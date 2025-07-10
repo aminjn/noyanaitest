@@ -1,0 +1,103 @@
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
+import classes from "./RTFEditor.module.css";
+import { Editable, ReactEditor, Slate, withReact } from "slate-react";
+import { withHistory } from "slate-history";
+import { BaseEditor, createEditor, Descendant, Editor } from "slate";
+import { Alignment, BlockName, Color, HeadingLevel, Size } from "./RTFConfigs";
+import Toolbar from "./Toolbar";
+import RenderElement from "./RenderElement";
+import RenderLeaf from "./RenderLeaf";
+
+export type CustomText = {
+  text: string;
+  size?: Size;
+  color?: Color;
+  bg?: Color;
+  strong?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strike?: boolean;
+  href?: string;
+};
+
+type BaseCustomElement<T extends BlockName, K = object> = {
+  align?: Alignment;
+  children: CustomText[];
+  type: T;
+  level?: never | HeadingLevel;
+} & K;
+
+type ParagraphElement = BaseCustomElement<"p">;
+type ListElement = BaseCustomElement<"ol" | "ul">;
+type ListItemElement = BaseCustomElement<"li">;
+type HeadingElement = BaseCustomElement<"h", { level: HeadingLevel }>;
+type ImageElement = BaseCustomElement<"img", { src: string; alt: string }>;
+type VideoElement = BaseCustomElement<"vid", { src: string }>;
+
+type CustomElement =
+  | ParagraphElement
+  | ListElement
+  | ListItemElement
+  | HeadingElement
+  | ImageElement
+  | VideoElement;
+
+declare module "slate" {
+  interface CustomTypes {
+    Editor: BaseEditor & ReactEditor;
+    Element: CustomElement;
+    Text: CustomText;
+  }
+}
+
+const inititalValue: Descendant[] = [
+  { type: "p", children: [{ text: "یه داستان بنویس..." }] },
+];
+
+const voids = ["img", "vid"];
+
+const withVoid = (editor: Editor) => {
+  const { isVoid } = editor;
+  editor.isVoid = (element) =>
+    voids.includes(element.type) ? true : isVoid(element);
+  return editor;
+};
+
+const RTFEditor = forwardRef<
+  Editor,
+  { defaultValue?: string; onChange?: (e: string) => unknown }
+>(({ defaultValue, onChange }, ref) => {
+  const [editor] = useState(() =>
+    withVoid(withHistory(withReact(createEditor())))
+  );
+
+  const init = useMemo<Descendant[]>(
+    () => (defaultValue ? JSON.parse(defaultValue) : inititalValue),
+    [defaultValue]
+  );
+
+  useImperativeHandle(ref, () => editor, [editor]);
+
+  return (
+    <div className={classes.container}>
+      <Slate
+        editor={editor}
+        initialValue={init}
+        onChange={(e) => {
+          onChange?.(JSON.stringify(e));
+        }}
+      >
+        <Toolbar />
+        <Editable
+          className={classes.main}
+          renderElement={RenderElement}
+          renderLeaf={RenderLeaf}
+        />
+      </Slate>
+    </div>
+  );
+});
+
+RTFEditor.displayName = "RTFEditor";
+
+export default RTFEditor;

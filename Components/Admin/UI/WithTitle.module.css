@@ -1,0 +1,100 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  position: relative;
+  z-index: 1;
+  animation: comeIn var(--transTime) ease-in-out forwards;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.contextBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+  transition: all var(--transTime);
+  background-color: transparent;
+  border-radius: 0.5rem;
+}
+
+.context {
+  position: absolute;
+  top: 100%;
+  inset-inline-end: 0;
+  background-color: var(--white);
+  opacity: 0;
+  transition: all var(--transTime) ease-in-out;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  width: 15rem;
+}
+
+.open {
+  opacity: 1;
+}
+
+.contextBtn:hover {
+  background-color: var(--gray4);
+}
+
+.action {
+  height: 3rem;
+  background-color: var(--white);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transTime);
+  position: relative;
+  color: var(--gray8);
+  padding-inline: 0.5rem;
+}
+
+.action:hover {
+  background-color: var(--gray4);
+}
+
+.content {
+  width: 100%;
+  animation: pop var(--transTime) ease-in-out forwards;
+  z-index: 0;
+  position: relative;
+}
+
+@keyframes comeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

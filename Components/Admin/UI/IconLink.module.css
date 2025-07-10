@@ -1,0 +1,55 @@
+.main {
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow), inset var(--shadow);
+  color: var(--gray13);
+  border: 2px solid transparent;
+  transition: all var(--transTime);
+  box-sizing: border-box;
+}
+
+.main:hover {
+  border-radius: 50%;
+  color: var(--white);
+  transform: scale(1.25);
+}
+
+.Info {
+  border-color: var(--infoS1);
+  background-color: var(--infoT3);
+}
+
+.Info:hover {
+  background-color: var(--info);
+}
+
+.Danger {
+  background-color: var(--errorT3);
+  border-color: var(--errorS1);
+}
+
+.Danger:hover {
+  background-color: var(--error);
+}
+
+.Success {
+  background-color: var(--successT3);
+  border-color: var(--successS1);
+}
+
+.Success:hover {
+  background-color: var(--success);
+}
+
+.Neutral {
+  background-color: var(--gray4);
+  border-color: var(--gray8);
+}
+
+.Neutral:hover {
+  background-color: var(--gray10);
+}

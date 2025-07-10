@@ -1,0 +1,109 @@
+.main {
+  position: absolute;
+  bottom: 0;
+  width: max-content;
+  max-width: 80vw;
+  transition: all var(--transTime);
+  opacity: 1;
+  pointer-events: all;
+  padding-top: 1rem;
+  user-select: none;
+  cursor: pointer;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.content {
+  font-size: 0.9rem;
+  animation: comeIn var(--transTime) ease-in-out forwards;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  color: var(--white);
+  border: 2px solid currentColor;
+  overflow: hidden;
+}
+
+.text {
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  direction: rtl;
+}
+
+.icon {
+  width: 1.5rem;
+  display: flex;
+  margin-left: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.dismissing {
+  animation: goAway var(--transTime) ease-in-out forwards;
+}
+
+.Success {
+  background: var(--success);
+  border-color: var(--successS2);
+}
+
+.Warn {
+  background: var(--warning);
+  border-color: var(--warningS2);
+}
+
+.Error {
+  background: var(--error);
+  border-color: var(--errorS2);
+}
+
+.Notify {
+  background: var(--info);
+  border-color: var(--infoS2);
+}
+
+.bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.fill {
+  transition: all 1s ease-in-out;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--white);
+}
+
+@keyframes comeIn {
+  0% {
+    transform: translateY(500%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes goAway {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%);
+    opacity: 0;
+  }
+}

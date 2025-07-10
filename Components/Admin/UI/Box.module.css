@@ -1,0 +1,7 @@
+.main {
+  background-color: var(--white);
+  border-radius: 0.75rem;
+  padding: 1.5rem min(1.5rem, 3dvw);
+  box-shadow: var(--shadow);
+  height: fit-content;
+}

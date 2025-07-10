@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.crump {
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.main {
+  display: flex;
+  gap: 2.375rem;
+  flex-wrap: wrap;
+}
+
+.content {
+  flex: 1;
+  min-width: 40rem;
+}
+
+.sides {
+  width: 21.5rem;
+  flex-shrink: 0;
+  max-width: 95dvw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.sideList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+.footer {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--gray10);
+}
+
+.meta > * {
+  position: relative;
+}
+
+.meta > *:not(:last-child)::after {
+  content: "";
+  display: block;
+  background-color: currentColor;
+  position: absolute;
+  width: 1px;
+  height: 0.75rem;
+  top: 50%;
+  left: 0;
+  transform: translate(-0.5rem, -50%);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

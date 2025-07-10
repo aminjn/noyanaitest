@@ -1,0 +1,76 @@
+.main {
+  width: 100%;
+  position: relative;
+  height: 3.5rem;
+  border: 1px solid var(--gray4);
+  border-radius: 0.25rem;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.invalid:not(:focus-within) {
+  border-color: var(--error);
+}
+
+.input {
+  position: absolute;
+  width: calc(100% - 3.5rem);
+  height: 100%;
+  border: none;
+  outline: none;
+  direction: ltr;
+  padding-inline: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neutral13);
+}
+
+.pre {
+  width: 3.5rem;
+  height: 100%;
+  position: absolute;
+  background-color: var(--gray4);
+  color: var(--gray10);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: 0.25rem 0.25rem 0 0;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  direction: ltr;
+}
+
+.placeholder {
+  position: absolute;
+  transition: all var(--transTime);
+  color: var(--gray7);
+  right: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+  background-color: var(--white);
+  padding-inline: 0.25rem;
+  font-weight: 400;
+  font-size: 0.75rem;
+  top: 0;
+}
+
+.input:placeholder-shown + .placeholder {
+  font-size: 0.875rem;
+  font-weight: 500;
+  top: 50%;
+}
+
+.invalid:not(:focus-within) > .placeholder {
+  color: var(--error);
+}
+
+.main:not(:focus-within) > .error {
+  color: var(--error);
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  font-size: 0.75rem;
+  font-weight: 500;
+}

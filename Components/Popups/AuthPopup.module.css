@@ -1,0 +1,67 @@
+.main {
+  background-color: var(--white);
+  padding-block: 2rem 3rem;
+  padding-inline: 4rem;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  width: min(31.25rem, 100dvw);
+}
+
+.logo {
+  margin-inline: auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend {
+  color: var(--gray13);
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+
+.tip {
+  color: var(--gray7);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.notice {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray7);
+  text-align: center;
+}
+
+.inlineLink {
+  color: var(--primary);
+}
+
+.submit.submit {
+  margin-top: 2.875rem;
+  height: 3.5rem;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.middle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-block: auto;
+}
+
+

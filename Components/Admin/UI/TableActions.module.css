@@ -1,0 +1,8 @@
+.main {
+  display: flex;
+  line-height: initial;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+  height: 100%;
+}

@@ -1,0 +1,12 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: var(--white);
+}
+
+.actions {
+  display: flex;
+  gap: 2rem;
+}

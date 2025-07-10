@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+  padding-block: 1rem;
+  padding-inline: 1rem;
+  position: sticky;
+}
+
+.main > * {
+  animation: boob var(--transTime) ease-in-out calc(2 * var(--transTime))
+    forwards;
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+@keyframes boob {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

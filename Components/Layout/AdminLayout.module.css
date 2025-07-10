@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  min-height: 100dvh;
+  max-width: 100dvw;
+}
+
+.content {
+  flex: 1;
+}

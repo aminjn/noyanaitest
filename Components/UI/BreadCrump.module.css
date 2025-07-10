@@ -1,0 +1,28 @@
+.main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: var(--gray8);
+  font-size: 0.875rem;
+  font-weight: 400;
+  gap: 0.75rem;
+  z-index: 3;
+  padding-block: 1rem;
+}
+
+.main::before {
+  border-top: 1px solid var(--gray4);
+  content: "";
+  background-color: var(--white);
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  width: 100dvw;
+  height: 100%;
+  z-index: -1;
+}
+
+.main > *:last-child {
+  color: var(--gray13);
+}

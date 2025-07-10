@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: var(--white);
+  border-radius: 0.25rem;
+  z-index: 1;
+  padding: 0.25rem;
+  flex-wrap: wrap;
+}
+
+
+.stamp {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  display: block;
+  border: 1px solid var(--black);
+  border-radius: 0.25rem;
+}
+
+.menu.menu {
+  flex-direction: row;
+  width: 20rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}

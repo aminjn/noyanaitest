@@ -1,0 +1,16 @@
+.wide.wide {
+  width: 90dvw;
+  height: 90dvh;
+  overflow-y: auto;
+}
+
+.image {
+  width: 10rem;
+  height: 10rem;
+  position: relative;
+}
+
+.video {
+  width: 10rem;
+  height: 10rem;
+}

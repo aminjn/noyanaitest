@@ -1,0 +1,43 @@
+.main {
+  width: 100%;
+  height: 10rem;
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--gray6);
+  border-radius: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.inputContainer {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border: 1px dashed var(--gray8);
+  overflow: hidden;
+  color: var(--gray8);
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.defaultValue {
+  height: 100%;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  color: var(--primary);
+  border: 1px solid var(--gray4);
+  border-radius: 0.25rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  position: relative;
+}

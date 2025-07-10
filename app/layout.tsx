@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Suspense } from "react";
+import Layout from "@/Components/Layout/Layout";
+import { PopupContextProvider } from "@/Components/Store/PopupContext";
+import { NotificationContextProvider } from "@/Components/Store/NotificationContext";
+import { ProgressContextProvider } from "@/Components/Store/ProgressContext";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const font = localFont({
+  src: "./fonts/IRANYekanXVFaNumVF.woff",
+  variable: "--fontFa",
   weight: "100 900",
 });
 
@@ -24,9 +24,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+    <html lang="fa" dir="rtl">
+      <body className={font.variable}>
+        <Suspense fallback={<Layout>{children}</Layout>}>
+          <ProgressContextProvider>
+            <NotificationContextProvider>
+              <PopupContextProvider>
+                <Layout>{children}</Layout>
+              </PopupContextProvider>
+            </NotificationContextProvider>
+          </ProgressContextProvider>
+        </Suspense>
       </body>
     </html>
   );

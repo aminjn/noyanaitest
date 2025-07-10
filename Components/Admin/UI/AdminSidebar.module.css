@@ -1,0 +1,99 @@
+.main {
+  padding: 3rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+  background-color: var(--white);
+  border-radius: 0.75rem;
+  width: 16.5rem;
+  flex-shrink: 0;
+  height: fit-content;
+  box-shadow: var(--shadow);
+}
+
+.linksContainer {
+  width: 100%;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.groupTitle {
+  color: var(--gray6);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.link {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--gray8);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all var(--transTime);
+}
+
+.waterfallContainer {
+  color: var(--gray8);
+  border-radius: 0.5rem;
+  padding-bottom: 0.75rem;
+  transition: all var(--transTime);
+}
+
+.active {
+  color: var(--primary8);
+}
+
+.chevron {
+  margin-inline-start: auto;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.subs {
+  width: calc(100% - 1.75rem);
+  margin-inline-start: auto;
+  padding-inline-start: 1.4rem;
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: all var(--transTime) ease-in-out;
+  overflow: hidden;
+  border-inline-start: 1px solid var(--gray2);
+  padding-inline-end: 1rem;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.sub {
+  padding: 0.38rem 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all var(--transTime);
+}
+
+.solo.active,
+.waterfallContainer.active {
+  background-color: var(--primary3);
+}
+
+.activeSub {
+  background-color: var(--primary4);
+}

@@ -1,0 +1,39 @@
+.main {
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  gap: 0.5rem;
+  white-space: nowrap;
+  padding-inline: 1.5625rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  border-radius: 0.25rem;
+  justify-content: center;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.Primary {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.Neutral {
+  background-color: var(--gray4);
+  color: var(--gray7);
+}
+
+.PrimaryStroke {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.Naked {
+  background-color: transparent;
+  color: var(--gray13);
+}
+
+.Black {
+  background-color: var(--gray13);
+  color: var(--white);
+}

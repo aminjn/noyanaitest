@@ -1,0 +1,32 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.colors {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.colorBox {
+  padding: 1rem;
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid var(--black);
+}
+
+.color {
+  width: 2rem;
+  height: 2rem;
+}
+
+.input {
+  background-color: khaki;
+  padding: 1rem;
+}

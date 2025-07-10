@@ -1,0 +1,35 @@
+.btn,
+.submit {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  color: var(--black);
+  transition: all var(--transTime);
+}
+
+.submit {
+  width: 3rem;
+  height: 3rem;
+}
+
+.inputCunt {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  background-color: var(--white);
+  border: 1px solid var(--gray6);
+  padding: 0.25rem;
+  display: flex;
+  width: 20rem;
+  align-items: center;
+  z-index: 2;
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow);
+}
+
+.active {
+  color: var(--primary);
+}

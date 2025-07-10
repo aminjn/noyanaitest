@@ -1,0 +1,25 @@
+.main {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-direction: column;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  min-width: min(20rem, 90dvw);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.message {
+  color: var(--gray12);
+  font-size: 1rem;
+  font-weight: 500;
+}

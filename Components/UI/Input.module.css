@@ -1,0 +1,37 @@
+.main {
+  position: relative;
+  flex: 1;
+  height: 2.875rem;
+  min-height: 2.875rem;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  padding: 1rem;
+  outline: none;
+  border: 1px solid var(--gray6);
+  border-radius: 0.25rem;
+}
+
+.title {
+  position: absolute;
+  transition: all var(--transTime);
+  color: var(--gray7);
+  right: 1.25rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+  background-color: var(--white);
+  padding-inline: 0.25rem;
+  font-weight: 400;
+  font-size: 0.75rem;
+  top: 0;
+  border-radius: 100dvw;
+}
+
+.input:placeholder-shown + .title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  top: 50%;
+}

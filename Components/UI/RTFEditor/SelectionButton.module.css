@@ -1,0 +1,52 @@
+.main {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--gray6);
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+}
+
+.box {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  border: 1px solid var(--gray6);
+  padding: 0.15rem;
+  border-radius: 0.25rem;
+}
+
+.btn {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: transparent;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  z-index: 1;
+  background-color: var(--white);
+  border: 1px solid var(--gray6);
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: column;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.option {
+  background-color: var(--gray1);
+  padding: 0.25rem;
+  color: var(--black);
+  transition: all var(--transTime);
+  border-radius: 0.25rem;
+}
+
+.active {
+  color: var(--primary);
+  background-color: var(--success);
+}

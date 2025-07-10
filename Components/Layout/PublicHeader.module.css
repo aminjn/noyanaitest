@@ -1,0 +1,140 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 1rem;
+  width: 100%;
+  position: relative;
+}
+
+.main::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100dvw;
+  background-color: var(--white);
+  left: 50%;
+  transform: translateX(-50%);
+  content: "";
+  display: block;
+  z-index: -1;
+}
+
+.left,
+.right {
+  width: 11.125rem;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  justify-content: flex-end;
+}
+
+.right {
+  justify-content: flex-start;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2.625rem;
+}
+
+.link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray7);
+  transition: all var(--transTime) ease-in-out;
+  height: 2rem;
+  position: relative;
+}
+
+.link:not(.active):not(.accent):hover {
+  color: var(--black);
+}
+
+.link::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  top: calc(100% + 4px);
+  height: 2px;
+  border-radius: 100dvw;
+  background-color: currentColor;
+  left: 0;
+  right: 0;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.active::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.subedBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sub {
+  display: flex;
+  padding-inline: 1.6rem;
+  padding-block: 0.5rem;
+  transition: all var(--transTime);
+  white-space: nowrap;
+  min-width: fit-content;
+  color: var(--gray);
+  gap: 1rem;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.subs {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.875rem);
+  background-color: var(--white);
+  border: 1px solid #00000012;
+  border-radius: 4px;
+  padding-block: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+  transform-origin: top;
+  animation: carpet var(--transTime) ease-in-out forwards;
+}
+
+.sub:hover {
+  color: var(--black);
+  background-color: #00000012;
+}
+
+.sub:hover > .subIcon {
+  color: var(--primary);
+}
+
+.accent {
+  color: var(--secondary);
+}
+
+@keyframes carpet {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

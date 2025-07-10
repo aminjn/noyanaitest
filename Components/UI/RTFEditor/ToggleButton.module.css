@@ -1,0 +1,14 @@
+.main {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--black);
+  transition: all var(--transTime);
+  background-color: transparent;
+}
+
+.active {
+  color: var(--success);
+}
