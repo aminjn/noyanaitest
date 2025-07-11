@@ -4,6 +4,7 @@ import Link from "next/link";
 const RenderLeaf = ({ children, leaf, attributes }: RenderLeafProps) => {
   const style: CSSProperties = {
     fontSize: leaf.size || 16,
+    //TODO: add default color for link element
     color: leaf.color || "var(--black)",
     backgroundColor: leaf.bg || "var(--white)",
     textAlign: "center",

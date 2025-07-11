@@ -19,6 +19,7 @@
     "react-multi-date-picker": "^4.5.2",
     "react-select": "^5.10.1",
     "react-timer-hook": "^4.0.5",
+    "sharp": "^0.34.3",
     "slate": "^0.117.2",
     "slate-history": "^0.113.1",
     "slate-react": "^0.117.3",
