@@ -60,7 +60,7 @@ const NodesSelector = <TMulti extends boolean>({
             onChange?.(getOptionValue(e) as any);
           }
         }}
-        menuPlacement="top"
+        // menuPlacement="top"
       />
     </div>
   );

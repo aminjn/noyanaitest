@@ -4,11 +4,6 @@
   border-radius: 0.8rem;
   padding: 0.5rem;
   min-height: 10rem;
-  line-height: 100%;
-}
-
-.main * {
-  line-height: 100%;
 }
 
 .container {

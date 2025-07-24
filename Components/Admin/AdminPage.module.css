@@ -30,3 +30,20 @@
   background-color: khaki;
   padding: 1rem;
 }
+
+.popup1,
+.popup2 {
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.popup1 {
+  background-color: khaki;
+  width: 20rem;
+  height: 20rem;
+}
+
+.popup2 {
+  background-color: pink;
+}

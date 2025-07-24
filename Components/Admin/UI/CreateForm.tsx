@@ -16,6 +16,7 @@ import DateInput from "@/Components/UI/DateInput";
 import NodesSelector from "@/Components/UI/NodesSelector";
 import ImageInput from "@/Components/UI/ImageInput";
 import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
+import StringListInput from "@/Components/UI/StringListInput";
 
 const CreateForm = <TInput,>({
   defaultValue,
@@ -40,7 +41,8 @@ const CreateForm = <TInput,>({
               | "range"
               | "date"
               | "image"
-              | "rtf";
+              | "rtf"
+              | "strings";
           }
         | { type: "select" | "options"; options: Record<string, string> }
         | {
@@ -221,6 +223,19 @@ const CreateForm = <TInput,>({
             content = (
               <RTFEditor
                 {...commons}
+                onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
+              />
+            );
+            break;
+          case "strings":
+            content = (
+              <StringListInput
+                {...commons}
+                defaultValue={
+                  Array.isArray(defaultValue?.[key])
+                    ? defaultValue?.[key]
+                    : undefined
+                }
                 onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
               />
             );

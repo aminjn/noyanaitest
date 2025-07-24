@@ -13,6 +13,7 @@ const Input = forwardRef<
     min?: number;
     max?: number;
     step?: number;
+    autoFocuse?: boolean;
   }>
 >(
   (
@@ -27,6 +28,7 @@ const Input = forwardRef<
       style,
       title,
       type,
+      autoFocuse,
     },
     ref
   ) => {
@@ -43,6 +45,7 @@ const Input = forwardRef<
           max={max}
           step={step}
           ref={ref}
+          autoFocus={autoFocuse}
         />
         {!!title && <span className={classes.title}>{title}</span>}
       </div>

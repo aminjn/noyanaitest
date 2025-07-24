@@ -23,7 +23,10 @@ const UserButton = () => {
       </Button>
     );
   return (
-    <Button className={classes.main} onClick={() => setPopup(<AuthPopup />)}>
+    <Button
+      className={classes.main}
+      onClick={() => setPopup("Auth", <AuthPopup />)}
+    >
       ورود/ثبت نام
     </Button>
   );

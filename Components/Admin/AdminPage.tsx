@@ -11,7 +11,7 @@ import useNotification from "../Hooks/useNotification";
 import * as Colors from "@/Components/Enums/Colors";
 
 const AdminPage = () => {
-  const { setPopup } = usePopup();
+  const { setPopup, closePopup } = usePopup();
   const [notif, setNotif] = useState<string>("");
 
   const pushNotification = useNotification();
@@ -20,7 +20,33 @@ const AdminPage = () => {
     <Box className={classes.main}>
       <Button
         onClick={() =>
-          setPopup(<div className={classes.popup}>Hello I&apos;m Popup</div>)
+          setPopup(
+            "Test1",
+            <div className={classes.popup1}>
+              <p>Hello I&apos;m Popup</p>
+              <Button
+                onClick={() =>
+                  setPopup(
+                    "Test2",
+                    <div className={classes.popup2}>
+                      <p>Another One Bites The Dust</p>
+                      <div>
+                        <Button onClick={() => closePopup("Test2")}>
+                          Close this
+                        </Button>
+                        <Button onClick={() => closePopup("Test1")}>
+                          Close First One
+                        </Button>
+                        <Button onClick={() => closePopup()}>Close All</Button>
+                      </div>
+                    </div>
+                  )
+                }
+              >
+                Open Second Popup
+              </Button>
+            </div>
+          )
         }
       >
         OpenPopup

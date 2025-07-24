@@ -1,0 +1,45 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px dashed var(--gray8);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 1rem;
+  color: var(--gray10);
+  font-weight: 600;
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.index {
+  flex-shrink: 0;
+  width: 2rem;
+  white-space: nowrap;
+}
+
+.value {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}

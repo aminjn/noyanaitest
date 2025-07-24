@@ -1,0 +1,14 @@
+.main {
+  width: 90dvw;
+  height: 90dvh;
+  position: relative;
+  background-color: var(--white);
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow);
+}
+
+.action {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}

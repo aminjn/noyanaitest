@@ -1,3 +1,4 @@
+import AdsButton from "./AdsButton";
 import AlignmentButton from "./AlignmentButton";
 import BackgroundColorIcon from "./BackgroundColorIcon";
 import BoldIcon from "./BoldIcon";
@@ -6,6 +7,7 @@ import FontSizeIcon from "./FontSizeIcon";
 import HeadingButton from "./HeadingButton";
 import ImageButton from "./ImageButton";
 import ItalicIcon from "./ItalicIcon";
+import LineHeightIcon from "./LineHeightIcon";
 import LinkButton from "./LinkButton";
 import ListButton from "./ListButton";
 import SelectionButton from "./SelectionButton";
@@ -16,6 +18,11 @@ import UnderlineIcon from "./UnderlineIcon";
 const Toolbar = () => {
   return (
     <div className={classes.main}>
+      <SelectionButton
+        thisKey="lineHeight"
+        defaultValue="100%"
+        icon={<LineHeightIcon />}
+      />
       <SelectionButton
         thisKey="size"
         defaultValue={16}
@@ -48,7 +55,8 @@ const Toolbar = () => {
       <AlignmentButton />
       <HeadingButton />
       <ListButton type="ol" />
-    <ListButton type="ul" />
+      <ListButton type="ul" />
+      <AdsButton />
     </div>
   );
 };

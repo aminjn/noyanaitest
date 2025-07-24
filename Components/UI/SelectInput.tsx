@@ -9,13 +9,13 @@ const SelectInput = ({
   readOnly,
   style,
   title,
-  defaultvalue,
+  defaultValue,
 }: WithStyleProps<{
   onChange?: ChangeEventHandler<HTMLSelectElement>;
   options: Record<string, string>;
   title?: string;
   readOnly?: boolean;
-  defaultvalue?: string;
+  defaultValue?: string;
 }>) => {
   return (
     <select
@@ -24,7 +24,7 @@ const SelectInput = ({
       className={`${classes.main} ${className}`}
       style={style}
       onChange={onChange}
-      defaultValue={defaultvalue}
+      defaultValue={defaultValue}
     >
       {!!title && <option value="">{title}</option>}
       {Object.keys(options).map((option) => (

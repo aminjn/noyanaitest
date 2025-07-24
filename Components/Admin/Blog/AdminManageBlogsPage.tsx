@@ -66,7 +66,8 @@ const AdminManageBlogsPage = () => {
           actions={[
             {
               title: "جدید",
-              action: () => setPopup(<CreateBlogPopup mutate={mutate} />),
+              action: () =>
+                setPopup("CreateBlog", <CreateBlogPopup mutate={mutate} />),
             },
           ]}
         >

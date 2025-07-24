@@ -1,0 +1,21 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--gray10);
+}
+
+.area {
+  resize: vertical;
+  min-height: 15rem;
+  padding: 1rem;
+  outline: none;
+  border: 1px solid var(--gray6);
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}

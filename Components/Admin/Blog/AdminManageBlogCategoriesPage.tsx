@@ -35,7 +35,11 @@ const AdminManageBlogCategoriesPage = () => {
           actions={[
             {
               title: "جدید",
-              action: () => setPopup(<NewBlogCategoryPopup mutate={mutate} />),
+              action: () =>
+                setPopup(
+                  "NewBlogCategory",
+                  <NewBlogCategoryPopup mutate={mutate} />
+                ),
             },
           ]}
         >
@@ -73,6 +77,7 @@ const AdminManageBlogCategoriesPage = () => {
                       variant="Danger"
                       onClick={() =>
                         setPopup(
+                          "DeleteBlogCategory",
                           <DeleteBlogCategoryPopup
                             node={node}
                             mutate={mutate}

@@ -20,7 +20,7 @@ const ConfirmationPopup = ({
         <Button onClick={onConfirm} variant="Primary" isLoading={isLoading}>
           تایید
         </Button>
-        <Button onClick={closePopup} variant="Neutral">
+        <Button onClick={() => closePopup()} variant="Neutral">
           انصراف
         </Button>
       </div>

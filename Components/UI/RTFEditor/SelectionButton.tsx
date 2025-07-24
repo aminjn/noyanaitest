@@ -1,12 +1,12 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import { colors, sizes } from "./RTFConfigs";
+import { colors, lineHeights, sizes } from "./RTFConfigs";
 import { CustomText } from "./RTFEditor";
 import classes from "./SelectionButton.module.css";
 import { useSlateSelection, useSlateStatic } from "slate-react";
 import { Editor } from "slate";
 import MenuIcon from "@/Components/Icons/MenuIcon";
 
-const selectables = ["size", "color", "bg"] as const;
+const selectables = ["size", "color", "bg", "lineHeight"] as const;
 
 type Selectable = (typeof selectables)[number];
 
@@ -14,6 +14,7 @@ const keyToValues: { [key in Selectable]: readonly CustomText[key][] } = {
   size: sizes,
   color: colors,
   bg: colors,
+  lineHeight: lineHeights,
 } as const;
 
 const SelectionButton = <T extends Selectable>({

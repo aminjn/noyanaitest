@@ -1,0 +1,47 @@
+.main {
+  width: 95dvw;
+  height: 95dvh;
+  overflow-y: auto;
+}
+
+.action {
+  position: sticky;
+  top: 0;
+  margin-inline-start: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.adItem {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--gray4);
+  border: 1px solid var(--gray6);
+  box-shadow: var(--shadow);
+  transition: all var(--transTime);
+}
+
+.selected {
+  background-color: var(--primary);
+}
+
+.adContent {
+  flex: 1;
+}
+
+.adActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  flex-shrink: 0;
+}

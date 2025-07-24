@@ -8,6 +8,7 @@ import PublicLayout from "./PublicLayout";
 import Popup from "../Popup/Popup";
 import Notifications from "../Notification/Notifications";
 import { adminKey } from "../config";
+import DoctorPanelLayout from "./DoctorPanelLayout";
 
 export type WithStyleProps<T = Record<string, never>> = T & {
   className?: string;
@@ -18,8 +19,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   const content = useMemo<ReactNode>(() => {
-    if (pathname.replaceAll("/", "").startsWith(adminKey))
+    const plain = pathname.replaceAll("/", "");
+    if (plain.startsWith(adminKey))
       return <AdminLayout>{children}</AdminLayout>;
+    if (plain.startsWith("doctorpanel"))
+      return <DoctorPanelLayout>{children}</DoctorPanelLayout>;
     return <PublicLayout>{children}</PublicLayout>;
   }, [children, pathname]);
 

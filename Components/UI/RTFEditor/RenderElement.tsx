@@ -4,6 +4,7 @@ import { CSSProperties, forwardRef, ReactNode, useMemo } from "react";
 import { HeadingLevel } from "./RTFConfigs";
 import Image from "next/image";
 import { FILE_PATH } from "@/Components/config";
+import AdvertisementItem from "./AdvertisementItem";
 
 const Heading = forwardRef<
   HTMLElement,
@@ -47,6 +48,7 @@ const RenderElement = (props: RenderElementProps) => {
             fill
             sizes="100dvw"
           />
+          {props.children}
         </div>
       );
     case "h":
@@ -78,6 +80,12 @@ const RenderElement = (props: RenderElementProps) => {
         <p style={style} {...attributes}>
           {props.children}
         </p>
+      );
+    case "ads":
+      return (
+        <AdvertisementItem id={props.element.id}>
+          {props.children}
+        </AdvertisementItem>
       );
     default:
       return (

@@ -1,16 +1,60 @@
-.wide.wide {
-  width: 90dvw;
-  height: 90dvh;
+.main {
+  width: 95dvw;
+  height: 95dvh;
   overflow-y: auto;
 }
 
-.image {
-  width: 10rem;
-  height: 10rem;
-  position: relative;
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--white);
+  padding: 1rem;
+  box-shadow: var(--shadow);
 }
 
-.video {
-  width: 10rem;
-  height: 10rem;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.item {
+  width: 15rem;
+  height: 18rem;
+  border: 1px solid var(--gray6);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transTime);
+  background-color: var(--gray4);
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+
+.activeItem {
+  background-color: var(--info);
+}
+
+.image {
+  width: 100%;
+  position: relative;
+  flex: 1;
+}
+
+.itemActions {
+  display: flex;
+  gap: 0.5rem;
 }

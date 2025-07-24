@@ -19,7 +19,7 @@ const LogoutPopup = () => {
         <Button isLoading={isLoading} onClick={() => setIsLoading(true)}>
           بله
         </Button>
-        <Button onClick={closePopup}>نه</Button>
+        <Button onClick={() => closePopup()}>نه</Button>
       </div>
       <Act
         path={isLoading ? `${API}/auth` : null}

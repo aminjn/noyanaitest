@@ -10,6 +10,7 @@ export const buttonVariants = [
   "PrimaryStroke",
   "Naked",
   "Black",
+  "Danger",
 ] as const;
 
 type ButtonVariant = (typeof buttonVariants)[number];

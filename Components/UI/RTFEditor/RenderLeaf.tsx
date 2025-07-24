@@ -8,6 +8,7 @@ const RenderLeaf = ({ children, leaf, attributes }: RenderLeafProps) => {
     color: leaf.color || "var(--black)",
     backgroundColor: leaf.bg || "var(--white)",
     textAlign: "center",
+    lineHeight: leaf.lineHeight || "100%",
   };
   if (leaf.href)
     children = (

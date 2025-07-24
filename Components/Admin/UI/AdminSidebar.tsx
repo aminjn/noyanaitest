@@ -27,6 +27,13 @@ const linkMap: {
         title: "مقالات",
       },
       { title: "دسته‌بندی مقالات", target: "blogcategory" },
+      { title: "تبلیغات خطی", target: "inlinead" },
+      { title: "مولتی مدیا وبلاگ", target: "blogmedia" },
+      { title: "لغت نامه", target: "textcontent" },
+      { title: "تخصص ها", target: "speciality" },
+      { title: "درخواست های پزشک شدن", target: "becomedoctor" },
+      { title: "کاربران", target: "user" },
+      { title: "پروفایل پزشکان", target: "doctorprofile" },
     ],
   },
 ];
@@ -105,9 +112,9 @@ const AdminSidebar = () => {
   useUser(true);
   return (
     <div className={classes.main}>
-      <div className={classes.logo}>
+      <Link className={classes.logo} href={"/"}>
         <LogoLong />
-      </div>
+      </Link>
       <div className={classes.linksContainer}>
         {linkMap.map((group) => (
           <div key={group.title} className={classes.group}>

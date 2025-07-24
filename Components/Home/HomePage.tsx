@@ -7,7 +7,9 @@ import classes from "./HomePage.module.css";
 
 const HomePage = () => {
   const { setPopup } = usePopup();
-  return <Button onClick={() => setPopup(<LogoutPopup />)}>خروج</Button>;
+  return (
+    <Button onClick={() => setPopup("Logout", <LogoutPopup />)}>خروج</Button>
+  );
 };
 
 export default HomePage;

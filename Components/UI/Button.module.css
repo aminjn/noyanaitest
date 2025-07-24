@@ -37,3 +37,8 @@
   background-color: var(--gray13);
   color: var(--white);
 }
+
+.Danger {
+  background-color: var(--error);
+  color: var(--white);
+}

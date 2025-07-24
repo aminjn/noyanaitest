@@ -3,18 +3,20 @@ import LogoLong from "../UI/LogoLong";
 import classes from "./PublicHeader.module.css";
 import UserButton from "./UserButton";
 import { usePathname } from "next/navigation";
-import { Fragment, ReactNode, useEffect, useState } from "react";
+import { Fragment, ReactNode, useEffect, useMemo, useState } from "react";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import CallingIcon from "../Icons/CallingIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
+import useLocale from "../Hooks/useLocale";
+import { ContentKey } from "../Enums/contentKeys";
 
 type LinkItem<TSubed extends boolean = false> = {
-  title: string;
+  title: ContentKey;
   accent?: boolean;
 } & (TSubed extends true
   ? {
-      subs: { title: string; taregt: string; icon: ReactNode }[];
+      subs: { title: ContentKey; taregt: string; icon: ReactNode }[];
       target?: never;
     }
   : {
@@ -22,31 +24,10 @@ type LinkItem<TSubed extends boolean = false> = {
       subs?: never;
     });
 
-const links: LinkItem<boolean>[] = [
-  { title: "صفحه اصلی", target: "/" },
-  { title: "نوبت‌دهی مطب", target: "/book" },
-  {
-    title: "مشاوره پزشکی",
-    subs: [
-      {
-        title: "مشاوره پزشکی تلفنی",
-        taregt: "/consult/voice",
-        icon: <CallingIcon />,
-      },
-      {
-        title: "مشاوره پزشکی متنی",
-        taregt: "/consult/text",
-        icon: <ChatBubbleIcon />,
-      },
-    ],
-  },
-  { title: "تشخیص با AI", target: "/wizard" },
-  { title: "مجله سلامت", target: "/mag" },
-  { title: "برای پزشکان", target: "/console", accent: true },
-];
-
 const WithSubs = ({ link }: { link: LinkItem<true> }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const getContent = useLocale();
 
   useEffect(() => {
     if (isOpen) {
@@ -59,7 +40,7 @@ const WithSubs = ({ link }: { link: LinkItem<true> }) => {
   return (
     <div className={classes.link}>
       <button className={classes.subedBtn} onClick={() => setIsOpen(true)}>
-        <span>{link.title}</span>
+        <span>{getContent(link.title)}</span>
         <Ixon width="1rem">
           <ChevronIcon />
         </Ixon>
@@ -71,7 +52,7 @@ const WithSubs = ({ link }: { link: LinkItem<true> }) => {
               <Ixon className={classes.subIcon} width="1.125rem">
                 {sub.icon}
               </Ixon>
-              <span>{sub.title}</span>
+              <span>{getContent(sub.title)}</span>
             </Link>
           ))}
         </div>
@@ -83,11 +64,39 @@ const WithSubs = ({ link }: { link: LinkItem<true> }) => {
 const PublicHeader = () => {
   const pathname = usePathname();
 
+  const getContent = useLocale();
+
+  const links = useMemo<LinkItem<boolean>[]>(
+    () => [
+      { title: "homePage", target: "/" },
+      { title: "officeBook", target: "/book" },
+      {
+        title: "medicalConsult",
+        subs: [
+          {
+            title: "phoneConsult",
+            taregt: "/consult/voice",
+            icon: <CallingIcon />,
+          },
+          {
+            title: "textConsult",
+            taregt: "/consult/text",
+            icon: <ChatBubbleIcon />,
+          },
+        ],
+      },
+      { title: "aiDetection", target: "/wizard" },
+      { title: "blog", target: "/mag" },
+      { title: "forDoctors", target: "/doctorpanel", accent: true },
+    ],
+    []
+  );
+
   return (
     <header className={classes.main}>
-      <div className={classes.right}>
+      <Link className={classes.right} href={"/"}>
         <LogoLong />
-      </div>
+      </Link>
       <nav className={classes.nav}>
         {links.map((link) => (
           <Fragment key={link.title}>
@@ -98,7 +107,7 @@ const PublicHeader = () => {
                   pathname === link.target ? classes.active : ""
                 } ${link.accent ? classes.accent : ""}`}
               >
-                {link.title}
+                {getContent(link.title)}
               </Link>
             ) : (
               <WithSubs link={link as LinkItem<true>} />

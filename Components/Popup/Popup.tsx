@@ -3,18 +3,27 @@
 import { Fragment, useContext } from "react";
 import classes from "./Popup.module.css";
 import PopupContext from "../Store/PopupContext";
-const Popup = () => {
-  const popupCTX = useContext(PopupContext);
 
-  if (!popupCTX.popup) return null;
+const BASE_Z = 20;
+
+const Popup = () => {
+  const { popups, closePopup } = useContext(PopupContext);
+
+  if (!popups) return null;
   return (
     <Fragment>
-      {!!popupCTX.popup && (
-        <Fragment>
-          <div className={classes.blur} onClick={() => popupCTX.closePopup()} />
-          <div className={classes.content}>{popupCTX.popup}</div>
+      {Object.entries(popups).map(([key, popup], i) => (
+        <Fragment key={key}>
+          <div
+            className={classes.blur}
+            onClick={() => closePopup(key)}
+            style={{ zIndex: i + BASE_Z }}
+          />
+          <div className={classes.content} style={{ zIndex: BASE_Z + i + 1 }}>
+            {popup}
+          </div>
         </Fragment>
-      )}
+      ))}
     </Fragment>
   );
 };

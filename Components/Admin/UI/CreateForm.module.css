@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  overflow-x: hidden;
   margin-inline: auto;
   padding: 1rem min(3rem, 3dvw);
+  overflow-y: visible;
 }

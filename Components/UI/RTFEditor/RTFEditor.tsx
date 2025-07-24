@@ -18,6 +18,7 @@ export type CustomText = {
   underline?: boolean;
   strike?: boolean;
   href?: string;
+  lineHeight?: string;
 };
 
 type BaseCustomElement<T extends BlockName, K = object> = {
@@ -33,6 +34,7 @@ type ListItemElement = BaseCustomElement<"li">;
 type HeadingElement = BaseCustomElement<"h", { level: HeadingLevel }>;
 type ImageElement = BaseCustomElement<"img", { src: string; alt: string }>;
 type VideoElement = BaseCustomElement<"vid", { src: string }>;
+type AdsElement = BaseCustomElement<"ads", { id: string }>;
 
 type CustomElement =
   | ParagraphElement
@@ -40,7 +42,8 @@ type CustomElement =
   | ListItemElement
   | HeadingElement
   | ImageElement
-  | VideoElement;
+  | VideoElement
+  | AdsElement;
 
 declare module "slate" {
   interface CustomTypes {

@@ -1,0 +1,17 @@
+.main {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.title {
+  font-size: 0.9rem;
+  color: var(--gray10);
+  font-weight: 400;
+}
+
+.value {
+  color: var(--gray13);
+  font-size: 1rem;
+  font-weight: 800;
+}

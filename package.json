@@ -13,6 +13,7 @@
     "@ag-grid-community/theming": "^32.2.0",
     "ag-grid-enterprise": "^32.2.0",
     "ag-grid-react": "^32.2.0",
+    "nanoid": "^5.1.5",
     "next": "14.2.30",
     "react": "^18",
     "react-dom": "^18",
