@@ -73,7 +73,7 @@ const BlogsPage = (props: BlogsPageProps) => {
               }),
               {}
             )}
-            defaultvalue={params.nodeSlug}
+            defaultValue={params.nodeSlug}
             onChange={(e) =>
               push(e.target.value ? `/mag/category/${e.target.value}` : "/mag")
             }
@@ -82,7 +82,7 @@ const BlogsPage = (props: BlogsPageProps) => {
             className={classes.criteria}
             title="مرتب سازی بر اساس"
             options={blogSortDict}
-            defaultvalue={sort || undefined}
+            defaultValue={sort || undefined}
             onChange={(e) =>
               push(
                 `/mag${params.nodeSlug ? `/category/${params.nodeSlug}` : ""}?${
