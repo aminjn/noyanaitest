@@ -1,0 +1,175 @@
+import useSWR from "swr";
+import classes from "./AdminManageDoctorGalleryTab.module.css";
+import { IDoctor } from "./AdminManageDoctorsPage";
+import { MongoDoc } from "@/Components/Hooks/useUser";
+import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { API } from "@/Components/config";
+import { fetcher } from "@/Components/helpers/fetcher";
+import HandleLoading from "../UI/HandleLoading";
+import Table from "../UI/Table";
+import FormatDate from "@/Components/UI/FormatDate";
+import IconButton from "../UI/IconButton";
+import TableActions from "../UI/TableActions";
+import ImageIcon from "@/Components/UI/RTFEditor/ImageIcon";
+import usePopup from "@/Components/Hooks/usePopup";
+import FullScreenImagePopup from "@/Components/Popups/FullScreenImagePopup";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
+import Garbageicon from "@/Components/Icons/GarbageIcon";
+import MutateGalleryItemPopup from "./MutateGalleryItemPopup";
+import DeleteGalleryItemPopup from "./DeleteGalleryItemPopup";
+import WithTitle from "../UI/WithTitle";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+
+type GalleryItemPopulation = { OwnerPopulated?: true };
+
+export interface IGalleryItem<
+  TOwnerIsDoctor extends boolean | undefined = boolean | undefined,
+  TPopulation extends GalleryItemPopulation = GalleryItemPopulation
+> extends MongoDoc {
+  owner: TOwnerIsDoctor extends undefined
+    ? unknown
+    : TPopulation["OwnerPopulated"] extends true
+    ? TOwnerIsDoctor extends true
+      ? IDoctor
+      : IDoctorProfile
+    : string;
+  ownerPath: TOwnerIsDoctor extends undefined
+    ? unknown
+    : TOwnerIsDoctor extends true
+    ? "Doctor"
+    : "DoctorProfile";
+  image?: string;
+  alt?: string;
+  description?: string;
+  createdAt: Date;
+  order: number;
+  active: boolean;
+}
+
+const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
+  const { data, error, mutate } = useSWR<IGalleryItem<true>[]>(
+    `${API}/auto/galleryitem?owner=${node._id}`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data)
+  );
+
+  const { setPopup } = usePopup();
+
+  const hasAccess = useAccessLevel();
+
+  return (
+    <HandleLoading data={!!data} error={error}>
+      {!!data && (
+        <WithTitle
+          title={`گالری ${node.name}`}
+          actions={
+            hasAccess("GalleryItem", "write")
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup(
+                        "MutateGalleryItem",
+                        <MutateGalleryItemPopup mutate={mutate} doc={node} />
+                      ),
+                  },
+                ]
+              : undefined
+          }
+        >
+          <Table
+            data={data}
+            name="AdminManageDoctorGallery"
+            renderer={{
+              createdAt: {
+                name: "زمان ایجاد",
+                value: (node) => new Date(node.createdAt),
+                component: (node) => <FormatDate value={node.createdAt} />,
+                filter: "Date",
+              },
+              image: {
+                name: "تصویر",
+                value: (node) => (node.image ? "دارد" : "ندارد"),
+                component: (node) =>
+                  node.image ? (
+                    <TableActions>
+                      <IconButton
+                        onClick={() =>
+                          setPopup(
+                            "FullscreenImagePreview",
+                            <FullScreenImagePopup src={node.image} />
+                          )
+                        }
+                      >
+                        <ImageIcon />
+                      </IconButton>
+                    </TableActions>
+                  ) : (
+                    ""
+                  ),
+                filter: "Set",
+              },
+              alt: { name: "آلت", value: (node) => node.alt, filter: "Text" },
+              description: {
+                name: "توضیحات",
+                value: (node) => node.description,
+                filter: "Text",
+              },
+              active: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.active}`],
+                component: (node) => <BooleanToIcon value={node.active} />,
+                filter: "Set",
+              },
+              order: {
+                name: "رتبه",
+                value: (node) => node.order,
+                filter: "Number",
+              },
+              actions: {
+                name: "عملیات",
+                component: (node) => (
+                  <TableActions>
+                    {hasAccess("GalleryItem", "update") && (
+                      <IconButton
+                        onClick={() =>
+                          setPopup(
+                            "MutateGalleryItem",
+                            <MutateGalleryItemPopup
+                              mutate={mutate}
+                              node={node}
+                            />
+                          )
+                        }
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    )}
+                    {hasAccess("GalleryItem", "delete") && (
+                      <IconButton
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteGalleryItem",
+                            <DeleteGalleryItemPopup
+                              mutate={mutate}
+                              node={node}
+                            />
+                          )
+                        }
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
+                  </TableActions>
+                ),
+              },
+            }}
+          />
+        </WithTitle>
+      )}
+    </HandleLoading>
+  );
+};
+
+export default AdminManageDoctorGalleryTab;

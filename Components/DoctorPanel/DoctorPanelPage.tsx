@@ -87,12 +87,15 @@ export interface IDoctorProfile<
   user?: T["UserPopulated"] extends true ? IUser : string;
   firstName?: string;
   lastName?: string;
+  ssid?: string;
+  gender?: Gender;
   mainSpeciality?: T["MainSpecialityPopulated"] extends true
     ? ISpeciality
     : string;
   specialities: T["SpecialitiesPopulated"] extends true
     ? ISpeciality[]
     : string[];
+  medicalSystemTitle?: MedicalSystemTitle;
   medicalSystemCode?: string;
   introduction?: string;
   services: string[];

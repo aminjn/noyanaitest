@@ -19,6 +19,8 @@ import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import FormatDate from "@/Components/UI/FormatDate";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import DeleteBlogPopup from "./DeleteBlogPopup";
 
 export interface IBlogCategory extends MongoDoc {
   title?: string;
@@ -56,6 +58,8 @@ const AdminManageBlogsPage = () => {
     fetcher({ url }).then((res) => res.data.data)
   );
 
+  const hasAccess = useAccessLevel();
+
   const { setPopup } = usePopup();
 
   return (
@@ -63,13 +67,20 @@ const AdminManageBlogsPage = () => {
       {!!data && (
         <WithTitle
           title="مقالات"
-          actions={[
-            {
-              title: "جدید",
-              action: () =>
-                setPopup("CreateBlog", <CreateBlogPopup mutate={mutate} />),
-            },
-          ]}
+          actions={
+            hasAccess("Blog", "write")
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup(
+                        "CreateBlog",
+                        <CreateBlogPopup mutate={mutate} />
+                      ),
+                  },
+                ]
+              : undefined
+          }
         >
           <Table
             data={data}
@@ -169,12 +180,24 @@ const AdminManageBlogsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/blog/${node._id}`)}>
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton variant="Danger">
-                      <Garbageicon />
-                    </IconButton>
+                    {hasAccess("Blog", "readOne") && (
+                      <IconLink href={adminPath(`/blog/${node._id}`)}>
+                        <EditIcon />
+                      </IconLink>
+                    )}
+                    {hasAccess("Blog", "delete") && (
+                      <IconButton
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteBlog",
+                            <DeleteBlogPopup node={node} mutate={mutate} />
+                          )
+                        }
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },

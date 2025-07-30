@@ -19,6 +19,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import Garbageicon from "@/Components/Icons/GarbageIcon";
 import DeleteSpecialityPopup from "./DeletSpecialityPopup";
 import InlineLink from "../UI/InlineLink";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 export interface ISpeciality extends MongoDoc {
   name?: string;
@@ -38,17 +39,24 @@ const AdminManageSpecialitiesPage = () => {
 
   const { setPopup } = usePopup();
 
+  const hasAccess = useAccessLevel();
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
           title="تخصص ها"
-          actions={[
-            {
-              title: "جدید",
-              action: () => setPopup("NewSpeciality", <NewSpecialityPopup />),
-            },
-          ]}
+          actions={
+            hasAccess("Sepciality", "write")
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup("NewSpeciality", <NewSpecialityPopup />),
+                  },
+                ]
+              : []
+          }
         >
           <Table
             name="AdminManageSpecialities"
@@ -89,23 +97,30 @@ const AdminManageSpecialitiesPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink
-                      variant="Info"
-                      href={adminPath(`/speciality/${node._id}`)}
-                    >
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton
-                      onClick={() =>
-                        setPopup(
-                          "DeleteSpeciality",
-                          <DeleteSpecialityPopup node={node} mutate={mutate} />
-                        )
-                      }
-                      variant="Danger"
-                    >
-                      <Garbageicon />
-                    </IconButton>
+                    {hasAccess("Sepciality", "readOne") && (
+                      <IconLink
+                        variant="Info"
+                        href={adminPath(`/speciality/${node._id}`)}
+                      >
+                        <EditIcon />
+                      </IconLink>
+                    )}
+                    {hasAccess("Sepciality", "delete") && (
+                      <IconButton
+                        onClick={() =>
+                          setPopup(
+                            "DeleteSpeciality",
+                            <DeleteSpecialityPopup
+                              node={node}
+                              mutate={mutate}
+                            />
+                          )
+                        }
+                        variant="Danger"
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },

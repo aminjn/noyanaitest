@@ -6,7 +6,7 @@
   align-items: center;
   background-color: var(--white);
   border-radius: 0.75rem;
-  width: 16.5rem;
+  width: var(--adminSidebarWidth);
   flex-shrink: 0;
   height: fit-content;
   box-shadow: var(--shadow);
@@ -14,6 +14,9 @@
 
 .linksContainer {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .group {

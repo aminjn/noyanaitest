@@ -9,6 +9,7 @@ import FormActions from "./UI/FormActions";
 import { notificationStatuses } from "../Store/NotificationContext";
 import useNotification from "../Hooks/useNotification";
 import * as Colors from "@/Components/Enums/Colors";
+import Debugger from "./Debugger";
 
 const AdminPage = () => {
   const { setPopup, closePopup } = usePopup();
@@ -82,6 +83,7 @@ const AdminPage = () => {
           </div>
         ))}
       </div>
+      <Button onClick={() => setPopup("Debugger", <Debugger />)}>Debug</Button>
     </Box>
   );
 };

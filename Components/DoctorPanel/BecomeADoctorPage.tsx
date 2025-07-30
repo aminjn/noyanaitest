@@ -24,8 +24,6 @@ const BecomeADoctorPage = () => {
       (url: string) => fetcher({ url }).then((res) => res.data.data)
     );
 
-  console.log(data);
-
   const getContent = useLocale();
 
   return (

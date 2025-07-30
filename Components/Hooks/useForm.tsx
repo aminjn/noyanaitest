@@ -80,7 +80,7 @@ const useForm = function <TInput, TResult = unknown>({
     if (!!isSaving) return;
     const problem = hasProblem?.(input);
     if (problem) return pushNotification(problem);
-    if (!!initMessage) pushNotification(initMessage);
+    if (!!initMessage) pushNotification(initMessage, "Warn");
     setIsSaving(mutator ? mutator({ ...input }) : { ...input, ...decorators });
   }, [
     decorators,

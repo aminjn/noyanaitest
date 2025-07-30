@@ -20,6 +20,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import Garbageicon from "@/Components/Icons/GarbageIcon";
 import DeleteInlineAdPopup from "./DeleteInlineAdPopup";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 export interface IInlineAdvertisement extends MongoDoc {
   name?: string;
@@ -40,21 +41,27 @@ const AdminManageInlineAdsPage = () => {
 
   const { setPopup } = usePopup();
 
+  const hasAccess = useAccessLevel();
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
           title="تبلیغات خطی"
-          actions={[
-            {
-              title: "جدید",
-              action: () =>
-                setPopup(
-                  "CreateInlineAd",
-                  <CreateInlineAdPopup mutate={mutate} />
-                ),
-            },
-          ]}
+          actions={
+            hasAccess("InlineAdvertisement", "write")
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup(
+                        "CreateInlineAd",
+                        <CreateInlineAdPopup mutate={mutate} />
+                      ),
+                  },
+                ]
+              : undefined
+          }
         >
           <Table
             name="AdminManageInlineAds"
@@ -109,23 +116,27 @@ const AdminManageInlineAdsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink
-                      variant="Info"
-                      href={adminPath(`/inlinead/${node._id}`)}
-                    >
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton
-                      variant="Danger"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteInlineAd",
-                          <DeleteInlineAdPopup node={node} mutate={mutate} />
-                        )
-                      }
-                    >
-                      <Garbageicon />
-                    </IconButton>
+                    {hasAccess("InlineAdvertisement", "readOne") && (
+                      <IconLink
+                        variant="Info"
+                        href={adminPath(`/inlinead/${node._id}`)}
+                      >
+                        <EditIcon />
+                      </IconLink>
+                    )}
+                    {hasAccess("InlineAdvertisement", "delete") && (
+                      <IconButton
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteInlineAd",
+                            <DeleteInlineAdPopup node={node} mutate={mutate} />
+                          )
+                        }
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },

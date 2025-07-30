@@ -27,6 +27,7 @@ import DeleteBecomeDoctorPopup from "./DeleteBecomeDoctorPopup";
 import ChangeBecomeDoctorStatusPopup from "./ChangeBecomeDoctorStatusPopup";
 import FormActions from "../UI/FormActions";
 import BecomeDoctorProfileSelector from "./BecomeDoctorProfileSelector";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const AdminManageBecomeDoctorPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -40,6 +41,8 @@ const AdminManageBecomeDoctorPage = () => {
   const { setPopup } = usePopup();
 
   const push = useProgress();
+
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -109,45 +112,53 @@ const AdminManageBecomeDoctorPage = () => {
                 title: "اطلاعات",
                 icon: <InfoIcon />,
               },
-              {
-                title: "پروفایل",
-                icon: <InfoIcon />,
-                id: "Profile",
-                content: <BecomeDoctorProfileSelector user={data.user} />,
-              },
+              ...(hasAccess("DoctorProfile", "readAll")
+                ? [
+                    {
+                      title: "پروفایل",
+                      icon: <InfoIcon />,
+                      id: "Profile",
+                      content: <BecomeDoctorProfileSelector req={data} />,
+                    },
+                  ]
+                : []),
               {
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
                   <FormActions>
-                    <Button
-                      variant="Danger"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteBecomeDoctor",
-                          <DeleteBecomeDoctorPopup
-                            node={data}
-                            mutate={() => push(adminPath("/becomedoctor"))}
-                          />
-                        )
-                      }
-                    >
-                      حذف
-                    </Button>
-                    <Button
-                      variant="Primary"
-                      onClick={() =>
-                        setPopup(
-                          "ChangeBecomeDoctorStatus",
-                          <ChangeBecomeDoctorStatusPopup
-                            mutate={mutate}
-                            node={data}
-                          />
-                        )
-                      }
-                    >
-                      تغییر وضعیت
-                    </Button>
+                    {hasAccess("BecomeDoctorRequest", "delete") && (
+                      <Button
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteBecomeDoctor",
+                            <DeleteBecomeDoctorPopup
+                              node={data}
+                              mutate={() => push(adminPath("/becomedoctor"))}
+                            />
+                          )
+                        }
+                      >
+                        حذف
+                      </Button>
+                    )}
+                    {hasAccess("BecomeDoctorRequest", "update") && (
+                      <Button
+                        variant="Primary"
+                        onClick={() =>
+                          setPopup(
+                            "ChangeBecomeDoctorStatus",
+                            <ChangeBecomeDoctorStatusPopup
+                              mutate={mutate}
+                              node={data}
+                            />
+                          )
+                        }
+                      >
+                        تغییر وضعیت
+                      </Button>
+                    )}
                   </FormActions>
                 ),
                 title: "عملیات",

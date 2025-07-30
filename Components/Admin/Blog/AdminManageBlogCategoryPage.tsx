@@ -9,6 +9,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import CreateForm from "../UI/CreateForm";
 import Box from "../UI/Box";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const AdminManageBlogCategoryPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -17,11 +18,14 @@ const AdminManageBlogCategoryPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.data)
   );
 
+  const hasAccess = useAccessLevel();
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <Box>
           <CreateForm
+            readOnly={!hasAccess("BlogCategory", "update")}
             defaultValue={data}
             renderer={{
               title: { title: "عنوان", type: "text" },

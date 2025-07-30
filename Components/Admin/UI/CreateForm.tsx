@@ -27,8 +27,10 @@ const CreateForm = <TInput,>({
   className = "",
   style,
   styleManaged = true,
+  readOnly,
 }: WithStyleProps<
   {
+    readOnly?: boolean;
     styleManaged?: boolean;
     renderer: {
       [key in keyof Partial<TInput>]: (
@@ -76,7 +78,10 @@ const CreateForm = <TInput,>({
 
   return (
     <Form
-      onSubmit={submit}
+      onSubmit={() => {
+        if (readOnly) return;
+        submit();
+      }}
       className={`${styleManaged ? classes.main : ""} ${className}`}
       style={style}
     >
@@ -88,7 +93,7 @@ const CreateForm = <TInput,>({
           title: segment.title,
           defaultValue: defaultValue?.[key]?.toString(),
           placeholder: true,
-          readOnly: isLoading,
+          readOnly: isLoading || readOnly,
         } as const;
         let content: ReactNode;
         switch (segment.type) {
@@ -249,9 +254,11 @@ const CreateForm = <TInput,>({
             انصراف
           </Button>
         ) : null}
-        <Button type="submit" isLoading={isLoading}>
-          تایید
-        </Button>
+        {!readOnly && (
+          <Button type="submit" isLoading={isLoading}>
+            تایید
+          </Button>
+        )}
       </FormActions>
     </Form>
   );

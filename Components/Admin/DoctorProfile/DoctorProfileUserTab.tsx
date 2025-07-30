@@ -3,6 +3,8 @@ import classes from "./DoctorProfileUserTab.module.css";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import { IUser } from "@/Components/Hooks/useUser";
+import { getUserLabel } from "../Lib/LabelGetters";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const DoctorProfileUserTab = ({
   mutate,
@@ -11,8 +13,10 @@ const DoctorProfileUserTab = ({
   node: IDoctorProfile;
   mutate: () => unknown;
 }) => {
+  const hasAccess = useAccessLevel();
   return (
     <CreateForm
+      readOnly={!hasAccess("DoctorProfile", "update")}
       defaultValue={node}
       hookProps={{
         path: `${API}/auto/doctorprofile/${node._id}`,
@@ -27,7 +31,7 @@ const DoctorProfileUserTab = ({
           type: "nodes",
           path: `${API}/auto/user`,
           title: "کاربر",
-          getOptionLabel: (node) => (node as IUser).phone,
+          getOptionLabel: (node) => getUserLabel(node as IUser),
           getOptionValue: (node) => (node as IUser)._id,
           getDefaultValue: (node) => node.user,
         },

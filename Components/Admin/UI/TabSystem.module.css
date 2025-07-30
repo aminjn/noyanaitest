@@ -70,14 +70,17 @@
 @keyframes overflowHack {
   0% {
     overflow-x: visible;
+    width: 100%;
   }
 
   99% {
     overflow-x: visible;
+    width: fit-content;
   }
 
   100% {
     overflow-x: auto;
+    width: fit-content;
   }
 }
 

@@ -19,6 +19,7 @@ import EditIcon from "../Icons/EditIcon";
 import IconButton from "../Admin/UI/IconButton";
 import Garbageicon from "../Icons/GarbageIcon";
 import DeleteBlogMediaPopup from "./DeleteBlogMediaPopup";
+import useAccessLevel from "../Hooks/useAccessLevel";
 
 export interface IBlogMedia extends MongoDoc {
   name?: string;
@@ -34,21 +35,27 @@ const AdminManageBlogMediasPage = () => {
 
   const { setPopup } = usePopup();
 
+  const hasAccess = useAccessLevel();
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
           title="مولتی مدیا وبلاگ"
-          actions={[
-            {
-              title: "جدید",
-              action: () =>
-                setPopup(
-                  "CreateBlogMedia",
-                  <CreateBlogMediaPopup mutate={mutate} />
-                ),
-            },
-          ]}
+          actions={
+            hasAccess("BlogMedia", "write")
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup(
+                        "CreateBlogMedia",
+                        <CreateBlogMediaPopup mutate={mutate} />
+                      ),
+                  },
+                ]
+              : undefined
+          }
         >
           <Table
             data={data}
@@ -73,23 +80,27 @@ const AdminManageBlogMediasPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink
-                      href={adminPath(`/blogmedia/${node._id}`)}
-                      variant="Info"
-                    >
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton
-                      variant="Danger"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteBlogMedia",
-                          <DeleteBlogMediaPopup node={node} mutate={mutate} />
-                        )
-                      }
-                    >
-                      <Garbageicon />
-                    </IconButton>
+                    {hasAccess("BlogMedia", "readOne") && (
+                      <IconLink
+                        href={adminPath(`/blogmedia/${node._id}`)}
+                        variant="Info"
+                      >
+                        <EditIcon />
+                      </IconLink>
+                    )}
+                    {hasAccess("BlogMedia", "delete") && (
+                      <IconButton
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteBlogMedia",
+                            <DeleteBlogMediaPopup node={node} mutate={mutate} />
+                          )
+                        }
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },

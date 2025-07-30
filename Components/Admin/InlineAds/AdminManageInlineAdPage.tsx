@@ -16,6 +16,8 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteInlineAdPopup from "./DeleteInlineAdPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import List from "../UI/List";
 
 const AdminManageInlineAdPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -27,6 +29,8 @@ const AdminManageInlineAdPage = () => {
   const { setPopup } = usePopup();
 
   const push = useProgress();
+
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -40,6 +44,7 @@ const AdminManageInlineAdPage = () => {
                 id: "Info",
                 content: (
                   <CreateForm
+                    readOnly={!hasAccess("InlineAdvertisement", "update")}
                     renderer={{
                       name: { title: "نام", type: "text" },
                       title: { title: "عنوان", type: "text" },
@@ -66,20 +71,24 @@ const AdminManageInlineAdPage = () => {
                 title: "عملیات",
                 icon: <InfoIcon />,
                 content: (
-                  <Button
-                    variant="Danger"
-                    onClick={() =>
-                      setPopup(
-                        "DeleteInlineAd",
-                        <DeleteInlineAdPopup
-                          node={data}
-                          mutate={() => push(adminPath("/inlinead"))}
-                        />
-                      )
-                    }
-                  >
-                    حذف
-                  </Button>
+                  <List>
+                    {hasAccess("InlineAdvertisement", "delete") && (
+                      <Button
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteInlineAd",
+                            <DeleteInlineAdPopup
+                              node={data}
+                              mutate={() => push(adminPath("/inlinead"))}
+                            />
+                          )
+                        }
+                      >
+                        حذف
+                      </Button>
+                    )}
+                  </List>
                 ),
                 id: "Actions",
               },

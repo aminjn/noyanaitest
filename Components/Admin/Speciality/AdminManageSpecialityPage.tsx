@@ -15,6 +15,8 @@ import useProgress from "@/Components/Hooks/useProgress";
 import DeleteSpecialityPopup from "./DeletSpecialityPopup";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { useParams } from "next/navigation";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import List from "../UI/List";
 
 const AdminManageSpecialityPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -26,6 +28,8 @@ const AdminManageSpecialityPage = () => {
   const { setPopup } = usePopup();
 
   const push = useProgress();
+
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -39,6 +43,7 @@ const AdminManageSpecialityPage = () => {
                 id: "Info",
                 content: (
                   <CreateForm
+                    readOnly={!hasAccess("Sepciality", "update")}
                     defaultValue={data}
                     renderer={{
                       name: { type: "text", title: "نام" },
@@ -66,20 +71,24 @@ const AdminManageSpecialityPage = () => {
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
-                  <Button
-                    variant="Danger"
-                    onClick={() =>
-                      setPopup(
-                        "DeleteSpeciality",
-                        <DeleteSpecialityPopup
-                          node={data}
-                          mutate={() => push(adminPath("/speciality"))}
-                        />
-                      )
-                    }
-                  >
-                    حذف
-                  </Button>
+                  <List>
+                    {hasAccess("Sepciality", "delete") && (
+                      <Button
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteSpeciality",
+                            <DeleteSpecialityPopup
+                              node={data}
+                              mutate={() => push(adminPath("/speciality"))}
+                            />
+                          )
+                        }
+                      >
+                        حذف
+                      </Button>
+                    )}
+                  </List>
                 ),
               },
             ]}

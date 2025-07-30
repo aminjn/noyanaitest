@@ -4,6 +4,7 @@ import { mutate } from "swr";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const DoctorSpecialityTab = ({
   mutate,
@@ -12,8 +13,10 @@ const DoctorSpecialityTab = ({
   node: IDoctorProfile;
   mutate: () => unknown;
 }) => {
+  const hasAccess = useAccessLevel();
   return (
     <CreateForm
+      readOnly={!hasAccess("DoctorProfile", "update")}
       styleManaged
       defaultValue={node}
       hookProps={{

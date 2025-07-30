@@ -9,6 +9,7 @@ import HandleLoading from "../UI/HandleLoading";
 import { useMemo } from "react";
 import Table from "../UI/Table";
 import EditTextContentAgent from "./EditTextContentAgent";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 export type ITextContent = MongoDoc & { [key in ContentKey]: string };
 
@@ -37,6 +38,8 @@ const AdminManageTextContentPage = () => {
       .filter(({ key }) => !readOnlyKeys.includes(key));
   }, [data]);
 
+  const hasAccess = useAccessLevel();
+
   return (
     <HandleLoading data={!!ready} error={error}>
       {!!ready && (
@@ -59,6 +62,7 @@ const AdminManageTextContentPage = () => {
               filter: "Text",
               component: (node) => (
                 <EditTextContentAgent
+                  readOnly={!hasAccess("TextContent", "update")}
                   mutate={mutate}
                   kay={node.key}
                   value={node.val}

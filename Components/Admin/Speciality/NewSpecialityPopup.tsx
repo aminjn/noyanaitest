@@ -22,7 +22,6 @@ const NewSpecialityPopup = () => {
         payload={{}}
         onDone={(status, data) => {
           if (!status || !data) return closePopup();
-          console.log(data);
           push(adminPath(`/speciality/${data.data.data._id}`));
           closePopup();
         }}

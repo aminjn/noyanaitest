@@ -16,6 +16,8 @@ import usePopup from "../Hooks/usePopup";
 import DeleteBlogMediaPopup from "./DeleteBlogMediaPopup";
 import useProgress from "../Hooks/useProgress";
 import { adminPath } from "../helpers/adminPath";
+import useAccessLevel from "../Hooks/useAccessLevel";
+import List from "../Admin/UI/List";
 
 const AdminManageBlogMediaPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -27,6 +29,8 @@ const AdminManageBlogMediaPage = () => {
   const { setPopup } = usePopup();
 
   const push = useProgress();
+
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -40,6 +44,7 @@ const AdminManageBlogMediaPage = () => {
                 id: "Info",
                 content: (
                   <CreateForm
+                    readOnly={!hasAccess("BlogMedia", "update")}
                     defaultValue={data}
                     hookProps={{
                       path: `${API}/auto/blogmedia/${data._id}`,
@@ -59,20 +64,24 @@ const AdminManageBlogMediaPage = () => {
                 icon: <InfoIcon />,
                 id: "Actions",
                 content: (
-                  <Button
-                    variant="Danger"
-                    onClick={() =>
-                      setPopup(
-                        "DeleteBlogMedia",
-                        <DeleteBlogMediaPopup
-                          node={data}
-                          mutate={() => push(adminPath("/blogmedia"))}
-                        />
-                      )
-                    }
-                  >
-                    حذف
-                  </Button>
+                  <List>
+                    {hasAccess("BlogMedia", "delete") && (
+                      <Button
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteBlogMedia",
+                            <DeleteBlogMediaPopup
+                              node={data}
+                              mutate={() => push(adminPath("/blogmedia"))}
+                            />
+                          )
+                        }
+                      >
+                        حذف
+                      </Button>
+                    )}
+                  </List>
                 ),
               },
             ]}

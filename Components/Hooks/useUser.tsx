@@ -8,12 +8,12 @@ export interface MongoDoc {
   _id: string;
 }
 
-export const userRoles = ["user", "admin"] as const;
+export const userRoles = ["user", "admin", "notadmin"] as const;
 
 export type UserRole = (typeof userRoles)[number];
 
 export interface IUser extends MongoDoc {
-  phone: string;
+  phone?: string;
   role: UserRole;
 }
 

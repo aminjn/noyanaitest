@@ -8,7 +8,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
-import CreateForm from "../UI/CreateForm";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import DoctorProfileInfoTab from "./DoctorProfileInfoTab";
 import DoctorSpecialityTab from "./DoctorSpecialityTab";
@@ -19,6 +18,8 @@ import useProgress from "@/Components/Hooks/useProgress";
 import DeleteDoctorProfilePopup from "./DeleteDoctorProfilePopup";
 import { adminPath } from "@/Components/helpers/adminPath";
 import DoctorProfilePhoneConsultTab from "./DoctorProfilePhoneConsultTab";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import List from "../UI/List";
 
 const AdminManageDoctorProfilePage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -34,6 +35,8 @@ const AdminManageDoctorProfilePage = () => {
   const { setPopup } = usePopup();
 
   const push = useProgress();
+
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -52,12 +55,18 @@ const AdminManageDoctorProfilePage = () => {
                 content: <DoctorProfileInfoTab node={data} mutate={mutate} />,
                 icon: <InfoIcon />,
               },
-              {
-                id: "Speciality",
-                title: "تخصص",
-                content: <DoctorSpecialityTab node={data} mutate={mutate} />,
-                icon: <InfoIcon />,
-              },
+              ...(hasAccess("Sepciality", "readAll")
+                ? [
+                    {
+                      id: "Speciality",
+                      title: "تخصص",
+                      content: (
+                        <DoctorSpecialityTab node={data} mutate={mutate} />
+                      ),
+                      icon: <InfoIcon />,
+                    },
+                  ]
+                : []),
               {
                 id: "User",
                 content: <DoctorProfileUserTab node={data} mutate={mutate} />,
@@ -75,20 +84,24 @@ const AdminManageDoctorProfilePage = () => {
               {
                 id: "Actions",
                 content: (
-                  <Button
-                    variant="Danger"
-                    onClick={() =>
-                      setPopup(
-                        "DeleteDoctorProfile",
-                        <DeleteDoctorProfilePopup
-                          node={data}
-                          mutate={() => push(adminPath(`/doctorprofile`))}
-                        />
-                      )
-                    }
-                  >
-                    حذف
-                  </Button>
+                  <List>
+                    {hasAccess("DoctorProfile", "delete") && (
+                      <Button
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteDoctorProfile",
+                            <DeleteDoctorProfilePopup
+                              node={data}
+                              mutate={() => push(adminPath(`/doctorprofile`))}
+                            />
+                          )
+                        }
+                      >
+                        حذف
+                      </Button>
+                    )}
+                  </List>
                 ),
                 icon: <InfoIcon />,
                 title: "عملیات",

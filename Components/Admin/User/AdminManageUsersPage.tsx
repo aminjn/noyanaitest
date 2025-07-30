@@ -12,12 +12,15 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const AdminManageUsersPage = () => {
   const { data, error, mutate } = useSWR<IUser[]>(
     `${API}/auto/user`,
     (url: string) => fetcher({ url }).then((res) => res.data.data)
   );
+
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -41,9 +44,11 @@ const AdminManageUsersPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/user/${node._id}`)}>
-                      <EditIcon />
-                    </IconLink>
+                    {hasAccess("User", "readOne") && (
+                      <IconLink href={adminPath(`/user/${node._id}`)}>
+                        <EditIcon />
+                      </IconLink>
+                    )}
                   </TableActions>
                 ),
               },

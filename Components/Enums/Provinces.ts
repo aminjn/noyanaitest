@@ -195,3 +195,6 @@ export const provinceOptions = provinces.reduce(
   (acc, el) => ({ ...acc, [el.slug]: el.name }),
   {}
 );
+
+export const findProvince = (slug: string) =>
+  provinces.find((p) => p.slug === slug)?.name;

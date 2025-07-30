@@ -5,7 +5,7 @@ import NotFoundPage from "../NotFound/NotFoundPage";
 import AdminSidebar from "../Admin/UI/AdminSidebar";
 import { LicenseManager } from "ag-grid-enterprise";
 
-const hasAccessToAdmin: UserRole[] = ["admin"];
+const hasAccessToAdmin: UserRole[] = ["admin", "notadmin"];
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();

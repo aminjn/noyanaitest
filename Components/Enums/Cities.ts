@@ -6728,3 +6728,6 @@ export const cityOptions = (province?: Province) =>
       (c) => c.province_id === provinces.find((p) => p.slug === province)?.id
     )
     .reduce((acc, el) => ({ ...acc, [el.slug]: el.name }), {});
+
+
+    export const findCity = (slug:string)=> cities.find(city=> city.slug === slug)?.name

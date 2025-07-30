@@ -22,7 +22,7 @@ const AdminManageUserPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.phone}>
+        <WithTitle title={data.phone || data._id}>
           <TabSystem
             name="AdminManageUser"
             items={[

@@ -23,6 +23,7 @@ import Garbageicon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteBecomeDoctorPopup from "./DeleteBecomeDoctorPopup";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const AdminManageBecomeDoctorsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -32,6 +33,8 @@ const AdminManageBecomeDoctorsPage = () => {
   );
 
   const { setPopup } = usePopup();
+
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -103,26 +106,30 @@ const AdminManageBecomeDoctorsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink
-                      href={adminPath(`/becomedoctor/${node._id}`)}
-                      variant="Info"
-                    >
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton
-                      variant="Danger"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteBecomeDoctor",
-                          <DeleteBecomeDoctorPopup
-                            node={node}
-                            mutate={mutate}
-                          />
-                        )
-                      }
-                    >
-                      <Garbageicon />
-                    </IconButton>
+                    {hasAccess("BecomeDoctorRequest", "readOne") && (
+                      <IconLink
+                        href={adminPath(`/becomedoctor/${node._id}`)}
+                        variant="Info"
+                      >
+                        <EditIcon />
+                      </IconLink>
+                    )}
+                    {hasAccess("BecomeDoctorRequest", "delete") && (
+                      <IconButton
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteBecomeDoctor",
+                            <DeleteBecomeDoctorPopup
+                              node={node}
+                              mutate={mutate}
+                            />
+                          )
+                        }
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },

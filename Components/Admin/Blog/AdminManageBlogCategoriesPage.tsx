@@ -18,6 +18,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import Garbageicon from "@/Components/Icons/GarbageIcon";
 import DeleteBlogCategoryPopup from "./DeleteBlogCategoryPopup";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const AdminManageBlogCategoriesPage = () => {
   const { data, error, mutate } = useSWR<IBlogCategory[]>(
@@ -27,21 +28,27 @@ const AdminManageBlogCategoriesPage = () => {
 
   const { setPopup } = usePopup();
 
+  const hasAccess = useAccessLevel();
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
           title="دسته بندی مقالات"
-          actions={[
-            {
-              title: "جدید",
-              action: () =>
-                setPopup(
-                  "NewBlogCategory",
-                  <NewBlogCategoryPopup mutate={mutate} />
-                ),
-            },
-          ]}
+          actions={
+            hasAccess("BlogCategory", "write")
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup(
+                        "NewBlogCategory",
+                        <NewBlogCategoryPopup mutate={mutate} />
+                      ),
+                  },
+                ]
+              : undefined
+          }
         >
           <Table
             data={data}
@@ -70,23 +77,27 @@ const AdminManageBlogCategoriesPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/blogcategory/${node._id}`)}>
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton
-                      variant="Danger"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteBlogCategory",
-                          <DeleteBlogCategoryPopup
-                            node={node}
-                            mutate={mutate}
-                          />
-                        )
-                      }
-                    >
-                      <Garbageicon />
-                    </IconButton>
+                    {hasAccess("BlogCategory", "readOne") && (
+                      <IconLink href={adminPath(`/blogcategory/${node._id}`)}>
+                        <EditIcon />
+                      </IconLink>
+                    )}
+                    {hasAccess("BlogCategory", "delete") && (
+                      <IconButton
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleteBlogCategory",
+                            <DeleteBlogCategoryPopup
+                              node={node}
+                              mutate={mutate}
+                            />
+                          )
+                        }
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },

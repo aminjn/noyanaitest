@@ -7,17 +7,23 @@ import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import useUser from "@/Components/Hooks/useUser";
 import LogoLong from "@/Components/UI/LogoLong";
 import { adminPath } from "@/Components/helpers/adminPath";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { AccessLevelModel } from "../AccessLevel/AdminManageAccessLevelsPage";
 
 type LinkItem = {
   title: string;
   target: string;
+  access?: AccessLevelModel;
   links?: { title: string; target: string }[];
 };
 
-const linkMap: {
+type LinkMap = {
   title: string;
+  super?: boolean;
   links: LinkItem[];
-}[] = [
+}[];
+
+const linkMap: LinkMap = [
   {
     title: "منو اصلی",
     links: [
@@ -25,15 +31,66 @@ const linkMap: {
       {
         target: "blog",
         title: "مقالات",
+        access: "Blog",
       },
-      { title: "دسته‌بندی مقالات", target: "blogcategory" },
-      { title: "تبلیغات خطی", target: "inlinead" },
-      { title: "مولتی مدیا وبلاگ", target: "blogmedia" },
-      { title: "لغت نامه", target: "textcontent" },
-      { title: "تخصص ها", target: "speciality" },
-      { title: "درخواست های پزشک شدن", target: "becomedoctor" },
-      { title: "کاربران", target: "user" },
-      { title: "پروفایل پزشکان", target: "doctorprofile" },
+      {
+        title: "دسته‌بندی مقالات",
+        target: "blogcategory",
+        access: "BlogCategory",
+      },
+      {
+        title: "تبلیغات خطی",
+        target: "inlinead",
+        access: "InlineAdvertisement",
+      },
+      { title: "مولتی مدیا وبلاگ", target: "blogmedia", access: "BlogMedia" },
+      { title: "لغت نامه", target: "textcontent", access: "TextContent" },
+      { title: "تخصص ها", target: "speciality", access: "Sepciality" },
+      {
+        title: "درخواست های پزشک شدن",
+        target: "becomedoctor",
+        access: "BecomeDoctorRequest",
+      },
+      { title: "کاربران", target: "user", access: "User" },
+      {
+        title: "پروفایل پزشکان",
+        target: "doctorprofile",
+        access: "DoctorProfile",
+      },
+      { title: "پزشکان", target: "doctor", access: "Doctor" },
+    ],
+  },
+  {
+    title: "دیتابیس قدیم",
+    super: true,
+    links: [
+      {
+        target: "old",
+        title: "دیتا",
+        links: [
+          { title: "پزشکان", target: "doctor" },
+          { title: "کاربران", target: "user" },
+          { title: "تخصص ها", target: "speciality" },
+          { title: "مقالات", target: "blog" },
+          { title: "بیماری ها", target: "disease" },
+          { title: "دارو ها", target: "drug" },
+          { title: "اعضا", target: "part" },
+          { title: "علائم", target: "symptom" },
+        ],
+      },
+      {
+        target: "cold",
+        title: "عملیات",
+        links: [{ title: "مهاجرت", target: "migrate" }],
+      },
+    ],
+  },
+  {
+    title: "سوپر ادمین",
+    super: true,
+    links: [
+      { title: "سطوح دسترسی", target: "accesslevel" },
+      { title: "ادمین ها", target: "useraccesslevel" },
     ],
   },
 ];
@@ -109,14 +166,36 @@ const Waterfall = ({ item }: { item: LinkItem }) => {
 };
 
 const AdminSidebar = () => {
-  useUser(true);
+  const { user } = useUser(true);
+
+  const hasAccess = useAccessLevel();
+
+  const readyLinks = useMemo<LinkMap>(() => {
+    if (!user) return [];
+    if (user.role !== "admin") {
+      const result: LinkMap = [];
+      for (let i = 0; i < linkMap.length; ++i) {
+        if (!linkMap[i].super)
+          result.push({
+            ...linkMap[i],
+            links: linkMap[i].links.filter(
+              (link) =>
+                link.access === undefined || hasAccess(link.access, "readAll")
+            ),
+          });
+        return result;
+      }
+    }
+    return linkMap;
+  }, [hasAccess, user]);
+
   return (
     <div className={classes.main}>
       <Link className={classes.logo} href={"/"}>
         <LogoLong />
       </Link>
       <div className={classes.linksContainer}>
-        {linkMap.map((group) => (
+        {readyLinks.map((group) => (
           <div key={group.title} className={classes.group}>
             <legend className={classes.groupTitle}>{group.title}</legend>
             <div className={classes.links}>

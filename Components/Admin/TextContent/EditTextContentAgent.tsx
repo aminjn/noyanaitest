@@ -12,10 +12,12 @@ const EditTextContentAgent = ({
   kay,
   value,
   mutate,
+  readOnly,
 }: {
   kay: string;
   value: string;
   mutate: () => unknown;
+  readOnly?: boolean;
 }) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
@@ -40,7 +42,16 @@ const EditTextContentAgent = ({
   }, [isEditMode]);
 
   if (!isEditMode)
-    return <div onDoubleClick={() => setIsEditMode(true)}>{value}</div>;
+    return (
+      <div
+        onDoubleClick={() => {
+          if (readOnly) return;
+          setIsEditMode(true);
+        }}
+      >
+        {value}
+      </div>
+    );
   return (
     <Form onSubmit={submit} className={classes.main}>
       <Input

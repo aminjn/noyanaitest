@@ -5,6 +5,7 @@ import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
 import { provinceOptions, provinces } from "@/Components/Enums/Provinces";
 import { cityOptions } from "@/Components/Enums/Cities";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const DoctorProfileInfoTab = ({
   mutate,
@@ -20,8 +21,12 @@ const DoctorProfileInfoTab = ({
       mutate();
     },
   });
+
+  const hasAccess = useAccessLevel();
+
   return (
     <CreateForm
+      readOnly={!hasAccess("DoctorProfile", "update")}
       defaultValue={node}
       styleManaged
       renderer={{

@@ -21,6 +21,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteDoctorProfilePopup from "./DeleteDoctorProfilePopup";
 import WithTitle from "../UI/WithTitle";
 import CreateDoctorProfilePopup from "./CreateDoctorProfilePopup";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
 const AdminManageDoctorProfilesPage = () => {
   const { data, error, mutate } = useSWR<
@@ -35,24 +36,27 @@ const AdminManageDoctorProfilesPage = () => {
 
   const { setPopup } = usePopup();
 
-
-  
+  const hasAccess = useAccessLevel();
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
           title="پروفایل پزشکان"
-          actions={[
-            {
-              title: "جدید",
-              action: () =>
-                setPopup(
-                  "CreateDoctorProfile",
-                  <CreateDoctorProfilePopup mutate={mutate} />
-                ),
-            },
-          ]}
+          actions={
+            hasAccess("DoctorProfile", "write")
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup(
+                        "CreateDoctorProfile",
+                        <CreateDoctorProfilePopup mutate={mutate} />
+                      ),
+                  },
+                ]
+              : undefined
+          }
         >
           <Table
             data={data}
@@ -144,23 +148,27 @@ const AdminManageDoctorProfilesPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/doctorprofile/${node._id}`)}>
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton
-                      variant="Danger"
-                      onClick={() =>
-                        setPopup(
-                          "DeleetDoctorProfile",
-                          <DeleteDoctorProfilePopup
-                            mutate={mutate}
-                            node={node}
-                          />
-                        )
-                      }
-                    >
-                      <Garbageicon />
-                    </IconButton>
+                    {hasAccess("DoctorProfile", "readOne") && (
+                      <IconLink href={adminPath(`/doctorprofile/${node._id}`)}>
+                        <EditIcon />
+                      </IconLink>
+                    )}
+                    {hasAccess("DoctorProfile", "delete") && (
+                      <IconButton
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DeleetDoctorProfile",
+                            <DeleteDoctorProfilePopup
+                              mutate={mutate}
+                              node={node}
+                            />
+                          )
+                        }
+                      >
+                        <Garbageicon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },
