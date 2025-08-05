@@ -9,6 +9,9 @@ import BecomeADoctorPage from "../DoctorPanel/BecomeADoctorPage";
 import useUser from "../Hooks/useUser";
 import LoginRequired from "../UI/LoginRequired";
 import Loading from "../Admin/UI/Loading";
+import PublicHeader from "./PublicHeader";
+import RemoteBreadCrump from "../UI/RemoteBreadCrump";
+import DoctorSidebar from "./DoctorSidebar";
 
 const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
@@ -17,11 +20,24 @@ const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
     (url: string) => fetcher({ url }).then((res) => res.data.data)
   );
 
+  console.log(data);
+
   if (isUserLoading) return <Loading />;
   if (!user) return <LoginRequired />;
   return (
     <HandleLoading data={!isLoading} error={error}>
-      {data ? children : <BecomeADoctorPage />}
+      {data ? (
+        <div className={classes.main}>
+          <PublicHeader />
+          <RemoteBreadCrump />
+          <div className={classes.content}>
+            <DoctorSidebar />
+            <div className={classes.children}>{children}</div>
+          </div>
+        </div>
+      ) : (
+        <BecomeADoctorPage />
+      )}
     </HandleLoading>
   );
 };

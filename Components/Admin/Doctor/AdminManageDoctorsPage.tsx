@@ -25,7 +25,7 @@ import WithTitle from "../UI/WithTitle";
 import CreateDoctorPopup from "./CreateDoctorPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
-type DoctorPopulation = {
+export type DoctorPopulation = {
   SpecialityPopulated?: boolean;
   SpecialitiesPopulated?: boolean;
 };

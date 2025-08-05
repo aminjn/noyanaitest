@@ -15,6 +15,7 @@ export type UserRole = (typeof userRoles)[number];
 export interface IUser extends MongoDoc {
   phone?: string;
   role: UserRole;
+  userName?: string;
 }
 
 const useUser = (require?: boolean | undefined) => {

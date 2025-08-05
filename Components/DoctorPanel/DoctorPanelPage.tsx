@@ -3,6 +3,7 @@
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { City } from "../Enums/Cities";
 import { Province } from "../Enums/Provinces";
+import useBreadCrump from "../Hooks/useBreadCrump";
 import useLocale from "../Hooks/useLocale";
 import { IUser, MongoDoc } from "../Hooks/useUser";
 import classes from "./DoctorPanelPage.module.css";
@@ -74,7 +75,7 @@ export interface IBecomeDoctorRequest<
   status: BecomeDoctorStatus;
 }
 
-type DoctorProfilePopulation = {
+export type DoctorProfilePopulation = {
   UserPopulated?: boolean;
   SpecialitiesPopulated?: boolean;
   MainSpecialityPopulated?: boolean;
@@ -126,6 +127,8 @@ export interface IPhoneConsultSettings<
 
 const DoctorPanelPage = () => {
   const getContent = useLocale();
+
+  useBreadCrump([{ title: getContent("dashboard"), target: "/doctorpanel" }]);
 
   return <p>DoctorPanelPage</p>;
 };

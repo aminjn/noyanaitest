@@ -1,0 +1,39 @@
+import { Fragment, useState } from "react";
+import { IClinic } from "./AdminManageClinicsPage";
+import classes from "./DeleteClinicPopup.module.css";
+import usePopup from "@/Components/Hooks/usePopup";
+import ConfirmationPopup from "../UI/ConfirmationPopup";
+import Act from "@/Components/UI/Act";
+import { API } from "@/Components/config";
+
+const DeleteClinicPopup = ({
+  mutate,
+  node,
+}: {
+  mutate: () => unknown;
+  node: IClinic;
+}) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { closePopup } = usePopup();
+  return (
+    <Fragment>
+      <ConfirmationPopup
+        isLoading={isLoading}
+        message={`آیا از حذف کلینیک ${node.name || node._id} مطمئنید؟`}
+        onConfirm={() => setIsLoading(true)}
+      />
+      <Act
+        path={isLoading ? `${API}/auto/clinic/${node._id}` : null}
+        onDone={(status) => {
+          setIsLoading(false);
+          if (!status) return;
+          mutate();
+          closePopup();
+        }}
+        method="PUT"
+      />
+    </Fragment>
+  );
+};
+
+export default DeleteClinicPopup;

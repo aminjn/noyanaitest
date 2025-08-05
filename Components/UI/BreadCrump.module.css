@@ -8,6 +8,8 @@
   gap: 0.75rem;
   z-index: 3;
   padding-block: 1rem;
+  justify-content: space-between;
+  background-color: red;
 }
 
 .main::before {
@@ -25,4 +27,47 @@
 
 .main > *:last-child {
   color: var(--gray13);
+}
+
+.rest {
+  margin-inline-start: auto;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.time {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--gray8);
+}
+
+.online {
+  color: var(--success);
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.flash {
+  border-radius: 50%;
+  background-color: currentColor;
+  width: 0.5rem;
+  height: 0.5rem;
+  animation: flash 1s ease-in-out infinite;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

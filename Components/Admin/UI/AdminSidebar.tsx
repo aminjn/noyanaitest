@@ -58,6 +58,7 @@ const linkMap: LinkMap = [
         access: "DoctorProfile",
       },
       { title: "پزشکان", target: "doctor", access: "Doctor" },
+      { title: "کلینیک ها", target: "clinic", access: "Clinic" },
     ],
   },
   {

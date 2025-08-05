@@ -4,29 +4,50 @@ import classes from "./BreadCrump.module.css";
 import Link from "next/link";
 import Ixon from "./Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
+import { BreadCrumpTrail } from "../Store/BreadCrumpStore";
+import { useTime } from "react-timer-hook";
+import useLocale from "../Hooks/useLocale";
 
 const BreadCrump = ({
   trail,
   className = "",
   style,
 }: WithStyleProps<{
-  trail: { title: string; target: string }[];
+  trail: BreadCrumpTrail;
 }>) => {
+  const getContent = useLocale();
+
+  const { hours, minutes } = useTime();
   return (
-    <nav className={`${classes.main} ${className}`} style={style}>
-      {trail.map((segment, i, arr) => (
-        <Fragment key={segment.target}>
-          <Link href={segment.target} className={classes.link}>
-            {segment.title}
-          </Link>
-          {arr.length - 1 !== i && (
-            <Ixon width="1.125rem" style={{ transform: "rotateZ(90deg)" }}>
-              <ChevronIcon />
-            </Ixon>
-          )}
-        </Fragment>
-      ))}
-    </nav>
+    <div className={`${classes.main} ${className}`} style={style}>
+      <nav>
+        {trail.map((segment, i, arr) => (
+          <Fragment key={segment.target}>
+            <Link href={segment.target} className={classes.link}>
+              {segment.title}
+            </Link>
+            {arr.length - 1 !== i && (
+              <Ixon width="1.125rem" style={{ transform: "rotateZ(90deg)" }}>
+                <ChevronIcon />
+              </Ixon>
+            )}
+          </Fragment>
+        ))}
+      </nav>
+      <div className={classes.rest}>
+        <span
+          className={classes.time}
+        >{`${hours} : ${minutes} - ${new Date().toLocaleDateString("fa-IR", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}`}</span>
+        <span className={classes.online}>
+          <span className={classes.flash}></span>
+          <span>{getContent("online")}</span>
+        </span>
+      </div>
+    </div>
   );
 };
 

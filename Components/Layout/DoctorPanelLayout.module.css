@@ -1,0 +1,12 @@
+.main {
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: min(5dvw, 5rem);
+  min-height: 100dvh;
+}
+
+.content {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 2.375rem;
+}

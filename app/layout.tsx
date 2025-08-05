@@ -9,6 +9,7 @@ import { ProgressContextProvider } from "@/Components/Store/ProgressContext";
 import { getPublicData } from "@/Components/helpers/getPublicData";
 import { ITextContent } from "@/Components/Admin/TextContent/AdminManageTextContentPage";
 import { LocaleContextProvider } from "@/Components/Store/LocaleContext";
+import { BreadCrumpContextProvider } from "@/Components/Store/BreadCrumpStore";
 
 const font = localFont({
   src: "./fonts/IRANYekanXVFaNumVF.woff",
@@ -40,7 +41,9 @@ export default async function RootLayout({
             <ProgressContextProvider>
               <NotificationContextProvider>
                 <PopupContextProvider>
-                  <Layout>{children}</Layout>
+                  <BreadCrumpContextProvider>
+                    <Layout>{children}</Layout>
+                  </BreadCrumpContextProvider>
                 </PopupContextProvider>
               </NotificationContextProvider>
             </ProgressContextProvider>

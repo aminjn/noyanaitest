@@ -1,0 +1,241 @@
+"use client";
+
+import { IUser, MongoDoc } from "@/Components/Hooks/useUser";
+import classes from "./AdminManageClinicsPage.module.css";
+import {
+  Province,
+  provinces,
+  provinceSlugs,
+} from "@/Components/Enums/Provinces";
+import { cities, City } from "@/Components/Enums/Cities";
+import useSWR from "swr";
+import { API } from "@/Components/config";
+import { fetcher } from "@/Components/helpers/fetcher";
+import HandleLoading from "../UI/HandleLoading";
+import WithTitle from "../UI/WithTitle";
+import usePopup from "@/Components/Hooks/usePopup";
+import CreateClinicPopup from "./CreateClinicPopup";
+import Table from "../UI/Table";
+import { DoctorPopulation, IDoctor } from "../Doctor/AdminManageDoctorsPage";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import TableActions from "../UI/TableActions";
+import IconButton from "../UI/IconButton";
+import IconLink from "../UI/IconLink";
+import EditIcon from "@/Components/Icons/EditIcon";
+import { adminPath } from "@/Components/helpers/adminPath";
+import DeleteClinicPopup from "./DeleteClinicPopup";
+import Garbageicon from "@/Components/Icons/GarbageIcon";
+import {
+  DoctorProfilePopulation,
+  IDoctorProfile,
+} from "@/Components/DoctorPanel/DoctorPanelPage";
+import { getUserLabel } from "../Lib/LabelGetters";
+import InlineLink from "../UI/InlineLink";
+
+export type Population<T> = { [key in keyof T]?: T[key] | false };
+
+export type ClinicPopulation = Population<{
+  DepartmentsPopulated: ClinicDepartmentPopulation;
+  DoctorsPopulated: ClinicDoctorPopuplation;
+  User: boolean;
+}>;
+
+export interface IClinic<T extends ClinicPopulation = ClinicPopulation>
+  extends MongoDoc {
+  slug?: string;
+  name?: string;
+  description?: string;
+  address?: string;
+  phone?: string;
+  province?: Province;
+  city?: City;
+  lat?: number;
+  lng?: number;
+  image?: string;
+  order: number;
+  active: boolean;
+  departments: T["DepartmentsPopulated"] extends ClinicDepartmentPopulation
+    ? IClinicDepartment<T["DepartmentsPopulated"]>[]
+    : never;
+  doctors: T["DoctorsPopulated"] extends ClinicDoctorPopuplation
+    ? IClinicDoctor<T["DoctorsPopulated"]>[]
+    : never;
+  user?: T["User"] extends true ? IUser : string;
+}
+
+export type ClinicDepartmentPopulation = Population<{
+  ClinicPopulated: ClinicPopulation;
+  DoctorsPopulated: ClinicDoctorPopuplation;
+  DoctorsCount: boolean;
+}>;
+
+export interface IClinicDepartment<
+  T extends ClinicDepartmentPopulation = ClinicDepartmentPopulation
+> extends MongoDoc {
+  clinic: T["ClinicPopulated"] extends ClinicPopulation
+    ? IClinic<T["ClinicPopulated"]> | null
+    : string;
+  name?: string;
+  description?: string;
+  image?: string;
+  active: boolean;
+  order: number;
+  doctors: T["DoctorsPopulated"] extends ClinicDoctorPopuplation
+    ? IClinicDoctor<T["DoctorsPopulated"]>[]
+    : string[];
+  doctorsCount: T["DoctorsCount"] extends true ? number : never;
+}
+
+export type ClinicDoctorPopuplation = Population<{
+  ClinicPopulated: ClinicPopulation;
+  DepartmentPopulated: ClinicDepartmentPopulation;
+  DoctorPopulated: DoctorProfilePopulation;
+}>;
+
+export interface IClinicDoctor<
+  T extends ClinicDoctorPopuplation = ClinicDoctorPopuplation
+> extends MongoDoc {
+  clinic: T["ClinicPopulated"] extends ClinicPopulation
+    ? IClinic<T["ClinicPopulated"]> | null
+    : string;
+  department?: T["DepartmentPopulated"] extends ClinicDepartmentPopulation
+    ? IClinicDepartment<T["DepartmentPopulated"]> | null
+    : string;
+  doctor: T["DoctorPopulated"] extends DoctorPopulation
+    ? IDoctorProfile<T["DoctorPopulated"]> | null
+    : string;
+}
+
+const AdminManageClinicsPage = () => {
+  const { data, error, mutate } = useSWR<IClinic<{ User: true }>[]>(
+    `${API}/auto/clinic`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data)
+  );
+
+  const { setPopup } = usePopup();
+
+  return (
+    <HandleLoading data={!!data} error={error}>
+      {!!data && (
+        <WithTitle
+          title="کلینیک ها"
+          actions={[
+            {
+              title: "جدید",
+              action: () =>
+                setPopup("CreateClinic", <CreateClinicPopup mutate={mutate} />),
+            },
+          ]}
+        >
+          <Table
+            data={data}
+            renderer={{
+              slug: {
+                name: "اسلاگ",
+                value: (node) => node.slug,
+                filter: "Text",
+              },
+              name: {
+                name: "نام",
+                filter: "Text",
+                value: (node) => node.name || node._id,
+                component: (node) => (
+                  <InlineLink href={adminPath(`/clinic/${node._id}`)}>
+                    {node.name || node._id}
+                  </InlineLink>
+                ),
+              },
+              user: {
+                name: "یوزر",
+                value: (node) => (node.user ? node.user.phone : "ندارد"),
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {getUserLabel(node.user)}
+                    </InlineLink>
+                  ) : (
+                    ""
+                  ),
+                filter: "Text",
+              },
+              description: {
+                name: "توضیحات",
+                filter: "Text",
+                value: (node) => node.description,
+              },
+              address: {
+                name: "آدرس",
+                value: (node) => node.address,
+                filter: "Text",
+              },
+              phone: {
+                name: "تلفن",
+                filter: "Text",
+                value: (node) => node.phone,
+              },
+              province: {
+                name: "استان",
+                value: (node) =>
+                  provinces.find((p) => p.slug === node.province)?.name,
+                filter: "Multi",
+              },
+              city: {
+                name: "شهر",
+                value: (node) => cities.find((c) => c.slug === node.city)?.name,
+                filter: "Multi",
+              },
+              lat: {
+                name: "عرض جغرافیایی",
+                filter: "Number",
+                value: (node) => node.lat,
+              },
+              lng: {
+                name: "طول جغرافیایی",
+                value: (node) => node.lng,
+                filter: "Number",
+              },
+              order: {
+                name: "رتبه",
+                value: (node) => node.order,
+                filter: "Number",
+              },
+              active: {
+                name: "فعال؟",
+                value: (node) => booleanToValue[`${node.active}`],
+                component: (node) => <BooleanToIcon value={node.active} />,
+                filter: "Set",
+              },
+              actions: {
+                name: "عملیات",
+                component: (node) => (
+                  <TableActions>
+                    <IconLink
+                      variant="Info"
+                      href={adminPath(`/clinic/${node._id}`)}
+                    >
+                      <EditIcon />
+                    </IconLink>
+                    <IconButton
+                      variant="Danger"
+                      onClick={() =>
+                        setPopup(
+                          "DeleteClinic",
+                          <DeleteClinicPopup mutate={mutate} node={node} />
+                        )
+                      }
+                    >
+                      <Garbageicon />
+                    </IconButton>
+                  </TableActions>
+                ),
+              },
+            }}
+            name="AdminManageClinics"
+          />
+        </WithTitle>
+      )}
+    </HandleLoading>
+  );
+};
+
+export default AdminManageClinicsPage;

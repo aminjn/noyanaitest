@@ -2,6 +2,7 @@ import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { IUser } from "@/Components/Hooks/useUser";
 import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
 import { IAccessLevel } from "../AccessLevel/AdminManageAccessLevelsPage";
+import { IClinicDepartment } from "../Clinic/AdminManageClinicsPage";
 
 export const getUserLabel = (node: IUser): string => node.phone || node._id;
 
@@ -11,4 +12,7 @@ export const getDoctorProfileLabel = (node: IDoctorProfile): string =>
 export const getDoctorLabel = (node: IDoctor): string => node.name || node._id;
 
 export const getAccessLevelLabel = (node: IAccessLevel): string =>
+  node.name || node._id;
+
+export const getClinicDepartmentLabel = (node: IClinicDepartment): string =>
   node.name || node._id;
