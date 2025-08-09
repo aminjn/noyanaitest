@@ -1,5 +1,5 @@
 .main {
-  max-width: 90rem;
+  max-width: min(90rem, 100dvw);
   margin-inline: auto;
   padding-inline: min(5dvw, 5rem);
   min-height: 100dvh;

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { HTMLAttributeAnchorTarget, ReactNode } from "react";
 import classes from "./InlineLink.module.css";
 import { WithStyleProps } from "./Loading";
 import Link from "next/link";
@@ -8,12 +8,19 @@ const InlineLink = ({
   href,
   className = "",
   style,
+  target,
 }: WithStyleProps<{
   children: ReactNode;
   href: string;
+  target?: HTMLAttributeAnchorTarget;
 }>) => {
   return (
-    <Link href={href} className={`${classes.main} ${className}`} style={style}>
+    <Link
+      target={target}
+      href={href}
+      className={`${classes.main} ${className}`}
+      style={style}
+    >
       {children}
     </Link>
   );

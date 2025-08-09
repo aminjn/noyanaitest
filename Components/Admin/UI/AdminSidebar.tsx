@@ -59,6 +59,16 @@ const linkMap: LinkMap = [
       },
       { title: "پزشکان", target: "doctor", access: "Doctor" },
       { title: "کلینیک ها", target: "clinic", access: "Clinic" },
+      {
+        title: "عضویت پزشکان در کلینیک",
+        target: "doctorjoinclinic",
+        access: "DoctorJoinClinic",
+      },
+      {
+        title: "درخواست های اضافه شدن کلینیک",
+        target: "clinicaddition",
+        access: "ClinicAdditionRequest",
+      },
     ],
   },
   {

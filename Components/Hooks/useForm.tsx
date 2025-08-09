@@ -79,8 +79,8 @@ const useForm = function <TInput, TResult = unknown>({
   const submit = useCallback(() => {
     if (!!isSaving) return;
     const problem = hasProblem?.(input);
-    if (problem) return pushNotification(problem);
-    if (!!initMessage) pushNotification(initMessage, "Warn");
+    if (problem) return pushNotification(problem, "Warn");
+    if (!!initMessage) pushNotification(initMessage);
     setIsSaving(mutator ? mutator({ ...input }) : { ...input, ...decorators });
   }, [
     decorators,

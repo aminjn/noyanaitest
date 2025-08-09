@@ -1,5 +1,5 @@
 .main {
-  width: 19.875rem;
+  width: var(--doctorSidebarWidth);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;

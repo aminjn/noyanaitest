@@ -1,0 +1,35 @@
+.main {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.card {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+  padding-block: 0.75rem;
+  padding-inline: 1.5rem;
+  border-radius: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--gray10);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 400;
+}

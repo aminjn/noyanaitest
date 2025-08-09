@@ -1,5 +1,7 @@
+import DoctorManageSecretariesPage from "@/Components/DoctorPanel/Secretary/DoctorManageSecretariesPage";
+
 const DoctorManageSecretaries = () => {
-  return <p>DoctorManageSecretaries</p>;
+  return <DoctorManageSecretariesPage />;
 };
 
 export default DoctorManageSecretaries;

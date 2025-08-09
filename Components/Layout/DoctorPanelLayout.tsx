@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import classes from "./DoctorPanelLayout.module.css";
 import useSWR from "swr";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
@@ -12,6 +12,7 @@ import Loading from "../Admin/UI/Loading";
 import PublicHeader from "./PublicHeader";
 import RemoteBreadCrump from "../UI/RemoteBreadCrump";
 import DoctorSidebar from "./DoctorSidebar";
+import { LicenseManager } from "ag-grid-enterprise";
 
 const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
   const { user, isUserLoading } = useUser();
@@ -20,8 +21,16 @@ const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
     (url: string) => fetcher({ url }).then((res) => res.data.data)
   );
 
-  console.log(data);
+  const [keySat, setKeySat] = useState<boolean>(false);
 
+  useEffect(() => {
+    LicenseManager.setLicenseKey(
+      "[v3][0102]_MTc2NzEzOTIwMDAwMA==e688a08fb8acde46d9bb3b15eaac16ff"
+    );
+    setKeySat(true);
+  }, []);
+
+  if (!keySat) return <Loading />;
   if (isUserLoading) return <Loading />;
   if (!user) return <LoginRequired />;
   return (

@@ -1,17 +1,24 @@
 import { AgGridReact } from "ag-grid-react";
 import classes from "./Table.module.css";
-import { ReactNode, useCallback, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import { ColDef, GridPreDestroyedEvent, GridState } from "ag-grid-enterprise";
 import "ag-grid-enterprise";
-import { themeQuartz } from "@ag-grid-community/theming";
+import { themeQuartz, iconSetMaterial } from "@ag-grid-community/theming";
 import { AG_GRID_LOCALE_IR } from "@ag-grid-community/locale";
 import TableDateInput from "./TableDateInput";
 import { WithStyleProps } from "./Loading";
 
-const myTheme = themeQuartz.withParams({
+const myTheme = themeQuartz.withPart(iconSetMaterial).withParams({
+  borderRadius: 16,
   browserColorScheme: "light",
-  headerFontSize: 14,
+  columnBorder: false,
   fontFamily: "inherit",
+  headerBackgroundColor: "#1A80E5",
+  headerFontFamily: "inherit",
+  headerFontSize: 14,
+  headerTextColor: "#FFFFFF",
+  iconSize: 14,
+  wrapperBorderRadius: 16,
 });
 
 const tableFilters = ["Number", "Text", "Date", "Multi", "Set"] as const;

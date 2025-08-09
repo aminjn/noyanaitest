@@ -17,6 +17,7 @@ import NodesSelector from "@/Components/UI/NodesSelector";
 import ImageInput from "@/Components/UI/ImageInput";
 import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
 import StringListInput from "@/Components/UI/StringListInput";
+import useLocale from "@/Components/Hooks/useLocale";
 
 const CreateForm = <TInput,>({
   defaultValue,
@@ -75,6 +76,8 @@ const CreateForm = <TInput,>({
   const hookResult = useForm<TInput>(hookProps || { path: "", method: "GET" });
 
   const { setInput, isLoading, submit, input } = hookProvided || hookResult;
+
+  const getContent = useLocale();
 
   return (
     <Form
@@ -251,12 +254,12 @@ const CreateForm = <TInput,>({
       <FormActions>
         {!!onCancel ? (
           <Button type="button" variant="Neutral" onClick={onCancel}>
-            انصراف
+            {getContent("cancel")}
           </Button>
         ) : null}
         {!readOnly && (
           <Button type="submit" isLoading={isLoading}>
-            تایید
+            {getContent("submit")}
           </Button>
         )}
       </FormActions>

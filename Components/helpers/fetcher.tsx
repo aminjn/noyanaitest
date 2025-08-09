@@ -9,6 +9,7 @@ type FethcerArgs = {
   method?: FetchMethod;
   payload?: { [key: string]: unknown };
   bodyParser?: FetchBodyParser;
+  headers?: Record<string, string>;
 };
 
 export class FetchError extends Error {
@@ -24,9 +25,10 @@ const fetcherInner = async <TResult,>({
   method,
   payload,
   bodyParser = "JSON",
+  headers: _headers = {},
 }: FethcerArgs): Promise<TResult> => {
   let body: undefined | FormData | string;
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ..._headers };
   if (payload) {
     switch (bodyParser) {
       case "JSON": {
