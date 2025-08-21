@@ -18,6 +18,8 @@ const NodesSelector = <TMulti extends boolean>({
   defaultValue,
   onChange,
   readOnly,
+  dataParser,
+  clearable,
 }: WithStyleProps<{
   title?: string;
   path: string;
@@ -25,17 +27,22 @@ const NodesSelector = <TMulti extends boolean>({
   getOptionLabel: (node: unknown) => string;
   defaultValue?: unknown;
   multi?: TMulti;
-  onChange?: (e: TMulti extends true ? string[] : string) => unknown;
+  onChange?: (
+    e: TMulti extends true ? string[] | null : string | null
+  ) => unknown;
   readOnly?: boolean;
+  dataParser?: (res: unknown) => unknown[];
+  clearable?: boolean;
 }>) => {
   const { data } = useSWR(path, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then(!!dataParser ? dataParser : (res) => res.data.data)
   );
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       {!!title && <span className={classes.title}>{title}</span>}
       <Select
+        isClearable={clearable}
         isDisabled={readOnly}
         isLoading={!data}
         options={data}
@@ -50,7 +57,11 @@ const NodesSelector = <TMulti extends boolean>({
             : data?.find((el: unknown) => getOptionValue(el) === defaultValue)
         }
         onChange={(e) => {
-          if (!e) return;
+          if (!e) {
+            if (!clearable) return;
+            onChange?.(null);
+            return;
+          }
           if (multi) {
             if (!Array.isArray(e)) return;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

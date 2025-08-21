@@ -1,0 +1,17 @@
+.calendar {
+  width: var(--panelContentWidth);
+  outline: 1px solid pink;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--gray13);
+}

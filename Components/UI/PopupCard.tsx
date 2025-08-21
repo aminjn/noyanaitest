@@ -9,7 +9,7 @@ const PopupCard = ({
   children,
   className,
   style,
-}: WithStyleProps<{ children: ReactNode }>) => {
+}: WithStyleProps<{ children?: ReactNode }>) => {
   const { closePopup } = usePopup();
   return (
     <div className={`${classes.main} ${className}`} style={style}>

@@ -10,14 +10,13 @@ import useLocale from "@/Components/Hooks/useLocale";
 import DoctorClinicsTab from "./DoctorClinicsTab";
 import DoctorJoinClinicsTab from "./DoctorJoinClinicsTab";
 import DoctorClinicAdditionsTab from "./DoctorClinicAdditionsTab";
+import WithBalanceHeader from "../_UI/WithBalanceHeader";
 
 const DoctorManageClinicsPage = () => {
-
   const getContent = useLocale();
 
   return (
-    <div className={classes.main}>
-      <DoctorPanelLicenseBalanceHeader />
+    <WithBalanceHeader>
       <ClientTabSystem
         items={[
           {
@@ -37,7 +36,7 @@ const DoctorManageClinicsPage = () => {
           },
         ]}
       />
-    </div>
+    </WithBalanceHeader>
   );
 };
 

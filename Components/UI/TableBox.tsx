@@ -11,7 +11,7 @@ const TableBox = ({
 }: WithStyleProps<{
   children: ReactNode;
   title: string;
-  actions?: [{ id: string; content: ReactNode }];
+  actions?: { id: string; content: ReactNode }[];
 }>) => {
   return (
     <div className={`${classes.main} ${className}`} style={style}>

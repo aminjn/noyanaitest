@@ -2,11 +2,18 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import classes from "./TabSystem.module.css";
 import Ixon from "@/Components/UI/Ixon";
 
+export type TabSystemTab = {
+  title: string;
+  id: string;
+  content: ReactNode;
+  icon: ReactNode;
+};
+
 const TabSystem = ({
   items,
   name,
 }: {
-  items: { title: string; id: string; content: ReactNode; icon: ReactNode }[];
+  items: TabSystemTab[];
   name: string;
 }) => {
   const [currentTab, setCurrenTab] = useState<string>(

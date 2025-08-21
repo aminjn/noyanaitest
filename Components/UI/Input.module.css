@@ -3,6 +3,7 @@
   flex: 1;
   height: 2.875rem;
   min-height: 2.875rem;
+  max-height: 2.875rem;
 }
 
 .input {

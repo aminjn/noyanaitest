@@ -69,6 +69,11 @@ const linkMap: LinkMap = [
         target: "clinicaddition",
         access: "ClinicAdditionRequest",
       },
+      {
+        title: "دسترسی پیش فرض منشی دکتر",
+        access: "DoctorSeretaryAccessLevel",
+        target: "doctorsecretaryaccesslevel",
+      },
     ],
   },
   {

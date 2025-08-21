@@ -18,6 +18,7 @@ import ImageInput from "@/Components/UI/ImageInput";
 import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
 import StringListInput from "@/Components/UI/StringListInput";
 import useLocale from "@/Components/Hooks/useLocale";
+import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
 
 const CreateForm = <TInput,>({
   defaultValue,
@@ -55,6 +56,8 @@ const CreateForm = <TInput,>({
             getOptionValue: (node: unknown) => string;
             multi?: boolean;
             getDefaultValue?: (node: TInput) => unknown;
+            clearable?: boolean;
+            dataParser?: (res: unknown) => unknown[];
           }
       ) & {
         title: string;
@@ -214,6 +217,8 @@ const CreateForm = <TInput,>({
                 }
                 onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
                 multi={segment.multi}
+                dataParser={segment.dataParser}
+                clearable={segment.clearable}
               />
             );
             break;

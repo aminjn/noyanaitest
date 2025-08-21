@@ -29,78 +29,21 @@ import PillIcon from "../Icons/PillIcon";
 import MedicalRecordIcon from "../Icons/MedicalRecordIcon";
 import LogoutIcon from "../Icons/LogoutIcon";
 import { currencize } from "../helpers/currencize";
-import { usePathname } from "next/navigation";
-
-type LinkMapItem = {
-  icon: ReactNode;
-  title: ContentKey;
-  className?: string;
-  side?: ReactNode;
-} & (
-  | { target: string; onClick?: never }
-  | { onClick: () => unknown; target?: never }
-);
-
-type LinkMap = LinkMapItem[];
-
-const LinkItem = ({
-  item: { icon, title, className, onClick, side, target },
-}: {
-  item: LinkMapItem;
-}) => {
-  const getContent = useLocale();
-  const pathname = usePathname();
-
-  const isActive = useMemo<boolean>(() => {
-    if (target === undefined) return false;
-    const cleaned = pathname.replaceAll("/", "").replaceAll("doctorpanel", "");
-    if (!target) return cleaned === "";
-    return cleaned.startsWith(target);
-  }, [pathname, target]);
-
-  const content = useMemo(
-    () => (
-      <Fragment>
-        <Ixon width="1.25rem">{icon}</Ixon>
-        <span>{getContent(title)}</span>
-        {!!side && <span className={classes.side}>{side}</span>}
-      </Fragment>
-    ),
-    [getContent, icon, side, title]
-  );
-
-  return (
-    <Fragment>
-      {target !== undefined ? (
-        <Link
-          className={`${classes.link} ${
-            isActive ? classes.activeLink : ""
-          } ${className}`}
-          href={`/doctorpanel/${target}`}
-        >
-          {content}
-        </Link>
-      ) : (
-        <button className={`${classes.link} ${className}`} onClick={onClick}>
-          {content}
-        </button>
-      )}
-    </Fragment>
-  );
-};
+import PanelSidebar, { LinkMap } from "./PanelSidebar";
+import useDoctorAcl from "../Hooks/useDoctorAcl";
 
 const DoctorSidebar = () => {
-  const { user } = useUser();
-
   const { data: balance } = useSWR<number>(`${API}/finance`, (url: string) =>
     fetcher({ url }).then((res) => res.data)
   );
 
   const getContent = useLocale();
 
+  const hasAccess = useDoctorAcl();
+
   const links = useMemo<LinkMap>(
     () => [
-      { title: "dashboard", icon: <DashboardIcon />, target: "" },
+      { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
         title: "financialMangement",
         icon: <WalletIcon />,
@@ -111,60 +54,98 @@ const DoctorSidebar = () => {
             <span className={classes.toman}>{getContent("toman")}</span>
           </span>
         ),
+        show: hasAccess(),
       },
-      { title: "secrataries", icon: <UserEditIcon />, target: "secretary" },
-      { title: "bookingCalendar", icon: <CalendarIcon />, target: "calendar" },
-      { title: "patients", icon: <StetoscopeIcon />, target: "patient" },
-      { title: "licenses", icon: <CartIcon />, target: "license" },
-      { title: "clinics", icon: <HospitalIcon />, target: "clinic" },
+      {
+        title: "secrataries",
+        icon: <UserEditIcon />,
+        target: "secretary",
+        show: hasAccess(),
+      },
+      {
+        title: "bookingCalendar",
+        icon: <CalendarIcon />,
+        target: "calendar",
+        show: hasAccess(),
+      },
+      {
+        title: "patients",
+        icon: <StetoscopeIcon />,
+        target: "patient",
+        show: hasAccess(),
+      },
+      {
+        title: "licenses",
+        icon: <CartIcon />,
+        target: "license",
+        show: hasAccess(),
+      },
+      {
+        title: "clinics",
+        icon: <HospitalIcon />,
+        target: "clinic",
+        show: hasAccess("readClinics"),
+      },
       {
         title: "phrmaciesAndLabs",
         icon: <BuildingIcon />,
         target: "pharmacy",
+        show: hasAccess(),
       },
-      { title: "insurances", icon: <ShieldCheckIcon />, target: "insurance" },
-      { title: "offers", icon: <ReceiptIcon />, target: "offer" },
-      { title: "discounts", icon: <DiscountIcon />, target: "discount" },
-      { title: "articles", icon: <FileDuplicateIcon />, target: "article" },
-      { title: "chatWithPatients", icon: <ChatIcon />, target: "chat" },
-      { title: "drugsAndPrescriptions", icon: <PillIcon />, target: "drug" },
+      {
+        title: "insurances",
+        icon: <ShieldCheckIcon />,
+        target: "insurance",
+        show: hasAccess(),
+      },
+      {
+        title: "offers",
+        icon: <ReceiptIcon />,
+        target: "offer",
+        show: hasAccess(),
+      },
+      {
+        title: "discounts",
+        icon: <DiscountIcon />,
+        target: "discount",
+        show: hasAccess(),
+      },
+      {
+        title: "articles",
+        icon: <FileDuplicateIcon />,
+        target: "article",
+        show: hasAccess(),
+      },
+      {
+        title: "chatWithPatients",
+        icon: <ChatIcon />,
+        target: "chat",
+        show: hasAccess(),
+      },
+      {
+        title: "drugsAndPrescriptions",
+        icon: <PillIcon />,
+        target: "drug",
+        show: hasAccess(),
+      },
       {
         title: "patientDocuments",
         icon: <MedicalRecordIcon />,
         target: "document",
+        show: hasAccess(),
       },
       {
         title: "logout",
         icon: <LogoutIcon />,
         onClick: () => {},
         className: classes.logout,
+        show: true,
       },
     ],
-    [balance, getContent]
+    [balance, getContent, hasAccess]
   );
 
-  if (!user) return <Loading />;
-  return (
-    <div className={classes.main}>
-      <Link href="/doctorpanel/profile" className={classes.user}>
-        <div>
-          <Image src={imagePath("")} alt="" />
-        </div>
-        <div className={classes.userDetails}>
-          <span className={classes.userName}>{user.userName || "کاربر"}</span>
-          <span className={classes.userPhone}>{user.phone}</span>
-        </div>
-        <Ixon width="1.5rem" style={{ transform: "rotateZ(90deg)" }}>
-          <ChevronIcon />
-        </Ixon>
-      </Link>
-      <div className={classes.bar}>
-        {links.map((item) => (
-          <LinkItem item={item} key={`${item.target}${item.title}`} />
-        ))}
-      </div>
-    </div>
-  );
+  return <PanelSidebar links={links} panel="doctorpanel" />;
 };
 
 export default DoctorSidebar;

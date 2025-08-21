@@ -1,5 +1,7 @@
+import DoctorManageCalendarPage from "@/Components/DoctorPanel/Calendar/DoctorManageCalendarPage";
+
 const DoctorManageCalendar = () => {
-  return <p>DoctorManageCalendar</p>;
+  return <DoctorManageCalendarPage />;
 };
 
 export default DoctorManageCalendar;

@@ -91,6 +91,11 @@
 
   --doctorSidebarWidth: 19.875rem;
 
+  --panelContentWidth: calc(
+    min(90rem, 100dvw) - 2.375rem - calc(2 * min(5dvw, 5rem)) -
+      var(--doctorSidebarWidth)
+  );
+
   --shadow: 0 0 0.5rem #00000050;
 }
 
@@ -156,4 +161,49 @@ h6 {
   margin-inline-start: 0;
   margin-inline-end: 0;
   font-size: 1em;
+}
+
+.doctorCalendar {
+  background-color: pink;
+}
+
+.doctorCalendar .rmdp-day {
+  width: min(10dvw, 10dvh);
+  height: min(10dvw, 10dvh);
+  border-radius: 0;
+  /* calc(
+    calc(calc(calc(calc(var(--panelContentWidth) - boxPadding) - horizontalGapBetweenDays) / 7) - 1.15px) -
+      0.53rem
+  ) */
+
+  --boxPadding: 3rem;
+  --horizontalGap: 0.625rem;
+  width: calc(
+    ((var(--panelContentWidth) - var(--boxPadding) - 10px) / 7) - 1.15px -
+      ((var(--horizontalGap) * 6) / 7)
+  );
+  outline: 1px solid red;
+}
+
+.doctorCalendar .rmdp-wrapper {
+  background-color: transparent;
+  width: 100%;
+}
+
+.doctorCalendar .rmdp-shadow {
+  box-shadow: none;
+}
+
+.doctorCalendar .rmdp-week {
+  gap: 0.625rem;
+}
+
+.doctorCalendar .rmdp-day-picker > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doctorCalendar .rmdp-week-day {
+  width: 100%;
 }

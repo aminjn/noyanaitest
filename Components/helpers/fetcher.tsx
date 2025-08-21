@@ -4,7 +4,7 @@ export type FetchMethod = (typeof fetchMethods)[number];
 const fetchBodyParsers = ["JSON", "FORM"] as const;
 export type FetchBodyParser = (typeof fetchBodyParsers)[number];
 
-type FethcerArgs = {
+export type FethcerArgs = {
   url: string;
   method?: FetchMethod;
   payload?: { [key: string]: unknown };

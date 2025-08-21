@@ -16,6 +16,7 @@ const BooleanToIcon = ({
     <Ixon
       className={className}
       style={{ color: value ? successCol : errorCol, ...style }}
+      width="2rem"
     >
       {value ? <CheckIcon /> : <CloseIcon />}
     </Ixon>
