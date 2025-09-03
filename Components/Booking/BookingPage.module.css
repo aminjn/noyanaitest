@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.list {
+  gap: 5rem;
+}

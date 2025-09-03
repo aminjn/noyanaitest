@@ -10,6 +10,7 @@ import Notifications from "../Notification/Notifications";
 import { adminKey } from "../config";
 import DoctorPanelLayout from "./DoctorPanelLayout";
 import SecretaryPanelLayout from "./SecretaryPanelLayout";
+import DashboardLayout from "./DashboardLayout";
 
 export type WithStyleProps<T = Record<string, never>> = T & {
   className?: string;
@@ -23,6 +24,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
     const plain = pathname.replaceAll("/", "");
     if (plain.startsWith(adminKey))
       return <AdminLayout>{children}</AdminLayout>;
+    if (plain.startsWith("dashboard"))
+      return <DashboardLayout>{children}</DashboardLayout>;
     if (plain.startsWith("doctorpanel"))
       return <DoctorPanelLayout>{children}</DoctorPanelLayout>;
     if (plain.startsWith("secretarypanel"))

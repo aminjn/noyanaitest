@@ -31,6 +31,7 @@ import LogoutIcon from "../Icons/LogoutIcon";
 import { currencize } from "../helpers/currencize";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import useDoctorAcl from "../Hooks/useDoctorAcl";
+import CogIcon from "../Icons/CogIcon";
 
 const DoctorSidebar = () => {
   const { data: balance } = useSWR<number>(`${API}/finance`, (url: string) =>
@@ -132,6 +133,12 @@ const DoctorSidebar = () => {
         title: "patientDocuments",
         icon: <MedicalRecordIcon />,
         target: "document",
+        show: hasAccess(),
+      },
+      {
+        title: "settings",
+        icon: <CogIcon />,
+        target: "settings",
         show: hasAccess(),
       },
       {

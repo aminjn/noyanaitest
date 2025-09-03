@@ -1,0 +1,167 @@
+.main {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  height: 15.25rem;
+  flex-wrap: wrap;
+}
+
+.avatar {
+  width: 8.75rem;
+  height: 8.75rem;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  min-width: 8.75rem;
+  flex-shrink: 0;
+}
+
+.details {
+  width: 27rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  color: var(--gray13);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.recommendation {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray13);
+  font-size: 12;
+  font-weight: 400;
+}
+
+.thumbsUp {
+  color: var(--success);
+}
+
+.second {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.speciality {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.successRate {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--primary);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.star {
+  color: var(--warning);
+}
+
+.ratingValue {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--gray13);
+}
+
+.commentCount {
+  color: var(--gray8);
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray13);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.summary {
+  color: var(--gray8);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-clamp: 3;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.sessions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  width: 21.5rem;
+}
+
+.day,
+.more {
+  display: flex;
+  width: 5rem;
+  flex-direction: column;
+  height: 8rem;
+  overflow: hidden;
+  gap: 0.5rem;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+
+.day {
+  padding-inline: 0.5rem;
+  background-color: var(--warning);
+  color: var(--gray13);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.weekDay {
+  font-size: 0.625rem;
+  font-weight: 400;
+}
+
+.countLabel {
+  font-size: 0.75rem;
+}
+
+.more {
+  justify-content: center;
+  align-items: center;
+  color: var(--gray6);
+  font-size: 0.75rem;
+  font-weight: 400;
+  border: 1px solid currentColor;
+}
+
+.full {
+  background-color: var(--gray4);
+}
+
+.day:not(.full) {
+  cursor: pointer;
+}

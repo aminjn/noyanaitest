@@ -16,6 +16,7 @@ const HomePage = () => {
     <List>
       <Button onClick={() => setPopup("Logout", <LogoutPopup />)}>خروج</Button>
       <Button onClick={() => push("secretarypanel")}>Secretary Panel</Button>
+      <Button onClick={() => push("chat")}>Chat</Button>
     </List>
   );
 };

@@ -1,0 +1,16 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 31rem;
+  flex-shrink: 0;
+  padding-inline: 1.5rem;
+  padding-block: 2.5rem;
+  gap: 2.5rem;
+  background-color: #f5fafc;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

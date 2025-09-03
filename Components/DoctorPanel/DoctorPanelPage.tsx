@@ -112,6 +112,9 @@ export interface IDoctorProfile<
     ? IPhoneConsultSettings | null
     : void;
   active: boolean;
+  order: number;
+  avatar?: string;
+  slug?: string;
 }
 
 type PhoneConsultSettingsPopulation = { DoctorPopulated?: boolean };

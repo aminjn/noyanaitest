@@ -53,6 +53,8 @@ const DoctorProfileInfoTab = ({
         services: { type: "strings", title: "خدمات" },
         achivements: { type: "strings", title: "دستاوردها" },
         active: { type: "bool", title: "فعال" },
+        order: { type: "number", title: "رتبه" },
+        avatar: { type: "image", title: "تصویر اصلی" },
       }}
       hookProvided={form}
     />

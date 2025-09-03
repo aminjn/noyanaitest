@@ -1,0 +1,50 @@
+.main {
+  position: relative;
+}
+
+.options {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  background-color: khaki;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  min-width: fit-content;
+  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  box-shadow: var(--shadow);
+  border-radius: 0.5rem;
+  background-color: var(--white);
+}
+
+.option {
+  color: var(--gray10);
+  font-weight: 400;
+  transition: all var(--transTime);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.option:not(.active):hover {
+  background-color: var(--gray3);
+}
+
+.active {
+  color: var(--primary);
+  background-color: var(--primary1);
+}
+
+.value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+.move {
+  height: 3rem;
+}

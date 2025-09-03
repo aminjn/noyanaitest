@@ -20,6 +20,36 @@ import StringListInput from "@/Components/UI/StringListInput";
 import useLocale from "@/Components/Hooks/useLocale";
 import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
 
+export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
+  [key in keyof Partial<TInput>]: (
+    | {
+        type:
+          | "text"
+          | "number"
+          | "bool"
+          | "area"
+          | "range"
+          | "date"
+          | "image"
+          | "rtf"
+          | "strings";
+      }
+    | { type: "select" | "options"; options: Record<string, string> }
+    | {
+        type: "nodes";
+        path: string;
+        getOptionLabel: (node: unknown) => string;
+        getOptionValue: (node: unknown) => string;
+        multi?: boolean;
+        getDefaultValue?: (node: TInput) => unknown;
+        clearable?: boolean;
+        dataParser?: (res: unknown) => unknown[];
+      }
+  ) & {
+    title: string;
+  };
+};
+
 const CreateForm = <TInput,>({
   defaultValue,
   hookProps,
@@ -34,35 +64,7 @@ const CreateForm = <TInput,>({
   {
     readOnly?: boolean;
     styleManaged?: boolean;
-    renderer: {
-      [key in keyof Partial<TInput>]: (
-        | {
-            type:
-              | "text"
-              | "number"
-              | "bool"
-              | "area"
-              | "range"
-              | "date"
-              | "image"
-              | "rtf"
-              | "strings";
-          }
-        | { type: "select" | "options"; options: Record<string, string> }
-        | {
-            type: "nodes";
-            path: string;
-            getOptionLabel: (node: unknown) => string;
-            getOptionValue: (node: unknown) => string;
-            multi?: boolean;
-            getDefaultValue?: (node: TInput) => unknown;
-            clearable?: boolean;
-            dataParser?: (res: unknown) => unknown[];
-          }
-      ) & {
-        title: string;
-      };
-    };
+    renderer: FormRenderer<TInput>;
     defaultValue?: TInput;
     onCancel?: () => unknown;
   } & (

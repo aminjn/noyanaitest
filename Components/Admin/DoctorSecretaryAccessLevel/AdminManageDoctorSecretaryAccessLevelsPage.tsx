@@ -33,17 +33,23 @@ export const doctorSecretaryActions = [
   "clinicAddition",
   "readCalendar",
   "mutateCalendar",
+  "readSettings",
+  "mutateSettings",
 ] as const;
 
 export type DoctorSecretaryAction = (typeof doctorSecretaryActions)[number];
 
-export const doctorSecretaryActionCategories = ["clinic", "calendar"] as const;
+export const doctorSecretaryActionCategories = [
+  "clinic",
+  "calendar",
+  "settings",
+] as const;
 
 export type DoctorSecretaryActionCategory =
   (typeof doctorSecretaryActionCategories)[number];
 
 export const doctorSecretaryActionCategoriesDict: Dictionary<DoctorSecretaryActionCategory> =
-  { clinic: "کلینیک", calendar: "تقویم نوبت دهی" };
+  { clinic: "کلینیک", calendar: "تقویم نوبت دهی", settings: "تنظیمات" };
 
 export const categorizedDoctorSecretaryActions: Record<
   DoctorSecretaryActionCategory,
@@ -57,6 +63,7 @@ export const categorizedDoctorSecretaryActions: Record<
     "readClinics",
   ],
   calendar: ["readCalendar", "mutateCalendar"],
+  settings: ["readSettings", "mutateSettings"],
 };
 
 export const doctorSecretaryActionDict: Dictionary<DoctorSecretaryAction> = {
@@ -67,6 +74,8 @@ export const doctorSecretaryActionDict: Dictionary<DoctorSecretaryAction> = {
   readClinics: "دریافت کلینیک ها",
   mutateCalendar: "آپدیت تقویم",
   readCalendar: "دریافت تقویم",
+  mutateSettings: "آپدیت تنظیمات",
+  readSettings: "دریافت تنظیمات",
 };
 
 const AdminManageDoctorSecretaryAccessLevelsPage = () => {

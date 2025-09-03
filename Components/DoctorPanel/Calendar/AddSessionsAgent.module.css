@@ -1,0 +1,54 @@
+.main {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.selected {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  align-items: center;
+  padding-block-end: 2rem;
+  padding-block-start: 0.5rem;
+  padding-inline: 1rem;
+  gap: 0.5rem;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--white);
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  border-radius: 100dvw;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--gray4);
+  transition: all var(--transTime);
+  min-width: fit-content;
+}
+
+.date:hover {
+  background-color: var(--gray1);
+}
+
+.delete {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--error);
+}
+
+.submit {
+  margin-inline-start: auto;
+}

@@ -1,0 +1,6 @@
+.main {
+  display: flex;
+  max-height: min(80dvh, 44.5rem);
+  min-height: min(80dvh, 44.5rem);
+  height: 100%;
+}
