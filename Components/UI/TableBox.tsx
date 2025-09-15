@@ -9,7 +9,7 @@ const TableBox = ({
   className,
   style,
 }: WithStyleProps<{
-  children: ReactNode;
+  children?: ReactNode;
   title: string;
   actions?: { id: string; content: ReactNode }[];
 }>) => {

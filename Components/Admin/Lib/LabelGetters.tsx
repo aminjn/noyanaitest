@@ -4,6 +4,7 @@ import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
 import { IAccessLevel } from "../AccessLevel/AdminManageAccessLevelsPage";
 import { IClinic, IClinicDepartment } from "../Clinic/AdminManageClinicsPage";
 import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
+import { Acl } from "@/Components/_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
 
 export const getUserLabel = (node: IUser): string => node.phone || node._id;
 
@@ -20,6 +21,10 @@ export const getClinicDepartmentLabel = (node: IClinicDepartment): string =>
 
 export const getClinicLabel = (node: IClinic): string => node.name || node._id;
 
+//TODO: remove this
 export const getDoctorSecretaryAccessLavelLabel = (
   node: IDoctorSecretaryAccessLevel
 ): string => node.name || node._id;
+
+export const getAclLabel = (node: Acl<[], unknown>): string =>
+  node.name || node._id;

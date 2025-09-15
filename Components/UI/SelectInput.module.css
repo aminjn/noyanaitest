@@ -8,4 +8,6 @@
   color: var(--gray7);
   font-size: 1rem;
   font-weight: 400;
+  display: block;
+  width: 100%;
 }

@@ -20,7 +20,7 @@ const WithTitle = ({
   className = "",
   style,
 }: WithStyleProps<{
-  children: ReactNode;
+  children?: ReactNode;
   title: string;
   actions?: {
     title: string;

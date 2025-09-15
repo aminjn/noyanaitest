@@ -9,6 +9,8 @@ import usePopup from "@/Components/Hooks/usePopup";
 import AreaInput from "@/Components/UI/AreaInput";
 import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
+import FormTitle from "@/Components/UI/FormTitle";
+import SelectNoResult from "@/Components/UI/SelectNoResult";
 
 const SubmitAJoinClinicRequestPopup = ({
   mutate,
@@ -35,9 +37,7 @@ const SubmitAJoinClinicRequestPopup = ({
   return (
     <PopupCard className={classes.main}>
       <Form className={classes.content} onSubmit={submit}>
-        <legend className={classes.title}>
-          {getContent("joinClinicRequest")}
-        </legend>
+        <FormTitle>{getContent("joinClinicRequest")}</FormTitle>
         <SearchServer<IClinic>
           method="POST"
           title={getContent("clinicName")}
@@ -52,13 +52,11 @@ const SubmitAJoinClinicRequestPopup = ({
             setInput((prev) => ({ ...prev, clinic: e?._id || "" }))
           }
           readOnly={isLoading}
+          //TODO:Hook this up
           noResult={
-            <div className={classes.noResult}>
-              <span>{getContent("nothingFound")}</span>
-              <button type="button" className={classes.link}>
-                {getContent("clickToRequestAddClinic")}
-              </button>
-            </div>
+            <SelectNoResult>
+              {getContent("clickToRequestAddClinic")}
+            </SelectNoResult>
           }
         />
         <AreaInput

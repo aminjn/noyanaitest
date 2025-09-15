@@ -14,7 +14,7 @@ import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -195,7 +195,7 @@ const AdminManageBlogsPage = () => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

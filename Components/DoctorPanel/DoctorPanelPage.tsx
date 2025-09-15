@@ -35,15 +35,11 @@ export const medicalSystemTitles = [
 
 export type MedicalSystemTitle = (typeof medicalSystemTitles)[number];
 
-export const becomeDoctorStatuses = [
-  "Pending",
-  "Rejected",
-  "Approved",
-] as const;
+export const becomeNodeStatuses = ["Pending", "Rejected", "Approved"] as const;
 
-export type BecomeDoctorStatus = (typeof becomeDoctorStatuses)[number];
+export type BecomeANodeStatus = (typeof becomeNodeStatuses)[number];
 
-export const becomeDoctorStatusesDict: Record<BecomeDoctorStatus, string> = {
+export const becomeNodeStatusesDict: Record<BecomeANodeStatus, string> = {
   Approved: "تایید شده",
   Pending: "منتظر تایید",
   Rejected: "رد شده",
@@ -72,7 +68,7 @@ export interface IBecomeDoctorRequest<
   city: City;
   address: string;
   description?: string;
-  status: BecomeDoctorStatus;
+  status: BecomeANodeStatus;
 }
 
 export type DoctorProfilePopulation = {

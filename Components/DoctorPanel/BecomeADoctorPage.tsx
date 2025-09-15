@@ -24,8 +24,6 @@ const BecomeADoctorPage = () => {
       (url: string) => fetcher({ url }).then((res) => res.data.data)
     );
 
-  const getContent = useLocale();
-
   return (
     <HandleLoading data={!isLoading} error={error}>
       {data ? (

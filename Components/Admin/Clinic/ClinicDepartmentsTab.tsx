@@ -13,7 +13,7 @@ import ImageIcon from "@/Components/UI/RTFEditor/ImageIcon";
 import IconButton from "../UI/IconButton";
 import FullScreenImagePopup from "@/Components/Popups/FullScreenImagePopup";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteClinicDepartmentPopup from "./DeleteClinicDepartmentPopup";
 import { fetcher } from "@/Components/helpers/fetcher";
 
@@ -125,7 +125,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

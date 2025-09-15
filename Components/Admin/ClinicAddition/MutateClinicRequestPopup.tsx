@@ -1,5 +1,5 @@
 import {
-  clinicAdditionRequestStatusDict,
+  additionRequestStatusDict,
   IClinicAdditionRequest,
 } from "@/Components/DoctorPanel/Clinic/DoctorClinicAdditionsTab";
 import Box from "../UI/Box";
@@ -34,7 +34,7 @@ const MutateClinicRequestPopup = ({
           status: {
             type: "select",
             title: "وضعیت",
-            options: clinicAdditionRequestStatusDict,
+            options: additionRequestStatusDict,
           },
         }}
       />

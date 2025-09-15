@@ -18,23 +18,21 @@ import { Dictionary } from "./DoctorJoinClinicsTab";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import FormatDate from "@/Components/UI/FormatDate";
 
-export const clinicAdditionRequsetStatuses = [
+export const additionRequsetStatuses = [
   "Pending",
   "Proccessing",
   "Done",
   "Rejected",
 ] as const;
 
-export type ClinicAdditionRequestStatus =
-  (typeof clinicAdditionRequsetStatuses)[number];
+export type AdditionRequestStatus = (typeof additionRequsetStatuses)[number];
 
-export const clinicAdditionRequestStatusDict: Dictionary<ClinicAdditionRequestStatus> =
-  {
-    Done: "تمام شده",
-    Pending: "منتظر تایید",
-    Proccessing: "در دست بررسی",
-    Rejected: "رد شده",
-  };
+export const additionRequestStatusDict: Dictionary<AdditionRequestStatus> = {
+  Done: "تمام شده",
+  Pending: "منتظر تایید",
+  Proccessing: "در دست بررسی",
+  Rejected: "رد شده",
+};
 
 export type ClinicAdditionRequestPopulation = Population<{
   user: DoctorProfilePopulation;
@@ -44,7 +42,7 @@ export interface IClinicAdditionRequest<
   T extends ClinicAdditionRequestPopulation = ClinicAdditionRequestPopulation
 > extends MongoDoc {
   submittedAt: Date;
-  status: ClinicAdditionRequestStatus;
+  status: AdditionRequestStatus;
   submittedBy: T["user"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["user"]> | null
     : string;

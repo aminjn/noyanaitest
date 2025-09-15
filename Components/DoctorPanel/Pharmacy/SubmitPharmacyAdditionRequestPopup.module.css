@@ -1,0 +1,6 @@
+.main {
+  width: min(30rem, 90dvw);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

@@ -10,7 +10,7 @@ import useLocale from "@/Components/Hooks/useLocale";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import UnjoinClinicPopup from "./UnjoinClinicPopup";
 
@@ -71,7 +71,7 @@ const DoctorClinicsTab = () => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

@@ -1,5 +1,7 @@
+import DoctorManageInsurancesPage from "@/Components/DoctorPanel/Insurance/DoctorManageInsurancesPage";
+
 const DoctorManageInsurances = () => {
-  return <p>DoctorManageInsurances</p>;
+  return <DoctorManageInsurancesPage />;
 };
 
 export default DoctorManageInsurances;

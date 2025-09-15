@@ -4,7 +4,7 @@ import Input from "./Input";
 import IconButton from "../Admin/UI/IconButton";
 import PlusIcon from "../Icons/PlusIcon";
 import { nanoid } from "nanoid";
-import Garbageicon from "../Icons/GarbageIcon";
+import GarbageIcon from "../Icons/GarbageIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
 
 function swap<T>(arr: T[], i: number, j: number): T[] {
@@ -94,7 +94,7 @@ const StringListInput = ({
                   })
                 }
               >
-                <Garbageicon />
+                <GarbageIcon />
               </IconButton>
               <IconButton
                 type="button"

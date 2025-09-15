@@ -2,7 +2,7 @@
 import useSWR from "swr";
 import classes from "./AdminManageBecomeDoctorsPage.module.css";
 import {
-  becomeDoctorStatusesDict,
+  becomeNodeStatusesDict,
   genderDict,
   IBecomeDoctorRequest,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -19,7 +19,7 @@ import { cities } from "@/Components/Enums/Cities";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteBecomeDoctorPopup from "./DeleteBecomeDoctorPopup";
@@ -99,7 +99,7 @@ const AdminManageBecomeDoctorsPage = () => {
               },
               status: {
                 name: "وضعیت",
-                value: (node) => becomeDoctorStatusesDict[node.status],
+                value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
               },
               actions: {
@@ -127,7 +127,7 @@ const AdminManageBecomeDoctorsPage = () => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

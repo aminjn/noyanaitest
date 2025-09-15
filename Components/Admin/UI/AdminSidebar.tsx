@@ -51,6 +51,21 @@ const linkMap: LinkMap = [
         target: "becomedoctor",
         access: "BecomeDoctorRequest",
       },
+      {
+        title: "درخواست کلینیک شدن",
+        access: "BecomeClinicRequest",
+        target: "becomeclinic",
+      },
+      {
+        title: "درخواست داروخانه شدن",
+        access: "BecomePharmacyRequest",
+        target: "becomepharmacy",
+      },
+      {
+        title: "درخواست بیمه شدن",
+        access: "BecomeInsuranceRequest",
+        target: "becomeinsurance",
+      },
       { title: "کاربران", target: "user", access: "User" },
       {
         title: "پروفایل پزشکان",
@@ -74,6 +89,8 @@ const linkMap: LinkMap = [
         access: "DoctorSeretaryAccessLevel",
         target: "doctorsecretaryaccesslevel",
       },
+      { title: "بیمه", access: "Insurance", target: "insurance" },
+      { title: "داروخانه و آزمایشگاه", access: "Pharmacy", target: "pharmacy" },
     ],
   },
   {

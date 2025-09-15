@@ -17,7 +17,7 @@ import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import { Fragment, useMemo } from "react";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
 import usePopup from "@/Components/Hooks/usePopup";
 import Button from "@/Components/UI/Button";
@@ -173,7 +173,7 @@ const DoctorManageCalendarDayPage = () => {
                             )
                           }
                         >
-                          <Garbageicon />
+                          <GarbageIcon />
                         </IconButton>
                       </Fragment>
                     )}

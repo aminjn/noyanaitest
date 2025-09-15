@@ -17,7 +17,7 @@ import TableActions from "../Admin/UI/TableActions";
 import IconLink from "../Admin/UI/IconLink";
 import EditIcon from "../Icons/EditIcon";
 import IconButton from "../Admin/UI/IconButton";
-import Garbageicon from "../Icons/GarbageIcon";
+import GarbageIcon from "../Icons/GarbageIcon";
 import DeleteBlogMediaPopup from "./DeleteBlogMediaPopup";
 import useAccessLevel from "../Hooks/useAccessLevel";
 
@@ -98,7 +98,7 @@ const AdminManageBlogMediasPage = () => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

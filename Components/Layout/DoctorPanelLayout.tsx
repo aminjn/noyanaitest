@@ -16,20 +16,20 @@ import { LicenseManager } from "ag-grid-enterprise";
 import PanelLayout from "./PanelLayout";
 
 const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
-  const { data, error, isLoading } = useSWR<IDoctorProfile | null>(
+  const { data, isLoading } = useSWR<IDoctorProfile | null>(
     `${API}/doctor`,
     (url: string) => fetcher({ url }).then((res) => res.data.data)
   );
 
-  const content = useMemo<ReactNode>(() => {
-    return (
-      <HandleLoading data={!isLoading} error={error}>
-        {data ? children : <BecomeADoctorPage />}
-      </HandleLoading>
-    );
-  }, [children, data, error, isLoading]);
-
-  return <PanelLayout sidebar={<DoctorSidebar />}>{content}</PanelLayout>;
+  return (
+    <HandleLoading data={!isLoading}>
+      {data ? (
+        <PanelLayout sidebar={<DoctorSidebar />}>{children}</PanelLayout>
+      ) : (
+        <BecomeADoctorPage />
+      )}
+    </HandleLoading>
+  );
 };
 
 export default DoctorPanelLayout;

@@ -1,5 +1,7 @@
+import DoctorManagePharmaciesPage from "@/Components/DoctorPanel/Pharmacy/DoctorManagePharmaciesPage";
+
 const DoctorManagePharmacies = () => {
-  return <p>DoctorManagePharmacies</p>;
+  return <DoctorManagePharmaciesPage />;
 };
 
 export default DoctorManagePharmacies;

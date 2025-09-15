@@ -16,7 +16,7 @@ import WithTitle from "../UI/WithTitle";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteSpecialityPopup from "./DeletSpecialityPopup";
 import InlineLink from "../UI/InlineLink";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
@@ -118,7 +118,7 @@ const AdminManageSpecialitiesPage = () => {
                         }
                         variant="Danger"
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

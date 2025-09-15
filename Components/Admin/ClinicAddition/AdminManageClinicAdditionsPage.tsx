@@ -3,7 +3,7 @@
 import useSWR from "swr";
 import classes from "./AdminManageClinicAdditionsPage.module.css";
 import {
-  clinicAdditionRequestStatusDict,
+  additionRequestStatusDict,
   IClinicAdditionRequest,
 } from "@/Components/DoctorPanel/Clinic/DoctorClinicAdditionsTab";
 import { API } from "@/Components/config";
@@ -21,7 +21,7 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import CreateClinicFromRequestPopup from "./CreateClinicFromRequestPopup";
 import MutateClinicRequestPopup from "./MutateClinicRequestPopup";
@@ -104,7 +104,7 @@ const AdminManageClinicAdditionsPage = () => {
               },
               status: {
                 name: "وضعیت",
-                value: (node) => clinicAdditionRequestStatusDict[node.status],
+                value: (node) => additionRequestStatusDict[node.status],
                 filter: "Set",
               },
               actions: {
@@ -148,7 +148,7 @@ const AdminManageClinicAdditionsPage = () => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

@@ -16,7 +16,7 @@ import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteBlogCategoryPopup from "./DeleteBlogCategoryPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
@@ -95,7 +95,7 @@ const AdminManageBlogCategoriesPage = () => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

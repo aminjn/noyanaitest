@@ -2,7 +2,6 @@
 
 import classes from "./DoctorManageCalendarPage.module.css";
 import WithBalanceHeader from "../_UI/WithBalanceHeader";
-import "react-day-picker/style.css";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import Calendxr, { CalendxrView } from "@/Components/UI/Calendar/Calendxr";
 import DoctorCalendarDay from "./DoctorCalendarDay";

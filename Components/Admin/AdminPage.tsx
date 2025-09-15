@@ -10,6 +10,7 @@ import { notificationStatuses } from "../Store/NotificationContext";
 import useNotification from "../Hooks/useNotification";
 import * as Colors from "@/Components/Enums/Colors";
 import Debugger from "./Debugger";
+import SipManager from "./SipManager";
 
 const AdminPage = () => {
   const { setPopup, closePopup } = usePopup();
@@ -84,6 +85,9 @@ const AdminPage = () => {
         ))}
       </div>
       <Button onClick={() => setPopup("Debugger", <Debugger />)}>Debug</Button>
+      <Button onClick={() => setPopup("sipManager", <SipManager />)}>
+        Sip
+      </Button>
     </Box>
   );
 };

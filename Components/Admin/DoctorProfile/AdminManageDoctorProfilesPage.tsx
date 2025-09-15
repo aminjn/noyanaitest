@@ -14,7 +14,7 @@ import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import IconLink from "../UI/IconLink";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -166,7 +166,7 @@ const AdminManageDoctorProfilesPage = () => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

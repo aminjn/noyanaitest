@@ -11,6 +11,9 @@ import { adminKey } from "../config";
 import DoctorPanelLayout from "./DoctorPanelLayout";
 import SecretaryPanelLayout from "./SecretaryPanelLayout";
 import DashboardLayout from "./DashboardLayout";
+import ClinicPanelLayout from "./ClinicPanelLayout";
+import PharmacyPanelLayout from "./PharmacyPanelLayout";
+import InsurancePanelLayout from "./InsurancePanelLayout";
 
 export type WithStyleProps<T = Record<string, never>> = T & {
   className?: string;
@@ -30,6 +33,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
       return <DoctorPanelLayout>{children}</DoctorPanelLayout>;
     if (plain.startsWith("secretarypanel"))
       return <SecretaryPanelLayout>{children}</SecretaryPanelLayout>;
+    if (plain.startsWith("clinicpanel"))
+      return <ClinicPanelLayout>{children}</ClinicPanelLayout>;
+    if (plain.startsWith("pharmacypanel"))
+      return <PharmacyPanelLayout>{children}</PharmacyPanelLayout>;
+    if (plain.startsWith("insurancepanel"))
+      return <InsurancePanelLayout>{children}</InsurancePanelLayout>;
     return <PublicLayout>{children}</PublicLayout>;
   }, [children, pathname]);
 

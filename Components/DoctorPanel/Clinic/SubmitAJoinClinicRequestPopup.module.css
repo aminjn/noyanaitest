@@ -8,28 +8,8 @@
   gap: 1rem;
 }
 
-.title {
-  color: var(--gray13);
-  font-size: 1.125rem;
-  font-weight: 400;
-  text-align: center;
-}
 
-.noResult {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-}
 
-.link {
-  text-decoration: underline solid 4%;
-  text-underline-offset: 45%;
-  color: var(--primary);
-  text-align: right;
-  width: fit-content;
-}
 
 .option {
   display: flex;

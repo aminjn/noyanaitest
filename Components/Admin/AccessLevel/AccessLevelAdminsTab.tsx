@@ -6,7 +6,7 @@ import classes from "./AccessLevelAdminsTab.module.css";
 import { IAccessLevel } from "./AdminManageAccessLevelsPage";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import RemoveAccessLevelUserPopup from "./RemoveAccessLevelUserPopup";
 import { IUser, MongoDoc } from "@/Components/Hooks/useUser";
@@ -81,7 +81,7 @@ const AccessLevelAdminsTab = ({
                     )
                   }
                 >
-                  <Garbageicon />
+                  <GarbageIcon />
                 </IconButton>
               </TableActions>
             ),

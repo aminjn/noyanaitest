@@ -24,7 +24,7 @@ import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import DeleteClinicPopup from "./DeleteClinicPopup";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import {
   DoctorProfilePopulation,
   IDoctorProfile,
@@ -224,7 +224,7 @@ const AdminManageClinicsPage = () => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

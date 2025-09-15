@@ -1,7 +1,7 @@
-import SecretaryManageInsurancesPage from "@/Components/SecretaryPanel/Insurance/SecretaryManageInsurancesPage";
+import SecretaryManageBossesPage from "@/Components/SecretaryPanel/SecretaryManageBossesPage";
 
 const SecretaryManageInsurances = () => {
-  return <SecretaryManageInsurancesPage />
+  return <SecretaryManageBossesPage name="insurance" />;
 };
 
 export default SecretaryManageInsurances;

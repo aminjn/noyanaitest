@@ -15,7 +15,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import FullScreenImagePopup from "@/Components/Popups/FullScreenImagePopup";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import MutateGalleryItemPopup from "./MutateGalleryItemPopup";
 import DeleteGalleryItemPopup from "./DeleteGalleryItemPopup";
 import WithTitle from "../UI/WithTitle";
@@ -158,7 +158,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

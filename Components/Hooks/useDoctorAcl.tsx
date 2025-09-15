@@ -10,7 +10,7 @@ import { useCallback } from "react";
 
 const useDoctorAcl = () => {
   const { data } = useSWR<IDoctorSecretaryAccessLevel | "FULL">(
-    `${API}/doctor/acl`,
+    `${API}/acl/doctor`,
     (url: string) => fetcher({ url }).then((res) => res.data.access)
   );
 

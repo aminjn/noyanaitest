@@ -12,7 +12,7 @@ import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import RemoveAccessLevelUserPopup from "./RemoveAccessLevelUserPopup";
 import InfoIcon from "@/Components/Icons/InfoIcon";
@@ -90,7 +90,7 @@ const AdminManageUserAccessLevelsPage = () => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

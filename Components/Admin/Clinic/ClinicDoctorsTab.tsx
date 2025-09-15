@@ -13,7 +13,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteClinicDoctorPopup from "./DeleteClinicDoctorPopup";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 
@@ -101,7 +101,7 @@ const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

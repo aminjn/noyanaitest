@@ -1,0 +1,17 @@
+export const doctorActions = [
+  "readClinics",
+  "leaveClinics",
+  "joinClinic",
+  "mutateJoinClinic",
+  "clinicAddition",
+  "readCalendar",
+  "mutateCalendar",
+  "readSettings",
+  "mutateSettings",
+  "readInsurance",
+  "mutateInsurance",
+  "insuranceAddition",
+  "readPharmacy",
+  "mutatePharmacy",
+  "pharmacyAddition",
+] as const;

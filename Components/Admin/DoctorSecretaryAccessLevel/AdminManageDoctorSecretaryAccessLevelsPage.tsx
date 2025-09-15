@@ -14,7 +14,7 @@ import Table from "../UI/Table";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import IconLink from "../UI/IconLink";
 import DeleteDoctorSecretaryAccessLevelPopup from "./DeleteDoctorSecretaryAccessLevelPopup";
@@ -64,7 +64,7 @@ export const categorizedDoctorSecretaryActions: Record<
   ],
   calendar: ["readCalendar", "mutateCalendar"],
   settings: ["readSettings", "mutateSettings"],
-};
+} as const;
 
 export const doctorSecretaryActionDict: Dictionary<DoctorSecretaryAction> = {
   clinicAddition: "درخواست اضافه کردن کلینیک",
@@ -131,7 +131,7 @@ const AdminManageDoctorSecretaryAccessLevelsPage = () => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

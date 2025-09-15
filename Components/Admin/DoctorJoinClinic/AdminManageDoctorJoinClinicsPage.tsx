@@ -19,7 +19,7 @@ import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import EditDoctorJoinClinicStatusPopup from "./EditDoctorJoinClinicStatusPopup";
 import DeleteDoctorJoinClinicPopup from "./DeleteDoctorJoinClinicPopup";
@@ -131,7 +131,7 @@ const AdminManageDoctorJoinClinicsPage = () => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

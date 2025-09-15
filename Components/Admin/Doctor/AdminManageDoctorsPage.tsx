@@ -18,7 +18,7 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteDoctorPopup from "./DeleteDoctorPopup";
 import WithTitle from "../UI/WithTitle";
@@ -263,7 +263,7 @@ const AdminManageDoctorsPage = () => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>

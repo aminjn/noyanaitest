@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import classes from "./AdminManageBecomeDoctorPage.module.css";
 import useSWR from "swr";
 import {
-  becomeDoctorStatusesDict,
+  becomeNodeStatusesDict,
   genderDict,
   IBecomeDoctorRequest,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -92,7 +92,7 @@ const AdminManageBecomeDoctorPage = () => {
                     <DataPair title="توضیحات" value={data.description} />
                     <DataPair
                       title="وضعیت"
-                      value={becomeDoctorStatusesDict[data.status]}
+                      value={becomeNodeStatusesDict[data.status]}
                     />
                     <div>
                       <legend>تخصص ها</legend>

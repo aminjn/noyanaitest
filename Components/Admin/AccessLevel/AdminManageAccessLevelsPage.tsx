@@ -16,7 +16,7 @@ import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteAccessLevelPopup from "./DeleteAccessLevelPopup";
 import {
   IUserAccessLevel,
@@ -45,6 +45,9 @@ type Access = { [key in AccessOperation]?: boolean };
 
 export const accessLevelModels = [
   "BecomeDoctorRequest",
+  "BecomeClinicRequest",
+  "BecomePharmacyRequest",
+  "BecomeInsuranceRequest",
   "Blog",
   "BlogCategory",
   "BlogMedia",
@@ -62,12 +65,17 @@ export const accessLevelModels = [
   "DoctorJoinClinic",
   "ClinicAdditionRequest",
   "DoctorSeretaryAccessLevel",
+  "Insurance",
+  "Pharmacy",
 ] as const;
 
 export type AccessLevelModel = (typeof accessLevelModels)[number];
 
 export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   BecomeDoctorRequest: "درخواست پزشک شدن",
+  BecomeClinicRequest: "درخواست کلینیک شدن",
+  BecomeInsuranceRequest: "درخواست بیمه شدن",
+  BecomePharmacyRequest: "درخواست داروخانه شدن",
   Blog: "مقالات",
   BlogCategory: "دسته بندی مقالات",
   BlogMedia: "مولتی مدیا وبلاگ",
@@ -85,6 +93,8 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   DoctorJoinClinic: "درخواست عضویت پزشکان در کلینیک",
   ClinicAdditionRequest: "درخواست اضافه شدن کلینیک",
   DoctorSeretaryAccessLevel: "دسترسی پیش فرض منشی دکتر",
+  Insurance: "بیمه",
+  Pharmacy: "داروخانه و آزمایشگاه",
 };
 
 type AccessLevelPopuplation = { AdminsPopulated?: UserAccessLevelPopulation };
@@ -170,7 +180,7 @@ const AdminManageAccessLevelsPage = () => {
                         )
                       }
                     >
-                      <Garbageicon />
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

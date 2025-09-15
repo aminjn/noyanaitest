@@ -18,7 +18,7 @@ import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
-import Garbageicon from "@/Components/Icons/GarbageIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteInlineAdPopup from "./DeleteInlineAdPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
@@ -134,7 +134,7 @@ const AdminManageInlineAdsPage = () => {
                           )
                         }
                       >
-                        <Garbageicon />
+                        <GarbageIcon />
                       </IconButton>
                     )}
                   </TableActions>
