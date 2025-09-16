@@ -11,6 +11,8 @@ import useNotification from "../Hooks/useNotification";
 import * as Colors from "@/Components/Enums/Colors";
 import Debugger from "./Debugger";
 import SipManager from "./SipManager";
+import VoiceManager from "./VoiceManager";
+import TelephonePopup from "./TelephonePopup";
 
 const AdminPage = () => {
   const { setPopup, closePopup } = usePopup();
@@ -87,6 +89,12 @@ const AdminPage = () => {
       <Button onClick={() => setPopup("Debugger", <Debugger />)}>Debug</Button>
       <Button onClick={() => setPopup("sipManager", <SipManager />)}>
         Sip
+      </Button>
+      <Button onClick={() => setPopup("voiceManager", <VoiceManager />)}>
+        Voice
+      </Button>
+      <Button onClick={() => setPopup("Telephone", <TelephonePopup />)}>
+        Telephone
       </Button>
     </Box>
   );

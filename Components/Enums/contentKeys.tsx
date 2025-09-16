@@ -193,6 +193,8 @@ const contentKeys = [
   "newPharmacyAdditionRequest",
   "bosses",
   "boss",
+  "unknownErrorOccured",
+  "calls",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

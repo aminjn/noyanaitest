@@ -10,6 +10,7 @@ import { getPublicData } from "@/Components/helpers/getPublicData";
 import { ITextContent } from "@/Components/Admin/TextContent/AdminManageTextContentPage";
 import { LocaleContextProvider } from "@/Components/Store/LocaleContext";
 import { BreadCrumpContextProvider } from "@/Components/Store/BreadCrumpStore";
+import { SockectContextProvider } from "@/Components/Store/SocketContext";
 
 const font = localFont({
   src: "./fonts/IRANYekanXVFaNumVF.woff",
@@ -42,7 +43,9 @@ export default async function RootLayout({
               <NotificationContextProvider>
                 <PopupContextProvider>
                   <BreadCrumpContextProvider>
-                    <Layout>{children}</Layout>
+                    <SockectContextProvider>
+                      <Layout>{children}</Layout>
+                    </SockectContextProvider>
                   </BreadCrumpContextProvider>
                 </PopupContextProvider>
               </NotificationContextProvider>

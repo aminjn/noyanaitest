@@ -14,6 +14,7 @@ import DashboardLayout from "./DashboardLayout";
 import ClinicPanelLayout from "./ClinicPanelLayout";
 import PharmacyPanelLayout from "./PharmacyPanelLayout";
 import InsurancePanelLayout from "./InsurancePanelLayout";
+import CallManager from "../Call/CallManager";
 
 export type WithStyleProps<T = Record<string, never>> = T & {
   className?: string;
@@ -47,6 +48,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       {content}
       <Popup />
       <Notifications />
+      <CallManager />
     </Fragment>
   );
 };

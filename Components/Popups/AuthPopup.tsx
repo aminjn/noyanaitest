@@ -10,6 +10,7 @@ import {
   Fragment,
   ReactNode,
   SetStateAction,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -19,6 +20,7 @@ import Form from "../UI/Form";
 import CodeInput from "../UI/CodeInput";
 import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
+import SocketContext from "../Store/SocketContext";
 
 const authStages = ["init", "otp"] as const;
 type AuthStage = (typeof authStages)[number];
@@ -35,6 +37,7 @@ type StageProps = {
 
 const OtpStage = ({ ctx, setCtx }: StageProps) => {
   const { refreshUser } = useUser(undefined);
+  const { reconnect } = useContext(SocketContext);
   const { closePopup } = usePopup();
   const [code, setCode] = useState<string>("");
   const { isLoading, submit } = useForm({
@@ -43,6 +46,7 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
     mutator: () => ({ code, phone: `0${ctx.phone}` }),
     successCb: () => {
       refreshUser();
+      reconnect();
       closePopup();
     },
     parser: "JSON",

@@ -27,6 +27,7 @@
     "slate": "^0.117.2",
     "slate-history": "^0.113.1",
     "slate-react": "^0.117.3",
+    "socket.io-client": "^4.8.1",
     "swr": "^2.3.3"
   },
   "devDependencies": {

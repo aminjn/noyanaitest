@@ -16,6 +16,7 @@ const DashboardSidebar = () => {
         target: "invoice",
       },
       { icon: <BookIcon />, show: true, title: "bookings", target: "booking" },
+      { icon: <BookIcon />, show: true, title: "calls", target: "call" },
     ],
     []
   );

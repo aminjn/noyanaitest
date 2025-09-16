@@ -1,6 +1,7 @@
 "use client";
 
 import List from "../Admin/UI/List";
+import VoiceManager from "../Admin/VoiceManager";
 import usePopup from "../Hooks/usePopup";
 import useProgress from "../Hooks/useProgress";
 import LogoutPopup from "../Popups/LogoutPopup";
@@ -20,6 +21,9 @@ const HomePage = () => {
       <Button onClick={() => push("insurancepanel")}>Insurance Panel</Button>
       <Button onClick={() => push("pharmacypanel")}>Pharmacy Panel</Button>
       <Button onClick={() => push("clinicpanel")}>clinic Panel</Button>
+      <Button onClick={() => setPopup("voiceManager", <VoiceManager />)}>
+        Voice
+      </Button>
     </List>
   );
 };

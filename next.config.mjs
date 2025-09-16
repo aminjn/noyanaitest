@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   env: { API: process.env.API, ADMIN_KEY: process.env.ADMIN_KEY },
   images: {
     remotePatterns: [
