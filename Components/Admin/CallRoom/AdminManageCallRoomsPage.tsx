@@ -77,7 +77,7 @@ const AdminManageCallRoomsPage = () => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                    variant="Danger"
+                      variant="Danger"
                       onClick={() =>
                         setPopup(
                           "DestroyCall",

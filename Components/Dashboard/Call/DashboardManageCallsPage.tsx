@@ -20,6 +20,11 @@ export const callTypes = ["voice", "video"] as const;
 
 export type CallType = (typeof callTypes)[number];
 
+export const callTypeDict: Record<CallType, string> = {
+  voice: "صوتی",
+  video: "تصویری",
+};
+
 export type CallRoomPopulation = Population<{
   participants: true;
   joined: true;

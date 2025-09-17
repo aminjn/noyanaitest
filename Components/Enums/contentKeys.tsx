@@ -195,6 +195,10 @@ const contentKeys = [
   "boss",
   "unknownErrorOccured",
   "calls",
+  "accessMediaErrorMessage",
+  "pleaseProvideAccessToMedia",
+  "yourDevicenotSupportingRequiredMedia",
+  "connectionError",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

@@ -1,4 +1,8 @@
-import { ICallRoom } from "@/Components/Dashboard/Call/DashboardManageCallsPage";
+import {
+  CallType,
+  callTypeDict,
+  ICallRoom,
+} from "@/Components/Dashboard/Call/DashboardManageCallsPage";
 import CreateForm from "../UI/CreateForm";
 import { IUser } from "@/Components/Hooks/useUser";
 import { API } from "@/Components/config";
@@ -10,7 +14,7 @@ const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
 
   return (
     <PopupCard>
-      <CreateForm<{ callee: string; caller: string }>
+      <CreateForm<{ callee: string; caller: string; callType: string }>
         style={{ width: "min(90dvw , 40rem)" }}
         renderer={{
           callee: {
@@ -31,13 +35,18 @@ const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
             path: `${API}/auto/user`,
             multi: false,
           },
+          callType: {
+            type: "select",
+            title: "call type",
+            options: callTypeDict,
+          },
         }}
         hookProps={{
           path: `${API}/auto/callroom`,
           method: "POST",
           mutator: (inp) => ({
-            callType: "voice",
             participants: [inp.caller, inp.callee],
+            ...inp,
           }),
           successCb: () => {
             mutate();
