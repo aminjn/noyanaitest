@@ -91,6 +91,7 @@ const linkMap: LinkMap = [
       },
       { title: "بیمه", access: "Insurance", target: "insurance" },
       { title: "داروخانه و آزمایشگاه", access: "Pharmacy", target: "pharmacy" },
+      { title: "تماس ها", access: "CallRoom", target: "callroom" },
     ],
   },
   {

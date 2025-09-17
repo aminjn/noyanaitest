@@ -67,6 +67,7 @@ export const accessLevelModels = [
   "DoctorSeretaryAccessLevel",
   "Insurance",
   "Pharmacy",
+  "CallRoom",
 ] as const;
 
 export type AccessLevelModel = (typeof accessLevelModels)[number];
@@ -95,6 +96,7 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   DoctorSeretaryAccessLevel: "دسترسی پیش فرض منشی دکتر",
   Insurance: "بیمه",
   Pharmacy: "داروخانه و آزمایشگاه",
+  CallRoom: "تماس",
 };
 
 type AccessLevelPopuplation = { AdminsPopulated?: UserAccessLevelPopulation };
