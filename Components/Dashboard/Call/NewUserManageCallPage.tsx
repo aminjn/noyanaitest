@@ -93,7 +93,9 @@ const CallManager = ({ room, user }: { room: ICallRoom; user: IUser }) => {
     let pc = peerConnection.current;
     if (!pc) {
       console.log("initiating pc");
-      pc = new RTCPeerConnection();
+      pc = new RTCPeerConnection({
+        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      });
       peerConnection.current = pc;
     }
 
@@ -102,7 +104,7 @@ const CallManager = ({ room, user }: { room: ICallRoom; user: IUser }) => {
     pc.onicecandidate = (e) => {
       if (e.candidate) {
         console.log("onicecandidate");
-        socket.emit("candidate", e.candidate);
+        socket.emit("candidate", { candidate: e.candidate, room: room._id });
       }
     };
 
@@ -117,7 +119,7 @@ const CallManager = ({ room, user }: { room: ICallRoom; user: IUser }) => {
       console.log("recieved audio track");
       if (remoteAudio.current) remoteAudio.current.srcObject = e.streams[0];
     };
-  }, [socket]);
+  }, [room._id, socket]);
 
   useEffect(() => {
     console.log("requesting audio stream");
