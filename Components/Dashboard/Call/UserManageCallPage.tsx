@@ -1,12 +1,15 @@
 "use client";
 
 import useSocket from "@/Components/Hooks/useSocket";
+import useUser from "@/Components/Hooks/useUser";
 import { useParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const UserManageCallPage = () => {
   const { nodeId } = useParams();
   const socket = useSocket();
+
+  const { user } = useUser();
 
   const pcRef = useRef<RTCPeerConnection | null>(null);
 
@@ -26,7 +29,7 @@ const UserManageCallPage = () => {
       const pc = pcRef.current;
       if (data.sdp) {
         if (data.sdp.type === "offer") {
-          if (pc.signalingState === "stable") {
+          if (pc.signalingState === "stable" && data.from !== user?._id) {
             const answer = await pc.createAnswer();
             await pc.setLocalDescription(answer);
             socket.emit("signal", { room: nodeId, sdp: pc.localDescription });
@@ -45,7 +48,7 @@ const UserManageCallPage = () => {
 
     pc.onicecandidate = (e) => {
       if (e.candidate) {
-        socket.emit("signal", { room: nodeId, candiate: e.candidate });
+        socket.emit("signal", { room: nodeId, candidate: e.candidate });
       }
     };
 
@@ -62,7 +65,7 @@ const UserManageCallPage = () => {
     // return () => {
     //   pc.close();
     // };
-  }, [nodeId, socket]);
+  }, [nodeId, socket, user?._id]);
 
   return (
     <div>
