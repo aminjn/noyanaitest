@@ -9,9 +9,13 @@
   margin-top: 2.5rem;
   display: flex;
   gap: 2.375rem;
+  /* TODO: remove this */
+  overflow-x: auto;
 }
 
 .children {
   flex: 1;
   max-width: var(--panelContentWidth);
+  /* TODO: remove this */
+  min-width: 20rem;
 }

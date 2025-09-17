@@ -5,6 +5,8 @@
   padding-block: 1rem;
   width: 100%;
   position: relative;
+  /* TODO: remove this */
+  flex-wrap: wrap;
 }
 
 .main::before {
