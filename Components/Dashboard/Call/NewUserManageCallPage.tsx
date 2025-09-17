@@ -153,7 +153,7 @@ const CallManager = ({ room, user }: { room: ICallRoom; user: IUser }) => {
 
   return (
     <div>
-      <audio muted autoPlay ref={localAudio} />
+      {/* <audio muted autoPlay ref={localAudio} /> */}
       <audio autoPlay ref={remoteAudio} />
     </div>
   );
