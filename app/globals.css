@@ -207,3 +207,7 @@ h6 {
 .doctorCalendar .rmdp-week-day {
   width: 100%;
 }
+
+.maplibregl-map.maplibregl-map {
+  font: unset;
+}

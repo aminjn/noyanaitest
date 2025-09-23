@@ -1,0 +1,20 @@
+.tooltip {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: 100%;
+}
+
+.markerIcon {
+  transform: translateY(-50%);
+}
+
+.active {
+  color: var(--primary);
+}
+
+.doctor {
+  color: var(--warning);
+}

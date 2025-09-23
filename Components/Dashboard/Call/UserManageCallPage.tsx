@@ -6,7 +6,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useUser from "@/Components/Hooks/useUser";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSocket from "@/Components/Hooks/useSocket";
 import useLocale from "@/Components/Hooks/useLocale";
 import useNotification from "@/Components/Hooks/useNotification";
@@ -38,7 +38,7 @@ const PrepareCall = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
         setDidGetPermission(true);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         pushNotification(getContent("accessMediaErrorMessage"), "Error");
       });
   }, [getContent, pushNotification, room.callType]);
@@ -60,31 +60,36 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
   const localVideo = useRef<HTMLVideoElement>(null);
   const remoteVideo = useRef<HTMLVideoElement>(null);
 
+  const mediaStream = useRef<MediaStream | null>(null);
+
   const push = useProgress();
 
   const getContent = useLocale();
 
   const pushNotification = useNotification();
 
-  useEffect(() => {
-    let pc = peerConnection.current;
-    if (!pc) {
-      console.log("initiating pc");
-      pc = new RTCPeerConnection({
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      });
-      peerConnection.current = pc;
+  const newPc = useCallback(() => {
+    //making new Pc
+    const oldPc = peerConnection.current;
+    if (oldPc) {
+      oldPc.close();
     }
-
-    console.log("adding pc listeners");
-
+    const pc = new RTCPeerConnection({
+      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+    });
+    peerConnection.current = pc;
+    const stream = mediaStream.current;
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        pc.addTrack(track, stream);
+      });
+    }
     pc.onicecandidate = (e) => {
       if (e.candidate) {
         console.log("onicecandidate");
         socket.emit("candidate", { candidate: e.candidate, room: room._id });
       }
     };
-
     pc.oniceconnectionstatechange = (e) => {
       console.log("--------");
       console.log("icecandidateChange");
@@ -100,9 +105,19 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
         if (remoteAudio.current) remoteAudio.current.srcObject = e.streams[0];
       }
     };
+    return pc;
+  }, [room._id, room.callType, socket]);
 
+  useEffect(() => {
+    const pc = newPc();
+    return () => {
+      pc.close();
+    };
+  }, [newPc]);
+
+  //Stream Initiation
+  useEffect(() => {
     let stream: MediaStream | undefined;
-
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: room.callType === "video" })
       .then((s) => {
@@ -111,95 +126,122 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
           console.log("sending audio track");
           if (room.callType === "video" && localVideo.current)
             localVideo.current.srcObject = s;
-          pc.addTrack(track, s);
+          const pc = peerConnection.current;
+          if (pc) pc.addTrack(track, s);
         });
+        console.log("attempting To Join");
+        socket.emit("peerJoin", room._id);
+        mediaStream.current = stream;
       })
       .catch((err) => {
         console.log("----------");
         console.log("failed to recieve audio");
-        console.log(err);
+        console.error(err);
         console.log("---------");
       });
+    return () => {
+      stream?.getTracks().forEach((track) => track.stop());
+    };
+  }, [room._id, room.callType, socket]);
 
+  // Events
+  useEffect(() => {
     socket.on("getCandidate", (candidate) => {
-      pc.addIceCandidate(new RTCIceCandidate(candidate)).then(() =>
-        console.log("Got ICE Candidate")
-      );
+      const pc = peerConnection.current;
+      if (pc)
+        pc.addIceCandidate(new RTCIceCandidate(candidate)).then(() =>
+          console.log("Got ICE Candidate")
+        );
     });
 
     socket.on("peerJoin", () => {
       console.log("someone wants to join");
-      pc.createOffer({
-        offerToReceiveAudio: true,
-        offerToReceiveVideo: room.callType === "video",
-        iceRestart: true,
-      })
-        .then((sdp) => {
-          pc.setLocalDescription(sdp).catch((err) => {
-            pushNotification(getContent("connectionError"), "Error");
-            console.log(err);
-          });
-          socket.emit("offer", { sdp, room: room._id });
-          console.log("Offer Sent");
+      const pc = peerConnection.current;
+      if (pc) {
+        pc.createOffer({
+          offerToReceiveAudio: true,
+          offerToReceiveVideo: room.callType === "video",
+          iceRestart: true,
         })
-        .catch((err) => {
-          console.log("------");
-          console.log("error sending offer");
-          console.log(err);
-          console.log("--------");
-        });
+          .then((sdp) => {
+            pc.setLocalDescription(sdp).catch((err) => {
+              pushNotification(getContent("connectionError"), "Error");
+              console.error(err);
+            });
+            socket.emit("offer", { sdp, room: room._id });
+            console.log("Offer Sent");
+          })
+          .catch((err) => {
+            console.log("------");
+            console.log("error sending offer");
+            console.error(err);
+            console.log("--------");
+          });
+      }
       console.log("Someone Joined");
     });
 
     socket.on("getOffer", (sdp) => {
       console.log("Offer recieved");
-      pc.setRemoteDescription(sdp)
-        .then(() => {
-          console.log("Set Remote Description");
-          pc.createAnswer()
-            .then((sdp1) => {
-              console.log("answer created");
-              pc.setLocalDescription(sdp1).catch((err) => {
-                pushNotification(getContent("connectionError"), "Error");
-                console.log(err);
+      const pc = peerConnection.current;
+      if (pc) {
+        pc.setRemoteDescription(sdp)
+          .then(() => {
+            console.log("Set Remote Description");
+            pc.createAnswer()
+              .then((sdp1) => {
+                console.log("answer created");
+                pc.setLocalDescription(sdp1).catch((err) => {
+                  pushNotification(getContent("connectionError"), "Error");
+                  console.error(err);
+                });
+                socket.emit("answer", { sdp: sdp1, room: room._id });
+                console.log("answer Sent");
+              })
+              .catch((err) => {
+                console.log("-------");
+                console.log("error Sending answer");
+                console.error(err);
+                console.log("--------");
               });
-              socket.emit("answer", { sdp: sdp1, room: room._id });
-              console.log("answer Sent");
-            })
-            .catch((err) => {
-              console.log("-------");
-              console.log("error Sending answer");
-              console.log(err);
-              console.log("--------");
-            });
-        })
-        .catch((err) => {
-          pushNotification(getContent("connectionError"), "Error");
-          console.log(err);
-        });
+          })
+          .catch((err) => {
+            pushNotification(getContent("connectionError"), "Error");
+            console.error(err);
+          });
+      }
     });
 
     socket.on("getAnswer", (sdp) => {
       console.log("got Answer");
-      pc.setRemoteDescription(sdp).catch((err) => {
-        pushNotification(getContent("connectionError"), "Error");
-        console.log(err);
-      });
+      const pc = peerConnection.current;
+      if (pc) {
+        pc.setRemoteDescription(sdp).catch((err) => {
+          pushNotification(getContent("connectionError"), "Error");
+          console.error(err);
+        });
+      }
     });
 
-    console.log("sending Im here");
-    socket.emit("peerJoin", room._id);
+    socket.on("peerLeft", () => {
+      console.log("peer Left");
+      newPc();
+    });
 
     return () => {
-      pc.close();
       socket.off("getCandidate");
       socket.off("peerJoin");
       socket.off("getOffer");
       socket.off("getAnswer");
-      socket.emit("leaveCall", room._id);
-      stream?.getTracks().forEach((track) => track.stop());
+      socket.off("peerLeft");
     };
-  }, [getContent, pushNotification, room._id, room.callType, socket]);
+  }, [getContent, newPc, pushNotification, room._id, room.callType, socket]);
+
+  useEffect(() => {
+    return () => {
+      socket.emit("leaveCall", room._id);
+    };
+  }, [room._id, socket]);
 
   if (room.callType === "video")
     return (

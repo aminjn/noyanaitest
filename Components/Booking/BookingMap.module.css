@@ -1,0 +1,34 @@
+.container {
+  height: 95dvh;
+  position: sticky !important;
+  top: 2.5dvh;
+  width: 17rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 17rem;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.expanded {
+  max-width: 100dvw;
+  width: 100%;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+}
+
+.fly {
+  position: absolute;
+  inset-inline-start: 0.5rem;
+  inset-block-end: 0.5rem;
+  z-index: 1;
+}
+
+.expand {
+  width: 11rem;
+  margin-inline: auto;
+}

@@ -7,6 +7,7 @@ import LoadingIcon from "../Icons/LoadingIcon";
 export const buttonVariants = [
   "Primary",
   "Neutral",
+  "NeutralStroke",
   "PrimaryStroke",
   "Naked",
   "Black",

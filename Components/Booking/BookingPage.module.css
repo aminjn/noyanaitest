@@ -1,13 +1,28 @@
+.container {
+  display: flex;
+  gap: 3.5rem;
+  position: relative;
+}
+
 .main {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
+  max-width: 100dvw;
+  transition: all var(--transTime) ease-in-out;
+  overflow: hidden;
+}
+
+.shrunk {
+  max-width: 0;
 }
 
 .list {
   display: flex;
   flex-direction: column;
   gap: 5rem;
+  /* TODO: remove this */
+  min-height: 200dvh;
 }
 
 .list {

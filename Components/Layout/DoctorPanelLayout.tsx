@@ -14,16 +14,14 @@ import RemoteBreadCrump from "../UI/RemoteBreadCrump";
 import DoctorSidebar from "./DoctorSidebar";
 import { LicenseManager } from "ag-grid-enterprise";
 import PanelLayout from "./PanelLayout";
+import useDoctor from "../Hooks/useDoctor";
 
 const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
-  const { data, isLoading } = useSWR<IDoctorProfile | null>(
-    `${API}/doctor`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
-  );
+  const { doctor, isLoading } = useDoctor();
 
   return (
     <HandleLoading data={!isLoading}>
-      {data ? (
+      {doctor ? (
         <PanelLayout sidebar={<DoctorSidebar />}>{children}</PanelLayout>
       ) : (
         <BecomeADoctorPage />

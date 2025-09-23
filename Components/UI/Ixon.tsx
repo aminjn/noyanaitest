@@ -7,7 +7,10 @@ const Ixon = ({
   className = "",
   style = {},
   children,
-}: WithStyleProps<{ width?: string; children?: ReactNode }>) => {
+}: WithStyleProps<{
+  width?: string;
+  children?: ReactNode;
+}>) => {
   return (
     <span
       style={{ width, height: width, ...style }}

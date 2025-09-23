@@ -8,6 +8,8 @@ import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import useLocale from "../Hooks/useLocale";
 import DoctorCardWithSessions from "./DoctorCardWithSessions";
+import BookingMap from "./BookingMap";
+import { useState } from "react";
 
 const BookingPage = () => {
   const { data, error } = useSWR<
@@ -16,18 +18,25 @@ const BookingPage = () => {
     fetcher({ url }).then((res) => res.data)
   );
 
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   const getContent = useLocale();
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <div className={classes.main}>
-          <h1>{getContent("booking")}</h1>
-          <ul className={classes.list}>
-            {data.map((doc) => (
-              <DoctorCardWithSessions key={doc._id} node={doc} />
-            ))}
-          </ul>
+        <div className={classes.container}>
+          <div
+            className={`${classes.main} ${isExpanded ? classes.shrunk : ""}`}
+          >
+            <h1>{getContent("booking")}</h1>
+            <ul className={classes.list}>
+              {data.map((doc) => (
+                <DoctorCardWithSessions key={doc._id} node={doc} />
+              ))}
+            </ul>
+          </div>
+          <BookingMap expanded={isExpanded} setExpanded={setIsExpanded} />
         </div>
       )}
     </HandleLoading>

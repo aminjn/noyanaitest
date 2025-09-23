@@ -46,6 +46,12 @@ const DoctorSidebar = () => {
     () => [
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
+        title: "profile",
+        icon: <DashboardIcon />,
+        target: "profile",
+        show: true,
+      },
+      {
         title: "financialMangement",
         icon: <WalletIcon />,
         target: "finance",

@@ -1,0 +1,9 @@
+.main {
+  width: calc(100% - 0.5rem);
+  margin-inline: auto;
+  background-color: var(--white);
+  box-shadow: var(--shadow);
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}

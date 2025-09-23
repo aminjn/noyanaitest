@@ -199,6 +199,13 @@ const contentKeys = [
   "pleaseProvideAccessToMedia",
   "yourDevicenotSupportingRequiredMedia",
   "connectionError",
+  "profile",
+  "location",
+  "mapIsNotReady",
+  "yourDeviceNotSupportingGPS",
+  "somethingWentWrongAcquiringYourLocation",
+  "missingLocationErrorMessage",
+  "searchByMap",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

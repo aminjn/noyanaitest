@@ -20,6 +20,8 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import DoctorProfilePhoneConsultTab from "./DoctorProfilePhoneConsultTab";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import List from "../UI/List";
+import DashboardIcon from "@/Components/Icons/DashboardIcon";
+import DoctorProfileLocationTab from "./DoctorProfileLocationTab";
 
 const AdminManageDoctorProfilePage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -54,6 +56,14 @@ const AdminManageDoctorProfilePage = () => {
                 title: "جزئیات",
                 content: <DoctorProfileInfoTab node={data} mutate={mutate} />,
                 icon: <InfoIcon />,
+              },
+              {
+                id: "Laoction",
+                title: "لوکیشن",
+                content: (
+                  <DoctorProfileLocationTab mutate={mutate} node={data} />
+                ),
+                icon: <DashboardIcon />,
               },
               ...(hasAccess("Sepciality", "readAll")
                 ? [

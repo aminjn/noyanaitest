@@ -111,6 +111,7 @@ export interface IDoctorProfile<
   order: number;
   avatar?: string;
   slug?: string;
+  location?: { type: "Point"; coordinates: [number, number] };
 }
 
 type PhoneConsultSettingsPopulation = { DoctorPopulated?: boolean };
