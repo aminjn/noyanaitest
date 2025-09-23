@@ -32,10 +32,10 @@ const useMap = ({
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
-    //TODO: change url and put it in env after moving behind cdn
+    //TODO: maybe put url in env
     const map = new mlgl.Map({
       container: containerRef.current,
-      style: "http://188.121.100.22:8080/styles/custom/style.json",
+      style: "https://map.noyanai.com/styles/custom/style.json",
       center: initialCenter,
       maxBounds: [
         [44.0, 24.0],
