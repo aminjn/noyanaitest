@@ -1,13 +1,6 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import mlgl, { LngLat } from "maplibre-gl";
-import {
-  MutableRefObject,
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import useNotification from "./useNotification";
 import useLocale from "./useLocale";
 
@@ -33,6 +26,10 @@ const useMap = ({
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
     //TODO: maybe put url in env
+    mlgl.setRTLTextPlugin(
+      "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
+      true
+    );
     const map = new mlgl.Map({
       container: containerRef.current,
       style: "https://map.noyanai.com/styles/custom/style.json",
