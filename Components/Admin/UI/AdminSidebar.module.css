@@ -10,6 +10,8 @@
   flex-shrink: 0;
   height: fit-content;
   box-shadow: var(--shadow);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
 }
 
 .linksContainer {

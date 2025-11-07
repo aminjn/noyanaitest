@@ -17,3 +17,5 @@ if (!_adminKey) throw new Error("Please Set 'ADMIN_KEY' in .env.local");
 export const adminKey = _adminKey;
 
 export const FILE_PATH = "http://127.0.0.1/files";
+
+export const DoctorsPerPage = 25;

@@ -1,0 +1,37 @@
+.main {
+  width: min(90dvw, 20rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.imageBox {
+  position: relative;
+  width: fit-content;
+  margin-inline: auto;
+}
+
+.image {
+  width: 10rem;
+  height: 10rem;
+  color: var(--primary);
+  position: relative;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.imageInputBox {
+  position: absolute;
+  bottom: 0;
+  inset-inline-end: 0;
+  width: 3rem;
+  height: 3rem;
+}
+
+.imageInput {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+}

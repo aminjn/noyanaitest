@@ -13,7 +13,7 @@ import useLocale from "@/Components/Hooks/useLocale";
 import Link from "next/link";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import useProgress from "@/Components/Hooks/useProgress";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { getSessionDateKey } from "@/Components/helpers/lib";
 
 export type BookingPopulation = Population<{
@@ -67,13 +67,15 @@ const DoctorCalendarDay = ({
   stamp,
   onSelect,
   selected,
+  isOut,
 }: {
+  isOut: boolean;
   stamp: Date;
   selected?: boolean;
   onSelect: () => void;
 }) => {
   const { data } = useSWR<IDoctorSession<{ Booking: Record<string, never> }>[]>(
-    `${API}/doctor/calendar/${getSessionDateKey(stamp)}`,
+    isOut ? null : `${API}/doctor/calendar/${getSessionDateKey(stamp)}`,
     (url: string) => fetcher({ url }).then((res) => res.data)
   );
 
@@ -89,21 +91,25 @@ const DoctorCalendarDay = ({
 
   return (
     <div
-      className={`${classes.main} ${past ? classes.past : ""}`}
+      className={`${classes.main} ${isOut ? classes.out : ""} ${
+        past ? classes.past : ""
+      }`}
       onClick={() => {
-        if (past) return;
+        if (past || isOut) return;
         onSelect();
       }}
     >
-      <span
-        className={`${classes.checkBox} ${selected ? classes.selected : ""}`}
-      >
-        {selected && (
-          <Ixon width=".875rem">
-            <CheckIcon />
-          </Ixon>
-        )}
-      </span>
+      {!isOut && (
+        <span
+          className={`${classes.checkBox} ${selected ? classes.selected : ""}`}
+        >
+          {selected && (
+            <Ixon width=".875rem">
+              <CheckIcon />
+            </Ixon>
+          )}
+        </span>
+      )}
       <div className={classes.info}>
         <span className={classes.stamp}>
           {new Date(stamp).toLocaleDateString("fa-IR", {
@@ -111,42 +117,50 @@ const DoctorCalendarDay = ({
             day: "numeric",
           })}
         </span>
-        <span className={classes.pair}>
-          <span className={classes.pairTitle}>
-            {getContent("availableSessionsCount")}
-          </span>
-          <span>{data?.filter((el) => !el.booking).length}</span>
-        </span>
-        <span className={classes.pair}>
-          <span className={classes.pairTitle}>
-            {getContent("reservedSessionsCount")}
-          </span>
-          <span>{data?.filter((el) => !!el.booking).length}</span>
-        </span>
+        {!isOut && (
+          <Fragment>
+            <span className={classes.pair}>
+              <span className={classes.pairTitle}>
+                {getContent("availableSessionsCount")}
+              </span>
+              <span>{data?.filter((el) => !el.booking).length}</span>
+            </span>
+            <span className={classes.pair}>
+              <span className={classes.pairTitle}>
+                {getContent("reservedSessionsCount")}
+              </span>
+              <span>{data?.filter((el) => !!el.booking).length}</span>
+            </span>
+          </Fragment>
+        )}
       </div>
-      <Link
-        href={`/doctorpanel/calendar/${stamp.getTime()}`}
-        className={classes.link}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.nativeEvent.stopImmediatePropagation();
-          e.nativeEvent.stopPropagation();
-          push(`/doctorpanel/calendar/${stamp.getTime()}`);
-        }}
-      >
-        <Ixon width=".875rem">
-          <EyeIcon />
-        </Ixon>
-      </Link>
-      <div className={classes.tooltip}>
-        {doctorSessionTypes.map((kind) => (
-          <div key={kind} className={classes.tooltipPair}>
-            <span>{getContent(kind)}</span>
-            <span>{data?.filter((el) => !!el[kind]).length}</span>
+      {!isOut && (
+        <Fragment>
+          <Link
+            href={`/doctorpanel/calendar/${stamp.getTime()}`}
+            className={classes.link}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
+              e.nativeEvent.stopPropagation();
+              push(`/doctorpanel/calendar/${stamp.getTime()}`);
+            }}
+          >
+            <Ixon width=".875rem">
+              <EyeIcon />
+            </Ixon>
+          </Link>
+          <div className={classes.tooltip}>
+            {doctorSessionTypes.map((kind) => (
+              <div key={kind} className={classes.tooltipPair}>
+                <span>{getContent(kind)}</span>
+                <span>{data?.filter((el) => !!el[kind]).length}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </Fragment>
+      )}
     </div>
   );
 };

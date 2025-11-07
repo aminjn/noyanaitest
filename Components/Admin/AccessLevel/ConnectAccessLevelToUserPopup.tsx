@@ -36,14 +36,14 @@ const ConnectAccessLevelToUserPopup = ({
           ...(accessLevel
             ? {}
             : {
-                accessLevel: {
-                  type: "nodes",
-                  title: "سطح دسترسی",
-                  path: `${API}/auto/accesslevel`,
-                  getOptionLabel: (node) =>
-                    getAccessLevelLabel(node as IAccessLevel),
-                  getOptionValue: (node) => (node as IAccessLevel)._id,
-                },
+                  accessLevel: {
+                    type: "nodes",
+                    title: "سطح دسترسی",
+                    path: `${API}/auto/accesslevel`,
+                    getOptionLabel: (node) =>
+                      getAccessLevelLabel(node as IAccessLevel),
+                    getOptionValue: (node) => (node as IAccessLevel)._id,
+                  },
               }),
         }}
         hookProps={{

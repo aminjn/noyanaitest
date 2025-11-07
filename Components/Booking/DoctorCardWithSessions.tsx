@@ -20,8 +20,9 @@ import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import AuthPopup from "../Popups/AuthPopup";
 import SelectSessionToReservePopup from "./SelectSessionToReservePopup";
+import CardWithSession from "./CardWithSession";
 
-const Sessions = ({ node }: { node: IDoctorProfile }) => {
+export const Sessions = ({ node }: { node: IDoctorProfile }) => {
   const { data, error } = useSWR<{ count: number; _id: string }[]>(
     `${API}/public/doctor/${node._id}/week`,
     (url: string) => fetcher({ url }).then((res) => res.data)
@@ -116,75 +117,15 @@ const DoctorCardWithSessions = ({
   const getContent = useLocale();
 
   return (
-    <li className={classes.main}>
-      <div className={classes.avatar}>
-        <Image
-          alt={getDoctorProfileLabel(node)}
-          src={imagePath(node.avatar)}
-          fill
-          sizes="10rem"
-          style={{ objectFit: "cover" }}
-        />
-      </div>
-      <div className={classes.details}>
-        <div className={classes.header}>
-          <h2 className={classes.name}>
-            <Link href={`/doctor/${node.slug || node._id}`}>
-              {getDoctorProfileLabel(node)}
-            </Link>
-          </h2>
-          {
-            //TODO: calculate this
-          }
-          <div className={classes.recommendation}>
-            <Ixon width="1rem" className={classes.thumbsUp}>
-              <HandThumUpIcon />
-            </Ixon>
-            <span>98% {getContent("usersSuggestionRate")}</span>
-          </div>
-        </div>
-        <div className={classes.second}>
-          {node.mainSpeciality && (
-            <Link
-              href={`/speciality/${
-                node.mainSpeciality.slug || node.mainSpeciality._id
-              }`}
-              className={classes.speciality}
-            >
-              {node.mainSpeciality.name}
-            </Link>
-          )}
-          <span className={classes.successRate}>
-            <Ixon width=".875rem">
-              <CheckCircleIcon />
-            </Ixon>
-            <span>23490 {getContent("succeededAppointmentsCount")}</span>
-          </span>
-        </div>
-        <div className={classes.rating}>
-          <Ixon width="1rem" className={classes.star}>
-            <StarIcon />
-          </Ixon>
-          {
-            //TODO: calculate this
-          }
-          <span className={classes.ratingValue}>4.86</span>
-          <span className={classes.commentCount}>
-            85 {getContent("commentCount")}
-          </span>
-        </div>
-        {!!node.address && (
-          <div className={classes.address}>
-            <Ixon width="1rem">
-              <LocationIcon />
-            </Ixon>
-            <p>{node.address}</p>
-          </div>
-        )}
-        <p className={classes.summary}>{node.introduction}</p>
-      </div>
-      <Sessions node={node} />
-    </li>
+    <CardWithSession
+      name={getDoctorProfileLabel(node)}
+      image={node.avatar}
+      speciality={node.mainSpeciality}
+      target={`/dr/${node.slug || node._id}`}
+      address={node.address}
+      description={node.introduction}
+      doctorProfile={node}
+    />
   );
 };
 

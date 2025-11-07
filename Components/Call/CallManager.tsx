@@ -19,7 +19,7 @@ const CallManager = () => {
     };
   }, [setPopup, socket]);
 
-  return <p>CallManager</p>;
+  return null;
 };
 
 export default CallManager;

@@ -1,0 +1,249 @@
+.main {
+  display: flex;
+  gap: 1.5rem;
+  padding-block: 2.5rem 2rem;
+  position: relative;
+}
+
+.main::before {
+  position: absolute;
+  height: 100%;
+  width: 100dvw;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  content: "";
+  z-index: -1;
+  background-color: var(--yellowLight);
+}
+
+.details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.identity {
+  display: flex;
+  gap: 1.75rem;
+  align-items: center;
+  margin-bottom: 3.25rem;
+}
+
+.image {
+  flex-shrink: 0;
+  position: relative;
+  width: 5.375rem;
+  height: 5.375rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.identityDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.identityHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  color: var(--gray13);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.successRate {
+  padding-block: 0.3125rem;
+  padding-inline: 0.75rem 1rem;
+  border-radius: 100dvw;
+  color: var(--success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  background-color: var(--successT1);
+}
+
+.identityMiddle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.speciality {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.succeededSessions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray13);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.topReview {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  background-color: var(--gray2);
+  padding-block: 2rem;
+  padding-inline: 1.5rem 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2.4rem;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  padding-inline-end: 1rem;
+  border-inline-end: 0.5px solid var(--gray6);
+}
+
+.scoreValue {
+  color: var(--gray13);
+  font-size: 2.375rem;
+  font-weight: 400;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  color: var(--warning);
+}
+
+.reviewCount {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--gray13);
+  white-space: nowrap;
+}
+
+.reviewContent {
+  text-align: justify;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--gray10);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.reviewText {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.allComments {
+  margin-inline-start: auto;
+  margin-block-start: auto;
+  color: var(--secondary);
+  text-decoration: underline;
+}
+
+.navs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 0.5rem;
+  margin-bottom: 3.125rem;
+}
+
+.nav {
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--gray8);
+}
+
+.activeNav {
+  text-decoration: underline;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.75rem;
+}
+
+.point {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pointHeader {
+  color: var(--gray13);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray13);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.pointDescription {
+  color: var(--gray8);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 1.5rem;
+  padding-block: 2.25rem;
+  border-radius: 1rem;
+  border-inline-start: 4px solid var(--primary);
+  background-color: var(--primary1);
+}
+
+.noticeHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--gray13);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.noticeText {
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.noticeText:not(:last-child) {
+  margin-bottom: 1rem;
+}

@@ -5,7 +5,7 @@ import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 
-const DropDoctorsPoppup = () => {
+const DropDoctorsPoppup = ({ node }: { node: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
   return (
@@ -13,10 +13,10 @@ const DropDoctorsPoppup = () => {
       <ConfirmationPopup
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
-        message="آیا از انداختن پزشکان مطمئنید؟"
+        message={`Drop ${node}s?`}
       />
       <Act
-        path={isLoading ? `${API}/migrate/doctor` : null}
+        path={isLoading ? `${API}/migrate/${node}` : null}
         method="PUT"
         onDone={(status) => {
           setIsLoading(false);

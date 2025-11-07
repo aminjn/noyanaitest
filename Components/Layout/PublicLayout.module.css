@@ -3,4 +3,6 @@
   margin-inline: auto;
   padding-inline: min(5dvw, 5rem);
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }

@@ -122,6 +122,7 @@ const Table = <T,>({
         tooltipShowDelay={500}
         defaultColDef={defaultColDef}
         pagination
+        suppressScrollOnNewData
       />
     </div>
   );

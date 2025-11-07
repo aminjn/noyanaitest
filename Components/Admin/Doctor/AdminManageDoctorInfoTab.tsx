@@ -49,6 +49,8 @@ const AdminManageDoctorInfoTab = ({
           options: cityOptions(form.input.province || node.province),
           title: "شهر",
         },
+        lat: { type: "number", title: "عرض" },
+        lng: { type: "number", title: "طول" },
         site: { type: "text", title: "سایت" },
         telegram: { type: "text", title: "تلگرام" },
         twitter: { type: "text", title: "توییتر" },

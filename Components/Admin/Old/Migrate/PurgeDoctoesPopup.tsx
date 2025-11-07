@@ -5,18 +5,18 @@ import ConfirmationPopup from "../../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 
-const PurgeDoctorsPopup = () => {
+const PurgeDoctorsPopup = ({ node }: { node: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
   return (
     <Fragment>
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
-        message="ایا از قطع اتصال پزشکان ساخته شده جدید با دیتابیس قدیم مطمئنید؟"
+        message={`Purge ${node}?`}
         isLoading={isLoading}
       />
       <Act
-        path={isLoading ? `${API}/migrate/doctor` : null}
+        path={isLoading ? `${API}/migrate/${node}` : null}
         method="PATCH"
         onDone={(status) => {
           setIsLoading(false);

@@ -21,8 +21,6 @@ const DoctorManageLocationTab = () => {
 
   const getContent = useLocale();
 
-  const markerRef = useRef<HTMLDivElement>(null);
-
   const pushNotification = useNotification();
 
   const [isLoading, setIsLoading] = useState<{
@@ -40,9 +38,9 @@ const DoctorManageLocationTab = () => {
       <div className={classes.main} ref={containerRef}>
         {ready ? (
           <Fragment>
-            {doctor?.location && (
+            {doctor?.location?.coordinates && (
               <MapMarker
-              variant="active"
+                variant="active"
                 lat={doctor.location.coordinates[1]}
                 lng={doctor.location.coordinates[0]}
                 map={map}
@@ -53,13 +51,6 @@ const DoctorManageLocationTab = () => {
             )}
           </Fragment>
         ) : null}
-        <div style={{ display: "none" }}>
-          <div className={classes.marker} ref={markerRef}>
-            <Ixon width="2rem" className={classes.markerIcon}>
-              <LocationIcon />
-            </Ixon>
-          </div>
-        </div>
       </div>
       <FormActions>
         <Button

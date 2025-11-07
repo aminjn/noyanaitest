@@ -20,7 +20,7 @@ const BreadCrump = ({
   const { hours, minutes } = useTime();
   return (
     <div className={`${classes.main} ${className}`} style={style}>
-      <nav>
+      <nav className={classes.nav} >
         {trail.map((segment, i, arr) => (
           <Fragment key={segment.target}>
             <Link href={segment.target} className={classes.link}>

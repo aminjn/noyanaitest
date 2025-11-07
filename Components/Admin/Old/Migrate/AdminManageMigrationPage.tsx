@@ -12,6 +12,16 @@ import InfoIcon from "@/Components/Icons/InfoIcon";
 import PurgeDoctorsPopup from "./PurgeDoctoesPopup";
 import DeleteAllDoctorsPopup from "./DeleteAllDoctorsPopup";
 
+const nodes = [
+  "doctor",
+  "blog",
+  "disease",
+  "drug",
+  "speciality",
+  "symptom",
+  "part",
+] as const;
+
 const AdminManageMigrationPage = () => {
   const { setPopup } = usePopup();
 
@@ -20,41 +30,41 @@ const AdminManageMigrationPage = () => {
       <TabSystem
         name="AdminManageMigration"
         items={[
-          {
+          ...nodes.map((node) => ({
             icon: <InfoIcon />,
-            id: "Doctors",
+            id: node,
             content: (
               <List>
                 <Button
                   onClick={() =>
-                    setPopup("ImportDoctors", <ImportDoctorsPopup />)
+                    setPopup(
+                      `import${node}`,
+                      <ImportDoctorsPopup node={node} />
+                    )
                   }
-                >
-                  ساخت پزشکان قدیم
-                </Button>
-                <Button
-                  onClick={() => setPopup("DropDoctors", <DropDoctorsPoppup />)}
-                >
-                  انداختن پزشکان جدید
-                </Button>
+                >{`import ${node}s`}</Button>
                 <Button
                   onClick={() =>
-                    setPopup("PurgeDoctors", <PurgeDoctorsPopup />)
+                    setPopup(`drop${node}`, <DropDoctorsPoppup node={node} />)
                   }
-                >
-                  پاکسازی پزشکان
-                </Button>
+                >{`drop ${node}s`}</Button>
                 <Button
                   onClick={() =>
-                    setPopup("DeleteAllDoctors", <DeleteAllDoctorsPopup />)
+                    setPopup(`Purge${node}`, <PurgeDoctorsPopup node={node} />)
                   }
-                >
-                  انداختن کل پزشکان
-                </Button>
+                >{`Purge ${node}s`}</Button>
+                <Button
+                  onClick={() =>
+                    setPopup(
+                      `dropAll${node}`,
+                      <DeleteAllDoctorsPopup node={node} />
+                    )
+                  }
+                >{`Drop All ${node}s`}</Button>
               </List>
             ),
-            title: "پزشکان",
-          },
+            title: node,
+          })),
         ]}
       />
     </Box>

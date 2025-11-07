@@ -179,7 +179,7 @@ const InnerChat = ({
         <div className={classes.image}>
           <Image
             src={imagePath("")}
-            alt={other?.userName || getContent("chat")}
+            alt={other?.username || getContent("chat")}
             fill
             sizes="6rem"
             style={{ objectFit: "cover" }}
@@ -187,7 +187,7 @@ const InnerChat = ({
         </div>
         <div className={classes.details}>
           <span className={classes.name}>
-            {other?.userName || getContent("chat")}
+            {other?.username || getContent("chat")}
           </span>
           <FormatDate className={classes.date} value={chat.createdAt} />
         </div>

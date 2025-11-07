@@ -51,6 +51,7 @@ const DoctorSidebar = () => {
         target: "profile",
         show: true,
       },
+      { title: "office", icon: <BuildingIcon />, target: "office", show: true },
       {
         title: "financialMangement",
         icon: <WalletIcon />,

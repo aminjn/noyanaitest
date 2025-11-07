@@ -1,0 +1,52 @@
+.main {
+  background-color: var(--white);
+  border-radius: 1rem;
+  padding-block-start: 1rem;
+  padding-block-end: 1.5rem;
+  padding-inline: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 24rem;
+  border: 1px solid var(--gray5);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  margin-inline-end: auto;
+  color: var(--gray13);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--gray2);
+  gap: 1rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  color: var(--gray8);
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.value {
+  color: var(--gray13);
+  font-size: 0.875rem;
+  font-weight: 400;
+  direction: ltr;
+}

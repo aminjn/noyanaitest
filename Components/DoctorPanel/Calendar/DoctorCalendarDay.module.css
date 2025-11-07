@@ -1,6 +1,5 @@
 .main {
   height: 10rem;
-  width: 100%;
   padding-inline: 0.5rem;
   padding-block: 0.75rem;
   display: flex;
@@ -124,6 +123,10 @@
 
 .past > .checkBox {
   background-color: var(--gray6);
+}
+
+.out {
+  background-color: var(--gray3);
 }
 
 @keyframes reveal {

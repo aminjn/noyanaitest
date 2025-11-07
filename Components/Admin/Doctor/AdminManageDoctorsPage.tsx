@@ -6,7 +6,10 @@ import { API } from "@/Components/config";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { findProvince, Province } from "@/Components/Enums/Provinces";
 import { City, findCity } from "@/Components/Enums/Cities";
-import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
+import {
+  ISpeciality,
+  SpecialityPopulation,
+} from "../Speciality/AdminManageSpecialitiesPage";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
@@ -24,11 +27,12 @@ import DeleteDoctorPopup from "./DeleteDoctorPopup";
 import WithTitle from "../UI/WithTitle";
 import CreateDoctorPopup from "./CreateDoctorPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { Population } from "../Clinic/AdminManageClinicsPage";
 
-export type DoctorPopulation = {
-  SpecialityPopulated?: boolean;
-  SpecialitiesPopulated?: boolean;
-};
+export type DoctorPopulation = Population<{
+  SpecialityPopulated?: SpecialityPopulation;
+  SpecialitiesPopulated?: SpecialityPopulation;
+}>;
 
 export interface IDoctor<T extends DoctorPopulation = DoctorPopulation>
   extends MongoDoc {
@@ -58,9 +62,11 @@ export interface IDoctor<T extends DoctorPopulation = DoctorPopulation>
   youtube?: string;
   aparat?: string;
   linkedin?: string;
-  speciality?: T["SpecialityPopulated"] extends true ? ISpeciality : string;
-  specialities?: T["SpecialitiesPopulated"] extends true
-    ? ISpeciality[]
+  speciality?: T["SpecialityPopulated"] extends SpecialityPopulation
+    ? ISpeciality<T["SpecialityPopulated"]>
+    : string;
+  specialities?: T["SpecialitiesPopulated"] extends SpecialityPopulation
+    ? ISpeciality<T["SpecialitiesPopulated"]>[]
     : string[];
 }
 

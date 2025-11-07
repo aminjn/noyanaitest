@@ -74,10 +74,14 @@ const RTFEditor = forwardRef<
     withVoid(withHistory(withReact(createEditor())))
   );
 
-  const init = useMemo<Descendant[]>(
-    () => (defaultValue ? JSON.parse(defaultValue) : inititalValue),
-    [defaultValue]
-  );
+  const init = useMemo<Descendant[]>(() => {
+    if (defaultValue) {
+      try {
+        return JSON.parse(defaultValue);
+      } catch {}
+    }
+    return inititalValue;
+  }, [defaultValue]);
 
   useImperativeHandle(ref, () => editor, [editor]);
 

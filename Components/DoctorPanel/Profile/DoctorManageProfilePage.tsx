@@ -6,6 +6,10 @@ import useDoctor from "@/Components/Hooks/useDoctor";
 import useLocale from "@/Components/Hooks/useLocale";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import DoctorManageLocationTab from "./DoctorManageLocationTab";
+import DoctorManageGalleryTab from "./DoctorManageGalleryTab";
+import DoctorManageDetailsTab from "./DoctorManageDetailstab";
+import DoctorManageSocialMediaTab from "./DoctorManageSocialMediaTab";
+import DoctorManageFaqTab from "./DoctorManageFaqTab";
 
 const DoctorManageProfilePage = () => {
   const { doctor } = useDoctor();
@@ -17,9 +21,29 @@ const DoctorManageProfilePage = () => {
       <ClientTabSystem
         items={[
           {
+            id: "Details",
+            title: getContent("details"),
+            content: <DoctorManageDetailsTab />,
+          },
+          {
+            id: "Gallery",
+            content: <DoctorManageGalleryTab />,
+            title: getContent("gallery"),
+          },
+          {
             id: "Location",
             content: <DoctorManageLocationTab />,
             title: getContent("location"),
+          },
+          {
+            id: "Social",
+            content: <DoctorManageSocialMediaTab />,
+            title: getContent("socialMedias"),
+          },
+          {
+            id: "Faq",
+            content: <DoctorManageFaqTab />,
+            title: getContent("faqs"),
           },
         ]}
       />

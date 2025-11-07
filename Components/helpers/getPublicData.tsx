@@ -7,6 +7,7 @@ export const getPublicData = async <T,>(
   if (!response.ok) return;
   try {
     const data = await response.json();
+    // if (path.includes("doctor")) console.log(data);
     return data?.data as T;
   } catch {
     return;

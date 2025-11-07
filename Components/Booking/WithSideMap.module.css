@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  gap: 3.5rem;
+  position: relative;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: 100dvw;
+  transition: all var(--transTime) ease-in-out;
+  overflow: hidden;
+  flex: 1;
+}
+
+.shrunk {
+  max-width: 0;
+}

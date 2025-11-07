@@ -1,0 +1,48 @@
+.main {
+  padding-block: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.image {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-block: 2rem;
+  gap: 2rem;
+}
+
+.listBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.listTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--gray13);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

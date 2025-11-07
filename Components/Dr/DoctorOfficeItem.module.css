@@ -1,0 +1,18 @@
+.main {
+  display: flex;
+  align-items: center;
+  gap: 3.25rem;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 27.5rem;
+  width: 27.5rem;
+}
+
+.map {
+  flex: 1;
+  height: 19rem;
+}

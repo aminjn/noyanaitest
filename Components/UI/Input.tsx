@@ -14,6 +14,7 @@ const Input = forwardRef<
     max?: number;
     step?: number;
     autoFocuse?: boolean;
+    pattern?: string;
   }>
 >(
   (
@@ -29,12 +30,14 @@ const Input = forwardRef<
       title,
       type,
       autoFocuse,
+      pattern,
     },
     ref
   ) => {
     return (
       <div style={style} className={`${classes.main} ${className}`}>
         <input
+          pattern={pattern}
           className={classes.input}
           placeholder=""
           type={type}

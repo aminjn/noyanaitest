@@ -19,6 +19,8 @@ import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
 import StringListInput from "@/Components/UI/StringListInput";
 import useLocale from "@/Components/Hooks/useLocale";
 import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
+import RangeInput from "@/Components/UI/RangeInput";
+import FilesInput from "./FilesInput";
 
 export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
   [key in keyof Partial<TInput>]: (
@@ -28,7 +30,6 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
           | "number"
           | "bool"
           | "area"
-          | "range"
           | "date"
           | "image"
           | "rtf"
@@ -45,6 +46,14 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
         clearable?: boolean;
         dataParser?: (res: unknown) => unknown[];
       }
+    | {
+        type: "range";
+        min?: number;
+        max?: number;
+        step?: number;
+        markCount?: number;
+      }
+    | { type: "files"; getDefaultValue?: (node: TInput) => string[] }
   ) & {
     title: string;
   };
@@ -171,18 +180,35 @@ const CreateForm = <TInput,>({
             );
             break;
           case "range":
+            const value =
+              (input[key] as number) ||
+              (defaultValue?.[key] as number) ||
+              segment.min ||
+              0;
+            const min = segment.min || 0;
+            const max = segment.max || 100;
+            const step = segment.step || 1;
+            const totalMarks = Math.floor(
+              (max - min) / step / (segment.markCount || 1)
+            );
             content = (
-              <Input
+              <RangeInput
                 {...commons}
-                type="range"
-                min={0}
-                max={100}
-                step={1}
                 onChange={(e) =>
                   setInput((prev) => ({
                     ...prev,
-                    [key]: Number(e.target.value),
+                    [key]: Number(e[0]),
                   }))
+                }
+                values={[value]}
+                left={min}
+                right={value}
+                min={min}
+                max={max}
+                step={step}
+                thumb={() => value.toString()}
+                mark={(index) =>
+                  !(index % totalMarks) ? (min + index * step).toString() : ""
                 }
               />
             );
@@ -255,6 +281,18 @@ const CreateForm = <TInput,>({
               />
             );
             break;
+          case "files":
+            content = (
+              <FilesInput
+                {...commons}
+                defaultValue={
+                  defaultValue
+                    ? segment.getDefaultValue?.(defaultValue)
+                    : undefined
+                }
+                onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
+              />
+            );
         }
         return <Fragment key={key.toString()}>{content}</Fragment>;
       })}

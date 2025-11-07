@@ -32,6 +32,7 @@ const DoctorProfileInfoTab = ({
       renderer={{
         firstName: { type: "text", title: "نام" },
         lastName: { type: "text", title: "نام خانوادگی" },
+        slug: { type: "text", title: "اسلاگ" },
         medicalSystemCode: {
           type: "text",
           title: "کد نظام پزشکی",

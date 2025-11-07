@@ -46,6 +46,10 @@ const fetcherInner = async <TResult,>({
               body.append(key, value);
             } else if (value instanceof Date) {
               body.append(key, value.toString());
+            } else if (Array.isArray(value) && value[0] instanceof File) {
+              for (let i = 0; i < value.length; ++i) {
+                if (value[i] instanceof File) body.append(key, value[i]);
+              }
             } else {
               body.append(key, JSON.stringify(value));
             }

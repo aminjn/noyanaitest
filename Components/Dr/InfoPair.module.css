@@ -1,0 +1,20 @@
+.pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  display: flex;
+  gap: 0.5rem;
+  color: var(--gray13);
+  font-size: 1rem;
+  font-weight: 400;
+  align-items: center;
+}
+
+.value {
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 400;
+}

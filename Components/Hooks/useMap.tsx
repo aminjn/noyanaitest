@@ -4,6 +4,11 @@ import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import useNotification from "./useNotification";
 import useLocale from "./useLocale";
 
+mlgl.setRTLTextPlugin(
+  "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
+  true
+);
+
 const useMap = ({
   containerRef,
   center: initialCenter = [51.389, 35.689],
@@ -26,10 +31,6 @@ const useMap = ({
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
     //TODO: maybe put url in env
-    mlgl.setRTLTextPlugin(
-      "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
-      true
-    );
     const map = new mlgl.Map({
       container: containerRef.current,
       style: "https://map.noyanai.com/styles/custom/style.json",

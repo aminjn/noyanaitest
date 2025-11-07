@@ -15,16 +15,18 @@ const UserButton = () => {
 
   if (!!user)
     return (
-      <Button
-        className={classes.main}
-        variant="PrimaryStroke"
-        leadIcon={<UserSquareIcon />}
-        tailIcon={<ChevronIcon />}
-        iconWidth="1.25rem"
-        onClick={() => push("/dashboard")}
-      >
-        {user.phone}
-      </Button>
+      <div>
+        <Button
+          className={classes.main}
+          variant="PrimaryStroke"
+          leadIcon={<UserSquareIcon />}
+          tailIcon={<ChevronIcon />}
+          iconWidth="1.25rem"
+          onClick={() => push("/dashboard")}
+        >
+          {user.phone}
+        </Button>
+      </div>
     );
   return (
     <Button

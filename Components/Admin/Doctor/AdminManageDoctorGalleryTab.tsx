@@ -21,7 +21,7 @@ import DeleteGalleryItemPopup from "./DeleteGalleryItemPopup";
 import WithTitle from "../UI/WithTitle";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 
-type GalleryItemPopulation = { OwnerPopulated?: true };
+export type GalleryItemPopulation = { OwnerPopulated?: true };
 
 export interface IGalleryItem<
   TOwnerIsDoctor extends boolean | undefined = boolean | undefined,

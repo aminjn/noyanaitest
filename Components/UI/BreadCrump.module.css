@@ -2,14 +2,21 @@
   position: relative;
   display: flex;
   align-items: center;
-  color: var(--gray8);
+  gap: 0.75rem;
   font-size: 0.875rem;
   font-weight: 400;
-  gap: 0.75rem;
+  color: var(--gray8);
   z-index: 3;
   padding-block: 1rem;
   justify-content: space-between;
   background-color: red;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .main::before {

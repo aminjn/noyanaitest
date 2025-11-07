@@ -13,6 +13,8 @@ import Debugger from "./Debugger";
 import SipManager from "./SipManager";
 import VoiceManager from "./VoiceManager";
 import TelephonePopup from "./TelephonePopup";
+import FillIdentityPopup from "./FillIdentityPopup";
+import PodPopup from "./PodPopup";
 
 const AdminPage = () => {
   const { setPopup, closePopup } = usePopup();
@@ -96,6 +98,10 @@ const AdminPage = () => {
       <Button onClick={() => setPopup("Telephone", <TelephonePopup />)}>
         Telephone
       </Button>
+      <Button onClick={() => setPopup("Tity", <FillIdentityPopup />)}>
+        Tity
+      </Button>
+      <Button onClick={() => setPopup("Pod", <PodPopup />)}>Pod</Button>
     </Box>
   );
 };

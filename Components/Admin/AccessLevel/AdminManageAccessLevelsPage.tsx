@@ -68,6 +68,12 @@ export const accessLevelModels = [
   "Insurance",
   "Pharmacy",
   "CallRoom",
+  "Redirection",
+  "ShortLink",
+  "Disease",
+  "Drug",
+  "Symptom",
+  "Part",
 ] as const;
 
 export type AccessLevelModel = (typeof accessLevelModels)[number];
@@ -97,6 +103,12 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   Insurance: "بیمه",
   Pharmacy: "داروخانه و آزمایشگاه",
   CallRoom: "تماس",
+  ShortLink: "لینک کوتاه",
+  Redirection: "انتقالات",
+  Disease: "بیماری",
+  Drug: "دارو",
+  Symptom: "علائم",
+  Part: "اعضای بدن",
 };
 
 type AccessLevelPopuplation = { AdminsPopulated?: UserAccessLevelPopulation };

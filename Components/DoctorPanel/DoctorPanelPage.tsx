@@ -1,12 +1,26 @@
 "use client";
 
-import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
+import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
+import {
+  GalleryItemPopulation,
+  IGalleryItem,
+} from "../Admin/Doctor/AdminManageDoctorGalleryTab";
+import {
+  ISpeciality,
+  SpecialityPopulation,
+} from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { City } from "../Enums/Cities";
 import { Province } from "../Enums/Provinces";
 import useBreadCrump from "../Hooks/useBreadCrump";
 import useLocale from "../Hooks/useLocale";
-import { IUser, MongoDoc } from "../Hooks/useUser";
+import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
+import { IMcCode, McCodepopulation } from "./BecomeADoctorPage";
 import classes from "./DoctorPanelPage.module.css";
+import { IOffice, OfficePopulation } from "./Office/DoctorManageOfficesPage";
+import {
+  DoctorSocialMediaPopulation,
+  IDoctorSocialMedia,
+} from "./Profile/DoctorManageSocialMediaTab";
 
 export const genders = ["male", "female"] as const;
 
@@ -71,26 +85,33 @@ export interface IBecomeDoctorRequest<
   status: BecomeANodeStatus;
 }
 
-export type DoctorProfilePopulation = {
-  UserPopulated?: boolean;
-  SpecialitiesPopulated?: boolean;
-  MainSpecialityPopulated?: boolean;
-  PhoneConsultSettingsPopulated?: boolean;
-};
+export type DoctorProfilePopulation = Population<{
+  UserPopulated: UserPopulation;
+  SpecialitiesPopulated?: SpecialityPopulation;
+  MainSpecialityPopulated?: SpecialityPopulation;
+  PhoneConsultSettingsPopulated?: PhoneConsultSettingsPopulation;
+  Mc: McCodepopulation;
+  Gallery: GalleryItemPopulation;
+  Offices: OfficePopulation;
+  Socials: DoctorSocialMediaPopulation;
+}>;
 
 export interface IDoctorProfile<
   T extends DoctorProfilePopulation = DoctorProfilePopulation
 > extends MongoDoc {
-  user?: T["UserPopulated"] extends true ? IUser : string;
+  user?: T["UserPopulated"] extends UserPopulation
+    ? IUser<T["UserPopulated"]>
+    : string;
+  mcCode?: T["Mc"] extends McCodepopulation ? IMcCode<T["Mc"]> : string;
   firstName?: string;
   lastName?: string;
   ssid?: string;
   gender?: Gender;
-  mainSpeciality?: T["MainSpecialityPopulated"] extends true
-    ? ISpeciality
+  mainSpeciality?: T["MainSpecialityPopulated"] extends SpecialityPopulation
+    ? ISpeciality<T["MainSpecialityPopulated"]>
     : string;
-  specialities: T["SpecialitiesPopulated"] extends true
-    ? ISpeciality[]
+  specialities: T["SpecialitiesPopulated"] extends SpecialityPopulation
+    ? ISpeciality<T["SpecialitiesPopulated"]>[]
     : string[];
   medicalSystemTitle?: MedicalSystemTitle;
   medicalSystemCode?: string;
@@ -104,14 +125,23 @@ export interface IDoctorProfile<
   address?: string;
   lat?: number;
   lng?: number;
-  phoneConsultSettings?: T["PhoneConsultSettingsPopulated"] extends true
-    ? IPhoneConsultSettings | null
+  phoneConsultSettings?: T["PhoneConsultSettingsPopulated"] extends PhoneConsultSettingsPopulation
+    ? IPhoneConsultSettings<T["PhoneConsultSettingsPopulated"]> | null
     : void;
   active: boolean;
   order: number;
   avatar?: string;
   slug?: string;
   location?: { type: "Point"; coordinates: [number, number] };
+  gallery: T["Gallery"] extends GalleryItemPopulation
+    ? IGalleryItem<boolean, T["Gallery"]>[]
+    : never;
+  offices: T["Offices"] extends OfficePopulation
+    ? IOffice<T["Offices"]>[]
+    : never;
+  socials: T["Socials"] extends DoctorSocialMediaPopulation
+    ? IDoctorSocialMedia<T["Socials"]>[]
+    : never;
 }
 
 type PhoneConsultSettingsPopulation = { DoctorPopulated?: boolean };

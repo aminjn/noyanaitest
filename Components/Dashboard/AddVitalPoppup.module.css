@@ -1,0 +1,10 @@
+.main {
+  width: min(90dvw, 40rem);
+}
+
+.title {
+  color: var(--gray13);
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}

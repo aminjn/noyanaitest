@@ -20,8 +20,12 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteSpecialityPopup from "./DeletSpecialityPopup";
 import InlineLink from "../UI/InlineLink";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { Population } from "../Clinic/AdminManageClinicsPage";
 
-export interface ISpeciality extends MongoDoc {
+export type SpecialityPopulation = Population<Record<never, never>>;
+export interface ISpeciality<
+  T extends SpecialityPopulation = SpecialityPopulation
+> extends MongoDoc {
   name?: string;
   slug?: string;
   image?: string;
@@ -29,6 +33,8 @@ export interface ISpeciality extends MongoDoc {
   order: number;
   summary?: string;
   active: boolean;
+  doctorsCountWithMainSpeciality?: number;
+  doctorsCountWithSideSpeciality?: number;
 }
 
 const AdminManageSpecialitiesPage = () => {

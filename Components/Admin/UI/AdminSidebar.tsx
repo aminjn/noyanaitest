@@ -92,6 +92,12 @@ const linkMap: LinkMap = [
       { title: "بیمه", access: "Insurance", target: "insurance" },
       { title: "داروخانه و آزمایشگاه", access: "Pharmacy", target: "pharmacy" },
       { title: "تماس ها", access: "CallRoom", target: "callroom" },
+      { title: "لینک کوتاه", access: "ShortLink", target: "shortlink" },
+      { title: "انتقالات", access: "Redirection", target: "redirection" },
+      { title: "بیماری ها", access: "Disease", target: "disease" },
+      { title: "دارو ها", access: "Drug", target: "drug" },
+      { title: "علائم", access: "Symptom", target: "symptom" },
+      { title: "اعضای بدن", access: "Part", target: "part" },
     ],
   },
   {

@@ -1,0 +1,48 @@
+.main {
+  display: flex;
+  align-content: inherit;
+  gap: 1.2rem;
+}
+
+.page {
+  padding: 0.5rem;
+  min-width: 2.5rem;
+  transition: all var(--transTime);
+  font-weight: 400;
+  font-size: 1.125rem;
+  border-radius: 0.5rem;
+  background-color: var(--gray2);
+  color: var(--gray9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.activePage {
+  background-color: var(--gray6);
+  color: var(--gray13);
+}
+
+.divider {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.arrow {
+  background-color: var(--gray2);
+  color: var(--gray8);
+  transition: all var(--transTime);
+  opacity: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+}
+
+.disabled {
+  opacity: 0.6;
+}

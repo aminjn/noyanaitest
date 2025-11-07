@@ -1,5 +1,7 @@
+import DoctorManagePatientsPage from "@/Components/DoctorPanel/Patient/DoctorManagePatientsPage";
+
 const DoctorManagePatients = () => {
-  return <p>DoctorManagePatients</p>;
+  return <DoctorManagePatientsPage />;
 };
 
 export default DoctorManagePatients;

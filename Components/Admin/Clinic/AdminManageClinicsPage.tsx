@@ -32,7 +32,14 @@ import {
 import { getUserLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 
+// export type Population<T> = { [key in keyof T]?: T[key] | false };
+
 export type Population<T> = { [key in keyof T]?: T[key] | false };
+// export type Population<T> = {
+//   [key in keyof T]?: T[key] extends true
+//     ? Population<Record<never, never>>
+//     : T[key] | boolean;
+// };
 
 export type ClinicPopulation = Population<{
   DepartmentsPopulated: ClinicDepartmentPopulation;
@@ -101,7 +108,7 @@ export interface IClinicDoctor<
   department?: T["DepartmentPopulated"] extends ClinicDepartmentPopulation
     ? IClinicDepartment<T["DepartmentPopulated"]> | null
     : string;
-  doctor: T["DoctorPopulated"] extends DoctorPopulation
+  doctor: T["DoctorPopulated"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["DoctorPopulated"]> | null
     : string;
 }

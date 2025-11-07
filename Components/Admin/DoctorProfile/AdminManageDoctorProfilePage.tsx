@@ -27,7 +27,7 @@ const AdminManageDoctorProfilePage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<
     IDoctorProfile<{
-      PhoneConsultSettingsPopulated: true;
+      PhoneConsultSettingsPopulated: Record<never, never>;
     }>
   >(
     params ? `${API}/auto/doctorprofile/${params.nodeId}` : null,

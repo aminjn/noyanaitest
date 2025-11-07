@@ -9,7 +9,7 @@ import { Acl } from "@/Components/_Common/SecretaryManager/Request/CreateSecreta
 export const getUserLabel = (node: IUser): string => node.phone || node._id;
 
 export const getDoctorProfileLabel = (node: IDoctorProfile): string =>
-  `${node.firstName || ""} ${node.lastName || ""}`.trim() || node._id;
+  `${node?.firstName || ""} ${node?.lastName || ""}`.trim() || node?._id;
 
 export const getDoctorLabel = (node: IDoctor): string => node.name || node._id;
 
