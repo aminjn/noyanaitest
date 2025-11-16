@@ -1,5 +1,7 @@
 "use client";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
+import { IDoctorFaq } from "../DoctorPanel/Profile/DoctorManageFaqTab";
+import FaqList from "../UI/FaqList";
 import DrIntroduction from "./DrtIntroduction";
 import classes from "./PublicDoctorProfilePage.module.css";
 import PublicDrIntro from "./PublicDrIntro";
@@ -12,16 +14,18 @@ export type PublicDoctorProfilePageProps = {
     Offices: Record<never, never>;
     Socials: Record<never, never>;
   }>;
+  faqs: IDoctorFaq[];
 };
 
-export const DoctorProfileInner = () => {};
-
-const PublicDoctorProfilePage = ({ doctor }: PublicDoctorProfilePageProps) => {
-  console.log(doctor);
+const PublicDoctorProfilePage = ({
+  doctor,
+  faqs,
+}: PublicDoctorProfilePageProps) => {
   return (
-    <div className={classes.main}>
+    <div>
       <PublicDrIntro doctor={doctor} />
       <DrIntroduction doctor={doctor} />
+      <FaqList items={faqs} />
     </div>
   );
 };

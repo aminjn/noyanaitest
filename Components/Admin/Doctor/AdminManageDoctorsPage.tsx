@@ -28,10 +28,15 @@ import WithTitle from "../UI/WithTitle";
 import CreateDoctorPopup from "./CreateDoctorPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { Population } from "../Clinic/AdminManageClinicsPage";
+import {
+  GalleryItemPopulation,
+  IGalleryItem,
+} from "./AdminManageDoctorGalleryTab";
 
 export type DoctorPopulation = Population<{
   SpecialityPopulated?: SpecialityPopulation;
   SpecialitiesPopulated?: SpecialityPopulation;
+  Gallery?: GalleryItemPopulation;
 }>;
 
 export interface IDoctor<T extends DoctorPopulation = DoctorPopulation>
@@ -61,6 +66,7 @@ export interface IDoctor<T extends DoctorPopulation = DoctorPopulation>
   twitter?: string;
   youtube?: string;
   aparat?: string;
+  instagram?: string;
   linkedin?: string;
   speciality?: T["SpecialityPopulated"] extends SpecialityPopulation
     ? ISpeciality<T["SpecialityPopulated"]>
@@ -68,6 +74,9 @@ export interface IDoctor<T extends DoctorPopulation = DoctorPopulation>
   specialities?: T["SpecialitiesPopulated"] extends SpecialityPopulation
     ? ISpeciality<T["SpecialitiesPopulated"]>[]
     : string[];
+  gallery?: T["Gallery"] extends GalleryItemPopulation
+    ? IGalleryItem<boolean, T["Gallery"]>[]
+    : never;
 }
 
 const AdminManageDoctorsPage = () => {

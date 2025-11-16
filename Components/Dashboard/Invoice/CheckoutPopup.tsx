@@ -4,8 +4,9 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import PopupCard from "@/Components/UI/PopupCard";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
+import useProgress from "@/Components/Hooks/useProgress";
 
-const CheckoutPopup = ({
+const CheckoutPalPopup = ({
   invoice,
   mutate,
 }: {
@@ -13,6 +14,8 @@ const CheckoutPopup = ({
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
+
+  const push = useProgress();
 
   return (
     <PopupCard>
@@ -23,8 +26,13 @@ const CheckoutPopup = ({
           path: `${API}/checkout/invoice/${invoice._id}`,
           method: "PUT",
           successCb: () => {
-            closePopup();
             mutate();
+            push(`/payment/${invoice._id}?status=Success`);
+            closePopup();
+          },
+          errorCb: () => {
+            push(`/payment/${invoice._id}?status=Fail`);
+            closePopup();
           },
         }}
       />
@@ -32,4 +40,4 @@ const CheckoutPopup = ({
   );
 };
 
-export default CheckoutPopup;
+export default CheckoutPalPopup;

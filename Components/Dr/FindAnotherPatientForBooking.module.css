@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.legend {
+  color: var(--gray13);
+  font-size: 1.125rem;
+  font-weight: 400;
+}

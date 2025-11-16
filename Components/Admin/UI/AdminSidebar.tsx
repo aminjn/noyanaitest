@@ -98,6 +98,11 @@ const linkMap: LinkMap = [
       { title: "دارو ها", access: "Drug", target: "drug" },
       { title: "علائم", access: "Symptom", target: "symptom" },
       { title: "اعضای بدن", access: "Part", target: "part" },
+      {
+        title: "سوالات متداول پزشکان",
+        access: "DoctorFaq",
+        target: "doctorfaq",
+      },
     ],
   },
   {

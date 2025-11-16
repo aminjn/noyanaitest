@@ -1,0 +1,62 @@
+.doctor {
+  display: flex;
+  padding-inline: 1rem;
+  padding-block: 1.5rem;
+  gap: 1.75rem;
+  border-radius: 1rem;
+  border: 1px solid var(--gray5);
+}
+
+.doctorImage {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  width: 5.375rem;
+  height: 5.375rem;
+}
+
+.doctorContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.doctorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.doctorName {
+  color: var(--gray13);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.rate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--success);
+  font-weight: 400;
+  font-size: 0.75rem;
+  padding-inline: 1rem;
+}
+
+.speciality {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--secondary);
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray13);
+  font-weight: 400;
+  font-size: 0.75rem;
+}

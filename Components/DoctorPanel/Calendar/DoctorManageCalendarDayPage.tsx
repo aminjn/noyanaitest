@@ -2,7 +2,11 @@
 
 import useSWR from "swr";
 import classes from "./DoctorManageCalendarDayPage.module.css";
-import { doctorSessionTypes, IDoctorSession } from "./DoctorCalendarDay";
+import {
+  doctorSessionTypes,
+  IDoctorSession,
+  patientStatuses,
+} from "./DoctorCalendarDay";
 import { API } from "@/Components/config";
 import { useParams } from "next/navigation";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -27,7 +31,7 @@ import DeleteSessionPopup from "./DeleteSessionPopup";
 const DoctorManageCalendarDayPage = () => {
   const params = useParams<{ stamp: string }>();
   const { data, error, mutate } = useSWR<
-    IDoctorSession<{ Booking: { User: true } }>[]
+    IDoctorSession<{ Booking: { User: true }; Clinic: Record<never, never> }>[]
   >(
     params ? `${API}/doctor/calendar/${params.stamp}/full` : null,
     (url: string) => fetcher({ url }).then((res) => res.data)
@@ -82,12 +86,6 @@ const DoctorManageCalendarDayPage = () => {
             name="DoctorManageCalendarDay"
             data={data}
             renderer={{
-              createdAt: {
-                name: getContent("createdAt"),
-                value: (node) => new Date(node.createdAt),
-                filter: "Date",
-                component: (node) => <FormatDate value={node.createdAt} />,
-              },
               start: {
                 name: getContent("sessionStart"),
                 value: (node) => node.start,
@@ -121,10 +119,30 @@ const DoctorManageCalendarDayPage = () => {
                 }),
                 {}
               ),
+              ...patientStatuses.reduce(
+                (acc, status) => ({
+                  ...acc,
+                  [status]: {
+                    name: getContent(status),
+                    value: (node: IDoctorSession) =>
+                      node[status] ? getContent("yes") : getContent("no"),
+                    filter: "Set",
+                    component: (node: IDoctorSession) => (
+                      <BooleanToIcon value={!!node[status]} />
+                    ),
+                  },
+                }),
+                {}
+              ),
               note: {
                 name: getContent("description"),
                 filter: "Text",
                 value: (node) => node.note,
+              },
+              clinic: {
+                name: getContent("office"),
+                filter: "Set",
+                value: (node) => node.clinic?.name,
               },
               booking: {
                 name: getContent("bookingStatus"),

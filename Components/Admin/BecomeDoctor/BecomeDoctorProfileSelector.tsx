@@ -28,7 +28,7 @@ const BecomeDoctorProfileSelector = ({
   req: IBecomeDoctorRequest<{ UserPopulated: true }>;
 }) => {
   const { data, error, mutate } = useSWR<
-    IDoctorProfile<{ UserPopulated: true }>[]
+    IDoctorProfile<{ UserPopulated: Record<never, never> }>[]
   >(`${API}/auto/doctorprofile?user=${req.user._id}`, (url: string) =>
     fetcher({ url }).then((res) => res.data.data)
   );

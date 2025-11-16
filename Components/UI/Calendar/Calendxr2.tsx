@@ -60,7 +60,7 @@ export const jDaysInMonth = (year: number, month: number) =>
 
 export const jWeekday = (year: number, month: number, day: number) => {
   const weekday = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
-  return (weekday + 6) % 7;
+  return (weekday + 1) % 7;
 };
 
 const Calendxr2 = ({

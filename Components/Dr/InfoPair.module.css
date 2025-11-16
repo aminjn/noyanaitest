@@ -18,3 +18,7 @@
   font-size: 0.875rem;
   font-weight: 400;
 }
+
+.icon {
+  color: var(--primary);
+}

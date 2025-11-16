@@ -2,11 +2,10 @@ import Image from "next/image";
 import classes from "./DoctorGallery.module.css";
 import { imagePath } from "../helpers/imagepath";
 import { useState } from "react";
-const DoctorGallery = ({
-  items,
-}: {
-  items: { src: string; alt: string }[];
-}) => {
+
+export type GalleryItems = { src: string; alt: string }[];
+
+const DoctorGallery = ({ items }: { items: GalleryItems }) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   return (

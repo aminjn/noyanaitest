@@ -11,12 +11,13 @@ import Calendxr2, {
 import FormatDate from "@/Components/UI/FormatDate";
 import classes from "./DoctorManageCalendarPage.module.css";
 import AddSessionsAgent from "./AddSessionsAgent";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import moment from "moment-jalaali";
 import Ixon from "@/Components/UI/Ixon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import MinusIcon from "@/Components/Icons/MinusIcon";
 import DoctorCalendarDay from "./DoctorCalendarDay";
+import Loading from "@/Components/Admin/UI/Loading";
 
 type WeekDayStatus = "Full" | "None" | "Partial";
 
@@ -110,56 +111,75 @@ const WeekDay = ({
 };
 
 const DoctorManageCalendarPage = () => {
-  const today = useMemo<Date>(() => new Date(), []);
+  const today = useMemo<Date>(() => {
+    const then = new Date();
+    then.setMinutes(0);
+    then.setHours(0);
+    then.setSeconds(0);
+    then.setMilliseconds(0);
+    return then;
+  }, []);
   const [selected, setSelected] = useState<Date[]>([]);
   const [view, setView] = useState<CalendxrView>({
     month: moment(today).jMonth(),
     year: moment(today).jYear(),
   });
 
+  const [shouldShow, setShouldShow] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!shouldShow) setShouldShow(true);
+  }, [shouldShow]);
+
   return (
     <div className={classes.main}>
       <div className={classes.calendar}>
-        <Calendxr2
-          renderDay={(date, isOut) => (
-            <DoctorCalendarDay
-              isOut={!!isOut}
-              stamp={date}
-              selected={
-                !!selected.find((d) => date.toDateString() === d.toDateString())
-              }
-              onSelect={() =>
-                setSelected((prev) => {
-                  const clone = [...prev];
-                  const index = clone.findIndex(
-                    (d) => d.toDateString() === date.toDateString()
-                  );
-                  if (index === -1) {
-                    clone.push(date);
-                  } else {
-                    clone.splice(index, 1);
-                  }
-                  clone.sort((a, b) => a.getTime() - b.getTime());
-                  return clone;
-                })
-              }
-            />
-          )}
-          renderWeekDay={(day) => (
-            <WeekDay
-              index={day}
-              selected={selected}
-              setSelected={setSelected}
-              view={view}
-            />
-          )}
-          onViewChange={setView}
-        />
+        {shouldShow ? (
+          <Calendxr2
+            renderDay={(date, isOut) => (
+              <DoctorCalendarDay
+                isOut={!!isOut}
+                stamp={date}
+                selected={
+                  !!selected.find(
+                    (d) => date.toDateString() === d.toDateString()
+                  )
+                }
+                onSelect={() =>
+                  setSelected((prev) => {
+                    const clone = [...prev];
+                    const index = clone.findIndex(
+                      (d) => d.toDateString() === date.toDateString()
+                    );
+                    if (index === -1) {
+                      clone.push(date);
+                    } else {
+                      clone.splice(index, 1);
+                    }
+                    clone.sort((a, b) => a.getTime() - b.getTime());
+                    return clone;
+                  })
+                }
+              />
+            )}
+            renderWeekDay={(day) => (
+              <WeekDay
+                index={day}
+                selected={selected}
+                setSelected={setSelected}
+                view={view}
+              />
+            )}
+            onViewChange={setView}
+          />
+        ) : (
+          <Loading />
+        )}
       </div>
       <AddSessionsAgent
         selected={selected}
         setSelected={setSelected}
-        mutate={() => {}}
+        mutate={() => setShouldShow(false)}
       />
     </div>
   );

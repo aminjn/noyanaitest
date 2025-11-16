@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { Fragment, ReactNode, useRef } from "react";
 import { IOffice } from "../DoctorPanel/Office/DoctorManageOfficesPage";
 import useMap from "../Hooks/useMap";
 import classes from "./DoctorOfficeItem.module.css";
@@ -9,53 +9,75 @@ import useLocale from "../Hooks/useLocale";
 import HeadphoneIcon from "../Icons/HeadphoneIcon";
 import LocationIcon from "../Icons/LocationIcon";
 
-const DoctorOfficeItem = ({ office }: { office: IOffice }) => {
+export const OfficeItemInner = ({
+  items,
+  coords,
+}: {
+  coords?: [number, number];
+  items: { title: string; value?: string; icon: ReactNode; target?: string }[];
+}) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { map, ready } = useMap({
     containerRef: mapRef,
-    center: office.location?.coordinates,
+    center: coords,
   });
 
-  const getContent = useLocale();
-
   return (
-    <div className={classes.main}>
+    <li className={classes.main}>
       <div className={classes.details}>
-        {!!office.name && (
-          <InfoPair
-            icon={<LinkIcon2 />}
-            title={getContent("officeName")}
-            value={office.name}
-          />
-        )}
-        {!!office.tel && (
-          <InfoPair
-            icon={<HeadphoneIcon />}
-            title={getContent("officeTel")}
-            value={office.tel}
-          />
-        )}
-        {!!office.address && (
-          <InfoPair
-            icon={<LocationIcon />}
-            title={getContent("officeAddress")}
-            value={office.address}
-          />
-        )}
+        {items.map((item) => (
+          <Fragment key={item.title}>
+            {!!item.value ? (
+              <InfoPair
+                icon={item.icon}
+                title={item.title}
+                value={item.value}
+                target={item.target}
+              />
+            ) : null}
+          </Fragment>
+        ))}
       </div>
-      {office.location?.coordinates && (
+      {coords && (
         <div className={classes.map} ref={mapRef}>
           {ready && (
             <MapMarker
-              lng={office.location.coordinates[0]}
-              lat={office.location.coordinates[1]}
+              lng={coords[0]}
+              lat={coords[1]}
               map={map}
               variant="active"
             />
           )}
         </div>
       )}
-    </div>
+    </li>
+  );
+};
+
+const DoctorOfficeItem = ({ office }: { office: IOffice }) => {
+  const getContent = useLocale();
+
+  return (
+    <OfficeItemInner
+      coords={office.location?.coordinates}
+      items={[
+        {
+          icon: <LinkIcon2 />,
+          title: getContent("officeName"),
+          value: office.name,
+        },
+        {
+          icon: <HeadphoneIcon />,
+          title: getContent("officeTel"),
+          value: office.tel,
+        },
+        {
+          icon: <LocationIcon />,
+          title: getContent("officeAddress"),
+          value: office.address,
+        },
+      ]}
+    />
   );
 };
 

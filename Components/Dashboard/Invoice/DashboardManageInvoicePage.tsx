@@ -12,7 +12,7 @@ import { currencize } from "@/Components/helpers/currencize";
 import FormatDate from "@/Components/UI/FormatDate";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
-import CheckoutPopup from "./CheckoutPopup";
+import CheckoutPalPopup from "./CheckoutPopup";
 
 const DashboardManageInvoicePage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -46,7 +46,7 @@ const DashboardManageInvoicePage = () => {
               onClick={() =>
                 setPopup(
                   "Checkout",
-                  <CheckoutPopup invoice={data} mutate={mutate} />
+                  <CheckoutPalPopup invoice={data} mutate={mutate} />
                 )
               }
             >

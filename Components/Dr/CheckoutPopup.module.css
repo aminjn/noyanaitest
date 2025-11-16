@@ -1,0 +1,77 @@
+.main {
+  width: min(34.25rem, 95dvw);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.title {
+  color: var(--gray13);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.priceBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+  border-radius: 1rem;
+  color: var(--success);
+  font-weight: 400;
+  font-size: 1rem;
+  border: 1px solid var(--success);
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 400;
+  font-size: 1.125rem;
+}
+
+.unit {
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.action.action {
+  background-color: var(--success);
+  height: 3rem;
+  border-radius: 1rem;
+}
+
+.tips {
+  display: flex;
+  flex-direction: column;
+  padding-block: 1.5rem;
+  padding-inline: 1rem;
+  border-radius: 1rem;
+  background-color: var(--primary1);
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tipsTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.tipsValue {
+  color: var(--gray7);
+  font-weight: 400;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+}

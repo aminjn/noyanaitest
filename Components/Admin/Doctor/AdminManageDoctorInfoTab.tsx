@@ -57,6 +57,7 @@ const AdminManageDoctorInfoTab = ({
         youtube: { type: "text", title: "یوتیوب" },
         aparat: { type: "text", title: "آپارات" },
         linkedin: { type: "text", title: "لینکدین" },
+        instagram: { type: "text", title: "اینستاگرام" },
       }}
     />
   );

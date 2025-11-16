@@ -24,7 +24,7 @@ const ChatSidebarItem = ({ chat }: { chat: IChat<{ Participants: true }> }) => {
           //TODO: add image later
         }
         <Image
-          alt={other?.userName || "chat"}
+          alt={other?.username || "chat"}
           src={imagePath("")}
           style={{ objectFit: "cover" }}
           sizes="10rem"
@@ -33,7 +33,7 @@ const ChatSidebarItem = ({ chat }: { chat: IChat<{ Participants: true }> }) => {
       </div>
       <div className={classes.info}>
         <span className={classes.name}>
-          {other?.userName || getContent("chat")}
+          {other?.username || getContent("chat")}
         </span>
         <span className={classes.status}>
           {getContent("status")} :{" "}
@@ -41,7 +41,7 @@ const ChatSidebarItem = ({ chat }: { chat: IChat<{ Participants: true }> }) => {
         </span>
       </div>
       <div className={classes.last}>
-        <span className={classes.date} >
+        <span className={classes.date}>
           {new Date(chat.createdAt).toLocaleString("fa-IR", {
             month: "numeric",
             day: "numeric",

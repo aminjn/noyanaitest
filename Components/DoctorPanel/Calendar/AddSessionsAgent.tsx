@@ -6,12 +6,20 @@ import Ixon from "@/Components/UI/Ixon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
 import RangeInput from "@/Components/UI/RangeInput";
 import OptionsInput from "@/Components/UI/OptionsInput";
-import { DoctorSessionType, doctorSessionTypes } from "./DoctorCalendarDay";
+import {
+  DoctorSessionType,
+  doctorSessionTypes,
+  PatientStatus,
+  patientStatuses,
+} from "./DoctorCalendarDay";
 import AreaInput from "@/Components/UI/AreaInput";
 import Button from "@/Components/UI/Button";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import useSWR from "swr";
+import { IOffice } from "../Office/DoctorManageOfficesPage";
+import { fetcher } from "@/Components/helpers/fetcher";
 
 export const MIN_SESSSION_START = 360;
 export const MAX_SESSION_END = 1440;
@@ -31,6 +39,13 @@ const AddSessionsAgent = ({
   setSelected: Dispatch<SetStateAction<Date[]>>;
   mutate: () => unknown;
 }) => {
+  const { data: clinics } = useSWR<IOffice[]>(
+    `${API}/doctor/office`,
+    (url: string) => fetcher({ url }).then((res) => res.data)
+  );
+
+  const [selectedClinic, setSelectedClinic] = useState<string | null>(null);
+
   const getContent = useLocale();
 
   const [businessTimes, setBusinessTimes] = useState<[number, number]>([
@@ -43,6 +58,10 @@ const AddSessionsAgent = ({
 
   const [kinds, setKinds] = useState<
     Partial<Record<DoctorSessionType, boolean>>
+  >({});
+
+  const [selectedStatuses, setSelectedStatuses] = useState<
+    Partial<Record<PatientStatus, boolean>>
   >({});
 
   const [duration, setDuration] = useState<number>(15);
@@ -66,6 +85,10 @@ const AddSessionsAgent = ({
       return pushNotification(getContent("durationTooLongError"), "Warn");
     if (!Object.values(kinds).some(Boolean))
       return pushNotification(getContent("noSessionKindFoundError"), "Warn");
+    if (!Object.values(selectedStatuses).some(Boolean))
+      return pushNotification(getContent("noPatientStatusError"), "Warn");
+    if (kinds.inPerson && !selectedClinic)
+      return pushNotification(getContent("noClinicErrorMessage"), "Warn");
     setIsSaving({
       gap,
       start,
@@ -74,6 +97,8 @@ const AddSessionsAgent = ({
       days: selected,
       duration,
       ...kinds,
+      ...selectedStatuses,
+      clinic: selectedClinic,
     });
   };
 
@@ -164,6 +189,30 @@ const AddSessionsAgent = ({
         onChange={(key) => setKinds((prev) => ({ ...prev, [key]: !prev[key] }))}
         readOnly={!!isSaving}
       />
+      <OptionsInput
+        options={patientStatuses.reduce(
+          (acc, el) => ({ ...acc, [el]: getContent(el) }),
+          {} as Record<PatientStatus, string>
+        )}
+        value={selectedStatuses}
+        title={getContent("patientStatus")}
+        onChange={(key) =>
+          setSelectedStatuses((prev) => ({ ...prev, [key]: !prev[key] }))
+        }
+        readOnly={!!isSaving}
+      />
+      {!!clinics?.length && (
+        <OptionsInput
+          options={clinics.reduce(
+            (acc, el) => ({ ...acc, [el._id]: el.name }),
+            {}
+          )}
+          title={getContent("availableClinics")}
+          readOnly={!!isSaving}
+          value={selectedClinic ? { [selectedClinic]: true } : {}}
+          onChange={(key) => setSelectedClinic(key.toString())}
+        />
+      )}
       <AreaInput
         title={getContent("description")}
         onChange={(e) => setDescription(e.target.value)}

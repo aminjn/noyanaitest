@@ -1,0 +1,74 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: 37.875rem;
+  width: min(37.875rem, 95dvw);
+  padding-inline: 2rem;
+  margin-inline: auto;
+}
+
+.title {
+  color: var(--gray13);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+
+.patient {
+  display: flex;
+  flex-direction: column;
+}
+
+.patientTitle {
+  margin-bottom: 1rem;
+  color: var(--gray13);
+  font-weight: 400;
+  font-size: 1.125rem;
+}
+
+.patientName {
+  color: var(--gray13);
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+}
+
+.anotherBtn {
+  color: var(--secondary);
+  text-decoration: underline;
+  font-size: 0.875rem;
+  font-weight: 400;
+  width: fit-content;
+}
+
+.context {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--gray13);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  border: 1px solid var(--gray13);
+}
+
+.activeCheck {
+  background-color: var(--primary);
+}
+
+.confirm.confirm {
+  height: 3rem;
+}

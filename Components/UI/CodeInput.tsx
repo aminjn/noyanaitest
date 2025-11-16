@@ -9,10 +9,12 @@ const CodeInput = ({
   readOnly,
   className = "",
   style,
+  autoFocus,
 }: WithStyleProps<{
   length?: number;
   onChange?: (val: string) => unknown;
   readOnly?: boolean;
+  autoFocus?: boolean;
 }>) => {
   const [value, setValue] = useState<string>("");
   const [shouldShow, setShouldShow] = useState<boolean>();
@@ -47,6 +49,7 @@ const CodeInput = ({
           className={classes.digit}
           readOnly={readOnly}
           defaultValue={value[index]}
+          autoFocus={autoFocus && index === 0 ? true : false}
           onKeyUp={(e) => {
             if (
               !e.currentTarget.getAttribute("prev") &&

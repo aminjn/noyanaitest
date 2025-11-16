@@ -28,6 +28,8 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
     (url: string) => fetcher({ url }).then((res) => res.data)
   );
 
+  console.log(data);
+
   const { user } = useUser();
 
   const isAvailable = useMemo<boolean>(
@@ -40,6 +42,10 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
   const ready = useMemo<Record<string, number>>(() => {
     const result: Record<string, number> = {};
     const now = new Date();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
     for (let i = 0; i < 7; ++i) {
       const key = getSessionDateKey(now);
       result[key] = data?.find((el) => el._id === key)?.count || 0;
@@ -47,6 +53,8 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
     }
     return result;
   }, [data]);
+
+  console.log(ready);
 
   const { setPopup } = usePopup();
 
@@ -114,8 +122,6 @@ const DoctorCardWithSessions = ({
 }: {
   node: IDoctorProfile<{ MainSpecialityPopulated: true }>;
 }) => {
-  const getContent = useLocale();
-
   return (
     <CardWithSession
       name={getDoctorProfileLabel(node)}

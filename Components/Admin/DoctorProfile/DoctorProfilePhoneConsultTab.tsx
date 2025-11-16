@@ -5,7 +5,7 @@ const DoctorProfilePhoneConsultTab = ({
   mutate,
   node,
 }: {
-  node: IDoctorProfile<{ PhoneConsultSettingsPopulated: true }>;
+  node: IDoctorProfile<{ PhoneConsultSettingsPopulated: Record<never, never> }>;
   mutate: () => unknown;
 }) => {
   return <p>DoctorProfilePhoneConsultTab</p>;

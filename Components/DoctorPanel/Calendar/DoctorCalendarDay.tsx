@@ -15,11 +15,17 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 import { Fragment, useMemo } from "react";
 import { getSessionDateKey } from "@/Components/helpers/lib";
+import { IOffice, OfficePopulation } from "../Office/DoctorManageOfficesPage";
+import {
+  IUserIdentity,
+  UserIdentityPopulation,
+} from "@/Components/Dashboard/DashboardPage";
 
 export type BookingPopulation = Population<{
   Session: DoctorSessionPopulation;
   User: boolean;
   Doctor: DoctorProfilePopulation;
+  Patient: UserIdentityPopulation;
 }>;
 
 export interface IBooking<T extends BookingPopulation = BookingPopulation>
@@ -33,6 +39,9 @@ export interface IBooking<T extends BookingPopulation = BookingPopulation>
   message?: string;
   kind: DoctorSessionType;
   bookPrice: number;
+  patient: T["Patient"] extends UserIdentityPopulation
+    ? IUserIdentity<T["Patient"]>
+    : string;
 }
 
 export const doctorSessionTypes = [
@@ -44,15 +53,23 @@ export const doctorSessionTypes = [
 ] as const;
 
 export type DoctorSessionType = (typeof doctorSessionTypes)[number];
+
+export const patientStatuses = ["oldPatient", "newPatient"] as const;
+
+export type PatientStatus = (typeof patientStatuses)[number];
+
 export type DoctorSessionPopulation = Population<{
   Doctor: DoctorProfilePopulation;
   Booking: BookingPopulation;
+  Clinic: OfficePopulation;
 }>;
 
 export type IDoctorSession<
   T extends DoctorSessionPopulation = DoctorSessionPopulation
 > = MongoDoc & {
-  doctor: T["Doctor"] extends DoctorProfilePopulation ? IDoctorProfile : string;
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
   date: string;
   start: number;
   end: number;
@@ -61,7 +78,9 @@ export type IDoctorSession<
     : void;
   note?: string;
   createdAt: Date;
-} & Partial<Record<DoctorSessionType, boolean>>;
+  clinic?: T["Clinic"] extends OfficePopulation ? IOffice<T["Clinic"]> : string;
+} & Partial<Record<DoctorSessionType, boolean>> &
+  Partial<Record<PatientStatus, boolean>>;
 
 const DoctorCalendarDay = ({
   stamp,

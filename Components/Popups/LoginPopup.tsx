@@ -74,7 +74,11 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
           ویرایش شماره موبایل
         </button>
       </div>
-      <CodeInput style={{ marginBlock: "1rem" }} onChange={(e) => setCode(e)} />
+      <CodeInput
+        autoFocus
+        style={{ marginBlock: "1rem" }}
+        onChange={(e) => setCode(e)}
+      />
       <div className={classes.resend}>
         <span>1:00</span>
         <span>تا دریافت مجدد کد</span>

@@ -6,18 +6,28 @@ const InfoPair = ({
   icon,
   title,
   value,
+  target,
 }: {
   title: string;
   value: string;
   icon: ReactNode;
+  target?: string;
 }) => {
   return (
     <div className={classes.pair}>
       <legend className={classes.title}>
-        <Ixon width="1.5rem">{icon}</Ixon>
+        <Ixon width="1.5rem" className={classes.icon}>
+          {icon}
+        </Ixon>
         <span>{title}</span>
       </legend>
-      <p className={classes.value}>{value}</p>
+      {target ? (
+        <a className={classes.value} rel="nofollow" href={target}>
+          {value}
+        </a>
+      ) : (
+        <p className={classes.value}>{value}</p>
+      )}
     </div>
   );
 };

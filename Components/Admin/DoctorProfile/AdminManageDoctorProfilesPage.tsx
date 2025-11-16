@@ -26,9 +26,9 @@ import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 const AdminManageDoctorProfilesPage = () => {
   const { data, error, mutate } = useSWR<
     IDoctorProfile<{
-      UserPopulated: true;
-      MainSpecialityPopulated: true;
-      PhoneConsultSettingsPopulated: true;
+      UserPopulated: Record<never, never>;
+      MainSpecialityPopulated: Record<never, never>;
+      PhoneConsultSettingsPopulated: Record<never, never>;
     }>[]
   >(`${API}/auto/doctorprofile`, (url: string) =>
     fetcher({ url }).then((res) => res.data.data)

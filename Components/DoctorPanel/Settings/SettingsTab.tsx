@@ -17,6 +17,7 @@ export interface ISessionSettings extends MongoDoc {
   receiver?: string;
   price?: number;
   active: boolean;
+  hidePrice?: boolean;
 }
 
 const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
@@ -39,7 +40,10 @@ const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
     Record<DoctorSessionType, FormRenderer<ISessionSettings>>
   >(
     () => ({
-      inPerson: { ...commons },
+      inPerson: {
+        ...commons,
+        hidePrice: { title: getContent("hidePrice"), type: "bool" },
+      },
       sipCall: {
         ...commons,
         receiver: { type: "text", title: getContent("callReceiver") },

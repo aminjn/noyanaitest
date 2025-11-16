@@ -87,7 +87,7 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
           <Image src={imagePath("")} alt="" />
         </div>
         <div className={classes.userDetails}>
-          <span className={classes.userName}>{user.userName || "کاربر"}</span>
+          <span className={classes.userName}>{user.username || "کاربر"}</span>
           <span className={classes.userPhone}>{user.phone}</span>
         </div>
         <Ixon width="1.5rem" style={{ transform: "rotateZ(90deg)" }}>

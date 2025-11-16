@@ -11,7 +11,7 @@ const RemoveUserFromDoctorProfilePopup = ({
   mutate,
   profile,
 }: {
-  profile: IDoctorProfile<{ UserPopulated: true }>;
+  profile: IDoctorProfile<{ UserPopulated: Record<never, never> }>;
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

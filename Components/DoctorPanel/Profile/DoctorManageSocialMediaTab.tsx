@@ -21,8 +21,14 @@ import { ReactNode } from "react";
 import InstagramIcon from "@/Components/Icons/InstagramIcon";
 import TelegramIcon from "@/Components/Icons/TelegramIcon";
 import WhatsappIcon from "@/Components/Icons/WhatsappIcon";
+import AparatIcon from "@/Components/Icons/AparatIcon";
 
-export const socialMedias = ["Instagram", "Telegarm", "Whatsapp"] as const;
+export const socialMedias = [
+  "Instagram",
+  "Telegarm",
+  "Whatsapp",
+  "Aparat",
+] as const;
 
 export type SocialMedia = (typeof socialMedias)[number];
 
@@ -30,12 +36,14 @@ export const socialMediaDict: Record<SocialMedia, ContentKey> = {
   Instagram: "instagram",
   Whatsapp: "whatsapp",
   Telegarm: "telegram",
+  Aparat: "aparat",
 };
 
 export const socialMediaIcons: Record<SocialMedia, ReactNode> = {
   Instagram: <InstagramIcon />,
   Telegarm: <TelegramIcon />,
   Whatsapp: <WhatsappIcon />,
+  Aparat: <AparatIcon />,
 };
 
 export type DoctorSocialMediaPopulation = Population<{

@@ -99,6 +99,9 @@
   font-weight: 400;
   font-size: 0.875rem;
   color: var(--gray13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .moreSessions {
@@ -108,4 +111,11 @@
   text-decoration: underline;
   font-weight: 400;
   font-size: 0.875rem;
+}
+
+.noSessionBox {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
 }

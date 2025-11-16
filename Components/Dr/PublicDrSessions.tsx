@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./PublicDrSessions.module.css";
 import { API } from "../config";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import useLocale from "../Hooks/useLocale";
 import { ISessionSettings } from "../DoctorPanel/Settings/SettingsTab";
 import { IDoctorInsurance } from "../DoctorPanel/Insurance/DoctorInsurancesTab";
@@ -23,8 +23,17 @@ import usePopup from "../Hooks/usePopup";
 import FinalizeSessionBookingPopup from "./FinalizeSessionBookingPopup";
 import { numberToTime } from "../DoctorPanel/Calendar/AddSessionsAgent";
 import SelectSessionToReservePopup from "../Booking/SelectSessionToReservePopup";
+import { currencize } from "../helpers/currencize";
+import OptionsInput from "../UI/OptionsInput";
+import Button from "../UI/Button";
+import Loading from "../Admin/UI/Loading";
+import SelectClinicFirstPopup from "./SelectClinicFirstPopup";
+import Link from "next/link";
 
-type DoctorConfig = Record<DoctorSessionType, ISessionSettings | null> & {
+export type DoctorConfig = Record<
+  DoctorSessionType,
+  ISessionSettings | null
+> & {
   insurances: IDoctorInsurance<{ Insurance: Record<never, never> }>[];
   clinics: IClinicDoctor<{ ClinicPopulated: Record<never, never> }>[];
   offices: IOffice[];
@@ -40,11 +49,29 @@ export const patientTypeDict: Record<PatientType, ContentKey> = {
 };
 
 const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
-  const today = useMemo<Date>(() => new Date(), []);
+  const today = useMemo<Date>(() => {
+    const then = new Date();
+    then.setHours(0);
+    then.setMinutes(0);
+    then.setSeconds(0);
+    then.setMilliseconds(0);
+    return then;
+  }, []);
   const [stamp, setStamp] = useState<Date>(today);
+
+  const [selectedSessionType, setSelectedSessionType] =
+    useState<DoctorSessionType | null>();
+
   const { data: config, error: configsError } = useSWR<DoctorConfig>(
     `${API}/public/doctor/${doctor._id}/config`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
+    {
+      onSuccess: (data) => {
+        setSelectedSessionType(
+          doctorSessionTypes.find((st) => data[st]?.active)
+        );
+      },
+    }
   );
   const { data: sessions, error: sessionsError } = useSWR<IDoctorSession[]>(
     `${API}/public/doctor/${doctor._id}/day/${stamp.getTime()}`,
@@ -52,38 +79,51 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
     { keepPreviousData: true }
   );
 
+  const [patientType, setPatientType] = useState<PatientType>("new");
+
+  const [selectedClinic, setSelectedClinic] = useState<string>();
+
+  const { data: firstAvailable } = useSWR<{ _id: string }[]>(
+    !(selectedSessionType === "inPerson" && !selectedClinic) &&
+      selectedSessionType
+      ? {
+          url: `${API}/public/doctor/${doctor._id}/session`,
+          payload: {
+            patientStatus: `${patientType}Patient`,
+            sessionType: selectedSessionType,
+            clinic:
+              selectedSessionType === "inPerson" ? selectedClinic : undefined,
+          },
+        }
+      : null,
+    ({ url, payload }: { url: string; payload: Record<string, string> }) =>
+      fetcher({ url, payload, method: "POST" }).then((res) => res.data)
+  );
+
   const [selectedInsurance, setSelectedInsurance] = useState<string | null>(
     null
   );
 
-  const [patientType, setPatientType] = useState<PatientType | null>(null);
-
-  const [selectedSessionTypes, setSelectedSessionTypes] = useState<
-    DoctorSessionType[] | null
-  >();
-
-  useEffect(() => {
-    if (!selectedSessionTypes && config)
-      setSelectedSessionTypes(
-        doctorSessionTypes.filter(
-          (sessionType) => !!config[sessionType]?.active
-        )
-      );
-  }, [config, selectedSessionTypes]);
-
-  const [selectedClinic, setSelectedClinic] = useState<string>();
-
   const getContent = useLocale();
 
-  const filteredSessions = useMemo<IDoctorSession[]>(
-    () =>
-      sessions?.filter((session) =>
-        selectedSessionTypes?.some((sessionType) => !!session[sessionType])
-      ) || [],
-    [selectedSessionTypes, sessions]
-  );
+  const filteredSessions = useMemo<IDoctorSession[]>(() => {
+    return (
+      sessions
+        ?.filter((el) => !!el[`${patientType}Patient`])
+        .filter((el) => selectedSessionType && !!el[selectedSessionType])
+        .filter(
+          (el) =>
+            selectedSessionType !== "inPerson" || selectedClinic === el.clinic
+        ) || []
+    );
+  }, [selectedSessionType, sessions, patientType, selectedClinic]);
 
   const { setPopup } = usePopup();
+
+  useEffect(() => {
+    if (selectedSessionType === "inPerson" && !selectedClinic)
+      setPopup("SelectClinicFirst", <SelectClinicFirstPopup />);
+  }, [selectedClinic, selectedSessionType, setPopup]);
 
   return (
     <div className={classes.main}>
@@ -91,23 +131,25 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
         {getContent("reserveYourSpot")}
       </legend>
       <legend className={classes.legend}>{getContent("timingDetails")}</legend>
+      <legend className={classes.legend}>{getContent("insurance")}</legend>
       {!!config?.insurances.length && (
-        <SelectInput
-          className={classes.select}
-          title={getContent("insuranceCoverage")}
-          options={{
-            none: getContent("noInsurance"),
-            ...config.insurances.reduce(
-              (acc, el) => ({ ...acc, [el._id]: el.insurance?.name }),
-              {}
-            ),
-          }}
-          onChange={(e) =>
-            setSelectedInsurance(
-              e.target.value === "none" ? null : e.target.value
-            )
-          }
-        />
+        <div className={classes.options}>
+          {config.insurances.map((inc) => (
+            <button
+              key={inc._id}
+              onClick={() =>
+                setSelectedInsurance((prev) =>
+                  prev === inc._id ? null : inc._id
+                )
+              }
+              className={`${classes.option} ${
+                selectedInsurance === inc._id ? classes.activeOption : ""
+              }`}
+            >
+              {inc.insurance?.name}
+            </button>
+          ))}
+        </div>
       )}
       <div className={classes.options}>
         {patientTypes.map((pType) => (
@@ -128,49 +170,49 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
       </legend>
       {!!config && (
         <div className={classes.options}>
-          {doctorSessionTypes.map((sessionType) => (
-            <button
-              key={sessionType}
-              onClick={() =>
-                setSelectedSessionTypes((prev) => {
-                  const clone = [...(prev || [])];
-                  const index = clone.indexOf(sessionType);
-                  if (index === -1) {
-                    clone.push(sessionType);
-                  } else {
-                    clone.splice(index, 1);
-                  }
-                  return clone;
-                })
-              }
-              className={`${classes.option} ${
-                selectedSessionTypes?.includes(sessionType)
-                  ? classes.activeOption
-                  : ""
-              }`}
-              type="button"
-            >
-              {getContent(sessionType)}
-            </button>
-          ))}
+          {doctorSessionTypes
+            .filter((st) => config[st]?.active)
+            .map((sessionType) => (
+              <button
+                key={sessionType}
+                onClick={() => setSelectedSessionType(sessionType)}
+                className={`${classes.option} ${
+                  selectedSessionType?.includes(sessionType)
+                    ? classes.activeOption
+                    : ""
+                }`}
+                type="button"
+              >
+                {getContent(sessionType)}
+              </button>
+            ))}
         </div>
       )}
-      {!!config && (
-        <SelectInput
-          className={classes.select}
-          title={getContent("availableClinics")}
-          options={{
-            ...config.offices.reduce(
-              (acc, el) => ({ ...acc, [el._id]: el.name }),
-              {}
-            ),
-            ...config.clinics.reduce(
-              (acc, el) => ({ ...acc, [el._id]: el.clinic?.name }),
-              {}
-            ),
-          }}
-          onChange={(e) => setSelectedClinic(e.target.value)}
-        />
+      {!!selectedSessionType &&
+        !!config?.[selectedSessionType]?.price &&
+        !config?.[selectedSessionType].hidePrice &&
+        !!config?.[selectedSessionType]?.price && (
+          <p>{`${currencize(config?.[selectedSessionType].price)} ${getContent(
+            "toman"
+          )}`}</p>
+        )}
+      {!!config && selectedSessionType === "inPerson" && (
+        <Fragment>
+          <legend className={classes.legend}>{getContent("clinic")}</legend>
+          <div className={classes.options}>
+            {config.offices.map((office) => (
+              <button
+                onClick={() => setSelectedClinic(office._id)}
+                key={office._id}
+                className={`${classes.option} ${
+                  selectedClinic === office._id ? classes.activeOption : ""
+                }`}
+              >
+                {office.name}
+              </button>
+            ))}
+          </div>
+        </Fragment>
       )}
       {!!sessions && (
         <div className={classes.sessions}>
@@ -216,18 +258,17 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
             <div className={classes.sessionsContainer}>
               <div className={classes.sessionsList}>
                 {filteredSessions.slice(0, 14).map((session) => (
-                  <button
+                  <Link
                     key={session._id}
-                    onClick={() =>
-                      setPopup(
-                        "FinalizeSessionBooking",
-                        <FinalizeSessionBookingPopup />
-                      )
-                    }
+                    href={`/session/${
+                      session._id
+                    }?patientType=${patientType}&sessionType=${selectedSessionType}${
+                      selectedInsurance ? `&insurance=${selectedInsurance}` : ""
+                    }${selectedClinic ? `&clinic=${selectedClinic}` : ""}`}
                     className={classes.session}
                   >
                     {numberToTime(session.start)}
-                  </button>
+                  </Link>
                 ))}
               </div>
               {filteredSessions.length > 14 && (
@@ -248,9 +289,36 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
               )}
             </div>
           ) : (
-            <p className={classes.noSession}>
-              {getContent("noSessionMatchesFilters")}
-            </p>
+            <div className={classes.noSessionBox}>
+              <p className={classes.noSession}>
+                {getContent("noSessionMatchesFilters")}
+              </p>
+              {!!firstAvailable ? (
+                <Fragment>
+                  {firstAvailable[0] ? (
+                    <Button
+                      onClick={() => {
+                        const then = new Date(firstAvailable[0]._id);
+                        then.setDate(then.getDate() + 1);
+                        setStamp(then);
+                      }}
+                    >
+                      {getContent("findFirstAvailableSession")}
+                    </Button>
+                  ) : (
+                    <p>{getContent("doctorHasNoSuchSession")}</p>
+                  )}
+                </Fragment>
+              ) : (
+                <Fragment>
+                  {selectedSessionType === "inPerson" && !selectedClinic ? (
+                    getContent("selectClinicFirstMessage")
+                  ) : (
+                    <Loading />
+                  )}
+                </Fragment>
+              )}
+            </div>
           )}
         </div>
       )}
