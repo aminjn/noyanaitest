@@ -1,0 +1,12 @@
+.proTip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: var(--yellow);
+  padding-block: 0.25rem;
+  color: var(--black);
+  font-size: 0.625rem;
+  font-weight: 400;
+  border-radius: 0.5rem;
+}

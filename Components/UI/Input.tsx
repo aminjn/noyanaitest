@@ -15,6 +15,15 @@ const Input = forwardRef<
     step?: number;
     autoFocuse?: boolean;
     pattern?: string;
+    inputMode?:
+      | "none"
+      | "text"
+      | "tel"
+      | "url"
+      | "email"
+      | "numeric"
+      | "decimal"
+      | "search";
   }>
 >(
   (
@@ -31,6 +40,7 @@ const Input = forwardRef<
       type,
       autoFocuse,
       pattern,
+      inputMode,
     },
     ref
   ) => {
@@ -49,6 +59,7 @@ const Input = forwardRef<
           step={step}
           ref={ref}
           autoFocus={autoFocuse}
+          inputMode={inputMode}
         />
         {!!title && <span className={classes.title}>{title}</span>}
       </div>

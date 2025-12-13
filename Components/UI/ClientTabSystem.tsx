@@ -1,13 +1,19 @@
 import { ReactNode, useState } from "react";
 import classes from "./ClientTabSystem.module.css";
 import { WithStyleProps } from "../Layout/Layout";
+import Ixon from "./Ixon";
 
 const ClientTabSystem = ({
   items,
   className,
   style,
 }: WithStyleProps<{
-  items: { title: string; id: string; content: ReactNode }[];
+  items: {
+    title: ReactNode;
+    id: string;
+    content: ReactNode;
+    icon?: ReactNode;
+  }[];
 }>) => {
   const [current, setCurrent] = useState<string>(items[0]?.id || "");
 
@@ -23,7 +29,8 @@ const ClientTabSystem = ({
               current === item.id ? classes.activeItem : ""
             }`}
           >
-            {item.title}
+            {!!item.icon && <Ixon width="1.5rem">{item.icon}</Ixon>}
+            <span>{item.title}</span>
           </button>
         ))}
       </nav>

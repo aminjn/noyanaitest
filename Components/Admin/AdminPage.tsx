@@ -15,6 +15,9 @@ import VoiceManager from "./VoiceManager";
 import TelephonePopup from "./TelephonePopup";
 import FillIdentityPopup from "./FillIdentityPopup";
 import PodPopup from "./PodPopup";
+import TabSystem from "./UI/TabSystem";
+import ClientTabSystem from "../UI/ClientTabSystem";
+import CupIcon from "../Icons/CupIcon";
 
 const AdminPage = () => {
   const { setPopup, closePopup } = usePopup();
@@ -102,6 +105,13 @@ const AdminPage = () => {
         Tity
       </Button>
       <Button onClick={() => setPopup("Pod", <PodPopup />)}>Pod</Button>
+      <ClientTabSystem
+        items={[
+          { id: "one", title: "One", icon: <CupIcon />, content: <p>One</p> },
+          { id: "Two", title: "Two", icon: <CupIcon />, content: <p>Two</p> },
+          { id: "Three", title: "Three", content: <p>Three</p> },
+        ]}
+      />
     </Box>
   );
 };

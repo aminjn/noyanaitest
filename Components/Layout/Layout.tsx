@@ -16,7 +16,7 @@ import PharmacyPanelLayout from "./PharmacyPanelLayout";
 import InsurancePanelLayout from "./InsurancePanelLayout";
 import CallManager from "../Call/CallManager";
 
-export type WithStyleProps<T = Record<string, never>> = T & {
+export type WithStyleProps<T = Record<never, never>> = T & {
   className?: string;
   style?: CSSProperties;
 };

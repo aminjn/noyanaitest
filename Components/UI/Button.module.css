@@ -22,6 +22,11 @@
   color: var(--gray7);
 }
 
+.Neutral3 {
+  background-color: var(--neutral3);
+  color: var(--black);
+}
+
 .NeutralStroke {
   border-radius: 1rem;
   border: 1px solid var(--gray8);
@@ -47,4 +52,14 @@
 .Danger {
   background-color: var(--error);
   color: var(--white);
+}
+
+.Primary3 {
+  background-color: var(--primary2);
+  color: var(--black);
+}
+
+.Secondary3 {
+  color: var(--gray10);
+  background-color: var(--secondary2);
 }

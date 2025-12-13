@@ -1,0 +1,137 @@
+.main {
+  background-color: var(--white);
+  padding-block: 1.5rem;
+  padding-inline: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: min(95dvw, 50rem);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.close {
+  color: var(--black);
+}
+
+.title {
+  margin-inline-end: auto;
+  color: var(--black);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-inline-start: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.overview {
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.point {
+  color: var(--gray10);
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-inline-end: 0.375rem;
+}
+
+.recordTitle {
+  color: var(--black);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.creation {
+  color: var(--gray7);
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-block: 0.75rem;
+  padding-inline: 1.5rem;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.createdBy {
+  color: var(--gray7);
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-inline-end: 1rem;
+}
+
+.authorName {
+  color: var(--gray10);
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-inline-end: auto;
+}
+
+.speciality {
+  color: var(--gray7);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.middle {
+  margin-top: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.files {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.file {
+  padding-block: 0.25rem;
+  padding-inline: 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--primary2);
+  display: flex;
+  align-items: center;
+}
+
+.fileIcon {
+  color: var(--black);
+  margin-inline-end: 0.75rem;
+}
+
+.fileName {
+  color: var(--gray8);
+  font-size: 0.625rem;
+  font-weight: 400;
+}
+
+.fileBtn {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray10);
+  font-size: 0.625rem;
+  font-weight: 400;
+}

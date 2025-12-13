@@ -1,0 +1,17 @@
+.main {
+  background-color: var(--white);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  max-height: min(57rem, 90dvh);
+  overflow-y: auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

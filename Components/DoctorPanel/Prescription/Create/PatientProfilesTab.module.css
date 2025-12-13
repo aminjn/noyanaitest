@@ -1,0 +1,10 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.new {
+  width: fit-content;
+  margin-inline-start: auto;
+}

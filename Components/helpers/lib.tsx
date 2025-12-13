@@ -8,3 +8,9 @@ export function range(x: number, y: number): number[] {
 
 export const getSessionDateKey = (date: Date): string =>
   new Date(date).toISOString().split("T")[0];
+
+export const calculateAge = (born: Date): number =>
+  Math.floor(
+    (new Date().getTime() - new Date(born).getTime()) /
+      (365 * 24 * 60 * 60 * 1000)
+  );

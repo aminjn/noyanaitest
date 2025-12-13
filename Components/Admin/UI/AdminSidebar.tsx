@@ -136,6 +136,21 @@ const linkMap: LinkMap = [
     links: [
       { title: "سطوح دسترسی", target: "accesslevel" },
       { title: "ادمین ها", target: "useraccesslevel" },
+      {
+        title: "تامین اجتماعی",
+        target: "tamin",
+        links: [
+          { title: "انواع نسخه", target: "prescriptionType" },
+          { title: "سرویس تایپ", target: "serviceType" },
+          { title: "سرویس", target: "service" },
+          { title: "زیر گروه نسخ آزمایش", target: "parTaref" },
+          { title: "مقادیر مصرف", target: "drugUsage" },
+          { title: "طریقه مصرف", target: "drugAmount" },
+          { title: "زمان مصرف", target: "drugInstruction" },
+          { title: "طرح درمان", target: "phPlan" },
+          { title: "انواع بیماری", target: "phIllness" },
+        ],
+      },
     ],
   },
 ];

@@ -14,11 +14,33 @@ import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconLink from "@/Components/Admin/UI/IconLink";
+import {
+  GenderSpecificOption,
+  IPart,
+  PartPopulation,
+} from "@/Components/Admin/Disease/AdminManageDiseasesPage";
 
-type SymptomPopulation = Population<Record<never, never>>;
+type SymptomPopulation = Population<{
+  Part: PartPopulation;
+  SameAs: SymptomPopulation;
+}>;
 export interface ISymptom<T extends SymptomPopulation = SymptomPopulation>
   extends MongoDoc {
-  "": "";
+  name?: string;
+  genderSpecific?: GenderSpecificOption;
+  part: T["Part"] extends PartPopulation ? IPart<T["Part"]>[] : string[];
+  summary?: string;
+  description?: string;
+  expectedPrognosis?: string;
+  image?: string;
+  naturalProgression?: string;
+  pathophysiology?: string;
+  sameAs: T["SameAs"] extends SymptomPopulation
+    ? ISymptom<T["SameAs"]>[]
+    : string[];
+  possibleComplication?: string;
+  order: number;
+  slug?: string;
 }
 
 export type PatientProfilePopulation = Population<{
@@ -37,7 +59,7 @@ export interface IPatientProfile<
   title: string;
   description?: string;
   diagnosis?: string;
-  records?: T["Records"] extends PatientProfileRecordPopulation
+  records: T["Records"] extends PatientProfileRecordPopulation
     ? IPatientProfileRecord<T["Records"]>[]
     : never;
 }
@@ -57,7 +79,7 @@ export interface IPatientProfileRecord<
   createdAt: Date;
   title: string;
   description?: string;
-  files?: T["File"] extends UserFilePopulation ? IUserFile<T["File"]>[] : never;
+  files: T["File"] extends UserFilePopulation ? IUserFile<T["File"]>[] : never;
   author: T["Author"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Author"]>
     : string;
@@ -79,8 +101,6 @@ const PatientFiles = ({
   const getContent = useLocale();
 
   const { setPopup } = usePopup();
-
-
 
   return (
     <WithTitle
