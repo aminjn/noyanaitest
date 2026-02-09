@@ -19,6 +19,7 @@ const WithTitle = ({
   actions,
   className = "",
   style,
+  collapsed,
 }: WithStyleProps<{
   children?: ReactNode;
   title: string;
@@ -27,6 +28,7 @@ const WithTitle = ({
     action?: MouseEventHandler<HTMLButtonElement>;
     icon?: ReactNode;
   }[];
+  collapsed?: ReactNode;
 }>) => {
   const [isContextOpen, setIsContextOpen] = useState<boolean>(false);
 
@@ -42,55 +44,71 @@ const WithTitle = ({
     <Box className={`${classes.main} ${className}`} style={style}>
       <div className={classes.header}>
         <Title>{title}</Title>
-        {!!actions?.length && (
-          <Fragment>
-            {actions.length === 1 ? (
-              <Button
-                type="button"
-                leadIcon={actions[0].icon}
-                onClick={actions[0].action}
-              >
-                {actions[0].title}
-              </Button>
-            ) : (
-              <Fragment>
-                <button
-                  className={classes.contextBtn}
-                  type="button"
-                  onClick={() => setIsContextOpen(true)}
-                >
-                  <Ixon width="1.5rem">
-                    <MenuIcon />
-                  </Ixon>
-                </button>
-                <div
-                  className={`${classes.context} ${
-                    isContextOpen ? classes.open : ""
-                  }`}
-                  style={{
-                    maxHeight: isContextOpen ? `${actions.length * 3}rem` : 0,
-                  }}
-                >
-                  {actions.map((action) => (
-                    <button
-                      key={action.title}
-                      className={classes.action}
-                      onClick={action.action}
-                      type="button"
-                    >
-                      {action.icon && (
-                        <Ixon width="1.5rem" className={classes.actionIcon}>
-                          {action.icon}
-                        </Ixon>
-                      )}
-                      <span>{action.title}</span>
-                    </button>
-                  ))}
+        <div className={classes.headerActions}>
+          {(!!actions?.length || !!collapsed) && (
+            <Fragment>
+              {!!collapsed && (
+                <div className={classes.collapsed}>{collapsed}</div>
+              )}
+              {!!actions?.length && (
+                <div className={classes.actions}>
+                  <Fragment>
+                    {actions.length === 1 ? (
+                      <Button
+                        type="button"
+                        leadIcon={actions[0].icon}
+                        onClick={actions[0].action}
+                      >
+                        {actions[0].title}
+                      </Button>
+                    ) : (
+                      <Fragment>
+                        <button
+                          className={classes.contextBtn}
+                          type="button"
+                          onClick={() => setIsContextOpen(true)}
+                        >
+                          <Ixon width="1.5rem">
+                            <MenuIcon />
+                          </Ixon>
+                        </button>
+                        <div
+                          className={`${classes.context} ${
+                            isContextOpen ? classes.open : ""
+                          }`}
+                          style={{
+                            maxHeight: isContextOpen
+                              ? `${actions.length * 3}rem`
+                              : 0,
+                          }}
+                        >
+                          {actions.map((action) => (
+                            <button
+                              key={action.title}
+                              className={classes.action}
+                              onClick={action.action}
+                              type="button"
+                            >
+                              {action.icon && (
+                                <Ixon
+                                  width="1.5rem"
+                                  className={classes.actionIcon}
+                                >
+                                  {action.icon}
+                                </Ixon>
+                              )}
+                              <span>{action.title}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </Fragment>
+                    )}
+                  </Fragment>
                 </div>
-              </Fragment>
-            )}
-          </Fragment>
-        )}
+              )}
+            </Fragment>
+          )}
+        </div>
       </div>
       <div className={classes.content}>{children}</div>
     </Box>

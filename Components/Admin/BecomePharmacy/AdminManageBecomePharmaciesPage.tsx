@@ -18,8 +18,10 @@ import EditIcon from "@/Components/Icons/EditIcon";
 const AdminManageBecomePharmaciesPage = () => {
   const { data, error } = useSWR<IBecomePharmacyRequest<{ user: true }>[]>(
     `${API}/auto/becomepharmacy`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+
+  console.log(data);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -38,12 +40,15 @@ const AdminManageBecomePharmaciesPage = () => {
               user: {
                 name: "یوزر",
                 filter: "Text",
-                value: (node) => node.user.phone,
-                component: (node) => (
-                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                    {node.user.phone}
-                  </InlineLink>
-                ),
+                value: (node) => node.user?.phone,
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {node.user.phone}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
               },
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
               status: {

@@ -1,0 +1,47 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legend {
+  color: var(--black);
+}
+
+.data {
+  padding: 1.125rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--gray5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pair {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pairTitle {
+  color: var(--gray8);
+}
+
+.pairValue {
+  height: 2rem;
+  padding-inline: 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--primary1);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

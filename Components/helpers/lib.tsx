@@ -14,3 +14,6 @@ export const calculateAge = (born: Date): number =>
     (new Date().getTime() - new Date(born).getTime()) /
       (365 * 24 * 60 * 60 * 1000)
   );
+
+export const clamp = (min: number, val: number, max: number): number =>
+  Math.min(max, Math.max(val, min));

@@ -20,7 +20,7 @@ const PanelLayout = ({
 
   useEffect(() => {
     LicenseManager.setLicenseKey(
-      "[v3][0102]_MTc2NzEzOTIwMDAwMA==e688a08fb8acde46d9bb3b15eaac16ff"
+      "[v3][0102]_MTc2NzEzOTIwMDAwMA==e688a08fb8acde46d9bb3b15eaac16ff",
     );
     setKeySat(true);
   }, []);

@@ -189,7 +189,7 @@ const CreateForm = <TInput,>({
             const max = segment.max || 100;
             const step = segment.step || 1;
             const totalMarks = Math.floor(
-              (max - min) / step / (segment.markCount || 1)
+              (max - min) / step / (segment.markCount || 1),
             );
             content = (
               <RangeInput

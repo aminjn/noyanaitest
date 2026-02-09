@@ -25,7 +25,7 @@ const AdminManageBecomePharmacyPage = () => {
   const { data, error, mutate } = useSWR<
     IBecomePharmacyRequest<{ user: true }>
   >(`${API}/auto/becomepharmacy/${nodeId}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -50,9 +50,15 @@ const AdminManageBecomePharmacyPage = () => {
                     <DataPair
                       title
                       value={
-                        <InlineLink href={adminPath(`/user/${data.user._id}`)}>
-                          {data.user.phone || data.user._id}
-                        </InlineLink>
+                        data.user ? (
+                          <InlineLink
+                            href={adminPath(`/user/${data.user?._id}`)}
+                          >
+                            {data.user?.phone || data.user?._id}
+                          </InlineLink>
+                        ) : (
+                          "حذف شده"
+                        )
                       }
                     />
                     <DataPair
@@ -76,7 +82,7 @@ const AdminManageBecomePharmacyPage = () => {
                           <ChangeBecomePharmacyRequestStatusPopup
                             mutate={mutate}
                             node={data}
-                          />
+                          />,
                         )
                       }
                     >
@@ -89,7 +95,7 @@ const AdminManageBecomePharmacyPage = () => {
                           <AssignPharmacyToBecomePharmacyRequestPopup
                             mutate={mutate}
                             node={data}
-                          />
+                          />,
                         )
                       }
                     >

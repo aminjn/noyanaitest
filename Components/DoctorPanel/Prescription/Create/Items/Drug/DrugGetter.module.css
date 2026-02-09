@@ -1,0 +1,21 @@
+.main {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.input {
+  padding-inline-start: 2.125rem;
+}
+
+.input + label {
+  inset-inline-start: 2.25rem;
+}
+
+.searchIcon {
+  color: var(--gray7);
+}
+
+.inputBox {
+  flex: 1;
+}

@@ -63,3 +63,8 @@
   color: var(--gray10);
   background-color: var(--secondary2);
 }
+
+.Success {
+  background-color: var(--success);
+  color: var(--white);
+}

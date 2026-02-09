@@ -13,7 +13,7 @@ import CheckIcon from "@/Components/Icons/CheckIcon";
 import { WithStyleProps } from "@/Components/Layout/Layout";
 import Form from "@/Components/UI/Form";
 const PatientSelector = ({ className = "", style }: WithStyleProps) => {
-  const { setPatient } = useContext(PrescriptionContext);
+  const { setPatient, canMutatePatient } = useContext(PrescriptionContext);
   const getContent = useLocale();
 
   const [isLoading, setIsLoading] = useState<{ nationalId: string } | null>(
@@ -24,6 +24,7 @@ const PatientSelector = ({ className = "", style }: WithStyleProps) => {
 
   const pushNotification = useNotification();
 
+  if (!canMutatePatient) return null;
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       <legend className={classes.legend}>

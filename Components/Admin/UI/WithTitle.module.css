@@ -52,6 +52,23 @@
   background-color: var(--gray4);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.collapsed {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
 .action {
   height: 3rem;
   background-color: var(--white);

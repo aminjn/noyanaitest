@@ -9,8 +9,12 @@ import WithTitle from "../../UI/WithTitle";
 import Table from "../../UI/Table";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import Act from "@/Components/UI/Act";
+import { Population } from "../../Clinic/AdminManageClinicsPage";
 
-export interface ITaminDrugInstruction extends MongoDoc {
+export type TaminDrugInstructionPopulation = Population<Record<never, never>>;
+export interface ITaminDrugInstruction<
+  T extends TaminDrugInstructionPopulation = TaminDrugInstructionPopulation
+> extends MongoDoc {
   drugInstId?: string;
   drugInstCode?: string;
   drugInstSumry?: string;

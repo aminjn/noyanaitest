@@ -84,7 +84,7 @@ const Colors = {
 } as const;
 
 export const colors = Object.keys(Colors).map(
-  (color) => Colors[color as keyof typeof Colors]
+  (color) => Colors[color as keyof typeof Colors],
 );
 
 export type Color = (typeof Colors)[keyof typeof Colors];

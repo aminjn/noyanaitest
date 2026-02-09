@@ -23,7 +23,7 @@ const AssignPharmacyToBecomePharmacyRequestPopup = ({
     hasProblem: (inp) => {
       if (!inp.pharmacy) return "لطفا داروخانه را انتخاب نمایید";
     },
-    mutator: () => ({ user: node.user._id }),
+    mutator: () => ({ user: node.user?._id }),
     successCb: () => {
       mutate();
       closePopup();

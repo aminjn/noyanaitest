@@ -1,4 +1,9 @@
-import { ChangeEventHandler, forwardRef, HTMLInputTypeAttribute } from "react";
+import {
+  ChangeEventHandler,
+  forwardRef,
+  HTMLInputTypeAttribute,
+  ReactNode,
+} from "react";
 import classes from "./Input.module.css";
 import { WithStyleProps } from "../Layout/Layout";
 
@@ -24,6 +29,9 @@ const Input = forwardRef<
       | "numeric"
       | "decimal"
       | "search";
+    lead?: ReactNode;
+    tail?: ReactNode;
+    inputClass?: string;
   }>
 >(
   (
@@ -41,6 +49,9 @@ const Input = forwardRef<
       autoFocuse,
       pattern,
       inputMode,
+      lead,
+      tail,
+      inputClass = "",
     },
     ref
   ) => {
@@ -48,7 +59,7 @@ const Input = forwardRef<
       <div style={style} className={`${classes.main} ${className}`}>
         <input
           pattern={pattern}
-          className={classes.input}
+          className={`${classes.input} ${inputClass}`}
           placeholder=""
           type={type}
           disabled={readOnly}
@@ -61,7 +72,9 @@ const Input = forwardRef<
           autoFocus={autoFocuse}
           inputMode={inputMode}
         />
-        {!!title && <span className={classes.title}>{title}</span>}
+        {!!title && <label className={classes.title}>{title}</label>}
+        {!!lead && <span className={classes.lead}>{lead}</span>}
+        {!!tail && <span className={classes.tail}>{tail}</span>}
       </div>
     );
   }

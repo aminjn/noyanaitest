@@ -7,32 +7,94 @@ import {
   useState,
 } from "react";
 import { IPatientProfile } from "../Patient/PatientFiles";
+import { ITaminService } from "@/Components/Admin/Tamin/Service/AdminManageTaminServicesPage";
+import { ITaminDrugInstruction } from "@/Components/Admin/Tamin/DrugInstructions/AdminManageTaminDrugInstructionsPage";
+import { ITaminDrugAmount } from "@/Components/Admin/Tamin/DrugAmount/AdminManageTaminDrugAmountsPage";
+import { ITaminDrugUsage } from "@/Components/Admin/Tamin/DrugUsage/AdminManageTaminDrugUsagesPage";
+import { MongoDoc } from "@/Components/Hooks/useUser";
+
+import { nanoid } from "nanoid";
+import { IPrescription } from "./Create/PrescriptionItemsOverview";
+
+export type PrescriptionItem = {
+  item: ITaminService;
+  qty: number;
+  instruction: ITaminDrugInstruction;
+  amount: ITaminDrugAmount;
+  usage: ITaminDrugUsage;
+  description?: string;
+};
 
 export type PrescriptionCtx = {
+  canMutatePatient: boolean;
   patient: (IUserIdentity & { phone?: string }) | null;
   setPatient: Dispatch<SetStateAction<IUserIdentity | null>>;
   profile: IPatientProfile | null;
   setProfile: Dispatch<SetStateAction<IPatientProfile | null>>;
+  items: (PrescriptionItem & MongoDoc)[];
+  setItems: Dispatch<SetStateAction<(PrescriptionItem & MongoDoc)[]>>;
+  working: Partial<PrescriptionItem> & MongoDoc;
+  setWorking: Dispatch<SetStateAction<Partial<PrescriptionItem> & MongoDoc>>;
+  defaultValue?: DefaultPrescription;
 };
 
 const PrescriptionContext = createContext<PrescriptionCtx>({
+  canMutatePatient: true,
   patient: null,
   setPatient: () => {},
   profile: null,
   setProfile: () => {},
+  items: [],
+  setItems: () => {},
+  working: { _id: "" },
+  setWorking: () => {},
 });
+
+export type DefaultPrescription = IPrescription<{
+  Author: { Mc: Record<never, never> };
+  Items: {
+    Amount: Record<never, never>;
+    Instruction: Record<never, never>;
+    Usage: Record<never, never>;
+    Item: Record<never, never>;
+  };
+  Patient: Record<never, never>;
+  TaminStatus: Record<never, never>;
+}>;
 
 export const PrescriptionContextProvider = ({
   children,
+  defaultValue,
 }: {
   children: ReactNode;
+  defaultValue?: DefaultPrescription;
 }) => {
-  const [patient, setPatient] = useState<IUserIdentity | null>(null);
+  const [patient, setPatient] = useState<IUserIdentity | null>(
+    defaultValue?.patient || null,
+  );
+  //TODO: implement this shit
   const [profile, setProfile] = useState<IPatientProfile | null>(null);
+  const [items, setItems] = useState<(PrescriptionItem & MongoDoc)[]>(
+    defaultValue?.items || [],
+  );
+  const [working, setWorking] = useState<Partial<PrescriptionItem> & MongoDoc>({
+    _id: `${nanoid()}${new Date().getTime()}`,
+  });
 
   return (
     <PrescriptionContext.Provider
-      value={{ patient, setPatient, profile, setProfile }}
+      value={{
+        defaultValue,
+        canMutatePatient: !defaultValue?.taminStatus,
+        patient,
+        setPatient,
+        profile,
+        setProfile,
+        items,
+        setItems,
+        setWorking,
+        working,
+      }}
     >
       {children}
     </PrescriptionContext.Provider>

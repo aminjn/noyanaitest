@@ -9,8 +9,12 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import { Population } from "../../Clinic/AdminManageClinicsPage";
 
-export interface ITaminService extends MongoDoc {
+export type TaminServicePopulation = Population<Record<never, never>>;
+export interface ITaminService<
+  T extends TaminServicePopulation = TaminServicePopulation
+> extends MongoDoc {
   srvId?: string;
   srvType?: string;
   srvCode?: string;

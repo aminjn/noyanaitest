@@ -1,0 +1,225 @@
+/* 7xl – 64px */
+.t7xlExtraBold {
+  font-size: 4rem;
+  font-weight: 800;
+}
+.t7xlBold {
+  font-size: 4rem;
+  font-weight: 700;
+}
+.t7xlDemiBold {
+  font-size: 4rem;
+  font-weight: 600;
+}
+.t7xlRegular {
+  font-size: 4rem;
+  font-weight: 400;
+}
+
+/* 6xl – 56px */
+.t6xlExtraBold {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+.t6xlBold {
+  font-size: 3.5rem;
+  font-weight: 700;
+}
+.t6xlDemiBold {
+  font-size: 3.5rem;
+  font-weight: 600;
+}
+.t6xlRegular {
+  font-size: 3.5rem;
+  font-weight: 400;
+}
+
+/* 5xl – 48px */
+.t5xlExtraBold {
+  font-size: 3rem;
+  font-weight: 800;
+}
+.t5xlBold {
+  font-size: 3rem;
+  font-weight: 700;
+}
+.t5xlDemiBold {
+  font-size: 3rem;
+  font-weight: 600;
+}
+.t5xlRegular {
+  font-size: 3rem;
+  font-weight: 400;
+}
+
+/* 4xl – 40px */
+.t4xlBold {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+.t4xlDemiBold {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+.t4xlMedium {
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+.t4xlRegular {
+  font-size: 2.5rem;
+  font-weight: 400;
+}
+
+/* 3xl – 32px */
+.t3xlBold {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.t3xlDemiBold {
+  font-size: 2rem;
+  font-weight: 600;
+}
+.t3xlMedium {
+  font-size: 2rem;
+  font-weight: 500;
+}
+.t3xlRegular {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+/* 2xl – 28px */
+.t2xlBold {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.t2xlDemiBold {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.t2xlMedium {
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+.t2xlRegular {
+  font-size: 1.75rem;
+  font-weight: 400;
+}
+
+/* xl – 24px */
+.txlBold {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.txlDemiBold {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.txlMedium {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.txlRegular {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+/* lg – 20px */
+.tlgBold {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.tlgDemiBold {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.tlgMedium {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.tlgRegular {
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+/* md – 18px */
+.tmdBold {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+.tmdDemiBold {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.tmdMedium {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+.tmdRegular {
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+/* base – 16px */
+.tbaseBold {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.tbaseDemiBold {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.tbaseMedium {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.tbaseRegular {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* sm – 14px */
+.tsmBold {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.tsmDemiBold {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.tsmMedium {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.tsmRegular {
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+/* xs – 12px */
+.txsDemiBold {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.txsMedium {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.txsRegular {
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+/* 2xs – 10px */
+.t2xsDemiBold {
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+.t2xsMedium {
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+.t2xsRegular {
+  font-size: 0.625rem;
+  font-weight: 400;
+}

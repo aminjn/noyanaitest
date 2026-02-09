@@ -15,6 +15,7 @@ export const buttonVariants = [
   "Neutral3",
   "Primary3",
   "Secondary3",
+  "Success",
 ] as const;
 
 type ButtonVariant = (typeof buttonVariants)[number];

@@ -11,9 +11,9 @@ import SubmitBecomePharmacyRequest from "./SubmitBecomePharmacyRequest";
 export type BecomePharmacyPopulation = Population<{ user: true }>;
 
 export interface IBecomePharmacyRequest<
-  T extends BecomePharmacyPopulation = BecomePharmacyPopulation
+  T extends BecomePharmacyPopulation = BecomePharmacyPopulation,
 > extends MongoDoc {
-  user: T["user"] extends true ? IUser : string;
+  user?: T["user"] extends true ? IUser : string;
   createdAt: Date;
   status: BecomeANodeStatus;
   name: string;
@@ -23,7 +23,7 @@ const BecomePharmacyPage = () => {
   const { data, error, isLoading, mutate } =
     useSWR<IBecomePharmacyRequest | null>(
       `${API}/pharmacy/request`,
-      (url: string) => fetcher({ url }).then((res) => res.data)
+      (url: string) => fetcher({ url }).then((res) => res.data),
     );
 
   return (

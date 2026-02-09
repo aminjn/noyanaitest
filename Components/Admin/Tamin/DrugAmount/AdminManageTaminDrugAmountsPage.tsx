@@ -9,8 +9,12 @@ import HandleLoading from "../../UI/HandleLoading";
 import WithTitle from "../../UI/WithTitle";
 import Table from "../../UI/Table";
 import Act from "@/Components/UI/Act";
+import { Population } from "../../Clinic/AdminManageClinicsPage";
 
-export interface ITaminDrugAmount extends MongoDoc {
+export type TaminDrugAmountPopulation = Population<Record<never, never>>;
+export interface ITaminDrugAmount<
+  T extends TaminDrugAmountPopulation = TaminDrugAmountPopulation
+> extends MongoDoc {
   drugAmntId?: string;
   drugAmntCode?: string;
   drugAmntSumry?: string;

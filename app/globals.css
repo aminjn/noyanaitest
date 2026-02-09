@@ -2,8 +2,11 @@
   --transTime: 300ms;
 
   --white: #fff;
-  --black: #000;
+  --black: #0b0c17;
 
+  --aghaNaiini: #ff0000;
+
+  --primary0: #f1f8fd;
   --primary1: #e6f2fc;
   --primary2: #cce6fa;
   --primary3: #99ccf5;
@@ -119,9 +122,19 @@ body {
   overflow-y: visible;
   max-height: 100dvh;
   background-color: var(--neutralLighter1);
-  font-family: var(--fontFa), -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family:
+    var(--fontFa),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
   background-color: var(--backCol);
 }
 

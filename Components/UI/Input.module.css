@@ -19,7 +19,7 @@
   position: absolute;
   transition: all var(--transTime);
   color: var(--gray7);
-  right: 1.25rem;
+  inset-inline-start: 1.25rem;
   transform: translateY(-50%);
   pointer-events: none;
   user-select: none;
@@ -35,4 +35,11 @@
   font-size: 0.875rem;
   font-weight: 500;
   top: 50%;
+}
+
+.lead {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  inset-inline-start: 1rem;
 }
