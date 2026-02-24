@@ -1,0 +1,27 @@
+.item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.start {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--black);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--gray7);
+  font-size: 0.75rem;
+  font-weight: 400;
+}

@@ -24,7 +24,7 @@ const readOnlyKeys = ["singleton", "_id", "__v"];
 const AdminManageTextContentPage = () => {
   const { data, error, mutate } = useSWR<ITextContent>(
     `${API}/auto/textcontent`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const ready = useMemo<{ key: string; val: string }[] | null>(() => {

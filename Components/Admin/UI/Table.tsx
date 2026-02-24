@@ -1,12 +1,19 @@
 import { AgGridReact } from "ag-grid-react";
 import classes from "./Table.module.css";
 import { ReactNode, useCallback, useMemo } from "react";
-import { ColDef, GridPreDestroyedEvent, GridState } from "ag-grid-enterprise";
+import {
+  ColDef,
+  GridPreDestroyedEvent,
+  GridState,
+  INumberCellEditorParams,
+  ValueSetterFunc,
+} from "ag-grid-enterprise";
 import "ag-grid-enterprise";
 import { themeQuartz, iconSetMaterial } from "@ag-grid-community/theming";
 import { AG_GRID_LOCALE_IR } from "@ag-grid-community/locale";
 import TableDateInput from "./TableDateInput";
 import { WithStyleProps } from "./Loading";
+import Input from "@/Components/UI/Input";
 
 const myTheme = themeQuartz.withPart(iconSetMaterial).withParams({
   borderRadius: 16,
@@ -32,6 +39,8 @@ type TableColumn<T> = {
   component?: (node: T) => ReactNode;
   width?: number;
   pin?: "left" | "right";
+  onEdit?: ValueSetterFunc<T>;
+  editParams?: Partial<INumberCellEditorParams>;
 };
 
 export type TableRenderer<T> = {
@@ -53,28 +62,37 @@ const Table = <T,>({
 }>) => {
   const columnDefs = useMemo<ColDef<T>[]>(() => {
     if (!true) return [{}];
-    return Object.keys(renderer).map((key) => ({
-      colId: key,
-      filter: renderer[key].filter
-        ? `ag${renderer[key].filter}ColumnFilter`
-        : undefined,
-      width: renderer[key].width,
-      sortable: !!renderer[key].value,
-      initialPinned: renderer[key].pin,
-      valueGetter: ({ data }) =>
-        data
-          ? !!renderer[key].value
-            ? renderer[key].value?.(data)
-            : null
-          : null,
-      cellRenderer: ({ data }: { data: T }) =>
-        data
-          ? renderer[key].component?.(data) || renderer[key].value?.(data)
-          : "",
-      tooltipValueGetter: ({ data }) =>
-        data ? renderer[key].value?.(data) : null,
-      headerValueGetter: () => renderer[key].name,
-    }));
+    return Object.keys(renderer).map(
+      (key) =>
+        ({
+          colId: key,
+          filter: renderer[key].filter
+            ? `ag${renderer[key].filter}ColumnFilter`
+            : undefined,
+          width: renderer[key].width,
+          sortable: !!renderer[key].value,
+          initialPinned: renderer[key].pin,
+          valueGetter: ({ data }) =>
+            data
+              ? !!renderer[key].value
+                ? renderer[key].value?.(data)
+                : null
+              : null,
+          cellRenderer: ({ data }: { data: T }) =>
+            data
+              ? renderer[key].component?.(data) || renderer[key].value?.(data)
+              : "",
+          tooltipValueGetter: ({ data }) =>
+            data ? renderer[key].value?.(data) : null,
+          headerValueGetter: () => renderer[key].name,
+          editable: !!renderer[key].onEdit,
+          valueSetter: renderer[key].onEdit,
+          cellEditor: !!renderer[key].onEdit
+            ? `ag${renderer[key].filter}CellEditor`
+            : undefined,
+          cellEditorParams: renderer[key].editParams,
+        }) as ColDef<T>,
+    );
   }, [renderer]);
 
   const defaultColDef = useMemo<ColDef>(() => ({ floatingFilter: true }), []);
@@ -99,7 +117,7 @@ const Table = <T,>({
         localStorage.setItem(name, JSON.stringify(state));
       } catch {}
     },
-    [name]
+    [name],
   );
 
   const components = useMemo<{ [key: string]: unknown }>(() => {
@@ -123,6 +141,11 @@ const Table = <T,>({
         defaultColDef={defaultColDef}
         pagination
         suppressScrollOnNewData
+        stopEditingWhenCellsLoseFocus
+        singleClickEdit
+        // onCellValueChanged={(e) => {
+        //   console.log(e);
+        // }}
       />
     </div>
   );

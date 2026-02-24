@@ -45,7 +45,7 @@ export type FavoriteDrugPopulation = Population<{
 }>;
 
 export interface IFavoriteDrug<
-  T extends FavoriteDrugPopulation = FavoriteDrugPopulation
+  T extends FavoriteDrugPopulation = FavoriteDrugPopulation,
 > extends MongoDoc {
   doctor: T["Doctor"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Doctor"]>
@@ -78,16 +78,26 @@ const DrugGetter = () => {
       Usage: Record<never, never>;
     }>[]
   >(`${API}/doctor/presc/drug`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const { data, isLoading } = useSWR<ITaminService[]>(
-    query.length > 0 ? { url: `${API}/doctor/presc/drug`, query } : null,
-    ({ url, query }: { url: string; query: string }) =>
-      fetcher({ url, method: "POST", payload: { query } }).then(
-        (res) => res.data
+    query.length > 0
+      ? { url: `${API}/doctor/presc/drug`, query, srvType: "01" }
+      : null,
+    ({
+      url,
+      query,
+      srvType,
+    }: {
+      url: string;
+      query: string;
+      srvType: string;
+    }) =>
+      fetcher({ url, method: "POST", payload: { query, srvType } }).then(
+        (res) => res.data,
       ),
-    { keepPreviousData: true }
+    { keepPreviousData: true },
   );
 
   const getContent = useLocale();

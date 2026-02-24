@@ -47,8 +47,9 @@ export type ClinicPopulation = Population<{
   User: boolean;
 }>;
 
-export interface IClinic<T extends ClinicPopulation = ClinicPopulation>
-  extends MongoDoc {
+export interface IClinic<
+  T extends ClinicPopulation = ClinicPopulation,
+> extends MongoDoc {
   slug?: string;
   name?: string;
   description?: string;
@@ -77,7 +78,7 @@ export type ClinicDepartmentPopulation = Population<{
 }>;
 
 export interface IClinicDepartment<
-  T extends ClinicDepartmentPopulation = ClinicDepartmentPopulation
+  T extends ClinicDepartmentPopulation = ClinicDepartmentPopulation,
 > extends MongoDoc {
   clinic: T["ClinicPopulated"] extends ClinicPopulation
     ? IClinic<T["ClinicPopulated"]> | null
@@ -100,7 +101,7 @@ export type ClinicDoctorPopuplation = Population<{
 }>;
 
 export interface IClinicDoctor<
-  T extends ClinicDoctorPopuplation = ClinicDoctorPopuplation
+  T extends ClinicDoctorPopuplation = ClinicDoctorPopuplation,
 > extends MongoDoc {
   clinic: T["ClinicPopulated"] extends ClinicPopulation
     ? IClinic<T["ClinicPopulated"]> | null
@@ -116,7 +117,7 @@ export interface IClinicDoctor<
 const AdminManageClinicsPage = () => {
   const { data, error, mutate } = useSWR<IClinic<{ User: true }>[]>(
     `${API}/auto/clinic`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -227,7 +228,7 @@ const AdminManageClinicsPage = () => {
                       onClick={() =>
                         setPopup(
                           "DeleteClinic",
-                          <DeleteClinicPopup mutate={mutate} node={node} />
+                          <DeleteClinicPopup mutate={mutate} node={node} />,
                         )
                       }
                     >

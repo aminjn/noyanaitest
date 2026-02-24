@@ -10,6 +10,7 @@ import useLocale from "@/Components/Hooks/useLocale";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import FavoriteButton from "./FavoriteButton";
 
 const FavoriteDrug = ({ mutate }: { mutate: () => unknown }) => {
   const { working } = useContext(PrescriptionContext);
@@ -24,8 +25,7 @@ const FavoriteDrug = ({ mutate }: { mutate: () => unknown }) => {
 
   return (
     <Fragment>
-      <button
-        className={classes.fav}
+      <FavoriteButton
         onClick={() => {
           if (!!loading) return;
           if (!isWorkingReady(working))
@@ -39,11 +39,7 @@ const FavoriteDrug = ({ mutate }: { mutate: () => unknown }) => {
             usage: working.usage?._id,
           });
         }}
-      >
-        <Ixon width="1.5rem">
-          <StarIcon />
-        </Ixon>
-      </button>
+      />
       <Act
         method="PUT"
         path={loading ? `${API}/doctor/presc/drug` : null}

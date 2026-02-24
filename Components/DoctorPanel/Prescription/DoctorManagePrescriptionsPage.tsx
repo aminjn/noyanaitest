@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/Components/UI/Button";
 import classes from "./DoctorManagePrescriptionsPage.module.css";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import DoctorTaminTokenManager from "./DoctorTaminTokenManager";
@@ -17,6 +17,8 @@ import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import FileIcon from "@/Components/Icons/FileIcon";
 import IconLink from "@/Components/Admin/UI/IconLink";
+import LoadPrescriptionsFromTamin from "./LoadPrescriptionsFromTamin";
+import usePopup from "@/Components/Hooks/usePopup";
 
 const DoctorManagePrescriptionsPage = () => {
   const getContent = useLocale();
@@ -27,10 +29,12 @@ const DoctorManagePrescriptionsPage = () => {
       TaminStatus: Record<never, never>;
     }>[]
   >(`${API}/doctor/presc`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const push = useProgress();
+
+  const { setPopup } = usePopup();
 
   return (
     <div>
@@ -39,12 +43,23 @@ const DoctorManagePrescriptionsPage = () => {
         {!!data && (
           <WithTitle
             title={getContent("prescriptionsList")}
-            actions={[
-              {
-                title: getContent("newPrescription"),
-                action: () => push("/doctorpanel/prescription"),
-              },
-            ]}
+            collapsed={
+              <Fragment>
+                <Button onClick={() => push("/doctorpanel/prescription")}>
+                  {getContent("newPrescription")}
+                </Button>
+                <Button
+                  onClick={() =>
+                    setPopup(
+                      "loadPrescriptionsFromTamin",
+                      <LoadPrescriptionsFromTamin />,
+                    )
+                  }
+                >
+                  {getContent("loadPrescriptionsFromTamin")}
+                </Button>
+              </Fragment>
+            }
           >
             <Table
               data={data}
@@ -75,6 +90,16 @@ const DoctorManagePrescriptionsPage = () => {
                 taminId: {
                   name: getContent("taminPrescriptionId"),
                   value: (node) => node.taminStatus?.taminId || "",
+                  filter: "Text",
+                },
+                labTaminTracking: {
+                  name: getContent("labTaminTracking"),
+                  value: (node) => node.taminStatus?.labTracking,
+                  filter: "Text",
+                },
+                labTaminId: {
+                  name: getContent("labTaminId"),
+                  value: (node) => node.taminStatus?.labTaminId,
                   filter: "Text",
                 },
                 taminDate: {

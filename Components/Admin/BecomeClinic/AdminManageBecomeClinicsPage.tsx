@@ -18,7 +18,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 const AdminManageBecomeClinicsPage = () => {
   const { data, error } = useSWR<IBecomeClinicRequest<{ user: true }>[]>(
     `${API}/auto/becomeclinic`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   return (
@@ -31,12 +31,15 @@ const AdminManageBecomeClinicsPage = () => {
             renderer={{
               user: {
                 name: " یوزر",
-                value: (node) => node.user.phone,
-                component: (node) => (
-                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                    {node.user.phone}
-                  </InlineLink>
-                ),
+                value: (node) => (node.user ? node.user.phone : "حذف شده"),
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {node.user.phone}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
                 filter: "Text",
               },
               createdAt: {

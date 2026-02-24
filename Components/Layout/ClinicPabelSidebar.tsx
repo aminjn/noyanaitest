@@ -11,8 +11,14 @@ const ClinicPanelSidebar = () => {
         show: true,
         target: "secretary",
       },
+      {
+        title: "prescriptions",
+        icon: <UserEditIcon />,
+        show: true,
+        target: "prescription",
+      },
     ],
-    []
+    [],
   );
 
   return <PanelSidebar links={links} panel="clinicpanel" />;

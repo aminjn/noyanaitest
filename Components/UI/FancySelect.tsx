@@ -54,7 +54,7 @@ const HighlightedText = ({ text, query }: { text: string; query: string }) => {
     result.push(
       <span key={`h-${i}`} className={classes.query}>
         {text.slice(r.start, r.end)}
-      </span>
+      </span>,
     );
     lastIndex = r.end;
   });
@@ -105,7 +105,7 @@ const FancySelect = ({
     if (!query) return options;
     const segments = query.toLowerCase().trim().split(/\s+/);
     return options.filter(
-      (option) => mergeRanges(findRanges(option.title, segments)).length > 0
+      (option) => mergeRanges(findRanges(option.title, segments)).length > 0,
     );
   }, [query, options]);
 
@@ -131,7 +131,7 @@ const FancySelect = ({
 
   const isOptionsOpen = useMemo<boolean>(
     () => isFocuesd && !!filteredOptions.length,
-    [isFocuesd, filteredOptions.length]
+    [isFocuesd, filteredOptions.length],
   );
 
   return (

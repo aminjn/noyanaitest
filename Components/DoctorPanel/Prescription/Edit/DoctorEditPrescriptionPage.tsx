@@ -11,7 +11,7 @@ const DoctorEditPrescriptionPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const { data, error } = useSWR<DefaultPrescription>(
     `${API}/doctor/presc/${nodeId}`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   return (

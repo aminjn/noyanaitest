@@ -8,7 +8,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import useLocale from "@/Components/Hooks/useLocale";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-import { IPrescription } from "../Create/PrescriptionItemsOverview";
 import { calculateAge } from "@/Components/helpers/lib";
 import { t2xsMedium, tsmRegular } from "@/Components/UI/Typography";
 import PrescriptionItemsList from "../Create/PrescriptionItemsList";
@@ -53,6 +52,7 @@ const PrescriptionOverviewPage = () => {
     `${API}/doctor/presc/${nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+
   const [isCommitting, setIsCommitting] = useState<boolean>(false);
   const getContent = useLocale();
   const { setPopup } = usePopup();
@@ -127,7 +127,11 @@ const PrescriptionOverviewPage = () => {
                 },
               ]}
             />
-            <PrescriptionItemsList items={data.items} readOnly />
+            <PrescriptionItemsList
+              labItems={data.labItems}
+              items={data.items}
+              readOnly
+            />
           </div>
           <Act
             path={isCommitting ? `${API}/doctor/presc/${data._id}` : null}

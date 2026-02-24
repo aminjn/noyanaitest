@@ -9,9 +9,7 @@ import WithTitle from "@/Components/Admin/UI/WithTitle";
 import CreatePatientPopup from "./CreatePatientPopup";
 import PrescriptionPatientManager from "./PrescriptionPatientManager";
 import PrescriptionItemGetterAgent from "./Items/PrescriptionItemGetterAgent";
-import PrescriptionItemsOverview, {
-  IPrescription,
-} from "./PrescriptionItemsOverview";
+import PrescriptionItemsOverview from "./PrescriptionItemsOverview";
 
 const Inner = () => {
   const getContent = useLocale();

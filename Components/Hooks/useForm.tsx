@@ -45,7 +45,7 @@ const useForm = function <TInput, TResult = unknown>({
 }: UseFormProps<TInput, TResult>): UseFormReturn<TInput> {
   const [input, setInput] = useState<Partial<TInput>>({});
   const [isSaving, setIsSaving] = useState<Record<string, unknown> | null>(
-    null
+    null,
   );
   const pushNotification = useNotification();
 
@@ -71,7 +71,7 @@ const useForm = function <TInput, TResult = unknown>({
         if (err instanceof FetchError) pushNotification(err.message, "Error");
         errorCb?.();
       },
-    }
+    },
   );
 
   const reset = useCallback(() => setInput({}), []);

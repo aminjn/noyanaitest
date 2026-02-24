@@ -10,9 +10,9 @@ import { Fragment } from "react";
 
 export type BecomeClinicPopulation = Population<{ user: true }>;
 export interface IBecomeClinicRequest<
-  T extends BecomeClinicPopulation = BecomeClinicPopulation
+  T extends BecomeClinicPopulation = BecomeClinicPopulation,
 > extends MongoDoc {
-  user: T["user"] extends true ? IUser : string;
+  user: T["user"] extends true ? IUser | null : string;
   createdAt: Date;
   status: BecomeANodeStatus;
   name: string;
@@ -22,7 +22,7 @@ const BecomeClinicPage = () => {
   const { data, error, isLoading, mutate } =
     useSWR<IBecomeClinicRequest | null>(
       `${API}/clinic/request`,
-      (url: string) => fetcher({ url }).then((res) => res.data)
+      (url: string) => fetcher({ url }).then((res) => res.data),
     );
 
   return (

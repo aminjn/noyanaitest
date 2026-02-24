@@ -1,0 +1,29 @@
+.items {
+  width: min(90dvw, 30rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+}
+
+.itemName {
+  font-size: 1.25rem;
+  color: var(--black);
+}
+
+.itemDetails {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--gray10);
+}

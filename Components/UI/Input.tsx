@@ -53,7 +53,7 @@ const Input = forwardRef<
       tail,
       inputClass = "",
     },
-    ref
+    ref,
   ) => {
     return (
       <div style={style} className={`${classes.main} ${className}`}>
@@ -77,7 +77,7 @@ const Input = forwardRef<
         {!!tail && <span className={classes.tail}>{tail}</span>}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

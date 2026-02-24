@@ -52,6 +52,21 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import PrescriptionItemsList from "./PrescriptionItemsList";
 import { FetchMethod } from "@/Components/helpers/fetcher";
 
+export type PrescriptionLabItemPopulation = Population<{
+  Item: TaminServicePopulation;
+}>;
+
+export interface IPrescriptionLabItem<
+  T extends PrescriptionLabItemPopulation = PrescriptionLabItemPopulation,
+> extends MongoDoc {
+  item: T["Item"] extends PrescriptionLabItemPopulation
+    ? ITaminService
+    : string;
+  dateDo?: Date;
+  qty: number;
+  description?: string;
+}
+
 export type PrescriptionItemPopulation = Population<{
   Item: TaminServicePopulation;
   Usage: TaminDrugUsagePopulation;
@@ -89,6 +104,8 @@ export interface ITaminPrescription<
   tracking?: string;
   taminId?: string;
   submittedAt: Date;
+  labTracking?: string;
+  labTaminId?: string;
 }
 
 export type PrescriptionPopulation = Population<{
@@ -96,6 +113,7 @@ export type PrescriptionPopulation = Population<{
   Patient: UserIdentityPopulation;
   Items: PrescriptionItemPopulation;
   TaminStatus: TaminPrescriptionPopulation;
+  LabItems: PrescriptionLabItemPopulation;
 }>;
 
 export interface IPrescription<
@@ -110,6 +128,9 @@ export interface IPrescription<
   items: T["Items"] extends PrescriptionItemPopulation
     ? IPrescriptionItem<T["Items"]>[]
     : IPrescriptionItem[];
+  labItems: T["LabItems"] extends PrescriptionLabItemPopulation
+    ? IPrescriptionLabItem<T["LabItems"]>[]
+    : IPrescriptionLabItem[];
   createdAt: Date;
   taminStatus?: T["TaminStatus"] extends TaminPrescriptionPopulation
     ? ITaminPrescription<T["TaminStatus"]> | null
@@ -126,12 +147,19 @@ type SubmitPrescriptionPayload = {
     qty: number;
     description?: string;
   }[];
+  labItems: {
+    item: string;
+    qty: number;
+    dateDo?: string;
+    description?: string;
+  }[];
 };
 
 type Action = "Commit" | "Draft" | "Edit" | "EditDraft" | "EditDraftCommit";
 
 const PrescriptionItemsOverview = () => {
-  const { items, patient, defaultValue } = useContext(PrescriptionContext);
+  const { items, patient, defaultValue, labItems } =
+    useContext(PrescriptionContext);
 
   // const [isDrafting, setIsDrfating] =
   //   useState<SubmitPrescriptionPayload | null>(null);
@@ -160,7 +188,7 @@ const PrescriptionItemsOverview = () => {
           getContent("selectpPatientFirstErrorMessage"),
           "Error",
         );
-      if (!items.length)
+      if (!items.length && !labItems.length)
         return pushNotification(
           getContent("draftingEmptyPrescriptionErrorMessage"),
           "Warn",
@@ -175,10 +203,17 @@ const PrescriptionItemsOverview = () => {
           description: item.description,
           qty: item.qty,
         })),
+        labItems: labItems.map((item) => ({
+          item: item.item._id,
+          qty: item.qty,
+          dateDo: item.dateDo?.toString(),
+          description: item.description,
+        })),
       };
+      console.log(payload);
       setAction({ action: _action, payload });
     },
-    [action, getContent, items, patient, pushNotification],
+    [action, getContent, items, patient, pushNotification, labItems],
   );
 
   const actDict = useMemo<
@@ -197,7 +232,7 @@ const PrescriptionItemsOverview = () => {
       Edit: {
         path: `${API}/doctor/presc/tamin/${defaultValue?._id}`,
         method: "POST",
-        payload: (inp) => ({ items: inp.items }),
+        payload: (inp) => ({ items: inp.items, labItems: inp.labItems }),
       },
       EditDraft: {
         path: `${API}/doctor/presc/${defaultValue?._id}`,
@@ -211,7 +246,7 @@ const PrescriptionItemsOverview = () => {
     [defaultValue?._id],
   );
 
-  if (!items.length) return null;
+  if (!items.length && !labItems.length) return null;
   return (
     <div className={classes.main}>
       <div className={classes.actions}>
@@ -260,7 +295,7 @@ const PrescriptionItemsOverview = () => {
           </Fragment>
         )}
       </div>
-      <PrescriptionItemsList items={items} />
+      <PrescriptionItemsList items={items} labItems={labItems} />
       {!!action && (
         <Act
           path={actDict[action.action].path}

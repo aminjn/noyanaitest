@@ -8,6 +8,7 @@ import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import { calculateAge } from "@/Components/helpers/lib";
 import { WithStyleProps } from "@/Components/Layout/Layout";
 import Button from "@/Components/UI/Button";
+import PatientPrivilege from "./PatientPrivilege";
 
 const PatientRenderer = ({ className = "", style }: WithStyleProps) => {
   const { patient } = useContext(PrescriptionContext);
@@ -52,7 +53,7 @@ const PatientRenderer = ({ className = "", style }: WithStyleProps) => {
           className={classes.alt}
           style={{ marginInlineEnd: "1rem" }}
         >{`${getContent("insuranceType")} :`}</span>
-        <span className={classes.tamin}>تامین اجتماعی</span>
+        <PatientPrivilege />
       </div>
       <div className={classes.part}>
         <span

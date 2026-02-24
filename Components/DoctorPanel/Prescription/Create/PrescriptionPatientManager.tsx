@@ -13,7 +13,7 @@ const PrescriptionPatientManager = () => {
     <div className={classes.main}>
       <PatientSelector style={{ marginBottom: "1.25rem" }} />
       <PatientRenderer />
-      <PrescriptionHeader />
+      {/* <PrescriptionHeader /> */}
     </div>
   );
 };

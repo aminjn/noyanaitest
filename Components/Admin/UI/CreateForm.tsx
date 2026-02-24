@@ -59,7 +59,7 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
   };
 };
 
-const CreateForm = <TInput,>({
+const CreateForm = <TInput, TResult = unknown>({
   defaultValue,
   hookProps,
   renderer,
@@ -87,7 +87,9 @@ const CreateForm = <TInput,>({
       }
   )
 >) => {
-  const hookResult = useForm<TInput>(hookProps || { path: "", method: "GET" });
+  const hookResult = useForm<TInput, TResult>(
+    hookProps || { path: "", method: "GET" },
+  );
 
   const { setInput, isLoading, submit, input } = hookProvided || hookResult;
 
