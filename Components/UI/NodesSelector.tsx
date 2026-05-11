@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
-const NodesSelector = <TMulti extends boolean>({
+const NodesSelector = <TMulti extends boolean = false>({
   getOptionLabel,
   getOptionValue,
   path,
@@ -28,15 +28,16 @@ const NodesSelector = <TMulti extends boolean>({
   defaultValue?: unknown;
   multi?: TMulti;
   onChange?: (
-    e: TMulti extends true ? string[] | null : string | null
+    e: TMulti extends true ? string[] | null : string | null,
   ) => unknown;
   readOnly?: boolean;
   dataParser?: (res: unknown) => unknown[];
   clearable?: boolean;
 }>) => {
   const { data } = useSWR(path, (url: string) =>
-    fetcher({ url }).then(!!dataParser ? dataParser : (res) => res.data.data)
+    fetcher({ url }).then(!!dataParser ? dataParser : (res) => res.data.data),
   );
+
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
@@ -52,7 +53,7 @@ const NodesSelector = <TMulti extends boolean>({
         defaultValue={
           multi
             ? data?.filter((el: unknown) =>
-                (defaultValue as unknown[])?.includes(getOptionValue(el))
+                (defaultValue as unknown[])?.includes(getOptionValue(el)),
               )
             : data?.find((el: unknown) => getOptionValue(el) === defaultValue)
         }

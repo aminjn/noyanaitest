@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-bottom: 5.875rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--gray13);
+}
+
+.all {
+  display: flex;
+  align-items: center;
+  color: var(--black);
+}
+
+.allText {
+  color: var(--primary);
+}
+
+.slide {
+  width: fit-content;
+}

@@ -1,0 +1,38 @@
+.main {
+  width: 100%;
+  height: 19.125rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 10.25rem;
+}
+
+.slider {
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(0.625rem);
+  inset-inline-end: 0;
+  padding: 0.625rem;
+  z-index: 1;
+  border-radius: 50%;
+  background-color: var(--white);
+  color: var(--black);
+  box-shadow: var(--shadowBase);
+}
+
+.navPrev {
+  inset-inline-end: unset;
+  inset-inline-start: 0;
+  transform: translateY(-50%) translateX(-0.625rem);
+}

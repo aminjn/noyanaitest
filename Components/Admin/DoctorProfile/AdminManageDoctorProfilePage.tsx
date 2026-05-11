@@ -31,7 +31,7 @@ const AdminManageDoctorProfilePage = () => {
     }>
   >(
     params ? `${API}/auto/doctorprofile/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -104,7 +104,7 @@ const AdminManageDoctorProfilePage = () => {
                             <DeleteDoctorProfilePopup
                               node={data}
                               mutate={() => push(adminPath(`/doctorprofile`))}
-                            />
+                            />,
                           )
                         }
                       >

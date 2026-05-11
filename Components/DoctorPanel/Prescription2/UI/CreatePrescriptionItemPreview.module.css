@@ -1,0 +1,86 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.itemWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 1.5rem;
+  padding-block: 0.5rem;
+  background-color: var(--white);
+  box-shadow: var(--shadow);
+  border-radius: 0.5rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.itemContent {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.itemName {
+  color: var(--black);
+}
+
+.itemDescription {
+  color: var(--gray10);
+  transition: all var(--transTime);
+}
+
+.itemActions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  transition: all var(--transTime);
+}
+
+.expansion {
+  max-height: 0;
+  transition: all var(--transTime);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.open {
+  max-height: 4rem;
+}
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pairTitle {
+  color: var(--gray10);
+}
+
+.pairValue {
+  padding-inline: 1rem;
+  padding-block: 0.25rem;
+  color: var(--black);
+}

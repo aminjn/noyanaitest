@@ -5,9 +5,11 @@ const Counter = ({
   value,
   onTick,
   title,
+  onChange,
 }: {
   value: number;
   onTick?: (tick: number) => unknown;
+  onChange?: (value: number) => unknown;
   title: string;
 }) => {
   return (
@@ -21,7 +23,22 @@ const Counter = ({
         >
           +
         </button>
-        <span className={`${classes.value} ${txsMedium}`}>{value}</span>
+        <input
+          className={`${classes.value} ${txsMedium}`}
+          value={value}
+          onChange={(e) => {
+            const val = Number(e.target.value);
+            if (
+              isNaN(val) ||
+              e.target.value.includes(".") ||
+              e.target.value.includes(" ") ||
+              e.target.value.includes("-")
+            )
+              return;
+            onChange?.(val);
+          }}
+          dir="ltr"
+        />
         <button
           className={`${classes.action} ${txsMedium}`}
           onClick={() => onTick?.(-1)}

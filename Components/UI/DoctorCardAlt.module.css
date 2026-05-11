@@ -1,0 +1,148 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+  width: 14.75rem;
+}
+
+.scores {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding-block: 0.125rem;
+  padding-inline: 0.375rem;
+  border-radius: 100dvw;
+  border: 0.5px solid currentColor;
+}
+
+.starBadge {
+  color: var(--warning);
+  background-color: var(--warningT1);
+}
+
+.recommendBadge {
+  background-color: var(--infoT1);
+  color: var(--info);
+}
+
+.badgeValue {
+  color: var(--gray11);
+}
+
+.imageBox {
+  position: relative;
+  width: fit-content;
+  margin-inline: auto;
+  margin-bottom: 0.5rem;
+}
+
+.image {
+  position: relative;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+  overflow: hidden;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 5rem;
+  height: 5rem;
+}
+
+.onlineBadge {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: var(--success);
+  border: 1px solid var(--white);
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  transform: translate(-0.25rem, 0.25rem);
+}
+
+.verifiedBadge {
+  color: var(--primary);
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.doctorName {
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--gray13);
+}
+
+.speciality {
+  color: var(--gray8);
+}
+
+.consult {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.pair {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pairTitle {
+  color: var(--gray10);
+}
+
+.pairValue {
+  color: var(--gray12);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding-inline: 0.75rem;
+  height: 2rem;
+}
+
+.primaryAction {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.secondaryAction {
+  background-color: transparent;
+  color: var(--primary7);
+  border: 2px solid currentColor;
+}

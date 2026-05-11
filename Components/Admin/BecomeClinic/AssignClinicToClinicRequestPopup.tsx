@@ -25,7 +25,7 @@ const AssignClinicToClinicRequestPopup = ({
       if (!inp.clinic) return "کلینیک را انتخاب نمایید";
     },
     mutator: () => ({
-      user: node.user._id,
+      user: node.user?._id,
     }),
     successCb: () => {
       mutate();

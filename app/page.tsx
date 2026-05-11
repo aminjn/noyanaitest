@@ -1,7 +1,10 @@
-import HomePage from "@/Components/Home/HomePage";
+import { getPublicData } from "@/Components/helpers/getPublicData";
+import HomePage, { HomePageProps } from "@/Components/Home/HomePage";
 
-const Home = () => {
-  return <HomePage />;
+const Home = async () => {
+  const data = await getPublicData<HomePageProps>("home");
+
+  return <HomePage {...data} />;
 };
 
 export default Home;

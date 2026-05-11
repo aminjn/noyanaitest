@@ -31,7 +31,7 @@ const AdminManageDoctorProfilesPage = () => {
       PhoneConsultSettingsPopulated: Record<never, never>;
     }>[]
   >(`${API}/auto/doctorprofile`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -51,7 +51,7 @@ const AdminManageDoctorProfilesPage = () => {
                     action: () =>
                       setPopup(
                         "CreateDoctorProfile",
-                        <CreateDoctorProfilePopup mutate={mutate} />
+                        <CreateDoctorProfilePopup mutate={mutate} />,
                       ),
                   },
                 ]
@@ -162,7 +162,7 @@ const AdminManageDoctorProfilesPage = () => {
                             <DeleteDoctorProfilePopup
                               mutate={mutate}
                               node={node}
-                            />
+                            />,
                           )
                         }
                       >

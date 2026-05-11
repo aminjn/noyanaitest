@@ -19,7 +19,7 @@ const DateInput = ({
   readOnly?: boolean;
 }>) => {
   return (
-    <div className={classes.main}>
+    <div className={`${classes.main} ${className}`} style={style} > 
       <DatePicker
         inputClass={classes.input}
         placeholder="برای انتخاب تاریخ کلیک کنید"

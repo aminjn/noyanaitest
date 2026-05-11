@@ -1,7 +1,7 @@
 export const getPublicData = async <T,>(
-  path: string
+  path: string,
 ): Promise<T | undefined> => {
-  const response = await fetch(`http://127.0.01/api/v1/public/${path}`, {
+  const response = await fetch(`http://127.0.0.1/api/v1/public/${path}`, {
     cache: "no-store",
   });
   if (!response.ok) return;

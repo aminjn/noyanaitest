@@ -17,7 +17,7 @@ const PatientSelector = ({ className = "", style }: WithStyleProps) => {
   const getContent = useLocale();
 
   const [isLoading, setIsLoading] = useState<{ nationalId: string } | null>(
-    null
+    null,
   );
 
   const [input, setInput] = useState<Partial<{ nationalId: string }>>({});
@@ -37,7 +37,7 @@ const PatientSelector = ({ className = "", style }: WithStyleProps) => {
           if (!isSSID(input.nationalId))
             return pushNotification(
               getContent("badNationalIdErrorMessage"),
-              "Warn"
+              "Warn",
             );
           setIsLoading({ nationalId: input.nationalId! });
         }}
@@ -80,7 +80,7 @@ const PatientSelector = ({ className = "", style }: WithStyleProps) => {
             if (!result.data.identity)
               return pushNotification(
                 getContent("patientNotFoundErrorMessage"),
-                "Error"
+                "Error",
               );
             setPatient(result.data.identity);
           }}

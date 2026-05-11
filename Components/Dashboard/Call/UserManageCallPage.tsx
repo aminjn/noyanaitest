@@ -150,7 +150,7 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
       const pc = peerConnection.current;
       if (pc)
         pc.addIceCandidate(new RTCIceCandidate(candidate)).then(() =>
-          console.log("Got ICE Candidate")
+          console.log("Got ICE Candidate"),
         );
     });
 
@@ -286,7 +286,7 @@ const NewUserManageCallPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const { data, error } = useSWR<ICallRoom<{ participants: true }>>(
     `${API}/call/${nodeId}`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const { user } = useUser();

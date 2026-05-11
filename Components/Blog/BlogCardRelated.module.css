@@ -32,7 +32,7 @@
 
 .title,
 .summary {
-    display: flex;
+  display: flex;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;

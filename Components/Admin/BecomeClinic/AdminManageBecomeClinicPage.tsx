@@ -24,7 +24,7 @@ const AdminManageBecomeClinicPage = () => {
   const { nodeId } = useParams();
   const { data, error, mutate } = useSWR<IBecomeClinicRequest<{ user: true }>>(
     `${API}/auto/becomeclinic/${nodeId}`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -50,8 +50,8 @@ const AdminManageBecomeClinicPage = () => {
                     <DataPair
                       title="یوزر"
                       value={
-                        <InlineLink href={adminPath(`/user/${data.user._id}`)}>
-                          {data.user.phone}
+                        <InlineLink href={adminPath(`/user/${data.user?._id}`)}>
+                          {data.user?.phone}
                         </InlineLink>
                       }
                     />
@@ -75,7 +75,7 @@ const AdminManageBecomeClinicPage = () => {
                           <ChangeBecomeClinicRequestPopup
                             node={data}
                             mutate={mutate}
-                          />
+                          />,
                         )
                       }
                     >
@@ -88,7 +88,7 @@ const AdminManageBecomeClinicPage = () => {
                           <AssignClinicToClinicRequestPopup
                             node={data}
                             mutate={mutate}
-                          />
+                          />,
                         )
                       }
                     >

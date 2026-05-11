@@ -9,8 +9,12 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
 import { MongoDoc } from "@/Components/Hooks/useUser";
+import { Population } from "../../Clinic/AdminManageClinicsPage";
 
-export interface ITaminPrescriptionType extends MongoDoc {
+export type TaminPrescriptionTypePopulation = Population<Record<never, never>>;
+export interface ITaminPrescriptionType<
+  T extends TaminPrescriptionTypePopulation = TaminPrescriptionTypePopulation,
+> extends MongoDoc {
   prescTypeId?: number;
   prescTypeCode?: string;
   prescTypeDesc?: string;
@@ -21,7 +25,7 @@ const AdminManageTaminPrescriptionTypesPage = () => {
 
   const { data, error, mutate } = useSWR<ITaminPrescriptionType[]>(
     `${API}/auto/taminPrescriptionType`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   return (

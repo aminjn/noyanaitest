@@ -1,30 +1,58 @@
 "use client";
 
-import List from "../Admin/UI/List";
-import VoiceManager from "../Admin/VoiceManager";
-import usePopup from "../Hooks/usePopup";
-import useProgress from "../Hooks/useProgress";
-import LogoutPopup from "../Popups/LogoutPopup";
-import Button from "../UI/Button";
+import { IAdvertisement } from "../Admin/Advertisement/AdminManageAdvertisementsPage";
+import { IAiExample } from "../Admin/AiExample/AdminManageAiExamplesPage";
+import { IFaq } from "../Admin/Faq/AdminManageFaqsPage";
+import { IHomeIntroduction } from "../Admin/HomeIntroduction/AdminManageHomeIntroductionsPage";
+import { IService } from "../Admin/Service/AdminManageServicesPage";
+import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
+import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
+import HomeAds from "./HomeAds";
+import HomeAdSlider from "./HomeAdSlider";
+import HomeFaqs from "./HomeFaqs";
+import HomeHero from "./HomeHero";
+import HomeIntroduction from "./HomeIntroduction";
 import classes from "./HomePage.module.css";
+import HomePopular from "./HomePopular";
+import HomeRegister from "./HomeRegister";
+import HomeServices from "./HomeServices";
+import HomeSpecialities from "./HomeSpecialities";
 
-const HomePage = () => {
-  const { setPopup } = usePopup();
+export type HomePageProps = Partial<{
+  examples: IAiExample[];
+  introduction: IHomeIntroduction[];
+  specialities: ISpeciality[];
+  advertisements: IAdvertisement[];
+  popularDoctors: IDoctorProfile<{
+    MainSpecialityPopulated: Record<never, never>;
+  }>[];
+  services: IService<{ Owner: Record<never, never> }>[];
+  sliderAds: IAdvertisement[];
+  faqs: IFaq[];
+}>;
 
-  const push = useProgress();
-
+const HomePage = ({
+  examples,
+  introduction,
+  specialities,
+  advertisements,
+  popularDoctors,
+  services,
+  sliderAds,
+  faqs,
+}: HomePageProps) => {
   return (
-    <List>
-      <Button onClick={() => setPopup("Logout", <LogoutPopup />)}>خروج</Button>
-      <Button onClick={() => push("secretarypanel")}>Secretary Panel</Button>
-      <Button onClick={() => push("chat")}>Chat</Button>
-      <Button onClick={() => push("insurancepanel")}>Insurance Panel</Button>
-      <Button onClick={() => push("pharmacypanel")}>Pharmacy Panel</Button>
-      <Button onClick={() => push("clinicpanel")}>clinic Panel</Button>
-      <Button onClick={() => setPopup("voiceManager", <VoiceManager />)}>
-        Voice
-      </Button>
-    </List>
+    <main className={classes.main}>
+      <HomeHero examples={examples} />
+      <HomeIntroduction nodes={introduction} />
+      <HomeSpecialities nodes={specialities} />
+      <HomeAds nodes={advertisements} />
+      <HomePopular nodes={popularDoctors} />
+      <HomeServices nodes={services} />
+      <HomeRegister />
+      <HomeAdSlider nodes={sliderAds} />
+      <HomeFaqs nodes={faqs} />
+    </main>
   );
 };
 

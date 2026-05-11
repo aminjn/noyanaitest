@@ -23,7 +23,7 @@ export const getClinicLabel = (node: IClinic): string => node.name || node._id;
 
 //TODO: remove this
 export const getDoctorSecretaryAccessLavelLabel = (
-  node: IDoctorSecretaryAccessLevel
+  node: IDoctorSecretaryAccessLevel,
 ): string => node.name || node._id;
 
 export const getAclLabel = (node: Acl<[], unknown>): string =>

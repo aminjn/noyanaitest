@@ -12,11 +12,11 @@ const useComplexLocale = () => {
       for (let i = 0; i < vars.length; ++i)
         result = result.replaceAll(
           "$" + "{" + (i + 1).toString() + "}",
-          vars[i]
+          vars[i],
         );
       return result;
     },
-    [getContent]
+    [getContent],
   );
   return getComplexContent;
 };

@@ -1,0 +1,38 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+}
+
+.questionBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 1.5rem;
+  padding-block: 1rem;
+  background-color: var(--primary2);
+  border-radius: 0.5rem;
+}
+
+.question {
+  color: var(--primary);
+}
+
+.chevron {
+  color: var(--primary);
+}
+
+.answer {
+  max-height: 0;
+  transition: all var(--transTime);
+  overflow: hidden;
+}
+
+.open {
+  max-height: 10rem;
+}

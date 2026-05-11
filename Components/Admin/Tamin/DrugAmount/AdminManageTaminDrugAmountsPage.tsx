@@ -13,7 +13,7 @@ import { Population } from "../../Clinic/AdminManageClinicsPage";
 
 export type TaminDrugAmountPopulation = Population<Record<never, never>>;
 export interface ITaminDrugAmount<
-  T extends TaminDrugAmountPopulation = TaminDrugAmountPopulation
+  T extends TaminDrugAmountPopulation = TaminDrugAmountPopulation,
 > extends MongoDoc {
   drugAmntId?: string;
   drugAmntCode?: string;
@@ -27,7 +27,7 @@ const AdminManageTaminDrugAmountsPage = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const { data, error, mutate } = useSWR<ITaminDrugAmount[]>(
     `${API}/auto/taminDrugAmount`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   return (

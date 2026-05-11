@@ -6,14 +6,15 @@ import FancySelect from "@/Components/UI/FancySelect";
 import { useContext } from "react";
 import useSWR from "swr";
 import PrescriptionContext from "../../../PrescriptionContext";
+import usePrescription from "@/Components/DoctorPanel/Prescription2/Store/usePrescription";
 
 const AmountGetter = () => {
   const { data } = useSWR<ITaminDrugAmount[]>(
     `${API}/doctor/presc/amount`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const { setWorking, working } = useContext(PrescriptionContext);
+  const { setWorking, working } = usePrescription();
 
   const getContent = useLocale();
 
@@ -28,10 +29,10 @@ const AmountGetter = () => {
       onChange={(e) =>
         setWorking((prev) => ({
           ...prev,
-          amount: data?.find((el) => el._id === e),
+          timesADay: data?.find((el) => el._id === e),
         }))
       }
-      defaultValue={working.amount?.drugAmntConcept}
+      defaultValue={working.timesADay?.drugAmntConcept}
     />
   );
 };

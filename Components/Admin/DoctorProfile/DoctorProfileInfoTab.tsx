@@ -56,6 +56,7 @@ const DoctorProfileInfoTab = ({
         active: { type: "bool", title: "فعال" },
         order: { type: "number", title: "رتبه" },
         avatar: { type: "image", title: "تصویر اصلی" },
+        popular: { type: "bool", title: "محبوب" },
       }}
       hookProvided={form}
     />

@@ -12,7 +12,7 @@ export const getSessionDateKey = (date: Date): string =>
 export const calculateAge = (born: Date): number =>
   Math.floor(
     (new Date().getTime() - new Date(born).getTime()) /
-      (365 * 24 * 60 * 60 * 1000)
+      (365 * 24 * 60 * 60 * 1000),
   );
 
 export const clamp = (min: number, val: number, max: number): number =>

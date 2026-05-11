@@ -103,6 +103,11 @@ const linkMap: LinkMap = [
         access: "DoctorFaq",
         target: "doctorfaq",
       },
+      { title: "مثال های بات", target: "aiExample" },
+      { title: "معرفی خانه", target: "homeIntroduction" },
+      { title: "تبلیغات", target: "advertisement" },
+      { title: "خدمات", target: "service" },
+      { title: "سوالات متداول", target: "faq" },
     ],
   },
   {
@@ -149,6 +154,9 @@ const linkMap: LinkMap = [
           { title: "زمان مصرف", target: "drugInstruction" },
           { title: "طرح درمان", target: "phPlan" },
           { title: "انواع بیماری", target: "phIllness" },
+          { title: "icid", target: "Icids" },
+          { title: "complaints", target: "complaint" },
+          { title: "specs", target: "spec" },
         ],
       },
     ],
@@ -158,7 +166,7 @@ const linkMap: LinkMap = [
 const Waterfall = ({ item }: { item: LinkItem }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(
-    pathname.split("/")[2] === item.target
+    pathname.split("/")[2] === item.target,
   );
 
   const isActive = useMemo<boolean>(() => {
@@ -240,7 +248,7 @@ const AdminSidebar = () => {
             ...linkMap[i],
             links: linkMap[i].links.filter(
               (link) =>
-                link.access === undefined || hasAccess(link.access, "readAll")
+                link.access === undefined || hasAccess(link.access, "readAll"),
             ),
           });
         return result;

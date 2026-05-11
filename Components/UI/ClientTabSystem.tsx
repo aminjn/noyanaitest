@@ -1,4 +1,10 @@
-import { ReactNode, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import classes from "./ClientTabSystem.module.css";
 import { WithStyleProps } from "../Layout/Layout";
 import Ixon from "./Ixon";
@@ -7,6 +13,7 @@ const ClientTabSystem = ({
   items,
   className,
   style,
+  viewState,
 }: WithStyleProps<{
   items: {
     title: ReactNode;
@@ -14,8 +21,15 @@ const ClientTabSystem = ({
     content: ReactNode;
     icon?: ReactNode;
   }[];
+  viewState?: [string, (v: string) => unknown];
 }>) => {
-  const [current, setCurrent] = useState<string>(items[0]?.id || "");
+  const innerState = useState<string>(items[0]?.id || "");
+
+  const [current, setCurrent] = viewState || innerState;
+
+  useEffect(() => {
+    if (!current && items[0]) setCurrent(items[0]?.id || "");
+  }, [current, items, setCurrent]);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>

@@ -1,0 +1,95 @@
+.main {
+  display: flex;
+  gap: 1.5rem;
+  height: 34rem;
+  margin-bottom: 1rem;
+}
+
+.main > * {
+  flex: 1;
+  background-color: var(--gray4);
+  border-radius: 1rem;
+  height: 100%;
+}
+
+.content {
+  padding-block: 4.25rem 3.25rem;
+  padding-inline: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--gray12);
+  margin-bottom: 1.625rem;
+}
+
+.description {
+  color: var(--gray12);
+  margin-bottom: auto;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-inline: 1.5rem;
+  padding-block: 1rem;
+  color: var(--white);
+  background-color: var(--primary);
+  width: fit-content;
+  border-radius: 0.5rem;
+  margin-bottom: 1.8125rem;
+}
+
+.cuntsBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cunts {
+  display: flex;
+}
+
+.cunts > * {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--white);
+}
+
+.cunts > *:not(:first-child) {
+  margin-inline-start: -1rem;
+}
+
+.cunt {
+  position: relative;
+}
+
+.tenk {
+  position: relative;
+  background-color: var(--gray12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+}
+
+.cuntsDescription {
+  color: var(--gray13);
+}
+
+.imageBox {
+  position: relative;
+}
+
+.image {
+  position: absolute;
+  width: 511px;
+  height: 536px;
+  bottom: 0;
+  inset-inline-end: -0.5rem;
+}

@@ -3,6 +3,7 @@ import CreatePrescriptionPage from "@/Components/DoctorPanel/Prescription2/Creat
 
 const DoctorCreatePrescription = () => {
   return <CreatePrescriptionPage />;
+  // return <DoctorCreatePrescriptionPage />;
 };
 
 export default DoctorCreatePrescription;

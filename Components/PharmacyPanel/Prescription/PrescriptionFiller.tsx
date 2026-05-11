@@ -69,7 +69,7 @@ const PrescriptionFiller = ({
       delete final[i].selected;
     }
     setIsLoading(final);
-  }, [isLoading, input]);
+  }, [isLoading, input, pushNotfication, getContent]);
 
   return (
     <div className={classes.main}>

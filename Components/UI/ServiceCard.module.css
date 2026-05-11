@@ -1,0 +1,130 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 0.75rem;
+  padding-block: 0.75rem 1rem;
+  background-color: var(--gray1);
+  width: 17.8125rem;
+  height: 23.5625rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadowMd);
+
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 10rem;
+  margin-bottom: 0.5rem;
+}
+
+.titleBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  color: var(--black);
+}
+
+.owner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.ownerImage {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.ownerName {
+  color: var(--black);
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.addressBox {
+  display: flex;
+  gap: 0.125rem;
+  color: var(--gray8);
+  align-items: center;
+}
+
+.scoreBox {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.commentCount {
+  color: var(--gray8);
+}
+
+.score {
+  color: var(--black);
+}
+
+.star {
+  color: var(--yellow);
+}
+
+.stats {
+  margin-top: auto;
+  border-top: 1.5px dashed var(--gray5);
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.discountBox {
+  width: fit-content;
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.striked {
+  color: var(--gray7);
+}
+
+.discountPercent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--error);
+  color: var(--white);
+  padding-inline: 0.25rem;
+  padding-block: 0.125rem;
+  border-radius: 100dvw;
+}
+
+.statFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remaining {
+  color: var(--error);
+}
+
+.price {
+  color: var(--black);
+}

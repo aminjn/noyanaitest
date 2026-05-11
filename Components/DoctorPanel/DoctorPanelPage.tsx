@@ -65,7 +65,7 @@ type BecomeDoctorPopulation = {
 };
 
 export interface IBecomeDoctorRequest<
-  T extends BecomeDoctorPopulation = BecomeDoctorPopulation
+  T extends BecomeDoctorPopulation = BecomeDoctorPopulation,
 > extends MongoDoc {
   user: T["UserPopulated"] extends true ? IUser : string;
   createdAt: Date;
@@ -97,7 +97,7 @@ export type DoctorProfilePopulation = Population<{
 }>;
 
 export interface IDoctorProfile<
-  T extends DoctorProfilePopulation = DoctorProfilePopulation
+  T extends DoctorProfilePopulation = DoctorProfilePopulation,
 > extends MongoDoc {
   user?: T["UserPopulated"] extends UserPopulation
     ? IUser<T["UserPopulated"]>
@@ -142,12 +142,13 @@ export interface IDoctorProfile<
   socials: T["Socials"] extends DoctorSocialMediaPopulation
     ? IDoctorSocialMedia<T["Socials"]>[]
     : never;
+  popular: boolean;
 }
 
 type PhoneConsultSettingsPopulation = { DoctorPopulated?: boolean };
 
 export interface IPhoneConsultSettings<
-  T extends PhoneConsultSettingsPopulation = PhoneConsultSettingsPopulation
+  T extends PhoneConsultSettingsPopulation = PhoneConsultSettingsPopulation,
 > extends MongoDoc {
   doctor: T["DoctorPopulated"] extends true ? IDoctorProfile : string;
   duration: number;

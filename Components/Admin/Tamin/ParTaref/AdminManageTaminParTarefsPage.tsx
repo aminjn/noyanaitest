@@ -22,7 +22,7 @@ const AdminManageTaminParTarefsPage = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const { data, error, mutate } = useSWR<ITaminParTaref[]>(
     `${API}/auto/taminParTaref`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   return (

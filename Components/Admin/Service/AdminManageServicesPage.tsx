@@ -1,0 +1,238 @@
+"use client";
+
+import { MongoDoc } from "@/Components/Hooks/useUser";
+import { Population } from "../Clinic/AdminManageClinicsPage";
+import {
+  DoctorProfilePopulation,
+  IDoctorProfile,
+} from "@/Components/DoctorPanel/DoctorPanelPage";
+import useSWR from "swr";
+import { API } from "@/Components/config";
+import { fetcher } from "@/Components/helpers/fetcher";
+import PopupCard from "@/Components/UI/PopupCard";
+import usePopup from "@/Components/Hooks/usePopup";
+import ConfirmationPopup from "../UI/ConfirmationPopup";
+import { Fragment, useState } from "react";
+import Act from "@/Components/UI/Act";
+import CreateForm from "../UI/CreateForm";
+import { getDoctorProfileLabel } from "../Lib/LabelGetters";
+import HandleLoading from "../UI/HandleLoading";
+import WithTitle from "../UI/WithTitle";
+import Table from "../UI/Table";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import InlineLink from "../UI/InlineLink";
+import { adminPath } from "@/Components/helpers/adminPath";
+import TableActions from "../UI/TableActions";
+import IconButton from "../UI/IconButton";
+import EditIcon from "@/Components/Icons/EditIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import { currencize } from "@/Components/helpers/currencize";
+
+export type ServicePopulation = Population<{ Owner: DoctorProfilePopulation }>;
+
+export interface IService<
+  T extends ServicePopulation = ServicePopulation,
+> extends MongoDoc {
+  order: number;
+  isActive: boolean;
+  name?: string;
+  owner?: T["Owner"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Owner"]>
+    : string;
+  image?: string;
+  price: number;
+  discount: number;
+  inventory: number;
+  isHome: boolean;
+}
+
+const MutateServicePopup = ({
+  mutate,
+  node,
+}: {
+  node?: IService;
+  mutate: () => unknown;
+}) => {
+  const { closePopup } = usePopup();
+  return (
+    <PopupCard>
+      <CreateForm
+        defaultValue={node}
+        onCancel={() => closePopup()}
+        hookProps={{
+          path: `${API}/auto/service${!!node ? `/${node._id}` : ""}`,
+          method: "POST",
+          successCb: () => {
+            mutate();
+            closePopup();
+          },
+        }}
+        renderer={{
+          name: { title: "نام", type: "text" },
+          order: { title: "رتبه", type: "number" },
+          isActive: { title: "فعال", type: "bool" },
+          owner: {
+            title: "صاحب",
+            type: "nodes",
+            path: `${API}/auto/doctorProfile`,
+            getOptionLabel: (node) =>
+              getDoctorProfileLabel(node as IDoctorProfile),
+            getOptionValue: (node) => (node as IDoctorProfile)._id,
+          },
+          price: { title: "قیمت", type: "number" },
+          discount: { title: "تخفیف", type: "number" },
+          image: { title: "تصویر", type: "image" },
+          inventory: { title: "موجودی", type: "number" },
+          isHome: { title: "نمایش در خانه", type: "bool" },
+        }}
+      />
+    </PopupCard>
+  );
+};
+
+const DeleteServicePopup = ({
+  mutate,
+  node,
+}: {
+  node: IService;
+  mutate: () => unknown;
+}) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { closePopup } = usePopup();
+  return (
+    <Fragment>
+      <ConfirmationPopup
+        onConfirm={() => setIsLoading(true)}
+        message="آیا از حذف این آیتم مطمئنید؟"
+        isLoading={isLoading}
+      />
+      <Act
+        path={isLoading ? `${API}/auto/service/${node._id}` : null}
+        method="PUT"
+        onDone={(status) => {
+          setIsLoading(false);
+          if (!status) return;
+          mutate();
+          closePopup();
+        }}
+      />
+    </Fragment>
+  );
+};
+
+const AdminManageServicesPage = () => {
+  const { data, error, mutate } = useSWR<
+    IService<{ Owner: Record<never, never> }>[]
+  >(`${API}/auto/service`, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
+  );
+
+  const { setPopup } = usePopup();
+
+  return (
+    <HandleLoading data={!!data} error={error}>
+      {!!data && (
+        <WithTitle
+          title="خدمات"
+          actions={[
+            {
+              title: "جدید",
+              action: () =>
+                setPopup(
+                  "MutateService",
+                  <MutateServicePopup mutate={mutate} />,
+                ),
+            },
+          ]}
+        >
+          <Table
+            data={data}
+            name="AdminManageService"
+            renderer={{
+              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              order: {
+                name: "رتبه",
+                value: (node) => node.order,
+                filter: "Number",
+              },
+              isActive: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
+              owner: {
+                name: "صاحب",
+                value: (node) =>
+                  !!node.owner ? getDoctorProfileLabel(node.owner) : "ندارد",
+                filter: "Multi",
+                component: (node) =>
+                  !!node.owner ? (
+                    <InlineLink
+                      href={adminPath(`/doctorprofile/${node.owner._id}`)}
+                    >
+                      {getDoctorProfileLabel(node.owner)}
+                    </InlineLink>
+                  ) : (
+                    "ندارد"
+                  ),
+              },
+              inventory: {
+                name: "موجودی",
+                value: (node) => node.inventory,
+                filter: "Number",
+              },
+              price: {
+                name: "قیمت",
+                value: (node) => node.price,
+                filter: "Number",
+                component: (node) => currencize(node.price),
+              },
+              discount: {
+                name: "تخفیف",
+                value: (node) => node.discount,
+                filter: "Number",
+                component: (node) => currencize(node.discount),
+              },
+              isHome: {
+                name: "نمایش در خانه",
+                value: (node) => booleanToValue[`${node.isHome}`],
+                component: (node) => <BooleanToIcon value={node.isHome} />,
+                filter: "Set",
+              },
+              actions: {
+                name: "عملیات",
+                component: (node) => (
+                  <TableActions>
+                    <IconButton
+                      onClick={() =>
+                        setPopup(
+                          "MutateService",
+                          <MutateServicePopup mutate={mutate} node={node} />,
+                        )
+                      }
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() =>
+                        setPopup(
+                          "DeleteService",
+                          <DeleteServicePopup node={node} mutate={mutate} />,
+                        )
+                      }
+                    >
+                      <GarbageIcon />
+                    </IconButton>
+                  </TableActions>
+                ),
+              },
+            }}
+          />
+        </WithTitle>
+      )}
+    </HandleLoading>
+  );
+};
+
+export default AdminManageServicesPage;

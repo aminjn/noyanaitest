@@ -24,8 +24,12 @@ const AdminManageTaminServiceTypesPage = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const { data, error, mutate } = useSWR<ITaminServiceType[]>(
     `${API}/auto/taminServiceType`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+
+
+  
+
 
   return (
     <Fragment>
@@ -42,7 +46,7 @@ const AdminManageTaminServiceTypesPage = () => {
                 srvType: {
                   name: "srvType",
                   value: (node) => node.srvType,
-                  filter: "Text",
+                  filter: "Multi",
                 },
                 srvTypeDes: {
                   name: "srvTypeDes",

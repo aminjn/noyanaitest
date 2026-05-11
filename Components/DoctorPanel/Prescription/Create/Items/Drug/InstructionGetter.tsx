@@ -6,12 +6,13 @@ import { ITaminDrugInstruction } from "@/Components/Admin/Tamin/DrugInstructions
 import { fetcher } from "@/Components/helpers/fetcher";
 import FancySelect from "@/Components/UI/FancySelect";
 import useLocale from "@/Components/Hooks/useLocale";
+import usePrescription from "@/Components/DoctorPanel/Prescription2/Store/usePrescription";
 
 const InstructionGetter = () => {
-  const { setWorking, working } = useContext(PrescriptionContext);
+  const { setWorking, working } = usePrescription();
   const { data } = useSWR<ITaminDrugInstruction[]>(
     `${API}/doctor/presc/instruction`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -27,10 +28,10 @@ const InstructionGetter = () => {
       onChange={(e) =>
         setWorking((prev) => ({
           ...prev,
-          instruction: data?.find((el) => el._id === e),
+          drugInstruction: data?.find((el) => el._id === e),
         }))
       }
-      defaultValue={working.instruction?.drugInstConcept}
+      defaultValue={working.drugInstruction?.drugInstConcept}
     />
   );
 };

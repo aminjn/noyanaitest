@@ -1,0 +1,84 @@
+.main {
+  display: flex;
+  gap: 1.5rem;
+  height: 27rem;
+  width: 100%;
+  margin-bottom: 4.125rem;
+}
+
+.main > * {
+  flex-basis: 1;
+  flex-grow: 1;
+  width: 50%;
+}
+
+.consts {
+  display: flex;
+  gap: 0.375rem;
+  background-color: var(--gray4);
+  border-radius: 1rem;
+}
+
+.mobileContainer {
+  width: 13.5rem;
+  height: 100%;
+  position: relative;
+}
+
+.mobile {
+  position: absolute;
+  inset-inline-end: 0;
+  top: -3rem;
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-inline-end: 1.5rem;
+  padding-block: 3.5rem 2.125rem;
+  align-content: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.title {
+  color: var(--gray12);
+  text-align: left;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  color: var(--gray10);
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.action {
+  margin-top: 1.75rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--secondary);
+  justify-content: center;
+  padding-block: 1rem;
+  border-radius: 0.5rem;
+  color: var(--white);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.ad {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
