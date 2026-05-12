@@ -1,8 +1,10 @@
 import {
   Dispatch,
+  Fragment,
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -21,6 +23,8 @@ const DeviceLoader = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const [didInit, setDidInit] = useState<boolean>(false);
+
   const socket = useSocket();
 
   const pushNotification = useNotification();
@@ -37,6 +41,12 @@ const DeviceLoader = ({
     d.load({ routerRtpCapabilities: response });
   }, [device, isLoading, pushNotification, setDevice, socket]);
 
+  useEffect(() => {
+    if (didInit) return;
+    setDidInit(true);
+    initDevice();
+  }, [didInit, initDevice]);
+
   return (
     <Button onClick={initDevice} isLoading={isLoading}>
       {!!device ? "device Initialized" : "Init Device"}
@@ -52,6 +62,8 @@ const StreamToggler = ({
   setStream: Dispatch<SetStateAction<MediaStream | null>>;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [didInit, setDidInit] = useState<boolean>(false);
 
   const pushNotification = useNotification();
 
@@ -71,6 +83,12 @@ const StreamToggler = ({
     setIsLoading(false);
   }, [isLoading, pushNotification, setStream, stream]);
 
+  useEffect(() => {
+    if (didInit) return;
+    setDidInit(true);
+    onStart();
+  }, [didInit, onStart]);
+
   return (
     <Button onClick={onStart}>{!!stream ? "Feed is On" : "Feed is Off"}</Button>
   );
@@ -86,6 +104,8 @@ const ProduceTransportRequester = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const socket = useSocket();
+
+  const [didInit, setDidInit] = useState<boolean>(false);
 
   const onRequest = useCallback(async () => {
     if (!!isLoading) return;
@@ -133,7 +153,14 @@ const ProduceTransportRequester = ({
       setIsLoading(false);
     });
     transport.produce({ track: stream.getVideoTracks()[0] });
+    transport.produce({ track: stream.getAudioTracks()[0] });
   }, [device, isLoading, socket, stream]);
+
+  useEffect(() => {
+    if (didInit) return;
+    setDidInit(true);
+    onRequest();
+  }, [didInit, onRequest]);
 
   return (
     <Button onClick={onRequest} isLoading={isLoading}>
@@ -159,6 +186,10 @@ const RefreshConsumers = ({
     setIsLoading(false);
   }, [isLoading, setAvailableProducers, socket]);
 
+  useEffect(() => {
+    socket.on("producerChange", refreshAvailableProducers);
+  }, [refreshAvailableProducers, socket]);
+
   return (
     <Button onClick={refreshAvailableProducers} isLoading={isLoading}>
       Refresh Producers
@@ -176,6 +207,8 @@ const ConsumeTransportRequester = ({
   setStream: Dispatch<SetStateAction<MediaStream | null>>;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [didInit, setDidInit] = useState<boolean>(false);
 
   const socket = useSocket();
 
@@ -239,6 +272,12 @@ const ConsumeTransportRequester = ({
     }
   }, [device, isLoading, producer, pushNotification, setStream, socket]);
 
+  useEffect(() => {
+    if (didInit) return;
+    setDidInit(true);
+    onRequest();
+  }, [didInit, onRequest]);
+
   return (
     <Button onClick={onRequest} isLoading={isLoading}>
       {"Request Transport"}
@@ -255,16 +294,35 @@ const Consumer = ({
 }) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
 
+  const isAudio = useMemo<boolean>(
+    () => !!stream?.getAudioTracks().length,
+    [stream],
+  );
+
   return (
     <div className={classes.consumer}>
       {!!stream && (
-        <video
-          autoPlay
-          ref={(el) => {
-            if (!el) return;
-            el.srcObject = stream;
-          }}
-        />
+        <Fragment>
+          {isAudio ? (
+            <audio
+              autoPlay
+              controls
+              ref={(el) => {
+                if (!el) return;
+                el.srcObject = stream;
+              }}
+            />
+          ) : (
+            <video
+              autoPlay
+              ref={(el) => {
+                if (!el) return;
+                el.srcObject = stream;
+              }}
+              controls
+            />
+          )}
+        </Fragment>
       )}
       <p>{producer}</p>
       <ConsumeTransportRequester
