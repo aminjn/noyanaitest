@@ -28,6 +28,7 @@ const linkMap: LinkMap = [
     title: "منو اصلی",
     links: [
       { target: "", title: "داشبورد" },
+      { target: "ollama", title: "AI" },
       {
         target: "blog",
         title: "مقالات",

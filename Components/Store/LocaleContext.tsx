@@ -19,13 +19,13 @@ export const LocaleContextProvider = ({
   value: { textContent?: ITextContent };
 }) => {
   const [textContent, setTextContent] = useState<Partial<ITextContent>>(
-    value.textContent || {}
+    value.textContent || {},
   );
 
   useSWR<ISite>(
     !Object.keys(textContent).length ? `${API}/public/site` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
-    { onSuccess: (data) => setTextContent(data.textContent || {}) }
+    { onSuccess: (data) => setTextContent(data.textContent || {}) },
   );
 
   return (

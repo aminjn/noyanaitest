@@ -8,7 +8,7 @@ import useSWR from "swr";
 const DoctorTaminTokenManager = () => {
   const { data, error } = useSWR<Date>(
     `${API}/doctor/tamin/token`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const [isGettingToken, setIsGettingToken] = useState<boolean>(false);

@@ -1,0 +1,89 @@
+.container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.main {
+  background: linear-gradient(
+    90deg,
+    rgba(231, 225, 246, 0.4) 0%,
+    rgba(196, 179, 233, 0.4) 87.5%,
+    rgba(216, 205, 240, 0.4) 100%
+  );
+  width: 100%;
+  height: 47.5rem;
+  overflow-y: auto;
+  position: relative;
+  border-radius: 1rem;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  max-width: 44rem;
+  margin-inline: auto;
+  margin-block: 1.5rem;
+}
+
+.userMessage {
+  background-color: var(--gray2);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: fit-content;
+}
+
+.prompt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 47.5rem;
+  height: 3.5rem;
+  transition: all var(--transTime);
+}
+
+.down {
+  top: 100%;
+  transform: translate(-50%, -100%);
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  border-radius: 100dvw;
+  border: 4px solid var(--white);
+  background-color: var(--gray2);
+  padding-block: 1rem;
+  padding-inline: 0.75rem;
+  outline: none;
+  overflow-y: auto;
+  color: var(--gray10);
+  height: 100%;
+  resize: none;
+  direction: rtl;
+}
+
+.placeholder {
+  top: 50%;
+  inset-inline-start: calc(0.75rem + 4px);
+  position: absolute;
+  color: var(--gray10);
+  transform: translateY(-50%);
+}
+
+.send {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 0.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray11);
+  color: var(--white);
+}

@@ -38,7 +38,6 @@ const NodesSelector = <TMulti extends boolean = false>({
     fetcher({ url }).then(!!dataParser ? dataParser : (res) => res.data.data),
   );
 
-
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       {!!title && <span className={classes.title}>{title}</span>}

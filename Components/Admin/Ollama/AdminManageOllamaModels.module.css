@@ -1,0 +1,5 @@
+.form {
+  max-height: 80dvh;
+  overflow-y: auto;
+  width: min(60rem, 90dvw);
+}

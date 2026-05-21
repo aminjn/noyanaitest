@@ -1,5 +1,7 @@
+import ClinicManagePrescriptionsPage from "@/Components/ClinicPanel/Prescription/ClinicManagePrescriptionsPage";
+
 const ClinicManagePrescriptions = () => {
-  return <p>ClinicManagePrescriptions</p>;
+  return <ClinicManagePrescriptionsPage />;
 };
 
 export default ClinicManagePrescriptions;

@@ -1,3 +1,4 @@
+"use client";
 import classes from "./NotFoundPage.module.css";
 
 const NotFoundPage = () => {

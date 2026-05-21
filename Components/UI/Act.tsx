@@ -46,7 +46,7 @@ const Act = <TResult,>({
         if (err instanceof FetchError) pushNotification(err.message, "Error");
         onDone(false);
       },
-    }
+    },
   );
   return null;
 };

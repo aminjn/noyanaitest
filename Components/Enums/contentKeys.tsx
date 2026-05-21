@@ -581,6 +581,21 @@ const contentKeys = [
   "registerDescription",
   "registerDoctorsAndClinics",
   "weHaveTooManyUsers",
+  "taminParType",
+  "doctorMedicalSystemCode",
+  "doctorSpeciality",
+  "clinicServiceName",
+  "2kPrice",
+  "requestedQuantity",
+  "maximumQuantity",
+  "subsidyPrice",
+  "remainingQuantity",
+  "selection",
+  "fillingCount",
+  "is2k",
+  "techMDID",
+  "patientMobile",
+  "writeYourPrompt",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
