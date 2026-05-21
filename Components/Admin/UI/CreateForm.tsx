@@ -140,6 +140,7 @@ const CreateForm = <TInput, TResult = unknown>({
           case "number":
             content = (
               <Input
+                inputMode="numeric"
                 {...commons}
                 onChange={(e) => {
                   const val = Number(e.target.value);
@@ -156,7 +157,6 @@ const CreateForm = <TInput, TResult = unknown>({
                     }));
                   }
                 }}
-                type="number"
               />
             );
             break;
