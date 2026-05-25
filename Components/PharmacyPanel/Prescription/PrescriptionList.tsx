@@ -52,7 +52,7 @@ const PrescriptionList = ({
             </div>
           </div>
         </div>
-        <Button onClick={onCancel} variant="Danger" className={classes.cancel}>
+        <Button onClick={onCancel} variant="Error" className={classes.cancel}>
           {getContent("cancel")}
         </Button>
       </div>

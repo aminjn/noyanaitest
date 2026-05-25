@@ -115,14 +115,14 @@ const ChatMessage = ({ _id }: { _id: string }) => {
   const { data } = useSWR<IMessage & { uploads: IUserFile[] }>(
     isVisible ? `${API}/chat/message/${_id}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
-    { refreshInterval: 1000 }
+    { refreshInterval: 1000 },
   );
 
   const { user } = useUser();
 
   const isSelf = useMemo<boolean>(
     () => data?.sender === user?._id,
-    [data?.sender, user?._id]
+    [data?.sender, user?._id],
   );
 
   return (
@@ -165,7 +165,7 @@ const InnerChat = ({
   const { user } = useUser();
   const other = useMemo<IUser | undefined>(
     () => chat.participants.find((p) => p._id !== user?._id),
-    [chat, user]
+    [chat, user],
   );
 
   const getContent = useLocale();
@@ -191,9 +191,7 @@ const InnerChat = ({
           </span>
           <FormatDate className={classes.date} value={chat.createdAt} />
         </div>
-        <Button className={classes.action} variant="PrimaryStroke">
-          {getContent("closeChat")}
-        </Button>
+        <Button className={classes.action}>{getContent("closeChat")}</Button>
       </div>
       <div className={classes.body}>
         {!!chat.messages.length ? (
@@ -216,7 +214,7 @@ const CurrentChat = () => {
   >(
     params.nodeId ? `${API}/chat/${params.nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
-    { refreshInterval: 1000 }
+    { refreshInterval: 1000 },
   );
 
   const getContent = useLocale();

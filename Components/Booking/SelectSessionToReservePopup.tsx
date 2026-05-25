@@ -34,7 +34,7 @@ export type InvoiceCheckoutPopulation = Population<{
 }>;
 
 export interface IInvoiceCheckout<
-  T extends InvoiceCheckoutPopulation = InvoiceCheckoutPopulation
+  T extends InvoiceCheckoutPopulation = InvoiceCheckoutPopulation,
 > extends MongoDoc {
   invoice: T["Invoice"] extends InvoicePopulation
     ? IInvoice<T["Invoice"]>
@@ -49,8 +49,9 @@ export type InvoicePopulation = Population<{
   Checkout: InvoiceCheckoutPopulation;
 }>;
 
-export interface IInvoice<T extends InvoicePopulation = InvoicePopulation>
-  extends MongoDoc {
+export interface IInvoice<
+  T extends InvoicePopulation = InvoicePopulation,
+> extends MongoDoc {
   submittedAt: Date;
   total: number;
   user: T["User"] extends true ? IUser : string;
@@ -73,17 +74,17 @@ const SelectSessionToReservePopup = ({
 }) => {
   const { data, error } = useSWR<IDoctorSession[]>(
     `${API}/public/doctor/${doctor._id}/day/${stamp}`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const [selected, setSelected] = useState<IDoctorSession | null>(null);
 
   const [selectedKind, setSelectedKind] = useState<DoctorSessionType | null>(
-    null
+    null,
   );
 
   const [isLoading, setIsLoading] = useState<Record<string, unknown> | null>(
-    null
+    null,
   );
 
   const { closePopup } = usePopup();
@@ -119,9 +120,6 @@ const SelectSessionToReservePopup = ({
                   .map((el) => (
                     <Button
                       type="button"
-                      variant={
-                        selected?._id === el._id ? "Primary" : "PrimaryStroke"
-                      }
                       className={`${classes.choice}`}
                       key={el._id}
                       onClick={() => {
@@ -130,7 +128,7 @@ const SelectSessionToReservePopup = ({
                       }}
                     >
                       <div className={classes.choiceTime}>{`${numberToTime(
-                        el.start
+                        el.start,
                       )} - ${numberToTime(el.end)}`}</div>
                       <div className={classes.choiceOptions}>
                         {doctorSessionTypes.map((kind) => (
@@ -150,15 +148,15 @@ const SelectSessionToReservePopup = ({
                     onChange={(e) =>
                       setSelectedKind(
                         doctorSessionTypes.find(
-                          (el) => el === e.target.value
-                        ) || null
+                          (el) => el === e.target.value,
+                        ) || null,
                       )
                     }
                     options={doctorSessionTypes
                       .filter((kind) => !!selected[kind])
                       .reduce(
                         (acc, el) => ({ ...acc, [el]: getContent(el) }),
-                        {}
+                        {},
                       )}
                     title={getContent("selectKind")}
                   />

@@ -25,14 +25,14 @@ const BlogPage = (props: BlogPageProps) => {
   const params = useParams<{ blogSlug: string }>();
   const { data: clientData } = useSWR(
     params ? `${API}/public/blog/${params.blogSlug}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const pathname = usePathname();
 
   const { blog, thisWeek } = useMemo<BlogPageProps>(
     () => clientData || props,
-    [clientData, props]
+    [clientData, props],
   );
 
   const copyTextToClipboard = useClipboard();
@@ -72,7 +72,6 @@ const BlogPage = (props: BlogPageProps) => {
             </div>
             <div className={classes.actions}>
               <Button
-                variant="Naked"
                 leadIcon={<CopyIcon />}
                 onClick={() => copyTextToClipboard(window.location.href)}
               >
@@ -80,7 +79,6 @@ const BlogPage = (props: BlogPageProps) => {
               </Button>
               {!!navigator.share && (
                 <Button
-                  variant="Black"
                   leadIcon={<ShareIcon />}
                   onClick={() => navigator.share({ url: window.location.href })}
                 >

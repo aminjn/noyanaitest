@@ -21,7 +21,7 @@ const AdminManageDrugPage = () => {
   const { nodeId } = useParams();
   const { data, error, mutate } = useSWR<IDrug>(
     nodeId ? `${API}/auto/drug/${nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -126,10 +126,10 @@ const AdminManageDrugPage = () => {
                           <DeleteDrugPopup
                             mutate={() => push(adminPath(`/drug`))}
                             node={data}
-                          />
+                          />,
                         )
                       }
-                      variant="Danger"
+                      variant="Error"
                     >
                       حذف
                     </Button>

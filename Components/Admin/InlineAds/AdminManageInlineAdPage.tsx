@@ -23,7 +23,7 @@ const AdminManageInlineAdPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IInlineAdvertisement>(
     params ? `${API}/auto/inlinead/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -74,14 +74,14 @@ const AdminManageInlineAdPage = () => {
                   <List>
                     {hasAccess("InlineAdvertisement", "delete") && (
                       <Button
-                        variant="Danger"
+                        variant="Error"
                         onClick={() =>
                           setPopup(
                             "DeleteInlineAd",
                             <DeleteInlineAdPopup
                               node={data}
                               mutate={() => push(adminPath("/inlinead"))}
-                            />
+                            />,
                           )
                         }
                       >

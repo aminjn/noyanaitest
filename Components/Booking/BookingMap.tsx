@@ -45,14 +45,13 @@ const BookingMap = ({
       url: string;
       payload: { bounds: [[number, number], [number, number]] };
     }) => fetcher({ ...args, method: "POST" }).then((res) => res.data),
-    { keepPreviousData: true }
+    { keepPreviousData: true },
   );
 
   return (
     <div className={`${classes.container} ${expanded ? classes.expanded : ""}`}>
       <Button
         onClick={() => setExpanded((prev) => !prev)}
-        variant="NeutralStroke"
         className={classes.expand}
       >
         {getContent("searchByMap")}

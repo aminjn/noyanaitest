@@ -26,7 +26,7 @@ const AdminManageClinicPage = () => {
 
   const { data, error, mutate } = useSWR<IClinic>(
     params ? `${API}/auto/clinic/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -77,10 +77,10 @@ const AdminManageClinicPage = () => {
                           <DeleteClinicPopup
                             node={data}
                             mutate={() => push(adminPath("/clinic"))}
-                          />
+                          />,
                         )
                       }
-                      variant="Danger"
+                      variant="Error"
                       //TODO:Clean up coroutine to remove departments and doctor department relations server side
                     >
                       حذف کامل این کلینیک

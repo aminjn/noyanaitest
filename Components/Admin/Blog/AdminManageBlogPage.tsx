@@ -22,7 +22,7 @@ const AdminManageBlogPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IBlog>(
     params ? `${API}/auto/blog/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const hasAccess = useAccessLevel();
@@ -115,11 +115,11 @@ const AdminManageBlogPage = () => {
                   <List>
                     {hasAccess("Blog", "delete") && (
                       <Button
-                        variant="Danger"
+                        variant="Error"
                         onClick={() =>
                           setPopup(
                             "DeleteBlog",
-                            <DeleteBlogPopup mutate={mutate} node={data} />
+                            <DeleteBlogPopup mutate={mutate} node={data} />,
                           )
                         }
                       >

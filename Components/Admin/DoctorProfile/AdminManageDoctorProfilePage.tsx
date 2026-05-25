@@ -97,7 +97,7 @@ const AdminManageDoctorProfilePage = () => {
                   <List>
                     {hasAccess("DoctorProfile", "delete") && (
                       <Button
-                        variant="Danger"
+                        variant="Error"
                         onClick={() =>
                           setPopup(
                             "DeleteDoctorProfile",

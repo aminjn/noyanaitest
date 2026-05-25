@@ -35,7 +35,7 @@ const PatientProfileRecordsPopup = ({
 
   const filtered = useMemo<PrescriptionPatientProfile["records"]>(
     () => profile.records.filter((rec) => rec.title.includes(query)),
-    [profile.records, query]
+    [profile.records, query],
   );
 
   return (
@@ -71,10 +71,9 @@ const PatientProfileRecordsPopup = ({
           onClick={() =>
             setPopup(
               "PrescriptionCreatePatientProfile",
-              <PrescriptionCreatePatientProfilePopup />
+              <PrescriptionCreatePatientProfilePopup />,
             )
           }
-          variant="Primary3"
         >
           {getContent("newPatientProfileRecord")}
         </Button>
@@ -101,7 +100,10 @@ const PatientProfileRecordsPopup = ({
               onClick={() =>
                 setPopup(
                   "PatientProfileRecordPreview",
-                  <PatientProfileRecordPreviewPopup record={record} ctx={ctx} />
+                  <PatientProfileRecordPreviewPopup
+                    record={record}
+                    ctx={ctx}
+                  />,
                 )
               }
             >

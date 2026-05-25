@@ -26,7 +26,7 @@ const AdminManageSymptomPage = () => {
   const { data, error, mutate } = useSWR<
     ISymptom<{ Part: Record<never, never>; SameAs: Record<never, never> }>
   >(nodeId ? `${API}/auto/symptom/${nodeId}` : null, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -148,14 +148,14 @@ const AdminManageSymptomPage = () => {
                 content: (
                   <List>
                     <Button
-                      variant="Danger"
+                      variant="Error"
                       onClick={() =>
                         setPopup(
                           "DeleteSymptom",
                           <DeleteSymptomPopup
                             node={data}
                             mutate={() => push(adminPath(`/symptom`))}
-                          />
+                          />,
                         )
                       }
                     >

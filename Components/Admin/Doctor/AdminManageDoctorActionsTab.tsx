@@ -26,7 +26,7 @@ const AdminManageDoctorActionsTab = ({ node }: { node: IDoctor }) => {
               <CloneDoctorProfileFromExistingDoctorPopup
                 mutate={() => {}}
                 doctor={node}
-              />
+              />,
             )
           }
         >
@@ -35,14 +35,14 @@ const AdminManageDoctorActionsTab = ({ node }: { node: IDoctor }) => {
       )}
       {hasAccess("Doctor", "delete") && (
         <Button
-          variant="Danger"
+          variant="Error"
           onClick={() =>
             setPopup(
               "DeleteDoctor",
               <DeleteDoctorPopup
                 node={node}
                 mutate={() => push(adminPath(`/doctor`))}
-              />
+              />,
             )
           }
         >

@@ -23,7 +23,7 @@ const AdminManageBlogMediaPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IBlogMedia>(
     params ? `${API}/auto/blogmedia/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -67,14 +67,14 @@ const AdminManageBlogMediaPage = () => {
                   <List>
                     {hasAccess("BlogMedia", "delete") && (
                       <Button
-                        variant="Danger"
+                        variant="Error"
                         onClick={() =>
                           setPopup(
                             "DeleteBlogMedia",
                             <DeleteBlogMediaPopup
                               node={data}
                               mutate={() => push(adminPath("/blogmedia"))}
-                            />
+                            />,
                           )
                         }
                       >

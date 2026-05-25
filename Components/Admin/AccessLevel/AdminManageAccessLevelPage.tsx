@@ -31,7 +31,7 @@ const AdminManageAccessLevelPage = () => {
   const { data, error, mutate } = useSWR<
     IAccessLevel<{ AdminsPopulated: { UserPopulated: true } }>
   >(params ? `${API}/auto/accesslevel/${params.nodeId}` : null, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -78,7 +78,7 @@ const AdminManageAccessLevelPage = () => {
                             ...acc,
                             [`${model}.${key}`]: value,
                           }),
-                          {}
+                          {},
                         ),
                       }),
                     }}
@@ -90,7 +90,7 @@ const AdminManageAccessLevelPage = () => {
                           title: accessLevelOperationsDict[op],
                         },
                       }),
-                      {}
+                      {},
                     )}
                   />
                 ),
@@ -108,14 +108,14 @@ const AdminManageAccessLevelPage = () => {
                 content: (
                   <List>
                     <Button
-                      variant="Danger"
+                      variant="Error"
                       onClick={() =>
                         setPopup(
                           "DeleteAccessLevel",
                           <DeleteAccessLevelPopup
                             node={data as unknown as IAccessLevel}
                             mutate={() => push(adminPath(`/accesslevel`))}
-                          />
+                          />,
                         )
                       }
                     >

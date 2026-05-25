@@ -48,7 +48,7 @@ const CreatePrescriptionPatientRenderer = ({
             calculateAge(patient.dateOfbirth).toString(),
           ])}
         </span>
-        <Button style={{ marginInlineEnd: "auto" }} variant="Primary3">
+        <Button style={{ marginInlineEnd: "auto" }}>
           {getContent("patientDetails")}
         </Button>
         <span

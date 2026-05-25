@@ -195,7 +195,6 @@ const Tab = ({ node }: { node: ITaminServiceType }) => {
       />
       <div className={classes.actions}>
         <Button
-          variant="Secondary3"
           onClick={() =>
             setWorking({ _id: `${nanoid()}${new Date().getTime()}` })
           }

@@ -22,7 +22,7 @@ import DeleteSecretaryAccessLevelPopup from "./DeleteSecretaryAccessLevelPopup";
 const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
   const { data, error, mutate } = useSWR<Acl<[], unknown>[]>(
     `${API}/acl/${name}/acl`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -45,7 +45,7 @@ const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
                       <MutateSecretaryAccessLevelPopup
                         mutate={mutate}
                         name={name}
-                      />
+                      />,
                     )
                   }
                 >
@@ -83,7 +83,7 @@ const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
                           <PreviewSecretaryAccessLevelPopup
                             node={node}
                             name="doctor"
-                          />
+                          />,
                         )
                       }
                     >
@@ -100,7 +100,7 @@ const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
                                 mutate={mutate}
                                 node={node}
                                 name={name}
-                              />
+                              />,
                             )
                           }
                         >
@@ -115,7 +115,7 @@ const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
                                 name={name}
                                 mutate={mutate}
                                 node={node}
-                              />
+                              />,
                             )
                           }
                         >

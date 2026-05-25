@@ -46,7 +46,7 @@ const SecretaryMutateRequestPopup = ({
             {getContent("approve")}
           </Button>
           <Button
-            variant="Danger"
+            variant="Error"
             onClick={() => {
               if (isLoading) return;
               setIsLoading("Rejected");

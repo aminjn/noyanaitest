@@ -35,7 +35,7 @@ const AdminManageBecomeDoctorPage = () => {
     IBecomeDoctorRequest<{ SpecialitiesPopulated: true; UserPopulated: true }>
   >(
     params ? `${API}/auto/becomedoctor/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -129,14 +129,14 @@ const AdminManageBecomeDoctorPage = () => {
                   <FormActions>
                     {hasAccess("BecomeDoctorRequest", "delete") && (
                       <Button
-                        variant="Danger"
+                        variant="Error"
                         onClick={() =>
                           setPopup(
                             "DeleteBecomeDoctor",
                             <DeleteBecomeDoctorPopup
                               node={data}
                               mutate={() => push(adminPath("/becomedoctor"))}
-                            />
+                            />,
                           )
                         }
                       >
@@ -152,7 +152,7 @@ const AdminManageBecomeDoctorPage = () => {
                             <ChangeBecomeDoctorStatusPopup
                               mutate={mutate}
                               node={data}
-                            />
+                            />,
                           )
                         }
                       >

@@ -63,12 +63,7 @@ const PatientSelector = ({ className = "", style }: WithStyleProps) => {
           inputMode="numeric"
           className={classes.input}
         />
-        <Button
-          isLoading={!!isLoading}
-          variant="Neutral3"
-          type="submit"
-          tailIcon={<CheckIcon />}
-        >
+        <Button isLoading={!!isLoading} type="submit" tailIcon={<CheckIcon />}>
           {getContent("inquiryPatient")}
         </Button>
         <Act<{ data: { identity: (IUserIdentity & { phone: string }) | null } }>

@@ -126,7 +126,7 @@ const ReferralPrescriptionPopup = ({ patient }: { patient: IUserIdentity }) => {
           <Button onClick={onSubmit} isLoading={!!isLoading}>
             {getContent("submitReferralPrescription")}
           </Button>
-          <Button variant="Danger">{getContent("cancel")}</Button>
+          <Button variant="Error">{getContent("cancel")}</Button>
         </div>
       </div>
       <Act

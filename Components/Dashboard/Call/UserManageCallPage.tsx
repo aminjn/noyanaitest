@@ -263,7 +263,7 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
             autoPlay
           />
         </div>
-        <Button variant="Danger" onClick={() => push("/dashboard/call")}>
+        <Button variant="Error" onClick={() => push("/dashboard/call")}>
           Hang up
         </Button>
       </div>
@@ -275,7 +275,7 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
       <div className={classes.localAudio}></div>
       <div className={classes.remoteAudio}></div>
       <audio autoPlay ref={remoteAudio} className={classes.audio} />
-      <Button variant="Danger" onClick={() => push("/dashboard/call")}>
+      <Button variant="Error" onClick={() => push("/dashboard/call")}>
         Hang up
       </Button>
     </div>

@@ -26,7 +26,7 @@ const PatientProfilesTab = ({ ctx }: { ctx: PrescriptionCtx }) => {
     IPatientProfile<{ Doctor: Record<never, never> }>[]
   >(
     patient ? `${API}/doctor/presc/patient/${patient._id}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.profiles)
+    (url: string) => fetcher({ url }).then((res) => res.data.profiles),
   );
 
   const getContent = useLocale();
@@ -35,11 +35,7 @@ const PatientProfilesTab = ({ ctx }: { ctx: PrescriptionCtx }) => {
 
   return (
     <div className={classes.main}>
-      <Button
-        className={classes.new}
-        tailIcon={<EditAltIcon />}
-        variant="Primary3"
-      >
+      <Button className={classes.new} tailIcon={<EditAltIcon />}>
         {getContent("newMedicalProfile")}
       </Button>
       <HandleLoading data={!!data} error={error}>
@@ -86,7 +82,7 @@ const PatientProfilesTab = ({ ctx }: { ctx: PrescriptionCtx }) => {
                           <PatientProfileOverviewPopup
                             ctx={ctx}
                             profile={node}
-                          />
+                          />,
                         )
                       }
                     >

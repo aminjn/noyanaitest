@@ -46,10 +46,10 @@ const ClinicUserTab = ({
             onClick={() =>
               setPopup(
                 "RemoveUserFromClinic",
-                <RemoveUserFromClinicPopup node={node} mutate={mutate} />
+                <RemoveUserFromClinicPopup node={node} mutate={mutate} />,
               )
             }
-            variant="Danger"
+            variant="Error"
           >
             حذف یوزر از روی این کلینیک
           </Button>

@@ -22,7 +22,7 @@ const AdminManageSpecialityPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<ISpeciality>(
     params ? `${API}/auto/speciality/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -74,14 +74,14 @@ const AdminManageSpecialityPage = () => {
                   <List>
                     {hasAccess("Sepciality", "delete") && (
                       <Button
-                        variant="Danger"
+                        variant="Error"
                         onClick={() =>
                           setPopup(
                             "DeleteSpeciality",
                             <DeleteSpecialityPopup
                               node={data}
                               mutate={() => push(adminPath("/speciality"))}
-                            />
+                            />,
                           )
                         }
                       >

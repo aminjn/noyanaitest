@@ -50,19 +50,17 @@ const PatientProfileRecordPreviewPopup = ({
       </div>
       <div className={classes.actions}>
         <Button
-          variant="Primary3"
           tailIcon={<EditAltIcon />}
           onClick={() =>
             setPopup(
               "PrescriptionCreatePatientProfile",
-              <PrescriptionCreatePatientProfilePopup />
+              <PrescriptionCreatePatientProfilePopup />,
             )
           }
         >
           {getContent("newPatientProfileRecord")}
         </Button>
         <Button
-          variant="Secondary3"
           tailIcon={<ArrowTurnRightIcon />}
           onClick={() => closePopup("PatientProfileRecordPreview")}
         >

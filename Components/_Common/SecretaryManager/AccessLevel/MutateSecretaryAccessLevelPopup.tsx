@@ -105,7 +105,7 @@ const MutateSecretaryAccessLevelPopup = ({
         />
         <FormActions className={classes.actions}>
           <Button onClick={submit}>{getContent("submit")}</Button>
-          <Button variant="Danger" onClick={() => closePopup()}>
+          <Button variant="Error" onClick={() => closePopup()}>
             {getContent("cancel")}
           </Button>
         </FormActions>

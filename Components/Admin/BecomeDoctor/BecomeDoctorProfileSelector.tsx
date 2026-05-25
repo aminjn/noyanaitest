@@ -30,14 +30,14 @@ const BecomeDoctorProfileSelector = ({
   const { data, error, mutate } = useSWR<
     IDoctorProfile<{ UserPopulated: Record<never, never> }>[]
   >(`${API}/auto/doctorprofile?user=${req.user._id}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { user } = useUser();
 
   const profile = useMemo<IDoctorProfile | null>(
     () => (data ? data[0] || null : null),
-    [data]
+    [data],
   );
 
   const { setPopup } = usePopup();
@@ -58,14 +58,14 @@ const BecomeDoctorProfileSelector = ({
           <FormActions>
             {user?.role === "admin" && (
               <Button
-                variant="Danger"
+                variant="Error"
                 onClick={() =>
                   setPopup(
                     "RemoveUserFromDoctorProfile",
                     <RemoveUserFromDoctorProfilePopup
                       profile={profile}
                       mutate={mutate}
-                    />
+                    />,
                   )
                 }
               >
@@ -86,7 +86,7 @@ const BecomeDoctorProfileSelector = ({
                     <AssignDoctorProfileToUserPopup
                       mutate={mutate}
                       user={req.user}
-                    />
+                    />,
                   )
                 }
               >
@@ -102,7 +102,7 @@ const BecomeDoctorProfileSelector = ({
                       <InstantCreateDoctorProfilePopup
                         req={req}
                         mutate={mutate}
-                      />
+                      />,
                     )
                   }
                 >
@@ -115,7 +115,7 @@ const BecomeDoctorProfileSelector = ({
                       <CloneDoctorProfileFromExistingDoctorPopup
                         user={req.user}
                         mutate={mutate}
-                      />
+                      />,
                     )
                   }
                 >

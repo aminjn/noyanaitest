@@ -278,11 +278,7 @@ const PrescriptionItemsOverview = () => {
             <Button onClick={() => push("/doctorpanel/drug")}>
               {getContent("cancel")}
             </Button>
-            <Button
-              variant="Secondary3"
-              isLoading={!!action}
-              onClick={() => onSubmit("Draft")}
-            >
+            <Button isLoading={!!action} onClick={() => onSubmit("Draft")}>
               {getContent("draftPrescription")}
             </Button>
             <Button

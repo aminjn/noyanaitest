@@ -30,7 +30,7 @@ const SuccessPayment = () => {
       };
     }>
   >(`${API}/user/invoice/${nodeId}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   console.log(data);
@@ -80,7 +80,7 @@ const SuccessPayment = () => {
             </div>
           )}
           <div className={classes.actions}>
-            <Button variant="NeutralStroke" leadIcon={<DownloadIcon />}>
+            <Button leadIcon={<DownloadIcon />}>
               {getContent("getSessionReciept")}
             </Button>
             <Button

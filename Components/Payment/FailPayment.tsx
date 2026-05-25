@@ -20,7 +20,6 @@ const FailPayment = () => {
       <p className={classes.message}>{getContent("paymentFailedText")}</p>
       <Button
         className={classes.action}
-        variant="NeutralStroke"
         onClick={() => push("/dashboard")}
       >
         {getContent("dashboard")}

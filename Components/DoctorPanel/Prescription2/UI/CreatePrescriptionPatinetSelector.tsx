@@ -72,7 +72,6 @@ const CreatePrescriptionPatinetSelector = ({
           />
           <Button
             isLoading={!!isLoading}
-            variant="Neutral3"
             type="submit"
             tailIcon={<CheckIcon />}
           >

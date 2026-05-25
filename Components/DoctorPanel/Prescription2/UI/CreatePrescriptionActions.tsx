@@ -260,7 +260,7 @@ const Deleter = () => {
       <Button
         isLoading={isLoading}
         onClick={() => setIsLoading(true)}
-        variant="Danger"
+        variant="Error"
       >
         {getContent("deletePrescription")}
       </Button>

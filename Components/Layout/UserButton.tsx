@@ -18,7 +18,6 @@ const UserButton = () => {
       <div>
         <Button
           className={classes.main}
-          variant="PrimaryStroke"
           leadIcon={<UserSquareIcon />}
           tailIcon={<ChevronIcon />}
           iconWidth="1.25rem"

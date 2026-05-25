@@ -40,7 +40,7 @@ const PatientProfileOverviewPopup = ({
 }) => {
   const { data } = useSWR<PrescriptionPatientProfile>(
     profile ? `${API}/doctor/presc/profile/${profile._id}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.profile)
+    (url: string) => fetcher({ url }).then((res) => res.data.profile),
   );
 
   const getContent = useLocale();
@@ -63,7 +63,6 @@ const PatientProfileOverviewPopup = ({
           </Ixon>
         </button>
         <Button
-          variant="Primary3"
           onClick={() =>
             setProfile((prev) => (prev?._id === profile._id ? null : profile))
           }
@@ -110,11 +109,10 @@ const PatientProfileOverviewPopup = ({
           tailIcon={
             <span className={classes.badge}>{data.records.length}</span>
           }
-          variant="Secondary3"
           onClick={() =>
             setPopup(
               "PatientProfileRecords",
-              <PatientProfileRecordsPopup ctx={ctx} profile={data} />
+              <PatientProfileRecordsPopup ctx={ctx} profile={data} />,
             )
           }
         >

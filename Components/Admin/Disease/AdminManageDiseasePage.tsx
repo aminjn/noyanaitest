@@ -33,7 +33,7 @@ const AdminManageDiseasePage = () => {
       Symptom: Record<never, never>;
     }>
   >(nodeId ? `${API}/auto/disease/${nodeId}` : null, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -176,14 +176,14 @@ const AdminManageDiseasePage = () => {
                 content: (
                   <List>
                     <Button
-                      variant="Danger"
+                      variant="Error"
                       onClick={() =>
                         setPopup(
                           "DeleetDisease",
                           <DeleteDiseasePopup
                             mutate={() => push(adminPath(`/disease`))}
                             node={data}
-                          />
+                          />,
                         )
                       }
                     >

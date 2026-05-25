@@ -77,7 +77,7 @@ const PrescriptionFiller = ({
         <PrescriptionFillPatient />
         <div className={classes.header}>
           <h1>{getContent("selectedPrescription")}</h1>
-          <Button variant="Danger" onClick={onBack}>
+          <Button variant="Error" onClick={onBack}>
             {getContent("back")}
           </Button>
         </div>
@@ -258,7 +258,7 @@ const PrescriptionFiller = ({
         <Button variant="Success" onClick={onSubmit}>
           {getContent("sendToTamin")}
         </Button>
-        <Button variant="Danger" onClick={onBack}>
+        <Button variant="Error" onClick={onBack}>
           {getContent("cancel")}
         </Button>
       </div>
