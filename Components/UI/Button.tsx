@@ -3,22 +3,39 @@ import classes from "./Button.module.css";
 import { WithStyleProps } from "../Layout/Layout";
 import Ixon from "./Ixon";
 import LoadingIcon from "../Icons/LoadingIcon";
+import { tbaseMedium, tmdMedium, tsmMedium, txsMedium } from "./Typography";
 
 export const buttonVariants = [
   "Primary",
-  "Neutral",
-  "NeutralStroke",
-  "PrimaryStroke",
-  "Naked",
-  "Black",
-  "Danger",
-  "Neutral3",
-  "Primary3",
-  "Secondary3",
+  "Secondary",
+  "Error",
   "Success",
+  "Disable",
+  "Warning",
+  "Info",
+  "Neutral",
 ] as const;
 
-type ButtonVariant = (typeof buttonVariants)[number];
+export type ButtonVariant = (typeof buttonVariants)[number];
+
+export const buttonModes = ["Fill", "Outline", "Black", "Inline"] as const;
+
+export type ButtonMode = (typeof buttonModes)[number];
+
+export const buttonSizes = ["XL", "L", "M", "S"] as const;
+
+export type ButtonSize = (typeof buttonSizes)[number];
+
+export const buttonRadiuses = ["Normal", "Medium", "High"] as const;
+
+export type ButtonRadius = (typeof buttonRadiuses)[number];
+
+const buttonTypegraphies: Record<ButtonSize, string> = {
+  XL: tmdMedium,
+  L: tbaseMedium,
+  M: tsmMedium,
+  S: txsMedium,
+};
 
 const Button = ({
   tailIcon,
@@ -29,6 +46,9 @@ const Button = ({
   style = {},
   type = "button",
   variant = "Primary",
+  mode = "Fill",
+  radius = "Normal",
+  size = "L",
   iconWidth,
   isLoading,
 }: WithStyleProps<{
@@ -36,6 +56,9 @@ const Button = ({
   leadIcon?: ReactNode;
   tailIcon?: ReactNode;
   variant?: ButtonVariant;
+  mode?: ButtonMode;
+  size?: ButtonSize;
+  radius?: ButtonRadius;
   type?: "button" | "submit";
   onClick?: MouseEventHandler<HTMLButtonElement>;
   isLoading?: boolean;
@@ -43,7 +66,7 @@ const Button = ({
 }>) => {
   return (
     <button
-      className={`${classes.main} ${classes[variant]} ${className}`}
+      className={`${classes.main} ${classes[variant]} ${classes[mode]} ${classes[size]} ${classes[radius]} ${buttonTypegraphies[size]} ${className}`}
       style={{ ...style, cursor: isLoading ? "progress" : undefined }}
       type={type}
       onClick={(e) => {
@@ -57,9 +80,17 @@ const Button = ({
         </Ixon>
       ) : (
         <Fragment>
-          {!!leadIcon && <Ixon width={iconWidth || "1rem"}>{leadIcon}</Ixon>}
+          {!!leadIcon && (
+            <Ixon width={iconWidth || size === "S" ? "1.25rem" : "1.5rem"}>
+              {leadIcon}
+            </Ixon>
+          )}
           {!!children && <span>{children}</span>}
-          {!!tailIcon && <Ixon width={iconWidth || "1rem"}>{tailIcon}</Ixon>}
+          {!!tailIcon && (
+            <Ixon width={iconWidth || size === "S" ? "1.25rem" : "1.5rem"}>
+              {tailIcon}
+            </Ixon>
+          )}
         </Fragment>
       )}
     </button>

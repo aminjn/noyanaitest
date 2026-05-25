@@ -7,64 +7,414 @@
   padding-inline: 1.5625rem;
   font-size: 0.75rem;
   font-weight: 400;
-  border-radius: 0.25rem;
   justify-content: center;
   transition: all var(--transTime) ease-in-out;
 }
 
-.Primary {
-  background-color: var(--primary);
+.Primary.Fill {
+  background-color: var(--primary6);
+  outline: none;
   color: var(--white);
 }
 
-.Neutral {
-  background-color: var(--gray4);
-  color: var(--gray7);
+.Primary.Fill:hover {
+  background-color: var(--primary7);
+  outline: none;
+  color: var(--white);
 }
 
-.Neutral3 {
-  background-color: var(--neutral3);
-  color: var(--black);
+.Primary.Fill:active {
+  background-color: var(--primary6);
+  outline: 4px solid var(--primary4);
+  color: var(--white);
 }
 
-.NeutralStroke {
-  border-radius: 1rem;
-  border: 1px solid var(--gray8);
-  color: var(--gray8);
+.Primary.Fill:focus {
+  background-color: var(--primary7);
+  outline: 4px solid var(--primary3);
+  color: var(--white);
 }
 
-.PrimaryStroke {
-  background-color: transparent;
-  color: var(--primary);
-  border: 1px solid var(--primary);
+.Primary.Outline {
+  background-color: var(--white);
+  color: var(--primary6);
+  outline: 2px solid var(--primary6);
 }
 
-.Naked {
-  background-color: transparent;
+.Primary.Outline:hover {
+  background-color: var(--primary1);
+  outline: 2px solid var(--primary6);
+  color: var(--primary7);
+}
+
+.Primary.Outline:active {
+  background-color: var(--white);
+  color: var(--primary6);
+  outline: 2px solid var(--primary4);
+}
+
+.Primary.Outline:focus {
+  background-color: var(--primary3);
+  color: var(--primary7);
+  outline: 4px solid var(--primary3);
+}
+
+.Primary.Black {
+  background-color: var(--white);
+  color: var(--gray13);
+  outline: 2px solid var(--gray13);
+}
+
+.Primary.Black:hover {
+  background-color: var(--primary1);
+  outline: 2px solid var(--gray9);
   color: var(--gray13);
 }
 
-.Black {
-  background-color: var(--gray13);
+.Primary.Black:active {
+  background-color: var(--white);
+  color: var(--gray13);
+  outline: 4px solid var(--gray7);
+}
+
+.Primary.Black:focus {
+  color: var(--gray13);
+  background-color: var(--primary1);
+  outline: 4px solid var(--gray6);
+}
+
+.Primary.Inline {
+  background-color: var(--white);
+  color: var(--primary6);
+}
+
+.Primary.Inline:hover {
+  background-color: var(--primary1);
+  color: var(--primary7);
+}
+
+.Primary.Inline:active {
+  background-color: var(--white);
+  outline: 2px solid var(--primary2);
+  color: var(--primary6);
+}
+
+.Primary.Inline:focus {
+  background-color: var(--primary1);
+  color: var(--primary7);
+  outline: 2px solid var(--primary2);
+}
+
+.Secondary.Fill {
+  background-color: var(--secondary6);
   color: var(--white);
 }
 
-.Danger {
+.Secondary.Fill:hover {
+  background-color: var(--secondary7);
+  color: var(--white);
+}
+
+.Secondary.Fill:active {
+  background-color: var(--secondary6);
+  outline: 4px solid var(--secondary4);
+  color: var(--white);
+}
+
+.Secondary.Fill:focus {
+  background-color: var(--secondary7);
+  outline: 4px solid var(--secondary3);
+  color: var(--white);
+}
+
+.Secondary.Outline {
+  background-color: var(--white);
+  color: var(--secondary6);
+  outline: 2px solid var(--secondary6);
+}
+
+.Secondary.Outline:hover {
+  outline: 2px solid var(--secondary6);
+  color: var(--secondary7);
+  background-color: var(--secondary1);
+}
+
+.Secondary.Outline:active {
+  background-color: var(--white);
+  color: var(--secondary6);
+  outline: 4px solid var(--secondary4);
+}
+
+.Secondary.Outline:focus {
+  background-color: var(--secondary1);
+  outline: 4px solid var(--secondary3);
+  color: var(--secondary7);
+}
+
+.Secondary.Black {
+  background-color: var(--white);
+  outline: 2px solid var(--gray13);
+  color: var(--gray13);
+}
+
+.Secondary.Black:hover {
+  background-color: var(--secondary1);
+  color: var(--gray13);
+  outline: 2px solid var(--gray9);
+}
+
+.Secondary.Black:active {
+  background-color: var(--white);
+  color: var(--gray13);
+  outline: 4px solid var(--gray7);
+}
+
+.Secondary.Black:focus {
+  background-color: var(--secondary1);
+  color: var(--gray13);
+  outline: 4px solid var(--gray6);
+}
+
+.Secondary.Inline {
+  background-color: var(--white);
+  color: var(--secondary6);
+}
+
+.Secondary.Inline:hover {
+  background-color: var(--secondary1);
+  color: var(--secondary7);
+}
+
+.Secondary.Inline:active {
+  background-color: var(--white);
+  color: var(--secondary6);
+  outline: 2px solid var(--secondary2);
+}
+
+.Secondary.Inline:focus {
+  background-color: var(--secondary1);
+  outline: 2px solid var(--secondary2);
+  color: var(--secondary7);
+}
+
+.Error.Fill {
   background-color: var(--error);
   color: var(--white);
 }
 
-.Primary3 {
-  background-color: var(--primary2);
+.Error.Fill:hover,
+.Error.Fill:active,
+.Error.Fill:focus {
+  background-color: var(--errorS1);
+  color: var(--white);
+}
+
+.Error.Outline {
+  background-color: var(--white);
+  color: var(--error);
+  outline: 2px solid var(--error);
+}
+
+.Error.Outline:hover,
+.Error.Outline:active,
+.Error.Outline:focus {
+  color: var(--errorS1);
+  outline: 2px solid var(--errorS1);
+  background-color: var(--errorT1);
+}
+
+.Error.Inline {
+  background-color: var(--white);
+  color: var(--error);
+}
+
+.Error.Inline:hover,
+.Error.Inline:active,
+.Error.Inline:focus {
+  color: var(--errorS1);
+  background-color: var(--errorT1);
+}
+
+.Success.Fill {
+  background-color: var(--success);
+  color: var(--white);
+}
+
+.Success.Fill:hover,
+.Success.Fill:active,
+.Success.Fill:focus {
+  background-color: var(--successS1);
+  color: var(--white);
+}
+
+.Success.Outline {
+  background-color: var(--white);
+  color: var(--successS1);
+  outline: 2px solid var(--successS1);
+}
+
+.Success.Outline:hover,
+.Success.Outline:active,
+.Success.Outline:focus {
+  background-color: var(--successT1);
+  outline: 2px solid var(--successS2);
+  color: var(--successS2);
+}
+
+.Success.Inline {
+  background-color: var(--white);
+  color: var(--successS1);
+}
+
+.Success.Inline:hover,
+.Success.Inline:active,
+.Success.Inline:focus {
+  background-color: var(--successT1);
+  color: var(--successS2);
+}
+
+.Disable.Fill {
+  background-color: var(--gray7);
+  color: var(--gray2);
+}
+
+.Disable.Outline {
+  background-color: var(--white);
+  color: var(--gray7);
+  outline: 2px solid var(--gray7);
+}
+
+.Disable.Inline {
+  background-color: var(--white);
+  color: var(--gray7);
+}
+
+.Warning.Fill {
+  background-color: var(--warning);
   color: var(--black);
 }
 
-.Secondary3 {
-  color: var(--gray10);
-  background-color: var(--secondary2);
+.Warning.Fill:hover,
+.Warning.Fill:active,
+.Warning.Fill:focus {
+  background-color: var(--warningS1);
+  color: var(--black);
 }
 
-.Success {
-  background-color: var(--success);
+.Warning.Outline {
+  background-color: var(--white);
+  color: var(--warningS2);
+  outline: 2px solid var(--warningS2);
+}
+
+.Warning.Outline:hover,
+.Warning.Outline:active,
+.Warning.Outline:focus {
+  background-color: var(--warningT2);
+  color: var(--warningS3);
+  outline: 2px solid var(--warningS3);
+}
+
+.Warning.Inline {
+  background-color: var(--white);
+  color: var(--warningS2);
+}
+
+.Warning.Inline:hover,
+.Warning.Inline:active,
+.Warning.Inline:focus {
+  background-color: var(--warningT2);
+  color: var(--warningS3);
+}
+
+.Info.Fill {
+  background-color: var(--info);
   color: var(--white);
+}
+
+.Info.Fill:hover,
+.Info.Fill:active,
+.Info.Fill:focus {
+  background-color: var(--infoS1);
+  color: var(--white);
+}
+
+.Info.Outline {
+  background-color: var(--white);
+  outline: 2px solid var(--infoS1);
+  color: var(--infoS1);
+}
+
+.Info.Outline:hover,
+.Info.Outline:active,
+.Info.Outline:focus {
+  background-color: var(--infoT1);
+  color: var(--infoS2);
+  outline: 2px solid var(--infoS2);
+}
+
+.Info.Inline {
+  background-color: var(--white);
+  color: var(--infoS1);
+}
+
+.Info.Inline:hover,
+.Info.Inline:active,
+.Info.Inline:focus {
+  background-color: var(--infoT1);
+  color: var(--infoS2);
+}
+
+.Neutral.Inline {
+  background-color: var(--white);
+  color: var(--gray11);
+}
+
+.Neutral.Inline:hover,
+.Neutral.Inline:active,
+.Neutral.Inline:focus {
+  background-color: var(--gray4);
+  color: var(--gray11);
+}
+
+.Neutral.Outline {
+  background-color: var(--white);
+  color: var(--gray11);
+  outline: 2px solid var(--gray11);
+}
+
+.Neutral.Outline:hover,
+.Neutral.Outline:active,
+.Neutral.Outline:focus {
+  background-color: var(--gray4);
+  color: var(--gray11);
+  outline: 2px solid var(--gray11);
+}
+
+.XL {
+  height: 3.5rem;
+}
+
+.L {
+  height: 3rem;
+}
+
+.M {
+  height: 2.5rem;
+}
+
+.S {
+  height: 2rem;
+}
+
+.Normal {
+  border-radius: 0.25rem;
+}
+
+.Medium {
+  border-radius: 0.5rem;
+}
+
+.High {
+  border-radius: 100dvw;
 }

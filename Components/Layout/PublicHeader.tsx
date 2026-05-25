@@ -89,7 +89,7 @@ const PublicHeader = () => {
       { title: "blog", target: "/mag" },
       { title: "forDoctors", target: "/doctorpanel", accent: true },
     ],
-    []
+    [],
   );
 
   return (

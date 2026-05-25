@@ -1,7 +1,16 @@
 "use client";
 import { useState } from "react";
 import usePopup from "../Hooks/usePopup";
-import Button, { buttonVariants } from "../UI/Button";
+import Button, {
+  ButtonMode,
+  buttonModes,
+  ButtonRadius,
+  buttonRadiuses,
+  ButtonSize,
+  buttonSizes,
+  ButtonVariant,
+  buttonVariants,
+} from "../UI/Button";
 import Input from "../UI/Input";
 import classes from "./AdminPage.module.css";
 import Box from "./UI/Box";
@@ -18,10 +27,17 @@ import PodPopup from "./PodPopup";
 import TabSystem from "./UI/TabSystem";
 import ClientTabSystem from "../UI/ClientTabSystem";
 import CupIcon from "../Icons/CupIcon";
+import SelectInput from "../UI/SelectInput";
+import DashboardIcon from "../Icons/DashboardIcon";
 
 const AdminPage = () => {
   const { setPopup, closePopup } = usePopup();
   const [notif, setNotif] = useState<string>("");
+
+  const [btnVariant, setBtnVariant] = useState<ButtonVariant>("Primary");
+  const [btnMode, setBtnMode] = useState<ButtonMode>("Fill");
+  const [btnSize, setBtnSize] = useState<ButtonSize>("XL");
+  const [btnRadius, setBtnRadius] = useState<ButtonRadius>("Normal");
 
   const pushNotification = useNotification();
 
@@ -48,13 +64,13 @@ const AdminPage = () => {
                         </Button>
                         <Button onClick={() => closePopup()}>Close All</Button>
                       </div>
-                    </div>
+                    </div>,
                   )
                 }
               >
                 Open Second Popup
               </Button>
-            </div>
+            </div>,
           )
         }
       >
@@ -73,11 +89,62 @@ const AdminPage = () => {
       </FormActions>
       <br />
       <div className={classes.colors}>
-        {buttonVariants.map((variant) => (
-          <Button key={variant} variant={variant}>
-            {variant}
-          </Button>
-        ))}
+        <SelectInput
+          title="Variant"
+          options={buttonVariants.reduce(
+            (acc, el) => ({ ...acc, [el]: el }),
+            {},
+          )}
+          onChange={(e) =>
+            setBtnVariant(
+              (prev) =>
+                buttonVariants.find((el) => el === e.target.value) || prev,
+            )
+          }
+          defaultValue={btnVariant}
+        />
+        <SelectInput
+          title="Mode"
+          defaultValue={btnMode}
+          options={buttonModes.reduce((acc, el) => ({ ...acc, [el]: el }), {})}
+          onChange={(e) =>
+            setBtnMode(
+              (prev) => buttonModes.find((el) => el === e.target.value) || prev,
+            )
+          }
+        />
+        <SelectInput
+          title="Size"
+          defaultValue={btnSize}
+          options={buttonSizes.reduce((acc, el) => ({ ...acc, [el]: el }), {})}
+          onChange={(e) =>
+            setBtnSize(
+              (prev) => buttonSizes.find((el) => el === e.target.value) || prev,
+            )
+          }
+        />
+        <SelectInput
+          title="Radius"
+          defaultValue={btnRadius}
+          options={buttonRadiuses.reduce(
+            (acc, el) => ({ ...acc, [el]: el }),
+            {},
+          )}
+          onChange={(e) =>
+            setBtnRadius(
+              (prev) =>
+                buttonRadiuses.find((el) => el === e.target.value) || prev,
+            )
+          }
+        />
+        <Button
+          leadIcon={<DashboardIcon />}
+          tailIcon={<DashboardIcon />}
+          variant={btnVariant}
+          size={btnSize}
+          mode={btnMode}
+          radius={btnRadius}
+        >{`${btnVariant}-${btnMode}-${btnRadius}-${btnSize}`}</Button>
       </div>
       <br />
       <div className={classes.colors}>
