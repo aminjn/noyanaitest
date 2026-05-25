@@ -7,30 +7,28 @@
   --black: #fff;
   --white: #0b0c17; */
 
-  --aghaNaiini: #ff0000;
-
   --primary0: #f1f8fd;
-  --primary1: #e6f2fc;
-  --primary2: #cce6fa;
-  --primary3: #99ccf5;
-  --primary4: #66b3f0;
-  --primary5: #3399eb;
+  --primary1: #e8f2fc;
+  --primary2: #bad9f7;
+  --primary3: #8dc0f2;
+  --primary4: #5fa6ed;
+  --primary5: #3e96ed;
   --primary6: #1a80e5;
-  --primary7: #166fcc;
-  --primary8: #125fb2;
-  --primary9: #0e4f99;
-  --primary10: #0b3f7f;
+  --primary7: #166cc2;
+  --primary8: #125aa0;
+  --primary9: #0d4073;
+  --primary10: #082645;
 
-  --secondary1: #ffe6eb;
-  --secondary2: #ffccd6;
-  --secondary3: #ff99ad;
-  --secondary4: #ff6684;
-  --secondary5: #ff335a;
-  --secondary6: #ff2d55;
-  --secondary7: #e0264a;
-  --secondary8: #c0203f;
-  --secondary9: #a01934;
-  --secondary10: #801328;
+  --secondary1: #e7e1f6;
+  --secondary2: #d8cdf0;
+  --secondary3: #c4b3e9;
+  --secondary4: #b09ae1;
+  --secondary5: #9d81da;
+  --secondary6: #8968d2;
+  --secondary7: #7257af;
+  --secondary8: #533f80;
+  --secondary9: #392b57;
+  --secondary10: #241c38;
 
   --yellowLight: #fffcf0;
   --yellow: #ffcd60;
@@ -63,45 +61,45 @@
   --gray12: #f7f7f8;
   --gray13: #fafafa; */
 
-  --errorS4: #331414;
-  --errorS3: #662929;
-  --errorS2: #993d3d;
-  --errorS1: #cc5252;
-  --error: #ff6666;
-  --errorT4: #ff8585;
-  --errorT3: #ffa3a3;
-  --errorT2: #ffc2c2;
-  --errorT1: #ffe0e0;
+  --errorS4: #2f090d;
+  --errorS3: #5e121b;
+  --errorS2: #8d1c2b;
+  --errorS1: #bc2539;
+  --error: #eb2e48;
+  --errorT4: #ef586c;
+  --errorT3: #f38291;
+  --errorT2: #f7abb4;
+  --errorT1: #fbd5d9;
 
-  --successS4: #0a290a;
-  --successS3: #145214;
-  --successS2: #1e7b1e;
+  --successS4: #082908;
+  --successS3: #105210;
+  --successS2: #197b19;
   --successS1: #28a428;
-  --success: #32cd32;
-  --successT4: #6fe36f;
-  --successT3: #9cec9c;
-  --successT2: #cbf5cb;
-  --successT1: #f3fdf3;
+  --success: #29cd29;
+  --successT4: #54d754;
+  --successT3: #7fe17f;
+  --successT2: #a9eba9;
+  --successT1: #d4f5d4;
 
-  --warningS4: #332701;
-  --warningS3: #664d03;
-  --warningS2: #997404;
-  --warningS1: #cc9a06;
-  --warning: #ffc107;
-  --warningT4: #ffdf7d;
-  --warningT3: #ffe9a8;
-  --warningT2: #fff4d4;
-  --warningT1: #fffcf5;
+  --warningS4: #332805;
+  --warningS3: #66500a;
+  --warningS2: #b28d12;
+  --warningS1: #e0b116;
+  --warning: #fec819;
+  --warningT4: #fed347;
+  --warningT3: #fede75;
+  --warningT2: #ffe9a3;
+  --warningT1: #fff4d1;
 
-  --infoS4: #061d33;
-  --infoS3: #0c3a66;
-  --infoS2: #125699;
-  --infoS1: #1873cc;
-  --info: #1e90ff;
-  --infoT4: #7dbfff;
-  --infoT3: #a9d5ff;
-  --infoT2: #d4eaff;
-  --infoT1: #f4f9ff;
+  --infoS4: #03222a;
+  --infoS3: #074454;
+  --infoS2: #0a677d;
+  --infoS1: #0e89a7;
+  --info: #11abd1;
+  --infoT4: #41bcda;
+  --infoT3: #70cde3;
+  --infoT2: #a0dded;
+  --infoT1: #cfeef6;
 
   --backCol: var(--gray2);
 
