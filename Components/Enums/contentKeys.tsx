@@ -596,6 +596,7 @@ const contentKeys = [
   "techMDID",
   "patientMobile",
   "writeYourPrompt",
+  "loginOrSignup",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

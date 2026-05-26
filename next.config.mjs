@@ -6,6 +6,8 @@ const nextConfig = {
     ADMIN_KEY: process.env.ADMIN_KEY,
     DOMAIN: process.env.DOMAIN,
     TAMIN_DOMAIN: process.env.TAMIN_DOMAIN,
+    BACKEND: process.env.BACKEND,
+    FILE_PATH: process.env.FILE_PATH,
   },
   images: {
     remotePatterns: [

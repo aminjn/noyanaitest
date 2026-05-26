@@ -10,6 +10,9 @@ import CallingIcon from "../Icons/CallingIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import useLocale from "../Hooks/useLocale";
 import { ContentKey } from "../Enums/contentKeys";
+import SearchIcon from "../Icons/SearchIcon";
+import Bell01Icon from "../Icons/Bell01Icon";
+import SearchButton from "./SearchButton";
 
 type LinkItem<TSubed extends boolean = false> = {
   title: ContentKey;
@@ -116,6 +119,12 @@ const PublicHeader = () => {
         ))}
       </nav>
       <div className={classes.left}>
+        <SearchButton />
+        <button type="button">
+          <Ixon width="1.5rem">
+            <Bell01Icon />
+          </Ixon>
+        </button>
         <UserButton />
       </div>
     </header>

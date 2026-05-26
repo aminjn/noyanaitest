@@ -1,7 +1,9 @@
+import useLocale from "../Hooks/useLocale";
 import usePopup from "../Hooks/usePopup";
 import useProgress from "../Hooks/useProgress";
 import useUser from "../Hooks/useUser";
 import ChevronIcon from "../Icons/ChevronIcon";
+import UserCircleIcon from "../Icons/UserCircleIcon";
 import UserSquareIcon from "../Icons/UserSquareIcon";
 import AuthPopup from "../Popups/AuthPopup";
 import Button from "../UI/Button";
@@ -13,26 +15,35 @@ const UserButton = () => {
 
   const push = useProgress();
 
-  if (!!user)
-    return (
-      <div>
-        <Button
-          className={classes.main}
-          leadIcon={<UserSquareIcon />}
-          tailIcon={<ChevronIcon />}
-          iconWidth="1.25rem"
-          onClick={() => push("/dashboard")}
-        >
-          {user.phone}
-        </Button>
-      </div>
-    );
+  const getContent = useLocale();
+
+  console.log(user);
+
+  // if (!!user)
+  //   return (
+  //     <div>
+  //       <Button
+  //         className={classes.main}
+  //         iconWidth="1.25rem"
+  //         onClick={() => }
+  //       >
+  //         {user.phone}
+  //       </Button>
+  //     </div>
+  //   );
   return (
     <Button
-      className={classes.main}
-      onClick={() => setPopup("Auth", <AuthPopup />)}
+      leadIcon={!!user ? <UserCircleIcon /> : undefined}
+      tailIcon={!!user ? <ChevronIcon /> : undefined}
+      onClick={() =>
+        !!user ? push("/dashboard") : setPopup("Auth", <AuthPopup />)
+      }
+      variant="Primary"
+      mode={!!user ? "Black" : "Outline"}
+      size="L"
+      radius="Medium"
     >
-      ورود/ثبت نام
+      {!!user ? user.phone : getContent("loginOrSignup")}
     </Button>
   );
 };
