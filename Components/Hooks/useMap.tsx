@@ -6,7 +6,7 @@ import useLocale from "./useLocale";
 
 mlgl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
-  true
+  true,
 );
 
 const useMap = ({
@@ -56,7 +56,9 @@ const useMap = ({
     map.on("click", (e) => {
       onClick?.(e.lngLat);
     });
-    setReady(true);
+    map.on("load", () => {
+      setReady(true);
+    });
   }, [containerRef, initialCenter, onClick]);
 
   useEffect(() => {
@@ -77,7 +79,7 @@ const useMap = ({
       if (!navigator.geolocation)
         return pushNotification(
           getContent("yourDeviceNotSupportingGPS"),
-          "Error"
+          "Error",
         );
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -90,13 +92,13 @@ const useMap = ({
           console.log(err);
           pushNotification(
             getContent("somethingWentWrongAcquiringYourLocation"),
-            "Error"
+            "Error",
           );
         },
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true },
       );
     },
-    [getContent, pushNotification, zoom]
+    [getContent, pushNotification, zoom],
   );
 
   const flyTo = useCallback(
@@ -107,7 +109,7 @@ const useMap = ({
       if (!navigator.geolocation)
         return pushNotification(
           getContent("yourDeviceNotSupportingGPS"),
-          "Error"
+          "Error",
         );
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -120,13 +122,13 @@ const useMap = ({
           console.log(err);
           pushNotification(
             getContent("somethingWentWrongAcquiringYourLocation"),
-            "Error"
+            "Error",
           );
         },
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true },
       );
     },
-    [getContent, pushNotification]
+    [getContent, pushNotification],
   );
 
   return { map: mapRef.current, bounds, center, flyToMe, ready };

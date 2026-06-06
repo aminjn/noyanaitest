@@ -109,6 +109,8 @@ const linkMap: LinkMap = [
       { title: "تبلیغات", target: "advertisement" },
       { title: "خدمات", target: "service" },
       { title: "سوالات متداول", target: "faq" },
+      { title: "دسته بندی خدمات", target: "serviceCategory" },
+      { title: "استان ها", target: "province" },
     ],
   },
   {

@@ -34,14 +34,14 @@ const DoctorManageCalendarDayPage = () => {
     IDoctorSession<{ Booking: { User: true }; Clinic: Record<never, never> }>[]
   >(
     params ? `${API}/doctor/calendar/${params.stamp}/full` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
 
   const past = useMemo<boolean>(
     () => new Date(Number(params.stamp)) < new Date(),
-    [params.stamp]
+    [params.stamp],
   );
 
   const { setPopup } = usePopup();
@@ -64,7 +64,7 @@ const DoctorManageCalendarDayPage = () => {
                             <MutateSessionPopup
                               mutate={mutate}
                               stamp={params.stamp}
-                            />
+                            />,
                           )
                         }
                       >
@@ -75,7 +75,7 @@ const DoctorManageCalendarDayPage = () => {
                 ]
           }
           title={`${getContent("timeLine")} ${new Date(
-            Number(params.stamp)
+            Number(params.stamp),
           ).toLocaleDateString("fa-IR", {
             month: "long",
             day: "numeric",
@@ -117,7 +117,7 @@ const DoctorManageCalendarDayPage = () => {
                     ),
                   },
                 }),
-                {}
+                {},
               ),
               ...patientStatuses.reduce(
                 (acc, status) => ({
@@ -132,7 +132,7 @@ const DoctorManageCalendarDayPage = () => {
                     ),
                   },
                 }),
-                {}
+                {},
               ),
               note: {
                 name: getContent("description"),
@@ -173,7 +173,7 @@ const DoctorManageCalendarDayPage = () => {
                               <MutateSessionPopup
                                 mutate={mutate}
                                 node={node as IDoctorSession}
-                              />
+                              />,
                             )
                           }
                         >
@@ -187,7 +187,7 @@ const DoctorManageCalendarDayPage = () => {
                               <DeleteSessionPopup
                                 node={node as IDoctorSession}
                                 mutate={mutate}
-                              />
+                              />,
                             )
                           }
                         >

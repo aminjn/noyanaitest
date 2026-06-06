@@ -12,7 +12,7 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import FormatDate from "@/Components/UI/FormatDate";
-import { getDoctorLabel } from "../Lib/LabelGetters";
+import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { findCity } from "@/Components/Enums/Cities";
@@ -31,7 +31,7 @@ const AdminManageClinicAdditionsPage = () => {
   const { data, error, mutate } = useSWR<
     IClinicAdditionRequest<{ user: Record<never, never> }>[]
   >(`${API}/auto/clinicaddition`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -54,14 +54,14 @@ const AdminManageClinicAdditionsPage = () => {
                 name: "ثبت کننده",
                 value: (node) =>
                   node.submittedBy
-                    ? getDoctorLabel(node.submittedBy)
+                    ? getDoctorProfileLabel(node.submittedBy)
                     : "حذف شده",
                 component: (node) =>
                   node.submittedBy ? (
                     <InlineLink
                       href={adminPath(`/doctorprofile/${node.submittedBy._id}`)}
                     >
-                      {getDoctorLabel(node.submittedBy)}
+                      {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
                     ""
@@ -116,7 +116,7 @@ const AdminManageClinicAdditionsPage = () => {
                       onClick={() =>
                         setPopup(
                           "CreateClinicFromRequest",
-                          <CreateClinicFromRequestPopup node={node} />
+                          <CreateClinicFromRequestPopup node={node} />,
                         )
                       }
                     >
@@ -130,7 +130,7 @@ const AdminManageClinicAdditionsPage = () => {
                           <MutateClinicRequestPopup
                             node={node}
                             mutate={mutate}
-                          />
+                          />,
                         )
                       }
                     >
@@ -144,7 +144,7 @@ const AdminManageClinicAdditionsPage = () => {
                           <DeleteClinicAdditionRequestPopup
                             node={node}
                             mutate={mutate}
-                          />
+                          />,
                         )
                       }
                     >

@@ -47,3 +47,10 @@
 .popup2 {
   background-color: pink;
 }
+
+.badger {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}

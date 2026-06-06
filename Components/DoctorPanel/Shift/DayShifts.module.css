@@ -1,0 +1,42 @@
+.main {
+  display: flex;
+  gap: 1rem;
+}
+
+.shiftsBox {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--white);
+  flex: 1;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shifts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.shiftsBoxInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.off::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  content: "";
+  backdrop-filter: blur(2px) brightness(80%);
+}

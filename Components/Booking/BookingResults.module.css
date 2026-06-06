@@ -1,0 +1,53 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: khaki;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.count {
+  color: var(--gray8);
+}
+
+.toggleView {
+  display: flex;
+}
+
+.viewSegment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 1.5rem;
+  background-color: var(--gray4);
+  color: var(--gray7);
+  border: 1px solid transparent;
+  transition: all var(--transTime);
+}
+
+.listView {
+  border-radius: 100dvw 0 0 100dvw;
+}
+
+.gridView {
+  border-radius: 0 100dvw 100dvw 0;
+}
+
+.activeView {
+  background-color: var(--white);
+  color: var(--gray10);
+  border-color: var(--gray10);
+}

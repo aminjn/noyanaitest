@@ -13,6 +13,7 @@ import classes from "./RoomPage.module.css";
 import { Device } from "mediasoup-client";
 import useSocket from "../Hooks/useSocket";
 import useNotification from "../Hooks/useNotification";
+import { Producer } from "mediasoup-client/types";
 
 const DeviceLoader = ({
   device,
@@ -47,11 +48,12 @@ const DeviceLoader = ({
     initDevice();
   }, [didInit, initDevice]);
 
-  return (
-    <Button onClick={initDevice} isLoading={isLoading}>
-      {!!device ? "device Initialized" : "Init Device"}
-    </Button>
-  );
+  return null;
+  // return (
+  //   <Button onClick={initDevice} isLoading={isLoading}>
+  //     {!!device ? "device Initialized" : "Init Device"}
+  //   </Button>
+  // );
 };
 
 const StreamToggler = ({
@@ -89,17 +91,22 @@ const StreamToggler = ({
     onStart();
   }, [didInit, onStart]);
 
-  return (
-    <Button onClick={onStart}>{!!stream ? "Feed is On" : "Feed is Off"}</Button>
-  );
+  return null;
+  // return (
+  //   <Button onClick={onStart}>{!!stream ? "Feed is On" : "Feed is Off"}</Button>
+  // );
 };
 
 const ProduceTransportRequester = ({
   device,
   stream,
+  setAudioProducer,
+  setVideoProducer,
 }: {
   device: Device;
   stream: MediaStream;
+  setAudioProducer: Dispatch<SetStateAction<Producer | null>>;
+  setVideoProducer: Dispatch<SetStateAction<Producer | null>>;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -152,9 +159,15 @@ const ProduceTransportRequester = ({
       }
       setIsLoading(false);
     });
-    transport.produce({ track: stream.getVideoTracks()[0] });
-    transport.produce({ track: stream.getAudioTracks()[0] });
-  }, [device, isLoading, socket, stream]);
+    const videoProducer = await transport.produce({
+      track: stream.getVideoTracks()[0],
+    });
+    const audioProducer = await transport.produce({
+      track: stream.getAudioTracks()[0],
+    });
+    setVideoProducer(videoProducer);
+    setAudioProducer(audioProducer);
+  }, [device, isLoading, setAudioProducer, setVideoProducer, socket, stream]);
 
   useEffect(() => {
     if (didInit) return;
@@ -162,11 +175,12 @@ const ProduceTransportRequester = ({
     onRequest();
   }, [didInit, onRequest]);
 
-  return (
-    <Button onClick={onRequest} isLoading={isLoading}>
-      {"Request Transport"}
-    </Button>
-  );
+  return null;
+  // return (
+  //   <Button onClick={onRequest} isLoading={isLoading}>
+  //     {"Request Transport"}
+  //   </Button>
+  // );
 };
 
 const RefreshConsumers = ({
@@ -190,11 +204,12 @@ const RefreshConsumers = ({
     socket.on("producerChange", refreshAvailableProducers);
   }, [refreshAvailableProducers, socket]);
 
-  return (
-    <Button onClick={refreshAvailableProducers} isLoading={isLoading}>
-      Refresh Producers
-    </Button>
-  );
+  return null;
+  // return (
+  //   <Button onClick={refreshAvailableProducers} isLoading={isLoading}>
+  //     Refresh Producers
+  //   </Button>
+  // );
 };
 
 const ConsumeTransportRequester = ({
@@ -278,11 +293,12 @@ const ConsumeTransportRequester = ({
     onRequest();
   }, [didInit, onRequest]);
 
-  return (
-    <Button onClick={onRequest} isLoading={isLoading}>
-      {"Request Transport"}
-    </Button>
-  );
+  return null;
+  // return (
+  //   <Button onClick={onRequest} isLoading={isLoading}>
+  //     {"Request Transport"}
+  //   </Button>
+  // );
 };
 
 const Consumer = ({
@@ -300,11 +316,14 @@ const Consumer = ({
   );
 
   return (
-    <div className={classes.consumer}>
+    <div
+      className={`${classes.consumer} ${isAudio ? classes.audioConsumer : ""}`}
+    >
       {!!stream && (
         <Fragment>
           {isAudio ? (
             <audio
+              className={classes.audio}
               autoPlay
               controls
               ref={(el) => {
@@ -314,6 +333,7 @@ const Consumer = ({
             />
           ) : (
             <video
+              className={classes.video}
               autoPlay
               ref={(el) => {
                 if (!el) return;
@@ -324,7 +344,7 @@ const Consumer = ({
           )}
         </Fragment>
       )}
-      <p>{producer}</p>
+      {/* <p>{producer}</p> */}
       <ConsumeTransportRequester
         device={device}
         producer={producer}
@@ -338,6 +358,7 @@ const Self = ({ stream }: { stream: MediaStream }) => {
   return (
     <div className={classes.self}>
       <video
+        className={classes.video}
         muted
         ref={(el) => {
           if (!el) return;
@@ -349,10 +370,65 @@ const Self = ({ stream }: { stream: MediaStream }) => {
   );
 };
 
+const Controls = ({
+  audioPrducer,
+  videoProducer,
+}: {
+  audioPrducer: Producer;
+  videoProducer: Producer;
+}) => {
+  const [audio, setAudio] = useState<boolean>(true);
+
+  const [video, setVideo] = useState<boolean>(true);
+
+  const socket = useSocket();
+
+  return (
+    <div className={classes.controls}>
+      <Button
+        onClick={() => {
+          if (audio) {
+            audioPrducer.pause();
+            setAudio(false);
+          } else {
+            audioPrducer.resume();
+            setAudio(true);
+          }
+        }}
+      >
+        {audio ? "Pause Audio" : "Resume Audio"}
+      </Button>
+      <Button
+        onClick={() => {
+          if (video) {
+            setVideo(false);
+            videoProducer.pause();
+          } else {
+            setVideo(true);
+            videoProducer.resume();
+          }
+        }}
+      >
+        {video ? "Pause Video" : "Resume Video"}
+      </Button>
+      <Button
+        variant="Error"
+        onClick={() => {
+          socket.emit("hangup");
+        }}
+      >
+        Hang Up
+      </Button>
+    </div>
+  );
+};
+
 const RoomPage = ({ roomName }: { roomName: string }) => {
   const [device, setDevice] = useState<Device | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [availableProducers, setAvailableProducers] = useState<string[]>([]);
+  const [audioProducer, setAudioProducer] = useState<Producer | null>(null);
+  const [videoProducer, setVideoProducer] = useState<Producer | null>(null);
 
   return (
     <div className={classes.main}>
@@ -361,7 +437,12 @@ const RoomPage = ({ roomName }: { roomName: string }) => {
         <DeviceLoader device={device} setDevice={setDevice} />
         <StreamToggler stream={stream} setStream={setStream} />
         {!!device && !!stream && (
-          <ProduceTransportRequester stream={stream} device={device} />
+          <ProduceTransportRequester
+            stream={stream}
+            device={device}
+            setAudioProducer={setAudioProducer}
+            setVideoProducer={setVideoProducer}
+          />
         )}
       </div>
       {!!device && (
@@ -375,6 +456,9 @@ const RoomPage = ({ roomName }: { roomName: string }) => {
         </div>
       )}
       {!!stream && <Self stream={stream} />}
+      {!!audioProducer && !!videoProducer && (
+        <Controls audioPrducer={audioProducer} videoProducer={videoProducer} />
+      )}
     </div>
   );
 };

@@ -10,13 +10,13 @@
 
 .Primary.Fill {
   background-color: var(--primary6);
-  outline: none;
+  outline-color: transparent;
   color: var(--white);
 }
 
 .Primary.Fill:hover {
   background-color: var(--primary7);
-  outline: none;
+  outline-color: transparent;
   color: var(--white);
 }
 
@@ -83,11 +83,13 @@
 .Primary.Inline {
   background-color: var(--white);
   color: var(--primary6);
+  outline-color: transparent;
 }
 
 .Primary.Inline:hover {
   background-color: var(--primary1);
   color: var(--primary7);
+  outline-color: transparent;
 }
 
 .Primary.Inline:active {
@@ -105,11 +107,13 @@
 .Secondary.Fill {
   background-color: var(--secondary6);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Secondary.Fill:hover {
   background-color: var(--secondary7);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Secondary.Fill:active {
@@ -175,11 +179,13 @@
 .Secondary.Inline {
   background-color: var(--white);
   color: var(--secondary6);
+  outline-color: transparent;
 }
 
 .Secondary.Inline:hover {
   background-color: var(--secondary1);
   color: var(--secondary7);
+  outline-color: transparent;
 }
 
 .Secondary.Inline:active {
@@ -197,6 +203,7 @@
 .Error.Fill {
   background-color: var(--error);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Error.Fill:hover,
@@ -204,6 +211,7 @@
 .Error.Fill:focus {
   background-color: var(--errorS1);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Error.Outline {
@@ -223,6 +231,7 @@
 .Error.Inline {
   background-color: var(--white);
   color: var(--error);
+  outline-color: transparent;
 }
 
 .Error.Inline:hover,
@@ -230,11 +239,13 @@
 .Error.Inline:focus {
   color: var(--errorS1);
   background-color: var(--errorT1);
+  outline-color: transparent;
 }
 
 .Success.Fill {
   background-color: var(--success);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Success.Fill:hover,
@@ -242,6 +253,7 @@
 .Success.Fill:focus {
   background-color: var(--successS1);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Success.Outline {
@@ -261,6 +273,7 @@
 .Success.Inline {
   background-color: var(--white);
   color: var(--successS1);
+  outline-color: transparent;
 }
 
 .Success.Inline:hover,
@@ -268,11 +281,13 @@
 .Success.Inline:focus {
   background-color: var(--successT1);
   color: var(--successS2);
+  outline-color: transparent;
 }
 
 .Disable.Fill {
   background-color: var(--gray7);
   color: var(--gray2);
+  outline-color: transparent;
 }
 
 .Disable.Outline {
@@ -284,11 +299,13 @@
 .Disable.Inline {
   background-color: var(--white);
   color: var(--gray7);
+  outline-color: transparent;
 }
 
 .Warning.Fill {
   background-color: var(--warning);
   color: var(--black);
+  outline-color: transparent;
 }
 
 .Warning.Fill:hover,
@@ -296,6 +313,7 @@
 .Warning.Fill:focus {
   background-color: var(--warningS1);
   color: var(--black);
+  outline-color: transparent;
 }
 
 .Warning.Outline {
@@ -315,6 +333,7 @@
 .Warning.Inline {
   background-color: var(--white);
   color: var(--warningS2);
+  outline-color: transparent;
 }
 
 .Warning.Inline:hover,
@@ -322,11 +341,13 @@
 .Warning.Inline:focus {
   background-color: var(--warningT2);
   color: var(--warningS3);
+  outline-color: transparent;
 }
 
 .Info.Fill {
   background-color: var(--info);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Info.Fill:hover,
@@ -334,6 +355,7 @@
 .Info.Fill:focus {
   background-color: var(--infoS1);
   color: var(--white);
+  outline-color: transparent;
 }
 
 .Info.Outline {
@@ -353,6 +375,7 @@
 .Info.Inline {
   background-color: var(--white);
   color: var(--infoS1);
+  outline-color: transparent;
 }
 
 .Info.Inline:hover,
@@ -360,11 +383,13 @@
 .Info.Inline:focus {
   background-color: var(--infoT1);
   color: var(--infoS2);
+  outline-color: transparent;
 }
 
 .Neutral.Inline {
   background-color: var(--white);
   color: var(--gray11);
+  outline-color: transparent;
 }
 
 .Neutral.Inline:hover,
@@ -372,6 +397,7 @@
 .Neutral.Inline:focus {
   background-color: var(--gray4);
   color: var(--gray11);
+  outline-color: transparent;
 }
 
 .Neutral.Outline {

@@ -34,16 +34,6 @@ const DoctorManageDetailsTab = () => {
             website: { type: "text", title: getContent("website") },
             landLine: { type: "text", title: getContent("landLine") },
             address: { type: "text", title: getContent("address") },
-            province: {
-              type: "select",
-              title: getContent("province"),
-              options: provinceOptions,
-            },
-            city: {
-              type: "select",
-              title: getContent("city"),
-              options: cityOptions(form.input.province || doctor.province),
-            },
           }}
         />
       )}

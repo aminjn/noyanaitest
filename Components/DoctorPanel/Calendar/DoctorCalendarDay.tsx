@@ -28,8 +28,9 @@ export type BookingPopulation = Population<{
   Patient: UserIdentityPopulation;
 }>;
 
-export interface IBooking<T extends BookingPopulation = BookingPopulation>
-  extends MongoDoc {
+export interface IBooking<
+  T extends BookingPopulation = BookingPopulation,
+> extends MongoDoc {
   session: T["Session"] extends DoctorSessionPopulation
     ? IDoctorSession<T["Session"]>
     : string;
@@ -65,7 +66,7 @@ export type DoctorSessionPopulation = Population<{
 }>;
 
 export type IDoctorSession<
-  T extends DoctorSessionPopulation = DoctorSessionPopulation
+  T extends DoctorSessionPopulation = DoctorSessionPopulation,
 > = MongoDoc & {
   doctor: T["Doctor"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Doctor"]>
@@ -95,7 +96,7 @@ const DoctorCalendarDay = ({
 }) => {
   const { data } = useSWR<IDoctorSession<{ Booking: Record<string, never> }>[]>(
     isOut ? null : `${API}/doctor/calendar/${getSessionDateKey(stamp)}`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();

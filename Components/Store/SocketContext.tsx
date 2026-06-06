@@ -49,7 +49,7 @@ export const SockectContextProvider = ({
     current.on("error", (data: unknown) => {
       pushNotification(
         typeof data === "string" ? data : getContent("unknownErrorOccured"),
-        "Error"
+        "Error",
       );
     });
     return () => {

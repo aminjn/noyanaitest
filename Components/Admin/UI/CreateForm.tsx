@@ -4,7 +4,7 @@ import useForm, {
 } from "@/Components/Hooks/useForm";
 import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
-import { Fragment, ReactNode } from "react";
+import { Dispatch, Fragment, ReactNode, SetStateAction } from "react";
 import FormActions from "./FormActions";
 import Input from "@/Components/UI/Input";
 import SelectInput from "@/Components/UI/SelectInput";
@@ -76,6 +76,12 @@ const CreateForm = <TInput, TResult = unknown>({
     renderer: FormRenderer<TInput>;
     defaultValue?: TInput;
     onCancel?: () => unknown;
+    more?: ({
+      input,
+    }: {
+      input: Partial<TInput>;
+      setInput: Dispatch<SetStateAction<Partial<TInput>>>;
+    }) => ReactNode;
   } & (
     | {
         hookProps: UseFormProps<TInput>;

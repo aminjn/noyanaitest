@@ -14,7 +14,7 @@ import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import { getDoctorLabel } from "../Lib/LabelGetters";
+import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
 import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
@@ -31,7 +31,7 @@ const AdminManageDoctorJoinClinicsPage = () => {
       Doctor: Record<never, never>;
     }>[]
   >(`${API}/auto/doctorjoinclinic`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -59,13 +59,13 @@ const AdminManageDoctorJoinClinicsPage = () => {
               doctor: {
                 name: "دکتر",
                 value: (node) =>
-                  node.doctor ? getDoctorLabel(node.doctor) : "",
+                  node.doctor ? getDoctorProfileLabel(node.doctor) : "",
                 component: (node) =>
                   node.doctor ? (
                     <InlineLink
                       href={adminPath(`/doctorprofile/${node.doctor._id}`)}
                     >
-                      {getDoctorLabel(node.doctor)}
+                      {getDoctorProfileLabel(node.doctor)}
                     </InlineLink>
                   ) : (
                     "حذف شده"
@@ -113,7 +113,7 @@ const AdminManageDoctorJoinClinicsPage = () => {
                           <EditDoctorJoinClinicStatusPopup
                             node={node}
                             mutate={mutate}
-                          />
+                          />,
                         )
                       }
                     >
@@ -127,7 +127,7 @@ const AdminManageDoctorJoinClinicsPage = () => {
                           <DeleteDoctorJoinClinicPopup
                             mutate={mutate}
                             node={node}
-                          />
+                          />,
                         )
                       }
                     >

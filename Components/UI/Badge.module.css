@@ -1,0 +1,105 @@
+.main {
+  display: flex;
+  align-items: center;
+  padding-inline: 0.5rem;
+  gap: 0.125rem;
+  width: fit-content;
+  justify-content: center;
+  transition: all var(--transTime);
+}
+
+.Warning {
+  --badgeCol1: var(--warning);
+  --badgeCol2: var(--warningT1);
+  --badgeCol3: var(--warning);
+}
+
+.Info {
+  --badgeCol1: var(--info);
+  --badgeCol2: var(--infoT1);
+  --badgeCol3: var(--infoT4);
+}
+
+.Success {
+  --badgeCol1: var(--success);
+  --badgeCol2: var(--successT1);
+  --badgeCol3: var(--successT4);
+}
+
+.Error {
+  --badgeCol1: var(--error);
+  --badgeCol2: var(--errorT1);
+  --badgeCol3: var(--errorT4);
+}
+
+.Primarylight {
+  --badgeCol1: var(--primary);
+  --badgeCol2: var(--primary1);
+  --badgeCol3: var(--primary5);
+}
+
+.Primary {
+  --badgeCol1: var(--white);
+  --badgeCol2: var(--primary);
+  --badgeCol3: var(--primary5);
+}
+
+.Secondary {
+  --badgeCol1: var(--white);
+  --badgeCol2: var(--secondary);
+  --badgeCol3: var(--secondary5);
+}
+
+.SecondaryLight {
+  --badgeCol1: var(--secondary);
+  --badgeCol2: var(--secondary1);
+  --badgeCol3: var(--secondary5);
+}
+
+.Black {
+  --badgeCol1: var(--gray10);
+  --badgeCol2: var(--gray3);
+  --badgeCol3: var(--gray8);
+}
+
+.Disabled {
+  --badgeCol1: var(--gray6);
+  --badgeCol2: var(--gray3);
+  --badgeCol3: var(--gray6);
+}
+
+.Fill {
+  background-color: var(--badgeCol2);
+  color: var(--badgeCol1);
+  border: none;
+}
+
+.Outline {
+  background-color: transparent;
+  color: var(--badgeCol3);
+  border: 1px solid var(--badgeCol3);
+}
+
+.High {
+  border-radius: 100dvw;
+}
+
+.Low {
+  border-radius: 0.25rem;
+}
+
+.XXL {
+  height: 1.75rem;
+}
+
+.XL {
+  height: 1.5rem;
+}
+
+.L {
+  height: 1.375rem;
+}
+
+.S {
+  height: 1.125rem;
+}

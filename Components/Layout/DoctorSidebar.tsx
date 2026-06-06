@@ -35,7 +35,7 @@ import CogIcon from "../Icons/CogIcon";
 
 const DoctorSidebar = () => {
   const { data: balance } = useSWR<number>(`${API}/finance`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -68,6 +68,12 @@ const DoctorSidebar = () => {
         title: "secrataries",
         icon: <UserEditIcon />,
         target: "secretary",
+        show: hasAccess(),
+      },
+      {
+        title: "shifts",
+        icon: <CalendarIcon />,
+        target: "shift",
         show: hasAccess(),
       },
       {
@@ -156,7 +162,7 @@ const DoctorSidebar = () => {
         show: true,
       },
     ],
-    [balance, getContent, hasAccess]
+    [balance, getContent, hasAccess],
   );
 
   return <PanelSidebar links={links} panel="doctorpanel" />;

@@ -3,10 +3,10 @@ import classes from "./TabSystem.module.css";
 import Ixon from "@/Components/UI/Ixon";
 
 export type TabSystemTab = {
-  title: string;
+  title: ReactNode;
   id: string;
   content: ReactNode;
-  icon: ReactNode;
+  icon?: ReactNode;
 };
 
 const TabSystem = ({
@@ -14,18 +14,22 @@ const TabSystem = ({
   name,
 }: {
   items: TabSystemTab[];
-  name: string;
+  name?: string;
 }) => {
   const [currentTab, setCurrenTab] = useState<string>(
-    items.find((el) => el.id === localStorage.getItem(name))?.id || items[0]?.id
+    name
+      ? items.find((el) => el.id === localStorage.getItem(name))?.id ||
+          items[0]?.id
+      : items[0]?.id,
   );
 
   const currentContent = useMemo<ReactNode>(
     () => items.find((tab) => tab.id === currentTab)?.content || null,
-    [currentTab, items]
+    [currentTab, items],
   );
 
   useEffect(() => {
+    if (!name) return;
     localStorage.setItem(name, currentTab);
   }, [currentTab, name]);
 
@@ -47,7 +51,7 @@ const TabSystem = ({
             }`}
             style={{ animationDelay: `calc(${i} * var(--transTime))` }}
           >
-            <Ixon width="2rem">{tab.icon}</Ixon>
+            {!!tab.icon && <Ixon width="2rem">{tab.icon}</Ixon>}
             <span>{tab.title}</span>
           </button>
         ))}

@@ -16,7 +16,7 @@ const BookingPage = () => {
   const { data, error } = useSWR<
     IDoctorProfile<{ MainSpecialityPopulated: true }>[]
   >(`${API}/public/booking`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();

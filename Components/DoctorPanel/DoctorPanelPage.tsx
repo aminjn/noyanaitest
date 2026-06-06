@@ -6,6 +6,14 @@ import {
   IGalleryItem,
 } from "../Admin/Doctor/AdminManageDoctorGalleryTab";
 import {
+  CityPopulation,
+  DistrictPopulation,
+  ICity,
+  IDistrict,
+  IProvince,
+  ProvincePopulation,
+} from "../Admin/Province/AdminManageProvincesPage";
+import {
   ISpeciality,
   SpecialityPopulation,
 } from "../Admin/Speciality/AdminManageSpecialitiesPage";
@@ -94,7 +102,17 @@ export type DoctorProfilePopulation = Population<{
   Gallery: GalleryItemPopulation;
   Offices: OfficePopulation;
   Socials: DoctorSocialMediaPopulation;
+  Province: ProvincePopulation;
+  City: CityPopulation;
+  District: DistrictPopulation;
 }>;
+
+export const doctorProfileTiers = [
+  "expert",
+  "specialist",
+  "superSpecialist",
+] as const;
+export type DoctorProfileTier = (typeof doctorProfileTiers)[number];
 
 export interface IDoctorProfile<
   T extends DoctorProfilePopulation = DoctorProfilePopulation,
@@ -107,6 +125,7 @@ export interface IDoctorProfile<
   lastName?: string;
   ssid?: string;
   gender?: Gender;
+  tier?: DoctorProfileTier;
   mainSpeciality?: T["MainSpecialityPopulated"] extends SpecialityPopulation
     ? ISpeciality<T["MainSpecialityPopulated"]>
     : string;
@@ -120,8 +139,13 @@ export interface IDoctorProfile<
   achivements: string[];
   website?: string;
   landLine?: string;
-  province?: Province;
-  city?: City;
+  province?: T["Province"] extends ProvincePopulation
+    ? IProvince<T["Province"]>
+    : string;
+  city?: T["City"] extends CityPopulation ? ICity<T["City"]> : string;
+  district?: T["District"] extends DistrictPopulation
+    ? IDistrict<T["District"]>
+    : string;
   address?: string;
   lat?: number;
   lng?: number;

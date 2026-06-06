@@ -1,0 +1,75 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--white);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 20rem;
+  height: fit-content;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.value {
+  color: var(--success);
+}
+
+.shift {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shiftHeader {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.shiftName {
+  padding: 0.25rem;
+  background-color: var(--primary2);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100dvw;
+  width: fit-content;
+}
+
+.values {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0;
+  justify-content: space-between;
+}
+
+.values > * {
+  width: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summaries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.off {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--gray3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

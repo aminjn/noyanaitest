@@ -1,0 +1,30 @@
+.main {
+  background-color: var(--primary2);
+  color: var(--primary9);
+  display: flex;
+  align-items: center;
+  border-radius: 100dvw;
+  overflow: hidden;
+  width: fit-content;
+  padding: 0.5rem;
+}
+
+.container {
+  flex: 1;
+  width: fit-content;
+}
+
+.input {
+  background-color: transparent;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+
+.clear {
+  color: var(--error);
+}

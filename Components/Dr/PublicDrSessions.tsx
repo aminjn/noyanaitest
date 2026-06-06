@@ -68,15 +68,15 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
     {
       onSuccess: (data) => {
         setSelectedSessionType(
-          doctorSessionTypes.find((st) => data[st]?.active)
+          doctorSessionTypes.find((st) => data[st]?.active),
         );
       },
-    }
+    },
   );
   const { data: sessions, error: sessionsError } = useSWR<IDoctorSession[]>(
     `${API}/public/doctor/${doctor._id}/day/${stamp.getTime()}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
-    { keepPreviousData: true }
+    { keepPreviousData: true },
   );
 
   const [patientType, setPatientType] = useState<PatientType>("new");
@@ -97,11 +97,11 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
         }
       : null,
     ({ url, payload }: { url: string; payload: Record<string, string> }) =>
-      fetcher({ url, payload, method: "POST" }).then((res) => res.data)
+      fetcher({ url, payload, method: "POST" }).then((res) => res.data),
   );
 
   const [selectedInsurance, setSelectedInsurance] = useState<string | null>(
-    null
+    null,
   );
 
   const getContent = useLocale();
@@ -113,7 +113,7 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
         .filter((el) => selectedSessionType && !!el[selectedSessionType])
         .filter(
           (el) =>
-            selectedSessionType !== "inPerson" || selectedClinic === el.clinic
+            selectedSessionType !== "inPerson" || selectedClinic === el.clinic,
         ) || []
     );
   }, [selectedSessionType, sessions, patientType, selectedClinic]);
@@ -139,7 +139,7 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
               key={inc._id}
               onClick={() =>
                 setSelectedInsurance((prev) =>
-                  prev === inc._id ? null : inc._id
+                  prev === inc._id ? null : inc._id,
                 )
               }
               className={`${classes.option} ${
@@ -193,7 +193,7 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
         !config?.[selectedSessionType].hidePrice &&
         !!config?.[selectedSessionType]?.price && (
           <p>{`${currencize(config?.[selectedSessionType].price)} ${getContent(
-            "toman"
+            "toman",
           )}`}</p>
         )}
       {!!config && selectedSessionType === "inPerson" && (
@@ -280,7 +280,7 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
                       <SelectSessionToReservePopup
                         doctor={doctor}
                         stamp={stamp.getTime().toString()}
-                      />
+                      />,
                     )
                   }
                 >

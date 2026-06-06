@@ -1,4 +1,7 @@
-import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
+import {
+  doctorProfileTiers,
+  IDoctorProfile,
+} from "@/Components/DoctorPanel/DoctorPanelPage";
 import classes from "./DoctorProfileInfoTab.module.css";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
@@ -40,16 +43,6 @@ const DoctorProfileInfoTab = ({
         address: { type: "text", title: "آدرس" },
         landLine: { type: "text", title: "تلفن ثابت" },
         website: { type: "text", title: "سایت" },
-        province: {
-          type: "select",
-          title: "استان",
-          options: provinceOptions,
-        },
-        city: {
-          type: "select",
-          title: "شهر",
-          options: cityOptions(form.input.province || node.province),
-        },
         introduction: { type: "area", title: "معرفی" },
         services: { type: "strings", title: "خدمات" },
         achivements: { type: "strings", title: "دستاوردها" },
@@ -57,6 +50,14 @@ const DoctorProfileInfoTab = ({
         order: { type: "number", title: "رتبه" },
         avatar: { type: "image", title: "تصویر اصلی" },
         popular: { type: "bool", title: "محبوب" },
+        tier: {
+          type: "select",
+          title: "رده",
+          options: doctorProfileTiers.reduce(
+            (acc, el) => ({ ...acc, [el]: el }),
+            {},
+          ),
+        },
       }}
       hookProvided={form}
     />

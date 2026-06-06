@@ -29,6 +29,106 @@ import ClientTabSystem from "../UI/ClientTabSystem";
 import CupIcon from "../Icons/CupIcon";
 import SelectInput from "../UI/SelectInput";
 import DashboardIcon from "../Icons/DashboardIcon";
+import Badge, {
+  BadgeColor,
+  badgeColors,
+  BadgeMode,
+  badgeModes,
+  BadgeRadius,
+  badgeRadiuses,
+  BadgeSize,
+  badgeSizes,
+} from "../UI/Badge";
+import ToggleInput from "../UI/ToggleInput";
+
+const BadgePreview = () => {
+  const [input, setInput] = useState<
+    Partial<{
+      color: BadgeColor;
+      leadIcon: boolean;
+      mode: BadgeMode;
+      radius: BadgeRadius;
+      size: BadgeSize;
+      tailIcon: boolean;
+      content: string;
+    }>
+  >({});
+
+  return (
+    <div className={classes.badger}>
+      <SelectInput
+        title="Color"
+        options={badgeColors.reduce((acc, el) => ({ ...acc, [el]: el }), {})}
+        onChange={(e) =>
+          setInput((prev) => ({
+            ...prev,
+            color: badgeColors.find((el) => el === e.target.value),
+          }))
+        }
+      />
+      <SelectInput
+        title="Mode"
+        options={badgeModes.reduce((acc, el) => ({ ...acc, [el]: el }), {})}
+        onChange={(e) =>
+          setInput((prev) => ({
+            ...prev,
+            mode: badgeModes.find((el) => el === e.target.value),
+          }))
+        }
+      />
+      <SelectInput
+        title="Radius"
+        options={badgeRadiuses.reduce((acc, el) => ({ ...acc, [el]: el }), {})}
+        onChange={(e) =>
+          setInput((prev) => ({
+            ...prev,
+            radius: badgeRadiuses.find((el) => el === e.target.value),
+          }))
+        }
+      />
+      <SelectInput
+        title="Size"
+        options={badgeSizes.reduce((acc, el) => ({ ...acc, [el]: el }), {})}
+        onChange={(e) =>
+          setInput((prev) => ({
+            ...prev,
+            size: badgeSizes.find((el) => el === e.target.value),
+          }))
+        }
+      />
+      <ToggleInput
+        value={input.leadIcon}
+        title="Lead Icon"
+        onChange={() =>
+          setInput((prev) => ({ ...prev, leadIcon: !prev.leadIcon }))
+        }
+      />
+      <ToggleInput
+        value={input.tailIcon}
+        title="Tail Icon"
+        onChange={() =>
+          setInput((prev) => ({ ...prev, tailIcon: !prev.tailIcon }))
+        }
+      />
+      <Input
+        title="Content"
+        onChange={(e) =>
+          setInput((prev) => ({ ...prev, content: e.target.value }))
+        }
+      />
+      <Badge
+        color={input.color}
+        mode={input.mode}
+        radius={input.radius}
+        size={input.size}
+        leadIcon={input.leadIcon ? <DashboardIcon /> : ""}
+        tailIcon={input.tailIcon ? <DashboardIcon /> : ""}
+      >
+        {input.content}
+      </Badge>
+    </div>
+  );
+};
 
 const AdminPage = () => {
   const { setPopup, closePopup } = usePopup();
@@ -146,6 +246,8 @@ const AdminPage = () => {
           radius={btnRadius}
         >{`${btnVariant}-${btnMode}-${btnRadius}-${btnSize}`}</Button>
       </div>
+      <br />
+      <BadgePreview />
       <br />
       <div className={classes.colors}>
         {Object.keys(Colors).map((color) => (

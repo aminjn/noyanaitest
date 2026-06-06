@@ -1,0 +1,22 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tabButton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tabButtonFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.error {
+  color: var(--error);
+}

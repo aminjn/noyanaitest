@@ -27,8 +27,15 @@ import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { currencize } from "@/Components/helpers/currencize";
+import {
+  IServiceCategory,
+  ServiceCategoryPopulation,
+} from "../ServiceCategory/AdminManageServiceCategoriesPage";
 
-export type ServicePopulation = Population<{ Owner: DoctorProfilePopulation }>;
+export type ServicePopulation = Population<{
+  Owner: DoctorProfilePopulation;
+  Category: ServiceCategoryPopulation;
+}>;
 
 export interface IService<
   T extends ServicePopulation = ServicePopulation,
@@ -44,13 +51,16 @@ export interface IService<
   discount: number;
   inventory: number;
   isHome: boolean;
+  category?: T["Category"] extends ServiceCategoryPopulation
+    ? IServiceCategory<T["Category"]>
+    : string;
 }
 
 const MutateServicePopup = ({
   mutate,
   node,
 }: {
-  node?: IService;
+  node?: IService<{ Category: Record<never, never> }>;
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
@@ -84,6 +94,16 @@ const MutateServicePopup = ({
           image: { title: "تصویر", type: "image" },
           inventory: { title: "موجودی", type: "number" },
           isHome: { title: "نمایش در خانه", type: "bool" },
+          category: {
+            title: "دسته بندی",
+            type: "nodes",
+            path: `${API}/auto/serviceCategory`,
+            getOptionLabel: (node) =>
+              (node as IServiceCategory).title ||
+              (node as IServiceCategory)._id,
+            getOptionValue: (node) => (node as IServiceCategory)._id,
+            getDefaultValue: (node) => node.category?._id,
+          },
         }}
       />
     </PopupCard>
@@ -122,7 +142,7 @@ const DeleteServicePopup = ({
 
 const AdminManageServicesPage = () => {
   const { data, error, mutate } = useSWR<
-    IService<{ Owner: Record<never, never> }>[]
+    IService<{ Owner: Record<never, never>; Category: Record<never, never> }>[]
   >(`${API}/auto/service`, (url: string) =>
     fetcher({ url }).then((res) => res.data.data),
   );
@@ -199,6 +219,22 @@ const AdminManageServicesPage = () => {
                 value: (node) => booleanToValue[`${node.isHome}`],
                 component: (node) => <BooleanToIcon value={node.isHome} />,
                 filter: "Set",
+              },
+              category: {
+                name: "دسته بندی",
+                value: (node) =>
+                  node.category ? node.category.title : "ندارد",
+                filter: "Multi",
+                component: (node) =>
+                  node.category ? (
+                    <InlineLink
+                      href={adminPath(`/serviceCategory/${node.category._id}`)}
+                    >
+                      {node.category.title}
+                    </InlineLink>
+                  ) : (
+                    "ندارد"
+                  ),
               },
               actions: {
                 name: "عملیات",

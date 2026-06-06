@@ -1,0 +1,15 @@
+.loading {
+  text-align: center;
+  padding: 5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+  margin-block: 2rem;
+}

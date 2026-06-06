@@ -12,12 +12,33 @@ import Act from "@/Components/UI/Act";
 import useDoctor from "@/Components/Hooks/useDoctor";
 import { API } from "@/Components/config";
 import MapMarker from "@/Components/UI/MapMarker";
+import {
+  ICity,
+  IDistrict,
+  IProvince,
+} from "@/Components/Admin/Province/AdminManageProvincesPage";
+import useSWR from "swr";
+import { fetcher } from "@/Components/helpers/fetcher";
 
 const DoctorManageLocationTab = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<LngLat | null>(null);
 
   const { doctor, mutate } = useDoctor();
+
+  const { data: geo } = useSWR<{
+    district: IDistrict | null;
+    city: ICity | null;
+    province: IProvince | null;
+  }>(
+    !!selected || !!doctor?.location?.coordinates
+      ? `${API}/public/resolveLocation?lat=${selected ? selected.lat : doctor?.location?.coordinates[1]}&lng=${selected ? selected.lng : doctor?.location?.coordinates[0]}`
+      : null,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+    {
+      keepPreviousData: true,
+    },
+  );
 
   const getContent = useLocale();
 
@@ -35,6 +56,14 @@ const DoctorManageLocationTab = () => {
 
   return (
     <div className={classes.container}>
+      {!!geo && (
+        <div className={classes.resolved}>
+          {[geo.province, geo.city, geo.district]
+            .filter((el) => !!el)
+            .map((el) => el.name)
+            .join(" - ")}
+        </div>
+      )}
       <div className={classes.main} ref={containerRef}>
         {ready ? (
           <Fragment>
@@ -59,7 +88,7 @@ const DoctorManageLocationTab = () => {
             if (!selected)
               return pushNotification(
                 getContent("missingLocationErrorMessage"),
-                "Warn"
+                "Warn",
               );
             setIsLoading({ location: selected.toArray() });
           }}

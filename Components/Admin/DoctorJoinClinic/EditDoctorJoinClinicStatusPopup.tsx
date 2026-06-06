@@ -5,7 +5,11 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import { Fragment, useState } from "react";
 import Act from "@/Components/UI/Act";
-import { getClinicLabel, getDoctorLabel } from "../Lib/LabelGetters";
+import {
+  getClinicLabel,
+  getDoctorLabel,
+  getDoctorProfileLabel,
+} from "../Lib/LabelGetters";
 
 const EditDoctorJoinClinicStatusPopup = ({
   mutate,
@@ -23,7 +27,7 @@ const EditDoctorJoinClinicStatusPopup = ({
     <Fragment>
       <ConfirmationPopup
         message={`از اتصال دکتر ${
-          node.doctor ? getDoctorLabel(node.doctor) : ""
+          node.doctor ? getDoctorProfileLabel(node.doctor) : ""
         } به کلینیک ${node.clinic ? getClinicLabel(node.clinic) : ""} مطمئنید؟`}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
