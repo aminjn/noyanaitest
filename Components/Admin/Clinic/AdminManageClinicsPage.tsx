@@ -1,6 +1,6 @@
 "use client";
 
-import { IUser, MongoDoc } from "@/Components/Hooks/useUser";
+import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import classes from "./AdminManageClinicsPage.module.css";
 import {
   Province,
@@ -31,6 +31,22 @@ import {
 } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { getUserLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
+import {
+  ClinicCategoryPopulation,
+  IClinicCategory,
+} from "../ClinicCategory/AdminManageClinicCategoriesPage";
+import {
+  CityPopulation,
+  DistrictPopulation,
+  ICity,
+  IDistrict,
+  IProvince,
+  ProvincePopulation,
+} from "../Province/AdminManageProvincesPage";
+import {
+  ClinicTagPopulation,
+  IClinicTag,
+} from "../ClinicTag/AdminManageClinicTagsPage";
 
 // export type Population<T> = { [key in keyof T]?: T[key] | false };
 
@@ -44,7 +60,12 @@ export type Population<T> = { [key in keyof T]?: T[key] | false };
 export type ClinicPopulation = Population<{
   DepartmentsPopulated: ClinicDepartmentPopulation;
   DoctorsPopulated: ClinicDoctorPopuplation;
-  User: boolean;
+  User: UserPopulation;
+  Category?: ClinicCategoryPopulation;
+  Province?: ProvincePopulation;
+  City: CityPopulation;
+  District: DistrictPopulation;
+  Tags: ClinicTagPopulation;
 }>;
 
 export interface IClinic<
@@ -55,8 +76,13 @@ export interface IClinic<
   description?: string;
   address?: string;
   phone?: string;
-  province?: Province;
-  city?: City;
+  province?: T["Province"] extends ProvincePopulation
+    ? IProvince<T["Province"]>
+    : string;
+  city?: T["City"] extends CityPopulation ? ICity<T["City"]> : string;
+  district: T["District"] extends DistrictPopulation
+    ? IDistrict<T["District"]>
+    : string;
   lat?: number;
   lng?: number;
   image?: string;
@@ -68,7 +94,17 @@ export interface IClinic<
   doctors: T["DoctorsPopulated"] extends ClinicDoctorPopuplation
     ? IClinicDoctor<T["DoctorsPopulated"]>[]
     : never;
-  user?: T["User"] extends true ? IUser : string;
+  user?: T["User"] extends UserPopulation ? IUser : string;
+  location?: { type: "Point"; coordinates?: [number, number] };
+  summary?: string;
+  category?: T["Category"] extends ClinicCategoryPopulation
+    ? IClinicCategory<T["Category"]>
+    : string;
+  special: boolean;
+  tags: T["Tags"] extends ClinicTagPopulation
+    ? IClinicTag<T["Tags"]>[]
+    : string[];
+  isRoundTheClock: boolean;
 }
 
 export type ClinicDepartmentPopulation = Population<{
@@ -115,9 +151,10 @@ export interface IClinicDoctor<
 }
 
 const AdminManageClinicsPage = () => {
-  const { data, error, mutate } = useSWR<IClinic<{ User: true }>[]>(
-    `${API}/auto/clinic`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  const { data, error, mutate } = useSWR<
+    IClinic<{ User: Record<never, never> }>[]
+  >(`${API}/auto/clinic`, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();

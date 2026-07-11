@@ -23,11 +23,15 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
   mutate: () => unknown;
 } & (
   | { user: IUser; doctor?: never }
-  | { doctor: IDoctor<{ SpecialityPopulated: true }>; user?: never }
+  | {
+      doctor: IDoctor<{ SpecialityPopulated: Record<never, never> }>;
+      user?: never;
+    }
 )) => {
-  const { data } = useSWR<IDoctor<{ SpecialityPopulated: true }>[]>(
-    `${API}/auto/doctor`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+  const { data } = useSWR<
+    IDoctor<{ SpecialityPopulated: Record<never, never> }>[]
+  >(`${API}/auto/doctor`, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const [proceed, setProceed] = useState<boolean>(false);

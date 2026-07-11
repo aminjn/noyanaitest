@@ -1,0 +1,16 @@
+
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.inlineTitle {
+  color: var(--gray13);
+  margin-inline-end: auto;
+}
+
+.boolFilterToggle {
+  margin-inline-start: auto;
+}

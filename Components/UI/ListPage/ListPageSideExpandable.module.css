@@ -1,0 +1,54 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding-block: 0.75rem;
+  gap: 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.title {
+  color: var(--gray10);
+}
+
+.count {
+  color: var(--gray8);
+  text-decoration: underline;
+}
+
+.chevron {
+  color: var(--black);
+  transition: all var(--transTime);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.open {
+  max-height: unset;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--gray11);
+  padding-block: 0.75rem;
+}

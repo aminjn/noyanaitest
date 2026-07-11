@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.map {
+  width: min(95%, 80vmin);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}

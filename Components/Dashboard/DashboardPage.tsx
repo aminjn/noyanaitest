@@ -19,7 +19,7 @@ import UserMedicalDetails, { IMedicalDetail } from "./UserMedicalDetails";
 export type UserIdentityPopulation = Population<{ User: UserPopulation }>;
 
 export interface IUserIdentity<
-  T extends UserIdentityPopulation = UserIdentityPopulation
+  T extends UserIdentityPopulation = UserIdentityPopulation,
 > extends MongoDoc {
   user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   nationalId: string;
@@ -27,22 +27,23 @@ export interface IUserIdentity<
   lastName: string;
   gender: Gender;
   dateOfbirth: Date;
+  phones: string[];
 }
 
 const DashboardPage = () => {
   const { user } = useUser();
   const { data: identity } = useSWR<IUserIdentity | null>(
     `${API}/user/identity`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
   const { data: vitals } = useSWR<IUserVital | null>(
     `${API}/user/vital`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const { data: medicalDetail, mutate } = useSWR<IMedicalDetail>(
     `${API}/user/medical`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   return (

@@ -31,6 +31,13 @@ const Divider = () => {
   return <span className={classes.divider}>...</span>;
 };
 
+export type PaginationProps = WithStyleProps<{
+  pagesCount: number;
+  currentPage: number;
+  makePath: PagePathMaker;
+  span?: number;
+}>;
+
 export type PagePathMaker = (page: number) => string;
 const Pagination = ({
   currentPage,
@@ -39,19 +46,14 @@ const Pagination = ({
   span = 2,
   className = "",
   style,
-}: WithStyleProps<{
-  pagesCount: number;
-  currentPage: number;
-  makePath: PagePathMaker;
-  span?: number;
-}>) => {
+}: PaginationProps) => {
   const getContent = useLocale();
 
   const renderPage = useCallback(
     (target: number) => (
       <Page makePath={makePath} current={currentPage} page={target} />
     ),
-    [currentPage, makePath]
+    [currentPage, makePath],
   );
 
   if (pagesCount <= 1) return null;
@@ -84,7 +86,7 @@ const Pagination = ({
         }`}
         title={getContent("nextPage")}
         href={makePath(
-          currentPage === pagesCount ? pagesCount : currentPage + 1
+          currentPage === pagesCount ? pagesCount : currentPage + 1,
         )}
       >
         <ChevronIcon />

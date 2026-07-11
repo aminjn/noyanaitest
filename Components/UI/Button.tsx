@@ -1,9 +1,10 @@
-import { Fragment, MouseEventHandler, ReactNode } from "react";
+import { Fragment, MouseEventHandler, ReactNode, useMemo } from "react";
 import classes from "./Button.module.css";
 import { WithStyleProps } from "../Layout/Layout";
 import Ixon from "./Ixon";
 import LoadingIcon from "../Icons/LoadingIcon";
 import { tbaseMedium, tmdMedium, tsmMedium, txsMedium } from "./Typography";
+import Link from "next/link";
 
 export const buttonVariants = [
   "Primary",
@@ -51,6 +52,7 @@ const Button = ({
   size = "L",
   iconWidth,
   isLoading,
+  href,
 }: WithStyleProps<{
   children?: ReactNode;
   leadIcon?: ReactNode;
@@ -63,36 +65,73 @@ const Button = ({
   onClick?: MouseEventHandler<HTMLButtonElement>;
   isLoading?: boolean;
   iconWidth?: string;
+  href?: string;
 }>) => {
+  const content = useMemo(
+    () => (
+      <Fragment>
+        {isLoading ? (
+          <Ixon width="1.5rem">
+            <LoadingIcon />
+          </Ixon>
+        ) : (
+          <Fragment>
+            {!!leadIcon && (
+              <Ixon width={iconWidth || (size === "S" ? "1.25rem" : "1.5rem")}>
+                {leadIcon}
+              </Ixon>
+            )}
+            {!!children && <span>{children}</span>}
+            {!!tailIcon && (
+              <Ixon width={iconWidth || (size === "S" ? "1.25rem" : "1.5rem")}>
+                {tailIcon}
+              </Ixon>
+            )}
+          </Fragment>
+        )}
+      </Fragment>
+    ),
+    [isLoading, leadIcon, size, iconWidth, tailIcon, children],
+  );
+
+  const classNames = useMemo(
+    () =>
+      `${classes.main} ${classes[variant]} ${classes[mode]} ${classes[size]} ${classes[radius]} ${buttonTypegraphies[size]} ${className}`,
+    [className, variant, mode, size, radius],
+  );
+
+  const styles = useMemo(
+    () => ({ ...style, cursor: isLoading ? "progress" : undefined }),
+    [style, isLoading],
+  );
+
+  if (href)
+    return (
+      <Link
+        className={classNames}
+        style={styles}
+        href={href}
+        onClick={(e) => {
+          if (isLoading) {
+            e.preventDefault();
+            return;
+          }
+        }}
+      >
+        {content}
+      </Link>
+    );
   return (
     <button
-      className={`${classes.main} ${classes[variant]} ${classes[mode]} ${classes[size]} ${classes[radius]} ${buttonTypegraphies[size]} ${className}`}
-      style={{ ...style, cursor: isLoading ? "progress" : undefined }}
-      type={type}
+      className={classNames}
+      style={styles}
       onClick={(e) => {
         if (isLoading) return;
         onClick?.(e);
       }}
+      type={type}
     >
-      {isLoading ? (
-        <Ixon width="1.5rem">
-          <LoadingIcon />
-        </Ixon>
-      ) : (
-        <Fragment>
-          {!!leadIcon && (
-            <Ixon width={iconWidth || size === "S" ? "1.25rem" : "1.5rem"}>
-              {leadIcon}
-            </Ixon>
-          )}
-          {!!children && <span>{children}</span>}
-          {!!tailIcon && (
-            <Ixon width={iconWidth || size === "S" ? "1.25rem" : "1.5rem"}>
-              {tailIcon}
-            </Ixon>
-          )}
-        </Fragment>
-      )}
+      {content}
     </button>
   );
 };

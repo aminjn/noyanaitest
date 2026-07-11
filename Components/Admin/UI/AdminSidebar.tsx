@@ -9,6 +9,7 @@ import LogoLong from "@/Components/UI/LogoLong";
 import { adminPath } from "@/Components/helpers/adminPath";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { AccessLevelModel } from "../AccessLevel/AdminManageAccessLevelsPage";
+import Input from "@/Components/UI/Input";
 
 type LinkItem = {
   title: string;
@@ -67,6 +68,7 @@ const linkMap: LinkMap = [
         access: "BecomeInsuranceRequest",
         target: "becomeinsurance",
       },
+      { title: "درخواست پاراکلینیک شدن", target: "becomeParaClinic" },
       { title: "کاربران", target: "user", access: "User" },
       {
         title: "پروفایل پزشکان",
@@ -92,6 +94,7 @@ const linkMap: LinkMap = [
       },
       { title: "بیمه", access: "Insurance", target: "insurance" },
       { title: "داروخانه و آزمایشگاه", access: "Pharmacy", target: "pharmacy" },
+      { title: "پاراکلینیک", target: "paraClinic" },
       { title: "تماس ها", access: "CallRoom", target: "callroom" },
       { title: "لینک کوتاه", access: "ShortLink", target: "shortlink" },
       { title: "انتقالات", access: "Redirection", target: "redirection" },
@@ -111,6 +114,23 @@ const linkMap: LinkMap = [
       { title: "سوالات متداول", target: "faq" },
       { title: "دسته بندی خدمات", target: "serviceCategory" },
       { title: "استان ها", target: "province" },
+      { title: "دسته بندی محصولات", target: "productCategory" },
+      { title: "محصولات", target: "product" },
+      { title: "دسته بندی کلینیک", target: "clinicCategory" },
+      { title: "دسته بندی بیماری ها", target: "diseaseCategory" },
+      { title: "تگ بیماری ها", target: "diseaseTag" },
+      { title: "تگ دارو ها", target: "drugTag" },
+      { title: "دسته بندی تخصص ها", target: "specialityCategory" },
+      { title: "تگ کلینیک ها", target: "clinicTag" },
+      { title: "بیمارستان ها", target: "hospital" },
+      { title: "دسته بندی بیمارستان ها", target: "hospitalCategory" },
+      { title: "تگ بیمارستان", target: "hospitalTag" },
+      { title: "دسته بندی تست ها", target: "testCategory" },
+      { title: "تست ها", target: "test" },
+      { title: "تگ پاراکلینیک", target: "paraClinicTag" },
+      { title: "سرویس پکیج ها", target: "servicePackage" },
+      { title: "بسته محصولات", target: "productPackage" },
+      { title: "دسته بندی علائم", target: "symptomCategory" },
     ],
   },
   {
@@ -241,30 +261,34 @@ const AdminSidebar = () => {
 
   const hasAccess = useAccessLevel();
 
+  const [search, setSearch] = useState<string>("");
+
   const readyLinks = useMemo<LinkMap>(() => {
     if (!user) return [];
-    if (user.role !== "admin") {
-      const result: LinkMap = [];
-      for (let i = 0; i < linkMap.length; ++i) {
-        if (!linkMap[i].super)
-          result.push({
-            ...linkMap[i],
-            links: linkMap[i].links.filter(
+    const result: LinkMap = [];
+    for (let i = 0; i < linkMap.length; ++i) {
+      if (!linkMap[i].super)
+        result.push({
+          ...linkMap[i],
+          links: linkMap[i].links
+            .filter(
               (link) =>
-                link.access === undefined || hasAccess(link.access, "readAll"),
-            ),
-          });
-        return result;
-      }
+                link.access === undefined ||
+                user.role === "notadmin" ||
+                hasAccess(link.access, "readAll"),
+            )
+            .filter((el) => el.title.includes(search)),
+        });
     }
-    return linkMap;
-  }, [hasAccess, user]);
+    return result;
+  }, [hasAccess, user, search]);
 
   return (
     <div className={classes.main}>
       <Link className={classes.logo} href={"/"}>
         <LogoLong />
       </Link>
+      <input onChange={(e) => setSearch(e.target.value)} />
       <div className={classes.linksContainer}>
         {readyLinks.map((group) => (
           <div key={group.title} className={classes.group}>

@@ -18,17 +18,20 @@ import {
   txsMedium,
   txsRegular,
 } from "./Typography";
+import { WithStyleProps } from "../Layout/Layout";
 
 const DoctorCardAlt = ({
   node,
-}: {
+  className = "",
+  style,
+}: WithStyleProps<{
   node: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
-}) => {
+}>) => {
   const getCompContent = useComplexLocale();
   const getContent = useLocale();
 
   return (
-    <div className={classes.main}>
+    <div className={`${classes.main} ${className}`} style={style}>
       <div className={classes.scores}>
         <div className={`${classes.badge} ${classes.starBadge}`}>
           <Ixon width=".75rem">
@@ -90,13 +93,13 @@ const DoctorCardAlt = ({
       <div className={`${classes.actions} ${txsMedium}`}>
         <Link
           className={`${classes.action} ${classes.primaryAction}`}
-          href={`/doctor/${node.slug || node._id}`}
+          href={`/dr/${node.slug || node._id}`}
         >
           {getContent("visitProfile")}
         </Link>
         <Link
           className={`${classes.action} ${classes.secondaryAction}`}
-          href={"/booking"}
+          href={"/book"}
         >
           <span>{getContent("booking")}</span>
           <Ixon width="1.25rem">

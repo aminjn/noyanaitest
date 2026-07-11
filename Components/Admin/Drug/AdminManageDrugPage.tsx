@@ -16,6 +16,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import DeleteDrugPopup from "./DeleetDrugPopup";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { IDrugTag } from "../DrugTag/AdminManageDrugTagsPage";
 
 const AdminManageDrugPage = () => {
   const { nodeId } = useParams();
@@ -53,6 +54,30 @@ const AdminManageDrugPage = () => {
                       order: { type: "number", title: "رتبه" },
                       slug: { type: "text", title: "اسلاگ" },
                       image: { type: "image", title: "تصویر" },
+                      brand: { type: "text", title: "برند" },
+                      tag: {
+                        type: "nodes",
+                        multi: false,
+                        title: "تگ",
+                        getOptionLabel: (node) =>
+                          (node as IDrugTag).name || (node as IDrugTag)._id,
+                        getOptionValue: (node) => (node as IDrugTag)._id,
+                        path: `${API}/auto/drugTag`,
+                        getDefaultValue: (inp) => inp.tag,
+                      },
+                      dosage: { type: "text", title: "دوز مصرفی" },
+                      sameAs: {
+                        type: "nodes",
+                        title: "مشابهات",
+                        path: `${API}/auto/drug`,
+                        getOptionLabel: (node) =>
+                          (node as IDrug).name || (node as IDrug)._id,
+                        getOptionValue: (node) => (node as IDrug)._id,
+                        getDefaultValue: (inp) => inp.sameAs,
+                        multi: true,
+                      },
+                      aiSummary: { type: "rtf", title: "خلاصه AI" },
+                      content: { type: "rtf", title: "محتوا" },
                     }}
                   />
                 ),

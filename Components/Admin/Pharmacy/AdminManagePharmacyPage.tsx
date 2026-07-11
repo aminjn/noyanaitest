@@ -10,13 +10,89 @@ import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
+import classes from "./AdminManagePharmacyPage.module.css";
+import { Fragment, useRef } from "react";
+import useForm from "@/Components/Hooks/useForm";
+import useMap from "@/Components/Hooks/useMap";
+import MapMarker from "@/Components/UI/MapMarker";
+import FormActions from "../UI/FormActions";
+import Button from "@/Components/UI/Button";
+import {
+  ICity,
+  IDistrict,
+  IProvince,
+} from "../Province/AdminManageProvincesPage";
+
+const PharmacyLocationTab = ({
+  mutate,
+  node,
+}: {
+  node: IPharmacy;
+  mutate: () => unknown;
+}) => {
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  const { input, setInput, isLoading, submit } = useForm<{
+    lat: number;
+    lng: number;
+  }>({
+    path: `${API}/auto/pharmacy/${node._id}`,
+    method: "POST",
+    successCb: () => {
+      mutate();
+    },
+    mutator: (inp) => {
+      if (inp.lat && inp.lng)
+        return { location: { type: "Point", coordinates: [inp.lng, inp.lat] } };
+      return inp;
+    },
+  });
+
+  const { map, ready } = useMap({
+    containerRef: mapRef,
+    onClick: (e) => setInput((prev) => ({ ...prev, lat: e.lat, lng: e.lng })),
+    center:
+      node.location?.coordinates?.length === 2
+        ? node.location.coordinates
+        : undefined,
+  });
+
+  return (
+    <div className={classes.main}>
+      <div className={classes.map} ref={mapRef}>
+        {ready && (
+          <Fragment>
+            {node.location?.coordinates?.length === 2 && (
+              <MapMarker
+                lat={node.location.coordinates[1]}
+                lng={node.location.coordinates[0]}
+                map={map}
+                variant="active"
+              />
+            )}
+            {input.lat && input.lng && (
+              <MapMarker lat={input.lat} lng={input.lng} map={map} />
+            )}
+          </Fragment>
+        )}
+      </div>
+      <FormActions>
+        <Button isLoading={isLoading} onClick={submit}>
+          تایید
+        </Button>
+      </FormActions>
+    </div>
+  );
+};
 
 const AdminManagePharmacyPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IPharmacy>(
     params ? `${API}/auto/pharmacy/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+
+  console.log(data);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -43,9 +119,44 @@ const AdminManagePharmacyPage = () => {
                       name: { title: "نام", type: "text" },
                       active: { type: "bool", title: "فعال" },
                       order: { type: "number", title: "رتبه" },
+                      province: {
+                        title: "استان",
+                        type: "nodes",
+                        path: `${API}/auto/province`,
+                        getOptionLabel: (node) =>
+                          (node as IProvince).name || (node as IProvince)._id,
+                        getOptionValue: (node) => (node as IProvince)._id,
+                        multi: false,
+                        getDefaultValue: (inp) => inp.province,
+                      },
+                      city: {
+                        title: "شهر",
+                        type: "nodes",
+                        getOptionLabel: (node) =>
+                          (node as ICity).name || (node as ICity)._id,
+                        getOptionValue: (node) => (node as ICity)._id,
+                        getDefaultValue: (inp) => inp.city,
+                        multi: false,
+                        path: `${API}/auto/city`,
+                      },
+                      district: {
+                        title: "محله",
+                        getOptionLabel: (node) =>
+                          (node as IDistrict).name || (node as IDistrict)._id,
+                        type: "nodes",
+                        getOptionValue: (node) => (node as IDistrict)._id,
+                        getDefaultValue: (inp) => inp.district,
+                        multi: false,
+                        path: `${API}/auto/district`,
+                      },
                     }}
                   />
                 ),
+              },
+              {
+                title: "لوکیشن",
+                content: <PharmacyLocationTab node={data} mutate={mutate} />,
+                id: "Location",
               },
             ]}
           />

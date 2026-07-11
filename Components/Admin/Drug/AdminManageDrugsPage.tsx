@@ -20,7 +20,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 const AdminManageDrugsPage = () => {
   const { data, error, mutate } = useSWR<IDrug[]>(
     `${API}/auto/drug`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -65,7 +65,7 @@ const AdminManageDrugsPage = () => {
                       onClick={() =>
                         setPopup(
                           "DeleteDrug",
-                          <DeleteDrugPopup node={node} mutate={mutate} />
+                          <DeleteDrugPopup node={node} mutate={mutate} />,
                         )
                       }
                     >

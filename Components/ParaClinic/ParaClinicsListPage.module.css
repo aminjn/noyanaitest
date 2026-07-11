@@ -1,0 +1,34 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--black);
+}
+
+.searchBox {
+  position: relative;
+  width: 18rem;
+  height: 2.25rem;
+  border-radius: 100dvw;
+  margin-block: 1.5rem;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  border: none;
+  outline: none;
+  border-radius: 100dvw;
+  padding-inline: 2.25rem 0.75rem;
+  background-color: var(--gray4);
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  inset-inline-start: 0.75rem;
+}

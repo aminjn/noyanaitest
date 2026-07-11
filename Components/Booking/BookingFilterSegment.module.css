@@ -1,0 +1,22 @@
+.segment {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.25rem;
+}
+
+.segmentHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.segmentTitle {
+  margin-inline-end: auto;
+  color: var(--gray10);
+}
+
+.segmentContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}

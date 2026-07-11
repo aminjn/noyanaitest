@@ -1,0 +1,16 @@
+.listBox {
+  margin-block: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.list {
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 1rem;
+}
+
+.pagination {
+  margin-inline: auto;
+}

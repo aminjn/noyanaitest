@@ -4,30 +4,42 @@ import useLocale from "../Hooks/useLocale";
 import classes from "./SymptomCard.module.css";
 import { imagePath } from "../helpers/imagepath";
 import Link from "next/link";
+import VirusIcon from "../Icons/VirusIcon";
+import Badge from "../UI/Badge";
+import Ixon from "../UI/Ixon";
+import ChevronIcon from "../Icons/ChevronIcon";
+import { tsmDemiBold, tsmRegular } from "../UI/Typography";
 
 const SymptomCard = ({ node }: { node: ISymptom }) => {
   const getContent = useLocale();
   return (
     <li className={classes.main}>
-      <div className={classes.image}>
-        <Image
-          alt={node.name || ""}
-          src={imagePath(node.image)}
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="20rem"
-        />
+      <div className={classes.header}>
+        <div className={classes.icon}>
+          <Ixon width="1.5rem">
+            <VirusIcon />
+          </Ixon>
+        </div>
+        <h3 className={`${classes.name} ${tsmDemiBold}`}>{node.name}</h3>
       </div>
-      <div className={classes.content}>
-        <h2 className={classes.title}>
-          <Link href={`/symptom/${node.name || node.slug}`}>{node.name}</Link>
-        </h2>
-        <p className={classes.summary}>{node.summary}</p>
+      <p className={`${classes.summary} ${tsmRegular}`}>{node.summary}</p>
+      <div className={classes.tags}>
+        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
+          tag
+        </Badge>
+        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
+          tag
+        </Badge>
+      </div>
+      <div className={classes.actions}>
         <Link
-          href={`/symptom/${node.slug || node.name}`}
-          className={classes.more}
+          href={`/symptom/${node.slug || node._id}`}
+          className={`${classes.link} ${tsmDemiBold}`}
         >
-          {getContent("readMore")}
+          <span>{getContent("seeDetails")}</span>
+          <Ixon width="1.25rem" style={{ transform: "rotateZ(90deg)" }}>
+            <ChevronIcon />
+          </Ixon>
         </Link>
       </div>
     </li>

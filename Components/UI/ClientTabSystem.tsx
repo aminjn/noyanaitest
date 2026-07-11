@@ -20,33 +20,39 @@ const ClientTabSystem = ({
     id: string;
     content: ReactNode;
     icon?: ReactNode;
+    exclude?: boolean;
   }[];
   viewState?: [string, (v: string) => unknown];
 }>) => {
-  const innerState = useState<string>(items[0]?.id || "");
+  const innerState = useState<string>(
+    items.filter((el) => !el.exclude)[0]?.id || "",
+  );
 
   const [current, setCurrent] = viewState || innerState;
 
   useEffect(() => {
-    if (!current && items[0]) setCurrent(items[0]?.id || "");
+    if (!current && items[0])
+      setCurrent(items.filter((el) => !el.exclude)[0]?.id || "");
   }, [current, items, setCurrent]);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       <nav className={classes.nav}>
-        {items.map((item) => (
-          <button
-            type="button"
-            key={item.id}
-            onClick={() => setCurrent(item.id)}
-            className={`${classes.navItem} ${
-              current === item.id ? classes.activeItem : ""
-            }`}
-          >
-            {!!item.icon && <Ixon width="1.5rem">{item.icon}</Ixon>}
-            <span>{item.title}</span>
-          </button>
-        ))}
+        {items
+          .filter((el) => !el.exclude)
+          .map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              onClick={() => setCurrent(item.id)}
+              className={`${classes.navItem} ${
+                current === item.id ? classes.activeItem : ""
+              }`}
+            >
+              {!!item.icon && <Ixon width="1.5rem">{item.icon}</Ixon>}
+              <span>{item.title}</span>
+            </button>
+          ))}
       </nav>
       {items.find((item) => item.id === current)?.content}
     </div>

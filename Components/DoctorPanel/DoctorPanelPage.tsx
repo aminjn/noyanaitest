@@ -1,5 +1,6 @@
 "use client";
 
+import { string } from "slate";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import {
   GalleryItemPopulation,
@@ -29,6 +30,10 @@ import {
   DoctorSocialMediaPopulation,
   IDoctorSocialMedia,
 } from "./Profile/DoctorManageSocialMediaTab";
+import {
+  DoctorShiftPopulation,
+  IDoctorShift,
+} from "./Shift/DoctorManageShiftsPage";
 
 export const genders = ["male", "female"] as const;
 
@@ -93,11 +98,85 @@ export interface IBecomeDoctorRequest<
   status: BecomeANodeStatus;
 }
 
+export type SipCallSettingsPopulation = Population<{
+  Doctor: DoctorProfilePopulation;
+}>;
+
+export interface ISipCallSettings<
+  T extends SipCallSettingsPopulation = SipCallSettingsPopulation,
+> extends MongoDoc {
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
+  receiver?: string;
+  price?: number;
+  active: boolean;
+}
+
+export type TextChatSettinsPopulation = Population<{
+  Doctor: DoctorProfilePopulation;
+}>;
+
+export interface ITextChatSettings<
+  T extends TextChatSettinsPopulation = TextChatSettinsPopulation,
+> extends MongoDoc {
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
+  price?: number;
+  active: boolean;
+}
+
+export type VideoCallSettingsPopulation = Population<{
+  Doctor: DoctorProfilePopulation;
+}>;
+
+export interface IVideoCallSettings<
+  T extends VideoCallSettingsPopulation = VideoCallSettingsPopulation,
+> extends MongoDoc {
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
+  price?: number;
+  active: boolean;
+}
+
+export type InPersonSettingsPopulation = Population<{
+  Doctor: DoctorProfilePopulation;
+}>;
+
+export interface IInPersonSettings<
+  T extends InPersonSettingsPopulation = InPersonSettingsPopulation,
+> extends MongoDoc {
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
+  price?: number;
+  active: boolean;
+  hidePrice: boolean;
+}
+
+export type DoctorAvailabilityPopulation = Population<{
+  Doctor: DoctorProfilePopulation;
+}>;
+
+export interface IDoctorAvailability<
+  T extends DoctorAvailabilityPopulation = DoctorAvailabilityPopulation,
+> extends MongoDoc {
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
+  date: Date;
+  bounds: { start: number; end: number }[];
+  isAvailable: boolean;
+  start: number;
+  end: number;
+}
+
 export type DoctorProfilePopulation = Population<{
   UserPopulated: UserPopulation;
   SpecialitiesPopulated?: SpecialityPopulation;
   MainSpecialityPopulated?: SpecialityPopulation;
-  PhoneConsultSettingsPopulated?: PhoneConsultSettingsPopulation;
   Mc: McCodepopulation;
   Gallery: GalleryItemPopulation;
   Offices: OfficePopulation;
@@ -105,6 +184,13 @@ export type DoctorProfilePopulation = Population<{
   Province: ProvincePopulation;
   City: CityPopulation;
   District: DistrictPopulation;
+  Shifts: DoctorShiftPopulation;
+  PhoneConsultSettingsPopulated?: PhoneConsultSettingsPopulation;
+  SipCallSettings: SipCallSettingsPopulation;
+  TextChatSettings: TextChatSettinsPopulation;
+  VideoCallSettings: VideoCallSettingsPopulation;
+  InPersonSettings: InPersonSettingsPopulation;
+  Availabilities: DoctorAvailabilityPopulation;
 }>;
 
 export const doctorProfileTiers = [
@@ -149,9 +235,7 @@ export interface IDoctorProfile<
   address?: string;
   lat?: number;
   lng?: number;
-  phoneConsultSettings?: T["PhoneConsultSettingsPopulated"] extends PhoneConsultSettingsPopulation
-    ? IPhoneConsultSettings<T["PhoneConsultSettingsPopulated"]> | null
-    : void;
+
   active: boolean;
   order: number;
   avatar?: string;
@@ -167,6 +251,27 @@ export interface IDoctorProfile<
     ? IDoctorSocialMedia<T["Socials"]>[]
     : never;
   popular: boolean;
+  shifts: T["Shifts"] extends DoctorShiftPopulation
+    ? IDoctorShift<T["Shifts"]>[]
+    : never;
+  phoneConsultSettings?: T["PhoneConsultSettingsPopulated"] extends PhoneConsultSettingsPopulation
+    ? IPhoneConsultSettings<T["PhoneConsultSettingsPopulated"]> | null
+    : never;
+  sipCallSettings?: T["SipCallSettings"] extends SipCallSettingsPopulation
+    ? ISipCallSettings<T["SipCallSettings"]>
+    : never;
+  textChatSettings?: T["TextChatSettings"] extends TextChatSettinsPopulation
+    ? ITextChatSettings<T["TextChatSettings"]>
+    : never;
+  videoCallSettings?: T["VideoCallSettings"] extends VideoCallSettingsPopulation
+    ? IVideoCallSettings<T["VideoCallSettings"]>
+    : string;
+  inPersonSettings?: T["InPersonSettings"] extends InPersonSettingsPopulation
+    ? IInPersonSettings<T["InPersonSettings"]>
+    : never;
+  availabilities: T["Availabilities"] extends DoctorAvailabilityPopulation
+    ? IDoctorAvailability<T["Availabilities"]>[]
+    : never;
 }
 
 type PhoneConsultSettingsPopulation = { DoctorPopulated?: boolean };

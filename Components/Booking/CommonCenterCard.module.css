@@ -1,0 +1,157 @@
+.main {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: repeat(4, auto);
+  grid-template-areas:
+    "intro score"
+    "intro side"
+    "lines side"
+    "action action";
+  gap: 0.75rem 0.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+}
+
+.intro {
+  grid-area: intro;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.image {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: var(--gray2);
+  border: 2px solid var(--primary);
+}
+
+.image img {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.verify {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+  color: var(--primary);
+}
+
+.detailBox {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.name {
+  color: var(--gray13);
+}
+
+.summary {
+  color: var(--gray8);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.tags > * {
+  color: var(--gray8);
+  border-radius: 100dvw;
+  border: 1px solid var(--gray4);
+  padding: 0.25rem 0.5rem;
+}
+
+.score {
+  grid-area: score;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.lines {
+  grid-area: lines;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+}
+
+.lineValue {
+  margin-inline-start: 0.25rem;
+  color: var(--gray8);
+}
+
+.inlineLink {
+  margin-inline-start: 1rem;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  text-decoration: underline;
+  color: var(--info);
+}
+
+.side {
+  grid-area: side;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.banner {
+  position: relative;
+  width: 11.625rem;
+  height: 6.5rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background-color: var(--gray2);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-block: 1rem;
+  border-radius: 0.25rem;
+}
+
+.buttonRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.action {
+  grid-area: action;
+  display: flex;
+}
+
+.cta {
+  width: 100%;
+}

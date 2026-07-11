@@ -40,6 +40,7 @@ export interface IProvince<
   isActive: boolean;
   geometry?: IPolygon;
   cities: T["Cities"] extends CityPopulation ? ICity<T["Cities"]>[] : never;
+  slug?: string;
 }
 
 export type CityPopulation = Population<{

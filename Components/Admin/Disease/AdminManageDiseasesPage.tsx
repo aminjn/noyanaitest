@@ -21,6 +21,22 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import DeleteDiseasePopup from "./DeleteDiseasePopup";
+import {
+  DiseaseCategoryPopuplation,
+  IDiseaseCategory,
+} from "../DiseaseCategory/AdminManageDiseaseCategoriesPage";
+import {
+  DiseaseTagPopulation,
+  IDiseaseTag,
+} from "../DiseaseTag/AdminManageDiseaseTagsPage";
+import {
+  DrugTagPopulation,
+  IDrugTag,
+} from "../DrugTag/AdminManageDrugTagsPage";
+import {
+  ISymptomCategory,
+  SymptomCategoryPopulation,
+} from "../SymptomCategory/AdminManageSymptomCategoriesPage";
 
 export const genderSpicificOptions = ["male", "female", "none"] as const;
 
@@ -33,8 +49,9 @@ export const genderSpecificOptionsDict: Record<GenderSpecificOption, string> = {
 };
 
 export type PartPopulation = Population<Record<never, never>>;
-export interface IPart<T extends PartPopulation = PartPopulation>
-  extends MongoDoc {
+export interface IPart<
+  T extends PartPopulation = PartPopulation,
+> extends MongoDoc {
   name?: string;
   order: number;
 }
@@ -42,9 +59,12 @@ export interface IPart<T extends PartPopulation = PartPopulation>
 export type SymptomPopulation = Population<{
   Part: PartPopulation;
   SameAs: SymptomPopulation;
+  Diseases: DiseasePopulation;
+  Category: SymptomCategoryPopulation;
 }>;
-export interface ISymptom<T extends SymptomPopulation = SymptomPopulation>
-  extends MongoDoc {
+export interface ISymptom<
+  T extends SymptomPopulation = SymptomPopulation,
+> extends MongoDoc {
   name?: string;
   genderSpecific?: GenderSpecificOption;
   part: T["Part"] extends PartPopulation ? IPart<T["Part"]>[] : string[];
@@ -60,11 +80,23 @@ export interface ISymptom<T extends SymptomPopulation = SymptomPopulation>
   possibleComplication?: string;
   order: number;
   slug?: string;
+  disease: T["Diseases"] extends DiseasePopulation
+    ? IDisease<T["Diseases"]>[]
+    : never;
+  category?: T["Category"] extends SymptomCategoryPopulation
+    ? ISymptomCategory<T["Category"]>
+    : string;
+  aiSummary?: string;
+  content?: string;
 }
 
-export type DrugPopulation = Population<Record<never, never>>;
-export interface IDrug<T extends DrugPopulation = DrugPopulation>
-  extends MongoDoc {
+export type DrugPopulation = Population<{
+  Tag: DrugTagPopulation;
+  SameAs: DrugPopulation;
+}>;
+export interface IDrug<
+  T extends DrugPopulation = DrugPopulation,
+> extends MongoDoc {
   name?: string;
   summary?: string;
   description?: string;
@@ -87,6 +119,12 @@ export interface IDrug<T extends DrugPopulation = DrugPopulation>
   warning?: string;
   order: number;
   slug?: string;
+  brand?: string;
+  tag?: T["Tag"] extends DrugTagPopulation ? IDrugTag : string;
+  dosage?: string;
+  sameAs: T["SameAs"] extends DrugPopulation ? IDrug<T["SameAs"]>[] : string[];
+  aiSummary?: string;
+  content?: string;
 }
 
 export type DiseasePopulation = Population<{
@@ -94,10 +132,13 @@ export type DiseasePopulation = Population<{
   Speciality: SpecialityPopulation;
   Drugs: DrugPopulation;
   SameAs: DiseasePopulation;
+  Category: DiseaseCategoryPopuplation;
+  Tag: DiseaseTagPopulation;
 }>;
 
-export interface IDisease<T extends DiseasePopulation = DiseasePopulation>
-  extends MongoDoc {
+export interface IDisease<
+  T extends DiseasePopulation = DiseasePopulation,
+> extends MongoDoc {
   name?: string;
   description?: string;
   summary?: string;
@@ -119,12 +160,18 @@ export interface IDisease<T extends DiseasePopulation = DiseasePopulation>
   possibleComplication?: string;
   order: number;
   slug?: string;
+  tag?: T["Tag"] extends DiseaseTagPopulation ? IDiseaseTag<T["Tag"]> : string;
+  category?: T["Category"] extends DiseaseCategoryPopuplation
+    ? IDiseaseCategory<T["Category"]>
+    : string;
+  aiSummary?: string;
+  content?: string;
 }
 
 const AdminManageDiseasePage = () => {
   const { data, error, mutate } = useSWR<IDisease[]>(
     `${API}/auto/disease`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -140,7 +187,7 @@ const AdminManageDiseasePage = () => {
               action: () =>
                 setPopup(
                   "CreateNewDisease",
-                  <CreateNewDiseasePopup mutate={mutate} />
+                  <CreateNewDiseasePopup mutate={mutate} />,
                 ),
             },
           ]}
@@ -171,7 +218,7 @@ const AdminManageDiseasePage = () => {
                       onClick={() =>
                         setPopup(
                           "DeleteDiseasePopup",
-                          <DeleteDiseasePopup mutate={mutate} node={node} />
+                          <DeleteDiseasePopup mutate={mutate} node={node} />,
                         )
                       }
                       variant="Danger"

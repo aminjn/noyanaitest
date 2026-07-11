@@ -21,7 +21,7 @@ const ToggleButton = <T extends Togglable>({
 
   useEffect(
     () => setCurrent(!!Editor.marks(editor)?.[thisKey]),
-    [editor, selection, thisKey]
+    [editor, selection, thisKey],
   );
 
   return (

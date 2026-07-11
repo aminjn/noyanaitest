@@ -1,5 +1,4 @@
 import useLocale from "@/Components/Hooks/useLocale";
-import { IncomingTaminPharmacyResponse } from "./PharmacyFillPrescriptionPage";
 import classes from "./PrescriptionList.module.css";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EyeIcon from "@/Components/Icons/EyeIcon";
@@ -10,6 +9,7 @@ import Button from "@/Components/UI/Button";
 import PrescriptionFiller from "./PrescriptionFiller";
 import PrescriptionFillPatient from "./PrescriptionFillPatient";
 import PrescriptionListItem from "./PrescriptionListItem";
+import { IncomingTaminPharmacyResponse } from "./FindPrescriptionAgent";
 
 const PrescriptionList = ({
   data,

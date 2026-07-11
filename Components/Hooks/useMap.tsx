@@ -1,23 +1,28 @@
 import "maplibre-gl/dist/maplibre-gl.css";
-import mlgl, { LngLat } from "maplibre-gl";
+import mlgl, { LngLat, LngLatBounds } from "maplibre-gl";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import useNotification from "./useNotification";
 import useLocale from "./useLocale";
+import { IPolygon } from "../Admin/Province/AdminManageProvincesPage";
 
 mlgl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
   true,
 );
 
+export type UseMapProps = {
+  containerRef: RefObject<HTMLDivElement>;
+  center?: [number, number];
+  onClick?: (e: LngLat) => void;
+};
+
+export type UseMapReturns = ReturnType<typeof useMap>;
+
 const useMap = ({
   containerRef,
   center: initialCenter = [51.389, 35.689],
   onClick,
-}: {
-  containerRef: RefObject<HTMLDivElement>;
-  center?: [number, number];
-  onClick?: (e: LngLat) => void;
-}) => {
+}: UseMapProps) => {
   const mapRef = useRef<mlgl.Map | null>(null);
   const [bounds, setBounds] = useState<mlgl.LngLatBounds | null>(null);
   const [center, setCenter] = useState<LngLat>(new LngLat(...initialCenter));
@@ -72,31 +77,35 @@ const useMap = ({
   }, []);
 
   const flyToMe = useCallback(
-    (_zoom: number = 17) => {
-      const current = mapRef.current;
-      if (!current)
-        return pushNotification(getContent("mapIsNotReady"), "Warn");
-      if (!navigator.geolocation)
-        return pushNotification(
-          getContent("yourDeviceNotSupportingGPS"),
-          "Error",
-        );
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          current.flyTo({
-            center: [pos.coords.longitude, pos.coords.latitude],
-            zoom: _zoom || zoom,
-          });
-        },
-        (err) => {
-          console.log(err);
-          pushNotification(
-            getContent("somethingWentWrongAcquiringYourLocation"),
+    async (_zoom: number = 17) => {
+      return new Promise<GeolocationPosition>((resolve, reject) => {
+        const current = mapRef.current;
+        if (!current)
+          return pushNotification(getContent("mapIsNotReady"), "Warn");
+        if (!navigator.geolocation)
+          return pushNotification(
+            getContent("yourDeviceNotSupportingGPS"),
             "Error",
           );
-        },
-        { enableHighAccuracy: true },
-      );
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            current.flyTo({
+              center: [pos.coords.longitude, pos.coords.latitude],
+              zoom: _zoom || zoom,
+            });
+            resolve(pos);
+          },
+          (err) => {
+            console.log(err);
+            pushNotification(
+              getContent("somethingWentWrongAcquiringYourLocation"),
+              "Error",
+            );
+            reject();
+          },
+          { enableHighAccuracy: true },
+        );
+      });
     },
     [getContent, pushNotification, zoom],
   );
@@ -131,7 +140,25 @@ const useMap = ({
     [getContent, pushNotification],
   );
 
-  return { map: mapRef.current, bounds, center, flyToMe, ready };
+  const fitBounds = useCallback((polygon: IPolygon) => {
+    const current = mapRef.current;
+    if (!current) return;
+    const bounds = new LngLatBounds();
+    polygon.coordinates[0].forEach(([lng, lat]) => {
+      bounds.extend([lng, lat]);
+    });
+    current.fitBounds(bounds);
+  }, []);
+
+  return {
+    map: mapRef.current,
+    bounds,
+    center,
+    flyToMe,
+    ready,
+    fitBounds,
+    zoom,
+  };
 };
 
 export default useMap;

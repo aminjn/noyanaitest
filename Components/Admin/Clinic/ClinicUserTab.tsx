@@ -15,7 +15,7 @@ const ClinicUserTab = ({
   mutate,
   node,
 }: {
-  node: IClinic<{ User: true }>;
+  node: IClinic<{ User: Record<never, never> }>;
   mutate: () => unknown;
 }) => {
   const { setPopup } = usePopup();

@@ -114,6 +114,7 @@ const ProvinceDetails = ({
         name: { type: "text", title: "نام" },
         order: { type: "number", title: "رتبه" },
         isActive: { type: "bool", title: "فعال" },
+        slug: { type: "text", title: "اسلاگ" },
       }}
     />
   );

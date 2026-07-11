@@ -25,7 +25,7 @@ import CardWithSession from "./CardWithSession";
 export const Sessions = ({ node }: { node: IDoctorProfile }) => {
   const { data, error } = useSWR<{ count: number; _id: string }[]>(
     `${API}/public/doctor/${node._id}/week`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   console.log(data);
@@ -34,7 +34,7 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
 
   const isAvailable = useMemo<boolean>(
     () => !!data?.some((el) => !!el.count),
-    [data]
+    [data],
   );
 
   const getContent = useLocale();
@@ -77,7 +77,7 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
                         <SelectSessionToReservePopup
                           doctor={node}
                           stamp={key}
-                        />
+                        />,
                       );
                     }
                   }}
@@ -120,7 +120,7 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
 const DoctorCardWithSessions = ({
   node,
 }: {
-  node: IDoctorProfile<{ MainSpecialityPopulated: true }>;
+  node: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
 }) => {
   return (
     <CardWithSession

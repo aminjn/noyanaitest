@@ -19,19 +19,21 @@ const MultiSelectInputServer = function <T = unknown>({
   className = "",
   style,
   placeholder,
+  multi = true,
 }: WithStyleProps<{
   path: string;
   getOption: (node: T) => MultiSelectOption;
   value: T[];
   onChange: (newValue: T[]) => unknown;
   placeholder: string;
+  multi?: boolean;
 }>) {
   const [query, setQuery] = useDebounce<string>({ initialValue: "" });
 
   const getContent = useLocale();
 
   const { data, isLoading } = useSWR<T[]>(
-    query ? `${path}?query=${query}` : null,
+    query ? `${path}${path.includes("?") ? "&" : "?"}query=${query}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
     { keepPreviousData: true },
   );
@@ -123,6 +125,7 @@ const MultiSelectInputServer = function <T = unknown>({
                   className={`${classes.option} ${selected.some((opt) => opt.value === option.value) ? classes.activeOption : ""}`}
                   key={option.value}
                   onClick={() => {
+                    if (!multi) return onChange([option.node]);
                     const newValue = [...value];
                     const index = newValue.findIndex(
                       (el) => getOption(el).value === option.value,

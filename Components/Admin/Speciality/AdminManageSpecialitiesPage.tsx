@@ -21,10 +21,21 @@ import DeleteSpecialityPopup from "./DeletSpecialityPopup";
 import InlineLink from "../UI/InlineLink";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { Population } from "../Clinic/AdminManageClinicsPage";
+import {
+  ISpecialityCategory,
+  SpecialityCategoryPopulation,
+} from "../SpecialityCategory/AdminManageSpecialityCategoriesPage";
+import {
+  DoctorProfilePopulation,
+  IDoctorProfile,
+} from "@/Components/DoctorPanel/DoctorPanelPage";
 
-export type SpecialityPopulation = Population<Record<never, never>>;
+export type SpecialityPopulation = Population<{
+  Category: SpecialityCategoryPopulation;
+  Doctors: DoctorProfilePopulation;
+}>;
 export interface ISpeciality<
-  T extends SpecialityPopulation = SpecialityPopulation
+  T extends SpecialityPopulation = SpecialityPopulation,
 > extends MongoDoc {
   name?: string;
   slug?: string;
@@ -35,12 +46,19 @@ export interface ISpeciality<
   active: boolean;
   doctorsCountWithMainSpeciality?: number;
   doctorsCountWithSideSpeciality?: number;
+  category: T["Category"] extends SpecialityCategoryPopulation
+    ? ISpecialityCategory<T["Category"]>
+    : string;
+  doctors: T["Doctors"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctors"]>[]
+    : never;
+  description?: string;
 }
 
 const AdminManageSpecialitiesPage = () => {
   const { data, error, mutate } = useSWR<ISpeciality[]>(
     `${API}/auto/speciality`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -119,7 +137,7 @@ const AdminManageSpecialitiesPage = () => {
                             <DeleteSpecialityPopup
                               node={node}
                               mutate={mutate}
-                            />
+                            />,
                           )
                         }
                         variant="Danger"

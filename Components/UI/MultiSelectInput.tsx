@@ -22,7 +22,7 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
   placeholder: string;
   options: MultiSelectOption[];
   onChange: (selected: string[]) => unknown;
-  value: TMulti extends true ? string[] : string;
+  value?: TMulti extends true ? string[] : string;
   multi?: boolean;
   title?: string;
 }>) {
@@ -107,7 +107,7 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
             {!!filteredOptions.length ? (
               filteredOptions.map((option) => (
                 <div
-                  className={`${classes.option} ${value.includes(option.value) ? classes.activeOption : ""}`}
+                  className={`${classes.option} ${value?.includes(option.value) ? classes.activeOption : ""}`}
                   key={option.value}
                   onClick={() => {
                     if (!multi) return onChange([option.value]);

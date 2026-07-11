@@ -6,90 +6,116 @@ import classes from "./DiseasePage.module.css";
 import { imagePath } from "../helpers/imagepath";
 import { TitleTextSection } from "../Symptom/SymptomPage";
 import SymptomCard from "../Symptom/SymptomCard";
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import { ContentKey } from "../Enums/contentKeys";
 import SpecialityCard from "../Speciality/SpecialityCard";
 import DrugCard from "../Drug/DrugCard";
+import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
+import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
+import ListPageLayout from "../UI/ListPage/ListPageLayout";
+import ListPageWideHeader from "../UI/ListPage/ListPageWideHeader";
+import FlaskIcon from "../Icons/FlaskIcon";
+import BigAd from "../UI/ListPage/BigAd";
+import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
+import ListPageSideSection from "../UI/ListPage/ListPageSideSection";
+import DoctorCardAlt from "../UI/DoctorCardAlt";
+import ClinicCardAlt from "./ClinicCardAlt";
+import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
+import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
+import RenderRtf from "../UI/RenderRtf";
+import SmallAd from "../UI/ListPage/SmallAd";
 
 export type DiseasePageProps = {
   data: IDisease<{
     Speciality: Record<never, never>;
     Symptom: Record<never, never>;
     Drugs: Record<never, never>;
+    Category: Record<never, never>;
+    SameAs: Record<never, never>;
   }>;
+  doctors: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
+  clinics: IClinic<{
+    Category: Record<never, never>;
+    Tags: Record<never, never>;
+    Province: Record<never, never>;
+  }>[];
 };
 
-const NodeList = ({
-  children,
-  length,
-  title,
-}: {
-  children?: ReactNode;
-  length: number;
-  title: ContentKey;
-}) => {
+const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
   const getContent = useLocale();
 
-  if (!length) return null;
   return (
-    <section className={classes.listBox}>
-      <legend className={classes.listTitle}>{getContent(title)}</legend>
-      <ul className={classes.list}>{children}</ul>
-    </section>
-  );
-};
-
-const DiseasePage = ({ data }: DiseasePageProps) => {
-  return (
-    <div className={classes.main}>
-      <div className={classes.header}>
-        <h1 className={classes.title}>{data.name}</h1>
-        <div className={classes.image}>
-          <Image
-            alt={data.name || ""}
-            src={imagePath(data.image)}
-            style={{ objectFit: "cover" }}
-            fill
-            sizes="20rem"
+    <ListPageLayout>
+      <ListPageWideHeader
+        icon={<FlaskIcon />}
+        name={data.name || ""}
+        category={{
+          title: getContent("diseaseCategory"),
+          value: data.category?.name || "",
+        }}
+        summary={data.summary}
+        primaryAction={{ title: getContent("bookASessionFromADoctor") }}
+        secondaryAction={{ title: getContent("inpectDiseaseWithAi") }}
+      />
+      <BigAd />
+      <ListPageWithSide
+        side={
+          <Fragment>
+            <ListPageSideSection
+              title={getContent("relatedDoctors")}
+              cards={doctors.map((doctor) => (
+                <DoctorCardAlt key={doctor._id} node={doctor} />
+              ))}
+            />
+            <ListPageSideSection
+              title={getContent("relatedClinics")}
+              cards={clinics.map((clinic) => (
+                <ClinicCardAlt key={clinic._id} node={clinic} />
+              ))}
+            />
+            <ListPageSideExpandable
+              title={getContent("relatedSpecialities")}
+              items={data.specialities.map((el) => ({
+                title: el.name || "",
+                target: `/speciality/${el.slug || el._id}`,
+              }))}
+            />
+            <ListPageSideExpandable
+              title={getContent("similarDiseases")}
+              items={data.sameAs.map((el) => ({
+                title: el.name || "",
+                target: `/disease/${el.slug || el._id}`,
+              }))}
+            />
+            <ListPageSideExpandable
+              title={getContent("relatedSymptoms")}
+              items={data.symptoms.map((el) => ({
+                title: el.name || el._id,
+                target: `/symptom/${el.slug || el._id}`,
+              }))}
+            />
+            <ListPageSideExpandable
+              title={getContent("relatedDrugs")}
+              items={data.drugs.map((el) => ({
+                title: el.name || "",
+                target: `/drug/${el._id}`,
+              }))}
+            />
+          </Fragment>
+        }
+      >
+        <Fragment>
+          <ListPageAISummary
+            title={getContent("diseaseAiSummaryTitle")}
+            content={data.aiSummary}
           />
-        </div>
-      </div>
-      <div className={classes.content}>
-        <TitleTextSection title="summary" value={data.summary} />
-        <TitleTextSection title="description" value={data.description} />
-        <TitleTextSection
-          title="expectedPrognosis"
-          value={data.expectedPrognosis}
-        />
-        <TitleTextSection
-          title="naturalProgeression"
-          value={data.naturalProgression}
-        />
-        <TitleTextSection
-          title="pathophysiology"
-          value={data.pathophysiology}
-        />
-        <TitleTextSection
-          title="possibleComplications"
-          value={data.possibleComplication}
-        />
-        <NodeList length={data.symptoms.length} title="diseaseSymptoms">
-          {data.symptoms.map((node) => (
-            <SymptomCard node={node} key={node._id} />
-          ))}
-        </NodeList>
-        <NodeList title="diseaseSpecilaities" length={data.specialities.length}>
-          {data.specialities.map((node) => (
-            <SpecialityCard key={node._id} node={node} />
-          ))}
-        </NodeList>
-        <NodeList title="diseaseDrugs" length={data.drugs.length}>
-          {data.drugs.map((node) => (
-            <DrugCard key={node._id} node={node} />
-          ))}
-        </NodeList>
-      </div>
-    </div>
+          <div className={classes.box}>
+            <RenderRtf value={data.content} />
+          </div>
+        </Fragment>
+      </ListPageWithSide>
+      <SmallAd />
+    </ListPageLayout>
   );
 };
 

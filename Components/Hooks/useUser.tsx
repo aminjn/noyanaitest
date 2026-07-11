@@ -29,8 +29,9 @@ export type UserVitalPopulation = Population<{
   User: UserPopulation;
   Author: DoctorProfilePopulation;
 }>;
-export interface IUserVital<T extends UserVitalPopulation = UserVitalPopulation>
-  extends MongoDoc {
+export interface IUserVital<
+  T extends UserVitalPopulation = UserVitalPopulation,
+> extends MongoDoc {
   user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   author: T["Author"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Author"]>
@@ -48,8 +49,9 @@ export type UserPopulation = Population<{
   Medical: MedicalDetailPopulation;
 }>;
 
-export interface IUser<T extends UserPopulation = UserPopulation>
-  extends MongoDoc {
+export interface IUser<
+  T extends UserPopulation = UserPopulation,
+> extends MongoDoc {
   phone: string;
   role: UserRole;
   nationalId?: string;
@@ -73,7 +75,7 @@ const useUser = (require?: boolean | undefined) => {
     mutate: refreshUser,
     isLoading,
   } = useSWR<IUser>(`${API}/user`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   useEffect(() => {

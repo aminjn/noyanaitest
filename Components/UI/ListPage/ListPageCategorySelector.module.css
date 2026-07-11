@@ -1,0 +1,40 @@
+.categoryBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transTime);
+  background-color: var(--white);
+  border-radius: 100dvw;
+  border: 1px solid var(--gray4);
+  color: var(--gray11);
+  padding: 0.5rem 1rem;
+}
+
+.activeCategory {
+  border-color: transparent;
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.titleBox {
+  display: flex;
+  align-items: center;
+  color: var(--gray10);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}

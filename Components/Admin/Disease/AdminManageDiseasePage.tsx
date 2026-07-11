@@ -22,6 +22,8 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteDiseasePopup from "./DeleteDiseasePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { IDiseaseCategory } from "../DiseaseCategory/AdminManageDiseaseCategoriesPage";
+import { IDiseaseTag } from "../DiseaseTag/AdminManageDiseaseTagsPage";
 
 const AdminManageDiseasePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -68,6 +70,31 @@ const AdminManageDiseasePage = () => {
                       image: { type: "image", title: "تصویر" },
                       slug: { type: "text", title: "اسلاگ" },
                       order: { type: "number", title: "رتبه" },
+                      tag: {
+                        type: "nodes",
+                        title: "لگ",
+                        multi: false,
+                        getOptionLabel: (node) =>
+                          (node as IDiseaseTag).name ||
+                          (node as IDiseaseTag)._id,
+                        getOptionValue: (node) => (node as IDiseaseTag)._id,
+                        getDefaultValue: (inp) => inp.tag,
+                        path: `${API}/auto/diseasetag`,
+                      },
+                      category: {
+                        type: "nodes",
+                        title: "دسته بندی",
+                        path: `${API}/auto/diseaseCategory`,
+                        getOptionLabel: (node) =>
+                          (node as IDiseaseCategory).name ||
+                          (node as IDiseaseCategory)._id,
+                        getOptionValue: (node) =>
+                          (node as IDiseaseCategory)._id,
+                        multi: false,
+                        getDefaultValue: (inp) => inp.category,
+                      },
+                      aiSummary: { type: "rtf", title: "خلاصه AI" },
+                      content:{type:"rtf" , title:"محتوا" }
                     }}
                   />
                 ),
@@ -126,7 +153,7 @@ const AdminManageDiseasePage = () => {
                         title: "علائم",
                         multi: true,
                         getDefaultValue: (val) =>
-                          val.symptoms.map((el) => el._id),
+                          val.symptoms?.map((el) => el._id),
                         getOptionLabel: (node) =>
                           (node as ISymptom).name || (node as ISymptom)._id,
                         getOptionValue: (node) => (node as ISymptom)._id,
@@ -152,7 +179,8 @@ const AdminManageDiseasePage = () => {
                         getOptionValue: (node) => (node as IDrug)._id,
                         path: `${API}/auto/drug`,
                         multi: true,
-                        getDefaultValue: (val) => val.drugs.map((el) => el._id),
+                        getDefaultValue: (val) =>
+                          val.drugs?.map((el) => el._id),
                       },
                       sameAs: {
                         type: "nodes",

@@ -89,6 +89,7 @@ const PublicHeader = () => {
         ],
       },
       { title: "aiDetection", target: "/wizard" },
+      { title: "noyanClinic", target: "/clinic" },
       { title: "blog", target: "/mag" },
       { title: "forDoctors", target: "/doctorpanel", accent: true },
     ],

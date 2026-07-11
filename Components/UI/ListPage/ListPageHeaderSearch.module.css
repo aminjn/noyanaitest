@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background-color: var(--white);
+  margin-top: 1.5rem;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.675rem;
+}
+
+.title {
+  color: var(--gray13);
+}
+
+.legend {
+  color: var(--gray13);
+}
+
+.searchBox {
+  position: relative;
+  height: 2.5rem;
+  width: 24.125rem;
+  border-radius: 100dvw;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding-inline-start: 2.5rem;
+  border: none;
+  outline: none;
+}
+
+.searchIcon {
+  inset-inline-start: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+}

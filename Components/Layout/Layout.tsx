@@ -1,5 +1,7 @@
 "use client";
 
+import "swiper/css";
+
 import { CSSProperties, Fragment, ReactNode, useMemo } from "react";
 import classes from "./Layout.module.css";
 import { usePathname } from "next/navigation";
@@ -15,6 +17,7 @@ import ClinicPanelLayout from "./ClinicPanelLayout";
 import PharmacyPanelLayout from "./PharmacyPanelLayout";
 import InsurancePanelLayout from "./InsurancePanelLayout";
 import CallManager from "../Call/CallManager";
+import ParaClinicPanelLayout from "./ParaClinicPanelLayout";
 
 export type WithStyleProps<T = Record<never, never>> = T & {
   className?: string;
@@ -40,6 +43,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
       return <PharmacyPanelLayout>{children}</PharmacyPanelLayout>;
     if (plain.startsWith("insurancepanel"))
       return <InsurancePanelLayout>{children}</InsurancePanelLayout>;
+    if (plain.startsWith("paraClinicPanel"))
+      return <ParaClinicPanelLayout>{children}</ParaClinicPanelLayout>;
     return <PublicLayout>{children}</PublicLayout>;
   }, [children, pathname]);
 

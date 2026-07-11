@@ -1,6 +1,6 @@
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import { MongoDoc } from "@/Components/Hooks/useUser";
+import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import useSWR from "swr";
 import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
@@ -15,14 +15,43 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteDoctorPharmacyPopup from "./DeleteDoctorPharmacyPopup";
 import Button from "@/Components/UI/Button";
 import DoctorAddPharmacyPopup from "./DoctorAddPharmacyPopup";
+import {
+  CityPopulation,
+  DistrictPopulation,
+  ICity,
+  IDistrict,
+  IProvince,
+  ProvincePopulation,
+} from "@/Components/Admin/Province/AdminManageProvincesPage";
+import { City } from "@/Components/Enums/Cities";
 
-export type PharmacyPopulation = Population<Record<string, never>>;
+export type PharmacyPopulation = Population<{
+  User: UserPopulation;
+  Province: ProvincePopulation;
+  City: CityPopulation;
+  District: DistrictPopulation;
+}>;
 
-export interface IPharmacy<T extends PharmacyPopulation = PharmacyPopulation>
-  extends MongoDoc {
+export interface IPharmacy<
+  T extends PharmacyPopulation = PharmacyPopulation,
+> extends MongoDoc {
+  user?: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   name?: string;
   order: number;
   active: boolean;
+  location?: { type: "Point"; coordinates?: [number, number] };
+  province?: T["Province"] extends ProvincePopulation
+    ? IProvince<T["Province"]>
+    : string;
+  city?: T["City"] extends CityPopulation ? ICity<T["City"]> : string;
+  district?: T["District"] extends DistrictPopulation
+    ? IDistrict<T["District"]>
+    : string;
+  avatar?: string;
+  summary?: string;
+  slug?: string;
+  address?: string;
+  banner?: string;
 }
 
 export type DoctorPharmacyPopulation = Population<{
@@ -31,7 +60,7 @@ export type DoctorPharmacyPopulation = Population<{
 }>;
 
 export interface IDoctorPharmacy<
-  T extends DoctorPharmacyPopulation = DoctorPharmacyPopulation
+  T extends DoctorPharmacyPopulation = DoctorPharmacyPopulation,
 > extends MongoDoc {
   doctor: T["Doctor"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Doctor"]>
@@ -45,7 +74,7 @@ const DoctorPharmaciesTab = () => {
   const { data, error, mutate } = useSWR<
     IDoctorPharmacy<{ Pharmacy: Record<string, never> }>[]
   >(`${API}/doctor/pharmacy`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -65,7 +94,7 @@ const DoctorPharmaciesTab = () => {
                   onClick={() =>
                     setPopup(
                       "DoctorAddPharmacy",
-                      <DoctorAddPharmacyPopup mutate={mutate} />
+                      <DoctorAddPharmacyPopup mutate={mutate} />,
                     )
                   }
                 >
@@ -96,7 +125,7 @@ const DoctorPharmaciesTab = () => {
                             <DeleteDoctorPharmacyPopup
                               node={node}
                               mutate={mutate}
-                            />
+                            />,
                           )
                         }
                         variant="Danger"

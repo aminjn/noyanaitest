@@ -1,0 +1,76 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  border-radius: 1rem;
+  box-shadow: 0px 1px 2px 0px #00000014;
+  height: 20.9375rem;
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: 12.875rem;
+  border-radius: 1rem 1rem 0 0;
+  overflow: hidden;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  color: var(--black);
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.commentCount {
+  color: var(--gray8);
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--yellow);
+}
+
+.province {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray8);
+}
+
+.counts {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray8);
+}
+
+.count {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}

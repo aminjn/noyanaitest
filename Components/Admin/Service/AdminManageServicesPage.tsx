@@ -54,6 +54,7 @@ export interface IService<
   category?: T["Category"] extends ServiceCategoryPopulation
     ? IServiceCategory<T["Category"]>
     : string;
+  special: boolean;
 }
 
 const MutateServicePopup = ({
@@ -104,6 +105,7 @@ const MutateServicePopup = ({
             getOptionValue: (node) => (node as IServiceCategory)._id,
             getDefaultValue: (node) => node.category?._id,
           },
+          special: { type: "bool", title: "ویژه" },
         }}
       />
     </PopupCard>

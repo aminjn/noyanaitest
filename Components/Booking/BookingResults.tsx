@@ -1,28 +1,26 @@
-import { Dispatch, SetStateAction } from "react";
-import { BookingOptions, bookingSorts } from "./BookingPage2";
+import { Dispatch, ReactNode, SetStateAction } from "react";
+import { BookingCommon, bookingSorts } from "./BookingPage2";
 import classes from "./BookingResults.module.css";
 import SortButton from "../UI/SortButton";
+import useLocale from "../Hooks/useLocale";
 import useComplexLocale from "../Hooks/useComplexLocale";
-import BarsIcon from "../Icons/BarsIcon";
+import { t2xsRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import CategoriesIcon from "../Icons/CategoriesIcon";
-import useLocale from "../Hooks/useLocale";
-import { t2xsRegular } from "../UI/Typography";
-import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
-import DoctorCard from "../Doctor/DoctorCard";
-import DoctorCardBooking from "./DoctorCardBooking";
-const BookingResults = ({
-  options,
-  setOptions,
-  data,
-}: {
-  options: BookingOptions;
-  setOptions: Dispatch<SetStateAction<BookingOptions>>;
-  data?: IDoctorProfile[];
-}) => {
-  const getCompContent = useComplexLocale();
+import BarsIcon from "../Icons/BarsIcon";
 
+const BookingResults = ({
+  common,
+  setCommon,
+  children,
+}: {
+  children?: ReactNode;
+  common: BookingCommon;
+  setCommon: Dispatch<SetStateAction<BookingCommon>>;
+}) => {
   const getContent = useLocale();
+
+  const getCompContent = useComplexLocale();
 
   return (
     <div className={classes.main}>
@@ -33,9 +31,9 @@ const BookingResults = ({
             title: getContent(el),
             value: el,
           }))}
-          value={options.sort}
+          value={common.sort}
           onChange={(e) =>
-            setOptions((prev) => ({
+            setCommon((prev) => ({
               ...prev,
               sort: bookingSorts.find((el) => el === e) || prev.sort,
             }))
@@ -48,21 +46,21 @@ const BookingResults = ({
           <button
             className={classes.toggleView}
             onClick={() =>
-              setOptions((prev) => ({
+              setCommon((prev) => ({
                 ...prev,
                 view: prev.view === "Grid" ? "List" : "Grid",
               }))
             }
           >
             <div
-              className={`${classes.viewSegment} ${classes.gridView} ${options.view === "Grid" ? classes.activeView : ""}`}
+              className={`${classes.viewSegment} ${classes.gridView} ${common.view === "Grid" ? classes.activeView : ""}`}
             >
               <Ixon width=".75rem">
                 <CategoriesIcon />
               </Ixon>
             </div>
             <div
-              className={`${classes.viewSegment} ${classes.listView} ${options.view === "List" ? classes.activeView : ""}`}
+              className={`${classes.viewSegment} ${classes.listView} ${common.view === "List" ? classes.activeView : ""}`}
             >
               <Ixon width=".75rem">
                 <BarsIcon />
@@ -71,11 +69,7 @@ const BookingResults = ({
           </button>
         </div>
       </div>
-      <div className={classes.content}>
-        {data?.map((doctor) => (
-          <DoctorCardBooking node={doctor} key={doctor._id} />
-        ))}
-      </div>
+      <div className={classes.content}>{children}</div>
     </div>
   );
 };

@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  margin-block: 1.5rem;
+  padding-block: 1rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.h1 {
+  color: var(--gray13);
+}
+
+.legend {
+  color: var(--gray10);
+}

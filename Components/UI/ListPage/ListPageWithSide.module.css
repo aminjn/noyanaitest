@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.side {
+  width: 16.5rem;
+  padding: 0.75rem;
+  position: relative;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: fit-content;
+}
+
+.content {
+  width: 52.3125rem;
+  flex-grow: 1;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+}

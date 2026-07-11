@@ -39,10 +39,10 @@ const linkMap: {
     title: "lists",
     items: [
       { title: "doctorsList", target: "/doctors" },
-      { title: "specialitiesList", target: "/specialities" },
-      { title: "symptomsList", target: "/symptoms" },
-      { title: "diseasesList", target: "/diseases" },
-      { title: "drugsList", target: "/drugs" },
+      { title: "specialitiesList", target: "/speciality" },
+      { title: "symptomsList", target: "/symptom" },
+      { title: "diseasesList", target: "/disease" },
+      { title: "drugsList", target: "/drug" },
     ],
   },
 ];

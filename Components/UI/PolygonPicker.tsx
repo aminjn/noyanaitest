@@ -3,6 +3,7 @@ import useMap from "../Hooks/useMap";
 import classes from "./PolygonPicker.module.css";
 import {
   TerraDraw,
+  TerraDrawCircleMode,
   TerraDrawSelectMode,
   ValidateNotSelfIntersecting,
 } from "terra-draw";

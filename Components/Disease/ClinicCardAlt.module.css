@@ -1,0 +1,69 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 17rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--gray4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.image {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.75rem;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  margin-inline: auto;
+}
+
+.theImage {
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.verify {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary);
+}
+
+.name {
+  text-align: center;
+  color: var(--gray13);
+  margin-bottom: 0.25rem;
+}
+
+.category {
+  color: var(--gray8);
+  text-align: center;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  margin-top: 1.375rem;
+}
+
+.province {
+  display: flex;
+  align-content: center;
+  gap: 0.25rem;
+  color: var(--gray10);
+  margin-top: 0.5rem;
+}
+
+.action {
+  margin-top: auto;
+}

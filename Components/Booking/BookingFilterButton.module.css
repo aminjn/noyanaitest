@@ -1,0 +1,55 @@
+.filterButtonContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding-inline: 0.25rem;
+  padding-block: 0.625rem;
+}
+
+.filterButtonTitle {
+  color: var(--gray13);
+}
+
+.activeBadge {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background-color: var(--secondary);
+}
+
+.filterButtonChevron {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  color: var(--black);
+  transition: all var(--transTime);
+}
+
+.filterButtonContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: open 0.5s ease-in-out forwards;
+}
+
+@keyframes open {
+  0% {
+    max-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  99% {
+    max-height: 5rem;
+    padding: 0.5rem;
+  }
+  100% {
+    max-height: unset;
+    overflow: visible;
+    padding: 0.5rem;
+  }
+}

@@ -5,10 +5,10 @@ import { getPublicData } from "@/Components/helpers/getPublicData";
 import { notFound } from "next/navigation";
 
 const Disease = async ({ params: { slug } }: { params: { slug: string } }) => {
-  const data = await getPublicData<DiseasePageProps["data"]>(`disease/${slug}`);
+  const data = await getPublicData<DiseasePageProps>(`disease/${slug}`);
   if (!data) return notFound();
 
-  return <DiseasePage data={data} />;
+  return <DiseasePage {...data} />;
 };
 
 export default Disease;

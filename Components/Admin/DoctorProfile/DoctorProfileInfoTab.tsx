@@ -9,6 +9,7 @@ import useForm from "@/Components/Hooks/useForm";
 import { provinceOptions, provinces } from "@/Components/Enums/Provinces";
 import { cityOptions } from "@/Components/Enums/Cities";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ICity, IDistrict, IProvince } from "../Province/AdminManageProvincesPage";
 
 const DoctorProfileInfoTab = ({
   mutate,
@@ -57,6 +58,35 @@ const DoctorProfileInfoTab = ({
             (acc, el) => ({ ...acc, [el]: el }),
             {},
           ),
+        },
+        province: {
+          title: "استان",
+          type: "nodes",
+          path: `${API}/auto/province`,
+          getOptionLabel: (node) =>
+            (node as IProvince).name || (node as IProvince)._id,
+          getOptionValue: (node) => (node as IProvince)._id,
+          multi: false,
+          getDefaultValue: (inp) => inp.province,
+        },
+        city: {
+          title: "شهر",
+          type: "nodes",
+          getOptionLabel: (node) => (node as ICity).name || (node as ICity)._id,
+          getOptionValue: (node) => (node as ICity)._id,
+          getDefaultValue: (inp) => inp.city,
+          multi: false,
+          path: `${API}/auto/city`,
+        },
+        district: {
+          title: "محله",
+          getOptionLabel: (node) =>
+            (node as IDistrict).name || (node as IDistrict)._id,
+          type: "nodes",
+          getOptionValue: (node) => (node as IDistrict)._id,
+          getDefaultValue: (inp) => inp.district,
+          multi: false,
+          path: `${API}/auto/district`,
         },
       }}
       hookProvided={form}

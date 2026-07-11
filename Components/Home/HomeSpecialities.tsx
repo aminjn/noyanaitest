@@ -34,7 +34,6 @@ const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
     fetcher({ url }).then((res) => res.data.doctors),
   );
 
-  console.log(data);
 
   const getCompContent = useComplexLocale();
 

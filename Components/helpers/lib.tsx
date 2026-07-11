@@ -17,3 +17,8 @@ export const calculateAge = (born: Date): number =>
 
 export const clamp = (min: number, val: number, max: number): number =>
   Math.min(max, Math.max(val, min));
+
+export const chunk = <T,>(arr: T[], size = 3): T[][] =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+    arr.slice(i * size, i * size + size),
+  );

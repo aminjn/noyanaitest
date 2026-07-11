@@ -20,6 +20,7 @@ import Button from "@/Components/UI/Button";
 import DeleteSymptomPopup from "./DeleteSymptomPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ISymptomCategory } from "../SymptomCategory/AdminManageSymptomCategoriesPage";
 
 const AdminManageSymptomPage = () => {
   const { nodeId } = useParams();
@@ -64,6 +65,20 @@ const AdminManageSymptomPage = () => {
                         type: "select",
                         options: genderSpecificOptionsDict,
                       },
+                      category: {
+                        type: "nodes",
+                        title: "دسته بندی",
+                        getOptionLabel: (node) =>
+                          (node as ISymptomCategory).name ||
+                          (node as ISymptomCategory)._id,
+                        getOptionValue: (node) =>
+                          (node as ISymptomCategory)._id,
+                        getDefaultValue: (inp) => inp.category,
+                        multi: false,
+                        path: `${API}/auto/symptomCategory`,
+                      },
+                      aiSummary: { type: "rtf", title: "خلاصه AI" },
+                      content: { type: "rtf", title: "محتوا" },
                     }}
                   />
                 ),

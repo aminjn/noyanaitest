@@ -4,29 +4,55 @@ import classes from "./DrugCard.module.css";
 import { imagePath } from "../helpers/imagepath";
 import Link from "next/link";
 import useLocale from "../Hooks/useLocale";
-const DrugCard = ({ node }: { node: IDrug }) => {
+import PillIcon from "../Icons/PillIcon";
+import Ixon from "../UI/Ixon";
+import Button from "../UI/Button";
+import { tsmMedium, tsmRegular, txsMedium, txsRegular } from "../UI/Typography";
+import Badge from "../UI/Badge";
+const DrugCard = ({ node }: { node: IDrug<{ Tag: Record<never, never> }> }) => {
   const getContent = useLocale();
 
   return (
     <li className={classes.main}>
-      <div className={classes.image}>
-        <Image
-          alt={node.name || ""}
-          src={imagePath(node.image)}
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="20rem"
-        />
+      <div className={classes.header}>
+        <div className={classes.icon}>
+          <Ixon width="1.5rem">
+            <PillIcon />
+          </Ixon>
+        </div>
+        <div className={classes.details}>
+          <h3 className={`${classes.name} ${txsMedium}`}>{node.name}</h3>
+          {!!node.brand && (
+            <span className={`${classes.brand} ${txsRegular}`}>
+              {node.brand}
+            </span>
+          )}
+          {node.tag && (
+            <Badge color="Primarylight" mode="Fill" radius="High" size="S">
+              {node.tag.name}
+            </Badge>
+          )}
+        </div>
       </div>
-      <div className={classes.content}>
-        <h2 className={classes.title}>
-          <Link href={`/drug/${node.slug || node.name}`}>{node.name}</Link>
-        </h2>
-        <p className={classes.summary}>{node.summary}</p>
-        <Link href={`/drug/${node.slug || node.name}`} className={classes.more}>
-          {getContent("readMore")}
-        </Link>
-      </div>
+      {!!node.dosage && (
+        <span className={classes.dosage}>
+          <span className={`${classes.dosageTitle} ${tsmMedium}`}>
+            {getContent("dosage")}
+          </span>
+          <span className={`${classes.dosageValue} ${tsmRegular}`}>
+            {node.dosage}
+          </span>
+        </span>
+      )}
+      <Button
+        className={classes.action}
+        variant="Primary"
+        mode="Fill"
+        size="S"
+        radius="High"
+      >
+        {getContent("seeDetails")}
+      </Button>
     </li>
   );
 };

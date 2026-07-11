@@ -1,4 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import useLocale from "../Hooks/useLocale";
 import AdjustmentHorizontalIcon from "../Icons/AdjustmentHorizontalIcon";
 import MapIcon from "../Icons/MapIcon";
@@ -7,23 +14,16 @@ import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import { txlDemiBold, txsMedium, txsRegular } from "../UI/Typography";
 import classes from "./BookingHeader.module.css";
-import { BookingOptions } from "./BookingPage2";
+import { DoctorBookingOptions } from "./BookingPage2";
 import useDebounce from "../Hooks/useDebounce";
+import useProgress from "../Hooks/useProgress";
 
 const BookingHeader = ({
-  options,
-  setOptions,
+  onChange,
 }: {
-  options: BookingOptions;
-  setOptions: Dispatch<SetStateAction<BookingOptions>>;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }) => {
-  const [query, setQuery] = useDebounce<string>({
-    initialValue: options.query || "",
-  });
-
-  useEffect(() => {
-    setOptions((prev) => ({ ...prev, query }));
-  }, [query, setOptions]);
+  const push = useProgress();
 
   const getContent = useLocale();
   return (
@@ -40,7 +40,7 @@ const BookingHeader = ({
             <SearchIcon />
           </Ixon>
           <input
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={onChange}
             className={`${classes.searchInput} ${txsRegular}`}
             placeholder={getContent("bookingSearchPlaceholder")}
           />
@@ -61,6 +61,7 @@ const BookingHeader = ({
           size="M"
           radius="High"
           tailIcon={<MapIcon />}
+          onClick={() => push("/map")}
         >
           {getContent("previewInMap")}
         </Button>

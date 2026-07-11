@@ -2,7 +2,10 @@
 
 import useSWR from "swr";
 import classes from "./DashboardManageBookingsPage.module.css";
-import { IBooking } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
+import {
+  DoctorSessionType,
+  IBooking,
+} from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
@@ -16,15 +19,82 @@ import InlineLink from "@/Components/Admin/UI/InlineLink";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
+import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
+import { IUserIdentity, UserIdentityPopulation } from "../DashboardPage";
+import {
+  DoctorProfilePopulation,
+  IDoctorProfile,
+} from "@/Components/DoctorPanel/DoctorPanelPage";
+import {
+  IOffice,
+  OfficePopulation,
+} from "@/Components/DoctorPanel/Office/DoctorManageOfficesPage";
+import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
+
+export type CheckoutPopulation = Population<{ User: UserPopulation }>;
+
+export interface ICheckout<
+  T extends CheckoutPopulation = CheckoutPopulation,
+> extends MongoDoc {
+  user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
+  amount: number;
+  createdAt: Date;
+}
+
+export type TransactionPopulation = Population<{
+  User: UserPopulation;
+  Checkout: CheckoutPopulation;
+}>;
+
+export interface ITransaction<
+  T extends TransactionPopulation = TransactionPopulation,
+> extends MongoDoc {
+  user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
+  amount: number;
+  checkout?: T["Checkout"] extends CheckoutPopulation
+    ? ICheckout<T["Checkout"]>
+    : string;
+  createdAt: Date;
+}
+
+export type ReservationPopulation = Population<{
+  User: UserPopulation;
+  Patient: UserIdentityPopulation;
+  Doctor: DoctorProfilePopulation;
+  Office: OfficePopulation;
+  Transaction: TransactionPopulation;
+}>;
+
+export interface IReservation<
+  T extends ReservationPopulation = ReservationPopulation,
+> extends MongoDoc {
+  user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
+  patient: T["Patient"] extends UserIdentityPopulation
+    ? IUserIdentity<T["Patient"]>
+    : string;
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
+  date: Date;
+  start: number;
+  end: number;
+  office: T["Office"] extends OfficePopulation ? IOffice<T["Office"]> : string;
+  sessionType: DoctorSessionType;
+  transaction?: T["Transaction"] extends TransactionPopulation
+    ? ITransaction<T["Transaction"]>
+    : string;
+  createdAt: Date;
+}
 
 const DashboardManageBookingsPage = () => {
   const { data, error } = useSWR<
-    IBooking<{
-      Doctor: Record<string, never>;
-      Session: Record<string, never>;
+    IReservation<{
+      Doctor: Record<never, never>;
+      Office: Record<never, never>;
+      User: Record<never, never>;
     }>[]
-  >(`${API}/user/booking`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+  >(`${API}/user/reservation`, (url: string) =>
+    fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -36,51 +106,59 @@ const DashboardManageBookingsPage = () => {
           data={data}
           name="DashboardManageBookings"
           renderer={{
-            bookedAt: {
-              name: getContent("bookedAt"),
-              value: (node) => new Date(node.bookedAt),
-              component: (node) => <FormatDate value={node.bookedAt} />,
-              filter: "Date",
-            },
-            bookPrice: {
-              name: getContent("bookingPrice"),
-              filter: "Number",
-              value: (node) => node.bookPrice,
-              component: (node) => currencize(node.bookPrice),
-            },
-            kind: {
-              name: getContent("sessionKind"),
-              value: (node) => getContent(node.kind),
-              filter: "Set",
-            },
-            sessionDate: {
-              name: getContent("sessionDate"),
-              value: (node) => new Date(node.session.date),
-              component: (node) => (
-                <FormatDate time={false} value={new Date(node.session.date)} />
-              ),
-              filter: "Date",
-            },
-            start: {
-              name: getContent("sessionStart"),
-              value: (node) => node.session.start,
-              component: (node) => numberToTime(node.session.start),
-              filter: "Number",
+            user: {
+              name: getContent("reserveUser"),
+              value: (node) => node.user.phone,
+              filter: "Text",
             },
             doctor: {
               name: getContent("doctor"),
               value: (node) => getDoctorProfileLabel(node.doctor),
+              filter: "Text",
               component: (node) => (
-                <InlineLink
-                  href={`/doctor/${node.doctor.slug || node.doctor._id}`}
-                >
+                <InlineLink href={`/dr/${node.doctor.slug || node.doctor._id}`}>
                   {getDoctorProfileLabel(node.doctor)}
                 </InlineLink>
               ),
-              filter: "Multi",
+            },
+            date: {
+              name: getContent("sessionDate"),
+              value: (node) => new Date(node.date),
+              filter: "Date",
+              component: (node) => (
+                <FormatDate value={node.date} time={false} />
+              ),
+            },
+            start: {
+              name: getContent("sessionStart"),
+              value: (node) => node.start,
+              filter: "Number",
+              component: (node) => numberToTime(node.start),
+            },
+            end: {
+              name: getContent("sessionEnd"),
+              value: (node) => node.end,
+              filter: "Number",
+              component: (node) => numberToTime(node.end),
+            },
+            office: {
+              name: getContent("office"),
+              value: (node) => node.office.name,
+              filter: "Text",
+            },
+            sessionType: {
+              name: getContent("sessionType"),
+              value: (node) => node.sessionType,
+              filter: "Set",
+            },
+            createdAt: {
+              name: getContent("submittedAt"),
+              value: (node) => new Date(node.createdAt),
+              filter: "Date",
+              component: (node) => <FormatDate value={node.createdAt} />,
             },
             actions: {
-              name: getContent("actions"),
+              name: "عملیات",
               component: (node) => (
                 <TableActions>
                   <IconLink href={`/dashboard/booking/${node._id}`}>

@@ -17,8 +17,6 @@ const UserButton = () => {
 
   const getContent = useLocale();
 
-  console.log(user);
-
   // if (!!user)
   //   return (
   //     <div>

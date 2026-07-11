@@ -270,10 +270,13 @@ const CreateForm = <TInput, TResult = unknown>({
             break;
           case "rtf":
             content = (
-              <RTFEditor
-                {...commons}
-                onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
-              />
+              <div>
+                <span>{commons.title}</span>
+                <RTFEditor
+                  {...commons}
+                  onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
+                />
+              </div>
             );
             break;
           case "strings":

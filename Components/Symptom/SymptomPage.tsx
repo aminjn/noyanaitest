@@ -1,12 +1,39 @@
 "use client";
 import Image from "next/image";
-import { ISymptom } from "../Admin/Disease/AdminManageDiseasesPage";
+import {
+  IDisease,
+  IDrug,
+  ISymptom,
+} from "../Admin/Disease/AdminManageDiseasesPage";
 import { ContentKey } from "../Enums/contentKeys";
 import useLocale from "../Hooks/useLocale";
 import classes from "./SymptomPage.module.css";
 import { imagePath } from "../helpers/imagepath";
+import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
+import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
+import ListPageLayout from "../UI/ListPage/ListPageLayout";
+import ListPageWideHeader from "../UI/ListPage/ListPageWideHeader";
+import FlaskIcon from "../Icons/FlaskIcon";
+import BigAd from "../UI/ListPage/BigAd";
+import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
+import { Fragment } from "react";
+import ListPageSideSection from "../UI/ListPage/ListPageSideSection";
+import DoctorCardAlt from "../UI/DoctorCardAlt";
+import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
+import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
+import RenderRtf from "../UI/RenderRtf";
+import SmallAd from "../UI/ListPage/SmallAd";
 
-export type SymptomPageProps = { data: ISymptom };
+export type SymptomPageProps = {
+  data: ISymptom<{
+    SameAs: Record<never, never>;
+    Category: Record<never, never>;
+  }>;
+  diseases: IDisease[];
+  doctors: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
+  drugs: IDrug[];
+  specialities: ISpeciality[];
+};
 
 export const TitleTextSection = ({
   title,
@@ -26,42 +53,84 @@ export const TitleTextSection = ({
   );
 };
 
-const SymptomPage = ({ data }: SymptomPageProps) => {
+const SymptomPage = ({
+  data,
+  diseases,
+  doctors,
+  drugs,
+  specialities,
+}: SymptomPageProps) => {
+  const getContent = useLocale();
+
+  console.log(drugs);
   return (
-    <div className={classes.main}>
-      <div className={classes.header}>
-        <h1 className={classes.title}>{data.name}</h1>
-        <div className={classes.image}>
-          <Image
-            alt={data.name || ""}
-            src={imagePath(data.image)}
-            fill
-            style={{ objectFit: "cover" }}
-            sizes="30rem"
-          />
+    <ListPageLayout>
+      <ListPageWideHeader
+        icon={<FlaskIcon />}
+        name={data.name || ""}
+        category={
+          data.category
+            ? {
+                title: getContent("symptomCategory"),
+                value: data.category?.name || "",
+              }
+            : undefined
+        }
+        primaryAction={{ title: getContent("bookASessionFromADoctor") }}
+        secondaryAction={{ title: getContent("inspectSymptomWithAi") }}
+        summary={data.summary}
+      />
+      <BigAd />
+      <ListPageWithSide
+        side={
+          <Fragment>
+            <ListPageSideSection
+              title={getContent("relatedDoctors")}
+              cards={doctors.map((el) => (
+                <DoctorCardAlt key={el._id} node={el} />
+              ))}
+            />
+            <ListPageSideExpandable
+              title={getContent("relatedSpecialities")}
+              items={specialities.map((el) => ({
+                title: el.name || "",
+                target: `/speciality/${el.slug || el._id}`,
+              }))}
+            />
+            <ListPageSideExpandable
+              title={getContent("relatedDiseases")}
+              items={diseases.map((el) => ({
+                title: el.name || "",
+                target: `/disease/${el.slug || el._id}`,
+              }))}
+            />
+            <ListPageSideExpandable
+              title={getContent("relatedDrugs")}
+              items={drugs.map((el) => ({
+                title: el.name || "",
+                target: `/drug/${el.slug || el._id}`,
+              }))}
+            />
+            <ListPageSideExpandable
+              title={getContent("similarSymptoms")}
+              items={data.sameAs.map((el) => ({
+                title: el.name || "",
+                target: `/symptom/${el.slug || el._id}`,
+              }))}
+            />
+          </Fragment>
+        }
+      >
+        <ListPageAISummary
+          title={getContent("symptomAiSummaryTitle")}
+          content={data.aiSummary}
+        />
+        <div className={classes.box}>
+          <RenderRtf value={data.content} />
         </div>
-      </div>
-      <div className={classes.content}>
-        <TitleTextSection title="summary" value={data.summary} />
-        <TitleTextSection title="description" value={data.summary} />
-        <TitleTextSection
-          title="expectedPrognosis"
-          value={data.expectedPrognosis}
-        />
-        <TitleTextSection
-          title="naturalProgeression"
-          value={data.naturalProgression}
-        />
-        <TitleTextSection
-          title="pathophysiology"
-          value={data.pathophysiology}
-        />
-        <TitleTextSection
-          title="possibleComplications"
-          value={data.possibleComplication}
-        />
-      </div>
-    </div>
+      </ListPageWithSide>
+      <SmallAd />
+    </ListPageLayout>
   );
 };
 

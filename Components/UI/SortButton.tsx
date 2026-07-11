@@ -1,6 +1,6 @@
 import classes from "./SortButton.module.css";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { BookingOptions } from "../Booking/BookingPage2";
+import { DoctorBookingOptions } from "../Booking/BookingPage2";
 import { WithStyleProps } from "../Layout/Layout";
 import Ixon from "./Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";

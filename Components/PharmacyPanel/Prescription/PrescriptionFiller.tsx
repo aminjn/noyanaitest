@@ -1,5 +1,4 @@
 import useLocale from "@/Components/Hooks/useLocale";
-import { IncomingTaminPharmacyResponse } from "./PharmacyFillPrescriptionPage";
 import classes from "./PrescriptionFiller.module.css";
 import PrescriptionFillPatient from "./PrescriptionFillPatient";
 import PrescriptionListItem from "./PrescriptionListItem";
@@ -15,6 +14,7 @@ import ReplaceDrugPopup from "./ReplaceDrugPopup";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { IncomingTaminPharmacyResponse } from "./FindPrescriptionAgent";
 
 const PrescriptionFiller = ({
   prescription,
@@ -266,6 +266,7 @@ const PrescriptionFiller = ({
         path={isLoading ? `${API}/pharmacy/prescription` : null}
         method="PUT"
         onDone={(status, result) => {
+          setIsLoading(null);
           console.log(result);
         }}
         payload={{
