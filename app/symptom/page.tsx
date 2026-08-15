@@ -3,6 +3,13 @@ import SymptomsListPage, {
   SymptomsListPageProps,
 } from "@/Components/Symptom/SymptomsListPage";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/symptom");
 
 const SymptomsList = async (ctx: {
   searchParams: Promise<{ page?: string; search?: string }>;
@@ -18,7 +25,14 @@ const SymptomsList = async (ctx: {
   );
   if (!data) return notFound();
 
-  return <SymptomsListPage {...data} />;
+  const webSchema = await getListPageWebSchema("/symptom");
+
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <SymptomsListPage {...data} />
+    </>
+  );
 };
 
 export default SymptomsList;

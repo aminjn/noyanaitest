@@ -3,6 +3,13 @@ import SpecialitiesPage, {
   SpecialitiesPageProps,
 } from "@/Components/Speciality/SpecialitiesPage";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/speciality");
 
 const SepecailitiesList = async (ctx: {
   searchParams: Promise<{
@@ -25,7 +32,13 @@ const SepecailitiesList = async (ctx: {
     `speciality?${params.toString()}`,
   );
   if (!data) return notFound();
-  return <SpecialitiesPage {...data} />;
+  const webSchema = await getListPageWebSchema("/speciality");
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <SpecialitiesPage {...data} />
+    </>
+  );
 };
 
 export default SepecailitiesList;

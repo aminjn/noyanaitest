@@ -9,6 +9,8 @@ import LocationAltIcon from "../Icons/LocationAltIcon";
 import UserLineIcon from "../Icons/UserLineIcon";
 import MerchantIcon from "../Icons/MerchantIcon";
 import Calendar01Icon from "../Icons/Calendar01Icon";
+import { t4xlDemiBold } from "../UI/Typography";
+import Ixon from "../UI/Ixon";
 
 const cards: { icon: ReactNode; title: ContentKey; legend?: ContentKey }[] = [
   { icon: <StarsLineIcon />, title: "onboardingIntroItem0Title" },
@@ -37,7 +39,7 @@ const OnboardingIntro = () => {
   return (
     <div className={classes.main}>
       <div className={classes.intro}>
-        <h1 className={classes.h1}>
+        <h1 className={`${classes.h1} ${t4xlDemiBold}`}>
           <span>{getContent("onboardingTitlePre")}</span>{" "}
           <span className={classes.noyan}>{getContent("aboutTitleNoyan")}</span>{" "}
           <span className={classes.ai}>{getContent("aboutTitleAi")}</span>
@@ -49,7 +51,9 @@ const OnboardingIntro = () => {
       <ul className={classes.list}>
         {cards.map((card) => (
           <li key={card.title} className={classes.card}>
-            <div className={classes.icon}>{card.icon}</div>
+            <Ixon width="3rem" className={classes.icon}>
+              {card.icon}
+            </Ixon>
             <span className={classes.cardTitle}>{getContent(card.title)}</span>
             {!!card.legend && (
               <span className={classes.cardLegend}>

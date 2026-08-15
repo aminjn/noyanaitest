@@ -3,6 +3,13 @@ import TestsListPage, {
   TestsListPageProps,
 } from "@/Components/Test/TestsListPage";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/test");
 
 const TestsList = async (ctx: {
   searchParams: Promise<{ search?: string; page?: string }>;
@@ -17,7 +24,13 @@ const TestsList = async (ctx: {
     `test?${params.toString()}`,
   );
   if (!data) return notFound();
-  return <TestsListPage {...data} />;
+  const webSchema = await getListPageWebSchema("/test");
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <TestsListPage {...data} />
+    </>
+  );
 };
 
 export default TestsList;

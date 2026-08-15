@@ -3,6 +3,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-top: 1.5rem;
+  min-width: 0;
 }
 
 .categories {
@@ -10,6 +11,19 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.75rem;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-inline: -0.25rem;
+  padding-inline: 0.25rem;
+  padding-block: 0.125rem;
+}
+
+.categories::-webkit-scrollbar {
+  display: none;
 }
 
 .category {
@@ -22,6 +36,9 @@
   border: 1px solid var(--gray4);
   color: var(--gray11);
   padding: 0.5rem 1rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  scroll-snap-align: start;
 }
 
 .activeCategory {
@@ -34,7 +51,6 @@
   display: flex;
   align-items: center;
   color: var(--gray10);
-  display: flex;
-  align-items: center;
   gap: 0.625rem;
+  flex-shrink: 0;
 }

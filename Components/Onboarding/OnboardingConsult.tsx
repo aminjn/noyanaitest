@@ -14,6 +14,7 @@ import Ixon from "../UI/Ixon";
 import VideoIcon from "../Icons/VideoIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
+import banner from "./OnboardingConsult.png";
 
 const cards: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
   [
@@ -78,16 +79,6 @@ const OnboardingConsult = () => {
         ))}
       </ul>
       <div className={classes.content}>
-        <div className={classes.imageBox}>
-          <Image
-            src="https://www.figma.com/api/mcp/asset/b29a57a9-9e64-4515-981b-97e55942bb28.png"
-            alt={getContent("onboardingConsultTitle")}
-            width={564}
-            height={480}
-            unoptimized
-            className={classes.image}
-          />
-        </div>
         <ul className={classes.list}>
           {items.map((item) => (
             <li key={item.title} className={classes.item}>
@@ -100,6 +91,15 @@ const OnboardingConsult = () => {
             </li>
           ))}
         </ul>
+        <div className={classes.imageBox}>
+          <Image
+            src={banner}
+            alt={getContent("onboardingConsultTitle")}
+            width={564}
+            height={480}
+            className={classes.image}
+          />
+        </div>
       </div>
     </div>
   );

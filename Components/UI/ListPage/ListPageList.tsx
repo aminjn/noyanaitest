@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import classes from "./ListPageList.module.css";
 import Pagination, { PaginationProps } from "../Pagination";
 const ListPageList = ({
@@ -14,9 +14,7 @@ const ListPageList = ({
     <div className={classes.listBox}>
       <ul
         className={classes.list}
-        style={{
-          gridTemplateColumns: `repeat(auto-fit, minmax(${itemWidth}, 1fr))`,
-        }}
+        style={{ "--item-width": itemWidth } as CSSProperties}
       >
         {children}
       </ul>

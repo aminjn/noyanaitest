@@ -41,6 +41,7 @@ import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import ImagesManager from "../Product/ImagesManager";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 export type ParaClinicTestPopulation = Population<{
   Test: TestPopulation;
@@ -378,6 +379,16 @@ const AdminManageParaClinicPage = () => {
                 id: "Geo",
                 title: "موقعیت",
                 content: <ParaClinicGeoManager mutate={mutate} node={data} />,
+              },
+              {
+                id: "Meta",
+                title: "متادیتا",
+                content: (
+                  <PageMetaEditor
+                    resourceType="/paraClinic/[slug]"
+                    slug={data.slug}
+                  />
+                ),
               },
             ]}
           />

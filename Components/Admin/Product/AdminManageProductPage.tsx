@@ -32,6 +32,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import { currencize } from "@/Components/helpers/currencize";
 import SpecsManager from "./SpecsManager";
 import ImagesManager from "./ImagesManager";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const ProductDetailsManager = ({
   node,
@@ -331,6 +332,16 @@ const AdminManageProductPage = () => {
                 id: "Sellers",
                 content: <ProductSellersManager product={data} />,
                 title: "فروشندگان",
+              },
+              {
+                id: "Meta",
+                title: "متادیتا",
+                content: (
+                  <PageMetaEditor
+                    resourceType="/product/[slug]"
+                    slug={data.slug}
+                  />
+                ),
               },
             ]}
           />

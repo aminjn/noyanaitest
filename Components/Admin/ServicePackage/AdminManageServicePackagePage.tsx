@@ -9,6 +9,7 @@ import { IServiceCategory } from "../ServiceCategory/AdminManageServiceCategorie
 import { IService } from "../Service/AdminManageServicesPage";
 import SpecsManager from "../Product/SpecsManager";
 import ImagesManager from "../Product/ImagesManager";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageServicePackagePage = () => {
   return (
@@ -90,6 +91,16 @@ const AdminManageServicePackagePage = () => {
               id: "Images",
               title: "تصاویر",
               content: <ImagesManager model="ServicePackage" node={node} />,
+            },
+            {
+              id: "Meta",
+              title: "متادیتا",
+              content: (
+                <PageMetaEditor
+                  resourceType="/servicePackage/[slug]"
+                  slug={node.slug}
+                />
+              ),
             },
           ]}
         />

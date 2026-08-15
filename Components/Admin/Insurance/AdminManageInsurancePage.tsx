@@ -32,6 +32,7 @@ import Form from "@/Components/UI/Form";
 import PointPicker from "../UI/PointPicker";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 export type InsurancePlanPopulation = Population<{
   Insurance: InsurancePopulation;
@@ -304,6 +305,16 @@ const AdminManageInsurancePage = () => {
                 id: "plans",
                 title: "طرح ها",
                 content: <AdminManageInsurancePlans node={data} />,
+              },
+              {
+                id: "Meta",
+                title: "متادیتا",
+                content: (
+                  <PageMetaEditor
+                    resourceType="/insurance/[slug]"
+                    slug={data.slug}
+                  />
+                ),
               },
             ]}
           />

@@ -3,6 +3,13 @@ import InsurancesPage, {
   InsurancesPageProps,
 } from "@/Components/Insurance/InsurancesPage";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/insurance");
 
 const Insurances = async (ctx: {
   searchParams: Promise<{
@@ -22,7 +29,13 @@ const Insurances = async (ctx: {
     `insurance?${params.toString()}`,
   );
   if (!data) return notFound();
-  return <InsurancesPage {...data} />;
+  const webSchema = await getListPageWebSchema("/insurance");
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <InsurancesPage {...data} />
+    </>
+  );
 };
 
 export default Insurances;

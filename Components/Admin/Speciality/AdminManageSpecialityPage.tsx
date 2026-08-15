@@ -18,6 +18,7 @@ import { useParams } from "next/navigation";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import List from "../UI/List";
 import { ISpecialityCategory } from "../SpecialityCategory/AdminManageSpecialityCategoriesPage";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageSpecialityPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -79,6 +80,17 @@ const AdminManageSpecialityPage = () => {
                   />
                 ),
                 icon: <InfoIcon />,
+              },
+              {
+                title: "متادیتا",
+                id: "Meta",
+                icon: <InfoIcon />,
+                content: (
+                  <PageMetaEditor
+                    resourceType="/speciality/[slug]"
+                    slug={data.slug}
+                  />
+                ),
               },
               {
                 title: "عملیات",

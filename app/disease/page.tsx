@@ -3,6 +3,13 @@ import DiseasesListPage, {
 } from "@/Components/Disease/DiseasesListPage";
 import { getPublicData } from "@/Components/helpers/getPublicData";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/disease");
 
 const DiseasesList = async (ctx: {
   searchParams: Promise<{ page?: string; search?: string; category?: string }>;
@@ -19,7 +26,13 @@ const DiseasesList = async (ctx: {
     `disease?${params.toString()}`,
   );
   if (!data) return notFound();
-  return <DiseasesListPage {...data} />;
+  const webSchema = await getListPageWebSchema("/disease");
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <DiseasesListPage {...data} />
+    </>
+  );
 };
 
 export default DiseasesList;

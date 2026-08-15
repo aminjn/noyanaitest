@@ -39,6 +39,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 export type HospitalClinicPopulation = Population<{
   Hospital: HospitalPopulation;
@@ -352,6 +353,16 @@ const AdminManageHospitalPage = () => {
                 title: "کلینیک ها",
                 id: "Clinic",
                 content: <HospitalClinicsManager node={data} />,
+              },
+              {
+                title: "متادیتا",
+                id: "Meta",
+                content: (
+                  <PageMetaEditor
+                    resourceType="/hospital/[slug]"
+                    slug={data.slug}
+                  />
+                ),
               },
             ]}
           />

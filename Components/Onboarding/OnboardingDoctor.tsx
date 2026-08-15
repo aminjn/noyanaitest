@@ -1,7 +1,12 @@
 import useLocale from "../Hooks/useLocale";
 import classes from "./OnboardingDoctor.module.css";
 import { ContentKey } from "../Enums/contentKeys";
-import { t3xlDemiBold, tlgMedium, t2xlBold, tbaseRegular } from "../UI/Typography";
+import {
+  t3xlDemiBold,
+  tlgMedium,
+  t2xlBold,
+  tbaseRegular,
+} from "../UI/Typography";
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {

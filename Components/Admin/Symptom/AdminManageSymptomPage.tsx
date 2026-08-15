@@ -21,6 +21,7 @@ import DeleteSymptomPopup from "./DeleteSymptomPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { ISymptomCategory } from "../SymptomCategory/AdminManageSymptomCategoriesPage";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageSymptomPage = () => {
   const { nodeId } = useParams();
@@ -154,6 +155,14 @@ const AdminManageSymptomPage = () => {
                       successCb: () => mutate(),
                     }}
                   />
+                ),
+              },
+              {
+                title: "متادیتا",
+                icon: <InfoIcon />,
+                id: "Meta",
+                content: (
+                  <PageMetaEditor resourceType="/symptom/[slug]" slug={data.slug} />
                 ),
               },
               {

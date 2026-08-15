@@ -1,3 +1,4 @@
+import "swiper/css";
 import Image from "next/image";
 import { SwiperSlide } from "swiper/react";
 import useLocale from "../Hooks/useLocale";
@@ -5,44 +6,50 @@ import classes from "./OnboardingTestify.module.css";
 import { ITestify } from "../Admin/Testify/AdminManageTestifiesPage";
 import { imagePath } from "../helpers/imagepath";
 import SwiperSlider from "../UI/SwiperSlider";
-import { t4xlBold, tlgDemiBold, tbaseRegular, txsRegular } from "../UI/Typography";
+import {
+  t4xlBold,
+  tlgDemiBold,
+  tbaseRegular,
+  txsRegular,
+} from "../UI/Typography";
 
 const OnboardingTestify = ({ data }: { data?: ITestify[] }) => {
   const getContent = useLocale();
 
   if (!data?.length) return null;
-
   return (
     <div className={classes.main}>
       <h2 className={`${classes.title} ${t4xlBold}`}>
         {getContent("onboardingTestifyTitle")}
       </h2>
-      <SwiperSlider swiperClass={classes.list}>
-        {data.map((node) => (
-          <SwiperSlide key={node._id} className={classes.slide}>
-            <div className={classes.card}>
-              <div className={classes.avatar}>
-                <Image
-                  src={imagePath(node.image)}
-                  alt={node.name || ""}
-                  fill
-                  sizes="5rem"
-                  style={{ objectFit: "cover" }}
-                />
+      <div className={classes.list}>
+        <SwiperSlider>
+          {data.map((node) => (
+            <SwiperSlide key={node._id} className={classes.slide}>
+              <div className={classes.card}>
+                <div className={classes.avatar}>
+                  <Image
+                    src={imagePath(node.image)}
+                    alt={node.name || ""}
+                    fill
+                    sizes="5rem"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <span className={`${classes.name} ${tlgDemiBold}`}>
+                  {node.name}
+                </span>
+                <span className={`${classes.role} ${tbaseRegular}`}>
+                  {node.title}
+                </span>
+                <p className={`${classes.content} ${txsRegular}`}>
+                  {node.content}
+                </p>
               </div>
-              <span className={`${classes.name} ${tlgDemiBold}`}>
-                {node.name}
-              </span>
-              <span className={`${classes.role} ${tbaseRegular}`}>
-                {node.title}
-              </span>
-              <p className={`${classes.content} ${txsRegular}`}>
-                {node.content}
-              </p>
-            </div>
-          </SwiperSlide>
-        ))}
-      </SwiperSlider>
+            </SwiperSlide>
+          ))}
+        </SwiperSlider>
+      </div>
     </div>
   );
 };

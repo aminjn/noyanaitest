@@ -1,6 +1,17 @@
 import BlogPage, { BlogPageProps } from "@/Components/Blog/BlogPage";
 import { getPublicData } from "@/Components/helpers/getPublicData";
 import { notFound } from "next/navigation";
+import {
+  getNodePageMetadata,
+  getNodePageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = ({
+  params: { blogSlug },
+}: {
+  params: { blogSlug: string };
+}) => getNodePageMetadata("/mag/[blogSlug]", blogSlug);
 
 const Blog = async ({
   params: { blogSlug },
@@ -11,7 +22,14 @@ const Blog = async ({
 
   if (!data?.blog) return notFound();
 
-  return <BlogPage {...data} />;
+  const webSchema = await getNodePageWebSchema("/mag/[blogSlug]", blogSlug);
+
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <BlogPage {...data} />
+    </>
+  );
 };
 
 export default Blog;

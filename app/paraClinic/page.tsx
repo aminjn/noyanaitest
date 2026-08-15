@@ -3,6 +3,13 @@ import ParaClinicsListPage, {
   ParaClinicsListPageProps,
 } from "@/Components/ParaClinic/ParaClinicsListPage";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/paraClinic");
 
 const ParaClinics = async (ctx: {
   searchParams: Promise<{ search?: string; page?: string }>;
@@ -17,7 +24,13 @@ const ParaClinics = async (ctx: {
     `paraClinic?${params.toString()}`,
   );
   if (!data) return notFound();
-  return <ParaClinicsListPage {...data} />;
+  const webSchema = await getListPageWebSchema("/paraClinic");
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <ParaClinicsListPage {...data} />
+    </>
+  );
 };
 
 export default ParaClinics;

@@ -29,6 +29,7 @@ const linkMap: LinkMap = [
     title: "منو اصلی",
     links: [
       { target: "", title: "داشبورد" },
+      { target: "analytics", title: "آمار بازدید" },
       { target: "ollama", title: "AI" },
       {
         target: "blog",
@@ -141,6 +142,7 @@ const linkMap: LinkMap = [
       { title: "درباره تیم", target: "aboutTeam" },
       { title: "درباره چرا", target: "aboutWhy" },
       { title: "تستیفای", target: "testify" },
+      { title: "متادیتای صفحات", target: "pageMeta" },
     ],
   },
   {

@@ -3,6 +3,13 @@ import ProductListPage, {
   ProductListPageProps,
 } from "@/Components/Product/ProductListPage";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/product");
 
 const ProductList = async (ctx: {
   searchParams: Promise<{
@@ -24,7 +31,13 @@ const ProductList = async (ctx: {
     `product?${params.toString()}`,
   );
   if (!data) return notFound();
-  return <ProductListPage {...data} />;
+  const webSchema = await getListPageWebSchema("/product");
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <ProductListPage {...data} />
+    </>
+  );
 };
 
 export default ProductList;

@@ -17,6 +17,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import DeleteDrugPopup from "./DeleetDrugPopup";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { IDrugTag } from "../DrugTag/AdminManageDrugTagsPage";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageDrugPage = () => {
   const { nodeId } = useParams();
@@ -137,6 +138,14 @@ const AdminManageDrugPage = () => {
                       warning: { type: "area", title: "Warning" },
                     }}
                   />
+                ),
+              },
+              {
+                title: "متادیتا",
+                icon: <InfoIcon />,
+                id: "Meta",
+                content: (
+                  <PageMetaEditor resourceType="/drug/[slug]" slug={data.slug} />
                 ),
               },
               {

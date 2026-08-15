@@ -1,12 +1,23 @@
+.container {
+  width: 100%;
+  position: relative;
+  height: 5rem;
+}
+
 .main {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-block: 1rem;
-  width: 100%;
-  position: relative;
+  width: 100dvw;
+  position: absolute;
   /* TODO: remove this */
   flex-wrap: wrap;
+  left: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-inline: 2.25rem;
+  z-index: 10000;
 }
 
 .main::before {
@@ -105,6 +116,7 @@
   color: var(--gray);
   gap: 1rem;
   transition: all var(--transTime) ease-in-out;
+  justify-content: center;
 }
 
 .subs {
@@ -133,6 +145,111 @@
 
 .accent {
   color: var(--secondary);
+}
+
+.categoriesContainer {
+  position: relative;
+  height: 2rem;
+}
+
+.categoriesDropdown {
+  position: absolute;
+  top: calc(100% + 0.875rem);
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  background-color: var(--white);
+  border: 1px solid var(--gray3);
+  border-radius: 4px;
+  padding: 0.5rem;
+  box-shadow: var(--shadow);
+  transform-origin: top;
+  animation: carpet var(--transTime) ease-in-out forwards;
+  max-width: min(46rem, 90dvw);
+}
+
+.categoriesTabs {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  max-width: 13rem;
+}
+
+.categoryTabBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  padding-inline: 0.75rem;
+  border-radius: 4px;
+  color: var(--gray11);
+  white-space: nowrap;
+  transition: all var(--transTime) ease-in-out;
+}
+
+.categoryTabBtn:hover {
+  background-color: var(--gray2);
+}
+
+.categoryTabBtnActive {
+  background-color: var(--gray4);
+}
+
+.categoriesDivider {
+  align-self: stretch;
+  width: 1px;
+  background-color: var(--gray8);
+}
+
+.categoriesContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  min-width: 16rem;
+}
+
+.categoriesAllLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary);
+}
+
+.categoriesWrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.5rem 1.25rem;
+  width: min(70dvw, 38rem);
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding-inline-start: 0.25rem;
+  border-inline-start: 2px solid var(--primary);
+  color: var(--gray11);
+  transition: color var(--transTime) ease-in-out;
+  min-width: 30%;
+}
+
+.categoryItem:hover {
+  color: var(--primary);
+}
+
+.categoriesEmpty {
+  color: var(--gray8);
+}
+
+.categoriesChevron {
+  transform: rotate(90deg);
 }
 
 @keyframes carpet {

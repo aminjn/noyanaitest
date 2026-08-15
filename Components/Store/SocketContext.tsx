@@ -46,6 +46,9 @@ export const SockectContextProvider = ({
 
   useEffect(() => {
     const current = socketRef.current;
+    current.onAny((event, data) => {
+      console.log({ event, data });
+    });
     current.on("error", (data: unknown) => {
       pushNotification(
         typeof data === "string" ? data : getContent("unknownErrorOccured"),

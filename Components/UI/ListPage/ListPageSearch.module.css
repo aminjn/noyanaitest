@@ -30,3 +30,9 @@
   inset-inline-start: 1.25rem;
   transform: translateY(-50%);
 }
+
+@media (max-width: 640px) {
+  .search {
+    margin-top: 1.5rem;
+  }
+}

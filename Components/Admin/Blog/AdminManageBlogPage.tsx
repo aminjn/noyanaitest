@@ -17,6 +17,7 @@ import List from "../UI/List";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteBlogPopup from "./DeleteBlogPopup";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageBlogPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -107,6 +108,17 @@ const AdminManageBlogPage = () => {
                   />
                 ),
                 title: "محتوا",
+              },
+              {
+                icon: <InfoIcon />,
+                id: "Meta",
+                title: "متادیتا",
+                content: (
+                  <PageMetaEditor
+                    resourceType="/mag/[blogSlug]"
+                    slug={data.slug}
+                  />
+                ),
               },
               {
                 icon: <InfoIcon />,

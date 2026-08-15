@@ -9,6 +9,7 @@ import {
   tlgMedium,
   tbaseRegular,
 } from "../UI/Typography";
+import banner from "./aboutProfile.png";
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {
@@ -59,11 +60,10 @@ const OnboardingProfile = () => {
       </ul>
       <div className={classes.imageBox}>
         <Image
-          src="https://www.figma.com/api/mcp/asset/0190e096-05f8-4beb-a748-3ef5c0472001.png"
+          src={banner}
           alt={getContent("onboardingProfileTitle")}
           width={564}
           height={380}
-          unoptimized
           className={classes.image}
         />
       </div>

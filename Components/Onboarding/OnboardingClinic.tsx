@@ -2,7 +2,12 @@ import Image from "next/image";
 import useLocale from "../Hooks/useLocale";
 import classes from "./OnboardingClinic.module.css";
 import { ContentKey } from "../Enums/contentKeys";
-import { t3xlDemiBold, txlDemiBold, txlBold, tbaseRegular } from "../UI/Typography";
+import {
+  t3xlDemiBold,
+  txlDemiBold,
+  txlBold,
+  tbaseRegular,
+} from "../UI/Typography";
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {
@@ -29,16 +34,6 @@ const OnboardingClinic = () => {
         </p>
       </div>
       <div className={classes.content}>
-        <div className={classes.imageBox}>
-          <Image
-            src="https://www.figma.com/api/mcp/asset/3c6023a7-d9ee-4ce4-af49-376de7b745a7.png"
-            alt={getContent("onboardingClinicTitle")}
-            width={532}
-            height={364}
-            unoptimized
-            className={classes.image}
-          />
-        </div>
         <ul className={classes.list}>
           {items.map((item) => (
             <li key={item.title} className={classes.item}>
@@ -51,6 +46,16 @@ const OnboardingClinic = () => {
             </li>
           ))}
         </ul>
+        <div className={classes.imageBox}>
+          <Image
+            src="https://www.figma.com/api/mcp/asset/3c6023a7-d9ee-4ce4-af49-376de7b745a7.png"
+            alt={getContent("onboardingClinicTitle")}
+            width={532}
+            height={364}
+            unoptimized
+            className={classes.image}
+          />
+        </div>
       </div>
     </div>
   );

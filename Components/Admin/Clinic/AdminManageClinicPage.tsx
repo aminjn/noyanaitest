@@ -25,6 +25,7 @@ import PointPicker from "../UI/PointPicker";
 import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const ClinicLocationManager = ({
   node,
@@ -108,6 +109,14 @@ const AdminManageClinicPage = () => {
                 icon: <InfoIcon />,
                 content: <ClinicDoctorsTab clinic={data} />,
                 id: "Doctors",
+              },
+              {
+                title: "متادیتا",
+                icon: <InfoIcon />,
+                id: "Meta",
+                content: (
+                  <PageMetaEditor resourceType="/clinic/[slug]" slug={data.slug} />
+                ),
               },
               {
                 title: "عملیات",

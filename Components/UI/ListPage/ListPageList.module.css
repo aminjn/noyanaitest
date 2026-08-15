@@ -8,9 +8,21 @@
 .list {
   display: grid;
   grid-auto-rows: min-content;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(var(--item-width), 100%), var(--item-width))
+  );
+  justify-content: center;
   gap: 1rem;
 }
 
 .pagination {
   margin-inline: auto;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .listBox {
+    margin-block: 1.5rem;
+  }
 }

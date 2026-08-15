@@ -5,8 +5,7 @@ import useDoctor from "@/Components/Hooks/useDoctor";
 import useForm from "@/Components/Hooks/useForm";
 import useLocale from "@/Components/Hooks/useLocale";
 import { IDoctorProfile } from "../DoctorPanelPage";
-import { provinceOptions } from "@/Components/Enums/Provinces";
-import { cityOptions } from "@/Components/Enums/Cities";
+import { ISpeciality } from "@/Components/Admin/Speciality/AdminManageSpecialitiesPage";
 
 const DoctorManageDetailsTab = () => {
   const { doctor, mutate } = useDoctor();
@@ -28,6 +27,28 @@ const DoctorManageDetailsTab = () => {
           defaultValue={doctor}
           hookProvided={form}
           renderer={{
+            avatar: { type: "image", title: getContent("avatar") },
+            mainSpeciality: {
+              type: "nodes",
+              title: getContent("mainSpeciality"),
+              path: `${API}/public/selectspeciality`,
+              multi: false,
+              clearable: true,
+              getOptionLabel: (node) =>
+                (node as ISpeciality).name || (node as ISpeciality)._id,
+              getOptionValue: (node) => (node as ISpeciality)._id,
+              getDefaultValue: (inp) => inp.mainSpeciality,
+            },
+            specialities: {
+              type: "nodes",
+              title: getContent("specialities"),
+              path: `${API}/public/selectspeciality`,
+              multi: true,
+              getOptionLabel: (node) =>
+                (node as ISpeciality).name || (node as ISpeciality)._id,
+              getOptionValue: (node) => (node as ISpeciality)._id,
+              getDefaultValue: (inp) => inp.specialities,
+            },
             introduction: { type: "area", title: getContent("introduction") },
             services: { type: "strings", title: getContent("services") },
             achivements: { type: "strings", title: getContent("achivemets") },

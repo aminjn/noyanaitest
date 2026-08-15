@@ -11,6 +11,7 @@ import useSWR from "swr";
 import { fetcher } from "@/Components/helpers/fetcher";
 import SpecsManager from "../Product/SpecsManager";
 import ImagesManager from "../Product/ImagesManager";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const InfoManager = ({
   mutate,
@@ -98,6 +99,16 @@ const AdminManageProductPackagePage = () => {
               id: "Images",
               title: "تصویر",
               content: <ImagesManager model="ProductPackage" node={node} />,
+            },
+            {
+              id: "Meta",
+              title: "متادیتا",
+              content: (
+                <PageMetaEditor
+                  resourceType="/productPackage/[slug]"
+                  slug={node.slug}
+                />
+              ),
             },
           ]}
         />

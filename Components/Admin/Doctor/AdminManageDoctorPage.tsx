@@ -15,6 +15,7 @@ import AdminManageDoctorInfoTab from "./AdminManageDoctorInfoTab";
 import { fetcher } from "@/Components/helpers/fetcher";
 import AdminManageDoctorActionsTab from "./AdminManageDoctorActionsTab";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 const AdminManageDoctorPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<
@@ -50,6 +51,14 @@ const AdminManageDoctorPage = () => {
                     },
                   ]
                 : []),
+              {
+                title: "متادیتا",
+                id: "Meta",
+                icon: <InfoIcon />,
+                content: (
+                  <PageMetaEditor resourceType="/doctor/[slug]" slug={data.slug} />
+                ),
+              },
               {
                 title: "عملیات",
                 id: "Actions",

@@ -194,71 +194,108 @@ const RegisterSessionPopup = ({ data }: { data: RequestedPresc }) => {
 
   const { setPopup, closePopup } = usePopup();
 
-  const onSubmit = useCallback(() => {}, []);
+  const pushNotification = useNotification();
+
+  const onSubmit = useCallback(() => {
+    if (!!isSubmitting) return;
+    if (!input.some((el) => el.requesT_QTY))
+      return pushNotification(getContent("checkInput"));
+    setIsSubmitting([...input]);
+  }, [getContent, input, isSubmitting, pushNotification]);
 
   return (
     <PopupCard>
-      <div className={classes.list}>
-        {data.details.map((detail) => (
-          <div className={classes.item} key={detail.tareF_CODE}>
-            <div className={classes.name}>{detail.tareF_NAME}</div>
-            <Input
-              title={getContent("price")}
-              onChange={(e) =>
-                setInput((prev) => {
-                  const clone = [...prev];
-                  const index = clone.findIndex(
-                    (el) => el.paR_TAREF_CODE === detail.tareF_CODE,
-                  );
-                  if (index < 0) {
-                    clone.push({
-                      paR_TAREF_CODE: detail.tareF_CODE,
-                      iS2K: false,
-                      tareF_PRICE: Number(e.target.value),
-                      requesT_QTY: 0,
-                    });
-                  } else {
-                    clone[index].tareF_PRICE = Number(e.target.value);
-                  }
-                  return clone;
-                })
-              }
-              type="number"
-              inputMode="numeric"
-              pattern="[0-9]*"
-            />
-            <Input
-              title={getContent("quantity")}
-              onChange={(e) =>
-                setInput((prev) => {
-                  const clone = [...prev];
-                  const index = clone.findIndex(
-                    (el) => el.paR_TAREF_CODE === detail.tareF_CODE,
-                  );
-                  if (index < 0) {
-                    clone.push({
-                      paR_TAREF_CODE: detail.tareF_CODE,
-                      iS2K: false,
-                      tareF_PRICE: 0,
-                      requesT_QTY: Number(e.target.value),
-                    });
-                  } else {
-                    clone[index].requesT_QTY = Number(e.target.value);
-                  }
-                  return clone;
-                })
-              }
-              type="number"
-              inputMode="numeric"
-              pattern="[0-9]*"
-            />
-          </div>
-        ))}
+      <div className={classes.main}>
+        <div className={classes.list}>
+          {data.details.map((detail) => (
+            <div className={classes.item} key={detail.tareF_CODE}>
+              <div className={classes.name}>{detail.tareF_NAME}</div>
+              <Input
+                title={getContent("price")}
+                onChange={(e) =>
+                  setInput((prev) => {
+                    const clone = [...prev];
+                    const index = clone.findIndex(
+                      (el) => el.paR_TAREF_CODE === detail.tareF_CODE,
+                    );
+                    if (index < 0) {
+                      clone.push({
+                        paR_TAREF_CODE: detail.tareF_CODE,
+                        iS2K: false,
+                        tareF_PRICE: Number(e.target.value),
+                        requesT_QTY: 0,
+                      });
+                    } else {
+                      clone[index].tareF_PRICE = Number(e.target.value);
+                    }
+                    return clone;
+                  })
+                }
+                type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
+              />
+              <Input
+                title={getContent("quantity")}
+                onChange={(e) =>
+                  setInput((prev) => {
+                    const clone = [...prev];
+                    const index = clone.findIndex(
+                      (el) => el.paR_TAREF_CODE === detail.tareF_CODE,
+                    );
+                    if (index < 0) {
+                      clone.push({
+                        paR_TAREF_CODE: detail.tareF_CODE,
+                        iS2K: false,
+                        tareF_PRICE: 0,
+                        requesT_QTY: Number(e.target.value),
+                      });
+                    } else {
+                      clone[index].requesT_QTY = Number(e.target.value);
+                    }
+                    return clone;
+                  })
+                }
+                type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
+              />
+            </div>
+          ))}
+        </div>
+        <FormActions>
+          <Button isLoading={!!isSubmitting} onClick={onSubmit}>
+            {getContent("submit")}
+          </Button>
+          <Button onClick={() => closePopup()}>{getContent("cancel")}</Button>
+        </FormActions>
+        <Act<TaminResponse<unknown>>
+          path={isSubmitting ? `${API}/paraClinic/tamin/session` : null}
+          method="POST"
+          payload={{
+            userInformation: {
+              parID: "0000007303",
+            },
+            registeR_ID: data.registeR_ID,
+            patienT_MOBILE: "0",
+            details: isSubmitting,
+          }}
+          onDone={(status, result) => {
+            console.log(result);
+            setIsSubmitting(null);
+            if (result?.data?.data?.problems?.length) {
+              pushNotification(
+                result.data.data.problems
+                  .map((p) => p.complemantary_Msg)
+                  .join("،"),
+              );
+            } else {
+              pushNotification(getContent("sessionSubmitted"));
+              closePopup();
+            }
+          }}
+        />
       </div>
-      <FormActions>
-        <Button>{getContent("submit")}</Button>
-        <Button onClick={() => closePopup()}>{getContent("cancel")}</Button>
-      </FormActions>
     </PopupCard>
   );
 };

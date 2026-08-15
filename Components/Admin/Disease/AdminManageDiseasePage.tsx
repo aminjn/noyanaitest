@@ -24,6 +24,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { IDiseaseCategory } from "../DiseaseCategory/AdminManageDiseaseCategoriesPage";
 import { IDiseaseTag } from "../DiseaseTag/AdminManageDiseaseTagsPage";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageDiseasePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -195,6 +196,14 @@ const AdminManageDiseasePage = () => {
                       },
                     }}
                   />
+                ),
+              },
+              {
+                title: "متادیتا",
+                icon: <InfoIcon />,
+                id: "Meta",
+                content: (
+                  <PageMetaEditor resourceType="/disease/[slug]" slug={data.slug} />
                 ),
               },
               {

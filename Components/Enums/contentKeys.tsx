@@ -27,6 +27,8 @@ const contentKeys = [
   "medicalSystemTitle",
   "medicalSystemCode",
   "specialities",
+  "mainSpeciality",
+  "avatar",
   "province",
   "city",
   "address",
@@ -1190,6 +1192,17 @@ const contentKeys = [
   "onboardingFeaturesItem2Description",
   "physio",
   "registerSession",
+  "sessionSubmitted",
+  "categories",
+  "diseases",
+  "symptoms",
+  "hospitals",
+  "services",
+  "tests",
+  "blogs",
+  "fullListOfX",
+  "nothingWasFound",
+  "bookingGuide",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

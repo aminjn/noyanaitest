@@ -3,6 +3,13 @@ import HospitalsPage, {
   HospitalsPageProps,
 } from "@/Components/Hospital/HospitalsPage";
 import { notFound } from "next/navigation";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/hospital");
 
 const HospitalsList = async (ctx: {
   searchParams: Promise<{
@@ -24,7 +31,13 @@ const HospitalsList = async (ctx: {
     `hospital?${params.toString()}`,
   );
   if (!data) return notFound();
-  return <HospitalsPage {...data} />;
+  const webSchema = await getListPageWebSchema("/hospital");
+  return (
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <HospitalsPage {...data} />
+    </>
+  );
 };
 
 export default HospitalsList;

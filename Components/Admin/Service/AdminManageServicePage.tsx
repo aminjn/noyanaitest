@@ -7,6 +7,7 @@ import { IService, mutateServiceFormRenderer } from "./AdminManageServicesPage";
 import TabSystem from "../UI/TabSystem";
 import SpecsManager from "../Product/SpecsManager";
 import ImagesManager from "../Product/ImagesManager";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageServicePage = () => {
   return (
@@ -43,6 +44,13 @@ const AdminManageServicePage = () => {
               id: "Images",
               content: <ImagesManager model="Service" node={node} />,
               title: "تصاویر",
+            },
+            {
+              id: "Meta",
+              title: "متادیتا",
+              content: (
+                <PageMetaEditor resourceType="/service/[slug]" slug={node.slug} />
+              ),
             },
           ]}
         />
