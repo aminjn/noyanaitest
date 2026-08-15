@@ -1,0 +1,13 @@
+.nav {
+  display: flex;
+  padding: 0.5rem 1.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  gap: 0.25rem;
+  position: sticky;
+  top: 0;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--gray4);
+  z-index: 10;
+}

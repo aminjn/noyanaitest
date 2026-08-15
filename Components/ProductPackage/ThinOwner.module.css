@@ -1,0 +1,24 @@
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 0.675rem;
+}
+
+.image {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.nameBox {
+  display: flex;
+  align-items: center;
+  gap: 0.675rem;
+  color: var(--gray13);
+}
+
+.ownerIcon {
+  color: var(--primary);
+}

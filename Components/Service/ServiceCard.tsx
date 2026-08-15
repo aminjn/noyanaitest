@@ -2,23 +2,10 @@ import Image from "next/image";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import classes from "./ServiceCard.module.css";
 import { FilePath } from "../config";
-import Badge from "../UI/Badge";
 import { IServicePackage } from "../Admin/ServicePackage/AdminManageServicePackagesPage";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
-import useLocale from "../Hooks/useLocale";
-import StarIcon from "../Icons/StarIcon";
-import { useMemo } from "react";
-import { clamp } from "../helpers/lib";
-import {
-  t2xsDemiBold,
-  t2xsMedium,
-  t2xsRegular,
-  tsmMedium,
-  txsMedium,
-} from "../UI/Typography";
-import { currencize } from "../helpers/currencize";
 import ServiceOrProductCard from "./ServiceOrProductCard";
 const ServiceCard = ({
   node,
@@ -37,6 +24,7 @@ const ServiceCard = ({
   return (
     <ServiceOrProductCard
       commentCount={3}
+      target={`/${node.model === "Service" ? "service" : "servicePackage"}/${node.slug || node._id}`}
       discount={node.discount}
       name={node.name || ""}
       price={node.price}

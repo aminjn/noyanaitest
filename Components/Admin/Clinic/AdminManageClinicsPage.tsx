@@ -47,6 +47,10 @@ import {
   ClinicTagPopulation,
   IClinicTag,
 } from "../ClinicTag/AdminManageClinicTagsPage";
+import {
+  IInsurance,
+  InsurancePopulation,
+} from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 // export type Population<T> = { [key in keyof T]?: T[key] | false };
 
@@ -66,6 +70,7 @@ export type ClinicPopulation = Population<{
   City: CityPopulation;
   District: DistrictPopulation;
   Tags: ClinicTagPopulation;
+  Insurances: InsurancePopulation;
 }>;
 
 export interface IClinic<
@@ -105,6 +110,17 @@ export interface IClinic<
     ? IClinicTag<T["Tags"]>[]
     : string[];
   isRoundTheClock: boolean;
+  insurances: T["Insurances"] extends InsurancePopulation
+    ? IInsurance<T["Insurances"]>[]
+    : string[];
+  clinicCode?: string;
+  personelCount?: number;
+  establishment?: string;
+  website?: string;
+  mail?: string;
+  businessTimes?: string;
+  services?: string[];
+  certificates?: string[];
 }
 
 export type ClinicDepartmentPopulation = Population<{
@@ -128,6 +144,8 @@ export interface IClinicDepartment<
     ? IClinicDoctor<T["DoctorsPopulated"]>[]
     : string[];
   doctorsCount: T["DoctorsCount"] extends true ? number : never;
+  summary?: string;
+  phone?: string;
 }
 
 export type ClinicDoctorPopuplation = Population<{

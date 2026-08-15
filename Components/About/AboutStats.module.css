@@ -1,0 +1,96 @@
+.main {
+  padding-block: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* overflow: hidden; */
+}
+
+.main::before {
+  content: "";
+  inset-block: 0;
+  width: 100dvw;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  z-index: -2;
+  background: linear-gradient(135deg, #1a80e5 0%, #166cc2 55%, #125aa0 100%);
+}
+
+.circles {
+  content: "";
+  inset-block: 0;
+  width: 100dvw;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  z-index: -1;
+  /* background-color: red; */
+}
+
+.circleLeft {
+  position: absolute;
+  width: 27.8125rem;
+  height: 27.8125rem;
+  background: rgba(255, 255, 255, 0.1);
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%) translateY(-20px)
+    translateX(140px);
+  border-radius: 50%;
+}
+
+.circleRight {
+  position: absolute;
+  width: 22rem;
+  height: 22rem;
+  background: rgba(255, 255, 255, 0.1);
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(50%) translateY(115px)
+    translateX(-80px);
+  border-radius: 50%;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  padding: 1rem 0.75rem;
+  border-radius: 1.5rem;
+  width: 100%;
+  gap: 1rem;
+}
+
+.segment {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--white);
+  max-width: calc(100% / 5);
+  position: relative;
+}
+
+.segment > * {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.segment:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: -0.5rem;
+  background-color: var(--white);
+  opacity: 0.2;
+  width: 1px;
+}

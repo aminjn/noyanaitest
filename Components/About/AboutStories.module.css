@@ -1,0 +1,55 @@
+.main {
+  padding-block: 7.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  align-content: center;
+  padding-bottom: 5rem;
+}
+
+.item {
+  padding-inline: 4.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary1);
+  border-radius: 50%;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.storyTitle {
+  color: var(--primary10);
+  margin-bottom: 0.5rem;
+}
+
+.storyDescription {
+  color: var(--gray8);
+}
+
+.description {
+  color: var(--gray10);
+  text-align: center;
+}

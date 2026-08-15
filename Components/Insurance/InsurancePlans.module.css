@@ -1,0 +1,52 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.list {
+  display: flex;
+  gap: 1rem;
+}
+
+.item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  box-shadow:
+    0px 2px 12px -3px #0000001a,
+    0px 4px 6px 0px #0000000d;
+}
+
+.price {
+  margin-top: 0.5rem;
+  color: var(--primary8);
+  margin-bottom: 1rem;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.featureIcon {
+  color: var(--successS1);
+}
+
+.featureValue {
+  color: var(--black);
+}
+
+.action {
+  margin-top: auto;
+}

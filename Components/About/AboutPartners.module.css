@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding-block: 5rem;
+}
+
+.listContainer {
+  position: relative;
+}
+
+.list {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  gap: 2.5rem;
+  align-items: center;
+  background-color: var(--white);
+  width: 100dvw;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.item {
+  position: relative;
+  width: 7.5rem;
+  height: 2.5rem;
+}

@@ -11,6 +11,7 @@ const ParaClinicSidebar = () => {
         show: true,
         target: "prescription",
       },
+      { title: "tamin", icon: <UserEditIcon />, show: true, target: "tamin" },
     ],
     [],
   );

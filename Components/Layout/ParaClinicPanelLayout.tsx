@@ -22,6 +22,18 @@ import {
   IProvince,
   ProvincePopulation,
 } from "../Admin/Province/AdminManageProvincesPage";
+import {
+  IProductImage,
+  ProductImagePopulation,
+} from "../Admin/Product/AdminManageProductsPage";
+import {
+  IParaClinicTest,
+  ParaClinicTestPopulation,
+} from "../Admin/ParaClinic/AdminManageParaClinicPage";
+import {
+  IInsurance,
+  InsurancePopulation,
+} from "../DoctorPanel/Insurance/DoctorInsurancesTab";
 
 export type ParaClinicPopulation = Population<{
   User: UserPopulation;
@@ -29,6 +41,9 @@ export type ParaClinicPopulation = Population<{
   Province: ProvincePopulation;
   City: CityPopulation;
   District: DistrictPopulation;
+  Images: ProductImagePopulation;
+  Tests: ParaClinicTestPopulation;
+  Insurances: InsurancePopulation;
 }>;
 
 export interface IParaClinic<
@@ -52,6 +67,24 @@ export interface IParaClinic<
   special: boolean;
   image?: string;
   slug?: string;
+  images: T["Images"] extends ProductImagePopulation
+    ? IProductImage<T["Images"]>[]
+    : never;
+  establishment?: string;
+  businessTime?: string;
+  phone?: string;
+  onPremises: boolean;
+  onlineResponse: boolean;
+  basicInsurance: boolean;
+  tests: T["Tests"] extends ParaClinicTestPopulation
+    ? IParaClinicTest<T["Tests"]>[]
+    : never;
+  personelCount: number;
+  summary?: string;
+  insurances: T["Insurances"] extends InsurancePopulation
+    ? IInsurance<T["Insurances"]>[]
+    : string[];
+  address?: string;
 }
 
 const ParaClinicPanelLayout = ({ children }: { children: ReactNode }) => {

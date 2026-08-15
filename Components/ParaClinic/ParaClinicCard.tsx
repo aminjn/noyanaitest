@@ -45,7 +45,13 @@ const ParaClinicCard = ({
       {!!node.tags.length && (
         <div className={classes.tags}>
           {node.tags.map((tag) => (
-            <Badge size="S" color="Primarylight" mode="Fill" radius="High">
+            <Badge
+              size="S"
+              color="Primarylight"
+              mode="Fill"
+              radius="High"
+              key={tag._id}
+            >
               {tag.name}
             </Badge>
           ))}

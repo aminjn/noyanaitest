@@ -15,14 +15,56 @@ import usePopup from "@/Components/Hooks/usePopup";
 import AddInsurancePopup from "./AddInsurancePopup";
 import Button from "@/Components/UI/Button";
 import DeleteInsurancePopup from "./DeleteInsurancePopup";
+import {
+  IInsuranceCategory,
+  InsuranceCategoryPopulation,
+} from "@/Components/Admin/InsuranceCategory/AdminManageInsuranceCategoriesPage";
+import {
+  IInsuranceTag,
+  InsuranceTagPopulation,
+} from "@/Components/Admin/InsuranceTag/AdminManageInsuranceTagsPage";
+import {
+  IInsurancePlan,
+  InsurancePlanPopulation,
+} from "@/Components/Admin/Insurance/AdminManageInsurancePage";
 
-export type InsurancePopulation = Population<Record<string, never>>;
+export type InsurancePopulation = Population<{
+  Category: InsuranceCategoryPopulation;
+  Tags: InsuranceTagPopulation;
+  Plans: InsurancePlanPopulation;
+}>;
 
-export interface IInsurance<T extends InsurancePopulation = InsurancePopulation>
-  extends MongoDoc {
+export interface IInsurance<
+  T extends InsurancePopulation = InsurancePopulation,
+> extends MongoDoc {
   name?: string;
   active: boolean;
   order: number;
+  category?: T["Category"] extends InsuranceCategoryPopulation
+    ? IInsuranceCategory<T["Category"]>
+    : string;
+  tags: T["Tags"] extends InsuranceTagPopulation
+    ? IInsuranceTag<T["Tags"]>[]
+    : string[];
+  establishment?: string;
+  membersCount?: string;
+  centersCount?: string;
+  doctorsCount?: string;
+  image?: string;
+  slug?: string;
+  phone?: string;
+  summary?: string;
+  pharmacyCount?: string;
+  doctorCount?: string;
+  hospitalCount?: string;
+  coverages: string[];
+  advantages: string[];
+  website?: string;
+  address?: string;
+  location?: { type: "Point"; coordinates?: [number, number] };
+  plans: T["Plans"] extends InsurancePlanPopulation
+    ? IInsurancePlan<T["Plans"]>[]
+    : never;
 }
 
 export type DoctorInsurancePopulation = Population<{
@@ -31,7 +73,7 @@ export type DoctorInsurancePopulation = Population<{
 }>;
 
 export interface IDoctorInsurance<
-  T extends DoctorInsurancePopulation = DoctorInsurancePopulation
+  T extends DoctorInsurancePopulation = DoctorInsurancePopulation,
 > extends MongoDoc {
   doctor: T["Doctor"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Doctor"]>
@@ -45,7 +87,7 @@ const DoctorInsurancesTab = () => {
   const { data, error, mutate } = useSWR<
     IDoctorInsurance<{ Insurance: Record<string, never> }>[]
   >(`${API}/doctor/insurance`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -65,7 +107,7 @@ const DoctorInsurancesTab = () => {
                   onClick={() =>
                     setPopup(
                       "AddInsurance",
-                      <AddInsurancePopup mutate={mutate} />
+                      <AddInsurancePopup mutate={mutate} />,
                     )
                   }
                 >
@@ -92,7 +134,7 @@ const DoctorInsurancesTab = () => {
                       onClick={() =>
                         setPopup(
                           "DeleteInsurance",
-                          <DeleteInsurancePopup mutate={mutate} node={node} />
+                          <DeleteInsurancePopup mutate={mutate} node={node} />,
                         )
                       }
                       variant="Danger"

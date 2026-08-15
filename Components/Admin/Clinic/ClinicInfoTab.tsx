@@ -12,6 +12,7 @@ import {
   IProvince,
 } from "../Province/AdminManageProvincesPage";
 import { IClinicTag } from "../ClinicTag/AdminManageClinicTagsPage";
+import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 const ClinicInfoTab = ({
   clinic,
@@ -90,6 +91,25 @@ const ClinicInfoTab = ({
           path: `${API}/auto/clinicTag`,
           getDefaultValue: (inp) => inp.tags,
         },
+        insurances: {
+          type: "nodes",
+          multi: true,
+          title: "بیمه ها",
+          path: `${API}/auto/insurance`,
+          getOptionLabel: (node) =>
+            (node as IInsurance).name || (node as IInsurance)._id,
+          getOptionValue: (node) => (node as IInsurance)._id,
+          getDefaultValue: (inp) => inp.insurances,
+        },
+        clinicCode: { type: "text", title: "کد کلینیک" },
+        personelCount: { type: "number", title: "تغداد پرسنل" },
+        establishment: { type: "text", title: "تاسیس" },
+        website: { type: "text", title: "سایت" },
+        mail: { type: "text", title: "ایمیل" },
+        businessTimes: { type: "text", title: "ساعات کاری" },
+        services: { title: "خدمات", type: "strings" },
+        certificates: { title: "اعتبار نامه ها", type: "strings" },
+        summary: { type: "text", title: "حلاصه" },
       }}
     />
   );

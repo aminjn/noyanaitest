@@ -1,0 +1,248 @@
+import { ReactNode, useState } from "react";
+import classes from "./ParaClinicIntro.module.css";
+import { ParaClinicPageProps } from "./ParaClinicPage";
+import Ixon from "../UI/Ixon";
+import { IProductImage } from "../Admin/Product/AdminManageProductsPage";
+import Image from "next/image";
+import { FilePath } from "../config";
+import StarIcon from "../Icons/StarIcon";
+import useLocale from "../Hooks/useLocale";
+import LocationIcon from "../Icons/LocationIcon";
+import ClockIcon from "../Icons/ClockIcon";
+import CallingIcon from "../Icons/CallingIcon";
+import Badge from "../UI/Badge";
+import TruckIcon from "../Icons/TruckIcon";
+import ShieldIcon from "../Icons/ShieldIcon";
+import Button from "../UI/Button";
+import FlaskIcon from "../Icons/FlaskIcon";
+import UserIcon from "../Icons/UserIcon";
+import StarLineIcon from "../Icons/StarLineIcon";
+import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
+import {
+  tbaseDemiBold,
+  tbaseRegular,
+  tsmBold,
+  tsmRegular,
+  txlMedium,
+  txsRegular,
+} from "../UI/Typography";
+
+const Box = ({
+  icon,
+  value,
+  show,
+}: {
+  icon: ReactNode;
+  value: string;
+  show: boolean;
+}) => {
+  if (!show) return null;
+  return (
+    <div className={classes.box}>
+      <Ixon width="1rem">{icon}</Ixon>
+      <span className={`${classes.boxValue} ${tsmBold}`}>{value}</span>
+    </div>
+  );
+};
+
+const Detail = ({ icon, value }: { icon: ReactNode; value: string }) => {
+  return (
+    <div className={classes.detail}>
+      <Ixon width="1rem" className={classes.detailIcon}>
+        {icon}
+      </Ixon>
+      <span className={tsmRegular}>{value}</span>
+    </div>
+  );
+};
+
+const Card = ({
+  icon,
+  title,
+  value,
+}: {
+  icon: ReactNode;
+  title: string;
+  value: string;
+}) => {
+  return (
+    <div className={classes.card}>
+      <div className={classes.cardIcon}>
+        <Ixon width="1.5rem">{icon}</Ixon>
+      </div>
+      <div className={classes.cardContent}>
+        <legend className={`${classes.cardTitle} ${tbaseRegular}`}>
+          {title}
+        </legend>
+        <span className={`${classes.cardvalue} ${tbaseDemiBold}`}>{value}</span>
+      </div>
+    </div>
+  );
+};
+
+const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
+  const [currentImage, setCurrentImage] = useState<IProductImage>(
+    data.images[0],
+  );
+
+  const getContent = useLocale();
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.main}>
+        <div className={classes.intro}>
+          <div className={classes.image}>
+            <Image
+              src={`${FilePath}/${currentImage?.image}`}
+              alt={currentImage?.alt || ""}
+              sizes="36rem"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+          <div className={classes.content}>
+            <h1 className={`${classes.h1} ${txlMedium}`}>{data.name}</h1>
+            <div className={classes.stats}>
+              <Ixon className={classes.star} width="1rem">
+                <StarIcon />
+              </Ixon>
+              <span className={`${classes.score} ${tsmBold}`}>4.9</span>
+              <span
+                className={`${classes.commentCount} ${tsmRegular}`}
+              >{`(${getContent("nComments", ["450"])})`}</span>
+              {!!data.establishment && (
+                <span className={`${classes.commentCount} ${txsRegular}`}>
+                  {getContent("establishedAtx", [data.establishment])}
+                </span>
+              )}
+            </div>
+            <div className={classes.details}>
+              {(!!data.province || !!data.city || !!data.district) && (
+                <Detail
+                  icon={<LocationIcon />}
+                  value={[
+                    data.province?.name,
+                    data.city?.name,
+                    data.district?.name,
+                  ]
+                    .filter(Boolean)
+                    .join("،")}
+                />
+              )}
+              {!!data.businessTime && (
+                <Detail icon={<ClockIcon />} value={data.businessTime} />
+              )}
+              {!!data.phone && (
+                <Detail icon={<CallingIcon />} value={data.phone} />
+              )}
+            </div>
+            {!!data.tags.length && (
+              <div className={classes.tags}>
+                {data.tags.map((tag) => (
+                  <Badge
+                    key={tag._id}
+                    color="Primarylight"
+                    radius="High"
+                    mode="Fill"
+                    size="XXL"
+                  >
+                    {tag.name}
+                  </Badge>
+                ))}
+              </div>
+            )}
+            <div className={classes.boxes}>
+              <Box
+                icon={<TruckIcon />}
+                value={getContent("onPremisesSampling")}
+                show={data.onPremises}
+              />
+              <Box
+                icon={<ClockIcon />}
+                value={getContent("onlineResponding")}
+                show={data.onlineResponse}
+              />
+              <Box
+                icon={<ShieldIcon />}
+                value={getContent("basicInsurance")}
+                show={data.basicInsurance}
+              />
+            </div>
+            <div className={classes.actions}>
+              <Button
+                variant="Primary"
+                mode="Fill"
+                radius="High"
+                size="M"
+                tailIcon={<FlaskIcon />}
+              >
+                {getContent("reserveTest")}
+              </Button>
+              {/* <Button
+                variant="Secondary"
+                mode="Fill"
+                size="M"
+                radius="High"
+                tailIcon={<TruckIcon />}
+              >
+                {getContent("onPremisesSampling")}
+              </Button> */}
+              <Button
+                variant="Neutral"
+                mode="Outline"
+                size="M"
+                radius="High"
+                tailIcon={<CallingIcon />}
+              >
+                {getContent("call")}
+              </Button>
+            </div>
+          </div>
+        </div>
+        {data.images.length > 1 && (
+          <div className={classes.navs}>
+            {data.images.map((image) => (
+              <div
+                key={image._id}
+                onClick={() => setCurrentImage(image)}
+                className={`${classes.nav} ${currentImage._id === image._id ? classes.activeNav : ""} `}
+              >
+                <Image
+                  fill
+                  src={`${FilePath}/${image.image}`}
+                  sizes="22rem"
+                  style={{ objectFit: "cover" }}
+                  alt={image.alt || ""}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className={classes.cards}>
+        <Card
+          icon={<FlaskIcon />}
+          title={getContent("servicesAndTests")}
+          value={data.tests.length.toString()}
+        />
+        <Card
+          icon={<UserIcon />}
+          title={getContent("specialistPersonel")}
+          value={getContent("nPerson", [data.personelCount.toString()])}
+        />
+        <Card
+          icon={<StarLineIcon />}
+          title={getContent("usersScore")}
+          value="4.5"
+        />
+        <Card
+          icon={<ChatBubbleIcon />}
+          title={getContent("submittedCommentsCount")}
+          value="540"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default ParaClinicIntro;

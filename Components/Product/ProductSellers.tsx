@@ -96,7 +96,9 @@ const Item = ({
           </Badge>
         )}
         <span className={`${classes.itemPrice} ${tsmBold}`}>
-          {getContent("xToman", [currencize(node.price - node.discount)])}
+          {getContent("xToman", [
+            currencize((node.price || 0) - (node.discount || 0)),
+          ])}
         </span>
         <Button
           variant="Primary"

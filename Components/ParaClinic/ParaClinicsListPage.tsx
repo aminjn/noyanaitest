@@ -52,7 +52,7 @@ const ParaClinicsListPage = ({
   useEffect(() => {
     const params = new URLSearchParams();
     if (query) params.append("search", query);
-    push(`/test?${params.toString()}`);
+    push(`/paraClinic?${params.toString()}`);
   }, [query, push]);
 
   return (

@@ -131,6 +131,16 @@ const linkMap: LinkMap = [
       { title: "سرویس پکیج ها", target: "servicePackage" },
       { title: "بسته محصولات", target: "productPackage" },
       { title: "دسته بندی علائم", target: "symptomCategory" },
+      { title: "نظرات", target: "comment" },
+      { title: "دسته بندی بیمه ها", target: "insuranceCategory" },
+      { title: "تگ بیمه", target: "insuranceTag" },
+      { title: "دسته بندی سوالات متداول", target: "faqCategory" },
+      { title: "درخواست تماس ها", target: "contactRequest" },
+      { title: "مقررات", target: "privacy" },
+      { title: "درباره همکاران", target: "aboutPartner" },
+      { title: "درباره تیم", target: "aboutTeam" },
+      { title: "درباره چرا", target: "aboutWhy" },
+      { title: "تستیفای", target: "testify" },
     ],
   },
   {
@@ -267,7 +277,7 @@ const AdminSidebar = () => {
     if (!user) return [];
     const result: LinkMap = [];
     for (let i = 0; i < linkMap.length; ++i) {
-      if (!linkMap[i].super)
+      if (!linkMap[i].super) {
         result.push({
           ...linkMap[i],
           links: linkMap[i].links
@@ -277,8 +287,26 @@ const AdminSidebar = () => {
                 user.role === "notadmin" ||
                 hasAccess(link.access, "readAll"),
             )
-            .filter((el) => el.title.includes(search)),
+            .filter(
+              (el) => el.title.includes(search) || el.target.includes(search),
+            ),
         });
+      } else {
+        if (user.role === "admin")
+          result.push({
+            ...linkMap[i],
+            links: linkMap[i].links
+              .filter(
+                (link) =>
+                  link.access === undefined ||
+                  user.role === "notadmin" ||
+                  hasAccess(link.access, "readAll"),
+              )
+              .filter(
+                (el) => el.title.includes(search) || el.target.includes(search),
+              ),
+          });
+      }
     }
     return result;
   }, [hasAccess, user, search]);

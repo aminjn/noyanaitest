@@ -1,0 +1,8 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.comments {
+  margin-top: 2rem;
+}

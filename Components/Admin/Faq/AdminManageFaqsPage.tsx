@@ -19,8 +19,12 @@ import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import WithTitle from "../UI/WithTitle";
+import {
+  FaqCategoryPopulation,
+  IFaqCategory,
+} from "../faqCategory/AdminManageFaqCategoriesPage";
 
-export type FaqPopulation = Population<Record<never, never>>;
+export type FaqPopulation = Population<{ Category: FaqCategoryPopulation }>;
 
 export interface IFaq<
   T extends FaqPopulation = FaqPopulation,
@@ -31,6 +35,9 @@ export interface IFaq<
   isHome: boolean;
   question?: string;
   answer?: string;
+  category?: T["Category"] extends FaqCategoryPopulation
+    ? IFaqCategory<T["Category"]>
+    : string;
 }
 
 const MutateFaqPopup = ({

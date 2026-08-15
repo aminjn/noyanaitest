@@ -10,13 +10,13 @@ import BookAltIcon from "../Icons/BookAltIcon";
 import TagIcon from "../Icons/TagIcon";
 import PillIcon from "../Icons/PillIcon";
 import AlertTriangleIcon from "../Icons/AlertTriangleIcon";
-import CommentSection from "./CommentSection";
 import StarIcon from "../Icons/StarIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import QnaSection from "./QnaSection";
 import { tsmMedium, txsRegular } from "../UI/Typography";
+import CommentSection from "../Comment/CommentSection";
 
-const WhyBox = ({ content }: { content?: string }) => {
+export const WhyBox = ({ content }: { content?: string }) => {
   const getContent = useLocale();
 
   if (!content) return null;
@@ -33,7 +33,13 @@ const WhyBox = ({ content }: { content?: string }) => {
   );
 };
 
-const Tab = ({ children, title }: { title: string; children?: ReactNode }) => {
+export const ProductTab = ({
+  children,
+  title,
+}: {
+  title: string;
+  children?: ReactNode;
+}) => {
   return (
     <div className={classes.tab}>
       <span className={classes.tabTitle}>{title}</span>
@@ -51,10 +57,10 @@ const ProductTabs = ({ data }: { data: IProduct }) => {
         items={[
           {
             content: (
-              <Tab title={getContent("description")}>
+              <ProductTab title={getContent("description")}>
                 <RenderRtf value={data.description} />
                 <WhyBox content={data.whyChoose} />
-              </Tab>
+              </ProductTab>
             ),
             id: "Description",
             title: getContent("description"),
@@ -63,9 +69,9 @@ const ProductTabs = ({ data }: { data: IProduct }) => {
           },
           {
             content: (
-              <Tab title={getContent("details")}>
+              <ProductTab title={getContent("details")}>
                 <RenderRtf value={data.details} />
-              </Tab>
+              </ProductTab>
             ),
             id: "Details",
             title: getContent("details"),
@@ -78,9 +84,9 @@ const ProductTabs = ({ data }: { data: IProduct }) => {
             exclude: !data.usage,
             icon: <PillIcon />,
             content: (
-              <Tab title={getContent("productUsage")}>
+              <ProductTab title={getContent("productUsage")}>
                 <RenderRtf value={data.usage} />
-              </Tab>
+              </ProductTab>
             ),
           },
           {
@@ -88,16 +94,16 @@ const ProductTabs = ({ data }: { data: IProduct }) => {
             id: "Warnings",
             exclude: !data.warning,
             content: (
-              <Tab title={getContent("warnings")}>
+              <ProductTab title={getContent("warnings")}>
                 <RenderRtf value={data.warning} />
-              </Tab>
+              </ProductTab>
             ),
             icon: <AlertTriangleIcon />,
           },
           {
             title: getContent("comments"),
             id: "Comments",
-            content: <CommentSection />,
+            content: <CommentSection model="Product" nodeId={data._id} />,
             icon: <StarIcon />,
           },
           {

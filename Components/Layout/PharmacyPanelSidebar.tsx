@@ -17,6 +17,7 @@ const PharmacyPanelSidebar = () => {
         show: true,
         target: "prescription",
       },
+      { title: "tamin", show: true, icon: <UserEditIcon />, target: "tamin" },
     ],
     [],
   );

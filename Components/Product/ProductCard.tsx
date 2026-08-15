@@ -31,9 +31,11 @@ const ProductCard = ({
       discount={
         node.model === "Product"
           ? node.sellers[0]?.discount || 0
-          : node.discount
+          : node.discount || 0
       }
-      price={node.model === "Product" ? node.sellers[0]?.price : node.price}
+      price={
+        node.model === "Product" ? node.sellers[0]?.price || 0 : node.price || 0
+      }
       rating={4.5}
       category={node.category?.name}
       detail={{

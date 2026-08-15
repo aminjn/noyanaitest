@@ -20,6 +20,45 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteClinicPopup from "./DeleteClinicPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import LocationIcon from "@/Components/Icons/LocationIcon";
+import PointPicker from "../UI/PointPicker";
+import useForm from "@/Components/Hooks/useForm";
+import Form from "@/Components/UI/Form";
+import FormActions from "../UI/FormActions";
+
+const ClinicLocationManager = ({
+  node,
+  mutate,
+}: {
+  node: IClinic;
+  mutate: () => unknown;
+}) => {
+  const { setInput, submit, isLoading } = useForm<{ coords: [number, number] }>(
+    {
+      path: `${API}/auto/clinic/${node._id}`,
+      method: "POST",
+      hasProblem: (inp) => (!inp.coords ? "یک موقعیت را انتخاب کنید" : false),
+      mutator: (inp) => ({
+        location: { type: "Point", coordinates: inp.coords },
+      }),
+      successCb: () => mutate(),
+    },
+  );
+
+  return (
+    <Form>
+      <PointPicker
+        onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
+        defaultValue={node.location?.coordinates}
+      />
+      <FormActions>
+        <Button type="submit" onClick={submit} isLoading={isLoading}>
+          تایید
+        </Button>
+      </FormActions>
+    </Form>
+  );
+};
 
 const AdminManageClinicPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -44,6 +83,12 @@ const AdminManageClinicPage = () => {
                 icon: <InfoIcon />,
                 id: "Info",
                 content: <ClinicInfoTab clinic={data} mutate={mutate} />,
+              },
+              {
+                title: "لوکیشن",
+                id: "GEO",
+                icon: <LocationIcon />,
+                content: <ClinicLocationManager mutate={mutate} node={data} />,
               },
               {
                 title: "یوزر",

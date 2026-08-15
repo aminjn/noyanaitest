@@ -1,0 +1,58 @@
+.main {
+  display: flex;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--white);
+  box-shadow:
+    0px 8px 25px -5px #0000001a,
+    0px 4px 10px 0px #0000000a;
+  flex-direction: column;
+}
+
+.titleBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+}
+
+.title {
+  color: var(--gray13);
+  flex: 1;
+}
+
+
+.priceBox {
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.priceHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.strike {
+  color: var(--gray8);
+}
+
+.percent {
+  padding-block: 2px;
+  padding-inline: 0.375rem;
+  border-radius: 100dvw;
+  color: var(--white);
+  background-color: var(--error);
+}
+
+.price {
+  color: var(--error);
+}
+
+.saved {
+  margin-top: 0.25rem;
+  color: var(--successS1);
+}

@@ -95,10 +95,11 @@ const ClinicCard = ({
           size="S"
           radius="High"
           tailIcon={
-            <Ixon>
+            <Ixon style={{ transform: "rotateZ(90deg)" }}>
               <ChevronIcon />
             </Ixon>
           }
+          href={`/clinic/${node.slug || node._id}`}
         >
           {getContent("seeDetails")}
         </Button>

@@ -1,0 +1,62 @@
+.main {
+  position: relative;
+  display: flex;
+  padding-block: 4.25rem;
+  gap: 4.125rem;
+}
+
+.main::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 100dvw;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(270.22deg, #dfefff 0.37%, #ffffff 99.62%);
+  z-index: -1;
+}
+
+.content {
+  flex-grow: 1;
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.h1 {
+  margin-bottom: 1.5rem;
+}
+
+.noyan {
+  color: var(--primary);
+}
+
+.ai {
+  color: var(--secondary);
+}
+
+.post {
+  color: var(--primary10);
+}
+
+.legend {
+  color: var(--gray10);
+  margin-bottom: 2.5rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.image {
+  position: relative;
+  height: 32.875rem;
+  width: 28.875rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  flex-shrink: 0;
+}

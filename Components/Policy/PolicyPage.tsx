@@ -1,0 +1,55 @@
+"use client";
+import { IPrivacySection } from "../Admin/PrivacySection/AdminManagePrivacySectionsPage";
+import StickyNav from "../Clinic/StickyNav";
+import { ContentKey } from "../Enums/contentKeys";
+import useLocale from "../Hooks/useLocale";
+import {
+  t5xlExtraBold,
+  tbaseRegular,
+  tlgRegular,
+  txlBold,
+} from "../UI/Typography";
+import classes from "./PolicyPage.module.css";
+
+export type PolicyPageProps = { data: IPrivacySection[] };
+
+const PolicyPage = ({
+  data,
+  legend,
+  title,
+}: PolicyPageProps & { title: ContentKey; legend: ContentKey }) => {
+  const getContent = useLocale();
+
+  return (
+    <div className={classes.main}>
+      <div className={classes.header}>
+        <h1 className={`${classes.title} ${t5xlExtraBold}`}>
+          {getContent(title)}
+        </h1>
+        <legend className={`${classes.legend} ${tlgRegular}`}>
+          {getContent(legend)}
+        </legend>
+      </div>
+      <StickyNav
+        map={data.map((section) => ({
+          target: section._id,
+          absTitle: section.title || "",
+        }))}
+      />
+      <div className={classes.content}>
+        {data.map((section) => (
+          <div key={section._id} className={classes.section} id={section._id}>
+            <h2 className={`${classes.sectionTitle} ${txlBold}`}>
+              {section.title}
+            </h2>
+            <p className={`${classes.sectionContent} ${tbaseRegular}`}>
+              {section.content}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default PolicyPage;

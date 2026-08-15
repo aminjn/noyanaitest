@@ -1,0 +1,61 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.5rem;
+  max-width: 70.5rem;
+  margin-inline: auto;
+  padding-block: 3.5rem;
+  padding-inline: 1.5rem;
+}
+
+.title {
+  color: var(--primary9);
+  text-align: right;
+  width: 100%;
+}
+
+.list {
+  width: 100%;
+}
+
+.slide {
+  width: 27.75rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  height: 19rem;
+  padding: 1.3125rem;
+  border-radius: 0.625rem;
+  background-color: var(--primary1);
+  border: 1px solid var(--primary1);
+}
+
+.avatar {
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.name {
+  color: var(--black);
+  text-align: center;
+}
+
+.role {
+  color: var(--black);
+  text-align: center;
+}
+
+.content {
+  color: var(--black);
+  text-align: center;
+  margin-top: 0.75rem;
+}

@@ -27,12 +27,22 @@ import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import {
+  IProductImage,
+  IProductSpec,
+  ProductImagePopulation,
+  ProductSpecPopulation,
+} from "../Product/AdminManageProductsPage";
 
 export type ServicePackagePopulation = Population<{
   Owner: DoctorProfilePopulation;
   Services: ServicePopulation;
   Category: ServiceCategoryPopulation;
+  Images: ProductImagePopulation;
+  Specs: ProductSpecPopulation;
+  SameAs: ServicePackagePopulation;
 }>;
+
 export interface IServicePackage<
   T extends ServicePackagePopulation = ServicePackagePopulation,
 > extends MongoDoc {
@@ -51,6 +61,21 @@ export interface IServicePackage<
   isActive: boolean;
   order: number;
   image?: string;
+  slug?: string;
+  images: T["Images"] extends ProductImagePopulation
+    ? IProductImage<T["Images"]>[]
+    : never;
+  specs: T["Specs"] extends ProductSpecPopulation
+    ? IProductSpec<T["Specs"]>[]
+    : never;
+  sameAs: T["SameAs"] extends ServicePackagePopulation
+    ? IServicePackage<T["SameAs"]>[]
+    : string[];
+  description?: string;
+  whyChoose?: string;
+  stages?: string;
+  results?: string;
+  summary?: string;
 }
 
 const AdminManageServicePackagesPage = () => {

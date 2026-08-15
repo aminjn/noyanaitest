@@ -5,6 +5,7 @@
   border-radius: 1rem;
   border: 1px solid var(--gray3);
   height: 24rem;
+  min-width: min(16.5rem, 90dvw);
 }
 
 .image {

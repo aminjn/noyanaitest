@@ -5,26 +5,33 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import useLocale from "@/Components/Hooks/useLocale";
 import { txsMedium } from "../Typography";
+import { WithStyleProps } from "@/Components/Layout/Layout";
 const ListPageCategorySelector = ({
   categories,
   basePath,
   title,
-}: {
+  className = "",
+  style,
+  noIcon,
+}: WithStyleProps<{
   categories: { _id: string; name?: string; slug?: string; title?: string }[];
   basePath: string;
   title?: string;
-}) => {
+  noIcon?: boolean;
+}>) => {
   const searchParams = useSearchParams();
 
   const getContent = useLocale();
 
   if (!categories.length) return null;
   return (
-    <div className={classes.categoryBox}>
+    <div className={`${classes.categoryBox} ${className}`} style={style}>
       <div className={classes.titleBox}>
-        <Ixon width="1rem">
-          <FilterIcon />
-        </Ixon>
+        {!noIcon && (
+          <Ixon width="1rem">
+            <FilterIcon />
+          </Ixon>
+        )}
         {!!title && <span>{title}</span>}
       </div>
       <div className={classes.categories}>

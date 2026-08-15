@@ -9,6 +9,7 @@ import useLocale from "../Hooks/useLocale";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import Badge from "../UI/Badge";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
+import Link from "next/link";
 
 const HospitalCard = ({
   node,
@@ -34,7 +35,11 @@ const HospitalCard = ({
       </div>
       <div className={classes.details}>
         <div className={classes.header}>
-          <span className={`${classes.name} ${tbaseMedium}`}>{node.name}</span>
+          <Link href={`/hospital/${node.slug || node._id}`}>
+            <span className={`${classes.name} ${tbaseMedium}`}>
+              {node.name}
+            </span>
+          </Link>
           <div className={classes.stats}>
             <span className={classes.commentCount}>(1530)</span>
             <div className={classes.score}>

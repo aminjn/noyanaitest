@@ -30,6 +30,10 @@ import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import IconLink from "../UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
+import { IProductPackage } from "../ProductPackage/AdminManageProductPackagesPage";
+import { IServicePackage } from "../ServicePackage/AdminManageServicePackagesPage";
+import { IService } from "../Service/AdminManageServicesPage";
+import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
 
 export type ProductPopulation = Population<{
   Category: ProductCategoryPopulation;
@@ -69,6 +73,7 @@ export interface IProduct<
   sameAs: T["SameAs"] extends ProductPopulation
     ? IProduct<T["SameAs"]>[]
     : string[];
+  price?: number;
 }
 
 export type ProductImagePopulation = Population<{ Product: ProductPopulation }>;
@@ -87,12 +92,28 @@ export interface IProductImage<
 
 export type ProductSpecPopulation = Population<{ Product: ProductPopulation }>;
 
+export const productSpecRefPaths = [
+  "Product",
+  "ProductPackage",
+  "Service",
+  "ServicePackage",
+  "ParaClinic",
+] as const;
+
+export type ProductSpecRefPath = (typeof productSpecRefPaths)[number];
+
+export type ProductSpecModel =
+  | IProduct
+  | IProductPackage
+  | IService
+  | IServicePackage
+  | IParaClinic;
+
 export interface IProductSpec<
   T extends ProductSpecPopulation = ProductSpecPopulation,
 > extends MongoDoc {
-  product: T["Product"] extends ProductPopulation
-    ? IProduct<T["Product"]>
-    : string;
+  product: ProductSpecModel;
+  refPath: ProductSpecRefPath;
   order: number;
   isActive: boolean;
   title?: string;
@@ -115,8 +136,8 @@ export interface IProductSeller<
     : string;
   order: number;
   isActive: boolean;
-  price: number;
-  discount: number;
+  price?: number;
+  discount?: number;
   special: boolean;
   freeDelivery: boolean;
   fastDelivery: boolean;

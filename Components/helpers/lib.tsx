@@ -22,3 +22,25 @@ export const chunk = <T,>(arr: T[], size = 3): T[][] =>
   Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
     arr.slice(i * size, i * size + size),
   );
+
+const rtf = new Intl.RelativeTimeFormat("fa", { numeric: "auto" });
+
+export const getRelativeTime = (date: Date) => {
+  const diff = new Date(date).getTime() - new Date().getTime();
+
+  const units = [
+    ["year", 1000 * 60 * 60 * 24 * 365],
+    ["month", 1000 * 60 * 60 * 24 * 30],
+    ["week", 1000 * 60 * 60 * 24 * 7],
+    ["day", 1000 * 60 * 60 * 24],
+    ["hour", 1000 * 60 * 60],
+    ["minute", 1000 * 60],
+    ["second", 1000],
+  ] as const;
+
+  for (const [unit, ms] of units) {
+    if (Math.abs(diff) >= ms || unit === "second") {
+      return rtf.format(Math.round(diff / ms), unit);
+    }
+  }
+};

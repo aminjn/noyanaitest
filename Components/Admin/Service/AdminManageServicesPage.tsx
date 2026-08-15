@@ -14,7 +14,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import { Fragment, useState } from "react";
 import Act from "@/Components/UI/Act";
-import CreateForm from "../UI/CreateForm";
+import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -31,10 +31,20 @@ import {
   IServiceCategory,
   ServiceCategoryPopulation,
 } from "../ServiceCategory/AdminManageServiceCategoriesPage";
+import {
+  IProductImage,
+  IProductSpec,
+  ProductImagePopulation,
+  ProductSpecPopulation,
+} from "../Product/AdminManageProductsPage";
+import IconLink from "../UI/IconLink";
 
 export type ServicePopulation = Population<{
   Owner: DoctorProfilePopulation;
   Category: ServiceCategoryPopulation;
+  Specs: ProductSpecPopulation;
+  Images: ProductImagePopulation;
+  SameAs: ServicePopulation;
 }>;
 
 export interface IService<
@@ -55,7 +65,63 @@ export interface IService<
     ? IServiceCategory<T["Category"]>
     : string;
   special: boolean;
+  slug?: string;
+  specs: T["Specs"] extends ProductSpecPopulation
+    ? IProductSpec<T["Specs"]>[]
+    : never;
+  images: T["Images"] extends ProductImagePopulation
+    ? IProductImage<T["Images"]>[]
+    : never;
+  sameAs: T["SameAs"] extends ServicePopulation
+    ? IService<T["SameAs"]>[]
+    : string[];
+  description?: string;
+  whyChoose?: string;
+  stages?: string;
+  results?: string;
 }
+
+export const mutateServiceFormRenderer: FormRenderer<IService> = {
+  name: { title: "نام", type: "text" },
+  order: { title: "رتبه", type: "number" },
+  isActive: { title: "فعال", type: "bool" },
+  owner: {
+    title: "صاحب",
+    type: "nodes",
+    path: `${API}/auto/doctorProfile`,
+    getOptionLabel: (node) => getDoctorProfileLabel(node as IDoctorProfile),
+    getOptionValue: (node) => (node as IDoctorProfile)._id,
+  },
+  price: { title: "قیمت", type: "number" },
+  discount: { title: "تخفیف", type: "number" },
+  image: { title: "تصویر", type: "image" },
+  inventory: { title: "موجودی", type: "number" },
+  isHome: { title: "نمایش در خانه", type: "bool" },
+  category: {
+    title: "دسته بندی",
+    type: "nodes",
+    path: `${API}/auto/serviceCategory`,
+    getOptionLabel: (node) =>
+      (node as IServiceCategory).title || (node as IServiceCategory)._id,
+    getOptionValue: (node) => (node as IServiceCategory)._id,
+    getDefaultValue: (node) => node.category,
+  },
+  special: { type: "bool", title: "ویژه" },
+  slug: { type: "text", title: "اسلاگ" },
+  sameAs: {
+    type: "nodes",
+    title: "مشابهات",
+    path: `${API}/auto/service`,
+    getOptionLabel: (node) => (node as IService).name || (node as IService)._id,
+    getOptionValue: (node) => (node as IService)._id,
+    getDefaultValue: (inp) => inp.sameAs,
+    multi: true,
+  },
+  description: { type: "rtf", title: "توضیحات" },
+  whyChoose: { type: "rtf", title: "چرا این" },
+  stages: { type: "rtf", title: "مراحل ا نجام" },
+  results: { type: "rtf", title: "نتایج" },
+};
 
 const MutateServicePopup = ({
   mutate,
@@ -78,35 +144,7 @@ const MutateServicePopup = ({
             closePopup();
           },
         }}
-        renderer={{
-          name: { title: "نام", type: "text" },
-          order: { title: "رتبه", type: "number" },
-          isActive: { title: "فعال", type: "bool" },
-          owner: {
-            title: "صاحب",
-            type: "nodes",
-            path: `${API}/auto/doctorProfile`,
-            getOptionLabel: (node) =>
-              getDoctorProfileLabel(node as IDoctorProfile),
-            getOptionValue: (node) => (node as IDoctorProfile)._id,
-          },
-          price: { title: "قیمت", type: "number" },
-          discount: { title: "تخفیف", type: "number" },
-          image: { title: "تصویر", type: "image" },
-          inventory: { title: "موجودی", type: "number" },
-          isHome: { title: "نمایش در خانه", type: "bool" },
-          category: {
-            title: "دسته بندی",
-            type: "nodes",
-            path: `${API}/auto/serviceCategory`,
-            getOptionLabel: (node) =>
-              (node as IServiceCategory).title ||
-              (node as IServiceCategory)._id,
-            getOptionValue: (node) => (node as IServiceCategory)._id,
-            getDefaultValue: (node) => node.category?._id,
-          },
-          special: { type: "bool", title: "ویژه" },
-        }}
+        renderer={mutateServiceFormRenderer}
       />
     </PopupCard>
   );
@@ -242,16 +280,9 @@ const AdminManageServicesPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconButton
-                      onClick={() =>
-                        setPopup(
-                          "MutateService",
-                          <MutateServicePopup mutate={mutate} node={node} />,
-                        )
-                      }
-                    >
+                    <IconLink href={adminPath(`/service/${node._id}`)}>
                       <EditIcon />
-                    </IconButton>
+                    </IconLink>
                     <IconButton
                       onClick={() =>
                         setPopup(

@@ -1,0 +1,43 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--white);
+  box-shadow:
+    0px 1px 2px 0px #0f285a0a,
+    0px 4px 24px -12px #0f285a1f;
+}
+
+.formTitle {
+  color: var(--black);
+}
+
+.scoreBox {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray8);
+  transition: all var(--transTime);
+}
+
+.activeScore {
+  color: var(--yellow);
+}
+
+.area {
+  margin-bottom: 0.5rem;
+  border: none;
+  outline: none;
+  background-color: var(--gray4);
+  resize: vertical;
+  border-radius: 1rem;
+  padding: 0.75rem;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

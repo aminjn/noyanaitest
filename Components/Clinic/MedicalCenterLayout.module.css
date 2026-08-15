@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  box-shadow:
+    0px 1px 2px 0px #0f285a0a,
+    0px 4px 24px -12px #0f285a1f;
+  padding-bottom: 1.5rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  margin-inline-start: auto;
+  gap: 0.5rem;
+  color: var(--gray10);
+  margin-block: 2rem 1rem;
+  padding: 0.5rem 0.75rem;
+}

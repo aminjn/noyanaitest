@@ -11,7 +11,11 @@ import {
 } from "../ProductCategory/AdminManageProductCategoriesPage";
 import {
   IProduct,
+  IProductImage,
+  IProductSpec,
+  ProductImagePopulation,
   ProductPopulation,
+  ProductSpecPopulation,
 } from "../Product/AdminManageProductsPage";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import NodesManager from "../UI/NodesManager";
@@ -32,6 +36,9 @@ export type ProductPackagePopulation = Population<{
   Owner: PharmacyPopulation;
   Category: ProductCategoryPopulation;
   Products: ProductPopulation;
+  Images: ProductImagePopulation;
+  Specs: ProductSpecPopulation;
+  SameAs: ProductPackagePopulation;
 }>;
 
 export interface IProductPackage<
@@ -49,8 +56,20 @@ export interface IProductPackage<
   products: T["Products"] extends ProductPopulation
     ? IProduct<T["Products"]>[]
     : string[];
-  price: number;
-  discount: number;
+  price?: number;
+  discount?: number;
+  images: T["Images"] extends ProductImagePopulation
+    ? IProductImage<T["Images"]>[]
+    : never;
+  specs: T["Specs"] extends ProductSpecPopulation
+    ? IProductSpec<T["Specs"]>[]
+    : never;
+  sameAs: T["SameAs"] extends ProductPackagePopulation
+    ? IProductPackage<T["SameAs"]>[]
+    : string[];
+  summary?: string;
+  description?: string;
+  whyChoose?: string;
 }
 
 const AdminManageProductPackagesPage = () => {
@@ -94,14 +113,14 @@ const AdminManageProductPackagesPage = () => {
         price: {
           name: "قیمت",
           value: (node) => node.price,
-          component: (node) => currencize(node.price),
+          component: (node) => currencize(node.price || 0),
           filter: "Number",
         },
         discount: {
           name: "تخفیف",
           value: (node) => node.discount,
           filter: "Number",
-          component: (node) => currencize(node.discount),
+          component: (node) => currencize(node.discount || 0),
         },
         products: {
           name: "تعداد افلام",

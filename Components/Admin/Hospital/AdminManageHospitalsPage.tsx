@@ -37,6 +37,18 @@ import {
   HospitalTagPopulation,
   IHospitalTag,
 } from "../HospitalTag/AdminManageHospitalTagsPage";
+import {
+  HospitalClinicPopulation,
+  IHospitalClinic,
+} from "./AdminManageHospitalPage";
+import {
+  DoctorProfilePopulation,
+  IDoctorProfile,
+} from "@/Components/DoctorPanel/DoctorPanelPage";
+import {
+  IInsurance,
+  InsurancePopulation,
+} from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 export type HospitalPopulation = Population<{
   Province: ProvincePopulation;
@@ -44,6 +56,9 @@ export type HospitalPopulation = Population<{
   District: DistrictPopulation;
   Category: HospitalCategoryPopulation;
   Tags: HospitalTagPopulation;
+  Clinics: HospitalClinicPopulation;
+  Owner: DoctorProfilePopulation;
+  Insurances: InsurancePopulation;
 }>;
 
 export interface IHospital<
@@ -71,6 +86,26 @@ export interface IHospital<
     : string[];
   special: boolean;
   image?: string;
+  code?: string;
+  establishment?: string;
+  personelCount?: number;
+  summary?: string;
+  clinics: T["Clinics"] extends HospitalClinicPopulation
+    ? IHospitalClinic<T["Clinics"]>[]
+    : never;
+  address?: string;
+  businessTimes?: string;
+  mail?: string;
+  owner?: T["Owner"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Owner"]>
+    : string;
+  phone?: string;
+  website?: string;
+  services?: string[];
+  insurances: T["Insurances"] extends InsurancePopulation
+    ? IInsurance<T["Insurances"]>[]
+    : string[];
+  certificates?: string[];
 }
 
 const CreateHospitalPopup = ({ mutate }: { mutate: () => unknown }) => {

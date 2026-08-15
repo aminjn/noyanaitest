@@ -9,19 +9,21 @@ import classes from "./ClientTabSystem.module.css";
 import { WithStyleProps } from "../Layout/Layout";
 import Ixon from "./Ixon";
 
+export type ClientTabSystemItems = {
+  title: ReactNode;
+  id: string;
+  content: ReactNode;
+  icon?: ReactNode;
+  exclude?: boolean;
+}[];
+
 const ClientTabSystem = ({
   items,
   className,
   style,
   viewState,
 }: WithStyleProps<{
-  items: {
-    title: ReactNode;
-    id: string;
-    content: ReactNode;
-    icon?: ReactNode;
-    exclude?: boolean;
-  }[];
+  items: ClientTabSystemItems;
   viewState?: [string, (v: string) => unknown];
 }>) => {
   const innerState = useState<string>(

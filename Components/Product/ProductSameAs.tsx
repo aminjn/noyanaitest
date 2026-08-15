@@ -6,6 +6,7 @@ import Ixon from "../UI/Ixon";
 import classes from "./ProductSameAs.module.css";
 import { FilePath } from "../config";
 import Link from "next/link";
+import { t2xsRegular, tlgMedium, txsDemiBold } from "../UI/Typography";
 
 const Item = ({
   node,
@@ -25,10 +26,14 @@ const Item = ({
       </div>
       <div className={classes.itemContent}>
         <Link href={`/product/${node.slug || node._id}`}>
-          <span className={classes.itemName}>{node.name}</span>
+          <span className={`${classes.itemName} ${txsDemiBold}`}>
+            {node.name}
+          </span>
         </Link>
         {!!node.category && (
-          <span className={classes.category}>{node.category.name}</span>
+          <span className={`${classes.category} ${t2xsRegular}`}>
+            {node.category.name}
+          </span>
         )}
       </div>
     </div>
@@ -42,6 +47,8 @@ const ProductSameAs = ({
 }) => {
   const getContent = useLocale();
 
+  console.log(data);
+
   if (!data.length) return null;
   return (
     <div className={classes.main}>
@@ -49,7 +56,7 @@ const ProductSameAs = ({
         <Ixon className={classes.icon} width="1rem">
           <ShoppingCartIcon />
         </Ixon>
-        <span>{getContent("othersAlsoBoughtThese")}</span>
+        <span className={tlgMedium}>{getContent("othersAlsoBoughtThese")}</span>
       </div>
       <div className={classes.list}>
         {data.map((item) => (

@@ -15,7 +15,7 @@
   align-items: center;
   padding-inline: 1.5rem;
   padding-block: 1rem;
-  background-color: var(--primary2);
+  background-color: var(--white);
   border-radius: 0.5rem;
 }
 
@@ -31,8 +31,12 @@
   max-height: 0;
   transition: all var(--transTime);
   overflow: hidden;
+  background-color: var(--primary1);
+  color: var(--primary8);
+  padding: 0;
 }
 
 .open {
   max-height: 10rem;
+  padding: 0.75rem 1.5rem;
 }

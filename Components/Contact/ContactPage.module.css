@@ -1,0 +1,23 @@
+.features {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white);
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.featureIcon {
+  color: var(--primary);
+}
+
+.featureValue {
+  color: var(--gray13);
+}

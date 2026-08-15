@@ -7,6 +7,8 @@ import TabSystem from "../UI/TabSystem";
 import { IServicePackage } from "./AdminManageServicePackagesPage";
 import { IServiceCategory } from "../ServiceCategory/AdminManageServiceCategoriesPage";
 import { IService } from "../Service/AdminManageServicesPage";
+import SpecsManager from "../Product/SpecsManager";
+import ImagesManager from "../Product/ImagesManager";
 
 const AdminManageServicePackagePage = () => {
   return (
@@ -51,6 +53,23 @@ const AdminManageServicePackagePage = () => {
                       multi: true,
                     },
                     image: { type: "image", title: "تصویر" },
+                    slug: { type: "text", title: "اسلاگ" },
+                    description: { type: "rtf", title: "توضیحات" },
+                    results: { type: "rtf", title: "نتایج" },
+                    stages: { type: "rtf", title: "مراحل انجام" },
+                    whyChoose: { type: "rtf", title: "چرا این" },
+                    sameAs: {
+                      type: "nodes",
+                      title: "مشابهات",
+                      path: `${API}/auto/servicePackage`,
+                      getOptionLabel: (node) =>
+                        (node as IServicePackage).name ||
+                        (node as IServicePackage)._id,
+                      getOptionValue: (node) => (node as IServicePackage)._id,
+                      getDefaultValue: (inp) => inp.sameAs,
+                      multi: true,
+                    },
+                    summary: { type: "text", title: "خلاصه" },
                   }}
                   hookProps={{
                     path: `${API}/auto/servicePackage/${node._id}`,
@@ -61,6 +80,16 @@ const AdminManageServicePackagePage = () => {
                   }}
                 />
               ),
+            },
+            {
+              id: "Specs",
+              title: "ویژگی ها",
+              content: <SpecsManager model="ServicePackage" node={node} />,
+            },
+            {
+              id: "Images",
+              title: "تصاویر",
+              content: <ImagesManager model="ServicePackage" node={node} />,
             },
           ]}
         />

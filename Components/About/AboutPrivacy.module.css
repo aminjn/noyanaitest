@@ -1,0 +1,75 @@
+.main {
+  display: flex;
+  align-items: center;
+  gap: 8rem;
+  padding-block: 5rem;
+  position: relative;
+}
+
+.main::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 100dvw;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary1);
+  z-index: -1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.image {
+  position: relative;
+  width: 25rem;
+  height: 25rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.title {
+  color: var(--primary10);
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: var(--gray10);
+  margin-bottom: 2.5rem;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.itemIcon {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.itemTitle {
+  color: var(--primary10);
+}
+
+.itemDescription {
+  color: var(--gray8);
+}

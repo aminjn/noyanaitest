@@ -1,16 +1,17 @@
 import { ReactNode } from "react";
 import Ixon from "../UI/Ixon";
 import classes from "./InfoPair.module.css";
+import CogIcon from "../Icons/CogIcon";
 
 const InfoPair = ({
-  icon,
+  icon = <CogIcon />,
   title,
   value,
   target,
 }: {
   title: string;
   value: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   target?: string;
 }) => {
   return (

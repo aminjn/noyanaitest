@@ -56,6 +56,7 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
     | { type: "files"; getDefaultValue?: (node: TInput) => string[] }
   ) & {
     title: string;
+    readOnly?: boolean;
   };
 };
 
@@ -84,7 +85,7 @@ const CreateForm = <TInput, TResult = unknown>({
     }) => ReactNode;
   } & (
     | {
-        hookProps: UseFormProps<TInput>;
+        hookProps: UseFormProps<TInput, TResult>;
         hookProvided?: never;
       }
     | {
@@ -118,7 +119,7 @@ const CreateForm = <TInput, TResult = unknown>({
           title: segment.title,
           defaultValue: defaultValue?.[key]?.toString(),
           placeholder: true,
-          readOnly: isLoading || readOnly,
+          readOnly: isLoading || readOnly || segment.readOnly,
         } as const;
         let content: ReactNode;
         switch (segment.type) {
@@ -127,6 +128,7 @@ const CreateForm = <TInput, TResult = unknown>({
               <Input
                 {...commons}
                 onChange={(e) => {
+                  if (segment.readOnly) return;
                   setInput((prev) => ({ ...prev, [key]: e.target.value }));
                 }}
               />

@@ -1,0 +1,102 @@
+.main {
+  padding-block: 4rem 2.5rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.main::before {
+  content: "";
+  position: absolute;
+  background: linear-gradient(270deg, #059669 0%, #14b8a6 100%);
+  top: 0;
+  width: 100dvw;
+  left: 50%;
+  height: calc(100% - 6.5rem);
+  transform: translateX(-50%) translateY(4rem);
+  z-index: -2;
+}
+
+.circles {
+  position: absolute;
+  top: 0;
+  width: 100dvw;
+  left: 50%;
+  height: calc(100% - 6.5rem);
+  transform: translateX(-50%) translateY(4rem);
+  z-index: -1;
+  overflow: hidden;
+}
+
+.circleLeft {
+  width: 17.375rem;
+  height: 17.375rem;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-50%) translateY(-50%) translateX(80px) translateY(80px);
+}
+
+.circleRight {
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-50%) translateX(50%) translateX(-40px)
+    translateY(-120px);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-block: 3.25rem;
+  flex: 1;
+}
+
+.title {
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.legend {
+  color: var(--white);
+  margin-bottom: 1.25rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.altBtn.altBtn {
+  background-color: transparent;
+  color: var(--white);
+  outline-color: var(--white);
+}
+
+.items {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.item {
+  color: var(--white);
+  opacity: 0.7;
+}
+
+.image {
+  position: relative;
+  width: 23.25rem;
+  height: 19.8125rem;
+  transform: translateY(-2.5rem);
+}

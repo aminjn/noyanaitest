@@ -9,10 +9,30 @@ import {
 } from "../Admin/Product/AdminManageProductsPage";
 import { useCallback, useState } from "react";
 import { fetcher } from "../helpers/fetcher";
+import {
+  IProductPackage,
+  ProductPackagePopulation,
+} from "../Admin/ProductPackage/AdminManageProductPackagesPage";
+import {
+  IService,
+  ServicePopulation,
+} from "../Admin/Service/AdminManageServicesPage";
+import {
+  IServicePackage,
+  ServicePackagePopulation,
+} from "../Admin/ServicePackage/AdminManageServicePackagesPage";
+import {
+  IParaClinicTest,
+  ParaClinicTestPopulation,
+} from "../Admin/ParaClinic/AdminManageParaClinicPage";
 
 export type CartPopulation = Population<{
   Owner: UserPopulation;
   Products: ProductSellerPopulation;
+  ProductPackages: ProductPackagePopulation;
+  Services: ServicePopulation;
+  ServicePackages: ServicePackagePopulation;
+  Tests: ParaClinicTestPopulation;
 }>;
 
 export interface ICart<
@@ -25,9 +45,39 @@ export interface ICart<
       : string;
     qty: number;
   }[];
+  productPackages: {
+    item: T["ProductPackages"] extends ProductPackagePopulation
+      ? IProductPackage<T["ProductPackages"]>
+      : string;
+    qty: number;
+  }[];
+  services: {
+    item: T["Services"] extends ServicePopulation
+      ? IService<T["Services"]>
+      : string;
+    qty: number;
+  }[];
+  servicePackages: {
+    item: T["ServicePackages"] extends ServicePackagePopulation
+      ? IServicePackage<T["ServicePackages"]>
+      : string;
+    qty: number;
+  }[];
+  tests: {
+    item: T["Tests"] extends ParaClinicTestPopulation
+      ? IParaClinicTest<T["Tests"]>
+      : string;
+    qty: number;
+  }[];
 }
 
-export const cartModels = ["products"] as const;
+export const cartModels = [
+  "products",
+  "productPackages",
+  "services",
+  "servicePackages",
+  "tests",
+] as const;
 
 export type CartModel = (typeof cartModels)[number];
 
@@ -39,6 +89,14 @@ type MutateCartItemPayload = {
 
 type RemoveCartItemPayload = { item: string; model: CartModel };
 
+export type UseCartNode = ICart<{
+  Products: { Seller: Record<never, never>; Product: Record<never, never> };
+  ProductPackages: Record<never, never>;
+  Services: Record<never, never>;
+  ServicePackages: Record<never, never>;
+  Tests: { Test: Record<never, never>; ParaClinic: Record<never, never> };
+}>;
+
 const useCart = () => {
   const { user } = useUser();
 
@@ -46,11 +104,7 @@ const useCart = () => {
     data: cart,
     isLoading,
     mutate,
-  } = useSWR<
-    ICart<{
-      Products: { Seller: Record<never, never>; Product: Record<never, never> };
-    }>
-  >(user ? `${API}/cart` : null, (url: string) =>
+  } = useSWR<UseCartNode>(user ? `${API}/cart` : null, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
 

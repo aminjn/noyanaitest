@@ -39,6 +39,8 @@ import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
+import ImagesManager from "../Product/ImagesManager";
+import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 export type ParaClinicTestPopulation = Population<{
   Test: TestPopulation;
@@ -53,6 +55,7 @@ export interface IParaClinicTest<
   paraClinic: T["ParaClinic"] extends ParaClinicPopulation
     ? IParaClinic<T["ParaClinic"]>
     : string;
+  readyTime?: string;
 }
 
 const MutateParaClinicTestPopup = ({
@@ -94,6 +97,7 @@ const MutateParaClinicTestPopup = ({
             multi: false,
           },
           price: { type: "number", title: "قیمت" },
+          readyTime: { type: "text", title: "زمان آماده سازی" },
         }}
       />
     </PopupCard>
@@ -133,7 +137,7 @@ const DeleteParaClinicTestPopup = ({
 const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
   const { data, error, mutate } = useSWR<
     IParaClinicTest<{ Test: Record<never, never> }>[]
-  >(`${API}/auto/paraClinicTest`, (url: string) =>
+  >(`${API}/auto/paraClinicTest?paraClinic=${paraClinic._id}`, (url: string) =>
     fetcher({ url }).then((res) => res.data.data),
   );
 
@@ -330,6 +334,25 @@ const AdminManageParaClinicPage = () => {
                       },
                       image: { type: "image", title: "نصویر" },
                       slug: { type: "text", title: "اسلاگ" },
+                      establishment: { type: "text", title: "تاسیس" },
+                      businessTime: { type: "text", title: "ساعات کاری" },
+                      phone: { type: "text", title: "تلفن" },
+                      basicInsurance: { type: "bool", title: "بیمه پایه" },
+                      onlineResponse: { type: "bool", title: "پاسخ آنلاین" },
+                      onPremises: { type: "bool", title: "نمونه گیری در محل" },
+                      personelCount: { type: "number", title: "کادر تخصصی" },
+                      summary: { type: "text", title: "خلاصه" },
+                      insurances: {
+                        type: "nodes",
+                        title: "بیمه ها",
+                        getOptionLabel: (node) =>
+                          (node as IInsurance).name || (node as IInsurance)._id,
+                        getOptionValue: (node) => (node as IInsurance)._id,
+                        multi: true,
+                        getDefaultValue: (inp) => inp.insurances,
+                        path: `${API}/auto/insurance`,
+                      },
+                      address: { type: "text", title: "آدرس" },
                     }}
                     hookProps={{
                       path: `${API}/auto/paraClinic/${data._id}`,
@@ -340,6 +363,11 @@ const AdminManageParaClinicPage = () => {
                     }}
                   />
                 ),
+              },
+              {
+                id: "Images",
+                title: "تصاویر",
+                content: <ImagesManager model="ParaClinic" node={data} />,
               },
               {
                 id: "Tests",

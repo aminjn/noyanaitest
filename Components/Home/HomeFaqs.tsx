@@ -3,9 +3,9 @@ import { IFaq } from "../Admin/Faq/AdminManageFaqsPage";
 import classes from "./HomeFaqs.module.css";
 import Ixon from "../UI/Ixon";
 import ChevronDownSquareIcon from "../Icons/ChevronDownSquareIcon";
-import { tsmMedium } from "../UI/Typography";
+import { tsmMedium, tsmRegular } from "../UI/Typography";
 
-const FaqItem = ({ node }: { node: IFaq }) => {
+export const FaqItem = ({ node }: { node: IFaq }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <li>
@@ -20,7 +20,9 @@ const FaqItem = ({ node }: { node: IFaq }) => {
             </Ixon>
           </button>
         </dt>
-        <dd className={`${classes.answer} ${isOpen ? classes.open : ""}`}>
+        <dd
+          className={`${classes.answer} ${isOpen ? classes.open : ""} ${tsmRegular}`}
+        >
           {node.answer}
         </dd>
       </dl>

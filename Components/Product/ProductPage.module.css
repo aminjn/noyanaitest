@@ -1,16 +1,54 @@
-.main {
+.item {
+  padding: 0.5rem;
+  background-color: var(--gray3);
   display: flex;
-  gap: 0.75rem;
-  align-items: flex-start;
+  gap: 0.5rem;
+  width: 14.5rem;
+  flex-shrink: 0;
 }
 
-.content {
+.image {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+}
+
+.itemContent {
   display: flex;
   flex-direction: column;
-  flex: 756;
-  gap: 1.5rem;
+  justify-content: space-between;
 }
 
-.side {
-  flex: 358;
+.itemName {
+  color: var(--black);
+}
+
+.category {
+  color: var(--gray8);
+}
+
+.otherCount {
+  color: var(--info);
+}
+
+.seller {
+  display: flex;
+  gap: 0.675rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.sellerIcon {
+  color: var(--black);
+}
+
+.sellerContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sellerName {
+  color: var(--gray13);
 }

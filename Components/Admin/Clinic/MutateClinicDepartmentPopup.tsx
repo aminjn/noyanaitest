@@ -26,6 +26,8 @@ const MutateClinicDepartmentPopup = ({
           image: { title: "تصویر", type: "image" },
           active: { title: "فعال", type: "bool" },
           order: { type: "number", title: "رتبه" },
+          summary: { type: "text", title: "خلاصه" },
+          phone: { type: "text", title: "تلفن" },
         }}
         onCancel={() => closePopup()}
         hookProps={{

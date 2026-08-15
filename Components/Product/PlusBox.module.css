@@ -1,0 +1,19 @@
+.plusBox {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  box-shadow:
+    0px 8px 25px -5px #0000001a,
+    0px 4px 10px 0px #0000000a;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.plusText {
+  color: var(--black);
+  margin-block: 0.5rem 1rem;
+}
+
+.plusPrice {
+  color: var(--errorT4);
+}

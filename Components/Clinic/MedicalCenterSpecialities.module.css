@@ -1,0 +1,13 @@
+.main {
+  padding-inline: 1.5rem;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.list {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}

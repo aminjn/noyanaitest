@@ -16,7 +16,7 @@ const NodesManager = <T,>({
 }: {
   modelName: string;
   title: string;
-  create: FormRenderer<T>;
+  create?: FormRenderer<T>;
   table: (args: { mutate: () => unknown }) => TableRenderer<T>;
 }) => {
   const { data, error, mutate } = useSWR<T[]>(
@@ -31,20 +31,24 @@ const NodesManager = <T,>({
       {!!data && (
         <WithTitle
           title={title}
-          actions={[
-            {
-              title: "جدید",
-              action: () =>
-                setPopup(
-                  "CreateShit",
-                  <CreateShitPopup
-                    modelName={modelName}
-                    renderer={create}
-                    mutate={mutate}
-                  />,
-                ),
-            },
-          ]}
+          actions={
+            create
+              ? [
+                  {
+                    title: "جدید",
+                    action: () =>
+                      setPopup(
+                        "CreateShit",
+                        <CreateShitPopup
+                          modelName={modelName}
+                          renderer={create}
+                          mutate={mutate}
+                        />,
+                      ),
+                  },
+                ]
+              : []
+          }
         >
           <Table
             name={`AdminManage${modelName}s`}

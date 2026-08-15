@@ -2,7 +2,7 @@ import Link from "next/link";
 import classes from "./Pagination.module.css";
 import useLocale from "../Hooks/useLocale";
 import ChevronIcon from "../Icons/ChevronIcon";
-import { Fragment, useCallback } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import { range } from "../helpers/lib";
 import { WithStyleProps } from "../Layout/Layout";
 
@@ -10,10 +10,12 @@ const Page = ({
   current,
   page,
   makePath,
+  onClickPage,
 }: {
   current: number;
   page: number;
-  makePath: (page: number) => string;
+  makePath: PagePathMaker;
+  onClickPage?: (page: number) => unknown;
 }) => {
   return (
     <Link
@@ -21,6 +23,13 @@ const Page = ({
       className={`${classes.page} ${
         current === page ? classes.activePage : ""
       }`}
+      onClick={(e) => {
+        if (!!onClickPage) {
+          e.preventDefault();
+          e.nativeEvent.preventDefault();
+          onClickPage(page);
+        }
+      }}
     >
       {page}
     </Link>
@@ -36,6 +45,7 @@ export type PaginationProps = WithStyleProps<{
   currentPage: number;
   makePath: PagePathMaker;
   span?: number;
+  onClickPage?: (page: number) => unknown;
 }>;
 
 export type PagePathMaker = (page: number) => string;
@@ -46,14 +56,20 @@ const Pagination = ({
   span = 2,
   className = "",
   style,
+  onClickPage,
 }: PaginationProps) => {
   const getContent = useLocale();
 
   const renderPage = useCallback(
     (target: number) => (
-      <Page makePath={makePath} current={currentPage} page={target} />
+      <Page
+        makePath={makePath}
+        current={currentPage}
+        page={target}
+        onClickPage={onClickPage}
+      />
     ),
-    [currentPage, makePath],
+    [currentPage, makePath, onClickPage],
   );
 
   if (pagesCount <= 1) return null;
@@ -66,6 +82,13 @@ const Pagination = ({
         }`}
         title={getContent("previousPage")}
         href={makePath(currentPage === 1 ? 1 : currentPage - 1)}
+        onClick={(e) => {
+          if (!!onClickPage) {
+            e.preventDefault();
+            e.nativeEvent.preventDefault();
+            onClickPage(currentPage === 1 ? 1 : currentPage - 1);
+          }
+        }}
       >
         <ChevronIcon />
       </Link>
@@ -88,6 +111,15 @@ const Pagination = ({
         href={makePath(
           currentPage === pagesCount ? pagesCount : currentPage + 1,
         )}
+        onClick={(e) => {
+          if (!!onClickPage) {
+            e.preventDefault();
+            e.nativeEvent.preventDefault();
+            onClickPage(
+              currentPage === pagesCount ? pagesCount : currentPage + 1,
+            );
+          }
+        }}
       >
         <ChevronIcon />
       </Link>

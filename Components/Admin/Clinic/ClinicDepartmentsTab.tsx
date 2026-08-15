@@ -21,7 +21,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
   const { data, error, mutate } = useSWR<
     IClinicDepartment<{ DoctorsCount: true }>[]
   >(`${API}/auto/clinicdepartment?clinic=${clinic._id}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -40,7 +40,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                   <MutateClinicDepartmentPopup
                     clinic={clinic}
                     mutate={mutate}
-                  />
+                  />,
                 ),
             },
           ]}
@@ -81,7 +81,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                         onClick={() =>
                           setPopup(
                             "FullscreenImagePreview",
-                            <FullScreenImagePopup src={node.image} />
+                            <FullScreenImagePopup src={node.image} />,
                           )
                         }
                       >
@@ -107,7 +107,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                             clinic={clinic}
                             department={node}
                             mutate={mutate}
-                          />
+                          />,
                         )
                       }
                     >
@@ -121,7 +121,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                           <DeleteClinicDepartmentPopup
                             mutate={mutate}
                             node={node}
-                          />
+                          />,
                         )
                       }
                     >

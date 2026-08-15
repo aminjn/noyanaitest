@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: var(--white);
+  box-shadow:
+    0px 1px 2px 0px #0f285a0a,
+    0px 4px 24px -12px #d8e4fd1f;
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--black);
+}
+
+.icon {
+  color: var(--primary);
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  gap: 0.75rem;
+}
