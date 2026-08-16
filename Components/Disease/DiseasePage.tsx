@@ -66,7 +66,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
         primaryAction={{ title: getContent("bookASessionFromADoctor") }}
         secondaryAction={{ title: getContent("inpectDiseaseWithAi") }}
       />
-      <BigAd />
+      <BigAd position="disease1" />
       <ListPageWithSide
         side={
           <Fragment>
@@ -123,7 +123,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
           </div>
         </Fragment>
       </ListPageWithSide>
-      <SmallAd />
+      <SmallAd position="disease1" />
     </ListPageLayout>
   );
 };

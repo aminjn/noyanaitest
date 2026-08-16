@@ -95,10 +95,18 @@ const SpecialityPage = ({
         ))}
       </ListPageList>
       <div className={classes.box}>
-        <BigAd />
+        <BigAd
+          position="speciality1"
+          resourceModel="Speciality"
+          resource={data._id}
+        />
         <RenderRtf value={data.description} />
       </div>
-      <SmallAd />
+      <SmallAd
+        position="speciality2"
+        resourceModel="Speciality"
+        resource={data._id}
+      />
     </ListPageLayout>
   );
 };

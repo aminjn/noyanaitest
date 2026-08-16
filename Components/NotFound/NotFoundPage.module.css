@@ -1,0 +1,56 @@
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2.5rem;
+  padding-block: 4rem;
+  min-height: 70dvh;
+}
+
+.illustration {
+  width: min(20rem, 70dvw);
+}
+
+.textGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.title {
+  color: var(--gray13);
+}
+
+.legend {
+  color: var(--gray8);
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.legend::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  width: 5rem;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    var(--primary4),
+    transparent
+  );
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}

@@ -17,6 +17,12 @@ const ClinicPanelSidebar = () => {
         show: true,
         target: "prescription",
       },
+      {
+        title: "profile",
+        icon: <UserEditIcon />,
+        show: true,
+        target: "profile",
+      },
     ],
     [],
   );

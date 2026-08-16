@@ -13,6 +13,7 @@ import useProgress from "../Hooks/useProgress";
 import { useEffect } from "react";
 import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import ListPageList from "../UI/ListPage/ListPageList";
+import SmallAd from "../UI/ListPage/SmallAd";
 
 export type DrugsListPageProps = {
   data: IDrug<{ Tag: Record<never, never> }>[];
@@ -47,6 +48,7 @@ const DrugsListPage = ({ data, pagesCount }: DrugsListPageProps) => {
         title={getContent("drugsListIntroTitle")}
         description={getContent("drugsListIntroDescription")}
       />
+      <BigAd position="drugs1" />
       <ListPageSearch
         placeholder={getContent("searchInDrugs")}
         onChange={(e) => setQuery(e.target.value)}
@@ -69,7 +71,7 @@ const DrugsListPage = ({ data, pagesCount }: DrugsListPageProps) => {
           <DrugCard key={node._id} node={node} />
         ))}
       </ListPageList>
-      <BigAd />
+      <SmallAd position="drugs2" />
     </ListPageLayout>
   );
 };

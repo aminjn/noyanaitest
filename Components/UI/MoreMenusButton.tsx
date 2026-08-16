@@ -25,6 +25,7 @@ const MoreMenusButton = ({
         <div className={classes.options}>
           {options.map((option) => (
             <Button
+              key={option.title}
               radius="Normal"
               size="S"
               mode="Outline"

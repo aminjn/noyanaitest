@@ -17,6 +17,7 @@ import NodesSelector from "@/Components/UI/NodesSelector";
 import ImageInput from "@/Components/UI/ImageInput";
 import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
 import StringListInput from "@/Components/UI/StringListInput";
+import CheckboxGroupInput from "@/Components/UI/CheckboxGroupInput";
 import useLocale from "@/Components/Hooks/useLocale";
 import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
 import RangeInput from "@/Components/UI/RangeInput";
@@ -36,6 +37,7 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
           | "strings";
       }
     | { type: "select" | "options"; options: Record<string, string> }
+    | { type: "multiselect"; options: Record<string, string> }
     | {
         type: "nodes";
         path: string;
@@ -142,6 +144,20 @@ const CreateForm = <TInput, TResult = unknown>({
                 onChange={(e) => {
                   setInput((prev) => ({ ...prev, [key]: e.target.value }));
                 }}
+              />
+            );
+            break;
+          case "multiselect":
+            content = (
+              <CheckboxGroupInput
+                {...commons}
+                options={segment.options}
+                defaultValue={
+                  Array.isArray(defaultValue?.[key])
+                    ? (defaultValue?.[key] as unknown as string[])
+                    : undefined
+                }
+                onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
               />
             );
             break;

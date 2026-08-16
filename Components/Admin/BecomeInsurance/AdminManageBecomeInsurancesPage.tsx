@@ -16,9 +16,10 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import { fetcher } from "@/Components/helpers/fetcher";
 
 const AdminManageBecomeInsurancesPage = () => {
-  const { data, error } = useSWR<IBecomeInsuranceRequest<{ user: true }>[]>(
-    `${API}/auto/becomeinsurance`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+  const { data, error } = useSWR<
+    IBecomeInsuranceRequest<{ User: Record<never, never> }>[]
+  >(`${API}/auto/becomeinsurance`, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   return (
@@ -37,13 +38,16 @@ const AdminManageBecomeInsurancesPage = () => {
               },
               user: {
                 name: "یوزر",
-                value: (node) => node.user.phone,
+                value: (node) => node.user?.phone || "",
                 filter: "Text",
-                component: (node) => (
-                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                    {node.user.phone || node.user._id}
-                  </InlineLink>
-                ),
+                component: (node) =>
+                  !!node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {node.user.phone || node.user._id}
+                    </InlineLink>
+                  ) : (
+                    ""
+                  ),
               },
               name: {
                 name: "نام",

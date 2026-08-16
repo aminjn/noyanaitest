@@ -9,7 +9,7 @@ import CardWithSession from "../Booking/CardWithSession";
 const DoctorCard = ({
   node,
 }: {
-  node: IDoctor<{ SpecialityPopulated: true }>;
+  node: IDoctor<{ SpecialityPopulated: Record<never, never> }>;
 }) => {
   const getContent = useLocale();
 

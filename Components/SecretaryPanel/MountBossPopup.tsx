@@ -16,6 +16,7 @@ const nameToPanelPath: Record<NodeWithAcl, string> = {
   doctor: "doctorpanel",
   insurance: "insurancepanel",
   pharmacy: "pharmacypanel",
+  paraClinic: "paraClinicPanel",
 };
 
 const MountBossPopup = ({

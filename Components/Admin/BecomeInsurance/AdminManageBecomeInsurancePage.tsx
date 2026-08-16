@@ -23,9 +23,9 @@ import AssignInsuranceToBecomeInsuranceRequestPopup from "./AssignInsuranceToBec
 const AdminManageBecomeInsurancePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<
-    IBecomeInsuranceRequest<{ user: true }>
+    IBecomeInsuranceRequest<{ User: Record<never, never> }>
   >(`${API}/auto/becomeinsurance/${nodeId}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -51,9 +51,15 @@ const AdminManageBecomeInsurancePage = () => {
                     <DataPair
                       title="یوزر"
                       value={
-                        <InlineLink href={adminPath(`/user/${data.user._id}`)}>
-                          {data.user.phone || data.user._id}
-                        </InlineLink>
+                        data.user ? (
+                          <InlineLink
+                            href={adminPath(`/user/${data.user._id}`)}
+                          >
+                            {data.user.phone || data.user._id}
+                          </InlineLink>
+                        ) : (
+                          ""
+                        )
                       }
                     />
                     <DataPair
@@ -76,7 +82,7 @@ const AdminManageBecomeInsurancePage = () => {
                           <ChangeBecomeInsuranceStatusPopup
                             mutate={mutate}
                             node={data}
-                          />
+                          />,
                         )
                       }
                     >
@@ -89,7 +95,7 @@ const AdminManageBecomeInsurancePage = () => {
                           <AssignInsuranceToBecomeInsuranceRequestPopup
                             mutate={mutate}
                             node={data}
-                          />
+                          />,
                         )
                       }
                     >

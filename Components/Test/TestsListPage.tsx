@@ -50,7 +50,7 @@ const TestsListPage = ({ data, pagesCount }: TestsListPageProps) => {
         title={getContent("testListPageIntroTitle")}
         description={getContent("testListPageIntroDescription")}
       />
-      <BigAd />
+      <BigAd position="tests1" />
       <ListPageSearch
         placeholder={getContent("searchInTests")}
         onChange={(e) => setQuery(e.target.value)}
@@ -73,7 +73,7 @@ const TestsListPage = ({ data, pagesCount }: TestsListPageProps) => {
           <TestCard key={node._id} node={node} />
         ))}
       </ListPageList>
-      <SmallAd />
+      <SmallAd position="tests2" />
     </ListPageLayout>
   );
 };

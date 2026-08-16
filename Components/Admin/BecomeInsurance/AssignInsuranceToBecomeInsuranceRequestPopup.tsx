@@ -14,7 +14,7 @@ const AssignInsuranceToBecomeInsuranceRequestPopup = ({
   node,
 }: {
   mutate: () => unknown;
-  node: IBecomeInsuranceRequest<{ user: true }>;
+  node: IBecomeInsuranceRequest<{ User: Record<never, never> }>;
 }) => {
   const { closePopup } = usePopup();
 
@@ -24,7 +24,7 @@ const AssignInsuranceToBecomeInsuranceRequestPopup = ({
     hasProblem: (inp) => {
       if (!inp.insurance) return "لطفا بیمه را انتخاب کنید";
     },
-    mutator: () => ({ user: node.user._id }),
+    mutator: () => ({ user: node.user?._id }),
     successCb: () => {
       mutate();
       closePopup();

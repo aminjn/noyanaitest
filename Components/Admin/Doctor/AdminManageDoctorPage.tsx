@@ -19,9 +19,12 @@ import PageMetaEditor from "../PageMeta/PageMetaEditor";
 const AdminManageDoctorPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<
-    IDoctor<{ SpecialityPopulated: true; SpecialitiesPopulated: true }>
+    IDoctor<{
+      SpecialityPopulated: Record<never, never>;
+      SpecialitiesPopulated: Record<never, never>;
+    }>
   >(params ? `${API}/auto/doctor/${params.nodeId}` : null, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const hasAccess = useAccessLevel();
@@ -56,7 +59,10 @@ const AdminManageDoctorPage = () => {
                 id: "Meta",
                 icon: <InfoIcon />,
                 content: (
-                  <PageMetaEditor resourceType="/doctor/[slug]" slug={data.slug} />
+                  <PageMetaEditor
+                    resourceType="/doctor/[slug]"
+                    slug={data.slug}
+                  />
                 ),
               },
               {

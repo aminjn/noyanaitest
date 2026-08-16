@@ -13,6 +13,7 @@ const titleKeyByNode: Record<NodeWithAcl, ContentKey> = {
   clinic: "clinics",
   insurance: "insurances",
   pharmacy: "phrmaciesAndLabs",
+  paraClinic: "paraClinics",
 };
 
 const SecretaryManageBossesPage = ({ name }: { name: NodeWithAcl }) => {

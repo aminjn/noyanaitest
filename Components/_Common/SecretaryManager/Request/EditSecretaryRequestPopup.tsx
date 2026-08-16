@@ -4,13 +4,13 @@ import PopupCard from "@/Components/UI/PopupCard";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import useLocale from "@/Components/Hooks/useLocale";
-import { getAclLabel } from "@/Components/Admin/Lib/LabelGetters";
 import { ISecretaryRequest } from "./SecretaryRequestsTab";
 import {
   Acl,
   NodeWithAcl,
   SecretaryNodePath,
 } from "./CreateSecretaryRequestPopup";
+import { getAccessLevelLabel } from "@/Components/Admin/Lib/LabelGetters";
 
 const EditSecretaryRequestPopup = ({
   mutate,
@@ -45,7 +45,8 @@ const EditSecretaryRequestPopup = ({
             type: "nodes",
             path: `${API}/acl/${name}/acl`,
             title: getContent("accessLevel"),
-            getOptionLabel: (node) => getAclLabel(node as Acl<[], unknown>),
+            getOptionLabel: (node) =>
+              getAccessLevelLabel(node as Acl<[], unknown>),
             getOptionValue: (node) => (node as Acl<[], unknown>)._id,
             getDefaultValue: (node) => node.acl?._id,
             dataParser: (res) =>

@@ -50,7 +50,7 @@ const SymptomsListPage = ({ data, pagesCount }: SymptomsListPageProps) => {
         title={getContent("symptomsListIntroTitle")}
         description={getContent("symptomsListIntroDescription")}
       />
-      <BigAd />
+      <BigAd position="symptoms1" />
       <ListPageSearch
         onChange={(e) => setQuery(e.target.value)}
         placeholder={getContent("searchInSymptoms")}
@@ -73,7 +73,7 @@ const SymptomsListPage = ({ data, pagesCount }: SymptomsListPageProps) => {
           <SymptomCard key={node._id} node={node} />
         ))}
       </ListPageList>
-      <SmallAd />
+      <SmallAd position="symptoms2" />
     </ListPageLayout>
   );
 };

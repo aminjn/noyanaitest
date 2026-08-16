@@ -14,7 +14,7 @@ const LoadPrescriptionsFromTamin = () => {
 
   return (
     <PopupCard>
-      <CreateForm<{ tracking: string }, LoadedPrescription>
+      <CreateForm<{ tracking: string }, { data: LoadedPrescription }>
         renderer={{
           tracking: { type: "text", title: getContent("taminPrescriptionId") },
         }}
@@ -26,9 +26,7 @@ const LoadPrescriptionsFromTamin = () => {
             if (!!res)
               setPopup(
                 "LoadedPriscription",
-                <LoadedPrescriptionPopup
-                  data={(res as { data: LoadedPrescription }).data}
-                />,
+                <LoadedPrescriptionPopup data={res.data} />,
               );
           },
         }}

@@ -22,6 +22,7 @@ export const categoriesAclMap: Record<NodeWithAcl, readonly ContentKey[]> = {
   clinic: [],
   insurance: [],
   pharmacy: [],
+  paraClinic: [],
 };
 
 export const categorizedAclMap: Record<
@@ -32,6 +33,7 @@ export const categorizedAclMap: Record<
   clinic: {},
   insurance: {},
   pharmacy: {},
+  paraClinic: {},
 };
 
 const MutateSecretaryAccessLevelPopup = ({

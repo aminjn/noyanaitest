@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
+import CartIcon from "../Icons/CartIcon";
 
 const PharmacyPanelSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -10,6 +11,12 @@ const PharmacyPanelSidebar = () => {
         icon: <UserEditIcon />,
         show: true,
         target: "secretary",
+      },
+      {
+        title: "products",
+        icon: <CartIcon />,
+        show: true,
+        target: "product",
       },
       {
         title: "prescriptions",

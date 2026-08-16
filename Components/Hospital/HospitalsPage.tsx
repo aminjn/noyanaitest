@@ -122,7 +122,7 @@ const HospitalsPage = ({
           ))}
         </SpecialsBox>
       )}
-      <BigAd />
+      <BigAd position="hospitals1" />
       <div className={classes.searchBox}>
         <div className={classes.inputBox}>
           <input
@@ -199,7 +199,7 @@ const HospitalsPage = ({
           <HospitalCard key={node._id} node={node} />
         ))}
       </ListPageList>
-      <SmallAd />
+      <SmallAd position="hospitals2" />
     </ListPageLayout>
   );
 };

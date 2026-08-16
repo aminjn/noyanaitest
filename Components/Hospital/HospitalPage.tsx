@@ -158,7 +158,11 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
           <CommentSection model="Hospital" nodeId={data._id} />
         </div>
       </MedicalCenterLayout>
-      <SmallAd />
+      <SmallAd
+        position="hospital1"
+        resourceModel="Hospital"
+        resource={data._id}
+      />
     </div>
   );
 };

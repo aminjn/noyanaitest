@@ -1,7 +1,12 @@
 import { useParams } from "next/navigation";
 import classes from "./CurrentChat.module.css";
 import useSWR from "swr";
-import { IChat, IMessage, IUserFile } from "./ChatSidebar";
+import {
+  getChatParticipantName,
+  IChat,
+  IMessage,
+  IUserFile,
+} from "./ChatSidebar";
 import { API } from "../config";
 import useLocale from "../Hooks/useLocale";
 import Loading from "../Admin/UI/Loading";
@@ -22,6 +27,9 @@ import Link from "next/link";
 import useAnimateOnScroll from "../Hooks/useAnimateOnScroll";
 import CheckIcon from "../Icons/CheckIcon";
 import DoubleCheckIcon from "../Icons/DoubleCheckIcon";
+import MicrophoneIcon from "../Icons/MicrophoneIcon";
+import PlusSquareIcon from "../Icons/PlusSquareIcon";
+import SmileIcon from "../Icons/SmileIcon";
 
 const MessageSender = ({
   chat,
@@ -54,8 +62,25 @@ const MessageSender = ({
     },
   });
 
+  const hasContent = !!input.message?.trim() || !!input.file;
+
   return (
     <Form className={classes.footer} onSubmit={submit}>
+      {hasContent ? (
+        <button
+          type="submit"
+          className={classes.send}
+          aria-label={getContent("sendMessage")}
+        >
+          <Ixon>
+            <SendIcon />
+          </Ixon>
+        </button>
+      ) : (
+        <Ixon width="1.625rem" className={classes.mic}>
+          <MicrophoneIcon />
+        </Ixon>
+      )}
       <input
         type="text"
         className={classes.textInput}
@@ -78,14 +103,9 @@ const MessageSender = ({
           ref={fileRef}
         />
         <Ixon>
-          <AttachmentIcon />
+          <PlusSquareIcon />
         </Ixon>
       </div>
-      <button type="submit" className={classes.send}>
-        <Ixon>
-          <SendIcon />
-        </Ixon>
-      </button>
       {input.file && (
         <div className={classes.chosenFile}>
           <button
@@ -159,14 +179,19 @@ const InnerChat = ({
   chat,
   mutate,
 }: {
-  chat: IChat<{ Participants: true; Messages: Record<string, never> }>;
+  chat: IChat<{
+    Participants: { Identity: Record<never, never> };
+    Messages: Record<string, never>;
+  }>;
   mutate: () => unknown;
 }) => {
   const { user } = useUser();
-  const other = useMemo<IUser | undefined>(
+  const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
     () => chat.participants.find((p) => p._id !== user?._id),
     [chat, user],
   );
+
+  const title = useMemo(() => getChatParticipantName(other), [other]);
 
   const getContent = useLocale();
 
@@ -179,16 +204,14 @@ const InnerChat = ({
         <div className={classes.image}>
           <Image
             src={imagePath("")}
-            alt={other?.username || getContent("chat")}
+            alt={title || getContent("chat")}
             fill
             sizes="6rem"
             style={{ objectFit: "cover" }}
           />
         </div>
         <div className={classes.details}>
-          <span className={classes.name}>
-            {other?.username || getContent("chat")}
-          </span>
+          <span className={classes.name}>{title || getContent("chat")}</span>
           <FormatDate className={classes.date} value={chat.createdAt} />
         </div>
         <Button className={classes.action}>{getContent("closeChat")}</Button>
@@ -210,7 +233,10 @@ const InnerChat = ({
 const CurrentChat = () => {
   const params = useParams<{ nodeId?: string }>();
   const { data, mutate } = useSWR<
-    IChat<{ Participants: true; Messages: Record<string, never> }>
+    IChat<{
+      Participants: { Identity: Record<never, never> };
+      Messages: Record<string, never>;
+    }>
   >(
     params.nodeId ? `${API}/chat/${params.nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),

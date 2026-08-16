@@ -39,8 +39,9 @@ export type DoctorPopulation = Population<{
   Gallery?: GalleryItemPopulation;
 }>;
 
-export interface IDoctor<T extends DoctorPopulation = DoctorPopulation>
-  extends MongoDoc {
+export interface IDoctor<
+  T extends DoctorPopulation = DoctorPopulation,
+> extends MongoDoc {
   name?: string;
   slug?: string;
   image?: string;
@@ -81,9 +82,9 @@ export interface IDoctor<T extends DoctorPopulation = DoctorPopulation>
 
 const AdminManageDoctorsPage = () => {
   const { data, error, mutate } = useSWR<
-    IDoctor<{ SpecialityPopulated: true }>[]
+    IDoctor<{ SpecialityPopulated: Record<never, never> }>[]
   >(`${API}/auto/doctor`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -103,7 +104,7 @@ const AdminManageDoctorsPage = () => {
                     action: () =>
                       setPopup(
                         "CreateDoctor",
-                        <CreateDoctorPopup mutate={mutate} />
+                        <CreateDoctorPopup mutate={mutate} />,
                       ),
                   },
                 ]
@@ -274,7 +275,7 @@ const AdminManageDoctorsPage = () => {
                         onClick={() =>
                           setPopup(
                             "DeleteDoctor",
-                            <DeleteDoctorPopup node={node} mutate={mutate} />
+                            <DeleteDoctorPopup node={node} mutate={mutate} />,
                           )
                         }
                       >

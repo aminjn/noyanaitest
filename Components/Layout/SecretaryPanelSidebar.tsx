@@ -5,6 +5,7 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import BuildingIcon from "../Icons/BuildingIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
 import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
+import MedicalRecordIcon from "../Icons/MedicalRecordIcon";
 
 const SecretaryPanelSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -31,6 +32,12 @@ const SecretaryPanelSidebar = () => {
         title: "insurances",
         icon: <ShieldCheckIcon />,
         target: "insurance",
+        show: true,
+      },
+      {
+        title: "paraClinics",
+        icon: <MedicalRecordIcon />,
+        target: "paraClinic",
         show: true,
       },
     ],

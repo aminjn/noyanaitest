@@ -19,6 +19,12 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import {
+  advertisementPositionLabels,
+  AdvertisementPosition,
+  advertisementResourceModelLabels,
+  AdvertisementResourceModel,
+} from "./advertisementConstants";
 
 export type AdvertisementPopulation = Population<Record<never, never>>;
 
@@ -27,8 +33,17 @@ export interface IAdvertisement extends MongoDoc {
   image?: string;
   isActive: boolean;
   order: number;
-  isHome: boolean;
-  isHomeSlider: boolean;
+  title?: string;
+  description?: string;
+  legend?: string;
+  // href for the ad's "more info" action/button
+  target?: string;
+  positions: AdvertisementPosition[];
+  // Together, these optionally target one specific document (e.g. one
+  // specific disease) instead of applying generically to every document
+  // shown under `positions`. Leave both empty for a generic/fallback ad.
+  resourceModel?: AdvertisementResourceModel;
+  resource?: string;
 }
 
 const MutateAdvertisementPopup = ({
@@ -57,9 +72,25 @@ const MutateAdvertisementPopup = ({
           name: { title: "name", type: "text" },
           order: { title: "رتبه", type: "number" },
           isActive: { title: "فعال", type: "bool" },
-          isHome: { title: "نمایش در خانه", type: "bool" },
           image: { title: "تصویر", type: "image" },
-          isHomeSlider: { title: "اسلایدر هوم", type: "bool" },
+          title: { title: "عنوان", type: "text" },
+          description: { title: "توضیحات", type: "area" },
+          legend: { title: "لجند", type: "text" },
+          target: { title: "لینک اطلاعات بیشتر", type: "text" },
+          positions: {
+            title: "جایگاه ها",
+            type: "multiselect",
+            options: advertisementPositionLabels,
+          },
+          resourceModel: {
+            title: "نوع منبع هدف (اختیاری)",
+            type: "select",
+            options: advertisementResourceModelLabels,
+          },
+          resource: {
+            title: "شناسه منبع هدف (اختیاری)",
+            type: "text",
+          },
         }}
       />
     </PopupCard>
@@ -125,6 +156,26 @@ const AdminManageAdvertisementsPage = () => {
             name="AdminManageAdvertisement"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              title: {
+                name: "عنوان",
+                value: (node) => node.title,
+                filter: "Text",
+              },
+              description: {
+                name: "توضیحات",
+                value: (node) => node.description,
+                filter: "Text",
+              },
+              legend: {
+                name: "لجند",
+                value: (node) => node.legend,
+                filter: "Text",
+              },
+              target: {
+                name: "لینک اطلاعات بیشتر",
+                value: (node) => node.target,
+                filter: "Text",
+              },
               order: {
                 name: "رتبه",
                 value: (node) => node.order,
@@ -136,19 +187,21 @@ const AdminManageAdvertisementsPage = () => {
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
-              isHome: {
-                name: "نمایش در خانه",
-                value: (node) => booleanToValue[`${node.isHome}`],
-                component: (node) => <BooleanToIcon value={node.isHome} />,
-                filter: "Set",
+              positions: {
+                name: "جایگاه ها",
+                value: (node) =>
+                  (node.positions || [])
+                    .map((position) => advertisementPositionLabels[position])
+                    .join("، "),
+                filter: "Text",
               },
-              isHomeSlider: {
-                name: "نمایش در اسلایدر هوم",
-                value: (node) => booleanToValue[`${node.isHomeSlider}`],
-                filter: "Set",
-                component: (node) => (
-                  <BooleanToIcon value={node.isHomeSlider} />
-                ),
+              resource: {
+                name: "منبع هدف",
+                value: (node) =>
+                  node.resourceModel && node.resource
+                    ? `${advertisementResourceModelLabels[node.resourceModel]} / ${node.resource}`
+                    : "عمومی",
+                filter: "Text",
               },
               actions: {
                 name: "عملیات",

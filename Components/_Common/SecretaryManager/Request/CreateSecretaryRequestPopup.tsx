@@ -9,15 +9,17 @@ import {
 import { API } from "@/Components/config";
 import useLocale from "@/Components/Hooks/useLocale";
 import PopupCard from "@/Components/UI/PopupCard";
-import { getAclLabel } from "@/Components/Admin/Lib/LabelGetters";
 import { clinicActions } from "@/Components/Enums/actions/clinicActions";
 import { insuranceActions } from "@/Components/Enums/actions/insuranceActions";
 import { doctorActions } from "@/Components/Enums/actions/doctorActions";
 import { pharmacyActions } from "@/Components/Enums/actions/pharmacyActions";
+import { paraClinicActions } from "@/Components/Enums/actions/paraClinicActions";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import { IPharmacy } from "@/Components/DoctorPanel/Pharmacy/DoctorPharmaciesTab";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
 import { ISecretaryRequest } from "./SecretaryRequestsTab";
+import { getAccessLevelLabel } from "@/Components/Admin/Lib/LabelGetters";
 
 export type Acl<T extends readonly string[], S> = MongoDoc & {
   name: string;
@@ -29,6 +31,7 @@ export const nodesWithAcl = [
   "insurance",
   "pharmacy",
   "clinic",
+  "paraClinic",
 ] as const;
 
 export type NodeWithAcl = (typeof nodesWithAcl)[number];
@@ -38,6 +41,7 @@ export const secretaryNodePaths = [
   "Clinic",
   "Insurance",
   "Pharmacy",
+  "ParaClinic",
 ] as const;
 
 export type SecretaryNodePath = (typeof secretaryNodePaths)[number];
@@ -47,6 +51,7 @@ export const secretaryAclPaths = [
   "InsuranceAcl",
   "ClinicAcl",
   "PharmacyAcl",
+  "ParaClinicAcl",
 ] as const;
 
 export type SecretaryAclPath = (typeof secretaryAclPaths)[number];
@@ -56,6 +61,7 @@ export const modelNameToAclName: Record<SecretaryNodePath, SecretaryAclPath> = {
   DoctorProfile: "DoctorAcl",
   Insurance: "InsuranceAcl",
   Pharmacy: "PharmacyAcl",
+  ParaClinic: "ParaClinicAcl",
 } as const;
 
 export type ModelNameToModelType = {
@@ -63,6 +69,7 @@ export type ModelNameToModelType = {
   DoctorProfile: IDoctorProfile;
   Insurance: IInsurance;
   Pharmacy: IPharmacy;
+  ParaClinic: IParaClinic;
 };
 
 export type ModelNameToAclModel = {
@@ -70,6 +77,7 @@ export type ModelNameToAclModel = {
   DoctorProfile: IDoctorAcl;
   Insurance: IInsuranceAcl;
   Pharmacy: IPharmacyAcl;
+  ParaClinic: IParaClinicAcl;
 };
 
 export type SecretaryPopulation = Population<{
@@ -80,7 +88,7 @@ export type SecretaryPopulation = Population<{
 
 export interface ISecretary<
   T extends SecretaryNodePath,
-  K extends SecretaryPopulation = SecretaryPopulation
+  K extends SecretaryPopulation = SecretaryPopulation,
 > extends MongoDoc {
   owner: K["owner"] extends true ? ModelNameToModelType[T] : string;
   secretary: K["Secretary"] extends true ? IUser : string;
@@ -101,6 +109,9 @@ export type IDoctorAcl = Acl<typeof doctorActions, IDoctorProfile>;
 
 export type PharmacyAction = (typeof pharmacyActions)[number];
 export type IPharmacyAcl = Acl<typeof pharmacyActions, IPharmacy>;
+
+export type ParaClinicAction = (typeof paraClinicActions)[number];
+export type IParaClinicAcl = Acl<typeof paraClinicActions, IParaClinic>;
 
 const CreateSecretaryRequestPopup = ({
   mutate,
@@ -125,7 +136,8 @@ const CreateSecretaryRequestPopup = ({
             type: "nodes",
             path: `${API}/acl/${name}/acl`,
             title: getContent("accessLevel"),
-            getOptionLabel: (node) => getAclLabel(node as Acl<[], unknown>),
+            getOptionLabel: (node) =>
+              getAccessLevelLabel(node as Acl<[], unknown>),
             getOptionValue: (node) => (node as Acl<[], unknown>)._id,
             dataParser: (res) =>
               (res as Record<"data", Acl<[], unknown>[]>).data,

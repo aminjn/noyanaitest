@@ -11,8 +11,6 @@
   padding-block: 1rem;
   width: 100dvw;
   position: absolute;
-  /* TODO: remove this */
-  flex-wrap: wrap;
   left: 50%;
   left: 50%;
   transform: translateX(-50%);
@@ -31,6 +29,12 @@
   content: "";
   display: block;
   z-index: -1;
+}
+
+.start {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .left,
@@ -258,5 +262,38 @@
   }
   to {
     transform: scaleY(1);
+  }
+}
+
+.burgerBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--gray11);
+  flex-shrink: 0;
+}
+
+@media (max-width: 64rem) {
+  .main {
+    padding-inline: 1rem;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .searchWrap {
+    display: none;
+  }
+
+  .burgerBtn {
+    display: flex;
+  }
+
+  .left,
+  .right {
+    width: unset;
   }
 }

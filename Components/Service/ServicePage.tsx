@@ -47,7 +47,7 @@ const ServicePage = ({ data }: ServicePageProps) => {
       model="services"
       qnaCount={500}
       sameAs={data.sameAs.map((el) => (
-        <ServiceCard node={{ ...el, model: "Service" }} />
+        <ServiceCard key={el._id} node={{ ...el, model: "Service" }} />
       ))}
       sameAsIcon={<StarDotPlusIcon />}
       sameAsTitle={"similarServices"}

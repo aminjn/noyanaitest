@@ -1,5 +1,5 @@
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
 import Button from "../UI/Button";
 import classes from "./HomeHero.module.css";
 import HomeHeroBg from "./HomeHeroBg";
@@ -22,7 +22,10 @@ import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import SendLineIcon from "../Icons/SendLineIcon";
 
 const HomeHero = ({ examples }: { examples?: IAiExample[] }) => {
-  const getContent = useLocale();
+  // Reference usage of the scoped hook: this component only needs the
+  // "home" namespace, so it declares that directly instead of relying on
+  // an ancestor already having fetched everything.
+  const getContent = useScopedLocale(["home"]);
   return (
     <div className={classes.hero}>
       <div className={classes.heroBg}>

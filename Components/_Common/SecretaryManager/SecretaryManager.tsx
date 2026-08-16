@@ -14,6 +14,7 @@ const panelRootByNode: Record<NodeWithAcl, string> = {
   clinic: "/clinicpanel",
   insurance: "/insurancepanel",
   pharmacy: "/pharmacypanel",
+  paraClinic: "/paraClinicPanel",
 };
 
 const SecretaryManager = ({ name }: { name: NodeWithAcl }) => {

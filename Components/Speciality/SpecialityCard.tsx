@@ -25,14 +25,13 @@ const DoctorsSlider = ({
 }: {
   nodes: IDoctorProfile<{ Province: Record<never, never> }>[];
 }) => {
-  if (!nodes.length) return null;
-
   const [swiper, setSwiper] = useState<SwiperClass | null>();
 
   const [index, setIndex] = useState<number>(0);
 
   const chunks = useMemo(() => chunk(nodes), [nodes]);
 
+  if (!nodes.length) return null;
   if (!chunks.length) return null;
   return (
     <div className={classes.sliderContent}>

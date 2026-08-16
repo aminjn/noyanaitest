@@ -82,7 +82,7 @@ const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
                           "PreviewSecretaryAccessLevel",
                           <PreviewSecretaryAccessLevelPopup
                             node={node}
-                            name="doctor"
+                            name={name}
                           />,
                         )
                       }

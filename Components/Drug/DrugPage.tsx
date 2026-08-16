@@ -51,7 +51,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
         secondaryAction={{ title: getContent("inspectDrugWithAi") }}
         icon={<PillIcon />}
       />
-      <BigAd />
+      <BigAd position="drug1" />
       <ListPageWithSide
         side={
           <Fragment>
@@ -91,7 +91,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
         />
         <div className={classes.box}>{<RenderRtf value={data.content} />}</div>
       </ListPageWithSide>
-      <SmallAd />
+      <SmallAd position="drug2" />
     </ListPageLayout>
   );
 };

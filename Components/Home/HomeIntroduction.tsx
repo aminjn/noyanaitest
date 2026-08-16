@@ -8,13 +8,16 @@ import "swiper/css";
 import Image from "next/image";
 import { imagePath } from "../helpers/imagepath";
 import { t4xlBold, tlgDemiBold } from "../UI/Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 const INITIAL_ITEM_WIDTH = 240;
 const WIDTH_STEP = 20;
 const GAP = 46;
 
 const HomeIntroductionInner = ({ nodes }: { nodes: IHomeIntroduction[] }) => {
-  const getContent = useLocale();
+  // const getContent = useLocale();
+
+  const getContent = useScopedLocale(["home"]);
 
   const [isServer, setIsServer] = useState<boolean>(true);
 

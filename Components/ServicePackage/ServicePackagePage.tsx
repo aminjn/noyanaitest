@@ -40,7 +40,7 @@ const ServicePackagePage = ({ data }: ServicepackagePageProps) => {
       model="servicePackages"
       qnaCount={500}
       sameAs={data.sameAs.map((el) => (
-        <ServiceCard node={{ ...el, model: "ServicePackage" }} />
+        <ServiceCard key={el._id} node={{ ...el, model: "ServicePackage" }} />
       ))}
       sameAsIcon={<StarDotPlusIcon />}
       sameAsTitle="similarPackages"

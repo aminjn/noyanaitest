@@ -127,7 +127,7 @@ const ClinicsListPage = ({
           ))}
         </SpecialsBox>
       )}
-      <BigAd />
+      <BigAd position="clinics1" />
       <ListPageSearch
         onChange={(e) => setQuery(e.target.value)}
         placeholder={getContent("searchInClinics")}
@@ -157,7 +157,7 @@ const ClinicsListPage = ({
           <ClinicCard key={node._id} node={node} />
         ))}
       </ListPageList>
-      <SmallAd />
+      <SmallAd position="clinics2" />
     </ListPageLayout>
   );
 };

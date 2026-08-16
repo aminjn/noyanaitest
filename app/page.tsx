@@ -1,10 +1,29 @@
 import { getPublicData } from "@/Components/helpers/getPublicData";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import HomePage, { HomePageProps } from "@/Components/Home/HomePage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 
+// This page is the reference example for the namespaced text content
+// system: instead of relying only on the root layout's full textContent
+// fetch (still there, unchanged, and still what every other page uses),
+// it additionally fetches just the "common" + "home" namespaces (see
+// Components/Enums/contentNamespaces.tsx) and layers them on top via
+// LocaleScopeProvider. HomePage's children keep calling useLocale() exactly
+// as before — nothing in Components/Home/* needed to change.
 const Home = async () => {
-  const data = await getPublicData<HomePageProps>("home");
+  const [data, textContent] = await Promise.all([
+    getPublicData<HomePageProps>("home"),
+    getScopedTextContent(["common", "home"]),
+  ]);
 
-  return <HomePage {...data} />;
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "home"]}
+      initialTextContent={textContent}
+    >
+      <HomePage {...data} />
+    </LocaleScopeProvider>
+  );
 };
 
 export default Home;

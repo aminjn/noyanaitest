@@ -16,110 +16,19 @@ import Bell01Icon from "../Icons/Bell01Icon";
 import SearchButton from "./SearchButton";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import { IBlogCategory } from "../Admin/Blog/AdminManageBlogsPage";
-import { IProductCategory } from "../Admin/ProductCategory/AdminManageProductCategoriesPage";
-import { IDiseaseCategory } from "../Admin/DiseaseCategory/AdminManageDiseaseCategoriesPage";
-import { IClinicCategory } from "../Admin/ClinicCategory/AdminManageClinicCategoriesPage";
-import { IHospitalCategory } from "../Admin/HospitalCategory/AdminManageHospitalCategoriesPage";
-import { ITestCategory } from "../Admin/TestCategory/AdminManageTestCategoriesPage";
-import { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
-import { ISpecialityCategory } from "../Admin/SpecialityCategory/AdminManageSpecialityCategoriesPage";
-import { ISymptomCategory } from "../Admin/SymptomCategory/AdminManageSymptomCategoriesPage";
-import { IInsuranceCategory } from "../Admin/InsuranceCategory/AdminManageInsuranceCategoriesPage";
 import { t2xsRegular, txsMedium } from "../UI/Typography";
 import useUser from "../Hooks/useUser";
 import useProgress from "../Hooks/useProgress";
 import NotificationButton from "./NotificationButton";
 import CartIcon from "../Icons/CartIcon";
 import CartButton from "./CartButton";
-
-export interface HeaderCategories {
-  blogCategories: IBlogCategory[];
-  productCategories: IProductCategory[];
-  diseaseCategories: IDiseaseCategory[];
-  clinicCategories: IClinicCategory[];
-  hospitalCategories: IHospitalCategory[];
-  testCategories: ITestCategory[];
-  serviceCategories: IServiceCategory[];
-  specialityCategories: ISpecialityCategory[];
-  symptomCategories: ISymptomCategory[];
-  insuranceCategories: IInsuranceCategory[];
-}
-
-type CategoryLike = {
-  _id: string;
-  slug?: string;
-  name?: string;
-  title?: string;
-};
-
-const categoryTabs: {
-  key: keyof HeaderCategories;
-  label: ContentKey;
-  allTarget: string;
-  hrefFor: (value: string) => string;
-}[] = [
-  {
-    key: "specialityCategories",
-    label: "specialities",
-    allTarget: "/speciality",
-    hrefFor: (v) => `/speciality?category=${v}`,
-  },
-  {
-    key: "diseaseCategories",
-    label: "diseases",
-    allTarget: "/disease",
-    hrefFor: (v) => `/disease?category=${v}`,
-  },
-  {
-    key: "symptomCategories",
-    label: "symptoms",
-    allTarget: "/symptom",
-    hrefFor: () => "/symptom",
-  },
-  {
-    key: "clinicCategories",
-    label: "clinics",
-    allTarget: "/clinic",
-    hrefFor: (v) => `/clinic?category=${v}`,
-  },
-  {
-    key: "hospitalCategories",
-    label: "hospitals",
-    allTarget: "/hospital",
-    hrefFor: (v) => `/hospital?category=${v}`,
-  },
-  {
-    key: "serviceCategories",
-    label: "services",
-    allTarget: "/service",
-    hrefFor: (v) => `/service?category=${v}`,
-  },
-  {
-    key: "productCategories",
-    label: "products",
-    allTarget: "/product",
-    hrefFor: (v) => `/product?category=${v}`,
-  },
-  {
-    key: "insuranceCategories",
-    label: "insurances",
-    allTarget: "/insurance",
-    hrefFor: (v) => `/insurance?category=${v}`,
-  },
-  {
-    key: "testCategories",
-    label: "tests",
-    allTarget: "/test",
-    hrefFor: () => "/test",
-  },
-  {
-    key: "blogCategories",
-    label: "blogs",
-    allTarget: "/mag",
-    hrefFor: (v) => `/mag/category/${v}`,
-  },
-];
+import BarsIcon from "../Icons/BarsIcon";
+import PublicMobileMenu from "./PublicMobileMenu";
+import {
+  HeaderCategories,
+  categoryTabs,
+  CategoryLike,
+} from "./headerCategories";
 
 const NavLink = ({
   target,
@@ -298,12 +207,28 @@ const PublicHeader = () => {
 
   const push = useProgress();
 
+  const getContent = useLocale();
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
   return (
     <div className={classes.container}>
       <header className={classes.main}>
-        <Link className={classes.right} href={"/"}>
-          <LogoLong />
-        </Link>
+        <div className={classes.start}>
+          <button
+            type="button"
+            className={classes.burgerBtn}
+            aria-label={getContent("menu")}
+            onClick={() => setIsMobileMenuOpen(true)}
+          >
+            <Ixon width="1.25rem">
+              <BarsIcon />
+            </Ixon>
+          </button>
+          <Link className={classes.right} href={"/"}>
+            <LogoLong />
+          </Link>
+        </div>
         <nav className={classes.nav}>
           <NavLink title="homePage" target="/" />
           <Categories />
@@ -323,12 +248,18 @@ const PublicHeader = () => {
           <NavLink title="forDoctors" target="/doctorpanel" accent />
         </nav>
         <div className={classes.left}>
-          <SearchButton />
+          <span className={classes.searchWrap}>
+            <SearchButton />
+          </span>
           <CartButton />
           <NotificationButton />
           <UserButton />
         </div>
       </header>
+      <PublicMobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
     </div>
   );
 };

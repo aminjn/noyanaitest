@@ -1,9 +1,9 @@
 import Ixon from "@/Components/UI/Ixon";
-import { IncomingTaminPharmacyResponse } from "./PharmacyFillPrescriptionPage";
 import classes from "./PrescriptionListItem.module.css";
 import FolderIcon from "@/Components/Icons/FolderIcon";
 import useLocale from "@/Components/Hooks/useLocale";
 import { ReactNode } from "react";
+import { IncomingTaminPharmacyResponse } from "./FindPrescriptionAgent";
 
 const PrescriptionListItem = ({
   prescription,

@@ -110,7 +110,7 @@ const SpecialitiesPage = ({
 
   useEffect(() => {
     setSelectedCategories(getSelectedCategories);
-  }, [searchParams]);
+  }, [getSelectedCategories, searchParams]);
 
   return (
     <ListPageLayout
@@ -211,7 +211,7 @@ const SpecialitiesPage = ({
           <SpecialityCard key={node._id} node={node} />
         ))}
       </ListPageList>
-      <SmallAd />
+      <SmallAd position="specialities1" />
     </ListPageLayout>
   );
 };

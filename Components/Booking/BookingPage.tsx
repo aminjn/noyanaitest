@@ -14,7 +14,7 @@ import WithSideMap from "./WithSideMap";
 
 const BookingPage = () => {
   const { data, error } = useSWR<
-    IDoctorProfile<{ MainSpecialityPopulated: true }>[]
+    IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[]
   >(`${API}/public/booking`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );

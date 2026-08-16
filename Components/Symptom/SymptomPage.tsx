@@ -89,7 +89,7 @@ const SymptomPage = ({
         secondaryAction={{ title: getContent("inspectSymptomWithAi") }}
         summary={data.summary}
       />
-      <BigAd />
+      <BigAd position="symptom1" resourceModel="Symptom" resource={data._id} />
       <ListPageWithSide
         side={
           <Fragment>
@@ -138,7 +138,11 @@ const SymptomPage = ({
           <RenderRtf value={data.content} />
         </div>
       </ListPageWithSide>
-      <SmallAd />
+      <SmallAd
+        position="symptom1"
+        resourceModel="Symptom"
+        resource={data._id}
+      />
     </ListPageLayout>
   );
 };

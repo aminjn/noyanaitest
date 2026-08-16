@@ -93,7 +93,7 @@ const DiseasesListPage = ({
         title={getContent("diseasesListIntroTitle")}
         description={getContent("diseasesListIntroDescription")}
       />
-      <BigAd />
+      <BigAd position="diseases1" />
       <ListPageSearch
         onChange={(e) => setQuery(e.target.value)}
         placeholder={getContent("searchInDiseases")}
@@ -117,7 +117,7 @@ const DiseasesListPage = ({
           <DiseaseCard key={node._id} node={node} />
         ))}
       </ListPageList>
-      <SmallAd />
+      <SmallAd position="diseases2" />
     </ListPageLayout>
   );
 };

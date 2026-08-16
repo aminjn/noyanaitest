@@ -11,7 +11,9 @@ import JsonLdSchema from "@/Components/UI/JsonLdSchema";
 
 export type DoctorPageProps = {
   data: IDoctor<{ SpecialityPopulated: Record<never, never> }>[];
-  profiles: IDoctorProfile<{ MainSpecialityPopulated: true }>[];
+  profiles: IDoctorProfile<{
+    MainSpecialityPopulated: Record<never, never>;
+  }>[];
   pagesCount: number;
 };
 
