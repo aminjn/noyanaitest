@@ -8,6 +8,7 @@ import ParaClinicIntro from "./ParaClinicIntro";
 import ParaClinicNav from "./ParaClinicNav";
 import classes from "./ParaClinicPage.module.css";
 import ParaClinicTests from "./ParaClinicTests";
+import BreadCrump from "../UI/BreadCrump";
 
 export type ParaClinicPageProps = {
   data: IParaClinic<{
@@ -24,6 +25,17 @@ export type ParaClinicPageProps = {
 const ParaClinicPage = ({ data }: ParaClinicPageProps) => {
   return (
     <div className={classes.main}>
+      <BreadCrump
+        trail={[
+          { title: "صفحه اصلی", target: "/" },
+          { title: "پاراکلینیک ها", target: "/paraClinic" },
+          {
+            title: data.name || data._id,
+            target: `/paraClinic/${data.slug || data._id}`,
+          },
+        ]}
+        className={classes.crump}
+      />
       <ParaClinicIntro data={data} />
       <ParaClinicNav data={data} />
       <ParaClinicTests data={data} />

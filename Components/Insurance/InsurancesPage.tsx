@@ -63,7 +63,12 @@ const InsurancesPage = ({
   }, [searchParams, query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "بیمه ها", target: "/insurance" },
+      ]}
+    >
       <div className={classes.header}>
         <div className={classes.headerIntro}>
           <div className={classes.titleBox}>

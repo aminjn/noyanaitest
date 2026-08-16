@@ -31,6 +31,14 @@ const InsurancePage = ({ data }: InsurancePageProps) => {
   return (
     <MedicalCenterLayout
       back={{ target: "/insurance", title: getContent("backToList") }}
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "بیمه ها", target: "/insurance" },
+        {
+          title: data.name || data._id,
+          target: `/insurance/${data.slug || data._id}`,
+        },
+      ]}
     >
       <InsurancePageIntro node={data} />
       <StickyNav map={sections} />

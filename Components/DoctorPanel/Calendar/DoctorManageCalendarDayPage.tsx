@@ -27,6 +27,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import Button from "@/Components/UI/Button";
 import MutateSessionPopup from "./MutateSessionPopup";
 import DeleteSessionPopup from "./DeleteSessionPopup";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 
 const DoctorManageCalendarDayPage = () => {
   const params = useParams<{ stamp: string }>();
@@ -38,6 +39,11 @@ const DoctorManageCalendarDayPage = () => {
   );
 
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("bookingCalendar"), target: "/doctorpanel/calendar" },
+  ]);
 
   const past = useMemo<boolean>(
     () => new Date(Number(params.stamp)) < new Date(),

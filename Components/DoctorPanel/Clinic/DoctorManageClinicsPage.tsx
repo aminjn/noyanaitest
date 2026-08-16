@@ -11,9 +11,15 @@ import DoctorClinicsTab from "./DoctorClinicsTab";
 import DoctorJoinClinicsTab from "./DoctorJoinClinicsTab";
 import DoctorClinicAdditionsTab from "./DoctorClinicAdditionsTab";
 import WithBalanceHeader from "../_UI/WithBalanceHeader";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 
 const DoctorManageClinicsPage = () => {
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("clinics"), target: "/doctorpanel/clinic" },
+  ]);
 
   return (
     <WithBalanceHeader>

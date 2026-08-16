@@ -9,6 +9,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import DoctorManageOfficeLocationTab from "./DoctorManageOfficeLocationTab";
 
@@ -20,6 +21,11 @@ const DoctorManageOfficePage = () => {
   );
 
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("office"), target: "/doctorpanel/office" },
+  ]);
 
   return (
     <HandleLoading data={!!data} error={error}>

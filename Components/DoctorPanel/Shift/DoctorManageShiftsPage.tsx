@@ -23,6 +23,7 @@ import {
 import TabSystem from "@/Components/Admin/UI/TabSystem";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import DayShifts from "./DayShifts";
 import Ixon from "@/Components/UI/Ixon";
 import ErrorIcon from "@/Components/Icons/ErrorIcon";
@@ -194,6 +195,13 @@ const DoctorManageShiftsPage = () => {
     `${API}/doctor/shift`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+
+  const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("shifts"), target: "/doctorpanel/shift" },
+  ]);
 
   return (
     <HandleLoading data={!!data} error={error}>

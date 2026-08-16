@@ -103,6 +103,14 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
     <div className={classes.main}>
       <MedicalCenterLayout
         back={{ target: "/hospital", title: getContent("backToHospitalsList") }}
+        trail={[
+          { title: "صفحه اصلی", target: "/" },
+          { title: "بیمارستان ها", target: "/hospital" },
+          {
+            title: data.name || data._id,
+            target: `/hospital/${data.slug || data._id}`,
+          },
+        ]}
       >
         <WideIntro
           name={data.name}

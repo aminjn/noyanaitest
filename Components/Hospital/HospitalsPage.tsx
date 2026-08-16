@@ -99,7 +99,12 @@ const HospitalsPage = ({
   }, [push, query, searchParams]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "بیمارستان ها", target: "/hospital" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("hospitalsListTitle")}
         legend={getContent("hospitalsListLegend")}

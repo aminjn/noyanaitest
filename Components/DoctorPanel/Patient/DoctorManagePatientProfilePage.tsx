@@ -9,6 +9,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import UserIdentity from "@/Components/Dashboard/UserIdentity";
 import Table from "@/Components/Admin/UI/Table";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -33,6 +34,11 @@ const DoctorManagePatientProfilePage = () => {
   );
 
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("patients"), target: "/doctorpanel/patient" },
+  ]);
 
   const { setPopup } = usePopup();
 

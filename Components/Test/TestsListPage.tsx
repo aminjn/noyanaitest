@@ -36,7 +36,12 @@ const TestsListPage = ({ data, pagesCount }: TestsListPageProps) => {
   }, [query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "تست ها", target: "/test" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("testListPageTitle")}
         legend={getContent("testListPageLegend")}

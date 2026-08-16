@@ -97,6 +97,7 @@ const linkMap: LinkMap = [
       { title: "داروخانه و آزمایشگاه", access: "Pharmacy", target: "pharmacy" },
       { title: "پاراکلینیک", target: "paraClinic" },
       { title: "تماس ها", access: "CallRoom", target: "callroom" },
+      { title: "تیکت های پشتیبانی", target: "ticket" },
       { title: "لینک کوتاه", access: "ShortLink", target: "shortlink" },
       { title: "انتقالات", access: "Redirection", target: "redirection" },
       { title: "بیماری ها", access: "Disease", target: "disease" },

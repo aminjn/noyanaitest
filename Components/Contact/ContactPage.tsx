@@ -27,7 +27,12 @@ const ContactPage = () => {
   const getContent = useLocale();
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "تماس با ما", target: "/contact" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("contactPageTitle")}
         legend={getContent("contactPageLegend")}

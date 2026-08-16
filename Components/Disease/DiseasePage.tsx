@@ -45,7 +45,16 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
   const getContent = useLocale();
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "بیماری ها", target: "/disease" },
+        {
+          title: data.name || data._id,
+          target: `/disease/${data.slug || data._id}`,
+        },
+      ]}
+    >
       <ListPageWideHeader
         icon={<FlaskIcon />}
         name={data.name || ""}

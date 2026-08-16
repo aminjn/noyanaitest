@@ -80,7 +80,12 @@ const ProductListPage = ({
   }, [searchParams, query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "محصولات", target: "/product" },
+      ]}
+    >
       <ListPageHeaderSearch
         title={getContent("productListPageTitle")}
         legend={getContent("productListPageLegend")}

@@ -1,5 +1,6 @@
 "use client";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import classes from "./PharmacyFillPrescriptionPage.module.css";
 import Form from "@/Components/UI/Form";
 import useForm from "@/Components/Hooks/useForm";
@@ -16,6 +17,12 @@ import PharmacyFilledPrescriptions from "./PharmacyFilledPrescriptions";
 
 const PharmacyFillPrescriptionPage = () => {
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/pharmacypanel" },
+    { title: getContent("prescriptions"), target: "/pharmacypanel/prescription" },
+  ]);
+
   return (
     <TabSystem
       items={[

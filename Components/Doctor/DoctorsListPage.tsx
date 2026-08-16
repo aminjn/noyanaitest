@@ -11,6 +11,7 @@ import DoctorsCardList from "../Booking/DoctorsCardList";
 import DoctorCardWithSessions from "../Booking/DoctorCardWithSessions";
 import Pagination from "../UI/Pagination";
 import { useParams } from "next/navigation";
+import BreadCrump from "../UI/BreadCrump";
 
 const switchPage = (page: number) => `/doctors/${page}`;
 
@@ -24,6 +25,13 @@ const DoctorsListPage = ({ data, profiles, pagesCount }: DoctorPageProps) => {
   return (
     <WithSideMap>
       <Fragment>
+        <BreadCrump
+          trail={[
+            { title: "صفحه اصلی", target: "/" },
+            { title: "پزشکان", target: "/doctors" },
+          ]}
+          className={classes.crump}
+        />
         <h1>{getContent("doctors")}</h1>
         <DoctorsCardList>
           {profiles.map((profile) => (

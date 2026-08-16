@@ -36,7 +36,12 @@ const SymptomsListPage = ({ data, pagesCount }: SymptomsListPageProps) => {
   }, [query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "علائم", target: "/symptom" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("symptomsListTitle")}
         legend={getContent("symptomsListLegend")}

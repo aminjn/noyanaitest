@@ -6,6 +6,8 @@ import useProgress from "@/Components/Hooks/useProgress";
 import Act from "@/Components/UI/Act";
 import { useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
+import useLocale from "@/Components/Hooks/useLocale";
 
 const TaminCbPage = () => {
   const [code, setCode] = useState<string | null>(null);
@@ -15,6 +17,13 @@ const TaminCbPage = () => {
   const push = useProgress();
 
   const searchParams = useSearchParams();
+
+  const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("tamin"), target: "/doctorpanel/tamin" },
+  ]);
 
   useEffect(() => {
     if (!code) {

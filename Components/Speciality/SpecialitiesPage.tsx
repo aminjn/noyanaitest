@@ -113,7 +113,12 @@ const SpecialitiesPage = ({
   }, [searchParams]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "تخصص ها", target: "/speciality" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("specialitiesListTitle")}
         legend={getContent("specialitiesListLegend")}

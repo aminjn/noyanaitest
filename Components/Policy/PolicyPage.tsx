@@ -10,6 +10,7 @@ import {
   txlBold,
 } from "../UI/Typography";
 import classes from "./PolicyPage.module.css";
+import BreadCrump from "../UI/BreadCrump";
 
 export type PolicyPageProps = { data: IPrivacySection[] };
 
@@ -17,11 +18,23 @@ const PolicyPage = ({
   data,
   legend,
   title,
-}: PolicyPageProps & { title: ContentKey; legend: ContentKey }) => {
+  path,
+}: PolicyPageProps & {
+  title: ContentKey;
+  legend: ContentKey;
+  path: string;
+}) => {
   const getContent = useLocale();
 
   return (
     <div className={classes.main}>
+      <BreadCrump
+        trail={[
+          { title: "صفحه اصلی", target: "/" },
+          { title: getContent(title), target: path },
+        ]}
+        className={classes.crump}
+      />
       <div className={classes.header}>
         <h1 className={`${classes.title} ${t5xlExtraBold}`}>
           {getContent(title)}

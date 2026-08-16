@@ -64,7 +64,16 @@ const SymptomPage = ({
 
   console.log(drugs);
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "علائم", target: "/symptom" },
+        {
+          title: data.name || data._id,
+          target: `/symptom/${data.slug || data._id}`,
+        },
+      ]}
+    >
       <ListPageWideHeader
         icon={<FlaskIcon />}
         name={data.name || ""}

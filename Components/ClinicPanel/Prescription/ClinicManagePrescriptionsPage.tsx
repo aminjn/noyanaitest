@@ -10,6 +10,7 @@ import Act from "@/Components/UI/Act";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import Input from "@/Components/UI/Input";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import Form from "@/Components/UI/Form";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import useNotification from "@/Components/Hooks/useNotification";
@@ -34,6 +35,11 @@ const ClinicManagePrescriptionsPage = () => {
   const pushNotification = useNotification();
 
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/clinicpanel" },
+    { title: getContent("prescriptions"), target: "/clinicpanel/prescription" },
+  ]);
 
   const onSubmit = useCallback(() => {
     if (!!payload) return;

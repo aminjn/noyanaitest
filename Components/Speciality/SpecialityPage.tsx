@@ -39,7 +39,16 @@ const SpecialityPage = ({
   const searchParams = useSearchParams();
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "تخصص ها", target: "/speciality" },
+        {
+          title: data.name || data._id,
+          target: `/speciality/${data.slug || data._id}`,
+        },
+      ]}
+    >
       <div className={classes.header}>
         <div className={classes.headerIcon}>
           <Ixon width="2.5rem">

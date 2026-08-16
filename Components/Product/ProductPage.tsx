@@ -94,6 +94,14 @@ const ProductPage = ({ data }: ProductPageProps) => {
 
   return (
     <CartableNodePage
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "محصولات", target: "/product" },
+        {
+          title: data.name || data._id,
+          target: `/product/${data.slug || data._id}`,
+        },
+      ]}
       commentsCount={522}
       images={data.images}
       qnaCount={22}

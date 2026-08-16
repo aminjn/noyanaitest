@@ -7,6 +7,7 @@ import { API } from "../config";
 import useUser from "../Hooks/useUser";
 import { mutate } from "swr";
 import SocketContext from "../Store/SocketContext";
+import useProgress from "../Hooks/useProgress";
 
 const LogoutPopup = () => {
   const { closePopup } = usePopup();
@@ -14,6 +15,8 @@ const LogoutPopup = () => {
   const { refreshUser } = useUser(true);
 
   const { reconnect } = useContext(SocketContext);
+
+  const push = useProgress();
 
   return (
     <div className={classes.main}>
@@ -32,6 +35,7 @@ const LogoutPopup = () => {
           mutate(() => true, undefined, { revalidate: false });
           reconnect();
           closePopup();
+          push("/");
         }}
       />
     </div>

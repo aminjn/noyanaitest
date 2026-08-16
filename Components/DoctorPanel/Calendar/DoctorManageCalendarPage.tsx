@@ -18,6 +18,8 @@ import CheckIcon from "@/Components/Icons/CheckIcon";
 import MinusIcon from "@/Components/Icons/MinusIcon";
 import DoctorCalendarDay from "./DoctorCalendarDay";
 import Loading from "@/Components/Admin/UI/Loading";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
+import useLocale from "@/Components/Hooks/useLocale";
 
 type WeekDayStatus = "Full" | "None" | "Partial";
 
@@ -111,6 +113,13 @@ const WeekDay = ({
 };
 
 const DoctorManageCalendarPage = () => {
+  const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("bookingCalendar"), target: "/doctorpanel/calendar" },
+  ]);
+
   const today = useMemo<Date>(() => {
     const then = new Date();
     then.setMinutes(0);

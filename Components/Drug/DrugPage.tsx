@@ -30,7 +30,16 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
   const getContent = useLocale();
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "دارو ها", target: "/drug" },
+        {
+          title: data.name || data._id,
+          target: `/drug/${data.slug || data._id}`,
+        },
+      ]}
+    >
       <ListPageWideHeader
         name={data.name || ""}
         category={{

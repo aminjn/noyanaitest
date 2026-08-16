@@ -3,6 +3,7 @@
 import TabSystem from "@/Components/Admin/UI/TabSystem";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import GetPharmacyPrescription from "./GetPhamacyPrescription";
 import DoctorTaminTokenManager from "@/Components/DoctorPanel/Prescription/DoctorTaminTokenManager";
 import GetSubmittedPrescInfo from "./GetSubmittedPrescInfo";
@@ -10,6 +11,12 @@ import GetAdditiveDrugs from "./GetAdditiveDrugs";
 
 const PharmacyTaminPage = () => {
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/pharmacypanel" },
+    { title: getContent("tamin"), target: "/pharmacypanel/tamin" },
+  ]);
+
   return (
     <WithTitle title={getContent("precriptionFiller")}>
       <TabSystem

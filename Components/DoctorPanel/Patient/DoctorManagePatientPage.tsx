@@ -7,6 +7,8 @@ import { IDoctorPatient } from "./DoctorManagePatientsPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
+import useLocale from "@/Components/Hooks/useLocale";
 import UserIdentity from "@/Components/Dashboard/UserIdentity";
 import { Fragment } from "react";
 import UserVitals from "@/Components/Dashboard/UserVitals";
@@ -28,6 +30,13 @@ const DoctorManagePatientPage = () => {
   >(data ? `${API}/doctor/patient/file/${data._id}` : null, (url: string) =>
     fetcher({ url }).then((res) => res.data)
   );
+
+  const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("patients"), target: "/doctorpanel/patient" },
+  ]);
 
   return (
     <HandleLoading data={!!data} error={error}>

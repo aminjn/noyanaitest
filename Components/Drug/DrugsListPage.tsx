@@ -33,7 +33,12 @@ const DrugsListPage = ({ data, pagesCount }: DrugsListPageProps) => {
   }, [query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "دارو ها", target: "/drug" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("drugsListTitle")}
         legend={getContent("drugsListLegend")}

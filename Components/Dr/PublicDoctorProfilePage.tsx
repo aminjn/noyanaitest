@@ -5,6 +5,7 @@ import FaqList from "../UI/FaqList";
 import DrIntroduction from "./DrtIntroduction";
 import classes from "./PublicDoctorProfilePage.module.css";
 import PublicDrIntro from "./PublicDrIntro";
+import BreadCrump from "../UI/BreadCrump";
 
 export type PublicDoctorProfilePageProps = {
   doctor: IDoctorProfile<{
@@ -21,8 +22,20 @@ const PublicDoctorProfilePage = ({
   doctor,
   faqs,
 }: PublicDoctorProfilePageProps) => {
+  const fullName =
+    `${doctor.firstName || ""} ${doctor.lastName || ""}`.trim() ||
+    doctor._id;
+
   return (
     <div>
+      <BreadCrump
+        trail={[
+          { title: "صفحه اصلی", target: "/" },
+          { title: "پزشکان", target: "/doctors" },
+          { title: fullName, target: `/dr/${doctor.slug || doctor._id}` },
+        ]}
+        className={classes.crump}
+      />
       <PublicDrIntro doctor={doctor} />
       <DrIntroduction doctor={doctor} />
       <FaqList items={faqs} />

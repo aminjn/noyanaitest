@@ -79,7 +79,12 @@ const DiseasesListPage = ({
   }, [query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "بیماری ها", target: "/disease" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("diseasesListTitle")}
         legend={getContent("diseasesListLegend")}

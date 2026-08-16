@@ -1,3 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.crump {
+  margin-bottom: 1.5rem;
+}
+
 .main {
   display: flex;
   gap: 0.75rem;

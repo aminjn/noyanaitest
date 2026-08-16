@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.crump {
+  margin-bottom: 1.5rem;
+}
+
 .comments {
   margin-top: 2rem;
 }

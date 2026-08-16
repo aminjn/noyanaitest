@@ -56,7 +56,12 @@ const ParaClinicsListPage = ({
   }, [query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "پاراکلینیک ها", target: "/paraClinic" },
+      ]}
+    >
       <ListPageHeader
         title={getContent("noyanParaClinicTitle")}
         legend={getContent("noyanParaClinicLegend")}

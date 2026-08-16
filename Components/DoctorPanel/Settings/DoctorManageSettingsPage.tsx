@@ -7,9 +7,15 @@ import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import { doctorSessionTypes } from "../Calendar/DoctorCalendarDay";
 import SettingsTab from "./SettingsTab";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 
 const DoctorManageSettingsPage = () => {
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("settings"), target: "/doctorpanel/settings" },
+  ]);
 
   return (
     <WithBalanceHeader>

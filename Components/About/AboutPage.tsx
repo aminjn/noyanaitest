@@ -13,6 +13,7 @@ import AboutStats from "./AboutStats";
 import AboutStories from "./AboutStories";
 import AboutTeam from "./AboutTeam";
 import AboutWhys from "./AboutWhys";
+import BreadCrump from "../UI/BreadCrump";
 
 export type AboutPageProps = {
   whys: IAboutWhy[];
@@ -25,6 +26,13 @@ const AboutPage = ({ partners, team, whys }: AboutPageProps) => {
 
   return (
     <div className={classes.main}>
+      <BreadCrump
+        trail={[
+          { title: "صفحه اصلی", target: "/" },
+          { title: "درباره ما", target: "/about" },
+        ]}
+        className={classes.crump}
+      />
       <AboutIntro />
       <AboutStories />
       <AboutMissions />

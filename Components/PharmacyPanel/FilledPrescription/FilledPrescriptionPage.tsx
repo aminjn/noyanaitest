@@ -8,6 +8,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import List from "@/Components/Admin/UI/List";
 import DataPair from "@/Components/Admin/UI/DataPair";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -27,6 +28,11 @@ const FilledPrescriptionPage = () => {
   );
 
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/pharmacypanel" },
+    { title: getContent("prescriptions"), target: "/pharmacypanel/prescription" },
+  ]);
 
   return (
     <HandleLoading data={!!data} error={error}>

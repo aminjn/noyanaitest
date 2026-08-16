@@ -1,7 +1,23 @@
 import { ReactNode } from "react";
 import classes from "./ListPageLayout.module.css";
-const ListPageLayout = ({ children }: { children: ReactNode }) => {
-  return <div className={classes.main}>{children}</div>;
+import BreadCrump from "../BreadCrump";
+import { BreadCrumpTrail } from "@/Components/Store/BreadCrumpStore";
+
+const ListPageLayout = ({
+  children,
+  trail,
+}: {
+  children: ReactNode;
+  trail?: BreadCrumpTrail;
+}) => {
+  return (
+    <div className={classes.main}>
+      {!!trail?.length && (
+        <BreadCrump trail={trail} className={classes.crump} />
+      )}
+      {children}
+    </div>
+  );
 };
 
 export default ListPageLayout;

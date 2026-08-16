@@ -4,7 +4,7 @@ import { API } from "@/Components/config";
 import useDoctor from "@/Components/Hooks/useDoctor";
 import useForm from "@/Components/Hooks/useForm";
 import useLocale from "@/Components/Hooks/useLocale";
-import { IDoctorProfile } from "../DoctorPanelPage";
+import { genders, IDoctorProfile } from "../DoctorPanelPage";
 import { ISpeciality } from "@/Components/Admin/Speciality/AdminManageSpecialitiesPage";
 
 const DoctorManageDetailsTab = () => {
@@ -19,14 +19,60 @@ const DoctorManageDetailsTab = () => {
 
   const getContent = useLocale();
 
+  // mcCode comes back populated (server selects only its `mcCode` string
+  // field) purely for read-only display here, so it's swapped for a plain
+  // string before being handed to CreateForm.
+  const formDefaultValue = doctor
+    ? {
+        ...doctor,
+        mcCode:
+          (doctor.mcCode as unknown as { mcCode?: string } | undefined)
+            ?.mcCode || "",
+      }
+    : undefined;
+
   return (
     <HandleLoading data={!!doctor}>
       {!!doctor && (
         <CreateForm
           style={{ width: "100%" }}
-          defaultValue={doctor}
+          defaultValue={formDefaultValue}
           hookProvided={form}
           renderer={{
+            firstName: {
+              type: "text",
+              title: getContent("firstName"),
+              readOnly: true,
+            },
+            lastName: {
+              type: "text",
+              title: getContent("lastName"),
+              readOnly: true,
+            },
+            ssid: {
+              type: "text",
+              title: getContent("ssid"),
+              readOnly: true,
+            },
+            gender: {
+              type: "select",
+              title: getContent("gender"),
+              readOnly: true,
+              options: genders.reduce(
+                (acc, el) => ({ ...acc, [el]: getContent(el) }),
+                {},
+              ),
+            },
+            mcCode: {
+              type: "text",
+              title: getContent("mcCode"),
+              readOnly: true,
+            },
+            medicalSystemCode: {
+              type: "text",
+              title: getContent("medicalSystemCode"),
+              readOnly: true,
+            },
             avatar: { type: "image", title: getContent("avatar") },
             mainSpeciality: {
               type: "nodes",

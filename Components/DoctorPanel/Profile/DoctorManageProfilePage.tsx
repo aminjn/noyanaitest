@@ -4,6 +4,7 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Loading from "@/Components/Admin/UI/Loading";
 import useDoctor from "@/Components/Hooks/useDoctor";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import DoctorManageLocationTab from "./DoctorManageLocationTab";
 import DoctorManageGalleryTab from "./DoctorManageGalleryTab";
@@ -15,6 +16,11 @@ const DoctorManageProfilePage = () => {
   const { doctor } = useDoctor();
 
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("profile"), target: "/doctorpanel/profile" },
+  ]);
 
   return (
     <HandleLoading data={!!doctor}>

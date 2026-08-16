@@ -8,6 +8,7 @@ import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import Table from "@/Components/Admin/UI/Table";
 import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "@/Components/Admin/UI/TableActions";
@@ -37,6 +38,11 @@ const DoctorManagePatientsPage = () => {
   );
 
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("patients"), target: "/doctorpanel/patient" },
+  ]);
 
   return (
     <HandleLoading data={!!data} error={error}>

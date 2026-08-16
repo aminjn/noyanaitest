@@ -68,7 +68,7 @@ const DayCard = ({
         (el) => new Date(el.date) >= now && new Date(el.date) < then,
       ) || null
     );
-  }, []);
+  }, [date, node.availabilities]);
 
   const distanceFromNow = useMemo<number>(() => {
     const now = new Date();
@@ -105,7 +105,7 @@ const DayCard = ({
     } else {
       return todaysShifs.bounds.length;
     }
-  }, [getShiftSessions, todaysShifs]);
+  }, [isToday, todaysShifs]);
 
   return (
     <div

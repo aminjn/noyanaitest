@@ -60,6 +60,14 @@ const ClinicPage = ({ data }: ClinicPageProps) => {
   return (
     <MedicalCenterLayout
       back={{ target: "/clinic", title: getContent("backToClinicsList") }}
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "کلینیک ها", target: "/clinic" },
+        {
+          title: data.name || data._id,
+          target: `/clinic/${data.slug || data._id}`,
+        },
+      ]}
     >
       <ClinicIntro node={data} />
       <ClinicNav node={data} />

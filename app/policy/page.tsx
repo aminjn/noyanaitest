@@ -6,7 +6,12 @@ const Policy = async () => {
   const data = await getPublicData<PolicyPageProps>(`/policy`);
   if (!data) return notFound();
   return (
-    <PolicyPage {...data} title="policyPageTitle" legend="policyPageLegend" />
+    <PolicyPage
+      {...data}
+      title="policyPageTitle"
+      legend="policyPageLegend"
+      path="/policy"
+    />
   );
 };
 

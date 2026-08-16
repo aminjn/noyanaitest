@@ -8,7 +8,12 @@ const Privacy = async () => {
   if (!data) return notFound();
 
   return (
-    <PolicyPage {...data} title="privacyPageTitle" legend="privacyPageLegend" />
+    <PolicyPage
+      {...data}
+      title="privacyPageTitle"
+      legend="privacyPageLegend"
+      path="/privacy"
+    />
   );
 };
 

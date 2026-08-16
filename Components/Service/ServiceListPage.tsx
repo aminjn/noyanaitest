@@ -80,7 +80,12 @@ const ServiceListPage = ({
   }, [searchParams, query, push]);
 
   return (
-    <ListPageLayout>
+    <ListPageLayout
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "خدمات", target: "/service" },
+      ]}
+    >
       <ListPageHeaderSearch
         legend={getContent("serviceListLegend")}
         title={getContent("serviceListTitle")}

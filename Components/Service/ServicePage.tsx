@@ -32,6 +32,14 @@ const ServicePage = ({ data }: ServicePageProps) => {
 
   return (
     <CartableNodePage
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "خدمات", target: "/service" },
+        {
+          title: data.name || data._id,
+          target: `/service/${data.slug || data._id}`,
+        },
+      ]}
       cartTitle="provider"
       commentsCount={500}
       images={data.images}

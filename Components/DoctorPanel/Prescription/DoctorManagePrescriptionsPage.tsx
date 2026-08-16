@@ -7,6 +7,7 @@ import { API } from "@/Components/config";
 import DoctorTaminTokenManager from "./DoctorTaminTokenManager";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import useLocale from "@/Components/Hooks/useLocale";
+import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import useProgress from "@/Components/Hooks/useProgress";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -392,6 +393,12 @@ const ReferralPrescriptions = () => {
 
 const DoctorManagePrescriptionsPage = () => {
   const getContent = useLocale();
+
+  useBreadCrump([
+    { title: getContent("dashboard"), target: "/doctorpanel" },
+    { title: getContent("drugsAndPrescriptions"), target: "/doctorpanel/drug" },
+  ]);
+
   return (
     <ClientTabSystem
       items={[

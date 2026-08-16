@@ -9,6 +9,7 @@ import Button from "../UI/Button";
 import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import { FaqItem } from "../Home/HomeFaqs";
 import { tbaseMedium, tsmMedium, txlDemiBold } from "../UI/Typography";
+import BreadCrump from "../UI/BreadCrump";
 
 export type FaqPageProps = { data: IFaq[]; categories: IFaqCategory[] };
 const FaqPage = ({ categories, data }: FaqPageProps) => {
@@ -30,6 +31,13 @@ const FaqPage = ({ categories, data }: FaqPageProps) => {
 
   return (
     <div className={classes.main}>
+      <BreadCrump
+        trail={[
+          { title: "صفحه اصلی", target: "/" },
+          { title: "سوالات متداول", target: "/faq" },
+        ]}
+        className={classes.crump}
+      />
       <Badge
         color="Primary"
         size="XXL"

@@ -57,6 +57,17 @@ const BlogsPage = (props: BlogsPageProps) => {
         trail={[
           { title: "صفحه اصلی", target: "/" },
           { title: "بلاگ ها", target: "/mag" },
+          ...(params.nodeSlug
+            ? [
+                {
+                  title:
+                    categories?.find(
+                      (c) => (c.slug || c._id) === params.nodeSlug,
+                    )?.title || params.nodeSlug,
+                  target: `/mag/category/${params.nodeSlug}`,
+                },
+              ]
+            : []),
         ]}
       />
       <div className={classes.header}>
