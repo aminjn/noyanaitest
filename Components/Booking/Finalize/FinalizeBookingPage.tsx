@@ -591,7 +591,7 @@ const Inner = ({
     Office: Record<never, never>;
   }> | null>(() => {
     if (!data) return null;
-    const thisDayOfWeek = (date.getDay() + 6) % 7;
+    const thisDayOfWeek = (date.getDay() + 1) % 7;
     const target = data.shifts.find(
       (shift) =>
         shift.day === thisDayOfWeek && shift.start <= start && shift.end >= end,

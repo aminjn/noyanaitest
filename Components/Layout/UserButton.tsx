@@ -20,6 +20,7 @@ import { ContentKey } from "../Enums/contentKeys";
 import CategoriesIcon from "../Icons/CategoriesIcon";
 import Calendar02Icon from "../Icons/Calendar02Icon";
 import HeadphoneIcon from "../Icons/HeadphoneIcon";
+import Bell01Icon from "../Icons/Bell01Icon";
 import LogoutIcon from "../Icons/LogoutIcon";
 import LogoutPopup from "../Popups/LogoutPopup";
 import Link from "next/link";
@@ -52,6 +53,7 @@ const UserButton = () => {
         href: "/dashboard/booking",
       },
       { title: "support", icon: <HeadphoneIcon />, href: "/dashboard/support" },
+      
       {
         title: "signout",
         icon: <LogoutIcon />,

@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWR, { mutate as globalMutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { API } from "../config";
 import useUser, { IUser, MongoDoc, UserPopulation } from "./useUser";
@@ -119,6 +119,7 @@ const useCart = () => {
     {
       onSuccess: () => {
         mutate();
+        globalMutate(`${API}/cart/size`);
       },
     },
   );
@@ -142,6 +143,7 @@ const useCart = () => {
     {
       onSuccess: () => {
         mutate();
+        globalMutate(`${API}/cart/size`);
       },
     },
   );
@@ -157,7 +159,12 @@ const useCart = () => {
   const { trigger: clearCart, isMutating: isClearing } = useSWRMutation(
     `${API}/cart`,
     (url) => fetcher({ url, method: "PUT" }),
-    { onSuccess: () => mutate() },
+    {
+      onSuccess: () => {
+        mutate();
+        globalMutate(`${API}/cart/size`);
+      },
+    },
   );
 
   const getItemQty = useCallback(
@@ -165,8 +172,6 @@ const useCart = () => {
       cart?.[model].find((el) => el.item._id === itemId)?.qty || 0,
     [cart],
   );
-
-  console.log(cart);
 
   return {
     cart,

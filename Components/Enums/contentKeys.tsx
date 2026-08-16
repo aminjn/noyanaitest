@@ -901,6 +901,11 @@ const contentKeys = [
   "cartInfoItem0",
   "cartInfoItem1",
   "cartInfoItem2",
+  "cart",
+  "cartIsEmpty",
+  "cartIsEmptyLegend",
+  "productPackages",
+  "servicePackages",
   "plusMembers",
   "plusTextPre",
   "plusTextPost",
@@ -1228,6 +1233,11 @@ const contentKeys = [
   "ticketClosedNotice",
   "missingMessageErrorMessage",
   "sendMessage",
+  "notifications",
+  "markAllAsRead",
+  "markAsRead",
+  "noNotificationsYet",
+  "unreadOnly",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

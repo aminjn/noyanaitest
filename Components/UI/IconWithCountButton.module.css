@@ -1,0 +1,15 @@
+.main {
+  position: relative;
+}
+
+.count {
+  top: 0;
+  inset-inline-start: 0;
+  transform: translateX(50%) translateY(-50%);
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--white);
+  background-color: var(--error);
+  border-radius: 50%;
+}

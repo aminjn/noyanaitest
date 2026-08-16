@@ -27,6 +27,11 @@ import { ISpecialityCategory } from "../Admin/SpecialityCategory/AdminManageSpec
 import { ISymptomCategory } from "../Admin/SymptomCategory/AdminManageSymptomCategoriesPage";
 import { IInsuranceCategory } from "../Admin/InsuranceCategory/AdminManageInsuranceCategoriesPage";
 import { t2xsRegular, txsMedium } from "../UI/Typography";
+import useUser from "../Hooks/useUser";
+import useProgress from "../Hooks/useProgress";
+import NotificationButton from "./NotificationButton";
+import CartIcon from "../Icons/CartIcon";
+import CartButton from "./CartButton";
 
 export interface HeaderCategories {
   blogCategories: IBlogCategory[];
@@ -289,6 +294,10 @@ const WithSubs = ({
 };
 
 const PublicHeader = () => {
+  const { user } = useUser();
+
+  const push = useProgress();
+
   return (
     <div className={classes.container}>
       <header className={classes.main}>
@@ -315,11 +324,8 @@ const PublicHeader = () => {
         </nav>
         <div className={classes.left}>
           <SearchButton />
-          <button type="button">
-            <Ixon width="1.5rem">
-              <Bell01Icon />
-            </Ixon>
-          </button>
+          <CartButton />
+          <NotificationButton />
           <UserButton />
         </div>
       </header>
