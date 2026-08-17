@@ -158,7 +158,7 @@ const DashboardManageBookingsPage = () => {
               component: (node) => <FormatDate value={node.createdAt} />,
             },
             actions: {
-              name: "عملیات",
+              name: getContent("actions"),
               component: (node) => (
                 <TableActions>
                   <IconLink href={`/dashboard/booking/${node._id}`}>

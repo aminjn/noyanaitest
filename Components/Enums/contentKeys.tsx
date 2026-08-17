@@ -44,6 +44,7 @@ const contentKeys = [
   "toman",
   "secrataries",
   "bookingCalendar",
+  "schedule",
   "patients",
   "licenses",
   "clinics",
@@ -337,6 +338,14 @@ const contentKeys = [
   "offices",
   "telephone",
   "sureDeleteOffice",
+  "inventory",
+  "isHome",
+  "whyChoose",
+  "stages",
+  "sameAs",
+  "sureDeleteService",
+  "servicePackage",
+  "sureDeleteServicePackage",
   "becomeADoctorPageTitle",
   "noMcCodeIsLinkedToYourAccount",
   "createDoctroProfielWithThisMcCodeMessage",
@@ -1255,6 +1264,7 @@ const contentKeys = [
   "basePrice",
   "addProduct",
   "sureDeleteMyProduct",
+  "sureDeleteProductPackage",
   "special",
   "readyTime",
   "availableTests",
@@ -1269,6 +1279,10 @@ const contentKeys = [
   "menu",
   "doctorsAndMedicalCenters",
   "supportWorkingHours",
+
+  "becomeSomethingPageTitle",
+  "becomeSomethingPageLegend",
+  "paraClinic",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

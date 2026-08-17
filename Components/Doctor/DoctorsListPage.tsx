@@ -27,8 +27,8 @@ const DoctorsListPage = ({ data, profiles, pagesCount }: DoctorPageProps) => {
       <Fragment>
         <BreadCrump
           trail={[
-            { title: "صفحه اصلی", target: "/" },
-            { title: "پزشکان", target: "/doctors" },
+            { title: getContent("home"), target: "/" },
+            { title: getContent("doctors"), target: "/doctors" },
           ]}
           className={classes.crump}
         />

@@ -145,10 +145,12 @@ const ProductPageIntro = ({
               <Ixon className={classes.star} width="1rem">
                 <StarIcon />
               </Ixon>
-              <span className={t2xsRegular}>4.5</span>
+              <span className={t2xsRegular}>
+                {data.averageScore.toFixed(1)}
+              </span>
             </div>
             <span className={`${classes.commentCount} ${t2xsRegular}`}>
-              {getContent("xScoreFromBuyers", ["5922"])}
+              {getContent("xScoreFromBuyers", [data.commentCount.toString()])}
             </span>
             <Button
               variant="Secondary"
@@ -170,7 +172,7 @@ const ProductPageIntro = ({
                 </Ixon>
               }
             >
-              {getContent("nComments", ["336"])}
+              {getContent("nComments", [data.commentCount.toString()])}
             </Button>
             <Button
               variant="Disable"

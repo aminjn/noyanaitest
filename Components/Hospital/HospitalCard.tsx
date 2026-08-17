@@ -41,12 +41,12 @@ const HospitalCard = ({
             </span>
           </Link>
           <div className={classes.stats}>
-            <span className={classes.commentCount}>(1530)</span>
+            <span className={classes.commentCount}>({node.commentCount})</span>
             <div className={classes.score}>
               <Ixon width=".75rem">
                 <StarIcon />
               </Ixon>
-              <span className={txsRegular}>4.9</span>
+              <span className={txsRegular}>{node.averageScore.toFixed(1)}</span>
             </div>
           </div>
         </div>

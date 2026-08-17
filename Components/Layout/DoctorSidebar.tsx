@@ -32,6 +32,9 @@ import { currencize } from "../helpers/currencize";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import useDoctorAcl from "../Hooks/useDoctorAcl";
 import CogIcon from "../Icons/CogIcon";
+import ClockIcon from "../Icons/ClockIcon";
+import CategoriesIcon from "../Icons/CategoriesIcon";
+import PackageIcon from "../Icons/PackageIcon";
 
 const DoctorSidebar = () => {
   const { data: balance } = useSWR<number>(`${API}/finance`, (url: string) =>
@@ -52,6 +55,18 @@ const DoctorSidebar = () => {
         show: true,
       },
       { title: "office", icon: <BuildingIcon />, target: "office", show: true },
+      {
+        title: "services",
+        icon: <CategoriesIcon />,
+        target: "service",
+        show: true,
+      },
+      {
+        title: "servicePackages",
+        icon: <PackageIcon />,
+        target: "servicepackage",
+        show: true,
+      },
       {
         title: "financialMangement",
         icon: <WalletIcon />,
@@ -80,6 +95,12 @@ const DoctorSidebar = () => {
         title: "bookingCalendar",
         icon: <CalendarIcon />,
         target: "calendar",
+        show: hasAccess(),
+      },
+      {
+        title: "schedule",
+        icon: <ClockIcon />,
+        target: "schedule",
         show: hasAccess(),
       },
       {

@@ -106,6 +106,8 @@ export interface IHospital<
     ? IInsurance<T["Insurances"]>[]
     : string[];
   certificates?: string[];
+  averageScore: number;
+  commentCount: number;
 }
 
 const CreateHospitalPopup = ({ mutate }: { mutate: () => unknown }) => {

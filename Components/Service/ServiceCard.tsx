@@ -23,12 +23,12 @@ const ServiceCard = ({
 }) => {
   return (
     <ServiceOrProductCard
-      commentCount={3}
+      commentCount={node.commentCount}
       target={`/${node.model === "Service" ? "service" : "servicePackage"}/${node.slug || node._id}`}
       discount={node.discount}
       name={node.name || ""}
       price={node.price}
-      rating={4.5}
+      rating={node.averageScore}
       category={node.category?.title}
       owner={
         node.owner

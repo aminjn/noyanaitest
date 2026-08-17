@@ -76,6 +76,8 @@ export interface IServicePackage<
   stages?: string;
   results?: string;
   summary?: string;
+  averageScore: number;
+  commentCount: number;
 }
 
 const AdminManageServicePackagesPage = () => {

@@ -34,7 +34,7 @@ const ServicePackagePage = ({ data }: ServicepackagePageProps) => {
   return (
     <CartableNodePage
       cartTitle="provider"
-      commentsCount={500}
+      commentsCount={data.commentCount}
       images={data.images}
       itemId={data._id}
       model="servicePackages"
@@ -44,9 +44,9 @@ const ServicePackagePage = ({ data }: ServicepackagePageProps) => {
       ))}
       sameAsIcon={<StarDotPlusIcon />}
       sameAsTitle="similarPackages"
-      score={4.9}
+      score={data.averageScore}
       specs={data.specs}
-      totalScore={1200}
+      totalScore={data.commentCount}
       category={data.category ? { name: data.category.title } : undefined}
       name={data.name}
       discount={data.discount}

@@ -1,15 +1,17 @@
-"use client";
+import DotorManageArticlesClient from "@/Components/DoctorPanel/_Stub/DoctorManageArticlesPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
-
-const DotorManageArticles = () => {
-  const getContent = useLocale();
-  useBreadCrump([
-    { title: getContent("dashboard"), target: "/doctorpanel" },
-    { title: getContent("articles"), target: "/doctorpanel/article" },
-  ]);
-  return <p>DotorManageArticles</p>;
+const DotorManageArticles = async () => {
+  const textContent = await getScopedTextContent(["common", "doctorPanelStub"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "doctorPanelStub"]}
+      initialTextContent={textContent}
+    >
+      <DotorManageArticlesClient />
+    </LocaleScopeProvider>
+  );
 };
 
 export default DotorManageArticles;

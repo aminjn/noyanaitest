@@ -33,7 +33,7 @@ const HomeRegister = () => {
         <p className={`${classes.description} ${txlRegular}`}>
           {getContent("registerDescription")}
         </p>
-        <Link href={"/doctorpanel"} className={classes.action}>
+        <Link href={"/become"} className={classes.action}>
           <span className={tmdMedium}>
             {getContent("registerDoctorsAndClinics")}
           </span>

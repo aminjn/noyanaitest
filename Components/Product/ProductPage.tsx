@@ -102,7 +102,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
           target: `/product/${data.slug || data._id}`,
         },
       ]}
-      commentsCount={522}
+      commentsCount={data.commentCount}
       images={data.images}
       qnaCount={22}
       sameAs={data.sameAs.map((item) => (
@@ -110,9 +110,9 @@ const ProductPage = ({ data }: ProductPageProps) => {
       ))}
       sameAsIcon={<ShoppingCartIcon />}
       sameAsTitle={"othersAlsoBoughtThese"}
-      score={4.9}
+      score={data.averageScore}
       specs={data.specs}
-      totalScore={5203}
+      totalScore={data.commentCount}
       beforeTabs={<ProductSellers data={data.sellers} />}
       category={data.category ? { name: data.category.name || "" } : undefined}
       name={data.name}

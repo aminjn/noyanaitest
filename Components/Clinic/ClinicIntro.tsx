@@ -5,8 +5,8 @@ const ClinicIntro = ({ node }: { node: ClinicPageNode }) => {
   return (
     <WideIntro
       name={node.name}
-      commentCount={450}
-      score={4.9}
+      commentCount={node.commentCount}
+      score={node.averageScore}
       category={node.category?.name}
       image={node.image}
       province={node.province?.name}

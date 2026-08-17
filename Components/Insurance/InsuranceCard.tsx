@@ -80,7 +80,9 @@ const InsuranceCard = ({ node }: { node: InsurancesPageNode }) => {
             <Ixon width=".75rem" className={classes.star}>
               <StarIcon />
             </Ixon>
-            <span className={`${classes.scoreValue} ${t2xsMedium}`}>4.9</span>
+            <span className={`${classes.scoreValue} ${t2xsMedium}`}>
+              {node.averageScore.toFixed(1)}
+            </span>
           </div>
         </div>
         <div className={classes.fade} />

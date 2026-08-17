@@ -62,7 +62,7 @@ const ClinicCard = ({
             <Ixon width=".75rem">
               <StarIcon />
             </Ixon>
-            <span>4.9</span>
+            <span>{node.averageScore.toFixed(1)}</span>
           </div>
         </div>
         {!!node.province && (

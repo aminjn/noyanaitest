@@ -1,7 +1,17 @@
 import SecretaryManageBossesPage from "@/Components/SecretaryPanel/SecretaryManageBossesPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-const SecretaryManageInsurances = () => {
-  return <SecretaryManageBossesPage name="insurance" />;
+const SecretaryManageInsurances = async () => {
+  const textContent = await getScopedTextContent(["common", "secretaryPanelHome"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "secretaryPanelHome"]}
+      initialTextContent={textContent}
+    >
+      <SecretaryManageBossesPage name="insurance" />
+    </LocaleScopeProvider>
+  );
 };
 
 export default SecretaryManageInsurances;

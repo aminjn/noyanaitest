@@ -1,15 +1,17 @@
-"use client";
+import DoctorManageOffersClient from "@/Components/DoctorPanel/_Stub/DoctorManageOffersPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
-
-const DoctorManageOffers = () => {
-  const getContent = useLocale();
-  useBreadCrump([
-    { title: getContent("dashboard"), target: "/doctorpanel" },
-    { title: getContent("offers"), target: "/doctorpanel/offer" },
-  ]);
-  return <p>DoctorManageOffers</p>;
+const DoctorManageOffers = async () => {
+  const textContent = await getScopedTextContent(["common", "doctorPanelStub"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "doctorPanelStub"]}
+      initialTextContent={textContent}
+    >
+      <DoctorManageOffersClient />
+    </LocaleScopeProvider>
+  );
 };
 
 export default DoctorManageOffers;

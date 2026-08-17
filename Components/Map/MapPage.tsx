@@ -65,11 +65,13 @@ const ResultItem = ({
   title,
   description,
   target,
+  score,
 }: {
   mode: MapFilter;
   title: string;
   description?: string;
   target: string;
+  score?: number;
 }) => {
   return (
     <Link className={classes.item} href={target}>
@@ -84,12 +86,14 @@ const ResultItem = ({
           </span>
         )}
       </div>
-      <div className={classes.itemScore}>
-        <span>4.9</span>
-        <Ixon width=".75rem">
-          <StarIcon />
-        </Ixon>
-      </div>
+      {typeof score === "number" && (
+        <div className={classes.itemScore}>
+          <span>{score.toFixed(1)}</span>
+          <Ixon width=".75rem">
+            <StarIcon />
+          </Ixon>
+        </div>
+      )}
     </Link>
   );
 };
@@ -182,6 +186,7 @@ const MapPage = () => {
                 key={doctor._id}
                 description={doctor.mainSpeciality?.name}
                 target={`/dr/${doctor.slug || doctor._id}`}
+                score={doctor.averageScore}
               />
             ))}
           </div>

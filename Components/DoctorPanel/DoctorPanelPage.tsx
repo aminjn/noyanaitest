@@ -272,6 +272,8 @@ export interface IDoctorProfile<
   availabilities: T["Availabilities"] extends DoctorAvailabilityPopulation
     ? IDoctorAvailability<T["Availabilities"]>[]
     : never;
+  averageScore: number;
+  feedbackCount: number;
 }
 
 type PhoneConsultSettingsPopulation = { DoctorPopulated?: boolean };

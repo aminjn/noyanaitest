@@ -27,7 +27,7 @@ const ProductCard = ({
   return (
     <ServiceOrProductCard
       name={node.name || ""}
-      commentCount={3}
+      commentCount={node.commentCount}
       discount={
         node.model === "Product"
           ? node.sellers[0]?.discount || 0
@@ -36,7 +36,7 @@ const ProductCard = ({
       price={
         node.model === "Product" ? node.sellers[0]?.price || 0 : node.price || 0
       }
-      rating={4.5}
+      rating={node.averageScore}
       category={node.category?.name}
       detail={{
         icon: (

@@ -1,0 +1,33 @@
+.scopes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  padding-block: 0.375rem;
+}
+
+.scopeTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background-color: var(--infoT1);
+  color: var(--infoS1);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+a.scopeTag {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.scopeTag:hover {
+  background-color: var(--infoT2);
+}
+
+.noScope {
+  color: var(--gray6);
+  font-size: 0.75rem;
+}

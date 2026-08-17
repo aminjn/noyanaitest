@@ -1,15 +1,17 @@
-"use client";
+import DoctorManageDiscountsClient from "@/Components/DoctorPanel/_Stub/DoctorManageDiscountsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
-
-const DoctorManageDiscounts = () => {
-  const getContent = useLocale();
-  useBreadCrump([
-    { title: getContent("dashboard"), target: "/doctorpanel" },
-    { title: getContent("discounts"), target: "/doctorpanel/discount" },
-  ]);
-  return <p>DoctorManageDiscounts</p>;
+const DoctorManageDiscounts = async () => {
+  const textContent = await getScopedTextContent(["common", "doctorPanelStub"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "doctorPanelStub"]}
+      initialTextContent={textContent}
+    >
+      <DoctorManageDiscountsClient />
+    </LocaleScopeProvider>
+  );
 };
 
 export default DoctorManageDiscounts;

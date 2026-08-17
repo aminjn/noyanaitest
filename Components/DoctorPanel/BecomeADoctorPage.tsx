@@ -24,8 +24,9 @@ import usePopup from "../Hooks/usePopup";
 import ConfirmMedicalCodePopup from "./ConfirmMedicalCodePopup";
 
 export type McCodepopulation = Population<{ User: UserPopulation }>;
-export interface IMcCode<T extends McCodepopulation = McCodepopulation>
-  extends MongoDoc {
+export interface IMcCode<
+  T extends McCodepopulation = McCodepopulation,
+> extends MongoDoc {
   user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   mcCode: string;
   createdAt: Date;
@@ -38,7 +39,7 @@ const BecomeADoctorPage = () => {
     isLoading: isMcsLoading,
     mutate,
   } = useSWR<IMcCode[]>(`${API}/doctor/request`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,7 +61,7 @@ const BecomeADoctorPage = () => {
                   onClick={() =>
                     setPopup(
                       "ConfirmMedicalCode",
-                      <ConfirmMedicalCodePopup node={el} />
+                      <ConfirmMedicalCodePopup node={el} />,
                     )
                   }
                 >

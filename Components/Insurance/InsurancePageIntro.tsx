@@ -44,7 +44,7 @@ const InsurancePageIntro = ({ node }: { node: InsurancePageNode }) => {
                 <Ixon width=".875rem">
                   <StarIcon />
                 </Ixon>
-                <span>{`${4.6} (${getContent("xComment", ["980"])})`}</span>
+                <span>{`${node.averageScore.toFixed(1)} (${getContent("xComment", [node.commentCount.toString()])})`}</span>
               </div>
             </div>
           </div>

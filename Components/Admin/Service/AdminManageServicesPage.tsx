@@ -79,6 +79,8 @@ export interface IService<
   whyChoose?: string;
   stages?: string;
   results?: string;
+  averageScore: number;
+  commentCount: number;
 }
 
 export const mutateServiceFormRenderer: FormRenderer<IService> = {

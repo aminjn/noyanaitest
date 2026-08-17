@@ -2,12 +2,14 @@ import DiseasesListPage, {
   DiseasesListPageProps,
 } from "@/Components/Disease/DiseasesListPage";
 import { getPublicData } from "@/Components/helpers/getPublicData";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { notFound } from "next/navigation";
 import {
   getListPageMetadata,
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 
 export const generateMetadata = () => getListPageMetadata("/disease");
 
@@ -22,15 +24,21 @@ const DiseasesList = async (ctx: {
   params.append("page", page.toString());
   if (search) params.append("query", search);
   if (category) params.append("category", category);
-  const data = await getPublicData<DiseasesListPageProps>(
-    `disease?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<DiseasesListPageProps>(`disease?${params.toString()}`),
+    getScopedTextContent(["common", "diseasesList"]),
+  ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/disease");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <DiseasesListPage {...data} />
+      <LocaleScopeProvider
+        namespaces={["common", "diseasesList"]}
+        initialTextContent={textContent}
+      >
+        <DiseasesListPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

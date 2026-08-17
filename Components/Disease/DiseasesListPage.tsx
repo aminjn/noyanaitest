@@ -81,8 +81,8 @@ const DiseasesListPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "بیماری ها", target: "/disease" },
+        { title: getContent("home"), target: "/" },
+        { title: getContent("diseasesListTitle"), target: "/disease" },
       ]}
     >
       <ListPageHeader

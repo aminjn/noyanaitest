@@ -1,15 +1,17 @@
-"use client";
+import DoctorManageLicenceClient from "@/Components/DoctorPanel/_Stub/DoctorManageLicencePage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
-
-const DoctorManageLicence = () => {
-  const getContent = useLocale();
-  useBreadCrump([
-    { title: getContent("dashboard"), target: "/doctorpanel" },
-    { title: getContent("licenses"), target: "/doctorpanel/license" },
-  ]);
-  return <p>DoctorManageLicence</p>;
+const DoctorManageLicence = async () => {
+  const textContent = await getScopedTextContent(["common", "doctorPanelStub"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "doctorPanelStub"]}
+      initialTextContent={textContent}
+    >
+      <DoctorManageLicenceClient />
+    </LocaleScopeProvider>
+  );
 };
 
 export default DoctorManageLicence;

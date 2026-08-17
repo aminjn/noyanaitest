@@ -74,6 +74,8 @@ export interface IProduct<
     ? IProduct<T["SameAs"]>[]
     : string[];
   price?: number;
+  averageScore: number;
+  commentCount: number;
 }
 
 export type ProductImagePopulation = Population<{ Product: ProductPopulation }>;

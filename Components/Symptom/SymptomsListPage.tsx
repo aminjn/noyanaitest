@@ -38,8 +38,8 @@ const SymptomsListPage = ({ data, pagesCount }: SymptomsListPageProps) => {
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "علائم", target: "/symptom" },
+        { title: getContent("home"), target: "/" },
+        { title: getContent("symptomsListTitle"), target: "/symptom" },
       ]}
     >
       <ListPageHeader

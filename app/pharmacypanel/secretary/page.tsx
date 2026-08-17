@@ -1,7 +1,17 @@
 import SecretaryManager from "@/Components/_Common/SecretaryManager/SecretaryManager";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-const PharmacyManageSecretaries = () => {
-  return <SecretaryManager name="pharmacy" />;
+const PharmacyManageSecretaries = async () => {
+  const textContent = await getScopedTextContent(["common", "secretaryManager"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "secretaryManager"]}
+      initialTextContent={textContent}
+    >
+      <SecretaryManager name="pharmacy" />
+    </LocaleScopeProvider>
+  );
 };
 
 export default PharmacyManageSecretaries;

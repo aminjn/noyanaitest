@@ -41,7 +41,7 @@ const ServicePage = ({ data }: ServicePageProps) => {
         },
       ]}
       cartTitle="provider"
-      commentsCount={500}
+      commentsCount={data.commentCount}
       images={data.images}
       itemId={data._id}
       model="services"
@@ -51,9 +51,9 @@ const ServicePage = ({ data }: ServicePageProps) => {
       ))}
       sameAsIcon={<StarDotPlusIcon />}
       sameAsTitle={"similarServices"}
-      score={4.9}
+      score={data.averageScore}
       specs={data.specs}
-      totalScore={4650}
+      totalScore={data.commentCount}
       category={data.category ? { name: data.category.title } : undefined}
       discount={data.discount}
       name={data.name}

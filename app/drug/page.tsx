@@ -2,12 +2,14 @@ import DrugsListPage, {
   DrugsListPageProps,
 } from "@/Components/Drug/DrugsListPage";
 import { getPublicData } from "@/Components/helpers/getPublicData";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { notFound } from "next/navigation";
 import {
   getListPageMetadata,
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 
 export const generateMetadata = () => getListPageMetadata("/drug");
 
@@ -22,16 +24,22 @@ const DrugsList = async (ctx: {
   params.append("page", page.toString());
   if (search) params.append("query", search);
 
-  const data = await getPublicData<DrugsListPageProps>(
-    `drug?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<DrugsListPageProps>(`drug?${params.toString()}`),
+    getScopedTextContent(["common", "drugsList"]),
+  ]);
 
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/drug");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <DrugsListPage {...data} />
+      <LocaleScopeProvider
+        namespaces={["common", "drugsList"]}
+        initialTextContent={textContent}
+      >
+        <DrugsListPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

@@ -121,6 +121,8 @@ export interface IClinic<
   businessTimes?: string;
   services?: string[];
   certificates?: string[];
+  averageScore: number;
+  commentCount: number;
 }
 
 export type ClinicDepartmentPopulation = Population<{

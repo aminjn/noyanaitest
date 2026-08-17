@@ -68,14 +68,13 @@ const ServiceCard = ({
             </span>
           </div>
         )}
-        {
-          //TODO: calculate this
-        }
         <div className={classes.scoreBox}>
           <span className={`${classes.commentCount} ${t2xsRegular}`}>
-            {getCompContent("xComment", ["3"])}
+            {getCompContent("xComment", [node.commentCount.toString()])}
           </span>
-          <span className={`${classes.score} ${t2xsRegular}`}>4.5</span>
+          <span className={`${classes.score} ${t2xsRegular}`}>
+            {node.averageScore.toFixed(1)}
+          </span>
           <Ixon className={classes.star} width="1rem">
             <StarIcon />
           </Ixon>

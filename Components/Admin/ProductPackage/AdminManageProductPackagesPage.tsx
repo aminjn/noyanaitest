@@ -70,6 +70,8 @@ export interface IProductPackage<
   summary?: string;
   description?: string;
   whyChoose?: string;
+  averageScore: number;
+  commentCount: number;
 }
 
 const AdminManageProductPackagesPage = () => {

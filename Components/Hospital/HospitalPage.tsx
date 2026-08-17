@@ -114,8 +114,8 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
       >
         <WideIntro
           name={data.name}
-          commentCount={450}
-          score={4.9}
+          commentCount={data.commentCount}
+          score={data.averageScore}
           category={data.category?.name}
           image={data.image}
           province={data.province?.name}

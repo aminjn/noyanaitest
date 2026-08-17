@@ -65,6 +65,8 @@ export interface IInsurance<
   plans: T["Plans"] extends InsurancePlanPopulation
     ? IInsurancePlan<T["Plans"]>[]
     : never;
+  averageScore: number;
+  commentCount: number;
 }
 
 export type DoctorInsurancePopulation = Population<{

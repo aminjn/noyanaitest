@@ -1,7 +1,17 @@
 import SupportPage from "@/Components/Dashboard/Support/SupportPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-const Support = () => {
-  return <SupportPage />;
+const Support = async () => {
+  const textContent = await getScopedTextContent(["common", "dashboardSupport"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "dashboardSupport"]}
+      initialTextContent={textContent}
+    >
+      <SupportPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default Support;

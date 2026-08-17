@@ -43,7 +43,7 @@ const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
   return (
     <CartableNodePage
       cartTitle="provider"
-      commentsCount={200}
+      commentsCount={data.commentCount}
       images={data.images}
       itemId={data._id}
       model="productPackages"
@@ -53,9 +53,9 @@ const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
       ))}
       sameAsIcon={<StarDotPlusIcon />}
       sameAsTitle="similarPackages"
-      score={4.9}
+      score={data.averageScore}
       specs={data.specs}
-      totalScore={4500}
+      totalScore={data.commentCount}
       category={data.category ? { name: data.category.name } : undefined}
       discount={data.discount}
       name={data.name}
