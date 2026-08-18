@@ -5,6 +5,7 @@ import { HeadingLevel } from "./RTFConfigs";
 import Image from "next/image";
 import { FILE_PATH } from "@/Components/config";
 import AdvertisementItem from "./AdvertisementItem";
+import HostedImage from "../HostedImage";
 
 const Heading = forwardRef<
   HTMLElement,
@@ -41,8 +42,8 @@ const RenderElement = (props: RenderElementProps) => {
     case "img":
       return (
         <div className={classes.image} contentEditable={false} {...attributes}>
-          <Image
-            src={`${FILE_PATH}/${props.element.src}`}
+          <HostedImage
+            src={props.element.src}
             alt={props.element.alt}
             style={{ objectFit: "cover" }}
             fill

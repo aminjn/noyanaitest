@@ -10,6 +10,7 @@ import Button from "../UI/Button";
 import useLocale from "../Hooks/useLocale";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 const ClinicCard = ({
   node,
@@ -25,9 +26,9 @@ const ClinicCard = ({
   return (
     <li className={classes.main}>
       <div className={classes.image}>
-        <Image
+        <HostedImage
           alt={node.name || ""}
-          src={`${FilePath}/${node.image}`}
+          src={node.image}
           sizes="22.75rem"
           style={{ objectFit: "contain" }}
           fill

@@ -11,6 +11,31 @@
   overflow: hidden;
 }
 
+.close {
+  display: none;
+}
+
+@media (max-width: 48rem) {
+  .main {
+    width: 100%;
+    padding-block: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    align-self: flex-start;
+    color: var(--gray10);
+    border-radius: 0.5rem;
+    background-color: var(--white);
+  }
+}
+
 .top {
   display: flex;
   flex-direction: column;

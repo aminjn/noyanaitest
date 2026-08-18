@@ -1,8 +1,7 @@
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { IAdvertisement } from "../Admin/Advertisement/AdminManageAdvertisementsPage";
 import classes from "./HomeAdSlider.module.css";
-import Image from "next/image";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import { useState } from "react";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
@@ -21,8 +20,8 @@ const HomeAdSlider = ({ nodes }: { nodes?: IAdvertisement[] }) => {
         {nodes.map((node) => (
           <SwiperSlide tag="li" key={node._id}>
             <div className={classes.image}>
-              <Image
-                src={imagePath(node.image)}
+              <HostedImage
+                src={node.image}
                 alt={node.name || ""}
                 style={{ objectFit: "contain" }}
                 fill

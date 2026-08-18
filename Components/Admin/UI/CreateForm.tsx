@@ -33,8 +33,15 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
           | "area"
           | "date"
           | "image"
-          | "rtf"
           | "strings";
+      }
+    | {
+        type: "rtf";
+        // Hides the image-picker/ad-inserter toolbar buttons, which browse
+        // the admin-only BlogMedia/InlineAdvertisement libraries. Set this
+        // for non-admin authors (org panels) who don't have access to those
+        // routes.
+        hideMediaLibrary?: boolean;
       }
     | { type: "select" | "options"; options: Record<string, string> }
     | { type: "multiselect"; options: Record<string, string> }
@@ -292,6 +299,7 @@ const CreateForm = <TInput, TResult = unknown>({
                 <span>{commons.title}</span>
                 <RTFEditor
                   {...commons}
+                  hideMediaLibrary={segment.hideMediaLibrary}
                   onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
                 />
               </div>

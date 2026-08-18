@@ -85,3 +85,34 @@
 .detailValue {
   color: var(--black);
 }
+
+@media (max-width: 64rem) {
+  .main {
+    flex-direction: column;
+  }
+
+  .contact {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 40rem) {
+  .about,
+  .contact {
+    padding: 1rem;
+  }
+
+  .features {
+    flex-wrap: wrap;
+  }
+
+  .feature {
+    flex: 1 1 calc(50% - 0.5rem);
+  }
+
+  .list {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+}

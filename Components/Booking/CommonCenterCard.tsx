@@ -13,6 +13,7 @@ import ScoreBadge from "./ScoreBadge";
 import StarIcon from "../Icons/StarIcon";
 import MoreMenusButton from "../UI/MoreMenusButton";
 import useLocale from "../Hooks/useLocale";
+import useComplexLocale from "../Hooks/useComplexLocale";
 import usePopup from "../Hooks/usePopup";
 import ReportProblemPopup from "./ReportProblemPopup";
 import EditIcon from "../Icons/EditIcon";
@@ -22,6 +23,8 @@ import Link from "next/link";
 import LocationIcon from "../Icons/LocationIcon";
 import PlusIcon from "../Icons/PlusIcon";
 import Button from "../UI/Button";
+import { BookingView } from "./BookingPage2";
+import HostedImage from "../UI/HostedImage";
 const CommonCenterCard = ({
   name,
   avatar,
@@ -31,6 +34,7 @@ const CommonCenterCard = ({
   address,
   coords,
   banner,
+  view,
 }: {
   name: string;
   avatar?: string;
@@ -40,66 +44,170 @@ const CommonCenterCard = ({
   address?: string;
   coords?: [number, number];
   banner?: string;
+  view: BookingView;
 }) => {
   const getContent = useLocale();
 
+  const getCompContent = useComplexLocale();
+
   const { setPopup } = usePopup();
+
+  const introBlock = (
+    <div className={classes.intro}>
+      <div className={classes.image}>
+        <HostedImage
+          alt={name}
+          src={avatar}
+          fill
+          sizes="3.5rem"
+          style={{ objectFit: "cover" }}
+        />
+        <Ixon className={classes.verify} width="1rem">
+          <VerifyIcon />
+        </Ixon>
+      </div>
+      <div className={classes.detailBox}>
+        <div className={classes.details}>
+          <span className={`${classes.name} ${tsmDemiBold}`}>{name}</span>
+          {!!summary && (
+            <span className={`${classes.summary} ${txsRegular}`}>
+              {summary}
+            </span>
+          )}
+        </div>
+        <div className={classes.tags}>
+          <div className={t2xsMedium}>Tag1</div>
+          <div className={t2xsMedium}>Tag2</div>
+          <div className={t2xsMedium}>Tag3</div>
+          <div className={t2xsMedium}>Tag4</div>
+          <div className={t2xsMedium}>Tag5</div>
+          <div className={t2xsMedium}>Tag6</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const scoreBlock = (
+    <div className={classes.score}>
+      <ScoreBadge icon={<StarIcon />} iconColor="var(--yellow)" value="4.5" />
+      <MoreMenusButton
+        options={[
+          {
+            title: getContent("reportProblem"),
+            onClick: () => setPopup("reportproblem", <ReportProblemPopup />),
+            icon: <EditIcon />,
+          },
+          {
+            title: getContent("share"),
+            onClick: () => {
+              navigator.share({
+                text: `${location.protocol}//${location.host}/${nodeName}/${slug}`,
+              });
+            },
+            icon: <ShareIcon />,
+          },
+        ]}
+      />
+    </div>
+  );
+
+  const ctaBlock = (
+    <div className={classes.action}>
+      <Button
+        variant="Primary"
+        mode="Fill"
+        radius="Medium"
+        size="M"
+        className={classes.cta}
+      >
+        {getContent("seeProfile")}
+      </Button>
+    </div>
+  );
+
+  if (view === "Grid") {
+    return (
+      <div className={classes.gridMain}>
+        <div className={classes.gridTop}>
+          {introBlock}
+          {scoreBlock}
+        </div>
+        <div className={classes.gridMeta}>
+          <div className={classes.gridMetaRow}>
+            <button
+              className={`${classes.inlineLink} ${t2xsRegular}`}
+              type="button"
+            >
+              {getContent("seeBookings")}
+            </button>
+            <div className={classes.gridDoctorsCount}>
+              <span className={t2xsRegular}>
+                {getCompContent("xDoctorsRegisteredInCenter", ["50"])}
+              </span>
+              <Bitches />
+            </div>
+          </div>
+          {address && (
+            <div className={classes.gridMetaRow}>
+              {!!coords && (
+                <button
+                  className={`${classes.inlineLink} ${t2xsRegular}`}
+                  type="button"
+                >
+                  {getContent("seeOnMap")}
+                </button>
+              )}
+              <div className={classes.gridAddress}>
+                <span className={t2xsRegular}>{address}</span>
+                <Ixon width="1rem">
+                  <LocationIcon />
+                </Ixon>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className={classes.gridTiles}>
+          <div className={classes.gridTileCol}>
+            <button
+              className={`${classes.gridTile} ${classes.gridTileBlue}`}
+              type="button"
+            >
+              <span className={t2xsRegular}>{getContent("seeServices")}</span>
+              <Ixon width="1rem">
+                <PlusIcon />
+              </Ixon>
+            </button>
+            <button
+              className={`${classes.gridTile} ${classes.gridTilePurple}`}
+              type="button"
+            >
+              <span className={t2xsRegular}>{getContent("seeDoctors")}</span>
+              <Ixon width="1rem">
+                <PlusIcon />
+              </Ixon>
+            </button>
+          </div>
+          {!!banner && (
+            <div className={classes.gridBanner}>
+              <HostedImage
+                src={banner}
+                alt={name}
+                style={{ objectFit: "cover" }}
+                fill
+                sizes="11.25rem"
+              />
+            </div>
+          )}
+        </div>
+        {ctaBlock}
+      </div>
+    );
+  }
 
   return (
     <div className={classes.main}>
-      <div className={classes.intro}>
-        <div className={classes.image}>
-          <Image
-            alt={name}
-            src={`${FilePath}/${avatar}`}
-            fill
-            sizes="3.5rem"
-            style={{ objectFit: "cover" }}
-          />
-          <Ixon className={classes.verify} width="1rem">
-            <VerifyIcon />
-          </Ixon>
-        </div>
-        <div className={classes.detailBox}>
-          <div className={classes.details}>
-            <span className={`${classes.name} ${tsmDemiBold}`}>{name}</span>
-            {!!summary && (
-              <span className={`${classes.summary} ${txsRegular}`}>
-                {summary}
-              </span>
-            )}
-          </div>
-          <div className={classes.tags}>
-            <div className={t2xsMedium}>Tag1</div>
-            <div className={t2xsMedium}>Tag2</div>
-            <div className={t2xsMedium}>Tag3</div>
-            <div className={t2xsMedium}>Tag4</div>
-            <div className={t2xsMedium}>Tag5</div>
-            <div className={t2xsMedium}>Tag6</div>
-          </div>
-        </div>
-      </div>
-      <div className={classes.score}>
-        <ScoreBadge icon={<StarIcon />} iconColor="var(--yellow)" value="4.5" />
-        <MoreMenusButton
-          options={[
-            {
-              title: getContent("reportProblem"),
-              onClick: () => setPopup("reportproblem", <ReportProblemPopup />),
-              icon: <EditIcon />,
-            },
-            {
-              title: getContent("share"),
-              onClick: () => {
-                navigator.share({
-                  text: `${location.protocol}//${location.host}/${nodeName}/${slug}`,
-                });
-              },
-              icon: <ShareIcon />,
-            },
-          ]}
-        />
-      </div>
+      {introBlock}
+      {scoreBlock}
       <div className={classes.lines}>
         <div className={classes.line}>
           <Bitches />
@@ -131,8 +239,8 @@ const CommonCenterCard = ({
       </div>
       <div className={classes.side}>
         <div className={classes.banner}>
-          <Image
-            src={`${FilePath}/${banner}`}
+          <HostedImage
+            src={banner}
             alt={name}
             style={{ objectFit: "contain" }}
             fill
@@ -162,17 +270,7 @@ const CommonCenterCard = ({
           </div>
         </div>
       </div>
-      <div className={classes.action}>
-        <Button
-          variant="Primary"
-          mode="Fill"
-          radius="Medium"
-          size="M"
-          className={classes.cta}
-        >
-          {getContent("seeProfile")}
-        </Button>
-      </div>
+      {ctaBlock}
     </div>
   );
 };

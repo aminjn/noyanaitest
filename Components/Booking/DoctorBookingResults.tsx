@@ -35,7 +35,7 @@ const DoctorBookinResult = ({
   return (
     <BookingResults common={common} setCommon={setCommon}>
       {data?.map((doctor) => (
-        <DoctorCardBooking node={doctor} key={doctor._id} />
+        <DoctorCardBooking node={doctor} key={doctor._id} view={common.view} />
       ))}
     </BookingResults>
   );

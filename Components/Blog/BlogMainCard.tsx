@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import classes from "./BlogMainCard.module.css";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import Link from "next/link";
 import FormatDate from "../UI/FormatDate";
 
@@ -10,8 +9,8 @@ const BlogMainCard = ({ node }: { node: IBlog }) => {
     <li className={classes.main}>
       <Link href={`/mag/${node.slug || node._id}`} className={classes.link}>
         <div className={classes.image}>
-          <Image
-            src={imagePath(node.image)}
+          <HostedImage
+            src={node.image}
             alt={node.title || ""}
             fill
             style={{ objectFit: "cover" }}

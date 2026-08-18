@@ -6,8 +6,7 @@ import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import Image from "next/image";
-import { imagePath } from "@/Components/helpers/imagepath";
+import HostedImage from "@/Components/UI/HostedImage";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 import {
   Dispatch,
@@ -702,8 +701,8 @@ const Inner = ({
               <div className={classes.detail}>
                 <div className={classes.doctor}>
                   <div className={classes.doctorImage}>
-                    <Image
-                      src={imagePath(data.avatar)}
+                    <HostedImage
+                      src={data.avatar}
                       alt={getDoctorProfileLabel(data)}
                       fill
                       sizes="4rem"
@@ -789,9 +788,15 @@ const FinalizeBookingPage = () => {
     const _start = searchParams.get("s");
     const _end = searchParams.get("e");
     if (!_date || !_start || !_end) return push("/book");
-    const date = new Date(_date);
+    // Parse the YYYY-MM-DD key as local midnight explicitly. `new Date(_date)`
+    // would parse a date-only string as UTC midnight, which drifts from
+    // local midnight (and from `todayStart`) by the timezone offset.
+    const [dYear, dMonth, dDay] = _date.split("-").map(Number);
+    const date = new Date(dYear, (dMonth || 1) - 1, dDay || 1);
     const start = Number(_start);
     const end = Number(_end);
+    const now = new Date();
+    const isToday = date.getTime() === todayStart.getTime();
     if (
       isNaN(date.getTime()) ||
       isNaN(start) ||
@@ -801,7 +806,8 @@ const FinalizeBookingPage = () => {
       start < 0 ||
       start > 24 * 60 ||
       end < 0 ||
-      end > 24 * 60
+      end > 24 * 60 ||
+      (isToday && start <= now.getHours() * 60 + now.getMinutes())
     )
       return push("/book");
     setData({ date, end, start });

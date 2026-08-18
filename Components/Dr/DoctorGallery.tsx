@@ -1,6 +1,5 @@
-import Image from "next/image";
 import classes from "./DoctorGallery.module.css";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import { useState } from "react";
 
 export type GalleryItems = { src: string; alt: string }[];
@@ -27,9 +26,9 @@ const DoctorGallery = ({ items }: { items: GalleryItems }) => {
             }}
             onClick={() => setCurrentSlide(i)}
           >
-            <Image
+            <HostedImage
               alt={item.alt}
-              src={imagePath(item.src)}
+              src={item.src}
               fill
               style={{ objectFit: "cover" }}
               sizes="50dvw"

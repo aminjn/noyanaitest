@@ -4,13 +4,14 @@ import { FilePath } from "../config";
 import { tbaseRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import VerifyIcon from "../Icons/VerifyIcon";
+import HostedImage from "../UI/HostedImage";
 const ThinOwner = ({ name, src }: { name?: string; src?: string }) => {
   return (
     <div className={classes.owner}>
       <div className={classes.image}>
-        <Image
+        <HostedImage
           alt={name || ""}
-          src={`${FilePath}/${src}`}
+          src={src}
           sizes="2rem"
           style={{ objectFit: "cover" }}
           fill

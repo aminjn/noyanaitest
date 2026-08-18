@@ -7,6 +7,7 @@ import { t4xlBold, tsmRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
 import StarIcon from "../Icons/StarIcon";
+import HostedImage from "../UI/HostedImage";
 const WideIntro = ({
   category,
   image,
@@ -26,9 +27,9 @@ const WideIntro = ({
 
   return (
     <div className={classes.main}>
-      <Image
+      <HostedImage
         alt={name || ""}
-        src={`${FilePath}/${image}`}
+        src={image}
         fill
         sizes="61.375rem"
         style={{ objectFit: "cover" }}

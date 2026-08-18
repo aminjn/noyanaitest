@@ -92,12 +92,6 @@ const DoctorSidebar = () => {
         show: hasAccess(),
       },
       {
-        title: "bookingCalendar",
-        icon: <CalendarIcon />,
-        target: "calendar",
-        show: hasAccess(),
-      },
-      {
         title: "schedule",
         icon: <ClockIcon />,
         target: "schedule",

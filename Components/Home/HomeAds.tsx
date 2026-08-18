@@ -2,7 +2,7 @@ import Image from "next/image";
 import { IAdvertisement } from "../Admin/Advertisement/AdminManageAdvertisementsPage";
 import useLocale from "../Hooks/useLocale";
 import classes from "./HomeAds.module.css";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import mobileImage from "./mobile.png";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
@@ -46,8 +46,8 @@ const HomeAds = ({ nodes }: { nodes?: IAdvertisement[] }) => {
       <div className={classes.col}>
         {nodes.map((node) => (
           <div key={node._id} className={classes.ad}>
-            <Image
-              src={imagePath(node.image)}
+            <HostedImage
+              src={node.image}
               alt={node.name || ""}
               fill
               style={{ objectFit: "contain" }}

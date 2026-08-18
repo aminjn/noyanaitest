@@ -10,6 +10,7 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import Badge from "../UI/Badge";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
 import Link from "next/link";
+import HostedImage from "../UI/HostedImage";
 
 const HospitalCard = ({
   node,
@@ -25,9 +26,9 @@ const HospitalCard = ({
   return (
     <li className={classes.main}>
       <div className={classes.image}>
-        <Image
+        <HostedImage
           alt={node.name || ""}
-          src={`${FilePath}/${node.image}`}
+          src={node.image}
           fill
           style={{ objectFit: "contain" }}
           sizes="24rem"

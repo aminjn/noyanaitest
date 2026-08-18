@@ -12,6 +12,7 @@ import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import Link from "next/link";
+import XMarkIcon from "../Icons/XMarkIcon";
 
 export type ChatPopuplation = Population<{
   Messages: MessagePopulation;
@@ -76,7 +77,7 @@ export interface IUserFile<
   createdAt: Date;
 }
 
-const ChatSidebar = () => {
+const ChatSidebar = ({ onClose }: { onClose?: () => void }) => {
   const { data } = useSWR<
     IChat<{ Participants: { Identity: Record<never, never> } }>[]
   >(`${API}/chat`, (url: string) => fetcher({ url }).then((res) => res.data), {
@@ -89,6 +90,16 @@ const ChatSidebar = () => {
 
   return (
     <div className={classes.main}>
+      <button
+        type="button"
+        className={classes.close}
+        aria-label={getContent("close")}
+        onClick={onClose}
+      >
+        <Ixon width="1.125rem">
+          <XMarkIcon />
+        </Ixon>
+      </button>
       <div className={classes.top}>
         <div className={classes.search}>
           <Ixon className={classes.searchIcon} width="1.5rem">

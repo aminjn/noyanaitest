@@ -1,8 +1,7 @@
-import Image from "next/image";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./CardWithSession.module.css";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
 import HandThumUpIcon from "../Icons/HandThumbUpIcon";
@@ -34,9 +33,9 @@ const CardWithSession = ({
   return (
     <li className={classes.main}>
       <div className={classes.avatar}>
-        <Image
+        <HostedImage
           alt={name}
-          src={imagePath(image)}
+          src={image}
           fill
           sizes="10rem"
           style={{ objectFit: "cover" }}

@@ -1,6 +1,5 @@
-import Image from "next/image";
 import classes from "./FullScreenImagePopup.module.css";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import IconButton from "../Admin/UI/IconButton";
 import CloseIcon from "../Icons/CloseIcon";
 import usePopup from "../Hooks/usePopup";
@@ -9,8 +8,8 @@ const FullScreenImagePopup = ({ src }: { src?: string }) => {
   const { closePopup } = usePopup();
   return (
     <div className={classes.main}>
-      <Image
-        src={imagePath(src)}
+      <HostedImage
+        src={src}
         alt=""
         fill
         style={{ objectFit: "contain" }}

@@ -43,6 +43,11 @@ export interface IBlog<T extends BlogPopulation = BlogPopulation>
   slug?: string;
   content?: string;
   author?: string;
+  // Set when this post was submitted by an organization panel (doctor/
+  // clinic/pharmacy/insurance/paraClinic) instead of written by an admin.
+  // Those posts always come in unpublished and stay that way until an admin
+  // reviews and publishes them here.
+  authorType?: "doctor" | "clinic" | "pharmacy" | "insurance" | "paraClinic";
   readTime?: string;
   related: T["RelatedPopulated"] extends true ? IBlog[] : string[];
   thisWeekSpecial: boolean;
@@ -50,6 +55,14 @@ export interface IBlog<T extends BlogPopulation = BlogPopulation>
   published: boolean;
   category?: T["CategoryPopulated"] extends true ? IBlogCategory : string;
 }
+
+const authorTypeLabels: Record<string, string> = {
+  doctor: "پزشک",
+  clinic: "کلینیک",
+  pharmacy: "داروخانه",
+  insurance: "بیمه",
+  paraClinic: "پاراکلینیک",
+};
 
 const AdminManageBlogsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -119,6 +132,14 @@ const AdminManageBlogsPage = () => {
                 name: "نویسنده",
                 value: (node) => node.author,
                 filter: "Multi",
+              },
+              authorType: {
+                name: "منبع",
+                value: (node) =>
+                  node.authorType
+                    ? authorTypeLabels[node.authorType] || node.authorType
+                    : "ادمین",
+                filter: "Set",
               },
               readTime: {
                 name: "مدت زمان مطالعه",

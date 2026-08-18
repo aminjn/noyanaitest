@@ -82,7 +82,7 @@ const SpecialityPage = ({
         </Button>
       </div>
       <ListPageList
-        itemWidth="12.5rem"
+        itemWidth="14.75rem"
         pagination={{
           pagesCount,
           currentPage: Number(searchParams.get("page")) || 1,

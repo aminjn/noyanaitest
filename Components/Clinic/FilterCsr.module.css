@@ -5,3 +5,14 @@
   justify-content: flex-start;
   gap: 0.5rem;
 }
+
+@media (max-width: 40rem) {
+  .nav {
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .nav > * {
+    flex-shrink: 0;
+  }
+}

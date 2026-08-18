@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./DoctorCardAlt.module.css";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "./HostedImage";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import Ixon from "./Ixon";
 import StarIcon from "../Icons/StarIcon";
@@ -53,8 +52,8 @@ const DoctorCardAlt = ({
       </div>
       <div className={classes.imageBox}>
         <div className={classes.image}>
-          <Image
-            src={imagePath(node.avatar)}
+          <HostedImage
+            src={node.avatar}
             alt={getDoctorProfileLabel(node)}
             sizes="5rem"
             fill

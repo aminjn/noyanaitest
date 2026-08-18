@@ -6,8 +6,7 @@ import Link from "next/link";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import EyeIcon from "../Icons/EyeIcon";
-import Image from "next/image";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import DoubleChevronIcon from "../Icons/DoubleChevronIcon";
 import useComplexLocale from "../Hooks/useComplexLocale";
 import {
@@ -105,8 +104,8 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
                 <span className={tsmRegular}>1200</span>
               </span>
               <div className={classes.image}>
-                <Image
-                  src={imagePath(node.image)}
+                <HostedImage
+                  src={node.image}
                   alt={node.name || ""}
                   fill
                   style={{ objectFit: "contain" }}

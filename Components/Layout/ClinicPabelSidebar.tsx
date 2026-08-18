@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
+import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 
 const ClinicPanelSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -16,6 +17,12 @@ const ClinicPanelSidebar = () => {
         icon: <UserEditIcon />,
         show: true,
         target: "prescription",
+      },
+      {
+        title: "articles",
+        icon: <FileDuplicateIcon />,
+        show: true,
+        target: "article",
       },
       {
         title: "profile",

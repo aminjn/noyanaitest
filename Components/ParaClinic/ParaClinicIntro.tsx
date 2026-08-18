@@ -26,6 +26,7 @@ import {
   txlMedium,
   txsRegular,
 } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 const Box = ({
   icon,
@@ -92,8 +93,8 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
       <div className={classes.main}>
         <div className={classes.intro}>
           <div className={classes.image}>
-            <Image
-              src={`${FilePath}/${currentImage?.image}`}
+            <HostedImage
+              src={currentImage?.image}
               alt={currentImage?.alt || ""}
               sizes="36rem"
               fill
@@ -209,9 +210,9 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
                 onClick={() => setCurrentImage(image)}
                 className={`${classes.nav} ${currentImage._id === image._id ? classes.activeNav : ""} `}
               >
-                <Image
+                <HostedImage
                   fill
-                  src={`${FilePath}/${image.image}`}
+                  src={image.image}
                   sizes="22rem"
                   style={{ objectFit: "cover" }}
                   alt={image.alt || ""}

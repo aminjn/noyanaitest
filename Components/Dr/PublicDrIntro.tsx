@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./PublicDrIntro.module.css";
 import PublicDrSessions from "./PublicDrSessions";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import useLocale from "../Hooks/useLocale";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
@@ -60,9 +59,9 @@ export const PublicDrIntroInner = ({
       <div className={classes.details}>
         <div className={classes.identity}>
           <div className={classes.image}>
-            <Image
+            <HostedImage
               alt={name}
-              src={imagePath(image)}
+              src={image}
               fill
               sizes="10rem"
               style={{ objectFit: "cover" }}

@@ -25,6 +25,7 @@ import {
   txsMedium,
   txsRegular,
 } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 const Spec = ({ spec }: { spec: IProductSpec }) => {
   return (
@@ -113,8 +114,8 @@ const ProductPageIntro = ({
       <div className={classes.content}>
         <div className={classes.imagesBox}>
           <div className={classes.image}>
-            <Image
-              src={`${FILE_PATH}/${currentImage.image}`}
+            <HostedImage
+              src={currentImage.image}
               alt={currentImage.alt || ""}
               sizes="17rem"
               fill
@@ -128,8 +129,8 @@ const ProductPageIntro = ({
                 key={image._id}
                 onClick={() => setCurrentImage(image)}
               >
-                <Image
-                  src={`${FilePath}/${image.image}`}
+                <HostedImage
+                  src={image.image}
                   alt={image.alt || ""}
                   fill
                   sizes="6.25rem"

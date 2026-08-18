@@ -23,6 +23,7 @@ import Button from "@/Components/UI/Button";
 import StarsSolidIcon from "@/Components/Icons/StarsSolidIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import UpgradeProBox from "../UpgradeProBox";
+import HostedImage from "@/Components/UI/HostedImage";
 
 const Spec = ({ spec }: { spec: IProductSpec }) => {
   return (
@@ -124,8 +125,8 @@ const CartableNodePageIntro = ({
       <div className={classes.content}>
         <div className={classes.imagesBox}>
           <div className={classes.image}>
-            <Image
-              src={`${FILE_PATH}/${currentImage?.image}`}
+            <HostedImage
+              src={currentImage?.image}
               alt={currentImage?.alt || ""}
               sizes="17rem"
               fill
@@ -139,8 +140,8 @@ const CartableNodePageIntro = ({
                 key={image._id}
                 onClick={() => setCurrentImage(image)}
               >
-                <Image
-                  src={`${FilePath}/${image.image}`}
+                <HostedImage
+                  src={image.image}
                   alt={image.alt || ""}
                   fill
                   sizes="6.25rem"

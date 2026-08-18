@@ -3,6 +3,7 @@ import { IAboutPartner } from "../Admin/AboutPartner/AdminManageAboutPartnersPag
 import classes from "./AboutPartners.module.css";
 import TitleLegend from "./TitleLegend";
 import { FilePath } from "../config";
+import HostedImage from "../UI/HostedImage";
 const AboutPartners = ({ items }: { items: IAboutPartner[] }) => {
   if (!items.length) return null;
   return (
@@ -12,8 +13,8 @@ const AboutPartners = ({ items }: { items: IAboutPartner[] }) => {
         <ul className={classes.list}>
           {items.map((el) => (
             <li key={el._id} className={classes.item}>
-              <Image
-                src={`${FilePath}/${el.image}`}
+              <HostedImage
+                src={el.image}
                 alt={el.name || ""}
                 fill
                 sizes="7.5rem"

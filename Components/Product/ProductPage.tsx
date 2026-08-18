@@ -31,6 +31,7 @@ import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import QnaSection from "./QnaSection";
 import useCart from "../Hooks/useCart";
 import VolleyBallIcon from "../Icons/VolleyBallIcon";
+import HostedImage from "../UI/HostedImage";
 
 export type ProductPageProduct = IProduct<{
   Category: Record<never, never>;
@@ -52,9 +53,9 @@ const Item = ({
   return (
     <div className={classes.item}>
       <div className={classes.image}>
-        <Image
+        <HostedImage
           alt={node.name || ""}
-          src={`${FilePath}/${node.image}`}
+          src={node.image}
           style={{ objectFit: "contain" }}
           fill
           sizes="4rem"

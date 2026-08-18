@@ -7,4 +7,46 @@
   overflow: hidden;
   box-shadow: var(--shadowMd);
   background-color: var(--white);
+  position: relative;
+}
+
+.sidebarBackdrop {
+  display: none;
+}
+
+@media (max-width: 48rem) {
+  .sidebarBackdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background-color: #0b0c1780;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transTime) ease-in-out;
+  }
+
+  .sidebarBackdropOpen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sidebarWrap {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10051;
+    width: min(85dvw, 22rem);
+    transform: translateX(100%);
+    transition: transform var(--transTime) ease-in-out;
+  }
+
+  .sidebarWrap > * {
+    height: 100%;
+  }
+
+  .sidebarWrapOpen {
+    transform: translateX(0);
+  }
 }

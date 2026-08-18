@@ -9,6 +9,7 @@ import Link from "next/link";
 import useLocale from "../Hooks/useLocale";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 const ParaClinicCard = ({
   node,
@@ -23,8 +24,8 @@ const ParaClinicCard = ({
   return (
     <li className={classes.main}>
       <div className={classes.image}>
-        <Image
-          src={`${FilePath}/${node.image}`}
+        <HostedImage
+          src={node.image}
           alt={node.name || ""}
           sizes="23rem"
           style={{ objectFit: "contain" }}

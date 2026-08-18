@@ -23,8 +23,6 @@ export type ParaClinicPageProps = {
 };
 
 const ParaClinicPage = ({ data }: ParaClinicPageProps) => {
-  console.log(data);
-
   return (
     <div className={classes.main}>
       <BreadCrump

@@ -22,6 +22,7 @@ import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
 import Badge from "../UI/Badge";
 import { useMemo } from "react";
+import HostedImage from "../UI/HostedImage";
 
 const Item = ({
   node,
@@ -37,9 +38,9 @@ const Item = ({
   return (
     <div className={classes.item}>
       <div className={classes.itemImage}>
-        <Image
+        <HostedImage
           alt={node.seller.name || ""}
-          src={`${FilePath}/${node.seller.avatar}`}
+          src={node.seller.avatar}
           fill
           sizes="3rem"
           style={{ objectFit: "cover" }}

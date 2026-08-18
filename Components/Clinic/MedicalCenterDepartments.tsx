@@ -19,6 +19,7 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import StarIcon from "../Icons/StarIcon";
 import IconTitle from "../UI/IconTitle";
 import BuildingIcon from "../Icons/BuildingIcon";
+import HostedImage from "../UI/HostedImage";
 
 export type MedicalCenterDepartmentItemProps = {
   name?: string;
@@ -77,9 +78,9 @@ const DepartmentItem = ({
                 {!!doctor ? (
                   <div className={classes.doctor}>
                     <div className={classes.image}>
-                      <Image
+                      <HostedImage
                         fill
-                        src={`${FilePath}/${doctor?.avatar}`}
+                        src={doctor?.avatar}
                         alt={getDoctorProfileLabel(doctor)}
                       />
                     </div>

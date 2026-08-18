@@ -7,6 +7,7 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
 import ServiceOrProductCard from "./ServiceOrProductCard";
+import HostedImage from "../UI/HostedImage";
 const ServiceCard = ({
   node,
 }: {
@@ -35,9 +36,9 @@ const ServiceCard = ({
           ? {
               icon: (
                 <div className={classes.doctorImage}>
-                  <Image
+                  <HostedImage
                     alt={getDoctorProfileLabel(node.owner)}
-                    src={`${FilePath}/${node.owner.avatar}`}
+                    src={node.owner.avatar}
                     sizes=".75rem"
                     fill
                     style={{ objectFit: "cover" }}

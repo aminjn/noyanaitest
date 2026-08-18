@@ -49,7 +49,7 @@ const DayShifts = ({
           <div className={classes.activeBox}>
             {/* TODO: calc this */}
             <ToggleInput
-              title="active"
+              title={getContent("active")}
               value={offDays.includes(day)}
               onChange={() =>
                 setOffDays((prev) => {

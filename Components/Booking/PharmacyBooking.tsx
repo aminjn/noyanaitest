@@ -374,7 +374,11 @@ const PharmacyBooking = ({
         />
         <BookingResults common={common} setCommon={setCommon}>
           {data?.map((pharmacy) => (
-            <PharmacyBookingCard key={pharmacy._id} node={pharmacy} />
+            <PharmacyBookingCard
+              key={pharmacy._id}
+              node={pharmacy}
+              view={common.view}
+            />
           ))}
         </BookingResults>
       </BookingLayout>

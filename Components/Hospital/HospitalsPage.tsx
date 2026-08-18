@@ -23,6 +23,7 @@ import SearchIcon from "../Icons/SearchIcon";
 import ListPageList from "../UI/ListPage/ListPageList";
 import HospitalCard from "./HospitalCard";
 import SmallAd from "../UI/ListPage/SmallAd";
+import HostedImage from "../UI/HostedImage";
 
 export type HospitalsPageProps = {
   data: IHospital<{
@@ -44,9 +45,9 @@ const SpecialItem = ({
   return (
     <div className={classes.item}>
       <div className={classes.itemImage}>
-        <Image
+        <HostedImage
           alt={node.name || ""}
-          src={`${FilePath}/${node.image}`}
+          src={node.image}
           fill
           sizes="4rem"
           style={{ objectFit: "contain" }}

@@ -64,3 +64,18 @@
 .icon {
   color: var(--errorT4);
 }
+
+@media (max-width: 40rem) {
+  .main {
+    padding-inline: 1rem;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .map {
+    height: 11rem;
+  }
+}

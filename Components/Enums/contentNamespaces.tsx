@@ -1255,6 +1255,90 @@ export const contentNamespaces = {
     "special",
   ],
 
+  // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,
+  // DoctorManageArticlePage, DoctorMutateArticlePopup, DeleteArticlePopup).
+  // Org-submitted posts always come back with published=false until an
+  // admin reviews them from the admin blog panel, hence the
+  // articlePendingReview/articlePublished/articleModerationNotice keys.
+  doctorPanelArticle: [
+    "dashboard",
+    "articles",
+    "newItem",
+    "title",
+    "summary",
+    "image",
+    "category",
+    "readTime",
+    "content",
+    "actions",
+    "publishStatus",
+    "articlePendingReview",
+    "articlePublished",
+    "articleModerationNotice",
+    "sureDeleteArticle",
+  ],
+
+  // app/clinicpanel/article/page.tsx + [nodeId] (ClinicManageArticlesPage,
+  // ClinicManageArticlePage, ClinicMutateArticlePopup, DeleteArticlePopup).
+  clinicPanelArticle: [
+    "dashboard",
+    "articles",
+    "newItem",
+    "title",
+    "summary",
+    "image",
+    "category",
+    "readTime",
+    "content",
+    "actions",
+    "publishStatus",
+    "articlePendingReview",
+    "articlePublished",
+    "articleModerationNotice",
+    "sureDeleteArticle",
+  ],
+
+  // app/pharmacypanel/article/page.tsx + [nodeId] (PharmacyManageArticlesPage,
+  // PharmacyManageArticlePage, PharmacyMutateArticlePopup, DeleteArticlePopup).
+  pharmacyPanelArticle: [
+    "dashboard",
+    "articles",
+    "newItem",
+    "title",
+    "summary",
+    "image",
+    "category",
+    "readTime",
+    "content",
+    "actions",
+    "publishStatus",
+    "articlePendingReview",
+    "articlePublished",
+    "articleModerationNotice",
+    "sureDeleteArticle",
+  ],
+
+  // app/insurancepanel/article/page.tsx + [nodeId]
+  // (InsuranceManageArticlesPage, InsuranceManageArticlePage,
+  // InsuranceMutateArticlePopup, DeleteArticlePopup).
+  insurancePanelArticle: [
+    "dashboard",
+    "articles",
+    "newItem",
+    "title",
+    "summary",
+    "image",
+    "category",
+    "readTime",
+    "content",
+    "actions",
+    "publishStatus",
+    "articlePendingReview",
+    "articlePublished",
+    "articleModerationNotice",
+    "sureDeleteArticle",
+  ],
+
   // app/pharmacypanel/productPackage/page.tsx
   // (PharmacyManageProductPackagesPage).
   pharmacyPanelProductPackage: [

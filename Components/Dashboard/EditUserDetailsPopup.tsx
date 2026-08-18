@@ -1,11 +1,9 @@
-import Image from "next/image";
 import Loading from "../Admin/UI/Loading";
 import useUser, { IUser } from "../Hooks/useUser";
 import PopupCard from "../UI/PopupCard";
 import classes from "./EditUserDetailsPopup.module.css";
 import useLocale from "../Hooks/useLocale";
-import { imagePath } from "../helpers/imagepath";
-import UserSquareIcon from "../Icons/UserSquareIcon";
+import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import { useState } from "react";
 import useForm from "../Hooks/useForm";
@@ -41,19 +39,13 @@ const EditUserDetailsPopup = () => {
       <div className={classes.main}>
         <div className={classes.imageBox}>
           <div className={classes.image}>
-            {user.avatar ? (
-              <Image
-                alt={user.username || getContent("notAssigned")}
-                src={imagePath(user.avatar)}
-                fill
-                sizes="10rem"
-                style={{ objectFit: "cover" }}
-              />
-            ) : (
-              <Ixon>
-                <UserSquareIcon />
-              </Ixon>
-            )}
+            <HostedImage
+              alt={user.username || getContent("notAssigned")}
+              src={user.avatar}
+              fill
+              sizes="10rem"
+              style={{ objectFit: "cover" }}
+            />
           </div>
           <div className={classes.imageInputBox}>
             <input

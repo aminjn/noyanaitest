@@ -10,6 +10,7 @@ import LocationIcon from "../Icons/LocationIcon";
 import Button from "../UI/Button";
 import useLocale from "../Hooks/useLocale";
 import { t2xsRegular, tsmDemiBold, txsRegular } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 const ClinicCardAlt = ({
   node,
@@ -37,8 +38,8 @@ const ClinicCardAlt = ({
         </Badge>
       </div>
       <div className={classes.image}>
-        <Image
-          src={`${FilePath}/${node.image}`}
+        <HostedImage
+          src={node.image}
           alt={node.name || ""}
           style={{ objectFit: "cover" }}
           fill

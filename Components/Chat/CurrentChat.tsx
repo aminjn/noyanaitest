@@ -13,8 +13,7 @@ import Loading from "../Admin/UI/Loading";
 import { useMemo, useRef } from "react";
 import useUser, { IUser } from "../Hooks/useUser";
 import Button from "../UI/Button";
-import Image from "next/image";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import FormatDate from "../UI/FormatDate";
 import { fetcher } from "../helpers/fetcher";
 import Ixon from "../UI/Ixon";
@@ -30,6 +29,7 @@ import DoubleCheckIcon from "../Icons/DoubleCheckIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import PlusSquareIcon from "../Icons/PlusSquareIcon";
 import SmileIcon from "../Icons/SmileIcon";
+import BarsIcon from "../Icons/BarsIcon";
 
 const MessageSender = ({
   chat,
@@ -178,12 +178,14 @@ const ChatMessage = ({ _id }: { _id: string }) => {
 const InnerChat = ({
   chat,
   mutate,
+  onOpenSidebar,
 }: {
   chat: IChat<{
     Participants: { Identity: Record<never, never> };
     Messages: Record<string, never>;
   }>;
   mutate: () => unknown;
+  onOpenSidebar?: () => void;
 }) => {
   const { user } = useUser();
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
@@ -198,12 +200,22 @@ const InnerChat = ({
   return (
     <div className={classes.main}>
       <div className={classes.header}>
+        <button
+          type="button"
+          className={classes.menuToggle}
+          aria-label={getContent("menu")}
+          onClick={onOpenSidebar}
+        >
+          <Ixon width="1.25rem">
+            <BarsIcon />
+          </Ixon>
+        </button>
         {
           //TODO: add user image later
         }
         <div className={classes.image}>
-          <Image
-            src={imagePath("")}
+          <HostedImage
+            src={undefined}
             alt={title || getContent("chat")}
             fill
             sizes="6rem"
@@ -230,7 +242,7 @@ const InnerChat = ({
   );
 };
 
-const CurrentChat = () => {
+const CurrentChat = ({ onOpenSidebar }: { onOpenSidebar?: () => void }) => {
   const params = useParams<{ nodeId?: string }>();
   const { data, mutate } = useSWR<
     IChat<{
@@ -245,9 +257,26 @@ const CurrentChat = () => {
 
   const getContent = useLocale();
 
-  if (!params.nodeId) return <p>{getContent("selectAChatFirstMessage")}</p>;
+  if (!params.nodeId)
+    return (
+      <div className={classes.main}>
+        <div className={classes.emptyHeader}>
+          <button
+            type="button"
+            className={classes.menuToggle}
+            aria-label={getContent("menu")}
+            onClick={onOpenSidebar}
+          >
+            <Ixon width="1.25rem">
+              <BarsIcon />
+            </Ixon>
+          </button>
+        </div>
+        <p className={classes.empty}>{getContent("selectAChatFirstMessage")}</p>
+      </div>
+    );
   if (!data) return <Loading />;
-  return <InnerChat chat={data} mutate={mutate} />;
+  return <InnerChat chat={data} mutate={mutate} onOpenSidebar={onOpenSidebar} />;
 };
 
 export default CurrentChat;

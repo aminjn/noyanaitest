@@ -32,6 +32,17 @@ const shiftDateFromNow = (shift: number) => {
   return now;
 };
 
+// Builds a YYYY-MM-DD key from the date's local calendar day. Using
+// Date#toISOString() here is wrong because it converts to UTC first, which
+// rolls the date back a day for any timezone ahead of UTC (e.g. Iran,
+// UTC+3:30) whenever the local time is earlier than the UTC offset.
+const toLocalDateKey = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 const SessionButton = ({
   bounds,
   selectedSession,
@@ -142,7 +153,6 @@ const BookingSessionSelectorPopup = ({
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    console.log({ today, tomorrow, availability: new Date(availability.date) });
     const isToday =
       new Date(availability.date) >= today &&
       new Date(availability.date) < tomorrow;
@@ -253,7 +263,7 @@ const BookingSessionSelectorPopup = ({
                 return;
               }
               push(
-                `/book/finalize/${node._id}?d=${selectedDay.toISOString().split("T")[0]}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
+                `/book/finalize/${node._id}?d=${toLocalDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
               );
               closePopup();
             }}

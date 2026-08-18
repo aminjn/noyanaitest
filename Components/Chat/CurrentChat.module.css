@@ -9,11 +9,24 @@
 .header {
   background-color: var(--white);
   display: flex;
+  align-items: center;
   gap: 1rem;
   padding-block: 1rem;
   padding-inline: 1.5rem;
   position: sticky;
   top: 0;
+}
+
+.emptyHeader {
+  display: none;
+}
+
+.empty {
+  padding-inline: 1.5rem;
+}
+
+.menuToggle {
+  display: none;
 }
 
 .image {
@@ -201,4 +214,51 @@
   display: flex;
   flex-direction: column;
   max-width: 80%;
+}
+
+@media (max-width: 48rem) {
+  .emptyHeader {
+    display: flex;
+    background-color: var(--white);
+    padding-block: 1rem;
+    padding-inline: 1.5rem;
+    position: sticky;
+    top: 0;
+  }
+
+  .menuToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    color: var(--gray10);
+    border-radius: 0.5rem;
+    background-color: var(--gray1);
+  }
+
+  .details {
+    min-width: 0;
+  }
+
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .action.action {
+    padding-inline: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .body {
+    padding-inline: 1.25rem;
+  }
+
+  .message {
+    max-width: 92%;
+  }
 }

@@ -9,12 +9,13 @@ import StarIcon from "../Icons/StarIcon";
 import useLocale from "../Hooks/useLocale";
 import { tlgMedium, tsmMedium } from "../UI/Typography";
 import { InsurancePageNode } from "./InsurancePage";
+import HostedImage from "../UI/HostedImage";
 const InsurancePageIntro = ({ node }: { node: InsurancePageNode }) => {
   const getContent = useLocale();
   return (
     <div className={classes.main}>
-      <Image
-        src={`${FilePath}/${node.image}`}
+      <HostedImage
+        src={node.image}
         alt={node.name || ""}
         fill
         style={{ objectFit: "cover" }}
@@ -24,8 +25,8 @@ const InsurancePageIntro = ({ node }: { node: InsurancePageNode }) => {
       <div className={classes.content}>
         <div className={classes.intro}>
           <div className={classes.avatar}>
-            <Image
-              src={`${FilePath}/${node.image}`}
+            <HostedImage
+              src={node.image}
               alt={node.name || ""}
               fill
               style={{ objectFit: "cover" }}

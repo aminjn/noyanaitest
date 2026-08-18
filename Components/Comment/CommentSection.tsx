@@ -33,6 +33,7 @@ import AuthPopup from "../Popups/AuthPopup";
 import Act from "../UI/Act";
 import Pagination from "../UI/Pagination";
 import { usePathname } from "next/navigation";
+import HostedImage from "../UI/HostedImage";
 
 export const commentableDocumentPaths = [
   "Blog",
@@ -132,9 +133,9 @@ const CommentItem = ({
     <div className={classes.item}>
       <div className={classes.itemHeader}>
         <div className={classes.itemImage}>
-          <Image
+          <HostedImage
             alt={node.author.username || ""}
-            src={`${FilePath}/${node.author.avatar}`}
+            src={node.author.avatar}
             sizes="2.5rem"
             fill
             style={{ objectFit: "cover" }}

@@ -7,6 +7,7 @@ import classes from "./ProductSameAs.module.css";
 import { FilePath } from "../config";
 import Link from "next/link";
 import { t2xsRegular, tlgMedium, txsDemiBold } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 const Item = ({
   node,
@@ -16,9 +17,9 @@ const Item = ({
   return (
     <div className={classes.item}>
       <div className={classes.image}>
-        <Image
+        <HostedImage
           alt={node.name || ""}
-          src={`${FilePath}/${node.image}`}
+          src={node.image}
           style={{ objectFit: "contain" }}
           fill
           sizes="4rem"

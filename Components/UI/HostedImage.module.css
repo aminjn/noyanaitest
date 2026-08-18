@@ -1,0 +1,29 @@
+.fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary1);
+  color: var(--primary7);
+  overflow: hidden;
+  user-select: none;
+  container-type: size;
+}
+
+.fallback.fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.letter {
+  font-size: 45cqb;
+  line-height: 1;
+  font-weight: 600;
+}
+
+@supports not (container-type: size) {
+  .letter {
+    font-size: 1.25rem;
+  }
+}

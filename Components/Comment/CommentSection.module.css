@@ -94,3 +94,24 @@
   margin-top: 1rem;
   margin-inline: auto;
 }
+
+@media (max-width: 40rem) {
+  .filterBox {
+    padding-inline: 1rem;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .filterBox > * {
+    flex-shrink: 0;
+  }
+
+  .comments {
+    padding-inline: 1rem;
+  }
+
+  .itemHeader {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+}

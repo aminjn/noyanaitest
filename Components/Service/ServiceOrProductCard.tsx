@@ -16,6 +16,7 @@ import StarIcon from "../Icons/StarIcon";
 import { clamp } from "../helpers/lib";
 import { currencize } from "../helpers/currencize";
 import Link from "next/link";
+import HostedImage from "../UI/HostedImage";
 const ServiceOrProductCard = ({
   name,
   image,
@@ -54,8 +55,8 @@ const ServiceOrProductCard = ({
   return (
     <li className={classes.main}>
       <div className={classes.image}>
-        <Image
-          src={`${FilePath}/${image}`}
+        <HostedImage
+          src={image}
           alt={name}
           fill
           sizes="16.5rem"
@@ -104,7 +105,7 @@ const ServiceOrProductCard = ({
           <div className={classes.stats}>
             <span
               className={classes.count}
-            >{`(${getContent("xComments", [commentCount.toString()])})`}</span>
+            >{`(${getContent("xComments", [commentCount?.toString()])})`}</span>
           </div>
           <div className={classes.score}>
             <span className={t2xsRegular}>{rating}</span>

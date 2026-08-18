@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./DoctorBookingCard.module.css";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
@@ -6,7 +5,7 @@ import Ixon from "../UI/Ixon";
 import CupIcon from "../Icons/CupIcon";
 import useLocale from "../Hooks/useLocale";
 import LocationIcon from "../Icons/LocationIcon";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 
 const DoctorBookingCard = ({
   node,
@@ -18,8 +17,8 @@ const DoctorBookingCard = ({
   return (
     <div className={classes.doctor}>
       <div className={classes.doctorImage}>
-        <Image
-          src={imagePath(node.avatar)}
+        <HostedImage
+          src={node.avatar}
           alt={getDoctorProfileLabel(node)}
           fill
           sizes="10rem"

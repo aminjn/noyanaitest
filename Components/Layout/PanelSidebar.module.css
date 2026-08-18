@@ -16,6 +16,15 @@
   border-radius: 1rem;
 }
 
+.avatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
 .userDetails {
   margin-inline-end: auto;
   display: flex;

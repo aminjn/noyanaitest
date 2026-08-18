@@ -4,8 +4,7 @@ import { IChat, getChatParticipantName } from "./ChatSidebar";
 import classes from "./ChatSidebarItem.module.css";
 import useLocale from "../Hooks/useLocale";
 import Link from "next/link";
-import Image from "next/image";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 
 const ChatSidebarItem = ({
   chat,
@@ -33,9 +32,9 @@ const ChatSidebarItem = ({
         {
           //TODO: add image later
         }
-        <Image
+        <HostedImage
           alt={title || "chat"}
-          src={imagePath("")}
+          src={undefined}
           style={{ objectFit: "cover" }}
           sizes="10rem"
           fill

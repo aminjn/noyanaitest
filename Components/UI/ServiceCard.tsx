@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import classes from "./ServiceCard.module.css";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "./HostedImage";
 import Ixon from "./Ixon";
 import CrownIcon from "../Icons/CrownIcon";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
@@ -27,8 +26,8 @@ const ServiceCard = ({
   return (
     <div className={classes.main}>
       <div className={classes.image}>
-        <Image
-          src={imagePath(node.image)}
+        <HostedImage
+          src={node.image}
           alt={node.name || ""}
           style={{ objectFit: "contain" }}
           fill
@@ -44,8 +43,8 @@ const ServiceCard = ({
       {!!node.owner && (
         <div className={classes.owner}>
           <div className={classes.ownerImage}>
-            <Image
-              src={imagePath(node.owner.avatar)}
+            <HostedImage
+              src={node.owner.avatar}
               alt={getDoctorProfileLabel(node.owner)}
               fill
               sizes="2reem"

@@ -16,6 +16,7 @@ import {
   tlgBold,
   tsmRegular,
 } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 const ProductPackagePageCart = ({ data }: ProductPackagePageProps) => {
   const getContent = useLocale();
@@ -25,9 +26,9 @@ const ProductPackagePageCart = ({ data }: ProductPackagePageProps) => {
         <span className={classes.title}>{getContent("provider")}</span>
         <div className={classes.owner}>
           <div className={classes.image}>
-            <Image
+            <HostedImage
               alt={data.owner.name || ""}
-              src={`${FilePath}/${data.owner.avatar}`}
+              src={data.owner.avatar}
               sizes="2rem"
               style={{ objectFit: "cover" }}
               fill

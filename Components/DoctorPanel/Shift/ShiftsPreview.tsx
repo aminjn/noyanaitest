@@ -43,7 +43,9 @@ const ShiftsPreview = ({
     <div className={classes.main}>
       <div className={classes.header}>
         <span className={classes.title}>
-          {getContent("previewXDayOfWeekShifts")}
+          {getContent("previewXDayOfWeekShifts", [
+            getContent(daysOfWeekContentKeys[day]),
+          ])}
         </span>
         <span className={classes.value}>
           {getCompContent("xSessions", [

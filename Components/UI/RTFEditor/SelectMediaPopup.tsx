@@ -10,8 +10,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Box from "@/Components/Admin/UI/Box";
 import { useState } from "react";
-import Image from "next/image";
-import { imagePath } from "@/Components/helpers/imagepath";
+import HostedImage from "@/Components/UI/HostedImage";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import FullScreenIcon from "@/Components/Icons/FullScreenIcon";
 import FullScreenImagePopup from "@/Components/Popups/FullScreenImagePopup";
@@ -27,7 +26,7 @@ const SelectMediaPopup = ({
 }) => {
   const { data, error, mutate } = useSWR<IBlogMedia[]>(
     `${API}/auto/blogmedia`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -49,7 +48,7 @@ const SelectMediaPopup = ({
               action: () =>
                 setPopup(
                   "MutateBlogMedia",
-                  <MutateBlogMediaPopup mutate={mutate} />
+                  <MutateBlogMediaPopup mutate={mutate} />,
                 ),
             },
           ]}
@@ -62,12 +61,12 @@ const SelectMediaPopup = ({
                   if (!selected)
                     return pushNotification(
                       "لطفا یک تصویر انتخاب کنید",
-                      "Warn"
+                      "Warn",
                     );
                   if (!selected.file)
                     return pushNotification(
                       "نتصویر انتخابی فایلی ندارد",
-                      "Warn"
+                      "Warn",
                     );
                   if (!alt)
                     return pushNotification("لطفا آلت را وارد کنید", "Warn");
@@ -87,8 +86,8 @@ const SelectMediaPopup = ({
                   onClick={() => setSelected(media)}
                 >
                   <div className={classes.image}>
-                    <Image
-                      src={imagePath(media.file)}
+                    <HostedImage
+                      src={media.file}
                       alt=""
                       style={{ objectFit: "contain" }}
                       fill
@@ -101,7 +100,7 @@ const SelectMediaPopup = ({
                       onClick={() =>
                         setPopup(
                           "FullscreenImagePreview",
-                          <FullScreenImagePopup src={media.file} />
+                          <FullScreenImagePopup src={media.file} />,
                         )
                       }
                     >
@@ -115,7 +114,7 @@ const SelectMediaPopup = ({
                           <MutateBlogMediaPopup
                             mutate={mutate}
                             defaultValue={media}
-                          />
+                          />,
                         )
                       }
                     >

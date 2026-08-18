@@ -8,10 +8,7 @@ import useLocale from "../Hooks/useLocale";
 import IconButton from "../Admin/UI/IconButton";
 import Icon from "react-multi-date-picker/components/icon";
 import EditIcon from "../Icons/EditIcon";
-import Ixon from "../UI/Ixon";
-import UserSquareIcon from "../Icons/UserSquareIcon";
-import Image from "next/image";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import usePopup from "../Hooks/usePopup";
 import EditUserDetailsPopup from "./EditUserDetailsPopup";
 import DataPair from "../Admin/UI/DataPair";
@@ -36,19 +33,13 @@ const UserIdentity = ({
     <div className={classes.main}>
       <div className={classes.user}>
         <div className={classes.avatar}>
-          {avatar ? (
-            <Image
-              alt={username || getContent("user")}
-              src={imagePath(avatar)}
-              sizes="10rem"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          ) : (
-            <Ixon>
-              <UserSquareIcon />
-            </Ixon>
-          )}
+          <HostedImage
+            alt={username || getContent("user")}
+            src={avatar}
+            sizes="10rem"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className={classes.usernameBox}>
           {self && (

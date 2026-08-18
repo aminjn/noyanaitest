@@ -5,8 +5,7 @@ import { IInlineAdvertisement } from "@/Components/Admin/InlineAds/AdminManageIn
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import Image from "next/image";
-import { imagePath } from "@/Components/helpers/imagepath";
+import HostedImage from "@/Components/UI/HostedImage";
 import Link from "next/link";
 
 const AdvertisementItem = ({
@@ -25,8 +24,8 @@ const AdvertisementItem = ({
     if (!data) return null;
     return (
       <Fragment>
-        <Image
-          src={imagePath(data.image)}
+        <HostedImage
+          src={data.image}
           alt={data.title || ""}
           fill
           style={{ objectFit: "cover" }}

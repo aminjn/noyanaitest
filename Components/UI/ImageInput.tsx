@@ -5,6 +5,7 @@ import ImageIcon from "./RTFEditor/ImageIcon";
 import Image from "next/image";
 import { FilePath } from "../config";
 import Ixon from "./Ixon";
+import HostedImage from "./HostedImage";
 
 const ImageInput = ({
   className = "",
@@ -47,8 +48,8 @@ const ImageInput = ({
       </div>
       <div className={classes.defaultValue}>
         {defaultValue ? (
-          <Image
-            src={`${FilePath}/${defaultValue}`}
+          <HostedImage
+            src={defaultValue}
             alt=""
             fill
             style={{ objectFit: "contain" }}

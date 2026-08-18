@@ -24,6 +24,7 @@ import {
   txsRegular,
 } from "../UI/Typography";
 import { ProductPackagePageProps } from "./ProductPackagePage";
+import HostedImage from "../UI/HostedImage";
 
 const Spec = ({ spec }: { spec: IProductSpec }) => {
   return (
@@ -101,8 +102,8 @@ const ProductPackagePageIntro = ({
       <div className={classes.content}>
         <div className={classes.imagesBox}>
           <div className={classes.image}>
-            <Image
-              src={`${FILE_PATH}/${currentImage.image}`}
+            <HostedImage
+              src={currentImage.image}
               alt={currentImage.alt || ""}
               sizes="17rem"
               fill
@@ -116,8 +117,8 @@ const ProductPackagePageIntro = ({
                 key={image._id}
                 onClick={() => setCurrentImage(image)}
               >
-                <Image
-                  src={`${FilePath}/${image.image}`}
+                <HostedImage
+                  src={image.image}
                   alt={image.alt || ""}
                   fill
                   sizes="6.25rem"
@@ -179,9 +180,9 @@ const ProductPackagePageIntro = ({
           {!!data.owner && (
             <div className={classes.owner}>
               <div className={classes.ownerImage}>
-                <Image
+                <HostedImage
                   alt={data.owner.name || ""}
-                  src={`${FilePath}/${data.owner.avatar}`}
+                  src={data.owner.avatar}
                   fill
                   sizes="3.5rem"
                   style={{ objectFit: "cover" }}

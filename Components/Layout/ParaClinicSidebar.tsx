@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FlaskIcon from "../Icons/FlaskIcon";
+import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 
 const ParaClinicSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -23,6 +24,12 @@ const ParaClinicSidebar = () => {
         icon: <UserEditIcon />,
         show: true,
         target: "prescription",
+      },
+      {
+        title: "articles",
+        icon: <FileDuplicateIcon />,
+        show: true,
+        target: "article",
       },
       { title: "tamin", icon: <UserEditIcon />, show: true, target: "tamin" },
       {

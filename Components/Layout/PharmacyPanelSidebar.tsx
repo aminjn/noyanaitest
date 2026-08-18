@@ -3,6 +3,7 @@ import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
 import CartIcon from "../Icons/CartIcon";
 import FolderIcon from "../Icons/FolderIcon";
+import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 
 const PharmacyPanelSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -30,6 +31,12 @@ const PharmacyPanelSidebar = () => {
         icon: <UserEditIcon />,
         show: true,
         target: "prescription",
+      },
+      {
+        title: "articles",
+        icon: <FileDuplicateIcon />,
+        show: true,
+        target: "article",
       },
       { title: "tamin", show: true, icon: <UserEditIcon />, target: "tamin" },
     ],

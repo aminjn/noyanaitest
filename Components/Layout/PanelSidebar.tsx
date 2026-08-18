@@ -12,8 +12,7 @@ import Ixon from "../UI/Ixon";
 import Link from "next/link";
 import Loading from "../Admin/UI/Loading";
 import ChevronIcon from "../Icons/ChevronIcon";
-import Image from "next/image";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 
 export type LinkMapItem = {
   icon: ReactNode;
@@ -83,8 +82,14 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
   return (
     <div className={classes.main}>
       <Link href="/dashboard" className={classes.user}>
-        <div>
-          <Image src={imagePath("")} alt="" />
+        <div className={classes.avatar}>
+          <HostedImage
+            src={user.avatar}
+            alt={user.username || ""}
+            fill
+            sizes="2.75rem"
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className={classes.userDetails}>
           <span className={classes.userName}>{user.username || "کاربر"}</span>

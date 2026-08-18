@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import useProgress from "../Hooks/useProgress";
 import SpecialsBox from "./SpecialsBox";
 import { tsmBold, txsMedium } from "../UI/Typography";
+import HostedImage from "../UI/HostedImage";
 
 export type ClinicsListProps = {
   data: IClinic<{
@@ -48,9 +49,9 @@ const SpecialItem = ({
   return (
     <div className={classes.item}>
       <div className={classes.itemImage}>
-        <Image
+        <HostedImage
           alt={node.name || ""}
-          src={`${FilePath}/${node.image}`}
+          src={node.image}
           fill
           sizes="4rem"
           style={{ objectFit: "contain" }}

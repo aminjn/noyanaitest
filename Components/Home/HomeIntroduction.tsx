@@ -5,8 +5,7 @@ import classes from "./HomeIntroduction.module.css";
 import useWindow from "../Hooks/useWindow";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import Image from "next/image";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import { t4xlBold, tlgDemiBold } from "../UI/Typography";
 import useScopedLocale from "../Hooks/useScopedLocale";
 
@@ -104,8 +103,8 @@ const HomeIntroductionInner = ({ nodes }: { nodes: IHomeIntroduction[] }) => {
               <div className={classes.slideContainer}>
                 <div className={classes.slide} style={getStyle(i)}>
                   <div className={classes.image}>
-                    <Image
-                      src={imagePath(node.image)}
+                    <HostedImage
+                      src={node.image}
                       alt={node.title}
                       fill
                       style={{ objectFit: "contain" }}

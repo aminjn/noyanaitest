@@ -537,6 +537,7 @@ const ClinicBooking = ({
               banner={clinic.image}
               coords={clinic.location?.coordinates}
               summary={clinic.summary}
+              view={common.view}
             />
           ))}
         </BookingResults>

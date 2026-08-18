@@ -25,7 +25,8 @@ const ScheduleBookingCard = ({ node }: { node: IScheduleBooking }) => {
             <ClockIcon />
           </Ixon>
           <span>
-            {numberToTime(node.session.start)} - {numberToTime(node.session.end)}
+            {numberToTime(node.session.start)} -{" "}
+            {numberToTime(node.session.end)}
           </span>
         </span>
         <IconLink

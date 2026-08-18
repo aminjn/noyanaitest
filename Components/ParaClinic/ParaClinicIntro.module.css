@@ -74,6 +74,7 @@
   align-items: center;
   gap: 0.5rem;
   color: var(--gray12);
+  flex-wrap: wrap;
 }
 
 .detailIcon {
@@ -181,4 +182,76 @@
 
 .cardValue {
   color: var(--black);
+}
+
+@media (max-width: 64rem) {
+  .intro {
+    flex-direction: column;
+    padding-bottom: 0;
+  }
+
+  .image {
+    flex: unset;
+    width: 100%;
+    height: 15.625rem;
+    border-radius: 0;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .cards {
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 9rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .stats {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+
+  .tags {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .boxes {
+    flex-wrap: wrap;
+  }
+
+  .box {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 6.5rem;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+  }
+
+  .actions > * {
+    flex: 1 1 auto;
+  }
+
+  .navs {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .nav {
+    height: 4rem;
+  }
+
+  .cards {
+    gap: 0.75rem;
+  }
+
+  .card {
+    padding: 0.5rem 0.75rem;
+  }
 }

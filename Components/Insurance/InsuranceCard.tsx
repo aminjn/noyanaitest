@@ -17,6 +17,7 @@ import {
   txsDemiBold,
 } from "../UI/Typography";
 import Link from "next/link";
+import HostedImage from "../UI/HostedImage";
 
 const Count = ({
   icon,
@@ -47,9 +48,9 @@ const InsuranceCard = ({ node }: { node: InsurancesPageNode }) => {
   return (
     <li className={classes.main}>
       <div className={classes.image}>
-        <Image
+        <HostedImage
           alt={node.name || ""}
-          src={`${FilePath}/${node.image}`}
+          src={node.image}
           fill
           style={{ objectFit: "cover" }}
           sizes="23rem"

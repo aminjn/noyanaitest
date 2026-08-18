@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import classes from "./CartPage.module.css";
 import useCart, { CartModel, cartModels, UseCartNode } from "../Hooks/useCart";
 import useUser from "../Hooks/useUser";
 import useLocale from "../Hooks/useLocale";
 import HandleLoading from "../Admin/UI/HandleLoading";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import { currencize } from "../helpers/currencize";
 import Ixon from "../UI/Ixon";
 import TrashIcon from "../Icons/TrashIcon";
@@ -131,9 +130,9 @@ const CartRowItem = ({
   return (
     <div className={classes.row}>
       <div className={classes.imageBox}>
-        <Image
+        <HostedImage
           alt={row.title}
-          src={imagePath(row.image)}
+          src={row.image}
           fill
           sizes="4.5rem"
           style={{ objectFit: "cover" }}

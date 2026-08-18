@@ -68,8 +68,12 @@ const withVoid = (editor: Editor) => {
 
 const RTFEditor = forwardRef<
   Editor,
-  { defaultValue?: string; onChange?: (e: string) => unknown }
->(({ defaultValue, onChange }, ref) => {
+  {
+    defaultValue?: string;
+    onChange?: (e: string) => unknown;
+    hideMediaLibrary?: boolean;
+  }
+>(({ defaultValue, onChange, hideMediaLibrary }, ref) => {
   const [editor] = useState(() =>
     withVoid(withHistory(withReact(createEditor())))
   );
@@ -94,7 +98,7 @@ const RTFEditor = forwardRef<
           onChange?.(JSON.stringify(e));
         }}
       >
-        <Toolbar />
+        <Toolbar hideMediaLibrary={hideMediaLibrary} />
         <Editable
           className={classes.main}
           renderElement={RenderElement}

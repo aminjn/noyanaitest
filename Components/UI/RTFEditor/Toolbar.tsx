@@ -15,7 +15,13 @@ import StrikeIcon from "./StrikeIcon";
 import ToggleButton from "./ToggleButton";
 import classes from "./Toolbar.module.css";
 import UnderlineIcon from "./UnderlineIcon";
-const Toolbar = () => {
+// hideMediaLibrary hides the image-picker and ad-inserter buttons, which
+// browse/upload against the admin-only BlogMedia/InlineAdvertisement asset
+// libraries. Org panels (doctor/clinic/pharmacy/insurance/paraClinic) don't
+// have access to those admin routes, so they get a restricted toolbar
+// (still full text formatting) instead of a broken button. Defaults to
+// false so the admin panel's toolbar is unchanged.
+const Toolbar = ({ hideMediaLibrary = false }: { hideMediaLibrary?: boolean }) => {
   return (
     <div className={classes.main}>
       <SelectionButton
@@ -51,12 +57,12 @@ const Toolbar = () => {
       <ToggleButton icon={<StrikeIcon />} thisKey="strike" />
       <ToggleButton icon={<ItalicIcon />} thisKey="italic" />
       <LinkButton />
-      <ImageButton />
+      {!hideMediaLibrary && <ImageButton />}
       <AlignmentButton />
       <HeadingButton />
       <ListButton type="ol" />
       <ListButton type="ul" />
-      <AdsButton />
+      {!hideMediaLibrary && <AdsButton />}
     </div>
   );
 };

@@ -35,9 +35,10 @@ import PopupCard from "../UI/PopupCard";
 import EditIcon from "../Icons/EditIcon";
 import ShareIcon from "../Icons/ShareIcon";
 import BookingSessionSelectorPopup from "./BookingSessionSelectorPopup";
-import { BookingPageDoctor } from "./BookingPage2";
+import { BookingPageDoctor, BookingView } from "./BookingPage2";
 import ReportProblemPopup from "./ReportProblemPopup";
 import ScoreBadge from "./ScoreBadge";
+import HostedImage from "../UI/HostedImage";
 
 const addDaysToToday = (days: number) => {
   const now = new Date();
@@ -136,7 +137,13 @@ const DayCard = ({
 
 const DAY_CARD_COUNT = 3;
 
-const DoctorCardBooking = ({ node }: { node: BookingPageDoctor }) => {
+const DoctorCardBooking = ({
+  node,
+  view,
+}: {
+  node: BookingPageDoctor;
+  view: BookingView;
+}) => {
   const getContent = useLocale();
 
   const getCompContent = useComplexLocale();
@@ -156,142 +163,183 @@ const DoctorCardBooking = ({ node }: { node: BookingPageDoctor }) => {
     return result;
   }, []);
 
-  return (
-    <div className={classes.main}>
-      <div className={classes.identity}>
-        <div className={classes.image}>
-          <Image
-            className={classes.theImage}
-            src={`${FilePath}/${node.avatar}`}
-            alt={getDoctorProfileLabel(node)}
-            fill
-            style={{ objectFit: "cover" }}
-            sizes="3.5rem"
-          />
-          <div className={classes.onlineBadge} />
-          <Ixon className={classes.verifiedBadge} width="1rem">
-            <VerifyIcon />
-          </Ixon>
-        </div>
-        <div className={classes.identityContent}>
-          <div className={classes.identityDetails}>
-            <span className={`${classes.name} ${tsmDemiBold}`}>
-              {getDoctorProfileLabel(node)}
+  const identityBlock = (
+    <div className={classes.identity}>
+      <div className={classes.image}>
+        <HostedImage
+          className={classes.theImage}
+          src={node.avatar}
+          alt={getDoctorProfileLabel(node)}
+          fill
+          style={{ objectFit: "cover" }}
+          sizes="3.5rem"
+        />
+        <div className={classes.onlineBadge} />
+        <Ixon className={classes.verifiedBadge} width="1rem">
+          <VerifyIcon />
+        </Ixon>
+      </div>
+      <div className={classes.identityContent}>
+        <div className={classes.identityDetails}>
+          <span className={`${classes.name} ${tsmDemiBold}`}>
+            {getDoctorProfileLabel(node)}
+          </span>
+          {!!node.mainSpeciality && (
+            <span className={`${classes.speciality} ${txsRegular}`}>
+              {node.mainSpeciality?.name}
             </span>
-            {!!node.mainSpeciality && (
-              <span className={`${classes.speciality} ${txsRegular}`}>
-                {node.mainSpeciality?.name}
-              </span>
-            )}
-          </div>
-          <div className={classes.tags}>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag1</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag2</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag3</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag4</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-            <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-          </div>
+          )}
+        </div>
+        <div className={classes.tags}>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag1</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag2</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag3</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag4</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
+          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
         </div>
       </div>
-      <div className={classes.scores}>
-        <ScoreBadge iconColor="var(--yellow)" icon={<StarIcon />} value="4.5" />
-        <ScoreBadge
-          icon={<CheckCircleIcon />}
-          iconColor="var(--info)"
-          value={getCompContent("xPeopleRecommended", ["20"])}
-        />
-        <MoreMenusButton
-          options={[
-            {
-              title: getContent("reportProblem"),
-              onClick: () => setPopup("reportproblem", <ReportProblemPopup />),
-              icon: <EditIcon />,
+    </div>
+  );
+
+  const scoresBlock = (
+    <div className={classes.scores}>
+      <ScoreBadge iconColor="var(--yellow)" icon={<StarIcon />} value="4.5" />
+      <ScoreBadge
+        icon={<CheckCircleIcon />}
+        iconColor="var(--info)"
+        value={getCompContent("xPeopleRecommended", ["20"])}
+      />
+      <MoreMenusButton
+        options={[
+          {
+            title: getContent("reportProblem"),
+            onClick: () => setPopup("reportproblem", <ReportProblemPopup />),
+            icon: <EditIcon />,
+          },
+          {
+            title: getContent("share"),
+            onClick: () => {
+              navigator.share({
+                text: `${location.protocol}//${location.host}/doctor/${node.slug || node._id}`,
+              });
             },
-            {
-              title: getContent("share"),
-              onClick: () => {
-                navigator.share({
-                  text: `${location.protocol}//${location.host}/doctor/${node.slug || node._id}`,
-                });
-              },
-              icon: <ShareIcon />,
-            },
-          ]}
-        />
+            icon: <ShareIcon />,
+          },
+        ]}
+      />
+    </div>
+  );
+
+  const onlinesBlock = (
+    <div className={classes.onlines}>
+      <div className={classes.inlineHeader}>
+        <div className={`${classes.inlineTitle} ${t2xsRegular}`}>
+          <Ixon width="1rem">
+            <Calendar02Icon />
+          </Ixon>
+          <span>{getContent("onlineConsult")}</span>
+        </div>
       </div>
-      {/* TODO: make this */}
-      <div className={classes.onlines}>
-        <div className={classes.inlineHeader}>
+      <div className={classes.badges}>
+        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
+          {getContent("videoCall")}
+        </Badge>
+        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
+          {getContent("voiceCall")}
+        </Badge>
+        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
+          {getContent("textChat")}
+        </Badge>
+      </div>
+    </div>
+  );
+
+  const inPersonsBlock = (
+    <div className={classes.inPersons}>
+      <div className={classes.inlineHeader}>
+        <div className={classes.withMap}>
           <div className={`${classes.inlineTitle} ${t2xsRegular}`}>
             <Ixon width="1rem">
-              <Calendar02Icon />
+              <LocationIcon />
             </Ixon>
-            <span>{getContent("onlineConsult")}</span>
+            <span
+              className={classes.inlineTitle}
+            >{`${getContent("address")}: ${node.province ? node.province.name || "-" : "-"}`}</span>
           </div>
-        </div>
-        <div className={classes.badges}>
-          <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-            {getContent("videoCall")}
-          </Badge>
-          <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-            {getContent("voiceCall")}
-          </Badge>
-          <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-            {getContent("textChat")}
-          </Badge>
+          <button
+            className={`${classes.mapButton} ${t2xsRegular}`}
+            type="button"
+          >
+            {getContent("seeOnMap")}
+          </button>
         </div>
       </div>
-      <div className={classes.inPersons}>
-        <div className={classes.inlineHeader}>
-          <div className={classes.withMap}>
-            <div className={`${classes.inlineTitle} ${t2xsRegular}`}>
-              <Ixon width="1rem">
-                <LocationIcon />
-              </Ixon>
-              <span
-                className={classes.inlineTitle}
-              >{`${getContent("address")}: ${node.province ? node.province.name || "-" : "-"}`}</span>
-            </div>
-            <button
-              className={`${classes.mapButton} ${t2xsRegular}`}
-              type="button"
-            >
-              {getContent("seeOnMap")}
-            </button>
-          </div>
+      <div className={classes.badges}>
+        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
+          {getContent("inPerson")}
+        </Badge>
+        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
+          {getContent("sipCall")}
+        </Badge>
+      </div>
+    </div>
+  );
+
+  const sessionsBlock = (
+    <div className={classes.sessions}>
+      {showDates.map((date) => (
+        <DayCard key={date.toISOString()} node={node} date={date} />
+      ))}
+      <div
+        className={classes.moreSessions}
+        onClick={() =>
+          setPopup(
+            "BookingSessionSelector",
+            <BookingSessionSelectorPopup node={node} />,
+          )
+        }
+      >
+        <Ixon width="1rem">
+          <PlusIcon />
+        </Ixon>
+        <span>{getContent("more")}</span>
+      </div>
+    </div>
+  );
+
+  if (view === "Grid") {
+    return (
+      <div className={classes.gridMain}>
+        <div className={classes.gridTop}>
+          {identityBlock}
+          {scoresBlock}
         </div>
-        <div className={classes.badges}>
-          <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-            {getContent("inPerson")}
-          </Badge>
-          <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-            {getContent("sipCall")}
-          </Badge>
+        {onlinesBlock}
+        {inPersonsBlock}
+        {sessionsBlock}
+        <div className={classes.actions}>
+          <Button size="M" radius="Medium" variant="Primary" mode="Fill">
+            {getContent("onlineConsult")}
+          </Button>
+          <Button size="M" radius="Medium" variant="Primary" mode="Fill">
+            {getContent("reservation")}
+          </Button>
         </div>
       </div>
-      <div className={classes.sessions}>
-        {showDates.map((date) => (
-          <DayCard key={date.toISOString()} node={node} date={date} />
-        ))}
-        <div
-          className={classes.moreSessions}
-          onClick={() =>
-            setPopup(
-              "BookingSessionSelector",
-              <BookingSessionSelectorPopup node={node} />,
-            )
-          }
-        >
-          <Ixon width="1rem">
-            <PlusIcon />
-          </Ixon>
-          <span>{getContent("more")}</span>
-        </div>
-      </div>
+    );
+  }
+
+  return (
+    <div className={classes.main}>
+      {identityBlock}
+      {scoresBlock}
+      {onlinesBlock}
+      {inPersonsBlock}
+      {sessionsBlock}
       <div className={classes.actions}>
         <Button size="M" radius="Medium" variant="Primary" mode="Fill">
           {getContent("reservation")}

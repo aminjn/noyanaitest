@@ -94,3 +94,13 @@
   inset-inline-end: 0;
   background-color: var(--yellow);
 }
+
+@media (max-width: 30rem) {
+  .main {
+    flex-direction: column;
+  }
+
+  .stats {
+    padding: 1rem;
+  }
+}

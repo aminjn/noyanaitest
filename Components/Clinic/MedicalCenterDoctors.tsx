@@ -12,6 +12,7 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import { tsmDemiBold, tsmRegular, txsRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
+import HostedImage from "../UI/HostedImage";
 
 const Item = ({
   node,
@@ -21,8 +22,8 @@ const Item = ({
   return (
     <div className={classes.item}>
       <div className={classes.image}>
-        <Image
-          src={`${FilePath}/${node.avatar}`}
+        <HostedImage
+          src={node.avatar}
           alt={getDoctorProfileLabel(node)}
           fill
           sizes="3.5rem"

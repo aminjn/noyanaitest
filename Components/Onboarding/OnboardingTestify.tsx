@@ -1,10 +1,9 @@
 import "swiper/css";
-import Image from "next/image";
 import { SwiperSlide } from "swiper/react";
 import useLocale from "../Hooks/useLocale";
 import classes from "./OnboardingTestify.module.css";
 import { ITestify } from "../Admin/Testify/AdminManageTestifiesPage";
-import { imagePath } from "../helpers/imagepath";
+import HostedImage from "../UI/HostedImage";
 import SwiperSlider from "../UI/SwiperSlider";
 import {
   t4xlBold,
@@ -28,8 +27,8 @@ const OnboardingTestify = ({ data }: { data?: ITestify[] }) => {
             <SwiperSlide key={node._id} className={classes.slide}>
               <div className={classes.card}>
                 <div className={classes.avatar}>
-                  <Image
-                    src={imagePath(node.image)}
+                  <HostedImage
+                    src={node.image}
                     alt={node.name || ""}
                     fill
                     sizes="5rem"
