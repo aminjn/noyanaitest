@@ -234,7 +234,7 @@ const CommentSection = ({
               <CommentIcon />
             </Ixon>
             <legend className={`${classes.title} ${tbaseMedium}`}>
-              {getContent("useComments")}
+              {`${getContent("useComments")} (${getContent("xComments", [data.count.toString()])})`}
             </legend>
           </div>
           <CommentsSummary

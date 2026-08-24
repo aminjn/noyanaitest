@@ -51,6 +51,7 @@ import {
   IInsurance,
   InsurancePopulation,
 } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
+import OrderEditor from "../UI/OrderEditor";
 
 // export type Population<T> = { [key in keyof T]?: T[key] | false };
 
@@ -121,8 +122,8 @@ export interface IClinic<
   businessTimes?: string;
   services?: string[];
   certificates?: string[];
-  averageScore: number;
-  commentCount: number;
+  averageScore?: number;
+  commentCount?: number;
 }
 
 export type ClinicDepartmentPopulation = Population<{
@@ -263,6 +264,14 @@ const AdminManageClinicsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    mutate={mutate}
+                    modelName="clinic"
+                  />
+                ),
               },
               active: {
                 name: "فعال؟",

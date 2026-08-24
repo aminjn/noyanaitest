@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import useSWR from "swr";
 import classes from "./CartPage.module.css";
 import useCart, { CartModel, cartModels, UseCartNode } from "../Hooks/useCart";
 import useUser from "../Hooks/useUser";
@@ -12,8 +14,14 @@ import TrashIcon from "../Icons/TrashIcon";
 import PlusIcon from "../Icons/PlusIcon";
 import MinusIcon from "../Icons/MinusIcon";
 import CartIcon from "../Icons/CartIcon";
+import WalletIcon from "../Icons/WalletIcon";
 import Button from "../UI/Button";
+import Act from "../UI/Act";
 import { ContentKey } from "../Enums/contentKeys";
+import { API } from "../config";
+import { fetcher } from "../helpers/fetcher";
+import useProgress from "../Hooks/useProgress";
+import { IWallet } from "../Booking/Finalize/FinalizeBookingPage";
 import {
   t2xsRegular,
   tlgBold,
@@ -21,6 +29,13 @@ import {
   tsmRegular,
   txsMedium,
 } from "../UI/Typography";
+
+// only "wallet" is wired up on the backend today (CartController.submitCart)
+// - kept as a literal union (rather than importing orderPaymentMethods from
+// the backend) so this file has no cross-project import
+type OrderPaymentMethod = "wallet";
+
+type SubmitCartResponse = { data: { _id: string } };
 
 type CartRow = {
   itemId: string;
@@ -196,6 +211,98 @@ const CartRowItem = ({
   );
 };
 
+const CheckoutSection = ({
+  total,
+  totalCount,
+  isLoading,
+  clearCart,
+}: {
+  total: number;
+  totalCount: number;
+  isLoading: boolean;
+  clearCart: () => void;
+}) => {
+  const getContent = useLocale();
+  const push = useProgress();
+
+  const { data: wallet } = useSWR<IWallet>(`${API}/user/wallet`, (url: string) =>
+    fetcher({ url }).then((res) => res.data),
+  );
+
+  const [method] = useState<OrderPaymentMethod>("wallet");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  return (
+    <div className={classes.summary}>
+      <legend className={`${classes.summaryTitle} ${tmdDemiBold}`}>
+        {getContent("totalPrice")}
+      </legend>
+      <div className={classes.summaryRow}>
+        <span className={t2xsRegular}>{getContent("itemsCount")}</span>
+        <span className={tsmRegular}>{totalCount}</span>
+      </div>
+      <div className={classes.summaryDivider} />
+      <div className={classes.summaryRow}>
+        <span className={t2xsRegular}>{getContent("totalPrice")}</span>
+        <span className={`${classes.totalPrice} ${tlgBold}`}>
+          {`${currencize(total)} ${getContent("toman")}`}
+        </span>
+      </div>
+      <div className={classes.summaryDivider} />
+      <div className={classes.summaryRow}>
+        <span className={t2xsRegular}>{getContent("paymentMethod")}</span>
+        <span className={tsmRegular}>{getContent("wallet")}</span>
+      </div>
+      {!!wallet && (
+        <div className={classes.summaryRow}>
+          <span className={`${classes.walletLabel} ${t2xsRegular}`}>
+            <Ixon width="1rem">
+              <WalletIcon />
+            </Ixon>
+            {getContent("balance")}
+          </span>
+          <span className={tsmRegular}>
+            {`${currencize(wallet.balance)} ${getContent("toman")}`}
+          </span>
+        </div>
+      )}
+      <Button
+        variant="Primary"
+        mode="Fill"
+        size="M"
+        radius="Medium"
+        isLoading={isSubmitting || isLoading}
+        onClick={() => {
+          if (isSubmitting || isLoading) return;
+          setIsSubmitting(true);
+        }}
+      >
+        {getContent("confirmAndPayOrder")}
+      </Button>
+      <Button
+        variant="Error"
+        mode="Outline"
+        size="M"
+        radius="Medium"
+        isLoading={isLoading}
+        onClick={() => clearCart()}
+      >
+        {getContent("removeAll")}
+      </Button>
+      <Act<SubmitCartResponse>
+        path={isSubmitting ? `${API}/cart/submit` : null}
+        method="POST"
+        payload={{ method }}
+        successMessage={getContent("orderSubmittedMessage")}
+        onDone={(status, result) => {
+          setIsSubmitting(false);
+          if (status && result?.data?._id) push(`/order/${result.data._id}`);
+        }}
+      />
+    </div>
+  );
+};
+
 const CartPage = () => {
   const { user } = useUser();
   const {
@@ -282,32 +389,12 @@ const CartPage = () => {
             ))}
           </div>
           {!isEmpty && (
-            <div className={classes.summary}>
-              <legend className={`${classes.summaryTitle} ${tmdDemiBold}`}>
-                {getContent("totalPrice")}
-              </legend>
-              <div className={classes.summaryRow}>
-                <span className={t2xsRegular}>{getContent("itemsCount")}</span>
-                <span className={tsmRegular}>{totalCount}</span>
-              </div>
-              <div className={classes.summaryDivider} />
-              <div className={classes.summaryRow}>
-                <span className={t2xsRegular}>{getContent("totalPrice")}</span>
-                <span className={`${classes.totalPrice} ${tlgBold}`}>
-                  {`${currencize(totalPrice)} ${getContent("toman")}`}
-                </span>
-              </div>
-              <Button
-                variant="Error"
-                mode="Outline"
-                size="M"
-                radius="Medium"
-                isLoading={isLoading}
-                onClick={() => clearCart()}
-              >
-                {getContent("removeAll")}
-              </Button>
-            </div>
+            <CheckoutSection
+              total={totalPrice}
+              totalCount={totalCount}
+              isLoading={isLoading}
+              clearCart={clearCart}
+            />
           )}
         </div>
       </div>

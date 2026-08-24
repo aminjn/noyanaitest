@@ -178,6 +178,7 @@ const linkMap: LinkMap = [
     links: [
       { title: "سطوح دسترسی", target: "accesslevel" },
       { title: "ادمین ها", target: "useraccesslevel" },
+      { title: "تنظیمات سیستم", target: "appConfig" },
       {
         title: "تامین اجتماعی",
         target: "tamin",
@@ -292,7 +293,9 @@ const AdminSidebar = () => {
                 hasAccess(link.access, "readAll"),
             )
             .filter(
-              (el) => el.title.includes(search) || el.target.includes(search),
+              (el) =>
+                el.title.toLowerCase().includes(search.toLowerCase()) ||
+                el.target.toLowerCase().includes(search.toLowerCase()),
             ),
         });
       } else {
@@ -307,7 +310,9 @@ const AdminSidebar = () => {
                   hasAccess(link.access, "readAll"),
               )
               .filter(
-                (el) => el.title.includes(search) || el.target.includes(search),
+                (el) =>
+                  el.title.toLowerCase().includes(search.toLowerCase()) ||
+                  el.target.toLowerCase().includes(search.toLowerCase()),
               ),
           });
       }

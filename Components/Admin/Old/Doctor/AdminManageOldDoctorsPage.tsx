@@ -8,6 +8,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
 import FormatDate from "@/Components/UI/FormatDate";
+import OrderEditor from "../../UI/OrderEditor";
 
 export interface IOldSpeciality extends MongoDoc {
   name: string;
@@ -168,7 +169,7 @@ export interface IOldDoctor extends MongoDoc {
 const AdminManageOldDoctorsPage = () => {
   const { data, error } = useSWR<IOldDoctor[]>(
     `${API}/old/doctor`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   return (

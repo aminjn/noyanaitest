@@ -128,6 +128,7 @@ const AdminManageTextContentPage = () => {
                   value={node.val}
                 />
               ),
+              suppressKeyboardEvents: true,
             },
           }}
         />

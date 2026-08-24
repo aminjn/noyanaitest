@@ -13,6 +13,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
+import OrderEditor from "../UI/OrderEditor";
 
 export type InsuranceTagPopulation = Population<Record<never, never>>;
 
@@ -46,7 +47,19 @@ const AdminManageInsuranceTagsPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتیه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتیه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              modelName="insuranceTag"
+              mutate={mutate}
+              value={node.order}
+            />
+          ),
+        },
         action: {
           name: "عملیات",
           component: (node) => (

@@ -33,6 +33,7 @@ import {
   ProductImagePopulation,
   ProductSpecPopulation,
 } from "../Product/AdminManageProductsPage";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ServicePackagePopulation = Population<{
   Owner: DoctorProfilePopulation;
@@ -121,7 +122,19 @@ const AdminManageServicePackagesPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              value={node.order}
+              mutate={mutate}
+              modelName="servicePackage"
+            />
+          ),
+        },
         price: {
           name: "قیمت",
           value: (node) => node.price,

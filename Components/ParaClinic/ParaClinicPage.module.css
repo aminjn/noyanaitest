@@ -10,3 +10,7 @@
 .comments {
   margin-top: 2rem;
 }
+
+.location.location {
+  padding-inline: unset;
+}

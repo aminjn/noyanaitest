@@ -172,7 +172,7 @@ const LoginPopup = ({
         </Link>{" "}
         موافقت می‌کنم
       </p>
-      <button onClick={() => setIsLogin(false)}>ثبت نام</button>
+      <Button onClick={() => setIsLogin(false)}>ثبت نام</Button>
     </div>
   );
 };

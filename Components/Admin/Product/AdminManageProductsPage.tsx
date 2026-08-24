@@ -34,6 +34,7 @@ import { IProductPackage } from "../ProductPackage/AdminManageProductPackagesPag
 import { IServicePackage } from "../ServicePackage/AdminManageServicePackagesPage";
 import { IService } from "../Service/AdminManageServicesPage";
 import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ProductPopulation = Population<{
   Category: ProductCategoryPopulation;
@@ -250,6 +251,14 @@ const AdminManageProductsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="product"
+                    mutate={mutate}
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

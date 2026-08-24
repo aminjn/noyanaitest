@@ -16,11 +16,12 @@ import DeletePartPopup from "./DeletePartPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import WithTitle from "../UI/WithTitle";
 import CreatePartPopup from "./CreatePartPopup";
+import OrderEditor from "../UI/OrderEditor";
 
 const AdminManagePartsPage = () => {
   const { data, error, mutate } = useSWR<IPart[]>(
     `${API}/auto/part`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -47,6 +48,14 @@ const AdminManagePartsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    modelName="part"
+                    mutate={mutate}
+                    value={node.order}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",
@@ -60,7 +69,7 @@ const AdminManagePartsPage = () => {
                       onClick={() =>
                         setPopup(
                           "DeletePart",
-                          <DeletePartPopup mutate={mutate} node={node} />
+                          <DeletePartPopup mutate={mutate} node={node} />,
                         )
                       }
                     >

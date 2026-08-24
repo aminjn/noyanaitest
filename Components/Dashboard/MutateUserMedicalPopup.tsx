@@ -28,24 +28,23 @@ const MutateUserMedicalPopup = ({
             title: getContent("bloodType"),
           },
           height: {
-            type: "range",
+            type: "number",
             title: getContent("height"),
-            min: 0,
-            max: 300,
-            step: 5,
-            markCount: 10,
+            // min: 0,
+            // max: 300,
+            // step: 5,
+            // markCount: 10,
           },
           weight: {
-            type: "range",
+            type: "number",
             title: getContent("weight"),
-            min: 0,
-            max: 300,
-            step: 5,
-            markCount: 10,
+            // min: 0,
+            // max: 300,
+            // step: 5,
+            // markCount: 10,
           },
         }}
         onCancel={() => closePopup()}
-        className={classes.main}
         hookProps={{
           path: `${API}/user/medical`,
           method: "POST",

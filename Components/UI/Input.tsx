@@ -3,9 +3,15 @@ import {
   forwardRef,
   HTMLInputTypeAttribute,
   ReactNode,
+  useState,
 } from "react";
 import classes from "./Input.module.css";
 import { WithStyleProps } from "../Layout/Layout";
+import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { currencize } from "../helpers/currencize";
+import { numberToPersianWords } from "../helpers/lib";
+import { tsmRegular } from "./Typography";
 
 const Input = forwardRef<
   HTMLInputElement,
@@ -32,6 +38,8 @@ const Input = forwardRef<
     lead?: ReactNode;
     tail?: ReactNode;
     inputClass?: string;
+    required?: boolean;
+    price?: boolean;
   }>
 >(
   (
@@ -52,18 +60,30 @@ const Input = forwardRef<
       lead,
       tail,
       inputClass = "",
+      required,
+      price,
     },
     ref,
   ) => {
+    const [innerValue, setInnerValue] = useState<string>(defaultValue || "");
+
+    const getContent = useScopedLocale(["common"]);
+
     return (
-      <div style={style} className={`${classes.main} ${className}`}>
+      <div
+        style={style}
+        className={`${classes.main} ${price ? classes.withPrice : ""} ${className}`}
+      >
         <input
           pattern={pattern}
           className={`${classes.input} ${inputClass}`}
           placeholder=""
           type={type}
           disabled={readOnly}
-          onChange={onChange}
+          onChange={(e) => {
+            setInnerValue(e.target.value);
+            onChange?.(e);
+          }}
           defaultValue={defaultValue}
           min={min}
           max={max}
@@ -72,9 +92,25 @@ const Input = forwardRef<
           autoFocus={autoFocuse}
           inputMode={inputMode}
         />
-        {!!title && <label className={classes.title}>{title}</label>}
+        {!!title && (
+          <label className={classes.title}>
+            {!!required && <span className={classes.required}>* </span>}
+            <span>{title}</span>
+          </label>
+        )}
         {!!lead && <span className={classes.lead}>{lead}</span>}
         {!!tail && <span className={classes.tail}>{tail}</span>}
+        {!!price && (
+          <span className={`${classes.price} ${tsmRegular}`}>
+            {getContent("xToman", [
+              currencize(
+                numberToPersianWords(
+                  Number(innerValue.replaceAll(/\D/g, "") || "0"),
+                ),
+              ),
+            ])}
+          </span>
+        )}
       </div>
     );
   },

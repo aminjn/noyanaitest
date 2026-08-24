@@ -4,6 +4,8 @@ import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 
+export const wizardChatsKey = `${API}/wizard/chat`;
+
 export type BotChatPopulation = Population<{ User: UserPopulation }>;
 export interface IBotChat<
   T extends BotChatPopulation = BotChatPopulation,
@@ -15,7 +17,7 @@ export interface IBotChat<
 
 const useBotChats = () => {
   const { data, error, mutate } = useSWR<IBotChat[]>(
-    `${API}/wizard/chat`,
+    wizardChatsKey,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 

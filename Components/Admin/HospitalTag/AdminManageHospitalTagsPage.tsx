@@ -21,6 +21,7 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type HospitalTagPopulation = Population<Record<never, never>>;
 
@@ -126,6 +127,14 @@ const AdminManageHospitalTagsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="hopitalTag"
+                    mutate={mutate}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",

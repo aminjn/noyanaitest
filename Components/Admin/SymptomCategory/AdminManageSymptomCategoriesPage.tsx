@@ -13,6 +13,7 @@ import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
+import OrderEditor from "../UI/OrderEditor";
 
 export type SymptomCategoryPopulation = Population<Record<never, never>>;
 export interface ISymptomCategory<
@@ -47,7 +48,19 @@ const AdminManageSymptomCategoriesPage = () => {
           filter: "Set",
         },
         slug: { name: "اسلاگ", value: (node) => node.slug, filter: "Text" },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              value={node.order}
+              mutate={mutate}
+              modelName="symptomCategory"
+            />
+          ),
+        },
         actions: {
           name: "غملیات",
           component: (node) => (

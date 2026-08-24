@@ -13,6 +13,7 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
+import OrderEditor from "../UI/OrderEditor";
 
 export type AboutTeamPopulation = Population<Record<never, never>>;
 
@@ -60,7 +61,19 @@ const AdminManageAboutTeamsPage = () => {
           filter: "Set",
           component: (node) => <BooleanToIcon value={node.isActive} />,
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              modelName="aboutTeam"
+              _id={node._id}
+              value={node.order}
+              mutate={mutate}
+            />
+          ),
+        },
         linkedin: {
           name: "لینکدین",
           value: (node) => node.linkedin,

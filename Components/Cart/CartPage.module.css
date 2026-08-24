@@ -223,3 +223,9 @@
 .totalPrice {
   color: var(--error);
 }
+
+.walletLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}

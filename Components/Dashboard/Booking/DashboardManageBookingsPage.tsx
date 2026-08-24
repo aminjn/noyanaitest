@@ -4,6 +4,7 @@ import useSWR from "swr";
 import classes from "./DashboardManageBookingsPage.module.css";
 import {
   DoctorSessionType,
+  doctorSessionTypeContentKeyDict,
   IBooking,
 } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
 import { API } from "@/Components/config";
@@ -30,6 +31,8 @@ import {
   OfficePopulation,
 } from "@/Components/DoctorPanel/Office/DoctorManageOfficesPage";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
+import ReservationStatusBadge from "./ReservationStatusBadge";
+import { ReservationParty, ReservationStatus } from "./reservationStatus";
 
 export type CheckoutPopulation = Population<{ User: UserPopulation }>;
 
@@ -44,6 +47,8 @@ export interface ICheckout<
 export type TransactionPopulation = Population<{
   User: UserPopulation;
   Checkout: CheckoutPopulation;
+  Reservation: ReservationPopulation;
+  Doctor: DoctorProfilePopulation;
 }>;
 
 export interface ITransaction<
@@ -53,6 +58,16 @@ export interface ITransaction<
   amount: number;
   checkout?: T["Checkout"] extends CheckoutPopulation
     ? ICheckout<T["Checkout"]>
+    : string;
+  // the reservation/booking this transaction is for - e.g. the patient's
+  // payment when it's created, or the doctor's payout once it completes
+  reservation?: T["Reservation"] extends ReservationPopulation
+    ? IReservation<T["Reservation"]>
+    : string;
+  // set on the doctor's payout transaction, since `user` there is the
+  // doctor's linked User account, not the DoctorProfile itself
+  doctor?: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
     : string;
   createdAt: Date;
 }
@@ -83,6 +98,17 @@ export interface IReservation<
   transaction?: T["Transaction"] extends TransactionPopulation
     ? ITransaction<T["Transaction"]>
     : string;
+  status: ReservationStatus;
+  // set by the cron sweep when it dispatches a textChat / voiceCall /
+  // videoCall session — unpopulated refs, just used to build a "join" link
+  chat?: string;
+  callRoom?: string;
+  activatedAt?: Date;
+  reminderSentAt?: Date;
+  patientPresentAt?: Date;
+  doctorPresentAt?: Date;
+  noShowParty?: ReservationParty;
+  finalizedAt?: Date;
   createdAt: Date;
 }
 
@@ -148,8 +174,17 @@ const DashboardManageBookingsPage = () => {
             },
             sessionType: {
               name: getContent("sessionType"),
-              value: (node) => node.sessionType,
+              value: (node) =>
+                getContent(doctorSessionTypeContentKeyDict[node.sessionType]),
               filter: "Set",
+            },
+            status: {
+              name: getContent("status"),
+              value: (node) => node.status,
+              filter: "Set",
+              component: (node) => (
+                <ReservationStatusBadge status={node.status} />
+              ),
             },
             createdAt: {
               name: getContent("submittedAt"),

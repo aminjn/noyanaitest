@@ -67,6 +67,7 @@ import DateInput from "@/Components/UI/DateInput";
 import useForm from "@/Components/Hooks/useForm";
 import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
 import Act from "@/Components/UI/Act";
+import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 
 const AddRelativePopup = ({ mutate }: { mutate: () => unknown }) => {
   const getContent = useLocale();
@@ -691,6 +692,8 @@ const Inner = ({
     [context, data, identity, onFinalize, shift],
   );
 
+  const push = useProgress();
+
   return (
     <HandleLoading data={!!data && !!user} error={error}>
       {!!data && !!user && (
@@ -745,13 +748,14 @@ const Inner = ({
           )}
         </Fragment>
       )}
-      <Act
+      <Act<{ data: IReservation }>
         path={!!isLoading ? `${API}/booking/reserve` : null}
         method="POST"
         payload={isLoading || undefined}
-        onDone={(status) => {
+        onDone={(status, result) => {
           setIsLoading(null);
-          if (!status) return;
+          if (!status || !result) return;
+          push(`/dashboard/booking/${result.data._id}`);
         }}
       />
     </HandleLoading>

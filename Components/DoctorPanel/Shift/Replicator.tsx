@@ -122,7 +122,9 @@ const Replicator = ({
                   setIsOpen(false);
                 }}
               >
-                {getContent("applySettingsOnXDays")}
+                {getContent("applySettingsOnXDays", [
+                  seletcedDays.length.toString(),
+                ])}
               </Button>
             </div>
           </div>

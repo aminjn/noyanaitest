@@ -21,6 +21,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type HospitalCategoryPopulation = Population<Record<never, never>>;
 
@@ -132,6 +133,14 @@ const AdminManageHospitalCategoriesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    modelName="hospitalCategory"
+                    _id={node._id}
+                    mutate={mutate}
+                    value={node.order}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",

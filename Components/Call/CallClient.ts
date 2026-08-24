@@ -202,6 +202,13 @@ export type CallClientEventMap = {
   joined: { roomId: string; role: CallParticipantRole };
   /** One of your own tracks started publishing. */
   localTrack: { mediaTag: MediaTag; track: MediaStreamTrack };
+  /** A mic/camera you asked to join with (`audio`/`video: true`) couldn't be
+   *  acquired - no such device, or permission was denied. You're still
+   *  fully joined and consuming everyone else's tracks; the UI should just
+   *  reflect that this kind of media isn't being sent (e.g. keep the
+   *  mic/camera toggle off/disabled instead of showing a stuck "on"
+   *  state). */
+  mediaUnavailable: { kind: MuteKind; reason: string };
   /** A remote participant's track is ready to render. */
   remoteTrack: {
     userId: string;
@@ -339,6 +346,17 @@ export class CallClient extends TypedEmitter<CallClientEventMap> {
     return this.role;
   }
 
+  /** Whether your mic is actually publishing (false if you have no
+   *  microphone, denied permission, or never asked to join with audio). */
+  get isPublishingAudio(): boolean {
+    return this.producers.has("mic");
+  }
+
+  /** Whether your camera is actually publishing. */
+  get isPublishingVideo(): boolean {
+    return this.producers.has("webcam");
+  }
+
   get isInCall(): boolean {
     return !!this.roomId;
   }
@@ -369,15 +387,14 @@ export class CallClient extends TypedEmitter<CallClientEventMap> {
     this.recvTransport = recvTransport;
 
     if (opts.autoPublish !== false) {
-      const stream =
-        opts.stream ??
-        (opts.audio !== false || opts.video
-          ? await navigator.mediaDevices.getUserMedia({
-              audio: opts.audio !== false,
-              video: !!opts.video,
-            })
-          : null);
+      const stream = await this.acquireLocalStream(opts);
       if (stream) await this.publish(stream);
+      // If no stream came back (no mic/camera present, or the user denied
+      // permission), we deliberately do NOT throw here - the room/transports
+      // above are already committed, so the caller stays fully joined and
+      // simply consumes everyone else's tracks without publishing any of
+      // its own. An "error" event was already emitted with details for the
+      // UI to show as a toast if it wants to.
     }
 
     for (const producerInfo of existingProducers) {
@@ -385,6 +402,80 @@ export class CallClient extends TypedEmitter<CallClientEventMap> {
     }
 
     this.emit("joined", { roomId, role });
+  }
+
+  /** Best-effort microphone/camera acquisition for `join()`. Never throws -
+   *  a user with no mic/camera (or who denies permission) should still be
+   *  able to join and consume everyone else's media, not get bounced out of
+   *  the call entirely. Falls back to acquiring audio/video independently
+   *  so e.g. a mic-but-no-camera device still publishes audio instead of
+   *  failing outright because the combined `getUserMedia` call rejected. */
+  private async acquireLocalStream(
+    opts: JoinOptions,
+  ): Promise<MediaStream | null> {
+    if (opts.stream) return opts.stream;
+
+    const wantAudio = opts.audio !== false;
+    const wantVideo = !!opts.video;
+    if (!wantAudio && !wantVideo) return null;
+
+    if (
+      typeof navigator === "undefined" ||
+      !navigator.mediaDevices?.getUserMedia
+    ) {
+      return null;
+    }
+
+    try {
+      return await navigator.mediaDevices.getUserMedia({
+        audio: wantAudio,
+        video: wantVideo,
+      });
+    } catch (err) {
+      // Combined request failed (missing device, permission denial,
+      // OverconstrainedError, etc). Don't give up on the whole call - try
+      // each device independently so we still publish whatever we can.
+      if (!wantAudio || !wantVideo) {
+        // Only one kind was requested anyway, nothing left to fall back to.
+        this.emit("mediaUnavailable", {
+          kind: wantAudio ? "audio" : "video",
+          reason: (err as Error).message,
+        });
+        return null;
+      }
+    }
+
+    let audioStream: MediaStream | null = null;
+    let videoStream: MediaStream | null = null;
+
+    try {
+      audioStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+    } catch (err) {
+      this.emit("mediaUnavailable", {
+        kind: "audio",
+        reason: (err as Error).message,
+      });
+    }
+
+    try {
+      videoStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
+    } catch (err) {
+      this.emit("mediaUnavailable", {
+        kind: "video",
+        reason: (err as Error).message,
+      });
+    }
+
+    const tracks = [
+      ...(audioStream?.getAudioTracks() ?? []),
+      ...(videoStream?.getVideoTracks() ?? []),
+    ];
+    if (!tracks.length) return null;
+    return new MediaStream(tracks);
   }
 
   /** Publish a MediaStream's audio/video tracks (tagged "mic"/"webcam").

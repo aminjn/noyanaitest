@@ -7,11 +7,12 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import OrderEditor from "../../UI/OrderEditor";
 
 const AdminManageOldDiseasesPage = () => {
-  const { data, error } = useSWR<IOldDisease[]>(
+  const { data, error, mutate } = useSWR<IOldDisease[]>(
     `${API}/old/disease`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   return (
@@ -61,7 +62,19 @@ const AdminManageOldDiseasesPage = () => {
               value: (node) => node.possibleComlplication,
               filter: "Text",
             },
-            order: { name: "رتبه", value: (node) => node.order },
+            order: {
+              name: "رتبه",
+              value: (node) => node.order,
+              filter: "Number",
+              component: (node) => (
+                <OrderEditor
+                  value={node.order}
+                  _id={node._id}
+                  mutate={mutate}
+                  modelName="disease"
+                />
+              ),
+            },
           }}
         />
       )}

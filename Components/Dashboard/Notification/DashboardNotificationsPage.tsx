@@ -161,6 +161,7 @@ const DashboardNotificationsPage = () => {
                 variant={data.unreadCount ? "Secondary" : "Disable"}
                 mode="Outline"
                 size="S"
+                radius="High"
                 leadIcon={<DoubleCheckIcon />}
                 isLoading={isMarkingAll}
                 onClick={() => {

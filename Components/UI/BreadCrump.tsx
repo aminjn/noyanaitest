@@ -20,7 +20,7 @@ const BreadCrump = ({
   const { hours, minutes } = useTime();
   return (
     <div className={`${classes.main} ${className}`} style={style}>
-      <nav className={classes.nav} >
+      <nav className={classes.nav}>
         {trail.map((segment, i, arr) => (
           <Fragment key={segment.target}>
             <Link href={segment.target} className={classes.link}>
@@ -37,7 +37,7 @@ const BreadCrump = ({
       <div className={classes.rest}>
         <span
           className={classes.time}
-        >{`${hours} : ${minutes} - ${new Date().toLocaleDateString("fa-IR", {
+        >{`${minutes} : ${hours} - ${new Date().toLocaleDateString("fa-IR", {
           month: "long",
           day: "numeric",
           year: "numeric",

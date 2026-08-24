@@ -21,6 +21,7 @@ import IconLink from "../UI/IconLink";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ClinicCategoryPopulation = Population<Record<never, never>>;
 
@@ -129,6 +130,14 @@ const AdminManageClinicCategoriesPage = () => {
                 name: "رنبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    modelName="clinicCategory"
+                    mutate={mutate}
+                    value={node.order}
+                    _id={node._id}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",

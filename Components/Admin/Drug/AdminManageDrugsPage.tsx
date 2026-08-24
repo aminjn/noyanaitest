@@ -16,6 +16,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import EditIcon from "@/Components/Icons/EditIcon";
 import DeleteDrugPopup from "./DeleetDrugPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 const AdminManageDrugsPage = () => {
   const { data, error, mutate } = useSWR<IDrug[]>(
@@ -47,6 +48,14 @@ const AdminManageDrugsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    modelName="drug"
+                    mutate={mutate}
+                    _id={node._id}
+                  />
+                ),
               },
               slug: {
                 name: "اسلاگ",

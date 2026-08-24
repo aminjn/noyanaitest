@@ -13,6 +13,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
+import OrderEditor from "../UI/OrderEditor";
 
 export const privacySectionpages = ["Privacy", "Policy"] as const;
 
@@ -59,7 +60,19 @@ const AdminManagePrivacySectionsPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              value={node.order}
+              _id={node._id}
+              modelName="privacySection"
+              mutate={mutate}
+            />
+          ),
+        },
         page: {
           name: "صفحه",
           value: (node) => privacySectionPageDict[node.page],

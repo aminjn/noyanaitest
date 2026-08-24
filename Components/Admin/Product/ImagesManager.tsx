@@ -21,6 +21,7 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 const DeleteProductImagePopup = ({
   mutate,
@@ -138,6 +139,14 @@ const ImagesManager = ({
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    modelName="productImage"
+                    mutate={mutate}
+                    value={node.order}
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

@@ -11,6 +11,8 @@ import { NEXT_META_SUFFIX } from "next/dist/lib/constants";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import useForm from "@/Components/Hooks/useForm";
+import PointPicker from "@/Components/Admin/UI/PointPicker";
 
 const DoctorManageOfficeLocationTab = ({
   mutate,
@@ -19,16 +21,15 @@ const DoctorManageOfficeLocationTab = ({
   office: IOffice;
   mutate: () => unknown;
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const [selected, setSelected] = useState<LngLat | null>(null);
-
-  const [isLoading, setIsLoading] = useState<[number, number] | null>(null);
-
-  const { map, ready } = useMap({
-    containerRef,
-    onClick: setSelected,
-    center: office.location?.coordinates,
+  const { setInput, isLoading, submit, input } = useForm<{
+    coords: [number, number];
+  }>({
+    path: `${API}/doctor/office/${office._id}`,
+    method: "POST",
+    successCb: () => {
+      mutate();
+    },
+    mutator: (inp) => ({ location: inp.coords }),
   });
 
   const getContent = useLocale();
@@ -37,52 +38,21 @@ const DoctorManageOfficeLocationTab = ({
 
   return (
     <div className={classes.main}>
-      <div className={classes.map} ref={containerRef}>
-        {ready && (
-          <Fragment>
-            {!!office.location?.coordinates && (
-              <MapMarker
-                map={map}
-                variant="active"
-                lat={office.location.coordinates[0]}
-                lng={office.location.coordinates[1]}
-              />
-            )}
-            {!!selected && (
-              <MapMarker map={map} lng={selected.lng} lat={selected.lat} />
-            )}
-            {!!office.location?.coordinates && (
-              <MapMarker
-                map={map}
-                lng={office.location.coordinates[0]}
-                lat={office.location.coordinates[1]}
-                variant="doctor"
-              />
-            )}
-          </Fragment>
-        )}
-      </div>
+      <PointPicker
+        defaultValue={office.location?.coordinates}
+        onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
+      />
       <FormActions>
         <Button
           onClick={() => {
-            if (!selected) return pushNotification("checkInput", "Warn");
-            setIsLoading(selected.toArray());
+            if (!input.coords) return pushNotification("checkInput", "Warn");
+            submit();
           }}
           isLoading={!!isLoading}
         >
           {getContent("submit")}
         </Button>
       </FormActions>
-      <Act
-        path={isLoading ? `${API}/doctor/office/${office._id}` : null}
-        method="POST"
-        onDone={(status) => {
-          setIsLoading(null);
-          if (!status) return;
-          mutate();
-        }}
-        payload={{ location: isLoading }}
-      />
     </div>
   );
 };

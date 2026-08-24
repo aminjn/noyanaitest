@@ -22,6 +22,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type DiseaseTagPopulation = Population<Record<never, never>>;
 
@@ -135,6 +136,14 @@ const AdminManageDiseaseTagsPage = () => {
                 name: "رتیه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    modelName="diseaseTag"
+                    mutate={mutate}
+                    _id={node._id}
+                    value={node.order}
+                  />
+                ),
               },
               level: {
                 name: "لول",

@@ -68,7 +68,7 @@ export interface IDoctorShift<
     : string;
 }
 
-export type ShiftContext = (Omit<IDoctorShift, "office" | "doctor"> &
+export type ShiftContext = (Omit<IDoctorShift, "office" | "doctor" | "__v"> &
   Partial<{ office: string; doctor: string }>)[];
 
 const Inner = ({
@@ -111,6 +111,8 @@ const Inner = ({
       const stripped: Partial<ShiftContext[number]> = { ...shift };
       delete stripped._id;
       delete stripped.doctor;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (stripped as any).__v;
       result.push(stripped);
     }
     setIsLoading(result);

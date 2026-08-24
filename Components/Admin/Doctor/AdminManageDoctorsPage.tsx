@@ -32,6 +32,7 @@ import {
   GalleryItemPopulation,
   IGalleryItem,
 } from "./AdminManageDoctorGalleryTab";
+import OrderEditor from "../UI/OrderEditor";
 
 export type DoctorPopulation = Population<{
   SpecialityPopulated?: SpecialityPopulation;
@@ -164,6 +165,14 @@ const AdminManageDoctorsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    modelName="doctor"
+                    value={node.order || 0}
+                    mutate={mutate}
+                  />
+                ),
               },
               active: {
                 name: "فعال",

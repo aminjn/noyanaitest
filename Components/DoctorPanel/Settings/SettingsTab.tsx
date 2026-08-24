@@ -23,17 +23,17 @@ export interface ISessionSettings extends MongoDoc {
 const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
   const { data, error, mutate } = useSWR<ISessionSettings>(
     `${API}/doctor/settings/${kind}`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
 
   const commons = useMemo<FormRenderer<ISessionSettings>>(
     () => ({
-      price: { type: "number", title: getContent("price") },
+      price: { type: "number", title: getContent("price"), price: true },
       active: { type: "bool", title: getContent("active") },
     }),
-    [getContent]
+    [getContent],
   );
 
   const sessionTypeToFormRenderer = useMemo<
@@ -52,7 +52,7 @@ const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
       videoCall: { ...commons },
       voiceCall: { ...commons },
     }),
-    [commons, getContent]
+    [commons, getContent],
   );
 
   return (

@@ -1,0 +1,95 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.stepIconCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.stepIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: var(--gray3);
+  color: var(--gray7);
+  flex-shrink: 0;
+}
+
+.stepIcon.done {
+  background-color: var(--successT1);
+  color: var(--successS1);
+}
+
+.stepIcon.error {
+  background-color: var(--errorT1);
+  color: var(--errorS1);
+}
+
+.stepIcon.skipped {
+  background-color: var(--gray3);
+  color: var(--gray6);
+}
+
+.stepLine {
+  width: 2px;
+  flex: 1;
+  min-height: 1.5rem;
+  margin-block: 0.125rem;
+  background-color: var(--gray4);
+}
+
+.stepLineDone {
+  background-color: var(--successT3);
+}
+
+.stepBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding-bottom: 1.25rem;
+}
+
+.stepLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray13);
+}
+
+.stepLabel.muted {
+  color: var(--gray8);
+  font-weight: 400;
+}
+
+.stepDate {
+  font-size: 0.75rem;
+  color: var(--gray8);
+}
+
+.stepCaption {
+  margin-top: 0.25rem;
+  width: fit-content;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.5rem;
+  background-color: var(--gray3);
+  color: var(--gray9);
+}
+
+.stepCaption.error {
+  background-color: var(--errorT1);
+  color: var(--errorS1);
+}

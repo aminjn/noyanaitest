@@ -21,6 +21,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type TestCategoryPopulation = Population<Record<never, never>>;
 
@@ -123,6 +124,14 @@ const AdminManageTestCategoriesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="testCategory"
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

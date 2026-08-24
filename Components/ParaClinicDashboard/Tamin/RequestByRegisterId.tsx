@@ -212,6 +212,7 @@ const RegisterSessionPopup = ({ data }: { data: RequestedPresc }) => {
               <div className={classes.name}>{detail.tareF_NAME}</div>
               <Input
                 title={getContent("price")}
+                price
                 onChange={(e) =>
                   setInput((prev) => {
                     const clone = [...prev];

@@ -23,6 +23,9 @@ import {
   FaqCategoryPopulation,
   IFaqCategory,
 } from "../faqCategory/AdminManageFaqCategoriesPage";
+import OrderEditor from "../UI/OrderEditor";
+import InlineLink from "../UI/InlineLink";
+import { adminPath } from "@/Components/helpers/adminPath";
 
 export type FaqPopulation = Population<{ Category: FaqCategoryPopulation }>;
 
@@ -44,7 +47,7 @@ const MutateFaqPopup = ({
   mutate,
   node,
 }: {
-  node?: IFaq;
+  node?: IFaq<{ Category: Record<never, never> }>;
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
@@ -70,6 +73,15 @@ const MutateFaqPopup = ({
           isHome: { title: "نمایش در خانه", type: "bool" },
           question: { title: "سوال", type: "text" },
           answer: { title: "جواب", type: "text" },
+          category: {
+            title: "دسته بندی",
+            type: "nodes",
+            getOptionLabel: (node) =>
+              (node as IFaqCategory).name || (node as IFaqCategory)._id,
+            getOptionValue: (node) => (node as IFaqCategory)._id,
+            path: `${API}/auto/faqCategory`,
+            getDefaultValue: (inp) => inp.category?._id,
+          },
         }}
       />
     </PopupCard>
@@ -107,9 +119,10 @@ const DeleteFaqPopup = ({
 };
 
 const AdminManageFaqsPage = () => {
-  const { data, error, mutate } = useSWR<IFaq[]>(
-    `${API}/auto/faq`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  const { data, error, mutate } = useSWR<
+    IFaq<{ Category: Record<never, never> }>[]
+  >(`${API}/auto/faq`, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -142,6 +155,14 @@ const AdminManageFaqsPage = () => {
                 name: "رتبه",
                 filter: "Number",
                 value: (node) => node.order,
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="faq"
+                    mutate={mutate}
+                  />
+                ),
               },
               isHome: {
                 name: "نمایش در هوم",
@@ -158,6 +179,21 @@ const AdminManageFaqsPage = () => {
                 name: "جواب",
                 value: (node) => node.answer,
                 filter: "Text",
+              },
+              category: {
+                name: "دسته یندی",
+                filter: "Multi",
+                value: (node) => node.category?.name,
+                component: (node) =>
+                  node.category ? (
+                    <InlineLink
+                      href={adminPath(`/faqCategory/${node.category._id}`)}
+                    >
+                      {node.category.name}
+                    </InlineLink>
+                  ) : (
+                    ""
+                  ),
               },
               actions: {
                 name: "عملیات",

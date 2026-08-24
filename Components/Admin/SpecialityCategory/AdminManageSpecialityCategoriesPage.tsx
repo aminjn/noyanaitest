@@ -21,6 +21,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type SpecialityCategoryPopulation = Population<Record<never, never>>;
 export interface ISpecialityCategory<
@@ -131,6 +132,14 @@ const AdminManageSpecialityCategoriesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="specialityCategory"
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",

@@ -1,7 +1,23 @@
 import {
-  categorizedDoctorSecretaryActions,
-  doctorSecretaryActionCategories,
-} from "@/Components/Admin/DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
+  categorizedDoctorActions,
+  doctorActionCategories,
+} from "@/Components/Enums/actions/doctorActions";
+import {
+  categorizedClinicActions,
+  clinicActionCategories,
+} from "@/Components/Enums/actions/clinicActions";
+import {
+  categorizedInsuranceActions,
+  insuranceActionCategories,
+} from "@/Components/Enums/actions/insuranceActions";
+import {
+  categorizedPharmacyActions,
+  pharmacyActionCategories,
+} from "@/Components/Enums/actions/pharmacyActions";
+import {
+  categorizedParaClinicActions,
+  paraClinicActionCategories,
+} from "@/Components/Enums/actions/paraClinicActions";
 import classes from "./MutateSecretaryAccessLevelPopup.module.css";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
@@ -17,23 +33,29 @@ import TableBox from "@/Components/UI/TableBox";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { Acl, NodeWithAcl } from "../Request/CreateSecretaryRequestPopup";
 
+// Per-panel access-level tab groupings, each owned by that panel's own
+// Components/Enums/actions/*.tsx file (which is itself kept in sync with the
+// matching *Acl.ts action array on noyanai-back). Every node type is fully
+// populated as of 2026-08 — previously only "doctor" had real categories
+// here, so the other four panels' access-level create/edit/preview popups
+// rendered no toggles at all.
 export const categoriesAclMap: Record<NodeWithAcl, readonly ContentKey[]> = {
-  doctor: doctorSecretaryActionCategories,
-  clinic: [],
-  insurance: [],
-  pharmacy: [],
-  paraClinic: [],
+  doctor: doctorActionCategories,
+  clinic: clinicActionCategories,
+  insurance: insuranceActionCategories,
+  pharmacy: pharmacyActionCategories,
+  paraClinic: paraClinicActionCategories,
 };
 
 export const categorizedAclMap: Record<
   NodeWithAcl,
   Readonly<Record<string, readonly ContentKey[]>>
 > = {
-  doctor: categorizedDoctorSecretaryActions,
-  clinic: {},
-  insurance: {},
-  pharmacy: {},
-  paraClinic: {},
+  doctor: categorizedDoctorActions,
+  clinic: categorizedClinicActions,
+  insurance: categorizedInsuranceActions,
+  pharmacy: categorizedPharmacyActions,
+  paraClinic: categorizedParaClinicActions,
 };
 
 const MutateSecretaryAccessLevelPopup = ({

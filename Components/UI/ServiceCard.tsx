@@ -72,7 +72,7 @@ const ServiceCard = ({
             {getCompContent("xComment", [node.commentCount.toString()])}
           </span>
           <span className={`${classes.score} ${t2xsRegular}`}>
-            {node.averageScore.toFixed(1)}
+            {node.averageScore?.toFixed(1)}
           </span>
           <Ixon className={classes.star} width="1rem">
             <StarIcon />

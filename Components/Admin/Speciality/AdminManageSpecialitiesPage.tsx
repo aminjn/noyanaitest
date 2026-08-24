@@ -29,6 +29,7 @@ import {
   DoctorProfilePopulation,
   IDoctorProfile,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
+import OrderEditor from "../UI/OrderEditor";
 
 export type SpecialityPopulation = Population<{
   Category: SpecialityCategoryPopulation;
@@ -102,6 +103,14 @@ const AdminManageSpecialitiesPage = () => {
               },
               order: {
                 name: "رتبه",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    modelName="speciality"
+                    mutate={mutate}
+                    _id={node._id}
+                  />
+                ),
                 value: (node) => node.order,
                 filter: "Number",
               },

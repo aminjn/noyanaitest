@@ -2,30 +2,36 @@
 import { useParams } from "next/navigation";
 import useUser, { MongoDoc } from "../Hooks/useUser";
 import classes from "./WizardPage.module.css";
-import useSWR from "swr";
-import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
-import { BotChatPopulation, IBotChat } from "./useBotChats";
+import useSWR, { mutate as mutateGlobal } from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import { Fragment, useCallback, useState } from "react";
+import {
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Form from "../UI/Form";
 import Ixon from "../UI/Ixon";
-import AirPodsIcon from "../Icons/AirPodsIcon";
+import SendIcon from "../Icons/SendIcon";
+import BarsIcon from "../Icons/BarsIcon";
+import AiIcon from "../Icons/AiIcon";
 import useLocale from "../Hooks/useLocale";
 import { tsmRegular } from "../UI/Typography";
 import useNotification from "../Hooks/useNotification";
 import useProgress from "../Hooks/useProgress";
 import ChatsSidebar from "./ChatsSidebar";
+import LoginRequired from "../UI/LoginRequired";
+import Loading from "../Admin/UI/Loading";
+import { wizardChatsKey } from "./useBotChats";
 
 export const botChatMessageRoles = ["user", "assistant"] as const;
 
 export type BotChatMessageRole = (typeof botChatMessageRoles)[number];
 
-export type BotChatMessagePopulation = Population<{ Chat: BotChatPopulation }>;
-export interface IBotChatMessage<
-  T extends BotChatMessagePopulation = BotChatMessagePopulation,
-> extends MongoDoc {
-  chat: T["Chat"] extends BotChatPopulation ? IBotChat<T["Chat"]> : string;
+export interface IBotChatMessage extends MongoDoc {
+  chat: string;
   content: string;
   role: BotChatMessageRole;
   createdAt: Date;
@@ -33,118 +39,253 @@ export interface IBotChatMessage<
 
 const Message = ({ node }: { node: IBotChatMessage }) => {
   return (
-    <p
-      className={`${classes.message} ${node.role === "user" ? classes.userMessage : ""}`}
+    <div
+      className={`${classes.message} ${
+        node.role === "user" ? classes.userMessage : classes.assistantMessage
+      }`}
     >
-      {node.content}
-    </p>
+      <p className={`${classes.messageContent} ${tsmRegular}`}>
+        {node.content}
+      </p>
+    </div>
   );
 };
+
+const TypingIndicator = ({ label }: { label: string }) => (
+  <div className={`${classes.message} ${classes.assistantMessage}`}>
+    <div className={classes.typing} role="status" aria-label={label}>
+      <span />
+      <span />
+      <span />
+    </div>
+  </div>
+);
 
 const WizardPage = () => {
   const { user } = useUser();
   const { nodeId } = useParams<{ nodeId?: string }>();
+
   const { data, mutate } = useSWR<IBotChatMessage[]>(
     nodeId ? `${API}/wizard/chat/${nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+
   const [prompt, setPrompt] = useState<string>("");
+  const [sentPrompt, setSentPrompt] = useState<string>("");
   const [isSending, setIsSending] = useState<boolean>(false);
+  const [incomingStream, setIncomingStream] = useState<string>("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const push = useProgress();
-
-  const [incomingStream, setIncomingStream] = useState<string>("");
-
   const pushNotification = useNotification();
-
-  const onSend = useCallback(async () => {
-    if (!prompt.trim() || isSending) return;
-    setIsSending(true);
-    const response = await fetch(
-      `${API}/wizard/prompt${nodeId ? `/${nodeId}` : ""}?prompt=${prompt}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      },
-    );
-    const reader = response.body?.getReader();
-    if (!reader) return pushNotification("Could't Get Reader", "Error");
-    const decoder = new TextDecoder();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const chunk = decoder.decode(value);
-      const lines = chunk.split("\n");
-      for (const line of lines) {
-        if (line.startsWith("data: "))
-          setIncomingStream(
-            (prev) => prev + JSON.parse(line.replace("data: ", "")),
-          );
-        if (line.startsWith("chatId: "))
-          push(`/wizard/${JSON.parse(line.replace("chatId: ", ""))}`);
-      }
-    }
-    mutate();
-    setIsSending(false);
-  }, [prompt, isSending, pushNotification, push, mutate, nodeId]);
-
   const getContent = useLocale();
 
-  if (!user) return <p>Please Login To Gain Access</p>;
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ block: "end" });
+  }, [data, incomingStream, isSending]);
+
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [nodeId]);
+
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+  }, [prompt]);
+
+  const onSend = useCallback(async () => {
+    const message = prompt.trim();
+    if (!message || isSending) return;
+    setIsSending(true);
+    setSentPrompt(message);
+    setIncomingStream("");
+    setPrompt("");
+    let capturedChatId: string | undefined;
+    try {
+      const response = await fetch(
+        `${API}/wizard/prompt${nodeId ? `/${nodeId}` : ""}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: message }),
+        },
+      );
+      if (!response.ok) {
+        const errBody = await response.json().catch(() => undefined);
+        pushNotification(
+          errBody?.message || getContent("unknownErrorOccured"),
+          "Error",
+        );
+        return;
+      }
+      const reader = response.body?.getReader();
+      if (!reader) {
+        pushNotification(getContent("unknownErrorOccured"), "Error");
+        return;
+      }
+      const decoder = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n");
+        for (const line of lines) {
+          if (line.startsWith("data: "))
+            setIncomingStream(
+              (prev) => prev + JSON.parse(line.replace("data: ", "")),
+            );
+          else if (line.startsWith("chatId: "))
+            capturedChatId = JSON.parse(line.replace("chatId: ", ""));
+          else if (line.startsWith("errorMessage: "))
+            pushNotification(
+              JSON.parse(line.replace("errorMessage: ", "")),
+              "Error",
+            );
+        }
+      }
+      await mutate();
+      mutateGlobal(wizardChatsKey);
+      // the chat's title (only for its first exchange) finishes generating
+      // shortly after the answer itself - one more revalidate picks it up
+      // without having to poll the sidebar continuously.
+      setTimeout(() => mutateGlobal(wizardChatsKey), 1800);
+    } catch (err) {
+      pushNotification(getContent("connectionError"), "Error");
+    } finally {
+      setSentPrompt("");
+      setIncomingStream("");
+      setIsSending(false);
+      if (capturedChatId && !nodeId) push(`/wizard/${capturedChatId}`);
+    }
+  }, [prompt, isSending, nodeId, mutate, push, pushNotification, getContent]);
+
+  const onKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        onSend();
+      }
+    },
+    [onSend],
+  );
+
+  if (!user) return <LoginRequired />;
+
+  const isLoadingHistory = !!nodeId && !data && !isSending;
+  const hasMessages = !!data?.length || isSending;
+
   return (
     <div className={classes.container}>
-      <ChatsSidebar />
+      <div
+        className={`${classes.sidebarBackdrop} ${
+          isSidebarOpen ? classes.sidebarBackdropOpen : ""
+        }`}
+        onClick={() => setIsSidebarOpen(false)}
+      />
+      <div
+        className={`${classes.sidebarWrap} ${
+          isSidebarOpen ? classes.sidebarWrapOpen : ""
+        }`}
+      >
+        <ChatsSidebar
+          activeChatId={nodeId}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+      </div>
       <div className={classes.main}>
-        {(!!data?.length || !!incomingStream) && (
-          <div className={classes.messages}>
-            {!!data?.length &&
-              data.map((message) => (
+        <div className={classes.header}>
+          <button
+            type="button"
+            className={classes.menuToggle}
+            aria-label={getContent("menu")}
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            <Ixon width="1.25rem">
+              <BarsIcon />
+            </Ixon>
+          </button>
+          <Ixon width="1.5rem" className={classes.headerIcon}>
+            <AiIcon />
+          </Ixon>
+          <span className={classes.headerTitle}>
+            {getContent("aiAssistant")}
+          </span>
+        </div>
+        <div className={classes.body}>
+          {isLoadingHistory ? (
+            <Loading />
+          ) : hasMessages ? (
+            <div className={classes.messages}>
+              {data?.map((message) => (
                 <Message node={message} key={message._id} />
               ))}
-            {!!incomingStream && (
-              <Fragment>
+              {isSending && (
                 <Message
                   node={{
-                    content: prompt,
-                    role: "user",
+                    _id: "pending-user",
+                    __v: 0,
                     chat: "",
+                    content: sentPrompt,
                     createdAt: new Date(),
-                    _id: "",
+                    role: "user",
                   }}
                 />
+              )}
+              {!!incomingStream && (
                 <Message
                   node={{
-                    _id: "",
+                    _id: "pending-assistant",
+                    __v: 0,
                     chat: "",
                     content: incomingStream,
                     createdAt: new Date(),
                     role: "assistant",
                   }}
                 />
-              </Fragment>
-            )}
-          </div>
-        )}
-        <div
-          className={`${classes.prompt} ${!!incomingStream || !!data?.length ? classes.down : ""}`}
-        >
-          <textarea
-            className={`${classes.input} ${tsmRegular}`}
-            onChange={(e) => setPrompt(e.target.value)}
-          />
-          {!prompt && (
-            <span className={`${classes.placeholder} ${tsmRegular}`}>
-              {getContent("writeYourPrompt")}
-            </span>
-          )}
-          <Form className={classes.send} onSubmit={onSend}>
-            <button type="submit">
-              <Ixon width="1.25rem">
-                <AirPodsIcon />
+              )}
+              {isSending && !incomingStream && (
+                <TypingIndicator label={getContent("aiIsTyping")} />
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          ) : (
+            <div className={classes.empty}>
+              <Ixon width="3rem" className={classes.emptyIcon}>
+                <AiIcon />
               </Ixon>
-            </button>
-          </Form>
+              <p className={classes.emptyMessage}>
+                {getContent("askMeAnythingMessage")}
+              </p>
+            </div>
+          )}
         </div>
+        <Form className={classes.composer} onSubmit={onSend}>
+          <textarea
+            ref={textareaRef}
+            className={`${classes.input} ${tsmRegular}`}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder={getContent("writeYourPrompt")}
+            rows={1}
+          />
+          <button
+            type="submit"
+            className={classes.send}
+            disabled={!prompt.trim() || isSending}
+            aria-label={getContent("sendMessage")}
+          >
+            <Ixon width="1.125rem">
+              <SendIcon />
+            </Ixon>
+          </button>
+        </Form>
       </div>
     </div>
   );

@@ -33,6 +33,7 @@ import { currencize } from "@/Components/helpers/currencize";
 import SpecsManager from "./SpecsManager";
 import ImagesManager from "./ImagesManager";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import OrderEditor from "../UI/OrderEditor";
 
 const ProductDetailsManager = ({
   node,
@@ -222,6 +223,14 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    modelName="productSeller"
+                    mutate={mutate}
+                    _id={node._id}
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

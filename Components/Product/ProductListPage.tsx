@@ -19,6 +19,7 @@ import Calendar02Icon from "../Icons/Calendar02Icon";
 import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ProductCard from "./ProductCard";
+import SwitchProductAndService from "./SwitchProductAndService";
 
 export type ProductListPageProps = {
   data: (
@@ -86,6 +87,7 @@ const ProductListPage = ({
         { title: "محصولات", target: "/product" },
       ]}
     >
+      <SwitchProductAndService />
       <ListPageHeaderSearch
         title={getContent("productListPageTitle")}
         legend={getContent("productListPageLegend")}

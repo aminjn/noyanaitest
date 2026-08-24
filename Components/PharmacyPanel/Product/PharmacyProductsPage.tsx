@@ -23,7 +23,10 @@ import InlineLink from "@/Components/Admin/UI/InlineLink";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
-import { IProduct, IProductSeller } from "@/Components/Admin/Product/AdminManageProductsPage";
+import {
+  IProduct,
+  IProductSeller,
+} from "@/Components/Admin/Product/AdminManageProductsPage";
 
 type MyProductSeller = IProductSeller<{
   Product: { Category: Record<never, never> };
@@ -53,7 +56,7 @@ const AddMyProductPopup = ({
       <CreateForm<PharmacyEditableProductSellerFields>
         onCancel={() => closePopup()}
         renderer={{
-          price: { type: "number", title: getContent("price") },
+          price: { type: "number", title: getContent("price"), price: true },
           discount: { type: "number", title: getContent("discount") },
           isActive: { type: "bool", title: getContent("isActive") },
           freeDelivery: { type: "bool", title: getContent("freeDelivery") },
@@ -88,8 +91,8 @@ const EditMyProductPopup = ({
         defaultValue={node}
         onCancel={() => closePopup()}
         renderer={{
-          price: { type: "number", title: getContent("price") },
-          discount: { type: "number", title: getContent("discount") },
+          price: { type: "number", title: getContent("price") , price:true  },
+          discount: { type: "number", title: getContent("discount") , price:true  },
           isActive: { type: "bool", title: getContent("isActive") },
           freeDelivery: { type: "bool", title: getContent("freeDelivery") },
           fastDelivery: { type: "bool", title: getContent("fastDelivery") },
@@ -247,7 +250,8 @@ const PharmacyMyProductsTab = () => {
               discount: {
                 name: getContent("discount"),
                 value: (node) => node.discount,
-                component: (node) => (node.discount ? currencize(node.discount) : ""),
+                component: (node) =>
+                  node.discount ? currencize(node.discount) : "",
                 filter: "Number",
               },
               isActive: {
@@ -265,13 +269,17 @@ const PharmacyMyProductsTab = () => {
               freeDelivery: {
                 name: getContent("freeDelivery"),
                 value: (node) => booleanToValue[`${node.freeDelivery}`],
-                component: (node) => <BooleanToIcon value={node.freeDelivery} />,
+                component: (node) => (
+                  <BooleanToIcon value={node.freeDelivery} />
+                ),
                 filter: "Set",
               },
               fastDelivery: {
                 name: getContent("fastDelivery"),
                 value: (node) => booleanToValue[`${node.fastDelivery}`],
-                component: (node) => <BooleanToIcon value={node.fastDelivery} />,
+                component: (node) => (
+                  <BooleanToIcon value={node.fastDelivery} />
+                ),
                 filter: "Set",
               },
               actions: {

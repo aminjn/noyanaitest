@@ -124,8 +124,12 @@ const ProductPackageMutatePopup = ({
             getDefaultValue: (inp) => inp.products,
             multi: true,
           },
-          price: { type: "number", title: getContent("price") },
-          discount: { type: "number", title: getContent("discount") },
+          price: { type: "number", title: getContent("price"), price: true },
+          discount: {
+            type: "number",
+            title: getContent("discount"),
+            price: true,
+          },
           summary: { type: "text", title: getContent("summary") },
           description: { type: "rtf", title: getContent("description") },
           whyChoose: { type: "text", title: getContent("whyChoose") },
@@ -188,7 +192,10 @@ const PharmacyManageProductPackagesPage = () => {
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/pharmacypanel" },
-    { title: getContent("productPackages"), target: "/pharmacypanel/productPackage" },
+    {
+      title: getContent("productPackages"),
+      target: "/pharmacypanel/productPackage",
+    },
   ]);
 
   return (

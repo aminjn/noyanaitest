@@ -19,6 +19,7 @@ import {
 
 export interface MongoDoc {
   _id: string;
+  __v?: number;
 }
 
 export const userRoles = ["user", "admin", "notadmin"] as const;

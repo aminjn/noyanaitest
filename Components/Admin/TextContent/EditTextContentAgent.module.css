@@ -5,12 +5,14 @@
   position: relative;
   height: 2.5rem;
   width: 100%;
-  background-color: red;
 }
 
 .input {
   position: absolute;
   inset: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
 
 .actions {

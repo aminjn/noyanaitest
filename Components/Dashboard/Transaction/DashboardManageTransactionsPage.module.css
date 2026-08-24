@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.balanceValue {
+  font-weight: 600;
+}

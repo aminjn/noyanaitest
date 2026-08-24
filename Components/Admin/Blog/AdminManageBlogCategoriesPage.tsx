@@ -19,11 +19,12 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteBlogCategoryPopup from "./DeleteBlogCategoryPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import OrderEditor from "../UI/OrderEditor";
 
 const AdminManageBlogCategoriesPage = () => {
   const { data, error, mutate } = useSWR<IBlogCategory[]>(
     `${API}/auto/blogcategory`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -43,7 +44,7 @@ const AdminManageBlogCategoriesPage = () => {
                     action: () =>
                       setPopup(
                         "NewBlogCategory",
-                        <NewBlogCategoryPopup mutate={mutate} />
+                        <NewBlogCategoryPopup mutate={mutate} />,
                       ),
                   },
                 ]
@@ -72,6 +73,14 @@ const AdminManageBlogCategoriesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Text",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="blogCategory"
+                    _id={node._id}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",
@@ -91,7 +100,7 @@ const AdminManageBlogCategoriesPage = () => {
                             <DeleteBlogCategoryPopup
                               node={node}
                               mutate={mutate}
-                            />
+                            />,
                           )
                         }
                       >

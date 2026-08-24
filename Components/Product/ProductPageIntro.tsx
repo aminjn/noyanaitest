@@ -147,7 +147,7 @@ const ProductPageIntro = ({
                 <StarIcon />
               </Ixon>
               <span className={t2xsRegular}>
-                {data.averageScore.toFixed(1)}
+                {data.averageScore?.toFixed(1)}
               </span>
             </div>
             <span className={`${classes.commentCount} ${t2xsRegular}`}>

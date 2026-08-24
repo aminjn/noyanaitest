@@ -85,8 +85,8 @@ export interface IParaClinic<
     ? IInsurance<T["Insurances"]>[]
     : string[];
   address?: string;
-  averageScore: number;
-  commentCount: number;
+  averageScore?: number;
+  commentCount?: number;
 }
 
 const ParaClinicPanelLayout = ({ children }: { children: ReactNode }) => {

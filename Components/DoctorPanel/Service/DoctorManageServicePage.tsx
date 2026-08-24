@@ -17,7 +17,7 @@ const DoctorManageServicePage = () => {
   const { data, error, mutate } = useSWR<
     IService<{ Category: Record<never, never> }>
   >(nodeId ? `${API}/doctor/service/${nodeId}` : null, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -47,8 +47,12 @@ const DoctorManageServicePage = () => {
               getOptionValue: (node) => (node as IServiceCategory)._id,
               getDefaultValue: (node) => node.category?._id,
             },
-            price: { title: getContent("price"), type: "number" },
-            discount: { title: getContent("discount"), type: "number" },
+            price: { title: getContent("price"), type: "number", price: true },
+            discount: {
+              title: getContent("discount"),
+              type: "number",
+              price: true,
+            },
             inventory: { title: getContent("inventory"), type: "number" },
             order: { title: getContent("order"), type: "number" },
             isActive: { title: getContent("isActive"), type: "bool" },

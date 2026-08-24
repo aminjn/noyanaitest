@@ -16,11 +16,12 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import DeleteSymptomPopup from "./DeleteSymptomPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 const AdminManageSymptomsPage = () => {
   const { data, error, mutate } = useSWR<ISymptom[]>(
     `${API}/auto/symptom`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -36,7 +37,7 @@ const AdminManageSymptomsPage = () => {
               action: () =>
                 setPopup(
                   "CreateSymptom",
-                  <CreateSymptomPopup mutate={mutate} />
+                  <CreateSymptomPopup mutate={mutate} />,
                 ),
             },
           ]}
@@ -55,6 +56,14 @@ const AdminManageSymptomsPage = () => {
                   name: "رتبه",
                   value: (node) => node.order,
                   filter: "Number",
+                  component: (node) => (
+                    <OrderEditor
+                      _id={node._id}
+                      value={node.order}
+                      mutate={mutate}
+                      modelName="symptom"
+                    />
+                  ),
                 },
                 slug: {
                   name: "اسلاگ",
@@ -72,7 +81,7 @@ const AdminManageSymptomsPage = () => {
                         onClick={() =>
                           setPopup(
                             "DeleteSymptom",
-                            <DeleteSymptomPopup node={node} mutate={mutate} />
+                            <DeleteSymptomPopup node={node} mutate={mutate} />,
                           )
                         }
                         variant="Danger"

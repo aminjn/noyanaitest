@@ -44,3 +44,89 @@ export const getRelativeTime = (date: Date) => {
     }
   }
 };
+
+export function numberToPersianWords(num: number): string {
+  if (num === 0) return "صفر";
+
+  const yekan = [
+    "",
+    "یک",
+    "دو",
+    "سه",
+    "چهار",
+    "پنج",
+    "شش",
+    "هفت",
+    "هشت",
+    "نه",
+    "ده",
+    "یازده",
+    "دوازده",
+    "سیزده",
+    "چهارده",
+    "پانزده",
+    "شانزده",
+    "هفده",
+    "هجده",
+    "نوزده",
+  ];
+
+  const dahgan = [
+    "",
+    "",
+    "بیست",
+    "سی",
+    "چهل",
+    "پنجاه",
+    "شصت",
+    "هفتاد",
+    "هشتاد",
+    "نود",
+  ];
+
+  const sadgan = [
+    "",
+    "یکصد",
+    "دویست",
+    "سیصد",
+    "چهارصد",
+    "پانصد",
+    "ششصد",
+    "هفتصد",
+    "هشتصد",
+    "نهصد",
+  ];
+
+  const units = ["", "هزار", "میلیون", "میلیارد", "تریلیون"];
+
+  function threeDigitsToWord(n: number): string {
+    const res: string[] = [];
+    if (n >= 100) {
+      res.push(sadgan[Math.floor(n / 100)]);
+      n %= 100;
+    }
+    if (n >= 20) {
+      res.push(dahgan[Math.floor(n / 10)]);
+      if (n % 10 > 0) res.push(yekan[n % 10]);
+    } else if (n > 0) {
+      res.push(yekan[n]);
+    }
+    return res.join(" و ");
+  }
+
+  const res: string[] = [];
+  let i = 0;
+
+  while (num > 0) {
+    const part = num % 1000;
+    if (part > 0) {
+      let chunk = threeDigitsToWord(part);
+      if (units[i]) chunk += " " + units[i];
+      res.unshift(chunk);
+    }
+    num = Math.floor(num / 1000);
+    i++;
+  }
+
+  return res.join(" و ").trim();
+}

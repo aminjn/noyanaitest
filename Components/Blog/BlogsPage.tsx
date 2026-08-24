@@ -40,12 +40,12 @@ const BlogsPage = (props: BlogsPageProps) => {
           sort ? `sort=${sort}` : ""
         }`
       : null,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const { blogs, blogsCount, categories } = useMemo<BlogsPageProps>(
     () => clientData || props,
-    [props, clientData]
+    [props, clientData],
   );
 
   const push = useProgress();
@@ -60,10 +60,11 @@ const BlogsPage = (props: BlogsPageProps) => {
           ...(params.nodeSlug
             ? [
                 {
-                  title:
+                  title: decodeURIComponent(
                     categories?.find(
                       (c) => (c.slug || c._id) === params.nodeSlug,
                     )?.title || params.nodeSlug,
+                  ),
                   target: `/mag/category/${params.nodeSlug}`,
                 },
               ]
@@ -82,7 +83,7 @@ const BlogsPage = (props: BlogsPageProps) => {
                 [category.slug || category._id]:
                   category.title || category.slug || category._id,
               }),
-              {}
+              {},
             )}
             defaultValue={params.nodeSlug}
             onChange={(e) =>
@@ -98,7 +99,7 @@ const BlogsPage = (props: BlogsPageProps) => {
               push(
                 `/mag${params.nodeSlug ? `/category/${params.nodeSlug}` : ""}?${
                   e.target.value ? `sort=${e.target.value}` : ""
-                }`
+                }`,
               )
             }
           />

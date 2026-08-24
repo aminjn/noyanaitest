@@ -10,11 +10,14 @@ export const FaqItem = ({ node }: { node: IFaq }) => {
   return (
     <li>
       <dl className={classes.faq}>
-        <dt className={classes.questionBox}>
+        <dt
+          className={classes.questionBox}
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
           <span className={`${classes.question} ${tsmMedium}`}>
             {node.question}
           </span>
-          <button onClick={() => setIsOpen((prev) => !prev)}>
+          <button>
             <Ixon width="1.5rem" className={classes.chevron}>
               <ChevronDownSquareIcon />
             </Ixon>

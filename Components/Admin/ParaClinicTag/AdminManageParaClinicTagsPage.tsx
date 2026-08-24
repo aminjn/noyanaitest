@@ -13,6 +13,7 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ParaClinicTagPopulation = Population<Record<never, never>>;
 export interface IParaClinicTag<
@@ -45,7 +46,19 @@ const AdminManageParaClinicTagsPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              value={node.order}
+              _id={node._id}
+              modelName="paraClinicTag"
+              mutate={mutate}
+            />
+          ),
+        },
         actions: {
           name: "عملیات",
           component: (node) => (

@@ -22,6 +22,8 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
 
   dashboardHome: ["/dashboard"],
   dashboardInvoice: ["/dashboard/invoice"],
+  dashboardTransaction: ["/dashboard/transaction"],
+  dashboardOrder: ["/dashboard/order"],
   dashboardBooking: ["/dashboard/booking"],
   dashboardVital: ["/dashboard/vital"],
   dashboardNotification: ["/dashboard/notification"],
@@ -83,11 +85,14 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
   doctorPanelSchedule: ["/doctorpanel/schedule"],
   doctorPanelService: ["/doctorpanel/service"],
   doctorPanelServicePackage: ["/doctorpanel/servicepackage"],
+  doctorPanelOrder: ["/doctorpanel/order"],
 
   pharmacyPanelHome: ["/pharmacypanel"],
+  pharmacyPanelProfile: ["/pharmacypanel/profile"],
   pharmacyPanelPrescription: ["/pharmacypanel/prescription"],
   pharmacyPanelFilledPrescription: ["/pharmacypanel/filledPrescription"],
   pharmacyPanelTamin: ["/pharmacypanel/tamin"],
   pharmacyPanelProduct: ["/pharmacypanel/product"],
   pharmacyPanelProductPackage: ["/pharmacypanel/productPackage"],
+  pharmacyPanelOrder: ["/pharmacypanel/order"],
 };

@@ -8,16 +8,19 @@ import { tbaseBold, tsmRegular } from "../UI/Typography";
 import Button from "../UI/Button";
 import SendIcon from "../Icons/SendIcon";
 import MapMarker from "../UI/MapMarker";
+import { WithStyleProps } from "../Layout/Layout";
 
 const LocationSection = ({
   coords,
   address,
   name,
-}: {
+  className = "",
+  style,
+}: WithStyleProps<{
   coords?: [number, number];
   name?: string;
   address?: string;
-}) => {
+}>) => {
   const getContent = useLocale();
 
   const mapRef = useRef<HTMLDivElement>(null);
@@ -27,7 +30,7 @@ const LocationSection = ({
   });
   if (!coords) return null;
   return (
-    <div className={classes.main} id="location">
+    <div className={`${classes.main} ${className}`} style={style} id="location">
       <div className={classes.header}>
         <div className={classes.iconBox}>
           <Ixon width="1rem">

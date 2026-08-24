@@ -20,6 +20,7 @@ import {
   IUserIdentity,
   UserIdentityPopulation,
 } from "@/Components/Dashboard/DashboardPage";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 
 export type BookingPopulation = Population<{
   Session: DoctorSessionPopulation;
@@ -54,6 +55,17 @@ export const doctorSessionTypes = [
 ] as const;
 
 export type DoctorSessionType = (typeof doctorSessionTypes)[number];
+
+export const doctorSessionTypeContentKeyDict: Record<
+  DoctorSessionType,
+  ContentKey
+> = {
+  inPerson: "inPerson",
+  sipCall: "sipCall",
+  textChat: "textChat",
+  videoCall: "videoCall",
+  voiceCall: "voiceCall",
+};
 
 export const patientStatuses = ["oldPatient", "newPatient"] as const;
 

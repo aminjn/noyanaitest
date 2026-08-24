@@ -7,15 +7,21 @@ import { API } from "@/Components/config";
 import { useParams } from "next/navigation";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
-import CreateForm from "../UI/CreateForm";
+import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import Box from "../UI/Box";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+
+export const blogCategoryFormRenderer: FormRenderer<IBlogCategory> = {
+  title: { title: "عنوان", type: "text" },
+  slug: { title: "اسلاگ", type: "text" },
+  order: { type: "number", title: "رتبه" },
+};
 
 const AdminManageBlogCategoryPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IBlogCategory>(
     params ? `${API}/auto/blogcategory/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const hasAccess = useAccessLevel();
@@ -27,11 +33,7 @@ const AdminManageBlogCategoryPage = () => {
           <CreateForm
             readOnly={!hasAccess("BlogCategory", "update")}
             defaultValue={data}
-            renderer={{
-              title: { title: "عنوان", type: "text" },
-              slug: { title: "اسلاگ", type: "text" },
-              order: { type: "number", title: "رتبه" },
-            }}
+            renderer={blogCategoryFormRenderer}
             hookProps={{
               path: `${API}/auto/blogcategory/${data._id}`,
               method: "POST",

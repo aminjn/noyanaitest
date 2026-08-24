@@ -25,6 +25,7 @@ import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import PopupCard from "@/Components/UI/PopupCard";
 import PolygonPicker from "@/Components/UI/PolygonPicker";
+import OrderEditor from "../UI/OrderEditor";
 
 const MutateDistrictPopup = ({
   mutate,
@@ -149,6 +150,14 @@ const CityDistricts = ({ node }: { node: ICity }) => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="district"
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

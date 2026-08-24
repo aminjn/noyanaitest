@@ -22,6 +22,7 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 const DeleteProductSpecPopup = ({
   mutate,
@@ -145,6 +146,14 @@ const SpecsManager = ({
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="productSpec"
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

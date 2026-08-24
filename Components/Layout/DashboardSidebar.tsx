@@ -7,6 +7,8 @@ import BookIcon from "../Icons/BookIcon";
 import Bell01Icon from "../Icons/Bell01Icon";
 import HeadphoneIcon from "../Icons/HeadphoneIcon";
 import ChatIcon from "../Icons/ChatIcon";
+import WalletIcon from "../Icons/WalletIcon";
+import PackageIcon from "../Icons/PackageIcon";
 
 const DashboardSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -19,6 +21,18 @@ const DashboardSidebar = () => {
         target: "invoice",
       },
       { icon: <BookIcon />, show: true, title: "bookings", target: "booking" },
+      {
+        icon: <PackageIcon />,
+        show: true,
+        title: "orders",
+        target: "order",
+      },
+      {
+        icon: <WalletIcon />,
+        show: true,
+        title: "transactions",
+        target: "transaction",
+      },
       {
         icon: <HeadphoneIcon />,
         show: true,

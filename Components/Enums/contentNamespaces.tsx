@@ -39,6 +39,12 @@ export const contentNamespaces = {
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,
   // HomeSpecialities, HomeServices, HomePopular, HomeAds, HomeRegister,
   // HomeIntroduction), found by grepping their getContent(...) calls.
+  //
+  // Note: only HomeHero and HomeIntroduction actually call
+  // useScopedLocale(["home"]) — the rest of Components/Home/* still use the
+  // unscoped useLocale() and so don't need their keys listed here. Keys
+  // below marked "(hero redesign 2026-08)" are new keys/reused sitewide
+  // keys HomeHero picked up in the Figma redesign.
   home: [
     "homeHeroTitle",
     "homeHeroLegend",
@@ -47,6 +53,17 @@ export const contentNamespaces = {
     "homeChatLegend",
     "aiInputPlaceholder",
     "homeAiExamplesLegend",
+    // (hero redesign 2026-08)
+    "homeHeroBadge",
+    "homeHeroTitleHighlight1",
+    "homeHeroTitleHighlight2",
+    "homeHeroLiveVisitLabel",
+    "homeHeroLiveVisitValue",
+    "homeHeroAiAccuracyValue",
+    "homeHeroQuickLinkLab",
+    "homeHeroQuickLinkPharmacy",
+    "aiDetection",
+    "doctors",
     "noyanIntroductionTitle",
     "noyanIntroductionLegend",
     "mostViewedSpecialities",
@@ -174,6 +191,53 @@ export const contentNamespaces = {
     "voiceCall",
     "videoCall",
     "inPerson",
+    "backToList",
+    "reservation",
+    "status",
+    "reservationStatusPending",
+    "reservationStatusActive",
+    "reservationStatusCompleted",
+    "reservationStatusCancelled",
+    "reservationStatusNoShow",
+    "reservationStatusError",
+    "reservationTimeline",
+    "reminderSent",
+    "sessionActivated",
+    "patientJoined",
+    "doctorJoined",
+    "noShowByPatient",
+    "noShowByDoctor",
+    "reservationErrorNotice",
+    "joinSession",
+  ],
+
+  // app/dashboard/transaction/page.tsx (DashboardManageTransactionsPage) —
+  // the logged-in user's wallet balance history (booking payments + doctor
+  // payouts, both via Models/Transaction.ts on noyanai-back).
+  dashboardTransaction: [
+    "createdAt",
+    "amount",
+    "reservation",
+    "unset",
+    "toman",
+    "currentBalance",
+    "doctor",
+  ],
+
+  // app/dashboard/order/page.tsx (DashboardManageOrdersPage,
+  // OrderStatusBadge) — the logged-in user's order history/management page,
+  // listing Models/Order.ts docs from GET /user/order.
+  dashboardOrder: [
+    "orders",
+    "submittedAt",
+    "orderItems",
+    "total",
+    "toman",
+    "status",
+    "orderStatusPending",
+    "orderStatusPaid",
+    "orderStatusCancelled",
+    "actions",
   ],
 
   // app/dashboard/vital/page.tsx (DashboardManageVitalsPage + VitalList).
@@ -413,12 +477,11 @@ export const contentNamespaces = {
   // Components/_Common/SecretaryManager/* — the shared secretary-management
   // UI (secretaries tab, access levels tab, incoming requests tab) reused
   // identically by app/{insurancepanel,clinicpanel,pharmacypanel,
-  // doctorpanel}/secretary/page.tsx. Includes access-level category/action
-  // keys (clinic/calendar/settings + the read/mutate action keys) which are
-  // only reachable dynamically through doctorSecretaryActionCategories /
-  // categorizedDoctorSecretaryActions — currently only populated for
-  // "doctor", the other node types have empty category/action lists so
-  // those code paths never actually request a key today.
+  // doctorpanel,paraClinicPanel}/secretary/page.tsx. Includes every
+  // access-level category/action key reachable dynamically through the
+  // per-panel *ActionCategories / categorized*Actions exports in
+  // Components/Enums/actions/*.tsx (2026-08: now populated for all five
+  // node types, not just "doctor").
   secretaryManager: [
     "dashboard",
     "secretaries",
@@ -446,6 +509,7 @@ export const contentNamespaces = {
     "Pending",
     "Approved",
     "Rejected",
+    // doctor
     "clinic",
     "calendar",
     "settings",
@@ -458,6 +522,45 @@ export const contentNamespaces = {
     "mutateCalendar",
     "readSettings",
     "mutateSettings",
+    "financialMangement",
+    "shifts",
+    "schedule",
+    "patients",
+    "licenses",
+    "phrmaciesAndLabs",
+    "insurances",
+    "offers",
+    "discounts",
+    "chatWithPatients",
+    "drugsAndPrescriptions",
+    "patientDocuments",
+    "readInsurance",
+    "readPharmacy",
+    "readPatients",
+    "readFinance",
+    "readShifts",
+    "readSchedule",
+    "readLicenses",
+    "readOffers",
+    "readDiscounts",
+    "readChat",
+    "readDrugs",
+    "readDocuments",
+    // shared across clinic / insurance / paraClinic / pharmacy
+    "articles",
+    "readArticles",
+    "prescriptions",
+    "readPrescriptions",
+    "tamin",
+    "readTamin",
+    // paraClinic
+    "tests",
+    "readTests",
+    // pharmacy
+    "products",
+    "readProducts",
+    "productPackages",
+    "readProductPackages",
   ],
 
   // app/secretarypanel/* — the secretary's own view of their bosses/requests
@@ -805,6 +908,45 @@ export const contentNamespaces = {
     "phoneNumber",
   ],
 
+  // app/doctorpanel/booking/[nodeId] (DoctorManageBookingPage) — the
+  // doctor-side counterpart of dashboardBooking's detail page: reservation
+  // info, status/timeline, and the inPerson manual check-in action.
+  doctorPanelBooking: [
+    "dashboard",
+    "reservation",
+    "bookingCalendar",
+    "patientName",
+    "sessionDate",
+    "sessionStart",
+    "sessionEnd",
+    "office",
+    "sessionType",
+    "submittedAt",
+    "status",
+    "textChat",
+    "sipCall",
+    "voiceCall",
+    "videoCall",
+    "inPerson",
+    "reservationStatusPending",
+    "reservationStatusActive",
+    "reservationStatusCompleted",
+    "reservationStatusCancelled",
+    "reservationStatusNoShow",
+    "reservationStatusError",
+    "reservationTimeline",
+    "reminderSent",
+    "sessionActivated",
+    "patientJoined",
+    "doctorJoined",
+    "noShowByPatient",
+    "noShowByDoctor",
+    "reservationErrorNotice",
+    "joinSession",
+    "checkInPatient",
+    "checkInSuccessMessage",
+  ],
+
   // app/doctorpanel/office/page.tsx + [nodeId] (DoctorManageOfficesPage,
   // DoctorManageOfficePage, DoctorManageOfficeLocationTab,
   // DoctorMutateOfficePopup, DeleteOfficePopup).
@@ -1038,6 +1180,29 @@ export const contentNamespaces = {
     "sureDeleteService",
   ],
 
+  // app/doctorpanel/order/page.tsx (DoctorIncomingOrdersPage) — incoming
+  // orders that include this doctor's services/servicePackages.
+  doctorPanelOrder: [
+    "dashboard",
+    "incomingOrders",
+    "submittedAt",
+    "buyer",
+    "orderItems",
+    "mySubtotal",
+    "toman",
+    "status",
+    "orderStatusPending",
+    "orderStatusPaid",
+    "orderStatusCancelled",
+    "actions",
+    "view",
+    "orderDetails",
+    "name",
+    "quantity",
+    "price",
+    "total",
+  ],
+
   // app/doctorpanel/servicepackage/page.tsx + [nodeId]
   // (DoctorManageServicePackagesPage, DoctorManageServicePackagePage,
   // DoctorMutateServicePackagePopup, DeleteServicePackagePopup).
@@ -1065,6 +1230,28 @@ export const contentNamespaces = {
 
   // app/pharmacypanel/page.tsx (PharmacyPanelPage) — just the panel shell.
   pharmacyPanelHome: ["dashboard"],
+
+  // app/pharmacypanel/profile/page.tsx (PharmacyManageProfilePage,
+  // PharmacyManageDetailsTab, PharmacyManageLocationTab). Scoped to the
+  // fields Models/Pharmacy.ts already has on noyanai-back — no gallery/
+  // social/faq tabs, those don't exist for pharmacies (see doctorPanelProfile
+  // for the fuller doctor equivalent).
+  pharmacyPanelProfile: [
+    "dashboard",
+    "profile",
+    "details",
+    "location",
+    "name",
+    "avatar",
+    "banner",
+    "summary",
+    "address",
+    "missingLocationErrorMessage",
+    "selectProvince",
+    "selectCity",
+    "selectDistrict",
+    "submit",
+  ],
 
   // app/pharmacypanel/prescription/page.tsx (PharmacyFillPrescriptionPage +
   // its 3 tabs: FindPrescriptionAgent, PharmacyPrescriptionCache,
@@ -1255,6 +1442,29 @@ export const contentNamespaces = {
     "special",
   ],
 
+  // app/pharmacypanel/order/page.tsx (PharmacyIncomingOrdersPage) —
+  // incoming orders that include this pharmacy's products/productPackages.
+  pharmacyPanelOrder: [
+    "dashboard",
+    "incomingOrders",
+    "submittedAt",
+    "buyer",
+    "orderItems",
+    "mySubtotal",
+    "toman",
+    "status",
+    "orderStatusPending",
+    "orderStatusPaid",
+    "orderStatusCancelled",
+    "actions",
+    "view",
+    "orderDetails",
+    "name",
+    "quantity",
+    "price",
+    "total",
+  ],
+
   // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,
   // DoctorManageArticlePage, DoctorMutateArticlePopup, DeleteArticlePopup).
   // Org-submitted posts always come back with published=false until an
@@ -1360,6 +1570,8 @@ export const contentNamespaces = {
     "unset",
     "actions",
   ],
+  products: [],
+  services: [],
 } as const satisfies Record<string, readonly ContentKey[]>;
 
 export type ContentNamespace = keyof typeof contentNamespaces;

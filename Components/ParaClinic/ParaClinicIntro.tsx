@@ -108,11 +108,11 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
                 <StarIcon />
               </Ixon>
               <span className={`${classes.score} ${tsmBold}`}>
-                {data.averageScore.toFixed(1)}
+                {data.averageScore?.toFixed(1)}
               </span>
               <span
                 className={`${classes.commentCount} ${tsmRegular}`}
-              >{`(${getContent("nComments", [data.commentCount.toString()])})`}</span>
+              >{`(${getContent("nComments", [data.commentCount?.toString() || "0"])})`}</span>
               {!!data.establishment && (
                 <span className={`${classes.commentCount} ${txsRegular}`}>
                   {getContent("establishedAtx", [data.establishment])}
@@ -236,12 +236,12 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
         <Card
           icon={<StarLineIcon />}
           title={getContent("usersScore")}
-          value={data.averageScore.toFixed(1)}
+          value={data.averageScore?.toFixed(1) || "0"}
         />
         <Card
           icon={<ChatBubbleIcon />}
           title={getContent("submittedCommentsCount")}
-          value={data.commentCount.toString()}
+          value={data.commentCount?.toString() || "0"}
         />
       </div>
     </div>

@@ -1,0 +1,155 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: min(32rem, 95dvw);
+  margin: 2rem auto;
+  padding: 1.5rem 1rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.icon {
+  color: var(--success);
+  margin-bottom: 0.5rem;
+}
+
+.legend {
+  color: var(--success);
+}
+
+.orderNumber {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray8);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.paid {
+  color: var(--success);
+  background-color: var(--successT1, #e8f8f0);
+}
+
+.pending {
+  color: var(--warning, #b58900);
+  background-color: var(--warningT1, #fdf3d8);
+}
+
+.cancelled {
+  color: var(--error);
+  background-color: var(--errorT1, #fbe9e9);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--white);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow:
+    0px 8px 25px -5px #0000001a,
+    0px 4px 10px 0px #0000000a;
+}
+
+.title {
+  color: var(--gray13);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subtitle {
+  color: var(--gray9);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 4rem 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0.75rem;
+  border-top: 1px solid var(--gray4);
+}
+
+.rows > .row:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.imageBox {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: var(--gray3);
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.itemTitle {
+  color: var(--gray13);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemSubtitle {
+  color: var(--gray8);
+}
+
+.qty {
+  color: var(--gray8);
+  white-space: nowrap;
+}
+
+.price {
+  color: var(--gray13);
+  white-space: nowrap;
+}
+
+.totalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--gray4);
+}
+
+.totalPrice {
+  color: var(--error);
+}
+
+.action.action {
+  width: 100%;
+}

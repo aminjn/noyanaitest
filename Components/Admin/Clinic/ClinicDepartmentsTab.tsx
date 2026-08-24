@@ -16,6 +16,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteClinicDepartmentPopup from "./DeleteClinicDepartmentPopup";
 import { fetcher } from "@/Components/helpers/fetcher";
+import OrderEditor from "../UI/OrderEditor";
 
 const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
   const { data, error, mutate } = useSWR<
@@ -65,6 +66,14 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    mutate={mutate}
+                    modelName="clinicdepartment"
+                  />
+                ),
               },
               doctorsCount: {
                 name: "تعداد پزشکان",

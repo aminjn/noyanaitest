@@ -25,6 +25,7 @@ import {
   advertisementResourceModelLabels,
   AdvertisementResourceModel,
 } from "./advertisementConstants";
+import OrderEditor from "../UI/OrderEditor";
 
 export type AdvertisementPopulation = Population<Record<never, never>>;
 
@@ -180,6 +181,14 @@ const AdminManageAdvertisementsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    modelName="advertisement"
+                    mutate={mutate}
+                    value={node.order}
+                    _id={node._id}
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

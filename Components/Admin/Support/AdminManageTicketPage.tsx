@@ -35,11 +35,7 @@ type AdminTicket = ITicket<{
 }>;
 type AdminTicketMessage = AdminTicket["messages"][number];
 
-const TicketMessageBubble = ({
-  message,
-}: {
-  message: AdminTicketMessage;
-}) => {
+const TicketMessageBubble = ({ message }: { message: AdminTicketMessage }) => {
   return (
     <div
       className={`${classes.message} ${
@@ -47,10 +43,7 @@ const TicketMessageBubble = ({
       }`}
     >
       <p className={classes.messageContent}>{message.content}</p>
-      <FormatDate
-        className={classes.messageDate}
-        value={message.submittedAt}
-      />
+      <FormatDate className={classes.messageDate} value={message.submittedAt} />
     </div>
   );
 };
@@ -64,19 +57,17 @@ const ReplySender = ({
 }) => {
   const textRef = useRef<HTMLTextAreaElement>(null);
 
-  const { setInput, submit, reset, isLoading } = useForm<{ content: string }>(
-    {
-      path: `${API}/auto/ticketmessage`,
-      method: "POST",
-      decorators: { ticket: ticketId, isAdmin: true },
-      hasProblem: (inp) => !inp.content?.trim() && "متن پاسخ را وارد کنید",
-      successCb: () => {
-        mutate();
-        reset();
-        if (textRef.current) textRef.current.value = "";
-      },
+  const { setInput, submit, reset, isLoading } = useForm<{ content: string }>({
+    path: `${API}/auto/ticketmessage`,
+    method: "POST",
+    decorators: { ticket: ticketId, isAdmin: true },
+    hasProblem: (inp) => !inp.content?.trim() && "متن پاسخ را وارد کنید",
+    successCb: () => {
+      mutate();
+      reset();
+      if (textRef.current) textRef.current.value = "";
     },
-  );
+  });
 
   return (
     <Form className={classes.footer} onSubmit={submit}>
@@ -126,8 +117,7 @@ const InnerAdminTicket = ({
     () =>
       [...ticket.messages].sort(
         (a, b) =>
-          new Date(a.submittedAt).getTime() -
-          new Date(b.submittedAt).getTime(),
+          new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime(),
       ),
     [ticket.messages],
   );

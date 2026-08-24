@@ -13,6 +13,7 @@ import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { FormRenderer } from "../UI/CreateForm";
+import OrderEditor from "../UI/OrderEditor";
 
 export type AboutPartnerPopulation = Population<Record<never, never>>;
 
@@ -48,7 +49,19 @@ const AdminManageAboutPartnersPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              modelName="aboutPartner"
+              mutate={mutate}
+              value={node.order}
+              _id={node._id}
+            />
+          ),
+        },
         actions: {
           name: "عملیات",
           component: (node) => (

@@ -41,6 +41,7 @@ const ParaClinicPage = ({ data }: ParaClinicPageProps) => {
       <ParaClinicTests data={data} />
       <ParaClinicAbout data={data} />
       <LocationSection
+        className={classes.location}
         coords={data.location?.coordinates}
         name={data.name}
         address={data.address}

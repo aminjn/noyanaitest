@@ -52,7 +52,7 @@ const AddMyTestPopup = ({
       <CreateForm<ParaClinicEditableTestFields>
         onCancel={() => closePopup()}
         renderer={{
-          price: { type: "number", title: getContent("price") },
+          price: { type: "number", title: getContent("price"), price: true },
           readyTime: { type: "text", title: getContent("readyTime") },
         }}
         hookProps={{
@@ -84,7 +84,7 @@ const EditMyTestPopup = ({
         defaultValue={node}
         onCancel={() => closePopup()}
         renderer={{
-          price: { type: "number", title: getContent("price") },
+          price: { type: "number", title: getContent("price"), price: true },
           readyTime: { type: "text", title: getContent("readyTime") },
         }}
         hookProps={{

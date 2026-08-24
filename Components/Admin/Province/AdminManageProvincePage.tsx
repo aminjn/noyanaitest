@@ -25,6 +25,7 @@ import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import PolygonPicker from "@/Components/UI/PolygonPicker";
+import OrderEditor from "../UI/OrderEditor";
 
 const MutateCityPopup = ({
   mutate,
@@ -153,6 +154,14 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="city"
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

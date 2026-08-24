@@ -20,11 +20,13 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteOfficePopup from "./DeleteOfficePopup";
+import OrderEditor from "@/Components/Admin/UI/OrderEditor";
 
 export type OfficePopulation = Population<{ Doctor: DoctorProfilePopulation }>;
 
-export interface IOffice<T extends OfficePopulation = OfficePopulation>
-  extends MongoDoc {
+export interface IOffice<
+  T extends OfficePopulation = OfficePopulation,
+> extends MongoDoc {
   doctor: T["Doctor"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Doctor"]>
     : string;
@@ -39,7 +41,7 @@ export interface IOffice<T extends OfficePopulation = OfficePopulation>
 const DoctorManageOfficesPage = () => {
   const { data, error, mutate } = useSWR<IOffice[]>(
     `${API}/doctor/office`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -62,7 +64,7 @@ const DoctorManageOfficesPage = () => {
               action: () =>
                 setPopup(
                   "DoctorMutateOffice",
-                  <DoctorMutateOfficePopup mutate={mutate} />
+                  <DoctorMutateOfficePopup mutate={mutate} />,
                 ),
             },
           ]}
@@ -109,7 +111,7 @@ const DoctorManageOfficesPage = () => {
                       onClick={() =>
                         setPopup(
                           "DoctorDeleetOffice",
-                          <DeleteOfficePopup node={node} mutate={mutate} />
+                          <DeleteOfficePopup node={node} mutate={mutate} />,
                         )
                       }
                     >

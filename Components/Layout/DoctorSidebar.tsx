@@ -68,6 +68,12 @@ const DoctorSidebar = () => {
         show: true,
       },
       {
+        title: "incomingOrders",
+        icon: <PackageIcon />,
+        target: "order",
+        show: hasAccess("readOrders"),
+      },
+      {
         title: "financialMangement",
         icon: <WalletIcon />,
         target: "finance",
@@ -77,37 +83,40 @@ const DoctorSidebar = () => {
             <span className={classes.toman}>{getContent("toman")}</span>
           </span>
         ),
-        show: hasAccess(),
+        show: hasAccess("readFinance"),
       },
       {
         title: "secrataries",
         icon: <UserEditIcon />,
         target: "secretary",
+        // Managing secretaries/access-levels is never delegable — only the
+        // real owner (hasAccess() with no action, true only for "FULL") can
+        // see this, same as every panel's secretary-management nav item.
         show: hasAccess(),
       },
       {
         title: "shifts",
         icon: <CalendarIcon />,
         target: "shift",
-        show: hasAccess(),
+        show: hasAccess("readShifts"),
       },
       {
         title: "schedule",
         icon: <ClockIcon />,
         target: "schedule",
-        show: hasAccess(),
+        show: hasAccess("readSchedule"),
       },
       {
         title: "patients",
         icon: <StetoscopeIcon />,
         target: "patient",
-        show: hasAccess(),
+        show: hasAccess("readPatients"),
       },
       {
         title: "licenses",
         icon: <CartIcon />,
         target: "license",
-        show: hasAccess(),
+        show: hasAccess("readLicenses"),
       },
       {
         title: "clinics",
@@ -119,55 +128,55 @@ const DoctorSidebar = () => {
         title: "phrmaciesAndLabs",
         icon: <BuildingIcon />,
         target: "pharmacy",
-        show: hasAccess(),
+        show: hasAccess("readPharmacy"),
       },
       {
         title: "insurances",
         icon: <ShieldCheckIcon />,
         target: "insurance",
-        show: hasAccess(),
+        show: hasAccess("readInsurance"),
       },
       {
         title: "offers",
         icon: <ReceiptIcon />,
         target: "offer",
-        show: hasAccess(),
+        show: hasAccess("readOffers"),
       },
       {
         title: "discounts",
         icon: <DiscountIcon />,
         target: "discount",
-        show: hasAccess(),
+        show: hasAccess("readDiscounts"),
       },
       {
         title: "articles",
         icon: <FileDuplicateIcon />,
         target: "article",
-        show: hasAccess(),
+        show: hasAccess("readArticles"),
       },
       {
         title: "chatWithPatients",
         icon: <ChatIcon />,
         target: "chat",
-        show: hasAccess(),
+        show: hasAccess("readChat"),
       },
       {
         title: "drugsAndPrescriptions",
         icon: <PillIcon />,
         target: "drug",
-        show: hasAccess(),
+        show: hasAccess("readDrugs"),
       },
       {
         title: "patientDocuments",
         icon: <MedicalRecordIcon />,
         target: "document",
-        show: hasAccess(),
+        show: hasAccess("readDocuments"),
       },
       {
         title: "settings",
         icon: <CogIcon />,
         target: "settings",
-        show: hasAccess(),
+        show: hasAccess("readSettings"),
       },
       {
         title: "logout",

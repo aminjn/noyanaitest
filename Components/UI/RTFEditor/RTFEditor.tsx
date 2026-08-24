@@ -53,9 +53,7 @@ declare module "slate" {
   }
 }
 
-const inititalValue: Descendant[] = [
-  { type: "p", children: [{ text: "یه داستان بنویس..." }] },
-];
+const inititalValue: Descendant[] = [{ type: "p", children: [{ text: "" }] }];
 
 const voids = ["img", "vid"];
 
@@ -75,7 +73,7 @@ const RTFEditor = forwardRef<
   }
 >(({ defaultValue, onChange, hideMediaLibrary }, ref) => {
   const [editor] = useState(() =>
-    withVoid(withHistory(withReact(createEditor())))
+    withVoid(withHistory(withReact(createEditor()))),
   );
 
   const init = useMemo<Descendant[]>(() => {
@@ -103,6 +101,10 @@ const RTFEditor = forwardRef<
           className={classes.main}
           renderElement={RenderElement}
           renderLeaf={RenderLeaf}
+          placeholder="یه داستان بنویس ..."
+          renderPlaceholder={({ children, attributes }) => (
+            <span className={classes.placeholder}  {...attributes}>{children}</span>
+          )}
         />
       </Slate>
     </div>

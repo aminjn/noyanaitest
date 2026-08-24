@@ -49,6 +49,7 @@ import {
   IInsurance,
   InsurancePopulation,
 } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
+import OrderEditor from "../UI/OrderEditor";
 
 export type HospitalPopulation = Population<{
   Province: ProvincePopulation;
@@ -214,6 +215,14 @@ const AdminManageHospitalsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="hospital"
+                    mutate={mutate}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",

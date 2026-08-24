@@ -26,14 +26,7 @@ import FilesInput from "./FilesInput";
 export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
   [key in keyof Partial<TInput>]: (
     | {
-        type:
-          | "text"
-          | "number"
-          | "bool"
-          | "area"
-          | "date"
-          | "image"
-          | "strings";
+        type: "text" | "bool" | "area" | "date" | "image" | "strings";
       }
     | {
         type: "rtf";
@@ -63,9 +56,11 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
         markCount?: number;
       }
     | { type: "files"; getDefaultValue?: (node: TInput) => string[] }
+    | { type: "number"; price?: boolean }
   ) & {
     title: string;
     readOnly?: boolean;
+    required?: boolean;
   };
 };
 
@@ -129,6 +124,7 @@ const CreateForm = <TInput, TResult = unknown>({
           defaultValue: defaultValue?.[key]?.toString(),
           placeholder: true,
           readOnly: isLoading || readOnly || segment.readOnly,
+          required: segment.required,
         } as const;
         let content: ReactNode;
         switch (segment.type) {
@@ -171,6 +167,7 @@ const CreateForm = <TInput, TResult = unknown>({
           case "number":
             content = (
               <Input
+                price={segment.price}
                 inputMode="numeric"
                 {...commons}
                 onChange={(e) => {

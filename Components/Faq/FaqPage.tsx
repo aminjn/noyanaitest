@@ -10,6 +10,7 @@ import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import { FaqItem } from "../Home/HomeFaqs";
 import { tbaseMedium, tsmMedium, txlDemiBold } from "../UI/Typography";
 import BreadCrump from "../UI/BreadCrump";
+import Link from "next/link";
 
 export type FaqPageProps = { data: IFaq[]; categories: IFaqCategory[] };
 const FaqPage = ({ categories, data }: FaqPageProps) => {
@@ -51,10 +52,10 @@ const FaqPage = ({ categories, data }: FaqPageProps) => {
         {getContent("frequentlyAskedQuestions")}
       </h1>
       <legend className={`${classes.legend} ${tbaseMedium}`}>
-        <span>{getContent("faqLegendPre")}</span>
-        <span className={classes.legendLink}>
+        <span>{getContent("faqLegendPre")}</span>{" "}
+        <Link className={classes.legendLink} href={"/contact"}>
           {getContent("faqLegendLink")}
-        </span>
+        </Link>{" "}
         <span>{getContent("faqLegendPost")}</span>
       </legend>
       {!!categories.length && (

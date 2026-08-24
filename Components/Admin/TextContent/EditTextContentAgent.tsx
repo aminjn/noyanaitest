@@ -54,8 +54,7 @@ const EditTextContentAgent = ({
     );
   return (
     <Form onSubmit={submit} className={classes.main}>
-      <Input
-        autoFocuse
+      <input
         className={classes.input}
         defaultValue={value}
         onChange={(e) =>

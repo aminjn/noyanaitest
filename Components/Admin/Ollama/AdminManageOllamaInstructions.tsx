@@ -18,6 +18,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
+import OrderEditor from "../UI/OrderEditor";
 
 export type BotInstructionPopulation = Population<Record<never, never>>;
 
@@ -138,6 +139,14 @@ const AdminManageOllamaInstructions = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    modelName="botInstruction"
+                    mutate={mutate}
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

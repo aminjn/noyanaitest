@@ -1,0 +1,163 @@
+import { Fragment, ReactNode } from "react";
+import classes from "./ReservationTimeline.module.css";
+import useLocale from "@/Components/Hooks/useLocale";
+import Ixon from "@/Components/UI/Ixon";
+import FormatDate from "@/Components/UI/FormatDate";
+import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
+import ClockIcon from "@/Components/Icons/ClockIcon";
+import ErrorIcon from "@/Components/Icons/ErrorIcon";
+import XMarkIcon from "@/Components/Icons/XMarkIcon";
+import {
+  ReservationParty,
+  ReservationStatus,
+  reservationStatusContentKeyDict,
+} from "./reservationStatus";
+import { ContentKey } from "@/Components/Enums/contentKeys";
+
+export type ReservationLifecycleData = {
+  status: ReservationStatus;
+  createdAt: Date;
+  activatedAt?: Date;
+  reminderSentAt?: Date;
+  patientPresentAt?: Date;
+  doctorPresentAt?: Date;
+  noShowParty?: ReservationParty;
+  finalizedAt?: Date;
+};
+
+type StepState = "done" | "pending" | "error" | "skipped";
+
+type Step = {
+  key: string;
+  state: StepState;
+  label: string;
+  date?: Date;
+  caption?: string;
+};
+
+const stepIcon: Record<StepState, ReactNode> = {
+  done: <CheckCircleIcon />,
+  pending: <ClockIcon />,
+  error: <ErrorIcon />,
+  skipped: <XMarkIcon />,
+};
+
+const ReservationTimeline = ({ data }: { data: ReservationLifecycleData }) => {
+  const getContent = useLocale();
+
+  const isCancelled = data.status === "cancelled";
+
+  const steps: Step[] = [
+    {
+      key: "submitted",
+      state: "done",
+      label: getContent("submittedAt"),
+      date: data.createdAt,
+    },
+  ];
+
+  if (data.reminderSentAt)
+    steps.push({
+      key: "reminder",
+      state: "done",
+      label: getContent("reminderSent"),
+      date: data.reminderSentAt,
+    });
+
+  steps.push({
+    key: "activation",
+    state: isCancelled ? "skipped" : data.activatedAt ? "done" : "pending",
+    label: getContent("sessionActivated"),
+    date: data.activatedAt,
+  });
+
+  if (!isCancelled) {
+    steps.push({
+      key: "patientJoined",
+      state: data.patientPresentAt ? "done" : "pending",
+      label: getContent("patientJoined"),
+      date: data.patientPresentAt,
+    });
+    steps.push({
+      key: "doctorJoined",
+      state: data.doctorPresentAt ? "done" : "pending",
+      label: getContent("doctorJoined"),
+      date: data.doctorPresentAt,
+    });
+  }
+
+  const outcomeStateDict: Record<ReservationStatus, StepState> = {
+    pending: "pending",
+    active: "pending",
+    completed: "done",
+    cancelled: "skipped",
+    noShow: "error",
+    error: "error",
+  };
+
+  const noShowCaptionKey: Record<ReservationParty, ContentKey> = {
+    patient: "noShowByPatient",
+    doctor: "noShowByDoctor",
+  };
+
+  steps.push({
+    key: "outcome",
+    state: outcomeStateDict[data.status],
+    label: getContent(reservationStatusContentKeyDict[data.status]),
+    date: data.finalizedAt,
+    caption:
+      data.status === "noShow" && data.noShowParty
+        ? getContent(noShowCaptionKey[data.noShowParty])
+        : data.status === "error"
+          ? getContent("reservationErrorNotice")
+          : undefined,
+  });
+
+  return (
+    <div className={classes.main}>
+      {steps.map((step, index) => (
+        <Fragment key={step.key}>
+          <div className={classes.step}>
+            <div className={classes.stepIconCol}>
+              <div
+                className={`${classes.stepIcon} ${
+                  step.state === "pending" ? "" : classes[step.state]
+                }`}
+              >
+                <Ixon width="0.875rem">{stepIcon[step.state]}</Ixon>
+              </div>
+              {index < steps.length - 1 && (
+                <div
+                  className={`${classes.stepLine} ${
+                    step.state === "done" ? classes.stepLineDone : ""
+                  }`}
+                />
+              )}
+            </div>
+            <div className={classes.stepBody}>
+              <span
+                className={`${classes.stepLabel} ${
+                  step.state === "pending" ? classes.muted : ""
+                }`}
+              >
+                {step.label}
+              </span>
+              {!!step.date && (
+                <FormatDate className={classes.stepDate} value={step.date} />
+              )}
+              {!!step.caption && (
+                <span
+                  className={`${classes.stepCaption} ${classes[step.state]}`}
+                >
+                  {step.caption}
+                </span>
+              )}
+            </div>
+          </div>
+        </Fragment>
+      ))}
+    </div>
+  );
+};
+
+export default ReservationTimeline;

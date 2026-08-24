@@ -4,6 +4,7 @@ import classes from "./NodesSelector.module.css";
 import { fetcher } from "../helpers/fetcher";
 
 import dynamic from "next/dynamic";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -38,6 +39,8 @@ const NodesSelector = <TMulti extends boolean = false>({
     fetcher({ url }).then(!!dataParser ? dataParser : (res) => res.data.data),
   );
 
+  const getContent = useScopedLocale(["common"]);
+
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       {!!title && <span className={classes.title}>{title}</span>}
@@ -71,6 +74,7 @@ const NodesSelector = <TMulti extends boolean = false>({
             onChange?.(getOptionValue(e) as any);
           }
         }}
+        placeholder={getContent("selectPlaceholder")}
         // menuPlacement="top"
       />
     </div>

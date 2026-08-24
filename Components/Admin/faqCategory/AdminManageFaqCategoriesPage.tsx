@@ -14,6 +14,7 @@ import useLocale from "@/Components/Hooks/useLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type FaqCategoryPopulation = Population<Record<never, never>>;
 
@@ -50,7 +51,19 @@ const AdminManageFaqCategoriesPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              value={node.order}
+              _id={node._id}
+              modelName="faqCategory"
+              mutate={mutate}
+            />
+          ),
+        },
         actions: {
           name: "غملیات",
           component: (node) => (

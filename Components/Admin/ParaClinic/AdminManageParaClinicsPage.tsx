@@ -18,6 +18,7 @@ import IconLink from "../UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 import PopupCard from "@/Components/UI/PopupCard";
+import OrderEditor from "../UI/OrderEditor";
 
 const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
@@ -93,6 +94,14 @@ const AdminManageParaClinicsPage = () => {
               name: "رتبه",
               value: (node) => node.order,
               filter: "Number",
+              component: (node) => (
+                <OrderEditor
+                  value={node.order}
+                  modelName="paraClinic"
+                  _id={node._id}
+                  mutate={mutate}
+                />
+              ),
             },
             active: {
               name: "فعال",

@@ -12,6 +12,9 @@ import Title from "./Title";
 import Button from "@/Components/UI/Button";
 import Ixon from "@/Components/UI/Ixon";
 import MenuIcon from "@/Components/Icons/MenuIcon";
+import IconButton from "./IconButton";
+import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
+import { useRouter } from "next/navigation";
 
 const WithTitle = ({
   children,
@@ -40,10 +43,20 @@ const WithTitle = ({
     }
   }, [isContextOpen]);
 
+  const { back } = useRouter();
   return (
     <Box className={`${classes.main} ${className}`} style={style}>
       <div className={classes.header}>
-        <Title>{title}</Title>
+        <div className={classes.titleBox}>
+          <IconButton
+            onClick={() => back()}
+            variant="Neutral"
+            style={{ transform: "rotateZ(180deg)" }}
+          >
+            <ArrowLeftIcon />
+          </IconButton>
+          <Title>{title}</Title>
+        </div>
         <div className={classes.headerActions}>
           {(!!actions?.length || !!collapsed) && (
             <Fragment>

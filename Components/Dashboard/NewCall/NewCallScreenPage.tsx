@@ -273,6 +273,12 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
   const [role, setRole] = useState<CallParticipantRole | null>(null);
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(false);
+  // Whether we actually managed to publish a mic/camera track. Someone with
+  // no device (or who denied permission) still joins and consumes everyone
+  // else's audio/video fine - these just drive the toggle buttons so they
+  // don't dangle in a misleading "on" state for media that was never sent.
+  const [micAvailable, setMicAvailable] = useState(true);
+  const [camAvailable, setCamAvailable] = useState(true);
   const [sharingScreen, setSharingScreen] = useState(false);
   const [recording, setRecording] = useState(false);
 
@@ -420,6 +426,23 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       pushNotification(message, "Error");
     });
 
+    const offMediaUnavailable = call.on("mediaUnavailable", ({ kind }) => {
+      // No mic/camera present (or permission denied) - stay in the call as
+      // a consumer, just reflect that this kind of media isn't being sent.
+      if (kind === "audio") {
+        setMicOn(false);
+        setMicAvailable(false);
+        pushNotification(
+          "میکروفون در دسترس نیست - شما تنها می‌توانید تماس را بشنوید",
+          "Warn",
+        );
+      } else {
+        setCamOn(false);
+        setCamAvailable(false);
+        pushNotification("دوربین در دسترس نیست", "Warn");
+      }
+    });
+
     return () => {
       offJoined();
       offLocalTrack();
@@ -436,6 +459,7 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       offRecordingStarted();
       offRecordingStopped();
       offError();
+      offMediaUnavailable();
       call.destroy();
     };
     // call is stable for the lifetime of this component (only changes if
@@ -467,20 +491,22 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
   }, [call, room, callId]);
 
   const toggleMic = useCallback(() => {
+    if (!micAvailable) return;
     const next = !micOn;
     setMicOn(next);
     call
       .setMute("audio", !next)
       .catch((err: Error) => pushNotification(err.message, "Error"));
-  }, [call, micOn, pushNotification]);
+  }, [call, micOn, micAvailable, pushNotification]);
 
   const toggleCam = useCallback(() => {
+    if (!camAvailable) return;
     const next = !camOn;
     setCamOn(next);
     call
       .setMute("video", !next)
       .catch((err: Error) => pushNotification(err.message, "Error"));
-  }, [call, camOn, pushNotification]);
+  }, [call, camOn, camAvailable, pushNotification]);
 
   const toggleScreenShare = useCallback(async () => {
     try {
@@ -613,7 +639,14 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
           type="button"
           className={`${classes.controlButton} ${!micOn ? classes.controlButtonOff : ""}`}
           onClick={toggleMic}
-          title={micOn ? "قطع میکروفون" : "روشن کردن میکروفون"}
+          disabled={!micAvailable}
+          title={
+            !micAvailable
+              ? "میکروفونی یافت نشد"
+              : micOn
+                ? "قطع میکروفون"
+                : "روشن کردن میکروفون"
+          }
         >
           {micOn ? <MicIcon /> : <MicOffIcon />}
         </button>
@@ -623,7 +656,14 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
             type="button"
             className={`${classes.controlButton} ${!camOn ? classes.controlButtonOff : ""}`}
             onClick={toggleCam}
-            title={camOn ? "خاموش کردن دوربین" : "روشن کردن دوربین"}
+            disabled={!camAvailable}
+            title={
+              !camAvailable
+                ? "دوربینی یافت نشد"
+                : camOn
+                  ? "خاموش کردن دوربین"
+                  : "روشن کردن دوربین"
+            }
           >
             {camOn ? <CameraIcon /> : <CameraOffIcon />}
           </button>

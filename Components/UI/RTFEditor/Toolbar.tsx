@@ -21,7 +21,11 @@ import UnderlineIcon from "./UnderlineIcon";
 // have access to those admin routes, so they get a restricted toolbar
 // (still full text formatting) instead of a broken button. Defaults to
 // false so the admin panel's toolbar is unchanged.
-const Toolbar = ({ hideMediaLibrary = false }: { hideMediaLibrary?: boolean }) => {
+const Toolbar = ({
+  hideMediaLibrary = false,
+}: {
+  hideMediaLibrary?: boolean;
+}) => {
   return (
     <div className={classes.main}>
       <SelectionButton

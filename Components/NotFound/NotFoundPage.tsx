@@ -29,10 +29,17 @@ const NotFoundPage = () => {
           variant="Primary"
           href="/contact"
           tailIcon={<HeadphoneIcon />}
+          radius="Medium"
         >
           {getContent("contactSupport")}
         </Button>
-        <Button mode="Fill" variant="Primary" href="/" tailIcon={<HomeIcon />}>
+        <Button
+          radius="Medium"
+          mode="Fill"
+          variant="Primary"
+          href="/"
+          tailIcon={<HomeIcon />}
+        >
           {getContent("goToHomePage")}
         </Button>
       </div>

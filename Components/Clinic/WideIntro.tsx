@@ -13,15 +13,15 @@ const WideIntro = ({
   image,
   name,
   province,
-  commentCount,
-  score,
+  commentCount = 0,
+  score = 0,
 }: {
   name?: string;
   image?: string;
   category?: string;
   province?: string;
-  score: number;
-  commentCount: number;
+  score?: number;
+  commentCount?: number;
 }) => {
   const getContent = useLocale();
 
@@ -56,7 +56,7 @@ const WideIntro = ({
             <Ixon width=".875rem">
               <StarIcon />
             </Ixon>
-            <span>{`${score} (${getContent("xComments", [commentCount.toString()])})`}</span>
+            <span>{`${score} (${getContent("xComments", [commentCount?.toString()])})`}</span>
           </div>
         </div>
       </div>

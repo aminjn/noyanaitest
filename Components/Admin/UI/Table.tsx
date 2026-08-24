@@ -41,6 +41,7 @@ type TableColumn<T> = {
   pin?: "left" | "right";
   onEdit?: ValueSetterFunc<T>;
   editParams?: Partial<INumberCellEditorParams>;
+  suppressKeyboardEvents?: boolean;
 };
 
 export type TableRenderer<T> = {
@@ -65,6 +66,7 @@ const Table = <T,>({
     return Object.keys(renderer).map(
       (key) =>
         ({
+          suppressKeyboardEvent: () => renderer[key].suppressKeyboardEvents,
           colId: key,
           filter: renderer[key].filter
             ? `ag${renderer[key].filter}ColumnFilter`

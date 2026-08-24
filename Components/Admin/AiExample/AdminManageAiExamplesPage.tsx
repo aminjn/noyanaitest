@@ -19,6 +19,7 @@ import CreateForm from "../UI/CreateForm";
 import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
+import OrderEditor from "../UI/OrderEditor";
 
 export type AiExamplePopulation = Population<Record<never, never>>;
 
@@ -136,6 +137,14 @@ const AdminManageAiExamplesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    mutate={mutate}
+                    modelName="aiExample"
+                  />
+                ),
               },
               prompt: {
                 name: "پرامپت",

@@ -234,7 +234,7 @@ const PublicHeader = () => {
           <Categories />
           <NavLink title="officeBook" target="/book" />
           <NavLink title="aiDetection" target="/wizard" />
-          <NavLink title="noyanClinic" target="/clinic" />
+          <NavLink title="noyanClinic" target="/product" />
           <WithSubs
             title="more"
             subs={[

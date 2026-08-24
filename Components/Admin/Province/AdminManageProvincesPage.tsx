@@ -22,6 +22,7 @@ import Act from "@/Components/UI/Act";
 import IconLink from "../UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
+import OrderEditor from "../UI/OrderEditor";
 
 export type IPosition = [longitude: number, latitude: number];
 export type ILinearRing = IPosition[];
@@ -172,6 +173,14 @@ const AdminManageProvincesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="province"
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

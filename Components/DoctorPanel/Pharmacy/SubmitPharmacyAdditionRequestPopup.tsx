@@ -80,10 +80,16 @@ const SubmitPharmacyAdditionRequestPopup = ({
           }
         />
         <FormActions>
-          <Button type="submit" isLoading={isLoading}>
+          <Button
+            onClick={() => closePopup()}
+            variant="Neutral"
+            radius="Medium"
+          >
+            {getContent("cancel")}
+          </Button>
+          <Button type="submit" isLoading={isLoading} radius="Medium">
             {getContent("submit")}
           </Button>
-          <Button onClick={() => closePopup()}>{getContent("cancel")}</Button>
         </FormActions>
       </Form>
     </PopupCard>

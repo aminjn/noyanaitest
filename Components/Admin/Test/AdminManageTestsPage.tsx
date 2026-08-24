@@ -25,6 +25,7 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
+import OrderEditor from "../UI/OrderEditor";
 
 export type TestPopulation = Population<{ Category: TestCategoryPopulation }>;
 
@@ -75,7 +76,19 @@ const AdminManageTestsPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              value={node.order}
+              mutate={mutate}
+              modelName="test"
+            />
+          ),
+        },
         slug: { name: "اسلاگ", value: (node) => node.slug },
         actions: {
           name: "غملیات",

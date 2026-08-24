@@ -22,6 +22,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ProductCategoryPopulation = Population<Record<never, never>>;
 
@@ -127,6 +128,14 @@ const AdminManageProductCategoriesPage = () => {
                 name: "رتبه",
                 filter: "Number",
                 value: (node) => node.order,
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="productCategory"
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",

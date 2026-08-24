@@ -1,22 +1,63 @@
-import useSWR from "swr";
 import classes from "./ChatsSidebar.module.css";
-import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
-import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
-import { API } from "../config";
 import useBotChats from "./useBotChats";
+import useLocale from "../Hooks/useLocale";
+import Ixon from "../UI/Ixon";
 import Link from "next/link";
+import PlusIcon from "../Icons/PlusIcon";
+import XMarkIcon from "../Icons/XMarkIcon";
+import Loading from "../Admin/UI/Loading";
+import WizardSidebarItem from "./WizardSidebarItem";
+import { Fragment } from "react";
 
-const ChatsSidebar = () => {
-  const { data } = useBotChats();
+const ChatsSidebar = ({
+  activeChatId,
+  onClose,
+}: {
+  activeChatId?: string;
+  onClose?: () => void;
+}) => {
+  const { data, mutate } = useBotChats();
+  const getContent = useLocale();
+
   return (
     <div className={classes.main}>
-      <div className={classes.list}>
-        {data?.map((chat) => (
-          <Link href={`/wizard/${chat._id}`} key={chat._id}>
-            {chat.name}
-          </Link>
-        ))}
-      </div>
+      <button
+        type="button"
+        className={classes.close}
+        aria-label={getContent("close")}
+        onClick={onClose}
+      >
+        <Ixon width="1.125rem">
+          <XMarkIcon />
+        </Ixon>
+      </button>
+      <Link href="/wizard" className={classes.newChat} onClick={onClose}>
+        <Ixon width="1.125rem" className={classes.newChatIcon}>
+          <PlusIcon />
+        </Ixon>
+        <span>{getContent("newChat")}</span>
+      </Link>
+      {data ? (
+        <Fragment>
+          {!!data.length ? (
+            <div className={classes.list}>
+              {data.map((chat) => (
+                <WizardSidebarItem
+                  key={chat._id}
+                  chat={chat}
+                  isActive={chat._id === activeChatId}
+                  mutate={mutate}
+                  onNavigate={onClose}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className={classes.empty}>{getContent("noChatYetMessage")}</p>
+          )}
+        </Fragment>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 };

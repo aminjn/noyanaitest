@@ -25,12 +25,13 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import DeleteDoctorFaqPopup from "./DeleteDoctorFaqPopup";
 import { IDoctorFaq } from "@/Components/DoctorPanel/Profile/DoctorManageFaqTab";
+import OrderEditor from "../UI/OrderEditor";
 
 const AdminManageDoctorFaqsPage = () => {
   const { data, error, mutate } = useSWR<
     IDoctorFaq<{ Doctor: Record<never, never> }>[]
   >(`${API}/auto/doctorfaq`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -66,6 +67,14 @@ const AdminManageDoctorFaqsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="doctorfaq"
+                    mutate={mutate}
+                  />
+                ),
               },
               active: {
                 name: "فعال",
@@ -99,7 +108,7 @@ const AdminManageDoctorFaqsPage = () => {
                       onClick={() =>
                         setPopup(
                           "DeleteDoctorFaq",
-                          <DeleteDoctorFaqPopup mutate={mutate} node={node} />
+                          <DeleteDoctorFaqPopup mutate={mutate} node={node} />,
                         )
                       }
                     >

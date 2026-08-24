@@ -3,6 +3,7 @@ import CreateForm from "../UI/CreateForm";
 import classes from "./NewBlogCategoryPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
 import Box from "../UI/Box";
+import { blogCategoryFormRenderer } from "./AdminManageBlogCategoryPage";
 
 const NewBlogCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
@@ -10,7 +11,7 @@ const NewBlogCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
     <Box>
       <CreateForm
         className={classes.main}
-        renderer={{ title: { title: "عنوان", type: "text" } }}
+        renderer={blogCategoryFormRenderer}
         hookProps={{
           path: `${API}/auto/blogcategory`,
           method: "POST",

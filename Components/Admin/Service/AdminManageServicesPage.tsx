@@ -38,6 +38,7 @@ import {
   ProductSpecPopulation,
 } from "../Product/AdminManageProductsPage";
 import IconLink from "../UI/IconLink";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ServicePopulation = Population<{
   Owner: DoctorProfilePopulation;
@@ -216,6 +217,14 @@ const AdminManageServicesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="service"
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

@@ -37,6 +37,7 @@ import {
   ISymptomCategory,
   SymptomCategoryPopulation,
 } from "../SymptomCategory/AdminManageSymptomCategoriesPage";
+import OrderEditor from "../UI/OrderEditor";
 
 export const genderSpicificOptions = ["male", "female", "none"] as const;
 
@@ -201,6 +202,14 @@ const AdminManageDiseasePage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    modelName="disease"
+                    mutate={mutate}
+                    _id={node._id}
+                  />
+                ),
               },
               slug: {
                 name: "اسلاگ",

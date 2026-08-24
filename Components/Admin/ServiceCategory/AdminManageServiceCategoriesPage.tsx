@@ -19,6 +19,7 @@ import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import CreateForm from "../UI/CreateForm";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ServiceCategoryPopulation = Population<Record<never, never>>;
 export interface IServiceCategory<
@@ -132,6 +133,14 @@ const AdminManageServiceCategoriesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="serviceCategory"
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

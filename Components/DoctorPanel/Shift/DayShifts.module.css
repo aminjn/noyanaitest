@@ -1,6 +1,7 @@
 .main {
   display: flex;
   gap: 1rem;
+  padding-inline-end: 0.5rem;
 }
 
 .shiftsBox {

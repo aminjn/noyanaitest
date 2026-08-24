@@ -1,0 +1,107 @@
+.main {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  transition: background-color var(--transTime) ease-in-out;
+}
+
+.main:hover {
+  background-color: #ffffffa0;
+}
+
+.active {
+  background-color: var(--white);
+}
+
+.link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-inline: 0.875rem;
+  padding-block: 0.625rem;
+}
+
+.name {
+  color: var(--gray13);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date {
+  color: var(--gray8);
+  font-size: 0.625rem;
+  font-weight: 400;
+}
+
+.delete {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray8);
+  border-radius: 0.5rem;
+  margin-inline-end: 0.5rem;
+  opacity: 0.65;
+  transition:
+    opacity var(--transTime) ease-in-out,
+    background-color var(--transTime) ease-in-out,
+    color var(--transTime) ease-in-out;
+}
+
+.main:hover .delete,
+.main:focus-within .delete {
+  opacity: 1;
+}
+
+.delete:hover {
+  background-color: #fde8e8;
+  color: var(--error);
+}
+
+.confirm {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  margin-inline-end: 0.5rem;
+}
+
+.confirmText {
+  color: var(--gray10);
+  font-size: 0.625rem;
+  white-space: nowrap;
+}
+
+.confirmYes,
+.confirmNo {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+}
+
+.confirmYes {
+  color: var(--error);
+  background-color: #fde8e8;
+}
+
+.confirmYes:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.confirmNo {
+  color: var(--gray10);
+  background-color: var(--gray2);
+}

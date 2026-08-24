@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "Components/Admin/AppConfig/AdminManageAppConfigPage.tsx",
+    "app/[adminKey]/appConfig/page.tsx",
+    "Components/Admin/UI/AdminSidebar.tsx"
+  ]
+}

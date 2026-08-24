@@ -18,11 +18,12 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeletePharmacyPopup from "./DeletePharmacyPopup";
 import WithTitle from "../UI/WithTitle";
 import CreatePharmacyPopup from "./CreatePharmacyPopup";
+import OrderEditor from "../UI/OrderEditor";
 
 const AdminManagePharmaciesPage = () => {
   const { data, error, mutate } = useSWR<IPharmacy[]>(
     `${API}/auto/pharmacy`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -38,7 +39,7 @@ const AdminManagePharmaciesPage = () => {
               action: () =>
                 setPopup(
                   "CreatePharmacy",
-                  <CreatePharmacyPopup mutate={mutate} />
+                  <CreatePharmacyPopup mutate={mutate} />,
                 ),
             },
           ]}
@@ -61,6 +62,14 @@ const AdminManagePharmaciesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    modelName="pharmacy"
+                    _id={node._id}
+                    mutate={mutate}
+                  />
+                ),
               },
               active: {
                 name: "فعال",
@@ -79,7 +88,7 @@ const AdminManagePharmaciesPage = () => {
                       onClick={() =>
                         setPopup(
                           "DeletePharmacy",
-                          <DeletePharmacyPopup mutate={mutate} node={node} />
+                          <DeletePharmacyPopup mutate={mutate} node={node} />,
                         )
                       }
                       variant="Danger"

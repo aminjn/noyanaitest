@@ -21,6 +21,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ClinicTagPopulation = Population<Record<never, never>>;
 export interface IClinicTag<
@@ -121,6 +122,14 @@ const AdminManageClinicTagsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="clinicTag"
+                    mutate={mutate}
+                  />
+                ),
               },
               isActive: {
                 name: "فعال",

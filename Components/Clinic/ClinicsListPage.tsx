@@ -69,7 +69,7 @@ const SpecialItem = ({
         )}
       </div>
       <div className={classes.itemScore}>
-        <span className={txsMedium}>{node.averageScore.toFixed(1)}</span>
+        <span className={txsMedium}>{node.averageScore?.toFixed(1)}</span>
         <Ixon width="1rem">
           <StarIcon />
         </Ixon>

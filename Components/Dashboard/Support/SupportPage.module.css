@@ -26,7 +26,7 @@
 
 .item {
   display: grid;
-  grid-template-columns: 7rem 1fr auto auto;
+  grid-template-columns: 10rem 1fr auto auto;
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.25rem;

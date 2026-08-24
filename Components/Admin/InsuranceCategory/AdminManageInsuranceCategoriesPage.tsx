@@ -13,6 +13,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
+import OrderEditor from "../UI/OrderEditor";
 
 export type InsuranceCategoryPopulation = Population<Record<never, never>>;
 
@@ -48,7 +49,19 @@ const AdminManageInsuranceCategoriesPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              value={node.order}
+              modelName="insuranceCategory"
+              mutate={mutate}
+            />
+          ),
+        },
         actions: {
           name: "عملیات",
           component: (node) => (

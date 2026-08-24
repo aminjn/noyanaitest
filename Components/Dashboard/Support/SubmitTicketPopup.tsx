@@ -32,7 +32,11 @@ const SubmitTicketPopup = ({ mutate }: { mutate: () => unknown }) => {
               {},
             ),
           },
-          title: { type: "text", title: getContent("ticketTitle") },
+          title: {
+            type: "text",
+            title: getContent("ticketTitle"),
+            required: true,
+          },
           content: { type: "area", title: getContent("ticketMessage") },
         }}
         onCancel={() => closePopup()}
@@ -43,6 +47,12 @@ const SubmitTicketPopup = ({ mutate }: { mutate: () => unknown }) => {
             mutate();
             closePopup();
             push(`/dashboard/support/${data.data._id}`);
+          },
+          hasProblem: (inp) => {
+            if (!inp.title) return getContent("titleMissingError");
+            if (!inp.content) return getContent("messageMissingError");
+            if (!inp.subject) return getContent("subjectMissingError");
+            return false;
           },
         }}
       />

@@ -27,6 +27,7 @@ import {
 } from "../UI/Typography";
 import ListPageHeaderSearch from "../UI/ListPage/ListPageHeaderSearch";
 import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
+import SwitchProductAndService from "../Product/SwitchProductAndService";
 
 export type ServiceListPageProps = {
   data: (
@@ -86,6 +87,7 @@ const ServiceListPage = ({
         { title: "خدمات", target: "/service" },
       ]}
     >
+      <SwitchProductAndService />
       <ListPageHeaderSearch
         legend={getContent("serviceListLegend")}
         title={getContent("serviceListTitle")}

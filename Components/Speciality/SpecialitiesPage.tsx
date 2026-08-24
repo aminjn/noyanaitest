@@ -103,8 +103,10 @@ const SpecialitiesPage = ({
     if (query) params.append("search", query);
     for (const category of selectedCategories)
       params.append("category", category.slug || category._id);
+    const page = searchParams.get("page");
+    if (page) params.append("page", page);
     push(`/speciality?${params.toString()}`);
-  }, [query, selectedCategories, push]);
+  }, [query, selectedCategories, push, searchParams]);
 
   const { setPopup } = usePopup();
 

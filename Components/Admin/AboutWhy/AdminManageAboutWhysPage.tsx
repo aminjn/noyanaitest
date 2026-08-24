@@ -13,6 +13,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
+import OrderEditor from "../UI/OrderEditor";
 
 export const aboutWhyElems = ["Why", "Principle"] as const;
 
@@ -63,7 +64,19 @@ const AdminManageAboutWhysPage = () => {
           value: (node) => booleanToValue[`${node.isActive}`],
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              value={node.order}
+              _id={node._id}
+              modelName="aboutWhy"
+              mutate={mutate}
+            />
+          ),
+        },
         elem: {
           name: "قسمت",
           value: (node) => aboutWhyElemDict[node.elem],

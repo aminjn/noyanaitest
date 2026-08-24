@@ -64,8 +64,8 @@ export interface IServicePackage<
   whyChoose?: string;
   stages?: string;
   results?: string;
-  averageScore: number;
-  commentCount: number;
+  averageScore?: number;
+  commentCount?: number;
 }
 
 const DoctorManageServicePackagesPage = () => {

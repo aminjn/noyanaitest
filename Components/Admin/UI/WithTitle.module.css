@@ -17,6 +17,12 @@
   gap: 1rem;
 }
 
+.titleBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .contextBtn {
   display: flex;
   justify-content: center;

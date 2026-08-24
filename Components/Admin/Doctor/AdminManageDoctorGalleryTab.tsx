@@ -20,25 +20,26 @@ import MutateGalleryItemPopup from "./MutateGalleryItemPopup";
 import DeleteGalleryItemPopup from "./DeleteGalleryItemPopup";
 import WithTitle from "../UI/WithTitle";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import OrderEditor from "../UI/OrderEditor";
 
 export type GalleryItemPopulation = { OwnerPopulated?: true };
 
 export interface IGalleryItem<
   TOwnerIsDoctor extends boolean | undefined = boolean | undefined,
-  TPopulation extends GalleryItemPopulation = GalleryItemPopulation
+  TPopulation extends GalleryItemPopulation = GalleryItemPopulation,
 > extends MongoDoc {
   owner: TOwnerIsDoctor extends undefined
     ? unknown
     : TPopulation["OwnerPopulated"] extends true
-    ? TOwnerIsDoctor extends true
-      ? IDoctor
-      : IDoctorProfile
-    : string;
+      ? TOwnerIsDoctor extends true
+        ? IDoctor
+        : IDoctorProfile
+      : string;
   ownerPath: TOwnerIsDoctor extends undefined
     ? unknown
     : TOwnerIsDoctor extends true
-    ? "Doctor"
-    : "DoctorProfile";
+      ? "Doctor"
+      : "DoctorProfile";
   image?: string;
   alt?: string;
   description?: string;
@@ -50,7 +51,7 @@ export interface IGalleryItem<
 const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
   const { data, error, mutate } = useSWR<IGalleryItem<true>[]>(
     `${API}/auto/galleryitem?owner=${node._id}`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -70,7 +71,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                     action: () =>
                       setPopup(
                         "MutateGalleryItem",
-                        <MutateGalleryItemPopup mutate={mutate} doc={node} />
+                        <MutateGalleryItemPopup mutate={mutate} doc={node} />,
                       ),
                   },
                 ]
@@ -97,7 +98,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                         onClick={() =>
                           setPopup(
                             "FullscreenImagePreview",
-                            <FullScreenImagePopup src={node.image} />
+                            <FullScreenImagePopup src={node.image} />,
                           )
                         }
                       >
@@ -125,6 +126,14 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="galleryitem"
+                    mutate={mutate}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",
@@ -138,7 +147,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                             <MutateGalleryItemPopup
                               mutate={mutate}
                               node={node}
-                            />
+                            />,
                           )
                         }
                       >
@@ -154,7 +163,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                             <DeleteGalleryItemPopup
                               mutate={mutate}
                               node={node}
-                            />
+                            />,
                           )
                         }
                       >

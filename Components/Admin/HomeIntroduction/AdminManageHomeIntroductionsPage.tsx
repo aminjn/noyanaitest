@@ -19,6 +19,7 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type HomeIntroductionPopulation = Population<Record<never, never>>;
 
@@ -137,6 +138,14 @@ const AdminManageHomeIntroductionsPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    modelName="homeIntroduction"
+                    mutate={mutate}
+                    value={node.order}
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",

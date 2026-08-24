@@ -31,8 +31,9 @@ export type ServicePopulation = Population<{
   Category: ServiceCategoryPopulation;
 }>;
 
-export interface IService<T extends ServicePopulation = ServicePopulation>
-  extends MongoDoc {
+export interface IService<
+  T extends ServicePopulation = ServicePopulation,
+> extends MongoDoc {
   order: number;
   isActive: boolean;
   name?: string;
@@ -54,15 +55,15 @@ export interface IService<T extends ServicePopulation = ServicePopulation>
   stages?: string;
   results?: string;
   sameAs: string[];
-  averageScore: number;
-  commentCount: number;
+  averageScore?: number;
+  commentCount?: number;
 }
 
 const DoctorManageServicesPage = () => {
   const { data, error, mutate } = useSWR<
     IService<{ Category: ServiceCategoryPopulation }>[]
   >(`${API}/doctor/service`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -85,7 +86,7 @@ const DoctorManageServicesPage = () => {
               action: () =>
                 setPopup(
                   "DoctorMutateService",
-                  <DoctorMutateServicePopup mutate={mutate} />
+                  <DoctorMutateServicePopup mutate={mutate} />,
                 ),
             },
           ]}
@@ -144,7 +145,7 @@ const DoctorManageServicesPage = () => {
                       onClick={() =>
                         setPopup(
                           "DoctorDeleteService",
-                          <DeleteServicePopup node={node} mutate={mutate} />
+                          <DeleteServicePopup node={node} mutate={mutate} />,
                         )
                       }
                     >

@@ -23,14 +23,14 @@ const FormatDate = ({
   className = "",
   style,
 }: WithStyleProps<{
-  value?: Date;
+  value?: Date | string | number;
   date?: boolean;
   time?: boolean;
 }>) => {
   if (!value) return <Fragment />;
   return (
     <span className={className} style={style}>
-      {dateToString({ value, date, time })}
+      {dateToString({ value: new Date(value), date, time })}
     </span>
   );
 };

@@ -82,7 +82,7 @@ const InsuranceCard = ({ node }: { node: InsurancesPageNode }) => {
               <StarIcon />
             </Ixon>
             <span className={`${classes.scoreValue} ${t2xsMedium}`}>
-              {node.averageScore.toFixed(1)}
+              {node.averageScore?.toFixed(1)}
             </span>
           </div>
         </div>

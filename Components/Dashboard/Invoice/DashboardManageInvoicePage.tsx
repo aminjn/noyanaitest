@@ -13,13 +13,16 @@ import FormatDate from "@/Components/UI/FormatDate";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import CheckoutPalPopup from "./CheckoutPopup";
+import DataPair from "@/Components/Admin/UI/DataPair";
+import List from "@/Components/Admin/UI/List";
+import WithTitle from "@/Components/Admin/UI/WithTitle";
 
 const DashboardManageInvoicePage = () => {
   const params = useParams<{ nodeId: string }>();
 
   const { data, error, mutate } = useSWR<IInvoice>(
     `${API}/user/invoice/${params.nodeId}`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
@@ -29,31 +32,34 @@ const DashboardManageInvoicePage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <div>
-          <p>
-            {getContent("status")} :{" "}
-            {getContent(!!data.checkout ? "paid" : "notPaid")}
-          </p>
-          <p>
-            {getContent("total")} : {currencize(data.total)}{" "}
-            {getContent("toman")}
-          </p>
-          <p>
-            {getContent("createdAt")} : <FormatDate value={data.submittedAt} />
-          </p>
-          {!data.checkout && data.payable && (
-            <Button
-              onClick={() =>
-                setPopup(
-                  "Checkout",
-                  <CheckoutPalPopup invoice={data} mutate={mutate} />
-                )
-              }
-            >
-              {getContent("pay")}
-            </Button>
-          )}
-        </div>
+        <WithTitle title={getContent("invoiceDetails")}>
+          <List>
+            <DataPair
+              title={getContent("status")}
+              value={getContent(!!data.checkout ? "paid" : "notPaid")}
+            />
+            <DataPair
+              title={getContent("total")}
+              value={`${currencize(data.total)} ${getContent("toman")}`}
+            />
+            <DataPair
+              title={getContent("createdAt")}
+              value={<FormatDate value={data.submittedAt} />}
+            />
+            {!data.checkout && data.payable && (
+              <Button
+                onClick={() =>
+                  setPopup(
+                    "Checkout",
+                    <CheckoutPalPopup invoice={data} mutate={mutate} />,
+                  )
+                }
+              >
+                {getContent("pay")}
+              </Button>
+            )}
+          </List>
+        </WithTitle>
       )}
     </HandleLoading>
   );

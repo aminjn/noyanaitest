@@ -13,6 +13,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
+import OrderEditor from "../UI/OrderEditor";
 
 export type TestifyPopulation = Population<Record<never, never>>;
 
@@ -44,7 +45,19 @@ const AdminManageTestifiesPage = () => {
       modelName="testify"
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              value={node.order}
+              mutate={mutate}
+              modelName="testify"
+            />
+          ),
+        },
         isActive: {
           name: "فعال",
           value: (node) => booleanToValue[`${node.isActive}`],

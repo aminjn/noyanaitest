@@ -150,6 +150,7 @@ const InnerTicket = ({
   return (
     <div className={classes.main}>
       <div className={classes.head}>
+        {!isClosed && <CloseTicketAction nodeId={ticket._id} mutate={mutate} />}
         <Button
           href="/dashboard/support"
           mode="Inline"
@@ -158,9 +159,7 @@ const InnerTicket = ({
         >
           {getContent("backToList")}
         </Button>
-        {!isClosed && <CloseTicketAction nodeId={ticket._id} mutate={mutate} />}
       </div>
-
       <div className={classes.card}>
         <div className={classes.cardHeader}>
           <div className={classes.headerInfo}>
@@ -176,7 +175,6 @@ const InnerTicket = ({
             </Badge>
           </div>
         </div>
-
         <div className={classes.body}>
           {!!messages.length ? (
             <>

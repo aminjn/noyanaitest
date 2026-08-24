@@ -2,26 +2,32 @@ import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
+import useAcl from "../Hooks/useAcl";
 
 const ClinicPanelSidebar = () => {
+  const hasAccess = useAcl("clinic");
+
   const links = useMemo<LinkMap>(
     () => [
       {
         title: "secretaries",
         icon: <UserEditIcon />,
-        show: true,
+        // Managing secretaries/access-levels is never delegable — only the
+        // real owner (hasAccess() with no action, true only for "FULL") can
+        // see this.
+        show: hasAccess(),
         target: "secretary",
       },
       {
         title: "prescriptions",
         icon: <UserEditIcon />,
-        show: true,
+        show: hasAccess("readPrescriptions"),
         target: "prescription",
       },
       {
         title: "articles",
         icon: <FileDuplicateIcon />,
-        show: true,
+        show: hasAccess("readArticles"),
         target: "article",
       },
       {
@@ -31,7 +37,7 @@ const ClinicPanelSidebar = () => {
         target: "profile",
       },
     ],
-    [],
+    [hasAccess],
   );
 
   return <PanelSidebar links={links} panel="clinicpanel" />;

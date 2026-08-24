@@ -47,7 +47,7 @@ const HospitalCard = ({
               <Ixon width=".75rem">
                 <StarIcon />
               </Ixon>
-              <span className={txsRegular}>{node.averageScore.toFixed(1)}</span>
+              <span className={txsRegular}>{node.averageScore?.toFixed(1)}</span>
             </div>
           </div>
         </div>

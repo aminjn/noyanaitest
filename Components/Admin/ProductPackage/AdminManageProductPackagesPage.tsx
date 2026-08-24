@@ -31,6 +31,7 @@ import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import OrderEditor from "../UI/OrderEditor";
 
 export type ProductPackagePopulation = Population<{
   Owner: PharmacyPopulation;
@@ -100,7 +101,19 @@ const AdminManageProductPackagesPage = () => {
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
-        order: { name: "رتبه", value: (node) => node.order, filter: "Number" },
+        order: {
+          name: "رتبه",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              value={node.order}
+              mutate={mutate}
+              modelName="productPackage"
+            />
+          ),
+        },
         owner: {
           name: "صاحب",
           value: (node) => node.owner.name,

@@ -18,11 +18,12 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteInsurancePopup from "./DeleteInsurancePopup";
+import OrderEditor from "../UI/OrderEditor";
 
 const AdminManageInsurancesPage = () => {
   const { data, error, mutate } = useSWR<IInsurance[]>(
     `${API}/auto/insurance`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -38,7 +39,7 @@ const AdminManageInsurancesPage = () => {
               action: () =>
                 setPopup(
                   "CreateInsurance",
-                  <CreateInsurancePopup mutate={mutate} />
+                  <CreateInsurancePopup mutate={mutate} />,
                 ),
             },
           ]}
@@ -61,6 +62,14 @@ const AdminManageInsurancesPage = () => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    modelName="insurance"
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                  />
+                ),
               },
               active: {
                 name: "فعال",
@@ -80,7 +89,7 @@ const AdminManageInsurancesPage = () => {
                       onClick={() =>
                         setPopup(
                           "DeleteInsurance",
-                          <DeleteInsurancePopup node={node} mutate={mutate} />
+                          <DeleteInsurancePopup node={node} mutate={mutate} />,
                         )
                       }
                     >

@@ -1,7 +1,16 @@
 .hero {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding-block: 3rem;
+  margin-bottom: 2rem;
   position: relative;
-  height: 44rem;
-  margin-bottom: 11rem;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.375rem;
 }
 
 .heroBg {
@@ -9,205 +18,261 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100dvw;
   height: 100%;
+  width: 100dvw;
+  border-radius: 1.25rem;
+  z-index: -1;
+}
+
+/* ---- image card ---- */
+
+.imageCard {
+  position: relative;
+  flex: 1 1 46%;
+  max-width: 34rem;
+  aspect-ratio: 542 / 348;
+}
+
+.imageTilt {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.25rem;
+  background: linear-gradient(to bottom, var(--secondary2), var(--secondary3));
+  transform: rotate(2deg);
+  z-index: -1;
+}
+
+.imageFrame {
+  position: relative;
+  height: 100%;
+  padding: 1.25rem;
+  border-radius: 0.8rem;
+  border: 0.8px solid var(--gray3);
+  background-color: var(--white);
+  box-shadow: var(--shadowMd);
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  background-color: var(--gray4);
+}
+
+.floatBadge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--white);
+  box-shadow: var(--shadowMd);
+}
+
+.floatBadgeBottom {
+  inset-inline-end: 1rem;
+  bottom: 1.25rem;
+}
+
+.floatBadgeTop {
+  inset-inline-start: 1rem;
+  top: -1.25rem;
+}
+
+.floatIcon {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: -2;
-  pointer-events: none;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.5rem;
+  border-radius: 50%;
 }
 
-.heroBg::after {
-  content: "";
-  z-index: 0;
-  pointer-events: none;
-  display: block;
-  width: 100dvw;
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  height: 15rem;
-  background: linear-gradient(to bottom, transparent, var(--backCol));
+.floatIconInfo {
+  background-color: var(--gray3);
+  color: var(--gray9);
 }
+
+.floatIconSecondary {
+  background-color: var(--secondary1);
+}
+
+.floatText {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.floatLabel {
+  color: var(--gray8);
+}
+
+.floatValue {
+  color: var(--black);
+}
+
+/* ---- content ---- */
 
 .content {
-  margin-top: 10.5rem;
+  flex: 1 1 50%;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2.5rem;
 }
 
-.intro {
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  height: 1.5rem;
+  padding-inline: 0.5rem;
+  border-radius: 1rem;
+  background-color: var(--secondary1);
+  color: var(--secondary7);
+}
+
+.textBox {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: flex-end;
   gap: 0.875rem;
+  width: 100%;
 }
 
 .title {
   color: var(--gray12);
-  text-align: center;
+  text-align: right;
+}
+
+.highlightPrimary {
+  color: var(--primary);
+}
+
+.highlightSecondary {
+  color: var(--secondary);
 }
 
 .legend {
+  color: var(--gray8);
+  text-align: right;
+  width: 100%;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 4px solid var(--white);
+  border-radius: 2rem;
+  background-color: var(--gray2);
+}
+
+.searchLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.searchRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.searchIconButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 1.5rem;
+  background-color: var(--white);
+  color: var(--gray11);
+}
+
+.searchIconButtonDark {
+  background-color: var(--gray11);
+  color: var(--white);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background-color: transparent;
+  outline: none;
   color: var(--gray10);
-  text-align: center;
+  text-align: right;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
-  margin-top: 3.5rem;
-  margin-inline: auto;
+  gap: 1rem;
 }
 
 .action {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
-  color: var(--primary);
-  background-color: var(--white);
-  border-radius: 0.5rem;
-  padding-inline: 1.5rem;
-  padding-block: 1rem;
-}
-
-.primaryAction {
-  color: var(--white);
-  background-color: VAR(--primary);
-}
-
-.convoBox {
-  margin-top: 6.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-  padding-inline: 9rem;
-}
-
-.convoLegend {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-inline: auto;
-}
-
-.aiImage {
-  position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.aiLegend {
-  color: var(--gray13);
-}
-
-.aiBox {
-  position: relative;
-  width: 100%;
-  height: 4rem;
-  border: 4px solid var(--gray1);
+  height: 2rem;
+  padding-inline: 0.75rem;
   border-radius: 2rem;
-  background-color: transparent;
-  overflow: hidden;
-}
-
-.aiBox::before {
-  pointer-events: none;
-  content: "";
-  position: absolute;
-  display: block;
-  inset: 0;
   background-color: var(--white);
-  opacity: 0.3;
 }
 
-.aiInput {
-  position: absolute;
-  inset: 0;
-  border: none;
-  background-color: transparent;
-  outline: none;
-  padding-inline-start: 3.125rem;
-}
-
-.plusIcon {
-  position: absolute;
-  top: 50%;
-  inset-inline-start: 0.625rem;
-  transform: translateY(-50%);
-  padding: 0.5rem;
+.actionOutline {
   color: var(--primary);
 }
 
-.aiSend {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+.actionPrimary {
   background-color: var(--primary);
   color: var(--white);
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  inset-inline-end: 0.625rem;
-  width: 2.5rem;
-  height: 2.5rem;
 }
 
-.examplesBox {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.125rem;
-  align-items: flex-start;
-  padding-inline: 9rem;
+/* ---- quick links ---- */
+
+.quickLinks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  width: 100%;
 }
 
-.examplesLegend {
-  color: var(--black);
-}
-
-.exampleList {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.375rem;
-}
-
-.example {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-block: 0.625rem;
-  padding-inline: 0.875rem;
-  border-radius: 0.5rem;
-  background-color: var(--gray4);
-  width: 12rem;
-  height: 9.25rem;
-  box-shadow: var(--shadowMd);
-}
-
-.examplePrompt {
-  color: var(--gray12);
-  display: flex;
-  line-clamp: 5;
-  -webkit-line-clamp: 5;
-  overflow: hidden;
-  text-align: justify;
-}
-
-.exampleFooter {
+.quickLink {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
+  height: 5rem;
+  padding: 1.0625rem;
+  border-radius: 1rem;
+  border: 1px solid var(--gray3);
+  background-color: var(--white);
+  box-shadow: var(--shadowBase);
 }
 
-.exampleCategory {
-  padding-inline: 0.625rem;
-  padding-block: 0.25rem;
-  border-radius: 0.5rem;
+.quickLinkLabel {
+  color: var(--black);
+}
+
+.quickLinkIcon {
+  flex-shrink: 0;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background-color: var(--secondary1);
+  color: var(--secondary);
 }

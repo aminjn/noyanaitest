@@ -1,23 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import classes from "./HomeSpecialities.module.css";
 import useLocale from "../Hooks/useLocale";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
-import EyeIcon from "../Icons/EyeIcon";
 import HostedImage from "../UI/HostedImage";
-import DoubleChevronIcon from "../Icons/DoubleChevronIcon";
 import useComplexLocale from "../Hooks/useComplexLocale";
 import {
   t2xlBold,
   tlgBold,
   tsmDemiBold,
   tsmMedium,
-  tsmRegular,
-  txsMedium,
 } from "../UI/Typography";
-import { Swiper, SwiperClass, SwiperSlide, useSwiper } from "swiper/react";
+import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { API } from "../config";
@@ -32,7 +28,6 @@ const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
   >(`${API}/public/specialityDoctors/${node._id}`, (url: string) =>
     fetcher({ url }).then((res) => res.data.doctors),
   );
-
 
   const getCompContent = useComplexLocale();
 
@@ -87,48 +82,29 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
           </Ixon>
         </Link>
       </div>
-      <SwiperSlider swiperClass={classes.specialitiesList}>
+      <ul className={classes.grid}>
         {nodes.map((node) => (
-          <SwiperSlide key={node._id} tag="li" className={classes.slide}>
+          <li key={node._id}>
             <div
               className={`${classes.speciality} ${activeNode?._id === node._id ? classes.activeSpeciality : ""}`}
               onClick={() => setActiveNode(node)}
             >
-              <span className={classes.viewBadge}>
-                <Ixon width=".75rem">
-                  <EyeIcon />
-                </Ixon>
-                {
-                  //TODO:calculate this
-                }
-                <span className={tsmRegular}>1200</span>
-              </span>
               <div className={classes.image}>
                 <HostedImage
                   src={node.image}
                   alt={node.name || ""}
                   fill
                   style={{ objectFit: "contain" }}
-                  sizes="5rem"
+                  sizes="3.5rem"
                 />
               </div>
-              <div className={classes.specialityDetails}>
-                <span className={`${classes.greatest} ${txsMedium}`}>
-                  {getContent("greatest")}
-                </span>
-                <span className={`${classes.specialityName} ${tsmDemiBold}`}>
-                  {node.name}
-                </span>
-              </div>
-              <div className={classes.indicator}>
-                <Ixon width="1.25rem">
-                  <DoubleChevronIcon />
-                </Ixon>
-              </div>
+              <span className={`${classes.specialityName} ${tsmDemiBold}`}>
+                {node.name}
+              </span>
             </div>
-          </SwiperSlide>
+          </li>
         ))}
-      </SwiperSlider>
+      </ul>
       {!!activeNode && <SpecialityDoctors node={activeNode} />}
     </div>
   );

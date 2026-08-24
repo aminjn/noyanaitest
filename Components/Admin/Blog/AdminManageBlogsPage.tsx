@@ -21,6 +21,7 @@ import FormatDate from "@/Components/UI/FormatDate";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DeleteBlogPopup from "./DeleteBlogPopup";
+import OrderEditor from "../UI/OrderEditor";
 
 export interface IBlogCategory extends MongoDoc {
   title?: string;
@@ -33,8 +34,9 @@ type BlogPopulation = {
   RelatedPopulated?: boolean;
 };
 
-export interface IBlog<T extends BlogPopulation = BlogPopulation>
-  extends MongoDoc {
+export interface IBlog<
+  T extends BlogPopulation = BlogPopulation,
+> extends MongoDoc {
   image?: string;
   title?: string;
   summary?: string;
@@ -68,7 +70,7 @@ const AdminManageBlogsPage = () => {
   const { data, error, mutate } = useSWR<
     IBlog<{ RelatedPopulated: true; CategoryPopulated: true }>[]
   >(`${API}/auto/blog`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data)
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const hasAccess = useAccessLevel();
@@ -88,7 +90,7 @@ const AdminManageBlogsPage = () => {
                     action: () =>
                       setPopup(
                         "CreateBlog",
-                        <CreateBlogPopup mutate={mutate} />
+                        <CreateBlogPopup mutate={mutate} />,
                       ),
                   },
                 ]
@@ -122,6 +124,14 @@ const AdminManageBlogsPage = () => {
                 name: "رتبه",
                 filter: "Number",
                 value: (node) => node.order,
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    modelName="blog"
+                    mutate={mutate}
+                    value={node.order}
+                  />
+                ),
               },
               slug: {
                 name: "اسلاگ",
@@ -212,7 +222,7 @@ const AdminManageBlogsPage = () => {
                         onClick={() =>
                           setPopup(
                             "DeleteBlog",
-                            <DeleteBlogPopup node={node} mutate={mutate} />
+                            <DeleteBlogPopup node={node} mutate={mutate} />,
                           )
                         }
                       >

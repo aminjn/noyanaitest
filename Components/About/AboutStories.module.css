@@ -47,6 +47,7 @@
 
 .storyDescription {
   color: var(--gray8);
+  text-align: center;
 }
 
 .description {

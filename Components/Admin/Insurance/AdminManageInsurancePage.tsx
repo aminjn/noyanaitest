@@ -33,6 +33,7 @@ import PointPicker from "../UI/PointPicker";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import OrderEditor from "../UI/OrderEditor";
 
 export type InsurancePlanPopulation = Population<{
   Insurance: InsurancePopulation;
@@ -128,6 +129,14 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
                 name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    modelName="insuracePlan"
+                    _id={node._id}
+                    mutate={mutate}
+                  />
+                ),
               },
               price: {
                 name: "قیمت",

@@ -31,7 +31,7 @@ const linkMap: {
     title: "contactUs",
     items: [
       { title: "support", target: "/support" },
-      { title: "aboutUs", target: "/anout" },
+      { title: "aboutUs", target: "/about" },
       { title: "contactUs", target: "/contact" },
     ],
   },
