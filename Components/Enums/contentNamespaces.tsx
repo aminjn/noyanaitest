@@ -1572,6 +1572,7 @@ export const contentNamespaces = {
   ],
   products: [],
   services: [],
+  mag: [],
 } as const satisfies Record<string, readonly ContentKey[]>;
 
 export type ContentNamespace = keyof typeof contentNamespaces;

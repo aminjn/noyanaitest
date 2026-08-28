@@ -39,8 +39,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  height: 7.125rem;
-  padding: 1.0625rem;
+  /* height: 7.125rem; */
+  padding-block: 1rem;
   border-radius: 1rem;
   background-color: var(--primary1);
   border: 1px solid var(--gray4);

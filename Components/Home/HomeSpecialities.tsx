@@ -7,12 +7,7 @@ import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import HostedImage from "../UI/HostedImage";
 import useComplexLocale from "../Hooks/useComplexLocale";
-import {
-  t2xlBold,
-  tlgBold,
-  tsmDemiBold,
-  tsmMedium,
-} from "../UI/Typography";
+import { t2xlBold, tlgBold, tsmDemiBold, tsmMedium } from "../UI/Typography";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
@@ -21,6 +16,8 @@ import { fetcher } from "../helpers/fetcher";
 import CrownIcon from "../Icons/CrownIcon";
 import SwiperSlider from "../UI/SwiperSlider";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
+import Button from "../UI/Button";
+import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 
 const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
   const { data } = useSWR<
@@ -44,12 +41,16 @@ const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
             {getCompContent("xSpecialityGreatestDoctors", [node.name || ""])}
           </h4>
         </div>
-        <Link
-          className={`${classes.allDoctors} ${tsmMedium}`}
+        <Button
+          tailIcon={<ArrowLeftIcon />}
           href={`/speciality/${node.slug || node._id}`}
+          size="S"
+          mode="Inline"
+          variant="Primary"
+          style={{ backgroundColor: "transparent" }}
         >
           {getContent("goToPage")}
-        </Link>
+        </Button>
       </div>
       {!!data?.length && (
         <SwiperSlider>
@@ -75,12 +76,20 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
         <h2 className={`${classes.title} ${t2xlBold}`}>
           {getContent("mostViewedSpecialities")}
         </h2>
-        <Link href={"/speciality"} className={classes.all}>
-          <span className={classes.allText}>{getContent("seeAll")}</span>
-          <Ixon style={{ transform: "rotateZ(90deg)" }} width="1.5rem">
-            <ChevronIcon />
-          </Ixon>
-        </Link>
+        <Button
+          href={"/speciality"}
+          tailIcon={
+            <span style={{ transform: "rotateZ(90deg)" }}>
+              <ChevronIcon />
+            </span>
+          }
+          variant="Primary"
+          mode="Inline"
+          size="S"
+          style={{ backgroundColor: "transparent" }}
+        >
+          {getContent("seeAll")}
+        </Button>
       </div>
       <ul className={classes.grid}>
         {nodes.map((node) => (

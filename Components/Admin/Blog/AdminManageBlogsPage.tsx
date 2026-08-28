@@ -22,17 +22,27 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DeleteBlogPopup from "./DeleteBlogPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { Population } from "../Clinic/AdminManageClinicsPage";
+import {
+  BlogTagPopulation,
+  IBlogTag,
+} from "../BlogTag/AdminManageBlogTgasPage";
 
-export interface IBlogCategory extends MongoDoc {
+export type BlogCategoryPopulation = Population<Record<never, never>>;
+
+export interface IBlogCategory<
+  T extends BlogCategoryPopulation = BlogCategoryPopulation,
+> extends MongoDoc {
   title?: string;
   slug?: string;
   order: number;
 }
 
-type BlogPopulation = {
-  CategoryPopulated?: boolean;
-  RelatedPopulated?: boolean;
-};
+type BlogPopulation = Population<{
+  CategoryPopulated?: BlogCategoryPopulation;
+  RelatedPopulated?: BlogPopulation;
+  Tags: BlogTagPopulation;
+}>;
 
 export interface IBlog<
   T extends BlogPopulation = BlogPopulation,
@@ -51,11 +61,16 @@ export interface IBlog<
   // reviews and publishes them here.
   authorType?: "doctor" | "clinic" | "pharmacy" | "insurance" | "paraClinic";
   readTime?: string;
-  related: T["RelatedPopulated"] extends true ? IBlog[] : string[];
+  related: T["RelatedPopulated"] extends BlogPopulation ? IBlog[] : string[];
   thisWeekSpecial: boolean;
   home: boolean;
   published: boolean;
-  category?: T["CategoryPopulated"] extends true ? IBlogCategory : string;
+  category?: T["CategoryPopulated"] extends BlogCategoryPopulation
+    ? IBlogCategory<T["CategoryPopulated"]>
+    : string;
+  recommended: boolean;
+  chosen: boolean;
+  tags: T["Tags"] extends BlogTagPopulation ? IBlogTag<T["Tags"]>[] : string[];
 }
 
 const authorTypeLabels: Record<string, string> = {
@@ -68,7 +83,10 @@ const authorTypeLabels: Record<string, string> = {
 
 const AdminManageBlogsPage = () => {
   const { data, error, mutate } = useSWR<
-    IBlog<{ RelatedPopulated: true; CategoryPopulated: true }>[]
+    IBlog<{
+      RelatedPopulated: Record<never, never>;
+      CategoryPopulated: Record<never, never>;
+    }>[]
   >(`${API}/auto/blog`, (url: string) =>
     fetcher({ url }).then((res) => res.data.data),
   );

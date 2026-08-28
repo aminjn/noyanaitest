@@ -3,14 +3,28 @@ import useLocale from "../Hooks/useLocale";
 import classes from "./HomeRegister.module.css";
 import Ixon from "../UI/Ixon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import { t3xlDemiBold, tmdMedium, tsmMedium } from "../UI/Typography";
+import {
+  t3xlDemiBold,
+  tmdMedium,
+  tsmMedium,
+  tsmRegular,
+  txlBold,
+} from "../UI/Typography";
 import { ContentKey } from "../Enums/contentKeys";
+import Button from "../UI/Button";
 
-const stats: ContentKey[] = [
-  "statPharmacyCount",
-  "statDoctorCount",
-  "statLabCount",
-  "statPatientCount",
+// const stats: ContentKey[] = [
+//   "statPharmacyCount",
+//   "statDoctorCount",
+//   "statLabCount",
+//   "statPatientCount",
+// ];
+
+const stats: { title: ContentKey; value: ContentKey }[] = [
+  { title: "doctors", value: "doctorCountValue" },
+  { title: "pharmacies", value: "pharmacyCountValue" },
+  { title: "labs", value: "labsCountValue" },
+  { title: "patients", value: "patientsCountValue" },
 ];
 
 // Redesigned "join Noyan" CTA (Figma, Aug 2026): a gradient stats banner
@@ -21,13 +35,6 @@ const HomeRegister = () => {
 
   return (
     <div className={classes.main}>
-      <div className={classes.stats}>
-        {stats.map((key) => (
-          <div key={key} className={`${classes.stat} ${tsmMedium}`}>
-            {getContent(key)}
-          </div>
-        ))}
-      </div>
       <div className={classes.content}>
         <h3 className={`${classes.title} ${t3xlDemiBold}`}>
           {getContent("homeJoinNoyanTitle")}
@@ -36,19 +43,38 @@ const HomeRegister = () => {
           {getContent("homeJoinNoyanDescription")}
         </p>
         <div className={classes.actions}>
-          <Link href={"/become"} className={`${classes.action} ${tmdMedium}`}>
-            {getContent("registerDoctors")}
-          </Link>
-          <Link
+          <Button
             href={"/become"}
-            className={`${classes.action} ${classes.actionOutline} ${tmdMedium}`}
+            variant="Primary"
+            mode="Outline"
+            radius="High"
+            size="M"
+          >
+            {getContent("registerDoctors")}
+          </Button>
+          <Button
+            href={"/become"}
+            variant="Primary"
+            mode="Outline"
+            size="M"
+            radius="High"
+            className={classes.secondary}
           >
             {getContent("registerPharmacyAndLab")}
-            <Ixon width="1.5rem">
-              <ArrowLeftIcon />
-            </Ixon>
-          </Link>
+          </Button>
         </div>
+      </div>
+      <div className={classes.stats}>
+        {stats.map(({ title, value }) => (
+          <div key={title} className={`${classes.stat} ${tsmMedium}`}>
+            <span className={`${classes.statValue} ${txlBold}`}>
+              {getContent(value)}
+            </span>
+            <span className={`${classes.statTitle} ${tsmRegular}`}>
+              {getContent(title)}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );

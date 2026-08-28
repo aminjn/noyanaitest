@@ -40,6 +40,7 @@ const Input = forwardRef<
     inputClass?: string;
     required?: boolean;
     price?: boolean;
+    placeholder?: string | boolean;
   }>
 >(
   (
@@ -62,6 +63,7 @@ const Input = forwardRef<
       inputClass = "",
       required,
       price,
+      placeholder,
     },
     ref,
   ) => {
@@ -77,7 +79,7 @@ const Input = forwardRef<
         <input
           pattern={pattern}
           className={`${classes.input} ${inputClass}`}
-          placeholder=""
+          placeholder={typeof placeholder === "string" ? placeholder : ""}
           type={type}
           disabled={readOnly}
           onChange={(e) => {

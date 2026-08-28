@@ -145,6 +145,8 @@ const linkMap: LinkMap = [
       { title: "درباره چرا", target: "aboutWhy" },
       { title: "تستیفای", target: "testify" },
       { title: "متادیتای صفحات", target: "pageMeta" },
+      { title: "تگ وبلاگ", target: "blogTag" },
+      { title: "خبرنامه", target: "blogRrs" },
     ],
   },
   {

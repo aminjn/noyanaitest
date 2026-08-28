@@ -8,6 +8,7 @@ import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 import { t2xlBold, tlgMedium } from "../UI/Typography";
+import Button from "../UI/Button";
 
 const HomePopular = ({
   nodes,
@@ -23,14 +24,20 @@ const HomePopular = ({
         <h2 className={`${classes.title} ${t2xlBold}`}>
           {getContent("popularDoctors")}
         </h2>
-        <Link href={"/doctors"} className={classes.all}>
-          <span className={`${classes.allText} ${tlgMedium}`}>
-            {getContent("seeAll")}
-          </span>
-          <Ixon width="1.5rem" style={{ transform: "rotateZ(90deg)" }}>
-            <ChevronIcon />
-          </Ixon>
-        </Link>
+        <Button
+          href={"/doctors"}
+          variant="Primary"
+          mode="Inline"
+          style={{ backgroundColor: "transparent" }}
+          tailIcon={
+            <span style={{ transform: "rotateZ(90deg)" }}>
+              <ChevronIcon />
+            </span>
+          }
+          size="S"
+        >
+          {getContent("seeAll")}
+        </Button>
       </div>
       <SwiperSlider>
         {nodes.map((node) => (

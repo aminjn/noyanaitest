@@ -1,0 +1,72 @@
+.main {
+  background: linear-gradient(135deg, #1a80e5 0%, #166cc2 55%, #125aa0 100%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem;
+  border-radius: 1rem;
+}
+
+.badge {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.h1 {
+  color: var(--white);
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.legend {
+  color: var(--white);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.searchBox {
+  position: relative;
+  width: 100%;
+  max-width: 58rem;
+  height: 3.5rem;
+  border-radius: 5rem;
+  margin-top: 1.25rem;
+  margin-inline: auto;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--gray3);
+  padding-inline-start: 3rem;
+  outline: none;
+  border: none;
+}
+
+.rec {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline: auto;
+  margin-top: 2rem;
+}
+
+.recTitle {
+  color: var(--white);
+  opacity: 0.6;
+}
+
+.recList {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recItem.recItem {
+  background-color: transparent;
+  border: 1px solid var(--white);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+}

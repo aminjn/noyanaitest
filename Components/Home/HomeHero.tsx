@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import classes from "./HomeHero.module.css";
-import HomeAiImg from "./HomeAi.png";
+import HomeAiImg from "./HomeAi.jpg";
 import Image from "next/image";
 import Ixon from "../UI/Ixon";
 import PlusIcon from "../Icons/PlusIcon";
@@ -24,6 +24,10 @@ import {
   txsMedium,
 } from "../UI/Typography";
 import HomeHeroBg from "./HomeHeroBg";
+import Badge from "../UI/Badge";
+import StarsLineIcon from "../Icons/StarsLineIcon";
+import Button from "../UI/Button";
+import BrainIcon from "../Icons/BrainIcon";
 
 // Redesigned hero (Figma "Home Page" frame, Aug 2026): a framed AI-branded
 // image with two floating stat badges on the right, and on the left a
@@ -48,7 +52,7 @@ const HomeHero = () => {
     icon: ReactNode;
   }[] = [
     { key: "doctors", href: "/doctors", icon: <StetoscopeIcon /> },
-    { key: "aiDetection", href: "/wizard", icon: <AiIcon /> },
+    { key: "aiDetection", href: "/wizard", icon: <BrainIcon /> },
     { key: "homeHeroQuickLinkPharmacy", href: "/product", icon: <PillIcon /> },
     { key: "homeHeroQuickLinkLab", href: "/paraClinic", icon: <FlaskIcon /> },
   ];
@@ -60,20 +64,17 @@ const HomeHero = () => {
       </div>
       <div className={classes.top}>
         <div className={classes.content}>
-          <span className={`${classes.badge} ${t2xsRegular}`}>
-            <Ixon width=".75rem">
-              <AiIcon />
-            </Ixon>
+          <Badge leadIcon={<StarsLineIcon />} color="SecondaryLight">
             {getContent("homeHeroBadge")}
-          </span>
+          </Badge>
           <div className={classes.textBox}>
             <h1 className={`${classes.title} ${t3xlBold}`}>
               <span className={classes.highlightPrimary}>
                 {getContent("homeHeroTitleHighlight1")}
-              </span>
+              </span>{" "}
               <span className={classes.highlightSecondary}>
                 {getContent("homeHeroTitleHighlight2")}
-              </span>
+              </span>{" "}
               {getContent("homeHeroTitle")}
             </h1>
             <p className={`${classes.legend} ${tmdMedium}`}>
@@ -109,50 +110,43 @@ const HomeHero = () => {
             </div>
           </div>
           <div className={classes.actions}>
-            <Link
-              className={`${classes.action} ${classes.actionPrimary} ${txsMedium}`}
-              href={"/ai"}
+            <Button
+              href="/wizard"
+              variant="Primary"
+              mode="Fill"
+              radius="High"
+              size="S"
+              tailIcon={<ArrowLeftIcon />}
             >
-              <span>{getContent("chatWithAi")}</span>
-              <Ixon width="1.25rem">
-                <ArrowLeftIcon />
-              </Ixon>
-            </Link>
-            <Link
-              className={`${classes.action} ${classes.actionOutline} ${txsMedium}`}
-              href={"/book"}
+              {getContent("chatWithAi")}
+            </Button>
+            <Button
+              href="/book"
+              variant="Primary"
+              mode="Inline"
+              radius="High"
+              size="S"
+              tailIcon={<ArrowLeftIcon />}
             >
-              <span>{getContent("reserveABooking")}</span>
-              <Ixon width="1.25rem">
-                <ArrowLeftIcon />
-              </Ixon>
-            </Link>
+              {getContent("reserveABooking")}
+            </Button>
           </div>
         </div>
         <div className={classes.imageCard}>
           <div className={classes.imageTilt} />
           <div className={classes.imageFrame}>
-            {/* Figma has a brain-scan photo here; this sandbox can't reach
-                Figma's asset CDN to pull the real export (see PR notes), so
-                this reuses the existing AI mascot image as a stand-in —
-                swap in the real photo export when available. */}
             <div className={classes.image}>
               <Image
                 src={HomeAiImg}
                 alt="Noyan AI"
                 fill
                 sizes="32rem"
-                style={{ objectFit: "contain" }}
+                style={{ objectFit: "cover" }}
               />
             </div>
             <div
               className={`${classes.floatBadge} ${classes.floatBadgeBottom}`}
             >
-              <span className={`${classes.floatIcon} ${classes.floatIconInfo}`}>
-                <Ixon width="1rem">
-                  <VideoIcon />
-                </Ixon>
-              </span>
               <div className={classes.floatText}>
                 <span className={`${classes.floatLabel} ${t2xsRegular}`}>
                   {getContent("homeHeroLiveVisitLabel")}
@@ -161,15 +155,13 @@ const HomeHero = () => {
                   {getContent("homeHeroLiveVisitValue")}
                 </span>
               </div>
-            </div>
-            <div className={`${classes.floatBadge} ${classes.floatBadgeTop}`}>
-              <span
-                className={`${classes.floatIcon} ${classes.floatIconSecondary}`}
-              >
+              <span className={`${classes.floatIcon} ${classes.floatIconInfo}`}>
                 <Ixon width="1rem">
-                  <AiIcon />
+                  <VideoIcon />
                 </Ixon>
               </span>
+            </div>
+            <div className={`${classes.floatBadge} ${classes.floatBadgeTop}`}>
               <div className={classes.floatText}>
                 <span className={`${classes.floatLabel} ${t2xsRegular}`}>
                   {getContent("aiDetection")}
@@ -178,6 +170,13 @@ const HomeHero = () => {
                   {getContent("homeHeroAiAccuracyValue")}
                 </span>
               </div>
+              <span
+                className={`${classes.floatIcon} ${classes.floatIconSecondary}`}
+              >
+                <Ixon width="1rem">
+                  <BrainIcon />
+                </Ixon>
+              </span>
             </div>
           </div>
         </div>
@@ -186,11 +185,11 @@ const HomeHero = () => {
         {quickLinks.map((link) => (
           <li key={link.key}>
             <Link href={link.href} className={classes.quickLink}>
-              <span className={`${classes.quickLinkLabel} ${tmdDemiBold}`}>
-                {getContent(link.key)}
-              </span>
               <span className={classes.quickLinkIcon}>
                 <Ixon width="1.5rem">{link.icon}</Ixon>
+              </span>
+              <span className={`${classes.quickLinkLabel} ${tmdDemiBold}`}>
+                {getContent(link.key)}
               </span>
             </Link>
           </li>

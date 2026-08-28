@@ -17,6 +17,9 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { IProduct } from "../Admin/Product/AdminManageProductsPage";
 import { IProductPackage } from "../Admin/ProductPackage/AdminManageProductPackagesPage";
+import Image from "next/image";
+import Button from "../UI/Button";
+import productsImage from "./products.png";
 
 type ProductNode =
   | (IProduct<{
@@ -47,37 +50,46 @@ const HomePharmacyProducts = () => {
   return (
     <div className={classes.main}>
       <div className={classes.header}>
-        <Link href={"/product"} className={classes.chevron}>
-          <Ixon width="1.5rem">
-            <DoubleChevronIcon />
-          </Ixon>
-        </Link>
         <div className={classes.titleBox}>
-          <h2 className={tlgBold}>{getContent("homePharmacyProductsTitle")}</h2>
           <Ixon width="1.5rem">
             <CrownIcon />
           </Ixon>
+          <h2 className={tlgBold}>{getContent("homePharmacyProductsTitle")}</h2>
         </div>
+        <Link href={"/product"} className={classes.chevron}>
+          <Ixon width="1.5rem" style={{ transform: "rotateZ(180deg)" }}>
+            <DoubleChevronIcon />
+          </Ixon>
+        </Link>
       </div>
       <div className={classes.content}>
         <div className={classes.intro}>
-          <span className={classes.iconBox}>
-            <Ixon width="3rem">
-              <PillIcon />
-            </Ixon>
-          </span>
-          <h3 className={`${classes.secondaryTitle} ${t4xlBold}`}>
+          <div className={classes.image}>
+            <Image
+              src={productsImage}
+              alt={"Noyan Products"}
+              fill
+              style={{ objectFit: "contain" }}
+              sizes="12rem"
+            />
+          </div>
+          <h3 className={`${classes.secondareyTitle} ${t4xlBold}`}>
             {getContent("noyanProductsTitle")}
           </h3>
           <p className={`${classes.description} ${tmdMedium}`}>
             {getContent("noyanProductsDescription")}
           </p>
-          <Link href={"/product"} className={`${classes.action} ${tmdMedium}`}>
-            <span>{getContent("seeProducts")}</span>
-            <Ixon width="1.5rem">
-              <ArrowLeftIcon />
-            </Ixon>
-          </Link>
+          <Button
+            href={"/product"}
+            tailIcon={<ArrowLeftIcon />}
+            className={classes.action}
+            variant="Secondary"
+            mode="Outline"
+            size="L"
+            radius="Medium"
+          >
+            {getContent("seeProducts")}
+          </Button>
         </div>
         <div className={classes.list}>
           <SwiperSlider>

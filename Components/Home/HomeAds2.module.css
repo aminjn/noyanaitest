@@ -1,0 +1,45 @@
+.main {
+  display: flex;
+  gap: 1.5rem;
+  padding-block: 3rem;
+}
+
+.main > * {
+  flex: 1;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.item {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  align-items: center;
+  background-color: var(--primary1);
+  border-radius: 1rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  color: var(--primary8);
+}
+
+.description {
+  color: var(--gray10);
+}
+
+.image {
+  height: 100%;
+  width: 35%;
+  position: relative;
+  flex-shrink: 0;
+}

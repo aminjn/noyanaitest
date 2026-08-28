@@ -8,10 +8,13 @@ import RenderLeaf from "./RTFEditor/RenderLeaf";
 const RenderRtf = ({ value }: { value?: string }) => {
   const [editor] = useState<Editor>(withReact(createEditor()));
 
-  const content = useMemo<Descendant[]>(
-    () => JSON.parse(value || "[]"),
-    [value]
-  );
+  const content = useMemo<Descendant[]>(() => {
+    try {
+      return JSON.parse(value || "[]");
+    } catch {
+      return [];
+    }
+  }, [value]);
 
   return (
     <Slate editor={editor} initialValue={content}>

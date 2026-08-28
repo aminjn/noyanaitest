@@ -15,10 +15,49 @@ import Button from "../UI/Button";
 import ShareIcon from "../Icons/ShareIcon";
 import CopyIcon from "../Icons/CopyIcon";
 import { useClipboard } from "../Hooks/useClipboard";
+import Badge from "../UI/Badge";
+import Ixon from "../UI/Ixon";
+import UserIcon from "../Icons/UserIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import ClockIcon from "../Icons/ClockIcon";
+import CalendarIcon from "../Icons/CalendarIcon";
+import { getRelativeTime } from "../helpers/lib";
+import HostedImage from "../UI/HostedImage";
+import CommentSection from "../Comment/CommentSection";
+import {
+  t2xsMedium,
+  tsmDemiBold,
+  tsmMedium,
+  txsRegular,
+} from "../UI/Typography";
+import { WithStyleProps } from "../Layout/Layout";
 
 export type BlogPageProps = {
-  blog?: IBlog<{ RelatedPopulated: true }>;
+  blog?: IBlog<{
+    RelatedPopulated: Record<never, never>;
+    CategoryPopulated: Record<never, never>;
+    Tags: Record<never, never>;
+  }>;
   thisWeek?: IBlog[];
+};
+const Side = ({ className = "", style }: WithStyleProps) => {
+  const getContent = useScopedLocale(["common"]);
+
+  return (
+    <div className={`${classes.side} ${className}`} style={style}>
+      <div className={classes.bookBox}>
+        <h4 className={`${classes.bookTitle} ${tsmMedium}`}>
+          {getContent("onlineConsult")}
+        </h4>
+        <legend className={`${classes.bookLegend} ${txsRegular}`}>
+          {getContent("blogBookLegend")}
+        </legend>
+        <Button href="/book" variant="Error" size="M" radius="High" mode="Fill">
+          {getContent("bookReservation")}
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 const BlogPage = (props: BlogPageProps) => {
@@ -34,6 +73,10 @@ const BlogPage = (props: BlogPageProps) => {
     () => clientData || props,
     [clientData, props],
   );
+
+  console.log(blog);
+
+  const getContent = useScopedLocale(["common"]);
 
   const copyTextToClipboard = useClipboard();
 
@@ -51,67 +94,91 @@ const BlogPage = (props: BlogPageProps) => {
         ]}
         className={classes.crump}
       />
-      <h1 className={classes.title}>{blog.title}</h1>
-      <div className={classes.main}>
-        <article className={classes.content}>
-          <div className={classes.rtf}>
-            <RenderRtf value={blog.content} />
-          </div>
-          <div className={classes.footer}>
-            <div className={classes.meta}>
-              {!!blog.author && <span>{blog.author}</span>}
-              {!!blog.publishedAt && (
-                <span>
-                  {new Date(blog.publishedAt).toLocaleDateString("fa-IR", {
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
-              )}
-              {!!blog.readTime && <span>{blog.readTime}</span>}
-            </div>
-            <div className={classes.actions}>
-              <Button
-                leadIcon={<CopyIcon />}
-                onClick={() => copyTextToClipboard(window.location.href)}
+      <div className={classes.wrap}>
+        <div className={classes.main}>
+          <div className={classes.intro}>
+            {!!blog.category && (
+              <Badge
+                color="Error"
+                mode="Fill"
+                radius="High"
+                size="XXL"
+                className={classes.category}
               >
-                کپی لینک پست
-              </Button>
-              {!!navigator.share && (
-                <Button
-                  leadIcon={<ShareIcon />}
-                  onClick={() => navigator.share({ url: window.location.href })}
-                >
-                  اشتراک گذاری
-                </Button>
-              )}
+                {blog.category.title}
+              </Badge>
+            )}
+            <h1 className={`${classes.h1} ${t2xsMedium}`}>{blog.title}</h1>
+            <div className={classes.details}>
+              <div className={`${classes.author} ${tsmDemiBold}`}>
+                <Ixon width="3rem">
+                  <UserIcon />
+                </Ixon>
+                <span>{getContent("noyan")}</span>
+              </div>
+              <div className={`${classes.more} ${txsRegular}`}>
+                {!!blog.readTime && (
+                  <div className={classes.withIcon}>
+                    <Ixon width=".875rem">
+                      <ClockIcon />
+                    </Ixon>
+                    <span>{blog.readTime}</span>
+                  </div>
+                )}
+                <div className={classes.withIcon}>
+                  <Ixon width=".875rem">
+                    <CalendarIcon />
+                  </Ixon>
+                  <span>{getRelativeTime(new Date(blog.publishedAt))}</span>
+                </div>
+              </div>
             </div>
+            <div className={classes.image}>
+              <HostedImage
+                src={blog.image}
+                alt={blog.title}
+                fill
+                sizes="51rem"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div className={classes.shareBox}>
+              <Button
+                size="S"
+                tailIcon={<ShareIcon />}
+                variant="Neutral"
+                mode="Fill"
+                radius="High"
+              >
+                {getContent("share")}
+              </Button>
+            </div>
+            <div className={classes.content}>
+              <RenderRtf value={blog.content} />
+            </div>
+            {!!blog.tags.length && (
+              <div className={classes.tags}>
+                <span className={classes.tagsList}>{getContent("tags")}</span>
+                <div className={classes.tagList}>
+                  {blog.tags.map((tag) => (
+                    <Badge
+                      key={tag._id}
+                      color="Primarylight"
+                      mode="Fill"
+                      size="XXL"
+                      radius="High"
+                    >
+                      {tag.name}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+            <Side className={classes.mobileOnly} />
+            <CommentSection model="Blog" nodeId={blog._id} />
           </div>
-        </article>
-        {(!!blog.related.length || !!thisWeek?.length) && (
-          <aside className={classes.sides}>
-            {!!blog.related.length && (
-              <div className={classes.side}>
-                <h2 className={classes.sideTitle}>مقالات مرتبط</h2>
-                <ul className={classes.sideList}>
-                  {blog.related.map((node) => (
-                    <BlogCardRelated key={node._id} node={node} />
-                  ))}
-                </ul>
-              </div>
-            )}
-            {!!thisWeek?.length && (
-              <div className={classes.side}>
-                <h2 className={classes.sideTitle}>مطالب برگزیده هفته</h2>
-                <ul className={classes.sideList}>
-                  {thisWeek.map((node) => (
-                    <BlogCardWeek key={node._id} node={node} />
-                  ))}
-                </ul>
-              </div>
-            )}
-          </aside>
-        )}
+        </div>
+        <Side className={classes.desktopOnly} />
       </div>
     </div>
   );

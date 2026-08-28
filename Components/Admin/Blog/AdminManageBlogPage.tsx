@@ -18,6 +18,7 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteBlogPopup from "./DeleteBlogPopup";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { IBlogTag } from "../BlogTag/AdminManageBlogTgasPage";
 
 const AdminManageBlogPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -61,6 +62,8 @@ const AdminManageBlogPage = () => {
                         type: "bool",
                       },
                       home: { title: "نمایش در خانه", type: "bool" },
+                      recommended: { title: "پیشنهاد شده", type: "bool" },
+                      chosen: { title: "منتخب", type: "bool" },
                       published: { title: "منتشر شده", type: "bool" },
                       category: {
                         title: "دسته بندی",
@@ -82,6 +85,16 @@ const AdminManageBlogPage = () => {
                           (node as IBlog).title || (node as IBlog)._id,
                         getOptionValue: (node) => (node as IBlog)._id,
                         getDefaultValue: (node) => node.related,
+                      },
+                      tags: {
+                        title: "تگ ها",
+                        type: "nodes",
+                        getOptionLabel: (node) =>
+                          (node as IBlogTag).name || (node as IBlogTag)._id,
+                        getOptionValue: (node) => (node as IBlogTag)._id,
+                        getDefaultValue: (inp) => inp.tags,
+                        path: `${API}/auto/blogtag`,
+                        multi: true,
                       },
                     }}
                     hookProps={{

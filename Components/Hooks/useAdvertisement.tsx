@@ -8,6 +8,7 @@ import {
   AdvertisementResourceModel,
 } from "../Admin/Advertisement/advertisementConstants";
 import { IAdvertisement } from "../Admin/Advertisement/AdminManageAdvertisementsPage";
+import { ReactNode } from "react";
 
 export type UseAdvertisementProps = {
   position: AdvertisementPosition;
@@ -15,6 +16,7 @@ export type UseAdvertisementProps = {
   // resource, falling back to the generic ad for `position` if none exists
   resourceModel?: AdvertisementResourceModel;
   resource?: string;
+  render?: (node: IAdvertisement) => ReactNode;
 };
 
 // Fetches the ad to show for a given slot. See findAdvertisementsForPosition

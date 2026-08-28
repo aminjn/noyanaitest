@@ -1,13 +1,18 @@
 "use client";
 
 import { IAdvertisement } from "../Admin/Advertisement/AdminManageAdvertisementsPage";
+import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import { IFaq } from "../Admin/Faq/AdminManageFaqsPage";
 import { IHomeIntroduction } from "../Admin/HomeIntroduction/AdminManageHomeIntroductionsPage";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
+import BigAd from "../UI/ListPage/BigAd";
+import SmallAd from "../UI/ListPage/SmallAd";
 import HomeAds from "./HomeAds";
+import HomeAds2 from "./HomeAds2";
 import HomeAdSlider from "./HomeAdSlider";
+import HomeBlogs from "./HomeBlogs";
 import HomeFaqs from "./HomeFaqs";
 import HomeHero from "./HomeHero";
 import HomeIntroduction from "./HomeIntroduction";
@@ -28,6 +33,7 @@ export type HomePageProps = Partial<{
   services: IService<{ Owner: Record<never, never> }>[];
   sliderAds: IAdvertisement[];
   faqs: IFaq[];
+  blogs: IBlog<{ CategoryPopulated: Record<never, never> }>[];
 }>;
 
 const HomePage = ({
@@ -38,18 +44,26 @@ const HomePage = ({
   services,
   sliderAds,
   faqs,
+  blogs,
 }: HomePageProps) => {
   return (
     <main className={classes.main}>
       <HomeHero />
-      <HomeIntroduction nodes={introduction} />
+      {/* <HomeIntroduction nodes={introduction} /> */}
       <HomeSpecialities nodes={specialities} />
-      <HomeAds nodes={advertisements} />
+      {/* <HomeAds nodes={advertisements} /> */}
+      <BigAd position="home1" />
       <HomePopular nodes={popularDoctors} />
+      <HomeAds2 />
       <HomeServices nodes={services} />
       <HomePharmacyProducts />
       <HomeRegister />
-      <HomeAdSlider nodes={sliderAds} />
+      <div className={classes.ads}>
+        <SmallAd position="home5" />
+        <SmallAd position="home6" />
+      </div>
+      {/* <HomeAdSlider nodes={sliderAds} /> */}
+      <HomeBlogs nodes={blogs} />
       <HomeFaqs nodes={faqs} />
     </main>
   );

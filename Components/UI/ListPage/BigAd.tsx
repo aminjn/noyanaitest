@@ -15,12 +15,13 @@ const BigAd = ({
   position,
   resourceModel,
   resource,
+  render,
 }: UseAdvertisementProps) => {
   const ad = useAdvertisement({ position, resourceModel, resource });
   const [isDismissed, setIsDismissed] = useState(false);
 
   if (!ad || isDismissed) return null;
-
+  if (!!render) return render(ad);
   return (
     <div
       className={classes.main}
