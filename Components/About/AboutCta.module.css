@@ -79,7 +79,8 @@
 .altBtn.altBtn {
   background-color: transparent;
   color: var(--white);
-  outline-color: var(--white);
+  box-shadow: none;
+  border: 1px solid var(--white);
 }
 
 .items {
@@ -99,4 +100,10 @@
   width: 23.25rem;
   height: 19.8125rem;
   transform: translateY(-2.5rem);
+}
+
+.primaryAction.primaryAction {
+  border: none;
+  outline: none;
+  box-shadow: none;
 }

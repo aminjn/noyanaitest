@@ -21,7 +21,7 @@ export const validateNumber = (
     min = 0,
     max = Number.MAX_SAFE_INTEGER,
     integer = true,
-  }: { min?: number; max?: number; integer?: boolean } = {}
+  }: { min?: number; max?: number; integer?: boolean } = {},
 ) =>
   val !== undefined &&
   !isNaN(Number(val)) &&

@@ -1,5 +1,6 @@
 "use client";
 
+import classes from "./ProductListPage.module.css";
 import { useSearchParams } from "next/navigation";
 import {
   IProduct,
@@ -20,6 +21,12 @@ import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ProductCard from "./ProductCard";
 import SwitchProductAndService from "./SwitchProductAndService";
+import HostedImage from "../UI/HostedImage";
+import Ixon from "../UI/Ixon";
+import StarIcon from "../Icons/StarIcon";
+import { currencize } from "../helpers/currencize";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { t2xsMedium, tsmBold, txsDemiBold } from "../UI/Typography";
 
 export type ProductListPageProps = {
   data: (
@@ -52,7 +59,38 @@ const SpecialItem = ({
     Seller: Record<never, never>;
   }>;
 }) => {
-  return <div>sp</div>;
+  const getContent = useScopedLocale(["common"]);
+
+  return (
+    <div className={classes.item}>
+      <div className={classes.image}>
+        <HostedImage
+          src={node.product.image}
+          alt={node.product.name}
+          fill
+          sizes="4rem"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+      <div className={classes.content}>
+        <div className={classes.score}>
+          <span>{node.product.averageScore}</span>
+          <Ixon width="1rem">
+            <StarIcon />
+          </Ixon>
+        </div>
+        <span className={`${classes.name} ${tsmBold}`}>
+          {node.product.name}
+        </span>
+        <span className={`${classes.seller} ${t2xsMedium}`}>
+          {node.seller.name}
+        </span>
+        <span className={`${classes.price} ${txsDemiBold}`}>
+          {getContent("xToman", [currencize(node.price || 0)])}
+        </span>
+      </div>
+    </div>
+  );
 };
 
 const ProductListPage = ({

@@ -9,6 +9,13 @@
   font-weight: 600;
   font-size: 1rem;
   color: var(--gray10);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.required {
+  color: var(--error);
 }
 
 .area {

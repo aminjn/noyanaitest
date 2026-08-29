@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import classes from "./EditTextContentAgent.module.css";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
@@ -28,25 +28,42 @@ const EditTextContentAgent = ({
     successCb: () => {
       mutate();
       setIsEditMode(false);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).isAnyOpen = false;
     },
   });
 
   useEffect(() => {
     if (isEditMode) {
       const listener = (e: DocumentEventMap["keyup"]) => {
-        if (e.code === "Escape") setIsEditMode(false);
+        if (e.code === "Escape") {
+          setIsEditMode(false);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (window as any).isAnyOpen = false;
+        }
       };
       document.addEventListener("keyup", listener, false);
       return () => document.removeEventListener("keyup", listener, false);
     }
   }, [isEditMode]);
 
+  useEffect(() => {
+    if (!isEditMode) return;
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).isAnyOpen = false;
+    };
+  }, [isEditMode]);
+
   if (!isEditMode)
     return (
       <div
         onDoubleClick={() => {
-          if (readOnly) return;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if (readOnly || (window as any).isAnyOpen) return;
           setIsEditMode(true);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (window as any).isAnyOpen = true;
         }}
       >
         {value}
@@ -69,7 +86,11 @@ const EditTextContentAgent = ({
         <IconButton
           variant="Neutral"
           type="button"
-          onClick={() => setIsEditMode(false)}
+          onClick={() => {
+            setIsEditMode(false);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (window as any).isAnyOpen = false;
+          }}
         >
           <CloseIcon />
         </IconButton>

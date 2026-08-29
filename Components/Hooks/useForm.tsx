@@ -7,6 +7,7 @@ import {
 } from "../helpers/fetcher";
 import useNotification from "./useNotification";
 import useSWR from "swr";
+import useScopedLocale from "./useScopedLocale";
 
 export type UseFormProps<TInput, TResult = unknown> = {
   path: string | ((input: Partial<TInput>) => string);
@@ -47,6 +48,9 @@ const useForm = function <TInput, TResult = unknown>({
   const [isSaving, setIsSaving] = useState<Record<string, unknown> | null>(
     null,
   );
+
+  const getContent = useScopedLocale(["common"]);
+
   const pushNotification = useNotification();
 
   useSWR<TResult>(
@@ -62,7 +66,10 @@ const useForm = function <TInput, TResult = unknown>({
       dedupingInterval: 0,
       onSuccess: (data) => {
         setIsSaving(null);
-        if (successMessage) pushNotification(successMessage, "Success");
+        pushNotification(
+          successMessage || getContent("operationWasSuccessful"),
+          "Success",
+        );
         successCb?.(data);
       },
       onError: (err) => {

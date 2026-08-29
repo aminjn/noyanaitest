@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import classes from "./BigAd.module.css";
 import useAdvertisement, {
   UseAdvertisementProps,
@@ -10,6 +10,7 @@ import Ixon from "../Ixon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import Button from "../Button";
 import { t2xsRegular, tlgBold, tsmMedium } from "../Typography";
+import HostedImage from "../HostedImage";
 
 const BigAd = ({
   position,
@@ -23,15 +24,19 @@ const BigAd = ({
   if (!ad || isDismissed) return null;
   if (!!render) return render(ad);
   return (
-    <div
-      className={classes.main}
-      style={
-        ad.image
-          ? { backgroundImage: `url(${imagePath(ad.image)})` }
-          : undefined
-      }
-    >
-      {!!ad.image && <span className={classes.overlay} />}
+    <div className={classes.main}>
+      {!!ad.image && (
+        <Fragment>
+          <HostedImage
+            src={ad.image}
+            alt={ad.title}
+            fill
+            sizes="70rem"
+            style={{ objectFit: "cover" }}
+          />
+          <span className={classes.overlay} />
+        </Fragment>
+      )}
       <span className={classes.blobStart} />
       <span className={classes.blobEnd} />
       <button

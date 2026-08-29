@@ -1437,6 +1437,11 @@ const contentKeys = [
   "subscribe",
   "blogBookLegend",
   "bookReservation",
+  "missinNameErrorMessage",
+  "missingPhoneErrorMessage",
+  "missingSubjectErrorMessage",
+  "badPhoneErrorMessage",
+  "operationWasSuccessful",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

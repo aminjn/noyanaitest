@@ -9,18 +9,27 @@ const AreaInput = ({
   readOnly,
   style,
   title,
+  required,
+  inputClass = "",
 }: WithStyleProps<{
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   title?: string;
   defaultValue?: string;
   readOnly?: boolean;
+  required?: boolean;
+  inputClass?: string;
 }>) => {
   return (
     <div className={`${classes.main} ${className}`} style={style}>
-      {!!title && <span className={classes.title}>{title}</span>}
+      {!!title && (
+        <span className={classes.title}>
+          {required && <span className={classes.required}>* </span>}
+          <span>{title}</span>
+        </span>
+      )}
       <textarea
         placeholder={title}
-        className={classes.area}
+        className={`${classes.area} ${inputClass}`}
         onChange={onChange}
         readOnly={readOnly}
         defaultValue={defaultValue}

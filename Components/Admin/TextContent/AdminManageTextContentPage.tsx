@@ -11,7 +11,7 @@ import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Table from "../UI/Table";
 import EditTextContentAgent from "./EditTextContentAgent";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
@@ -57,6 +57,18 @@ const AdminManageTextContentPage = () => {
   }, [data]);
 
   const hasAccess = useAccessLevel();
+
+  const renderValue = useCallback(
+    (node: { key: string; val: string; scopes: ContentNamespace[] }) => (
+      <EditTextContentAgent
+        readOnly={!hasAccess("TextContent", "update")}
+        mutate={mutate}
+        kay={node.key}
+        value={node.val}
+      />
+    ),
+    [mutate, hasAccess],
+  );
 
   return (
     <HandleLoading data={!!ready} error={error}>
@@ -120,14 +132,7 @@ const AdminManageTextContentPage = () => {
               name: "مقدار",
               value: (node) => node.val,
               filter: "Text",
-              component: (node) => (
-                <EditTextContentAgent
-                  readOnly={!hasAccess("TextContent", "update")}
-                  mutate={mutate}
-                  kay={node.key}
-                  value={node.val}
-                />
-              ),
+              component: renderValue,
               suppressKeyboardEvents: true,
             },
           }}

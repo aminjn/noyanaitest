@@ -156,6 +156,8 @@ const InnerTicket = ({
           mode="Inline"
           size="S"
           leadIcon={<ArrowLeftIcon />}
+          className={classes.close}
+          variant="Error"
         >
           {getContent("backToList")}
         </Button>

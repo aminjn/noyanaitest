@@ -53,7 +53,7 @@ const UserButton = () => {
         href: "/dashboard/booking",
       },
       { title: "support", icon: <HeadphoneIcon />, href: "/dashboard/support" },
-      
+
       {
         title: "signout",
         icon: <LogoutIcon />,
@@ -102,6 +102,7 @@ const UserButton = () => {
         mode={!!user ? "Outline" : "Fill"}
         size="L"
         radius="Medium"
+        className={isOpen ? classes.openButton : ""}
       >
         {!!user ? user.phone : getContent("loginOrSignup")}
       </Button>

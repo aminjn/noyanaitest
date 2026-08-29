@@ -15,17 +15,24 @@ import Button from "../UI/Button";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { tsmMedium } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
+import { isMobile } from "../helpers/Validators";
 const ContactForm = () => {
   const getContent = useLocale();
 
   const [didSubmit, setDidSubmit] = useState<boolean>(false);
 
+  const [didTry, setDidTry] = useState<boolean>(false);
+
   const { input, setInput, isLoading, submit } = useForm<IContactRequest>({
     path: `${API}/public/contact`,
     method: "POST",
     hasProblem: (inp) => {
-      if (!inp.name || !inp.content || !inp.phone || !inp.subject)
-        return getContent("checkInput");
+      if (!inp.name) return getContent("missinNameErrorMessage");
+      if (!inp.content) return getContent("missingMessageErrorMessage");
+      if (!inp.phone) return getContent("missingPhoneErrorMessage");
+      if (!isMobile(Number(inp.phone)))
+        return getContent("badPhoneErrorMessage");
+      if (!inp.subject) return getContent("missingSubjectErrorMessage");
       return false;
     },
     successCb: () => {
@@ -38,6 +45,7 @@ const ContactForm = () => {
       className={classes.main}
       onSubmit={() => {
         if (didSubmit) return;
+        setDidTry(true);
         submit();
       }}
     >
@@ -49,6 +57,8 @@ const ContactForm = () => {
             setInput((prev) => ({ ...prev, name: e.target.value }))
           }
           title={getContent("fullName")}
+          required
+          inputClass={didTry ? (!!input.name ? "" : classes.invalid) : ""}
         />
         <div className={classes.wrap}>
           <Input
@@ -57,6 +67,15 @@ const ContactForm = () => {
               setInput((prev) => ({ ...prev, phone: e.target.value }))
             }
             title={getContent("phoneNumber")}
+            required
+            inputClass={
+              didTry
+                ? isMobile(Number(input.phone))
+                  ? ""
+                  : classes.invalid
+                : ""
+            }
+            pattern="[0-9]*"
           />
           <Input
             readOnly={isLoading || didSubmit}
@@ -68,6 +87,7 @@ const ContactForm = () => {
         </div>
         <div className={classes.selectBox}>
           <legend className={classes.selectTitle}>
+            <span className={classes.required}>* </span>
             {getContent("selectSubject")}
           </legend>
           <div className={classes.options}>
@@ -93,6 +113,8 @@ const ContactForm = () => {
           onChange={(e) =>
             setInput((prev) => ({ ...prev, content: e.target.value }))
           }
+          required
+          inputClass={didTry ? (!!input.content ? "" : classes.invalid) : ""}
         />
       </div>
       <div className={classes.actions}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import classes from "./SmallAd.module.css";
 import useAdvertisement, {
   UseAdvertisementProps,
@@ -10,6 +10,7 @@ import Ixon from "../Ixon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import Button from "../Button";
 import { t2xsRegular, tsmMedium, txsDemiBold } from "../Typography";
+import HostedImage from "../HostedImage";
 
 const SmallAd = ({
   position,
@@ -22,15 +23,19 @@ const SmallAd = ({
   if (!ad || isDismissed) return null;
 
   return (
-    <div
-      className={classes.main}
-      style={
-        ad.image
-          ? { backgroundImage: `url(${imagePath(ad.image)})` }
-          : undefined
-      }
-    >
-      {!!ad.image && <span className={classes.overlay} />}
+    <div className={classes.main}>
+      {!!ad.image && (
+        <Fragment>
+          <HostedImage
+            src={ad.image}
+            alt={ad.title}
+            fill
+            sizes="70rem"
+            style={{ objectFit: "cover" }}
+          />
+          <span className={classes.overlay} />
+        </Fragment>
+      )}
       <div className={classes.row}>
         <div className={classes.content}>
           {/* {!!ad.legend && (

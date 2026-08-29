@@ -176,6 +176,10 @@
   cursor: progress;
 }
 
+.close {
+  margin-inline-start: auto;
+}
+
 @media (max-width: 640px) {
   .card {
     height: min(80dvh, 40rem);

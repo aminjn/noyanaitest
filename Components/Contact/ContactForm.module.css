@@ -37,6 +37,13 @@
 
 .selectTitle {
   color: var(--gray13);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.required {
+  color: var(--error);
 }
 
 .options {
@@ -71,4 +78,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.invalid.invalid {
+  background-color: var(--errorT1);
 }

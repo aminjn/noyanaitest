@@ -21,7 +21,8 @@
   gap: 0.75rem;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 16.5rem;
+  min-width: 16.5rem;
+  flex: 1;
 }
 
 .icon {

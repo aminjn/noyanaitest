@@ -30,8 +30,8 @@ const AdminManageServicePackagePage = () => {
                     name: { type: "text", title: "نام" },
                     isActive: { type: "bool", title: "فعال" },
                     order: { type: "number", title: "رتبه" },
-                    price: { type: "number", title: "فیمت" },
-                    discount: { type: "number", title: "تخفیف" },
+                    price: { type: "number", title: "فیمت", price: true },
+                    discount: { type: "number", title: "تخفیف", price: true },
                     category: {
                       type: "nodes",
                       title: "دسته بندی",

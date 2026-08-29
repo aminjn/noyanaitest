@@ -25,10 +25,11 @@ const LocationSection = ({
 
   const mapRef = useRef<HTMLDivElement>(null);
   const { ready, map } = useMap({
-    center: coords,
+    center: coords?.length ? coords : undefined,
     containerRef: mapRef,
   });
-  if (!coords) return null;
+
+  if (!coords?.length) return null;
   return (
     <div className={`${classes.main} ${className}`} style={style} id="location">
       <div className={classes.header}>
