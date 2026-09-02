@@ -1,0 +1,17 @@
+import DoctorIncomingOrderPage from "@/Components/DoctorPanel/Order/DoctorIncomingOrderPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+
+const DoctorOrderDetail = async () => {
+  const textContent = await getScopedTextContent(["common", "doctorPanelOrder"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "doctorPanelOrder"]}
+      initialTextContent={textContent}
+    >
+      <DoctorIncomingOrderPage />
+    </LocaleScopeProvider>
+  );
+};
+
+export default DoctorOrderDetail;

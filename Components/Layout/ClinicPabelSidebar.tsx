@@ -25,6 +25,12 @@ const ClinicPanelSidebar = () => {
         target: "prescription",
       },
       {
+        title: "licenses",
+        icon: <UserEditIcon />,
+        show: hasAccess("readLicenses"),
+        target: "license",
+      },
+      {
         title: "articles",
         icon: <FileDuplicateIcon />,
         show: hasAccess("readArticles"),

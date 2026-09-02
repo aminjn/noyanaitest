@@ -49,6 +49,12 @@ const PharmacyPanelSidebar = () => {
         target: "order",
       },
       {
+        title: "licenses",
+        icon: <CartIcon />,
+        show: hasAccess("readLicenses"),
+        target: "license",
+      },
+      {
         title: "prescriptions",
         icon: <UserEditIcon />,
         show: hasAccess("readPrescriptions"),

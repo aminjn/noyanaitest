@@ -15,6 +15,7 @@ import DoctorSidebar from "./DoctorSidebar";
 import { LicenseManager } from "ag-grid-enterprise";
 import PanelLayout from "./PanelLayout";
 import useDoctor from "../Hooks/useDoctor";
+import DoctorLicenseGate from "../DoctorPanel/DoctorLicenseGate";
 
 const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
   const { doctor, isLoading } = useDoctor();
@@ -22,7 +23,9 @@ const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
   return (
     <HandleLoading data={!isLoading}>
       {doctor ? (
-        <PanelLayout sidebar={<DoctorSidebar />}>{children}</PanelLayout>
+        <PanelLayout sidebar={<DoctorSidebar />}>
+          <DoctorLicenseGate>{children}</DoctorLicenseGate>
+        </PanelLayout>
       ) : (
         <BecomeADoctorPage />
       )}

@@ -37,6 +37,7 @@ import {
   ParaClinicTestPopulation,
 } from "../Admin/ParaClinic/AdminManageParaClinicPage";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
+import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage";
 import {
   t2xsRegular,
   tlgBold,
@@ -97,6 +98,7 @@ export interface IOrder<
   total: number;
   paymentMethod: "wallet";
   status: OrderStatus;
+  address?: IUserAddress;
   submittedAt: string;
   paidAt?: string;
 }
@@ -209,8 +211,6 @@ const OrderConfirmationPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  console.log(order);
-
   const getContent = useLocale();
 
   const push = useProgress();
@@ -296,6 +296,16 @@ const OrderConfirmationPage = () => {
                 {`${currencize(order.total)} ${getContent("toman")}`}
               </span>
             </div>
+            {!!order.address && (
+              <div className={classes.addressRow}>
+                <span className={`${classes.subtitle} ${tsmRegular}`}>
+                  {getContent("deliveryAddress")}
+                </span>
+                <span className={t2xsRegular}>
+                  {`${order.address.displayName} - ${order.address.address}`}
+                </span>
+              </div>
+            )}
           </div>
           <Button onClick={() => push("/dashboard")} className={classes.action}>
             {getContent("dashboard")}

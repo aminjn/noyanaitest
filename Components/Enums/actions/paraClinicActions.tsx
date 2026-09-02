@@ -12,6 +12,10 @@ export const paraClinicActions = [
   // Incoming-orders page (2026-08) — paraClinicPanel/order. Kept in sync
   // with Models/ParaClinicAcl.ts on noyanai-back.
   "readOrders",
+  // Incoming-order detail page (2026-08) — paraClinicPanel/order/[nodeId],
+  // fulfilling/cancelling this paraClinic's own line items. Kept in sync
+  // with Models/ParaClinicAcl.ts on noyanai-back.
+  "mutateOrders",
 ] as const;
 
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
@@ -31,5 +35,5 @@ export const categorizedParaClinicActions: Readonly<
   prescriptions: ["readPrescriptions"],
   articles: ["readArticles"],
   tamin: ["readTamin"],
-  incomingOrders: ["readOrders"],
+  incomingOrders: ["readOrders", "mutateOrders"],
 } as const;

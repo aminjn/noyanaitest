@@ -13,6 +13,13 @@ export const pharmacyActions = [
   // Incoming-orders page (2026-08) — pharmacypanel/order. Kept in sync with
   // Models/pharmacyAcl.ts on noyanai-back.
   "readOrders",
+  // Incoming-order detail page (2026-08) — pharmacypanel/order/[nodeId],
+  // fulfilling/cancelling this pharmacy's own line items. Kept in sync with
+  // Models/pharmacyAcl.ts on noyanai-back.
+  "mutateOrders",
+  // Licenses page (2026-09) — pharmacypanel/license. Kept in sync with
+  // Models/pharmacyAcl.ts on noyanai-back.
+  "readLicenses",
 ] as const;
 
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
@@ -24,6 +31,7 @@ export const pharmacyActionCategories = [
   "articles",
   "tamin",
   "incomingOrders",
+  "licenses",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedPharmacyActions: Readonly<
@@ -34,5 +42,6 @@ export const categorizedPharmacyActions: Readonly<
   prescriptions: ["readPrescriptions"],
   articles: ["readArticles"],
   tamin: ["readTamin"],
-  incomingOrders: ["readOrders"],
+  incomingOrders: ["readOrders", "mutateOrders"],
+  licenses: ["readLicenses"],
 } as const;

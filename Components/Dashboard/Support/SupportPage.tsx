@@ -133,13 +133,17 @@ const SupportPage = () => {
                     <Badge mode="Outline">
                       {getContent(ticketSubjectContentKeyDict[ticket.subject])}
                     </Badge>
-                    <Badge mode="Outline" color="Secondary">
+                    <Badge
+                      mode="Outline"
+                      color={ticket.status === "Closed" ? "Error" : "Secondary"}
+                    >
                       {getContent(ticketStatusesContentKeyDict[ticket.status])}
                     </Badge>
                   </div>
                   <Button
                     className={classes.visitButton}
                     href={`/dashboard/support/${ticket._id}`}
+                    size="S"
                   >
                     {getContent("visitTicket")}
                   </Button>

@@ -22,6 +22,10 @@ import {
   IDistrict,
   IProvince,
 } from "../Province/AdminManageProvincesPage";
+import WalletIcon from "@/Components/Icons/WalletIcon";
+import PharmacyCommissionTab from "./PharmacyCommissionTab";
+import PharmacyProfileLicenseTab from "./PharmacyProfileLicenseTab";
+import CartIcon from "@/Components/Icons/CartIcon";
 
 const PharmacyLocationTab = ({
   mutate,
@@ -157,6 +161,18 @@ const AdminManagePharmacyPage = () => {
                 title: "لوکیشن",
                 content: <PharmacyLocationTab node={data} mutate={mutate} />,
                 id: "Location",
+              },
+              {
+                title: "کمیسیون",
+                id: "Commission",
+                icon: <WalletIcon />,
+                content: <PharmacyCommissionTab node={data} />,
+              },
+              {
+                title: "مجوز",
+                id: "License",
+                icon: <CartIcon />,
+                content: <PharmacyProfileLicenseTab node={data} />,
               },
             ]}
           />

@@ -42,6 +42,7 @@ import Button from "@/Components/UI/Button";
 import ImagesManager from "../Product/ImagesManager";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import ParaClinicCommissionTab from "./ParaClinicCommissionTab";
 
 export type ParaClinicTestPopulation = Population<{
   Test: TestPopulation;
@@ -389,6 +390,11 @@ const AdminManageParaClinicPage = () => {
                     slug={data.slug}
                   />
                 ),
+              },
+              {
+                id: "Commission",
+                title: "کمیسیون",
+                content: <ParaClinicCommissionTab node={data} />,
               },
             ]}
           />

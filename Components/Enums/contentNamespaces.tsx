@@ -34,6 +34,12 @@ export const contentNamespaces = {
     "generatedByAi",
     "dataIsnotAccurate",
     "showPackagesOnly",
+    // DoctorLicenseGate (2026-09) wraps every /doctorpanel/* page from
+    // DoctorPanelLayout, same as header/footer chrome — so its notice keys
+    // live here rather than in every doctorPanel* namespace individually.
+    "licenseNotCoveredTitle",
+    "licenseNotCoveredLegend",
+    "buyLicense",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,
@@ -238,6 +244,22 @@ export const contentNamespaces = {
     "orderStatusPaid",
     "orderStatusCancelled",
     "actions",
+  ],
+
+  // app/dashboard/address/page.tsx + [nodeId] (DashboardManageAddressesPage,
+  // DashboardMutateAddressPopup, DashboardManageAddressPage,
+  // DashboardManageAddressLocationTab) — the logged-in user's saved address
+  // book, backed by Models/UserAddress.ts on noyanai-back.
+  dashboardAddress: [
+    "addresses",
+    "newItem",
+    "displayName",
+    "address",
+    "actions",
+    "details",
+    "location",
+    "submit",
+    "checkInput",
   ],
 
   // app/dashboard/vital/page.tsx (DashboardManageVitalsPage + VitalList).
@@ -589,8 +611,35 @@ export const contentNamespaces = {
   // dashboard shell.
   insurancePanelHome: ["dashboard"],
 
-  // app/clinicpanel/page.tsx — dashboard shell.
-  clinicPanelHome: ["dashboard"],
+  // app/clinicpanel/page.tsx — dashboard shell, plus the
+  // CurrentLicenseWidget it now renders (2026-09), mirrors
+  // pharmacyPanelHome/doctorPanelHome.
+  clinicPanelHome: [
+    "dashboard",
+    "currentLicense",
+    "licenses",
+    "noLicensePurchasedYet",
+  ],
+
+  // app/clinicpanel/license/page.tsx (ClinicManageLicencePage) - the
+  // purchasable BaseClinicLicense catalog + the clinic's own current
+  // ClinicProfileLicense, via GET /clinic/license and PurchaseLicensePopup
+  // (POST /clinic/license/:nodeId). Mirrors doctorPanelLicense/
+  // pharmacyPanelLicense.
+  clinicPanelLicense: [
+    "dashboard",
+    "licenses",
+    "buyLicense",
+    "currentLicense",
+    "price",
+    "discount",
+    "toman",
+    "currentBalance",
+    "buyLicenseConfirmationMessage",
+    "nothingFound",
+    "monthly",
+    "annual",
+  ],
 
   // app/clinicpanel/profile/page.tsx (ClinicManageProfilePage,
   // ClinicManageDetailsTab, ClinicManageLocationTab).
@@ -703,8 +752,14 @@ export const contentNamespaces = {
     "Done",
   ],
 
-  // app/doctorpanel/page.tsx (DoctorPanelPage) — just the panel shell/sidebar.
-  doctorPanelHome: ["dashboard"],
+  // app/doctorpanel/page.tsx (DoctorPanelPage) — the panel shell/sidebar,
+  // plus the CurrentLicenseWidget it now renders (2026-09).
+  doctorPanelHome: [
+    "dashboard",
+    "currentLicense",
+    "licenses",
+    "noLicensePurchasedYet",
+  ],
 
   // app/doctorpanel/calendar/page.tsx + [stamp] (DoctorManageCalendarPage,
   // DoctorManageCalendarDayPage, DoctorCalendarDay, MutateSessionPopup,
@@ -1126,9 +1181,10 @@ export const contentNamespaces = {
     "newPatient",
   ],
 
-  // The 7 doctorpanel stub pages (article/chat/discount/document/license/
+  // The 6 remaining doctorpanel stub pages (article/chat/discount/document/
   // offer/finance) — each just renders a breadcrumb + placeholder <p>, no
-  // real content yet. One shared namespace since they're trivial.
+  // real content yet. One shared namespace since they're trivial. "license"
+  // was the 7th and is now real content - see doctorPanelLicense below.
   doctorPanelStub: [
     "dashboard",
     "articles",
@@ -1138,6 +1194,25 @@ export const contentNamespaces = {
     "licenses",
     "offers",
     "financialMangement",
+  ],
+
+  // app/doctorpanel/license/page.tsx (DoctorManageLicencePage) - the
+  // purchasable BaseDoctorLicense catalog + the doctor's own current
+  // DoctorProfileLicense, via GET /doctor/license and PurchaseLicensePopup
+  // (POST /doctor/license/:nodeId).
+  doctorPanelLicense: [
+    "dashboard",
+    "licenses",
+    "buyLicense",
+    "currentLicense",
+    "price",
+    "discount",
+    "toman",
+    "currentBalance",
+    "buyLicenseConfirmationMessage",
+    "nothingFound",
+    "monthly",
+    "annual",
   ],
 
   // app/doctorpanel/schedule/page.tsx (DoctorManageSchedulePage,
@@ -1201,6 +1276,13 @@ export const contentNamespaces = {
     "quantity",
     "price",
     "total",
+    "orderItemStatusPending",
+    "orderItemStatusFulfilled",
+    "orderItemStatusCancelled",
+    "fulfill",
+    "cancel",
+    "sureFulfillOrderItem",
+    "sureCancelOrderItem",
   ],
 
   // app/doctorpanel/servicepackage/page.tsx + [nodeId]
@@ -1228,8 +1310,30 @@ export const contentNamespaces = {
     "sureDeleteServicePackage",
   ],
 
-  // app/pharmacypanel/page.tsx (PharmacyPanelPage) — just the panel shell.
-  pharmacyPanelHome: ["dashboard"],
+  // app/pharmacypanel/page.tsx (PharmacyPanelPage) — the panel shell, plus
+  // the CurrentLicenseWidget it now renders (2026-09), mirrors
+  // doctorPanelHome.
+  pharmacyPanelHome: ["dashboard", "currentLicense", "licenses", "noLicensePurchasedYet"],
+
+  // app/pharmacypanel/license/page.tsx (PharmacyManageLicencePage) - the
+  // purchasable BasePharmacyLicense catalog + the pharmacy's own current
+  // PharmacyProfileLicense, via GET /pharmacy/license and
+  // PurchaseLicensePopup (POST /pharmacy/license/:nodeId). Mirrors
+  // doctorPanelLicense.
+  pharmacyPanelLicense: [
+    "dashboard",
+    "licenses",
+    "buyLicense",
+    "currentLicense",
+    "price",
+    "discount",
+    "toman",
+    "currentBalance",
+    "buyLicenseConfirmationMessage",
+    "nothingFound",
+    "monthly",
+    "annual",
+  ],
 
   // app/pharmacypanel/profile/page.tsx (PharmacyManageProfilePage,
   // PharmacyManageDetailsTab, PharmacyManageLocationTab). Scoped to the
@@ -1463,6 +1567,13 @@ export const contentNamespaces = {
     "quantity",
     "price",
     "total",
+    "orderItemStatusPending",
+    "orderItemStatusFulfilled",
+    "orderItemStatusCancelled",
+    "fulfill",
+    "cancel",
+    "sureFulfillOrderItem",
+    "sureCancelOrderItem",
   ],
 
   // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,

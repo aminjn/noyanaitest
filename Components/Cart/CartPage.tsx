@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import useSWR from "swr";
 import classes from "./CartPage.module.css";
 import useCart, { CartModel, cartModels, UseCartNode } from "../Hooks/useCart";
@@ -16,12 +15,12 @@ import MinusIcon from "../Icons/MinusIcon";
 import CartIcon from "../Icons/CartIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import Button from "../UI/Button";
-import Act from "../UI/Act";
 import { ContentKey } from "../Enums/contentKeys";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import useProgress from "../Hooks/useProgress";
+import usePopup from "../Hooks/usePopup";
 import { IWallet } from "../Booking/Finalize/FinalizeBookingPage";
+import CartCheckoutPopup from "./CartCheckoutPopup";
 import {
   t2xsRegular,
   tlgBold,
@@ -30,12 +29,9 @@ import {
   txsMedium,
 } from "../UI/Typography";
 
-// only "wallet" is wired up on the backend today (CartController.submitCart)
-// - kept as a literal union (rather than importing orderPaymentMethods from
-// the backend) so this file has no cross-project import
-type OrderPaymentMethod = "wallet";
-
-type SubmitCartResponse = { data: { _id: string } };
+// physical goods that need to be shipped - kept in sync with
+// physicalCartModels in CartController.submitCart on noyanai-back
+const physicalCartModels: CartModel[] = ["products", "productPackages"];
 
 type CartRow = {
   itemId: string;
@@ -216,21 +212,21 @@ const CheckoutSection = ({
   totalCount,
   isLoading,
   clearCart,
+  requiresAddress,
 }: {
   total: number;
   totalCount: number;
   isLoading: boolean;
   clearCart: () => void;
+  requiresAddress: boolean;
 }) => {
   const getContent = useLocale();
-  const push = useProgress();
+
+  const { setPopup } = usePopup();
 
   const { data: wallet } = useSWR<IWallet>(`${API}/user/wallet`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
-
-  const [method] = useState<OrderPaymentMethod>("wallet");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <div className={classes.summary}>
@@ -271,10 +267,13 @@ const CheckoutSection = ({
         mode="Fill"
         size="M"
         radius="Medium"
-        isLoading={isSubmitting || isLoading}
+        isLoading={isLoading}
         onClick={() => {
-          if (isSubmitting || isLoading) return;
-          setIsSubmitting(true);
+          if (isLoading) return;
+          setPopup(
+            "CartCheckout",
+            <CartCheckoutPopup total={total} requiresAddress={requiresAddress} />,
+          );
         }}
       >
         {getContent("confirmAndPayOrder")}
@@ -289,16 +288,6 @@ const CheckoutSection = ({
       >
         {getContent("removeAll")}
       </Button>
-      <Act<SubmitCartResponse>
-        path={isSubmitting ? `${API}/cart/submit` : null}
-        method="POST"
-        payload={{ method }}
-        successMessage={getContent("orderSubmittedMessage")}
-        onDone={(status, result) => {
-          setIsSubmitting(false);
-          if (status && result?.data?._id) push(`/order/${result.data._id}`);
-        }}
-      />
     </div>
   );
 };
@@ -329,6 +318,10 @@ const CartPage = () => {
     0,
   );
   const totalCount = rows.reduce((sum, row) => sum + row.qty, 0);
+
+  const requiresAddress = rows.some((row) =>
+    physicalCartModels.includes(row.model),
+  );
 
   const grouped = cartModels
     .map((model) => ({
@@ -394,6 +387,7 @@ const CartPage = () => {
               totalCount={totalCount}
               isLoading={isLoading}
               clearCart={clearCart}
+              requiresAddress={requiresAddress}
             />
           )}
         </div>

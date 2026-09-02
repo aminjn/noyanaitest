@@ -34,6 +34,7 @@ import {
   DoctorShiftPopulation,
   IDoctorShift,
 } from "./Shift/DoctorManageShiftsPage";
+import CurrentLicenseWidget from "./CurrentLicenseWidget";
 
 export const genders = ["male", "female"] as const;
 
@@ -292,7 +293,7 @@ const DoctorPanelPage = () => {
 
   useBreadCrump([{ title: getContent("dashboard"), target: "/doctorpanel" }]);
 
-  return <p>DoctorPanelPage</p>;
+  return <CurrentLicenseWidget />;
 };
 
 export default DoctorPanelPage;

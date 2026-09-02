@@ -19,6 +19,7 @@ import Ixon from "@/Components/UI/Ixon";
 import Bell01Icon from "@/Components/Icons/Bell01Icon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import DoubleCheckIcon from "@/Components/Icons/DoubleCheckIcon";
+import PushNotificationToggle from "@/Components/Notification/PushNotificationToggle";
 
 // mirrors Lib/enums.ts `pageLimit` on the backend
 const NOTIFICATIONS_PAGE_LIMIT = 25;
@@ -145,6 +146,7 @@ const DashboardNotificationsPage = () => {
               )}
             </div>
             <div className={classes.headActions}>
+              <PushNotificationToggle />
               <Button
                 variant={unreadOnly ? "Primary" : "Disable"}
                 mode="Fill"

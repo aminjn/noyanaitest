@@ -15,7 +15,7 @@
   left: 50%;
   transform: translateX(-50%);
   padding-inline: 2.25rem;
-  z-index: 10000;
+  z-index: 19;
 }
 
 .main::before {

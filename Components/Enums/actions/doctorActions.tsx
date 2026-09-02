@@ -34,6 +34,10 @@ export const doctorActions = [
   // Incoming-orders page (2026-08) — doctorpanel/order. Kept in sync with
   // Models/DoctorAcl.ts on noyanai-back.
   "readOrders",
+  // Incoming-order detail page (2026-08) — doctorpanel/order/[nodeId],
+  // fulfilling/cancelling this doctor's own line items. Kept in sync with
+  // Models/DoctorAcl.ts on noyanai-back.
+  "mutateOrders",
 ] as const;
 
 // Access-level popup tab groupings (2026-08). Each category is a
@@ -86,5 +90,5 @@ export const categorizedDoctorActions: Readonly<
   chatWithPatients: ["readChat"],
   drugsAndPrescriptions: ["readDrugs"],
   patientDocuments: ["readDocuments"],
-  incomingOrders: ["readOrders"],
+  incomingOrders: ["readOrders", "mutateOrders"],
 } as const;

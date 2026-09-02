@@ -9,6 +9,7 @@ import HeadphoneIcon from "../Icons/HeadphoneIcon";
 import ChatIcon from "../Icons/ChatIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import PackageIcon from "../Icons/PackageIcon";
+import LocationIcon from "../Icons/LocationIcon";
 
 const DashboardSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -32,6 +33,12 @@ const DashboardSidebar = () => {
         show: true,
         title: "transactions",
         target: "transaction",
+      },
+      {
+        icon: <LocationIcon />,
+        show: true,
+        title: "addresses",
+        target: "address",
       },
       {
         icon: <HeadphoneIcon />,

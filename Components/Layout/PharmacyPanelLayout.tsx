@@ -8,6 +8,7 @@ import { API } from "../config";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import BecomePharmacyPage from "../PharmacyPanel/BecomePharmacyPage";
 import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
+import PharmacyLicenseGate from "../PharmacyPanel/PharmacyLicenseGate";
 
 const PharmacyPanelLayout = ({ children }: { children: ReactNode }) => {
   const { data, isLoading } = useSWR<IPharmacy | null>(
@@ -18,7 +19,9 @@ const PharmacyPanelLayout = ({ children }: { children: ReactNode }) => {
   return (
     <HandleLoading data={!isLoading}>
       {data ? (
-        <PanelLayout sidebar={<PharmacyPanelSidebar />}>{children}</PanelLayout>
+        <PanelLayout sidebar={<PharmacyPanelSidebar />}>
+          <PharmacyLicenseGate>{children}</PharmacyLicenseGate>
+        </PanelLayout>
       ) : (
         <BecomePharmacyPage />
       )}

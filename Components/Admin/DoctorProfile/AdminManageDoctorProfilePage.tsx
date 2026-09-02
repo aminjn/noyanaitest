@@ -22,6 +22,10 @@ import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import List from "../UI/List";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 import DoctorProfileLocationTab from "./DoctorProfileLocationTab";
+import WalletIcon from "@/Components/Icons/WalletIcon";
+import DoctorCommissionTab from "./DoctorCommissionTab";
+import DoctorProfileLicenseTab from "./DoctorProfileLicenseTab";
+import CartIcon from "@/Components/Icons/CartIcon";
 
 const AdminManageDoctorProfilePage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -90,6 +94,18 @@ const AdminManageDoctorProfilePage = () => {
                 ),
                 icon: <InfoIcon />,
                 title: "مشاور تلفنی",
+              },
+              {
+                id: "Commission",
+                content: <DoctorCommissionTab node={data} />,
+                icon: <WalletIcon />,
+                title: "کمیسیون",
+              },
+              {
+                id: "License",
+                content: <DoctorProfileLicenseTab node={data} />,
+                icon: <CartIcon />,
+                title: "مجوز",
               },
               {
                 id: "Actions",

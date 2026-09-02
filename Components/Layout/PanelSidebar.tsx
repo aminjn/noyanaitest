@@ -39,9 +39,12 @@ const LinkItem = ({
 
   const isActive = useMemo<boolean>(() => {
     if (target === undefined) return false;
-    const cleaned = pathname.replaceAll("/", "").replaceAll(panel, "");
+    const cleaned = pathname
+      .replaceAll("/", "")
+      .replaceAll(panel, "")
+      .split("?")[0];
     if (!target) return cleaned === "";
-    return cleaned.startsWith(target);
+    return cleaned == target;
   }, [panel, pathname, target]);
 
   const content = useMemo(
@@ -52,7 +55,7 @@ const LinkItem = ({
         {!!side && <span className={classes.side}>{side}</span>}
       </Fragment>
     ),
-    [getContent, icon, side, title]
+    [getContent, icon, side, title],
   );
 
   return (

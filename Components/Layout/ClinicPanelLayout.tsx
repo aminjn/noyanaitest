@@ -6,6 +6,7 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import BecomeClinicPage from "../ClinicPanel/BecomeClinicPage";
+import ClinicLicenseGate from "../ClinicPanel/ClinicLicenseGate";
 
 const ClinicPanelLayout = ({ children }: { children: ReactNode }) => {
   const { data, isLoading } = useSWR(`${API}/clinic`, (url: string) =>
@@ -14,7 +15,9 @@ const ClinicPanelLayout = ({ children }: { children: ReactNode }) => {
   return (
     <HandleLoading data={!isLoading}>
       {data ? (
-        <PanelLayout sidebar={<ClinicPanelSidebar />}>{children}</PanelLayout>
+        <PanelLayout sidebar={<ClinicPanelSidebar />}>
+          <ClinicLicenseGate>{children}</ClinicLicenseGate>
+        </PanelLayout>
       ) : (
         <BecomeClinicPage />
       )}

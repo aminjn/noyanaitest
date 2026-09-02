@@ -26,6 +26,8 @@ import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import ClinicProfileLicenseTab from "./ClinicProfileLicenseTab";
+import CartIcon from "@/Components/Icons/CartIcon";
 
 const ClinicLocationManager = ({
   node,
@@ -117,6 +119,12 @@ const AdminManageClinicPage = () => {
                 content: (
                   <PageMetaEditor resourceType="/clinic/[slug]" slug={data.slug} />
                 ),
+              },
+              {
+                title: "مجوز",
+                id: "License",
+                icon: <CartIcon />,
+                content: <ClinicProfileLicenseTab node={data} />,
               },
               {
                 title: "عملیات",

@@ -1,36 +1,41 @@
 .main {
-background-color: var(--white);
-border-radius: 1rem;
-box-shadow: var(--shadow);
-display: flex;
-flex-direction: column;
-padding: 1.5rem;
-gap: 0.5rem;
-max-height: 90dvh;
-overflow-y: auto;
-width: min(40rem, 90dvw);
+  background-color: var(--white);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 0.5rem;
+  max-height: 90dvh;
+  overflow-y: auto;
+  width: min(40rem, 90dvw);
 }
 
 .header {
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .titleBox {
-display: flex;
-align-items: center;
-gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .icon {
-color: var(--black);
+  color: var(--black);
 }
 
 .close {
-margin-inline-start: auto;
-color: var(--black);
+  margin-inline-start: auto;
+  color: var(--black);
 }
 
 .content {
-width: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.content > * {
+  flex: 1;
 }

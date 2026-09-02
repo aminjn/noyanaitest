@@ -24,6 +24,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
   dashboardInvoice: ["/dashboard/invoice"],
   dashboardTransaction: ["/dashboard/transaction"],
   dashboardOrder: ["/dashboard/order"],
+  dashboardAddress: ["/dashboard/address"],
   dashboardBooking: ["/dashboard/booking"],
   dashboardVital: ["/dashboard/vital"],
   dashboardNotification: ["/dashboard/notification"],

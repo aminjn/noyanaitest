@@ -39,6 +39,7 @@ const contentKeys = [
   "province",
   "city",
   "address",
+  "addresses",
   "description",
   "mail",
   "online",
@@ -1283,6 +1284,28 @@ const contentKeys = [
   "markAsRead",
   "noNotificationsYet",
   "unreadOnly",
+  // Web push opt-in (2026-09) — Components/Hooks/usePushNotifications.tsx +
+  // Components/Notification/PushNotificationToggle.tsx. Kept in sync with
+  // Models/TextContent.ts on noyanai-back.
+  "enablePushNotifications",
+  "disablePushNotifications",
+  "pushNotificationsEnabled",
+  "pushNotificationsUnsupported",
+  "pushNotificationsBlocked",
+  "pushSubscriptionFailed",
+  "link",
+  // Admin "test push notifications" page (2026-09) —
+  // app/[adminKey]/pushTest (AdminTestPushPage). Kept in sync with
+  // Models/TextContent.ts on noyanai-back.
+  "testPushNotifications",
+  "testPushNotificationDescription",
+  "device",
+  "testPushDefaultTitle",
+  "testPushDefaultMessage",
+  "selectAtLeastOneUserErrorMessage",
+  "missingTitleErrorMessage",
+  "missingMessageErrorMessage",
+  "deletePushSubscriptionConfirmationMessage",
   "chats",
   "searchOrStartNewChat",
   "startNewChat",
@@ -1367,6 +1390,14 @@ const contentKeys = [
   "orderStatusCancelled",
   "backToHome",
 
+  // Cart checkout popup (2026-08) — Components/Cart/CartCheckoutPopup.tsx.
+  // Address selection + payment method step shown before submitCart is
+  // finally called from the cart page.
+  "selectDeliveryAddress",
+  "addNewAddress",
+  "noAddressesRegisteredYet",
+  "deliveryAddress",
+
   // Dashboard orders list page (2026-08) — app/dashboard/order/page.tsx
   // (DashboardManageOrdersPage), the "my orders" management page. Sidebar
   // nav title + page heading; the rest of the table reuses existing keys
@@ -1387,6 +1418,22 @@ const contentKeys = [
   "buyer",
   "mySubtotal",
   "orderDetails",
+
+  // Incoming-order detail page (2026-08) — pharmacypanel/order/[nodeId]
+  // (PharmacyIncomingOrderPage). Per-item fulfillment status (distinct from
+  // the order-level orderStatus* keys above) and the fulfill/cancel row
+  // actions a pharmacy can take on its own line items within an order.
+  "orderItemStatusPending",
+  "orderItemStatusFulfilled",
+  "orderItemStatusCancelled",
+  "fulfill",
+  "sureFulfillOrderItem",
+  "sureCancelOrderItem",
+  // ACL action label (Secretary access-level popup) for the mutateOrders
+  // pharmacy permission. Kept in sync with Models/pharmacyAcl.ts on
+  // noyanai-back.
+  "mutateOrders",
+
   "readInsurance",
   "readPharmacy",
   "readPatients",
@@ -1442,6 +1489,29 @@ const contentKeys = [
   "missingSubjectErrorMessage",
   "badPhoneErrorMessage",
   "operationWasSuccessful",
+
+  // Doctor license purchase page (2026-09) — app/doctorpanel/license
+  // (DoctorManageLicencePage), rendering Models/BaseDoctorLicense.ts as
+  // purchasable cards. "buyLicense"/"currentLicense" already existed above.
+  // Kept in sync with Models/TextContent.ts on noyanai-back.
+  "buyLicenseConfirmationMessage",
+  // Monthly/annual billing period labels, once BaseDoctorLicense split
+  // price/discount into monthlyPrice/monthlyDiscount/annualPrice/
+  // annualDiscount (2026-09).
+  "monthly",
+  "annual",
+  // Dashboard "current license" widget (2026-09) —
+  // Components/DoctorPanel/CurrentLicenseWidget.tsx, shown on
+  // app/doctorpanel/page.tsx.
+  "noLicensePurchasedYet",
+  // Doctor-panel per-page license gate (2026-09) —
+  // Components/DoctorPanel/DoctorLicenseGate.tsx wraps every
+  // /doctorpanel/* page and shows this notice instead of the page when the
+  // doctor's current license modules don't cover it. "buyLicense" already
+  // existed above for the CTA button. Kept in sync with Models/TextContent.ts
+  // on noyanai-back.
+  "licenseNotCoveredTitle",
+  "licenseNotCoveredLegend",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
