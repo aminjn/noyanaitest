@@ -57,6 +57,10 @@ export interface IBaseClinicLicense<
   pricing: ILicensePricingEntry[];
   descriptions: string[];
   modules: ClinicDashboardModule[];
+  isRecommended: boolean;
+  isDiscounted: boolean;
+  isActive: boolean;
+  details: string;
 }
 
 export const baseClinicLicenseFormRenderer: FormRenderer<IBaseClinicLicense> =
@@ -64,8 +68,12 @@ export const baseClinicLicenseFormRenderer: FormRenderer<IBaseClinicLicense> =
     displayName: { title: "نام نمایشی", type: "text" },
     order: { title: "رتبه", type: "number" },
     isDefault: { title: "پیش فرض", type: "bool" },
+    isRecommended: { title: "پیشنهادی", type: "bool" },
+    isDiscounted: { title: "تخفیف دار", type: "bool" },
+    isActive: { title: "فعال", type: "bool" },
     pricing: { title: "قیمت‌گذاری", type: "licensePricing" },
     descriptions: { title: "توضیحات", type: "strings" },
+    details: { title: "جزئیات", type: "rtf" },
     modules: {
       title: "منوهای قابل دسترسی",
       type: "multiselect",

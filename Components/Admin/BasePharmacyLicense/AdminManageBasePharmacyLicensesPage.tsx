@@ -65,6 +65,10 @@ export interface IBasePharmacyLicense<
   pricing: ILicensePricingEntry[];
   descriptions: string[];
   modules: PharmacyDashboardModule[];
+  isRecommended: boolean;
+  isDiscounted: boolean;
+  isActive: boolean;
+  details: string;
 }
 
 export const basePharmacyLicenseFormRenderer: FormRenderer<IBasePharmacyLicense> =
@@ -72,8 +76,12 @@ export const basePharmacyLicenseFormRenderer: FormRenderer<IBasePharmacyLicense>
     displayName: { title: "نام نمایشی", type: "text" },
     order: { title: "رتبه", type: "number" },
     isDefault: { title: "پیش فرض", type: "bool" },
+    isRecommended: { title: "پیشنهادی", type: "bool" },
+    isDiscounted: { title: "تخفیف دار", type: "bool" },
+    isActive: { title: "فعال", type: "bool" },
     pricing: { title: "قیمت‌گذاری", type: "licensePricing" },
     descriptions: { title: "توضیحات", type: "strings" },
+    details: { title: "جزئیات", type: "rtf" },
     modules: {
       title: "منوهای قابل دسترسی",
       type: "multiselect",
