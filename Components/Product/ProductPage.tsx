@@ -78,8 +78,6 @@ const Item = ({
 };
 
 const ProductPage = ({ data }: ProductPageProps) => {
-  console.log(data);
-
   const getContent = useLocale();
 
   const { cart } = useCart();
@@ -147,7 +145,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
       tabs={[
         {
           content: (
-            <ProductTab title={getContent("description")}>
+            <ProductTab title={getContent("description")} key={"Description"}>
               <RenderRtf value={data.description} />
               <WhyBox content={data.whyChoose} />
             </ProductTab>
@@ -159,7 +157,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
         },
         {
           content: (
-            <ProductTab title={getContent("details")}>
+            <ProductTab title={getContent("details")} key={"Details"}>
               <RenderRtf value={data.details} />
             </ProductTab>
           ),
@@ -174,7 +172,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
           exclude: !data.usage,
           icon: <PillIcon />,
           content: (
-            <ProductTab title={getContent("productUsage")}>
+            <ProductTab title={getContent("productUsage")} key="Usage">
               <RenderRtf value={data.usage} />
             </ProductTab>
           ),
@@ -184,7 +182,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
           id: "Warnings",
           exclude: !data.warning,
           content: (
-            <ProductTab title={getContent("warnings")}>
+            <ProductTab title={getContent("warnings")} key={"Warning"}>
               <RenderRtf value={data.warning} />
             </ProductTab>
           ),

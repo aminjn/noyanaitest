@@ -45,6 +45,14 @@
   border: none;
 }
 
+.icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  inset-inline-start: 1rem;
+  color: var(--black);
+}
+
 .rec {
   display: flex;
   align-items: center;

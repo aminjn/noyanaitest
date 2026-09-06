@@ -40,6 +40,7 @@
   height: 17.625rem;
   flex: 1;
   min-width: 24.5rem;
+  overflow: hidden;
 }
 
 .image {

@@ -13,8 +13,8 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
-import { currencize } from "@/Components/helpers/currencize";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import { ILicensePricingEntry } from "../UI/LicensePricingInput";
 
 // Menu items available in the pharmacy dashboard (PharmacyPanelSidebar).
 // Kept in sync with Models/BasePharmacyLicense.ts on noyanai-back and with
@@ -58,10 +58,11 @@ export interface IBasePharmacyLicense<
   displayName?: string;
   order: number;
   isDefault: boolean;
-  monthlyPrice: number;
-  monthlyDiscount: number;
-  annualPrice: number;
-  annualDiscount: number;
+  // Replaces the old flat monthlyPrice/monthlyDiscount/annualPrice/
+  // annualDiscount fields (2026-09) - one pricing option per
+  // Models/LicenseDuration.ts catalog entry, edited via the
+  // "licensePricing" CreateForm field type below.
+  pricing: ILicensePricingEntry[];
   descriptions: string[];
   modules: PharmacyDashboardModule[];
 }
@@ -71,10 +72,7 @@ export const basePharmacyLicenseFormRenderer: FormRenderer<IBasePharmacyLicense>
     displayName: { title: "نام نمایشی", type: "text" },
     order: { title: "رتبه", type: "number" },
     isDefault: { title: "پیش فرض", type: "bool" },
-    monthlyPrice: { title: "قیمت ماهانه", type: "number", price: true },
-    monthlyDiscount: { title: "تخفیف ماهانه", type: "number", price: true },
-    annualPrice: { title: "قیمت سالانه", type: "number", price: true },
-    annualDiscount: { title: "تخفیف سالانه", type: "number", price: true },
+    pricing: { title: "قیمت‌گذاری", type: "licensePricing" },
     descriptions: { title: "توضیحات", type: "strings" },
     modules: {
       title: "منوهای قابل دسترسی",
@@ -115,30 +113,6 @@ const AdminManageBasePharmacyLicensesPage = () => {
           value: (node) => booleanToValue[`${node.isDefault}`],
           component: (node) => <BooleanToIcon value={node.isDefault} />,
           filter: "Set",
-        },
-        monthlyPrice: {
-          name: "قیمت ماهانه",
-          value: (node) => node.monthlyPrice,
-          component: (node) => currencize(node.monthlyPrice),
-          filter: "Number",
-        },
-        monthlyDiscount: {
-          name: "تخفیف ماهانه",
-          value: (node) => node.monthlyDiscount,
-          component: (node) => currencize(node.monthlyDiscount || 0),
-          filter: "Number",
-        },
-        annualPrice: {
-          name: "قیمت سالانه",
-          value: (node) => node.annualPrice,
-          component: (node) => currencize(node.annualPrice),
-          filter: "Number",
-        },
-        annualDiscount: {
-          name: "تخفیف سالانه",
-          value: (node) => node.annualDiscount,
-          component: (node) => currencize(node.annualDiscount || 0),
-          filter: "Number",
         },
         actions: {
           name: "عملیات",

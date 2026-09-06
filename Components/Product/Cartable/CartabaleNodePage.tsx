@@ -88,6 +88,7 @@ const CartableNodePage = <T,>({
         </div>
         <div className={classes.side}>
           <CartablePageCartSection
+            service={model === "services" || model === "servicePackages"}
             cartTitle={cartTitle}
             itemId={itemId}
             model={model}

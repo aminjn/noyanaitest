@@ -42,6 +42,14 @@ const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
 
   return (
     <CartableNodePage
+      trail={[
+        { title: "صفحه اصلی", target: "/" },
+        { title: "محصولات", target: "/product" },
+        {
+          title: data.name || data._id,
+          target: `/productPackage/${data.slug || data._id}`,
+        },
+      ]}
       cartTitle="provider"
       commentsCount={data.commentCount}
       images={data.images}

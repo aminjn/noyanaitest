@@ -25,6 +25,24 @@ import {
 } from "@/Components/Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
 import PurchaseLicensePopup from "./PurchaseLicensePopup";
 
+// Mirrors backend Models/LicenseDuration.ts - the admin-managed catalog of
+// selectable license durations (in days), populated onto each pricing
+// option below via clinicController.getMyLicenseOverview.
+export interface ILicenseDuration extends MongoDoc {
+  duration: number;
+  displayName?: string;
+}
+
+// Mirrors backend Models/BaseLicensePricing.ts - one pricing option per
+// LicenseDuration a plan is offered at (2026-09, replacing the old flat
+// monthlyPrice/monthlyDiscount/annualPrice/annualDiscount fields).
+export interface IBaseLicensePricing {
+  duration: ILicenseDuration;
+  isActive: boolean;
+  price: number;
+  discount: number;
+}
+
 // Mirrors backend Models/BaseClinicLicense.ts - the admin-managed catalog of
 // purchasable license tiers. Mirrors
 // Components/PharmacyPanel/License/PharmacyManageLicencePage.tsx's own
@@ -32,16 +50,10 @@ import PurchaseLicensePopup from "./PurchaseLicensePopup";
 export interface IBaseClinicLicense extends MongoDoc {
   displayName?: string;
   order: number;
-  monthlyPrice: number;
-  monthlyDiscount: number;
-  annualPrice: number;
-  annualDiscount: number;
+  pricing: IBaseLicensePricing[];
   descriptions: string[];
   modules: ClinicDashboardModule[];
 }
-
-export const licensePeriods = ["monthly", "annual"] as const;
-export type LicensePeriod = (typeof licensePeriods)[number];
 
 // Mirrors backend Models/ClinicProfileLicense.ts - the clinic's own current
 // license record (one per clinic), which only tracks which modules are
@@ -61,17 +73,16 @@ interface ILicenseOverview {
 
 const PriceOption = ({
   node,
-  period,
-  price,
+  option,
   mutate,
 }: {
   node: IBaseClinicLicense;
-  period: LicensePeriod;
-  price: number;
+  option: IBaseLicensePricing;
   mutate: () => unknown;
 }) => {
   const getContent = useLocale();
   const { setPopup } = usePopup();
+  const price = Math.max(0, (option.price || 0) - (option.discount || 0));
 
   return (
     <div className={classes.priceOption}>
@@ -79,7 +90,9 @@ const PriceOption = ({
         <span className={`${classes.price} ${txlBold}`}>
           {`${currencize(price)} ${getContent("toman")}`}
         </span>
-        <span className={tsmRegular}>{getContent(period)}</span>
+        <span className={tsmRegular}>
+          {option.duration.displayName || `${option.duration.duration} روز`}
+        </span>
       </div>
       <Button
         variant="Primary"
@@ -89,11 +102,7 @@ const PriceOption = ({
         onClick={() =>
           setPopup(
             "PurchaseLicense",
-            <PurchaseLicensePopup
-              node={node}
-              period={period}
-              mutate={mutate}
-            />,
+            <PurchaseLicensePopup node={node} option={option} mutate={mutate} />,
           )
         }
       >
@@ -110,14 +119,7 @@ const LicenseCard = ({
   node: IBaseClinicLicense;
   mutate: () => unknown;
 }) => {
-  const monthlyPrice = Math.max(
-    0,
-    (node.monthlyPrice || 0) - (node.monthlyDiscount || 0),
-  );
-  const annualPrice = Math.max(
-    0,
-    (node.annualPrice || 0) - (node.annualDiscount || 0),
-  );
+  const activeOptions = node.pricing.filter((p) => p.isActive);
 
   return (
     <div className={classes.item}>
@@ -133,18 +135,14 @@ const LicenseCard = ({
         ))}
       </div>
       <div className={classes.priceOptions}>
-        <PriceOption
-          node={node}
-          period="monthly"
-          price={monthlyPrice}
-          mutate={mutate}
-        />
-        <PriceOption
-          node={node}
-          period="annual"
-          price={annualPrice}
-          mutate={mutate}
-        />
+        {activeOptions.map((option) => (
+          <PriceOption
+            key={option.duration._id}
+            node={node}
+            option={option}
+            mutate={mutate}
+          />
+        ))}
       </div>
     </div>
   );

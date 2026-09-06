@@ -29,6 +29,7 @@ import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { IParaClinicTag } from "../ParaClinicTag/AdminManageParaClinicTagsPage";
+import { IParaClinicCategory } from "../ParaClinicCategory/AdminManageParaClinicCategoriesPage";
 import {
   ICity,
   IDistrict,
@@ -41,8 +42,11 @@ import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import ImagesManager from "../Product/ImagesManager";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
+import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import ParaClinicCommissionTab from "./ParaClinicCommissionTab";
+import ParaClinicProfileLicenseTab from "./ParaClinicProfileLicenseTab";
+import CartIcon from "@/Components/Icons/CartIcon";
 
 export type ParaClinicTestPopulation = Population<{
   Test: TestPopulation;
@@ -296,6 +300,28 @@ const AdminManageParaClinicPage = () => {
                         path: `${API}/auto/user`,
                       },
                       special: { type: "bool", title: "ویژه" },
+                      category: {
+                        type: "nodes",
+                        title: "دسته بندی",
+                        multi: false,
+                        getOptionLabel: (node) =>
+                          (node as IParaClinicCategory).name ||
+                          (node as IParaClinicCategory)._id,
+                        getOptionValue: (node) =>
+                          (node as IParaClinicCategory)._id,
+                        getDefaultValue: (inp) => inp.category,
+                        path: `${API}/auto/paraClinicCategory`,
+                      },
+                      specialities: {
+                        type: "nodes",
+                        title: "تخصص ها",
+                        path: `${API}/auto/speciality`,
+                        getOptionLabel: (node) =>
+                          (node as ISpeciality).name || (node as ISpeciality)._id,
+                        getOptionValue: (node) => (node as ISpeciality)._id,
+                        getDefaultValue: (inp) => inp.specialities,
+                        multi: true,
+                      },
                       tags: {
                         type: "nodes",
                         title: "تگ ها",
@@ -395,6 +421,12 @@ const AdminManageParaClinicPage = () => {
                 id: "Commission",
                 title: "کمیسیون",
                 content: <ParaClinicCommissionTab node={data} />,
+              },
+              {
+                id: "License",
+                title: "مجوز",
+                icon: <CartIcon />,
+                content: <ParaClinicProfileLicenseTab node={data} />,
               },
             ]}
           />

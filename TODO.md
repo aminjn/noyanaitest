@@ -36,7 +36,7 @@ Note: Tamin sandbox ≠ real API — all Tamin integration gets rewritten once r
 - [ ] Onboarding: CSS/design pass
 - [ ] Cart: build line items
 - [ ] Cart: build totals/checkout
-- [ ] Book page: remove dead code
+- [x] ~~Book page: remove dead code~~ — the old /doctors and /dr card-level booking flow (SelectSessionToReservePopup, the /book/page/[page] paginated list, /session/[id] submit flow) was retired in favor of the /book Reservation flow. See AUDIT/FIXES_TODO.md F-01, F-14.
 
 ### Panel: Admin
 
@@ -146,22 +146,22 @@ Note: Tamin sandbox ≠ real API — all Tamin integration gets rewritten once r
 
 ### Domain: User
 
-- [ ] Add invoice pagination
-- [ ] Add booking pagination
+- [x] Add invoice pagination
+- [x] Add booking pagination
 
 ### Cross-cutting
 
 - [ ] Finish prescription v2 migration
 - [ ] Retire prescription v1
-- [ ] Implement payment settlement
+- [x] ~~Implement payment settlement~~ — moot: the old /doctors and /dr booking flow (Invoice -> settleInvoice -> Booking) this was for was retired in favor of the Reservation flow (wallet-debit at booking time, no separate settlement step). See AUDIT/FIXES_TODO.md F-01.
 - [ ] Resolve telephony test endpoints
 - [ ] Delete leftover SIP config
 - [ ] Fix Offer owner list
-- [ ] Add upload file filter
+- [x] ~~Add upload file filter~~ — `noyanai-back/Controllers/uploadController.ts` now sniffs actual file bytes against an allowlist (images/pdf/audio/video/office docs) instead of accepting anything, and the on-disk extension/filename is built entirely from sanitized/allowlisted parts rather than the attacker-supplied original filename (closes the path-traversal angle too). See AUDIT/FIXES_TODO.md F-02.
 - [ ] Auto-fill blog author
 - [ ] Build related-posts feature
 - [ ] Fix availability race condition
-- [ ] Fix timezone shift bug
+- [x] ~~Fix timezone shift bug~~ — root cause found: `getSessionDateKey` (backend `Lib/helpers.ts`, frontend `Components/helpers/lib.tsx`) used a UTC-based day key, which rolled over 8:30pm-ish local time in Tehran and silently filed evening-created doctor sessions under the wrong day. Fixed to use the local calendar day in both repos, matching `Reservation`'s (already-correct) date logic. Sessions already stored under the old key are not retroactively repaired. See AUDIT/FIXES_TODO.md F-19.
 
 ---
 

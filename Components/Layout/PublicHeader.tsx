@@ -3,7 +3,7 @@ import LogoLong from "../UI/LogoLong";
 import classes from "./PublicHeader.module.css";
 import UserButton from "./UserButton";
 import { usePathname } from "next/navigation";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
@@ -29,6 +29,7 @@ import {
   categoryTabs,
   CategoryLike,
 } from "./headerCategories";
+import SearchModal from "./SearchModal";
 
 const NavLink = ({
   target,
@@ -211,56 +212,61 @@ const PublicHeader = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+
   return (
-    <div className={classes.container}>
-      <header className={classes.main}>
-        <div className={classes.start}>
-          <button
-            type="button"
-            className={classes.burgerBtn}
-            aria-label={getContent("menu")}
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <Ixon width="1.25rem">
-              <BarsIcon />
-            </Ixon>
-          </button>
-          <Link className={classes.right} href={"/"}>
-            <LogoLong />
-          </Link>
-        </div>
-        <nav className={classes.nav}>
-          <NavLink title="homePage" target="/" />
-          <Categories />
-          <NavLink title="officeBook" target="/book" />
-          <NavLink title="aiDetection" target="/wizard" />
-          <NavLink title="noyanClinic" target="/product" />
-          <WithSubs
-            title="more"
-            subs={[
-              { title: "blogs", taregt: "/mag" },
-              { title: "bookingGuide", taregt: "/bookingGuide" },
-              { title: "faqs", taregt: "/faq" },
-              { title: "contactUs", taregt: "/contact" },
-              { title: "aboutUs", taregt: "/about" },
-            ]}
-          />
-          <NavLink title="forDoctors" target="/doctorpanel" accent />
-        </nav>
-        <div className={classes.left}>
-          <span className={classes.searchWrap}>
-            <SearchButton />
-          </span>
-          <CartButton />
-          <NotificationButton />
-          <UserButton />
-        </div>
-      </header>
-      <PublicMobileMenu
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-      />
-    </div>
+    <Fragment>
+      <div className={classes.container}>
+        <header className={classes.main}>
+          <div className={classes.start}>
+            <button
+              type="button"
+              className={classes.burgerBtn}
+              aria-label={getContent("menu")}
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Ixon width="1.25rem">
+                <BarsIcon />
+              </Ixon>
+            </button>
+            <Link className={classes.right} href={"/"}>
+              <LogoLong />
+            </Link>
+          </div>
+          <nav className={classes.nav}>
+            <NavLink title="homePage" target="/" />
+            <Categories />
+            <NavLink title="officeBook" target="/book" />
+            <NavLink title="aiDetection" target="/wizard" />
+            <NavLink title="noyanClinic" target="/product" />
+            <WithSubs
+              title="more"
+              subs={[
+                { title: "blogs", taregt: "/mag" },
+                { title: "bookingGuide", taregt: "/bookingGuide" },
+                { title: "faqs", taregt: "/faq" },
+                { title: "contactUs", taregt: "/contact" },
+                { title: "aboutUs", taregt: "/about" },
+              ]}
+            />
+            <NavLink title="forDoctors" target="/doctorpanel" accent />
+          </nav>
+          <div className={classes.left}>
+            <span className={classes.searchWrap}>
+              <SearchButton isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
+            </span>
+            <CartButton />
+            <NotificationButton />
+            <UserButton />
+          </div>
+        </header>
+        {isSearchOpen && <SearchModal close={() => setIsSearchOpen(false)} />}
+        <PublicMobileMenu
+          isOpen={isMobileMenuOpen}
+          onClose={() => setIsMobileMenuOpen(false)}
+        />
+      </div>
+    </Fragment>
   );
 };
 

@@ -6,20 +6,24 @@ import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
-import { IBaseDoctorLicense, LicensePeriod } from "./DoctorManageLicencePage";
+import {
+  IBaseDoctorLicense,
+  IBaseLicensePricing,
+} from "./DoctorManageLicencePage";
 
 // Confirm-then-Act purchase flow, same pattern as
 // Components/DoctorPanel/Clinic/UnjoinClinicPopup.tsx - POSTs to
-// doctorController.purchaseLicense with the chosen billing period, which
-// debits the doctor's wallet for that period's price and replaces their
+// doctorController.purchaseLicense with the chosen LicenseDuration id
+// (2026-09, replacing the old monthly/annual period toggle), which debits
+// the doctor's wallet for that duration's price and replaces their
 // DoctorProfileLicense.displayName/modules with this tier's own.
 const PurchaseLicensePopup = ({
   mutate,
   node,
-  period,
+  option,
 }: {
   node: IBaseDoctorLicense;
-  period: LicensePeriod;
+  option: IBaseLicensePricing;
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,7 +36,7 @@ const PurchaseLicensePopup = ({
       <ConfirmationPopup
         message={getContent("buyLicenseConfirmationMessage", [
           node.displayName || "",
-          getContent(period),
+          option.duration.displayName || "",
         ])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
@@ -40,7 +44,7 @@ const PurchaseLicensePopup = ({
       <Act
         path={isLoading ? `${API}/doctor/license/${node._id}` : null}
         method="POST"
-        payload={{ period }}
+        payload={{ duration: option.duration._id }}
         onDone={(status) => {
           setIsLoading(false);
           if (!status) return;

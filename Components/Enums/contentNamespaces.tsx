@@ -161,8 +161,10 @@ export const contentNamespaces = {
     "checkInput",
   ],
 
-  // app/dashboard/invoice/page.tsx + [nodeId] (DashboardManageInvoice(s)Page,
-  // CheckoutPopup — CheckoutPopup itself has no getContent calls).
+  // app/dashboard/invoice/page.tsx + [nodeId] (DashboardManageInvoice(s)Page).
+  // Read-only per F-01 - the "pay" action (and CheckoutPopup, which had no
+  // getContent calls of its own) was removed along with settleInvoice; no
+  // invoice can be paid anymore. See AUDIT/FIXES_TODO.md F-01, F-18.
   dashboardInvoice: [
     "submittedAt",
     "total",
@@ -173,7 +175,6 @@ export const contentNamespaces = {
     "status",
     "toman",
     "createdAt",
-    "pay",
   ],
 
   // app/dashboard/booking/page.tsx + [nodeId] (DashboardManageBooking(s)Page).
@@ -470,13 +471,10 @@ export const contentNamespaces = {
     "xToman",
   ],
 
-  // app/book/page/[page]/page.tsx (BookingPage) — the older/simpler
-  // paginated booking list. app/book/page.tsx no longer renders this
-  // component (it imports BookingPage but only uses BookingPage2), so this
-  // route may be dead; still scoped it since it's reachable. Reuses
-  // "doctorsList" since it renders the same DoctorCardWithSessions /
-  // DoctorsCardList components as the public doctors list.
-  bookingLegacyList: ["booking"],
+  // bookingLegacyList (app/book/page/[page]/page.tsx, BookingPage) removed
+  // per F-01/F-14 - the old paginated booking list rendered the retired
+  // System-A booking flow and was confirmed unlinked from the live UI. See
+  // AUDIT/FIXES_TODO.md F-01, F-14.
 
   // app/become/page.tsx (BecomeSomethingPage) — the public, tab-based page
   // where a visitor picks which node they want to become (doctor, para
@@ -637,8 +635,6 @@ export const contentNamespaces = {
     "currentBalance",
     "buyLicenseConfirmationMessage",
     "nothingFound",
-    "monthly",
-    "annual",
   ],
 
   // app/clinicpanel/profile/page.tsx (ClinicManageProfilePage,
@@ -1211,8 +1207,6 @@ export const contentNamespaces = {
     "currentBalance",
     "buyLicenseConfirmationMessage",
     "nothingFound",
-    "monthly",
-    "annual",
   ],
 
   // app/doctorpanel/schedule/page.tsx (DoctorManageSchedulePage,
@@ -1331,8 +1325,6 @@ export const contentNamespaces = {
     "currentBalance",
     "buyLicenseConfirmationMessage",
     "nothingFound",
-    "monthly",
-    "annual",
   ],
 
   // app/pharmacypanel/profile/page.tsx (PharmacyManageProfilePage,

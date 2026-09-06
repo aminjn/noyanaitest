@@ -1,4 +1,4 @@
-  .main {
+.main {
   display: flex;
   gap: 0.25rem;
   padding: 0.25rem;
@@ -28,7 +28,7 @@
 .menu {
   position: absolute;
   top: calc(100% + 0.5rem);
-  z-index: 1;
+  z-index: 30;
   background-color: var(--white);
   border: 1px solid var(--gray6);
   display: flex;

@@ -103,7 +103,9 @@ const RTFEditor = forwardRef<
           renderLeaf={RenderLeaf}
           placeholder="یه داستان بنویس ..."
           renderPlaceholder={({ children, attributes }) => (
-            <span className={classes.placeholder}  {...attributes}>{children}</span>
+            <span className={classes.placeholder} {...attributes}>
+              {children}
+            </span>
           )}
         />
       </Slate>

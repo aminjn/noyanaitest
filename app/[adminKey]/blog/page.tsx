@@ -1,13 +1,8 @@
-import CheckAdminKey from "@/Components/Admin/UI/CheckAdminKey";
-import { AdminProps } from "../page";
 import AdminManageBlogsPage from "@/Components/Admin/Blog/AdminManageBlogsPage";
 
-const AdminManageBlogs = ({ params: { adminKey } }: AdminProps) => {
-  return (
-    <CheckAdminKey providedAdminKey={adminKey}>
-      <AdminManageBlogsPage />
-    </CheckAdminKey>
-  );
+// adminKey enforcement now lives in app/[adminKey]/layout.tsx — see F-05.
+const AdminManageBlogs = () => {
+  return <AdminManageBlogsPage />;
 };
 
 export default AdminManageBlogs;

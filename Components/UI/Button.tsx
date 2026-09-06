@@ -1,4 +1,10 @@
-import { Fragment, MouseEventHandler, ReactNode, useMemo } from "react";
+import {
+  Fragment,
+  MouseEvent,
+  MouseEventHandler,
+  ReactNode,
+  useMemo,
+} from "react";
 import classes from "./Button.module.css";
 import { WithStyleProps } from "../Layout/Layout";
 import Ixon from "./Ixon";
@@ -116,6 +122,8 @@ const Button = ({
             e.preventDefault();
             return;
           }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onClick?.(e as any);
         }}
       >
         {content}

@@ -8,6 +8,8 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { t2xsRegular } from "../UI/Typography";
 import IconWithCountButton from "../UI/IconWithCountButton";
+import { useState } from "react";
+import NotificationModal from "./NotificationModal";
 const NotificationButton = () => {
   const { user } = useUser();
 
@@ -16,16 +18,16 @@ const NotificationButton = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.count),
   );
 
-  const push = useProgress();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   if (!user) return null;
   return (
-    <IconWithCountButton
-      count={data}
-      onClick={() => push("/dashboard/notification")}
-    >
-      <Bell01Icon />
-    </IconWithCountButton>
+    <div className={classes.main}>
+      <IconWithCountButton count={data} onClick={() => setIsOpen(true)}>
+        <Bell01Icon />
+      </IconWithCountButton>
+      {isOpen && <NotificationModal close={() => setIsOpen(false)} />}
+    </div>
   );
 };
 

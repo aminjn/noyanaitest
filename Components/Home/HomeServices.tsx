@@ -11,7 +11,13 @@ import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
 import ServiceCard from "../UI/ServiceCard";
-import { t4xlBold, tlgBold, tmdMedium } from "../UI/Typography";
+import {
+  t4xlBold,
+  tlgBold,
+  tmdMedium,
+  tsmRegular,
+  txlDemiBold,
+} from "../UI/Typography";
 import Button from "../UI/Button";
 
 const HomeServices = ({
@@ -57,10 +63,10 @@ const HomeServices = ({
               sizes="12rem"
             />
           </div>
-          <h3 className={`${classes.secondareyTitle} ${t4xlBold}`}>
+          <h3 className={`${classes.secondareyTitle} ${txlDemiBold}`}>
             {getContent("noyanClinicalServicesTitle")}
           </h3>
-          <p className={`${classes.description} ${tmdMedium}`}>
+          <p className={`${classes.description} ${tsmRegular}`}>
             {getContent("noyanClinicalServicesDescription")}
           </p>
           <Button

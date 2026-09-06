@@ -21,6 +21,7 @@ const CartablePageCartSection = ({
   price,
   itemId,
   model,
+  service,
 }: {
   cartTitle: ContentKey;
   cartTitleTail?: ReactNode;
@@ -29,8 +30,11 @@ const CartablePageCartSection = ({
   price?: number;
   itemId: string;
   model: CartModel;
+  service?: boolean;
 }) => {
   const getContent = useLocale();
+
+  const { getItemQty } = useCart();
 
   if (!owner) return null;
   return (
@@ -48,7 +52,7 @@ const CartablePageCartSection = ({
             <div className={classes.priceHeader}>
               <s
                 className={`${classes.strike} ${tsmRegular}`}
-              >{`${currencize(price || 0)} ${getContent("toman")}`}</s>
+              >{`${currencize((price || 0) * (getItemQty({ itemId, model }) || 1))} ${getContent("toman")}`}</s>
               <span className={`${classes.percent} ${t2xsRegular}`}>
                 {getContent("percentSymbol", [
                   Math.ceil(discount / (price || 1)).toString(),
@@ -57,16 +61,18 @@ const CartablePageCartSection = ({
             </div>
           )}
           <span className={`${classes.price} ${tlgBold}`}>
-            {`${currencize((price || 0) - (discount || 0))} ${getContent("toman")}`}
+            {`${currencize(((price || 0) - (discount || 0)) * (getItemQty({ itemId, model }) || 1))} ${getContent("toman")}`}
           </span>
           {!!discount && (
             <p className={`${classes.saved} ${t2xsRegular}`}>
-              {getContent("youSavedxToman", [currencize(discount)])}
+              {getContent("youSavedxToman", [
+                currencize(discount * (getItemQty({ itemId, model }) || 1)),
+              ])}
             </p>
           )}
         </div>
         <CartActions itemId={itemId} model={model} />
-        <ProductCartInfos />
+        <ProductCartInfos service={service} />
       </div>
       <PlusBox value={discount || 0} />
     </Fragment>

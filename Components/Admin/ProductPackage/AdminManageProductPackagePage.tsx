@@ -45,8 +45,8 @@ const InfoManager = ({
           getDefaultValue: (inp) => inp.category,
           multi: false,
         },
-        price: { type: "number", title: "فیمت" },
-        discount: { type: "number", title: "تخفیف" },
+        price: { type: "number", title: "فیمت", price: true },
+        discount: { type: "number", title: "تخفیف", price: true },
         image: { type: "image", title: "تصویر" },
         products: {
           type: "nodes",

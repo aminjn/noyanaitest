@@ -11,7 +11,13 @@ import PillIcon from "../Icons/PillIcon";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
 import ProductCard from "../Product/ProductCard";
-import { t4xlBold, tlgBold, tmdMedium } from "../UI/Typography";
+import {
+  t4xlBold,
+  tlgBold,
+  tmdMedium,
+  tsmRegular,
+  txlDemiBold,
+} from "../UI/Typography";
 import useSWR from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
@@ -73,10 +79,10 @@ const HomePharmacyProducts = () => {
               sizes="12rem"
             />
           </div>
-          <h3 className={`${classes.secondareyTitle} ${t4xlBold}`}>
+          <h3 className={`${classes.secondareyTitle} ${txlDemiBold}`}>
             {getContent("noyanProductsTitle")}
           </h3>
-          <p className={`${classes.description} ${tmdMedium}`}>
+          <p className={`${classes.description} ${tsmRegular}`}>
             {getContent("noyanProductsDescription")}
           </p>
           <Button

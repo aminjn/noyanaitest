@@ -121,7 +121,7 @@ export const mutateServiceFormRenderer: FormRenderer<IService> = {
     multi: true,
   },
   description: { type: "rtf", title: "توضیحات" },
-  whyChoose: { type: "rtf", title: "چرا این" },
+  whyChoose: { type: "text", title: "چرا این" },
   stages: { type: "rtf", title: "مراحل ا نجام" },
   results: { type: "rtf", title: "نتایج" },
 };

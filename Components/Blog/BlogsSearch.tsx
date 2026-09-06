@@ -15,9 +15,10 @@ import { useSearchParams } from "next/navigation";
 const BlogsSearch = ({ recommended }: { recommended?: IBlog[] }) => {
   const getContent = useScopedLocale(["mag"]);
 
-  const [query, setQuery] = useDebounce({ initialValue: "" });
-
   const searchParams = useSearchParams();
+  const [query, setQuery] = useDebounce({
+    initialValue: searchParams.get("search"),
+  });
 
   const push = useProgress();
 

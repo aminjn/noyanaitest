@@ -81,9 +81,10 @@ const SpecialitiesPage = ({
 }: SpecialitiesPageProps) => {
   const getContent = useLocale();
 
-  const [query, setQuery] = useDebounce<string>({ initialValue: "" });
-
   const searchParams = useSearchParams();
+  const [query, setQuery] = useDebounce<string>({
+    initialValue: searchParams.get("search") || "",
+  });
 
   const getSelectedCategories = useCallback(() => {
     const query = searchParams.getAll("category");

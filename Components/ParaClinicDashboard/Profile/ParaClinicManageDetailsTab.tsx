@@ -4,6 +4,7 @@ import { API } from "@/Components/config";
 import useParaClinic from "@/Components/Hooks/useParaClinic";
 import useLocale from "@/Components/Hooks/useLocale";
 import { IParaClinicTag } from "@/Components/Admin/ParaClinicTag/AdminManageParaClinicTagsPage";
+import { IParaClinicCategory } from "@/Components/Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 const ParaClinicManageDetailsTab = () => {
@@ -27,6 +28,17 @@ const ParaClinicManageDetailsTab = () => {
           renderer={{
             name: { type: "text", title: getContent("name") },
             image: { type: "image", title: getContent("image") },
+            category: {
+              type: "nodes",
+              title: getContent("category"),
+              path: `${API}/public/paraClinicCategory`,
+              getOptionLabel: (node) =>
+                (node as IParaClinicCategory).name ||
+                (node as IParaClinicCategory)._id,
+              getOptionValue: (node) => (node as IParaClinicCategory)._id,
+              getDefaultValue: (inp) => inp.category,
+              multi: false,
+            },
             tags: {
               type: "nodes",
               title: getContent("tags"),

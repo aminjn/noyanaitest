@@ -6,7 +6,7 @@ const RenderLeaf = ({ children, leaf, attributes }: RenderLeafProps) => {
     fontSize: leaf.size || 16,
     //TODO: add default color for link element
     color: leaf.color || "var(--black)",
-    backgroundColor: leaf.bg || "var(--white)",
+    backgroundColor: leaf.bg || "transparent",
     textAlign: "center",
     lineHeight: leaf.lineHeight || "100%",
   };

@@ -16,6 +16,9 @@ export const paraClinicActions = [
   // fulfilling/cancelling this paraClinic's own line items. Kept in sync
   // with Models/ParaClinicAcl.ts on noyanai-back.
   "mutateOrders",
+  // Licenses page (2026-09) — paraClinicPanel/license. Kept in sync with
+  // Models/ParaClinicAcl.ts on noyanai-back.
+  "readLicenses",
 ] as const;
 
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
@@ -26,6 +29,7 @@ export const paraClinicActionCategories = [
   "articles",
   "tamin",
   "incomingOrders",
+  "licenses",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedParaClinicActions: Readonly<
@@ -36,4 +40,5 @@ export const categorizedParaClinicActions: Readonly<
   articles: ["readArticles"],
   tamin: ["readTamin"],
   incomingOrders: ["readOrders", "mutateOrders"],
+  licenses: ["readLicenses"],
 } as const;

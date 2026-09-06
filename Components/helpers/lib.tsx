@@ -6,8 +6,18 @@ export function range(x: number, y: number): number[] {
   return Array.from({ length }, (_, i) => x + i);
 }
 
-export const getSessionDateKey = (date: Date): string =>
-  new Date(date).toISOString().split("T")[0];
+// F-19 fix: mirrors the backend's Lib/helpers.ts:getSessionDateKey - this
+// used to be UTC-based (toISOString()), which rolls over to the next
+// calendar day at UTC midnight, the wrong day for a timezone ahead of UTC.
+// Now reads the LOCAL (viewer's browser) calendar day instead, matching the
+// server-side fix. See AUDIT/FIXES_TODO.md F-19.
+export const getSessionDateKey = (date: Date): string => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 export const calculateAge = (born: Date): number =>
   Math.floor(

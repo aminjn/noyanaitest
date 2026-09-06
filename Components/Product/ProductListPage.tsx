@@ -101,10 +101,11 @@ const ProductListPage = ({
   specials,
 }: ProductListPageProps) => {
   const getContent = useLocale();
-
-  const [query, setQuery] = useDebounce({ initialValue: "" });
-
   const searchParams = useSearchParams();
+
+  const [query, setQuery] = useDebounce({
+    initialValue: searchParams.get("search"),
+  });
 
   const push = useProgress();
 

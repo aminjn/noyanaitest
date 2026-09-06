@@ -36,7 +36,15 @@ const NodesSelector = <TMulti extends boolean = false>({
   clearable?: boolean;
 }>) => {
   const { data } = useSWR(path, (url: string) =>
-    fetcher({ url }).then(!!dataParser ? dataParser : (res) => res.data.data),
+    fetcher({ url }).then(
+      !!dataParser
+        ? dataParser
+        : (res) =>
+            res.data.data.sort(
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (a: any, b: any) => (a.order || 0) - (b.order || 0),
+            ),
+    ),
   );
 
   const getContent = useScopedLocale(["common"]);

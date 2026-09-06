@@ -10,24 +10,24 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useLocale from "@/Components/Hooks/useLocale";
 import { currencize } from "@/Components/helpers/currencize";
 import FormatDate from "@/Components/UI/FormatDate";
-import Button from "@/Components/UI/Button";
-import usePopup from "@/Components/Hooks/usePopup";
-import CheckoutPalPopup from "./CheckoutPopup";
 import DataPair from "@/Components/Admin/UI/DataPair";
 import List from "@/Components/Admin/UI/List";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 
+// Read-only per F-01: this page's "pay" action opened CheckoutPalPopup,
+// which submitted to /checkout/invoice/:id (settleInvoice) - System A's
+// payment step, removed along with the rest of the old /doctors and /dr
+// booking flow (see AUDIT/FIXES_TODO.md F-01, F-18). Existing invoices are
+// still viewable here for history; none can be paid anymore.
 const DashboardManageInvoicePage = () => {
   const params = useParams<{ nodeId: string }>();
 
-  const { data, error, mutate } = useSWR<IInvoice>(
+  const { data, error } = useSWR<IInvoice>(
     `${API}/user/invoice/${params.nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
-
-  const { setPopup } = usePopup();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -46,18 +46,6 @@ const DashboardManageInvoicePage = () => {
               title={getContent("createdAt")}
               value={<FormatDate value={data.submittedAt} />}
             />
-            {!data.checkout && data.payable && (
-              <Button
-                onClick={() =>
-                  setPopup(
-                    "Checkout",
-                    <CheckoutPalPopup invoice={data} mutate={mutate} />,
-                  )
-                }
-              >
-                {getContent("pay")}
-              </Button>
-            )}
           </List>
         </WithTitle>
       )}

@@ -4,9 +4,11 @@ import SpecialsBox from "../Clinic/SpecialsBox";
 import useLocale from "../Hooks/useLocale";
 import FlaskIcon from "../Icons/FlaskIcon";
 import { IParaClinic } from "../Layout/ParaClinicPanelLayout";
+import { IParaClinicCategory } from "../Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageList from "../UI/ListPage/ListPageList";
+import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ProPromotion from "../UI/ProPromotion";
 import classes from "./ParaClinicsListPage.module.css";
 import useDebounce from "../Hooks/useDebounce";
@@ -23,6 +25,7 @@ export type ParaClinicsListPageProps = {
     Province: Record<never, never>;
   }>[];
   pagesCount: number;
+  categories: IParaClinicCategory[];
   specials: IParaClinic<{ Province: Record<never, never> }>[];
 };
 
@@ -39,21 +42,26 @@ const SpecialItem = ({
 const ParaClinicsListPage = ({
   data,
   pagesCount,
+  categories,
   specials,
 }: ParaClinicsListPageProps) => {
   const getContent = useLocale();
 
   const searchParams = useSearchParams();
 
-  const [query, setQuery] = useDebounce<string>({ initialValue: "" });
+  const [query, setQuery] = useDebounce<string>({
+    initialValue: searchParams.get("search") || "",
+  });
 
   const push = useProgress();
 
   useEffect(() => {
     const params = new URLSearchParams();
     if (query) params.append("search", query);
+    const categories = searchParams.getAll("category");
+    for (const cat of categories) params.append("category", cat);
     push(`/paraClinic?${params.toString()}`);
-  }, [query, push]);
+  }, [searchParams, query, push]);
 
   return (
     <ListPageLayout
@@ -95,6 +103,11 @@ const ParaClinicsListPage = ({
           </Ixon>
         </div>
       </div>
+      <ListPageCategorySelector
+        basePath="/paraClinic"
+        categories={categories}
+        title={getContent("paraClinicKind")}
+      />
       <ListPageList
         itemWidth="24.0625rem"
         pagination={{
@@ -104,7 +117,9 @@ const ParaClinicsListPage = ({
             params.append("page", page.toString());
             const query = searchParams.get("search");
             if (query) params.append("search", query);
-            return `/symptom?${params.toString()}`;
+            const categories = searchParams.getAll("category");
+            for (const cat of categories) params.append("category", cat);
+            return `/paraClinic?${params.toString()}`;
           },
           pagesCount: pagesCount,
         }}

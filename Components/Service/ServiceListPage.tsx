@@ -20,14 +20,21 @@ import { IServicePackage } from "../Admin/ServicePackage/AdminManageServicePacka
 import ToggleButton from "../UI/RTFEditor/ToggleButton";
 import ToggleInput from "../UI/ToggleInput";
 import {
+  t2xsMedium,
   t2xsRegular,
   tbaseMedium,
   tlgDemiBold,
+  tsmBold,
+  txsDemiBold,
   txsMedium,
 } from "../UI/Typography";
 import ListPageHeaderSearch from "../UI/ListPage/ListPageHeaderSearch";
 import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
 import SwitchProductAndService from "../Product/SwitchProductAndService";
+import HostedImage from "../UI/HostedImage";
+import StarIcon from "../Icons/StarIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { currencize } from "../helpers/currencize";
 
 export type ServiceListPageProps = {
   data: (
@@ -52,7 +59,38 @@ const SpecialItem = ({
 }: {
   node: IService<{ Owner: Record<never, never> }>;
 }) => {
-  return <></>;
+  const getContent = useScopedLocale(["common"]);
+
+  return (
+    <div className={classes.item}>
+      <div className={classes.itemImage}>
+        <HostedImage
+          src={node.image}
+          alt={node.name}
+          sizes="4rem"
+          style={{ objectFit: "cover" }}
+          fill
+        />
+      </div>
+      <div className={classes.itemContent}>
+        <div className={`${classes.score} ${txsMedium}`}>
+          <span>{node.averageScore}</span>
+          <Ixon width="1rem">
+            <StarIcon />
+          </Ixon>
+        </div>
+        <h3 className={`${classes.itemName} ${tsmBold}`}>{node.name}</h3>
+        {!!node.owner && (
+          <legend className={`${classes.itemOwner} ${t2xsMedium}`}>
+            {`${node.owner.firstName || ""} ${node.owner.lastName || ""}`.trim()}
+          </legend>
+        )}
+        <div className={`${classes.price} ${txsDemiBold}`}>
+          {getContent("xToman", [currencize(node.price)])}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const ServiceListPage = ({
@@ -63,10 +101,11 @@ const ServiceListPage = ({
   count,
 }: ServiceListPageProps) => {
   const getContent = useLocale();
-
-  const [query, setQuery] = useDebounce({ initialValue: "" });
-
   const searchParams = useSearchParams();
+
+  const [query, setQuery] = useDebounce({
+    initialValue: searchParams.get("search"),
+  });
 
   const push = useProgress();
 

@@ -22,6 +22,9 @@ import useLocale from "@/Components/Hooks/useLocale";
 import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
 import RangeInput from "@/Components/UI/RangeInput";
 import FilesInput from "./FilesInput";
+import LicensePricingInput, {
+  ILicensePricingEntry,
+} from "./LicensePricingInput";
 
 export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
   [key in keyof Partial<TInput>]: (
@@ -57,6 +60,7 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
       }
     | { type: "files"; getDefaultValue?: (node: TInput) => string[] }
     | { type: "number"; price?: boolean }
+    | { type: "licensePricing" }
   ) & {
     title: string;
     readOnly?: boolean;
@@ -322,6 +326,19 @@ const CreateForm = <TInput, TResult = unknown>({
                 defaultValue={
                   defaultValue
                     ? segment.getDefaultValue?.(defaultValue)
+                    : undefined
+                }
+                onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
+              />
+            );
+            break;
+          case "licensePricing":
+            content = (
+              <LicensePricingInput
+                {...commons}
+                defaultValue={
+                  Array.isArray(defaultValue?.[key])
+                    ? (defaultValue?.[key] as unknown as ILicensePricingEntry[])
                     : undefined
                 }
                 onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}

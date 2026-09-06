@@ -28,12 +28,13 @@ import {
   tsmRegular,
   txsMedium,
 } from "../UI/Typography";
+import CartItemActions from "./CartItemActions";
 
 // physical goods that need to be shipped - kept in sync with
 // physicalCartModels in CartController.submitCart on noyanai-back
 const physicalCartModels: CartModel[] = ["products", "productPackages"];
 
-type CartRow = {
+export type CartRow = {
   itemId: string;
   model: CartModel;
   image?: string;
@@ -52,7 +53,7 @@ const sectionTitle: Record<CartModel, ContentKey> = {
   tests: "tests",
 };
 
-const buildRows = (cart: UseCartNode): CartRow[] => {
+export const buildCartRows = (cart: UseCartNode): CartRow[] => {
   const rows: CartRow[] = [];
 
   cart.products.forEach(({ item, qty }) => {
@@ -127,12 +128,10 @@ const buildRows = (cart: UseCartNode): CartRow[] => {
 const CartRowItem = ({
   row,
   isLoading,
-  onChangeQty,
   onRemove,
 }: {
   row: CartRow;
   isLoading: boolean;
-  onChangeQty: (row: CartRow, amount: number) => void;
   onRemove: (row: CartRow) => void;
 }) => {
   const getContent = useLocale();
@@ -169,29 +168,7 @@ const CartRowItem = ({
           {`${currencize(finalPrice)} ${getContent("toman")}`}
         </span>
       </div>
-      <div className={classes.qtyBox}>
-        <button
-          type="button"
-          className={classes.qtyBtn}
-          disabled={isLoading}
-          onClick={() => onChangeQty(row, 1)}
-        >
-          <Ixon width="1rem">
-            <PlusIcon />
-          </Ixon>
-        </button>
-        <span className={`${classes.qty} ${txsMedium}`}>{row.qty}</span>
-        <button
-          type="button"
-          className={classes.qtyBtn}
-          disabled={isLoading}
-          onClick={() => onChangeQty(row, -1)}
-        >
-          <Ixon width="1rem">
-            <MinusIcon />
-          </Ixon>
-        </button>
-      </div>
+      <CartItemActions row={row} />
       <button
         type="button"
         className={classes.removeBtn}
@@ -224,8 +201,9 @@ const CheckoutSection = ({
 
   const { setPopup } = usePopup();
 
-  const { data: wallet } = useSWR<IWallet>(`${API}/user/wallet`, (url: string) =>
-    fetcher({ url }).then((res) => res.data),
+  const { data: wallet } = useSWR<IWallet>(
+    `${API}/user/wallet`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   return (
@@ -272,7 +250,10 @@ const CheckoutSection = ({
           if (isLoading) return;
           setPopup(
             "CartCheckout",
-            <CartCheckoutPopup total={total} requiresAddress={requiresAddress} />,
+            <CartCheckoutPopup
+              total={total}
+              requiresAddress={requiresAddress}
+            />,
           );
         }}
       >
@@ -310,7 +291,7 @@ const CartPage = () => {
       <div className={classes.noUser}>{getContent("loginToGainAccess")}</div>
     );
 
-  const rows = cart ? buildRows(cart) : [];
+  const rows = cart ? buildCartRows(cart) : [];
   const isEmpty = !isCartLoading && rows.length === 0;
 
   const totalPrice = rows.reduce(
@@ -362,13 +343,6 @@ const CartPage = () => {
                       key={`${row.model}-${row.itemId}`}
                       row={row}
                       isLoading={isLoading}
-                      onChangeQty={(target, amount) =>
-                        mutateCartItem({
-                          item: target.itemId,
-                          model: target.model,
-                          amount,
-                        })
-                      }
                       onRemove={(target) =>
                         removeCartItem({
                           item: target.itemId,

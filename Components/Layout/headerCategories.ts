@@ -3,6 +3,7 @@ import { IBlogCategory } from "../Admin/Blog/AdminManageBlogsPage";
 import { IProductCategory } from "../Admin/ProductCategory/AdminManageProductCategoriesPage";
 import { IDiseaseCategory } from "../Admin/DiseaseCategory/AdminManageDiseaseCategoriesPage";
 import { IClinicCategory } from "../Admin/ClinicCategory/AdminManageClinicCategoriesPage";
+import { IParaClinicCategory } from "../Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
 import { IHospitalCategory } from "../Admin/HospitalCategory/AdminManageHospitalCategoriesPage";
 import { ITestCategory } from "../Admin/TestCategory/AdminManageTestCategoriesPage";
 import { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
@@ -15,6 +16,7 @@ export interface HeaderCategories {
   productCategories: IProductCategory[];
   diseaseCategories: IDiseaseCategory[];
   clinicCategories: IClinicCategory[];
+  paraClinicCategories: IParaClinicCategory[];
   hospitalCategories: IHospitalCategory[];
   testCategories: ITestCategory[];
   serviceCategories: IServiceCategory[];
@@ -59,6 +61,12 @@ export const categoryTabs: {
     label: "clinics",
     allTarget: "/clinic",
     hrefFor: (v) => `/clinic?category=${v}`,
+  },
+  {
+    key: "paraClinicCategories",
+    label: "paraClinics",
+    allTarget: "/paraClinic",
+    hrefFor: (v) => `/paraClinic?category=${v}`,
   },
   {
     key: "hospitalCategories",

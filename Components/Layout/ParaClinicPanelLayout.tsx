@@ -10,10 +10,15 @@ import BecomeParaClinicPage from "./BecomeParaClinicPage";
 import PanelLayout from "./PanelLayout";
 import { ReactNode } from "react";
 import ParaClinicSidebar from "./ParaClinicSidebar";
+import ParaClinicLicenseGate from "../ParaClinicDashboard/ParaClinicLicenseGate";
 import {
   IParaClinicTag,
   ParaClinicTagPopulation,
 } from "../Admin/ParaClinicTag/AdminManageParaClinicTagsPage";
+import {
+  IParaClinicCategory,
+  ParaClinicCategoryPopulation,
+} from "../Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
 import {
   CityPopulation,
   DistrictPopulation,
@@ -34,6 +39,10 @@ import {
   IInsurance,
   InsurancePopulation,
 } from "../DoctorPanel/Insurance/DoctorInsurancesTab";
+import {
+  ISpeciality,
+  SpecialityPopulation,
+} from "../Admin/Speciality/AdminManageSpecialitiesPage";
 
 export type ParaClinicPopulation = Population<{
   User: UserPopulation;
@@ -41,9 +50,11 @@ export type ParaClinicPopulation = Population<{
   Province: ProvincePopulation;
   City: CityPopulation;
   District: DistrictPopulation;
+  Category: ParaClinicCategoryPopulation;
   Images: ProductImagePopulation;
   Tests: ParaClinicTestPopulation;
   Insurances: InsurancePopulation;
+  Specialities: SpecialityPopulation;
 }>;
 
 export interface IParaClinic<
@@ -64,6 +75,12 @@ export interface IParaClinic<
   district?: T["District"] extends DistrictPopulation
     ? IDistrict<T["District"]>
     : string;
+  category?: T["Category"] extends ParaClinicCategoryPopulation
+    ? IParaClinicCategory<T["Category"]>
+    : string;
+  specialities: T["Specialities"] extends SpecialityPopulation
+    ? ISpeciality<T["Specialities"]>[]
+    : string[];
   special: boolean;
   image?: string;
   slug?: string;
@@ -97,7 +114,9 @@ const ParaClinicPanelLayout = ({ children }: { children: ReactNode }) => {
   return (
     <HandleLoading data={!isLoading}>
       {!!data ? (
-        <PanelLayout sidebar={<ParaClinicSidebar />}>{children}</PanelLayout>
+        <PanelLayout sidebar={<ParaClinicSidebar />}>
+          <ParaClinicLicenseGate>{children}</ParaClinicLicenseGate>
+        </PanelLayout>
       ) : (
         <BecomeParaClinicPage />
       )}

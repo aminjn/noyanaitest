@@ -47,10 +47,11 @@ const InsurancesPage = ({
 }: InsurancesPageProps) => {
   console.log({ data, pagesCount, totalCount, categories });
   const getContent = useLocale();
-
-  const [query, setQuery] = useDebounce<string>({ initialValue: "" });
-
   const searchParams = useSearchParams();
+
+  const [query, setQuery] = useDebounce<string>({
+    initialValue: searchParams.get("search") || "",
+  });
 
   const push = useProgress();
 

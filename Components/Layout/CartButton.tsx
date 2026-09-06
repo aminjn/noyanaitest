@@ -6,21 +6,27 @@ import IconWithCountButton from "../UI/IconWithCountButton";
 import Ixon from "../UI/Ixon";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
+import { useState } from "react";
+import CartModal from "./CartModal";
+import classes from "./CartButton.module.css";
 
 const CartButton = () => {
   const { user } = useUser();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { data } = useSWR<number>(`${API}/cart/size`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
 
-  const push = useProgress();
-
   if (!user) return null;
   return (
-    <IconWithCountButton count={data} onClick={() => push("/cart")}>
-      <LineBagIcon />
-    </IconWithCountButton>
+    <div className={classes.main}>
+      <IconWithCountButton count={data} onClick={() => setIsOpen(true)}>
+        <LineBagIcon />
+      </IconWithCountButton>
+      {isOpen && <CartModal close={() => setIsOpen(false)} />}
+    </div>
   );
 };
 

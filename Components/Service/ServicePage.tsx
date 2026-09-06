@@ -28,8 +28,6 @@ export type ServicePageProps = {
 const ServicePage = ({ data }: ServicePageProps) => {
   const getContent = useLocale();
 
-  console.log(data);
-
   return (
     <CartableNodePage
       trail={[
@@ -71,7 +69,7 @@ const ServicePage = ({ data }: ServicePageProps) => {
           id: "Description",
           title: getContent("aboutService"),
           content: (
-            <ProductTab title={getContent("aboutService")}>
+            <ProductTab title={getContent("aboutService")} key="Description">
               <RenderRtf value={data.description} />
               <WhyBox content={data.whyChoose} />
             </ProductTab>
@@ -81,7 +79,7 @@ const ServicePage = ({ data }: ServicePageProps) => {
           id: "stages",
           title: getContent("procedure"),
           content: (
-            <ProductTab title={getContent("procedure")}>
+            <ProductTab title={getContent("procedure")} key={"Stages"}>
               <RenderRtf value={data.stages} />
             </ProductTab>
           ),
@@ -91,7 +89,10 @@ const ServicePage = ({ data }: ServicePageProps) => {
           id: "Results",
           title: getContent("resultsAndAdvantages"),
           content: (
-            <ProductTab title={getContent("resultsAndAdvantages")}>
+            <ProductTab
+              title={getContent("resultsAndAdvantages")}
+              key="Results"
+            >
               <RenderRtf value={data.results} />
             </ProductTab>
           ),

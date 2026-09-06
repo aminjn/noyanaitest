@@ -18,13 +18,22 @@ const Info = ({ content, icon }: { icon: ReactNode; content: string }) => {
   );
 };
 
-const ProductCartInfos = () => {
+const ProductCartInfos = ({ service }: { service?: boolean }) => {
   const getContent = useLocale();
   return (
     <div className={classes.infos}>
-      <Info icon={<TruckIcon />} content={getContent("cartInfoItem0")} />
-      <Info icon={<LocationIcon />} content={getContent("cartInfoItem1")} />
-      <Info icon={<ShieldIcon />} content={getContent("cartInfoItem2")} />
+      <Info
+        icon={<TruckIcon />}
+        content={getContent(service ? "cartInfoItem0Service" : "cartInfoItem0")}
+      />
+      <Info
+        icon={<LocationIcon />}
+        content={getContent(service ? "cartInfoItem1Service" : "cartInfoItem1")}
+      />
+      <Info
+        icon={<ShieldIcon />}
+        content={getContent(service ? "cartInfoItem2Service" : "cartInfoItem2")}
+      />
     </div>
   );
 };

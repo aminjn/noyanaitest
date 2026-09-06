@@ -83,9 +83,10 @@ const HospitalsPage = ({
 }: HospitalsPageProps) => {
   const getContent = useLocale();
 
-  const [query, setQuery] = useDebounce<string>({ initialValue: "" });
-
   const searchParams = useSearchParams();
+  const [query, setQuery] = useDebounce<string>({
+    initialValue: searchParams.get("search") || "",
+  });
 
   const push = useProgress();
 

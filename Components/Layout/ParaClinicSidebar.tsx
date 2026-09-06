@@ -4,6 +4,7 @@ import UserEditIcon from "../Icons/UserEditIcon";
 import FlaskIcon from "../Icons/FlaskIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
+import CartIcon from "../Icons/CartIcon";
 import useAcl from "../Hooks/useAcl";
 
 const ParaClinicSidebar = () => {
@@ -49,6 +50,12 @@ const ParaClinicSidebar = () => {
         icon: <UserEditIcon />,
         show: hasAccess("readTamin"),
         target: "tamin",
+      },
+      {
+        title: "licenses",
+        icon: <CartIcon />,
+        show: hasAccess("readLicenses"),
+        target: "license",
       },
       {
         title: "profile",
