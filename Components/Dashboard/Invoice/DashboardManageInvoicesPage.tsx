@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import useSWR from "swr";
-import classes from "./DashboardManageinvoicesPage.module.css";
+import classes from "./DashboardManageinvoicesPagee.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
@@ -26,7 +26,7 @@ const DashboardManageinvoicesPage = () => {
 
   const { data, error } = useSWR<{ data: IInvoice[]; total: number }>(
     `${API}/user/invoice?page=${page}`,
-    (url: string) => fetcher({ url }).then((res) => res.data)
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();
