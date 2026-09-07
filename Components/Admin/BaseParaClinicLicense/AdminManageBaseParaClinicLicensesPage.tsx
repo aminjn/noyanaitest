@@ -65,6 +65,13 @@ export interface IBaseParaClinicLicense<
   isRecommended: boolean;
   isDiscounted: boolean;
   isActive: boolean;
+  // Whether this plan is part of the "primary" lineup shown on the main
+  // license page (backend filters GET /paraClinic/license on isActive AND
+  // isPrimary) - an isActive plan that isn't isPrimary is still purchasable
+  // via its direct id or the "see all plans" listing, just not featured.
+  isPrimary: boolean;
+  isGolden: boolean;
+  summary: string;
   details: string;
 }
 
@@ -76,8 +83,11 @@ export const baseParaClinicLicenseFormRenderer: FormRenderer<IBaseParaClinicLice
     isRecommended: { title: "پیشنهادی", type: "bool" },
     isDiscounted: { title: "تخفیف دار", type: "bool" },
     isActive: { title: "فعال", type: "bool" },
+    isPrimary: { title: "پلن اصلی", type: "bool" },
+    isGolden: { title: "طلایی", type: "bool" },
     pricing: { title: "قیمت‌گذاری", type: "licensePricing" },
     descriptions: { title: "توضیحات", type: "strings" },
+    summary: { title: "خلاصه", type: "text" },
     details: { title: "جزئیات", type: "rtf" },
     modules: {
       title: "منوهای قابل دسترسی",

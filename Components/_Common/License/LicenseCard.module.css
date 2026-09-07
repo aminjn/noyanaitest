@@ -1,0 +1,59 @@
+.main {
+  flex: 1;
+  background-color: var(--white);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: 1px solid var(--gray3);
+  height: 24.0625rem;
+}
+
+.alt {
+  height: 25.8125rem;
+  border: 2px solid var(--primary7);
+}
+
+.badges {
+  height: 1.375rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.nameBox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.icon {
+  color: var(--primary);
+}
+
+.alt .icon {
+  color: var(--yellow);
+}
+
+.name {
+  color: var(--gray12);
+}
+
+.features {
+  flex: 1;
+  max-height: 6.125rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--gray4);
+}
+
+.action {
+  margin-top: auto;
+}

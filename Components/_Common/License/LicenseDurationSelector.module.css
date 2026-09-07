@@ -1,0 +1,10 @@
+.selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--white);
+  border-radius: 1rem;
+  width: fit-content;
+  margin-inline: auto;
+}

@@ -1,0 +1,54 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: var(--white);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.details {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.name {
+  color: var(--gray13);
+}
+
+.summary {
+  color: var(--gray10);
+}
+
+.bot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selector.selector {
+  margin-inline: unset;
+  margin-inline-end: auto;
+  width: fit-content;
+}
+
+.footer {
+  display: flex;
+  margin-top: 2.5rem;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 1rem;
+}

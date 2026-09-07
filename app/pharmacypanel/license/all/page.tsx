@@ -1,17 +1,17 @@
-import LicensePlansPage from "@/Components/_Common/License/LicensePlansPage";
+import AllLicensePlansPage from "@/Components/_Common/License/AllLicensePlansPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-const PharmacyLicense = async () => {
+const PharmacyAllLicenses = async () => {
   const textContent = await getScopedTextContent(["common", "pharmacyPanelLicense"]);
   return (
     <LocaleScopeProvider
       namespaces={["common", "pharmacyPanelLicense"]}
       initialTextContent={textContent}
     >
-      <LicensePlansPage name="pharmacy" />
+      <AllLicensePlansPage name="pharmacy" />
     </LocaleScopeProvider>
   );
 };
 
-export default PharmacyLicense;
+export default PharmacyAllLicenses;

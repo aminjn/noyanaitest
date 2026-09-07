@@ -1,0 +1,31 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--white);
+  border: 1px solid var(--gray3);
+  padding-block: 4rem 3rem;
+  border-radius: 1rem;
+  margin-bottom: 3.75rem;
+}
+
+.h1 {
+  color: var(--gray13);
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.legend {
+  color: var(--gray10);
+  text-align: center;
+}
+
+.durationSelector {
+  margin-top: 2rem;
+}

@@ -1,8 +1,8 @@
-import LicensePlansPage from "@/Components/_Common/License/LicensePlansPage";
+import LicensePlanDetailPage from "@/Components/_Common/License/LicensePlanDetailPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-const DoctorManageLicence = async () => {
+const DoctorLicenseDetail = async () => {
   const textContent = await getScopedTextContent([
     "common",
     "doctorPanelLicense",
@@ -12,9 +12,9 @@ const DoctorManageLicence = async () => {
       namespaces={["common", "doctorPanelLicense"]}
       initialTextContent={textContent}
     >
-      <LicensePlansPage name="doctor" />
+      <LicensePlanDetailPage name="doctor" />
     </LocaleScopeProvider>
   );
 };
 
-export default DoctorManageLicence;
+export default DoctorLicenseDetail;

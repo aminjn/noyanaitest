@@ -1,7 +1,7 @@
-import ParaClinicManageLicencePage from "@/Components/ParaClinicDashboard/License/ParaClinicManageLicencePage";
+import LicensePlansPage from "@/Components/_Common/License/LicensePlansPage";
 
 const ParaClinicLicense = () => {
-  return <ParaClinicManageLicencePage />;
+  return <LicensePlansPage name="paraClinic" />;
 };
 
 export default ParaClinicLicense;
