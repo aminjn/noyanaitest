@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import PanelLayout from "./PanelLayout";
 import InsurancePanelSidebar from "./InsurancePanelSidebar";
 import useSWR from "swr";
-import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
+import useUser, { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
 import { BecomeANodeStatus } from "../DoctorPanel/DoctorPanelPage";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IInsurance } from "../DoctorPanel/Insurance/DoctorInsurancesTab";
@@ -12,6 +12,8 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import BecomeInsurancePage from "../InsurancePanel/BecomeInsurancePage";
+import InsuranceLicenseGate from "../InsurancePanel/InsuranceLicenseGate";
+import LoginRequired from "../UI/LoginRequired";
 
 export type BecomeInsurancePopuplation = Population<{ User: UserPopulation }>;
 
@@ -20,21 +22,30 @@ export interface IBecomeInsuranceRequest<
 > extends MongoDoc {
   user?: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   createdAt: Date;
+  updatedAt: Date;
   status: BecomeANodeStatus;
   name: string;
+  siamCode: string;
+  nationalId: string;
+  certificateDate: Date;
+  certificateFile?: string;
+  description?: string;
 }
 
 const InsurancePanelLayout = ({ children }: { children: ReactNode }) => {
+  const { user, isUserLoading } = useUser();
   const { data, isLoading } = useSWR<IInsurance | null>(
     `${API}/insurance`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   return (
-    <HandleLoading data={!isLoading}>
-      {data ? (
+    <HandleLoading data={!isUserLoading && !isLoading}>
+      {!user ? (
+        <LoginRequired />
+      ) : data ? (
         <PanelLayout sidebar={<InsurancePanelSidebar />}>
-          {children}
+          <InsuranceLicenseGate>{children}</InsuranceLicenseGate>
         </PanelLayout>
       ) : (
         <BecomeInsurancePage />

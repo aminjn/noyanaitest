@@ -6,7 +6,7 @@ import { fetcher } from "../helpers/fetcher";
 const useDoctor = () => {
   const { data, isLoading, mutate } = useSWR<IDoctorProfile | null>(
     `${API}/doctor`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
   return { doctor: data, isLoading, mutate };
 };

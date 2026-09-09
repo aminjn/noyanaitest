@@ -36,6 +36,7 @@ import useUser, {
 } from "@/Components/Hooks/useUser";
 import { IUserIdentity } from "@/Components/Dashboard/DashboardPage";
 import Loading from "@/Components/Admin/UI/Loading";
+import LoginRequired from "@/Components/UI/LoginRequired";
 import {
   DoctorSessionType,
   doctorSessionTypes,
@@ -764,6 +765,7 @@ const Inner = ({
 
 const FinalizeBookingPage = () => {
   const searchParams = useSearchParams();
+  const { user, isUserLoading } = useUser();
 
   const { data: identity, error: identityError } = useSWR<IUserIdentity>(
     `${API}/user/identity`,
@@ -816,6 +818,9 @@ const FinalizeBookingPage = () => {
       return push("/book");
     setData({ date, end, start });
   }, [push, searchParams, todayStart]);
+
+  if (isUserLoading) return <Loading />;
+  if (!user) return <LoginRequired />;
 
   return (
     <HandleLoading data={!!data && !!identity}>

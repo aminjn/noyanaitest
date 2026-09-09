@@ -40,6 +40,11 @@ import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import HospitalUserTab from "./HospitalUserTab";
+import HospitalDepartmentsTab from "./HospitalDepartmentsTab";
+import HospitalDoctorsTab from "./HospitalDoctorsTab";
+import HospitalProfileLicenseTab from "./HospitalProfileLicenseTab";
+import CartIcon from "@/Components/Icons/CartIcon";
 
 export type HospitalClinicPopulation = Population<{
   Hospital: HospitalPopulation;
@@ -217,9 +222,10 @@ const HospitalLocationManager = ({
 
 const AdminManageHospitalPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
-  const { data, error, mutate } = useSWR<IHospital>(
-    `${API}/auto/hospital/${nodeId}`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  const { data, error, mutate } = useSWR<
+    IHospital<{ User: Record<never, never> }>
+  >(`${API}/auto/hospital/${nodeId}`, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   return (
@@ -353,6 +359,27 @@ const AdminManageHospitalPage = () => {
                 title: "کلینیک ها",
                 id: "Clinic",
                 content: <HospitalClinicsManager node={data} />,
+              },
+              {
+                title: "یوزر",
+                id: "User",
+                content: <HospitalUserTab node={data} mutate={mutate} />,
+              },
+              {
+                title: "دپارتمان ها",
+                id: "Departments",
+                content: <HospitalDepartmentsTab hospital={data} />,
+              },
+              {
+                title: "پزشکان",
+                id: "Doctors",
+                content: <HospitalDoctorsTab hospital={data} />,
+              },
+              {
+                title: "مجوز",
+                id: "License",
+                icon: <CartIcon />,
+                content: <HospitalProfileLicenseTab node={data} />,
               },
               {
                 title: "متادیتا",

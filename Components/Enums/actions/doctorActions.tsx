@@ -6,6 +6,13 @@ export const doctorActions = [
   "joinClinic",
   "mutateJoinClinic",
   "clinicAddition",
+  // Hospital counterpart of the clinic actions above (2026-09). Kept in
+  // sync with Models/DoctorAcl.ts on noyanai-back.
+  "readHospitals",
+  "leaveHospitals",
+  "joinHospital",
+  "mutateJoinHospital",
+  "hospitalAddition",
   "readCalendar",
   "mutateCalendar",
   "readSettings",
@@ -47,6 +54,7 @@ export const doctorActions = [
 // render the owner-facing ACL editor for the "doctor" node.
 export const doctorActionCategories = [
   "clinic",
+  "hospital",
   "calendar",
   "settings",
   "financialMangement",
@@ -74,6 +82,13 @@ export const categorizedDoctorActions: Readonly<
     "leaveClinics",
     "mutateJoinClinic",
     "readClinics",
+  ],
+  hospital: [
+    "hospitalAddition",
+    "joinHospital",
+    "leaveHospitals",
+    "mutateJoinHospital",
+    "readHospitals",
   ],
   calendar: ["readCalendar", "mutateCalendar"],
   settings: ["readSettings", "mutateSettings"],

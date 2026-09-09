@@ -15,8 +15,14 @@ export interface IBecomePharmacyRequest<
 > extends MongoDoc {
   user?: T["user"] extends true ? IUser : string;
   createdAt: Date;
+  updatedAt: Date;
   status: BecomeANodeStatus;
   name: string;
+  siamCode: string;
+  nationalId: string;
+  certificateDate: Date;
+  certificateFile?: string;
+  description?: string;
 }
 
 const BecomePharmacyPage = () => {

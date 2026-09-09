@@ -18,11 +18,14 @@ import useDoctor from "../Hooks/useDoctor";
 import DoctorLicenseGate from "../DoctorPanel/DoctorLicenseGate";
 
 const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
+  const { user, isUserLoading } = useUser();
   const { doctor, isLoading } = useDoctor();
 
   return (
-    <HandleLoading data={!isLoading}>
-      {doctor ? (
+    <HandleLoading data={!isUserLoading && !isLoading}>
+      {!user ? (
+        <LoginRequired />
+      ) : doctor ? (
         <PanelLayout sidebar={<DoctorSidebar />}>
           <DoctorLicenseGate>{children}</DoctorLicenseGate>
         </PanelLayout>

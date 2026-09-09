@@ -18,6 +18,10 @@ import {
   categorizedParaClinicActions,
   paraClinicActionCategories,
 } from "@/Components/Enums/actions/paraClinicActions";
+import {
+  categorizedHospitalActions,
+  hospitalActionCategories,
+} from "@/Components/Enums/actions/hospitalActions";
 import classes from "./MutateSecretaryAccessLevelPopup.module.css";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
@@ -45,6 +49,7 @@ export const categoriesAclMap: Record<NodeWithAcl, readonly ContentKey[]> = {
   insurance: insuranceActionCategories,
   pharmacy: pharmacyActionCategories,
   paraClinic: paraClinicActionCategories,
+  hospital: hospitalActionCategories,
 };
 
 export const categorizedAclMap: Record<
@@ -56,6 +61,7 @@ export const categorizedAclMap: Record<
   insurance: categorizedInsuranceActions,
   pharmacy: categorizedPharmacyActions,
   paraClinic: categorizedParaClinicActions,
+  hospital: categorizedHospitalActions,
 };
 
 const MutateSecretaryAccessLevelPopup = ({

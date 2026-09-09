@@ -1,5 +1,5 @@
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import { MongoDoc } from "@/Components/Hooks/useUser";
+import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import useSWR from "swr";
 import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import { API } from "@/Components/config";
@@ -32,6 +32,7 @@ export type InsurancePopulation = Population<{
   Category: InsuranceCategoryPopulation;
   Tags: InsuranceTagPopulation;
   Plans: InsurancePlanPopulation;
+  User: UserPopulation;
 }>;
 
 export interface IInsurance<
@@ -67,6 +68,9 @@ export interface IInsurance<
     : never;
   averageScore?: number;
   commentCount?: number;
+  // Org-account field (2026-09), mirroring IHospital - an insurance's own
+  // login/panel (insuranceController/insuranceRouter).
+  user?: T["User"] extends UserPopulation ? IUser : string;
 }
 
 export type DoctorInsurancePopulation = Population<{

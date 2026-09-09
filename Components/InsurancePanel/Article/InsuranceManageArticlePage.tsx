@@ -14,7 +14,7 @@ const InsuranceManageArticlePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IArticle>(
     nodeId ? `${API}/blog/insurance/${nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();

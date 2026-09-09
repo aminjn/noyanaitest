@@ -1,6 +1,6 @@
 "use client";
 
-import { MongoDoc } from "@/Components/Hooks/useUser";
+import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import {
   CityPopulation,
@@ -50,6 +50,8 @@ import {
   InsurancePopulation,
 } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import OrderEditor from "../UI/OrderEditor";
+import { getUserLabel } from "../Lib/LabelGetters";
+import InlineLink from "../UI/InlineLink";
 
 export type HospitalPopulation = Population<{
   Province: ProvincePopulation;
@@ -60,6 +62,9 @@ export type HospitalPopulation = Population<{
   Clinics: HospitalClinicPopulation;
   Owner: DoctorProfilePopulation;
   Insurances: InsurancePopulation;
+  User: UserPopulation;
+  DepartmentsPopulated: HospitalDepartmentPopulation;
+  DoctorsPopulated: HospitalDoctorPopuplation;
 }>;
 
 export interface IHospital<
@@ -109,6 +114,62 @@ export interface IHospital<
   certificates?: string[];
   averageScore: number;
   commentCount: number;
+  // Org-account fields (2026-09), mirroring IClinic - a hospital's own
+  // login/panel (hospitalController/hospitalRouter), plus its own
+  // departments/doctors (separate from `clinics` above, which links this
+  // hospital to independently-run Clinic docs via HospitalClinic).
+  user?: T["User"] extends UserPopulation ? IUser : string;
+  departments: T["DepartmentsPopulated"] extends HospitalDepartmentPopulation
+    ? IHospitalDepartment<T["DepartmentsPopulated"]>[]
+    : never;
+  doctors: T["DoctorsPopulated"] extends HospitalDoctorPopuplation
+    ? IHospitalDoctor<T["DoctorsPopulated"]>[]
+    : never;
+}
+
+export type HospitalDepartmentPopulation = Population<{
+  HospitalPopulated: HospitalPopulation;
+  DoctorsPopulated: HospitalDoctorPopuplation;
+  DoctorsCount: boolean;
+}>;
+
+export interface IHospitalDepartment<
+  T extends HospitalDepartmentPopulation = HospitalDepartmentPopulation,
+> extends MongoDoc {
+  hospital: T["HospitalPopulated"] extends HospitalPopulation
+    ? IHospital<T["HospitalPopulated"]> | null
+    : string;
+  name?: string;
+  description?: string;
+  image?: string;
+  active: boolean;
+  order: number;
+  doctors: T["DoctorsPopulated"] extends HospitalDoctorPopuplation
+    ? IHospitalDoctor<T["DoctorsPopulated"]>[]
+    : string[];
+  doctorsCount: T["DoctorsCount"] extends true ? number : never;
+  summary?: string;
+  phone?: string;
+}
+
+export type HospitalDoctorPopuplation = Population<{
+  HospitalPopulated: HospitalPopulation;
+  DepartmentPopulated: HospitalDepartmentPopulation;
+  DoctorPopulated: DoctorProfilePopulation;
+}>;
+
+export interface IHospitalDoctor<
+  T extends HospitalDoctorPopuplation = HospitalDoctorPopuplation,
+> extends MongoDoc {
+  hospital: T["HospitalPopulated"] extends HospitalPopulation
+    ? IHospital<T["HospitalPopulated"]> | null
+    : string;
+  department?: T["DepartmentPopulated"] extends HospitalDepartmentPopulation
+    ? IHospitalDepartment<T["DepartmentPopulated"]> | null
+    : string;
+  doctor: T["DoctorPopulated"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["DoctorPopulated"]> | null
+    : string;
 }
 
 const CreateHospitalPopup = ({ mutate }: { mutate: () => unknown }) => {
@@ -168,9 +229,10 @@ const DeleteHospitalPopup = ({
 };
 
 const AdminManageHospitalsPage = () => {
-  const { data, error, mutate } = useSWR<IHospital[]>(
-    `${API}/auto/hospital`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  const { data, error, mutate } = useSWR<
+    IHospital<{ User: Record<never, never> }>[]
+  >(`${API}/auto/hospital`, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -209,6 +271,19 @@ const AdminManageHospitalsPage = () => {
               slug: {
                 name: "اسلاگ",
                 value: (node) => node.slug,
+                filter: "Text",
+              },
+              user: {
+                name: "یوزر",
+                value: (node) => (node.user ? node.user.phone : "ندارد"),
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {getUserLabel(node.user)}
+                    </InlineLink>
+                  ) : (
+                    ""
+                  ),
                 filter: "Text",
               },
               order: {

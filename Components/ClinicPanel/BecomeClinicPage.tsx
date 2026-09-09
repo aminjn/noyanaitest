@@ -14,8 +14,14 @@ export interface IBecomeClinicRequest<
 > extends MongoDoc {
   user: T["user"] extends true ? IUser | null : string;
   createdAt: Date;
+  updatedAt: Date;
   status: BecomeANodeStatus;
   name: string;
+  siamCode: string;
+  nationalId: string;
+  certificateDate: Date;
+  certificateFile?: string;
+  description?: string;
 }
 
 const BecomeClinicPage = () => {

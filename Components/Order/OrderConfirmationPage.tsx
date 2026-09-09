@@ -8,6 +8,8 @@ import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import useLocale from "../Hooks/useLocale";
 import useProgress from "../Hooks/useProgress";
+import useUser from "../Hooks/useUser";
+import LoginRequired from "../UI/LoginRequired";
 import { currencize } from "../helpers/currencize";
 import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
@@ -205,6 +207,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
 
 const OrderConfirmationPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
+  const { user, isUserLoading } = useUser();
 
   const { data: order, error } = useSWR<OrderNode>(
     `${API}/user/order/${nodeId}`,
@@ -214,6 +217,8 @@ const OrderConfirmationPage = () => {
   const getContent = useLocale();
 
   const push = useProgress();
+
+  if (!isUserLoading && !user) return <LoginRequired />;
 
   const rows = order ? buildRows(order) : [];
 

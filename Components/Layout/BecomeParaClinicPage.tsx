@@ -19,8 +19,14 @@ export interface IBecomeParaClinicRequest<
 > extends MongoDoc {
   user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   createdAt: Date;
+  updatedAt: Date;
   status: BecomeANodeStatus;
   name: string;
+  siamCode: string;
+  nationalId: string;
+  certificateDate: Date;
+  certificateFile?: string;
+  description?: string;
 }
 
 const BecomeParaClinicPage = () => {
@@ -52,7 +58,20 @@ const BecomeParaClinicPage = () => {
         </Fragment>
       ) : (
         <CreateForm<IBecomeParaClinicRequest>
-          renderer={{ name: { type: "text", title: getContent("name") } }}
+          renderer={{
+            name: { type: "text", title: getContent("name") },
+            siamCode: { type: "text", title: getContent("siamCode") },
+            nationalId: { type: "text", title: getContent("nationalId") },
+            certificateDate: {
+              type: "date",
+              title: getContent("certificateDate"),
+            },
+            certificateFile: {
+              type: "image",
+              title: getContent("certificateFile"),
+            },
+            description: { type: "text", title: getContent("description") },
+          }}
           hookProps={{
             path: `${API}/paraClinic`,
             method: "POST",

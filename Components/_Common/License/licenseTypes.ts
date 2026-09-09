@@ -3,31 +3,37 @@ import { doctorDashboardModuleLabels } from "@/Components/Admin/BaseDoctorLicens
 import { pharmacyDashboardModuleLabels } from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
 import { clinicDashboardModuleLabels } from "@/Components/Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
 import { paraClinicDashboardModuleLabels } from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
+import { hospitalDashboardModuleLabels } from "@/Components/Admin/BaseHospitalLicense/AdminManageBaseHospitalLicensesPage";
+import { insuranceDashboardModuleLabels } from "@/Components/Admin/BaseInsuranceLicense/AdminManageBaseInsuranceLicensesPage";
 
-// The four org types that have a license catalog + purchase flow (2026-09).
+// The org types that have a license catalog + purchase flow (2026-09).
 // Mirrors the subset of Components/_Common/SecretaryManager's NodeWithAcl
 // (see Request/CreateSecretaryRequestPopup.tsx) that actually has
 // Base<Org>License / <Org>ProfileLicense models and license routes on
-// noyanai-back - "insurance" does not. Also matches the exact API path
-// segment each org is mounted under (app.ts's `nameToRouter`), so
-// `${API}/${name}/license` etc. below is valid for every value here.
+// noyanai-back. Also matches the exact API path segment each org is
+// mounted under (app.ts's `nameToRouter`), so `${API}/${name}/license` etc.
+// below is valid for every value here.
 export const licenseOrgs = [
   "doctor",
   "pharmacy",
   "clinic",
   "paraClinic",
+  "hospital",
+  "insurance",
 ] as const;
 
 export type LicenseOrg = (typeof licenseOrgs)[number];
 
 // Maps a LicenseOrg to its panel root on noyanai-front, same mapping as
 // Components/_Common/SecretaryManager/SecretaryManager.tsx's own
-// panelRootByNode (minus "insurance").
+// panelRootByNode.
 export const licensePanelRootByOrg: Record<LicenseOrg, string> = {
   doctor: "/doctorpanel",
   pharmacy: "/pharmacypanel",
   clinic: "/clinicpanel",
   paraClinic: "/paraClinicPanel",
+  hospital: "/hospitalpanel",
+  insurance: "/insurancepanel",
 };
 
 // Per-org dashboard-module label map, keyed the same way as licenseOrgs -
@@ -43,6 +49,8 @@ export const licenseModuleLabelsByOrg: Record<
   pharmacy: pharmacyDashboardModuleLabels,
   clinic: clinicDashboardModuleLabels,
   paraClinic: paraClinicDashboardModuleLabels,
+  hospital: hospitalDashboardModuleLabels,
+  insurance: insuranceDashboardModuleLabels,
 };
 
 // Mirrors backend Models/LicenseDuration.ts.
@@ -119,3 +127,27 @@ export interface IActiveLicenseCatalog extends ILicenseCatalog {
 // plan document, `details` included, each pricing entry's `duration`
 // populated inline since there's only one document to enrich.
 export type IBaseLicenseDetail = IBaseLicense<ILicenseDuration>;
+
+// Mirrors backend Models/<Org>ProfileLicense.ts - the org's own currently
+// assigned license record (one per org, upserted by purchaseLicense). Not
+// to be confused with IBaseLicense above, which is a catalog entry an org
+// can buy - this is what they actually own right now.
+export interface IProfileLicense extends MongoDoc {
+  displayName?: string;
+  modules: string[];
+  baseLicense?: string;
+  startedAt?: string;
+  expiresAt?: string;
+}
+
+// Response shape of getMyCurrentLicense (GET <org>/license/current) - used
+// by CurrentLicenseWidget on each org's dashboard home. `current` is null
+// if the org has never purchased a license; `isExpired` is true when
+// `current.expiresAt` exists and is in the past, in which case
+// resolveMyLicenseModules has already fallen back to the isDefault tier's
+// modules on the backend, so the widget should treat this the same as "no
+// license" rather than showing the expired plan as active.
+export interface ICurrentLicense {
+  current: IProfileLicense | null;
+  isExpired: boolean;
+}

@@ -14,10 +14,12 @@ import { insuranceActions } from "@/Components/Enums/actions/insuranceActions";
 import { doctorActions } from "@/Components/Enums/actions/doctorActions";
 import { pharmacyActions } from "@/Components/Enums/actions/pharmacyActions";
 import { paraClinicActions } from "@/Components/Enums/actions/paraClinicActions";
+import { hospitalActions } from "@/Components/Enums/actions/hospitalActions";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import { IPharmacy } from "@/Components/DoctorPanel/Pharmacy/DoctorPharmaciesTab";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
+import { IHospital } from "@/Components/Admin/Hospital/AdminManageHospitalsPage";
 import { ISecretaryRequest } from "./SecretaryRequestsTab";
 import { getAccessLevelLabel } from "@/Components/Admin/Lib/LabelGetters";
 
@@ -32,6 +34,7 @@ export const nodesWithAcl = [
   "pharmacy",
   "clinic",
   "paraClinic",
+  "hospital",
 ] as const;
 
 export type NodeWithAcl = (typeof nodesWithAcl)[number];
@@ -42,6 +45,7 @@ export const secretaryNodePaths = [
   "Insurance",
   "Pharmacy",
   "ParaClinic",
+  "Hospital",
 ] as const;
 
 export type SecretaryNodePath = (typeof secretaryNodePaths)[number];
@@ -52,6 +56,7 @@ export const secretaryAclPaths = [
   "ClinicAcl",
   "PharmacyAcl",
   "ParaClinicAcl",
+  "HospitalAcl",
 ] as const;
 
 export type SecretaryAclPath = (typeof secretaryAclPaths)[number];
@@ -62,6 +67,7 @@ export const modelNameToAclName: Record<SecretaryNodePath, SecretaryAclPath> = {
   Insurance: "InsuranceAcl",
   Pharmacy: "PharmacyAcl",
   ParaClinic: "ParaClinicAcl",
+  Hospital: "HospitalAcl",
 } as const;
 
 export type ModelNameToModelType = {
@@ -70,6 +76,7 @@ export type ModelNameToModelType = {
   Insurance: IInsurance;
   Pharmacy: IPharmacy;
   ParaClinic: IParaClinic;
+  Hospital: IHospital;
 };
 
 export type ModelNameToAclModel = {
@@ -78,6 +85,7 @@ export type ModelNameToAclModel = {
   Insurance: IInsuranceAcl;
   Pharmacy: IPharmacyAcl;
   ParaClinic: IParaClinicAcl;
+  Hospital: IHospitalAcl;
 };
 
 export type SecretaryPopulation = Population<{
@@ -112,6 +120,9 @@ export type IPharmacyAcl = Acl<typeof pharmacyActions, IPharmacy>;
 
 export type ParaClinicAction = (typeof paraClinicActions)[number];
 export type IParaClinicAcl = Acl<typeof paraClinicActions, IParaClinic>;
+
+export type HospitalAction = (typeof hospitalActions)[number];
+export type IHospitalAcl = Acl<typeof hospitalActions, IHospital>;
 
 const CreateSecretaryRequestPopup = ({
   mutate,

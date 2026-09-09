@@ -476,13 +476,14 @@ export const contentNamespaces = {
   // System-A booking flow and was confirmed unlinked from the live UI. See
   // AUDIT/FIXES_TODO.md F-01, F-14.
 
-  // app/become/page.tsx (BecomeSomethingPage) — the public, tab-based page
-  // where a visitor picks which node they want to become (doctor, para
-  // clinic, clinic, insurance, pharmacy) and submits that node's own become
-  // request form. Tab content is the existing per-node Become*Page
-  // components (BecomeADoctorPage, BecomeParaClinicPage, BecomeClinicPage,
-  // BecomeInsurancePage, BecomePharmacyPage), scoped separately wherever
-  // they're already used from within their panel layouts.
+  // app/become/layout.tsx + app/become/page.tsx (BecomeLayout,
+  // BecomeSomethingPage) — the shared shell every /become/[org] route sits
+  // inside (login gate + "already have a node, bounce to its panel" redirect
+  // + the org-picker nav) and the /become index page itself, which just
+  // lists the 6 organization types and links to their own dedicated
+  // /become/[org] page (2026-09 redo — this used to be a single tab-based
+  // page rendering every Become*Page component inline; each org now has its
+  // own namespace below instead).
   becomeSomething: [
     "becomeSomethingPageTitle",
     "becomeSomethingPageLegend",
@@ -492,6 +493,125 @@ export const contentNamespaces = {
     "clinic",
     "insurance",
     "pharmacy",
+    "hospital",
+    // Shared by BecomeOrganizationForm.tsx + BecomeDoneView.tsx, which
+    // every /become/[org] page (nameOnly orgs and the doctor medicalCode
+    // flow alike) renders under this single namespace instead of each
+    // org's own becomeX namespace below.
+    "checkInput",
+    "pendingApplicationTitle",
+    "pendingApplicationLegend",
+    "phoneNumber",
+    "nationalId",
+    "siamCode",
+    "nationalCode",
+    "organizationName",
+    "certificateDate",
+    "certificateFile",
+    "description",
+    "enterDashboard",
+    "goHomePage",
+    "logoutOrChangeNumber",
+    "confirmInformation",
+    "becomeSuccessLegend",
+    "becomeDoctorDone",
+    "becomeHospitalDone",
+    "becomeClinicDone",
+    "becomeInsuranceDone",
+    "becomeParaClinicDone",
+    "becomePharmacyDone",
+  ],
+
+  // app/become/clinic/page.tsx (new BecomeClinicRequestPage, 2026-09) — the
+  // clinic's own become-request form. Models/BecomeClinicRequest.ts on
+  // noyanai-back has name/siamCode/nationalId/certificateDate/
+  // certificateFile/description (the org is fully profiled later, once
+  // approved).
+  becomeClinic: [
+    "becomeClinicPageTitle",
+    "becomeClinicPageLegend",
+    "name",
+    "siamCode",
+    "nationalId",
+    "certificateDate",
+    "certificateFile",
+    "description",
+    "submit",
+    "Pending",
+    "Approved",
+    "Rejected",
+  ],
+
+  // app/become/hospital/page.tsx (new BecomeHospitalRequestPage, 2026-09).
+  // Mirrors becomeClinic — Models/BecomeHospitalRequest.ts has the same
+  // fields.
+  becomeHospital: [
+    "becomeHospitalPageTitle",
+    "becomeHospitalPageLegend",
+    "name",
+    "siamCode",
+    "nationalId",
+    "certificateDate",
+    "certificateFile",
+    "description",
+    "submit",
+    "Pending",
+    "Approved",
+    "Rejected",
+  ],
+
+  // app/become/insurance/page.tsx (new BecomeInsuranceRequestPage, 2026-09).
+  // Mirrors becomeClinic — Models/BecomeInsuranceRequest.ts has the same
+  // fields.
+  becomeInsurance: [
+    "becomeInsurancePageTitle",
+    "becomeInsurancePageLegend",
+    "name",
+    "siamCode",
+    "nationalId",
+    "certificateDate",
+    "certificateFile",
+    "description",
+    "submit",
+    "Pending",
+    "Approved",
+    "Rejected",
+  ],
+
+  // app/become/pharmacy/page.tsx (new BecomePharmacyRequestPage, 2026-09).
+  // Mirrors becomeClinic — Models/BecomePharmacyRequest.ts has the same
+  // fields.
+  becomePharmacy: [
+    "becomePharmacyPageTitle",
+    "becomePharmacyPageLegend",
+    "name",
+    "siamCode",
+    "nationalId",
+    "certificateDate",
+    "certificateFile",
+    "description",
+    "submit",
+    "Pending",
+    "Approved",
+    "Rejected",
+  ],
+
+  // app/become/paraClinic/page.tsx (new BecomeParaClinicRequestPage,
+  // 2026-09). Mirrors becomeClinic — Models/BecomeParaClinicRequest.ts has
+  // the same fields.
+  becomeParaClinic: [
+    "becomeParaClinicPageTitle",
+    "becomeParaClinicPageLegend",
+    "name",
+    "siamCode",
+    "nationalId",
+    "certificateDate",
+    "certificateFile",
+    "description",
+    "submit",
+    "Pending",
+    "Approved",
+    "Rejected",
   ],
 
   // Components/_Common/SecretaryManager/* — the shared secretary-management
@@ -531,6 +651,7 @@ export const contentNamespaces = {
     "Rejected",
     // doctor
     "clinic",
+    "hospital",
     "calendar",
     "settings",
     "clinicAddition",
@@ -538,6 +659,11 @@ export const contentNamespaces = {
     "leaveClinics",
     "mutateJoinClinic",
     "readClinics",
+    "hospitalAddition",
+    "joinHospital",
+    "leaveHospitals",
+    "mutateJoinHospital",
+    "readHospitals",
     "readCalendar",
     "mutateCalendar",
     "readSettings",
@@ -605,14 +731,29 @@ export const contentNamespaces = {
     "Rejected",
   ],
 
-  // app/insurancepanel/page.tsx (InsurancePanelHomePage) — currently just a
-  // dashboard shell.
-  insurancePanelHome: ["dashboard"],
+  // app/insurancepanel/page.tsx (InsurancePanelHomePage) — dashboard shell,
+  // plus the CurrentLicenseWidget it now renders (2026-09), mirrors
+  // hospitalPanelHome/clinicPanelHome.
+  insurancePanelHome: [
+    "dashboard",
+    "currentLicense",
+    "licenses",
+    "noLicensePurchasedYet",
+  ],
 
   // app/clinicpanel/page.tsx — dashboard shell, plus the
   // CurrentLicenseWidget it now renders (2026-09), mirrors
   // pharmacyPanelHome/doctorPanelHome.
   clinicPanelHome: [
+    "dashboard",
+    "currentLicense",
+    "licenses",
+    "noLicensePurchasedYet",
+  ],
+
+  // app/hospitalpanel/page.tsx — dashboard shell, plus the
+  // CurrentLicenseWidget it renders (2026-09), mirrors clinicPanelHome.
+  hospitalPanelHome: [
     "dashboard",
     "currentLicense",
     "licenses",
@@ -625,6 +766,23 @@ export const contentNamespaces = {
   // (POST /clinic/license/:nodeId). Mirrors doctorPanelLicense/
   // pharmacyPanelLicense.
   clinicPanelLicense: [
+    "dashboard",
+    "licenses",
+    "buyLicense",
+    "currentLicense",
+    "price",
+    "discount",
+    "toman",
+    "currentBalance",
+    "buyLicenseConfirmationMessage",
+    "nothingFound",
+  ],
+
+  // app/hospitalpanel/license{,/all,/[nodeId],/[nodeId]/checkout}/page.tsx,
+  // via the generic _Common/License components (LicensePlansPage,
+  // AllLicensePlansPage, LicensePlanDetailPage, LicenseCheckoutPage) with
+  // name="hospital". Mirrors clinicPanelLicense.
+  hospitalPanelLicense: [
     "dashboard",
     "licenses",
     "buyLicense",
@@ -665,6 +823,88 @@ export const contentNamespaces = {
     "services",
     "certificates",
     "insurances",
+    "address",
+  ],
+
+  // app/hospitalpanel/profile/page.tsx (HospitalManageProfilePage,
+  // HospitalManageDetailsTab, HospitalManageLocationTab). Mirrors
+  // clinicPanelProfile (Hospital has no self-service fields Clinic lacks).
+  hospitalPanelProfile: [
+    "dashboard",
+    "profile",
+    "details",
+    "location",
+    "missingLocationErrorMessage",
+    "selectProvince",
+    "selectCity",
+    "selectDistrict",
+    "submit",
+    "name",
+    "image",
+    "summary",
+    "category",
+    "tags",
+    "establishment",
+    "businessTime",
+    "phone",
+    "mail",
+    "website",
+    "roundTheClock",
+    "personelCount",
+    "services",
+    "certificates",
+    "insurances",
+    "address",
+  ],
+
+  // app/insurancepanel/license{,/all,/[nodeId],/[nodeId]/checkout}/page.tsx,
+  // via the generic _Common/License components (LicensePlansPage,
+  // AllLicensePlansPage, LicensePlanDetailPage, LicenseCheckoutPage) with
+  // name="insurance". Mirrors hospitalPanelLicense/clinicPanelLicense.
+  insurancePanelLicense: [
+    "dashboard",
+    "licenses",
+    "buyLicense",
+    "currentLicense",
+    "price",
+    "discount",
+    "toman",
+    "currentBalance",
+    "buyLicenseConfirmationMessage",
+    "nothingFound",
+  ],
+
+  // app/insurancepanel/profile/page.tsx (InsuranceManageProfilePage,
+  // InsuranceManageDetailsTab, InsuranceManageLocationTab). Models/Insurance.ts
+  // has no province/city/district refs (unlike Hospital/Clinic), just a
+  // plain `address` string + `location` point, so this has no
+  // selectProvince/selectCity/selectDistrict/roundTheClock/personelCount/
+  // services/certificates/insurances keys, and adds Insurance's own
+  // membersCount/centersCount/doctorsCount/pharmacyCount/doctorCount/
+  // hospitalCount/coverages/advantages fields instead.
+  insurancePanelProfile: [
+    "dashboard",
+    "profile",
+    "details",
+    "location",
+    "missingLocationErrorMessage",
+    "submit",
+    "name",
+    "image",
+    "summary",
+    "category",
+    "tags",
+    "establishment",
+    "phone",
+    "website",
+    "membersCount",
+    "centersCount",
+    "doctorsCount",
+    "pharmacyCount",
+    "doctorCount",
+    "hospitalCount",
+    "coverages",
+    "advantages",
     "address",
   ],
 
@@ -740,6 +980,47 @@ export const contentNamespaces = {
     "submissionParty",
     "doctor",
     "clinic",
+    "statusLastChangedAt",
+    "Pending",
+    "Approved",
+    "Rejected",
+    "Proccessing",
+    "Done",
+  ],
+
+  // app/doctorpanel/hospital/page.tsx (DoctorManageHospitalsPage +
+  // DoctorHospitalsTab/DoctorHospitalAdditionsTab/DoctorJoinHospitalsTab and
+  // their popups). Mirrors doctorPanelClinic minus prescriptions.
+  doctorPanelHospital: [
+    "dashboard",
+    "hospitals",
+    "doctorHospitals",
+    "doctorJoinHospitals",
+    "hospitalAdditionRequests",
+    "hospitalsList",
+    "hospitalName",
+    "department",
+    "noDepartment",
+    "actions",
+    "checkInput",
+    "ownerName",
+    "ownerPhone",
+    "province",
+    "city",
+    "hospitalAddress",
+    "description",
+    "leaveHospitalConfirmationMessage",
+    "resubmitJoinHospitalRequestConfirmationMessage",
+    "joinHospitalRequest",
+    "clickToRequestAddHospital",
+    "message",
+    "submitRequest",
+    "newItem",
+    "submittedAt",
+    "status",
+    "submissionParty",
+    "doctor",
+    "hospital",
     "statusLastChangedAt",
     "Pending",
     "Approved",
@@ -1594,6 +1875,26 @@ export const contentNamespaces = {
   // app/clinicpanel/article/page.tsx + [nodeId] (ClinicManageArticlesPage,
   // ClinicManageArticlePage, ClinicMutateArticlePopup, DeleteArticlePopup).
   clinicPanelArticle: [
+    "dashboard",
+    "articles",
+    "newItem",
+    "title",
+    "summary",
+    "image",
+    "category",
+    "readTime",
+    "content",
+    "actions",
+    "publishStatus",
+    "articlePendingReview",
+    "articlePublished",
+    "articleModerationNotice",
+    "sureDeleteArticle",
+  ],
+
+  // app/hospitalpanel/article/page.tsx + [nodeId] (HospitalManageArticlesPage,
+  // HospitalManageArticlePage, HospitalMutateArticlePopup, DeleteArticlePopup).
+  hospitalPanelArticle: [
     "dashboard",
     "articles",
     "newItem",

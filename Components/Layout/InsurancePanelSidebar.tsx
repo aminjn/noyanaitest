@@ -19,10 +19,22 @@ const InsurancePanelSidebar = () => {
         target: "secretary",
       },
       {
+        icon: <UserEditIcon />,
+        title: "licenses",
+        show: hasAccess("readLicenses"),
+        target: "license",
+      },
+      {
         icon: <FileDuplicateIcon />,
         title: "articles",
         show: hasAccess("readArticles"),
         target: "article",
+      },
+      {
+        icon: <UserEditIcon />,
+        title: "profile",
+        show: true,
+        target: "profile",
       },
     ],
     [hasAccess],

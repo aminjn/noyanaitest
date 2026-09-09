@@ -1,0 +1,109 @@
+.main {
+  position: relative;
+}
+
+.main:before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 100dvw;
+  display: block;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--white);
+  z-index: -1;
+}
+
+.content {
+  padding-block-start: 2.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--gray13);
+  margin-bottom: 2rem;
+}
+
+.navBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.legend {
+  color: var(--primary);
+}
+
+.toggleBox {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggleIcon {
+  padding: 2px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: transparent;
+  border: 1px solid var(--gray10);
+  transition: all var(--transTime);
+}
+
+.toggleLabel {
+  color: var(--gray8);
+  transition: all var(--transTime);
+}
+
+.activeToggle .toggleIcon {
+  border-color: transparent;
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.activeToggle .toggleLabel {
+  color: var(--primary);
+}
+
+.nav {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navItem {
+  flex: 1;
+  padding-block: 1.375rem;
+  border-radius: 0.5rem;
+  background-color: var(--gray4);
+  border: 1px solid transparent;
+  color: var(--gray8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transTime);
+}
+
+.activeNavItem {
+  background-color: var(--primary1);
+  color: var(--primary);
+  border-color: var(--primary2);
+}
+
+.support {
+  margin-top: 3.5rem;
+  text-align: center;
+  color: var(--gray8);
+  margin-bottom: 2.75rem;
+}
+
+.link {
+  color: var(--info);
+}

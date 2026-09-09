@@ -13,11 +13,7 @@ import {
 // module that page requires. Mirrors
 // Components/PharmacyPanel/LicenseNotCoveredNotice.tsx /
 // Components/DoctorPanel/LicenseNotCoveredNotice.tsx.
-const LicenseNotCoveredNotice = ({
-  mod,
-}: {
-  mod: ClinicDashboardModule;
-}) => {
+const LicenseNotCoveredNotice = ({ mod }: { mod: ClinicDashboardModule }) => {
   const getContent = useLocale();
   return (
     <div className={classes.main}>

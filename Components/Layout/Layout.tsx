@@ -18,6 +18,7 @@ import PharmacyPanelLayout from "./PharmacyPanelLayout";
 import InsurancePanelLayout from "./InsurancePanelLayout";
 import CallManager from "../Call/CallManager";
 import ParaClinicPanelLayout from "./ParaClinicPanelLayout";
+import HospitalPanelLayout from "./HospitalPanelLayout";
 
 export type WithStyleProps<T = Record<never, never>> = T & {
   className?: string;
@@ -45,6 +46,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
       return <InsurancePanelLayout>{children}</InsurancePanelLayout>;
     if (plain.startsWith("paraClinicPanel"))
       return <ParaClinicPanelLayout>{children}</ParaClinicPanelLayout>;
+    if (plain.startsWith("hospitalpanel"))
+      return <HospitalPanelLayout>{children}</HospitalPanelLayout>;
     return <PublicLayout>{children}</PublicLayout>;
   }, [children, pathname]);
 

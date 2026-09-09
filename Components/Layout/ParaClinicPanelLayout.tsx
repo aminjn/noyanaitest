@@ -2,12 +2,13 @@
 
 import useSWR from "swr";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
-import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
+import useUser, { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import BecomeParaClinicPage from "./BecomeParaClinicPage";
 import PanelLayout from "./PanelLayout";
+import LoginRequired from "../UI/LoginRequired";
 import { ReactNode } from "react";
 import ParaClinicSidebar from "./ParaClinicSidebar";
 import ParaClinicLicenseGate from "../ParaClinicDashboard/ParaClinicLicenseGate";
@@ -107,13 +108,16 @@ export interface IParaClinic<
 }
 
 const ParaClinicPanelLayout = ({ children }: { children: ReactNode }) => {
+  const { user, isUserLoading } = useUser();
   const { data, isLoading } = useSWR<IParaClinic | null>(
     `${API}/paraClinic`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
   return (
-    <HandleLoading data={!isLoading}>
-      {!!data ? (
+    <HandleLoading data={!isUserLoading && !isLoading}>
+      {!user ? (
+        <LoginRequired />
+      ) : !!data ? (
         <PanelLayout sidebar={<ParaClinicSidebar />}>
           <ParaClinicLicenseGate>{children}</ParaClinicLicenseGate>
         </PanelLayout>

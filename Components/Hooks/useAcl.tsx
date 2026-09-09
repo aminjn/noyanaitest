@@ -6,6 +6,7 @@ import {
   Acl,
   ClinicAction,
   DoctorAction,
+  HospitalAction,
   InsuranceAction,
   NodeWithAcl,
   ParaClinicAction,
@@ -18,6 +19,7 @@ type NodeActionMap = {
   insurance: InsuranceAction;
   pharmacy: PharmacyAction;
   paraClinic: ParaClinicAction;
+  hospital: HospitalAction;
 };
 
 // Generic replacement for the old doctor-only useDoctorAcl: fetches the

@@ -34,6 +34,9 @@ import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import OrderEditor from "../UI/OrderEditor";
+import InsuranceUserTab from "./InsuranceUserTab";
+import InsuranceProfileLicenseTab from "./InsuranceProfileLicenseTab";
+import CartIcon from "@/Components/Icons/CartIcon";
 
 export type InsurancePlanPopulation = Population<{
   Insurance: InsurancePopulation;
@@ -228,7 +231,9 @@ const InsuranceLocationManager = ({
 
 const AdminManageInsurancePage = () => {
   const params = useParams<{ nodeId: string }>();
-  const { data, error, mutate } = useSWR<IInsurance>(
+  const { data, error, mutate } = useSWR<
+    IInsurance<{ User: Record<never, never> }>
+  >(
     params ? `${API}/auto/insurance/${params.nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
@@ -314,6 +319,17 @@ const AdminManageInsurancePage = () => {
                 id: "plans",
                 title: "طرح ها",
                 content: <AdminManageInsurancePlans node={data} />,
+              },
+              {
+                title: "یوزر",
+                id: "User",
+                content: <InsuranceUserTab node={data} mutate={mutate} />,
+              },
+              {
+                title: "مجوز",
+                id: "License",
+                icon: <CartIcon />,
+                content: <InsuranceProfileLicenseTab node={data} />,
               },
               {
                 id: "Meta",

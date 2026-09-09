@@ -10,6 +10,7 @@ import CreateForm from "../UI/CreateForm";
 import {
   clinicDashboardModuleLabels,
   ClinicDashboardModule,
+  IBaseClinicLicense,
 } from "../BaseClinicLicense/AdminManageBaseClinicLicensesPage";
 
 // Mirrors backend Models/ClinicProfileLicense.ts - one doc per clinic
@@ -24,6 +25,14 @@ export interface IClinicProfileLicense extends MongoDoc {
   // label.
   displayName?: string;
   modules: ClinicDashboardModule[];
+  // Reference to the BaseClinicLicense tier this record was purchased
+  // from, plus the period it's valid for (2026-09) - unset for records
+  // created before these fields existed, or for a hand-assigned license
+  // with no expiry. See clinicController.resolveMyLicenseModules, which
+  // treats a past expiresAt as no license at all.
+  baseLicense?: string;
+  startedAt?: Date;
+  expiresAt?: Date;
 }
 
 const ClinicProfileLicenseTab = ({ node }: { node: IClinic }) => {
@@ -49,6 +58,19 @@ const ClinicProfileLicenseTab = ({ node }: { node: IClinic }) => {
           }}
           renderer={{
             displayName: { title: "نام نمایشی", type: "text" },
+            baseLicense: {
+              title: "پلن مرجع",
+              type: "nodes",
+              multi: false,
+              path: `${API}/auto/baseClinicLicense`,
+              getOptionLabel: (node) =>
+                (node as IBaseClinicLicense).displayName ||
+                (node as IBaseClinicLicense)._id,
+              getOptionValue: (node) => (node as IBaseClinicLicense)._id,
+              getDefaultValue: (inp) => inp.baseLicense,
+            },
+            startedAt: { title: "تاریخ شروع", type: "date" },
+            expiresAt: { title: "تاریخ انقضا", type: "date" },
             modules: {
               title: "منوهای قابل دسترسی",
               type: "multiselect",

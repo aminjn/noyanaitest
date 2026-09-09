@@ -41,6 +41,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
     "/insurancepanel/secretary",
     "/pharmacypanel/secretary",
     "/doctorpanel/secretary",
+    "/hospitalpanel/secretary",
   ],
   secretaryPanelHome: [
     "/secretarypanel",
@@ -49,6 +50,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
     "/secretarypanel/insurance",
     "/secretarypanel/doctor",
     "/secretarypanel/clinic",
+    "/secretarypanel/hospital",
   ],
 
   insurancePanelHome: ["/insurancepanel"],
@@ -58,8 +60,12 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
   clinicPanelPrescription: ["/clinicpanel/prescription"],
   clinicPanelTamin: ["/clinicpanel/tamin"],
 
+  hospitalPanelHome: ["/hospitalpanel"],
+  hospitalPanelProfile: ["/hospitalpanel/profile"],
+
   doctorPanelHome: ["/doctorpanel"],
   doctorPanelClinic: ["/doctorpanel/clinic"],
+  doctorPanelHospital: ["/doctorpanel/hospital"],
   doctorPanelCalendar: ["/doctorpanel/calendar"],
   doctorPanelSettings: ["/doctorpanel/settings"],
   doctorPanelInsurance: ["/doctorpanel/insurance"],

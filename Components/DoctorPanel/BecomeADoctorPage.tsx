@@ -1,3 +1,4 @@
+"use client";
 import useSWR from "swr";
 import classes from "./BecomeADoctorPage.module.css";
 import {
@@ -15,13 +16,20 @@ import { provinces } from "../Enums/Provinces";
 import useForm from "../Hooks/useForm";
 import { cities } from "../Enums/Cities";
 import SubmitABecomeDoctorRequest from "./SubmitABecomeDoctorRequest";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Button from "../UI/Button";
 import Act from "../UI/Act";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
-import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
+import useUser, { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import ConfirmMedicalCodePopup from "./ConfirmMedicalCodePopup";
+import useDoctor from "../Hooks/useDoctor";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentKey } from "../Enums/contentKeys";
+import Input from "../UI/Input";
+import LogoutPopup from "../Popups/LogoutPopup";
+import { t2xsRegular, tsmRegular } from "../UI/Typography";
+import BecomeDoneView from "../Become/BecomeDoneView";
 
 export type McCodepopulation = Population<{ User: UserPopulation }>;
 export interface IMcCode<
@@ -31,6 +39,62 @@ export interface IMcCode<
   mcCode: string;
   createdAt: Date;
 }
+
+const becomeDoctorStages = ["inquiry", "confirm", "done"] as const;
+
+type BecomeDoctorStage = (typeof becomeDoctorStages)[number];
+
+const becomeDoctorStageContentKeyDict: Record<BecomeDoctorStage, ContentKey> = {
+  confirm: "confirmInfo",
+  done: "finalizeRegister",
+  inquiry: "inquiryDetails",
+};
+
+const InquiryStage = () => {
+  const { user } = useUser();
+
+  const getContent = useScopedLocale(["becomeSomething"]);
+
+  const { setPopup } = usePopup();
+
+  return (
+    <div className={classes.form}>
+      <Input
+        readOnly
+        defaultValue={user?.nationalId}
+        title={getContent("nationalId")}
+      />
+      <div className={classes.actions}>
+        <Button
+          onClick={() => setPopup("Logout", <LogoutPopup />)}
+          variant="Error"
+          mode="Outline"
+          radius="High"
+          size="L"
+        >
+          {getContent("logout")}
+        </Button>
+        <Button variant="Primary" mode="Fill" radius="High" size="L">
+          {getContent("inquiryAndContinue")}
+        </Button>
+        <span className={`${classes.notice} ${t2xsRegular}`}>
+          {getContent("becomeDoctorInquiryNotice")}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const ConfirmStage = () => {
+  return null;
+};
+
+const DoneStage = () => {
+  const { doctor } = useDoctor();
+
+  if (!doctor) return null;
+  return <BecomeDoneView title="becomeDoctorDone" target="/doctorpanel" />;
+};
 
 const BecomeADoctorPage = () => {
   const {
@@ -42,75 +106,36 @@ const BecomeADoctorPage = () => {
     fetcher({ url }).then((res) => res.data.data),
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { doctor, isLoading } = useDoctor();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(["becomeSomething"]);
 
-  const { setPopup } = usePopup();
+  const [stage, setStage] = useState<BecomeDoctorStage>("inquiry");
+
+  useEffect(() => {
+    if (doctor) setStage("done");
+  }, [doctor]);
 
   return (
-    <HandleLoading data={!isMcsLoading} error={error}>
-      {!!data && (
-        <div className={classes.main}>
-          <legend>{getContent("becomeADoctorPageTitle")}</legend>
-          {!!data.length ? (
-            <div className={classes.list}>
-              {data.map((el) => (
-                <Button
-                  key={el._id}
-                  onClick={() =>
-                    setPopup(
-                      "ConfirmMedicalCode",
-                      <ConfirmMedicalCodePopup node={el} />,
-                    )
-                  }
-                >
-                  {el.mcCode}
-                </Button>
-              ))}
+    <HandleLoading data={!isLoading}>
+      <div className={classes.main}>
+        <div className={classes.tabs}>
+          {becomeDoctorStages.map((s, i) => (
+            <div
+              className={`${classes.stage} ${tsmRegular} ${becomeDoctorStages.indexOf(s) <= i ? classes.activeStage : ""}`}
+              key={s}
+            >
+              <span>{i + 1}</span>
+              <span>{getContent(becomeDoctorStageContentKeyDict[s])}</span>
             </div>
-          ) : (
-            <p>{getContent("noMcCodeIsLinkedToYourAccount")}</p>
-          )}
-          <Button isLoading={isLoading} onClick={() => setIsLoading(true)}>
-            استعلام
-          </Button>
-          <Act
-            path={isLoading ? `${API}/doctor/request` : null}
-            method="POST"
-            onDone={(status, result) => {
-              setIsLoading(false);
-              if (!status) return;
-              mutate();
-            }}
-          />
+          ))}
         </div>
-      )}
+        {stage === "inquiry" && <InquiryStage />}
+        {stage === "confirm" && <ConfirmStage />}
+        {stage === "done" && <DoneStage />}
+      </div>
     </HandleLoading>
   );
-  // return (
-  // <HandleLoading data={!isLoading} error={error}>
-  //   {data ? (
-  //     <Fragment>
-  //       {data.status === "Pending" ? (
-  //         <p>در حال پردازش اطلاعات توسط ادمین</p>
-  //       ) : (
-  //         <Fragment>
-  //           {data.status === "Approved" ? (
-  //             <p>
-  //               درخواست شما تایید شده است در حال ساخت پروفایل برای شما هستیم
-  //             </p>
-  //           ) : (
-  //             <p>درخواست شما رد شده است</p>
-  //           )}
-  //         </Fragment>
-  //       )}
-  //     </Fragment>
-  //   ) : (
-  //     <SubmitABecomeDoctorRequest mutate={mutate} />
-  //   )}
-  // </HandleLoading>
-  // );
 };
 
 export default BecomeADoctorPage;

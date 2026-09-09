@@ -9,16 +9,21 @@ import HandleLoading from "../Admin/UI/HandleLoading";
 import BecomePharmacyPage from "../PharmacyPanel/BecomePharmacyPage";
 import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
 import PharmacyLicenseGate from "../PharmacyPanel/PharmacyLicenseGate";
+import useUser from "../Hooks/useUser";
+import LoginRequired from "../UI/LoginRequired";
 
 const PharmacyPanelLayout = ({ children }: { children: ReactNode }) => {
+  const { user, isUserLoading } = useUser();
   const { data, isLoading } = useSWR<IPharmacy | null>(
     `${API}/pharmacy`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   return (
-    <HandleLoading data={!isLoading}>
-      {data ? (
+    <HandleLoading data={!isUserLoading && !isLoading}>
+      {!user ? (
+        <LoginRequired />
+      ) : data ? (
         <PanelLayout sidebar={<PharmacyPanelSidebar />}>
           <PharmacyLicenseGate>{children}</PharmacyLicenseGate>
         </PanelLayout>

@@ -8,7 +8,20 @@ const SubmitBecomePharmacyRequest = ({ mutate }: { mutate: () => unknown }) => {
 
   return (
     <CreateForm<IBecomePharmacyRequest>
-      renderer={{ name: { type: "text", title: getContent("name") } }}
+      renderer={{
+        name: { type: "text", title: getContent("name") },
+        siamCode: { type: "text", title: getContent("siamCode") },
+        nationalId: { type: "text", title: getContent("nationalId") },
+        certificateDate: {
+          type: "date",
+          title: getContent("certificateDate"),
+        },
+        certificateFile: {
+          type: "image",
+          title: getContent("certificateFile"),
+        },
+        description: { type: "text", title: getContent("description") },
+      }}
       hookProps={{
         path: `${API}/pharmacy`,
         method: "POST",

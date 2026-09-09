@@ -6,6 +6,7 @@ import useCart, { CartModel, cartModels, UseCartNode } from "../Hooks/useCart";
 import useUser from "../Hooks/useUser";
 import useLocale from "../Hooks/useLocale";
 import HandleLoading from "../Admin/UI/HandleLoading";
+import LoginRequired from "../UI/LoginRequired";
 import HostedImage from "../UI/HostedImage";
 import { currencize } from "../helpers/currencize";
 import Ixon from "../UI/Ixon";
@@ -286,10 +287,7 @@ const CartPage = () => {
 
   const getContent = useLocale();
 
-  if (!user)
-    return (
-      <div className={classes.noUser}>{getContent("loginToGainAccess")}</div>
-    );
+  if (!user) return <LoginRequired />;
 
   const rows = cart ? buildCartRows(cart) : [];
   const isEmpty = !isCartLoading && rows.length === 0;

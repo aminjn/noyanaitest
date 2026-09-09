@@ -12,19 +12,22 @@ import Badge from "@/Components/UI/Badge";
 import Button from "@/Components/UI/Button";
 import CartIcon from "@/Components/Icons/CartIcon";
 import { doctorDashboardModuleLabels } from "@/Components/Admin/BaseDoctorLicense/AdminManageBaseDoctorLicensesPage";
-import { IDoctorProfileLicense } from "./_Stub/DoctorManageLicencePage";
+import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 
 // Surfaces the doctor's current DoctorProfileLicense on the dashboard home
 // page (2026-09) so it's visible without going into the licenses tab. Only
 // fetched/rendered for whoever can already see the "licenses" sidebar item
-// (hasAccess("readLicenses")) - same gate DoctorSidebar itself uses.
+// (hasAccess("readLicenses")) - same gate DoctorSidebar itself uses. Fetches
+// doctorController.getMyCurrentLicense - not the same as
+// LicensePlansPage's own `${API}/doctor/license` (getMyLicenseOverview),
+// which returns the purchasable catalog, not what the doctor already owns.
 const CurrentLicenseWidget = () => {
   const getContent = useLocale();
   const hasAccess = useDoctorAcl();
   const canView = hasAccess("readLicenses");
 
-  const { data, error } = useSWR<{ current: IDoctorProfileLicense | null }>(
-    canView ? `${API}/doctor/license` : null,
+  const { data, error } = useSWR<ICurrentLicense>(
+    canView ? `${API}/doctor/license/current` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
@@ -37,7 +40,7 @@ const CurrentLicenseWidget = () => {
           <IconTitle icon={<CartIcon />}>
             {getContent("currentLicense")}
           </IconTitle>
-          {data.current ? (
+          {data.current && !data.isExpired ? (
             <>
               <span className={classes.name}>
                 {data.current.displayName || getContent("licenses")}
@@ -46,7 +49,11 @@ const CurrentLicenseWidget = () => {
                 <div className={classes.modules}>
                   {data.current.modules.map((m) => (
                     <Badge key={m} color="Primarylight" size="S">
-                      {doctorDashboardModuleLabels[m]}
+                      {
+                        doctorDashboardModuleLabels[
+                          m as keyof typeof doctorDashboardModuleLabels
+                        ]
+                      }
                     </Badge>
                   ))}
                 </div>
@@ -54,7 +61,11 @@ const CurrentLicenseWidget = () => {
             </>
           ) : (
             <span className={classes.empty}>
-              {getContent("noLicensePurchasedYet")}
+              {getContent(
+                data.current && data.isExpired
+                  ? "licenseExpired"
+                  : "noLicensePurchasedYet",
+              )}
             </span>
           )}
           <Button

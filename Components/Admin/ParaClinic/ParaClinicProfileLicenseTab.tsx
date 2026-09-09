@@ -10,6 +10,7 @@ import CreateForm from "../UI/CreateForm";
 import {
   paraClinicDashboardModuleLabels,
   ParaClinicDashboardModule,
+  IBaseParaClinicLicense,
 } from "../BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
 
 // Mirrors backend Models/ParaClinicProfileLicense.ts - one doc per
@@ -25,6 +26,14 @@ export interface IParaClinicProfileLicense extends MongoDoc {
   // own label.
   displayName?: string;
   modules: ParaClinicDashboardModule[];
+  // Reference to the BaseParaClinicLicense tier this record was purchased
+  // from, plus the period it's valid for (2026-09) - unset for records
+  // created before these fields existed, or for a hand-assigned license
+  // with no expiry. See paraClinicController.resolveMyLicenseModules,
+  // which treats a past expiresAt as no license at all.
+  baseLicense?: string;
+  startedAt?: Date;
+  expiresAt?: Date;
 }
 
 const ParaClinicProfileLicenseTab = ({ node }: { node: IParaClinic }) => {
@@ -50,6 +59,19 @@ const ParaClinicProfileLicenseTab = ({ node }: { node: IParaClinic }) => {
           }}
           renderer={{
             displayName: { title: "نام نمایشی", type: "text" },
+            baseLicense: {
+              title: "پلن مرجع",
+              type: "nodes",
+              multi: false,
+              path: `${API}/auto/baseParaClinicLicense`,
+              getOptionLabel: (node) =>
+                (node as IBaseParaClinicLicense).displayName ||
+                (node as IBaseParaClinicLicense)._id,
+              getOptionValue: (node) => (node as IBaseParaClinicLicense)._id,
+              getDefaultValue: (inp) => inp.baseLicense,
+            },
+            startedAt: { title: "تاریخ شروع", type: "date" },
+            expiresAt: { title: "تاریخ انقضا", type: "date" },
             modules: {
               title: "منوهای قابل دسترسی",
               type: "multiselect",

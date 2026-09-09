@@ -125,6 +125,12 @@ const DoctorSidebar = () => {
         show: hasAccess("readClinics"),
       },
       {
+        title: "hospitals",
+        icon: <BuildingIcon />,
+        target: "hospital",
+        show: hasAccess("readHospitals"),
+      },
+      {
         title: "phrmaciesAndLabs",
         icon: <BuildingIcon />,
         target: "pharmacy",

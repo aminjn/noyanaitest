@@ -4,16 +4,23 @@ import { ContentKey } from "../contentKeys";
 // that isn't a baseline (always-visible) page or the secretary-management
 // item itself (owner-only by design). Kept in sync with
 // Models/InsuranceAcl.ts on noyanai-back.
-export const insuranceActions = ["readArticles"] as const;
+export const insuranceActions = [
+  "readArticles",
+  // Licenses page (2026-09) — insurancepanel/license. Kept in sync with
+  // Models/InsuranceAcl.ts on noyanai-back.
+  "readLicenses",
+] as const;
 
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
 // nav item's own title key, reused as the tab label.
 export const insuranceActionCategories = [
   "articles",
+  "licenses",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedInsuranceActions: Readonly<
   Record<(typeof insuranceActionCategories)[number], readonly ContentKey[]>
 > = {
   articles: ["readArticles"],
+  licenses: ["readLicenses"],
 } as const;

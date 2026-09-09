@@ -1,0 +1,42 @@
+.main {
+  display: flex;
+  margin-block: 3.5rem;
+  flex-direction: column;
+  width: min(25rem, 100%);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.icon {
+  width: fit-content;
+  margin-inline: auto;
+  padding: 1.25rem;
+  border-radius: 50%;
+  background-color: var(--successT1);
+  color: var(--gray13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  color: var(--gray13);
+  margin-bottom: 0.75rem;
+}
+
+.description {
+  color: var(--gray10);
+  margin-bottom: 3rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.actions > * {
+  width: 12rem;
+}

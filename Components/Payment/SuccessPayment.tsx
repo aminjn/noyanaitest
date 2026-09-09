@@ -17,9 +17,12 @@ import Ixon from "../UI/Ixon";
 import CheckIcon from "../Icons/CheckIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import DownloadIcon from "../Icons/DownloadIcon";
+import useUser from "../Hooks/useUser";
+import LoginRequired from "../UI/LoginRequired";
 
 const SuccessPayment = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
+  const { user, isUserLoading } = useUser();
 
   const { data, error } = useSWR<
     IInvoice<{
@@ -38,6 +41,8 @@ const SuccessPayment = () => {
   const getContent = useLocale();
 
   const push = useProgress();
+
+  if (!isUserLoading && !user) return <LoginRequired />;
 
   return (
     <HandleLoading data={!!data} error={error}>

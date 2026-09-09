@@ -36,7 +36,7 @@ export interface IArticle extends MongoDoc {
 const InsuranceManageArticlesPage = () => {
   const { data, error, mutate } = useSWR<IArticle[]>(
     `${API}/blog/insurance`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useLocale();

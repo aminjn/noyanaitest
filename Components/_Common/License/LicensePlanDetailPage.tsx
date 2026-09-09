@@ -9,10 +9,12 @@ import {
   IBaseLicenseDetail,
   ILicenseDuration,
   LicenseOrg,
+  licensePanelRootByOrg,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Button from "@/Components/UI/Button";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import useProgress from "@/Components/Hooks/useProgress";
 import RenderRtf from "@/Components/UI/RenderRtf";
 import LicenseDurationSelector from "./LicenseDurationSelector";
 import { useEffect, useState } from "react";
@@ -45,6 +47,7 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
   }, [selectedDuration, data]);
 
   const getContent = useScopedLocale(["common"]);
+  const push = useProgress();
 
   // TODO: render `license` (plan details + duration/price picker + purchase
   // action) once the JSX/CSS pass for this page happens. `error`/
@@ -115,6 +118,12 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
                 <Ixon style={{ transform: "rotateZ(90deg)" }}>
                   <ChevronIcon />
                 </Ixon>
+              }
+              onClick={() =>
+                selectedDuration &&
+                push(
+                  `${licensePanelRootByOrg[name]}/license/${data._id}/checkout?duration=${selectedDuration._id}`,
+                )
               }
             >
               {getContent("confirmAndContinue")}

@@ -56,6 +56,24 @@ const AdminManageBecomePharmaciesPage = () => {
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
               },
+              siamCode: {
+                name: "کد سیام",
+                value: (node) => node.siamCode,
+                filter: "Text",
+              },
+              nationalId: {
+                name: "کد ملی",
+                value: (node) => node.nationalId,
+                filter: "Text",
+              },
+              certificateDate: {
+                name: "تاریخ گواهی",
+                value: (node) => new Date(node.certificateDate),
+                component: (node) => (
+                  <FormatDate value={node.certificateDate} />
+                ),
+                filter: "Date",
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (

@@ -1,7 +1,7 @@
 "use client";
 
 import { IBecomeClinicRequest } from "@/Components/ClinicPanel/BecomeClinicPage";
-import { API } from "@/Components/config";
+import { API, FilePath } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
@@ -59,6 +59,27 @@ const AdminManageBecomeClinicPage = () => {
                       title="وضعیت"
                       value={becomeNodeStatusesDict[data.status]}
                     />
+                    <DataPair title="کد سیام" value={data.siamCode} />
+                    <DataPair title="کد ملی" value={data.nationalId} />
+                    <DataPair
+                      title="تاریخ گواهی"
+                      value={<FormatDate value={data.certificateDate} />}
+                    />
+                    <DataPair
+                      title="فایل گواهی"
+                      value={
+                        data.certificateFile ? (
+                          <InlineLink
+                            href={`${FilePath}/${data.certificateFile}`}
+                          >
+                            مشاهده فایل
+                          </InlineLink>
+                        ) : (
+                          "ثبت نشده"
+                        )
+                      }
+                    />
+                    <DataPair title="توضیحات" value={data.description} />
                   </List>
                 ),
               },

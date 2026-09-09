@@ -12,6 +12,7 @@ import useNotification from "@/Components/Hooks/useNotification";
 import useProgress from "@/Components/Hooks/useProgress";
 import useSocket from "@/Components/Hooks/useSocket";
 import useUser from "@/Components/Hooks/useUser";
+import LoginRequired from "@/Components/UI/LoginRequired";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import classes from "./NewCallScreenPage.module.css";
@@ -715,7 +716,9 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
 
 const NewCallScreenPage = () => {
   const { callId } = useParams<{ callId: string }>();
-  const { user, isUserLoading } = useUser(true);
+  const { user, isUserLoading } = useUser();
+
+  if (!isUserLoading && !user) return <LoginRequired />;
 
   return (
     <HandleLoading data={!isUserLoading && !!user}>

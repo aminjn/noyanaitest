@@ -6,6 +6,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useUser from "@/Components/Hooks/useUser";
+import LoginRequired from "@/Components/UI/LoginRequired";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSocket from "@/Components/Hooks/useSocket";
 import useLocale from "@/Components/Hooks/useLocale";
@@ -284,12 +285,13 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
 
 const NewUserManageCallPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
+  const { user, isUserLoading } = useUser();
   const { data, error } = useSWR<ICallRoom<{ participants: true }>>(
     `${API}/call/${nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const { user } = useUser();
+  if (!isUserLoading && !user) return <LoginRequired />;
 
   return (
     <HandleLoading data={!!data && !!user} error={error}>
