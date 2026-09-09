@@ -249,7 +249,7 @@ const PublicHeader = () => {
                 { title: "aboutUs", taregt: "/about" },
               ]}
             />
-            <NavLink title="forDoctors" target="/doctorpanel" accent />
+            <NavLink title="forDoctors" target="/become" accent />
           </nav>
           <div className={classes.left}>
             <span className={classes.searchWrap}>

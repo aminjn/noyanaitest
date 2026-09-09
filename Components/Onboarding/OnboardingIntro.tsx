@@ -44,7 +44,13 @@ const OnboardingIntro = () => {
           <span className={classes.noyan}>{getContent("aboutTitleNoyan")}</span>{" "}
           <span className={classes.ai}>{getContent("aboutTitleAi")}</span>
         </h1>
-        <Button variant="Primary" size="M" radius="High" mode="Fill">
+        <Button
+          variant="Primary"
+          size="M"
+          radius="High"
+          mode="Fill"
+          href="/become"
+        >
           {getContent("doctorsAndClinicsRegisteration")}
         </Button>
       </div>
