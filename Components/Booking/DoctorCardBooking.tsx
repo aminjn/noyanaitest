@@ -39,6 +39,7 @@ import { BookingPageDoctor, BookingView } from "./BookingPage2";
 import ReportProblemPopup from "./ReportProblemPopup";
 import ScoreBadge from "./ScoreBadge";
 import HostedImage from "../UI/HostedImage";
+import Link from "next/link";
 
 const addDaysToToday = (days: number) => {
   const now = new Date();
@@ -181,9 +182,11 @@ const DoctorCardBooking = ({
       </div>
       <div className={classes.identityContent}>
         <div className={classes.identityDetails}>
-          <span className={`${classes.name} ${tsmDemiBold}`}>
-            {getDoctorProfileLabel(node)}
-          </span>
+          <Link href={`/dr/${node.slug || node._id}`}>
+            <span className={`${classes.name} ${tsmDemiBold}`}>
+              {getDoctorProfileLabel(node)}
+            </span>
+          </Link>
           {!!node.mainSpeciality && (
             <span className={`${classes.speciality} ${txsRegular}`}>
               {node.mainSpeciality?.name}

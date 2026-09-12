@@ -19,6 +19,8 @@ import useLocale from "../Hooks/useLocale";
 import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import SocketContext from "../Store/SocketContext";
+import AuthShell from "./AuthShell";
+import { tmdMedium } from "../UI/Typography";
 
 type SignupInput = { birthDate: Date; phone: string; nationalId: string };
 
@@ -67,14 +69,25 @@ const SignupPopup = ({
   });
 
   return (
-    <PopupCard>
+    <AuthShell>
       <div className={classes.main}>
+        <legend className={`${classes.title} ${tmdMedium}`}>
+          {getContent("signup")}
+        </legend>
         {isCodeStage ? (
           <Fragment>
             <CodeInput
               onChange={(e) => setCodeInput((prev) => ({ ...prev, code: e }))}
             />
-            <Button onClick={() => submitCode()} isLoading={isCodeLoading}>
+            <Button
+              onClick={() => submitCode()}
+              isLoading={isCodeLoading}
+              className={classes.action}
+              variant="Primary"
+              mode="Fill"
+              size="L"
+              radius="High"
+            >
               {getContent("confirm")}
             </Button>
           </Fragment>
@@ -97,12 +110,31 @@ const SignupPopup = ({
                 setInput((prev) => ({ ...prev, nationalId: e.target.value }))
               }
             />
-            <Button onClick={submit}>تایید</Button>
+            <Button
+              onClick={submit}
+              style={{ marginTop: "5rem" }}
+              className={classes.action}
+              variant="Primary"
+              mode="Fill"
+              size="L"
+              radius="High"
+            >
+              تایید
+            </Button>
           </Fragment>
         )}
-        <button onClick={() => setIsLogin(true)}>ورود</button>
       </div>
-    </PopupCard>
+      <Button
+        onClick={() => setIsLogin(true)}
+        variant="Primary"
+        mode="Outline"
+        radius="High"
+        size="L"
+        className={classes.switch}
+      >
+        {getContent("login")}
+      </Button>
+    </AuthShell>
   );
 };
 

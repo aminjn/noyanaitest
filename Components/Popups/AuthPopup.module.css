@@ -1,20 +1,7 @@
-.main {
-  background-color: var(--white);
-  padding-block: 2rem 3rem;
-  padding-inline: 4rem;
-  border-radius: 0.25rem;
-  display: flex;
-  flex-direction: column;
-  width: min(31.25rem, 100dvw);
-}
-
-.logo {
-  margin-inline: auto;
-}
-
 .form {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .legend {
@@ -30,20 +17,8 @@
   font-weight: 400;
 }
 
-.notice {
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--gray7);
-  text-align: center;
-}
-
-.inlineLink {
-  color: var(--primary);
-}
-
 .submit.submit {
-  margin-top: 2.875rem;
+  margin-top: auto;
   height: 3.5rem;
   width: 100%;
   font-size: 1rem;
@@ -64,4 +39,6 @@
   margin-block: auto;
 }
 
-
+.switch {
+  margin-top: 0.75rem;
+}

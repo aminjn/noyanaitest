@@ -23,8 +23,7 @@ const PublicDoctorProfilePage = ({
   faqs,
 }: PublicDoctorProfilePageProps) => {
   const fullName =
-    `${doctor.firstName || ""} ${doctor.lastName || ""}`.trim() ||
-    doctor._id;
+    `${doctor.firstName || ""} ${doctor.lastName || ""}`.trim() || doctor._id;
 
   return (
     <div>

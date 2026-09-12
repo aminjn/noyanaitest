@@ -16,7 +16,7 @@ import Bell01Icon from "../Icons/Bell01Icon";
 import SearchButton from "./SearchButton";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import { t2xsRegular, txsMedium } from "../UI/Typography";
+import { t2xsRegular, tsmMedium, txsMedium } from "../UI/Typography";
 import useUser from "../Hooks/useUser";
 import useProgress from "../Hooks/useProgress";
 import NotificationButton from "./NotificationButton";
@@ -48,7 +48,7 @@ const NavLink = ({
       href={target}
       className={`${classes.link} ${
         pathname === target ? classes.active : ""
-      } ${accent ? classes.accent : ""}`}
+      } ${accent ? classes.accent : ""} ${tsmMedium}`}
     >
       {getContent(title)}
     </Link>
@@ -249,7 +249,7 @@ const PublicHeader = () => {
                 { title: "aboutUs", taregt: "/about" },
               ]}
             />
-            <NavLink title="forDoctors" target="/become" accent />
+            <NavLink title="forDoctors" target="/onboarding" accent />
           </nav>
           <div className={classes.left}>
             <span className={classes.searchWrap}>

@@ -21,6 +21,8 @@ import CodeInput from "../UI/CodeInput";
 import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import SocketContext from "../Store/SocketContext";
+import AuthShell from "./AuthShell";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 const authStages = ["init", "otp"] as const;
 type AuthStage = (typeof authStages)[number];
@@ -85,8 +87,11 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
       </div>
       <Button
         className={classes.submit}
-        variant={isOTP(code) ? "Primary" : "Neutral"}
+        variant={isOTP(code) ? "Primary" : "Disable"}
         type="submit"
+        mode="Fill"
+        size="L"
+        radius="High"
       >
         ورود
       </Button>
@@ -123,10 +128,13 @@ const InitStage = ({ ctx, setCtx }: StageProps) => {
         defaultValue={ctx.phone}
       />
       <Button
-        variant={isMobile(ctx.phone) ? "Primary" : "Neutral"}
+        variant={isMobile(ctx.phone) ? "Primary" : "Disable"}
         className={classes.submit}
         isLoading={isLoading}
+        mode="Fill"
         type="submit"
+        radius="High"
+        size="L"
       >
         تایید و ادامه
       </Button>
@@ -152,6 +160,8 @@ const LoginPopup = ({
     if (!!user) closePopup();
   }, [closePopup, user]);
 
+  const getContent = useScopedLocale(["common"]);
+
   const currentStage = useMemo<ReactNode>(() => {
     return {
       init: <InitStage ctx={context} setCtx={setContext} />,
@@ -160,20 +170,19 @@ const LoginPopup = ({
   }, [context]);
 
   return (
-    <div className={classes.main}>
-      <div className={classes.logo}>
-        <LogoLong width={174} height={64} />
-      </div>
+    <AuthShell>
       {currentStage}
-      <p className={classes.notice}>
-        با ورود و ثبت نام در سایت،با{" "}
-        <Link className={classes.inlineLink} href={"/policy"}>
-          قوانین نویان
-        </Link>{" "}
-        موافقت می‌کنم
-      </p>
-      <Button onClick={() => setIsLogin(false)}>ثبت نام</Button>
-    </div>
+      <Button
+        onClick={() => setIsLogin(false)}
+        variant="Primary"
+        mode="Outline"
+        radius="High"
+        size="L"
+        className={classes.switch}
+      >
+        {getContent("signup")}
+      </Button>
+    </AuthShell>
   );
 };
 

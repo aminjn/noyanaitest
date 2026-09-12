@@ -49,6 +49,7 @@ export const commentableDocumentPaths = [
   "ParaClinic",
   "Hospital",
   "Insurance",
+  "DoctorProfile",
 ] as const;
 
 export type CommentableDocumentPath = (typeof commentableDocumentPaths)[number];
@@ -67,6 +68,7 @@ export const commentDocumentsDict: Record<CommentableDocumentPath, string> = {
   ParaClinic: "پاراکلینیک",
   Hospital: "بیماستان",
   Insurance: "بیمه",
+  DoctorProfile: "پزشک",
 };
 
 const commentStatuses = ["Pending", "Approved", "Rejected"] as const;

@@ -1,3 +1,4 @@
+import NewDoctorProfilePage from "@/Components/Dr/New/NewPublicDoctorProfilePage";
 import PublicDoctorProfilePage, {
   PublicDoctorProfilePageProps,
 } from "@/Components/Dr/PublicDoctorProfilePage";
@@ -11,7 +12,8 @@ const PublicDoctorProfile = async ({
 }) => {
   const data = await getPublicData<PublicDoctorProfilePageProps>(`dr/${slug}`);
   if (!data) return notFound();
-  return <PublicDoctorProfilePage {...data} />;
+  return <NewDoctorProfilePage {...data} />;
+  // return <PublicDoctorProfilePage {...data} />;
 };
 
 export default PublicDoctorProfile;

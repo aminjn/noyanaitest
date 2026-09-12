@@ -1,0 +1,26 @@
+.main {
+  background-color: var(--white);
+  padding-block: 2.75rem;
+  padding-inline: 3.875rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: min(31.25rem, 100dvw);
+  min-height: 35.5rem;
+}
+
+.logo {
+  margin-inline: auto;
+}
+
+.notice {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray7);
+  text-align: center;
+}
+
+.inlineLink {
+  color: var(--primary);
+}
