@@ -24,14 +24,41 @@ import MutateUserAlertPopup from "./MutateUserAlertPopup";
 // "admin"/"notadmin") can be alerted about. Kept in sync with
 // `userAlertEvents` in Models/UserAlert.ts on noyanai-back - adding an
 // event to both arrays (and a label here) is the only change needed for a
-// push/SMS toggle pair to show up in this admin page.
-export const userAlertEvents = ["newTicket", "newWithdrawalRequest"] as const;
+// push/SMS toggle pair to show up in this admin page. Each event also gets
+// its own SMS pattern field on AdminManageSmsPatternsPage.tsx (2026-09
+// audit finding: staff alerts used to all share one generic pattern) - see
+// that file's smsPatternNameForEvent, which mirrors the backend's
+// Models/UserAlert.ts helper of the same name.
+export const userAlertEvents = [
+  "newTicket",
+  "newWithdrawalRequest",
+  "newBecomeDoctorRequest",
+  "newBecomePharmacyRequest",
+  "newBecomeClinicRequest",
+  "newBecomeParaClinicRequest",
+  "newBecomeHospitalRequest",
+  "newBecomeInsuranceRequest",
+  "newClinicAdditionRequest",
+  "newPharmacyAdditionRequest",
+  "newHospitalAdditionRequest",
+  "newInsuranceAdditionRequest",
+] as const;
 
 export type UserAlertEvent = (typeof userAlertEvents)[number];
 
 export const userAlertEventLabels: Record<UserAlertEvent, string> = {
   newTicket: "تیکت جدید",
   newWithdrawalRequest: "درخواست برداشت جدید",
+  newBecomeDoctorRequest: "درخواست پزشک شدن",
+  newBecomePharmacyRequest: "درخواست داروخانه شدن",
+  newBecomeClinicRequest: "درخواست کلینیک شدن",
+  newBecomeParaClinicRequest: "درخواست پاراکلینیک شدن",
+  newBecomeHospitalRequest: "درخواست بیمارستان شدن",
+  newBecomeInsuranceRequest: "درخواست بیمه شدن",
+  newClinicAdditionRequest: "درخواست افزودن کلینیک",
+  newPharmacyAdditionRequest: "درخواست افزودن داروخانه",
+  newHospitalAdditionRequest: "درخواست افزودن بیمارستان",
+  newInsuranceAdditionRequest: "درخواست افزودن بیمه",
 };
 
 const capitalize = <T extends string>(value: T) =>

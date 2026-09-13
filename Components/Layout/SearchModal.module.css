@@ -2,6 +2,8 @@
   position: fixed;
   inset: 0;
   z-index: 100000;
+  height: calc(100dvh - 5rem);
+  top: 5rem;
 }
 
 .blur {
@@ -14,10 +16,10 @@
 .content {
   width: min(100dvw, 70.5rem);
   max-height: calc(100dvh - 6.5rem);
+  max-height: calc(100dvh - 6.5rem);
   overflow-y: auto;
   background-color: var(--white);
   border-radius: 0 0 1rem 1rem;
-  top: 5rem;
   left: 50%;
   transform: translateX(-50%);
   position: absolute;
@@ -89,4 +91,13 @@
 
 .slide {
   flex: none;
+}
+
+@media only screen and (max-width: 750px) {
+  .content {
+    height: calc(100dvh - 6.5rem);
+    box-shadow: none;
+    border-radius: unset;
+    box-shadow: unset;
+  }
 }

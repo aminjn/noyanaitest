@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import useSWR from "swr";
 import { SwiperSlide } from "swiper/react";
 import classes from "./SearchModal.module.css";
@@ -165,6 +165,8 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
 
   const trimmed = query.trim();
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const { data, isLoading } = useSWR<GlobalSearchData>(
     trimmed
       ? `${API}/public/search/global?query=${encodeURIComponent(trimmed)}`
@@ -172,6 +174,22 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
     (url: string) => fetcher({ url }).then((res) => res.data),
     { keepPreviousData: true },
   );
+
+  useEffect(() => {
+    const listener = (e: MouseEvent) => {
+      if (
+        !containerRef.current ||
+        !e.target ||
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        return close();
+      }
+    };
+    setTimeout(() => {
+      window.addEventListener("click", listener, false);
+    }, 10);
+    return () => window.removeEventListener("click", listener, false);
+  }, [close]);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -210,7 +228,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
     );
 
   return (
-    <div className={classes.main}>
+    <div className={classes.main} ref={containerRef}>
       <div className={classes.blur} onClick={() => close()} />
       <div className={classes.content}>
         <div className={classes.searchBox}>

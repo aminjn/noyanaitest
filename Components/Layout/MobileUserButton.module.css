@@ -1,0 +1,19 @@
+.main {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--primary);
+}
+
+@media only screen and (max-width: 500px) {
+  .main {
+    display: flex;
+  }
+
+  body:has(.menu) {
+    overflow-y: hidden;
+  }
+}

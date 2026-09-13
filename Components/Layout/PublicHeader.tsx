@@ -16,7 +16,12 @@ import Bell01Icon from "../Icons/Bell01Icon";
 import SearchButton from "./SearchButton";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import { t2xsRegular, tsmMedium, txsMedium } from "../UI/Typography";
+import {
+  t2xsRegular,
+  tsmMedium,
+  txsMedium,
+  txsRegular,
+} from "../UI/Typography";
 import useUser from "../Hooks/useUser";
 import useProgress from "../Hooks/useProgress";
 import NotificationButton from "./NotificationButton";
@@ -30,6 +35,8 @@ import {
   CategoryLike,
 } from "./headerCategories";
 import SearchModal from "./SearchModal";
+import XMarkIcon from "../Icons/XMarkIcon";
+import LineBagIcon from "../Icons/LinebagIcon";
 
 const NavLink = ({
   target,
@@ -207,6 +214,18 @@ const modals = ["search", "cart", "notification"] as const;
 
 type Modal = (typeof modals)[number];
 
+const modalLabels: Record<Modal, ContentKey> = {
+  cart: "cart",
+  notification: "notifications",
+  search: "search",
+};
+
+const modalIcons: Record<Modal, ReactNode> = {
+  cart: <LineBagIcon />,
+  search: <SearchIcon />,
+  notification: <Bell01Icon />,
+};
+
 const PublicHeader = () => {
   const { user } = useUser();
 
@@ -216,29 +235,7 @@ const PublicHeader = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
-
-  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-
   const [openModel, setOpenModel] = useState<Modal | null>(null);
-
-  const [isNotificationsOpen, setIsNotificationsOpen] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    if (isSearchOpen) {
-      setIsCartOpen(false);
-      setIsNotificationsOpen(false);
-    }
-    if (isCartOpen) {
-      setIsSearchOpen(false);
-      setIsNotificationsOpen(false);
-    }
-    if (isNotificationsOpen) {
-      setIsCartOpen(false);
-      setIsSearchOpen(false);
-    }
-  }, [isCartOpen, isNotificationsOpen, isSearchOpen]);
 
   return (
     <Fragment>
@@ -278,20 +275,42 @@ const PublicHeader = () => {
             <NavLink title="forDoctors" target="/onboarding" accent />
           </nav>
           <div className={classes.left}>
-            <span className={classes.searchWrap}>
-              <SearchButton open={() => setOpenModel("search")} />
-            </span>
-            <CartButton
-              isOpen={openModel === "cart"}
-              open={() => setOpenModel("cart")}
-              close={() => setOpenModel(null)}
-            />
-            <NotificationButton
-              isOpen={openModel === "notification"}
-              open={() => setOpenModel("notification")}
-              close={() => setOpenModel(null)}
-            />
-            <UserButton />
+            <div
+              className={`${classes.leftContent} ${!!openModel ? classes.hideMobileOpen : ""}`}
+            >
+              <span className={classes.searchWrap}>
+                <SearchButton open={() => setOpenModel("search")} />
+              </span>
+              <CartButton
+                isOpen={openModel === "cart"}
+                open={() => setOpenModel("cart")}
+                close={() => setOpenModel(null)}
+              />
+              <NotificationButton
+                isOpen={openModel === "notification"}
+                open={() => setOpenModel("notification")}
+                close={() => setOpenModel(null)}
+              />
+              <UserButton />
+            </div>
+            {!!openModel && (
+              <div className={classes.mobileOpen}>
+                <span className={`${classes.mobileLabel} ${txsRegular}`}>
+                  {getContent(modalLabels[openModel])}
+                </span>
+                <button
+                  onClick={() => setOpenModel(null)}
+                  className={classes.mobileClose}
+                >
+                  <Ixon width="1rem">
+                    <XMarkIcon />
+                  </Ixon>
+                </button>
+                <Ixon width="1rem" className={classes.mobileIcon}>
+                  {modalIcons[openModel]}
+                </Ixon>
+              </div>
+            )}
           </div>
         </header>
         {openModel === "search" && (

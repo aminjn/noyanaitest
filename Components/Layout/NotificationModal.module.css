@@ -76,3 +76,26 @@
   align-items: center;
   justify-content: center;
 }
+
+@media only screen and (max-width: 750px) {
+  .main {
+    height: calc(100dvh - 5rem);
+    top: 5rem;
+    width: 100dvw;
+    position: fixed;
+    inset-inline: 0;
+    border-radius: none;
+    box-shadow: none;
+  }
+  .content {
+    max-height: unset;
+  }
+
+  .footer {
+    margin-top: auto;
+  }
+
+  body:has(.main) {
+    overflow-y: hidden;
+  }
+}

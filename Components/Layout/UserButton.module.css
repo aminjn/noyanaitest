@@ -1,5 +1,11 @@
 .main {
   position: relative;
+  width: 10.625rem;
+}
+
+.button.button {
+  width: 100%;
+  justify-content: space-between;
 }
 
 .menuContainer {
@@ -35,4 +41,10 @@
   border-radius: 0.5rem 0.5rem 0 0;
   outline: none;
   box-shadow: none;
+}
+
+@media only screen and (max-width: 500px) {
+  .main {
+    display: none;
+  }
 }

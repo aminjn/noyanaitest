@@ -40,6 +40,8 @@ import ReportProblemPopup from "./ReportProblemPopup";
 import ScoreBadge from "./ScoreBadge";
 import HostedImage from "../UI/HostedImage";
 import Link from "next/link";
+import VerifiedImage from "../UI/VerifiedImage";
+import useProgress from "../Hooks/useProgress";
 
 const addDaysToToday = (days: number) => {
   const now = new Date();
@@ -164,22 +166,13 @@ const DoctorCardBooking = ({
     return result;
   }, []);
 
+  const push = useProgress();
+
   const identityBlock = (
     <div className={classes.identity}>
-      <div className={classes.image}>
-        <HostedImage
-          className={classes.theImage}
-          src={node.avatar}
-          alt={getDoctorProfileLabel(node)}
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="3.5rem"
-        />
+      <VerifiedImage src={node.avatar} alt={getDoctorProfileLabel(node)}>
         <div className={classes.onlineBadge} />
-        <Ixon className={classes.verifiedBadge} width="1rem">
-          <VerifyIcon />
-        </Ixon>
-      </div>
+      </VerifiedImage>
       <div className={classes.identityContent}>
         <div className={classes.identityDetails}>
           <Link href={`/dr/${node.slug || node._id}`}>
@@ -220,7 +213,7 @@ const DoctorCardBooking = ({
         options={[
           {
             title: getContent("reportProblem"),
-            onClick: () => setPopup("reportproblem", <ReportProblemPopup />),
+            onClick: () => push("/contact"),
             icon: <EditIcon />,
           },
           {

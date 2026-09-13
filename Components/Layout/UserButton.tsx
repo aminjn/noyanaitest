@@ -25,43 +25,18 @@ import LogoutIcon from "../Icons/LogoutIcon";
 import LogoutPopup from "../Popups/LogoutPopup";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
-
-type MenuMap = ({ title: ContentKey; icon: ReactNode } & (
-  | {
-      href: string;
-      action?: never;
-    }
-  | { href?: never; action: () => unknown }
-))[];
+import MobileUserButton from "./MobileUserButton";
+import useUserMenus from "./useUserMenus";
 
 const UserButton = () => {
   const { setPopup } = usePopup();
   const { user } = useUser(undefined);
 
-  const push = useProgress();
-
   const getContent = useLocale();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const menus = useMemo<MenuMap>(
-    () => [
-      { title: "dashboard", icon: <CategoriesIcon />, href: "/dashboard" },
-      {
-        title: "myBookings",
-        icon: <Calendar02Icon />,
-        href: "/dashboard/booking",
-      },
-      { title: "support", icon: <HeadphoneIcon />, href: "/dashboard/support" },
-
-      {
-        title: "signout",
-        icon: <LogoutIcon />,
-        action: () => setPopup("Signout", <LogoutPopup />),
-      },
-    ],
-    [setPopup],
-  );
+  const userMenus = useUserMenus();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -78,64 +53,57 @@ const UserButton = () => {
     return () => window.removeEventListener("click", listener, false);
   }, []);
 
-  // if (!!user)
-  //   return (
-  //     <div>
-  //       <Button
-  //         className={classes.main}
-  //         iconWidth="1.25rem"
-  //         onClick={() => }
-  //       >
-  //         {user.phone}
-  //       </Button>
-  //     </div>
-  //   );
   return (
-    <div className={classes.main} ref={containerRef}>
-      <Button
-        leadIcon={!!user ? <UserCircleIcon /> : undefined}
-        tailIcon={!!user ? <ChevronIcon /> : undefined}
-        onClick={() =>
-          !!user ? setIsOpen((prev) => !prev) : setPopup("Auth", <AuthPopup />)
-        }
-        variant="Primary"
-        mode={!!user ? "Outline" : "Fill"}
-        size="L"
-        radius="Medium"
-        className={isOpen ? classes.openButton : ""}
-      >
-        {!!user ? user.phone : getContent("loginOrSignup")}
-      </Button>
-      {isOpen && (
-        <div className={classes.menuContainer}>
-          {menus.map((menu) => (
-            <Fragment key={menu.title}>
-              {menu.href ? (
-                <Link
-                  className={classes.item}
-                  href={menu.href}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Ixon width="1.25rem">{menu.icon}</Ixon>
-                  <span>{getContent(menu.title)}</span>
-                </Link>
-              ) : (
-                <button
-                  className={`${classes.item} ${classes.action}`}
-                  onClick={() => {
-                    setIsOpen(false);
-                    menu.action?.();
-                  }}
-                >
-                  <Ixon width="1.25rem">{menu.icon}</Ixon>
-                  <span>{getContent(menu.title)}</span>
-                </button>
-              )}
-            </Fragment>
-          ))}
-        </div>
-      )}
-    </div>
+    <Fragment>
+      <MobileUserButton />
+      <div className={classes.main} ref={containerRef}>
+        <Button
+          leadIcon={!!user ? <UserCircleIcon /> : undefined}
+          tailIcon={!!user ? <ChevronIcon /> : undefined}
+          onClick={() =>
+            !!user
+              ? setIsOpen((prev) => !prev)
+              : setPopup("Auth", <AuthPopup />)
+          }
+          variant="Primary"
+          mode={!!user ? "Outline" : "Fill"}
+          size="L"
+          radius="Medium"
+          className={`${classes.button} ${isOpen ? classes.openButton : ""}`}
+        >
+          {!!user ? user.username || user.phone : getContent("loginOrSignup")}
+        </Button>
+        {isOpen && (
+          <div className={classes.menuContainer}>
+            {userMenus.map((menu) => (
+              <Fragment key={menu.title}>
+                {menu.href ? (
+                  <Link
+                    className={classes.item}
+                    href={menu.href}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Ixon width="1.25rem">{menu.icon}</Ixon>
+                    <span>{getContent(menu.title)}</span>
+                  </Link>
+                ) : (
+                  <button
+                    className={`${classes.item} ${classes.action}`}
+                    onClick={() => {
+                      setIsOpen(false);
+                      menu.action?.();
+                    }}
+                  >
+                    <Ixon width="1.25rem">{menu.icon}</Ixon>
+                    <span>{getContent(menu.title)}</span>
+                  </button>
+                )}
+              </Fragment>
+            ))}
+          </div>
+        )}
+      </div>
+    </Fragment>
   );
 };
 

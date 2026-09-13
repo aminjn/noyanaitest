@@ -36,19 +36,20 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 1;
+  justify-content: flex-start;
 }
 
 .left,
-.right {
+.start {
   flex-shrink: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  align-items: center;
+  width: 18.75rem;
 }
 
 .left {
+  position: relative;
+}
+
+.leftContent {
   justify-content: flex-end;
   display: flex;
   align-items: center;
@@ -273,16 +274,47 @@
   flex-shrink: 0;
 }
 
+.mobileOpen {
+  display: none;
+}
+
+@media only screen and (max-width: 750px) {
+  .mobileOpen {
+    display: block;
+    position: absolute;
+    height: 5rem;
+    background-color: var(--white);
+    top: 50%;
+    left: 50%;
+    width: 102%;
+    transform: translateY(-50%) translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .mobileClose {
+    color: var(--error);
+  }
+
+  .mobileLabel {
+    color: var(--gray10);
+  }
+
+  .mobileIcon {
+    color: var(--gray10);
+  }
+}
+
 @media (max-width: 64rem) {
   .main {
     padding-inline: 1rem;
   }
 
   .nav {
-    display: none;
-  }
-
-  .searchWrap {
     display: none;
   }
 

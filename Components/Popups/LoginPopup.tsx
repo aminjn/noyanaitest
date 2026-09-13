@@ -147,18 +147,10 @@ const LoginPopup = ({
 }: {
   setIsLogin: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { user } = useUser(undefined);
-
   const [context, setContext] = useState<AuthContext>({
     phone: "",
     stage: "init",
   });
-
-  const { closePopup } = usePopup();
-
-  useEffect(() => {
-    if (!!user) closePopup();
-  }, [closePopup, user]);
 
   const getContent = useScopedLocale(["common"]);
 

@@ -1620,6 +1620,7 @@ const contentKeys = [
   "loginToGainAccessLegend",
   "signup",
   "logoutDescription",
+  "search",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
