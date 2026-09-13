@@ -96,12 +96,10 @@ const DoctorBooking = ({
     return params;
   }, [debouncedOptions, common]);
 
-  // const { data, error, mutate } = useSWR(
-  //   `${API}/public/filterBooking?${params.toString()}`,
-  //   (url: string) => fetcher({ url }).then((res) => res.data),
-  // );
-
-  const { data: data2 } = useSWR<{ rows: BookingPageDoctor[] }>(
+  const { data: data2 } = useSWR<{
+    rows: BookingPageDoctor[];
+    count: { total: number }[];
+  }>(
     `${API}/public/filterBooking2?${params.toString()}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
@@ -124,6 +122,7 @@ const DoctorBooking = ({
           common={common}
           setCommon={setCommon}
           data={data2?.rows}
+          count={data2?.count?.[0]?.total ?? 0}
           options={options}
           setOptions={setOptions}
         />

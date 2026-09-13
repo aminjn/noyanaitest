@@ -19,12 +19,14 @@ const DoctorBookinResult = ({
   options,
   setOptions,
   data,
+  count,
   common,
   setCommon,
 }: {
   options: DoctorBookingOptions;
   setOptions: Dispatch<SetStateAction<DoctorBookingOptions>>;
   data?: BookingPageDoctor[];
+  count?: number;
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
 }) => {
@@ -33,7 +35,7 @@ const DoctorBookinResult = ({
   const getContent = useLocale();
 
   return (
-    <BookingResults common={common} setCommon={setCommon}>
+    <BookingResults common={common} setCommon={setCommon} count={count}>
       {data?.map((doctor) => (
         <DoctorCardBooking node={doctor} key={doctor._id} view={common.view} />
       ))}

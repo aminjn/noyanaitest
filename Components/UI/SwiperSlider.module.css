@@ -5,8 +5,6 @@
 .navButton {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%) translateX(-50%);
-  inset-inline-end: 0;
   padding: 0.625rem;
   z-index: 1;
   border-radius: 50%;
@@ -18,5 +16,4 @@
 .navPrev {
   inset-inline-end: unset;
   inset-inline-start: 0;
-  transform: translateY(-50%) translateX(50%);
 }

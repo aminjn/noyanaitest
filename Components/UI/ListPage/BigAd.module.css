@@ -28,11 +28,7 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.15)
-  );
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.15));
 }
 
 .blobStart {
@@ -70,6 +66,7 @@
   background: none;
   border: none;
   padding: 0;
+  z-index: 1;
 }
 
 .row {

@@ -35,6 +35,7 @@ import HostedImage from "../UI/HostedImage";
 import StarIcon from "../Icons/StarIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { currencize } from "../helpers/currencize";
+import Link from "next/link";
 
 export type ServiceListPageProps = {
   data: (
@@ -79,7 +80,9 @@ const SpecialItem = ({
             <StarIcon />
           </Ixon>
         </div>
-        <h3 className={`${classes.itemName} ${tsmBold}`}>{node.name}</h3>
+        <h3 className={`${classes.itemName} ${tsmBold}`}>
+          <Link href={`/service/${node.slug || node._id}`}>{node.name}</Link>
+        </h3>
         {!!node.owner && (
           <legend className={`${classes.itemOwner} ${t2xsMedium}`}>
             {`${node.owner.firstName || ""} ${node.owner.lastName || ""}`.trim()}

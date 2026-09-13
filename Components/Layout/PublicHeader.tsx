@@ -214,6 +214,18 @@ const PublicHeader = () => {
 
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
 
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+
+  const [isNotificationsOpen, setIsNotificationsOpen] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (isSearchOpen) {
+      setIsCartOpen(false);
+      setIsNotificationsOpen(false);
+    }
+  }, [isSearchOpen]);
+
   return (
     <Fragment>
       <div className={classes.container}>
@@ -253,10 +265,13 @@ const PublicHeader = () => {
           </nav>
           <div className={classes.left}>
             <span className={classes.searchWrap}>
-              <SearchButton isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
+              <SearchButton setIsOpen={setIsSearchOpen} />
             </span>
-            <CartButton />
-            <NotificationButton />
+            <CartButton isOpen={isCartOpen} setIsOpen={setIsCartOpen} />
+            <NotificationButton
+              isOpen={isNotificationsOpen}
+              setIsOpen={setIsNotificationsOpen}
+            />
             <UserButton />
           </div>
         </header>

@@ -39,16 +39,7 @@ const BigAd = ({
       )}
       <span className={classes.blobStart} />
       <span className={classes.blobEnd} />
-      <button
-        type="button"
-        className={classes.close}
-        onClick={() => setIsDismissed(true)}
-        aria-label="بستن"
-      >
-        <Ixon width="1rem">
-          <XMarkIcon />
-        </Ixon>
-      </button>
+
       <div className={classes.row}>
         <div className={classes.content}>
           {!!ad.legend && (
@@ -76,6 +67,16 @@ const BigAd = ({
           </Button>
         )}
       </div>
+      <button
+        type="button"
+        className={classes.close}
+        onClick={() => setIsDismissed(true)}
+        aria-label="بستن"
+      >
+        <Ixon width="1rem">
+          <XMarkIcon />
+        </Ixon>
+      </button>
     </div>
   );
 };

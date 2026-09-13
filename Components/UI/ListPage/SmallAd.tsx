@@ -54,18 +54,30 @@ const SmallAd = ({
             </span>
           )}
         </div>
-        {!!ad.target && (
-          <Button
-            href={ad.target}
-            variant="Neutral"
-            mode="Inline"
-            size="S"
-            radius="High"
-            className={classes.button}
+        <div className={classes.end}>
+          {!!ad.target && (
+            <Button
+              href={ad.target}
+              variant="Neutral"
+              mode="Inline"
+              size="S"
+              radius="High"
+              className={classes.button}
+            >
+              اطلاعات بیشتر
+            </Button>
+          )}
+          <button
+            type="button"
+            className={classes.close}
+            onClick={() => setIsDismissed(true)}
+            aria-label="بستن"
           >
-            اطلاعات بیشتر
-          </Button>
-        )}
+            <Ixon width="1rem">
+              <XMarkIcon />
+            </Ixon>
+          </button>
+        </div>
       </div>
     </div>
   );

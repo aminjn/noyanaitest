@@ -88,3 +88,7 @@
 .slide {
   width: fit-content;
 }
+
+.swiper {
+  direction: ltr;
+}

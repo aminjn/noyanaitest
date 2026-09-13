@@ -44,10 +44,13 @@ const CartModal = ({ close }: { close: () => unknown }) => {
         !containerRef.current ||
         !e.target ||
         !containerRef.current.contains(e.target as Node)
-      )
+      ) {
         return close();
+      }
     };
-    setTimeout(() => window.addEventListener("click", listener, false), 10);
+    setTimeout(() => {
+      window.addEventListener("click", listener, false);
+    }, 10);
     return () => window.removeEventListener("click", listener, false);
   }, [close]);
 

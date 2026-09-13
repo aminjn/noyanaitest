@@ -45,7 +45,7 @@ const HomeServices = ({
       </div>
       <div className={classes.content}>
         <div className={classes.list}>
-          <SwiperSlider>
+          <SwiperSlider swiperClass={classes.swiper} ltr>
             {nodes.map((node) => (
               <SwiperSlide tag="li" key={node._id} className={classes.slide}>
                 <ServiceCard node={node} />

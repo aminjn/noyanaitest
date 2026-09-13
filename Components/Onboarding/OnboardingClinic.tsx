@@ -8,6 +8,7 @@ import {
   txlBold,
   tbaseRegular,
 } from "../UI/Typography";
+import banner from "./onboardingClinic.png";
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {
@@ -48,7 +49,7 @@ const OnboardingClinic = () => {
         </ul>
         <div className={classes.imageBox}>
           <Image
-            src="https://www.figma.com/api/mcp/asset/3c6023a7-d9ee-4ce4-af49-376de7b745a7.png"
+            src={banner}
             alt={getContent("onboardingClinicTitle")}
             width={532}
             height={364}

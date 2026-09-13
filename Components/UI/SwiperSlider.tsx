@@ -7,9 +7,11 @@ import ChevronIcon from "../Icons/ChevronIcon";
 const SwiperSlider = ({
   children,
   swiperClass,
+  ltr,
 }: {
   children?: ReactNode;
   swiperClass?: string;
+  ltr?: boolean;
 }) => {
   const [isBegining, setIsBegining] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useState<boolean>(false);
@@ -38,8 +40,16 @@ const SwiperSlider = ({
         <button
           className={classes.navButton}
           onClick={() => swiper?.slideNext()}
+          style={{
+            insetInlineEnd: ltr ? "unset" : 0,
+            insetInlineStart: ltr ? 0 : "unset",
+            transform: `translateY(-50%) translateX(${ltr ? "" : "-"}50%)`,
+          }}
         >
-          <Ixon width="1.5rem" style={{ transform: "rotateZ(90deg)" }}>
+          <Ixon
+            width="1.5rem"
+            style={{ transform: `rotateZ( ${ltr ? "-" : ""}90deg)` }}
+          >
             <ChevronIcon />
           </Ixon>
         </button>
@@ -48,8 +58,16 @@ const SwiperSlider = ({
         <button
           className={`${classes.navButton} ${classes.navPrev}`}
           onClick={() => swiper?.slidePrev()}
+          style={{
+            insetInlineStart: ltr ? "unset" : 0,
+            insetInlineEnd: ltr ? 0 : "unset",
+            transform: `translateY(-50%) translateX(${ltr ? "-" : ""}50%)`,
+          }}
         >
-          <Ixon width="1.5rem" style={{ transform: "rotateZ(-90deg)" }}>
+          <Ixon
+            width="1.5rem"
+            style={{ transform: `rotateZ(${ltr ? "" : "-"}90deg)` }}
+          >
             <ChevronIcon />
           </Ixon>
         </button>

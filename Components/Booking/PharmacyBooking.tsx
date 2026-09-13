@@ -351,12 +351,13 @@ const PharmacyBooking = ({
     return params;
   }, [common.sort, debouncedOptions]);
 
-  const { data } = useSWR<IPharmacy[]>(
+  const { data } = useSWR<{
+    rows: IPharmacy[];
+    count: { total: number }[];
+  }>(
     `${API}/public/filterBookingPharmacy?${params.toString()}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
-
-  console.log(data);
 
   return (
     <Fragment>
@@ -372,8 +373,12 @@ const PharmacyBooking = ({
           options={options}
           setOptions={setOptions}
         />
-        <BookingResults common={common} setCommon={setCommon}>
-          {data?.map((pharmacy) => (
+        <BookingResults
+          common={common}
+          setCommon={setCommon}
+          count={data?.count?.[0]?.total ?? 0}
+        >
+          {data?.rows.map((pharmacy) => (
             <PharmacyBookingCard
               key={pharmacy._id}
               node={pharmacy}

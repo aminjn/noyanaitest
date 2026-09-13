@@ -27,6 +27,7 @@ import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { t2xsMedium, tsmBold, txsDemiBold } from "../UI/Typography";
+import Link from "next/link";
 
 export type ProductListPageProps = {
   data: (
@@ -80,7 +81,9 @@ const SpecialItem = ({
           </Ixon>
         </div>
         <span className={`${classes.name} ${tsmBold}`}>
-          {node.product.name}
+          <Link href={`/product/${node.product.slug || node.product._id}`}>
+            {node.product.name}
+          </Link>
         </span>
         <span className={`${classes.seller} ${t2xsMedium}`}>
           {node.seller.name}

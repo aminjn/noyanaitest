@@ -40,14 +40,12 @@
 
 .left,
 .right {
-  width: 11.125rem;
   flex-shrink: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   display: flex;
   align-items: center;
-  background-color: pink;
 }
 
 .left {
@@ -72,6 +70,7 @@
   transition: all var(--transTime) ease-in-out;
   height: 2rem;
   position: relative;
+  white-space: nowrap;
 }
 
 .link:not(.active):not(.accent):hover {

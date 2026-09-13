@@ -13,8 +13,11 @@ import { t4xlDemiBold } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 
 const cards: { icon: ReactNode; title: ContentKey; legend?: ContentKey }[] = [
-  { icon: <StarsLineIcon />, title: "onboardingIntroItem0Title" },
-  { icon: <FolderIcon />, title: "onboardingIntroItem1Title" },
+  {
+    icon: <StarsLineIcon strokeWidth="1" />,
+    title: "onboardingIntroItem0Title",
+  },
+  { icon: <FolderIcon strokeWidth="1" />, title: "onboardingIntroItem1Title" },
   { icon: <LocationAltIcon />, title: "onboardingIntroItem2Title" },
   {
     icon: <UserLineIcon />,

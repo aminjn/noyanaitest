@@ -8,17 +8,21 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { t2xsRegular } from "../UI/Typography";
 import IconWithCountButton from "../UI/IconWithCountButton";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import NotificationModal from "./NotificationModal";
-const NotificationButton = () => {
+const NotificationButton = ({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { user } = useUser();
 
   const { data } = useSWR<number>(
     `${API}/user/notification/unread-count`,
     (url: string) => fetcher({ url }).then((res) => res.data.count),
   );
-
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   if (!user) return null;
   return (

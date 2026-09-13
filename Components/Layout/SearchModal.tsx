@@ -136,11 +136,7 @@ const ResultSection = <T extends { _id: string }>({
                 <ChevronIcon />
               </span>
             }
-            href={
-              query
-                ? `${all}?search=${encodeURIComponent(query)}`
-                : all
-            }
+            href={query ? `${all}?search=${encodeURIComponent(query)}` : all}
           >
             {getContent("seeAll")}
           </Button>

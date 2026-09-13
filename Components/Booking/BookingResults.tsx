@@ -13,10 +13,12 @@ const BookingResults = ({
   common,
   setCommon,
   children,
+  count,
 }: {
   children?: ReactNode;
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
+  count?: number;
 }) => {
   const getContent = useLocale();
 
@@ -41,7 +43,7 @@ const BookingResults = ({
         />
         <div className={classes.headerMeta}>
           <div className={`${classes.count} ${t2xsRegular}`}>
-            {getCompContent("xResults", ["1"])}
+            {getCompContent("xResults", [String(count ?? 0)])}
           </div>
           <button
             className={classes.toggleView}

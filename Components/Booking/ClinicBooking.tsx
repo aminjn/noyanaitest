@@ -178,7 +178,7 @@ const ClinicBookingFilter = ({
                       (el) => el._id === category._id,
                     );
                     if (index > -1) {
-                      clone.category = clone.category.splice(index, 1);
+                      clone.category.splice(index, 1);
                     }
                     return clone;
                   })
@@ -265,7 +265,9 @@ const ClinicBookingFilter = ({
                     return clone;
                   })
                 }
-              />
+              >
+                {service.title}
+              </BookingSelectedFilter>
             ))}
         </Fragment>
       }
@@ -504,12 +506,13 @@ const ClinicBooking = ({
     return params;
   }, [common.sort, debouncedOptions]);
 
-  const { data } = useSWR<IClinic[]>(
+  const { data } = useSWR<{
+    rows: IClinic[];
+    count: { total: number }[];
+  }>(
     `${API}/public/filterBookingClinic?${params.toString()}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
-
-  console.log(data);
 
   return (
     <Fragment>
@@ -525,8 +528,12 @@ const ClinicBooking = ({
           options={options}
           setOptions={setOptions}
         />
-        <BookingResults common={common} setCommon={setCommon}>
-          {data?.map((clinic) => (
+        <BookingResults
+          common={common}
+          setCommon={setCommon}
+          count={data?.count?.[0]?.total ?? 0}
+        >
+          {data?.rows.map((clinic) => (
             <CommonCenterCard
               key={clinic._id}
               name={clinic.name || ""}
