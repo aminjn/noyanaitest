@@ -1,7 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  padding-block: 2rem;
+  padding-block-end: 2rem;
 }
 
 .crump {

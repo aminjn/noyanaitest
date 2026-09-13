@@ -39,6 +39,35 @@ export const reservationSmsEventLabels: Record<ReservationSmsEvent, string> = {
   reservationInProgressPatientNoShow: "یادآوری حضور در نوبت - بیمار",
 };
 
+// The exact {placeholder} variable names Services/reservationSmsService.ts
+// sends for each event - mirrors backend Models/Reservation.ts's
+// ReservationSmsVariables. Shown on this page (see patternFormRenderer
+// below) so whoever creates the matching pattern on the gateway's own
+// panel (e.g. IPPanel) knows which placeholders to use in its fixed text -
+// this is the whole point of the 2026-09 fix away from a generic
+// {title,message} pair.
+export const reservationSmsEventVariables: Record<
+  ReservationSmsEvent,
+  string[]
+> = {
+  newReservationDoctor: ["reservationId", "patientName", "date", "time"],
+  newReservationPatient: ["reservationId", "doctorName", "date", "time"],
+  upcomingReservationDoctor: [
+    "reservationId",
+    "minutesBefore",
+    "date",
+    "time",
+  ],
+  upcomingReservationPatient: [
+    "reservationId",
+    "minutesBefore",
+    "date",
+    "time",
+  ],
+  reservationInProgressDoctorNoShow: ["reservationId"],
+  reservationInProgressPatientNoShow: ["reservationId"],
+};
+
 // Every entry here is one SMS an order's own buyer or an involved seller
 // org can receive about that specific order - mirrors backend
 // Models/Order.ts's orderSmsEvents. Only three seller-side events exist
@@ -58,6 +87,38 @@ export const orderSmsEventLabels: Record<OrderSmsEvent, string> = {
   newOrderPharmacy: "سفارش جدید - داروخانه",
   newOrderDoctor: "سفارش جدید - پزشک",
   newOrderParaClinic: "سفارش جدید - پاراکلینیک",
+};
+
+// The exact {placeholder} variable names Services/orderSmsService.ts sends
+// for each event - mirrors backend Models/Order.ts's OrderSmsVariables. See
+// reservationSmsEventVariables above for why this exists.
+export const orderSmsEventVariables: Record<OrderSmsEvent, string[]> = {
+  newOrderUser: ["orderId", "total"],
+  newOrderPharmacy: ["orderId", "customerName"],
+  newOrderDoctor: ["orderId", "customerName"],
+  newOrderParaClinic: ["orderId", "customerName"],
+};
+
+// The exact {placeholder} variable names Services/userAlertService.ts sends
+// for each staff-alert event - mirrors backend Models/UserAlert.ts's
+// UserAlertSmsVariables. Hand-kept in sync the same way userAlertEvents/
+// userAlertEventLabels already are (imported from AdminManageUserAlertsPage
+// above) - front and back are separate packages, so there's no way to share
+// this literally. See reservationSmsEventVariables above for why this
+// exists.
+export const userAlertEventVariables: Record<UserAlertEvent, string[]> = {
+  newTicket: ["ticketId", "userPhone", "ticketTitle"],
+  newWithdrawalRequest: ["requestId", "userPhone", "amount"],
+  newBecomeDoctorRequest: ["requestId", "userPhone"],
+  newBecomePharmacyRequest: ["requestId", "userPhone"],
+  newBecomeClinicRequest: ["requestId", "userPhone"],
+  newBecomeParaClinicRequest: ["requestId", "userPhone"],
+  newBecomeHospitalRequest: ["requestId", "userPhone"],
+  newBecomeInsuranceRequest: ["requestId", "userPhone"],
+  newClinicAdditionRequest: ["requestId", "name"],
+  newPharmacyAdditionRequest: ["requestId", "name"],
+  newHospitalAdditionRequest: ["requestId", "name"],
+  newInsuranceAdditionRequest: ["requestId", "name"],
 };
 
 // Type-level camelCase -> snake_case (lowercase), e.g.
@@ -109,12 +170,21 @@ export type ISmsPatterns = MongoDoc & {
   singleton: "SINGLETON";
 } & Record<SmsPatternName, string>;
 
-// Built once from userAlertEvents + reservationSmsEvents, so a new event
-// automatically gets its own text field here without hand-listing pattern
-// names.
+// Each pattern is a fixed text configured in the SMS gateway's own provider
+// panel (e.g. IPPanel), with named placeholders substituted in - not a
+// generic {title,message} pair (2026-09 correction). This turns a
+// variable-name list into the "(متغیرها: ...)" suffix shown on every field's
+// title below, so whoever configures a pattern on the gateway's side knows
+// exactly which placeholders that pattern's text must contain.
+const withVariables = (title: string, variables: string[]): string =>
+  `${title} (متغیرها: ${variables.join("، ")})`;
+
+// Built once from userAlertEvents + reservationSmsEvents + orderSmsEvents,
+// so a new event automatically gets its own text field here without
+// hand-listing pattern names.
 const patternFormRenderer = {
   OTP_PATTERN: {
-    title: "پترن کد تایید (OTP)",
+    title: "پترن کد تایید (OTP) (متغیرها: OTP)",
     type: "text",
   },
 } as FormRenderer<ISmsPatterns>;
@@ -123,7 +193,10 @@ for (const event of userAlertEvents) {
   (patternFormRenderer as Record<string, unknown>)[
     smsPatternNameForEvent(event)
   ] = {
-    title: `پترن پیامک - ${userAlertEventLabels[event]}`,
+    title: withVariables(
+      `پترن پیامک - ${userAlertEventLabels[event]}`,
+      userAlertEventVariables[event],
+    ),
     type: "text",
   };
 }
@@ -132,7 +205,10 @@ for (const event of reservationSmsEvents) {
   (patternFormRenderer as Record<string, unknown>)[
     smsPatternNameForEvent(event)
   ] = {
-    title: `پترن پیامک - ${reservationSmsEventLabels[event]}`,
+    title: withVariables(
+      `پترن پیامک - ${reservationSmsEventLabels[event]}`,
+      reservationSmsEventVariables[event],
+    ),
     type: "text",
   };
 }
@@ -141,7 +217,10 @@ for (const event of orderSmsEvents) {
   (patternFormRenderer as Record<string, unknown>)[
     smsPatternNameForEvent(event)
   ] = {
-    title: `پترن پیامک - ${orderSmsEventLabels[event]}`,
+    title: withVariables(
+      `پترن پیامک - ${orderSmsEventLabels[event]}`,
+      orderSmsEventVariables[event],
+    ),
     type: "text",
   };
 }
