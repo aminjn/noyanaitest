@@ -54,10 +54,15 @@ const PharmacyPanelSidebar = () => {
         show: hasAccess("readLicenses"),
         target: "license",
       },
+      // Tamin end-user lockout (2026-09) - "prescriptions" and "tamin" are
+      // hard-hidden regardless of ACL while Tamin only talks to its sandbox
+      // API; see Components/PharmacyPanel/PharmacyLicenseGate.tsx's
+      // lockedSegments and Controllers/featureGateController.ts on
+      // noyanai-back. Restore hasAccess(...) on both once Tamin goes live.
       {
         title: "prescriptions",
         icon: <UserEditIcon />,
-        show: hasAccess("readPrescriptions"),
+        show: false,
         target: "prescription",
       },
       {
@@ -68,7 +73,7 @@ const PharmacyPanelSidebar = () => {
       },
       {
         title: "tamin",
-        show: hasAccess("readTamin"),
+        show: false,
         icon: <UserEditIcon />,
         target: "tamin",
       },

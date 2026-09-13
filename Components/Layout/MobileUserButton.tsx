@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import classes from "./MobileUserButton.module.css";
 import Ixon from "../UI/Ixon";
 import UserLineIcon from "../Icons/UserLineIcon";
@@ -10,6 +10,7 @@ import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import useUserMenus from "./useUserMenus";
 import Link from "next/link";
+import { tbaseDemiBold, tbaseMedium, tsmRegular } from "../UI/Typography";
 const MobileUserButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -21,8 +22,27 @@ const MobileUserButton = () => {
 
   const userMenus = useUserMenus();
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const listener = (e: MouseEvent) => {
+      if (
+        !containerRef.current ||
+        !e.target ||
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        return setIsOpen(false);
+      }
+    };
+    setTimeout(() => {
+      window.addEventListener("click", listener, false);
+    }, 10);
+    return () => window.removeEventListener("click", listener, false);
+  }, [isOpen]);
+
   return (
-    <div className={classes.main}>
+    <div className={classes.main} ref={containerRef}>
       <button
         className={classes.button}
         onClick={() => {
@@ -44,10 +64,12 @@ const MobileUserButton = () => {
               />
             </div>
             <div className={classes.userContent}>
-              <span className={classes.userName}>
+              <span className={`${classes.userName} ${tbaseMedium}`}>
                 {user?.username || getContent("user")}
               </span>
-              <span>{user?.phone}</span>
+              <span className={`${classes.phone} ${tsmRegular}`}>
+                {user?.phone}
+              </span>
             </div>
           </div>
           <div className={classes.links}>
@@ -55,7 +77,7 @@ const MobileUserButton = () => {
               <Fragment key={menu.title}>
                 {menu.href ? (
                   <Link
-                    className={classes.item}
+                    className={`${classes.item} ${tsmRegular}`}
                     href={menu.href}
                     onClick={() => setIsOpen(false)}
                   >
@@ -64,7 +86,7 @@ const MobileUserButton = () => {
                   </Link>
                 ) : (
                   <button
-                    className={`${classes.item} ${classes.action}`}
+                    className={`${classes.item} ${classes.action} ${tbaseDemiBold}`}
                     onClick={() => {
                       setIsOpen(false);
                       menu.action?.();

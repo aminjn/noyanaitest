@@ -3,7 +3,15 @@ import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import useParaClinicLicenseModules from "@/Components/Hooks/useParaClinicLicenseModules";
 import LicenseNotCoveredNotice from "./LicenseNotCoveredNotice";
+import TemporarilyDisabledNotice from "@/Components/UI/TemporarilyDisabledNotice";
 import { ParaClinicDashboardModule } from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
+
+// Tamin end-user lockout (2026-09) - mirrors DoctorLicenseGate.tsx's own
+// lockedSegments; see its comment for the full rationale. "prescription" is
+// included even though app/paraClinicPanel/prescription/page.tsx doesn't
+// exist yet (orphan sidebar link, per useParaClinicAcl "readPrescriptions"),
+// so it stays locked if that page is ever added before Tamin goes live.
+const lockedSegments = new Set(["tamin", "prescription"]);
 
 // Maps the first path segment under /paraClinicPanel/* to the
 // ParaClinicDashboardModule that noyanai-back's paraClinicRouter actually
@@ -33,6 +41,7 @@ const ParaClinicLicenseGate = ({ children }: { children: ReactNode }) => {
   const mod = segment ? pathModuleMap[segment] : undefined;
   const { modules, error } = useParaClinicLicenseModules();
 
+  if (segment && lockedSegments.has(segment)) return <TemporarilyDisabledNotice />;
   if (!mod) return <>{children}</>;
   if (!modules || error) return <>{children}</>;
   if (modules.includes(mod)) return <>{children}</>;

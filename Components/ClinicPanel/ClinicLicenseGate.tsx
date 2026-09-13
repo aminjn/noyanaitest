@@ -3,7 +3,12 @@ import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import useClinicLicenseModules from "../Hooks/useClinicLicenseModules";
 import LicenseNotCoveredNotice from "./LicenseNotCoveredNotice";
+import TemporarilyDisabledNotice from "../UI/TemporarilyDisabledNotice";
 import { ClinicDashboardModule } from "../Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
+
+// Tamin end-user lockout (2026-09) - mirrors DoctorLicenseGate.tsx's own
+// lockedSegments; see its comment for the full rationale.
+const lockedSegments = new Set(["prescription", "tamin"]);
 
 // Maps the first path segment under /clinicpanel/* to the
 // ClinicDashboardModule that noyanai-back's clinicRouter actually gates with
@@ -31,6 +36,7 @@ const ClinicLicenseGate = ({ children }: { children: ReactNode }) => {
   const mod = segment ? pathModuleMap[segment] : undefined;
   const { modules, error } = useClinicLicenseModules();
 
+  if (segment && lockedSegments.has(segment)) return <TemporarilyDisabledNotice />;
   if (!mod) return <>{children}</>;
   if (!modules || error) return <>{children}</>;
   if (modules.includes(mod)) return <>{children}</>;

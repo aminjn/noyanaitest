@@ -39,6 +39,27 @@ export const reservationSmsEventLabels: Record<ReservationSmsEvent, string> = {
   reservationInProgressPatientNoShow: "یادآوری حضور در نوبت - بیمار",
 };
 
+// Every entry here is one SMS an order's own buyer or an involved seller
+// org can receive about that specific order - mirrors backend
+// Models/Order.ts's orderSmsEvents. Only three seller-side events exist
+// (no clinic): nothing a Clinic owns can appear as an order item today, see
+// that file's comment.
+export const orderSmsEvents = [
+  "newOrderUser",
+  "newOrderPharmacy",
+  "newOrderDoctor",
+  "newOrderParaClinic",
+] as const;
+
+export type OrderSmsEvent = (typeof orderSmsEvents)[number];
+
+export const orderSmsEventLabels: Record<OrderSmsEvent, string> = {
+  newOrderUser: "سفارش جدید - خریدار",
+  newOrderPharmacy: "سفارش جدید - داروخانه",
+  newOrderDoctor: "سفارش جدید - پزشک",
+  newOrderParaClinic: "سفارش جدید - پاراکلینیک",
+};
+
 // Type-level camelCase -> snake_case (lowercase), e.g.
 // "newBecomeDoctorRequest" -> "new_become_doctor_request". Mirrors backend
 // Lib/smsPatternName.ts's SnakeCase helper exactly - keep the two in sync.
@@ -60,7 +81,8 @@ export type SmsPatternNameFor<E extends string> =
 export type SmsPatternName =
   | "OTP_PATTERN"
   | SmsPatternNameFor<UserAlertEvent>
-  | SmsPatternNameFor<ReservationSmsEvent>;
+  | SmsPatternNameFor<ReservationSmsEvent>
+  | SmsPatternNameFor<OrderSmsEvent>;
 
 // camelCase event name -> SCREAMING_SNAKE_CASE + "_PATTERN", e.g.
 // "newBecomeDoctorRequest" -> "NEW_BECOME_DOCTOR_REQUEST_PATTERN". Mirrors
@@ -111,6 +133,15 @@ for (const event of reservationSmsEvents) {
     smsPatternNameForEvent(event)
   ] = {
     title: `پترن پیامک - ${reservationSmsEventLabels[event]}`,
+    type: "text",
+  };
+}
+
+for (const event of orderSmsEvents) {
+  (patternFormRenderer as Record<string, unknown>)[
+    smsPatternNameForEvent(event)
+  ] = {
+    title: `پترن پیامک - ${orderSmsEventLabels[event]}`,
     type: "text",
   };
 }

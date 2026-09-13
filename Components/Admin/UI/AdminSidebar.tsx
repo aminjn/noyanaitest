@@ -220,6 +220,17 @@ const linkMap: LinkMap = [
           { title: "icid", target: "Icids" },
           { title: "complaints", target: "complaint" },
           { title: "specs", target: "spec" },
+          // Tamin sandbox test consoles (2026-09) - see
+          // Controllers/adminTaminController.ts on noyanai-back and
+          // Components/Admin/Tamin/AdminTaminTestConsole.tsx. Real end
+          // users can no longer reach Tamin at all (see
+          // Controllers/featureGateController.ts) so this is now the only
+          // way to exercise the sandbox API, same idea as "تست اسنپ (پیک)"
+          // below for Snapp.
+          { title: "تست پزشک (تامین)", target: "doctorTest" },
+          { title: "تست داروخانه (تامین)", target: "pharmacyTest" },
+          { title: "تست کلینیک (تامین)", target: "clinicTest" },
+          { title: "تست پاراکلینیک (تامین)", target: "paraClinicTest" },
         ],
       },
     ],

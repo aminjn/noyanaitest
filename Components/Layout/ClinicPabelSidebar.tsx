@@ -18,10 +18,15 @@ const ClinicPanelSidebar = () => {
         show: hasAccess(),
         target: "secretary",
       },
+      // Tamin end-user lockout (2026-09) - hard-hidden regardless of ACL
+      // while Tamin only talks to its sandbox API; see
+      // Components/ClinicPanel/ClinicLicenseGate.tsx's lockedSegments and
+      // Controllers/featureGateController.ts on noyanai-back. Restore
+      // `hasAccess("readPrescriptions")` once Tamin goes live.
       {
         title: "prescriptions",
         icon: <UserEditIcon />,
-        show: hasAccess("readPrescriptions"),
+        show: false,
         target: "prescription",
       },
       {

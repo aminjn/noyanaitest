@@ -40,6 +40,11 @@ export const contentNamespaces = {
     "licenseNotCoveredTitle",
     "licenseNotCoveredLegend",
     "buyLicense",
+    // Tamin end-user lockout (2026-09) — TemporarilyDisabledNotice is shown
+    // by all 4 panels' license gates (Doctor/Pharmacy/Clinic/ParaClinic),
+    // same reasoning as the license-gate keys right above.
+    "featureTemporarilyDisabledTitle",
+    "featureTemporarilyDisabledLegend",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,

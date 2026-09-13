@@ -170,7 +170,12 @@ const DoctorSidebar = () => {
         title: "drugsAndPrescriptions",
         icon: <PillIcon />,
         target: "drug",
-        show: hasAccess("readDrugs"),
+        // Tamin end-user lockout (2026-09) - hard-hidden regardless of ACL
+        // while Tamin only talks to its sandbox API; see
+        // Components/DoctorPanel/DoctorLicenseGate.tsx's lockedSegments and
+        // Controllers/featureGateController.ts on noyanai-back. Restore
+        // `hasAccess("readDrugs")` once Tamin goes live.
+        show: false,
       },
       {
         title: "patientDocuments",
