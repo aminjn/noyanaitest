@@ -11,20 +11,23 @@ import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import Button from "../Button";
 import { t2xsRegular, tlgBold, tsmMedium } from "../Typography";
 import HostedImage from "../HostedImage";
+import { WithStyleProps } from "@/Components/Layout/Layout";
 
 const BigAd = ({
   position,
   resourceModel,
   resource,
   render,
-}: UseAdvertisementProps) => {
+  className = "",
+  style,
+}: WithStyleProps<UseAdvertisementProps>) => {
   const ad = useAdvertisement({ position, resourceModel, resource });
   const [isDismissed, setIsDismissed] = useState(false);
 
   if (!ad || isDismissed) return null;
   if (!!render) return render(ad);
   return (
-    <div className={classes.main}>
+    <div className={`${classes.main} ${className}`} style={style}>
       {!!ad.image && (
         <Fragment>
           <HostedImage

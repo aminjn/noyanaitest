@@ -12,10 +12,12 @@ import classes from "./CartButton.module.css";
 
 const CartButton = ({
   isOpen,
-  setIsOpen,
+  open,
+  close,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  open: () => void;
+  close: () => void;
 }) => {
   const { user } = useUser();
 
@@ -26,13 +28,10 @@ const CartButton = ({
   if (!user) return null;
   return (
     <div className={classes.main}>
-      <IconWithCountButton
-        count={data}
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
+      <IconWithCountButton count={data} onClick={() => open()}>
         <LineBagIcon />
       </IconWithCountButton>
-      {isOpen && <CartModal close={() => setIsOpen(false)} />}
+      {isOpen && <CartModal close={close} />}
     </div>
   );
 };

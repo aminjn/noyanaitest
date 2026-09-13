@@ -122,17 +122,17 @@ const CartModal = ({ close }: { close: () => unknown }) => {
         <div className={classes.totalBox}>
           {!!totalDiscount && (
             <div className={classes.discountBox}>
-              <s className={classes.discount}>
+              <s className={`${classes.discount} ${txsRegular}`}>
                 {getContent("xToman", [currencize(totalDiscount)])}
               </s>
-              <span className={classes.percent}>
+              <span className={`${classes.percent} ${t2xsDemiBold}`}>
                 {getContent("percentSymbol", [
                   Math.ceil((totalDiscount / totalPrice) * 100).toString(),
                 ])}
               </span>
             </div>
           )}
-          <div className={classes.price}>
+          <div className={`${classes.price} ${tmdBold}`}>
             {getContent("xToman", [currencize(totalPrice)])}
           </div>
         </div>

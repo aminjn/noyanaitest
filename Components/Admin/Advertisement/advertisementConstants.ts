@@ -32,6 +32,7 @@ export const advertisementPositions = [
   "tests1",
   "tests2",
   "hospital1",
+  "paraClinics1",
 ] as const;
 
 export type AdvertisementPosition = (typeof advertisementPositions)[number];
@@ -68,6 +69,7 @@ export const advertisementPositionLabels: Record<
   tests1: "tests1",
   tests2: "tests2",
   hospital1: "hospital1",
+  paraClinics1: "paraClinics1",
 };
 
 // Mongoose model names an Advertisement can target via `resource`, for

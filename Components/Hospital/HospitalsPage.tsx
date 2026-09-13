@@ -124,7 +124,7 @@ const HospitalsPage = ({
           ))}
         </SpecialsBox>
       )}
-      <BigAd position="hospitals1" />
+      <BigAd position="hospitals1" className={classes.ad} />
       <div className={classes.searchBox}>
         <div className={classes.inputBox}>
           <input

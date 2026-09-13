@@ -84,3 +84,7 @@
   outline: none;
   border: 1px solid var(--gray4);
 }
+
+.ad {
+  margin-bottom: 2rem;
+}

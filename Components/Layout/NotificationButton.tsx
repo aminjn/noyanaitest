@@ -12,10 +12,12 @@ import { Dispatch, SetStateAction, useState } from "react";
 import NotificationModal from "./NotificationModal";
 const NotificationButton = ({
   isOpen,
-  setIsOpen,
+  close,
+  open,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  open: () => void;
+  close: () => void;
 }) => {
   const { user } = useUser();
 
@@ -27,10 +29,10 @@ const NotificationButton = ({
   if (!user) return null;
   return (
     <div className={classes.main}>
-      <IconWithCountButton count={data} onClick={() => setIsOpen(true)}>
+      <IconWithCountButton count={data} onClick={() => open()}>
         <Bell01Icon />
       </IconWithCountButton>
-      {isOpen && <NotificationModal close={() => setIsOpen(false)} />}
+      {isOpen && <NotificationModal close={close} />}
     </div>
   );
 };

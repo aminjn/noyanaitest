@@ -18,6 +18,7 @@ import SearchIcon from "../Icons/SearchIcon";
 import { tbaseMedium, tsmRegular } from "../UI/Typography";
 import useProgress from "../Hooks/useProgress";
 import { useEffect } from "react";
+import SmallAd from "../UI/ListPage/SmallAd";
 
 export type ParaClinicsListPageProps = {
   data: IParaClinic<{
@@ -74,7 +75,7 @@ const ParaClinicsListPage = ({
         title={getContent("noyanParaClinicTitle")}
         legend={getContent("noyanParaClinicLegend")}
       />
-      <ProPromotion />
+      <SmallAd position="paraClinics1" />
       {!!specials.length && (
         <SpecialsBox
           badge={getContent("specialParaClinicsBadge")}

@@ -9,8 +9,15 @@ import { imagePath } from "../../helpers/imagepath";
 import Ixon from "../Ixon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import Button from "../Button";
-import { t2xsRegular, tsmMedium, txsDemiBold } from "../Typography";
+import {
+  t2xsRegular,
+  tsmDemiBold,
+  tsmMedium,
+  txsDemiBold,
+  txsRegular,
+} from "../Typography";
 import HostedImage from "../HostedImage";
+import AnnouncementIcon from "@/Components/Icons/AnnouncementIcon";
 
 const SmallAd = ({
   position,
@@ -37,6 +44,9 @@ const SmallAd = ({
         </Fragment>
       )}
       <div className={classes.row}>
+        <Ixon width="1.5rem" className={classes.icon}>
+          <AnnouncementIcon />
+        </Ixon>
         <div className={classes.content}>
           {/* {!!ad.legend && (
             <span className={`${classes.legend} ${t2xsRegular}`}>
@@ -44,12 +54,12 @@ const SmallAd = ({
             </span>
           )} */}
           {!!ad.title && (
-            <span className={`${classes.title} ${txsDemiBold}`}>
+            <span className={`${classes.title} ${tsmDemiBold}`}>
               {ad.title}
             </span>
           )}
           {!!ad.description && (
-            <span className={`${classes.description} ${tsmMedium}`}>
+            <span className={`${classes.description} ${txsRegular}`}>
               {ad.description}
             </span>
           )}

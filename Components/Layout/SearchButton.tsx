@@ -4,17 +4,13 @@ import Ixon from "../UI/Ixon";
 import classes from "./SearcButton.module.css";
 import SearchModal from "./SearchModal";
 
-const SearchButton = ({
-  setIsOpen,
-}: {
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+const SearchButton = ({ open }: { open: () => void }) => {
   return (
     <div className={classes.main}>
       <button
         type="button"
         onClick={() => {
-          setIsOpen(true);
+          open();
         }}
       >
         <Ixon width="1.5rem">

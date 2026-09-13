@@ -203,6 +203,10 @@ const WithSubs = ({
   );
 };
 
+const modals = ["search", "cart", "notification"] as const;
+
+type Modal = (typeof modals)[number];
+
 const PublicHeader = () => {
   const { user } = useUser();
 
@@ -216,6 +220,8 @@ const PublicHeader = () => {
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
+  const [openModel, setOpenModel] = useState<Modal | null>(null);
+
   const [isNotificationsOpen, setIsNotificationsOpen] =
     useState<boolean>(false);
 
@@ -224,7 +230,15 @@ const PublicHeader = () => {
       setIsCartOpen(false);
       setIsNotificationsOpen(false);
     }
-  }, [isSearchOpen]);
+    if (isCartOpen) {
+      setIsSearchOpen(false);
+      setIsNotificationsOpen(false);
+    }
+    if (isNotificationsOpen) {
+      setIsCartOpen(false);
+      setIsSearchOpen(false);
+    }
+  }, [isCartOpen, isNotificationsOpen, isSearchOpen]);
 
   return (
     <Fragment>
@@ -265,17 +279,24 @@ const PublicHeader = () => {
           </nav>
           <div className={classes.left}>
             <span className={classes.searchWrap}>
-              <SearchButton setIsOpen={setIsSearchOpen} />
+              <SearchButton open={() => setOpenModel("search")} />
             </span>
-            <CartButton isOpen={isCartOpen} setIsOpen={setIsCartOpen} />
+            <CartButton
+              isOpen={openModel === "cart"}
+              open={() => setOpenModel("cart")}
+              close={() => setOpenModel(null)}
+            />
             <NotificationButton
-              isOpen={isNotificationsOpen}
-              setIsOpen={setIsNotificationsOpen}
+              isOpen={openModel === "notification"}
+              open={() => setOpenModel("notification")}
+              close={() => setOpenModel(null)}
             />
             <UserButton />
           </div>
         </header>
-        {isSearchOpen && <SearchModal close={() => setIsSearchOpen(false)} />}
+        {openModel === "search" && (
+          <SearchModal close={() => setOpenModel(null)} />
+        )}
         <PublicMobileMenu
           isOpen={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}

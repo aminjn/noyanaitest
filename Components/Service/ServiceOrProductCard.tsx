@@ -104,7 +104,7 @@ const ServiceOrProductCard = ({
           )}
           <div className={classes.stats}>
             <span
-              className={classes.count}
+              className={`${classes.count} ${t2xsRegular}`}
             >{`(${getContent("xComments", [commentCount?.toString()])})`}</span>
           </div>
           <div className={classes.score}>
