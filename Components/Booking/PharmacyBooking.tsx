@@ -64,6 +64,12 @@ const PharmacyBookingFilter = ({
 
   return (
     <BookingFilter
+      filtered={
+        !Object.values(options).every((el) =>
+          Array.isArray(el) ? !el.length : !el,
+        )
+      }
+      onClear={() => setOptions({})}
       common={common}
       setCommon={setCommon}
       actives={

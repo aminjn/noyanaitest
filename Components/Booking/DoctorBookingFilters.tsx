@@ -60,10 +60,18 @@ const DoctorBookingFilter = ({
 
   const { setPopup } = usePopup();
 
+  console.log({ options });
+
   return (
     <BookingFilter
       common={common}
       setCommon={setCommon}
+      filtered={
+        !Object.values(options).every((el) =>
+          Array.isArray(el) ? !el.length : !el,
+        )
+      }
+      onClear={() => setOptions({})}
       actives={
         <Fragment>
           {!!options.location && (

@@ -70,6 +70,12 @@ const ClinicBookingFilter = ({
 
   return (
     <BookingFilter
+      filtered={
+        !Object.values(options).every((el) =>
+          Array.isArray(el) ? !el.length : !el,
+        )
+      }
+      onClear={() => setOptions({})}
       common={common}
       setCommon={setCommon}
       top={
@@ -509,9 +515,8 @@ const ClinicBooking = ({
   const { data } = useSWR<{
     rows: IClinic[];
     count: { total: number }[];
-  }>(
-    `${API}/public/filterBookingClinic?${params.toString()}`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+  }>(`${API}/public/filterBookingClinic?${params.toString()}`, (url: string) =>
+    fetcher({ url }).then((res) => res.data),
   );
 
   return (

@@ -8,6 +8,8 @@ import {
   t2xlBold,
   tlgMedium,
   tbaseRegular,
+  txlBold,
+  tmdMedium,
 } from "../UI/Typography";
 import banner from "./aboutProfile.png";
 
@@ -34,15 +36,15 @@ const OnboardingProfile = () => {
   const getContent = useLocale();
 
   return (
-    <div className={classes.main}>
+    <div className={classes.main} id="Profile">
       <div className={classes.head}>
-        <h2 className={`${classes.title} ${t3xlDemiBold}`}>
+        <h2 className={`${classes.title} ${txlBold}`}>
           {getContent("onboardingProfileTitle")}
         </h2>
-        <span className={`${classes.subtitle} ${t2xlDemiBold}`}>
+        <span className={`${classes.subtitle} ${tmdMedium}`}>
           {getContent("onboardingProfileSubtitle")}
         </span>
-        <p className={`${classes.description} ${tlgMedium}`}>
+        <p className={`${classes.description} ${tbaseRegular}`}>
           {getContent("onboardingProfileDescription")}
         </p>
       </div>

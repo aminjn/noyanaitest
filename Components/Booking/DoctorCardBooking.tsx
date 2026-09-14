@@ -203,11 +203,17 @@ const DoctorCardBooking = ({
 
   const scoresBlock = (
     <div className={classes.scores}>
-      <ScoreBadge iconColor="var(--yellow)" icon={<StarIcon />} value="4.5" />
+      <ScoreBadge
+        iconColor="var(--yellow)"
+        icon={<StarIcon />}
+        value={node.averageScore?.toString() || "0"}
+      />
       <ScoreBadge
         icon={<CheckCircleIcon />}
         iconColor="var(--info)"
-        value={getCompContent("xPeopleRecommended", ["20"])}
+        value={getCompContent("xPeopleRecommended", [
+          node.feedbackCount?.toString() || "0",
+        ])}
       />
       <MoreMenusButton
         options={[

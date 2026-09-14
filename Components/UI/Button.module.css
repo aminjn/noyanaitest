@@ -6,6 +6,7 @@
   justify-content: center;
   transition: all var(--transTime) ease-in-out;
   box-shadow: 0 0 0 var(--btnRingWidth, 0px) var(--btnRingColor, transparent);
+  text-align: center;
 }
 
 .Primary.Fill {

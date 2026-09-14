@@ -5,13 +5,7 @@ import classes from "./WizardPage.module.css";
 import useSWR, { mutate as mutateGlobal } from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import {
-  KeyboardEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import Form from "../UI/Form";
 import Ixon from "../UI/Ixon";
 import SendIcon from "../Icons/SendIcon";
@@ -24,7 +18,7 @@ import useProgress from "../Hooks/useProgress";
 import ChatsSidebar from "./ChatsSidebar";
 import LoginRequired from "../UI/LoginRequired";
 import Loading from "../Admin/UI/Loading";
-import { wizardChatsKey } from "./useBotChats";
+import { IBotChat, wizardChatsKey } from "./useBotChats";
 
 export const botChatMessageRoles = ["user", "assistant"] as const;
 
@@ -64,6 +58,11 @@ const TypingIndicator = ({ label }: { label: string }) => (
 const WizardPage = () => {
   const { user } = useUser();
   const { nodeId } = useParams<{ nodeId?: string }>();
+
+  const { data: chat } = useSWR<IBotChat>(
+    nodeId ? `${API}/wizard/chat/${nodeId}/details` : null,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
 
   const { data, mutate } = useSWR<IBotChatMessage[]>(
     nodeId ? `${API}/wizard/chat/${nodeId}` : null,
@@ -204,7 +203,7 @@ const WizardPage = () => {
             type="button"
             className={classes.menuToggle}
             aria-label={getContent("menu")}
-            onClick={() => setIsSidebarOpen(true)}
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
           >
             <Ixon width="1.25rem">
               <BarsIcon />
@@ -214,7 +213,7 @@ const WizardPage = () => {
             <AiIcon />
           </Ixon>
           <span className={classes.headerTitle}>
-            {getContent("aiAssistant")}
+            {chat?.name || getContent("aiAssistant")}
           </span>
         </div>
         <div className={classes.body}>

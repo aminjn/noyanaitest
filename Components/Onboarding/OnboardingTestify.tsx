@@ -10,6 +10,7 @@ import {
   tlgDemiBold,
   tbaseRegular,
   txsRegular,
+  txlBold,
 } from "../UI/Typography";
 
 const OnboardingTestify = ({ data }: { data?: ITestify[] }) => {
@@ -18,7 +19,7 @@ const OnboardingTestify = ({ data }: { data?: ITestify[] }) => {
   if (!data?.length) return null;
   return (
     <div className={classes.main}>
-      <h2 className={`${classes.title} ${t4xlBold}`}>
+      <h2 className={`${classes.title} ${txlBold}`}>
         {getContent("onboardingTestifyTitle")}
       </h2>
       <div className={classes.list}>

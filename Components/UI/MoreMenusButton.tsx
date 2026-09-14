@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import classes from "./MoreMenusButton.module.css";
 import Ixon from "./Ixon";
 import MenuIcon from "../Icons/MenuIcon";
@@ -9,6 +9,14 @@ const MoreMenusButton = ({
   options: { title: string; icon: ReactNode; onClick: () => unknown }[];
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      const listener = () => setIsOpen(false);
+      setTimeout(() => window.addEventListener("click", listener, false), 10);
+      return () => window.removeEventListener("click", listener, false);
+    }
+  }, [isOpen]);
 
   return (
     <div className={classes.main}>

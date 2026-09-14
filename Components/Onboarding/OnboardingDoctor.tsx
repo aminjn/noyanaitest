@@ -6,6 +6,8 @@ import {
   tlgMedium,
   t2xlBold,
   tbaseRegular,
+  txlBold,
+  tlgDemiBold,
 } from "../UI/Typography";
 
 const items: { title: ContentKey; description: ContentKey }[] = [
@@ -23,19 +25,19 @@ const OnboardingDoctor = () => {
   const getContent = useLocale();
 
   return (
-    <div className={classes.main}>
+    <div className={classes.main} id="Panel">
       <div className={classes.head}>
-        <h2 className={`${classes.title} ${t3xlDemiBold}`}>
+        <h2 className={`${classes.title} ${txlBold}`}>
           {getContent("onboardingDoctorTitle")}
         </h2>
-        <p className={`${classes.description} ${tlgMedium}`}>
+        <p className={`${classes.description} ${tbaseRegular}`}>
           {getContent("onboardingDoctorDescription")}
         </p>
       </div>
       <ul className={classes.grid}>
         {items.map((item) => (
           <li key={item.title} className={classes.item}>
-            <h3 className={`${classes.itemTitle} ${t2xlBold}`}>
+            <h3 className={`${classes.itemTitle} ${tlgDemiBold}`}>
               {getContent(item.title)}
             </h3>
             <p className={`${classes.itemDescription} ${tbaseRegular}`}>

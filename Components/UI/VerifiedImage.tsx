@@ -4,6 +4,7 @@ import HostedImage from "./HostedImage";
 import Ixon from "./Ixon";
 import classes from "./VerifiedImage.module.css";
 import { WithStyleProps } from "../Layout/Layout";
+import VerifySolidIcon from "../Icons/VerfySolidIcon";
 const VerifiedImage = ({
   src,
   alt,
@@ -26,7 +27,7 @@ const VerifiedImage = ({
         sizes="3.5rem"
       />
       <Ixon className={classes.verifiedBadge} width="1rem">
-        <VerifyIcon />
+        <VerifySolidIcon />
       </Ixon>
       {children}
     </div>

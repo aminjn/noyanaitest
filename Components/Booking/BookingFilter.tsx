@@ -15,12 +15,16 @@ const BookingFilter = ({
   top,
   actives,
   segments,
+  filtered,
+  onClear,
 }: {
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
   top?: ReactNode;
   actives?: ReactNode;
   segments?: ReactNode;
+  filtered?: boolean;
+  onClear: () => unknown;
 }) => {
   const getContent = useLocale();
 
@@ -46,9 +50,17 @@ const BookingFilter = ({
           <span className={`${classes.botTitle} ${tmdMedium}`}>
             {getContent("filters")}
           </span>
-          <Button variant="Error" mode="Inline" size="S" radius="High">
-            {getContent("deleteAll")}
-          </Button>
+          {filtered && (
+            <Button
+              variant="Error"
+              mode="Inline"
+              size="S"
+              radius="High"
+              onClick={() => onClear()}
+            >
+              {getContent("deleteAll")}
+            </Button>
+          )}
         </div>
         <div className={classes.activeFilters}>{actives}</div>
         {segments}

@@ -7,6 +7,7 @@ import {
   txlDemiBold,
   txlBold,
   tbaseRegular,
+  tlgBold,
 } from "../UI/Typography";
 import banner from "./onboardingClinic.png";
 
@@ -25,12 +26,12 @@ const OnboardingClinic = () => {
   const getContent = useLocale();
 
   return (
-    <div className={classes.main}>
+    <div className={classes.main} id="Clinic">
       <div className={classes.head}>
-        <h2 className={`${classes.title} ${t3xlDemiBold}`}>
+        <h2 className={`${classes.title} ${txlDemiBold}`}>
           {getContent("onboardingClinicTitle")}
         </h2>
-        <p className={`${classes.description} ${txlDemiBold}`}>
+        <p className={`${classes.description} ${tbaseRegular}`}>
           {getContent("onboardingClinicDescription")}
         </p>
       </div>
@@ -38,7 +39,7 @@ const OnboardingClinic = () => {
         <ul className={classes.list}>
           {items.map((item) => (
             <li key={item.title} className={classes.item}>
-              <h3 className={`${classes.itemTitle} ${txlBold}`}>
+              <h3 className={`${classes.itemTitle} ${tlgBold}`}>
                 {getContent(item.title)}
               </h3>
               <p className={`${classes.itemDescription} ${tbaseRegular}`}>

@@ -87,7 +87,7 @@ const Button = ({
                 {leadIcon}
               </Ixon>
             )}
-            {!!children && <span>{children}</span>}
+            {!!children && <span style={{ flex: "1" }}>{children}</span>}
             {!!tailIcon && (
               <Ixon width={iconWidth || (size === "S" ? "1.25rem" : "1.5rem")}>
                 {tailIcon}

@@ -7,9 +7,12 @@ import Ixon from "../UI/Ixon";
 import {
   t2xlDemiBold,
   t3xlDemiBold,
+  tbaseMedium,
   tbaseRegular,
   tlgBold,
   tlgMedium,
+  tmdMedium,
+  txlBold,
 } from "../UI/Typography";
 
 const cards: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
@@ -34,14 +37,14 @@ const cards: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
 const OnboardingAi = () => {
   const getContent = useLocale();
   return (
-    <div className={classes.main}>
-      <h2 className={`${classes.title} ${t3xlDemiBold}`}>
+    <div className={classes.main} id="AI">
+      <h2 className={`${classes.title} ${txlBold}`}>
         {getContent("onboardingAiTitle")}
       </h2>
-      <legend className={`${classes.legend} ${t2xlDemiBold}`}>
+      <legend className={`${classes.legend} ${tmdMedium}`}>
         {getContent("onboardingAiLegend")}
       </legend>
-      <p className={`${classes.description} ${tlgMedium}`}>
+      <p className={`${classes.description} ${tbaseMedium}`}>
         {getContent("onboardingAiDescription")}
       </p>
       <ul className={classes.cards}>

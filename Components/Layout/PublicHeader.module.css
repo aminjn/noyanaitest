@@ -29,6 +29,7 @@
   content: "";
   display: block;
   z-index: -1;
+  border-bottom: 1px solid var(--gray4);
 }
 
 .start {

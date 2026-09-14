@@ -9,6 +9,7 @@ import {
   tlgBold,
   tbaseRegular,
   t2xlBold,
+  txlBold,
 } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import VideoIcon from "../Icons/VideoIcon";
@@ -54,12 +55,12 @@ const OnboardingConsult = () => {
   const getContent = useLocale();
 
   return (
-    <div className={classes.main}>
+    <div className={classes.main} id="Consult">
       <div className={classes.head}>
-        <h2 className={`${classes.title} ${t3xlDemiBold}`}>
+        <h2 className={`${classes.title} ${txlBold}`}>
           {getContent("onboardingConsultTitle")}
         </h2>
-        <p className={`${classes.description} ${tlgMedium}`}>
+        <p className={`${classes.description} ${tbaseRegular}`}>
           {getContent("onboardingConsultDescription")}
         </p>
       </div>
@@ -82,7 +83,7 @@ const OnboardingConsult = () => {
         <ul className={classes.list}>
           {items.map((item) => (
             <li key={item.title} className={classes.item}>
-              <h3 className={`${classes.itemTitle} ${t2xlBold}`}>
+              <h3 className={`${classes.itemTitle} ${txlBold}`}>
                 {getContent(item.title)}
               </h3>
               <p className={`${classes.itemDescription} ${tbaseRegular}`}>

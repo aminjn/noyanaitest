@@ -8,7 +8,7 @@
   height: 23.5625rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadowMd);
-
+direction: rtl;
 }
 
 .image {
