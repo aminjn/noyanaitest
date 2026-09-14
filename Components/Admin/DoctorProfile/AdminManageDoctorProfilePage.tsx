@@ -24,6 +24,7 @@ import DashboardIcon from "@/Components/Icons/DashboardIcon";
 import DoctorProfileLocationTab from "./DoctorProfileLocationTab";
 import WalletIcon from "@/Components/Icons/WalletIcon";
 import DoctorCommissionTab from "./DoctorCommissionTab";
+import DoctorTaxTab from "./DoctorTaxTab";
 import DoctorProfileLicenseTab from "./DoctorProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
 
@@ -100,6 +101,12 @@ const AdminManageDoctorProfilePage = () => {
                 content: <DoctorCommissionTab node={data} />,
                 icon: <WalletIcon />,
                 title: "کمیسیون",
+              },
+              {
+                id: "Tax",
+                content: <DoctorTaxTab node={data} />,
+                icon: <WalletIcon />,
+                title: "مالیات",
               },
               {
                 id: "License",

@@ -203,6 +203,7 @@ const linkMap: LinkMap = [
       { title: "ادمین ها", target: "useraccesslevel" },
       { title: "تنظیمات سیستم", target: "appConfig" },
       { title: "تنظیمات مالی", target: "globalFinanceSettings" },
+      { title: "تنظیمات مالیاتی", target: "globalTaxSettings" },
       { title: "پترن‌های پیامک", target: "smsPatterns" },
       {
         title: "تامین اجتماعی",

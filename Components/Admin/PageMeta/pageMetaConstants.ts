@@ -3,7 +3,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 // every listing page in the app, e.g. /symptom
 export const pageMetaListResourceTypes = [
   "/mag",
-  "/doctors/[page]",
+  "/doctors",
   "/disease",
   "/drug",
   "/speciality",
@@ -49,7 +49,7 @@ export const pageMetaListResourceTypeLabels: Record<
   string
 > = {
   "/mag": "مقالات",
-  "/doctors/[page]": "پزشکان",
+  "/doctors": "پزشکان",
   "/disease": "بیماری ها",
   "/drug": "دارو ها",
   "/speciality": "تخصص ها",

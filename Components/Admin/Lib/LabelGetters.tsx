@@ -1,4 +1,7 @@
-import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
+import {
+  DoctorProfilePopulation,
+  IDoctorProfile,
+} from "@/Components/DoctorPanel/DoctorPanelPage";
 import { IUser } from "@/Components/Hooks/useUser";
 import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
 import { IAccessLevel } from "../AccessLevel/AdminManageAccessLevelsPage";

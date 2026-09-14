@@ -801,6 +801,7 @@ const contentKeys = [
   "consentFirst",
   "paymentDetails",
   "tax",
+  "subtotal",
   "freeOfCharge",
   "downPayment",
   "paymentMethod",
@@ -1636,6 +1637,14 @@ const contentKeys = [
   "lastWeek",
   "lastMonth",
   "older",
+  // Unclaimed public doctor page redesign (2026-09) -
+  // Components/Doctor/DoctorPage.tsx, mirroring the NewPublicDoctorProfilePage
+  // card/tabs layout for scraped (not-yet-claimed) Doctor records. Replaces
+  // the booking sidebar with a claim-profile CTA linking to /onboarding.
+  // "isThisYou" already existed. Kept in sync with Models/TextContent.ts on
+  // noyanai-back.
+  "claimThisProfile",
+  "claimProfileLegend",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

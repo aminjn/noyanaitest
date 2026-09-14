@@ -1,50 +1,18 @@
-import { IDoctor } from "@/Components/Admin/Doctor/AdminManageDoctorsPage";
-import DoctorsListPage from "@/Components/Doctor/DoctorsListPage";
-import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
-import { getPublicData } from "@/Components/helpers/getPublicData";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { notFound } from "next/navigation";
-import {
-  getListPageMetadata,
-  getListPageWebSchema,
-} from "@/Components/helpers/getPageMetadata";
-import JsonLdSchema from "@/Components/UI/JsonLdSchema";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { redirect } from "next/navigation";
 
-export type DoctorPageProps = {
-  data: IDoctor<{ SpecialityPopulated: Record<never, never> }>[];
-  profiles: IDoctorProfile<{
-    MainSpecialityPopulated: Record<never, never>;
-  }>[];
-  pagesCount: number;
-};
-
-export const generateMetadata = () => getListPageMetadata("/doctors/[page]");
-
-const DoctorsList = async ({
-  params: { page: _page },
+// Old dynamic-segment pagination route, retired 2026-09 in favor of query-param
+// pagination on app/doctors/page.tsx (matches the app/disease convention).
+// Kept as a redirect - rather than deleted outright - so any bookmarked or
+// indexed /doctors/N links keep working. TODO: this folder can be deleted
+// outright once nothing links to /doctors/[page] anymore (couldn't delete it
+// directly here - the sandbox shell was unreachable this session).
+const DoctorsListPageRedirect = async ({
+  params,
 }: {
-  params: { page: string };
+  params: Promise<{ page: string }>;
 }) => {
-  const page = Number(_page);
-  if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
-  const [data, textContent] = await Promise.all([
-    getPublicData<DoctorPageProps>(`doctor?page=${page}`),
-    getScopedTextContent(["common", "doctorsList"]),
-  ]);
-  if (!data) return notFound();
-  const webSchema = await getListPageWebSchema("/doctors/[page]");
-  return (
-    <>
-      <JsonLdSchema schema={webSchema} />
-      <LocaleScopeProvider
-        namespaces={["common", "doctorsList"]}
-        initialTextContent={textContent}
-      >
-        <DoctorsListPage {...data} />
-      </LocaleScopeProvider>
-    </>
-  );
+  const { page } = await params;
+  redirect(`/doctors?page=${encodeURIComponent(page)}`);
 };
 
-export default DoctorsList;
+export default DoctorsListPageRedirect;

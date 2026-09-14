@@ -27,7 +27,9 @@ import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import ClinicProfileLicenseTab from "./ClinicProfileLicenseTab";
+import ClinicTaxTab from "./ClinicTaxTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import WalletIcon from "@/Components/Icons/WalletIcon";
 
 const ClinicLocationManager = ({
   node,
@@ -125,6 +127,12 @@ const AdminManageClinicPage = () => {
                 id: "License",
                 icon: <CartIcon />,
                 content: <ClinicProfileLicenseTab node={data} />,
+              },
+              {
+                title: "مالیات",
+                id: "Tax",
+                icon: <WalletIcon />,
+                content: <ClinicTaxTab node={data} />,
               },
               {
                 title: "عملیات",

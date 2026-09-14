@@ -96,8 +96,7 @@ export const contentNamespaces = {
     "weHaveTooManyUsers",
   ],
 
-  // app/doctors/page.tsx + app/doctors/[page]/page.tsx (DoctorsListPage,
-  // DoctorCard, DoctorCardWithSessions).
+  // app/doctors/page.tsx (DoctorsListPage, DoctorCard).
   doctorsList: [
     "doctors",
     "noName",

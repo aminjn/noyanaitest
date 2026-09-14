@@ -45,6 +45,7 @@ import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesT
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import ParaClinicCommissionTab from "./ParaClinicCommissionTab";
+import ParaClinicTaxTab from "./ParaClinicTaxTab";
 import ParaClinicProfileLicenseTab from "./ParaClinicProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
 
@@ -421,6 +422,11 @@ const AdminManageParaClinicPage = () => {
                 id: "Commission",
                 title: "کمیسیون",
                 content: <ParaClinicCommissionTab node={data} />,
+              },
+              {
+                id: "Tax",
+                title: "مالیات",
+                content: <ParaClinicTaxTab node={data} />,
               },
               {
                 id: "License",

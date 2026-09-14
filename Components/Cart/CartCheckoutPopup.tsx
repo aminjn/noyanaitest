@@ -33,6 +33,15 @@ const checkoutMethods: OrderPaymentMethod[] = ["wallet"];
 
 type SubmitCartResponse = { data: { _id: string } };
 
+// Server-computed cart total, tax included - fetched fresh here rather than
+// trusting the `total` prop (which is only the client-side subtotal CartPage
+// already had on hand) since tax rates live in admin-only *TaxSettings docs
+// this buyer can't read directly (Controllers/cartController.ts
+// getCartSummary, 2026-09). Item prices shown elsewhere in the cart never
+// change - this popup is specifically the "checkout view" that adds tax on
+// top, per the user's request.
+type CartSummary = { subtotal: number; tax: number; total: number };
+
 const CartCheckoutPopup = ({
   total,
   requiresAddress,
@@ -55,6 +64,11 @@ const CartCheckoutPopup = ({
 
   const { data: wallet } = useSWR<IWallet>(`${API}/user/wallet`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
+  );
+
+  const { data: summary } = useSWR<CartSummary>(
+    `${API}/cart/summary`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const [address, setAddress] = useState<string | null>(null);
@@ -152,9 +166,23 @@ const CartCheckoutPopup = ({
           </div>
         </div>
         <div className={classes.totalRow}>
+          <span className={tsmRegular}>{getContent("subtotal")}</span>
+          <span className={tsmRegular}>
+            {`${currencize(summary ? summary.subtotal : total)} ${getContent("toman")}`}
+          </span>
+        </div>
+        <div className={classes.totalRow}>
+          <span className={tsmRegular}>{getContent("tax")}</span>
+          <span className={tsmRegular}>
+            {summary && summary.tax > 0
+              ? `${currencize(summary.tax)} ${getContent("toman")}`
+              : getContent("freeOfCharge")}
+          </span>
+        </div>
+        <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("totalPrice")}</span>
           <span className={`${classes.totalPrice} ${tbaseDemiBold}`}>
-            {`${currencize(total)} ${getContent("toman")}`}
+            {`${currencize(summary ? summary.total : total)} ${getContent("toman")}`}
           </span>
         </div>
         <Button

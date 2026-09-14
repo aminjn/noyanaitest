@@ -27,3 +27,10 @@ const _backend = process.env.BACKEND;
 if (!_backend) throw new Error("Please Set 'BACKEND' in .env.local");
 
 export const BACKEND = _backend;
+
+const _domain = process.env.DOMAIN;
+
+if (!_domain) throw new Error("Please Set 'DOMAIN' in .env.local");
+
+// public-facing origin of this site, used to build absolute URLs (sitemaps, canonical links)
+export const DOMAIN = _domain;

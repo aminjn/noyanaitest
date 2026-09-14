@@ -24,6 +24,7 @@ import {
 } from "../Province/AdminManageProvincesPage";
 import WalletIcon from "@/Components/Icons/WalletIcon";
 import PharmacyCommissionTab from "./PharmacyCommissionTab";
+import PharmacyTaxTab from "./PharmacyTaxTab";
 import PharmacyProfileLicenseTab from "./PharmacyProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
 
@@ -167,6 +168,12 @@ const AdminManagePharmacyPage = () => {
                 id: "Commission",
                 icon: <WalletIcon />,
                 content: <PharmacyCommissionTab node={data} />,
+              },
+              {
+                title: "مالیات",
+                id: "Tax",
+                icon: <WalletIcon />,
+                content: <PharmacyTaxTab node={data} />,
               },
               {
                 title: "مجوز",

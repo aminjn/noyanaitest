@@ -431,7 +431,21 @@ const CheckoutStage = ({
     ],
   );
 
+  // Tax is additive on top of the session price shown throughout this page
+  // - the price itself never changes (2026-09 user decision). Rounding
+  // matches Lib/taxSettings.ts's calcTax on the backend (plain
+  // Math.round, no fractional Toman).
+  const getSessionTypeTax = useCallback(
+    (st: DoctorSessionType): number =>
+      Math.round(
+        (getSessionTypePrice(st) * (doctor.visitTaxPercent || 0)) / 100,
+      ),
+    [getSessionTypePrice, doctor.visitTaxPercent],
+  );
+
   if (!context.sessionType || !wallet) return <Loading />;
+  const sessionPrice = getSessionTypePrice(context.sessionType);
+  const sessionTax = getSessionTypeTax(context.sessionType);
   return (
     <div className={classes.boxs}>
       <div className={classes.box}>
@@ -441,15 +455,15 @@ const CheckoutStage = ({
           </span>
           <div className={classes.paymentDetails}>
             <div className={`${classes.paymentDetail} ${tsmMedium}`}>
-              <span>{getContent("tax")}</span>
-              <span>{getContent("freeOfCharge")}</span>
+              <span>{getContent("downPayment")}</span>
+              <span>{getCompContent("xToman", [sessionPrice.toString()])}</span>
             </div>
             <div className={`${classes.paymentDetail} ${tsmMedium}`}>
-              <span>{getContent("downPayment")}</span>
+              <span>{getContent("tax")}</span>
               <span>
-                {getCompContent("xToman", [
-                  getSessionTypePrice(context.sessionType).toString(),
-                ])}
+                {sessionTax > 0
+                  ? getCompContent("xToman", [sessionTax.toString()])
+                  : getContent("freeOfCharge")}
               </span>
             </div>
           </div>
@@ -459,7 +473,7 @@ const CheckoutStage = ({
             </span>
             <span className={`${classes.totalValue} ${tbaseDemiBold}`}>
               {getCompContent("xToman", [
-                getSessionTypePrice(context.sessionType).toString(),
+                (sessionPrice + sessionTax).toString(),
               ])}
             </span>
           </div>
@@ -557,7 +571,14 @@ type FinalizeBookingDoctor = IDoctorProfile<{
   TextChatSettings: Record<never, never>;
   VideoCallSettings: Record<never, never>;
   PhoneConsultSettingsPopulated: Record<never, never>;
-}>;
+}> & {
+  // Effective visit tax percent (2026-09) - attached by
+  // Controllers/publicController.ts's getDoctorProfileById, not stored on
+  // DoctorProfile itself. Already resolved server-side (this doctor's own
+  // Models/DoctorTaxSettings.ts doc if set, else the platform default), so
+  // this page just applies it - see Lib/taxSettings.ts.
+  visitTaxPercent?: number;
+};
 
 const Inner = ({
   date,
@@ -707,7 +728,7 @@ const Inner = ({
                   <div className={classes.doctorImage}>
                     <HostedImage
                       src={data.avatar}
-                      alt={getDoctorProfileLabel(data)}
+                      alt={getDoctorProfileLabel(data as IDoctorProfile)}
                       fill
                       sizes="4rem"
                       style={{ objectFit: "cover" }}
@@ -715,7 +736,7 @@ const Inner = ({
                   </div>
                   <div className={classes.doctorDetails}>
                     <span className={`${classes.doctorName} ${tsmDemiBold}`}>
-                      {getDoctorProfileLabel(data)}
+                      {getDoctorProfileLabel(data as IDoctorProfile)}
                     </span>
                     {!!data.mainSpeciality && (
                       <span
