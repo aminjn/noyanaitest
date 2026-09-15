@@ -143,7 +143,6 @@ const PatientStage = ({
 
   const { setPopup } = usePopup();
 
-
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
@@ -158,6 +157,9 @@ const PatientStage = ({
               <div
                 className={`${classes.identity} ${context.patient._id === identity._id ? classes.activeIdentity : ""}`}
                 key={identity._id}
+                onClick={() =>
+                  setContext((prev) => ({ ...prev, patient: identity }))
+                }
               >
                 <div className={classes.identityCheck}>
                   <Ixon width=".75rem">
