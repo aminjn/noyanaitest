@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Image from "next/image";
 import useLocale from "../Hooks/useLocale";
 import classes from "./OnboardingConsult.module.css";
 import { ContentKey } from "../Enums/contentKeys";
@@ -15,7 +14,7 @@ import Ixon from "../UI/Ixon";
 import VideoIcon from "../Icons/VideoIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
-import banner from "./OnboardingConsult.png";
+import HostedImage from "../UI/HostedImage";
 
 const cards: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
   [
@@ -51,7 +50,11 @@ const items: { title: ContentKey; description: ContentKey }[] = [
   },
 ];
 
-const OnboardingConsult = () => {
+const OnboardingConsult = ({
+  onboadrdinConsult,
+}: {
+  onboadrdinConsult?: string;
+}) => {
   const getContent = useLocale();
 
   return (
@@ -93,8 +96,8 @@ const OnboardingConsult = () => {
           ))}
         </ul>
         <div className={classes.imageBox}>
-          <Image
-            src={banner}
+          <HostedImage
+            src={onboadrdinConsult}
             alt={getContent("onboardingConsultTitle")}
             width={564}
             height={480}

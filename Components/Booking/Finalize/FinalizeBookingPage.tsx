@@ -69,6 +69,7 @@ import useForm from "@/Components/Hooks/useForm";
 import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
 import Act from "@/Components/UI/Act";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
+import BookingSessionSelectorPopup from "@/Components/Booking/BookingSessionSelectorPopup";
 
 const AddRelativePopup = ({ mutate }: { mutate: () => unknown }) => {
   const getContent = useLocale();
@@ -583,27 +584,20 @@ type FinalizeBookingDoctor = IDoctorProfile<{
   visitTaxPercent?: number;
 };
 
-const Inner = ({
+const InnerBookingFlow = ({
   date,
   end,
   start,
   identity,
+  doctor: data,
 }: {
   date: Date;
   start: number;
   end: number;
   identity: IUserIdentity;
+  doctor: FinalizeBookingDoctor;
 }) => {
-  const { user } = useUser();
-
-  const { nodeId } = useParams<{ nodeId: string }>();
-
   const [doesntExist, setDoesntExist] = useState<boolean>(false);
-
-  const { data, error } = useSWR<FinalizeBookingDoctor>(
-    `${API}/public/dr/${nodeId}/id`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
 
   const getContent = useLocale();
 
@@ -720,56 +714,50 @@ const Inner = ({
   const push = useProgress();
 
   return (
-    <HandleLoading data={!!data && !!user} error={error}>
-      {!!data && !!user && (
-        <Fragment>
-          {!!shift ? (
-            <div className={classes.main}>
-              <div className={classes.var}>{stageDict[stage]}</div>
-              <div className={classes.detail}>
-                <div className={classes.doctor}>
-                  <div className={classes.doctorImage}>
-                    <HostedImage
-                      src={data.avatar}
-                      alt={getDoctorProfileLabel(data as IDoctorProfile)}
-                      fill
-                      sizes="4rem"
-                      style={{ objectFit: "cover" }}
-                    />
-                  </div>
-                  <div className={classes.doctorDetails}>
-                    <span className={`${classes.doctorName} ${tsmDemiBold}`}>
-                      {getDoctorProfileLabel(data as IDoctorProfile)}
-                    </span>
-                    {!!data.mainSpeciality && (
-                      <span
-                        className={`${classes.doctorSpeciality} ${txsRegular}`}
-                      >
-                        {data.mainSpeciality.name}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className={classes.sessionDetails}>
-                  <Pair
-                    title={getContent("sessionOffice")}
-                    value={shift.office.name || "-"}
-                  />
-                  <Pair
-                    title={getContent("sessionTime")}
-                    value={`${date.toLocaleDateString("fa-IR", { month: "long", day: "numeric" })} ${getCompContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
-                  />
-                </div>
+    <Fragment>
+      {!!shift ? (
+        <div className={classes.main}>
+          <div className={classes.var}>{stageDict[stage]}</div>
+          <div className={classes.detail}>
+            <div className={classes.doctor}>
+              <div className={classes.doctorImage}>
+                <HostedImage
+                  src={data.avatar}
+                  alt={getDoctorProfileLabel(data as IDoctorProfile)}
+                  fill
+                  sizes="4rem"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+              <div className={classes.doctorDetails}>
+                <span className={`${classes.doctorName} ${tsmDemiBold}`}>
+                  {getDoctorProfileLabel(data as IDoctorProfile)}
+                </span>
+                {!!data.mainSpeciality && (
+                  <span className={`${classes.doctorSpeciality} ${txsRegular}`}>
+                    {data.mainSpeciality.name}
+                  </span>
+                )}
               </div>
             </div>
+            <div className={classes.sessionDetails}>
+              <Pair
+                title={getContent("sessionOffice")}
+                value={shift.office.name || "-"}
+              />
+              <Pair
+                title={getContent("sessionTime")}
+                value={`${date.toLocaleDateString("fa-IR", { month: "long", day: "numeric" })} ${getCompContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <Fragment>
+          {doesntExist ? (
+            <ErrorMessage message={getContent("shiftDoesNotExist")} />
           ) : (
-            <Fragment>
-              {doesntExist ? (
-                <ErrorMessage message={getContent("shiftDoesNotExist")} />
-              ) : (
-                <Loading />
-              )}
-            </Fragment>
+            <Loading />
           )}
         </Fragment>
       )}
@@ -783,6 +771,51 @@ const Inner = ({
           push(`/dashboard/booking/${result.data._id}`);
         }}
       />
+    </Fragment>
+  );
+};
+
+const Inner = ({
+  date,
+  end,
+  start,
+  identity,
+}: {
+  date?: Date;
+  start?: number;
+  end?: number;
+  identity: IUserIdentity;
+}) => {
+  const { user } = useUser();
+
+  const { nodeId } = useParams<{ nodeId: string }>();
+
+  const { data, error } = useSWR<FinalizeBookingDoctor>(
+    `${API}/public/dr/${nodeId}/id`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+
+  return (
+    <HandleLoading data={!!data && !!user} error={error}>
+      {!!data && !!user && (
+        <Fragment>
+          {date !== undefined && start !== undefined && end !== undefined ? (
+            <InnerBookingFlow
+              date={date}
+              start={start}
+              end={end}
+              identity={identity}
+              doctor={data}
+            />
+          ) : (
+            <div className={classes.main}>
+              <BookingSessionSelectorPopup
+                node={data as unknown as IDoctorProfile}
+              />
+            </div>
+          )}
+        </Fragment>
+      )}
     </HandleLoading>
   );
 };
@@ -817,6 +850,11 @@ const FinalizeBookingPage = () => {
     const _date = searchParams.get("d");
     const _start = searchParams.get("s");
     const _end = searchParams.get("e");
+    // Session info in the query is optional - if none of it is present the
+    // user simply hasn't picked a session yet, so they get prompted to
+    // choose one on this page instead of being redirected away. If it's
+    // only partially present, though, the link is malformed.
+    if (!_date && !_start && !_end) return setData(null);
     if (!_date || !_start || !_end) return push("/book");
     // Parse the YYYY-MM-DD key as local midnight explicitly. `new Date(_date)`
     // would parse a date-only string as UTC midnight, which drifts from
@@ -847,8 +885,15 @@ const FinalizeBookingPage = () => {
   if (!user) return <LoginRequired />;
 
   return (
-    <HandleLoading data={!!data && !!identity}>
-      {!!data && !!identity && <Inner identity={identity} {...data} />}
+    <HandleLoading data={!!identity} error={identityError}>
+      {!!identity && (
+        <Inner
+          identity={identity}
+          date={data?.date}
+          start={data?.start}
+          end={data?.end}
+        />
+      )}
     </HandleLoading>
   );
 };

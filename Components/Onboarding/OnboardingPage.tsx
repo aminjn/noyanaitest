@@ -1,5 +1,6 @@
 "use client";
 import { ITestify } from "../Admin/Testify/AdminManageTestifiesPage";
+import { IStaticImages } from "../Admin/StaticImages/AdminManageStaticImagesPage";
 import OnboardingAi from "./OnboardingAi";
 import OnboardingClinic from "./OnboardingClinic";
 import OnboardingConsult from "./OnboardingConsult";
@@ -11,18 +12,23 @@ import classes from "./OnBoardingPage.module.css";
 import OnboardingProfile from "./OnboardingProfile";
 import OnboardingTestify from "./OnboardingTestify";
 
-export type OnboardingpageProps = { data: ITestify[] };
+export type OnboardingpageProps = {
+  data: ITestify[];
+  staticImages: IStaticImages;
+};
 
-const OnboardingPage = ({ data }: OnboardingpageProps) => {
+const OnboardingPage = ({ data, staticImages }: OnboardingpageProps) => {
   return (
     <div className={classes.main}>
       <OnboardingIntro />
       <OnboardingAi />
-      <OnboardingProfile />
+      <OnboardingProfile onboadingProfile={staticImages?.onboadingProfile} />
       <OnboardingMap />
       <OnboardingDoctor />
-      <OnboardingClinic />
-      <OnboardingConsult />
+      <OnboardingClinic onboadingClinic={staticImages?.onboadingClinic} />
+      <OnboardingConsult
+        onboadrdinConsult={staticImages?.onboadrdinConsult}
+      />
       <OnboardingTestify data={data} />
       <OnboardingFeatures />
     </div>

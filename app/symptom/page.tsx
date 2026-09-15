@@ -26,6 +26,7 @@ const SymptomsList = async (ctx: {
     getPublicData<SymptomsListPageProps>(`symptom?${params.toString()}`),
     getScopedTextContent(["common", "symptomsList"]),
   ]);
+
   if (!data) return notFound();
 
   const webSchema = await getListPageWebSchema("/symptom");

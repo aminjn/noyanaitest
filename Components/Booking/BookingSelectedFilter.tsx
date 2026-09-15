@@ -18,6 +18,7 @@ const BookingSelectedFilter = ({
       type="button"
       tailIcon={<XMarkIcon />}
       onClick={onClick}
+      style={{ maxWidth: "15rem", overflow: "hidden" }}
     >
       {children}
     </Button>

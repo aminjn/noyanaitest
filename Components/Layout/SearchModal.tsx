@@ -97,6 +97,12 @@ type GlobalSearchData = {
   insurances: InsurancesPageNode[];
   doctorProfiles: IDoctorProfile<{
     MainSpecialityPopulated: Record<never, never>;
+    TextChatSettings: Record<never, never>;
+    SipCallSettings: Record<never, never>;
+    InPersonSettings: Record<never, never>;
+    VideoCallSettings: Record<never, never>;
+    VoiceCallSettings: Record<never, never>;
+    Province: Record<never, never>;
   }>[];
   drugs: IDrug<{ Tag: Record<never, never> }>[];
 };

@@ -21,7 +21,15 @@ import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 
 const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
   const { data } = useSWR<
-    IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[]
+    IDoctorProfile<{
+      MainSpecialityPopulated: Record<never, never>;
+      TextChatSettings: Record<never, never>;
+      SipCallSettings: Record<never, never>;
+      InPersonSettings: Record<never, never>;
+      VideoCallSettings: Record<never, never>;
+      VoiceCallSettings: Record<never, never>;
+      Province: Record<never, never>;
+    }>[]
   >(`${API}/public/specialityDoctors/${node._id}`, (url: string) =>
     fetcher({ url }).then((res) => res.data.doctors),
   );

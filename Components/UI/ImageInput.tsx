@@ -24,10 +24,12 @@ const ImageInput = ({
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  console.log({ title });
+
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       <div className={classes.inputContainer}>
-        {!!title && <span className={classes.title}></span>}
+        {!!title && <span className={classes.title}>{title}</span>}
         {!!value ? (
           <span>{value.name}</span>
         ) : (

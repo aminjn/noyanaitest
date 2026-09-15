@@ -62,8 +62,9 @@ const CartCheckoutPopup = ({
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const { data: wallet } = useSWR<IWallet>(`${API}/user/wallet`, (url: string) =>
-    fetcher({ url }).then((res) => res.data),
+  const { data: wallet } = useSWR<IWallet>(
+    `${API}/user/wallet`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const { data: summary } = useSWR<CartSummary>(
@@ -99,9 +100,7 @@ const CartCheckoutPopup = ({
                     <span className={`${classes.addressName} ${tsmRegular}`}>
                       {node.displayName}
                     </span>
-                    <span
-                      className={`${classes.addressValue} ${t2xsRegular}`}
-                    >
+                    <span className={`${classes.addressValue} ${t2xsRegular}`}>
                       {node.address}
                     </span>
                   </div>

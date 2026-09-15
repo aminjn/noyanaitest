@@ -1,11 +1,10 @@
-import Image from "next/image";
 import useLocale from "../Hooks/useLocale";
 import Button from "../UI/Button";
 import classes from "./AboutCta.module.css";
-import img from "./aboutCta.png";
+import HostedImage from "../UI/HostedImage";
 import { t2xlBold, tbaseRegular } from "../UI/Typography";
 
-const AboutCta = () => {
+const AboutCta = ({ aboutCta }: { aboutCta?: string }) => {
   const getContent = useLocale();
 
   return (
@@ -42,8 +41,8 @@ const AboutCta = () => {
         </div>
       </div>
       <div className={classes.image}>
-        <Image
-          src={img}
+        <HostedImage
+          src={aboutCta}
           alt={getContent("aboutCtaImageAlt")}
           sizes="24rem"
           style={{ objectFit: "contain" }}

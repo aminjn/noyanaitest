@@ -7,8 +7,7 @@ import LockIcon from "../Icons/LockIcon";
 import LinkIcon from "../Icons/LinkIcon";
 import BadgeCheckIcon from "../Icons/BadgeCheckIcon";
 import Ixon from "../UI/Ixon";
-import Image from "next/image";
-import img from "./aboutPrivacy.png";
+import HostedImage from "../UI/HostedImage";
 import { t4xlBold, tmdBold, tsmRegular } from "../UI/Typography";
 
 const items: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
@@ -35,7 +34,7 @@ const items: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
     },
   ];
 
-const AboutPrivacy = () => {
+const AboutPrivacy = ({ aboutSecurity }: { aboutSecurity?: string }) => {
   const getContent = useLocale();
 
   return (
@@ -66,8 +65,8 @@ const AboutPrivacy = () => {
         </div>
       </div>
       <div className={classes.image}>
-        <Image
-          src={img}
+        <HostedImage
+          src={aboutSecurity}
           alt={getContent("aboutPrivacyImageAlt")}
           fill
           sizes="25rem"

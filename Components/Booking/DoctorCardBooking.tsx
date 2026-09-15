@@ -211,9 +211,13 @@ const DoctorCardBooking = ({
       <ScoreBadge
         icon={<CheckCircleIcon />}
         iconColor="var(--info)"
-        value={getCompContent("xPeopleRecommended", [
-          node.feedbackCount?.toString() || "0",
-        ])}
+        value={
+          view === "Grid"
+            ? node.feedbackCount?.toString() || "0"
+            : getCompContent("xPeopleRecommended", [
+                node.feedbackCount?.toString() || "0",
+              ])
+        }
       />
       <MoreMenusButton
         options={[
@@ -324,10 +328,22 @@ const DoctorCardBooking = ({
         {inPersonsBlock}
         {sessionsBlock}
         <div className={classes.actions}>
-          <Button size="M" radius="Medium" variant="Primary" mode="Fill">
+          <Button
+            size="M"
+            radius="Medium"
+            variant="Primary"
+            mode="Fill"
+            href={`/dr/${node.slug || node._id}`}
+          >
             {getContent("onlineConsult")}
           </Button>
-          <Button size="M" radius="Medium" variant="Primary" mode="Fill">
+          <Button
+            size="M"
+            radius="Medium"
+            variant="Primary"
+            mode="Fill"
+            href={`/book/finalize/${node._id}`}
+          >
             {getContent("reservation")}
           </Button>
         </div>
@@ -343,10 +359,22 @@ const DoctorCardBooking = ({
       {inPersonsBlock}
       {sessionsBlock}
       <div className={classes.actions}>
-        <Button size="M" radius="Medium" variant="Primary" mode="Fill">
+        <Button
+          size="M"
+          radius="Medium"
+          variant="Primary"
+          mode="Fill"
+          href={`/book/finalize/${node._id}`}
+        >
           {getContent("reservation")}
         </Button>
-        <Button size="M" radius="Medium" variant="Primary" mode="Fill">
+        <Button
+          size="M"
+          radius="Medium"
+          variant="Primary"
+          mode="Fill"
+          href={`/dr/${node.slug || node._id}`}
+        >
           {getContent("onlineConsult")}
         </Button>
       </div>

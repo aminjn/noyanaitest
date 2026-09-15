@@ -1,4 +1,3 @@
-import Image from "next/image";
 import useLocale from "../Hooks/useLocale";
 import classes from "./OnboardingClinic.module.css";
 import { ContentKey } from "../Enums/contentKeys";
@@ -9,7 +8,7 @@ import {
   tbaseRegular,
   tlgBold,
 } from "../UI/Typography";
-import banner from "./onboardingClinic.png";
+import HostedImage from "../UI/HostedImage";
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {
@@ -22,7 +21,11 @@ const items: { title: ContentKey; description: ContentKey }[] = [
   },
 ];
 
-const OnboardingClinic = () => {
+const OnboardingClinic = ({
+  onboadingClinic,
+}: {
+  onboadingClinic?: string;
+}) => {
   const getContent = useLocale();
 
   return (
@@ -49,8 +52,8 @@ const OnboardingClinic = () => {
           ))}
         </ul>
         <div className={classes.imageBox}>
-          <Image
-            src={banner}
+          <HostedImage
+            src={onboadingClinic}
             alt={getContent("onboardingClinicTitle")}
             width={532}
             height={364}

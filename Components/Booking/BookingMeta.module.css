@@ -1,0 +1,49 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2.75rem;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend {
+  padding: 0.675rem 0.25rem;
+  color: var(--gray8);
+}
+
+.title {
+  color: var(--gray13);
+  margin-top: 1rem;
+  margin-bottom: 0.675rem;
+}
+
+.subtitle {
+  color: var(--gray10);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+  padding-bottom: 2.25rem;
+}
+
+.about {
+  color: var(--gray10);
+}
+
+.h5 {
+  padding-inline: 0.25rem;
+  color: var(--gray13);
+}
+
+.description {
+  color: var(--gray11);
+}

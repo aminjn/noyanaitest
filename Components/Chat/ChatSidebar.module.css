@@ -9,6 +9,7 @@
   background-color: #f5fafc;
   position: relative;
   overflow: hidden;
+  max-height: 100%;
 }
 
 .close {
@@ -106,6 +107,7 @@
   overflow-y: auto;
   margin-inline: -0.5rem;
   padding-inline: 0.5rem;
+  max-height: 100%;
 }
 
 .fab {

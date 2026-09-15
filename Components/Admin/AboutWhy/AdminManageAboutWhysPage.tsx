@@ -31,6 +31,7 @@ export interface IAboutWhy<
 > extends MongoDoc {
   title?: string;
   content?: string;
+  image?: string;
   isActive: boolean;
   order: number;
   elem: AboutWhyElem;
@@ -41,6 +42,7 @@ export const aboutWhyFormRenderer: FormRenderer<IAboutWhy> = {
   order: { type: "number", title: "رتبه" },
   elem: { type: "select", title: "قسمت", options: aboutWhyElemDict },
   content: { type: "text", title: "توضیحات" },
+  image: { title: "تصویر", type: "image" },
   isActive: { type: "bool", title: "فعال" },
 };
 

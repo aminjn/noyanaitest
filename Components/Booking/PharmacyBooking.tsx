@@ -36,6 +36,8 @@ import PharmacyBookingCard from "./PharmacyBookingCard";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
 import { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
+import BookingMeta from "./BookingMeta";
+import { tsmRegular } from "../UI/Typography";
 
 export type PharmacyBookingOptions = Partial<{
   query: string;
@@ -145,7 +147,7 @@ const PharmacyBookingFilter = ({
       }
       top={
         <input
-          className={classes.semiSelect}
+          className={`${classes.input} ${tsmRegular}`}
           onChange={(e) =>
             setOptions((prev) => ({ ...prev, query: e.target.value }))
           }
@@ -284,7 +286,7 @@ const PharmacyBookingFilter = ({
           </BookingFilterSegment>
           <BookingFilterSegment title={getContent("products")}>
             <input
-              className={classes.semiSelect}
+              className={`${classes.input} ${tsmRegular}`}
               onChange={(e) =>
                 setOptions((prev) => ({
                   ...prev,
@@ -393,6 +395,12 @@ const PharmacyBooking = ({
           ))}
         </BookingResults>
       </BookingLayout>
+      <BookingMeta
+        title="pharmacyBookingMetaTitle"
+        description="pharmacyBookingMetaDescription"
+        label="pharmacyBookingMetaLabel"
+        legend="pharmacyBookingMetaLegend"
+      />
     </Fragment>
   );
 };

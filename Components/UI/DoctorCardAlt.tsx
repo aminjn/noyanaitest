@@ -18,16 +18,33 @@ import {
   txsRegular,
 } from "./Typography";
 import { WithStyleProps } from "../Layout/Layout";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import Badge from "./Badge";
+import AiIcon from "../Icons/AiIcon";
+import VideoIcon from "../Icons/VideoIcon";
+import MicrophoneIcon from "../Icons/MicrophoneIcon";
+import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
+import LocationIcon from "../Icons/LocationIcon";
 
 const DoctorCardAlt = ({
   node,
   className = "",
   style,
 }: WithStyleProps<{
-  node: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
+  node: IDoctorProfile<{
+    MainSpecialityPopulated: Record<never, never>;
+    TextChatSettings: Record<never, never>;
+    SipCallSettings: Record<never, never>;
+    InPersonSettings: Record<never, never>;
+    VideoCallSettings: Record<never, never>;
+    VoiceCallSettings: Record<never, never>;
+    Province: Record<never, never>;
+  }>;
 }>) => {
   const getCompContent = useComplexLocale();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(["common"]);
+
+  console.log({ node });
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
@@ -74,7 +91,7 @@ const DoctorCardAlt = ({
         </legend>
       </div>
       <div className={classes.consult}>
-        <div className={`${classes.pair} ${t2xsRegular}`}>
+        {/* <div className={`${classes.pair} ${t2xsRegular}`}>
           <span className={classes.pairTitle}>{getContent("consultTime")}</span>
           <span className={classes.pairValue}>
             {getCompContent("xMinutes", ["15"])}
@@ -87,6 +104,72 @@ const DoctorCardAlt = ({
           <span className={classes.pairValue}>
             {getContent("readyToRespond")}
           </span>
+        </div> */}
+        <div className={classes.settings}>
+          <div className={classes.settingsRow}>
+            <legend className={`${classes.settingsTitle} ${t2xsRegular}`}>
+              {getContent("onlineConsult")}
+            </legend>
+            <div className={classes.settingsBadges}>
+              <Badge
+                leadIcon={<VideoIcon />}
+                size="S"
+                color={
+                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                }
+                mode="Fill"
+                radius="High"
+              />
+              <Badge
+                leadIcon={<MicrophoneIcon />}
+                size="S"
+                color={
+                  node.voiceCallSettings?.active ? "Primarylight" : "Disabled"
+                }
+                mode="Fill"
+                radius="High"
+              />
+              <Badge
+                leadIcon={<ChatBubbleIcon />}
+                size="S"
+                color={
+                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                }
+                mode="Fill"
+                radius="High"
+              />
+            </div>
+          </div>
+          <div className={classes.settingsRow}>
+            <legend className={`${classes.settingsTitle} ${t2xsRegular}`}>
+              <Ixon width="1rem">
+                <LocationIcon />
+              </Ixon>
+              <span>{node.province?.name || getContent("location")}</span>
+            </legend>
+            <div className={classes.settingsBadges}>
+              <Badge
+                size="S"
+                color={
+                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                }
+                mode="Fill"
+                radius="High"
+              >
+                {getContent("inPerson")}
+              </Badge>
+              <Badge
+                size="S"
+                color={
+                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                }
+                mode="Fill"
+                radius="High"
+              >
+                {getContent("sipCall")}
+              </Badge>
+            </div>
+          </div>
         </div>
       </div>
       <div className={`${classes.actions} ${txsMedium}`}>

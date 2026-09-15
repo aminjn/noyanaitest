@@ -99,9 +99,8 @@ const DoctorBooking = ({
   const { data: data2 } = useSWR<{
     rows: BookingPageDoctor[];
     count: { total: number }[];
-  }>(
-    `${API}/public/filterBooking2?${params.toString()}`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+  }>(`${API}/public/filterBooking2?${params.toString()}`, (url: string) =>
+    fetcher({ url }).then((res) => res.data),
   );
 
   return (
@@ -127,7 +126,12 @@ const DoctorBooking = ({
           setOptions={setOptions}
         />
       </BookingLayout>
-      <BookingMeta />
+      <BookingMeta
+        title="doctorBookingMetaTitle"
+        description="doctorBookingMetaDescription"
+        label="doctorBookingMetaLabel"
+        legend="doctorBookingMetaLegend"
+      />
     </Fragment>
   );
 };

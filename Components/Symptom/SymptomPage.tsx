@@ -30,7 +30,15 @@ export type SymptomPageProps = {
     Category: Record<never, never>;
   }>;
   diseases: IDisease[];
-  doctors: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
+  doctors: IDoctorProfile<{
+    MainSpecialityPopulated: Record<never, never>;
+    TextChatSettings: Record<never, never>;
+    SipCallSettings: Record<never, never>;
+    InPersonSettings: Record<never, never>;
+    VideoCallSettings: Record<never, never>;
+    VoiceCallSettings: Record<never, never>;
+    Province: Record<never, never>;
+  }>[];
   drugs: IDrug[];
   specialities: ISpeciality[];
 };

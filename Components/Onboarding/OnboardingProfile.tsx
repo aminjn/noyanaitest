@@ -1,4 +1,3 @@
-import Image from "next/image";
 import useLocale from "../Hooks/useLocale";
 import classes from "./OnboardingProfile.module.css";
 import { ContentKey } from "../Enums/contentKeys";
@@ -11,7 +10,7 @@ import {
   txlBold,
   tmdMedium,
 } from "../UI/Typography";
-import banner from "./aboutProfile.png";
+import HostedImage from "../UI/HostedImage";
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {
@@ -32,7 +31,11 @@ const items: { title: ContentKey; description: ContentKey }[] = [
   },
 ];
 
-const OnboardingProfile = () => {
+const OnboardingProfile = ({
+  onboadingProfile,
+}: {
+  onboadingProfile?: string;
+}) => {
   const getContent = useLocale();
 
   return (
@@ -61,8 +64,8 @@ const OnboardingProfile = () => {
         ))}
       </ul>
       <div className={classes.imageBox}>
-        <Image
-          src={banner}
+        <HostedImage
+          src={onboadingProfile}
           alt={getContent("onboardingProfileTitle")}
           width={564}
           height={380}

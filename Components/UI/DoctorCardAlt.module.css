@@ -119,6 +119,32 @@
   color: var(--gray12);
 }
 
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.settingsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settingsTitle {
+  color: var(--gray10);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.settingsBadges {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .actions {
   display: flex;
   align-items: center;

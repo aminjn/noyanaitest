@@ -23,7 +23,15 @@ import SmallAd from "../UI/ListPage/SmallAd";
 export type DrugPageProps = {
   data: IDrug<{ SameAs: Record<never, never> }>;
   diseases: IDisease[];
-  doctors: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
+  doctors: IDoctorProfile<{
+    MainSpecialityPopulated: Record<never, never>;
+    TextChatSettings: Record<never, never>;
+    SipCallSettings: Record<never, never>;
+    InPersonSettings: Record<never, never>;
+    VideoCallSettings: Record<never, never>;
+    VoiceCallSettings: Record<never, never>;
+    Province: Record<never, never>;
+  }>[];
   specialities: ISpeciality[];
 };
 const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {

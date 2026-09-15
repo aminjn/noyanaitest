@@ -23,6 +23,12 @@ export type SpecialityPageProps = {
   data: ISpeciality<{ Category: Record<never, never> }>;
   doctors: (IDoctorProfile<{
     MainSpecialityPopulated: Record<never, never>;
+    TextChatSettings: Record<never, never>;
+    SipCallSettings: Record<never, never>;
+    InPersonSettings: Record<never, never>;
+    VideoCallSettings: Record<never, never>;
+    VoiceCallSettings: Record<never, never>;
+    Province: Record<never, never>;
   }> & { sessionTypes: DoctorSessionType[] })[];
   pagesCount: number;
   count: number;
@@ -91,7 +97,8 @@ const SpecialityPage = ({
         }}
       >
         {doctors.map((node) => (
-          <DoctorCardAlt key={node._id} node={node} />
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          <DoctorCardAlt key={node._id} node={node as any} />
         ))}
       </ListPageList>
       <div className={classes.box}>

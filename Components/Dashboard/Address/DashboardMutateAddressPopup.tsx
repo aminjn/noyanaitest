@@ -5,11 +5,7 @@ import useLocale from "@/Components/Hooks/useLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 
-const DashboardMutateAddressPopup = ({
-  mutate,
-}: {
-  mutate: () => unknown;
-}) => {
+const DashboardMutateAddressPopup = ({ mutate }: { mutate: () => unknown }) => {
   const getContent = useLocale();
 
   const { closePopup } = usePopup();
@@ -26,10 +22,10 @@ const DashboardMutateAddressPopup = ({
           path: `${API}/user/address`,
           successCb: () => {
             mutate();
-            closePopup();
+            closePopup("CartAddAddress");
           },
         }}
-        onCancel={() => closePopup()}
+        onCancel={() => closePopup("CartAddAddress")}
       />
     </PopupCard>
   );

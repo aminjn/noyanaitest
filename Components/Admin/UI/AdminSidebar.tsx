@@ -205,6 +205,7 @@ const linkMap: LinkMap = [
       { title: "تنظیمات مالی", target: "globalFinanceSettings" },
       { title: "تنظیمات مالیاتی", target: "globalTaxSettings" },
       { title: "پترن‌های پیامک", target: "smsPatterns" },
+      { title: "تصاویر ثابت", target: "staticImages" },
       {
         title: "تامین اجتماعی",
         target: "tamin",

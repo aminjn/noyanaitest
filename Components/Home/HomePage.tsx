@@ -4,6 +4,7 @@ import { IAdvertisement } from "../Admin/Advertisement/AdminManageAdvertisements
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import { IFaq } from "../Admin/Faq/AdminManageFaqsPage";
 import { IHomeIntroduction } from "../Admin/HomeIntroduction/AdminManageHomeIntroductionsPage";
+import { IStaticImages } from "../Admin/StaticImages/AdminManageStaticImagesPage";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
@@ -29,11 +30,19 @@ export type HomePageProps = Partial<{
   advertisements: IAdvertisement[];
   popularDoctors: IDoctorProfile<{
     MainSpecialityPopulated: Record<never, never>;
+    TextChatSettings: Record<never, never>;
+    SipCallSettings: Record<never, never>;
+    InPersonSettings: Record<never, never>;
+    VideoCallSettings: Record<never, never>;
+    VoiceCallSettings: Record<never, never>;
+    Province:Record<never  , never>
+    // PhoneConsultSettingsPopulated: Record<never, never>;
   }>[];
   services: IService<{ Owner: Record<never, never> }>[];
   sliderAds: IAdvertisement[];
   faqs: IFaq[];
   blogs: IBlog<{ CategoryPopulated: Record<never, never> }>[];
+  staticImages: IStaticImages;
 }>;
 
 const HomePage = ({
@@ -45,10 +54,11 @@ const HomePage = ({
   sliderAds,
   faqs,
   blogs,
+  staticImages,
 }: HomePageProps) => {
   return (
     <main className={classes.main}>
-      <HomeHero />
+      <HomeHero homeMain={staticImages?.homeMain} />
       {/* <HomeIntroduction nodes={introduction} /> */}
       <HomeSpecialities nodes={specialities} />
       {/* <HomeAds nodes={advertisements} /> */}

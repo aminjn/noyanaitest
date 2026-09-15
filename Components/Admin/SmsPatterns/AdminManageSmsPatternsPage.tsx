@@ -22,6 +22,11 @@ import {
 export const reservationSmsEvents = [
   "newReservationDoctor",
   "newReservationPatient",
+  // Sent instead of newReservationPatient when the booking was made for a
+  // relative (Models/UserRelative.ts on the backend) rather than by the
+  // patient themselves - see backend Services/reservationSmsService.ts's
+  // isBookedForRelative (2026-09).
+  "newReservationRelativePatient",
   "upcomingReservationDoctor",
   "upcomingReservationPatient",
   "reservationInProgressDoctorNoShow",
@@ -33,6 +38,7 @@ export type ReservationSmsEvent = (typeof reservationSmsEvents)[number];
 export const reservationSmsEventLabels: Record<ReservationSmsEvent, string> = {
   newReservationDoctor: "نوبت جدید - پزشک",
   newReservationPatient: "نوبت جدید - بیمار",
+  newReservationRelativePatient: "نوبت جدید - بیمار (رزرو توسط دیگری)",
   upcomingReservationDoctor: "یادآوری نوبت - پزشک",
   upcomingReservationPatient: "یادآوری نوبت - بیمار",
   reservationInProgressDoctorNoShow: "یادآوری حضور در نوبت - پزشک",
@@ -52,6 +58,13 @@ export const reservationSmsEventVariables: Record<
 > = {
   newReservationDoctor: ["reservationId", "patientName", "date", "time"],
   newReservationPatient: ["reservationId", "doctorName", "date", "time"],
+  newReservationRelativePatient: [
+    "reservationId",
+    "doctorName",
+    "date",
+    "time",
+    "bookerName",
+  ],
   upcomingReservationDoctor: [
     "reservationId",
     "minutesBefore",

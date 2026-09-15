@@ -2,6 +2,7 @@
 import { IAboutPartner } from "../Admin/AboutPartner/AdminManageAboutPartnersPage";
 import { IAboutTeam } from "../Admin/AboutTeam/AdminManageAboutTeamsPage";
 import { IAboutWhy } from "../Admin/AboutWhy/AdminManageAboutWhysPage";
+import { IStaticImages } from "../Admin/StaticImages/AdminManageStaticImagesPage";
 import AboutCta from "./AboutCta";
 import AboutIntro from "./AboutIntro";
 import AboutMissions from "./AboutMissions";
@@ -19,9 +20,10 @@ export type AboutPageProps = {
   whys: IAboutWhy[];
   partners: IAboutPartner[];
   team: IAboutTeam[];
+  staticImages: IStaticImages;
 };
 
-const AboutPage = ({ partners, team, whys }: AboutPageProps) => {
+const AboutPage = ({ partners, team, whys, staticImages }: AboutPageProps) => {
   console.log({ partners, team, whys });
 
   return (
@@ -33,15 +35,15 @@ const AboutPage = ({ partners, team, whys }: AboutPageProps) => {
         ]}
         className={classes.crump}
       />
-      <AboutIntro />
+      <AboutIntro aboutMain={staticImages?.aboutMain} />
       <AboutStories />
       <AboutMissions />
       <AboutWhys items={whys.filter((el) => el.elem === "Why")} />
       <AboutStats />
       <AboutPrinciples items={whys.filter((el) => el.elem === "Principle")} />
-      <AboutPrivacy />
+      <AboutPrivacy aboutSecurity={staticImages?.aboutSecurity} />
       <AboutTeam team={team} />
-      <AboutCta />
+      <AboutCta aboutCta={staticImages?.aboutCta} />
       <AboutPartners items={partners} />
     </div>
   );

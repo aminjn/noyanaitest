@@ -39,6 +39,9 @@ import useSWR from "swr";
 import { fetcher } from "../helpers/fetcher";
 import BookingResults from "./BookingResults";
 import CommonCenterCard from "./CommonCenterCard";
+import BookingMeta from "./BookingMeta";
+import classes from "./ClinicBooking.module.css";
+import { tsmRegular } from "../UI/Typography";
 
 type ClinicBookingOptions = Partial<{
   query: string;
@@ -84,6 +87,8 @@ const ClinicBookingFilter = ({
             onChange={(e) =>
               setOptions((prev) => ({ ...prev, query: e.target.value }))
             }
+            placeholder={getContent("searchInClinics")}
+            className={`${classes.input} ${tsmRegular}`}
           />
           <MultiSelectInputServer
             path={`${API}/public/clinicCategory`}
@@ -554,6 +559,12 @@ const ClinicBooking = ({
           ))}
         </BookingResults>
       </BookingLayout>
+      <BookingMeta
+        title="clinicBookingMetaTitle"
+        description="clinicBookingMetaDescription"
+        label="clinicBookingMetaLabel"
+        legend="clinicBookingMetaLegend"
+      />
     </Fragment>
   );
 };

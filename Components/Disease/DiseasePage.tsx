@@ -33,7 +33,15 @@ export type DiseasePageProps = {
     Category: Record<never, never>;
     SameAs: Record<never, never>;
   }>;
-  doctors: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
+  doctors: IDoctorProfile<{
+    MainSpecialityPopulated: Record<never, never>;
+    TextChatSettings: Record<never, never>;
+    SipCallSettings: Record<never, never>;
+    InPersonSettings: Record<never, never>;
+    VideoCallSettings: Record<never, never>;
+    VoiceCallSettings: Record<never, never>;
+    Province: Record<never, never>;
+  }>[];
   clinics: IClinic<{
     Category: Record<never, never>;
     Tags: Record<never, never>;

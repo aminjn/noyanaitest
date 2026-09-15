@@ -1,14 +1,13 @@
-import Image from "next/image";
 import useLocale from "../Hooks/useLocale";
 import Button from "../UI/Button";
 import classes from "./AboutIntro.module.css";
 
-import img from "./aboutIntro.png";
+import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import VideoIcon from "../Icons/VideoIcon";
 import { t5xlExtraBold, tlgMedium } from "../UI/Typography";
 
-const AboutIntro = () => {
+const AboutIntro = ({ aboutMain }: { aboutMain?: string }) => {
   const getContent = useLocale();
 
   return (
@@ -44,9 +43,9 @@ const AboutIntro = () => {
         </div>
       </div>
       <div className={classes.image}>
-        <Image
+        <HostedImage
           alt={getContent("aboutIntroImageAlt")}
-          src={img}
+          src={aboutMain}
           fill
           sizes="29rem"
           style={{ objectFit: "cover" }}

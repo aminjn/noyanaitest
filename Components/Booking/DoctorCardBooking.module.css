@@ -25,7 +25,7 @@
 .scores {
   grid-area: scores;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
 }

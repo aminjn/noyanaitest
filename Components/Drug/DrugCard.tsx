@@ -50,6 +50,7 @@ const DrugCard = ({ node }: { node: IDrug<{ Tag: Record<never, never> }> }) => {
         mode="Fill"
         size="S"
         radius="High"
+        href={`/drug/${node.slug || node._id}`}
       >
         {getContent("seeDetails")}
       </Button>

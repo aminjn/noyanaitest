@@ -142,6 +142,21 @@ export interface IVideoCallSettings<
   active: boolean;
 }
 
+export type VoiceCallSettingsPopulation = Population<{
+  Doctor: DoctorProfilePopulation;
+}>;
+
+export interface IVoiceCallSettings<
+  T extends VoiceCallSettingsPopulation = VoiceCallSettingsPopulation,
+> extends MongoDoc {
+  doctor: T["Doctor"] extends DoctorProfilePopulation
+    ? IDoctorProfile<T["Doctor"]>
+    : string;
+  price?: number;
+  active: boolean;
+  hidePrice: boolean;
+}
+
 export type InPersonSettingsPopulation = Population<{
   Doctor: DoctorProfilePopulation;
 }>;
@@ -191,6 +206,7 @@ export type DoctorProfilePopulation = Population<{
   TextChatSettings: TextChatSettinsPopulation;
   VideoCallSettings: VideoCallSettingsPopulation;
   InPersonSettings: InPersonSettingsPopulation;
+  VoiceCallSettings: VoiceCallSettingsPopulation;
   Availabilities: DoctorAvailabilityPopulation;
 }>;
 
@@ -266,9 +282,12 @@ export interface IDoctorProfile<
     : never;
   videoCallSettings?: T["VideoCallSettings"] extends VideoCallSettingsPopulation
     ? IVideoCallSettings<T["VideoCallSettings"]>
-    : string;
+    : never;
   inPersonSettings?: T["InPersonSettings"] extends InPersonSettingsPopulation
     ? IInPersonSettings<T["InPersonSettings"]>
+    : never;
+  voiceCallSettings?: T["VoiceCallSettings"] extends VoiceCallSettingsPopulation
+    ? IVoiceCallSettings<T["VoiceCallSettings"]>
     : never;
   availabilities: T["Availabilities"] extends DoctorAvailabilityPopulation
     ? IDoctorAvailability<T["Availabilities"]>[]

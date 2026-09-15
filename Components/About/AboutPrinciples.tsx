@@ -1,6 +1,5 @@
 import { IAboutWhy } from "../Admin/AboutWhy/AdminManageAboutWhysPage";
-import TargetIcon from "../Icons/TargetIcon";
-import Ixon from "../UI/Ixon";
+import HostedImage from "../UI/HostedImage";
 import { tbaseBold, txsRegular } from "../UI/Typography";
 import classes from "./AboutPrinciples.module.css";
 import TitleLegend from "./TitleLegend";
@@ -13,9 +12,12 @@ const AboutPrinciples = ({ items }: { items: IAboutWhy[] }) => {
         {items.map((item) => (
           <li key={item._id} className={classes.item}>
             <div className={classes.icon}>
-              <Ixon width="1.25rem">
-                <TargetIcon />
-              </Ixon>
+              <HostedImage
+                src={item.image}
+                alt={item.title || ""}
+                fill
+                sizes="1.25rem"
+              />
             </div>
             <h3 className={`${classes.title} ${tbaseBold}`}>{item.title}</h3>
             <p className={`${classes.description} ${txsRegular}`}>

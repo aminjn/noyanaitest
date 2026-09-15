@@ -34,9 +34,9 @@
   flex-direction: column;
   box-shadow: var(--shadow);
   border-radius: 0.5rem;
+  z-index: 1;
 }
 
 .option {
   padding: 1rem;
 }
-

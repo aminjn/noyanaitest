@@ -26,6 +26,9 @@
 }
 
 .icon {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
   background-color: var(--secondary1);
   color: var(--secondary);
   padding: 0.5rem;
@@ -33,6 +36,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .itemTitle {

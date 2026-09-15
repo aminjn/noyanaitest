@@ -2,8 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import classes from "./HomeHero.module.css";
-import HomeAiImg from "./HomeAi.jpg";
-import Image from "next/image";
+import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import PlusIcon from "../Icons/PlusIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
@@ -36,7 +35,7 @@ import BrainIcon from "../Icons/BrainIcon";
 // strip isn't part of the new design and has been dropped — `examples`
 // stays a prop for now (data fetching in app/page.tsx is unchanged) but is
 // no longer rendered here.
-const HomeHero = () => {
+const HomeHero = ({ homeMain }: { homeMain?: string }) => {
   // Reference usage of the scoped hook: this component only needs the
   // "home" namespace, so it declares that directly instead of relying on
   // an ancestor already having fetched everything.
@@ -136,8 +135,8 @@ const HomeHero = () => {
           <div className={classes.imageTilt} />
           <div className={classes.imageFrame}>
             <div className={classes.image}>
-              <Image
-                src={HomeAiImg}
+              <HostedImage
+                src={homeMain}
                 alt="Noyan AI"
                 fill
                 sizes="32rem"

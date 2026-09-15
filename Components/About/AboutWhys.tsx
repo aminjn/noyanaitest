@@ -1,7 +1,5 @@
 import { IAboutWhy } from "../Admin/AboutWhy/AdminManageAboutWhysPage";
-import useLocale from "../Hooks/useLocale";
-import CalendarIcon from "../Icons/CalendarIcon";
-import Ixon from "../UI/Ixon";
+import HostedImage from "../UI/HostedImage";
 import { tmdBold, tsmRegular } from "../UI/Typography";
 import classes from "./AboutWhys.module.css";
 import TitleLegend from "./TitleLegend";
@@ -14,9 +12,12 @@ const AboutWhys = ({ items }: { items: IAboutWhy[] }) => {
         {items.map((item) => (
           <li key={item._id} className={classes.item}>
             <div className={classes.icon}>
-              <Ixon width="1.75rem">
-                <CalendarIcon />
-              </Ixon>
+              <HostedImage
+                src={item.image}
+                alt={item.title || ""}
+                fill
+                sizes="1.75rem"
+              />
             </div>
             <h3 className={`${classes.itemTitle} ${tmdBold}`}>{item.title}</h3>
             <p className={`${classes.itemDescription} ${tsmRegular}`}>

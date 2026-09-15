@@ -329,7 +329,7 @@
 
 .methodCheck {
   display: flex;
-  padding-inline: 2px;
+  padding: 2px;
   border-radius: 50%;
   align-items: center;
   justify-content: center;
@@ -377,5 +377,4 @@
 
 .tip {
   color: var(--gray13);
-  
 }
