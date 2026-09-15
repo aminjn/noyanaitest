@@ -257,12 +257,14 @@
   justify-content: space-between;
   padding-top: 1rem;
   border-top: 1px solid var(--gray3);
+  text-align: end;
 }
 
 .price {
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--primary8);
+  margin-inline-start: auto;
 }
 
 .bookButton {

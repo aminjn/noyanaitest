@@ -10,7 +10,7 @@ const WithBalanceHeader = ({
 }: WithStyleProps<{ children?: ReactNode }>) => {
   return (
     <div className={`${classes.main} ${className}`} style={style}>
-      <DoctorPanelLicenseBalanceHeader />
+      {/* <DoctorPanelLicenseBalanceHeader /> */}
       {children}
     </div>
   );

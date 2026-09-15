@@ -304,9 +304,7 @@ const NewDoctorProfilePage = ({
             )}
             {!!config?.insurances.length && (
               <div className={classes.subBlock}>
-                <h3 className={classes.subTitle}>
-                  {getContent("insurances")}
-                </h3>
+                <h3 className={classes.subTitle}>{getContent("insurances")}</h3>
                 <div className={classes.pillRow}>
                   {config.insurances.map((inc) => (
                     <Badge

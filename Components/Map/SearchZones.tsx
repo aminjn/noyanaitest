@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import classes from "./MapPage.module.css";
 import useSWR from "swr";
 import {
@@ -52,6 +52,15 @@ const SearchZones = ({
     return () => window.removeEventListener("click", listener, false);
   }, []);
 
+  const isEmpty = useMemo<boolean>(() => {
+    if (!zoneData) return false;
+    return (
+      !zoneData.cities.length &&
+      !zoneData.districts.length &&
+      !zoneData.provinces.length
+    );
+  }, [zoneData]);
+
   return (
     <div
       className={classes.searchBox}
@@ -70,30 +79,36 @@ const SearchZones = ({
       </div>
       {!!zoneData && isSearchOpen && (
         <div className={classes.searchResults}>
-          {[
-            ...zoneData.provinces,
-            ...zoneData.cities,
-            ...zoneData.districts,
-          ].map((zone) => (
-            <Fragment key={zone._id}>
-              {!!zone.geometry && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.nativeEvent.stopPropagation();
-                    e.nativeEvent.stopImmediatePropagation();
-                    if (!zone.geometry) return;
-                    onSelect(zone.geometry);
-                    setIsSearchOpen(false);
-                  }}
-                >
-                  {zone.name}
-                </button>
-              )}
+          {isEmpty ? (
+            <p>{getContent("nothingWasFound")}</p>
+          ) : (
+            <Fragment>
+              {[
+                ...zoneData.provinces,
+                ...zoneData.cities,
+                ...zoneData.districts,
+              ].map((zone) => (
+                <Fragment key={zone._id}>
+                  {!!zone.geometry && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.nativeEvent.stopPropagation();
+                        e.nativeEvent.stopImmediatePropagation();
+                        if (!zone.geometry) return;
+                        onSelect(zone.geometry);
+                        setIsSearchOpen(false);
+                      }}
+                    >
+                      {zone.name}
+                    </button>
+                  )}
+                </Fragment>
+              ))}
             </Fragment>
-          ))}
+          )}
         </div>
       )}
     </div>

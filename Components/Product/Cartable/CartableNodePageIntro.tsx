@@ -57,6 +57,10 @@ const SpecBox = ({ specs }: { specs: IProductSpec[] }) => {
           mode="Outline"
           radius="Medium"
           tailIcon={<ChevronIcon />}
+          onClick={() => {
+            const node = document.getElementById("TABS");
+            if (node) node.scrollIntoView({ behavior: "smooth" });
+          }}
         >
           {getContent("seeAllSpecs")}
         </Button>

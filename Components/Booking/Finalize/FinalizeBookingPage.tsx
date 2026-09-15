@@ -143,6 +143,7 @@ const PatientStage = ({
 
   const { setPopup } = usePopup();
 
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
