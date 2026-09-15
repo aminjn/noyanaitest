@@ -25,6 +25,7 @@ import PlusIcon from "../Icons/PlusIcon";
 import Button from "../UI/Button";
 import { BookingView } from "./BookingPage2";
 import HostedImage from "../UI/HostedImage";
+import VerifiedImage from "../UI/VerifiedImage";
 const CommonCenterCard = ({
   name,
   avatar,
@@ -54,18 +55,7 @@ const CommonCenterCard = ({
 
   const introBlock = (
     <div className={classes.intro}>
-      <div className={classes.image}>
-        <HostedImage
-          alt={name}
-          src={avatar}
-          fill
-          sizes="3.5rem"
-          style={{ objectFit: "cover" }}
-        />
-        <Ixon className={classes.verify} width="1rem">
-          <VerifyIcon />
-        </Ixon>
-      </div>
+      <VerifiedImage alt={name} src={avatar} />
       <div className={classes.detailBox}>
         <div className={classes.details}>
           <span className={`${classes.name} ${tsmDemiBold}`}>{name}</span>

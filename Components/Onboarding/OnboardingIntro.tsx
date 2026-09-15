@@ -84,7 +84,7 @@ const OnboardingIntro = () => {
             mode="Outline"
             radius="High"
             size="M"
-            href="/dashboard"
+            href="/doctorpanel"
           >
             {getContent("enterDashboard")}
           </Button>

@@ -10,6 +10,7 @@
   padding-block: 1rem;
   justify-content: space-between;
   background-color: red;
+  z-index: 0;
 }
 
 .nav {

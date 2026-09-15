@@ -1,7 +1,9 @@
 .container {
   width: 100%;
-  position: relative;
+  position: sticky;
   height: 5rem;
+  top: 0;
+  z-index: 1;
 }
 
 .main {
@@ -160,7 +162,6 @@
   position: absolute;
   top: calc(100% + 0.875rem);
   right: 0;
-  z-index: 10;
   display: flex;
   align-items: stretch;
   gap: 0.5rem;

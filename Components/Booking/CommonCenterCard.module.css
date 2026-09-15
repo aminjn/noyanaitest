@@ -60,6 +60,13 @@
 
 .summary {
   color: var(--gray8);
+  display: flex;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 .tags {
@@ -150,6 +157,7 @@
 .action {
   grid-area: action;
   display: flex;
+  margin-top: auto;
 }
 
 .cta {
@@ -164,6 +172,9 @@
   border: 0.8px solid var(--gray3);
   border-radius: 0.5rem;
   padding: 1rem;
+  max-width: min(100%, calc(50% - 1rem));
+  min-width: 25.375rem;
+  margin-inline: auto;
 }
 
 .gridTop {

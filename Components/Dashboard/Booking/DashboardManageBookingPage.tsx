@@ -54,9 +54,7 @@ const DashboardManageBookingPage = () => {
 
           <div className={classes.card}>
             <div className={classes.cardHeader}>
-              <span className={classes.title}>
-                {getContent("reservation")}
-              </span>
+              <span className={classes.title}>{getContent("reservation")}</span>
               <FormatDate
                 className={classes.date}
                 value={data.date}

@@ -56,3 +56,8 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.grid {
+  flex-wrap: wrap;
+  flex-direction: row;
+}

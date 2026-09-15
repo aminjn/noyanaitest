@@ -336,7 +336,7 @@ const DoctorCardBooking = ({
   }
 
   return (
-    <div className={classes.main}>
+    <div className={`${classes.main}`}>
       {identityBlock}
       {scoresBlock}
       {onlinesBlock}

@@ -46,7 +46,6 @@
   grid-area: actions;
 }
 
-
 .onlineBadge {
   position: absolute;
   top: 0;
@@ -57,7 +56,6 @@
   background-color: var(--success);
   border: 1px solid var(--white);
 }
-
 
 .identityContent {
   display: flex;
@@ -198,6 +196,9 @@
   border: 0.8px solid var(--gray3);
   border-radius: 0.5rem;
   padding: 1rem;
+  max-width: calc(50% - 0.5rem);
+  min-width: 25.375rem;
+  margin-inline: auto;
 }
 
 .gridTop {
@@ -206,4 +207,3 @@
   justify-content: space-between;
   gap: 0.5rem;
 }
-

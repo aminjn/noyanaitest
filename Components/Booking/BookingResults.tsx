@@ -71,7 +71,11 @@ const BookingResults = ({
           </button>
         </div>
       </div>
-      <div className={classes.content}>{children}</div>
+      <div
+        className={`${classes.content} ${common.view === "Grid" ? classes.grid : ""}`}
+      >
+        {children}
+      </div>
     </div>
   );
 };
