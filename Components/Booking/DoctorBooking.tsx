@@ -21,6 +21,9 @@ import BookingMeta from "./BookingMeta";
 import DoctorBookingFilter from "./DoctorBookingFilters";
 import DoctorBookinResult from "./DoctorBookingResults";
 import BookingLayout from "./BookingLayout";
+import BookingFiltersMobile from "./BookingFiltersMobile";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import MultiSelectInputServer from "../UI/MultiSelectInputServer";
 
 const DoctorBooking = ({
   common,
@@ -35,6 +38,8 @@ const DoctorBooking = ({
     useDebounce<DoctorBookingOptions>({
       initialValue: options,
     });
+
+  const getContent = useScopedLocale(["booking"]);
 
   useEffect(() => {
     setDebouncedOptions({ ...options });
@@ -109,6 +114,41 @@ const DoctorBooking = ({
         onChange={(e) =>
           setOptions((prev) => ({ ...prev, query: e.target.value }))
         }
+      />
+      <BookingFiltersMobile
+        common={common}
+        setCommon={setCommon}
+        filters={[
+          {
+            active: !!options.location,
+            title: "location",
+            drawer: () => <div></div>,
+          },
+          {
+            active: !!options.province || !!options.city || !!options.district,
+            title: "province",
+            drawer: () => <div></div>,
+          },
+          {
+            active: !!options.speciality?.length,
+            title: "specialityGroup",
+            drawer: (close) => (
+              <MultiSelectInputServer
+                placeholder={getContent("selectSpecilitis")}
+                path={`${API}/public/search/speciality`}
+                getOption={(node) => ({
+                  title: node.name || "",
+                  value: node._id,
+                })}
+                value={options.speciality || []}
+                onChange={(e) => {
+                  setOptions((prev) => ({ ...prev, speciality: e }));
+                  close();
+                }}
+              />
+            ),
+          },
+        ]}
       />
       <BookingLayout>
         <DoctorBookingFilter

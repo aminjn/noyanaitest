@@ -1,0 +1,46 @@
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: brightness(50%) blur(10px);
+}
+
+.main {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  transition: all var(--transTime);
+  animation: comeIn var(--transTime) ease-in-out forwards;
+  max-height: 100dvh;
+  overflow-y: auto;
+  background-color: var(--white);
+  border-radius: 1rem 1rem 0 0;
+}
+
+.header {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray4);
+}
+
+.content {
+  padding: 1.5rem 1rem;
+  min-height: 50dvh;
+}
+
+@keyframes comeIn {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}

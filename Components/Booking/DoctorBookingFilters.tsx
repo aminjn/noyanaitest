@@ -60,8 +60,6 @@ const DoctorBookingFilter = ({
 
   const { setPopup } = usePopup();
 
-  console.log({ options });
-
   return (
     <BookingFilter
       common={common}
