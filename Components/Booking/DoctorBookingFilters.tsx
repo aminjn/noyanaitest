@@ -45,32 +45,28 @@ const FilterButtonBool = ({
 
 // TODO: sort: bestScore / mostViewd / mostAvailvable
 
-const DoctorBookingFilter = ({
+// Builds the {filtered, onClear, actives, top, segments} props BookingFilter
+// (desktop sidebar) and BookingFilterFullDrawer (mobile full-screen drawer)
+// both render, so the two shells share this content instead of duplicating
+// it. Doesn't depend on common/setCommon — those only drive the shells'
+// node-switcher, not the filter fields themselves.
+export const useDoctorBookingFilterProps = ({
   options,
   setOptions,
-  common,
-  setCommon,
 }: {
   options: DoctorBookingOptions;
   setOptions: Dispatch<SetStateAction<DoctorBookingOptions>>;
-  common: BookingCommon;
-  setCommon: Dispatch<SetStateAction<BookingCommon>>;
 }) => {
   const getContent = useLocale();
 
   const { setPopup } = usePopup();
 
-  return (
-    <BookingFilter
-      common={common}
-      setCommon={setCommon}
-      filtered={
-        !Object.values(options).every((el) =>
-          Array.isArray(el) ? !el.length : !el,
-        )
-      }
-      onClear={() => setOptions({})}
-      actives={
+  return {
+    filtered: !Object.values(options).every((el) =>
+      Array.isArray(el) ? !el.length : !el,
+    ),
+    onClear: () => setOptions({}),
+    actives:
         <Fragment>
           {!!options.location && (
             <BookingSelectedFilter
@@ -261,8 +257,8 @@ const DoctorBookingFilter = ({
             </BookingSelectedFilter>
           )}
         </Fragment>
-      }
-      top={
+      ,
+    top:
         <Fragment>
           <MultiSelectInput
             value={options.sessiontype || []}
@@ -287,8 +283,8 @@ const DoctorBookingFilter = ({
             path={`${API}/public/search/clinic`}
           />
         </Fragment>
-      }
-      segments={
+      ,
+    segments:
         <Fragment>
           <BookingFilterSegment
             title={getContent("geospetialPositoin")}
@@ -600,9 +596,24 @@ const DoctorBookingFilter = ({
             />
           </BookingFilterSegment>
         </Fragment>
-      }
-    />
-  );
+      ,
+  };
+};
+
+const DoctorBookingFilter = ({
+  options,
+  setOptions,
+  common,
+  setCommon,
+}: {
+  options: DoctorBookingOptions;
+  setOptions: Dispatch<SetStateAction<DoctorBookingOptions>>;
+  common: BookingCommon;
+  setCommon: Dispatch<SetStateAction<BookingCommon>>;
+}) => {
+  const filterProps = useDoctorBookingFilterProps({ options, setOptions });
+
+  return <BookingFilter common={common} setCommon={setCommon} {...filterProps} />;
 };
 
 export default DoctorBookingFilter;

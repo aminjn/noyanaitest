@@ -1,5 +1,5 @@
 import { Dispatch, Fragment, ReactNode, SetStateAction, useState } from "react";
-import { BookingCommon } from "./BookingPage2";
+import { BookingCommon, bookingSorts } from "./BookingPage2";
 import { ContentKey } from "../Enums/contentKeys";
 import classes from "./BookingFiltersMobile.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -8,11 +8,17 @@ import FilterIcon from "../Icons/FilterIcon";
 import BarsAltIcon from "../Icons/BarsAltIcon";
 import { t2xsDemiBold } from "../UI/Typography";
 import Drawer from "./Drawer";
+import BookingFilterFullDrawer from "./BookingFilterFullDrawer";
 
 const BookingFiltersMobile = ({
   common,
   filters,
   setCommon,
+  top,
+  actives,
+  segments,
+  filtered,
+  onClear,
 }: {
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
@@ -21,10 +27,16 @@ const BookingFiltersMobile = ({
     active: boolean;
     drawer: (close: () => unknown) => ReactNode;
   }[];
+  top?: ReactNode;
+  actives?: ReactNode;
+  segments?: ReactNode;
+  filtered?: boolean;
+  onClear?: () => unknown;
 }) => {
   const [openDrawer, setOpenDrawer] = useState<{
     content: (close: () => unknown) => ReactNode;
     title: ContentKey;
+    fullScreen?: boolean;
   } | null>(null);
 
   const getContent = useScopedLocale(["booking"]);
@@ -36,7 +48,21 @@ const BookingFiltersMobile = ({
           <button
             className={`${classes.filter} ${t2xsDemiBold}`}
             onClick={() =>
-              setOpenDrawer({ content: () => "", title: "filters" })
+              setOpenDrawer({
+                content: () => (
+                  <BookingFilterFullDrawer
+                    common={common}
+                    setCommon={setCommon}
+                    top={top}
+                    actives={actives}
+                    segments={segments}
+                    filtered={filtered}
+                    onClear={onClear}
+                  />
+                ),
+                title: "filters",
+                fullScreen: true,
+              })
             }
           >
             <Ixon width=".675rem" className={classes.filterIcon}>
@@ -47,7 +73,26 @@ const BookingFiltersMobile = ({
           <button
             className={`${classes.filter} ${t2xsDemiBold}`}
             onClick={() =>
-              setOpenDrawer({ content: () => "", title: "sortBy" })
+              setOpenDrawer({
+                content: (close) => (
+                  <div className={classes.sortOptions}>
+                    {bookingSorts.map((sort) => (
+                      <button
+                        key={sort}
+                        type="button"
+                        className={`${classes.filter} ${t2xsDemiBold} ${common.sort === sort ? classes.activeFilter : ""}`}
+                        onClick={() => {
+                          setCommon((prev) => ({ ...prev, sort }));
+                          close();
+                        }}
+                      >
+                        {getContent(sort)}
+                      </button>
+                    ))}
+                  </div>
+                ),
+                title: "sortBy",
+              })
             }
           >
             <Ixon width=".675rem" className={classes.filterIcon}>
@@ -76,6 +121,7 @@ const BookingFiltersMobile = ({
           title={openDrawer.title}
           close={() => setOpenDrawer(null)}
           content={openDrawer.content}
+          fullScreen={openDrawer.fullScreen}
         />
       )}
     </Fragment>

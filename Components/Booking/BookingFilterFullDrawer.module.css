@@ -1,0 +1,55 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.nodes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--gray2);
+}
+
+.node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 0.5rem;
+  transition: all var(--transTime);
+  border-radius: 0.5rem;
+}
+
+.activeNode {
+  background-color: var(--white);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.clearRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.activeFilters {
+  padding-block: 0.25rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.segments {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

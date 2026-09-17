@@ -672,6 +672,7 @@ const contentKeys = [
   "deleteAll",
   "onlyAvailable",
   "onlyWithEPresc",
+  "done",
   "geospetialPositoin",
   "selectOnMap",
   "district",

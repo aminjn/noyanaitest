@@ -8,17 +8,19 @@ const Drawer = ({
   close,
   title,
   content,
+  fullScreen,
 }: {
   content?: (close: () => unknown) => ReactNode;
   title: ContentKey;
   close: () => unknown;
+  fullScreen?: boolean;
 }) => {
   const getContent = useScopedLocale(["booking"]);
 
   return (
     <div className={classes.container}>
       <div className={classes.backdrop} onClick={() => close()} />
-      <div className={classes.main}>
+      <div className={`${classes.main} ${fullScreen ? classes.fullScreen : ""}`}>
         <div className={classes.header}>
           <span className={classes.title}>{getContent(title)}</span>
           <button

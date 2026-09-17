@@ -42,6 +42,19 @@
   border-color: var(--primary);
 }
 
+.sortOptions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.sortOptions .filter {
+  justify-content: flex-start;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
 @media only screen and (max-width: 800px) {
   .container {
     display: block;

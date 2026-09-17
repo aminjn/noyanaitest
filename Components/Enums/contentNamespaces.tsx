@@ -400,6 +400,7 @@ export const contentNamespaces = {
     "unset",
     "onlyAvailable",
     "onlyWithEPresc",
+    "done",
     "selectClinicsPlaceholder",
     "specialityGroup",
     "details",

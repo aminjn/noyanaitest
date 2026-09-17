@@ -18,12 +18,26 @@ import useSWR from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import BookingMeta from "./BookingMeta";
-import DoctorBookingFilter from "./DoctorBookingFilters";
+import DoctorBookingFilter, {
+  useDoctorBookingFilterProps,
+} from "./DoctorBookingFilters";
 import DoctorBookinResult from "./DoctorBookingResults";
 import BookingLayout from "./BookingLayout";
 import BookingFiltersMobile from "./BookingFiltersMobile";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import MultiSelectInputServer from "../UI/MultiSelectInputServer";
+import MultiSelectInput from "../UI/MultiSelectInput";
+import { doctorProfileTiers, genders } from "../DoctorPanel/DoctorPanelPage";
+import InlineDateInput from "../UI/InlineDateInput";
+import TimePicker from "../UI/TimePicker";
+import filterClasses from "./DoctorBookingFilters.module.css";
+import { t2xsRegular } from "../UI/Typography";
+import Button from "../UI/Button";
+import usePopup from "../Hooks/usePopup";
+import BookingMap2 from "./BookingMap2";
+import BookingFilterButton from "./BookingFilterButton";
+import { ICity, IProvince } from "../Admin/Province/AdminManageProvincesPage";
+import BookingFilterDrawerField from "./BookingFilterDrawerField";
 
 const DoctorBooking = ({
   common,
@@ -40,6 +54,10 @@ const DoctorBooking = ({
     });
 
   const getContent = useScopedLocale(["booking"]);
+
+  const { setPopup } = usePopup();
+
+  const fullFilterProps = useDoctorBookingFilterProps({ options, setOptions });
 
   useEffect(() => {
     setDebouncedOptions({ ...options });
@@ -118,33 +136,382 @@ const DoctorBooking = ({
       <BookingFiltersMobile
         common={common}
         setCommon={setCommon}
+        {...fullFilterProps}
         filters={[
           {
             active: !!options.location,
             title: "location",
-            drawer: () => <div></div>,
+            drawer: (close) => (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <Button
+                  variant="Primary"
+                  mode="Fill"
+                  radius="High"
+                  size="L"
+                  onClick={() => {
+                    close();
+                    setPopup(
+                      "BookingMap2",
+                      <BookingMap2
+                        defaultValue={options.location || undefined}
+                        onApply={(location) =>
+                          setOptions((prev) => ({
+                            ...prev,
+                            location,
+                            province: null,
+                            city: null,
+                            district: null,
+                          }))
+                        }
+                      />,
+                    );
+                  }}
+                >
+                  {getContent("selectOnMap")}
+                </Button>
+                {!!options.location && (
+                  <Button
+                    variant="Error"
+                    mode="Inline"
+                    size="S"
+                    radius="High"
+                    onClick={() => {
+                      setOptions((prev) => ({ ...prev, location: null }));
+                      close();
+                    }}
+                  >
+                    {getContent("remove")}
+                  </Button>
+                )}
+              </div>
+            ),
           },
           {
-            active: !!options.province || !!options.city || !!options.district,
+            active:
+              !!options.province ||
+              !!options.city ||
+              !!options.district?.length,
             title: "province",
-            drawer: () => <div></div>,
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <BookingFilterButton
+                  title={getContent("province")}
+                  active={!!options.province}
+                >
+                  <MultiSelectInputServer<IProvince>
+                    multi={false}
+                    value={options.province ? [options.province] : []}
+                    placeholder={getContent("selectProvince")}
+                    path={`${API}/public/province`}
+                    onChange={(e) =>
+                      setOptions((prev) =>
+                        !!e[0]
+                          ? e[0]._id === prev.province?._id
+                            ? { ...prev, province: e[0], location: null }
+                            : {
+                                ...prev,
+                                province: e[0],
+                                city: null,
+                                district: null,
+                                location: null,
+                              }
+                          : {
+                              ...prev,
+                              province: null,
+                              city: null,
+                              district: null,
+                              location: null,
+                            },
+                      )
+                    }
+                    getOption={(node) => ({
+                      title: node.name || node._id,
+                      value: node._id,
+                    })}
+                  />
+                </BookingFilterButton>
+                {!!options.province && (
+                  <BookingFilterButton
+                    title={getContent("city")}
+                    active={!!options.city}
+                  >
+                    <MultiSelectInputServer<ICity>
+                      multi={false}
+                      value={options.city ? [options.city] : []}
+                      path={`${API}/public/city?province=${options.province._id}`}
+                      placeholder={getContent("selectCity")}
+                      getOption={(node) => ({
+                        title: node.name || node._id,
+                        value: node._id,
+                      })}
+                      onChange={(e) =>
+                        setOptions((prev) =>
+                          !!e[0]
+                            ? e[0]._id === prev.city?._id
+                              ? { ...prev, city: e[0], location: null }
+                              : {
+                                  ...prev,
+                                  city: e[0],
+                                  district: null,
+                                  location: null,
+                                }
+                            : {
+                                ...prev,
+                                city: null,
+                                district: null,
+                                location: null,
+                              },
+                        )
+                      }
+                    />
+                  </BookingFilterButton>
+                )}
+                {!!options.city && (
+                  <BookingFilterButton
+                    title={getContent("district")}
+                    active={!!options.district?.length}
+                  >
+                    <MultiSelectInputServer
+                      placeholder={getContent("selectDistrict")}
+                      path={`${API}/public/district?city=${options.city._id}`}
+                      onChange={(e) =>
+                        setOptions((prev) => ({
+                          ...prev,
+                          district: e,
+                          location: null,
+                        }))
+                      }
+                      value={options.district || []}
+                      getOption={(node) => ({
+                        title: node.name || node._id,
+                        value: node._id,
+                      })}
+                    />
+                  </BookingFilterButton>
+                )}
+              </BookingFilterDrawerField>
+            ),
           },
           {
             active: !!options.speciality?.length,
             title: "specialityGroup",
             drawer: (close) => (
-              <MultiSelectInputServer
-                placeholder={getContent("selectSpecilitis")}
-                path={`${API}/public/search/speciality`}
-                getOption={(node) => ({
-                  title: node.name || "",
-                  value: node._id,
-                })}
-                value={options.speciality || []}
-                onChange={(e) => {
-                  setOptions((prev) => ({ ...prev, speciality: e }));
-                  close();
-                }}
+              <BookingFilterDrawerField type="select" close={close}>
+                <MultiSelectInputServer
+                  placeholder={getContent("selectSpecilitis")}
+                  path={`${API}/public/search/speciality`}
+                  getOption={(node) => ({
+                    title: node.name || "",
+                    value: node._id,
+                  })}
+                  value={options.speciality || []}
+                  onChange={(e) =>
+                    setOptions((prev) => ({ ...prev, speciality: e }))
+                  }
+                />
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.disease?.length,
+            title: "disease",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <MultiSelectInputServer
+                  value={options.disease || []}
+                  path={`${API}/public/search/disease`}
+                  placeholder={getContent("selectDiseases")}
+                  getOption={(node) => ({
+                    title: node.name || "",
+                    value: node._id,
+                  })}
+                  onChange={(e) =>
+                    setOptions((prev) => ({ ...prev, disease: e }))
+                  }
+                />
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.service?.length,
+            title: "service",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <MultiSelectInputServer
+                  value={options.service || []}
+                  path={`${API}/public/search/serviceCategory`}
+                  placeholder={getContent("selectServices")}
+                  getOption={(node) => ({
+                    title: node.title || "",
+                    value: node._id,
+                  })}
+                  onChange={(e) =>
+                    setOptions((prev) => ({ ...prev, service: e }))
+                  }
+                />
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.education?.length,
+            title: "educationLevel",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <MultiSelectInput
+                  options={doctorProfileTiers.map((t) => ({
+                    title: getContent(t),
+                    value: t,
+                  }))}
+                  placeholder={getContent("selectEducation")}
+                  value={options.education || []}
+                  onChange={(e) =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      education: doctorProfileTiers.filter((el) =>
+                        e.includes(el),
+                      ),
+                    }))
+                  }
+                />
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.gender,
+            title: "gender",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <MultiSelectInput
+                  placeholder={getContent("selectGender")}
+                  multi={false}
+                  onChange={(e) =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      gender: genders.find((g) => g === e[0]) || null,
+                    }))
+                  }
+                  options={genders.map((gender) => ({
+                    title: getContent(gender),
+                    value: gender,
+                  }))}
+                  value={options.gender ? [options.gender] : []}
+                />
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active:
+              !!options.date && (!!options.date.start || !!options.date.end),
+            title: "sessionDate",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <div className={filterClasses.date}>
+                  <span
+                    className={`${filterClasses.inlineTitle} ${t2xsRegular}`}
+                  >
+                    {getContent("sessionDate")}
+                  </span>
+                  <InlineDateInput
+                    onChange={(e) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        date: { ...prev.date, start: e || undefined },
+                      }))
+                    }
+                    value={options.date?.start || null}
+                    prefix={getContent("from")}
+                  />
+                  <InlineDateInput
+                    onChange={(e) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        date: { ...prev.date, end: e || undefined },
+                      }))
+                    }
+                    value={options.date?.end || null}
+                    prefix={getContent("to")}
+                  />
+                </div>
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.time,
+            title: "sessionTime",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <div className={filterClasses.date}>
+                  <span className={filterClasses.inlineTitle}>
+                    {getContent("sessionTime")}
+                  </span>
+                  <TimePicker
+                    prefix={getContent("from")}
+                    value={
+                      typeof options.time?.start === "number"
+                        ? options.time.start
+                        : null
+                    }
+                    onChange={(e) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        time: { ...prev.time, start: e || undefined },
+                      }))
+                    }
+                  />
+                  <TimePicker
+                    prefix={getContent("to")}
+                    value={
+                      typeof options.time?.end === "number"
+                        ? options.time.end
+                        : null
+                    }
+                    onChange={(e) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        time: { ...prev.time, end: e || undefined },
+                      }))
+                    }
+                  />
+                </div>
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.onlyAvailable,
+            title: "onlyAvailable",
+            drawer: (close) => (
+              <BookingFilterDrawerField
+                type="toggle"
+                close={close}
+                title={getContent("onlyAvailable")}
+                value={!!options.onlyAvailable}
+                onChange={() =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    onlyAvailable: !prev.onlyAvailable,
+                  }))
+                }
+              />
+            ),
+          },
+          {
+            active: !!options.ePresc,
+            title: "onlyWithEPresc",
+            drawer: (close) => (
+              <BookingFilterDrawerField
+                type="toggle"
+                close={close}
+                title={getContent("onlyWithEPresc")}
+                value={!!options.ePresc}
+                onChange={() =>
+                  setOptions((prev) => ({ ...prev, ePresc: !prev.ePresc }))
+                }
               />
             ),
           },

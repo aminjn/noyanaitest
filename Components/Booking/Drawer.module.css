@@ -33,6 +33,23 @@
 .content {
   padding: 1.5rem 1rem;
   min-height: 50dvh;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.fullScreen {
+  top: 0;
+  height: 100dvh;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fullScreen .content {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
 }
 
 @keyframes comeIn {
