@@ -42,6 +42,16 @@ const MultiSelectInputServer = function <T = unknown>({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Mirrors `value` locally so selections render immediately even when this
+  // component sits inside a popup snapshot (Components/Popup/Popup.tsx) that
+  // won't re-receive fresh props from its parent after the popup opens -
+  // clicking still calls onChange so the real state upstream stays correct.
+  const [innerValue, setInnerValue] = useState<T[]>(value);
+
+  useEffect(() => {
+    setInnerValue(value);
+  }, [value]);
+
   const isReallyOpen = useMemo<boolean>(
     () => isOpen && !!query.trim(),
     [isOpen, query],
@@ -61,8 +71,8 @@ const MultiSelectInputServer = function <T = unknown>({
   }, []);
 
   const selected = useMemo<(MultiSelectOption & { node: T })[]>(
-    () => value.map((val) => ({ ...getOption(val), node: val })),
-    [getOption, value],
+    () => innerValue.map((val) => ({ ...getOption(val), node: val })),
+    [getOption, innerValue],
   );
 
   const options = useMemo<(MultiSelectOption & { node: T })[] | null>(() => {
@@ -86,12 +96,13 @@ const MultiSelectInputServer = function <T = unknown>({
               className={`${classes.value} ${txsRegular}`}
               key={option.value}
               onClick={() => {
-                const newValue = [...value];
+                const newValue = [...innerValue];
                 const index = newValue.findIndex(
                   (el) => getOption(el).value === option.value,
                 );
                 if (index === -1) return;
                 newValue.splice(index, 1);
+                setInnerValue(newValue);
                 onChange(newValue);
               }}
             >
@@ -125,8 +136,11 @@ const MultiSelectInputServer = function <T = unknown>({
                   className={`${classes.option} ${selected.some((opt) => opt.value === option.value) ? classes.activeOption : ""}`}
                   key={option.value}
                   onClick={() => {
-                    if (!multi) return onChange([option.node]);
-                    const newValue = [...value];
+                    if (!multi) {
+                      setInnerValue([option.node]);
+                      return onChange([option.node]);
+                    }
+                    const newValue = [...innerValue];
                     const index = newValue.findIndex(
                       (el) => getOption(el).value === option.value,
                     );
@@ -135,6 +149,7 @@ const MultiSelectInputServer = function <T = unknown>({
                     } else {
                       newValue.splice(index, 1);
                     }
+                    setInnerValue(newValue);
                     onChange(newValue);
                   }}
                 >

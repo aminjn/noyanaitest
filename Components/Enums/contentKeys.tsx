@@ -699,6 +699,7 @@ const contentKeys = [
   "from",
   "to",
   "selectTime",
+  "closeAndSearch",
   "sortBy",
   "Best",
   "Worst",

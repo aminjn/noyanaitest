@@ -7,7 +7,11 @@ import {
   useMemo,
   useState,
 } from "react";
-import { BookingCommon, DoctorBookingOptions } from "./BookingPage2";
+import {
+  BookingCommon,
+  bookingSorts,
+  DoctorBookingOptions,
+} from "./BookingPage2";
 import BookingHeader from "./BookingHeader";
 import {
   ICity,
@@ -40,6 +44,10 @@ import BookingMeta from "./BookingMeta";
 import { tsmRegular } from "../UI/Typography";
 import BookingFiltersMobile from "./BookingFiltersMobile";
 import BookingFilterDrawerField from "./BookingFilterDrawerField";
+import MultiSelectInput from "../UI/MultiSelectInput";
+import BookingAdvancedSearchPopup, {
+  AdvancedSearchLocationField,
+} from "./BookingAdvancedSearchPopup";
 
 export type PharmacyBookingOptions = Partial<{
   query: string;
@@ -385,11 +393,70 @@ const PharmacyBooking = ({
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
+  // Flat field grid for BookingAdvancedSearchPopup, built from this file's own
+  // PharmacyBookingOptions (the smallest of the three - just a product
+  // category, location, and the in-store product search).
+  const advancedSearchFields = (
+    <Fragment>
+      <MultiSelectInputServer
+        placeholder={getContent("selectCategory")}
+        value={options.category ? [options.category] : []}
+        multi={false}
+        path={`${API}/public/productCategory`}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        onChange={(e) =>
+          setOptions((prev) => ({ ...prev, category: e[0] || null }))
+        }
+      />
+      <MultiSelectInput
+        placeholder={getContent("sortBy")}
+        multi={false}
+        value={[common.sort]}
+        options={bookingSorts.map((el) => ({
+          title: getContent(el),
+          value: el,
+        }))}
+        onChange={(e) =>
+          setCommon((prev) => ({
+            ...prev,
+            sort: bookingSorts.find((el) => el === e[0]) || prev.sort,
+          }))
+        }
+      />
+      <AdvancedSearchLocationField options={options} setOptions={setOptions} />
+      <input
+        className={`${classes.input} ${tsmRegular}`}
+        placeholder={getContent("searchInProducts")}
+        value={options.productQuery || ""}
+        onChange={(e) =>
+          setOptions((prev) => ({ ...prev, productQuery: e.target.value }))
+        }
+      />
+    </Fragment>
+  );
+
   return (
     <Fragment>
       <BookingHeader
         onChange={(e) =>
           setOptions((prev) => ({ ...prev, query: e.target.value }))
+        }
+        onAdvancedSearch={() =>
+          setPopup(
+            "BookingAdvancedSearch",
+            <BookingAdvancedSearchPopup
+              common={common}
+              setCommon={setCommon}
+              query={options.query}
+              onQueryChange={(e) =>
+                setOptions((prev) => ({ ...prev, query: e.target.value }))
+              }
+              filtered={fullFilterProps.filtered}
+              onClear={fullFilterProps.onClear}
+            >
+              {advancedSearchFields}
+            </BookingAdvancedSearchPopup>,
+          )
         }
       />
       <BookingFiltersMobile

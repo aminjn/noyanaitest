@@ -70,3 +70,20 @@
   position: relative;
   z-index: 2;
 }
+
+.mobileOnly {
+  display: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .advanced {
+    display: none;
+  }
+  .mobileOnly {
+    display: flex !important;
+  }
+
+  .map {
+    display: none;
+  }
+}

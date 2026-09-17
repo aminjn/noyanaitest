@@ -20,8 +20,10 @@ import useProgress from "../Hooks/useProgress";
 
 const BookingHeader = ({
   onChange,
+  onAdvancedSearch,
 }: {
   onChange: ChangeEventHandler<HTMLInputElement>;
+  onAdvancedSearch?: () => unknown;
 }) => {
   const push = useProgress();
 
@@ -50,7 +52,17 @@ const BookingHeader = ({
             size="M"
             radius="High"
             tailIcon={<AdjustmentHorizontalIcon />}
+            className={`${classes.advanced} ${classes.mobileOnly}`}
+            onClick={() => onAdvancedSearch?.()}
+          />
+          <Button
+            variant="Primary"
+            mode="Inline"
+            size="M"
+            radius="High"
+            tailIcon={<AdjustmentHorizontalIcon />}
             className={classes.advanced}
+            onClick={() => onAdvancedSearch?.()}
           >
             {getContent("advancedSearch")}
           </Button>
@@ -62,9 +74,19 @@ const BookingHeader = ({
           radius="High"
           tailIcon={<MapIcon />}
           onClick={() => push("/map")}
+          className={classes.map}
         >
           {getContent("previewInMap")}
         </Button>
+        <Button
+          variant="Primary"
+          mode="Fill"
+          size="M"
+          radius="High"
+          tailIcon={<MapIcon />}
+          onClick={() => push("/map")}
+          className={classes.mobileOnly}
+        ></Button>
       </div>
     </div>
   );

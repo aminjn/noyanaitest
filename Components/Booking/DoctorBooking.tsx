@@ -11,6 +11,7 @@ import classes from "./DoctorBooking.module.css";
 import {
   BookingCommon,
   BookingPageDoctor,
+  bookingSorts,
   DoctorBookingOptions,
 } from "./BookingPage2";
 import useDebounce from "../Hooks/useDebounce";
@@ -38,6 +39,12 @@ import BookingMap2 from "./BookingMap2";
 import BookingFilterButton from "./BookingFilterButton";
 import { ICity, IProvince } from "../Admin/Province/AdminManageProvincesPage";
 import BookingFilterDrawerField from "./BookingFilterDrawerField";
+import { doctorSessionTypes } from "../DoctorPanel/Calendar/DoctorCalendarDay";
+import BookingAdvancedSearchPopup, {
+  AdvancedSearchField,
+  AdvancedSearchLocationField,
+  AdvancedSearchToggleField,
+} from "./BookingAdvancedSearchPopup";
 
 const DoctorBooking = ({
   common,
@@ -126,11 +133,189 @@ const DoctorBooking = ({
     fetcher({ url }).then((res) => res.data),
   );
 
+  // Flat field grid for BookingAdvancedSearchPopup - the same options state
+  // (and mostly the same field components) DoctorBookingFilters.tsx's
+  // sidebar/accordion segments already bind to, just laid out as always-
+  // visible grid cells instead of collapsible sections.
+  const advancedSearchFields = (
+    <Fragment>
+      <MultiSelectInputServer
+        value={options.clinic || []}
+        placeholder={getContent("selectClinicsPlaceholder")}
+        onChange={(e) => setOptions((prev) => ({ ...prev, clinic: e }))}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        path={`${API}/public/search/clinic`}
+      />
+      <MultiSelectInput
+        value={options.sessiontype || []}
+        options={doctorSessionTypes.map((el) => ({
+          title: getContent(el),
+          value: el,
+        }))}
+        placeholder={getContent("selectSessionType")}
+        onChange={(e) =>
+          setOptions((prev) => ({
+            ...prev,
+            sessiontype: doctorSessionTypes.filter((el) => e.includes(el)),
+          }))
+        }
+      />
+      <MultiSelectInput
+        placeholder={getContent("sortBy")}
+        multi={false}
+        value={[common.sort]}
+        options={bookingSorts.map((el) => ({
+          title: getContent(el),
+          value: el,
+        }))}
+        onChange={(e) =>
+          setCommon((prev) => ({
+            ...prev,
+            sort: bookingSorts.find((el) => el === e[0]) || prev.sort,
+          }))
+        }
+      />
+      <AdvancedSearchLocationField options={options} setOptions={setOptions} />
+      <MultiSelectInputServer
+        value={options.service || []}
+        path={`${API}/public/search/serviceCategory`}
+        placeholder={getContent("selectServices")}
+        getOption={(node) => ({ title: node.title || "", value: node._id })}
+        onChange={(e) => setOptions((prev) => ({ ...prev, service: e }))}
+      />
+      <MultiSelectInputServer
+        value={options.disease || []}
+        path={`${API}/public/search/disease`}
+        placeholder={getContent("selectDiseases")}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        onChange={(e) => setOptions((prev) => ({ ...prev, disease: e }))}
+      />
+      <MultiSelectInputServer
+        placeholder={getContent("selectSpecilitis")}
+        path={`${API}/public/search/speciality`}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        value={options.speciality || []}
+        onChange={(e) => setOptions((prev) => ({ ...prev, speciality: e }))}
+      />
+      <AdvancedSearchToggleField
+        title={getContent("onlyAvailable")}
+        active={!!options.onlyAvailable}
+        onClick={() =>
+          setOptions((prev) => ({
+            ...prev,
+            onlyAvailable: !prev.onlyAvailable,
+          }))
+        }
+      />
+      <MultiSelectInput
+        placeholder={getContent("selectGender")}
+        multi={false}
+        onChange={(e) =>
+          setOptions((prev) => ({
+            ...prev,
+            gender: genders.find((g) => g === e[0]) || null,
+          }))
+        }
+        options={genders.map((gender) => ({
+          title: getContent(gender),
+          value: gender,
+        }))}
+        value={options.gender ? [options.gender] : []}
+      />
+      <MultiSelectInput
+        options={doctorProfileTiers.map((t) => ({
+          title: getContent(t),
+          value: t,
+        }))}
+        placeholder={getContent("selectEducation")}
+        value={options.education || []}
+        onChange={(e) =>
+          setOptions((prev) => ({
+            ...prev,
+            education: doctorProfileTiers.filter((el) => e.includes(el)),
+          }))
+        }
+      />
+      <AdvancedSearchToggleField
+        title={getContent("onlyWithEPresc")}
+        active={!!options.ePresc}
+        onClick={() =>
+          setOptions((prev) => ({ ...prev, ePresc: !prev.ePresc }))
+        }
+      />
+      <AdvancedSearchField label={getContent("sessionTime")}>
+        <TimePicker
+          prefix={getContent("from")}
+          value={
+            typeof options.time?.start === "number" ? options.time.start : null
+          }
+          onChange={(e) =>
+            setOptions((prev) => ({
+              ...prev,
+              time: { ...prev.time, start: e || undefined },
+            }))
+          }
+        />
+        <TimePicker
+          prefix={getContent("to")}
+          value={
+            typeof options.time?.end === "number" ? options.time.end : null
+          }
+          onChange={(e) =>
+            setOptions((prev) => ({
+              ...prev,
+              time: { ...prev.time, end: e || undefined },
+            }))
+          }
+        />
+      </AdvancedSearchField>
+      <AdvancedSearchField label={getContent("sessionDate")}>
+        <InlineDateInput
+          onChange={(e) =>
+            setOptions((prev) => ({
+              ...prev,
+              date: { ...prev.date, start: e || undefined },
+            }))
+          }
+          value={options.date?.start || null}
+          prefix={getContent("from")}
+        />
+        <InlineDateInput
+          onChange={(e) =>
+            setOptions((prev) => ({
+              ...prev,
+              date: { ...prev.date, end: e || undefined },
+            }))
+          }
+          value={options.date?.end || null}
+          prefix={getContent("to")}
+        />
+      </AdvancedSearchField>
+    </Fragment>
+  );
+
   return (
     <Fragment>
       <BookingHeader
         onChange={(e) =>
           setOptions((prev) => ({ ...prev, query: e.target.value }))
+        }
+        onAdvancedSearch={() =>
+          setPopup(
+            "BookingAdvancedSearch",
+            <BookingAdvancedSearchPopup
+              common={common}
+              setCommon={setCommon}
+              query={options.query}
+              onQueryChange={(e) =>
+                setOptions((prev) => ({ ...prev, query: e.target.value }))
+              }
+              filtered={fullFilterProps.filtered}
+              onClear={fullFilterProps.onClear}
+            >
+              {advancedSearchFields}
+            </BookingAdvancedSearchPopup>,
+          )
         }
       />
       <BookingFiltersMobile

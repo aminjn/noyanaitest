@@ -1,0 +1,128 @@
+.card {
+  background-color: var(--white);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  max-height: 90dvh;
+  overflow-y: auto;
+  width: min(64rem, 92dvw);
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.close {
+  margin-inline-start: auto;
+  color: var(--black);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+}
+
+@media only screen and (max-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.nodes {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  background-color: var(--gray2);
+}
+
+.node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 0.5rem;
+  transition: all var(--transTime);
+  border-radius: 0.5rem;
+  color: var(--gray10);
+}
+
+.activeNode {
+  background-color: var(--white);
+  box-shadow: 0 0 0 1px var(--primary);
+  color: var(--primary);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--primary4);
+  min-height: 2rem;
+  padding-inline: 0.75rem;
+}
+
+.fieldLabel {
+  color: var(--gray11);
+  margin-inline-end: auto;
+  white-space: nowrap;
+}
+
+.mapButton {
+  flex-shrink: 0;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--gray3);
+}
+
+.searchBox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.75rem;
+  padding-block: 0.5rem;
+  border-radius: 100dvw;
+  background-color: var(--gray3);
+}
+
+.searchIcon {
+  color: var(--black);
+}
+
+.searchInput {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+@media only screen and (max-width: 640px) {
+  .bottom {
+    flex-wrap: wrap;
+  }
+
+  .searchBox {
+    order: 3;
+    flex-basis: 100%;
+  }
+}

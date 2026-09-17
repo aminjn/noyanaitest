@@ -28,13 +28,25 @@ const TimePicker = ({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [inner, setInner] = useState<number>(
-    typeof value === "number" ? value : 12 * 60,
+  // Mirrors `value` locally so the displayed time updates immediately even
+  // when this component sits inside a popup snapshot (Components/Popup/
+  // Popup.tsx) that won't re-receive fresh props from its parent after the
+  // popup opens - onChange is still called so the real state upstream stays
+  // correct.
+  const [inner, setInner] = useState<number | null>(
+    typeof value === "number" ? value : null,
   );
 
   useEffect(() => {
-    if (isOpen && !value) onChange(720);
-  }, [isOpen, onChange, value]);
+    setInner(typeof value === "number" ? value : null);
+  }, [value]);
+
+  useEffect(() => {
+    if (isOpen && inner === null) {
+      setInner(720);
+      onChange(720);
+    }
+  }, [isOpen, inner, onChange]);
 
   const getContent = useLocale();
 
@@ -52,8 +64,9 @@ const TimePicker = ({
   }, []);
 
   const tick = useCallback(
-    (tick: number) => {
-      const newVal = clamp(0, inner + tick, 24 * 60);
+    (tickBy: number) => {
+      const base = typeof inner === "number" ? inner : 12 * 60;
+      const newVal = clamp(0, base + tickBy, 24 * 60);
       setInner(newVal);
       onChange(newVal);
     },
@@ -69,15 +82,18 @@ const TimePicker = ({
       <div className={`${classes.label}`}>
         {!!prefix && <span>{prefix}</span>}
         <span onClick={() => setIsOpen(true)}>
-          {typeof value === "number"
-            ? numberToTime(value)
+          {typeof inner === "number"
+            ? numberToTime(inner)
             : getContent("selectTime")}
         </span>
-        {clearable && typeof value === "number" && (
+        {clearable && typeof inner === "number" && (
           <button
             className={classes.clear}
             type="button"
-            onClick={() => onChange(null)}
+            onClick={() => {
+              setInner(null);
+              onChange(null);
+            }}
           >
             <Ixon width="1rem">
               <XMarkIcon />
@@ -93,7 +109,7 @@ const TimePicker = ({
                 <ChevronIcon />
               </Ixon>
             </button>
-            <span>{String(Math.floor(inner / 60)).padStart(2, "0")}</span>
+            <span>{String(Math.floor((inner ?? 720) / 60)).padStart(2, "0")}</span>
             <button type="button" onClick={() => tick(-60)}>
               <Ixon width="1rem">
                 <ChevronIcon />
@@ -107,7 +123,7 @@ const TimePicker = ({
                 <ChevronIcon />
               </Ixon>
             </button>
-            <span>{String(Math.floor(inner % 60)).padStart(2, "0")}</span>
+            <span>{String(Math.floor((inner ?? 720) % 60)).padStart(2, "0")}</span>
             <button type="button" onClick={() => tick(-5)}>
               <Ixon width="1rem">
                 <ChevronIcon />

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import classes from "./InlineDateInput.module.css";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
@@ -24,6 +25,16 @@ const InlineDateInput = ({
 }) => {
   const getContent = useLocale();
 
+  // Mirrors `value` locally so the picked date renders immediately even when
+  // this component sits inside a popup snapshot (Components/Popup/Popup.tsx)
+  // that won't re-receive fresh props from its parent after the popup opens -
+  // onChange is still called so the real state upstream stays correct.
+  const [innerValue, setInnerValue] = useState<Date | null>(value);
+
+  useEffect(() => {
+    setInnerValue(value);
+  }, [value]);
+
   return (
     <div className={classes.main}>
       {!!prefix && <span className={t2xsRegular}>{prefix}</span>}
@@ -34,17 +45,22 @@ const InlineDateInput = ({
         calendar={persian}
         locale={persian_fa}
         multiple={false}
-        value={value}
+        value={innerValue}
         onChange={(e) => {
-          onChange(e?.toDate() || null);
+          const newValue = e?.toDate() || null;
+          setInnerValue(newValue);
+          onChange(newValue);
         }}
         minDate={min}
         maxDate={max}
       />
-      {!!value && (
+      {!!innerValue && (
         <button
           type="button"
-          onClick={() => onChange(null)}
+          onClick={() => {
+            setInnerValue(null);
+            onChange(null);
+          }}
           className={classes.clear}
         >
           <Ixon width="1rem">

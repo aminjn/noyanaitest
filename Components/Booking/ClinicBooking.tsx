@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { BookingCommon } from "./BookingPage2";
+import { BookingCommon, bookingSorts } from "./BookingPage2";
 import BookingHeader from "./BookingHeader";
 import { IClinicCategory } from "../Admin/ClinicCategory/AdminManageClinicCategoriesPage";
 import {
@@ -44,6 +44,9 @@ import classes from "./ClinicBooking.module.css";
 import { tsmRegular } from "../UI/Typography";
 import BookingFiltersMobile from "./BookingFiltersMobile";
 import BookingFilterDrawerField from "./BookingFilterDrawerField";
+import BookingAdvancedSearchPopup, {
+  AdvancedSearchLocationField,
+} from "./BookingAdvancedSearchPopup";
 
 type ClinicBookingOptions = Partial<{
   query: string;
@@ -542,11 +545,95 @@ const ClinicBooking = ({
     fetcher({ url }).then((res) => res.data),
   );
 
+  // Flat field grid for BookingAdvancedSearchPopup, built from this file's own
+  // ClinicBookingOptions/useClinicBookingFilterProps fields (a smaller set
+  // than Doctor's since clinics have no gender/education/date/time options).
+  const advancedSearchFields = (
+    <Fragment>
+      <MultiSelectInputServer
+        path={`${API}/public/clinicCategory`}
+        value={options.category || []}
+        onChange={(e) => setOptions((prev) => ({ ...prev, category: e }))}
+        placeholder={getContent("selectClinicCategory")}
+        getOption={(node) => ({ title: node.name || node._id, value: node._id })}
+      />
+      <MultiSelectInput
+        options={doctorSessionTypes.reduce(
+          (acc, el) => [...acc, { title: getContent(el), value: el }],
+          [] as MultiSelectOption[],
+        )}
+        placeholder={getContent("selectSessionType")}
+        multi={true}
+        value={options.sessionType || []}
+        onChange={(e) =>
+          setOptions((prev) => ({
+            ...prev,
+            sessionType: e as DoctorSessionType[],
+          }))
+        }
+      />
+      <MultiSelectInput
+        placeholder={getContent("sortBy")}
+        multi={false}
+        value={[common.sort]}
+        options={bookingSorts.map((el) => ({
+          title: getContent(el),
+          value: el,
+        }))}
+        onChange={(e) =>
+          setCommon((prev) => ({
+            ...prev,
+            sort: bookingSorts.find((el) => el === e[0]) || prev.sort,
+          }))
+        }
+      />
+      <AdvancedSearchLocationField options={options} setOptions={setOptions} />
+      <MultiSelectInputServer
+        placeholder={getContent("selectSpecilitis")}
+        path={`${API}/public/search/speciality`}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        value={options.speciality || []}
+        onChange={(e) => setOptions((prev) => ({ ...prev, speciality: e }))}
+      />
+      <MultiSelectInputServer
+        value={options.disease || []}
+        path={`${API}/public/search/disease`}
+        placeholder={getContent("selectDiseases")}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        onChange={(e) => setOptions((prev) => ({ ...prev, disease: e }))}
+      />
+      <MultiSelectInputServer
+        value={options.service || []}
+        path={`${API}/public/search/serviceCategory`}
+        placeholder={getContent("selectServices")}
+        getOption={(node) => ({ title: node.title || "", value: node._id })}
+        onChange={(e) => setOptions((prev) => ({ ...prev, service: e }))}
+      />
+    </Fragment>
+  );
+
   return (
     <Fragment>
       <BookingHeader
         onChange={(e) =>
           setOptions((prev) => ({ ...prev, query: e.target.value }))
+        }
+        onAdvancedSearch={() =>
+          setPopup(
+            "BookingAdvancedSearch",
+            <BookingAdvancedSearchPopup
+              common={common}
+              setCommon={setCommon}
+              query={options.query}
+              onQueryChange={(e) =>
+                setOptions((prev) => ({ ...prev, query: e.target.value }))
+              }
+              filtered={fullFilterProps.filtered}
+              onClear={fullFilterProps.onClear}
+            >
+              {advancedSearchFields}
+            </BookingAdvancedSearchPopup>,
+          )
         }
       />
       <BookingFiltersMobile

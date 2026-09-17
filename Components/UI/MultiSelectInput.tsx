@@ -34,6 +34,16 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
 
   const getContent = useLocale();
 
+  // Mirrors `value` locally so selections render immediately even when this
+  // component sits inside a popup snapshot (Components/Popup/Popup.tsx) that
+  // won't re-receive fresh props from its parent after the popup opens -
+  // clicking still calls onChange so the real state upstream stays correct.
+  const [innerValue, setInnerValue] = useState(value);
+
+  useEffect(() => {
+    setInnerValue(value);
+  }, [value]);
+
   useEffect(() => {
     const listener = (e: MouseEvent) => {
       if (
@@ -68,7 +78,7 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
           className={`${classes.select} ${isOpen ? classes.openSelect : ""}`}
         >
           <div className={classes.content}>
-            {(Array.isArray(value) ? value : [value])
+            {(Array.isArray(innerValue) ? innerValue : [innerValue])
               .map((v) => options.find((el) => el.value === v))
               .filter((el) => !!el)
               .map((option) => (
@@ -76,13 +86,17 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
                   className={`${classes.value} ${txsRegular}`}
                   key={option.value}
                   onClick={() => {
-                    if (!multi) return onChange([]);
-                    const newValue = [...(value as string[])];
+                    if (!multi) {
+                      setInnerValue([] as unknown as typeof innerValue);
+                      return onChange([]);
+                    }
+                    const newValue = [...(innerValue as string[])];
                     const index = newValue.findIndex(
                       (el) => el === option.value,
                     );
                     if (index === -1) return;
                     newValue.splice(index, 1);
+                    setInnerValue(newValue as typeof innerValue);
                     onChange(newValue);
                   }}
                 >
@@ -107,11 +121,14 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
             {!!filteredOptions.length ? (
               filteredOptions.map((option) => (
                 <div
-                  className={`${classes.option} ${value?.includes(option.value) ? classes.activeOption : ""}`}
+                  className={`${classes.option} ${innerValue?.includes(option.value) ? classes.activeOption : ""}`}
                   key={option.value}
                   onClick={() => {
-                    if (!multi) return onChange([option.value]);
-                    const newValue = [...(value as string[])];
+                    if (!multi) {
+                      setInnerValue([option.value] as typeof innerValue);
+                      return onChange([option.value]);
+                    }
+                    const newValue = [...(innerValue as string[])];
                     const index = newValue.findIndex(
                       (el) => el === option.value,
                     );
@@ -120,6 +137,7 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
                     } else {
                       newValue.splice(index, 1);
                     }
+                    setInnerValue(newValue as typeof innerValue);
                     onChange(newValue);
                   }}
                 >
