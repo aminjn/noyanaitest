@@ -31,6 +31,7 @@
   transition: all var(--transTime);
   border: 0.6px solid var(--gray5);
   color: var(--gray10);
+  white-space: nowrap;
 }
 
 .filterIcon {

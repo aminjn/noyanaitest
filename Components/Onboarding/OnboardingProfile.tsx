@@ -9,6 +9,7 @@ import {
   tbaseRegular,
   txlBold,
   tmdMedium,
+  tlgDemiBold,
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
 
@@ -54,7 +55,7 @@ const OnboardingProfile = ({
       <ul className={classes.grid}>
         {items.map((item) => (
           <li key={item.title} className={classes.item}>
-            <h3 className={`${classes.itemTitle} ${t2xlBold}`}>
+            <h3 className={`${classes.itemTitle} ${tlgDemiBold}`}>
               {getContent(item.title)}
             </h3>
             <p className={`${classes.itemDescription} ${tbaseRegular}`}>

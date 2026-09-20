@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import {
@@ -7,19 +9,26 @@ import {
   txsRegular,
 } from "../UI/Typography";
 import classes from "./BookingMeta.module.css";
+import Ixon from "../UI/Ixon";
+import ChevronIcon from "../Icons/ChevronIcon";
 const BookingMeta = ({
   description,
   label,
   legend,
   title,
+  descriptions,
 }: {
   title: ContentKey;
   legend: ContentKey;
   label: ContentKey;
   description: ContentKey;
+  descriptions: IBookingDescription[] | undefined;
 }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const getContent = useScopedLocale(["booking"]);
 
+  if (!descriptions?.length) return null;
   return (
     <div className={classes.main}>
       <div className={classes.intro}>
@@ -34,13 +43,31 @@ const BookingMeta = ({
         </p>
       </div>
       <div className={classes.content}>
-        <legend className={`${classes.about} ${tsmDemiBold}`}>
-          {getContent("aboutThisPage")}
-        </legend>
-        <h5 className={`${classes.h5} ${tsmMedium}`}>{getContent(label)}</h5>
-        <p className={`${classes.description} ${txsRegular}`}>
-          {getContent(description)}
-        </p>
+        <div className={classes.header}>
+          <legend className={`${classes.about} ${tsmDemiBold}`}>
+            {getContent("aboutThisPage")}
+          </legend>
+          <button
+            type="button"
+            onClick={() => setIsOpen((prev) => !prev)}
+            className={classes.toggle}
+            style={{ transform: `rotateZ(${isOpen ? 180 : 0}deg)` }}
+          >
+            <Ixon width="1.5rem">
+              <ChevronIcon />
+            </Ixon>
+          </button>
+        </div>
+        <div className={`${classes.segments} ${isOpen ? classes.open : ""}`}>
+          {descriptions.map((d, i) => (
+            <div key={i} className={classes.segment}>
+              <h5 className={`${classes.h5} ${tsmMedium}`}>{d.title}</h5>
+              <p className={`${classes.description} ${txsRegular}`}>
+                {d.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

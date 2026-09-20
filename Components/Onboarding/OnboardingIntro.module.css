@@ -44,6 +44,7 @@
 }
 
 .card {
+  cursor: pointer;
   width: 16rem;
   height: 12.5rem;
   display: flex;

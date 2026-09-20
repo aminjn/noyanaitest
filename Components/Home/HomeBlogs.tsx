@@ -39,6 +39,11 @@ const HomeBlogs = ({
           {getContent("seeAll")}
         </Button>
       </div>
+      <div className={classes.mobileList}>
+        {nodes.map((node) => (
+          <BlogCardHome node={node} key={node._id} />
+        ))}
+      </div>
       <div className={classes.list}>
         <SwiperSlider>
           {nodes.map((node) => (

@@ -45,13 +45,16 @@ import BookingAdvancedSearchPopup, {
   AdvancedSearchLocationField,
   AdvancedSearchToggleField,
 } from "./BookingAdvancedSearchPopup";
+import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
 const DoctorBooking = ({
   common,
   setCommon,
+  descriptions,
 }: {
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
+  descriptions?: IBookingDescription[];
 }) => {
   const [options, setOptions] = useState<DoctorBookingOptions>({});
 
@@ -716,6 +719,7 @@ const DoctorBooking = ({
           count={data2?.count?.[0]?.total ?? 0}
           options={options}
           setOptions={setOptions}
+          descriptions={descriptions}
         />
       </BookingLayout>
       <BookingMeta
@@ -723,6 +727,7 @@ const DoctorBooking = ({
         description="doctorBookingMetaDescription"
         label="doctorBookingMetaLabel"
         legend="doctorBookingMetaLegend"
+        descriptions={descriptions}
       />
     </Fragment>
   );

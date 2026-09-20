@@ -27,6 +27,7 @@ import Link from "next/link";
 import Ixon from "../UI/Ixon";
 import MobileUserButton from "./MobileUserButton";
 import useUserMenus from "./useUserMenus";
+import SwitchProfile from "./SwitchProfile";
 
 const UserButton = () => {
   const { setPopup } = usePopup();
@@ -75,31 +76,34 @@ const UserButton = () => {
         </Button>
         {isOpen && (
           <div className={classes.menuContainer}>
-            {userMenus.map((menu) => (
-              <Fragment key={menu.title}>
-                {menu.href ? (
-                  <Link
-                    className={classes.item}
-                    href={menu.href}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Ixon width="1.25rem">{menu.icon}</Ixon>
-                    <span>{getContent(menu.title)}</span>
-                  </Link>
-                ) : (
-                  <button
-                    className={`${classes.item} ${classes.action}`}
-                    onClick={() => {
-                      setIsOpen(false);
-                      menu.action?.();
-                    }}
-                  >
-                    <Ixon width="1.25rem">{menu.icon}</Ixon>
-                    <span>{getContent(menu.title)}</span>
-                  </button>
-                )}
-              </Fragment>
-            ))}
+            <SwitchProfile />
+            <div className={classes.otherMenus}>
+              {userMenus.map((menu) => (
+                <Fragment key={menu.title}>
+                  {menu.href ? (
+                    <Link
+                      className={classes.item}
+                      href={menu.href}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Ixon width="1.25rem">{menu.icon}</Ixon>
+                      <span>{getContent(menu.title)}</span>
+                    </Link>
+                  ) : (
+                    <button
+                      className={`${classes.item} ${classes.action}`}
+                      onClick={() => {
+                        setIsOpen(false);
+                        menu.action?.();
+                      }}
+                    >
+                      <Ixon width="1.25rem">{menu.icon}</Ixon>
+                      <span>{getContent(menu.title)}</span>
+                    </button>
+                  )}
+                </Fragment>
+              ))}
+            </div>
           </div>
         )}
       </div>

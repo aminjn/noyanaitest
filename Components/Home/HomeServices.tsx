@@ -63,27 +63,29 @@ const HomeServices = ({
               sizes="12rem"
             />
           </div>
-          <h3 className={`${classes.secondareyTitle} ${txlDemiBold}`}>
-            {getContent("noyanClinicalServicesTitle")}
-          </h3>
-          <p className={`${classes.description} ${tsmRegular}`}>
-            {getContent("noyanClinicalServicesDescription")}
-          </p>
-          <Button
-            href={"/service"}
-            leadIcon={
-              <Ixon style={{ transform: "rotateZ(180deg)" }}>
-                <ArrowLeftIcon />
-              </Ixon>
-            }
-            className={classes.action}
-            variant="Primary"
-            mode="Outline"
-            size="L"
-            radius="Medium"
-          >
-            {getContent("seeAllClinicalServices")}
-          </Button>
+          <div className={classes.introContent}>
+            <h3 className={`${classes.secondareyTitle} ${txlDemiBold}`}>
+              {getContent("noyanClinicalServicesTitle")}
+            </h3>
+            <p className={`${classes.description} ${tsmRegular}`}>
+              {getContent("noyanClinicalServicesDescription")}
+            </p>
+            <Button
+              href={"/service"}
+              leadIcon={
+                <Ixon style={{ transform: "rotateZ(180deg)" }}>
+                  <ArrowLeftIcon />
+                </Ixon>
+              }
+              className={classes.action}
+              variant="Primary"
+              mode="Outline"
+              size="L"
+              radius="Medium"
+            >
+              {getContent("seeAllClinicalServices")}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

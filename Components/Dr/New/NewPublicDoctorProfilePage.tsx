@@ -173,7 +173,7 @@ const NewDoctorProfilePage = ({
       <BreadCrump
         trail={[
           { title: getContent("home"), target: "/" },
-          { title: getContent("doctors"), target: "/doctors" },
+          { title: getContent("doctors"), target: "/book" },
           { title: fullName, target: `/dr/${doctor.slug || doctor._id}` },
         ]}
       />

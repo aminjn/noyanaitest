@@ -86,6 +86,7 @@ const BookingHeader = ({
           tailIcon={<MapIcon />}
           onClick={() => push("/map")}
           className={classes.mobileOnly}
+          iconWidth="1rem"
         ></Button>
       </div>
     </div>

@@ -15,4 +15,5 @@
   padding: 0.5rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow);
+  background-color: var(--white);
 }

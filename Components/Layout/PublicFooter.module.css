@@ -147,7 +147,7 @@
   top: 50%;
   inset-inline-start: 0;
   transform: translateY(-50%);
-  background-color: var(--white);
+  background-color: currentColor;
 }
 
 .certsCol {
@@ -191,7 +191,52 @@
   width: 100%;
   text-align: center;
   padding-block: 1.2rem;
-  border-top: 1px solid var(--white);
+  border-top: 1px solid currentColor;
   font-size: 0.625rem;
   font-weight: 300;
+}
+
+@media only screen and (max-width: 1000px) {
+  .main::before {
+    background-color: var(--primary1);
+  }
+
+  .content {
+    flex-wrap: wrap;
+  }
+
+  .contactCol {
+    order: 1;
+    color: var(--primary8);
+  }
+
+  .linksCol {
+    order: 0;
+    flex: 1;
+    flex-basis: 100%;
+    justify-content: space-between;
+    gap: 1.6875rem;
+  }
+
+  .certsCol {
+    order: 2;
+  }
+
+  .linkTitle {
+    color: var(--primary7);
+    border-bottom-color: var(--primary8);
+  }
+
+  .link {
+    color: var(--primary8);
+  }
+
+  .contactIcon {
+    background-color: rgba(26, 128, 229, 0.24);
+    color: var(--primary7);
+  }
+
+  .note {
+    color: var(--primary4);
+  }
 }

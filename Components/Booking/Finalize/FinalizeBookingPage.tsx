@@ -70,6 +70,8 @@ import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
 import Act from "@/Components/UI/Act";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import BookingSessionSelectorPopup from "@/Components/Booking/BookingSessionSelectorPopup";
+import BookingSidebar from "@/Components/Dr/New/BookingSidebar";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 const AddRelativePopup = ({ mutate }: { mutate: () => unknown }) => {
   const getContent = useLocale();
@@ -131,6 +133,8 @@ const PatientStage = ({
     `${API}/user/relative`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+
+  const { nodeId } = useParams();
 
   const [didConsent, setDidConsent] = useState<boolean>(false);
 
@@ -202,7 +206,7 @@ const PatientStage = ({
           </div>
           <div className={`${classes.actions} ${classes.patientActions}`}>
             <Button
-              onClick={() => push("/book")}
+              onClick={() => push(`/book/finalize/${nodeId}`)}
               tailIcon={
                 <Ixon style={{ transform: "rotateZ(90deg)" }}>
                   <ChevronIcon />
@@ -584,6 +588,89 @@ type FinalizeBookingDoctor = IDoctorProfile<{
   visitTaxPercent?: number;
 };
 
+const BookingFlowSidebar = ({
+  doctor,
+  shift,
+  date,
+  end,
+  start,
+}: {
+  doctor: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
+  shift?: IDoctorShift<{ Office: Record<never, never> }>;
+  date?: Date;
+  start?: number;
+  end?: number;
+}) => {
+  const getContent = useScopedLocale(["booking"]);
+
+  return (
+    <div className={classes.detail}>
+      <div className={classes.doctor}>
+        <div className={classes.doctorImage}>
+          <HostedImage
+            src={doctor.avatar}
+            alt={getDoctorProfileLabel(doctor as IDoctorProfile)}
+            fill
+            sizes="4rem"
+            style={{ objectFit: "cover" }}
+          />
+        </div>
+        <div className={classes.doctorDetails}>
+          <span className={`${classes.doctorName} ${tsmDemiBold}`}>
+            {getDoctorProfileLabel(doctor as IDoctorProfile)}
+          </span>
+          {!!doctor.mainSpeciality && (
+            <span className={`${classes.doctorSpeciality} ${txsRegular}`}>
+              {doctor.mainSpeciality.name}
+            </span>
+          )}
+        </div>
+      </div>
+      {!!shift && !!date && !!start && !!end && (
+        <div className={classes.sessionDetails}>
+          <Pair
+            title={getContent("sessionOffice")}
+            value={shift.office.name || "-"}
+          />
+          <Pair
+            title={getContent("sessionTime")}
+            value={`${date.toLocaleDateString("fa-IR", { month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const BookingFlowContent = ({
+  data,
+  shift,
+  children,
+  date,
+  end,
+  start,
+}: {
+  children?: ReactNode;
+  data: IDoctorProfile;
+  date?: Date;
+  shift?: IDoctorShift<{ Office: Record<never, never> }>;
+  start?: number;
+  end?: number;
+}) => {
+  return (
+    <div className={classes.main}>
+      <div className={classes.var}>{children}</div>
+      <BookingFlowSidebar
+        doctor={data as IDoctorProfile}
+        date={date}
+        shift={shift}
+        start={start}
+        end={end}
+      />
+    </div>
+  );
+};
+
 const InnerBookingFlow = ({
   date,
   end,
@@ -716,42 +803,15 @@ const InnerBookingFlow = ({
   return (
     <Fragment>
       {!!shift ? (
-        <div className={classes.main}>
-          <div className={classes.var}>{stageDict[stage]}</div>
-          <div className={classes.detail}>
-            <div className={classes.doctor}>
-              <div className={classes.doctorImage}>
-                <HostedImage
-                  src={data.avatar}
-                  alt={getDoctorProfileLabel(data as IDoctorProfile)}
-                  fill
-                  sizes="4rem"
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-              <div className={classes.doctorDetails}>
-                <span className={`${classes.doctorName} ${tsmDemiBold}`}>
-                  {getDoctorProfileLabel(data as IDoctorProfile)}
-                </span>
-                {!!data.mainSpeciality && (
-                  <span className={`${classes.doctorSpeciality} ${txsRegular}`}>
-                    {data.mainSpeciality.name}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className={classes.sessionDetails}>
-              <Pair
-                title={getContent("sessionOffice")}
-                value={shift.office.name || "-"}
-              />
-              <Pair
-                title={getContent("sessionTime")}
-                value={`${date.toLocaleDateString("fa-IR", { month: "long", day: "numeric" })} ${getCompContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
-              />
-            </div>
-          </div>
-        </div>
+        <BookingFlowContent
+          data={data as IDoctorProfile}
+          start={start}
+          end={end}
+          shift={shift}
+          date={date}
+        >
+          {stageDict[stage]}
+        </BookingFlowContent>
       ) : (
         <Fragment>
           {doesntExist ? (
@@ -808,11 +868,12 @@ const Inner = ({
               doctor={data}
             />
           ) : (
-            <div className={classes.main}>
+            <BookingFlowContent data={data as IDoctorProfile}>
               <BookingSessionSelectorPopup
                 node={data as unknown as IDoctorProfile}
+                standalone
               />
-            </div>
+            </BookingFlowContent>
           )}
         </Fragment>
       )}

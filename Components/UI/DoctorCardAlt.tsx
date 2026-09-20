@@ -25,6 +25,7 @@ import VideoIcon from "../Icons/VideoIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import LocationIcon from "../Icons/LocationIcon";
+import VerifiedImage from "./VerifiedImage";
 
 const DoctorCardAlt = ({
   node,
@@ -43,8 +44,6 @@ const DoctorCardAlt = ({
 }>) => {
   const getCompContent = useComplexLocale();
   const getContent = useScopedLocale(["common"]);
-
-  console.log({ node });
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
@@ -67,21 +66,9 @@ const DoctorCardAlt = ({
           </span>
         </div>
       </div>
-      <div className={classes.imageBox}>
-        <div className={classes.image}>
-          <HostedImage
-            src={node.avatar}
-            alt={getDoctorProfileLabel(node)}
-            sizes="5rem"
-            fill
-            style={{ objectFit: "cover" }}
-          />
-        </div>
+      <VerifiedImage src={node.avatar} alt={getDoctorProfileLabel(node)}>
         <span className={classes.onlineBadge} />
-        <Ixon width="1.5rem" className={classes.verifiedBadge}>
-          <VerifyIcon />
-        </Ixon>
-      </div>
+      </VerifiedImage>
       <div className={classes.identity}>
         <h5 className={`${classes.doctorName} ${tsmDemiBold}`}>
           {getDoctorProfileLabel(node)}
@@ -181,7 +168,7 @@ const DoctorCardAlt = ({
         </Link>
         <Link
           className={`${classes.action} ${classes.secondaryAction}`}
-          href={"/book"}
+          href={`/book/finalize/${node._id}`}
         >
           <span>{getContent("booking")}</span>
           <Ixon width="1.25rem">

@@ -13,6 +13,7 @@ import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
 import { tsmRegular } from "../UI/Typography";
 import useLocale from "../Hooks/useLocale";
+import { isSea } from "node:sea";
 
 export type ZoneData = {
   provinces: IProvince[];
@@ -61,6 +62,11 @@ const SearchZones = ({
     );
   }, [zoneData]);
 
+  const isOpen = useMemo<boolean>(
+    () => !!zoneData && isSearchOpen,
+    [zoneData, isSearchOpen],
+  );
+
   return (
     <div
       className={classes.searchBox}
@@ -72,21 +78,21 @@ const SearchZones = ({
           <SearchIcon />
         </Ixon>
         <input
-          className={`${classes.searchInput} ${tsmRegular}`}
+          className={`${classes.searchInput} ${tsmRegular} ${isOpen ? classes.openSearch : ""}`}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={getContent("searchProvinceOrCityOrDistrict")}
         />
       </div>
-      {!!zoneData && isSearchOpen && (
+      {isOpen && (
         <div className={classes.searchResults}>
           {isEmpty ? (
             <p>{getContent("nothingWasFound")}</p>
           ) : (
             <Fragment>
               {[
-                ...zoneData.provinces,
-                ...zoneData.cities,
-                ...zoneData.districts,
+                ...zoneData!.provinces,
+                ...zoneData!.cities,
+                ...zoneData!.districts,
               ].map((zone) => (
                 <Fragment key={zone._id}>
                   {!!zone.geometry && (

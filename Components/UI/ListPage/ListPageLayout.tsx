@@ -12,9 +12,7 @@ const ListPageLayout = ({
 }) => {
   return (
     <div className={classes.main}>
-      {!!trail?.length && (
-        <BreadCrump trail={trail} className={classes.crump} />
-      )}
+      {!!trail?.length && <BreadCrump trail={trail} />}
       {children}
     </div>
   );

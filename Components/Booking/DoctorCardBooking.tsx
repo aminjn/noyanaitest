@@ -333,7 +333,7 @@ const DoctorCardBooking = ({
             radius="Medium"
             variant="Primary"
             mode="Fill"
-            href={`/dr/${node.slug || node._id}`}
+            href={`/book/finalize/${node._id}`}
           >
             {getContent("onlineConsult")}
           </Button>
@@ -342,7 +342,7 @@ const DoctorCardBooking = ({
             radius="Medium"
             variant="Primary"
             mode="Fill"
-            href={`/book/finalize/${node._id}`}
+            href={`/dr/${node.slug || node._id}`}
           >
             {getContent("reservation")}
           </Button>

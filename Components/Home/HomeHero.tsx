@@ -74,7 +74,8 @@ const HomeHero = ({ homeMain }: { homeMain?: string }) => {
               <span className={classes.highlightSecondary}>
                 {getContent("homeHeroTitleHighlight2")}
               </span>{" "}
-              {getContent("homeHeroTitle")}
+              <br className={classes.br} />
+              <span>{getContent("homeHeroTitle")}</span>
             </h1>
             <p className={`${classes.legend} ${tmdMedium}`}>
               {getContent("homeHeroLegend")}
@@ -182,7 +183,7 @@ const HomeHero = ({ homeMain }: { homeMain?: string }) => {
       </div>
       <ul className={classes.quickLinks}>
         {quickLinks.map((link) => (
-          <li key={link.key}>
+          <li key={link.key} className={classes.quickLinkWrap}>
             <Link href={link.href} className={classes.quickLink}>
               <span className={classes.quickLinkIcon}>
                 <Ixon width="1.5rem">{link.icon}</Ixon>

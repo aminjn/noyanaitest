@@ -35,7 +35,7 @@ export type HomePageProps = Partial<{
     InPersonSettings: Record<never, never>;
     VideoCallSettings: Record<never, never>;
     VoiceCallSettings: Record<never, never>;
-    Province:Record<never  , never>
+    Province: Record<never, never>;
     // PhoneConsultSettingsPopulated: Record<never, never>;
   }>[];
   services: IService<{ Owner: Record<never, never> }>[];

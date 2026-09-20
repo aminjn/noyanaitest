@@ -20,6 +20,10 @@ import {
 import DoctorBooking from "./DoctorBooking";
 import ClinicBooking from "./ClinicBooking";
 import PharmacyBooking from "./PharmacyBooking";
+import type {
+  BookingDescriptionSegment,
+  IBookingDescription,
+} from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
 export const bookingNodes = ["doctor", "clinic", "pharmacy"] as const;
 export type BookingNode = (typeof bookingNodes)[number];
@@ -79,7 +83,11 @@ export type BookingPageDoctor = IDoctorProfile<{
   District: Record<never, never>;
 }>;
 
-const BookingPage2 = () => {
+const BookingPage2 = ({
+  descriptions,
+}: {
+  descriptions?: Record<BookingDescriptionSegment, IBookingDescription[]>;
+}) => {
   const [common, setCommon] = useState<BookingCommon>({
     view: "Grid",
     sort: "Best",
@@ -89,13 +97,25 @@ const BookingPage2 = () => {
   return (
     <div className={classes.main}>
       {common.node === "doctor" && (
-        <DoctorBooking common={common} setCommon={setCommon} />
+        <DoctorBooking
+          common={common}
+          setCommon={setCommon}
+          descriptions={descriptions?.Doctor}
+        />
       )}
       {common.node === "clinic" && (
-        <ClinicBooking common={common} setCommon={setCommon} />
+        <ClinicBooking
+          common={common}
+          setCommon={setCommon}
+          descriptions={descriptions?.Clinic}
+        />
       )}
       {common.node === "pharmacy" && (
-        <PharmacyBooking common={common} setCommon={setCommon} />
+        <PharmacyBooking
+          common={common}
+          setCommon={setCommon}
+          descriptions={descriptions?.Pharmacy}
+        />
       )}
     </div>
   );

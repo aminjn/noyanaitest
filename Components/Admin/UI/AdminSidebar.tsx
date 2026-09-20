@@ -168,6 +168,7 @@ const linkMap: LinkMap = [
       { title: "متادیتای صفحات", target: "pageMeta" },
       { title: "تگ وبلاگ", target: "blogTag" },
       { title: "خبرنامه", target: "blogRrs" },
+      { title: "توضیحات رزرو", target: "bookingDescription" },
     ],
   },
   {

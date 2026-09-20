@@ -8,6 +8,7 @@ import { t2xsRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import CategoriesIcon from "../Icons/CategoriesIcon";
 import BarsIcon from "../Icons/BarsIcon";
+import { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
 const BookingResults = ({
   common,

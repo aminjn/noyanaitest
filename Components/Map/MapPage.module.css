@@ -65,6 +65,10 @@
   outline: none;
 }
 
+.openSearch {
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+
 .filters {
   display: flex;
   align-items: center;
@@ -72,6 +76,7 @@
   gap: 0.5rem;
   padding-block-start: 1rem;
   border-top: 1px solid var(--gray4);
+  flex-wrap: wrap;
 }
 
 .filterContent {
@@ -104,6 +109,7 @@
 .content {
   display: flex;
   gap: 1.125rem;
+  flex-wrap: wrap;
 }
 
 .map {
@@ -111,6 +117,7 @@
   flex: 1;
   height: 37.5rem;
   border-radius: 1rem;
+  min-width: 37.5rem;
 }
 
 .resultsBox {
@@ -118,10 +125,12 @@
   flex-direction: column;
   gap: 1.125rem;
   width: 21.375rem;
+  min-width: min(21.375rem, 100%);
   padding: 0.75rem;
   border-radius: 1rem;
   border: 1px solid var(--primary2);
   background-color: var(--primary1);
+  flex: 1;
 }
 
 .resultsTitle {
@@ -244,7 +253,7 @@
 
 .searchResults {
   position: absolute;
-  top: 100%;
+  top: calc(100% - 1rem);
   inset-inline: 0;
   padding: 1rem;
   display: flex;
@@ -252,5 +261,7 @@
   gap: 0.5rem;
   background-color: var(--white);
   z-index: 1;
-  border-radius: 1rem;
+  border-radius: 0 0 1rem 1rem;
+  border: 1px solid var(--gray3);
+  box-shadow: var(--shadow);
 }

@@ -33,7 +33,6 @@ const PolicyPage = ({
           { title: "صفحه اصلی", target: "/" },
           { title: getContent(title), target: path },
         ]}
-        className={classes.crump}
       />
       <div className={classes.header}>
         <h1 className={`${classes.title} ${t5xlExtraBold}`}>

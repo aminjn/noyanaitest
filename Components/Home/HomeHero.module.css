@@ -268,10 +268,16 @@
 }
 
 .quickLinks {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
   width: 100%;
+  flex-wrap: wrap;
+}
+
+.quickLinkWrap {
+  flex: 1;
+  min-width: fit-content;
 }
 
 .quickLink {
@@ -296,4 +302,47 @@
   border-radius: 1rem;
   background-color: var(--secondary1);
   color: var(--secondary);
+}
+
+.br {
+  display: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .top {
+    flex-wrap: wrap;
+  }
+
+  .imageCard {
+    flex-shrink: 0;
+    max-width: unset;
+    flex: unset;
+    width: 100%;
+  }
+
+  .content {
+    align-items: center;
+  }
+
+  .br {
+    display: block;
+  }
+
+  .title {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .legend {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions > * {
+    flex: 1;
+  }
 }

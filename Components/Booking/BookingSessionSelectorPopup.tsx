@@ -14,7 +14,7 @@ import { IDoctorShift } from "../DoctorPanel/Shift/DoctorManageShiftsPage";
 import useShiftUtils from "../DoctorPanel/Shift/useShiftUtils";
 import useComplexLocale from "../Hooks/useComplexLocale";
 import { numberToTime } from "../DoctorPanel/Calendar/AddSessionsAgent";
-import { tbaseDemiBold, tsmRegular } from "../UI/Typography";
+import { tbaseDemiBold, tmdMedium, tsmRegular } from "../UI/Typography";
 import Button from "../UI/Button";
 import useProgress from "../Hooks/useProgress";
 import usePopup from "../Hooks/usePopup";
@@ -25,6 +25,8 @@ import useSWR from "swr";
 import { API } from "../config";
 import Loading from "../Admin/UI/Loading";
 import { fetcher } from "../helpers/fetcher";
+import { useRouter } from "next/navigation";
+import ChevronIcon from "../Icons/ChevronIcon";
 
 const shiftDateFromNow = (shift: number) => {
   const now = new Date();
@@ -114,9 +116,11 @@ const DayBadge = ({
 const BookingSessionSelectorPopup = ({
   node,
   initialDate,
+  standalone,
 }: {
   node: IDoctorProfile;
   initialDate?: Date;
+  standalone?: boolean;
 }) => {
   const { data: availabilities } = useSWR<IDoctorAvailability[]>(
     `${API}/public/dr/${node._id}/availability`,
@@ -171,14 +175,9 @@ const BookingSessionSelectorPopup = ({
 
   useEffect(() => setSelectedSession(null), [selectedDay]);
 
-  if (!availabilities) return <Loading />;
-  return (
-    <PopupCard
-      title={getContent("selectSessionTime")}
-      icon={<ClockIcon />}
-      className={classes.popup}
-    >
-      <div className={classes.main}>
+  const content = useMemo(
+    () => (
+      <div className={`${classes.main}`}>
         {tabView && (
           <div className={classes.tabView}>
             <div className={classes.week}>
@@ -238,40 +237,111 @@ const BookingSessionSelectorPopup = ({
             </div>
           </div>
         )}
-        <div className={classes.actions}>
-          <Button
-            variant="Primary"
-            mode="Outline"
-            size="L"
-            radius="High"
-            onClick={() => {
-              closePopup();
-              push(`/dr/${node.slug || node._id}`);
-            }}
-          >
-            {getContent("seeDoctorProfile")}
-          </Button>
-          <Button
-            variant={selectedSession ? "Primary" : "Disable"}
-            mode="Fill"
-            size="L"
-            radius="High"
-            onClick={() => {
-              if (!selectedSession) return;
-              if (!user) {
-                setPopup("Auth", <AuthPopup />);
-                return;
+        {standalone ? (
+          <div className={classes.standaloneActions}>
+            <Button
+              variant="Neutral"
+              mode="Inline"
+              size="M"
+              radius="High"
+              onClick={() => push("/book")}
+              tailIcon={
+                <Ixon style={{ transform: "rotateZ(90deg)" }}>
+                  <ChevronIcon />
+                </Ixon>
               }
-              push(
-                `/book/finalize/${node._id}?d=${toLocalDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
-              );
-              closePopup();
-            }}
-          >
-            {getContent("confirmAndContinue")}
-          </Button>
-        </div>
+            >
+              {getContent("previousStage")}
+            </Button>
+            <Button
+              size="M"
+              radius="High"
+              mode="Fill"
+              variant="Primary"
+              onClick={() => {
+                if (!selectedSession) return;
+                if (!user) {
+                  setPopup("Auth", <AuthPopup />);
+                  return;
+                }
+                push(
+                  `/book/finalize/${node._id}?d=${toLocalDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
+                );
+              }}
+            >
+              {getContent("confirmAndContinue")}
+            </Button>
+          </div>
+        ) : (
+          <div className={classes.actions}>
+            <Button
+              variant="Primary"
+              mode="Outline"
+              size="L"
+              radius="High"
+              onClick={() => {
+                closePopup();
+                push(`/dr/${node.slug || node._id}`);
+              }}
+            >
+              {getContent("seeDoctorProfile")}
+            </Button>
+            <Button
+              variant={selectedSession ? "Primary" : "Disable"}
+              mode="Fill"
+              size="L"
+              radius="High"
+              onClick={() => {
+                if (!selectedSession) return;
+                if (!user) {
+                  setPopup("Auth", <AuthPopup />);
+                  return;
+                }
+                push(
+                  `/book/finalize/${node._id}?d=${toLocalDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
+                );
+                closePopup();
+              }}
+            >
+              {getContent("confirmAndContinue")}
+            </Button>
+          </div>
+        )}
       </div>
+    ),
+    [
+      closePopup,
+      getContent,
+      node._id,
+      node.slug,
+      push,
+      selectedDateAvailableSessions,
+      selectedDay,
+      selectedSession,
+      setPopup,
+      standalone,
+      tabView,
+      user,
+    ],
+  );
+
+  if (!availabilities) return <Loading />;
+  if (standalone)
+    return (
+      <div className={classes.standalone}>
+        <div className={`${classes.standaloneHeader} ${tmdMedium}`}>
+          {getContent("chooseSession")}
+        </div>
+        <div>{content}</div>
+      </div>
+    );
+  return (
+    <PopupCard
+      title={getContent("selectSessionTime")}
+      icon={<ClockIcon />}
+      className={classes.popup}
+    >
+      {content}
     </PopupCard>
   );
 };

@@ -7,6 +7,26 @@
   flex-direction: column;
 }
 
+.standalone {
+  padding: 1rem;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.standaloneHeader {
+  color: var(--gray13);
+}
+
+.standaloneActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+}
+
 .toggle {
   margin-block: 1.5rem 1rem;
 }

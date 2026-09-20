@@ -47,6 +47,7 @@ import BookingFilterDrawerField from "./BookingFilterDrawerField";
 import BookingAdvancedSearchPopup, {
   AdvancedSearchLocationField,
 } from "./BookingAdvancedSearchPopup";
+import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
 type ClinicBookingOptions = Partial<{
   query: string;
@@ -81,387 +82,379 @@ const useClinicBookingFilterProps = ({
       Array.isArray(el) ? !el.length : !el,
     ),
     onClear: () => setOptions({}),
-    top:
-        <Fragment>
-          <input
-            onChange={(e) =>
-              setOptions((prev) => ({ ...prev, query: e.target.value }))
-            }
-            placeholder={getContent("searchInClinics")}
-            className={`${classes.input} ${tsmRegular}`}
-          />
-          <MultiSelectInputServer
-            path={`${API}/public/clinicCategory`}
-            value={options.category || []}
-            onChange={(e) => setOptions((prev) => ({ ...prev, category: e }))}
-            placeholder={getContent("selectClinicCategory")}
-            getOption={(node) => ({
-              title: node.name || node._id,
-              value: node._id,
-            })}
-          />
-          <MultiSelectInput
-            options={doctorSessionTypes.reduce(
-              (acc, el) => [...acc, { title: getContent(el), value: el }],
-              [] as MultiSelectOption[],
-            )}
-            placeholder={getContent("selectSessionType")}
-            multi={true}
-            value={options.sessionType || []}
-            onChange={(e) =>
+    top: (
+      <Fragment>
+        <input
+          onChange={(e) =>
+            setOptions((prev) => ({ ...prev, query: e.target.value }))
+          }
+          placeholder={getContent("searchInClinics")}
+          className={`${classes.input} ${tsmRegular}`}
+        />
+        <MultiSelectInputServer
+          path={`${API}/public/clinicCategory`}
+          value={options.category || []}
+          onChange={(e) => setOptions((prev) => ({ ...prev, category: e }))}
+          placeholder={getContent("selectClinicCategory")}
+          getOption={(node) => ({
+            title: node.name || node._id,
+            value: node._id,
+          })}
+        />
+        <MultiSelectInput
+          options={doctorSessionTypes.reduce(
+            (acc, el) => [...acc, { title: getContent(el), value: el }],
+            [] as MultiSelectOption[],
+          )}
+          placeholder={getContent("selectSessionType")}
+          multi={true}
+          value={options.sessionType || []}
+          onChange={(e) =>
+            setOptions((prev) => ({
+              ...prev,
+              sessionType: e as DoctorSessionType[],
+            }))
+          }
+        />
+      </Fragment>
+    ),
+    actives: (
+      <Fragment>
+        {!!options.location && (
+          <BookingSelectedFilter
+            onClick={() => setOptions((prev) => ({ ...prev, location: null }))}
+          >
+            {`${options.location.coords[0]}/${options.location.coords[1]} :: ${options.location.radius}`}
+          </BookingSelectedFilter>
+        )}
+        {!!options.province && (
+          <BookingSelectedFilter
+            onClick={() =>
               setOptions((prev) => ({
                 ...prev,
-                sessionType: e as DoctorSessionType[],
+                province: null,
+                city: null,
+                district: null,
               }))
             }
-          />
-        </Fragment>
-      ,
-    actives:
-        <Fragment>
-          {!!options.location && (
-            <BookingSelectedFilter
-              onClick={() =>
-                setOptions((prev) => ({ ...prev, location: null }))
-              }
-            >
-              {`${options.location.coords[0]}/${options.location.coords[1]} :: ${options.location.radius}`}
-            </BookingSelectedFilter>
-          )}
-          {!!options.province && (
-            <BookingSelectedFilter
-              onClick={() =>
-                setOptions((prev) => ({
-                  ...prev,
-                  province: null,
-                  city: null,
-                  district: null,
-                }))
-              }
-            >
-              {options.province.name}
-            </BookingSelectedFilter>
-          )}
-          {!!options.city && (
-            <BookingSelectedFilter
-              onClick={() =>
-                setOptions((prev) => ({ ...prev, city: null, district: null }))
-              }
-            >
-              {options.city.name}
-            </BookingSelectedFilter>
-          )}
-          {!!options.district?.length && (
-            <Fragment>
-              {options.district.map((d) => (
-                <BookingSelectedFilter
-                  key={d._id}
-                  onClick={() =>
-                    setOptions((prev) => {
-                      const clone = { ...prev };
-                      if (!clone.district) return { ...clone, district: [d] };
-                      const index = clone.district.findIndex(
-                        (el) => el._id === d._id,
-                      );
-                      if (index === -1) {
-                        clone.district.push(d);
-                      } else {
-                        clone.district.splice(index, 1);
-                      }
-                      return clone;
-                    })
-                  }
-                >
-                  {d.name}
-                </BookingSelectedFilter>
-              ))}
-            </Fragment>
-          )}
-          {!!options.category?.length &&
-            options.category.map((category) => (
-              <BookingSelectedFilter
-                key={category._id}
-                onClick={() =>
-                  setOptions((prev) => {
-                    const clone = { ...prev };
-                    if (!clone.category) return prev;
-                    const index = clone.category.findIndex(
-                      (el) => el._id === category._id,
-                    );
-                    if (index > -1) {
-                      clone.category.splice(index, 1);
-                    }
-                    return clone;
-                  })
-                }
-              >
-                {category.name}
-              </BookingSelectedFilter>
-            ))}
-          {!!options.sessionType?.length &&
-            options.sessionType.map((st) => (
-              <BookingSelectedFilter
-                key={st}
-                onClick={() =>
-                  setOptions((prev) => {
-                    const clone = { ...prev };
-                    if (!clone.sessionType) return prev;
-                    const index = clone.sessionType.indexOf(st);
-                    if (index > -1) {
-                      clone.sessionType.splice(index, 1);
-                    }
-                    return clone;
-                  })
-                }
-              >
-                {getContent(st)}
-              </BookingSelectedFilter>
-            ))}
-          {!!options.speciality?.length &&
-            options.speciality.map((spec) => (
-              <BookingSelectedFilter
-                key={spec._id}
-                onClick={() =>
-                  setOptions((prev) => {
-                    const clone = { ...prev };
-                    if (!clone.speciality) return prev;
-                    const index = clone.speciality.findIndex(
-                      (el) => el._id === spec._id,
-                    );
-                    if (index > -1) {
-                      clone.speciality.splice(index, 1);
-                    }
-                    return clone;
-                  })
-                }
-              >
-                {spec.name}
-              </BookingSelectedFilter>
-            ))}
-          {!!options.disease?.length &&
-            options.disease.map((disease) => (
-              <BookingSelectedFilter
-                key={disease._id}
-                onClick={() =>
-                  setOptions((prev) => {
-                    const clone = { ...prev };
-                    if (!clone.disease) return prev;
-                    const index = clone.disease.findIndex(
-                      (el) => el._id === disease._id,
-                    );
-                    if (index > -1) {
-                      clone.disease.splice(index, 1);
-                    }
-                    return clone;
-                  })
-                }
-              >
-                {disease.name}
-              </BookingSelectedFilter>
-            ))}
-          {!!options.service?.length &&
-            options.service.map((service) => (
-              <BookingSelectedFilter
-                key={service._id}
-                onClick={() =>
-                  setOptions((prev) => {
-                    const clone = { ...prev };
-                    if (!clone.service) return prev;
-                    const index = clone.service.findIndex(
-                      (el) => el._id === service._id,
-                    );
-                    if (index > -1) {
-                      clone.service.splice(index, 1);
-                    }
-                    return clone;
-                  })
-                }
-              >
-                {service.title}
-              </BookingSelectedFilter>
-            ))}
-        </Fragment>
-      ,
-    segments:
-        <Fragment>
-          <BookingFilterSegment
-            title={getContent("geospetialPositoin")}
-            action={
-              <Button
-                size="S"
-                radius="High"
-                variant="Secondary"
-                mode="Inline"
-                onClick={() =>
-                  setPopup(
-                    "BookingMap2",
-                    <BookingMap2
-                      defaultValue={options.location || undefined}
-                      onApply={(location) =>
-                        setOptions((prev) => ({
-                          ...prev,
-                          location,
-                          province: null,
-                          city: null,
-                          district: null,
-                        }))
-                      }
-                    />,
-                  )
-                }
-              >
-                {getContent("selectOnMap")}
-              </Button>
+          >
+            {options.province.name}
+          </BookingSelectedFilter>
+        )}
+        {!!options.city && (
+          <BookingSelectedFilter
+            onClick={() =>
+              setOptions((prev) => ({ ...prev, city: null, district: null }))
             }
           >
-            <BookingFilterButton
-              title={getContent("province")}
-              active={!!options.province}
+            {options.city.name}
+          </BookingSelectedFilter>
+        )}
+        {!!options.district?.length && (
+          <Fragment>
+            {options.district.map((d) => (
+              <BookingSelectedFilter
+                key={d._id}
+                onClick={() =>
+                  setOptions((prev) => {
+                    const clone = { ...prev };
+                    if (!clone.district) return { ...clone, district: [d] };
+                    const index = clone.district.findIndex(
+                      (el) => el._id === d._id,
+                    );
+                    if (index === -1) {
+                      clone.district.push(d);
+                    } else {
+                      clone.district.splice(index, 1);
+                    }
+                    return clone;
+                  })
+                }
+              >
+                {d.name}
+              </BookingSelectedFilter>
+            ))}
+          </Fragment>
+        )}
+        {!!options.category?.length &&
+          options.category.map((category) => (
+            <BookingSelectedFilter
+              key={category._id}
+              onClick={() =>
+                setOptions((prev) => {
+                  const clone = { ...prev };
+                  if (!clone.category) return prev;
+                  const index = clone.category.findIndex(
+                    (el) => el._id === category._id,
+                  );
+                  if (index > -1) {
+                    clone.category.splice(index, 1);
+                  }
+                  return clone;
+                })
+              }
             >
-              <MultiSelectInputServer<IProvince>
+              {category.name}
+            </BookingSelectedFilter>
+          ))}
+        {!!options.sessionType?.length &&
+          options.sessionType.map((st) => (
+            <BookingSelectedFilter
+              key={st}
+              onClick={() =>
+                setOptions((prev) => {
+                  const clone = { ...prev };
+                  if (!clone.sessionType) return prev;
+                  const index = clone.sessionType.indexOf(st);
+                  if (index > -1) {
+                    clone.sessionType.splice(index, 1);
+                  }
+                  return clone;
+                })
+              }
+            >
+              {getContent(st)}
+            </BookingSelectedFilter>
+          ))}
+        {!!options.speciality?.length &&
+          options.speciality.map((spec) => (
+            <BookingSelectedFilter
+              key={spec._id}
+              onClick={() =>
+                setOptions((prev) => {
+                  const clone = { ...prev };
+                  if (!clone.speciality) return prev;
+                  const index = clone.speciality.findIndex(
+                    (el) => el._id === spec._id,
+                  );
+                  if (index > -1) {
+                    clone.speciality.splice(index, 1);
+                  }
+                  return clone;
+                })
+              }
+            >
+              {spec.name}
+            </BookingSelectedFilter>
+          ))}
+        {!!options.disease?.length &&
+          options.disease.map((disease) => (
+            <BookingSelectedFilter
+              key={disease._id}
+              onClick={() =>
+                setOptions((prev) => {
+                  const clone = { ...prev };
+                  if (!clone.disease) return prev;
+                  const index = clone.disease.findIndex(
+                    (el) => el._id === disease._id,
+                  );
+                  if (index > -1) {
+                    clone.disease.splice(index, 1);
+                  }
+                  return clone;
+                })
+              }
+            >
+              {disease.name}
+            </BookingSelectedFilter>
+          ))}
+        {!!options.service?.length &&
+          options.service.map((service) => (
+            <BookingSelectedFilter
+              key={service._id}
+              onClick={() =>
+                setOptions((prev) => {
+                  const clone = { ...prev };
+                  if (!clone.service) return prev;
+                  const index = clone.service.findIndex(
+                    (el) => el._id === service._id,
+                  );
+                  if (index > -1) {
+                    clone.service.splice(index, 1);
+                  }
+                  return clone;
+                })
+              }
+            >
+              {service.title}
+            </BookingSelectedFilter>
+          ))}
+      </Fragment>
+    ),
+    segments: (
+      <Fragment>
+        <BookingFilterSegment
+          title={getContent("geospetialPositoin")}
+          action={
+            <Button
+              size="S"
+              radius="High"
+              variant="Secondary"
+              mode="Inline"
+              onClick={() =>
+                setPopup(
+                  "BookingMap2",
+                  <BookingMap2
+                    defaultValue={options.location || undefined}
+                    onApply={(location) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        location,
+                        province: null,
+                        city: null,
+                        district: null,
+                      }))
+                    }
+                  />,
+                )
+              }
+            >
+              {getContent("selectOnMap")}
+            </Button>
+          }
+        >
+          <BookingFilterButton
+            title={getContent("province")}
+            active={!!options.province}
+          >
+            <MultiSelectInputServer<IProvince>
+              multi={false}
+              value={options.province ? [options.province] : []}
+              placeholder={getContent("selectProvince")}
+              path={`${API}/public/province`}
+              onChange={(e) =>
+                setOptions((prev) =>
+                  !!e[0]
+                    ? e[0]._id === prev.province?._id
+                      ? { ...prev, province: e[0], location: null }
+                      : {
+                          ...prev,
+                          province: e[0],
+                          city: null,
+                          district: null,
+                          location: null,
+                        }
+                    : {
+                        ...prev,
+                        province: null,
+                        city: null,
+                        district: null,
+                        location: null,
+                      },
+                )
+              }
+              getOption={(node) => ({
+                title: node.name || node._id,
+                value: node._id,
+              })}
+            />
+          </BookingFilterButton>
+          {!!options.province && (
+            <BookingFilterButton
+              title={getContent("city")}
+              active={!!options.city}
+            >
+              <MultiSelectInputServer<ICity>
                 multi={false}
-                value={options.province ? [options.province] : []}
-                placeholder={getContent("selectProvince")}
-                path={`${API}/public/province`}
+                value={options.city ? [options.city] : []}
+                path={`${API}/public/city?province=${options.province._id}`}
+                placeholder={getContent("selectCity")}
+                getOption={(node) => ({
+                  title: node.name || node._id,
+                  value: node._id,
+                })}
                 onChange={(e) =>
                   setOptions((prev) =>
                     !!e[0]
-                      ? e[0]._id === prev.province?._id
-                        ? { ...prev, province: e[0], location: null }
+                      ? e[0]._id === prev.city?._id
+                        ? { ...prev, city: e[0], location: null }
                         : {
                             ...prev,
-                            province: e[0],
-                            city: null,
+                            city: e[0],
                             district: null,
                             location: null,
                           }
                       : {
                           ...prev,
-                          province: null,
                           city: null,
                           district: null,
                           location: null,
                         },
                   )
                 }
-                getOption={(node) => ({
-                  title: node.name || node._id,
-                  value: node._id,
-                })}
               />
             </BookingFilterButton>
-            {!!options.province && (
-              <BookingFilterButton
-                title={getContent("city")}
-                active={!!options.city}
-              >
-                <MultiSelectInputServer<ICity>
-                  multi={false}
-                  value={options.city ? [options.city] : []}
-                  path={`${API}/public/city?province=${options.province._id}`}
-                  placeholder={getContent("selectCity")}
+          )}
+          {!!options.city && (
+            <BookingFilterButton
+              title={getContent("district")}
+              active={!!options.district?.length}
+            >
+              <Fragment>
+                <MultiSelectInputServer
+                  placeholder={getContent("selectDistrict")}
+                  path={`${API}/public/district?city=${options.city._id}`}
+                  onChange={(e) =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      district: e,
+                      location: null,
+                    }))
+                  }
+                  value={options.district || []}
                   getOption={(node) => ({
                     title: node.name || node._id,
                     value: node._id,
                   })}
-                  onChange={(e) =>
-                    setOptions((prev) =>
-                      !!e[0]
-                        ? e[0]._id === prev.city?._id
-                          ? { ...prev, city: e[0], location: null }
-                          : {
-                              ...prev,
-                              city: e[0],
-                              district: null,
-                              location: null,
-                            }
-                        : {
-                            ...prev,
-                            city: null,
-                            district: null,
-                            location: null,
-                          },
-                    )
-                  }
                 />
-              </BookingFilterButton>
-            )}
-            {!!options.city && (
-              <BookingFilterButton
-                title={getContent("district")}
-                active={!!options.district?.length}
-              >
-                <Fragment>
-                  <MultiSelectInputServer
-                    placeholder={getContent("selectDistrict")}
-                    path={`${API}/public/district?city=${options.city._id}`}
-                    onChange={(e) =>
-                      setOptions((prev) => ({
-                        ...prev,
-                        district: e,
-                        location: null,
-                      }))
-                    }
-                    value={options.district || []}
-                    getOption={(node) => ({
-                      title: node.name || node._id,
-                      value: node._id,
-                    })}
-                  />
-                </Fragment>
-              </BookingFilterButton>
-            )}
-          </BookingFilterSegment>
-          <BookingFilterSegment title={getContent("category")}>
+              </Fragment>
+            </BookingFilterButton>
+          )}
+        </BookingFilterSegment>
+        <BookingFilterSegment title={getContent("category")}>
+          <MultiSelectInputServer
+            placeholder={getContent("selectSpecilitis")}
+            path={`${API}/public/search/speciality`}
+            getOption={(node) => ({
+              title: node.name || "",
+              value: node._id,
+            })}
+            value={options.speciality || []}
+            onChange={(e) => setOptions((prev) => ({ ...prev, speciality: e }))}
+          />
+          <BookingFilterButton
+            title={getContent("disease")}
+            active={!!options.disease?.length}
+          >
             <MultiSelectInputServer
-              placeholder={getContent("selectSpecilitis")}
-              path={`${API}/public/search/speciality`}
+              value={options.disease || []}
+              path={`${API}/public/search/disease`}
+              placeholder={getContent("selectDiseases")}
               getOption={(node) => ({
                 title: node.name || "",
                 value: node._id,
               })}
-              value={options.speciality || []}
-              onChange={(e) =>
-                setOptions((prev) => ({ ...prev, speciality: e }))
-              }
+              onChange={(e) => setOptions((prev) => ({ ...prev, disease: e }))}
             />
-            <BookingFilterButton
-              title={getContent("disease")}
-              active={!!options.disease?.length}
-            >
-              <MultiSelectInputServer
-                value={options.disease || []}
-                path={`${API}/public/search/disease`}
-                placeholder={getContent("selectDiseases")}
-                getOption={(node) => ({
-                  title: node.name || "",
-                  value: node._id,
-                })}
-                onChange={(e) =>
-                  setOptions((prev) => ({ ...prev, disease: e }))
-                }
-              />
-            </BookingFilterButton>
-            <BookingFilterButton
-              title={getContent("service")}
-              active={!!options.service?.length}
-            >
-              <MultiSelectInputServer
-                value={options.service || []}
-                path={`${API}/public/search/serviceCategory`}
-                placeholder={getContent("selectServices")}
-                getOption={(node) => ({
-                  title: node.title || "",
-                  value: node._id,
-                })}
-                onChange={(e) =>
-                  setOptions((prev) => ({ ...prev, service: e }))
-                }
-              />
-            </BookingFilterButton>
-          </BookingFilterSegment>
-        </Fragment>
-      ,
+          </BookingFilterButton>
+          <BookingFilterButton
+            title={getContent("service")}
+            active={!!options.service?.length}
+          >
+            <MultiSelectInputServer
+              value={options.service || []}
+              path={`${API}/public/search/serviceCategory`}
+              placeholder={getContent("selectServices")}
+              getOption={(node) => ({
+                title: node.title || "",
+                value: node._id,
+              })}
+              onChange={(e) => setOptions((prev) => ({ ...prev, service: e }))}
+            />
+          </BookingFilterButton>
+        </BookingFilterSegment>
+      </Fragment>
+    ),
   };
 };
 
@@ -478,15 +471,19 @@ const ClinicBookingFilter = ({
 }) => {
   const filterProps = useClinicBookingFilterProps({ options, setOptions });
 
-  return <BookingFilter common={common} setCommon={setCommon} {...filterProps} />;
+  return (
+    <BookingFilter common={common} setCommon={setCommon} {...filterProps} />
+  );
 };
 
 const ClinicBooking = ({
   common,
   setCommon,
+  descriptions,
 }: {
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
+  descriptions?: IBookingDescription[];
 }) => {
   const [options, setOptions] = useState<ClinicBookingOptions>({});
 
@@ -555,7 +552,10 @@ const ClinicBooking = ({
         value={options.category || []}
         onChange={(e) => setOptions((prev) => ({ ...prev, category: e }))}
         placeholder={getContent("selectClinicCategory")}
-        getOption={(node) => ({ title: node.name || node._id, value: node._id })}
+        getOption={(node) => ({
+          title: node.name || node._id,
+          value: node._id,
+        })}
       />
       <MultiSelectInput
         options={doctorSessionTypes.reduce(
@@ -646,7 +646,11 @@ const ClinicBooking = ({
             title: "location",
             drawer: (close) => (
               <div
-                style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
               >
                 <Button
                   variant="Primary"
@@ -693,7 +697,9 @@ const ClinicBooking = ({
           },
           {
             active:
-              !!options.province || !!options.city || !!options.district?.length,
+              !!options.province ||
+              !!options.city ||
+              !!options.district?.length,
             title: "province",
             drawer: (close) => (
               <BookingFilterDrawerField type="select" close={close}>
@@ -846,6 +852,7 @@ const ClinicBooking = ({
         </BookingResults>
       </BookingLayout>
       <BookingMeta
+        descriptions={descriptions}
         title="clinicBookingMetaTitle"
         description="clinicBookingMetaDescription"
         label="clinicBookingMetaLabel"

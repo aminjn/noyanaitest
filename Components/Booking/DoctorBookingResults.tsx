@@ -15,6 +15,7 @@ import useLocale from "../Hooks/useLocale";
 import { t2xsRegular } from "../UI/Typography";
 import DoctorCardBooking from "./DoctorCardBooking";
 import BookingResults from "./BookingResults";
+import { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 const DoctorBookinResult = ({
   options,
   setOptions,
@@ -22,6 +23,7 @@ const DoctorBookinResult = ({
   count,
   common,
   setCommon,
+  descriptions,
 }: {
   options: DoctorBookingOptions;
   setOptions: Dispatch<SetStateAction<DoctorBookingOptions>>;
@@ -29,6 +31,7 @@ const DoctorBookinResult = ({
   count?: number;
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
+  descriptions?: IBookingDescription[];
 }) => {
   const getCompContent = useComplexLocale();
 

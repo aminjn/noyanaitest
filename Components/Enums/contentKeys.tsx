@@ -1661,6 +1661,17 @@ const contentKeys = [
   "pharmacyBookingMetaLegend",
   "bookingMetaLegend",
   "aboutThisPage",
+  "chooseSession",
+  "publicProfile",
+  "switch",
+  "myProfiles",
+  "clinicPanel",
+  "doctorDashboard",
+  "hospitalDashboard",
+  "insuranceDashboard",
+  "paraClinicDashboard",
+  "pharmacyDashboard",
+  "secretaryDashboard",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

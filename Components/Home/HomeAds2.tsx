@@ -29,7 +29,14 @@ const Item = ({
         <span className={`${classes.description} ${tsmMedium}`}>
           {node.description}
         </span>
-        <Button size="L" tailIcon={<ArrowLeftIcon />} href={node.target}>
+        <Button
+          size="L"
+          tailIcon={<ArrowLeftIcon />}
+          href={node.target}
+          radius="Medium"
+          variant="Primary"
+          mode="Fill"
+        >
           {node.legend}
         </Button>
       </div>

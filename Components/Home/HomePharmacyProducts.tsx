@@ -79,23 +79,25 @@ const HomePharmacyProducts = () => {
               sizes="12rem"
             />
           </div>
-          <h3 className={`${classes.secondareyTitle} ${txlDemiBold}`}>
-            {getContent("noyanProductsTitle")}
-          </h3>
-          <p className={`${classes.description} ${tsmRegular}`}>
-            {getContent("noyanProductsDescription")}
-          </p>
-          <Button
-            href={"/product"}
-            tailIcon={<ArrowLeftIcon />}
-            className={classes.action}
-            variant="Secondary"
-            mode="Outline"
-            size="L"
-            radius="Medium"
-          >
-            {getContent("seeProducts")}
-          </Button>
+          <div className={classes.introContent}>
+            <h3 className={`${classes.secondareyTitle} ${txlDemiBold}`}>
+              {getContent("noyanProductsTitle")}
+            </h3>
+            <p className={`${classes.description} ${tsmRegular}`}>
+              {getContent("noyanProductsDescription")}
+            </p>
+            <Button
+              href={"/product"}
+              tailIcon={<ArrowLeftIcon />}
+              className={classes.action}
+              variant="Secondary"
+              mode="Outline"
+              size="L"
+              radius="Medium"
+            >
+              {getContent("seeProducts")}
+            </Button>
+          </div>
         </div>
         <div className={classes.list}>
           <SwiperSlider>

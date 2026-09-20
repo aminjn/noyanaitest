@@ -25,7 +25,7 @@ const HomePopular = ({
           {getContent("popularDoctors")}
         </h2>
         <Button
-          href={"/doctors"}
+          href={"/book"}
           variant="Primary"
           mode="Inline"
           style={{ backgroundColor: "transparent" }}

@@ -1,21 +1,82 @@
-import useSWR from "swr";
+import useSWR, { mutate as globalMutate } from "swr";
+import Link from "next/link";
 import classes from "./NotificationModal.module.css";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { INotification } from "../Admin/Notification/AdminManageNotificationsPage";
 import Loading from "../Admin/UI/Loading";
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import FormatDate from "../UI/FormatDate";
 import Button from "../UI/Button";
 import ChevronIcon from "../Icons/ChevronIcon";
 import Ixon from "../UI/Ixon";
+import Act from "../UI/Act";
 import {
   t2xsRegular,
   tbaseBold,
   txsMedium,
   txsRegular,
 } from "../UI/Typography";
+
+const NotificationModalItem = ({
+  not,
+  mutate,
+}: {
+  not: INotification<{ CreatedBy: Record<never, never> }>;
+  mutate: () => unknown;
+}) => {
+  const [isMarking, setIsMarking] = useState<boolean>(false);
+
+  const markRead = () => {
+    if (!not.isRead && !isMarking) setIsMarking(true);
+  };
+
+  const content = (
+    <Fragment>
+      <div className={classes.itemContent}>
+        <span className={`${classes.itemTitle} ${txsMedium}`}>
+          {not.title}
+        </span>
+        <span className={`${classes.itemMessage} ${t2xsRegular}`}>
+          {not.message}
+        </span>
+      </div>
+      <div className={classes.dateBox}>
+        <FormatDate
+          time={false}
+          value={not.createdAt}
+          className={`${classes.date} ${t2xsRegular}`}
+        />
+        <span className={classes.dot} />
+      </div>
+    </Fragment>
+  );
+
+  return (
+    <Fragment>
+      {not.link ? (
+        <Link href={not.link} className={classes.item} onClick={markRead}>
+          {content}
+        </Link>
+      ) : (
+        <div className={classes.item} onClick={markRead}>
+          {content}
+        </div>
+      )}
+      <Act
+        path={isMarking ? `${API}/user/notification/${not._id}/read` : null}
+        method="POST"
+        onDone={() => {
+          setIsMarking(false);
+          mutate();
+          globalMutate(`${API}/user/notification/unread-count`);
+        }}
+      />
+    </Fragment>
+  );
+};
+
 const NotificationModal = ({ close }: { close: () => unknown }) => {
   const { data, error, mutate } = useSWR<{
     data: INotification<{ CreatedBy: Record<never, never> }>[];
@@ -55,26 +116,9 @@ const NotificationModal = ({ close }: { close: () => unknown }) => {
             </span>
             <span className={`${txsRegular}`}>({data.unreadCount})</span>
           </div>
-          <div className={classes.content}>
+          <div className={classes.content} onClickCapture={() => close()}>
             {data.data.map((not) => (
-              <div key={not._id} className={classes.item}>
-                <div className={classes.itemContent}>
-                  <span className={`${classes.itemTitle} ${txsMedium}`}>
-                    {not.title}
-                  </span>
-                  <span className={`${classes.itemMessage} ${t2xsRegular}`}>
-                    {not.message}
-                  </span>
-                </div>
-                <div className={classes.dateBox}>
-                  <FormatDate
-                    time={false}
-                    value={not.createdAt}
-                    className={`${classes.date} ${t2xsRegular}`}
-                  />
-                  <span className={classes.dot} />
-                </div>
-              </div>
+              <NotificationModalItem key={not._id} not={not} mutate={mutate} />
             ))}
           </div>
           <div className={classes.footer}>

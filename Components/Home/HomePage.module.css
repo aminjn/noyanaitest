@@ -6,4 +6,12 @@
 .ads {
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ads > * {
+  margin-block: 0;
+  width: 34rem;
+  flex: 1;
+  min-width: 30rem;
 }

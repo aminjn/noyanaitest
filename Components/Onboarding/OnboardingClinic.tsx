@@ -57,7 +57,6 @@ const OnboardingClinic = ({
             alt={getContent("onboardingClinicTitle")}
             width={532}
             height={364}
-            unoptimized
             className={classes.image}
           />
         </div>

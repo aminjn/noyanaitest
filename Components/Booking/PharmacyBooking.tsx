@@ -48,6 +48,7 @@ import MultiSelectInput from "../UI/MultiSelectInput";
 import BookingAdvancedSearchPopup, {
   AdvancedSearchLocationField,
 } from "./BookingAdvancedSearchPopup";
+import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
 export type PharmacyBookingOptions = Partial<{
   query: string;
@@ -79,247 +80,243 @@ const usePharmacyBookingFilterProps = ({
       Array.isArray(el) ? !el.length : !el,
     ),
     onClear: () => setOptions({}),
-    actives:
-        <Fragment>
-          {!!options.location && (
-            <BookingSelectedFilter
-              onClick={() =>
-                setOptions((prev) => ({ ...prev, location: null }))
-              }
-            >
-              {`${options.location.coords[0]}/${options.location.coords[1]} :: ${options.location.radius}`}
-            </BookingSelectedFilter>
-          )}
-          {!!options.province && (
-            <BookingSelectedFilter
-              onClick={() =>
-                setOptions((prev) => ({
-                  ...prev,
-                  province: null,
-                  city: null,
-                  district: null,
-                }))
-              }
-            >
-              {options.province.name}
-            </BookingSelectedFilter>
-          )}
-          {!!options.city && (
-            <BookingSelectedFilter
-              onClick={() =>
-                setOptions((prev) => ({ ...prev, city: null, district: null }))
-              }
-            >
-              {options.city.name}
-            </BookingSelectedFilter>
-          )}
-          {!!options.district?.length && (
-            <Fragment>
-              {options.district.map((d) => (
-                <BookingSelectedFilter
-                  key={d._id}
-                  onClick={() =>
-                    setOptions((prev) => {
-                      const clone = { ...prev };
-                      if (!clone.district) return { ...clone, district: [d] };
-                      const index = clone.district.findIndex(
-                        (el) => el._id === d._id,
-                      );
-                      if (index === -1) {
-                        clone.district.push(d);
-                      } else {
-                        clone.district.splice(index, 1);
-                      }
-                      return clone;
-                    })
-                  }
-                >
-                  {d.name}
-                </BookingSelectedFilter>
-              ))}
-            </Fragment>
-          )}
-          {!!options.category && (
-            <BookingSelectedFilter
-              onClick={() =>
-                setOptions((prev) => ({ ...prev, category: null }))
-              }
-            >
-              {options.category.name}
-            </BookingSelectedFilter>
-          )}
-        </Fragment>
-      ,
-    top:
-        <input
-          className={`${classes.input} ${tsmRegular}`}
-          onChange={(e) =>
-            setOptions((prev) => ({ ...prev, query: e.target.value }))
-          }
-          placeholder={getContent("searchPharmacies")}
-        />
-      ,
-    segments:
-        <Fragment>
-          <BookingFilterSegment
-            title={getContent("geospetialPositoin")}
-            action={
-              <Button
-                size="S"
-                radius="High"
-                variant="Secondary"
-                mode="Inline"
-                onClick={() =>
-                  setPopup(
-                    "BookingMap2",
-                    <BookingMap2
-                      defaultValue={options.location || undefined}
-                      onApply={(location) =>
-                        setOptions((prev) => ({
-                          ...prev,
-                          location,
-                          province: null,
-                          city: null,
-                          district: null,
-                        }))
-                      }
-                    />,
-                  )
-                }
-              >
-                {getContent("selectOnMap")}
-              </Button>
+    actives: (
+      <Fragment>
+        {!!options.location && (
+          <BookingSelectedFilter
+            onClick={() => setOptions((prev) => ({ ...prev, location: null }))}
+          >
+            {`${options.location.coords[0]}/${options.location.coords[1]} :: ${options.location.radius}`}
+          </BookingSelectedFilter>
+        )}
+        {!!options.province && (
+          <BookingSelectedFilter
+            onClick={() =>
+              setOptions((prev) => ({
+                ...prev,
+                province: null,
+                city: null,
+                district: null,
+              }))
             }
           >
-            <BookingFilterButton
-              title={getContent("province")}
-              active={!!options.province}
+            {options.province.name}
+          </BookingSelectedFilter>
+        )}
+        {!!options.city && (
+          <BookingSelectedFilter
+            onClick={() =>
+              setOptions((prev) => ({ ...prev, city: null, district: null }))
+            }
+          >
+            {options.city.name}
+          </BookingSelectedFilter>
+        )}
+        {!!options.district?.length && (
+          <Fragment>
+            {options.district.map((d) => (
+              <BookingSelectedFilter
+                key={d._id}
+                onClick={() =>
+                  setOptions((prev) => {
+                    const clone = { ...prev };
+                    if (!clone.district) return { ...clone, district: [d] };
+                    const index = clone.district.findIndex(
+                      (el) => el._id === d._id,
+                    );
+                    if (index === -1) {
+                      clone.district.push(d);
+                    } else {
+                      clone.district.splice(index, 1);
+                    }
+                    return clone;
+                  })
+                }
+              >
+                {d.name}
+              </BookingSelectedFilter>
+            ))}
+          </Fragment>
+        )}
+        {!!options.category && (
+          <BookingSelectedFilter
+            onClick={() => setOptions((prev) => ({ ...prev, category: null }))}
+          >
+            {options.category.name}
+          </BookingSelectedFilter>
+        )}
+      </Fragment>
+    ),
+    top: (
+      <input
+        className={`${classes.input} ${tsmRegular}`}
+        onChange={(e) =>
+          setOptions((prev) => ({ ...prev, query: e.target.value }))
+        }
+        placeholder={getContent("searchPharmacies")}
+      />
+    ),
+    segments: (
+      <Fragment>
+        <BookingFilterSegment
+          title={getContent("geospetialPositoin")}
+          action={
+            <Button
+              size="S"
+              radius="High"
+              variant="Secondary"
+              mode="Inline"
+              onClick={() =>
+                setPopup(
+                  "BookingMap2",
+                  <BookingMap2
+                    defaultValue={options.location || undefined}
+                    onApply={(location) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        location,
+                        province: null,
+                        city: null,
+                        district: null,
+                      }))
+                    }
+                  />,
+                )
+              }
             >
-              <MultiSelectInputServer<IProvince>
+              {getContent("selectOnMap")}
+            </Button>
+          }
+        >
+          <BookingFilterButton
+            title={getContent("province")}
+            active={!!options.province}
+          >
+            <MultiSelectInputServer<IProvince>
+              multi={false}
+              value={options.province ? [options.province] : []}
+              placeholder={getContent("selectProvince")}
+              path={`${API}/public/province`}
+              onChange={(e) =>
+                setOptions((prev) =>
+                  !!e[0]
+                    ? e[0]._id === prev.province?._id
+                      ? { ...prev, province: e[0], location: null }
+                      : {
+                          ...prev,
+                          province: e[0],
+                          city: null,
+                          district: null,
+                          location: null,
+                        }
+                    : {
+                        ...prev,
+                        province: null,
+                        city: null,
+                        district: null,
+                        location: null,
+                      },
+                )
+              }
+              getOption={(node) => ({
+                title: node.name || node._id,
+                value: node._id,
+              })}
+            />
+          </BookingFilterButton>
+          {!!options.province && (
+            <BookingFilterButton
+              title={getContent("city")}
+              active={!!options.city}
+            >
+              <MultiSelectInputServer<ICity>
                 multi={false}
-                value={options.province ? [options.province] : []}
-                placeholder={getContent("selectProvince")}
-                path={`${API}/public/province`}
+                value={options.city ? [options.city] : []}
+                path={`${API}/public/city?province=${options.province._id}`}
+                placeholder={getContent("selectCity")}
+                getOption={(node) => ({
+                  title: node.name || node._id,
+                  value: node._id,
+                })}
                 onChange={(e) =>
                   setOptions((prev) =>
                     !!e[0]
-                      ? e[0]._id === prev.province?._id
-                        ? { ...prev, province: e[0], location: null }
+                      ? e[0]._id === prev.city?._id
+                        ? { ...prev, city: e[0], location: null }
                         : {
                             ...prev,
-                            province: e[0],
-                            city: null,
+                            city: e[0],
                             district: null,
                             location: null,
                           }
                       : {
                           ...prev,
-                          province: null,
                           city: null,
                           district: null,
                           location: null,
                         },
                   )
                 }
-                getOption={(node) => ({
-                  title: node.name || node._id,
-                  value: node._id,
-                })}
               />
             </BookingFilterButton>
-            {!!options.province && (
-              <BookingFilterButton
-                title={getContent("city")}
-                active={!!options.city}
-              >
-                <MultiSelectInputServer<ICity>
-                  multi={false}
-                  value={options.city ? [options.city] : []}
-                  path={`${API}/public/city?province=${options.province._id}`}
-                  placeholder={getContent("selectCity")}
+          )}
+          {!!options.city && (
+            <BookingFilterButton
+              title={getContent("district")}
+              active={!!options.district?.length}
+            >
+              <Fragment>
+                <MultiSelectInputServer
+                  placeholder={getContent("selectDistrict")}
+                  path={`${API}/public/district?city=${options.city._id}`}
+                  onChange={(e) =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      district: e,
+                      location: null,
+                    }))
+                  }
+                  value={options.district || []}
                   getOption={(node) => ({
                     title: node.name || node._id,
                     value: node._id,
                   })}
-                  onChange={(e) =>
-                    setOptions((prev) =>
-                      !!e[0]
-                        ? e[0]._id === prev.city?._id
-                          ? { ...prev, city: e[0], location: null }
-                          : {
-                              ...prev,
-                              city: e[0],
-                              district: null,
-                              location: null,
-                            }
-                        : {
-                            ...prev,
-                            city: null,
-                            district: null,
-                            location: null,
-                          },
-                    )
-                  }
                 />
-              </BookingFilterButton>
-            )}
-            {!!options.city && (
-              <BookingFilterButton
-                title={getContent("district")}
-                active={!!options.district?.length}
-              >
-                <Fragment>
-                  <MultiSelectInputServer
-                    placeholder={getContent("selectDistrict")}
-                    path={`${API}/public/district?city=${options.city._id}`}
-                    onChange={(e) =>
-                      setOptions((prev) => ({
-                        ...prev,
-                        district: e,
-                        location: null,
-                      }))
-                    }
-                    value={options.district || []}
-                    getOption={(node) => ({
-                      title: node.name || node._id,
-                      value: node._id,
-                    })}
-                  />
-                </Fragment>
-              </BookingFilterButton>
-            )}
-          </BookingFilterSegment>
-          <BookingFilterSegment title={getContent("products")}>
-            <input
-              className={`${classes.input} ${tsmRegular}`}
+              </Fragment>
+            </BookingFilterButton>
+          )}
+        </BookingFilterSegment>
+        <BookingFilterSegment title={getContent("products")}>
+          <input
+            className={`${classes.input} ${tsmRegular}`}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                productQuery: e.target.value,
+              }))
+            }
+          />
+          <BookingFilterButton
+            title={getContent("category")}
+            active={!!options.category}
+          >
+            <MultiSelectInputServer
+              placeholder={getContent("selectCategory")}
+              value={options.category ? [options.category] : []}
+              multi={false}
+              path={`${API}/public/productCategory`}
+              getOption={(node) => ({
+                title: node.name || "",
+                value: node._id,
+              })}
               onChange={(e) =>
-                setOptions((prev) => ({
-                  ...prev,
-                  productQuery: e.target.value,
-                }))
+                setOptions((prev) => ({ ...prev, category: e[0] || null }))
               }
             />
-            <BookingFilterButton
-              title={getContent("category")}
-              active={!!options.category}
-            >
-              <MultiSelectInputServer
-                placeholder={getContent("selectCategory")}
-                value={options.category ? [options.category] : []}
-                multi={false}
-                path={`${API}/public/productCategory`}
-                getOption={(node) => ({
-                  title: node.name || "",
-                  value: node._id,
-                })}
-                onChange={(e) =>
-                  setOptions((prev) => ({ ...prev, category: e[0] || null }))
-                }
-              />
-            </BookingFilterButton>
-          </BookingFilterSegment>
-        </Fragment>
-      ,
+          </BookingFilterButton>
+        </BookingFilterSegment>
+      </Fragment>
+    ),
   };
 };
 
@@ -336,15 +333,19 @@ const PharmacyBookingFilter = ({
 }) => {
   const filterProps = usePharmacyBookingFilterProps({ options, setOptions });
 
-  return <BookingFilter common={common} setCommon={setCommon} {...filterProps} />;
+  return (
+    <BookingFilter common={common} setCommon={setCommon} {...filterProps} />
+  );
 };
 
 const PharmacyBooking = ({
   common,
   setCommon,
+  descriptions,
 }: {
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
+  descriptions?: IBookingDescription[];
 }) => {
   const [options, setOptions] = useState<PharmacyBookingOptions>({});
 
@@ -352,7 +353,10 @@ const PharmacyBooking = ({
 
   const { setPopup } = usePopup();
 
-  const fullFilterProps = usePharmacyBookingFilterProps({ options, setOptions });
+  const fullFilterProps = usePharmacyBookingFilterProps({
+    options,
+    setOptions,
+  });
 
   const [debouncedOptions, setDebouncedOptions] =
     useDebounce<PharmacyBookingOptions>({ initialValue: options });
@@ -469,7 +473,11 @@ const PharmacyBooking = ({
             title: "location",
             drawer: (close) => (
               <div
-                style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
               >
                 <Button
                   variant="Primary"
@@ -516,7 +524,9 @@ const PharmacyBooking = ({
           },
           {
             active:
-              !!options.province || !!options.city || !!options.district?.length,
+              !!options.province ||
+              !!options.city ||
+              !!options.district?.length,
             title: "province",
             drawer: (close) => (
               <BookingFilterDrawerField type="select" close={close}>
@@ -667,6 +677,7 @@ const PharmacyBooking = ({
         description="pharmacyBookingMetaDescription"
         label="pharmacyBookingMetaLabel"
         legend="pharmacyBookingMetaLegend"
+        descriptions={descriptions}
       />
     </Fragment>
   );

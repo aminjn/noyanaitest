@@ -4,7 +4,7 @@ import { Fragment, useContext } from "react";
 import classes from "./Popup.module.css";
 import PopupContext from "../Store/PopupContext";
 
-const BASE_Z = 20;
+const BASE_Z = 200;
 
 const Popup = () => {
   const { popups, closePopup } = useContext(PopupContext);

@@ -122,7 +122,7 @@ const BecomeADoctorPage = () => {
         <div className={classes.tabs}>
           {becomeDoctorStages.map((s, i) => (
             <div
-              className={`${classes.stage} ${tsmRegular} ${becomeDoctorStages.indexOf(s) <= i ? classes.activeStage : ""}`}
+              className={`${classes.stage} ${tsmRegular} ${becomeDoctorStages.indexOf(stage) >= i ? classes.activeStage : ""}`}
               key={s}
             >
               <span>{i + 1}</span>

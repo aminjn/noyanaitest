@@ -26,9 +26,7 @@ const OnboardingPage = ({ data, staticImages }: OnboardingpageProps) => {
       <OnboardingMap />
       <OnboardingDoctor />
       <OnboardingClinic onboadingClinic={staticImages?.onboadingClinic} />
-      <OnboardingConsult
-        onboadrdinConsult={staticImages?.onboadrdinConsult}
-      />
+      <OnboardingConsult onboadrdinConsult={staticImages?.onboadrdinConsult} />
       <OnboardingTestify data={data} />
       <OnboardingFeatures />
     </div>

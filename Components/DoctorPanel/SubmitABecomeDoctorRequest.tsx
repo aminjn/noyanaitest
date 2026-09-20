@@ -40,7 +40,7 @@ const SubmitABecomeDoctorRequest = ({
           title: "جنسیت",
           options: genders.reduce(
             (acc, el) => ({ ...acc, [el]: getContent(el) }),
-            {}
+            {},
           ),
         },
         medicalSystemTitle: {
@@ -48,7 +48,7 @@ const SubmitABecomeDoctorRequest = ({
           title: getContent("medicalSystemTitle"),
           options: medicalSystemTitles.reduce(
             (acc, el) => ({ ...acc, [el]: el }),
-            {}
+            {},
           ),
         },
         medicalSystemCode: {
@@ -69,7 +69,7 @@ const SubmitABecomeDoctorRequest = ({
           title: getContent("province"),
           options: provinces.reduce(
             (acc, p) => ({ ...acc, [p.slug]: p.name }),
-            {}
+            {},
           ),
         },
         city: {
@@ -80,7 +80,7 @@ const SubmitABecomeDoctorRequest = ({
                 .filter(
                   (c) =>
                     c.province_id ===
-                    provinces.find((p) => p.slug === form.input.province)?.id
+                    provinces.find((p) => p.slug === form.input.province)?.id,
                 )
                 .reduce((acc, el) => ({ ...acc, [el.slug]: el.name }), {})
             : {},

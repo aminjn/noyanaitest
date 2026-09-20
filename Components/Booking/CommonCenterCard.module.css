@@ -157,7 +157,6 @@
 .action {
   grid-area: action;
   display: flex;
-  margin-top: auto;
 }
 
 .cta {
@@ -183,6 +182,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.5rem;
+  margin-bottom: auto;
 }
 
 .gridMeta {
