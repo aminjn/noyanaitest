@@ -22,4 +22,19 @@
   height: fit-content;
   display: flex;
   flex-direction: column;
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 800px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .content {
+    order: 0;
+  }
+  .side {
+    order: 1;
+    width: 100%;
+  }
 }

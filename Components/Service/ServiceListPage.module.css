@@ -40,6 +40,13 @@
 
 .itemOwner {
   color: var(--gray8);
+  display: flex;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 .price {

@@ -41,7 +41,7 @@ const CommentsSummary = ({
           <div className={classes.barBox} key={score}>
             <span className={classes.percent}>
               {getContent("percentSymbol", [
-                ((scoresMap[score] / (count || 1)) * 100).toString(),
+                Math.floor((scoresMap[score] / (count || 1)) * 100).toString(),
               ])}
             </span>
             <div className={classes.bar}>

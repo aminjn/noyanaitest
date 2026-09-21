@@ -69,6 +69,51 @@ const SpecBox = ({ specs }: { specs: IProductSpec[] }) => {
   );
 };
 
+const Intro = ({
+  name,
+  category,
+  original,
+  className = "",
+}: {
+  category?: string;
+  name: string;
+  original?: string;
+  className?: string;
+}) => {
+  return (
+    <div className={`${classes.intro} ${className}`}>
+      <div className={classes.crumpBox}>
+        <div className={`${classes.breadCrump} ${txsMedium}`}>
+          {!!category && (
+            <Fragment>
+              <span className={classes.crump}>{category}</span>
+              <span className={classes.slash}>/</span>
+            </Fragment>
+          )}
+          <span className={classes.crump}>{name}</span>
+        </div>
+        <button
+          className={classes.share}
+          onClick={() => navigator.share({ text: window.location.toString() })}
+        >
+          <Ixon width="1rem">
+            <ShareIcon />
+          </Ixon>
+        </button>
+      </div>
+      <h1 className={`${classes.h1} ${txlMedium}`}>{name}</h1>
+      {!!original && (
+        <div className={`${classes.originalBox} ${tsmRegular}`}>
+          <Ixon width="1rem" className={classes.originalIcon}>
+            <VerifyIcon />
+          </Ixon>
+          <legend>{original}</legend>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const CartableNodePageIntro = ({
   images,
   category,
@@ -98,34 +143,12 @@ const CartableNodePageIntro = ({
 
   return (
     <div className={classes.main}>
-      <div className={classes.crumpBox}>
-        <div className={`${classes.breadCrump} ${txsMedium}`}>
-          {!!category && (
-            <Fragment>
-              <span className={classes.crump}>{category.name}</span>
-              <span className={classes.slash}>/</span>
-            </Fragment>
-          )}
-          <span className={classes.crump}>{name}</span>
-        </div>
-        <button
-          className={classes.share}
-          onClick={() => navigator.share({ text: window.location.toString() })}
-        >
-          <Ixon width="1rem">
-            <ShareIcon />
-          </Ixon>
-        </button>
-      </div>
-      <h1 className={`${classes.h1} ${txlMedium}`}>{name}</h1>
-      {!!original && (
-        <div className={`${classes.originalBox} ${tsmRegular}`}>
-          <Ixon width="1rem" className={classes.originalIcon}>
-            <VerifyIcon />
-          </Ixon>
-          <legend>{original}</legend>
-        </div>
-      )}
+      <Intro
+        category={category?.name}
+        name={name || ""}
+        original={original}
+        className={classes.desktopIntro}
+      />
       <div className={classes.content}>
         <div className={classes.imagesBox}>
           <div className={classes.image}>
@@ -156,6 +179,12 @@ const CartableNodePageIntro = ({
           </div>
         </div>
         <div className={classes.detailsBox}>
+          <Intro
+            className={classes.mobileIntro}
+            name={name || ""}
+            category={category?.name}
+            original={original}
+          />
           <div className={classes.stats}>
             <div className={classes.score}>
               <Ixon className={classes.star} width="1rem">

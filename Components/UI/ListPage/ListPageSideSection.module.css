@@ -34,3 +34,9 @@
 .activeNav {
   background-color: var(--primary);
 }
+
+.slide {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

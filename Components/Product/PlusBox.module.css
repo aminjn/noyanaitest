@@ -17,3 +17,8 @@
 .plusPrice {
   color: var(--errorT4);
 }
+@media only screen and (max-width: 850px) {
+  .plusBox {
+    display: none;
+  }
+}

@@ -28,7 +28,8 @@
   background-color: #ffffff26;
   flex-direction: column;
   color: var(--white);
-  min-width: 15.125rem;
+  min-width: min(100%, 15.125rem);
+  max-width: calc(50%);
 }
 
 .content {

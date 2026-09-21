@@ -67,17 +67,31 @@ const CartableNodePage = <T,>({
       )}
       <div className={classes.main}>
         <div className={classes.content}>
-          <CartableNodePageIntro
-            images={images}
-            commentsCount={commentsCount}
-            qnaCount={qnaCount}
-            score={score}
-            specs={specs}
-            totalScore={totalScore}
-            category={category}
-            name={name}
-            original={original}
-          />
+          <div className={classes.intro} >
+            <CartableNodePageIntro
+              images={images}
+              commentsCount={commentsCount}
+              qnaCount={qnaCount}
+              score={score}
+              specs={specs}
+              totalScore={totalScore}
+              category={category}
+              name={name}
+              original={original}
+            />
+            <div className={classes.mobileOnly}>
+              <CartablePageCartSection
+                service={model === "services" || model === "servicePackages"}
+                cartTitle={cartTitle}
+                itemId={itemId}
+                model={model}
+                cartTitleTail={cartTitleTail}
+                discount={discount}
+                owner={owner}
+                price={price}
+              />
+            </div>
+          </div>
           {beforeTabs}
           <CartableNodePageTabs tabs={tabs} />
           <CartbaleNodePageSameAs
