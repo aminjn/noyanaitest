@@ -106,6 +106,7 @@ const SymptomPage = ({
               cards={doctors.map((el) => (
                 <DoctorCardAlt key={el._id} node={el} />
               ))}
+              cardWidth={236}
             />
             <ListPageSideExpandable
               title={getContent("relatedSpecialities")}

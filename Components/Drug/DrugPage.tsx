@@ -68,6 +68,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
               cards={doctors.map((node) => (
                 <DoctorCardAlt key={node._id} node={node} />
               ))}
+              cardWidth={236}
             />
             <ListPageSideExpandable
               title={getContent("relatedSpecialities")}
