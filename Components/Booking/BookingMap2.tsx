@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import classes from "./BookingMap2.module.css";
 import useMap from "../Hooks/useMap";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import useSWR from "swr";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { API } from "../config";
@@ -17,8 +18,9 @@ import { LngLat } from "maplibre-gl";
 import { TerraDraw, TerraDrawCircleMode, TerraDrawPointMode } from "terra-draw";
 import { TerraDrawMapLibreGLAdapter } from "terra-draw-maplibre-gl-adapter";
 import { bbox, circle } from "@turf/turf";
-import useComplexLocale from "../Hooks/useComplexLocale";
 import usePopup from "../Hooks/usePopup";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const SEARCH_RADIUS = 1;
 
@@ -134,9 +136,9 @@ const BookingMap2 = ({
     ]);
   }, [map, selected, selectedRadius, terra]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = getContent;
 
   const { closePopup } = usePopup();
 

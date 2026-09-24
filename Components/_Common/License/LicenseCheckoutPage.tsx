@@ -14,7 +14,6 @@ import {
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Act from "@/Components/UI/Act";
 import useProgress from "@/Components/Hooks/useProgress";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { IWallet } from "@/Components/Booking/Finalize/FinalizeBookingPage";
 import { currencize } from "@/Components/helpers/currencize";
 import Button from "@/Components/UI/Button";
@@ -23,6 +22,10 @@ import WalletIcon from "@/Components/Icons/WalletIcon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import LicensePriceDetails from "./LicensePriceDetails";
 import { tbaseDemiBold, tlgDemiBold, tsmDemiBold, tsmRegular } from "@/Components/UI/Typography";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
 // Only "wallet" is wired up on the backend today
 // (<org>Controller.purchaseLicense), same as cart checkout - see
@@ -52,7 +55,7 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
   const push = useProgress();
 
   // Only one method exists today (see checkoutMethods above), so there's

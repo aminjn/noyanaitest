@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import classes from "./FancySelect.module.css";
 import Ixon from "./Ixon";
-import useLocale from "../Hooks/useLocale";
 import { t2xsMedium, txsMedium } from "./Typography";
 import SearchIcon from "../Icons/SearchIcon";
 import InlineLoading from "./InlineLoading";
 import ChevronIcon from "../Icons/ChevronIcon";
 import XMarkIcon from "../Icons/XMarkIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 type Options = { title: string; value: string }[];
 
@@ -109,7 +112,7 @@ const FancySelect = ({
     );
   }, [query, options]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const showLoading = useMemo<boolean>(() => {
     if (isLoading === false) return false;

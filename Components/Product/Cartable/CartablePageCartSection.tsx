@@ -1,6 +1,7 @@
 import useCart, { CartModel, UseCartNode } from "@/Components/Hooks/useCart";
 import classes from "./CartablePageCartSection.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { Fragment, ReactNode } from "react";
 import {
   t2xsRegular,
@@ -13,6 +14,8 @@ import { currencize } from "@/Components/helpers/currencize";
 import CartActions from "../CartActions";
 import ProductCartInfos from "../ProductCartInfos";
 import PlusBox from "../PlusBox";
+
+const NS: ContentNamespace[] = ["common", "productCartable"];
 const CartablePageCartSection = ({
   cartTitle,
   cartTitleTail,
@@ -32,7 +35,7 @@ const CartablePageCartSection = ({
   model: CartModel;
   service?: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { getItemQty } = useCart();
 

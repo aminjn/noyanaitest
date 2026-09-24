@@ -5,7 +5,7 @@ import { IPharmacyAdditionRequest } from "./DoctorPharmacyRequestsTab";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import Input from "@/Components/UI/Input";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import SelectInput from "@/Components/UI/SelectInput";
 import { provinceOptions, provinceSlugs } from "@/Components/Enums/Provinces";
 import { cityOptions, citySlugs } from "@/Components/Enums/Cities";
@@ -14,6 +14,9 @@ import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
 import classes from "./SubmitPharmacyAdditionRequestPopup.module.css";
 import FormTitle from "@/Components/UI/FormTitle";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelPharmacy"];
 
 const SubmitPharmacyAdditionRequestPopup = ({
   mutate,
@@ -31,7 +34,7 @@ const SubmitPharmacyAdditionRequestPopup = ({
       },
     });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard>
       <Form onSubmit={submit} className={classes.main}>

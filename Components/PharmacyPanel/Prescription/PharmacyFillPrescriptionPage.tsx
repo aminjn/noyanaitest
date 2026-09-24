@@ -1,5 +1,6 @@
 "use client";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import classes from "./PharmacyFillPrescriptionPage.module.css";
 import Form from "@/Components/UI/Form";
@@ -15,8 +16,10 @@ import FindPrescriptionAgent from "./FindPrescriptionAgent";
 import PharmacyPrescriptionCache from "./PharmacyPrescriptionCache";
 import PharmacyFilledPrescriptions from "./PharmacyFilledPrescriptions";
 
+const NS: ContentNamespace[] = ["common", "pharmacyPanelPrescription"];
+
 const PharmacyFillPrescriptionPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/pharmacypanel" },

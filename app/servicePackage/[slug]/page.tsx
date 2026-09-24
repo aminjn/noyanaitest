@@ -8,14 +8,25 @@ import {
   getNodePageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = [
+  "common",
+  "servicePackagePage",
+  "productCartable",
+  "commentSection",
+];
 
 export const generateMetadata = (ctx: { params: { slug: string } }) =>
   getNodePageMetadata("/servicePackage/[slug]", ctx.params.slug);
 
 const ServicePackage = async (ctx: { params: { slug: string } }) => {
-  const data = await getPublicData<ServicepackagePageProps>(
-    `/servicePackage/${ctx.params.slug}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<ServicepackagePageProps>(`/servicePackage/${ctx.params.slug}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getNodePageWebSchema(
     "/servicePackage/[slug]",
@@ -24,7 +35,9 @@ const ServicePackage = async (ctx: { params: { slug: string } }) => {
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <ServicePackagePage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <ServicePackagePage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

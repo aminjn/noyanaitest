@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import useForm from "@/Components/Hooks/useForm";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -17,6 +17,9 @@ import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBook
 import ReservationStatusBadge from "@/Components/Dashboard/Booking/ReservationStatusBadge";
 import ReservationTimeline from "@/Components/Dashboard/Booking/ReservationTimeline";
 import ReservationJoinButton from "@/Components/Dashboard/Booking/ReservationJoinButton";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
 type DoctorReservation = IReservation<{
   Office: Record<never, never>;
@@ -31,7 +34,7 @@ const CheckInAction = ({
   nodeId: string;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { submit, isLoading } = useForm<Record<string, never>>({
     path: `${API}/doctor/reservation/${nodeId}/check-in`,
@@ -59,7 +62,7 @@ const DoctorManageBookingPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

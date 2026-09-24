@@ -7,7 +7,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
@@ -27,6 +28,8 @@ import {
   IProduct,
   IProductSeller,
 } from "@/Components/Admin/Product/AdminManageProductsPage";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelProduct"];
 
 type MyProductSeller = IProductSeller<{
   Product: { Category: Record<never, never> };
@@ -50,7 +53,7 @@ const AddMyProductPopup = ({
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard>
       <CreateForm<PharmacyEditableProductSellerFields>
@@ -84,7 +87,7 @@ const EditMyProductPopup = ({
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard>
       <CreateForm<PharmacyEditableProductSellerFields>
@@ -119,7 +122,7 @@ const DeleteMyProductPopup = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <Fragment>
       <ConfirmationPopup
@@ -148,7 +151,7 @@ const PharmacyAvailableProductsTab = () => {
   );
 
   const { setPopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -210,7 +213,7 @@ const PharmacyMyProductsTab = () => {
   );
 
   const { setPopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -319,7 +322,7 @@ const PharmacyMyProductsTab = () => {
 };
 
 const PharmacyProductsPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/pharmacypanel" },

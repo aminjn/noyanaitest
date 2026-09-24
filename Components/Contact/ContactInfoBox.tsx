@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import CallCallingIcon from "../Icons/CallCallingIcon";
 import EnvelopeIcon from "../Icons/EnvelopeIcon";
 import HelpCircleIcon from "../Icons/HelpCircleIcon";
@@ -11,6 +12,8 @@ import InstagramIcon from "../Icons/InstagramIcon";
 import TelegramIcon from "../Icons/TelegramIcon";
 import { tbaseMedium, tbaseRegular } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "contactPage"];
+
 const SocialItem = ({ href, icon }: { href: string; icon: ReactNode }) => {
   return (
     <a className={classes.social} href={href} target="_blank">
@@ -20,7 +23,7 @@ const SocialItem = ({ href, icon }: { href: string; icon: ReactNode }) => {
 };
 
 const ContactInfoBox = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomeHero.module.css";
 import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
@@ -28,6 +29,8 @@ import StarsLineIcon from "../Icons/StarsLineIcon";
 import Button from "../UI/Button";
 import BrainIcon from "../Icons/BrainIcon";
 
+const NS: ContentNamespace[] = ["common", "home"];
+
 // Redesigned hero (Figma "Home Page" frame, Aug 2026): a framed AI-branded
 // image with two floating stat badges on the right, and on the left a
 // badge pill + two-tone headline + AI search bar + two CTAs, followed by a
@@ -39,7 +42,7 @@ const HomeHero = ({ homeMain }: { homeMain?: string }) => {
   // Reference usage of the scoped hook: this component only needs the
   // "home" namespace, so it declares that directly instead of relying on
   // an ancestor already having fetched everything.
-  const getContent = useScopedLocale(["home"]);
+  const getContent = useScopedLocale(NS);
 
   const quickLinks: {
     key:

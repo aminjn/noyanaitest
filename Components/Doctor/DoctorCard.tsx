@@ -6,8 +6,8 @@ import StarIcon from "../Icons/StarIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import useComplexLocale from "../Hooks/useComplexLocale";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Link from "next/link";
 import {
   t2xsMedium,
@@ -17,13 +17,15 @@ import {
   txsRegular,
 } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "doctorsList"];
+
 const DoctorCard = ({
   node,
 }: {
   node: IDoctor<{ SpecialityPopulated: Record<never, never> }>;
 }) => {
-  const getCompContent = useComplexLocale();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
+  const getCompContent = getContent;
 
   const name = node.name || getContent("noName");
   const target = `/doctor/${node.slug || node.name}`;

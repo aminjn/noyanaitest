@@ -1,6 +1,7 @@
 import { Fragment, ReactNode } from "react";
 import { IProduct } from "../Admin/Product/AdminManageProductsPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ClientTabSystem from "../UI/ClientTabSystem";
 import classes from "./ProductTabs.module.css";
 import RenderRtf from "../UI/RenderRtf";
@@ -16,8 +17,10 @@ import QnaSection from "./QnaSection";
 import { tsmMedium, txsRegular } from "../UI/Typography";
 import CommentSection from "../Comment/CommentSection";
 
+const NS: ContentNamespace[] = ["common", "products"];
+
 export const WhyBox = ({ content }: { content?: string }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!content) return null;
   return (
@@ -49,7 +52,7 @@ export const ProductTab = ({
 };
 
 const ProductTabs = ({ data }: { data: IProduct }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

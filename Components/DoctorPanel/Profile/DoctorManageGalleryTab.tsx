@@ -6,7 +6,7 @@ import TableActions from "@/Components/Admin/UI/TableActions";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import EditIcon from "@/Components/Icons/EditIcon";
 import EyeIcon from "@/Components/Icons/EyeIcon";
@@ -17,6 +17,9 @@ import useSWR from "swr";
 import MutateGalleryItemPopup from "./MutateGalleryItemPopup";
 import DeleteGalleryItemPopup from "./DeleteGalleryItemPopup";
 import classes from "./DoctorManageGalleryTab.module.css";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
 const DoctorManageGalleryTab = () => {
   const { data, error, mutate } = useSWR<IGalleryItem[]>(
@@ -24,7 +27,7 @@ const DoctorManageGalleryTab = () => {
     (url: string) => fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

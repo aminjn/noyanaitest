@@ -1,6 +1,7 @@
 import { IInsurancePlan } from "../Admin/Insurance/AdminManageInsurancePage";
 import { currencize } from "../helpers/currencize";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import CheckIcon from "../Icons/CheckIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
 import WalletIcon from "../Icons/WalletIcon";
@@ -12,8 +13,10 @@ import { tsmRegular, txlBold } from "../UI/Typography";
 import { InsurancePageNode } from "./InsurancePage";
 import classes from "./InsurancePlans.module.css";
 
+const NS: ContentNamespace[] = ["common", "insurancePage"];
+
 const PlanCard = ({ node }: { node: IInsurancePlan }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.item}>
@@ -56,7 +59,7 @@ const PlanCard = ({ node }: { node: IInsurancePlan }) => {
 };
 
 const InsurancePlans = ({ node }: { node: InsurancePageNode }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!node.plans.length) return null;
   return (

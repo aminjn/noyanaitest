@@ -3,9 +3,12 @@ import classes from "./NewPatientProfileRecordPopup.module.css";
 import { IPatientProfile, IPatientProfileRecord } from "./PatientFiles";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { API } from "@/Components/config";
 import { title } from "process";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
 const NewPatientProfileRecordPopup = ({
   mutate,
@@ -16,7 +19,7 @@ const NewPatientProfileRecordPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <PopupCard>

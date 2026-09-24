@@ -11,6 +11,14 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = [
+  "common",
+  "booking",
+  "bookingSessionSelectorPopup",
+  "doctorPanelShiftUtils",
+];
 
 export const generateMetadata = () => getListPageMetadata("/book");
 
@@ -33,7 +41,7 @@ const groupBookingDescriptionsBySegment = (
 
 const Booking = async () => {
   const [textContent, bookingDescriptions, webSchema] = await Promise.all([
-    getScopedTextContent(["common", "booking"]),
+    getScopedTextContent(NS),
     getPublicData<{ data: IBookingDescription[] }>("bookingDescription"),
     getListPageWebSchema("/book"),
   ]);
@@ -44,7 +52,7 @@ const Booking = async () => {
     <>
       <JsonLdSchema schema={webSchema} />
       <LocaleScopeProvider
-        namespaces={["common", "booking"]}
+        namespaces={NS}
         initialTextContent={textContent}
       >
         <BookingPage2 descriptions={descriptions} />

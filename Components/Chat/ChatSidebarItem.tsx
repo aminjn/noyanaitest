@@ -2,9 +2,12 @@ import { useMemo } from "react";
 import useUser, { IUser } from "../Hooks/useUser";
 import { IChat, getChatParticipantName } from "./ChatSidebar";
 import classes from "./ChatSidebarItem.module.css";
-import useLocale from "../Hooks/useLocale";
 import Link from "next/link";
 import HostedImage from "../UI/HostedImage";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "chat"];
 
 const ChatSidebarItem = ({
   chat,
@@ -13,7 +16,7 @@ const ChatSidebarItem = ({
 }) => {
   const { user } = useUser();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
     () => chat.participants.find((p) => p._id !== user?._id),

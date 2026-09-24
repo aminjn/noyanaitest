@@ -1,7 +1,17 @@
 import AdminManageAnalyticsPage from "@/Components/Admin/Analytics/AdminManageAnalyticsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageAnalytics = () => {
-  return <AdminManageAnalyticsPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageAnalytics = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageAnalyticsPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageAnalytics;

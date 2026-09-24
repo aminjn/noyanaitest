@@ -1,7 +1,17 @@
 import AdminManageBecomePharmaciesPage from "@/Components/Admin/BecomePharmacy/AdminManageBecomePharmaciesPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageBecomePharmacies = () => {
-  return <AdminManageBecomePharmaciesPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageBecomePharmacies = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageBecomePharmaciesPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageBecomePharmacies;

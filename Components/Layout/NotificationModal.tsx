@@ -6,7 +6,6 @@ import { fetcher } from "../helpers/fetcher";
 import { INotification } from "../Admin/Notification/AdminManageNotificationsPage";
 import Loading from "../Admin/UI/Loading";
 import { Fragment, useEffect, useRef, useState } from "react";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import FormatDate from "../UI/FormatDate";
 import Button from "../UI/Button";
 import ChevronIcon from "../Icons/ChevronIcon";
@@ -18,6 +17,10 @@ import {
   txsMedium,
   txsRegular,
 } from "../UI/Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const NotificationModalItem = ({
   not,
@@ -87,7 +90,7 @@ const NotificationModal = ({ close }: { close: () => unknown }) => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const containerRef = useRef<HTMLDivElement>(null);
 

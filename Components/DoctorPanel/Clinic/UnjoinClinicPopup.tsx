@@ -1,11 +1,14 @@
 import { IClinicDoctor } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import classes from "./UnjoinClinicPopup.module.css";
 import { Fragment, useState } from "react";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelClinic"];
 
 const UnjoinClinicPopup = ({
   mutate,
@@ -15,7 +18,7 @@ const UnjoinClinicPopup = ({
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

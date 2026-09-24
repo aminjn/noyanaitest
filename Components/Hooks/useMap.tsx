@@ -2,8 +2,11 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import mlgl, { LngLat, LngLatBounds } from "maplibre-gl";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import useNotification from "./useNotification";
-import useLocale from "./useLocale";
 import { IPolygon } from "../Admin/Province/AdminManageProvincesPage";
+import useScopedLocale from "./useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "mapPage"];
 
 mlgl.setRTLTextPlugin(
   "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
@@ -31,7 +34,7 @@ const useMap = ({
   const [ready, setReady] = useState<boolean>(false);
 
   const pushNotification = useNotification();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;

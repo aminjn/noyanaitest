@@ -6,12 +6,15 @@ import { API } from "@/Components/config";
 import { IInvoice } from "@/Components/Booking/SelectSessionToReservePopup";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { currencize } from "@/Components/helpers/currencize";
 import FormatDate from "@/Components/UI/FormatDate";
 import DataPair from "@/Components/Admin/UI/DataPair";
 import List from "@/Components/Admin/UI/List";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
+
+const NS: ContentNamespace[] = ["common", "dashboardInvoice"];
 
 // Read-only per F-01: this page's "pay" action opened CheckoutPalPopup,
 // which submitted to /checkout/invoice/:id (settleInvoice) - System A's
@@ -26,7 +29,7 @@ const DashboardManageInvoicePage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

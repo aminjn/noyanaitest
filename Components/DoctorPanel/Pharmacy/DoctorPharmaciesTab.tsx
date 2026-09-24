@@ -6,7 +6,7 @@ import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Table from "@/Components/Admin/UI/Table";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
@@ -24,6 +24,9 @@ import {
   ProvincePopulation,
 } from "@/Components/Admin/Province/AdminManageProvincesPage";
 import { City } from "@/Components/Enums/Cities";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelPharmacy"];
 
 export type PharmacyPopulation = Population<{
   User: UserPopulation;
@@ -77,7 +80,7 @@ const DoctorPharmaciesTab = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

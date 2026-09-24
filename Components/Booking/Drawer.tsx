@@ -2,8 +2,11 @@ import { ReactNode } from "react";
 import classes from "./Drawer.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import XMarkIcon from "../Icons/XMarkIcon";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 const Drawer = ({
   close,
   title,
@@ -15,7 +18,7 @@ const Drawer = ({
   close: () => unknown;
   fullScreen?: boolean;
 }) => {
-  const getContent = useScopedLocale(["booking"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.container}>

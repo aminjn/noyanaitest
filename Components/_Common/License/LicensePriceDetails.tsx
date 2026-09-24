@@ -1,6 +1,5 @@
 import classes from "./LicensePriceDetails.module.css";
 import { IBaseLicensePricing, ILicenseDuration } from "./licenseTypes";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { currencize } from "@/Components/helpers/currencize";
 import {
   t2xsRegular,
@@ -8,6 +7,10 @@ import {
   txlBold,
   txsRegular,
 } from "@/Components/UI/Typography";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
 // Shared price/duration readout used by LicenseCard - the chosen
 // duration's name, a discount-percent badge (if any), the final price,
@@ -21,7 +24,7 @@ const LicensePriceDetails = ({
   duration: ILicenseDuration | null;
   pricing: IBaseLicensePricing<unknown> | null;
 }) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!pricing) return null;
 

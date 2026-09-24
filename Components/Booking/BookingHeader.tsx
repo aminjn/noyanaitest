@@ -6,7 +6,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import AdjustmentHorizontalIcon from "../Icons/AdjustmentHorizontalIcon";
 import MapIcon from "../Icons/MapIcon";
 import SearchIcon from "../Icons/SearchIcon";
@@ -18,6 +19,8 @@ import { DoctorBookingOptions } from "./BookingPage2";
 import useDebounce from "../Hooks/useDebounce";
 import useProgress from "../Hooks/useProgress";
 
+const NS: ContentNamespace[] = ["common", "booking"];
+
 const BookingHeader = ({
   onChange,
   onAdvancedSearch,
@@ -27,7 +30,7 @@ const BookingHeader = ({
 }) => {
   const push = useProgress();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.header}>
       <h1 className={`${classes.title} ${txlDemiBold}`}>

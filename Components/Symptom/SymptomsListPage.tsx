@@ -3,7 +3,8 @@ import { ISymptom } from "../Admin/Disease/AdminManageDiseasesPage";
 import SymptomCard from "./SymptomCard";
 import { ListPage } from "../Disease/DiseasesListPage";
 import classes from "./SymptomsListPage.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { tlgMedium, tsmDemiBold, tsmRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
@@ -20,10 +21,12 @@ import BigAd from "../UI/ListPage/BigAd";
 import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import ListPageList from "../UI/ListPage/ListPageList";
 
+const NS: ContentNamespace[] = ["common", "symptomsList"];
+
 export type SymptomsListPageProps = { data: ISymptom[]; pagesCount: number };
 
 const SymptomsListPage = ({ data, pagesCount }: SymptomsListPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [query, setQuery] = useDebounce({ initialValue: "" });
 

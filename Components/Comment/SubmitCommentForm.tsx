@@ -1,13 +1,16 @@
 import { useRef } from "react";
 import { API } from "../config";
 import useForm from "../Hooks/useForm";
-import useLocale from "../Hooks/useLocale";
 import StarIcon from "../Icons/StarIcon";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import { tsmMedium, tsmRegular } from "../UI/Typography";
 import { CommentableDocumentPath, scores } from "./CommentSection";
 import classes from "./SubmitCommentForm.module.css";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "commentSection"];
 const SubmitCommentForm = ({
   model,
   nodeId,
@@ -15,7 +18,7 @@ const SubmitCommentForm = ({
   model: CommentableDocumentPath;
   nodeId: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const areaRef = useRef<HTMLTextAreaElement>(null);
 

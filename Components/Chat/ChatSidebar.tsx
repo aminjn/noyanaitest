@@ -6,13 +6,16 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import Loading from "../Admin/UI/Loading";
 import { Fragment, useRef } from "react";
-import useLocale from "../Hooks/useLocale";
 import ChatSidebarItem from "./ChatSidebarItem";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import Link from "next/link";
 import XMarkIcon from "../Icons/XMarkIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "chat"];
 
 export type ChatPopuplation = Population<{
   Messages: MessagePopulation;
@@ -84,7 +87,7 @@ const ChatSidebar = ({ onClose }: { onClose?: () => void }) => {
     refreshInterval: 1000,
   });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const searchRef = useRef<HTMLInputElement>(null);
 

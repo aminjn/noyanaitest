@@ -20,9 +20,11 @@ import Ixon from "@/Components/UI/Ixon";
 import EditAltIcon from "@/Components/Icons/EditAltIcon";
 import TrashIcon from "@/Components/Icons/TrashIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { dateToString } from "@/Components/UI/FormatDate";
-import useLocale from "@/Components/Hooks/useLocale";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
 const Pair = ({ title, value }: { title: string; value: string }) => {
   return (
@@ -36,11 +38,11 @@ const Pair = ({ title, value }: { title: string; value: string }) => {
 const Item = ({ item }: { item: PrescCtxItem }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   const { setWorking, setItems, readOnly } = usePrescription();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.itemWrapper}>

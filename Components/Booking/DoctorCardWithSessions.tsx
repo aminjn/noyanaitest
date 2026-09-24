@@ -6,7 +6,8 @@ import {
 import classes from "./DoctorCardWithSessions.module.css";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import { imagePath } from "../helpers/imagepath";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import HandThumUpIcon from "../Icons/HandThumbUpIcon";
 import Link from "next/link";
@@ -23,6 +24,8 @@ import usePopup from "../Hooks/usePopup";
 import AuthPopup from "../Popups/AuthPopup";
 import BookingSessionSelectorPopup from "./BookingSessionSelectorPopup";
 import CardWithSession from "./CardWithSession";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 // Reads System B (Reservation) availability instead of the old
 // DoctorSession-based /week endpoint, and opens BookingSessionSelectorPopup
@@ -43,7 +46,7 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
     [data],
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   // Local-midnight Date objects, not UTC-ISO-string keys (getSessionDateKey
   // rolls over at UTC midnight, which is the wrong calendar day for a

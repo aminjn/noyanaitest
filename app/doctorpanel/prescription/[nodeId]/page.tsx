@@ -2,15 +2,19 @@ import PrescriptionOverviewPage from "@/Components/DoctorPanel/Prescription/Over
 import PreviewPrescription2Page from "@/Components/DoctorPanel/Prescription2/Preview/PreviewPrescription2Page";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NAMESPACES: ContentNamespace[] = [
+  "common",
+  "doctorPanelPrescriptionCreate",
+  "doctorPanelPrescriptionDrugItem",
+];
 
 const PrescriptionOverview = async () => {
-  const textContent = await getScopedTextContent([
-    "common",
-    "doctorPanelPrescriptionCreate",
-  ]);
+  const textContent = await getScopedTextContent(NAMESPACES);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "doctorPanelPrescriptionCreate"]}
+      namespaces={NAMESPACES}
       initialTextContent={textContent}
     >
       <PreviewPrescription2Page />

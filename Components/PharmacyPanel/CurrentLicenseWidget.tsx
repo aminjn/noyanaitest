@@ -4,7 +4,8 @@ import useSWR from "swr";
 import classes from "./CurrentLicenseWidget.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useAcl from "@/Components/Hooks/useAcl";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import IconTitle from "@/Components/UI/IconTitle";
@@ -14,6 +15,8 @@ import CartIcon from "@/Components/Icons/CartIcon";
 import { pharmacyDashboardModuleLabels } from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
 import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 
+const NS: ContentNamespace[] = ["common", "pharmacyPanelCurrentLicenseWidget"];
+
 // Surfaces the pharmacy's current PharmacyProfileLicense on the dashboard
 // home page (2026-09) so it's visible without going into the licenses tab.
 // Only fetched/rendered for whoever can already see the "licenses" sidebar
@@ -21,7 +24,7 @@ import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 // uses. Mirrors Components/DoctorPanel/CurrentLicenseWidget.tsx - fetches
 // pharmacyController.getMyCurrentLicense, not the purchasable catalog.
 const CurrentLicenseWidget = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const hasAccess = useAcl("pharmacy");
   const canView = hasAccess("readLicenses");
 

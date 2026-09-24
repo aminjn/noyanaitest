@@ -8,6 +8,16 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = [
+  "common",
+  "products",
+  "productServiceSwitch",
+  "productServiceCard",
+];
 
 export const generateMetadata = () => getListPageMetadata("/product");
 
@@ -27,15 +37,18 @@ const ProductList = async (ctx: {
   if (search) params.append("query", search);
   if (category) params.append("category", category);
   if (packageOnly) params.append("packageOnly", "1");
-  const data = await getPublicData<ProductListPageProps>(
-    `product?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<ProductListPageProps>(`product?${params.toString()}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/product");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <ProductListPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <ProductListPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

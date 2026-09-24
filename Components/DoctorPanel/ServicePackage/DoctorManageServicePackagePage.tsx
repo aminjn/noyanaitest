@@ -8,10 +8,13 @@ import { useParams } from "next/navigation";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import { IServiceCategory } from "@/Components/Admin/ServiceCategory/AdminManageServiceCategoriesPage";
 import { IService } from "../Service/DoctorManageServicesPage";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelServicePackage"];
 
 const DoctorManageServicePackagePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -24,7 +27,7 @@ const DoctorManageServicePackagePage = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

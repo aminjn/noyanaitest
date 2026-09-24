@@ -1,7 +1,17 @@
 import AdminManageBasePharmacyLicensePage from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensePage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageBasePharmacyLicense = () => {
-  return <AdminManageBasePharmacyLicensePage />
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageBasePharmacyLicense = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageBasePharmacyLicensePage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageBasePharmacyLicense;

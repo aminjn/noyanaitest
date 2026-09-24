@@ -1,12 +1,15 @@
 import { ITaminDrugAmount } from "@/Components/Admin/Tamin/DrugAmount/AdminManageTaminDrugAmountsPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import FancySelect from "@/Components/UI/FancySelect";
 import { useContext } from "react";
 import useSWR from "swr";
 import PrescriptionContext from "../../../PrescriptionContext";
 import usePrescription from "@/Components/DoctorPanel/Prescription2/Store/usePrescription";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionDrugItem"];
 
 const AmountGetter = () => {
   const { data } = useSWR<ITaminDrugAmount[]>(
@@ -16,7 +19,7 @@ const AmountGetter = () => {
 
   const { setWorking, working } = usePrescription();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <FancySelect

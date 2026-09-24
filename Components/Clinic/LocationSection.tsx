@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./LocationSection.module.css";
 import useMap from "../Hooks/useMap";
 import Ixon from "../UI/Ixon";
@@ -9,6 +10,8 @@ import Button from "../UI/Button";
 import SendIcon from "../Icons/SendIcon";
 import MapMarker from "../UI/MapMarker";
 import { WithStyleProps } from "../Layout/Layout";
+
+const NS: ContentNamespace[] = ["common", "medicalCenterLocation"];
 
 const LocationSection = ({
   coords,
@@ -21,7 +24,7 @@ const LocationSection = ({
   name?: string;
   address?: string;
 }>) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const mapRef = useRef<HTMLDivElement>(null);
   const { ready, map } = useMap({

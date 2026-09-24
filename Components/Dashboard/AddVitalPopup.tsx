@@ -1,10 +1,13 @@
 import classes from "./AddVitalPoppup.module.css";
 import CreateForm from "../Admin/UI/CreateForm";
 import { API } from "../config";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import usePopup from "../Hooks/usePopup";
 import { IUserVital } from "../Hooks/useUser";
 import PopupCard from "../UI/PopupCard";
+
+const NS: ContentNamespace[] = ["common", "dashboardAddVitalPopup"];
 
 const AddVitalPopup = ({
   patient,
@@ -15,7 +18,7 @@ const AddVitalPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <PopupCard>

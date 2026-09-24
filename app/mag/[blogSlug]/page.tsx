@@ -6,6 +6,11 @@ import {
   getNodePageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "magPost", "commentSection"];
 
 export const generateMetadata = ({
   params: { blogSlug },
@@ -18,7 +23,10 @@ const Blog = async ({
 }: {
   params: { blogSlug: string };
 }) => {
-  const data = await getPublicData<BlogPageProps>(`blog/${blogSlug}`);
+  const [data, textContent] = await Promise.all([
+    getPublicData<BlogPageProps>(`blog/${blogSlug}`),
+    getScopedTextContent(NS),
+  ]);
 
   if (!data?.blog) return notFound();
 
@@ -27,7 +35,9 @@ const Blog = async ({
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <BlogPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <BlogPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

@@ -11,7 +11,8 @@ import {
 import Link from "next/link";
 import classes from "./DoctorPage.module.css";
 import BreadCrump from "@/Components/UI/BreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useMap from "@/Components/Hooks/useMap";
 import HostedImage from "@/Components/UI/HostedImage";
 import Ixon from "@/Components/UI/Ixon";
@@ -37,6 +38,8 @@ import LandLineIcon from "@/Components/Icons/LandlineIcon";
 import MobileIcon from "@/Components/Icons/MobileIcon";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { tmdMedium } from "@/Components/UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "doctorPage"];
 
 export type DoctorPageProps = {
   data: IDoctor<{
@@ -75,7 +78,7 @@ const EmptyState = ({ children }: { children: ReactNode }) => (
 );
 
 const ClaimProfileSidebar = ({ name }: { name: string }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.sidebar}>
@@ -97,7 +100,7 @@ const ClaimProfileSidebar = ({ name }: { name: string }) => {
 };
 
 const DoctorPage = ({ data, faqs }: DoctorPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const fullName = data.name || getContent("noName");
 

@@ -10,13 +10,16 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Table from "@/Components/Admin/UI/Table";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelPrescription"];
 
 export type PharmacyTaminPrescriptionPopulation = Population<{
   Pharmacy: PharmacyPopulation;
@@ -78,7 +81,7 @@ const PharmacyTaminPrescriptionItemsPopup = ({
 }: {
   items: IPharmacyTaminPrescriptionItem[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard className={classes.itemsList}>
       <WithTitle title={getContent("prescriptionItems")}>
@@ -154,7 +157,7 @@ const PharmacyPrescriptionCache = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

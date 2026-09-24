@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
-import useLocale from "../Hooks/useLocale";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./BlogsMostViewed.module.css";
 import { t2xsRegular, tbaseMedium, tsmMedium, txlBold } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "mag"];
+
 const BlogsMostViewed = ({ nodes }: { nodes: IBlog[] }) => {
-  const getContent = useScopedLocale(["mag"]);
+  const getContent = useScopedLocale(NS);
 
   if (!nodes.length) return null;
   return (

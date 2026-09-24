@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./AboutStories.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import PuzzleIcon from "../Icons/PuzzleIcon";
@@ -8,6 +9,8 @@ import RocketIcon from "../Icons/RocketIcon";
 import Ixon from "../UI/Ixon";
 import TitleLegend from "./TitleLegend";
 import { tlgBold, tsmBold, tsmRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "aboutPage"];
 
 const stories: {
   icon: ReactNode;
@@ -32,7 +35,7 @@ const stories: {
 ];
 
 const AboutStories = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

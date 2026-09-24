@@ -1,4 +1,4 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import classes from "./AddSessionsAgent.module.css";
 import { Dispatch, SetStateAction, useState } from "react";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -20,6 +20,9 @@ import { API } from "@/Components/config";
 import useSWR from "swr";
 import { IOffice } from "../Office/DoctorManageOfficesPage";
 import { fetcher } from "@/Components/helpers/fetcher";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelCalendar"];
 
 export const MIN_SESSSION_START = 360;
 export const MAX_SESSION_END = 1440;
@@ -46,7 +49,7 @@ const AddSessionsAgent = ({
 
   const [selectedClinic, setSelectedClinic] = useState<string | null>(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [businessTimes, setBusinessTimes] = useState<[number, number]>([
     480, 1080,

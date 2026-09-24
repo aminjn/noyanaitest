@@ -1,7 +1,17 @@
 import AdminManageAccessLevelsPage from "@/Components/Admin/AccessLevel/AdminManageAccessLevelsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageAccessLevels = () => {
-  return <AdminManageAccessLevelsPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageAccessLevels = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageAccessLevelsPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageAccessLevels;

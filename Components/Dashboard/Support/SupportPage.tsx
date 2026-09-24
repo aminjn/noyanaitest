@@ -4,7 +4,8 @@ import classes from "./SupportPage.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -13,6 +14,8 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import SubmitTicketPopup from "./SubmitTicketPopup";
+
+const NS: ContentNamespace[] = ["common", "dashboardSupport"];
 
 export const ticketSubjects = [
   "TechnicalIssue",
@@ -104,7 +107,7 @@ const SupportPage = () => {
 
   const { setPopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

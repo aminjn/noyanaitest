@@ -1,7 +1,17 @@
 import AdminManageBecomeDoctorsPage from "@/Components/Admin/BecomeDoctor/AdminManageBecomeDoctorsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageBecomeDoctors = () => {
-  return <AdminManageBecomeDoctorsPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageBecomeDoctors = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageBecomeDoctorsPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageBecomeDoctors;

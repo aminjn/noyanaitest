@@ -1,12 +1,15 @@
 "use client";
 
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import SecretaryRequestsTab from "./SecretaryRequestsTab";
 import SecretaryBossesTab from "./SecretaryBossesTab";
 import { NodeWithAcl } from "../_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
 import { ContentKey } from "@/Components/Enums/contentKeys";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "secretaryPanelHome"];
 
 const titleKeyByNode: Record<NodeWithAcl, ContentKey> = {
   doctor: "doctors",
@@ -18,7 +21,7 @@ const titleKeyByNode: Record<NodeWithAcl, ContentKey> = {
 };
 
 const SecretaryManageBossesPage = ({ name }: { name: NodeWithAcl }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/secretarypanel" },

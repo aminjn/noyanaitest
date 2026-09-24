@@ -1,7 +1,8 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
@@ -10,6 +11,8 @@ import {
   IBaseParaClinicLicense,
   IBaseLicensePricing,
 } from "./ParaClinicManageLicencePage";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPanelLicense"];
 
 // Confirm-then-Act purchase flow, same pattern as
 // Components/PharmacyPanel/License/PurchaseLicensePopup.tsx - POSTs to
@@ -27,7 +30,7 @@ const PurchaseLicensePopup = ({
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

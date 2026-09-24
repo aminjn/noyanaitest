@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import StarLineIcon from "../Icons/StarLineIcon";
 import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
@@ -16,12 +17,14 @@ import {
 } from "../UI/Typography";
 import Badge from "../UI/Badge";
 
+const NS: ContentNamespace[] = ["common", "mag"];
+
 const ChosenBlogCard = ({
   node,
 }: {
   node: IBlog<{ CategoryPopulated: Record<never, never> }>;
 }) => {
-  const getContent = useScopedLocale(["mag"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.card}>
@@ -83,7 +86,7 @@ const BlogsChosen = ({
 }: {
   nodes?: IBlog<{ CategoryPopulated: Record<never, never> }>[];
 }) => {
-  const getContent = useScopedLocale(["mag"]);
+  const getContent = useScopedLocale(NS);
 
   if (!nodes?.length) return null;
   return (

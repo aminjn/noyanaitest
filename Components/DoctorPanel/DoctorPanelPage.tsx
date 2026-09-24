@@ -21,7 +21,7 @@ import {
 import { City } from "../Enums/Cities";
 import { Province } from "../Enums/Provinces";
 import useBreadCrump from "../Hooks/useBreadCrump";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
 import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
 import { IMcCode, McCodepopulation } from "./BecomeADoctorPage";
 import classes from "./DoctorPanelPage.module.css";
@@ -35,6 +35,9 @@ import {
   IDoctorShift,
 } from "./Shift/DoctorManageShiftsPage";
 import CurrentLicenseWidget from "./CurrentLicenseWidget";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelHome"];
 
 export const genders = ["male", "female"] as const;
 
@@ -308,7 +311,7 @@ export interface IPhoneConsultSettings<
 }
 
 const DoctorPanelPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([{ title: getContent("dashboard"), target: "/doctorpanel" }]);
 

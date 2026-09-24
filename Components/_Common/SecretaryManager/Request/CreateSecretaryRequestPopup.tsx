@@ -7,7 +7,6 @@ import {
   Population,
 } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
 import PopupCard from "@/Components/UI/PopupCard";
 import { clinicActions } from "@/Components/Enums/actions/clinicActions";
 import { insuranceActions } from "@/Components/Enums/actions/insuranceActions";
@@ -22,6 +21,10 @@ import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
 import { IHospital } from "@/Components/Admin/Hospital/AdminManageHospitalsPage";
 import { ISecretaryRequest } from "./SecretaryRequestsTab";
 import { getAccessLevelLabel } from "@/Components/Admin/Lib/LabelGetters";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 export type Acl<T extends readonly string[], S> = MongoDoc & {
   name: string;
@@ -133,7 +136,7 @@ const CreateSecretaryRequestPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <PopupCard>

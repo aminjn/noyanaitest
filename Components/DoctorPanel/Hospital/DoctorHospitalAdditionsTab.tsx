@@ -4,7 +4,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import SubmitHospitalAdditionRequestPopup from "./SubmitHospitalAdditionRequestPopup";
@@ -17,6 +17,9 @@ import { City, findCity } from "@/Components/Enums/Cities";
 import { Dictionary } from "./DoctorJoinHospitalsTab";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import FormatDate from "@/Components/UI/FormatDate";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelHospital"];
 
 export const additionRequsetStatuses = [
   "Pending",
@@ -61,7 +64,7 @@ const DoctorHospitalAdditionsTab = () => {
     (url: string) => fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

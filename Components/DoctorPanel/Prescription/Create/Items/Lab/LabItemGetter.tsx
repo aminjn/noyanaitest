@@ -6,8 +6,11 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import FancySelect from "@/Components/UI/FancySelect";
 import FavoriteButton from "../Drug/FavoriteButton";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import PrescriptionContext from "../../../PrescriptionContext";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 
 const LabItemGetter = () => {
   const [query, setQuery] = useState<string>("");
@@ -31,7 +34,7 @@ const LabItemGetter = () => {
     { keepPreviousData: true },
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { workingLab, setWorkingLab } = useContext(PrescriptionContext);
 

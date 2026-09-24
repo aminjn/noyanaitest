@@ -1,13 +1,16 @@
 import { Fragment, useContext } from "react";
 import classes from "./PrescriptionHeader.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import PrescriptionContext from "../PrescriptionContext";
 import Button from "@/Components/UI/Button";
 import PatientDetailsPopup from "./PatientDetailsPopup";
 import usePopup from "@/Components/Hooks/usePopup";
 import ProfileRenderer from "./ProfileRenderer";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 const PrescriptionHeader = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const ctx = useContext(PrescriptionContext);
   const { profile, patient, setProfile } = ctx;
 

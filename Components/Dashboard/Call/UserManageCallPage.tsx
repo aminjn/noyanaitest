@@ -9,19 +9,22 @@ import useUser from "@/Components/Hooks/useUser";
 import LoginRequired from "@/Components/UI/LoginRequired";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSocket from "@/Components/Hooks/useSocket";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useNotification from "@/Components/Hooks/useNotification";
 import classes from "./UserManageCallPage.module.css";
 import { Socket } from "socket.io-client";
 import Button from "@/Components/UI/Button";
 import useProgress from "@/Components/Hooks/useProgress";
 
+const NS: ContentNamespace[] = ["common", "dashboardUserManageCall"];
+
 const PrepareCall = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
   const [didGetPermission, setDidGetPermission] = useState(false);
 
   const [supports, setSupports] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 
@@ -65,7 +68,7 @@ const CallManager = ({ room }: { room: ICallRoom<{ participants: true }> }) => {
 
   const push = useProgress();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 

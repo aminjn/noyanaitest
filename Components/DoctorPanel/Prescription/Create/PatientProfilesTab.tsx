@@ -1,7 +1,8 @@
 import { IUserIdentity } from "@/Components/Dashboard/DashboardPage";
 import classes from "./PatientProfilesTab.module.css";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import Table from "@/Components/Admin/UI/Table";
 import useSWR from "swr";
@@ -19,6 +20,8 @@ import FileIcon from "@/Components/Icons/FileIcon";
 import EditAltIcon from "@/Components/Icons/EditAltIcon";
 import { PrescriptionCtx } from "../PrescriptionContext";
 import PatientProfileOverviewPopup from "./PatientProfileOverviewPopup";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 const PatientProfilesTab = ({ ctx }: { ctx: PrescriptionCtx }) => {
   const { patient, setProfile } = ctx;
 
@@ -29,7 +32,7 @@ const PatientProfilesTab = ({ ctx }: { ctx: PrescriptionCtx }) => {
     (url: string) => fetcher({ url }).then((res) => res.data.profiles),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup, closePopup } = usePopup();
 

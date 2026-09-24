@@ -1,8 +1,11 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import LocationIcon from "../Icons/LocationIcon";
 import IconTitle from "../UI/IconTitle";
 import { tsmRegular, txsDemiBold, txsRegular } from "../UI/Typography";
 import classes from "./MedicalCenterContactInfo.module.css";
+
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const MedicalCenterContactInfo = ({
   address,
   businessTimes,
@@ -18,7 +21,7 @@ const MedicalCenterContactInfo = ({
   businessTimes?: string;
   owner?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="contact">

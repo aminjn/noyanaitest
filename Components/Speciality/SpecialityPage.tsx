@@ -3,7 +3,8 @@
 import classes from "./SpecialityPage.module.css";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { useParams, useSearchParams } from "next/navigation";
 import { DoctorSessionType } from "../DoctorPanel/Calendar/DoctorCalendarDay";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
@@ -18,6 +19,8 @@ import BigAd from "../UI/ListPage/BigAd";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
 import { t2xlRegular, tsmRegular, txlRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "specialityPage"];
 
 export type SpecialityPageProps = {
   data: ISpeciality<{ Category: Record<never, never> }>;
@@ -40,7 +43,7 @@ const SpecialityPage = ({
   pagesCount,
   count,
 }: SpecialityPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const searchParams = useSearchParams();
 

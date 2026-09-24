@@ -3,14 +3,17 @@ import { IDrug } from "../Admin/Disease/AdminManageDiseasesPage";
 import classes from "./DrugCard.module.css";
 import { imagePath } from "../helpers/imagepath";
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import PillIcon from "../Icons/PillIcon";
 import Ixon from "../UI/Ixon";
 import Button from "../UI/Button";
 import { tsmMedium, tsmRegular, txsMedium, txsRegular } from "../UI/Typography";
 import Badge from "../UI/Badge";
+
+const NS: ContentNamespace[] = ["common", "drugCard"];
 const DrugCard = ({ node }: { node: IDrug<{ Tag: Record<never, never> }> }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

@@ -3,7 +3,8 @@
 import PointPicker from "@/Components/Admin/UI/PointPicker";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useParaClinic from "@/Components/Hooks/useParaClinic";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
@@ -13,6 +14,8 @@ import {
   IDistrict,
   IProvince,
 } from "@/Components/Admin/Province/AdminManageProvincesPage";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPanelProfile"];
 
 type LocationFormInput = {
   coords: [number, number];
@@ -24,7 +27,7 @@ type LocationFormInput = {
 const ParaClinicManageLocationTab = () => {
   const { paraClinic, mutate } = useParaClinic();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { input, setInput, isLoading, submit } = useForm<LocationFormInput>({
     path: `${API}/paraClinic/profile`,

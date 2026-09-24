@@ -1,8 +1,11 @@
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { WithStyleProps } from "../Layout/Layout";
 import { t4xlBold, tmdMedium } from "../UI/Typography";
 import classes from "./AboutStats.module.css";
+
+const NS: ContentNamespace[] = ["common", "aboutPage"];
 
 const Segment = ({
   title,
@@ -13,7 +16,7 @@ const Segment = ({
   title: ContentKey;
   value: ContentKey;
 }>) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={`${classes.segment} ${className}`} style={style}>

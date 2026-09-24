@@ -1,11 +1,14 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./ProductCartInfos.module.css";
 import { tsmRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import TruckIcon from "../Icons/TruckIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
+
+const NS: ContentNamespace[] = ["common", "productCartable"];
 
 const Info = ({ content, icon }: { icon: ReactNode; content: string }) => {
   return (
@@ -19,7 +22,7 @@ const Info = ({ content, icon }: { icon: ReactNode; content: string }) => {
 };
 
 const ProductCartInfos = ({ service }: { service?: boolean }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.infos}>
       <Info

@@ -18,7 +18,10 @@ import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import MapMarker from "../UI/MapMarker";
 import DoctorTooltip from "./DoctorTooltip";
 import Button from "../UI/Button";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const BookingMap = ({
   expanded,
@@ -32,7 +35,7 @@ const BookingMap = ({
     containerRef,
   });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data } = useSWR<{ doctors: IDoctorProfile[] }>(
     bounds

@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import classes from "./PrescriptionPatientManager.module.css";
 import PrescriptionContext from "../PrescriptionContext";
-import useLocale from "@/Components/Hooks/useLocale";
 import PatientSelector from "./PatientSelector";
 import PatientRenderer from "./PatientRenderer";
 import Button from "@/Components/UI/Button";

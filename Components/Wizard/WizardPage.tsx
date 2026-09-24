@@ -11,7 +11,8 @@ import Ixon from "../UI/Ixon";
 import SendIcon from "../Icons/SendIcon";
 import BarsIcon from "../Icons/BarsIcon";
 import AiIcon from "../Icons/AiIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { tsmRegular } from "../UI/Typography";
 import useNotification from "../Hooks/useNotification";
 import useProgress from "../Hooks/useProgress";
@@ -19,6 +20,8 @@ import ChatsSidebar from "./ChatsSidebar";
 import LoginRequired from "../UI/LoginRequired";
 import Loading from "../Admin/UI/Loading";
 import { IBotChat, wizardChatsKey } from "./useBotChats";
+
+const NS: ContentNamespace[] = ["common", "wizardPage"];
 
 export const botChatMessageRoles = ["user", "assistant"] as const;
 
@@ -77,7 +80,7 @@ const WizardPage = () => {
 
   const push = useProgress();
   const pushNotification = useNotification();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);

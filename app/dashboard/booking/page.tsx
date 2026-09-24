@@ -1,12 +1,19 @@
 import DashboardManageBookingsPage from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = [
+  "common",
+  "dashboardBooking",
+  "dashboardReservationStatusBadge",
+];
 
 const DashboardManageBookings = async () => {
-  const textContent = await getScopedTextContent(["common", "dashboardBooking"]);
+  const textContent = await getScopedTextContent(NS);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "dashboardBooking"]}
+      namespaces={NS}
       initialTextContent={textContent}
     >
       <DashboardManageBookingsPage />

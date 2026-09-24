@@ -5,14 +5,17 @@ import { DoctorPrescriptionContextProvider } from "./Store/DoctorPrescriptionCon
 import Prescription2Agent from "./Prescription2Agent";
 import { LoadedPrescription2 } from "./Preview/PreviewPrescription2Page";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
 const CreatePrescriptionPage = ({
   defaultValue,
 }: {
   defaultValue?: LoadedPrescription2;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

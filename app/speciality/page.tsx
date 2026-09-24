@@ -8,6 +8,11 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "specialitiesList", "specialityCard"];
 
 export const generateMetadata = () => getListPageMetadata("/speciality");
 
@@ -28,15 +33,20 @@ const SepecailitiesList = async (ctx: {
   if (category)
     for (const cate of Array.isArray(category) ? category : [category])
       params.append("category", cate);
-  const data = await getPublicData<SpecialitiesPageProps>(
-    `speciality?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<SpecialitiesPageProps>(
+      `speciality?${params.toString()}`,
+    ),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/speciality");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <SpecialitiesPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <SpecialitiesPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

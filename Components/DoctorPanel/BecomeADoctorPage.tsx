@@ -10,7 +10,6 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import CreateForm from "../Admin/UI/CreateForm";
-import useLocale from "../Hooks/useLocale";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { provinces } from "../Enums/Provinces";
 import useForm from "../Hooks/useForm";
@@ -32,6 +31,9 @@ import { t2xsRegular, tsmRegular } from "../UI/Typography";
 import BecomeDoneView from "../Become/BecomeDoneView";
 import { IUserIdentity } from "../Dashboard/DashboardPage";
 import Loading from "../Admin/UI/Loading";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "becomeSomething", "doctorPanelBecomeDoctor"];
 
 export type McCodepopulation = Population<{ User: UserPopulation }>;
 export interface IMcCode<
@@ -67,7 +69,7 @@ const InquiryStage = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getContent = useScopedLocale(["becomeSomething"]);
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 
@@ -130,7 +132,7 @@ const ConfirmStage = ({ onDone }: { onDone: () => unknown }) => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useScopedLocale(["becomeSomething"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data && !!identity} error={error}>
@@ -213,7 +215,7 @@ const BecomeADoctorPage = () => {
 
   const { doctor, isLoading, mutate } = useDoctor();
 
-  const getContent = useScopedLocale(["becomeSomething"]);
+  const getContent = useScopedLocale(NS);
 
   const [stage, setStage] = useState<BecomeDoctorStage>("inquiry");
 

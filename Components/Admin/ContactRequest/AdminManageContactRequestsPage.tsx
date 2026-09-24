@@ -3,7 +3,6 @@
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import NodesManager from "../UI/NodesManager";
-import useLocale from "@/Components/Hooks/useLocale";
 import FormatDate from "@/Components/UI/FormatDate";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import TableActions from "../UI/TableActions";

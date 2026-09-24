@@ -2,12 +2,15 @@
 
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import ParaClinicManageDetailsTab from "./ParaClinicManageDetailsTab";
 import ParaClinicManageLocationTab from "./ParaClinicManageLocationTab";
 
+const NS: ContentNamespace[] = ["common", "paraClinicPanelProfile"];
+
 const ParaClinicManageProfilePage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <WithTitle title={getContent("profile")}>

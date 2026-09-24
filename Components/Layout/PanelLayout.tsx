@@ -9,7 +9,10 @@ import LoginRequired from "../UI/LoginRequired";
 import Ixon from "../UI/Ixon";
 import BarsIcon from "../Icons/BarsIcon";
 import XMarkIcon from "../Icons/XMarkIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
 const PanelLayout = ({
   children,
@@ -19,7 +22,7 @@ const PanelLayout = ({
   sidebar: ReactNode;
 }) => {
   const { user, isUserLoading } = useUser();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [keySat, setKeySat] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);

@@ -2,7 +2,8 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import classes from "./BookingSidebar.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import useUser from "@/Components/Hooks/useUser";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -37,6 +38,8 @@ import {
   patientTypes,
 } from "../PublicDrSessions";
 
+const NS: ContentNamespace[] = ["common", "drBookingSidebar"];
+
 type DoctorType = PublicDoctorProfilePageProps["doctor"];
 
 const visitTypeIcon: Record<DoctorSessionType, ReactNode> = {
@@ -58,7 +61,7 @@ const shiftDateFromNow = (shift: number) => {
 const DAYS_SHOWN = 7;
 
 const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const { setPopup } = usePopup();
   const { user } = useUser();
   const push = useProgress();

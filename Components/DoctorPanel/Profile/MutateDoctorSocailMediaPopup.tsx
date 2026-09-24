@@ -8,7 +8,10 @@ import classes from "./MutateDoctorSocailMediaPopup.module.css";
 import PopupCard from "@/Components/UI/PopupCard";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 const MutateDoctorSocialMediaPopup = ({
   mutate,
   node,
@@ -18,7 +21,7 @@ const MutateDoctorSocialMediaPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <PopupCard>

@@ -1,11 +1,14 @@
 "use client";
 
-import useLocale from "../Hooks/useLocale";
 import useUser from "../Hooks/useUser";
 import useNotification from "../Hooks/useNotification";
 import usePushNotifications from "../Hooks/usePushNotifications";
 import Button from "../UI/Button";
 import Bell01Icon from "../Icons/Bell01Icon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "notificationPushToggle"];
 
 // Lets a logged-in user opt in/out of browser push notifications for their
 // account (Components/Hooks/usePushNotifications.tsx does the actual
@@ -15,7 +18,7 @@ import Bell01Icon from "../Icons/Bell01Icon";
 // so there's no need to duplicate this control anywhere else.
 const PushNotificationToggle = () => {
   const { user } = useUser();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const pushNotification = useNotification();
   const {
     support,

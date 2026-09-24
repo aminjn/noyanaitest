@@ -1,22 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IHomeIntroduction } from "../Admin/HomeIntroduction/AdminManageHomeIntroductionsPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomeIntroduction.module.css";
 import useWindow from "../Hooks/useWindow";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import HostedImage from "../UI/HostedImage";
 import { t4xlBold, tlgDemiBold } from "../UI/Typography";
-import useScopedLocale from "../Hooks/useScopedLocale";
+
+const NS: ContentNamespace[] = ["common", "home"];
 
 const INITIAL_ITEM_WIDTH = 240;
 const WIDTH_STEP = 20;
 const GAP = 46;
 
 const HomeIntroductionInner = ({ nodes }: { nodes: IHomeIntroduction[] }) => {
-  // const getContent = useLocale();
+  // const getContent = useScopedLocale(NS);
 
-  const getContent = useScopedLocale(["home"]);
+  const getContent = useScopedLocale(NS);
 
   const [isServer, setIsServer] = useState<boolean>(true);
 

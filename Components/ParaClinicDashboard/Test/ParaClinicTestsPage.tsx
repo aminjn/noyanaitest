@@ -7,7 +7,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
@@ -23,6 +24,8 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import { ITest } from "@/Components/Admin/Test/AdminManageTestsPage";
 import { IParaClinicTest } from "@/Components/Admin/ParaClinic/AdminManageParaClinicPage";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPanelTest"];
 
 type MyParaClinicTest = IParaClinicTest<{
   Test: { Category: Record<never, never> };
@@ -46,7 +49,7 @@ const AddMyTestPopup = ({
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard>
       <CreateForm<ParaClinicEditableTestFields>
@@ -77,7 +80,7 @@ const EditMyTestPopup = ({
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard>
       <CreateForm<ParaClinicEditableTestFields>
@@ -109,7 +112,7 @@ const DeleteMyTestPopup = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <Fragment>
       <ConfirmationPopup
@@ -138,7 +141,7 @@ const ParaClinicAvailableTestsTab = () => {
   );
 
   const { setPopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -194,7 +197,7 @@ const ParaClinicMyTestsTab = () => {
   );
 
   const { setPopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -265,7 +268,7 @@ const ParaClinicMyTestsTab = () => {
 };
 
 const ParaClinicTestsPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/paraClinicPanel" },

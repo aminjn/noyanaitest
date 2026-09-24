@@ -26,7 +26,8 @@ import BookingLayout from "./BookingLayout";
 import BookingFilter from "./BookingFilter";
 import MultiSelectInputServer from "../UI/MultiSelectInputServer";
 import { API } from "../config";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import MultiSelectInput, { MultiSelectOption } from "../UI/MultiSelectInput";
 import BookingSelectedFilter from "./BookingSelectedFilter";
 import BookingFilterSegment from "./BookingFilterSegment";
@@ -48,6 +49,8 @@ import BookingAdvancedSearchPopup, {
   AdvancedSearchLocationField,
 } from "./BookingAdvancedSearchPopup";
 import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 type ClinicBookingOptions = Partial<{
   query: string;
@@ -73,7 +76,7 @@ const useClinicBookingFilterProps = ({
   options: ClinicBookingOptions;
   setOptions: Dispatch<SetStateAction<ClinicBookingOptions>>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 
@@ -487,7 +490,7 @@ const ClinicBooking = ({
 }) => {
   const [options, setOptions] = useState<ClinicBookingOptions>({});
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

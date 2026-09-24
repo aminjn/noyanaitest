@@ -1,4 +1,5 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingMap.module.css";
 import {
   t2xlDemiBold,
@@ -11,8 +12,10 @@ import {
 import Ixon from "../UI/Ixon";
 import LocationAltIcon from "../Icons/LocationAltIcon";
 
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
+
 const OnboardingMap = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="Location">

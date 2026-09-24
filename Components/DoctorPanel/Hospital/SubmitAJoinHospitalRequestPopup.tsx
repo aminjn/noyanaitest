@@ -1,6 +1,6 @@
 import PopupCard from "@/Components/UI/PopupCard";
 import classes from "./SubmitAJoinHospitalRequestPopup.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import SearchServer from "@/Components/UI/SearchServer";
 import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
@@ -11,13 +11,16 @@ import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
 import FormTitle from "@/Components/UI/FormTitle";
 import SelectNoResult from "@/Components/UI/SelectNoResult";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelHospital"];
 
 const SubmitAJoinHospitalRequestPopup = ({
   mutate,
 }: {
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

@@ -4,7 +4,8 @@ import useSWR from "swr";
 import classes from "./CurrentLicenseWidget.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useAcl from "@/Components/Hooks/useAcl";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import IconTitle from "@/Components/UI/IconTitle";
@@ -14,6 +15,8 @@ import CartIcon from "@/Components/Icons/CartIcon";
 import { hospitalDashboardModuleLabels } from "@/Components/Admin/BaseHospitalLicense/AdminManageBaseHospitalLicensesPage";
 import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 
+const NS: ContentNamespace[] = ["common", "hospitalPanelHome"];
+
 // Surfaces the hospital's current HospitalProfileLicense on the dashboard home
 // page (2026-09) so it's visible without going into the licenses tab. Only
 // fetched/rendered for whoever can already see the "licenses" sidebar item
@@ -22,7 +25,7 @@ import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 // Components/DoctorPanel/CurrentLicenseWidget.tsx - fetches
 // hospitalController.getMyCurrentLicense, not the purchasable catalog.
 const CurrentLicenseWidget = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const hasAccess = useAcl("hospital");
   const canView = hasAccess("readLicenses");
 

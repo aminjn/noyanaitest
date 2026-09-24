@@ -4,7 +4,10 @@ import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import { FullPushSubscription } from "./AdminTestPushPage";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "adminPushTest"];
 
 const DeletePushSubscriptionPopup = ({
   mutate,
@@ -15,7 +18,7 @@ const DeletePushSubscriptionPopup = ({
 }) => {
   const { closePopup } = usePopup();
   const [isLoading, setIsLoading] = useState(false);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <Fragment>
       <ConfirmationPopup

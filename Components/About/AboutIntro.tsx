@@ -1,4 +1,5 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import classes from "./AboutIntro.module.css";
 
@@ -7,8 +8,10 @@ import Ixon from "../UI/Ixon";
 import VideoIcon from "../Icons/VideoIcon";
 import { t5xlExtraBold, tlgMedium } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "aboutPage"];
+
 const AboutIntro = ({ aboutMain }: { aboutMain?: string }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

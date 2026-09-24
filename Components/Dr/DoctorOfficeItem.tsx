@@ -5,9 +5,12 @@ import classes from "./DoctorOfficeItem.module.css";
 import MapMarker from "../UI/MapMarker";
 import InfoPair from "./InfoPair";
 import LinkIcon2 from "../Icons/LinkIcon2";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import HeadphoneIcon from "../Icons/HeadphoneIcon";
 import LocationIcon from "../Icons/LocationIcon";
+
+const NS: ContentNamespace[] = ["common", "drProfile"];
 
 export const OfficeItemInner = ({
   items,
@@ -55,7 +58,7 @@ export const OfficeItemInner = ({
 };
 
 const DoctorOfficeItem = ({ office }: { office: IOffice }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <OfficeItemInner

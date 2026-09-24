@@ -9,11 +9,11 @@ import {
 import classes from "./PrescriptionItemsOverview.module.css";
 import PrescriptionContext, { PrescriptionItem } from "../PrescriptionContext";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import PillIcon from "@/Components/Icons/PillIcon";
 import Button from "@/Components/UI/Button";
 import useProgress from "@/Components/Hooks/useProgress";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import {
   t2xsDemiBold,
   t3xlDemiBold,
@@ -51,6 +51,8 @@ import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import PrescriptionItemsList from "./PrescriptionItemsList";
 import { FetchMethod } from "@/Components/helpers/fetcher";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 
 export type PrescriptionLabItemPopulation = Population<{
   Item: TaminServicePopulation;
@@ -172,7 +174,7 @@ const PrescriptionItemsOverview = () => {
     action: Action;
   } | null>(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pushNotification = useNotification();
 

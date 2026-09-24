@@ -6,7 +6,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import Table from "@/Components/Admin/UI/Table";
 import TableActions from "@/Components/Admin/UI/TableActions";
@@ -14,6 +15,8 @@ import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import DashboardMutateAddressPopup from "./DashboardMutateAddressPopup";
+
+const NS: ContentNamespace[] = ["common", "dashboardAddress"];
 
 // Mirrors Models/UserAddress.ts on noyanai-back.
 export interface IUserAddress extends MongoDoc {
@@ -29,7 +32,7 @@ const DashboardManageAddressesPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

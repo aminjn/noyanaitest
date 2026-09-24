@@ -8,7 +8,6 @@ import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { Fragment, ReactNode, useMemo } from "react";
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
 import useSWR from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
@@ -35,13 +34,17 @@ import CogIcon from "../Icons/CogIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import CategoriesIcon from "../Icons/CategoriesIcon";
 import PackageIcon from "../Icons/PackageIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
 const DoctorSidebar = () => {
   const { data: balance } = useSWR<number>(`${API}/finance`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const hasAccess = useDoctorAcl();
 

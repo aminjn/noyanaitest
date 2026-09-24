@@ -2,7 +2,8 @@
 import { useMemo, useState } from "react";
 import { IFaq } from "../Admin/Faq/AdminManageFaqsPage";
 import { IFaqCategory } from "../Admin/faqCategory/AdminManageFaqCategoriesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Badge from "../UI/Badge";
 import classes from "./FaqPage.module.css";
 import Button from "../UI/Button";
@@ -12,9 +13,11 @@ import { tbaseMedium, tsmMedium, txlDemiBold } from "../UI/Typography";
 import BreadCrump from "../UI/BreadCrump";
 import Link from "next/link";
 
+const NS: ContentNamespace[] = ["common", "faqPage"];
+
 export type FaqPageProps = { data: IFaq[]; categories: IFaqCategory[] };
 const FaqPage = ({ categories, data }: FaqPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [filter, setFilter] = useState<IFaqCategory | null>(null);
 

@@ -4,10 +4,7 @@ import { ReactNode, useContext, useMemo, useState } from "react";
 import useSWR from "swr";
 import LocaleContext from "./LocaleContext";
 import { ITextContent } from "../Admin/TextContent/AdminManageTextContentPage";
-import {
-  ContentNamespace,
-  getNamespaceKeys,
-} from "../Enums/contentNamespaces";
+import { ContentNamespace, getNamespaceKeys } from "../Enums/contentNamespaces";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 

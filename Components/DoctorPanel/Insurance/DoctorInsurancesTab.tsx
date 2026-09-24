@@ -5,7 +5,7 @@ import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Table from "@/Components/Admin/UI/Table";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import TableActions from "@/Components/Admin/UI/TableActions";
@@ -27,6 +27,9 @@ import {
   IInsurancePlan,
   InsurancePlanPopulation,
 } from "@/Components/Admin/Insurance/AdminManageInsurancePage";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelInsurance"];
 
 export type InsurancePopulation = Population<{
   Category: InsuranceCategoryPopulation;
@@ -96,7 +99,7 @@ const DoctorInsurancesTab = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

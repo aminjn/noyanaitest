@@ -4,7 +4,8 @@ import classes from "./ClinicPage.module.css";
 
 import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import Image from "next/image";
@@ -32,6 +33,8 @@ import { txsMedium } from "../UI/Typography";
 import ClinicServices from "./ClinicServices";
 import MedicalCenterLayout from "./MedicalCenterLayout";
 
+const NS: ContentNamespace[] = ["common", "clinicPage"];
+
 export type ClinicPageNode = IClinic<{
   Category: Record<never, never>;
   Province: Record<never, never>;
@@ -55,7 +58,7 @@ export type ClinicPageProps = {
 };
 
 const ClinicPage = ({ data }: ClinicPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <MedicalCenterLayout

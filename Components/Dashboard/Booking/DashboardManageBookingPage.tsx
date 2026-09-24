@@ -6,7 +6,8 @@ import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import FormatDate from "@/Components/UI/FormatDate";
 import { currencize } from "@/Components/helpers/currencize";
 import { numberToTime } from "@/Components/DoctorPanel/Calendar/AddSessionsAgent";
@@ -18,6 +19,8 @@ import { IReservation } from "./DashboardManageBookingsPage";
 import ReservationStatusBadge from "./ReservationStatusBadge";
 import ReservationTimeline from "./ReservationTimeline";
 import ReservationJoinButton from "./ReservationJoinButton";
+
+const NS: ContentNamespace[] = ["common", "dashboardBooking"];
 
 const DashboardManageBookingPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -34,7 +37,7 @@ const DashboardManageBookingPage = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

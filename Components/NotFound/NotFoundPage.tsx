@@ -1,14 +1,17 @@
 "use client";
-import useLocale from "../Hooks/useLocale";
 import Button from "../UI/Button";
 import HeadphoneIcon from "../Icons/HeadphoneIcon";
 import HomeIcon from "../Icons/HomeIcon";
 import NotFoundRobotIllustration from "./NotFoundRobotIllustration";
 import { t3xlBold, tbaseRegular } from "../UI/Typography";
 import classes from "./NotFoundPage.module.css";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "notFound"];
 
 const NotFoundPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>

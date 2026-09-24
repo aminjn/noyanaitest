@@ -6,7 +6,8 @@ import classes from "./OrderConfirmationPage.module.css";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import useProgress from "../Hooks/useProgress";
 import useUser from "../Hooks/useUser";
 import LoginRequired from "../UI/LoginRequired";
@@ -46,6 +47,8 @@ import {
   tmdDemiBold,
   tsmRegular,
 } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "orderConfirmation"];
 
 export const orderStatuses = ["pending", "paid", "cancelled"] as const;
 
@@ -214,7 +217,7 @@ const OrderConfirmationPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const push = useProgress();
 

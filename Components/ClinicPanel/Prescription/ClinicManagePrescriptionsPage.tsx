@@ -9,12 +9,15 @@ import Button from "@/Components/UI/Button";
 import Act from "@/Components/UI/Act";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import Input from "@/Components/UI/Input";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import Form from "@/Components/UI/Form";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import useNotification from "@/Components/Hooks/useNotification";
 import PrescriptionsList from "./PrescriptionsList";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "clinicPanelPrescription"];
 
 type RequestPrescriptionsInput = {
   nationalCode: string;
@@ -34,7 +37,7 @@ const ClinicManagePrescriptionsPage = () => {
 
   const pushNotification = useNotification();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/clinicpanel" },

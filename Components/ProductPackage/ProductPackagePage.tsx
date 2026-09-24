@@ -11,7 +11,8 @@ import { Fragment } from "react";
 import CartableNodePage from "../Product/Cartable/CartabaleNodePage";
 import ProductCard from "../Product/ProductCard";
 import StarDotPlusIcon from "../Icons/StartDotPlusIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ProductTab, WhyBox } from "../Product/ProductTabs";
 import { tbaseRegular, tsmRegular } from "../UI/Typography";
 import RenderRtf from "../UI/RenderRtf";
@@ -21,6 +22,8 @@ import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import ThinOwner from "./ThinOwner";
+
+const NS: ContentNamespace[] = ["common", "productPackagePage"];
 
 export type ProductPackagePageProps = {
   data: IProductPackage<{
@@ -38,7 +41,7 @@ export type ProductPackagePageProps = {
 };
 
 const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <CartableNodePage

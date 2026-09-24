@@ -8,7 +8,8 @@ import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import ListPageWideHeader from "../UI/ListPage/ListPageWideHeader";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import PillIcon from "../Icons/PillIcon";
 import BigAd from "../UI/ListPage/BigAd";
 import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
@@ -19,6 +20,8 @@ import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
+
+const NS: ContentNamespace[] = ["common", "drugPage"];
 
 export type DrugPageProps = {
   data: IDrug<{ SameAs: Record<never, never> }>;
@@ -35,7 +38,7 @@ export type DrugPageProps = {
   specialities: ISpeciality[];
 };
 const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <ListPageLayout

@@ -1,10 +1,13 @@
 import { IGalleryItem } from "@/Components/Admin/Doctor/AdminManageDoctorGalleryTab";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import Act from "@/Components/UI/Act";
 import { Fragment, useState } from "react";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
 const DeleteGalleryItemPopup = ({
   mutate,
@@ -14,7 +17,7 @@ const DeleteGalleryItemPopup = ({
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const { closePopup } = usePopup();
 
   return (

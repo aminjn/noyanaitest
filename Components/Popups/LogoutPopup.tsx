@@ -8,9 +8,11 @@ import useUser from "../Hooks/useUser";
 import { mutate } from "swr";
 import SocketContext from "../Store/SocketContext";
 import useProgress from "../Hooks/useProgress";
-import useLocale from "../Hooks/useLocale";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import { tbaseRegular, tmdMedium } from "../UI/Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const LogoutPopup = () => {
   const { closePopup } = usePopup();
@@ -21,7 +23,7 @@ const LogoutPopup = () => {
 
   const push = useProgress();
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>

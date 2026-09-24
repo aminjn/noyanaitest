@@ -1,7 +1,17 @@
 import AdminManageBaseClinicLicensesPage from "@/Components/Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageBaseClinicLicenses = () => {
-  return <AdminManageBaseClinicLicensesPage />
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageBaseClinicLicenses = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageBaseClinicLicensesPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageBaseClinicLicenses;

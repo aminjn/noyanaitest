@@ -5,8 +5,11 @@ import Ixon from "../UI/Ixon";
 import ChevronDownSquareIcon from "../Icons/ChevronDownSquareIcon";
 import { tsmMedium, tsmRegular, txlDemiBold } from "../UI/Typography";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import ChevronIcon from "../Icons/ChevronIcon";
+
+const NS: ContentNamespace[] = ["common", "homeFaqs"];
 
 export const FaqItem = ({ node }: { node: IFaq }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -37,7 +40,7 @@ export const FaqItem = ({ node }: { node: IFaq }) => {
 };
 
 const HomeFaqs = ({ nodes }: { nodes?: IFaq[] }) => {
-  const getContent = useScopedLocale(["home"]);
+  const getContent = useScopedLocale(NS);
 
   if (!nodes?.length) return null;
   return (

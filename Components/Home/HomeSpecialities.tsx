@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import classes from "./HomeSpecialities.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import HostedImage from "../UI/HostedImage";
-import useComplexLocale from "../Hooks/useComplexLocale";
 import { t2xlBold, tlgBold, tsmDemiBold, tsmMedium } from "../UI/Typography";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
@@ -18,6 +18,8 @@ import SwiperSlider from "../UI/SwiperSlider";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 import Button from "../UI/Button";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
+
+const NS: ContentNamespace[] = ["common", "home"];
 
 const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
   const { data } = useSWR<
@@ -34,9 +36,8 @@ const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
     fetcher({ url }).then((res) => res.data.doctors),
   );
 
-  const getCompContent = useComplexLocale();
-
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
+  const getCompContent = getContent;
 
   return (
     <div className={classes.doctorsBox}>
@@ -76,7 +77,7 @@ const SpecialityDoctors = ({ node }: { node: ISpeciality }) => {
 const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
   const [activeNode, setActiveNode] = useState<ISpeciality | null>(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

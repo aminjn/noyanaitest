@@ -1,13 +1,16 @@
 import classes from "./PatientPersonalDetailsPopupTitle.module.css";
 import { PrescriptionCtx } from "../PrescriptionContext";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 
 const PatientPersonalDetailsPopupTitle = ({
   ctx,
 }: {
   ctx: PrescriptionCtx;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const { patient } = ctx;
   if (!patient) return null;
   return (

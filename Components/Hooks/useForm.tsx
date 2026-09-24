@@ -8,6 +8,9 @@ import {
 import useNotification from "./useNotification";
 import useSWR from "swr";
 import useScopedLocale from "./useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 export type UseFormProps<TInput, TResult = unknown> = {
   path: string | ((input: Partial<TInput>) => string);
@@ -49,7 +52,7 @@ const useForm = function <TInput, TResult = unknown>({
     null,
   );
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pushNotification = useNotification();
 

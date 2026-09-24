@@ -4,15 +4,25 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "contactPage"];
 
 export const generateMetadata = () => getListPageMetadata("/contact");
 
 const Contact = async () => {
-  const webSchema = await getListPageWebSchema("/contact");
+  const [textContent, webSchema] = await Promise.all([
+    getScopedTextContent(NS),
+    getListPageWebSchema("/contact"),
+  ]);
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <ContactPage />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <ContactPage />
+      </LocaleScopeProvider>
     </>
   );
 };

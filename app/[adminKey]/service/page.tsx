@@ -1,7 +1,17 @@
 import AdminManageServicesPage from "@/Components/Admin/Service/AdminManageServicesPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageServices = () => {
-  return <AdminManageServicesPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageServices = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageServicesPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageServices;

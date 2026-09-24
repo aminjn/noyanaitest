@@ -1,4 +1,5 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Button from "@/Components/UI/Button";
 import { useCallback, useContext, useMemo } from "react";
 import PrescriptionContext, {
@@ -8,6 +9,8 @@ import useNotification from "@/Components/Hooks/useNotification";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import { nanoid } from "nanoid";
 import { MongoDoc } from "@/Components/Hooks/useUser";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionDrugItem"];
 
 export const isWorkingReady = (working: Partial<PrescriptionItem>) =>
   !!working.item &&
@@ -23,7 +26,7 @@ const DrugSubmitter = () => {
 
   const pushNotification = useNotification();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const onAdd = useCallback(() => {
     if (!isComplete) return pushNotification(getContent("checkInput"), "Warn");

@@ -1,7 +1,8 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Pagination, { PagePathMaker } from "../UI/Pagination";
 import classes from "./DiseasesListPage.module.css";
 import DiseaseCard from "./DiseaseCard";
@@ -23,6 +24,8 @@ import Link from "next/link";
 import { txsMedium } from "../UI/Typography";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 
+const NS: ContentNamespace[] = ["common", "diseasesList"];
+
 export const ListPage = ({
   children,
   title,
@@ -35,7 +38,7 @@ export const ListPage = ({
   switchPage: PagePathMaker;
 }) => {
   const { page } = useParams<{ page: string }>();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>
@@ -66,7 +69,7 @@ const DiseasesListPage = ({
   pagesCount,
   categories,
 }: DiseasesListPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [query, setQuery] = useDebounce({ initialValue: "" });
 

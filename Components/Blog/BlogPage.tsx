@@ -19,6 +19,7 @@ import Badge from "../UI/Badge";
 import Ixon from "../UI/Ixon";
 import UserIcon from "../Icons/UserIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ClockIcon from "../Icons/ClockIcon";
 import CalendarIcon from "../Icons/CalendarIcon";
 import { getRelativeTime } from "../helpers/lib";
@@ -32,6 +33,8 @@ import {
 } from "../UI/Typography";
 import { WithStyleProps } from "../Layout/Layout";
 
+const NS: ContentNamespace[] = ["common", "magPost"];
+
 export type BlogPageProps = {
   blog?: IBlog<{
     RelatedPopulated: Record<never, never>;
@@ -41,7 +44,7 @@ export type BlogPageProps = {
   thisWeek?: IBlog[];
 };
 const Side = ({ className = "", style }: WithStyleProps) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={`${classes.side} ${className}`} style={style}>
@@ -76,7 +79,7 @@ const BlogPage = (props: BlogPageProps) => {
 
   console.log(blog);
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   const copyTextToClipboard = useClipboard();
 

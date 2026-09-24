@@ -4,9 +4,12 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import { t2xsRegular } from "./Typography";
-import useLocale from "../Hooks/useLocale";
 import Ixon from "./Ixon";
 import XMarkIcon from "../Icons/XMarkIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const InlineDateInput = ({
   onChange,
@@ -23,7 +26,7 @@ const InlineDateInput = ({
   placeholder?: string;
   prefix?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   // Mirrors `value` locally so the picked date renders immediately even when
   // this component sits inside a popup snapshot (Components/Popup/Popup.tsx)

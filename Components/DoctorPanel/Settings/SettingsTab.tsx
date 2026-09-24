@@ -4,11 +4,14 @@ import classes from "./SettingsTab.module.css";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { IDoctorProfile } from "../DoctorPanelPage";
 import { useMemo } from "react";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useSWR, { mutate } from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelSettings"];
 
 //TODO: you might need to map this
 //TODO: maybe add generic population controller
@@ -26,7 +29,7 @@ const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const commons = useMemo<FormRenderer<ISessionSettings>>(
     () => ({

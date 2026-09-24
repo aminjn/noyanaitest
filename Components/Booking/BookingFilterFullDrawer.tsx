@@ -5,9 +5,12 @@ import {
   bookingNodes,
   bookingNodesContentKeyDict,
 } from "./BookingPage2";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { txsRegular } from "../UI/Typography";
 import Button from "../UI/Button";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 // Full-screen counterpart to BookingFilter.tsx's sidebar, shown inside the
 // mobile filters drawer (see BookingFiltersMobile's "filters" pill). It's a
@@ -32,7 +35,7 @@ const BookingFilterFullDrawer = ({
   filtered?: boolean;
   onClear?: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

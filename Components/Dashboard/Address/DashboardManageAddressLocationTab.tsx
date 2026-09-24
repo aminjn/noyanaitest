@@ -3,10 +3,13 @@ import classes from "./DashboardManageAddressLocationTab.module.css";
 import PointPicker from "@/Components/Admin/UI/PointPicker";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useNotification from "@/Components/Hooks/useNotification";
 import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
+
+const NS: ContentNamespace[] = ["common", "dashboardAddress"];
 
 const DashboardManageAddressLocationTab = ({
   mutate,
@@ -26,7 +29,7 @@ const DashboardManageAddressLocationTab = ({
     mutator: (inp) => ({ location: inp.coords }),
   });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 

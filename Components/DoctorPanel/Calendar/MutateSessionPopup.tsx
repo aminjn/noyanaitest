@@ -10,7 +10,7 @@ import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import RangeInput from "@/Components/UI/RangeInput";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import {
   MAX_SESSION_END,
   MIN_SESSSION_START,
@@ -21,6 +21,9 @@ import OptionsInput from "@/Components/UI/OptionsInput";
 import AreaInput from "@/Components/UI/AreaInput";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelCalendar"];
 
 const MutateSessionPopup = ({
   mutate,
@@ -33,7 +36,7 @@ const MutateSessionPopup = ({
   | { node: IDoctorSession; stamp?: never }
 )) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setInput, isLoading, input, submit } = useForm<IDoctorSession>({
     method: "POST",

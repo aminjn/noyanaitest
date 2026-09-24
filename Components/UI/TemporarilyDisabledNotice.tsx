@@ -1,7 +1,10 @@
 import classes from "./TemporarilyDisabledNotice.module.css";
-import useLocale from "../Hooks/useLocale";
 import IconTitle from "./IconTitle";
 import ClockIcon from "../Icons/ClockIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 // Tamin end-user lockout (2026-09) — shown by DoctorLicenseGate/
 // PharmacyLicenseGate/ClinicLicenseGate/ParaClinicLicenseGate instead of a
@@ -15,7 +18,7 @@ import ClockIcon from "../Icons/ClockIcon";
 // (same layout, no CTA button since there's nothing the user can do to
 // unlock this - it isn't about their license).
 const TemporarilyDisabledNotice = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <div className={classes.main}>
       <div className={classes.icon}>

@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
 import classes from "./DrugGetter.module.css";
 import Input from "@/Components/UI/Input";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Ixon from "@/Components/UI/Ixon";
 import StarIcon from "@/Components/Icons/StarIcon";
 import useSWR from "swr";
@@ -34,7 +35,8 @@ import FancySelect from "@/Components/UI/FancySelect";
 import PrescriptionContext from "../../../PrescriptionContext";
 import { nanoid } from "nanoid";
 import FavoriteDrug from "./FavoriteDrug";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionDrugItem"];
 
 export type FavoriteDrugPopulation = Population<{
   Doctor: DoctorProfilePopulation;
@@ -100,11 +102,11 @@ const DrugGetter = () => {
     { keepPreviousData: true },
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setWorking, working } = useContext(PrescriptionContext);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>

@@ -1,4 +1,3 @@
-import useLocale from "../Hooks/useLocale";
 import Badge from "../UI/Badge";
 import IconTitle from "../UI/IconTitle";
 import classes from "./ClinicInsurances.module.css";

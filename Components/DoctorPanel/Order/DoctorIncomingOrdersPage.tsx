@@ -6,7 +6,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import { MongoDoc } from "@/Components/Hooks/useUser";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
@@ -18,6 +18,9 @@ import FormatDate from "@/Components/UI/FormatDate";
 import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import { OrderStatus } from "@/Components/Dashboard/Order/orderStatus";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelOrder"];
 
 // Shape returned by GET /doctor/order (doctorController.getMyIncomingOrders)
 // and GET /doctor/order/:nodeId (doctorController.getMyIncomingOrder) - each
@@ -47,7 +50,7 @@ const itemCount = (order: IIncomingOrder) =>
   order.services.length + order.servicePackages.length;
 
 const DoctorIncomingOrdersPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data, error } = useSWR<IIncomingOrder[]>(
     `${API}/doctor/order`,

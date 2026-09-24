@@ -3,16 +3,19 @@ import classes from "./DoctorBookingCard.module.css";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import Ixon from "../UI/Ixon";
 import CupIcon from "../Icons/CupIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import LocationIcon from "../Icons/LocationIcon";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "drProfile"];
 
 const DoctorBookingCard = ({
   node,
 }: {
   node: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.doctor}>

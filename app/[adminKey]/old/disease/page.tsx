@@ -1,7 +1,17 @@
 import AdminManageOldDiseasesPage from "@/Components/Admin/Old/Disease/AdminManageOldDiseasesPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageOldDiseases = () => {
-  return <AdminManageOldDiseasesPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageOldDiseases = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageOldDiseasesPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageOldDiseases;

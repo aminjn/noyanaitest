@@ -2,12 +2,15 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import usePharmacy from "@/Components/Hooks/usePharmacy";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelProfile"];
 
 const PharmacyManageDetailsTab = () => {
   const { pharmacy, mutate } = usePharmacy();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!pharmacy}>

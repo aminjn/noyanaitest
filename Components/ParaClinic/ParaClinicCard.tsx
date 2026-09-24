@@ -6,10 +6,13 @@ import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
 import Badge from "../UI/Badge";
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "paraClinicCard"];
 
 const ParaClinicCard = ({
   node,
@@ -19,7 +22,7 @@ const ParaClinicCard = ({
     Province: Record<never, never>;
   }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

@@ -8,14 +8,20 @@ import {
   getNodePageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "hospitalPage", "medicalCenter", "medicalCenterNav", "medicalCenterLocation", "commentSection"];
 
 export const generateMetadata = (ctx: { params: { slug: string } }) =>
   getNodePageMetadata("/hospital/[slug]", ctx.params.slug);
 
 const Hospital = async (ctx: { params: { slug: string } }) => {
-  const data = await getPublicData<HospitalPageProps>(
-    `/hospital/${ctx.params.slug}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<HospitalPageProps>(`/hospital/${ctx.params.slug}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getNodePageWebSchema(
     "/hospital/[slug]",
@@ -24,7 +30,9 @@ const Hospital = async (ctx: { params: { slug: string } }) => {
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <HospitalPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <HospitalPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

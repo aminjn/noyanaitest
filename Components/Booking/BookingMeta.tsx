@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import {
   t2xsMedium,
   tsmDemiBold,
@@ -11,6 +12,8 @@ import {
 import classes from "./BookingMeta.module.css";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 const BookingMeta = ({
   description,
   label,
@@ -26,7 +29,7 @@ const BookingMeta = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const getContent = useScopedLocale(["booking"]);
+  const getContent = useScopedLocale(NS);
 
   if (!descriptions?.length) return null;
   return (

@@ -1,7 +1,17 @@
 import ParaClinicDashboardHomePage from "@/Components/ParaClinicDashboard/ParaClinicDashboardHomePage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-const ParaClinicDashboardHome = () => {
-  return <ParaClinicDashboardHomePage />;
+const ParaClinicDashboardHome = async () => {
+  const textContent = await getScopedTextContent(["common", "paraClinicPanelHome"]);
+  return (
+    <LocaleScopeProvider
+      namespaces={["common", "paraClinicPanelHome"]}
+      initialTextContent={textContent}
+    >
+      <ParaClinicDashboardHomePage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default ParaClinicDashboardHome;

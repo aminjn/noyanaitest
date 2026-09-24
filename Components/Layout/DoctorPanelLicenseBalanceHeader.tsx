@@ -5,11 +5,14 @@ import classes from "./DoctorPanelLicenseBalanceHeader.module.css";
 import Ixon from "../UI/Ixon";
 import usePopup from "../Hooks/usePopup";
 import CartIcon from "../Icons/CartIcon";
-import useLocale from "../Hooks/useLocale";
 import WalletIcon from "../Icons/WalletIcon";
 import useSWR from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "layoutDoctorLicenseBalance"];
 
 const Card = ({
   action,
@@ -59,7 +62,7 @@ const DoctorPanelLicenseBalanceHeader = () => {
     fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>

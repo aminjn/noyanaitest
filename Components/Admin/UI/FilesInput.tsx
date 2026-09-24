@@ -2,7 +2,10 @@ import { useState } from "react";
 import classes from "./FilesInput.module.css";
 import IconButton from "./IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
 
 const FilesInput = ({
   title,
@@ -17,7 +20,7 @@ const FilesInput = ({
 }) => {
   const [selected, setSelected] = useState<File[]>([]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>

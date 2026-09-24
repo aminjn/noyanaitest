@@ -3,10 +3,12 @@ import PrescriptionContext, { LabItem } from "../../../PrescriptionContext";
 import classes from "./SubmittedTestsList.module.css";
 import ListOfItems from "../../../ListOfItems";
 import PreviewPrescriptionItem from "../../../PreviewPrescriptionItem";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { dateToString } from "@/Components/UI/FormatDate";
 import { useContext } from "react";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 
 const SubmittedTestsList = ({
   nodes,
@@ -15,9 +17,9 @@ const SubmittedTestsList = ({
   readOnly?: boolean;
   nodes: (LabItem & MongoDoc)[];
 }) => {
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setWorkingLab, setLabItems } = useContext(PrescriptionContext);
 

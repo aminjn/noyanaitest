@@ -6,7 +6,8 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { clamp } from "@/Components/helpers/lib";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useNotification from "@/Components/Hooks/useNotification";
 import usePopup from "@/Components/Hooks/usePopup";
 import Act from "@/Components/UI/Act";
@@ -22,6 +23,8 @@ import useSWR from "swr";
 import usePrescription from "../Store/usePrescription";
 import { IUserIdentity } from "@/Components/Dashboard/DashboardPage";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
+
 type ReferralPrescriptionInput = Partial<{
   spec: string | null;
   complaints: string[] | null;
@@ -32,7 +35,7 @@ type ReferralPrescriptionInput = Partial<{
 }>;
 
 const ReferralPrescriptionPopup = ({ patient }: { patient: IUserIdentity }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const [input, setInput] = useState<ReferralPrescriptionInput>({});
 
   const [isLoading, setIsLoading] = useState<Record<string, unknown> | null>(
@@ -142,7 +145,7 @@ const ReferralPrescriptionPopup = ({ patient }: { patient: IUserIdentity }) => {
 };
 
 const ReferralPrescription = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const { setPopup } = usePopup();
   const { patient } = usePrescription();
 

@@ -10,8 +10,8 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import Form from "@/Components/UI/Form";
 import { Fragment, ReactNode, useCallback, useState } from "react";
 import { ITaminService } from "@/Components/Admin/Tamin/Service/AdminManageTaminServicesPage";
-import useLocale from "@/Components/Hooks/useLocale";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import FancySelect from "@/Components/UI/FancySelect";
 import { IFavoriteDrug } from "../../Prescription/Create/Items/Drug/DrugGetter";
 import { nanoid } from "nanoid";
@@ -28,6 +28,8 @@ import {
   newPrescription2ItemId,
   PrescCtxItem,
 } from "../Store/DoctorPrescriptionContext";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
 const ItemGetter = ({ srvType }: { srvType: number }) => {
   const [query, setQuery] = useState<string>("");
@@ -66,11 +68,11 @@ const ItemGetter = ({ srvType }: { srvType: number }) => {
     { keepPreviousData: true },
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setWorking, working } = usePrescription();
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>
@@ -123,7 +125,7 @@ const WITH_DATE_DO = [2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 20, 99];
 const Tab = ({ node }: { node: ITaminServiceType }) => {
   const { working, setWorking, setItems, setView } = usePrescription();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pushNotification = useNotification();
 

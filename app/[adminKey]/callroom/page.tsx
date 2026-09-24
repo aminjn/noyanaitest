@@ -1,7 +1,17 @@
 import AdminManageCallRoomsPage from "@/Components/Admin/CallRoom/AdminManageCallRoomsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageCallRooms = () => {
-  return <AdminManageCallRoomsPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageCallRooms = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageCallRoomsPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageCallRooms;

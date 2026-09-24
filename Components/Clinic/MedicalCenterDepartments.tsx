@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import CallCallingIcon from "../Icons/CallCallingIcon";
 import PeopleIcon from "../Icons/PeopleIcon";
 import Ixon from "../UI/Ixon";
@@ -21,6 +22,8 @@ import IconTitle from "../UI/IconTitle";
 import BuildingIcon from "../Icons/BuildingIcon";
 import HostedImage from "../UI/HostedImage";
 
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
+
 export type MedicalCenterDepartmentItemProps = {
   name?: string;
   summary?: string;
@@ -35,7 +38,7 @@ const DepartmentItem = ({
   doctors,
   doctorsTitle,
 }: MedicalCenterDepartmentItemProps & { doctorsTitle: ContentKey }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.item}>
@@ -118,7 +121,7 @@ const MedicalCenterDepartments = ({
   title: ContentKey;
   departments: MedicalCenterDepartmentItemProps[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!departments.length) return null;
   return (

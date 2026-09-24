@@ -8,7 +8,6 @@ import {
   IUserFile,
 } from "./ChatSidebar";
 import { API } from "../config";
-import useLocale from "../Hooks/useLocale";
 import Loading from "../Admin/UI/Loading";
 import { useMemo, useRef } from "react";
 import useUser, { IUser } from "../Hooks/useUser";
@@ -30,6 +29,10 @@ import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import PlusSquareIcon from "../Icons/PlusSquareIcon";
 import SmileIcon from "../Icons/SmileIcon";
 import BarsIcon from "../Icons/BarsIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "chat"];
 
 const MessageSender = ({
   chat,
@@ -38,7 +41,7 @@ const MessageSender = ({
   chat: IChat;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -195,7 +198,7 @@ const InnerChat = ({
 
   const title = useMemo(() => getChatParticipantName(other), [other]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>
@@ -255,7 +258,7 @@ const CurrentChat = ({ onOpenSidebar }: { onOpenSidebar?: () => void }) => {
     { refreshInterval: 1000 },
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!params.nodeId)
     return (

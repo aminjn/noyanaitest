@@ -1,7 +1,8 @@
 import { Dispatch, Fragment, SetStateAction } from "react";
 import classes from "./DoctorBookingFilters.module.css";
 import { BookingCommon, DoctorBookingOptions } from "./BookingPage2";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { doctorSessionTypes } from "../DoctorPanel/Calendar/DoctorCalendarDay";
 import MultiSelectInput from "../UI/MultiSelectInput";
 import Button from "../UI/Button";
@@ -21,6 +22,8 @@ import BookingFilter from "./BookingFilter";
 import BookingFilterSegment from "./BookingFilterSegment";
 import BookingSelectedFilter from "./BookingSelectedFilter";
 import BookingFilterButton from "./BookingFilterButton";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const FilterButtonBool = ({
   active,
@@ -57,7 +60,7 @@ export const useDoctorBookingFilterProps = ({
   options: DoctorBookingOptions;
   setOptions: Dispatch<SetStateAction<DoctorBookingOptions>>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

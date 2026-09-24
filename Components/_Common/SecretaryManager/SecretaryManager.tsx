@@ -1,13 +1,16 @@
 "use client";
 
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import WithBalanceHeader from "@/Components/DoctorPanel/_UI/WithBalanceHeader";
 import SecretaryRequestsTab from "./Request/SecretaryRequestsTab";
 import SecretariesTab from "./Secretary/SecretariesTab";
 import { NodeWithAcl } from "./Request/CreateSecretaryRequestPopup";
 import SecretaryAccessLevelsTab from "./AccessLevel/SecretaryAccessLevelsTab";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 const panelRootByNode: Record<NodeWithAcl, string> = {
   doctor: "/doctorpanel",
@@ -19,7 +22,7 @@ const panelRootByNode: Record<NodeWithAcl, string> = {
 };
 
 const SecretaryManager = ({ name }: { name: NodeWithAcl }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const root = panelRootByNode[name];
 

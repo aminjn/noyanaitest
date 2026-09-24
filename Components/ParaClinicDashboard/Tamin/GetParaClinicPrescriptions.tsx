@@ -7,7 +7,8 @@ import WithTitle from "@/Components/Admin/UI/WithTitle";
 import { API } from "@/Components/config";
 import InfoPair from "@/Components/Dr/InfoPair";
 import { currencize } from "@/Components/helpers/currencize";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useNotification from "@/Components/Hooks/useNotification";
 import CogIcon from "@/Components/Icons/CogIcon";
 import EyeIcon from "@/Components/Icons/EyeIcon";
@@ -16,6 +17,8 @@ import Act from "@/Components/UI/Act";
 import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import { useState } from "react";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPanelTamin"];
 
 type ParaPresc = {
   eprsC_ID: number;
@@ -149,7 +152,7 @@ const ParaClinicPrescSubResult = ({
   data: ParraPrescSubResult;
   clear: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <WithTitle
@@ -303,7 +306,7 @@ const SinglePresc = ({
   clear: () => unknown;
   physio?: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [input, setInput] = useState<ParaPrescInput>([]);
 
@@ -550,7 +553,7 @@ const PrescsList = ({
   clear: () => unknown;
   physio?: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [presc, setPresc] = useState<ParaPresc | null>(null);
 
@@ -619,7 +622,7 @@ const PrescsList = ({
 };
 
 const GetParaClinicPrescriptions = ({ physio }: { physio?: boolean }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 

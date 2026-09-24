@@ -1,17 +1,28 @@
 import DashboardPage from "@/Components/Dashboard/DashboardPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-// Unlike the public list pages, this route did no server-side data fetching
-// at all before (DashboardPage is "use client" and pulls everything via
-// useSWR after auth). Adding the scoped text content fetch here is the only
-// change — DashboardPage and everything it renders keep calling useLocale()
-// unchanged, same non-breaking merge-on-top pattern as every other page.
+const NS: ContentNamespace[] = [
+  "common",
+  "dashboardHome",
+  "dashboardUserIdentity",
+  "dashboardEditUserDetailsPopup",
+  "dashboardUserVitals",
+  "dashboardUserMedicalDetails",
+  "dashboardMutateUserMedicalPopup",
+];
+
+// DashboardPage is "use client" and pulls its data via useSWR after auth;
+// this route only prefetches text content server-side. NS covers the page's
+// own namespace plus the per-component namespaces its children
+// (UserIdentity, UserVitals, UserMedicalDetails and their popups) declare
+// via useScopedLocale.
 const Dashboard = async () => {
-  const textContent = await getScopedTextContent(["common", "dashboardHome"]);
+  const textContent = await getScopedTextContent(NS);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "dashboardHome"]}
+      namespaces={NS}
       initialTextContent={textContent}
     >
       <DashboardPage />

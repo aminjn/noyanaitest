@@ -1,6 +1,7 @@
 import { SwiperSlide } from "swiper/react";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ChevronIcon from "../Icons/ChevronIcon";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
@@ -10,12 +11,14 @@ import classes from "./HomeBlogs.module.css";
 import BlogMainCard from "../Blog/BlogMainCard";
 import BlogCardHome from "./BlogCardHome";
 
+const NS: ContentNamespace[] = ["common", "home"];
+
 const HomeBlogs = ({
   nodes,
 }: {
   nodes?: IBlog<{ CategoryPopulated: Record<never, never> }>[];
 }) => {
-  const getContent = useScopedLocale(["home"]);
+  const getContent = useScopedLocale(NS);
 
   if (!nodes?.length) return null;
   return (

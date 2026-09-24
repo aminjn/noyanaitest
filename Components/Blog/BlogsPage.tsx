@@ -16,12 +16,15 @@ import BlogsChosen from "./BlogsChosen";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ListPageList from "../UI/ListPage/ListPageList";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { tbaseMedium } from "../UI/Typography";
 import BlogsMostViewed from "./BlogsMostViewed";
 import { IBlogTag } from "../Admin/BlogTag/AdminManageBlogTgasPage";
 import BlogsHotTags from "./BlogsHotTags";
 import BlogsRRS from "./BlogsRRS";
 import { ContentKey } from "../Enums/contentKeys";
+
+const NS: ContentNamespace[] = ["common", "mag"];
 
 export type BlogsPageProps = {
   blogs?: IBlog[];
@@ -70,7 +73,7 @@ const BlogsPage = (props: BlogsPageProps) => {
     );
   }, [searchParams]);
 
-  const getContent = useScopedLocale(["mag"]);
+  const getContent = useScopedLocale(NS);
 
   const push = useProgress();
 

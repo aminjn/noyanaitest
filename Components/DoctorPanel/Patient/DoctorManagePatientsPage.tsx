@@ -7,7 +7,8 @@ import useSWR from "swr";
 import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import Table from "@/Components/Admin/UI/Table";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -15,6 +16,8 @@ import TableActions from "@/Components/Admin/UI/TableActions";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { fetcher } from "@/Components/helpers/fetcher";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
 export type DoctorPatientPopulation = Population<{
   User: UserPopulation;
@@ -37,7 +40,7 @@ const DoctorManagePatientsPage = () => {
     fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

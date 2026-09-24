@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { IAdvertisement } from "../Admin/Advertisement/AdminManageAdvertisementsPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomeAds.module.css";
 import HostedImage from "../UI/HostedImage";
 import mobileImage from "./mobile.png";
@@ -9,8 +10,10 @@ import Ixon from "../UI/Ixon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import { t3xlDemiBold, tlgDemiBold, tmdMedium } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "home"];
+
 const HomeAds = ({ nodes }: { nodes?: IAdvertisement[] }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!nodes?.length) return null;
   return (

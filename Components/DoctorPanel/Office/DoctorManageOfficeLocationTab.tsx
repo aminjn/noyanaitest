@@ -6,13 +6,16 @@ import { LngLat } from "maplibre-gl";
 import MapMarker from "@/Components/UI/MapMarker";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { NEXT_META_SUFFIX } from "next/dist/lib/constants";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
 import PointPicker from "@/Components/Admin/UI/PointPicker";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelOffice"];
 
 const DoctorManageOfficeLocationTab = ({
   mutate,
@@ -32,7 +35,7 @@ const DoctorManageOfficeLocationTab = ({
     mutator: (inp) => ({ location: inp.coords }),
   });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 

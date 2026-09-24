@@ -1,4 +1,5 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingClinic.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import {
@@ -9,6 +10,8 @@ import {
   tlgBold,
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {
@@ -26,7 +29,7 @@ const OnboardingClinic = ({
 }: {
   onboadingClinic?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="Clinic">

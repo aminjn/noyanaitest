@@ -1,5 +1,5 @@
 import classes from "./ScheduleReservationCard.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Ixon from "@/Components/UI/Ixon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import UserIcon from "@/Components/Icons/UserIcon";
@@ -12,11 +12,14 @@ import FormatDate from "@/Components/UI/FormatDate";
 import { numberToTime } from "../Calendar/AddSessionsAgent";
 import { IScheduleReservation } from "./DoctorManageSchedulePage";
 import ReservationStatusBadge from "@/Components/Dashboard/Booking/ReservationStatusBadge";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelSchedule"];
 
 // System B counterpart of ScheduleBookingCard, added per F-01's
 // getMySchedule merge - see AUDIT/FIXES_TODO.md F-01.
 const ScheduleReservationCard = ({ node }: { node: IScheduleReservation }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

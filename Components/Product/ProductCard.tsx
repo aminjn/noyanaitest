@@ -1,11 +1,14 @@
 import { IProduct } from "../Admin/Product/AdminManageProductsPage";
 import { IProductPackage } from "../Admin/ProductPackage/AdminManageProductPackagesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import CheckSquareIcon from "../Icons/CheckSquareIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
 import ServiceOrProductCard from "../Service/ServiceOrProductCard";
 import Ixon from "../UI/Ixon";
 import classes from "./ProductCard.module.css";
+
+const NS: ContentNamespace[] = ["common", "productServiceCard"];
 const ProductCard = ({
   node,
 }: {
@@ -22,7 +25,7 @@ const ProductCard = ({
         Category: Record<never, never>;
       }> & { model: "ProductPackage" });
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <ServiceOrProductCard

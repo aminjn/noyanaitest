@@ -4,12 +4,12 @@ import usePopup from "@/Components/Hooks/usePopup";
 import Ixon from "@/Components/UI/Ixon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import PatientPersonalDetailsPopupTitle from "./PatientPersonalDetailsPopupTitle";
 import { IPatientProfile } from "../../Patient/PatientFiles";
 import FolderIcon from "@/Components/Icons/FolderIcon";
 import { dateToString } from "@/Components/UI/FormatDate";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -21,6 +21,8 @@ import AreaInput from "@/Components/UI/AreaInput";
 import PrescriptionProTip from "./PrescriptionProTip";
 import { Fragment } from "react";
 import PatientProfileRecordsPopup from "./PatientProfileRecordsPopup";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 
 export type PrescriptionPatientProfile = IPatientProfile<{
   Doctor: { MainSpecialityPopulated: Record<never, never> };
@@ -43,10 +45,10 @@ const PatientProfileOverviewPopup = ({
     (url: string) => fetcher({ url }).then((res) => res.data.profile),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setProfile } = ctx;
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   const { closePopup, setPopup } = usePopup();
   if (!data) return <Loading />;

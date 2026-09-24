@@ -1,13 +1,16 @@
 import Button from "@/Components/UI/Button";
 import classes from "./CreatePrescriptionActions.module.css";
 import { Fragment, useCallback, useState } from "react";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePrescription from "../Store/usePrescription";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import { IPrescription2 } from "../Store/DoctorPrescriptionContext";
 import useProgress from "@/Components/Hooks/useProgress";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
 const Submitter = () => {
   const { items, patient, defaultValue, readOnly } = usePrescription();
@@ -20,7 +23,7 @@ const Submitter = () => {
     Record<never, never>
   > | null>(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const push = useProgress();
 
@@ -89,7 +92,7 @@ const Drafter = () => {
     null,
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pushNotification = useNotification();
 
@@ -147,7 +150,7 @@ const Editor = () => {
 
   console.log(defaultValue);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pushNotification = useNotification();
 
@@ -199,7 +202,7 @@ const Committer = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!defaultValue || !readOnly || !!defaultValue.taminPrescriptions.length)
     return null;
@@ -227,7 +230,7 @@ const Committer = () => {
 const ToggleEditMode = () => {
   const { readOnly, setReadOnly, defaultValue } = usePrescription();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!defaultValue) return null;
   return (
@@ -250,7 +253,7 @@ const Deleter = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const push = useProgress();
 

@@ -12,7 +12,6 @@ import {
   licensePanelRootByOrg,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { useEffect, useState } from "react";
 import Table, { TableRenderer } from "@/Components/Admin/UI/Table";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
@@ -23,6 +22,10 @@ import TableActions from "@/Components/Admin/UI/TableActions";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { t3xlBold, txsRegular } from "@/Components/UI/Typography";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
 // Shared logic for the "/<panel>/license/all" page across every org panel
 // (doctor/pharmacy/clinic/paraClinic) - fetches every isActive plan for
@@ -36,7 +39,7 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [selectedDuration, setSelectedDuration] =
     useState<ILicenseDuration | null>(null);

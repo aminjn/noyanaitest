@@ -5,7 +5,8 @@ import { IHospital } from "../Admin/Hospital/AdminManageHospitalsPage";
 import MedicalCenterLayout from "../Clinic/MedicalCenterLayout";
 import StickyNav, { SectionMap } from "../Clinic/StickyNav";
 import WideIntro from "../Clinic/WideIntro";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HospitalsPage.module.css";
 import MedicalCenterSummary from "../Clinic/MedicalCenterSummary";
 import MedicalCenterTagList from "../Clinic/MedicalCenterTagList";
@@ -22,6 +23,8 @@ import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import LocationSection from "../Clinic/LocationSection";
 import CommentSection from "../Comment/CommentSection";
 import SmallAd from "../UI/ListPage/SmallAd";
+
+const NS: ContentNamespace[] = ["common", "hospitalPage"];
 
 export type HospitalPageNode = IHospital<{
   Province: Record<never, never>;
@@ -44,7 +47,7 @@ export type HospitalPageProps = {
 
 const HospitalPage = ({ data }: HospitalPageProps) => {
   console.log(data);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const specialities = useMemo<ISpeciality[]>(
     () =>

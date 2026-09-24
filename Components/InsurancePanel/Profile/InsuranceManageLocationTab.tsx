@@ -3,10 +3,13 @@
 import PointPicker from "@/Components/Admin/UI/PointPicker";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useInsurance from "@/Components/Hooks/useInsurance";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
+
+const NS: ContentNamespace[] = ["common", "insurancePanelProfile"];
 
 type LocationFormInput = {
   coords: [number, number];
@@ -18,7 +21,7 @@ type LocationFormInput = {
 const InsuranceManageLocationTab = () => {
   const { insurance, mutate } = useInsurance();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { input, setInput, isLoading, submit } = useForm<LocationFormInput>({
     path: `${API}/insurance/profile`,

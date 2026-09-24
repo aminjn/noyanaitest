@@ -1,11 +1,14 @@
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import Table from "../Admin/UI/Table";
 import WithTitle from "../Admin/UI/WithTitle";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import usePopup from "../Hooks/usePopup";
 import { IUserVital } from "../Hooks/useUser";
 import FormatDate from "../UI/FormatDate";
 import AddVitalPopup from "./AddVitalPopup";
+
+const NS: ContentNamespace[] = ["common", "dashboardVitalList"];
 
 const VitalList = ({
   vitals,
@@ -16,7 +19,7 @@ const VitalList = ({
   patient?: string;
   mutate?: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const { setPopup } = usePopup();
   return (
     <WithTitle

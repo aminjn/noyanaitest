@@ -6,7 +6,8 @@ import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import DoctorTaminTokenManager from "./DoctorTaminTokenManager";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import useProgress from "@/Components/Hooks/useProgress";
 import useSWR, { mutate } from "swr";
@@ -38,12 +39,14 @@ import { ITaminSpec } from "@/Components/Admin/Tamin/Spec/AdminManageTaminSpecsP
 import { ITaminComplaint } from "@/Components/Admin/Tamin/TaminComplaint/AdminManageTaminComplaintPage";
 import { ITaminIcid } from "@/Components/Admin/Tamin/Icid/AdminManageTaminIcidsPage";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionList"];
+
 const TaminPrescriptionsDetailsPopup = ({
   nodes,
 }: {
   nodes: ITaminPrescription2<{ PrescType: Record<never, never> }>[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <PopupCard className={classes.taminPopup}>
       <WithTitle title={getContent("committedTaminPrescriptions")}>
@@ -74,7 +77,7 @@ const TaminPrescriptionsDetailsPopup = ({
 };
 
 const NormalPrescriptions = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   // const { data, error } = useSWR<
   //   IPrescription<{
@@ -202,7 +205,7 @@ const DeleteVisitPrescriptionPopup = ({
   node: IVisitPrescription;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
   return (
@@ -227,7 +230,7 @@ const DeleteVisitPrescriptionPopup = ({
 };
 
 const VisitPrescriptions = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const { data, error, mutate } = useSWR<IVisitPrescription[]>(
     `${API}/doctor/presc2/visit`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -310,7 +313,7 @@ export interface IReferralPrescription extends MongoDoc {
 }
 
 const ReferralPrescriptions = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const { data, error } = useSWR<IReferralPrescription[]>(
     `${API}/doctor/referral`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -392,7 +395,7 @@ const ReferralPrescriptions = () => {
 };
 
 const DoctorManagePrescriptionsPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

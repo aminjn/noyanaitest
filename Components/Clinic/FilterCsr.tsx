@@ -1,7 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import Button from "../UI/Button";
 import classes from "./FilterCsr.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common"];
 const FilterCsr = ({
   filter,
   setFilter,
@@ -11,7 +14,7 @@ const FilterCsr = ({
   setFilter: Dispatch<SetStateAction<string | null>>;
   options: { value: string; title: string }[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.nav}>
       <Button

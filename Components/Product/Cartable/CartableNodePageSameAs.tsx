@@ -1,9 +1,12 @@
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import classes from "./CartableNodePageSameAs.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { Fragment, ReactNode } from "react";
 import Ixon from "@/Components/UI/Ixon";
 import { tlgMedium } from "@/Components/UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "productCartable"];
 const CartbaleNodePageSameAs = ({
   sameAs,
   sameAsTitle,
@@ -13,7 +16,7 @@ const CartbaleNodePageSameAs = ({
   sameAs: ReactNode[];
   sameAsIcon: ReactNode;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!sameAs.length) return null;
   return (

@@ -2,7 +2,7 @@ import PopupCard from "@/Components/UI/PopupCard";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 import { useState } from "react";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
 import TableBox from "@/Components/UI/TableBox";
@@ -15,6 +15,9 @@ import {
   ISecretaryRequest,
   SecretaryRequestStatus,
 } from "../_Common/SecretaryManager/Request/SecretaryRequestsTab";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "secretaryPanelHome"];
 
 const SecretaryMutateRequestPopup = ({
   mutate,
@@ -30,7 +33,7 @@ const SecretaryMutateRequestPopup = ({
     null
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <PopupCard>

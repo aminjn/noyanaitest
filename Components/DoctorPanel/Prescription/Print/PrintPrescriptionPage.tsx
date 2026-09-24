@@ -15,9 +15,12 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 import { calculateAge } from "@/Components/helpers/lib";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionPrint"];
 
 Font.register({ family: "yekan", src: "/font.ttf" });
 
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
 });
 
 const PrescrfiptionDocument = ({ node }: { node: DefaultPrescription }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <Document>

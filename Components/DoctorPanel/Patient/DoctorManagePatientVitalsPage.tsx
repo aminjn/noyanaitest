@@ -9,7 +9,10 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import VitalList from "@/Components/Dashboard/VitalList";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
 const DoctorManagepatientVitalsPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -18,7 +21,7 @@ const DoctorManagepatientVitalsPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

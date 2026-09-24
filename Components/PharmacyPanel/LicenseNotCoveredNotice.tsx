@@ -1,5 +1,6 @@
 import classes from "./LicenseNotCoveredNotice.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import IconTitle from "../UI/IconTitle";
 import Button from "../UI/Button";
 import LockIcon from "../Icons/LockIcon";
@@ -7,6 +8,8 @@ import {
   PharmacyDashboardModule,
   pharmacyDashboardModuleLabels,
 } from "../Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
+
+const NS: ContentNamespace[] = ["common"];
 
 // Shown by PharmacyLicenseGate instead of a /pharmacypanel/* page's own
 // content when the current pharmacy's resolved license modules don't
@@ -17,7 +20,7 @@ const LicenseNotCoveredNotice = ({
 }: {
   mod: PharmacyDashboardModule;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.main}>
       <div className={classes.icon}>

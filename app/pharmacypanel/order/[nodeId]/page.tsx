@@ -6,10 +6,12 @@ const PharmacyOrderDetail = async () => {
   const textContent = await getScopedTextContent([
     "common",
     "pharmacyPanelOrder",
+    "dashboardOrderStatusBadge",
+    "dashboardOrderItemStatusBadge",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "pharmacyPanelOrder"]}
+      namespaces={["common", "pharmacyPanelOrder", "dashboardOrderStatusBadge", "dashboardOrderItemStatusBadge"]}
       initialTextContent={textContent}
     >
       <PharmacyIncomingOrderPage />

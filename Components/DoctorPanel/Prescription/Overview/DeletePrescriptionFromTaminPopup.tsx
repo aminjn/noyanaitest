@@ -2,9 +2,12 @@ import { Fragment, useState } from "react";
 import { IPrescription } from "../Create/PrescriptionItemsOverview";
 import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionOverview"];
 
 const DeletePrescriptionFromTaminPopup = ({
   node,
@@ -13,7 +16,7 @@ const DeletePrescriptionFromTaminPopup = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { closePopup } = usePopup();
 

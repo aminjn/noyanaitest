@@ -1,11 +1,14 @@
 import useCart, { CartModel } from "../Hooks/useCart";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import CartIcon from "../Icons/CartIcon";
 import MinusIcon from "../Icons/MinusIcon";
 import PlusIcon from "../Icons/PlusIcon";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import classes from "./CartActions.module.css";
+
+const NS: ContentNamespace[] = ["common", "productCartable"];
 const CartActions = ({
   itemId,
   model,
@@ -15,7 +18,7 @@ const CartActions = ({
 }) => {
   const { mutateCartItem, getItemQty } = useCart();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.cart}>

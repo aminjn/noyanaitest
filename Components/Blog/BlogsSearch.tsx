@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import useDebounce from "../Hooks/useDebounce";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import BookOpenIcon from "../Icons/BookOpenIcon";
 import SearchIcon from "../Icons/SearchIcon";
 import Badge from "../UI/Badge";
@@ -12,8 +13,10 @@ import classes from "./BlogsSearch.module.css";
 import useProgress from "../Hooks/useProgress";
 import { useSearchParams } from "next/navigation";
 
+const NS: ContentNamespace[] = ["common", "mag"];
+
 const BlogsSearch = ({ recommended }: { recommended?: IBlog[] }) => {
-  const getContent = useScopedLocale(["mag"]);
+  const getContent = useScopedLocale(NS);
 
   const searchParams = useSearchParams();
   const [query, setQuery] = useDebounce({

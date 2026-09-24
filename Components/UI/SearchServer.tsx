@@ -7,8 +7,11 @@ import Input from "./Input";
 import { MongoDoc } from "../Hooks/useUser";
 import Ixon from "./Ixon";
 import CloseIcon from "../Icons/CloseIcon";
-import useLocale from "../Hooks/useLocale";
 import LoadingIcon from "../Icons/LoadingIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const MINIMUM_QUERY_LENGTH = 3;
 
@@ -53,7 +56,7 @@ const SearchServer = <T extends MongoDoc>({
 
   const [selected, setSeleted] = useState<T | null>(defaultValue || null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>

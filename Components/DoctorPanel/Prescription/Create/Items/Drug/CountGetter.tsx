@@ -1,12 +1,15 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import classes from "./CountGetter.module.css";
 import { useContext } from "react";
 import PrescriptionContext from "../../../PrescriptionContext";
 import { clamp } from "@/Components/helpers/lib";
 import { txsMedium } from "@/Components/UI/Typography";
 import Counter from "@/Components/UI/Counter";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionDrugItem"];
 const CountGetter = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { working, setWorking } = useContext(PrescriptionContext);
 

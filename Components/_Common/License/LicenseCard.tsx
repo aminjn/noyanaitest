@@ -7,7 +7,6 @@ import {
   LicenseOrg,
   licensePanelRootByOrg,
 } from "./licenseTypes";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Ixon from "@/Components/UI/Ixon";
 import CrownIcon from "@/Components/Icons/CrownIcon";
 import { useMemo } from "react";
@@ -15,6 +14,10 @@ import Button from "@/Components/UI/Button";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import { tsmBold } from "@/Components/UI/Typography";
 import LicensePriceDetails from "./LicensePriceDetails";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
 const LicenseCard = ({
   duration,
@@ -25,7 +28,7 @@ const LicenseCard = ({
   license: IBaseLicense;
   duration: ILicenseDuration | null;
 }) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pricing = useMemo<IBaseLicensePricing | null>(
     () => license.pricing.find((el) => el.duration === duration?._id) || null,

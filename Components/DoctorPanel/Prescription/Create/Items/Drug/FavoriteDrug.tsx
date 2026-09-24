@@ -6,11 +6,14 @@ import PrescriptionContext, {
   PrescriptionItem,
 } from "../../../PrescriptionContext";
 import { isWorkingReady } from "./DrugSubmitter";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import FavoriteButton from "./FavoriteButton";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionDrugItem"];
 
 const FavoriteDrug = ({ mutate }: { mutate: () => unknown }) => {
   const { working } = useContext(PrescriptionContext);
@@ -19,7 +22,7 @@ const FavoriteDrug = ({ mutate }: { mutate: () => unknown }) => {
     Record<keyof PrescriptionItem, string>
   > | null>(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pushNotification = useNotification();
 

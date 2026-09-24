@@ -1,6 +1,7 @@
 "use client";
 
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomePharmacyProducts.module.css";
 import Ixon from "../UI/Ixon";
 import CrownIcon from "../Icons/CrownIcon";
@@ -27,6 +28,8 @@ import Image from "next/image";
 import Button from "../UI/Button";
 import productsImage from "./products.png";
 
+const NS: ContentNamespace[] = ["common", "home"];
+
 type ProductNode =
   | (IProduct<{
       Sellers: { Seller: Record<never, never> };
@@ -44,7 +47,7 @@ type ProductNode =
 // have a dedicated "best sellers" sort yet, so this shows the default
 // (first-page) listing; swap the query below once/if the backend adds one.
 const HomePharmacyProducts = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data } = useSWR<ProductNode[]>(
     `${API}/public/product?page=1`,

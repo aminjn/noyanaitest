@@ -2,7 +2,8 @@
 import { IPrivacySection } from "../Admin/PrivacySection/AdminManagePrivacySectionsPage";
 import StickyNav from "../Clinic/StickyNav";
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import {
   t5xlExtraBold,
   tbaseRegular,
@@ -11,6 +12,8 @@ import {
 } from "../UI/Typography";
 import classes from "./PolicyPage.module.css";
 import BreadCrump from "../UI/BreadCrump";
+
+const NS: ContentNamespace[] = ["common", "policyPage"];
 
 export type PolicyPageProps = { data: IPrivacySection[] };
 
@@ -24,7 +27,7 @@ const PolicyPage = ({
   legend: ContentKey;
   path: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

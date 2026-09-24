@@ -5,7 +5,8 @@ import { ITestCategory } from "../Admin/TestCategory/AdminManageTestCategoriesPa
 import { ITest } from "../Admin/Test/AdminManageTestsPage";
 import FilterCsr from "../Clinic/FilterCsr";
 import ListPageSearch from "../UI/ListPage/ListPageSearch";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import FlaskIcon from "../Icons/FlaskIcon";
 import ClockIcon from "../Icons/ClockIcon";
@@ -18,12 +19,14 @@ import MinusIcon from "../Icons/MinusIcon";
 import PlusIcon from "../Icons/PlusIcon";
 import { tbaseBold, tsmMedium, txsRegular } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "paraClinicPage"];
+
 const TestItem = ({
   node,
 }: {
   node: IParaClinicTest<{ Test: { Category: Record<never, never> } }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const { cart, mutateCartItem, removeCartItem } = useCart();
 
   const inCart = useMemo<boolean>(
@@ -103,7 +106,7 @@ const ParaClinicTests = ({ data }: ParaClinicPageProps) => {
     [data.tests, filter, query],
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!data.tests.length) return null;
   return (

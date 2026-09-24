@@ -15,7 +15,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Table from "@/Components/Admin/UI/Table";
 import FormatDate from "@/Components/UI/FormatDate";
 import { currencize } from "@/Components/helpers/currencize";
@@ -23,6 +24,8 @@ import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelPrescription"];
 
 export type PharmacyFilledPrescriptionPopulation = Population<{
   Pharmacy: PharmacyPopulation;
@@ -100,7 +103,7 @@ const PharmacyFilledPrescriptions = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

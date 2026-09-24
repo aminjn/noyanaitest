@@ -6,11 +6,19 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "policyPage"];
 
 export const generateMetadata = () => getListPageMetadata("/privacy");
 
 const Privacy = async () => {
-  const data = await getPublicData<PolicyPageProps>("privacy");
+  const [data, textContent] = await Promise.all([
+    getPublicData<PolicyPageProps>("privacy"),
+    getScopedTextContent(NS),
+  ]);
 
   if (!data) return notFound();
 
@@ -19,12 +27,14 @@ const Privacy = async () => {
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <PolicyPage
-        {...data}
-        title="privacyPageTitle"
-        legend="privacyPageLegend"
-        path="/privacy"
-      />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <PolicyPage
+          {...data}
+          title="privacyPageTitle"
+          legend="privacyPageLegend"
+          path="/privacy"
+        />
+      </LocaleScopeProvider>
     </>
   );
 };

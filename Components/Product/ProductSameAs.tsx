@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { IProduct } from "../Admin/Product/AdminManageProductsPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
 import Ixon from "../UI/Ixon";
 import classes from "./ProductSameAs.module.css";
@@ -8,6 +9,8 @@ import { FilePath } from "../config";
 import Link from "next/link";
 import { t2xsRegular, tlgMedium, txsDemiBold } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "products"];
 
 const Item = ({
   node,
@@ -46,7 +49,7 @@ const ProductSameAs = ({
 }: {
   data: IProduct<{ Category: Record<never, never> }>[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   console.log(data);
 

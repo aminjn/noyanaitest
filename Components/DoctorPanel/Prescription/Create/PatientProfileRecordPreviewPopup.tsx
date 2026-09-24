@@ -1,4 +1,5 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { PrescriptionCtx } from "../PrescriptionContext";
 import PatientPersonalDetailsPopupTitle from "./PatientPersonalDetailsPopupTitle";
 import { PrescriptionPatientProfile } from "./PatientProfileOverviewPopup";
@@ -8,7 +9,6 @@ import Button from "@/Components/UI/Button";
 import EditAltIcon from "@/Components/Icons/EditAltIcon";
 import ArrowTurnRightIcon from "@/Components/Icons/ArrowTurnRightIcon";
 import PrescriptionCreatePatientProfilePopup from "./PrescriptionCreatePatientprofileRecordPopup";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import { dateToString } from "@/Components/UI/FormatDate";
 import Ixon from "@/Components/UI/Ixon";
 import UserEditIcon from "@/Components/Icons/UserEditIcon";
@@ -18,6 +18,8 @@ import LinkAltIcon from "@/Components/Icons/LinkAltIcon";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
+
 const PatientProfileRecordPreviewPopup = ({
   record,
   ctx,
@@ -25,11 +27,11 @@ const PatientProfileRecordPreviewPopup = ({
   record: PrescriptionPatientProfile["records"][number];
   ctx: PrescriptionCtx;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup, closePopup } = usePopup();
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>

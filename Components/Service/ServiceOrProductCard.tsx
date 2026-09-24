@@ -2,7 +2,8 @@ import Image from "next/image";
 import classes from "./ServiceOrProductCard.module.css";
 import { FilePath } from "../config";
 import Badge from "../UI/Badge";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import {
   t2xsDemiBold,
   t2xsMedium,
@@ -17,6 +18,8 @@ import { clamp } from "../helpers/lib";
 import { currencize } from "../helpers/currencize";
 import Link from "next/link";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "productServiceCard"];
 const ServiceOrProductCard = ({
   name,
   image,
@@ -44,7 +47,7 @@ const ServiceOrProductCard = ({
   price: number;
   target: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const disocuntPercent = useMemo<number>(
     () =>

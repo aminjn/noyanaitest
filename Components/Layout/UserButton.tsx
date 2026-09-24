@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
 } from "react";
-import useLocale from "../Hooks/useLocale";
 import usePopup from "../Hooks/usePopup";
 import useProgress from "../Hooks/useProgress";
 import useUser from "../Hooks/useUser";
@@ -28,12 +27,16 @@ import Ixon from "../UI/Ixon";
 import MobileUserButton from "./MobileUserButton";
 import useUserMenus from "./useUserMenus";
 import SwitchProfile from "./SwitchProfile";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const UserButton = () => {
   const { setPopup } = usePopup();
   const { user } = useUser(undefined);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 

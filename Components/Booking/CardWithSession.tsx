@@ -5,11 +5,14 @@ import HostedImage from "../UI/HostedImage";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
 import HandThumUpIcon from "../Icons/HandThumbUpIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import LocationIcon from "../Icons/LocationIcon";
 import { Sessions } from "./DoctorCardWithSessions";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import StarIcon from "../Icons/StarIcon";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const CardWithSession = ({
   name,
@@ -28,7 +31,7 @@ const CardWithSession = ({
   address?: string;
   description?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import classes from "./OnboardingIntro.module.css";
 import { ContentKey } from "../Enums/contentKeys";
@@ -11,6 +12,8 @@ import MerchantIcon from "../Icons/MerchantIcon";
 import Calendar01Icon from "../Icons/Calendar01Icon";
 import { t4xlDemiBold, t5xlDemiBold } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
+
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
 
 const cards: {
   icon: ReactNode;
@@ -54,7 +57,7 @@ const cards: {
 ];
 
 const OnboardingIntro = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

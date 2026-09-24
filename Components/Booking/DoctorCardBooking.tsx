@@ -9,7 +9,8 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import MoreMenusButton from "../UI/MoreMenusButton";
 import Ixon from "../UI/Ixon";
 import Calendar02Icon from "../Icons/Calendar02Icon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Badge from "../UI/Badge";
 import LocationIcon from "../Icons/LocationIcon";
 import { useMemo } from "react";
@@ -30,7 +31,6 @@ import {
 } from "../UI/Typography";
 import StarIcon from "../Icons/StarIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
-import useComplexLocale from "../Hooks/useComplexLocale";
 import PopupCard from "../UI/PopupCard";
 import EditIcon from "../Icons/EditIcon";
 import ShareIcon from "../Icons/ShareIcon";
@@ -42,6 +42,8 @@ import HostedImage from "../UI/HostedImage";
 import Link from "next/link";
 import VerifiedImage from "../UI/VerifiedImage";
 import useProgress from "../Hooks/useProgress";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const addDaysToToday = (days: number) => {
   const now = new Date();
@@ -56,7 +58,7 @@ const DayCard = ({
   date: Date;
   node: IDoctorProfile<{ Availabilities: Record<never, never> }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 
@@ -147,9 +149,9 @@ const DoctorCardBooking = ({
   node: BookingPageDoctor;
   view: BookingView;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = getContent;
 
   const todate = useMemo<number>(() => (new Date().getDay() - 6 + 7) % 7, []);
 

@@ -19,7 +19,8 @@ import { FilePath } from "../config";
 import Link from "next/link";
 import { t2xsRegular, txsDemiBold, txsMedium } from "../UI/Typography";
 import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import RenderRtf from "../UI/RenderRtf";
 import BookAltIcon from "../Icons/BookAltIcon";
 import TagIcon from "../Icons/TagIcon";
@@ -32,6 +33,8 @@ import QnaSection from "./QnaSection";
 import useCart from "../Hooks/useCart";
 import VolleyBallIcon from "../Icons/VolleyBallIcon";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "products"];
 
 export type ProductPageProduct = IProduct<{
   Category: Record<never, never>;
@@ -78,7 +81,7 @@ const Item = ({
 };
 
 const ProductPage = ({ data }: ProductPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { cart } = useCart();
 

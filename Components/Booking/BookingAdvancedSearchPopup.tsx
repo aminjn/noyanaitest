@@ -11,7 +11,8 @@ import {
   bookingNodes,
   bookingNodesContentKeyDict,
 } from "./BookingPage2";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import usePopup from "../Hooks/usePopup";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
@@ -21,6 +22,8 @@ import SearchIcon from "../Icons/SearchIcon";
 import { txsRegular } from "../UI/Typography";
 import BookingMap2 from "./BookingMap2";
 import { ICity, IDistrict, IProvince } from "../Admin/Province/AdminManageProvincesPage";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 // Wide flyout popup opened from BookingHeader's "advancedSearch" button. Reuses
 // the same options state (and the same MultiSelectInput/ToggleInput/etc. field
@@ -47,7 +50,7 @@ const BookingAdvancedSearchPopup = ({
   onClear?: () => unknown;
   children?: ReactNode;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 
@@ -171,7 +174,7 @@ export const AdvancedSearchLocationField = <T extends LocationOptions>({
   options: T;
   setOptions: Dispatch<SetStateAction<T>>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

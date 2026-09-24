@@ -1,7 +1,10 @@
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingFeatures.module.css";
 import { txlDemiBold, tsmRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
 
 const items: { title: ContentKey; description: ContentKey }[] = [
   {
@@ -19,7 +22,7 @@ const items: { title: ContentKey; description: ContentKey }[] = [
 ];
 
 const OnboardingFeatures = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

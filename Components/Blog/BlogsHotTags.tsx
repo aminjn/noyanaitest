@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { IBlogTag } from "../Admin/BlogTag/AdminManageBlogTgasPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./BlogsHotTags.module.css";
 import Badge from "../UI/Badge";
 import { tbaseMedium } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "mag"];
+
 const BlogsHotTags = ({ nodes }: { nodes: IBlogTag[] }) => {
-  const getContent = useScopedLocale(["mag"]);
+  const getContent = useScopedLocale(NS);
 
   if (!nodes.length) return null;
   return (

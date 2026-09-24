@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
 import classes from "./DiseaseCard.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Image from "next/image";
 import { imagePath } from "../helpers/imagepath";
 import Ixon from "../UI/Ixon";
@@ -12,12 +13,14 @@ import PillIcon from "../Icons/PillIcon";
 import Button from "../UI/Button";
 import { t2xsRegular, tsmDemiBold, txsRegular } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "diseaseCard"];
+
 const DiseaseCard = ({
   node,
 }: {
   node: IDisease<{ Tag: Record<never, never>; Category: Record<never, never> }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

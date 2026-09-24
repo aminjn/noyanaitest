@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Badge from "../UI/Badge";
 import classes from "./ParaClinicAbout.module.css";
 import { ParaClinicPageProps } from "./ParaClinicPage";
@@ -13,6 +14,8 @@ import UserIcon from "../Icons/UserIcon";
 import Button from "../UI/Button";
 import FlaskIcon from "../Icons/FlaskIcon";
 import { tbaseMedium, tsmMedium, tsmRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPage"];
 
 const Feature = ({
   active,
@@ -45,7 +48,7 @@ const Detail = ({ icon, value }: { icon: ReactNode; value?: string }) => {
 };
 
 const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="About">

@@ -4,7 +4,8 @@ import {
 } from "@/Components/Admin/Product/AdminManageProductsPage";
 import classes from "./CartableNodePageIntro.module.css";
 import { Fragment, useState } from "react";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import {
   t2xsRegular,
   tmdDemiBold,
@@ -25,6 +26,8 @@ import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import UpgradeProBox from "../UpgradeProBox";
 import HostedImage from "@/Components/UI/HostedImage";
 
+const NS: ContentNamespace[] = ["common", "productCartable"];
+
 const Spec = ({ spec }: { spec: IProductSpec }) => {
   return (
     <div className={classes.spec}>
@@ -37,7 +40,7 @@ const Spec = ({ spec }: { spec: IProductSpec }) => {
 };
 
 const SpecBox = ({ specs }: { specs: IProductSpec[] }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!specs.length) return null;
   return (
@@ -139,7 +142,7 @@ const CartableNodePageIntro = ({
     images[0],
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

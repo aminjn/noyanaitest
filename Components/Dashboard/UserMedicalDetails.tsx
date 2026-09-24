@@ -2,11 +2,14 @@ import classes from "./UserMedicalDetails.module.css";
 
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import IconButton from "../Admin/UI/IconButton";
 import EditIcon from "../Icons/EditIcon";
 import usePopup from "../Hooks/usePopup";
 import MutateUserMedicalPopup from "./MutateUserMedicalPopup";
+
+const NS: ContentNamespace[] = ["common", "dashboardUserMedicalDetails"];
 
 export const bloodTypes = [
   "A+",
@@ -38,7 +41,7 @@ const UserMedicalDetails = ({
   data: IMedicalDetail | undefined;
   mutate?: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

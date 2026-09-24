@@ -4,7 +4,8 @@ import useSWR from "swr";
 import classes from "./CartPage.module.css";
 import useCart, { CartModel, cartModels, UseCartNode } from "../Hooks/useCart";
 import useUser from "../Hooks/useUser";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import LoginRequired from "../UI/LoginRequired";
 import HostedImage from "../UI/HostedImage";
@@ -30,6 +31,8 @@ import {
   txsMedium,
 } from "../UI/Typography";
 import CartItemActions from "./CartItemActions";
+
+const NS: ContentNamespace[] = ["common", "cartPage"];
 
 // physical goods that need to be shipped - kept in sync with
 // physicalCartModels in CartController.submitCart on noyanai-back
@@ -135,7 +138,7 @@ const CartRowItem = ({
   isLoading: boolean;
   onRemove: (row: CartRow) => void;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const finalPrice = (row.price || 0) - (row.discount || 0);
 
   return (
@@ -198,7 +201,7 @@ const CheckoutSection = ({
   clearCart: () => void;
   requiresAddress: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 
@@ -285,7 +288,7 @@ const CartPage = () => {
     isCartLoading,
   } = useCart();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!user) return <LoginRequired />;
 

@@ -3,7 +3,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Table from "@/Components/Admin/UI/Table";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 import TableActions from "@/Components/Admin/UI/TableActions";
@@ -20,6 +20,9 @@ import {
   NodeWithAcl,
   SecretaryNodePath,
 } from "../_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "secretaryPanelHome"];
 
 const SecretaryBossesTab = ({ name }: { name: NodeWithAcl }) => {
   const { data, error, mutate } = useSWR<
@@ -28,7 +31,7 @@ const SecretaryBossesTab = ({ name }: { name: NodeWithAcl }) => {
     fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

@@ -9,7 +9,8 @@ import {
 import { IProductCategory } from "../Admin/ProductCategory/AdminManageProductCategoriesPage";
 import { IProductPackage } from "../Admin/ProductPackage/AdminManageProductPackagesPage";
 import useDebounce from "../Hooks/useDebounce";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import useProgress from "../Hooks/useProgress";
 import { useEffect } from "react";
@@ -25,9 +26,10 @@ import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import { t2xsMedium, tsmBold, txsDemiBold } from "../UI/Typography";
 import Link from "next/link";
+
+const NS: ContentNamespace[] = ["common", "products"];
 
 export type ProductListPageProps = {
   data: (
@@ -60,7 +62,7 @@ const SpecialItem = ({
     Seller: Record<never, never>;
   }>;
 }) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.item}>
@@ -103,7 +105,7 @@ const ProductListPage = ({
   pagesCount,
   specials,
 }: ProductListPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
 
   const [query, setQuery] = useDebounce({

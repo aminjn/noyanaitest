@@ -1,5 +1,5 @@
 import classes from "./ScheduleBookingCard.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Ixon from "@/Components/UI/Ixon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import UserIcon from "@/Components/Icons/UserIcon";
@@ -13,9 +13,12 @@ import FormatDate from "@/Components/UI/FormatDate";
 import { currencize } from "@/Components/helpers/currencize";
 import { numberToTime } from "../Calendar/AddSessionsAgent";
 import { IScheduleBooking } from "./DoctorManageSchedulePage";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelSchedule"];
 
 const ScheduleBookingCard = ({ node }: { node: IScheduleBooking }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

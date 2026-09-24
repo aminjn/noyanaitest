@@ -1,5 +1,4 @@
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import useLocale from "../Hooks/useLocale";
 import LocationIcon from "../Icons/LocationIcon";
 import IconTitle from "../UI/IconTitle";
 import { tsmRegular, txsDemiBold, txsRegular } from "../UI/Typography";

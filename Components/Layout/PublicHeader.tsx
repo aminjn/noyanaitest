@@ -9,7 +9,6 @@ import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import CallingIcon from "../Icons/CallingIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
-import useLocale from "../Hooks/useLocale";
 import { ContentKey } from "../Enums/contentKeys";
 import SearchIcon from "../Icons/SearchIcon";
 import Bell01Icon from "../Icons/Bell01Icon";
@@ -37,6 +36,10 @@ import {
 import SearchModal from "./SearchModal";
 import XMarkIcon from "../Icons/XMarkIcon";
 import LineBagIcon from "../Icons/LinebagIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const NavLink = ({
   target,
@@ -48,7 +51,7 @@ const NavLink = ({
   accent?: boolean;
 }) => {
   const pathname = usePathname();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <Link
@@ -88,7 +91,7 @@ const Categories = () => {
     return () => window.removeEventListener("click", listener, false);
   }, []);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const activeTabConfig =
     categoryTabs.find((tab) => tab.key === activeTab) || categoryTabs[0];
@@ -174,7 +177,7 @@ const WithSubs = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useEffect(() => {
     if (isOpen) {
@@ -231,7 +234,7 @@ const PublicHeader = () => {
 
   const push = useProgress();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 

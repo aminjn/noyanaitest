@@ -6,7 +6,8 @@ import { IProductImage } from "../Admin/Product/AdminManageProductsPage";
 import Image from "next/image";
 import { FilePath } from "../config";
 import StarIcon from "../Icons/StarIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import LocationIcon from "../Icons/LocationIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import CallingIcon from "../Icons/CallingIcon";
@@ -27,6 +28,8 @@ import {
   txsRegular,
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPage"];
 
 const Box = ({
   icon,
@@ -86,7 +89,7 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
     data.images[0],
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.container}>

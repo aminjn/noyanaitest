@@ -1,10 +1,13 @@
 import { useEffect } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import usePopup from "../Hooks/usePopup";
 import PopupCard from "../UI/PopupCard";
 
+const NS: ContentNamespace[] = ["common", "drSelectClinicFirstPopup"];
+
 const SelectClinicFirstPopup = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const { closePopup } = usePopup();
 
   useEffect(() => {

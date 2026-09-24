@@ -23,6 +23,9 @@ import usePopup from "../Hooks/usePopup";
 import SocketContext from "../Store/SocketContext";
 import AuthShell from "./AuthShell";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const authStages = ["init", "otp"] as const;
 type AuthStage = (typeof authStages)[number];
@@ -152,7 +155,7 @@ const LoginPopup = ({
     stage: "init",
   });
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const currentStage = useMemo<ReactNode>(() => {
     return {

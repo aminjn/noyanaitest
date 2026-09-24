@@ -6,6 +6,11 @@ import {
   getNodePageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "drugPage"];
 
 export const generateMetadata = ({
   params: { slug },
@@ -14,13 +19,18 @@ export const generateMetadata = ({
 }) => getNodePageMetadata("/drug/[slug]", slug);
 
 const Drug = async ({ params: { slug } }: { params: { slug: string } }) => {
-  const data = await getPublicData<DrugPageProps>(`drug/${slug}`);
+  const [data, textContent] = await Promise.all([
+    getPublicData<DrugPageProps>(`drug/${slug}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getNodePageWebSchema("/drug/[slug]", slug);
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <DrugPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <DrugPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

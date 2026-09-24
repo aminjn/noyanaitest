@@ -2,13 +2,16 @@
 
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import ClinicManageDetailsTab from "./ClinicManageDetailsTab";
 import ClinicManageLocationTab from "./ClinicManageLocationTab";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "clinicPanelProfile"];
 
 const ClinicManageProfilePage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/clinicpanel" },

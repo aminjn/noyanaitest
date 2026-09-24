@@ -3,8 +3,11 @@ import classes from "./PrescriptionPatientPrivilege.module.css";
 import Button from "@/Components/UI/Button";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePrescription from "../Store/usePrescription";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
 const PrescriptionPatientPrivilege = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -13,7 +16,7 @@ const PrescriptionPatientPrivilege = () => {
 
   const [hasDeserve, setHasDeserve] = useState<boolean | null>(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!patient) return null;
   return (

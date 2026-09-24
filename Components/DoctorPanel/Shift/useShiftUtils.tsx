@@ -1,10 +1,13 @@
 import { useCallback } from "react";
 import { ShiftContext } from "./DoctorManageShiftsPage";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { numberToTime } from "../Calendar/AddSessionsAgent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelShiftUtils"];
 
 const useShiftUtils = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const getShiftSessions = useCallback(
     (shift: ShiftContext[number]): string[] => {

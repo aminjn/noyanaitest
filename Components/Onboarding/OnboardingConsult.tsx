@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingConsult.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import {
@@ -17,7 +18,8 @@ import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import HostedImage from "../UI/HostedImage";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
-import useScopedLocale from "../Hooks/useScopedLocale";
+
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
 
 type CardProps = {
   icon: ReactNode;
@@ -44,7 +46,7 @@ const cards: CardProps[] = [
 ];
 
 const Card = ({ description, icon, title }: CardProps) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.card}>
@@ -77,7 +79,7 @@ const items: ItemProps[] = [
 ];
 
 const Item = ({ description, title }: ItemProps) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.item}>
@@ -94,7 +96,7 @@ const OnboardingConsult = ({
 }: {
   onboadrdinConsult?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="Consult">

@@ -12,8 +12,8 @@ import {
 import ScoreBadge from "./ScoreBadge";
 import StarIcon from "../Icons/StarIcon";
 import MoreMenusButton from "../UI/MoreMenusButton";
-import useLocale from "../Hooks/useLocale";
-import useComplexLocale from "../Hooks/useComplexLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import usePopup from "../Hooks/usePopup";
 import ReportProblemPopup from "./ReportProblemPopup";
 import EditIcon from "../Icons/EditIcon";
@@ -26,6 +26,8 @@ import Button from "../UI/Button";
 import { BookingView } from "./BookingPage2";
 import HostedImage from "../UI/HostedImage";
 import VerifiedImage from "../UI/VerifiedImage";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 const CommonCenterCard = ({
   name,
   avatar,
@@ -47,9 +49,9 @@ const CommonCenterCard = ({
   banner?: string;
   view: BookingView;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = getContent;
 
   const { setPopup } = usePopup();
 

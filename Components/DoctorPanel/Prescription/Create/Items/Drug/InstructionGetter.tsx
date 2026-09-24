@@ -5,8 +5,11 @@ import { API } from "@/Components/config";
 import { ITaminDrugInstruction } from "@/Components/Admin/Tamin/DrugInstructions/AdminManageTaminDrugInstructionsPage";
 import { fetcher } from "@/Components/helpers/fetcher";
 import FancySelect from "@/Components/UI/FancySelect";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePrescription from "@/Components/DoctorPanel/Prescription2/Store/usePrescription";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionDrugItem"];
 
 const InstructionGetter = () => {
   const { setWorking, working } = usePrescription();
@@ -15,7 +18,7 @@ const InstructionGetter = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <FancySelect

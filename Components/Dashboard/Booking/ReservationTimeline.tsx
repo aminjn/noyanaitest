@@ -1,6 +1,7 @@
 import { Fragment, ReactNode } from "react";
 import classes from "./ReservationTimeline.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Ixon from "@/Components/UI/Ixon";
 import FormatDate from "@/Components/UI/FormatDate";
 import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
@@ -13,6 +14,8 @@ import {
   reservationStatusContentKeyDict,
 } from "./reservationStatus";
 import { ContentKey } from "@/Components/Enums/contentKeys";
+
+const NS: ContentNamespace[] = ["common", "dashboardReservationTimeline"];
 
 export type ReservationLifecycleData = {
   status: ReservationStatus;
@@ -43,7 +46,7 @@ const stepIcon: Record<StepState, ReactNode> = {
 };
 
 const ReservationTimeline = ({ data }: { data: ReservationLifecycleData }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const isCancelled = data.status === "cancelled";
 

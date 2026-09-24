@@ -3,9 +3,12 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import useDoctor from "@/Components/Hooks/useDoctor";
 import useForm from "@/Components/Hooks/useForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { genders, IDoctorProfile } from "../DoctorPanelPage";
 import { ISpeciality } from "@/Components/Admin/Speciality/AdminManageSpecialitiesPage";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
 const DoctorManageDetailsTab = () => {
   const { doctor, mutate } = useDoctor();
@@ -17,7 +20,7 @@ const DoctorManageDetailsTab = () => {
     },
   });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   // mcCode comes back populated (server selects only its `mcCode` string
   // field) purely for read-only display here, so it's swapped for a plain

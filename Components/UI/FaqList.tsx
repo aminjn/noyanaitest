@@ -1,10 +1,13 @@
 import { IDoctorFaq } from "../DoctorPanel/Profile/DoctorManageFaqTab";
-import useLocale from "../Hooks/useLocale";
 import FaqItem from "./FaqItem";
 import classes from "./FaqList.module.css";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const FaqList = ({ items }: { items: IDoctorFaq[] }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!items.length) return null;
   return (

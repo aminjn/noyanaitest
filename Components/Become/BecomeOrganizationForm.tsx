@@ -6,6 +6,7 @@ import { BecomeOrgConfig } from "./becomeOrgs";
 import Input from "../UI/Input";
 import useUser, { userRoles } from "../Hooks/useUser";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import DateInput from "../UI/DateInput";
 import FilesInput from "../Admin/UI/FilesInput";
 import AreaInput from "../UI/AreaInput";
@@ -18,6 +19,8 @@ import Ixon from "../UI/Ixon";
 import ClockIcon from "../Icons/ClockIcon";
 import ClockSolidIcon from "../Icons/ClockSolidIcon";
 import { txlBold } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "becomeSomething"];
 
 type BecomeOrgInput = {
   name: string;
@@ -46,7 +49,7 @@ const BecomeOrganizationForm = ({
   mutate: () => unknown;
   pending?: BecomeRequest;
 }) => {
-  const getContent = useScopedLocale(["becomeSomething"]);
+  const getContent = useScopedLocale(NS);
 
   const { input, isLoading, setInput, submit } = useForm<BecomeOrgInput>({
     path: `${API}${org.apiBase}`,

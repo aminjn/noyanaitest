@@ -8,6 +8,11 @@ import {
   getNodePageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "specialityPage"];
 
 export const generateMetadata = ({
   params: { slug },
@@ -27,16 +32,21 @@ const Speciality = async ({
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
   const params = new URLSearchParams();
   params.append("page", page.toString());
-  const data = await getPublicData<SpecialityPageProps>(
-    `speciality/${slug}?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<SpecialityPageProps>(
+      `speciality/${slug}?${params.toString()}`,
+    ),
+    getScopedTextContent(NS),
+  ]);
 
   if (!data) return notFound();
   const webSchema = await getNodePageWebSchema("/speciality/[slug]", slug);
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <SpecialityPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <SpecialityPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

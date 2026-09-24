@@ -4,7 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { IInsuranceCategory } from "../Admin/InsuranceCategory/AdminManageInsuranceCategoriesPage";
 import { IInsurance } from "../DoctorPanel/Insurance/DoctorInsurancesTab";
 import useDebounce from "../Hooks/useDebounce";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ShieldIcon from "../Icons/ShieldIcon";
 import Ixon from "../UI/Ixon";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
@@ -17,6 +18,8 @@ import InsuranceCard from "./InsuranceCard";
 import { useEffect } from "react";
 import { t2xsRegular, tlgMedium, tsmBold, tsmRegular } from "../UI/Typography";
 import Link from "next/link";
+
+const NS: ContentNamespace[] = ["common", "insurancesList"];
 
 export type InsurancesPageNode = IInsurance<{
   Category: Record<never, never>;
@@ -46,7 +49,7 @@ const InsurancesPage = ({
   categories,
 }: InsurancesPageProps) => {
   console.log({ data, pagesCount, totalCount, categories });
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
 
   const [query, setQuery] = useDebounce<string>({

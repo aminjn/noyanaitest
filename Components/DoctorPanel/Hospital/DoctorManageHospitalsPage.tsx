@@ -6,15 +6,18 @@ import { IHospital } from "@/Components/Admin/Hospital/AdminManageHospitalsPage"
 import { API } from "@/Components/config";
 import DoctorPanelLicenseBalanceHeader from "@/Components/Layout/DoctorPanelLicenseBalanceHeader";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import DoctorHospitalsTab from "./DoctorHospitalsTab";
 import DoctorJoinHospitalsTab from "./DoctorJoinHospitalsTab";
 import DoctorHospitalAdditionsTab from "./DoctorHospitalAdditionsTab";
 import WithBalanceHeader from "../_UI/WithBalanceHeader";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelHospital"];
 
 const DoctorManageHospitalsPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

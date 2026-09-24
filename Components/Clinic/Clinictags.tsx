@@ -1,4 +1,3 @@
-import useLocale from "../Hooks/useLocale";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import Badge from "../UI/Badge";
 import IconTitle from "../UI/IconTitle";

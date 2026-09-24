@@ -2,9 +2,12 @@ import { Fragment, useState } from "react";
 import { IOffice } from "./DoctorManageOfficesPage";
 import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelOffice"];
 
 const DeleteOfficePopup = ({
   mutate,
@@ -16,7 +19,7 @@ const DeleteOfficePopup = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <Fragment>

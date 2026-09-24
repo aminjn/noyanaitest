@@ -27,7 +27,6 @@ import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
-import useLocale from "@/Components/Hooks/useLocale";
 import Input from "@/Components/UI/Input";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import ToggleInput from "@/Components/UI/ToggleInput";
@@ -36,6 +35,10 @@ import Button from "@/Components/UI/Button";
 import TableBox from "@/Components/UI/TableBox";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { Acl, NodeWithAcl } from "../Request/CreateSecretaryRequestPopup";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 // Per-panel access-level tab groupings, each owned by that panel's own
 // Components/Enums/actions/*.tsx file (which is itself kept in sync with the
@@ -86,7 +89,7 @@ const MutateSecretaryAccessLevelPopup = ({
     },
   });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <PopupCard>

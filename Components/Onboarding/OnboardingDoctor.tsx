@@ -1,4 +1,5 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingDoctor.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import {
@@ -9,9 +10,10 @@ import {
   txlBold,
   tlgDemiBold,
 } from "../UI/Typography";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import { SwiperSlide } from "swiper/react";
 import SwiperSlider from "../UI/SwiperSlider";
+
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
 
 type ItemProps = { title: ContentKey; description: ContentKey };
 
@@ -27,7 +29,7 @@ const items: ItemProps[] = [
 ];
 
 const Item = ({ description, title }: ItemProps) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
   return (
     <li className={classes.item}>
       <h3 className={`${classes.itemTitle} ${tlgDemiBold}`}>
@@ -41,7 +43,7 @@ const Item = ({ description, title }: ItemProps) => {
 };
 
 const OnboardingDoctor = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="Panel">

@@ -7,11 +7,13 @@ import {
 } from "react";
 import classes from "./Input.module.css";
 import { WithStyleProps } from "../Layout/Layout";
-import useLocale from "../Hooks/useLocale";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import { currencize } from "../helpers/currencize";
 import { numberToPersianWords } from "../helpers/lib";
 import { tsmRegular } from "./Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const Input = forwardRef<
   HTMLInputElement,
@@ -69,7 +71,7 @@ const Input = forwardRef<
   ) => {
     const [innerValue, setInnerValue] = useState<string>(defaultValue || "");
 
-    const getContent = useScopedLocale(["common"]);
+    const getContent = useScopedLocale(LOCALE_NS);
 
     return (
       <div

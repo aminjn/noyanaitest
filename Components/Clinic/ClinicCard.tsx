@@ -7,10 +7,13 @@ import StarIcon from "../Icons/StarIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import Badge from "../UI/Badge";
 import Button from "../UI/Button";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "clinicCard"];
 
 const ClinicCard = ({
   node,
@@ -21,7 +24,7 @@ const ClinicCard = ({
     Tags: Record<never, never>;
   }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

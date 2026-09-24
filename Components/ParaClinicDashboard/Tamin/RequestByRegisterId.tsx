@@ -8,7 +8,8 @@ import WithTitle from "@/Components/Admin/UI/WithTitle";
 import { API } from "@/Components/config";
 import InfoPair from "@/Components/Dr/InfoPair";
 import { currencize } from "@/Components/helpers/currencize";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useNotification from "@/Components/Hooks/useNotification";
 import usePopup from "@/Components/Hooks/usePopup";
 import CogIcon from "@/Components/Icons/CogIcon";
@@ -18,6 +19,8 @@ import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import PopupCard from "@/Components/UI/PopupCard";
 import { useCallback, useState } from "react";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPanelTamin"];
 
 type RequestedPresc = {
   patienT_NATCODE: string;
@@ -136,7 +139,7 @@ const t = {
 
 const RegisterDiagnosisPopup = ({ node }: { node: RequestedPresc }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const pushNotification = useNotification();
   return (
     <PopupCard>
@@ -190,7 +193,7 @@ const RegisterSessionPopup = ({ data }: { data: RequestedPresc }) => {
 
   const [input, setInput] = useState<RegisterSessionInput>([]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup, closePopup } = usePopup();
 
@@ -308,7 +311,7 @@ const Result = ({
   data: RequestedPresc;
   clear: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -553,7 +556,7 @@ const Result = ({
 };
 
 const RequestByRegisterId = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [presc, setPresc] = useState<RequestedPresc | null>(null);
 

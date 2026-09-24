@@ -6,10 +6,13 @@ const DoctorManageBooking = async () => {
   const textContent = await getScopedTextContent([
     "common",
     "doctorPanelBooking",
+    "dashboardReservationStatusBadge",
+    "dashboardReservationTimeline",
+    "dashboardReservationJoinButton",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "doctorPanelBooking"]}
+      namespaces={["common", "doctorPanelBooking", "dashboardReservationStatusBadge", "dashboardReservationTimeline", "dashboardReservationJoinButton"]}
       initialTextContent={textContent}
     >
       <DoctorManageBookingPage />

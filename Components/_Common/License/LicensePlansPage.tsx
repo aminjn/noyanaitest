@@ -13,13 +13,16 @@ import {
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Ixon from "@/Components/UI/Ixon";
 import LockCloseIcon from "@/Components/Icons/LockCloseIcon";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { useEffect, useState } from "react";
 import Button from "@/Components/UI/Button";
 import LicenseCard from "./LicenseCard";
 import LicenseDurationSelector from "./LicenseDurationSelector";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import { t3xlBold, tlgDemiBold, txsRegular } from "@/Components/UI/Typography";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
 // Shared logic for the "/<panel>/license" page across every org panel
 // (doctor/pharmacy/clinic/paraClinic) - fetches that org's primary,
@@ -41,7 +44,7 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
     setSelectedDuration(data.durations[0]);
   }, [selectedDuration, data]);
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   // TODO: render `licenses`/`durations` (plan cards + duration picker +
   // purchase action, calling `mutate` on a successful purchase) once the

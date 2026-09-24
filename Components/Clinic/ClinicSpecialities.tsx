@@ -1,4 +1,3 @@
-import useLocale from "../Hooks/useLocale";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import Badge from "../UI/Badge";
 import IconTitle from "../UI/IconTitle";

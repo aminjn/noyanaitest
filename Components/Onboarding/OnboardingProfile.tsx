@@ -1,4 +1,5 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingProfile.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import {
@@ -12,9 +13,10 @@ import {
   tlgDemiBold,
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
+
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
 
 type ItemProps = { title: ContentKey; description: ContentKey };
 
@@ -38,7 +40,7 @@ const items: ItemProps[] = [
 ];
 
 const Item = ({ description, title }: ItemProps) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.item}>
@@ -57,7 +59,7 @@ const OnboardingProfile = ({
 }: {
   onboadingProfile?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="Profile">

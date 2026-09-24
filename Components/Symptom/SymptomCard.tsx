@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ISymptom } from "../Admin/Disease/AdminManageDiseasesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./SymptomCard.module.css";
 import { imagePath } from "../helpers/imagepath";
 import Link from "next/link";
@@ -10,8 +11,10 @@ import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { tsmDemiBold, tsmRegular } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "symptomCard"];
+
 const SymptomCard = ({ node }: { node: ISymptom }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <li className={classes.main}>
       <div className={classes.header}>

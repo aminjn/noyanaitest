@@ -11,7 +11,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Table from "@/Components/Admin/UI/Table";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import FormatDate from "@/Components/UI/FormatDate";
 import { currencize } from "@/Components/helpers/currencize";
 import { numberToTime } from "@/Components/DoctorPanel/Calendar/AddSessionsAgent";
@@ -33,6 +34,8 @@ import {
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import ReservationStatusBadge from "./ReservationStatusBadge";
 import { ReservationParty, ReservationStatus } from "./reservationStatus";
+
+const NS: ContentNamespace[] = ["common", "dashboardBooking"];
 
 export type CheckoutPopulation = Population<{ User: UserPopulation }>;
 
@@ -123,7 +126,7 @@ const DashboardManageBookingsPage = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

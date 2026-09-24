@@ -11,7 +11,10 @@ import {
 import { Socket } from "socket.io-client";
 import { io } from "socket.io-client";
 import useNotification from "../Hooks/useNotification";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 type SocketContextType = { socket: Socket; reconnect: () => void };
 
@@ -35,7 +38,7 @@ export const SockectContextProvider = ({
 }) => {
   const pushNotification = useNotification();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const socketRef = useRef<Socket>(_socket);
 

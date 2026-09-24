@@ -1,10 +1,13 @@
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import CheckIcon from "../Icons/CheckIcon";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import { txlBold, txsRegular } from "../UI/Typography";
 import classes from "./BecomeDoneView.module.css";
+
+const NS: ContentNamespace[] = ["common", "becomeSomething"];
 const BecomeDoneView = ({
   title,
   target,
@@ -12,7 +15,7 @@ const BecomeDoneView = ({
   title: ContentKey;
   target: string;
 }) => {
-  const getContent = useScopedLocale(["becomeSomething"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

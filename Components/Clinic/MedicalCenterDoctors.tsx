@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./MedicalCenterDoctors.module.css";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import IconTitle from "../UI/IconTitle";
@@ -13,6 +14,8 @@ import { tsmDemiBold, tsmRegular, txsRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
 const Item = ({
   node,
@@ -55,7 +58,7 @@ const MedicalCenterDoctors = ({
 }: {
   nodes: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const specialities = useMemo<ISpeciality[]>(() => {
     const result = (

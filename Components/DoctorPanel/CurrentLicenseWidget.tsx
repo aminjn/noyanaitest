@@ -4,7 +4,7 @@ import useSWR from "swr";
 import classes from "./CurrentLicenseWidget.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import IconTitle from "@/Components/UI/IconTitle";
@@ -13,6 +13,9 @@ import Button from "@/Components/UI/Button";
 import CartIcon from "@/Components/Icons/CartIcon";
 import { doctorDashboardModuleLabels } from "@/Components/Admin/BaseDoctorLicense/AdminManageBaseDoctorLicensesPage";
 import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelHome"];
 
 // Surfaces the doctor's current DoctorProfileLicense on the dashboard home
 // page (2026-09) so it's visible without going into the licenses tab. Only
@@ -22,7 +25,7 @@ import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 // LicensePlansPage's own `${API}/doctor/license` (getMyLicenseOverview),
 // which returns the purchasable catalog, not what the doctor already owns.
 const CurrentLicenseWidget = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const hasAccess = useDoctorAcl();
   const canView = hasAccess("readLicenses");
 

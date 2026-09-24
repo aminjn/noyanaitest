@@ -1,5 +1,6 @@
 import classes from "./LicenseNotCoveredNotice.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import IconTitle from "@/Components/UI/IconTitle";
 import Button from "@/Components/UI/Button";
 import LockIcon from "@/Components/Icons/LockIcon";
@@ -7,6 +8,8 @@ import {
   ParaClinicDashboardModule,
   paraClinicDashboardModuleLabels,
 } from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
+
+const NS: ContentNamespace[] = ["common"];
 
 // Shown by ParaClinicLicenseGate instead of a /paraClinicPanel/* page's own
 // content when the current paraClinic's resolved license modules don't
@@ -17,7 +20,7 @@ const LicenseNotCoveredNotice = ({
 }: {
   mod: ParaClinicDashboardModule;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.main}>
       <div className={classes.icon}>

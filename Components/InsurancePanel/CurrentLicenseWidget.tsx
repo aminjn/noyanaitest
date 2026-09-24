@@ -4,7 +4,8 @@ import useSWR from "swr";
 import classes from "./CurrentLicenseWidget.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useAcl from "@/Components/Hooks/useAcl";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import IconTitle from "@/Components/UI/IconTitle";
@@ -13,6 +14,8 @@ import Button from "@/Components/UI/Button";
 import CartIcon from "@/Components/Icons/CartIcon";
 import { insuranceDashboardModuleLabels } from "@/Components/Admin/BaseInsuranceLicense/AdminManageBaseInsuranceLicensesPage";
 import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
+
+const NS: ContentNamespace[] = ["common", "insurancePanelHome"];
 
 // Surfaces the insurance's current InsuranceProfileLicense on the dashboard
 // home page (2026-09) so it's visible without going into the licenses tab.
@@ -23,7 +26,7 @@ import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 // Components/DoctorPanel/CurrentLicenseWidget.tsx - fetches
 // insuranceController.getMyCurrentLicense, not the purchasable catalog.
 const CurrentLicenseWidget = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const hasAccess = useAcl("insurance");
   const canView = hasAccess("readLicenses");
 

@@ -1,9 +1,12 @@
 import Ixon from "@/Components/UI/Ixon";
 import classes from "./PrescriptionListItem.module.css";
 import FolderIcon from "@/Components/Icons/FolderIcon";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { ReactNode } from "react";
 import { IncomingTaminPharmacyResponse } from "./FindPrescriptionAgent";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelPrescription"];
 
 const PrescriptionListItem = ({
   prescription,
@@ -12,7 +15,7 @@ const PrescriptionListItem = ({
   prescription: IncomingTaminPharmacyResponse["list"][number];
   action?: ReactNode;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.item} key={prescription.headeprscid}>

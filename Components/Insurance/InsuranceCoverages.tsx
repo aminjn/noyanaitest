@@ -1,4 +1,5 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import CheckIcon from "../Icons/CheckIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
 import IconTitle from "../UI/IconTitle";
@@ -6,8 +7,10 @@ import Ixon from "../UI/Ixon";
 import { tsmDemiBold } from "../UI/Typography";
 import classes from "./InsuranceCoverages.module.css";
 import { InsurancePageNode } from "./InsurancePage";
+
+const NS: ContentNamespace[] = ["common", "insurancePage"];
 const InsuranceCoverages = ({ node }: { node: InsurancePageNode }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!node.coverages.length) return null;
   return (

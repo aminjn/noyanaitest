@@ -6,7 +6,8 @@ import {
 } from "../Admin/ContactRequest/AdminManageContactRequestsPage";
 import { API } from "../config";
 import useForm from "../Hooks/useForm";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./ContactForm.module.css";
 import Form from "../UI/Form";
 import Input from "../UI/Input";
@@ -16,8 +17,10 @@ import ChevronIcon from "../Icons/ChevronIcon";
 import { tsmMedium } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import { isMobile } from "../helpers/Validators";
+
+const NS: ContentNamespace[] = ["common", "contactPage"];
 const ContactForm = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [didSubmit, setDidSubmit] = useState<boolean>(false);
 

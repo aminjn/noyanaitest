@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
@@ -25,6 +25,9 @@ import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import OrderItemStatusBadge from "@/Components/Dashboard/Order/OrderItemStatusBadge";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
 import { IIncomingOrder } from "./DoctorIncomingOrdersPage";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelOrder"];
 
 // Models this doctor can fulfill/cancel items in - mirrors the "model" enum
 // accepted by PATCH /doctor/order/:nodeId
@@ -78,7 +81,7 @@ const MutateOrderItemPopup = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <Fragment>
@@ -112,7 +115,7 @@ const DoctorIncomingOrderPage = () => {
   );
 
   const { setPopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

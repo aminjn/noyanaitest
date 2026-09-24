@@ -1,10 +1,13 @@
 import usePopup from "../Hooks/usePopup";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import LoginIcon from "../Icons/LoginIcon";
 import UserEditIcon from "../Icons/UserEditIcon";
 import AuthPopup from "../Popups/AuthPopup";
 import Button from "./Button";
 import classes from "./LoginRequired.module.css";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const Graphic = () => (
   <svg
@@ -214,7 +217,7 @@ const Graphic = () => (
 );
 
 const LoginRequired = () => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 

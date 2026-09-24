@@ -5,9 +5,7 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import Ixon from "./Ixon";
 import StarIcon from "../Icons/StarIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
-import useComplexLocale from "../Hooks/useComplexLocale";
 import VerifyIcon from "../Icons/VerifyIcon";
-import useLocale from "../Hooks/useLocale";
 import Link from "next/link";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import {
@@ -18,7 +16,6 @@ import {
   txsRegular,
 } from "./Typography";
 import { WithStyleProps } from "../Layout/Layout";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import Badge from "./Badge";
 import AiIcon from "../Icons/AiIcon";
 import VideoIcon from "../Icons/VideoIcon";
@@ -26,6 +23,10 @@ import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import VerifiedImage from "./VerifiedImage";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiDoctorCard"];
 
 const DoctorCardAlt = ({
   node,
@@ -42,8 +43,8 @@ const DoctorCardAlt = ({
     Province: Record<never, never>;
   }>;
 }>) => {
-  const getCompContent = useComplexLocale();
-  const getContent = useScopedLocale(["common"]);
+  const getCompContent = useScopedLocale(LOCALE_NS);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>

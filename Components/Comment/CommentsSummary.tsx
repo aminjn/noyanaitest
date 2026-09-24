@@ -1,10 +1,13 @@
-import useLocale from "../Hooks/useLocale";
 import StarIcon from "../Icons/StarIcon";
 import StarsSolidIcon from "../Icons/StarsSolidIcon";
 import Ixon from "../UI/Ixon";
 import { tsmMedium, txlBold } from "../UI/Typography";
 import { Score, scores } from "./CommentSection";
 import classes from "./CommentsSummary.module.css";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "commentSection"];
 const CommentsSummary = ({
   average,
   count,
@@ -14,7 +17,7 @@ const CommentsSummary = ({
   scores: Record<Score, number>;
   count: number;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <div className={classes.main}>
       <div className={classes.stats}>

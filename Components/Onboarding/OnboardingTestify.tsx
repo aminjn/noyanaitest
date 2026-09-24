@@ -1,6 +1,7 @@
 import "swiper/css";
 import { SwiperSlide } from "swiper/react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingTestify.module.css";
 import { ITestify } from "../Admin/Testify/AdminManageTestifiesPage";
 import HostedImage from "../UI/HostedImage";
@@ -13,8 +14,10 @@ import {
   txlBold,
 } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
+
 const OnboardingTestify = ({ data }: { data?: ITestify[] }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!data?.length) return null;
   return (

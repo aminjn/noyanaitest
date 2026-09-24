@@ -9,7 +9,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import Ixon from "@/Components/UI/Ixon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Link from "next/link";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -21,6 +21,9 @@ import {
   UserIdentityPopulation,
 } from "@/Components/Dashboard/DashboardPage";
 import { ContentKey } from "@/Components/Enums/contentKeys";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelCalendar"];
 
 export type BookingPopulation = Population<{
   Session: DoctorSessionPopulation;
@@ -111,7 +114,7 @@ const DoctorCalendarDay = ({
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const push = useProgress();
 

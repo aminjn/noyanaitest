@@ -6,10 +6,13 @@ import {
   doctorShiftDays,
   ShiftContext,
 } from "./DoctorManageShiftsPage";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Button from "@/Components/UI/Button";
 import { nanoid } from "nanoid";
 import useNotification from "@/Components/Hooks/useNotification";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
 const Replicator = ({
   day,
@@ -24,7 +27,7 @@ const Replicator = ({
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 

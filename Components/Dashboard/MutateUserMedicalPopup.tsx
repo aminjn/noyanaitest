@@ -4,7 +4,10 @@ import usePopup from "../Hooks/usePopup";
 import PopupCard from "../UI/PopupCard";
 import { bloodTypes, IMedicalDetail } from "./UserMedicalDetails";
 import { API } from "../config";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "dashboardMutateUserMedicalPopup"];
 
 const MutateUserMedicalPopup = ({
   mutate,
@@ -15,7 +18,7 @@ const MutateUserMedicalPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <PopupCard>

@@ -5,8 +5,7 @@ import {
   DoctorShiftDay,
   ShiftContext,
 } from "./DoctorManageShiftsPage";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import Button from "@/Components/UI/Button";
 import PlusIcon from "@/Components/Icons/PlusIcon";
@@ -15,6 +14,9 @@ import ProTip from "@/Components/UI/ProTip";
 import Replicator from "./Replicator";
 import ShiftItem from "./ShiftItem";
 import ShiftsPreview from "./ShiftsPreview";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
 const DayShifts = ({
   day,
@@ -29,8 +31,8 @@ const DayShifts = ({
   offDays: DoctorShiftDay[];
   setOffDays: Dispatch<SetStateAction<DoctorShiftDay[]>>;
 }) => {
-  const getCompContent = useComplexLocale();
-  const getContent = useLocale();
+  const getCompContent = useScopedLocale(NS);
+  const getContent = useScopedLocale(NS);
 
   const todaysShifts = useMemo<ShiftContext>(
     () => data.filter((shift) => shift.day === day),

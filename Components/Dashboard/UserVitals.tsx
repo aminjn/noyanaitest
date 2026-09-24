@@ -6,8 +6,11 @@ import BloodPressure from "./_Assets/BloodPressure.png";
 import BodyTemp from "./_Assets/BodyTemp.png";
 import HeartRate from "./_Assets/HeartRate.png";
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Link from "next/link";
+
+const NS: ContentNamespace[] = ["common", "dashboardUserVitals"];
 
 const VitalCard = ({
   image,
@@ -20,7 +23,7 @@ const VitalCard = ({
   value: number | string | undefined;
   unit: ContentKey;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.card}>
@@ -53,7 +56,7 @@ const UserVitals = ({
   vitals?: IUserVital | null;
   patient?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.container}>

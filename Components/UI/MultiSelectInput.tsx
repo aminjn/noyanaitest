@@ -5,7 +5,10 @@ import Ixon from "./Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { t2xsRegular, tsmMedium, txsRegular } from "./Typography";
 import XMarkIcon from "../Icons/XMarkIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 export type MultiSelectOption = { title: string; value: string };
 
@@ -32,7 +35,7 @@ const MultiSelectInput = function <TMulti extends boolean = true>({
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   // Mirrors `value` locally so selections render immediately even when this
   // component sits inside a popup snapshot (Components/Popup/Popup.tsx) that

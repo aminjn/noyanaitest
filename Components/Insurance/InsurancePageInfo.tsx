@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ShieldIcon from "../Icons/ShieldIcon";
 import Badge from "../UI/Badge";
 import Ixon from "../UI/Ixon";
@@ -10,6 +11,8 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import { t2xsRegular, tsmBold, tsmRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "insurancePage"];
 
 const Count = ({
   icon,
@@ -37,7 +40,7 @@ const Count = ({
 };
 
 const InsurancePageInfo = ({ node }: { node: InsurancePageNode }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

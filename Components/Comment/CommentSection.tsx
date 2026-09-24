@@ -7,7 +7,6 @@ import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import { useState } from "react";
 import useForm from "../Hooks/useForm";
-import useLocale from "../Hooks/useLocale";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import SubmitCommentForm from "./SubmitCommentForm";
@@ -34,6 +33,10 @@ import Act from "../UI/Act";
 import Pagination from "../UI/Pagination";
 import { usePathname } from "next/navigation";
 import HostedImage from "../UI/HostedImage";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "commentSection"];
 
 export const commentableDocumentPaths = [
   "Blog",
@@ -127,7 +130,7 @@ const CommentItem = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 
@@ -225,7 +228,7 @@ const CommentSection = ({
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

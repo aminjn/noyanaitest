@@ -2,13 +2,16 @@ import { Fragment, useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { API } from "@/Components/config";
 import {
   ISecretary,
   NodeWithAcl,
   SecretaryNodePath,
 } from "../_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "secretaryPanelHome"];
 
 const LeaveBossPopup = ({
   mutate,
@@ -22,7 +25,7 @@ const LeaveBossPopup = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <Fragment>

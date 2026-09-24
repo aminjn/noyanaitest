@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import LocationIcon from "../Icons/LocationIcon";
 import IconTitle from "../UI/IconTitle";
 import classes from "./InsuranceContact.module.css";
@@ -9,6 +10,8 @@ import CallingIcon from "../Icons/CallingIcon";
 import WebsiteIcon from "../Icons/WEbsiteIcon";
 import DocumentIcon from "../Icons/DocumentIcon";
 import { tsmRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "insurancePage"];
 
 const Item = ({ icon, value }: { icon: ReactNode; value?: string }) => {
   if (!value) return null;
@@ -23,7 +26,7 @@ const Item = ({ icon, value }: { icon: ReactNode; value?: string }) => {
 };
 
 const InsuranceContact = ({ node }: { node: InsurancePageNode }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.main}>
       <IconTitle icon={<LocationIcon />}>{getContent("contactInfo")}</IconTitle>

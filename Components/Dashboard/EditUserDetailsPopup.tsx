@@ -2,7 +2,8 @@ import Loading from "../Admin/UI/Loading";
 import useUser, { IUser } from "../Hooks/useUser";
 import PopupCard from "../UI/PopupCard";
 import classes from "./EditUserDetailsPopup.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import { useState } from "react";
@@ -15,10 +16,13 @@ import Input from "../UI/Input";
 import usePopup from "../Hooks/usePopup";
 import Button from "../UI/Button";
 import FormActions from "../Admin/UI/FormActions";
+
+const NS: ContentNamespace[] = ["common", "dashboardEditUserDetailsPopup"];
+
 const EditUserDetailsPopup = () => {
   const { user, refreshUser } = useUser();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [isUploading, setIsUploading] = useState<{ avatar: File } | null>(null);
 

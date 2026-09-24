@@ -6,10 +6,11 @@ const DashboardNotifications = async () => {
   const textContent = await getScopedTextContent([
     "common",
     "dashboardNotification",
+    "notificationPushToggle",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "dashboardNotification"]}
+      namespaces={["common", "dashboardNotification", "notificationPushToggle"]}
       initialTextContent={textContent}
     >
       <DashboardNotificationsPage />

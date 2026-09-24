@@ -1,5 +1,4 @@
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
 import Table from "@/Components/Admin/UI/Table";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useSWR from "swr";
@@ -21,6 +20,10 @@ import CreateSecretaryRequestPopup, {
   SecretaryNodePath,
 } from "./CreateSecretaryRequestPopup";
 import EditSecretaryRequestPopup from "./EditSecretaryRequestPopup";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 export const secretaryRequestStatuses = [
   "Pending",
@@ -52,7 +55,7 @@ const SecretaryRequestsTab = ({ name }: { name: NodeWithAcl }) => {
   >(`${API}/acl/${name}/secretaryrequest`, (url: string) =>
     fetcher({ url }).then((res) => res.data)
   );
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 

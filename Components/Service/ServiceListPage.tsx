@@ -3,7 +3,8 @@
 import classes from "./ServiceListPage.module.css";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
@@ -33,9 +34,10 @@ import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
 import SwitchProductAndService from "../Product/SwitchProductAndService";
 import HostedImage from "../UI/HostedImage";
 import StarIcon from "../Icons/StarIcon";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import { currencize } from "../helpers/currencize";
 import Link from "next/link";
+
+const NS: ContentNamespace[] = ["common", "services"];
 
 export type ServiceListPageProps = {
   data: (
@@ -60,7 +62,7 @@ const SpecialItem = ({
 }: {
   node: IService<{ Owner: Record<never, never> }>;
 }) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.item}>
@@ -103,7 +105,7 @@ const ServiceListPage = ({
   specials,
   count,
 }: ServiceListPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
 
   const [query, setQuery] = useDebounce({

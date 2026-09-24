@@ -4,7 +4,7 @@ import { IMcCode } from "./BecomeADoctorPage";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import classes from "./ConfirmMedicalCodePopup.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
 import FormActions from "../Admin/UI/FormActions";
 import Button from "../UI/Button";
 import usePopup from "../Hooks/usePopup";
@@ -12,6 +12,9 @@ import HandleLoading from "../Admin/UI/HandleLoading";
 import { useState } from "react";
 import Act from "../UI/Act";
 import PopupCard from "../UI/PopupCard";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelBecomeDoctor"];
 
 const ConfirmMedicalCodePopup = ({ node }: { node: IMcCode }) => {
   const { mutate } = useDoctor();
@@ -22,7 +25,7 @@ const ConfirmMedicalCodePopup = ({ node }: { node: IMcCode }) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

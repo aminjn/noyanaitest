@@ -1,7 +1,17 @@
 import AdminManageBlogRRSsPage from "@/Components/Admin/BlogRRS/AdminManageBlogRRSsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageBlgRRSs = () => {
-  return <AdminManageBlogRRSsPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageBlgRRSs = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageBlogRRSsPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageBlgRRSs;

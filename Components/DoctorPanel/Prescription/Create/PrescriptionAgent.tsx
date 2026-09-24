@@ -1,4 +1,5 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { useContext } from "react";
 import PrescriptionContext, {
   DefaultPrescription,
@@ -11,8 +12,10 @@ import PrescriptionPatientManager from "./PrescriptionPatientManager";
 import PrescriptionItemGetterAgent from "./Items/PrescriptionItemGetterAgent";
 import PrescriptionItemsOverview from "./PrescriptionItemsOverview";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
+
 const Inner = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useContext(PrescriptionContext);
 

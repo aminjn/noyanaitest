@@ -6,7 +6,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import { IBooking } from "../Calendar/DoctorCalendarDay";
 import { useMemo } from "react";
@@ -14,6 +14,9 @@ import ScheduleBookingCard from "./ScheduleBookingCard";
 import ScheduleReservationCard from "./ScheduleReservationCard";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import { getSessionDateKey } from "@/Components/helpers/lib";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelSchedule"];
 
 export type IScheduleBooking = IBooking<{
   Session: { Clinic: Record<string, never> };
@@ -48,7 +51,7 @@ const DoctorManageSchedulePage = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

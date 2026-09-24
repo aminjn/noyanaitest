@@ -2,12 +2,15 @@ import PopupCard from "@/Components/UI/PopupCard";
 import { IOffice } from "./DoctorManageOfficesPage";
 import classes from "./DoctorMutateOfficePopup.module.css";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelOffice"];
 
 const DoctorMutateOfficePopup = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

@@ -8,6 +8,11 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "insurancesList", "insuranceCard"];
 
 export const generateMetadata = () => getListPageMetadata("/insurance");
 
@@ -25,15 +30,18 @@ const Insurances = async (ctx: {
   params.append("page", page.toString());
   if (search) params.append("query", search);
   if (category) params.append("category", category);
-  const data = await getPublicData<InsurancesPageProps>(
-    `insurance?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<InsurancesPageProps>(`insurance?${params.toString()}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/insurance");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <InsurancesPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <InsurancesPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

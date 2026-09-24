@@ -3,7 +3,8 @@ import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import classes from "./SpecialityCard.module.css";
 import { imagePath } from "../helpers/imagepath";
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
@@ -19,6 +20,8 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import StarIcon from "../Icons/StarIcon";
 import { t2xsMedium, tsmBold, txsDemiBold, txsMedium } from "../UI/Typography";
 import { useMemo, useState } from "react";
+
+const NS: ContentNamespace[] = ["common", "specialityCard"];
 
 const DoctorsSlider = ({
   nodes,
@@ -94,7 +97,7 @@ const SpecialityCard = ({
 }: {
   node: ISpeciality<{ Doctors: { Province: Record<never, never> } }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

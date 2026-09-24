@@ -3,7 +3,8 @@ import {
   IDoctorAvailability,
   IDoctorProfile,
 } from "../DoctorPanel/DoctorPanelPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ClockIcon from "../Icons/ClockIcon";
 import PopupCard from "../UI/PopupCard";
 import classes from "./BookingSessionSelectorPopup.module.css";
@@ -12,7 +13,6 @@ import Ixon from "../UI/Ixon";
 import CheckIcon from "../Icons/CheckIcon";
 import { IDoctorShift } from "../DoctorPanel/Shift/DoctorManageShiftsPage";
 import useShiftUtils from "../DoctorPanel/Shift/useShiftUtils";
-import useComplexLocale from "../Hooks/useComplexLocale";
 import { numberToTime } from "../DoctorPanel/Calendar/AddSessionsAgent";
 import { tbaseDemiBold, tmdMedium, tsmRegular } from "../UI/Typography";
 import Button from "../UI/Button";
@@ -27,6 +27,8 @@ import Loading from "../Admin/UI/Loading";
 import { fetcher } from "../helpers/fetcher";
 import { useRouter } from "next/navigation";
 import ChevronIcon from "../Icons/ChevronIcon";
+
+const NS: ContentNamespace[] = ["common", "bookingSessionSelectorPopup"];
 
 const shiftDateFromNow = (shift: number) => {
   const now = new Date();
@@ -54,7 +56,7 @@ const SessionButton = ({
   selectedSession: [number, number] | null;
   setSelectedSession: Dispatch<SetStateAction<[number, number] | null>>;
 }) => {
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(NS);
 
   return (
     <div
@@ -87,7 +89,7 @@ const DayBadge = ({
   setSelectedDay: Dispatch<SetStateAction<Date>>;
   selectedDay: Date;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div
@@ -129,7 +131,7 @@ const BookingSessionSelectorPopup = ({
 
   const { user } = useUser();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

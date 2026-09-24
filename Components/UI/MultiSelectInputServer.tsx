@@ -8,8 +8,11 @@ import { t2xsRegular, tsmMedium, txsRegular } from "./Typography";
 import Ixon from "./Ixon";
 import XMarkIcon from "../Icons/XMarkIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
-import useLocale from "../Hooks/useLocale";
 import useDebounce from "../Hooks/useDebounce";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const MultiSelectInputServer = function <T = unknown>({
   path,
@@ -30,7 +33,7 @@ const MultiSelectInputServer = function <T = unknown>({
 }>) {
   const [query, setQuery] = useDebounce<string>({ initialValue: "" });
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { data, isLoading } = useSWR<T[]>(
     query ? `${path}${path.includes("?") ? "&" : "?"}query=${query}` : null,

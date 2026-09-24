@@ -7,7 +7,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Table from "@/Components/Admin/UI/Table";
 import { ContentKey } from "@/Components/Enums/contentKeys";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -22,6 +22,9 @@ import InstagramIcon from "@/Components/Icons/InstagramIcon";
 import TelegramIcon from "@/Components/Icons/TelegramIcon";
 import WhatsappIcon from "@/Components/Icons/WhatsappIcon";
 import AparatIcon from "@/Components/Icons/AparatIcon";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
 export const socialMedias = [
   "Instagram",
@@ -65,7 +68,7 @@ const DoctorManageSocialMediaTab = () => {
     (url: string) => fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

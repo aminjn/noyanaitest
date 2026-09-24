@@ -3,7 +3,6 @@ import classes from "./EditDoctorSecretaryRequestPopup.module.css";
 import PopupCard from "@/Components/UI/PopupCard";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
-import useLocale from "@/Components/Hooks/useLocale";
 import { ISecretaryRequest } from "./SecretaryRequestsTab";
 import {
   Acl,
@@ -11,6 +10,10 @@ import {
   SecretaryNodePath,
 } from "./CreateSecretaryRequestPopup";
 import { getAccessLevelLabel } from "@/Components/Admin/Lib/LabelGetters";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 const EditSecretaryRequestPopup = ({
   mutate,
@@ -23,7 +26,7 @@ const EditSecretaryRequestPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <PopupCard>

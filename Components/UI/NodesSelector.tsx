@@ -5,6 +5,9 @@ import { fetcher } from "../helpers/fetcher";
 
 import dynamic from "next/dynamic";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -47,7 +50,7 @@ const NodesSelector = <TMulti extends boolean = false>({
     ),
   );
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>

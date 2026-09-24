@@ -1,6 +1,7 @@
 import classes from "./HomeServices.module.css";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import CrownIcon from "../Icons/CrownIcon";
 import Link from "next/link";
@@ -20,12 +21,14 @@ import {
 } from "../UI/Typography";
 import Button from "../UI/Button";
 
+const NS: ContentNamespace[] = ["common", "home"];
+
 const HomeServices = ({
   nodes,
 }: {
   nodes?: IService<{ Owner: Record<never, never> }>[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!nodes?.length) return null;
   return (

@@ -5,7 +5,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import { MongoDoc } from "@/Components/Hooks/useUser";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
@@ -17,6 +18,8 @@ import FormatDate from "@/Components/UI/FormatDate";
 import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import { OrderStatus } from "@/Components/Dashboard/Order/orderStatus";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
 // Shape returned by GET /paraClinic/order
 // (paraClinicController.getMyIncomingOrders) and GET
@@ -42,7 +45,7 @@ const buyerLabel = (order: IIncomingOrder) =>
   order.user?.username || order.user?.phone || "";
 
 const ParaClinicIncomingOrdersPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data, error } = useSWR<IIncomingOrder[]>(
     `${API}/paraClinic/order`,

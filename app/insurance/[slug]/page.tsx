@@ -8,14 +8,20 @@ import {
   getNodePageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "insurancePage", "medicalCenterNav", "medicalCenterLocation", "commentSection"];
 
 export const generateMetadata = (ctx: { params: { slug: string } }) =>
   getNodePageMetadata("/insurance/[slug]", ctx.params.slug);
 
 const Insurance = async (ctx: { params: { slug: string } }) => {
-  const data = await getPublicData<InsurancePageProps>(
-    `/insurance/${ctx.params.slug}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<InsurancePageProps>(`/insurance/${ctx.params.slug}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getNodePageWebSchema(
     "/insurance/[slug]",
@@ -24,7 +30,9 @@ const Insurance = async (ctx: { params: { slug: string } }) => {
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <InsurancePage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <InsurancePage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

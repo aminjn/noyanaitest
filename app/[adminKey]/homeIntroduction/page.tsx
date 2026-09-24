@@ -1,7 +1,17 @@
 import AdminManageHomeIntroductionsPage from "@/Components/Admin/HomeIntroduction/AdminManageHomeIntroductionsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageHomeIntroductions = () => {
-  return <AdminManageHomeIntroductionsPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageHomeIntroductions = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageHomeIntroductionsPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageHomeIntroductions;

@@ -3,7 +3,8 @@ import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./PublicDrSessions.module.css";
 import { API } from "../config";
 import { Fragment, useEffect, useState } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ISessionSettings } from "../DoctorPanel/Settings/SettingsTab";
 import { IDoctorInsurance } from "../DoctorPanel/Insurance/DoctorInsurancesTab";
 import { IClinicDoctor } from "../Admin/Clinic/AdminManageClinicsPage";
@@ -17,6 +18,8 @@ import BookingSessionSelectorPopup from "../Booking/BookingSessionSelectorPopup"
 import { currencize } from "../helpers/currencize";
 import Button from "../UI/Button";
 import SelectClinicFirstPopup from "./SelectClinicFirstPopup";
+
+const NS: ContentNamespace[] = ["common", "drSessions"];
 
 export type DoctorConfig = Record<
   DoctorSessionType,
@@ -60,7 +63,7 @@ const PublicDrSessions = ({ doctor }: { doctor: IDoctorProfile }) => {
     null,
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

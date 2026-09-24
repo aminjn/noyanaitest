@@ -1,11 +1,14 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import classes from "./AboutCta.module.css";
 import HostedImage from "../UI/HostedImage";
 import { t2xlBold, tbaseRegular } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "aboutPage"];
+
 const AboutCta = ({ aboutCta }: { aboutCta?: string }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

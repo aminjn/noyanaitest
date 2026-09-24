@@ -1,7 +1,17 @@
 import AdminManageDrugsPage from "@/Components/Admin/Drug/AdminManageDrugsPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageDrugs = () => {
-  return <AdminManageDrugsPage />
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageDrugs = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageDrugsPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageDrugs;

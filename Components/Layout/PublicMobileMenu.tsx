@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import useSWR from "swr";
 import classes from "./PublicMobileMenu.module.css";
-import useLocale from "../Hooks/useLocale";
 import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import Ixon from "../UI/Ixon";
@@ -38,6 +37,10 @@ import {
   tsmMedium,
   txsMedium,
 } from "../UI/Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const menuItems: { title: ContentKey; target: string; icon: ReactNode }[] = [
   { title: "officeBook", target: "/book", icon: <Calendar02Icon /> },
@@ -61,7 +64,7 @@ const PublicMobileMenu = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const { user } = useUser();
   const { setPopup } = usePopup();
 

@@ -2,9 +2,12 @@ import { Fragment, useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
-import useLocale from "@/Components/Hooks/useLocale";
 import { API } from "@/Components/config";
 import { Acl, NodeWithAcl } from "../Request/CreateSecretaryRequestPopup";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 const DeleteSecretaryAccessLevelPopup = ({
   mutate,
@@ -18,7 +21,7 @@ const DeleteSecretaryAccessLevelPopup = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <Fragment>

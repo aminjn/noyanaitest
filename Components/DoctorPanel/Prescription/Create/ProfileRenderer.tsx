@@ -1,20 +1,22 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import classes from "./ProfileRenderer.module.css";
 import Ixon from "@/Components/UI/Ixon";
 import FolderIcon from "@/Components/Icons/FolderIcon";
 import { useContext } from "react";
 import PrescriptionContext from "../PrescriptionContext";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import FormatDate, { dateToString } from "@/Components/UI/FormatDate";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import LinkAltIcon from "@/Components/Icons/LinkAltIcon";
 import FileIcon from "@/Components/Icons/FileIcon";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
+
 const ProfileRenderer = () => {
   const ctx = useContext(PrescriptionContext);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   const { profile, setProfile } = ctx;
 

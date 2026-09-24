@@ -15,12 +15,15 @@ import classes from "./SignupPopup.module.css";
 import PopupCard from "../UI/PopupCard";
 import CodeInput from "../UI/CodeInput";
 import { isOTP } from "../helpers/Validators";
-import useLocale from "../Hooks/useLocale";
 import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import SocketContext from "../Store/SocketContext";
 import AuthShell from "./AuthShell";
 import { tmdMedium } from "../UI/Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 type SignupInput = { birthDate: Date; phone: string; nationalId: string };
 
@@ -47,7 +50,7 @@ const SignupPopup = ({
 
   const { reconnect } = useContext(SocketContext);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const {
     setInput: setCodeInput,

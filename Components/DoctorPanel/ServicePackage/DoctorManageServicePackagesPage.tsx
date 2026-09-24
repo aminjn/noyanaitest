@@ -17,7 +17,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
 import DoctorMutateServicePackagePopup from "./DoctorMutateServicePackagePopup";
@@ -29,6 +29,9 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteServicePackagePopup from "./DeleteServicePackagePopup";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelServicePackage"];
 
 export type ServicePackagePopulation = Population<{
   Owner: DoctorProfilePopulation;
@@ -78,7 +81,7 @@ const DoctorManageServicePackagesPage = () => {
     fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

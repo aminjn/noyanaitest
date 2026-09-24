@@ -1,10 +1,13 @@
 "use client";
 
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelStub"];
 
 const DoctorManagePatientDocuments = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },
     { title: getContent("patientDocuments"), target: "/doctorpanel/document" },

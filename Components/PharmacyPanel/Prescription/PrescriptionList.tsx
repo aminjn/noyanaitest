@@ -1,4 +1,5 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import classes from "./PrescriptionList.module.css";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EyeIcon from "@/Components/Icons/EyeIcon";
@@ -11,6 +12,8 @@ import PrescriptionFillPatient from "./PrescriptionFillPatient";
 import PrescriptionListItem from "./PrescriptionListItem";
 import { IncomingTaminPharmacyResponse } from "./FindPrescriptionAgent";
 
+const NS: ContentNamespace[] = ["common", "pharmacyPanelPrescription"];
+
 const PrescriptionList = ({
   data,
   onCancel,
@@ -18,7 +21,7 @@ const PrescriptionList = ({
   data: IncomingTaminPharmacyResponse;
   onCancel: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [selected, setSelected] = useState<
     null | IncomingTaminPharmacyResponse["list"][number]

@@ -2,7 +2,10 @@ import { ReactNode } from "react";
 import classes from "./BookingFilterDrawerField.module.css";
 import Button from "../UI/Button";
 import ToggleInput from "../UI/ToggleInput";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 // Wraps a single field rendered inside a BookingFiltersMobile drawer so its
 // closing behavior matches its input type:
@@ -26,7 +29,7 @@ export type BookingFilterDrawerFieldProps =
     };
 
 const BookingFilterDrawerField = (props: BookingFilterDrawerFieldProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (props.type === "toggle") {
     return (

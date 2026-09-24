@@ -22,16 +22,18 @@ import {
 } from "react";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
 import { ContentKey } from "@/Components/Enums/contentKeys";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import DayShifts from "./DayShifts";
 import Ixon from "@/Components/UI/Ixon";
 import ErrorIcon from "@/Components/Icons/ErrorIcon";
 import useShiftUtils from "./useShiftUtils";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import Button from "@/Components/UI/Button";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
 export const daysOfWeekContentKeys: ContentKey[] = [
   "saturday",
@@ -85,9 +87,9 @@ const Inner = ({
     Partial<ShiftContext[number]>[] | null
   >(null);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(NS);
 
   const { shiftHasProblem, getShiftSessions } = useShiftUtils();
 
@@ -198,7 +200,7 @@ const DoctorManageShiftsPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

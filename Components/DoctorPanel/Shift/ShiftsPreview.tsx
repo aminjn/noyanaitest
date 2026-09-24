@@ -1,4 +1,4 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import {
   daysOfWeekContentKeys,
   DoctorShiftDay,
@@ -7,12 +7,14 @@ import {
 import classes from "./ShiftsPreview.module.css";
 import useShiftUtils from "./useShiftUtils";
 import { Fragment, useMemo } from "react";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import { IOffice } from "../Office/DoctorManageOfficesPage";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { numberToTime } from "../Calendar/AddSessionsAgent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
 const ShiftsPreview = ({
   data,
@@ -30,9 +32,9 @@ const ShiftsPreview = ({
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(NS);
 
   const todaysShifts = useMemo<ShiftContext>(
     () => data.filter((el) => el.day === day),

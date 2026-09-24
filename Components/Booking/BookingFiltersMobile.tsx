@@ -3,12 +3,15 @@ import { BookingCommon, bookingSorts } from "./BookingPage2";
 import { ContentKey } from "../Enums/contentKeys";
 import classes from "./BookingFiltersMobile.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import FilterIcon from "../Icons/FilterIcon";
 import BarsAltIcon from "../Icons/BarsAltIcon";
 import { t2xsDemiBold } from "../UI/Typography";
 import Drawer from "./Drawer";
 import BookingFilterFullDrawer from "./BookingFilterFullDrawer";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const BookingFiltersMobile = ({
   common,
@@ -39,7 +42,7 @@ const BookingFiltersMobile = ({
     fullScreen?: boolean;
   } | null>(null);
 
-  const getContent = useScopedLocale(["booking"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <Fragment>

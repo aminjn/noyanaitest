@@ -1,10 +1,13 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePrescription from "../Store/usePrescription";
 import classes from "./CreatePrescriptionTaminBox.module.css";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
+
 const Segment = ({ title, value }: { title: ContentKey; value?: string }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <div className={classes.segment}>
       <span className={classes.segmentTitle}>{getContent(title)}</span>
@@ -19,7 +22,7 @@ const Segment = ({ title, value }: { title: ContentKey; value?: string }) => {
 const CreatePrescriptionTaminBox = () => {
   const { defaultValue } = usePrescription();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   console.log(defaultValue);
 

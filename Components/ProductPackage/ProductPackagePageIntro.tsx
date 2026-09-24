@@ -10,7 +10,8 @@ import {
 } from "../Admin/Product/AdminManageProductsPage";
 import { FILE_PATH, FilePath } from "../config";
 import StarIcon from "../Icons/StarIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import StarsSolidIcon from "../Icons/StarsSolidIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
@@ -26,6 +27,8 @@ import {
 import { ProductPackagePageProps } from "./ProductPackagePage";
 import HostedImage from "../UI/HostedImage";
 
+const NS: ContentNamespace[] = ["common", "productPackagePage"];
+
 const Spec = ({ spec }: { spec: IProductSpec }) => {
   return (
     <div className={classes.spec}>
@@ -38,7 +41,7 @@ const Spec = ({ spec }: { spec: IProductSpec }) => {
 };
 
 const SpecBox = ({ data }: { data: ProductPackagePageProps["data"] }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!data.specs.length) return null;
   return (
@@ -75,7 +78,7 @@ const ProductPackagePageIntro = ({
     data.images[0],
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

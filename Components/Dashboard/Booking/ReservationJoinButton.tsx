@@ -1,9 +1,12 @@
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import ChatBubbleIcon from "@/Components/Icons/ChatBubbleIcon";
 import VideoIcon from "@/Components/Icons/VideoIcon";
 import CallCallingIcon from "@/Components/Icons/CallCallingIcon";
 import { DoctorSessionType } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
+
+const NS: ContentNamespace[] = ["common", "dashboardReservationJoinButton"];
 
 // Reservation.chat / Reservation.callRoom are set by the backend cron sweep
 // once it dispatches the session channel for textChat / voiceCall /
@@ -19,7 +22,7 @@ const ReservationJoinButton = ({
   callRoom?: string;
   sessionType: DoctorSessionType;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (chat)
     return (

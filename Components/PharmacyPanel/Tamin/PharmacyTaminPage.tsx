@@ -2,15 +2,18 @@
 
 import TabSystem from "@/Components/Admin/UI/TabSystem";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import GetPharmacyPrescription from "./GetPhamacyPrescription";
 import DoctorTaminTokenManager from "@/Components/DoctorPanel/Prescription/DoctorTaminTokenManager";
 import GetSubmittedPrescInfo from "./GetSubmittedPrescInfo";
 import GetAdditiveDrugs from "./GetAdditiveDrugs";
 
+const NS: ContentNamespace[] = ["common", "pharmacyPanelTamin"];
+
 const PharmacyTaminPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/pharmacypanel" },

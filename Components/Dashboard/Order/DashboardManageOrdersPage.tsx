@@ -6,7 +6,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Table from "@/Components/Admin/UI/Table";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import FormatDate from "@/Components/UI/FormatDate";
 import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "@/Components/Admin/UI/TableActions";
@@ -15,6 +16,8 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import OrderStatusBadge from "./OrderStatusBadge";
 import { OrderStatus } from "./orderStatus";
+
+const NS: ContentNamespace[] = ["common", "dashboardOrder"];
 
 // Unpopulated shape returned by GET /user/order (list) — mirrors Models/
 // Order.ts on noyanai-back. The item arrays only need their length here
@@ -42,7 +45,7 @@ const itemCount = (order: IOrderListItem) =>
   order.tests.length;
 
 const DashboardManageOrdersPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data, error } = useSWR<IOrderListItem[]>(
     `${API}/user/order`,

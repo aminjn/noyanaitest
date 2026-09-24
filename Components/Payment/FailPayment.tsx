@@ -1,11 +1,14 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import useProgress from "../Hooks/useProgress";
 import CloseIcon from "../Icons/CloseIcon";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import classes from "./FailPayment.module.css";
+
+const NS: ContentNamespace[] = ["common", "paymentResult"];
 const FailPayment = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const push = useProgress();
 

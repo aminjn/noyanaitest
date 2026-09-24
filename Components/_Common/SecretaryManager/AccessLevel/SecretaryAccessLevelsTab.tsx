@@ -3,7 +3,6 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
 import Table from "@/Components/Admin/UI/Table";
 import usePopup from "@/Components/Hooks/usePopup";
 import Button from "@/Components/UI/Button";
@@ -18,6 +17,10 @@ import { Acl, NodeWithAcl } from "../Request/CreateSecretaryRequestPopup";
 import MutateSecretaryAccessLevelPopup from "./MutateSecretaryAccessLevelPopup";
 import PreviewSecretaryAccessLevelPopup from "./PreviewSecretaryAccessLevelPopup";
 import DeleteSecretaryAccessLevelPopup from "./DeleteSecretaryAccessLevelPopup";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
   const { data, error, mutate } = useSWR<Acl<[], unknown>[]>(
@@ -25,7 +28,7 @@ const SecretaryAccessLevelsTab = ({ name }: { name: NodeWithAcl }) => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 

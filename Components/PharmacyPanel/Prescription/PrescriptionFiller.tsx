@@ -1,4 +1,5 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import classes from "./PrescriptionFiller.module.css";
 import PrescriptionFillPatient from "./PrescriptionFillPatient";
 import PrescriptionListItem from "./PrescriptionListItem";
@@ -16,6 +17,8 @@ import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import { IncomingTaminPharmacyResponse } from "./FindPrescriptionAgent";
 
+const NS: ContentNamespace[] = ["common", "pharmacyPanelPrescription"];
+
 const PrescriptionFiller = ({
   prescription,
   data,
@@ -25,7 +28,7 @@ const PrescriptionFiller = ({
   data: IncomingTaminPharmacyResponse;
   onBack: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

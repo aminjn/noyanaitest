@@ -7,17 +7,20 @@ import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import AuthPopup from "../Popups/AuthPopup";
 import HostedImage from "../UI/HostedImage";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import useUserMenus from "./useUserMenus";
 import Link from "next/link";
 import { tbaseDemiBold, tbaseMedium, tsmRegular } from "../UI/Typography";
 import SwitchProfile, { SwitchProfilePopup } from "./SwitchProfile";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 const MobileUserButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { user } = useUser();
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 

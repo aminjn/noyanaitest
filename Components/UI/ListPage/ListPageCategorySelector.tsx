@@ -3,9 +3,12 @@ import Ixon from "../Ixon";
 import classes from "./ListPageCategorySelector.module.css";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import useLocale from "@/Components/Hooks/useLocale";
 import { txsMedium } from "../Typography";
 import { WithStyleProps } from "@/Components/Layout/Layout";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 const ListPageCategorySelector = ({
   categories,
   basePath,
@@ -21,7 +24,7 @@ const ListPageCategorySelector = ({
 }>) => {
   const searchParams = useSearchParams();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!categories.length) return null;
   return (

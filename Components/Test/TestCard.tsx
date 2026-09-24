@@ -4,15 +4,18 @@ import FlaskIcon from "../Icons/FlaskIcon";
 import Badge from "../UI/Badge";
 import Ixon from "../UI/Ixon";
 import classes from "./TestCard.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { tsmMedium, txsRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "testCard"];
 
 const TestCard = ({
   node,
 }: {
   node: ITest<{ Category: Record<never, never> }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

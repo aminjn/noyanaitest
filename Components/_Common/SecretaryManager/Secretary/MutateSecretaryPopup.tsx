@@ -1,7 +1,6 @@
 import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
 // import { getAclLabel } from "@/Components/Admin/Lib/LabelGetters";
 import usePopup from "@/Components/Hooks/usePopup";
 import {
@@ -10,6 +9,10 @@ import {
   SecretaryNodePath,
 } from "../Request/CreateSecretaryRequestPopup";
 import { getAccessLevelLabel } from "@/Components/Admin/Lib/LabelGetters";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 const MutateSecretaryPopup = ({
   mutate,
@@ -20,7 +23,7 @@ const MutateSecretaryPopup = ({
   mutate: () => unknown;
   node: ISecretary<SecretaryNodePath, { Acl: true; Secretary: true }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { closePopup } = usePopup();
 

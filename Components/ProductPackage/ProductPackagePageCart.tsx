@@ -2,7 +2,8 @@ import { Fragment } from "react";
 import { ProductPackagePageProps } from "./ProductPackagePage";
 import classes from "./ProductPackagePageCart.module.css";
 import PlusBox from "../Product/PlusBox";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Image from "next/image";
 import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
@@ -18,8 +19,10 @@ import {
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
 
+const NS: ContentNamespace[] = ["common", "productPackagePage"];
+
 const ProductPackagePageCart = ({ data }: ProductPackagePageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <Fragment>
       <div className={classes.main}>

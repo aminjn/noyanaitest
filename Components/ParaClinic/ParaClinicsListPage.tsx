@@ -1,7 +1,8 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import SpecialsBox from "../Clinic/SpecialsBox";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import FlaskIcon from "../Icons/FlaskIcon";
 import { IParaClinic } from "../Layout/ParaClinicPanelLayout";
 import { IParaClinicCategory } from "../Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
@@ -19,6 +20,8 @@ import { tbaseMedium, tsmRegular } from "../UI/Typography";
 import useProgress from "../Hooks/useProgress";
 import { useEffect } from "react";
 import SmallAd from "../UI/ListPage/SmallAd";
+
+const NS: ContentNamespace[] = ["common", "paraClinicsList"];
 
 export type ParaClinicsListPageProps = {
   data: IParaClinic<{
@@ -46,7 +49,7 @@ const ParaClinicsListPage = ({
   categories,
   specials,
 }: ParaClinicsListPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const searchParams = useSearchParams();
 

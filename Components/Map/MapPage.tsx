@@ -5,7 +5,6 @@ import classes from "./MapPage.module.css";
 import Input from "../UI/Input";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
-import useLocale from "../Hooks/useLocale";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import PillIcon from "../Icons/PillIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
@@ -36,6 +35,10 @@ import {
 import LoadingIcon from "../Icons/LoadingIcon";
 import MapInnerShit from "./MapInnerShit";
 import SearchZones from "./SearchZones";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "mapPage"];
 
 export const mapFilters = [
   "doctors",
@@ -126,7 +129,7 @@ const MapPage = () => {
 
   const [filters, setFilters] = useState<MapFilter[]>(["doctors"]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>

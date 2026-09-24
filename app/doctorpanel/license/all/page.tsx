@@ -6,10 +6,11 @@ const DoctorAllLicenses = async () => {
   const textContent = await getScopedTextContent([
     "common",
     "doctorPanelLicense",
+    "sharedLicense",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "doctorPanelLicense"]}
+      namespaces={["common", "doctorPanelLicense", "sharedLicense"]}
       initialTextContent={textContent}
     >
       <AllLicensePlansPage name="doctor" />

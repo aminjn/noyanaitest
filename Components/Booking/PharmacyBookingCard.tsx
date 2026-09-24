@@ -8,8 +8,8 @@ import { t2xsRegular, tsmDemiBold, txsRegular } from "../UI/Typography";
 import ScoreBadge from "./ScoreBadge";
 import StarIcon from "../Icons/StarIcon";
 import MoreMenusButton from "../UI/MoreMenusButton";
-import useLocale from "../Hooks/useLocale";
-import useComplexLocale from "../Hooks/useComplexLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import usePopup from "../Hooks/usePopup";
 import ReportProblemPopup from "./ReportProblemPopup";
 import EditIcon from "../Icons/EditIcon";
@@ -22,6 +22,8 @@ import { BookingView } from "./BookingPage2";
 import CommonCenterCard from "./CommonCenterCard";
 import HostedImage from "../UI/HostedImage";
 
+const NS: ContentNamespace[] = ["common", "booking"];
+
 const PharmacyBookingCard = ({
   node,
   view,
@@ -29,9 +31,9 @@ const PharmacyBookingCard = ({
   node: IPharmacy;
   view: BookingView;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = getContent;
 
   const { setPopup } = usePopup();
 

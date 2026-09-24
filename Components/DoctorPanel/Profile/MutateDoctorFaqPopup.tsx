@@ -2,8 +2,11 @@ import usePopup from "@/Components/Hooks/usePopup";
 import { IDoctorFaq } from "./DoctorManageFaqTab";
 import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { API } from "@/Components/config";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
 const MutateDoctorFaqPopup = ({
   mutate,
@@ -13,7 +16,7 @@ const MutateDoctorFaqPopup = ({
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard>
       <CreateForm

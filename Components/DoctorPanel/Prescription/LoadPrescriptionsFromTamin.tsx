@@ -1,14 +1,17 @@
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import LoadedPrescriptionPopup, {
   LoadedPrescription,
 } from "./LoadedPrescriptionPopup";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionList"];
+
 const LoadPrescriptionsFromTamin = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { closePopup, setPopup } = usePopup();
 

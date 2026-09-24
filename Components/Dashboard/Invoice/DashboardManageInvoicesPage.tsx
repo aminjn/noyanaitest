@@ -10,12 +10,15 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Table from "@/Components/Admin/UI/Table";
 import Pagination from "@/Components/UI/Pagination";
 import { IInvoice } from "@/Components/Booking/SelectSessionToReservePopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import FormatDate from "@/Components/UI/FormatDate";
 import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
+
+const NS: ContentNamespace[] = ["common", "dashboardInvoice"];
 
 // mirrors Lib/enums.ts `pageLimit` on the backend
 const INVOICES_PAGE_LIMIT = 25;
@@ -29,7 +32,7 @@ const DashboardManageinvoicesPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

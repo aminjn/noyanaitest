@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
 import classes from "./PatientSelector.module.css";
 import PrescriptionContext from "../PrescriptionContext";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Input from "@/Components/UI/Input";
 import Button from "@/Components/UI/Button";
 import { isSSID } from "@/Components/helpers/Validators";
@@ -12,9 +13,11 @@ import { IUserIdentity } from "@/Components/Dashboard/DashboardPage";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import { WithStyleProps } from "@/Components/Layout/Layout";
 import Form from "@/Components/UI/Form";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 const PatientSelector = ({ className = "", style }: WithStyleProps) => {
   const { setPatient, canMutatePatient } = useContext(PrescriptionContext);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [isLoading, setIsLoading] = useState<{ nationalId: string } | null>(
     null,

@@ -1,9 +1,12 @@
 import { IGalleryItem } from "@/Components/Admin/Doctor/AdminManageDoctorGalleryTab";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
 const MutateGalleryItemPopup = ({
   mutate,
@@ -14,7 +17,7 @@ const MutateGalleryItemPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <PopupCard>

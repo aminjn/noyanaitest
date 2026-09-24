@@ -4,7 +4,10 @@ import { WithStyleProps } from "../Layout/Layout";
 import { useState } from "react";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const DateInput = ({
   className = "",
@@ -23,7 +26,7 @@ const DateInput = ({
   placeholder?: string | boolean;
   onClear?: () => unknown;
 }>) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>

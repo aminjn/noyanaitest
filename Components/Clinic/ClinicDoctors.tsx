@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import useLocale from "../Hooks/useLocale";
 import PeopleIcon from "../Icons/PeopleIcon";
 import IconTitle from "../UI/IconTitle";
 import classes from "./ClinicDoctors.module.css";

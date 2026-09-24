@@ -8,9 +8,12 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import DashboardManageAddressLocationTab from "./DashboardManageAddressLocationTab";
+
+const NS: ContentNamespace[] = ["common", "dashboardAddress"];
 
 const DashboardManageAddressPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -19,7 +22,7 @@ const DashboardManageAddressPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

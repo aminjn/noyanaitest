@@ -5,9 +5,12 @@ import {
   bookingNodes,
   bookingNodesContentKeyDict,
 } from "./BookingPage2";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { tmdMedium, txsRegular } from "../UI/Typography";
 import Button from "../UI/Button";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const BookingFilter = ({
   common,
@@ -26,7 +29,7 @@ const BookingFilter = ({
   filtered?: boolean;
   onClear: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

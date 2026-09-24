@@ -4,14 +4,17 @@ import useForm from "../Hooks/useForm";
 import { API } from "../config";
 import Form from "../UI/Form";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "mag"];
+
 const BlogsRRS = () => {
   const [didSubmit, setDidSubmit] = useState<boolean>(false);
 
-  const getContent = useScopedLocale(["common", "mag"]);
+  const getContent = useScopedLocale(NS);
 
   const { setInput, isLoading, submit } = useForm<{ email: string }>({
     path: `${API}/public/blog`,

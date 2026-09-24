@@ -2,7 +2,6 @@ import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IHospitalClinic } from "../Admin/Hospital/AdminManageHospitalPage";
 import MedicalCenterDepartments from "../Clinic/MedicalCenterDepartments";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
-import useLocale from "../Hooks/useLocale";
 import BuildingIcon from "../Icons/BuildingIcon";
 import Badge from "../UI/Badge";
 import IconTitle from "../UI/IconTitle";

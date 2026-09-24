@@ -17,7 +17,10 @@ import FormatDate from "@/Components/UI/FormatDate";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import { getUserLabel } from "../Lib/LabelGetters";
 import DeletePushSubscriptionPopup from "./DeletePushSubscriptionPopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "adminPushTest"];
 
 export type PushSubscriptionPopulation = Population<{ User: UserPopulation }>;
 
@@ -62,7 +65,7 @@ const AdminTestPushPage = () => {
 
   const { setPopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <HandleLoading data={!!subscriptions} error={error}>

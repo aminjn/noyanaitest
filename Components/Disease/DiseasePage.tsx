@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./DiseasePage.module.css";
 import { imagePath } from "../helpers/imagepath";
 import { TitleTextSection } from "../Symptom/SymptomPage";
@@ -24,6 +25,8 @@ import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
+
+const NS: ContentNamespace[] = ["common", "diseasePage"];
 
 export type DiseasePageProps = {
   data: IDisease<{
@@ -50,7 +53,7 @@ export type DiseasePageProps = {
 };
 
 const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <ListPageLayout

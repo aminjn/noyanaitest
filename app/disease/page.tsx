@@ -26,7 +26,7 @@ const DiseasesList = async (ctx: {
   if (category) params.append("category", category);
   const [data, textContent] = await Promise.all([
     getPublicData<DiseasesListPageProps>(`disease?${params.toString()}`),
-    getScopedTextContent(["common", "diseasesList"]),
+    getScopedTextContent(["common", "diseasesList", "diseaseCard"]),
   ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/disease");
@@ -34,7 +34,7 @@ const DiseasesList = async (ctx: {
     <>
       <JsonLdSchema schema={webSchema} />
       <LocaleScopeProvider
-        namespaces={["common", "diseasesList"]}
+        namespaces={["common", "diseasesList", "diseaseCard"]}
         initialTextContent={textContent}
       >
         <DiseasesListPage {...data} />

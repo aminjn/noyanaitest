@@ -1,10 +1,13 @@
-import useLocale from "@/Components/Hooks/useLocale";
 import classes from "./ListPageAiSummary.module.css";
 import Image from "next/image";
 import Ixon from "../Ixon";
 import AiIcon from "@/Components/Icons/AiIcon";
 import RenderRtf from "../RenderRtf";
 import { tlgDemiBold, tsmRegular, txsRegular } from "../Typography";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const ListPageAISummary = ({
   content,
@@ -13,7 +16,7 @@ const ListPageAISummary = ({
   title: string;
   content?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!content) return null;
   return (

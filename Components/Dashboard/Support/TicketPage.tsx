@@ -10,7 +10,8 @@ import { useParams } from "next/navigation";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useForm from "@/Components/Hooks/useForm";
 import Badge from "@/Components/UI/Badge";
 import Button from "@/Components/UI/Button";
@@ -20,6 +21,8 @@ import FormatDate from "@/Components/UI/FormatDate";
 import SendIcon from "@/Components/Icons/SendIcon";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import { useEffect, useMemo, useRef } from "react";
+
+const NS: ContentNamespace[] = ["common", "dashboardSupport"];
 
 type FullTicket = ITicket<{ Messages: Record<never, never> }>;
 type TicketMessageItem = FullTicket["messages"][number];
@@ -44,7 +47,7 @@ const CloseTicketAction = ({
   nodeId: string;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { submit, isLoading } = useForm<Record<string, never>>({
     path: `${API}/support/${nodeId}`,
@@ -72,7 +75,7 @@ const MessageSender = ({
   nodeId: string;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const textRef = useRef<HTMLTextAreaElement>(null);
 
@@ -128,7 +131,7 @@ const InnerTicket = ({
   ticket: FullTicket;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 

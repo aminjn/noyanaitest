@@ -4,7 +4,8 @@ import useUser from "../Hooks/useUser";
 import { IUserIdentity } from "./DashboardPage";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import IconButton from "../Admin/UI/IconButton";
 import Icon from "react-multi-date-picker/components/icon";
 import EditIcon from "../Icons/EditIcon";
@@ -13,6 +14,8 @@ import usePopup from "../Hooks/usePopup";
 import EditUserDetailsPopup from "./EditUserDetailsPopup";
 import DataPair from "../Admin/UI/DataPair";
 import FormatDate from "../UI/FormatDate";
+
+const NS: ContentNamespace[] = ["common", "dashboardUserIdentity"];
 
 const UserIdentity = ({
   identity,
@@ -25,7 +28,7 @@ const UserIdentity = ({
   username?: string;
   self?: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

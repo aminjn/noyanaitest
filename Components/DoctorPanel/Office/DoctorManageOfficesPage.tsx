@@ -8,7 +8,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
 import DoctorMutateOfficePopup from "./DoctorMutateOfficePopup";
@@ -21,6 +21,9 @@ import IconLink from "@/Components/Admin/UI/IconLink";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteOfficePopup from "./DeleteOfficePopup";
 import OrderEditor from "@/Components/Admin/UI/OrderEditor";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelOffice"];
 
 export type OfficePopulation = Population<{ Doctor: DoctorProfilePopulation }>;
 
@@ -44,7 +47,7 @@ const DoctorManageOfficesPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

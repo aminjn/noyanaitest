@@ -2,13 +2,16 @@
 
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import InsuranceManageDetailsTab from "./InsuranceManageDetailsTab";
 import InsuranceManageLocationTab from "./InsuranceManageLocationTab";
 
+const NS: ContentNamespace[] = ["common", "insurancePanelProfile"];
+
 const InsuranceManageProfilePage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/insurancepanel" },

@@ -8,6 +8,11 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "clinicsList", "clinicCard"];
 
 export const generateMetadata = () => getListPageMetadata("/clinic");
 
@@ -28,15 +33,18 @@ const ClinicsList = async (ctx: {
   if (category)
     for (const cat of Array.isArray(category) ? category : [category])
       params.append("category", cat);
-  const data = await getPublicData<ClinicsListProps>(
-    `clinic?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<ClinicsListProps>(`clinic?${params.toString()}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/clinic");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <ClinicsListPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <ClinicsListPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

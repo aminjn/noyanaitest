@@ -6,12 +6,16 @@ import {
   ticketSubjectContentKeyDict,
   ticketSubjects,
 } from "./SupportPage";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 import useProgress from "@/Components/Hooks/useProgress";
+
+const NS: ContentNamespace[] = ["common", "dashboardSupport"];
+
 const SubmitTicketPopup = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

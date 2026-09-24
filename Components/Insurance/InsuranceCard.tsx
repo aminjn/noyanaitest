@@ -5,7 +5,8 @@ import { FilePath } from "../config";
 import Badge from "../UI/Badge";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ReactNode } from "react";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
@@ -18,6 +19,8 @@ import {
 } from "../UI/Typography";
 import Link from "next/link";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "insuranceCard"];
 
 const Count = ({
   icon,
@@ -43,7 +46,7 @@ const Count = ({
 };
 
 const InsuranceCard = ({ node }: { node: InsurancesPageNode }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

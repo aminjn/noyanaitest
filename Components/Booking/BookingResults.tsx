@@ -2,13 +2,15 @@ import { Dispatch, ReactNode, SetStateAction } from "react";
 import { BookingCommon, bookingSorts } from "./BookingPage2";
 import classes from "./BookingResults.module.css";
 import SortButton from "../UI/SortButton";
-import useLocale from "../Hooks/useLocale";
-import useComplexLocale from "../Hooks/useComplexLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { t2xsRegular } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import CategoriesIcon from "../Icons/CategoriesIcon";
 import BarsIcon from "../Icons/BarsIcon";
 import { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
+
+const NS: ContentNamespace[] = ["common", "booking"];
 
 const BookingResults = ({
   common,
@@ -21,9 +23,9 @@ const BookingResults = ({
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
   count?: number;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = getContent;
 
   return (
     <div className={classes.main}>

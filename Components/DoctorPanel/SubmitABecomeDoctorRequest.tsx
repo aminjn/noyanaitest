@@ -4,13 +4,16 @@ import { API } from "../config";
 import { cities } from "../Enums/Cities";
 import { provinces } from "../Enums/Provinces";
 import useForm from "../Hooks/useForm";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
 import {
   genders,
   IBecomeDoctorRequest,
   medicalSystemTitles,
 } from "./DoctorPanelPage";
 import classes from "./SubmitABecomeDoctorRequest.module.css";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelBecomeDoctor"];
 
 const SubmitABecomeDoctorRequest = ({
   mutate,
@@ -19,7 +22,7 @@ const SubmitABecomeDoctorRequest = ({
   defaultValue?: IBecomeDoctorRequest;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const form = useForm<IBecomeDoctorRequest>({
     path: `${API}/doctor`,

@@ -6,7 +6,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import { MongoDoc } from "@/Components/Hooks/useUser";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
@@ -18,6 +19,8 @@ import FormatDate from "@/Components/UI/FormatDate";
 import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import { OrderStatus } from "@/Components/Dashboard/Order/orderStatus";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
 // Shape returned by GET /pharmacy/order (pharmacyController.getMyIncomingOrders)
 // and GET /pharmacy/order/:nodeId (pharmacyController.getMyIncomingOrder) -
@@ -54,7 +57,7 @@ const itemCount = (order: IIncomingOrder) =>
   order.products.length + order.productPackages.length;
 
 const PharmacyIncomingOrdersPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data, error } = useSWR<IIncomingOrder[]>(
     `${API}/pharmacy/order`,

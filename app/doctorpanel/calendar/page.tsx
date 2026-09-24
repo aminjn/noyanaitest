@@ -3,10 +3,10 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
 const DoctorManageCalendar = async () => {
-  const textContent = await getScopedTextContent(["common", "doctorPanelCalendar"]);
+  const textContent = await getScopedTextContent(["common", "doctorPanelCalendar", "uiCalendar"]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "doctorPanelCalendar"]}
+      namespaces={["common", "doctorPanelCalendar", "uiCalendar"]}
       initialTextContent={textContent}
     >
       <DoctorManageCalendarPage />

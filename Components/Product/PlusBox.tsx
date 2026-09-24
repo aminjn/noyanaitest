@@ -1,13 +1,16 @@
 import { currencize } from "../helpers/currencize";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import StarsSolidIcon from "../Icons/StarsSolidIcon";
 import Badge from "../UI/Badge";
 import Button from "../UI/Button";
 import { tsmRegular } from "../UI/Typography";
 import classes from "./PlusBox.module.css";
 
+const NS: ContentNamespace[] = ["common", "productCartable"];
+
 const PlusBox = ({ value }: { value: number }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.plusBox}>

@@ -1,4 +1,3 @@
-import useLocale from "../Hooks/useLocale";
 import CheckIcon from "../Icons/CheckIcon";
 import Badge from "../UI/Badge";
 import IconTitle from "../UI/IconTitle";

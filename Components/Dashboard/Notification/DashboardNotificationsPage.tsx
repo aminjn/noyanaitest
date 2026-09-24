@@ -8,7 +8,8 @@ import classes from "./DashboardNotificationsPage.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import Button from "@/Components/UI/Button";
@@ -20,6 +21,8 @@ import Bell01Icon from "@/Components/Icons/Bell01Icon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import DoubleCheckIcon from "@/Components/Icons/DoubleCheckIcon";
 import PushNotificationToggle from "@/Components/Notification/PushNotificationToggle";
+
+const NS: ContentNamespace[] = ["common", "dashboardNotification"];
 
 // mirrors Lib/enums.ts `pageLimit` on the backend
 const NOTIFICATIONS_PAGE_LIMIT = 25;
@@ -53,7 +56,7 @@ const NotificationItem = ({
   mutate: () => unknown;
 }) => {
   const [isMarking, setIsMarking] = useState<boolean>(false);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const markRead = () => {
     if (!node.isRead && !isMarking) setIsMarking(true);
@@ -121,7 +124,7 @@ const DashboardNotificationsPage = () => {
   const [unreadOnly, setUnreadOnly] = useState<boolean>(false);
   const [isMarkingAll, setIsMarkingAll] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const pathname = usePathname();
 
   const { data, error, mutate } = useSWR<{

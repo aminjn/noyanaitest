@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./AboutMissions.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import TargetIcon from "../Icons/TargetIcon";
@@ -10,6 +11,8 @@ import TitleLegend from "./TitleLegend";
 import { tmdBold, tsmRegular } from "../UI/Typography";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
+
+const NS: ContentNamespace[] = ["common", "aboutPage"];
 
 const Card = ({
   icon,
@@ -22,7 +25,7 @@ const Card = ({
   items: ContentKey[];
   alt?: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <li className={`${classes.card} ${alt ? classes.alt : ""}`}>
       <div className={classes.icon}>

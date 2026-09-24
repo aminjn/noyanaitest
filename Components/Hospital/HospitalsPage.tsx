@@ -4,7 +4,8 @@ import { IHospital } from "../Admin/Hospital/AdminManageHospitalsPage";
 import { IHospitalCategory } from "../Admin/HospitalCategory/AdminManageHospitalCategoriesPage";
 import { IProvince } from "../Admin/Province/AdminManageProvincesPage";
 import SpecialsBox from "../Clinic/SpecialsBox";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Calendar02Icon from "../Icons/Calendar02Icon";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
@@ -24,6 +25,8 @@ import ListPageList from "../UI/ListPage/ListPageList";
 import HospitalCard from "./HospitalCard";
 import SmallAd from "../UI/ListPage/SmallAd";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "hospitalsList"];
 
 export type HospitalsPageProps = {
   data: IHospital<{
@@ -81,7 +84,7 @@ const HospitalsPage = ({
   specials,
   pagesCount,
 }: HospitalsPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const searchParams = useSearchParams();
   const [query, setQuery] = useDebounce<string>({

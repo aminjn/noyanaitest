@@ -26,6 +26,7 @@ import DoctorBookinResult from "./DoctorBookingResults";
 import BookingLayout from "./BookingLayout";
 import BookingFiltersMobile from "./BookingFiltersMobile";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import MultiSelectInputServer from "../UI/MultiSelectInputServer";
 import MultiSelectInput from "../UI/MultiSelectInput";
 import { doctorProfileTiers, genders } from "../DoctorPanel/DoctorPanelPage";
@@ -47,6 +48,8 @@ import BookingAdvancedSearchPopup, {
 } from "./BookingAdvancedSearchPopup";
 import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
+const NS: ContentNamespace[] = ["common", "booking"];
+
 const DoctorBooking = ({
   common,
   setCommon,
@@ -63,7 +66,7 @@ const DoctorBooking = ({
       initialValue: options,
     });
 
-  const getContent = useScopedLocale(["booking"]);
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

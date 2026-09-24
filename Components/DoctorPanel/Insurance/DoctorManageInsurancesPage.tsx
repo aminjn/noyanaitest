@@ -2,13 +2,16 @@
 
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import WithBalanceHeader from "../_UI/WithBalanceHeader";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import DoctorInsurancesTab from "./DoctorInsurancesTab";
 import DoctorInsuranceAdditionRequestsTab from "./DoctorInsuranceAdditionRequestsTab";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelInsurance"];
 
 const DoctorManageInsurancesPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

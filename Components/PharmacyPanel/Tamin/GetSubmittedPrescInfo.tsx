@@ -1,6 +1,7 @@
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import { API } from "@/Components/config";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import {
   SubmissionResult,
   SubResult,
@@ -9,8 +10,10 @@ import {
 import { useState } from "react";
 import useNotification from "@/Components/Hooks/useNotification";
 
+const NS: ContentNamespace[] = ["common", "pharmacyPanelTamin"];
+
 const GetSubmittedPrescInfo = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [data, setData] = useState<SubmissionResult | null>(null);
 

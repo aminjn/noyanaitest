@@ -4,7 +4,8 @@ import { useState } from "react";
 import useSWR from "swr";
 import classes from "./CartCheckoutPopup.module.css";
 import PopupCard from "../UI/PopupCard";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import usePopup from "../Hooks/usePopup";
 import useProgress from "../Hooks/useProgress";
 import useNotification from "../Hooks/useNotification";
@@ -25,6 +26,8 @@ import {
   tsmDemiBold,
   tsmRegular,
 } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "cartCheckoutPopup"];
 
 // only "wallet" is wired up on the backend today (CartController.submitCart)
 type OrderPaymentMethod = "wallet";
@@ -49,7 +52,7 @@ const CartCheckoutPopup = ({
   total: number;
   requiresAddress: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup, setPopup } = usePopup();
 

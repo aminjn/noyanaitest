@@ -2,17 +2,20 @@ import classes from "./PatientDetailsPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
 import Ixon from "@/Components/UI/Ixon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import AlertCircleIcon from "@/Components/Icons/AlertCircleIcon";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import PatientProfilesTab from "./PatientProfilesTab";
 import { PrescriptionCtx } from "../PrescriptionContext";
 import PatientPersonalDetailsPopupTitle from "./PatientPersonalDetailsPopupTitle";
 import PrescriptionProTip from "./PrescriptionProTip";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 const PatientDetailsPopup = ({ ctx }: { ctx: PrescriptionCtx }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { patient } = ctx;
 

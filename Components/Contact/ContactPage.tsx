@@ -1,6 +1,7 @@
 "use client";
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ContactInfoBox from "./ContactInfoBox";
@@ -9,6 +10,8 @@ import Ixon from "../UI/Ixon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import ContactForm from "./ContactForm";
 import { tbaseMedium } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "contactPage"];
 
 const Feature = ({ children }: { children?: ReactNode }) => {
   return (
@@ -24,7 +27,7 @@ const Feature = ({ children }: { children?: ReactNode }) => {
 };
 
 const ContactPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <ListPageLayout

@@ -6,7 +6,8 @@ import { useParams } from "next/navigation";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
@@ -25,6 +26,8 @@ import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import OrderItemStatusBadge from "@/Components/Dashboard/Order/OrderItemStatusBadge";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
 import { IIncomingOrder } from "./ParaClinicIncomingOrdersPage";
+
+const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
 interface OrderItemRow {
   key: string;
@@ -64,7 +67,7 @@ const MutateOrderItemPopup = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <Fragment>
@@ -98,7 +101,7 @@ const ParaClinicIncomingOrderPage = () => {
   );
 
   const { setPopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/paraClinicPanel" },

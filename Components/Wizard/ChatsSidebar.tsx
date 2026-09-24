@@ -1,6 +1,7 @@
 import classes from "./ChatsSidebar.module.css";
 import useBotChats, { IBotChat } from "./useBotChats";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import Link from "next/link";
 import PlusIcon from "../Icons/PlusIcon";
@@ -10,6 +11,8 @@ import WizardSidebarItem from "./WizardSidebarItem";
 import { Fragment } from "react";
 import { ContentKey } from "../Enums/contentKeys";
 import EditSquareIcon from "../Icons/EditSquareIcon";
+
+const NS: ContentNamespace[] = ["common", "wizardPage"];
 
 // Buckets chats by createdAt for the sidebar's date-grouped list, mirroring
 // the today/yesterday/last-7-days/last-30-days/older grouping common in chat
@@ -78,7 +81,7 @@ const ChatsSidebar = ({
   onClose?: () => void;
 }) => {
   const { data, mutate } = useBotChats();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

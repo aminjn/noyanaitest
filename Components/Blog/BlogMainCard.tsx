@@ -6,6 +6,7 @@ import FormatDate from "../UI/FormatDate";
 import Ixon from "../UI/Ixon";
 import UserIcon from "../Icons/UserIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ClockIcon from "../Icons/ClockIcon";
 import {
   t2xsRegular,
@@ -14,8 +15,10 @@ import {
   txsDemiBold,
 } from "../UI/Typography";
 
+const NS: ContentNamespace[] = ["common", "blogMainCard"];
+
 const BlogMainCard = ({ node }: { node: IBlog }) => {
-  const getContent = useScopedLocale(["mag"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

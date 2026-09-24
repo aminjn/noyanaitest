@@ -6,6 +6,11 @@ import {
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
 import { notFound } from "next/navigation";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "mag", "blogMainCard"];
 
 export const generateMetadata = () => getListPageMetadata("/mag");
 
@@ -29,7 +34,10 @@ const Blogs = async ({
   if (category) params.append("category", category);
   if (search) params.append("query", search);
   if (tag) params.append("tag", tag);
-  const data = await getPublicData<BlogsPageProps>(`blog?${params.toString()}`);
+  const [data, textContent] = await Promise.all([
+    getPublicData<BlogsPageProps>(`blog?${params.toString()}`),
+    getScopedTextContent(NS),
+  ]);
 
   if (!data) return notFound();
 
@@ -38,7 +46,9 @@ const Blogs = async ({
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <BlogsPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <BlogsPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

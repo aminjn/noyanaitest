@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { becomeOrgList } from "./becomeOrgs";
+
+const NS: ContentNamespace[] = ["common", "becomeSomething"];
 
 // app/become/page.tsx - the /become index itself. Login gate, the "already
 // have a node" redirect, breadcrumb, page header, and the org nav all live
@@ -11,7 +14,7 @@ import { becomeOrgList } from "./becomeOrgs";
 // /become/[org] page. JSX is intentionally bare - CSS/markup is meant to be
 // redone by hand.
 const BecomeSomethingPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div>

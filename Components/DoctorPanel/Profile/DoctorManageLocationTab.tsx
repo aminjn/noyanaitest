@@ -4,7 +4,7 @@ import classes from "./DoctorManageLocationTab.module.css";
 import PointPicker from "@/Components/Admin/UI/PointPicker";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useDoctor from "@/Components/Hooks/useDoctor";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
@@ -16,6 +16,9 @@ import {
 } from "@/Components/Admin/Province/AdminManageProvincesPage";
 import useSWR from "swr";
 import { fetcher } from "@/Components/helpers/fetcher";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
 type LocationFormInput = {
   coords: [number, number];
@@ -27,7 +30,7 @@ type LocationFormInput = {
 const DoctorManageLocationTab = () => {
   const { doctor, mutate } = useDoctor();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { input, setInput, isLoading, submit } = useForm<LocationFormInput>({
     path: `${API}/doctor/profile`,

@@ -2,15 +2,18 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import useParaClinic from "@/Components/Hooks/useParaClinic";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IParaClinicTag } from "@/Components/Admin/ParaClinicTag/AdminManageParaClinicTagsPage";
 import { IParaClinicCategory } from "@/Components/Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
+const NS: ContentNamespace[] = ["common", "paraClinicPanelProfile"];
+
 const ParaClinicManageDetailsTab = () => {
   const { paraClinic, mutate } = useParaClinic();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!paraClinic}>

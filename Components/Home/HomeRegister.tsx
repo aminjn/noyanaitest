@@ -1,5 +1,6 @@
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomeRegister.module.css";
 import Ixon from "../UI/Ixon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
@@ -12,6 +13,8 @@ import {
 } from "../UI/Typography";
 import { ContentKey } from "../Enums/contentKeys";
 import Button from "../UI/Button";
+
+const NS: ContentNamespace[] = ["common", "home"];
 
 // const stats: ContentKey[] = [
 //   "statPharmacyCount",
@@ -31,7 +34,7 @@ const stats: { title: ContentKey; value: ContentKey }[] = [
 // instead of the previous split content/avatar-stack card. Replaces the
 // former "cunts" avatar row and register.png illustration entirely.
 const HomeRegister = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

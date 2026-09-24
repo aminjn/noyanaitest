@@ -4,7 +4,8 @@ import DrugCard from "./DrugCard";
 import { ListPage } from "../Disease/DiseasesListPage";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import ListPageIntro from "../UI/ListPage/ListPageIntro";
 import BigAd from "../UI/ListPage/BigAd";
 import useDebounce from "../Hooks/useDebounce";
@@ -15,13 +16,15 @@ import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import ListPageList from "../UI/ListPage/ListPageList";
 import SmallAd from "../UI/ListPage/SmallAd";
 
+const NS: ContentNamespace[] = ["common", "drugsList"];
+
 export type DrugsListPageProps = {
   data: IDrug<{ Tag: Record<never, never> }>[];
   pagesCount: number;
 };
 
 const DrugsListPage = ({ data, pagesCount }: DrugsListPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [query, setQuery] = useDebounce({ initialValue: "" });
 

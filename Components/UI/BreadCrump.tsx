@@ -6,7 +6,10 @@ import Ixon from "./Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { BreadCrumpTrail } from "../Store/BreadCrumpStore";
 import { useTime } from "react-timer-hook";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const BreadCrump = ({
   trail,
@@ -15,7 +18,7 @@ const BreadCrump = ({
 }: WithStyleProps<{
   trail: BreadCrumpTrail;
 }>) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { hours, minutes } = useTime();
   return (

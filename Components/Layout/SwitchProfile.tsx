@@ -6,7 +6,6 @@ import useInsurance from "../Hooks/useInsurance";
 import useParaClinic from "../Hooks/useParaClinic";
 import usePharmacy from "../Hooks/usePharmacy";
 import usePopup from "../Hooks/usePopup";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import PopupCard from "../UI/PopupCard";
 import { t2xsMedium, t2xsRegular, tbaseMedium } from "../UI/Typography";
 import classes from "./SwitchProfile.module.css";
@@ -20,6 +19,10 @@ import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import usePanelsMap from "./usePanelsMaps";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 export const panels = [
   "dashboard",
@@ -46,7 +49,7 @@ export const panelToDashboardDict: Record<Panel, string> = {
 };
 
 export const SwitchProfilePopup = () => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { closePopup } = usePopup();
 
@@ -99,7 +102,7 @@ export const SwitchProfilePopup = () => {
 };
 
 const SwitchProfile = () => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 

@@ -1,6 +1,7 @@
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import classes from "./PrescriptionItemGetterAgent.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import DrugAgent from "./DrugAgent";
 import PillIcon from "@/Components/Icons/PillIcon";
 import LabAgent from "./LabAgent";
@@ -12,8 +13,10 @@ import BandageIcon from "@/Components/Icons/BandageIcon";
 import MedicalReportIcon from "@/Components/Icons/MedicalReportIcon";
 import ServicesAgent from "./ServicesAgent";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
+
 const PrescriptionItemGetterAgent = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <div className={classes.main}>
       <ClientTabSystem

@@ -1,10 +1,13 @@
 import CreateForm from "../Admin/UI/CreateForm";
 import { API } from "../config";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { IBecomePharmacyRequest } from "./BecomePharmacyPage";
 
+const NS: ContentNamespace[] = ["common", "becomePharmacy"];
+
 const SubmitBecomePharmacyRequest = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <CreateForm<IBecomePharmacyRequest>

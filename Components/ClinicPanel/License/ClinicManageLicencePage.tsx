@@ -3,7 +3,7 @@
 import useSWR from "swr";
 import classes from "./ClinicManageLicencePage.module.css";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
@@ -24,6 +24,9 @@ import {
   clinicDashboardModuleLabels,
 } from "@/Components/Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
 import PurchaseLicensePopup from "./PurchaseLicensePopup";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "clinicPanelLicense"];
 
 // Mirrors backend Models/LicenseDuration.ts - the admin-managed catalog of
 // selectable license durations (in days), populated onto each pricing
@@ -80,7 +83,7 @@ const PriceOption = ({
   option: IBaseLicensePricing;
   mutate: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const { setPopup } = usePopup();
   const price = Math.max(0, (option.price || 0) - (option.discount || 0));
 
@@ -149,7 +152,7 @@ const LicenseCard = ({
 };
 
 const ClinicManageLicencePage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data, error, mutate } = useSWR<ILicenseOverview>(
     `${API}/clinic/license`,

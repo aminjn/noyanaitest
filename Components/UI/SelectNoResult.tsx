@@ -1,7 +1,10 @@
 import { MouseEventHandler, ReactNode } from "react";
 import { WithStyleProps } from "../Layout/Layout";
-import useLocale from "../Hooks/useLocale";
 import classes from "./SelectNoResult.module.css";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const SelectNoResult = ({
   children,
@@ -12,7 +15,7 @@ const SelectNoResult = ({
   children?: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }>) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       <span>{getContent("nothingFound")}</span>

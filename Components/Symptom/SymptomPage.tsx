@@ -6,7 +6,8 @@ import {
   ISymptom,
 } from "../Admin/Disease/AdminManageDiseasesPage";
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./SymptomPage.module.css";
 import { imagePath } from "../helpers/imagepath";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
@@ -23,6 +24,8 @@ import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
+
+const NS: ContentNamespace[] = ["common", "symptomPage"];
 
 export type SymptomPageProps = {
   data: ISymptom<{
@@ -50,7 +53,7 @@ export const TitleTextSection = ({
   title: ContentKey;
   value?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!value) return null;
   return (
@@ -68,7 +71,7 @@ const SymptomPage = ({
   drugs,
   specialities,
 }: SymptomPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <ListPageLayout

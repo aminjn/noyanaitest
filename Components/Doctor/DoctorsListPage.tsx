@@ -3,11 +3,14 @@
 import { DoctorPageProps } from "@/app/doctors/page";
 import classes from "./DoctorsListPage.module.css";
 import DoctorCard from "./DoctorCard";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { Fragment } from "react";
 import ListPageList from "../UI/ListPage/ListPageList";
 import { useSearchParams } from "next/navigation";
 import BreadCrump from "../UI/BreadCrump";
+
+const NS: ContentNamespace[] = ["common", "doctorsList"];
 
 const switchPage = (page: number) => `/doctors?page=${page}`;
 
@@ -15,7 +18,7 @@ const DoctorsListPage = ({ data, pagesCount }: DoctorPageProps) => {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <Fragment>

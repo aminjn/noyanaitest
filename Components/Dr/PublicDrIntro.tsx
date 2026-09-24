@@ -3,7 +3,8 @@ import classes from "./PublicDrIntro.module.css";
 import PublicDrSessions from "./PublicDrSessions";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import HostedImage from "../UI/HostedImage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Link from "next/link";
 import Ixon from "../UI/Ixon";
 import CupIcon from "../Icons/CupIcon";
@@ -16,6 +17,8 @@ import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import Button from "../UI/Button";
 import useProgress from "../Hooks/useProgress";
+
+const NS: ContentNamespace[] = ["common", "drProfile"];
 
 const Point = ({
   title,
@@ -50,7 +53,7 @@ export const PublicDrIntroInner = ({
   speciality?: ISpeciality;
   address?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const push = useProgress();
 

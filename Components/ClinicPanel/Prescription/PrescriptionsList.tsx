@@ -5,7 +5,7 @@ import { fetcher, FetchMethod } from "@/Components/helpers/fetcher";
 import { Fragment, useCallback, useState } from "react";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Table from "@/Components/Admin/UI/Table";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ITaminSpec } from "@/Components/Admin/Tamin/Spec/AdminManageTaminSpecsPage";
 import parseMonkeyDate from "@/Components/helpers/parseMonkeyDate";
 import FormatDate from "@/Components/UI/FormatDate";
@@ -23,6 +23,9 @@ import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "clinicPanelPrescription"];
 
 // {
 //     "eprsC_ID": 140028887,
@@ -87,7 +90,7 @@ export type TaminParaPresc = {
 };
 
 const ClinicPrescriptionDetailsPopup = ({ node }: { node: TaminParaPresc }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [details, setDetails] = useState<
     {
@@ -363,7 +366,7 @@ const PrescriptionsList = ({
 
   const { setPopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!data} error={error}>

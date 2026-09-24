@@ -3,7 +3,8 @@ import { useMemo } from "react";
 import MedicalCenterLayout from "../Clinic/MedicalCenterLayout";
 import StickyNav, { SectionMap } from "../Clinic/StickyNav";
 import { IInsurance } from "../DoctorPanel/Insurance/DoctorInsurancesTab";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./InsurancePage.module.css";
 import InsurancePageIntro from "./InsurancePageIntro";
 import InsurancePageInfo from "./InsurancePageInfo";
@@ -14,6 +15,8 @@ import InsuranceContact from "./InsuranceContact";
 import LocationSection from "../Clinic/LocationSection";
 import CommentSection from "../Comment/CommentSection";
 
+const NS: ContentNamespace[] = ["common", "insurancePage"];
+
 export type InsurancePageNode = IInsurance<{
   Category: Record<never, never>;
   Plans: Record<never, never>;
@@ -22,7 +25,7 @@ export type InsurancePageNode = IInsurance<{
 export type InsurancePageProps = { data: InsurancePageNode };
 
 const InsurancePage = ({ data }: InsurancePageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const sections = useMemo<SectionMap>(() => {
     return [];

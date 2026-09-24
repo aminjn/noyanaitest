@@ -7,7 +7,10 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import PrescriptionAgent from "../Create/PrescriptionAgent";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEdit"];
 
 const DoctorEditPrescriptionPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -16,7 +19,7 @@ const DoctorEditPrescriptionPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

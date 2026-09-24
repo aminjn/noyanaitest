@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { IProductSeller } from "../Admin/Product/AdminManageProductsPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import LocationIcon from "../Icons/LocationIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
 import Ixon from "../UI/Ixon";
@@ -24,6 +25,8 @@ import Badge from "../UI/Badge";
 import { useMemo } from "react";
 import HostedImage from "../UI/HostedImage";
 
+const NS: ContentNamespace[] = ["common", "products"];
+
 const Item = ({
   node,
   cheapest,
@@ -33,7 +36,7 @@ const Item = ({
 }) => {
   const { mutateCartItem } = useCart();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.item}>
@@ -120,7 +123,7 @@ const ProductSellers = ({
 }: {
   data: IProductSeller<{ Seller: { Province: Record<never, never> } }>[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const cheapest = useMemo(
     () =>

@@ -24,7 +24,7 @@ const SymptomsList = async (ctx: {
   if (search) params.append("query", search);
   const [data, textContent] = await Promise.all([
     getPublicData<SymptomsListPageProps>(`symptom?${params.toString()}`),
-    getScopedTextContent(["common", "symptomsList"]),
+    getScopedTextContent(["common", "symptomsList", "symptomCard"]),
   ]);
 
   if (!data) return notFound();
@@ -35,7 +35,7 @@ const SymptomsList = async (ctx: {
     <>
       <JsonLdSchema schema={webSchema} />
       <LocaleScopeProvider
-        namespaces={["common", "symptomsList"]}
+        namespaces={["common", "symptomsList", "symptomCard"]}
         initialTextContent={textContent}
       >
         <SymptomsListPage {...data} />

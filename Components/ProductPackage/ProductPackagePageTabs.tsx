@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ProductTab, WhyBox } from "../Product/ProductTabs";
 import ClientTabSystem from "../UI/ClientTabSystem";
 import RenderRtf from "../UI/RenderRtf";
@@ -21,6 +22,8 @@ import {
 } from "../UI/Typography";
 import CommentSection from "../Comment/CommentSection";
 
+const NS: ContentNamespace[] = ["common", "productPackagePage"];
+
 export const DiffCalc = ({
   items,
   price,
@@ -33,7 +36,7 @@ export const DiffCalc = ({
     [items],
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.box}>
@@ -91,7 +94,7 @@ export const DiffCalc = ({
 };
 
 const ProductPackagePageTabs = ({ data }: ProductPackagePageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.main}>
       <ClientTabSystem

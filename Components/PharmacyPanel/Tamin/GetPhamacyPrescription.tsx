@@ -8,7 +8,8 @@ import WithTitle from "@/Components/Admin/UI/WithTitle";
 import { API } from "@/Components/config";
 import InfoPair from "@/Components/Dr/InfoPair";
 import { currencize } from "@/Components/helpers/currencize";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useNotification from "@/Components/Hooks/useNotification";
 import usePopup from "@/Components/Hooks/usePopup";
 import CogIcon from "@/Components/Icons/CogIcon";
@@ -19,6 +20,8 @@ import Input from "@/Components/UI/Input";
 import PopupCard from "@/Components/UI/PopupCard";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import { Fragment, useState } from "react";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelTamin"];
 
 type Presc = {
   headeprscid: number;
@@ -129,7 +132,7 @@ export const SubResult = ({
   data: SubmissionResult;
   clear: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [isRemoving, setIsRemoving] = useState<boolean>(false);
 
@@ -265,7 +268,7 @@ export const SubResult = ({
 };
 
 const ReferrerPopup = ({ node }: { node: Presc }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 
@@ -301,7 +304,7 @@ const SinglePresc = ({
   node: Presc;
   clear: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const [input, setInput] = useState<PrescInput>([]);
 
   const [isSubmitting, setIsSubmitting] = useState<PrescInput | null>(null);
@@ -532,7 +535,7 @@ const PrescList = ({
   data: Presc[];
   clear: () => unknown;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const [selected, setSelected] = useState<Presc | null>(null);
 
   if (selected)
@@ -616,7 +619,7 @@ const PrescList = ({
 };
 
 const GetPharmacyPrescription = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 

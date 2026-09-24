@@ -9,7 +9,8 @@ import SpecialityCard from "./SpecialityCard";
 import { ListPage } from "../Disease/DiseasesListPage";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Input from "../UI/Input";
 import useDebounce from "../Hooks/useDebounce";
 import Ixon from "../UI/Ixon";
@@ -25,6 +26,8 @@ import XMarkIcon from "../Icons/XMarkIcon";
 import ListPageList from "../UI/ListPage/ListPageList";
 import SmallAd from "../UI/ListPage/SmallAd";
 import usePopup from "../Hooks/usePopup";
+
+const NS: ContentNamespace[] = ["common", "specialitiesList"];
 
 export type SpecialitiesPageProps = {
   data: ISpeciality<{ Doctors: { Province: Record<never, never> } }>[];
@@ -79,7 +82,7 @@ const SpecialitiesPage = ({
   pagesCount,
   categories,
 }: SpecialitiesPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const searchParams = useSearchParams();
   const [query, setQuery] = useDebounce<string>({

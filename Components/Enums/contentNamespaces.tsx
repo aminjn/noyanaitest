@@ -45,6 +45,101 @@ export const contentNamespaces = {
     // same reasoning as the license-gate keys right above.
     "featureTemporarilyDisabledTitle",
     "featureTemporarilyDisabledLegend",
+    // (useScopedLocale migration, 2026-09)
+    // Sitewide chrome rendered from the root Layout: PublicHeader (+ headerCategories
+    // tabs, NavLinks, modal labels), PublicFooter, PublicMobileMenu, SearchModal,
+    // UserButton/MobileUserButton (+ useUserMenus), SwitchProfile (+ usePanelsMaps),
+    // CartModal, NotificationModal, Auth/Login/Signup/Logout popups, LoginRequired
+    // (every panel layout), SocketContext, FaqList.
+    "aboutUs",
+    "addressBot",
+    "addressTop",
+    "aiDetection",
+    "blog",
+    "blogs",
+    "bookingGuide",
+    "cart",
+    "categories",
+    "checkInput",
+    "clinicPanel",
+    "clinics",
+    "contactSupport",
+    "contactUs",
+    "dashboard",
+    "diseases",
+    "diseasesList",
+    "doctorDashboard",
+    "doctors",
+    "doctorsAndMedicalCenters",
+    "doctorsList",
+    "drug",
+    "drugsList",
+    "emailAddress",
+    "faqs",
+    "footerText",
+    "forDoctors",
+    "fullListOfX",
+    "homePage",
+    "hospitalDashboard",
+    "hospitals",
+    "instagramValue",
+    "insuranceDashboard",
+    "insurances",
+    "landLineLabel",
+    "landLineValue",
+    "legalNote",
+    "links",
+    "lists",
+    "login",
+    "loginOrSignup",
+    "loginToGainAccess",
+    "loginToGainAccessLegend",
+    "logout",
+    "logoutDescription",
+    "mailLabel",
+    "mailValue",
+    "menu",
+    "mobileLabel",
+    "mobileValue",
+    "more",
+    "myBookings",
+    "myCart",
+    "myNotifications",
+    "myProfiles",
+    "noResultFound",
+    "nothingWasFound",
+    "notifications",
+    "noyanClinic",
+    "officeBook",
+    "paraClinicDashboard",
+    "paraClinics",
+    "percentSymbol",
+    "pharmacyDashboard",
+    "policy",
+    "privacy",
+    "products",
+    "search",
+    "searchPlaceholder",
+    "secretaryDashboard",
+    "seeAll",
+    "services",
+    "signout",
+    "signup",
+    "specialities",
+    "specialitiesList",
+    "submitOrder",
+    "support",
+    "supportWorkingHours",
+    "switch",
+    "symptoms",
+    "symptomsList",
+    "telTitle",
+    "telegramValue",
+    "tests",
+    "unknownErrorOccured",
+    "user",
+    "xToman",
+    "youtubeValue",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,
@@ -94,6 +189,25 @@ export const contentNamespaces = {
     "registerDescription",
     "registerDoctorsAndClinics",
     "weHaveTooManyUsers",
+    // (useScopedLocale migration, 2026-09)
+    // Components/Home/* (HomeBlogs, HomePharmacyProducts, HomeRegister stats, HomeSpecialities).
+    "blog",
+    "homePharmacyProductsTitle",
+    "noyanProductsDescription",
+    "noyanProductsTitle",
+    "seeProducts",
+    "homeJoinNoyanDescription",
+    "homeJoinNoyanTitle",
+    "registerDoctors",
+    "registerPharmacyAndLab",
+    "doctorCountValue",
+    "labs",
+    "labsCountValue",
+    "patients",
+    "patientsCountValue",
+    "pharmacies",
+    "pharmacyCountValue",
+    "xSpecialityGreatestDoctors",
   ],
 
   // app/doctors/page.tsx (DoctorsListPage, DoctorCard).
@@ -103,6 +217,15 @@ export const contentNamespaces = {
     "availableSessionCount",
     "moreSessions",
     "doctorNotAvailableMessage",
+    // (useScopedLocale migration, 2026-09)
+    // Components/Doctor/DoctorCard.
+    "booking",
+    "consultTime",
+    "readyToRespond",
+    "responseStatus",
+    "visitProfile",
+    "xMinutes",
+    "xPeopleRecommended",
   ],
 
   // app/disease/page.tsx (DiseasesListPage + DiseaseCard).
@@ -179,6 +302,9 @@ export const contentNamespaces = {
     "status",
     "toman",
     "createdAt",
+    // (useScopedLocale migration, 2026-09)
+    // DashboardManageInvoicePage's WithTitle header.
+    "invoiceDetails",
   ],
 
   // app/dashboard/booking/page.tsx + [nodeId] (DashboardManageBooking(s)Page).
@@ -317,6 +443,11 @@ export const contentNamespaces = {
     "inProgressTicket",
     "openTicket",
     "resolvedTicket",
+    // (useScopedLocale migration, 2026-09)
+    // SubmitTicketPopup's validation messages.
+    "titleMissingError",
+    "messageMissingError",
+    "subjectMissingError",
   ],
 
   // app/dashboard/chat/page.tsx + [nodeId] (ChatsPage/ChatPage via
@@ -432,6 +563,30 @@ export const contentNamespaces = {
     "selectKind",
     "submit",
     "noSessionAvailableForSelectedPeriodMessage",
+    // (useScopedLocale migration, 2026-09)
+    "aboutThisPage",
+    "bookingMetaLegend",
+    "clinicBookingMetaLegend",
+    "clinicBookingMetaTitle",
+    "clinics",
+    "closeAndSearch",
+    "doctorBookingMetaLegend",
+    "doctorBookingMetaTitle",
+    "doctors",
+    "location",
+    "pharmacy",
+    "pharmacyBookingMetaLegend",
+    "pharmacyBookingMetaTitle",
+    "remove",
+    "search",
+    "searchInClinics",
+    "searchInProducts",
+    "seeBookings",
+    "seeDoctors",
+    "xDoctorsRegisteredInCenter",
+    "xKM",
+    "xPeopleRecommended",
+    "xResults",
   ],
 
   // app/book/finalize/[nodeId]/page.tsx (FinalizeBookingPage) — the
@@ -474,6 +629,8 @@ export const contentNamespaces = {
     "wallet",
     "xMinutes",
     "xToman",
+    // (useScopedLocale migration, 2026-09)
+    "fromTimeXtoTimeY",
   ],
 
   // bookingLegacyList (app/book/page/[page]/page.tsx, BookingPage) removed
@@ -525,6 +682,14 @@ export const contentNamespaces = {
     "becomeInsuranceDone",
     "becomeParaClinicDone",
     "becomePharmacyDone",
+    // (useScopedLocale migration, 2026-09)
+    // Components/Become/BecomeLayout.
+    "becomeOrgTitle",
+    "becomeSupportLink",
+    "becomeSupportPre",
+    "becomeSupprtPost",
+    "otherOrganizations",
+    "requestPanel",
   ],
 
   // app/become/clinic/page.tsx (new BecomeClinicRequestPage, 2026-09) — the
@@ -712,6 +877,12 @@ export const contentNamespaces = {
     "readProducts",
     "productPackages",
     "readProductPackages",
+    // (useScopedLocale migration, 2026-09)
+    // Components/_Common/SecretaryManager — order actions/category from
+    // Components/Enums/actions/{doctor,pharmacy,paraClinic}Actions.tsx.
+    "incomingOrders",
+    "readOrders",
+    "mutateOrders",
   ],
 
   // app/secretarypanel/* — the secretary's own view of their bosses/requests
@@ -734,6 +905,15 @@ export const contentNamespaces = {
     "Pending",
     "Approved",
     "Rejected",
+    // (useScopedLocale migration, 2026-09)
+    // SecretaryManageBossesPage breadcrumb title, looked up dynamically via
+    // titleKeyByNode[name] for every NodeWithAcl.
+    "doctors",
+    "clinics",
+    "insurances",
+    "phrmaciesAndLabs",
+    "paraClinics",
+    "hospitals",
   ],
 
   // app/insurancepanel/page.tsx (InsurancePanelHomePage) — dashboard shell,
@@ -744,6 +924,8 @@ export const contentNamespaces = {
     "currentLicense",
     "licenses",
     "noLicensePurchasedYet",
+    // (useScopedLocale migration, 2026-09)
+    "licenseExpired",
   ],
 
   // app/clinicpanel/page.tsx — dashboard shell, plus the
@@ -754,6 +936,10 @@ export const contentNamespaces = {
     "currentLicense",
     "licenses",
     "noLicensePurchasedYet",
+    // (useScopedLocale migration, 2026-09)
+    // CurrentLicenseWidget (ClinicPanelHomePage) - shown when the current
+    // license has expired.
+    "licenseExpired",
   ],
 
   // app/hospitalpanel/page.tsx — dashboard shell, plus the
@@ -763,6 +949,9 @@ export const contentNamespaces = {
     "currentLicense",
     "licenses",
     "noLicensePurchasedYet",
+    // (useScopedLocale migration, 2026-09)
+    // CurrentLicenseWidget shows "licenseExpired" when the current license lapsed.
+    "licenseExpired",
   ],
 
   // app/clinicpanel/license/page.tsx (ClinicManageLicencePage) - the
@@ -1041,6 +1230,9 @@ export const contentNamespaces = {
     "currentLicense",
     "licenses",
     "noLicensePurchasedYet",
+    // (useScopedLocale migration, 2026-09)
+    // CurrentLicenseWidget's expired-license state.
+    "licenseExpired",
   ],
 
   // app/doctorpanel/calendar/page.tsx + [stamp] (DoctorManageCalendarPage,
@@ -1215,6 +1407,12 @@ export const contentNamespaces = {
     "submit",
     "male",
     "female",
+    // (useScopedLocale migration, 2026-09)
+    // DoctorManageSocialMediaTab / MutateDoctorSocailMediaPopup (socialMediaDict).
+    "instagram",
+    "whatsapp",
+    "telegram",
+    "aparat",
   ],
 
   // app/doctorpanel/patient/page.tsx + [nodeId]/(profile|vital) —
@@ -1359,6 +1557,14 @@ export const contentNamespaces = {
     "trackingCode",
     "taminId",
     "medications",
+    // (useScopedLocale migration, 2026-09)
+    // PrintPrescriptionPage.
+    "age",
+    "doctorName",
+    "medicalSystemCode",
+    "patientNationalCode",
+    "prescriptionCreationDate",
+    "taminSendDate",
   ],
 
   // app/doctorpanel/prescription/page.tsx (CreatePrescriptionPage) and
@@ -1416,6 +1622,17 @@ export const contentNamespaces = {
     "inquiryTaminPrivilege",
     "male",
     "female",
+    // (useScopedLocale migration, 2026-09)
+    // CreatePrescriptionPage breadcrumb (prescriptionDetails when previewing),
+    // CreatePrescriptionTaminBox segment titles, CreatePrescriptionItemPreview
+    // (xUnit) and CreatePrescriptionPatientRenderer (xYearsOld).
+    "prescriptionDetails",
+    "prescriptionType",
+    "serviceType",
+    "taminPrescriptionId",
+    "taminPrescriptionTracking",
+    "xUnit",
+    "xYearsOld",
   ],
 
   // app/doctorpanel/shift/page.tsx (DoctorManageShiftsPage, ShiftItem,
@@ -1461,6 +1678,21 @@ export const contentNamespaces = {
     "inPerson",
     "oldPatient",
     "newPatient",
+    // (useScopedLocale migration, 2026-09)
+    // DayShifts / DoctorManageShiftsPage / Replicator / ShiftsPreview:
+    // daysOfWeekContentKeys + the templated (ex-useComplexLocale) keys.
+    "saturday",
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "active",
+    "xDaySettings",
+    "xSessions",
+    "xMinutes",
+    "nShiftsInXDayOfWeek",
   ],
 
   // The 6 remaining doctorpanel stub pages (article/chat/discount/document/
@@ -1508,6 +1740,9 @@ export const contentNamespaces = {
     "voiceCall",
     "videoCall",
     "inPerson",
+    // (useScopedLocale migration, 2026-09)
+    // ScheduleReservationCard.
+    "submittedAt",
   ],
 
   // app/doctorpanel/service/page.tsx + [nodeId] (DoctorManageServicesPage,
@@ -1699,6 +1934,17 @@ export const contentNamespaces = {
     "pharmacyRequestPrice",
     "isNotePatient",
     "itemsCount",
+    // (useScopedLocale migration, 2026-09)
+    // PharmacyFilledPrescriptions (a tab of PharmacyFillPrescriptionPage).
+    "custServiceType",
+    "custServiceTypeDesc",
+    "doctorFirstName",
+    "doctorLastName",
+    "month",
+    "patientAmount",
+    "phaId",
+    "userId",
+    "year",
   ],
 
   // app/pharmacypanel/filledPrescription/[nodeId]/page.tsx
@@ -1800,6 +2046,9 @@ export const contentNamespaces = {
     "patientNationalCode",
     "trackingCode",
     "unknownErrorOccured",
+    // (useScopedLocale migration, 2026-09)
+    // GetPhamacyPrescription (prescriptions list table).
+    "doctorName",
   ],
 
   // app/pharmacypanel/product/page.tsx (PharmacyProductsPage — available
@@ -1979,9 +2228,1423 @@ export const contentNamespaces = {
     "unset",
     "actions",
   ],
-  products: [],
-  services: [],
-  mag: [],
+  products: [
+    // (useScopedLocale migration, 2026-09)
+    "availableSellers",
+    "cheapest",
+    "choose",
+    "comments",
+    "commentsSummary",
+    "description",
+    "details",
+    "fastDelivery",
+    "freeDelivery",
+    "nComments",
+    "nOtherSellers",
+    "nQna",
+    "nSellers",
+    "othersAlsoBoughtThese",
+    "percentSymbol",
+    "productListPageLegend",
+    "productListPageSpecialBadge",
+    "productListPageSpecialButton",
+    "productListPageSpecialDescription",
+    "productListPageSpecialTitle",
+    "productListPageTitle",
+    "productUsage",
+    "qna",
+    "searchInProducts",
+    "seeAll",
+    "seeAllSpecs",
+    "seller",
+    "sellersFooterText",
+    "specs",
+    "toman",
+    "warnings",
+    "whyThisProduct",
+    "xScoreFromBuyers",
+    "xToman",
+    "youSavedxToman",
+  ],
+  services: [
+    // (useScopedLocale migration, 2026-09)
+    "aboutService",
+    "comments",
+    "procedure",
+    "resultsAndAdvantages",
+    "searchInServices",
+    "serviceListLegend",
+    "serviceListTitle",
+    "specialServicesBadge",
+    "specialServicesButton",
+    "specialServicesDescription",
+    "specialServicesTitle",
+    "xToman",
+  ],
+  mag: [
+    // (useScopedLocale migration, 2026-09)
+    // app/mag (BlogsPage incl. sortContentKeyDict, BlogsChosen, BlogsHotTags, BlogsMostViewed, BlogsRRS, BlogsSearch).
+    "chosenBlogs",
+    "noyan",
+    "hotBlogsTags",
+    "mostViewedArticles",
+    "allArticles",
+    "mostPopular",
+    "mostRecent",
+    "checkInput",
+    "emailPlaceholder",
+    "subscribe",
+    "subscribeToRRSLegend",
+    "subscribeToRRSTitle",
+    "subscribed",
+    "blogsIntroBadge",
+    "magLegend",
+    "magTitle",
+    "recommendations",
+    "searchInMag",
+  ],
+  // ---- shared UI / layout / common components (useScopedLocale migration, 2026-09) ----
+  // Generic form primitives: Components/UI/{DateInput,InlineDateInput,FancySelect,
+  // MultiSelectInput,MultiSelectInputServer,SearchServer,SelectNoResult,TimePicker,
+  // Input,NodesSelector} + Components/Hooks/useForm (loading/noResultFound/xToman
+  // live in common). Include on any page with forms/selects.
+  uiForm: [
+    "nothingFound", "operationWasSuccessful", "selectDate",
+    "selectPlaceholder", "selectTime",
+  ],
+  // Components/UI/Calendar/Calendxr2 (doctorpanel/calendar).
+  uiCalendar: [
+    "nextMonth", "prevMonth",
+  ],
+  // Components/UI/DoctorCardAlt (home, speciality/disease/drug/symptom pages, SearchModal).
+  uiDoctorCard: [
+    "booking", "consultTime", "inPerson", "location", "onlineConsult",
+    "readyToRespond", "responseStatus", "sipCall", "visitProfile", "xMinutes",
+    "xPeopleRecommended",
+  ],
+  // Components/UI/ServiceCard (home, service list/detail, service package, SearchModal).
+  uiServiceCard: [
+    "onlyXRemaining", "xComment",
+  ],
+  // Panel chrome: Components/Layout/{PanelLayout,PanelSidebar,DoctorSidebar} + every
+  // *Sidebar LinkMap title (Clinic/Dashboard/Doctor/Hospital/Insurance/ParaClinic/
+  // Pharmacy/Secretary). Rendered by the panel layouts, above page providers.
+  layoutPanel: [
+    "addresses", "articles", "bookings", "chatWithPatients", "chats",
+    "discounts", "drugsAndPrescriptions", "financialMangement",
+    "incomingOrders", "invoices", "licenses", "offers", "office", "orders",
+    "patientDocuments", "patients", "phrmaciesAndLabs", "prescriptions",
+    "productPackages", "profile", "schedule", "secrataries", "secretaries",
+    "servicePackages", "settings", "shifts", "tamin", "toman", "transactions",
+  ],
+  // Components/Layout/DoctorPanelLicenseBalanceHeader (doctorpanel clinic/hospital
+  // pages and DoctorPanel/_UI/WithBalanceHeader users).
+  layoutDoctorLicenseBalance: [
+    "currentBalance", "currentLicense", "deposit", "toman",
+  ],
+  // Components/_Common/License/* (all 6 panels' license/, license/all,
+  // license/[nodeId], license/[nodeId]/checkout pages). "wallet" = checkout method.
+  sharedLicense: [
+    "balance", "chooseLicense", "confirmAndContinue", "discount",
+    "licenseConsult", "licenseInfoItem0", "licenseInfoItem1",
+    "licenseInfoItem2", "name", "otherLicenses", "payablePrice",
+    "paymentMethod", "price", "primaryLicencesPageTitle",
+    "primaryLicensesIntroDescription", "primaryLicensesIntroTitle",
+    "primaryLicensesPageDescription", "selectNoyanLicense",
+    "selectNoyanLicenseLegend", "share", "specialDiscount", "specialOffer",
+    "toman", "totalPrice", "wallet",
+  ],
+  // app/map: Components/Map/{MapPage,SearchZones} + Components/Hooks/useMap
+  // (incl. MapPage filterContentKeys doctor/lab/hospital/pharmacy).
+  mapPage: [
+    "doctor", "hospital", "lab", "mapIsNotReady", "mapLegend", "mapTitle",
+    "pharmacy", "searchProvinceOrCityOrDistrict",
+    "somethingWentWrongAcquiringYourLocation", "yourDeviceNotSupportingGPS",
+  ],
+  // app/not-found.tsx: Components/NotFound/NotFoundPage.
+  notFound: [
+    "goToHomePage", "pageNotFoundLegend", "pageNotFoundTitle",
+  ],
+  // Components/Notification/PushNotificationToggle (dashboard/notification).
+  notificationPushToggle: [
+    "disablePushNotifications", "enablePushNotifications",
+    "pushNotificationsBlocked", "pushNotificationsEnabled",
+    "pushSubscriptionFailed",
+  ],
+  // Components/Comment/{CommentSection,CommentsSummary,SubmitCommentForm} incl.
+  // star filter keys. Any page rendering CommentSection (doctor/clinic/hospital/
+  // insurance/paraClinic/product/service/package/blog pages, admin comments).
+  commentSection: [
+    "3Star", "4Star", "5Star", "fromXComments", "lowStar",
+    "shareYourCommentPlaceholder", "submitComment", "submitYourComment",
+    "useComments", "wasUseful", "xComments",
+  ],
+  // Components/Chat/{ChatSidebar,ChatSidebarItem,CurrentChat} (dashboard/chat,
+  // doctorpanel/chat, DoctorPanel/Patient/PatientFiles).
+  chat: [
+    "chat", "closeChat", "missingMessageOrFileErrorMessage",
+    "noChatYetMessage", "noMessagesYet", "open", "searchOrStartNewChat",
+    "selectAChatFirstMessage", "sendMessage", "status", "writeYourMessage",
+  ],
+
+  // ---- admin (useScopedLocale migration, 2026-09) ----
+  // Shared admin-panel UI (Components/Admin/UI/*). FilesInput is rendered by
+  // CreateForm, which nearly every admin page uses, so every page under
+  // app/[adminKey]/** declares this namespace. (CreateForm itself only uses
+  // "cancel"/"submit", which are in common.)
+  adminCommon: ["dragFilesHere"],
+  // Components/Admin/Notification/AdminTestPushPage.tsx +
+  // DeletePushSubscriptionPopup.tsx
+  adminPushTest: [
+    "testPushNotifications",
+    "testPushNotificationDescription",
+    "testPushDefaultTitle",
+    "testPushDefaultMessage",
+    "users",
+    "title",
+    "message",
+    "link",
+    "selectAtLeastOneUserErrorMessage",
+    "missingTitleErrorMessage",
+    "missingMessageErrorMessage",
+    "user",
+    "device",
+    "createdAt",
+    "actions",
+    "deletePushSubscriptionConfirmationMessage",
+  ],
+
+  // ---- doctor panel (prescription/patient/tamin) (useScopedLocale migration, 2026-09) ----
+  // Components/DoctorPanel/Prescription/Create/Items/Drug/* — the drug
+  // item inputs (DrugGetter, AmountGetter, CountGetter, UsageGetter,
+  // InstructionGetter, FavoriteDrug, DrugSubmitter, SubmittedDrugsList).
+  // Reusable: FavoriteDrug/InstructionGetter/AmountGetter are also rendered
+  // by Prescription2/UI/PrescriptionItemGetter (the /doctorpanel/prescription
+  // create page), besides the legacy editor below.
+  doctorPanelPrescriptionDrugItem: [
+    "addDrug",
+    "checkInput",
+    "drugAmount",
+    "drugCount",
+    "drugFavorited",
+    "drugInstruction",
+    "drugNameOrCode",
+    "drugUsage",
+    "searchDrugAmount",
+    "searchDrugInstruction",
+    "searchDrugNameOrCode",
+    "searchDrugUsage",
+    "xUnit",
+  ],
+
+  // Components/DoctorPanel/Prescription/Create/** (except Items/Drug, see
+  // above) — the legacy prescription editor. Still live: it's rendered by
+  // app/doctorpanel/prescription/[nodeId]/edit (DoctorEditPrescriptionPage
+  // -> PrescriptionAgent). Gender label looked up dynamically (male/female).
+  doctorPanelPrescriptionEditor: [
+    "actions",
+    "addPatient",
+    "addTest",
+    "allItems",
+    "attachToThisPrescription",
+    "badNationalIdErrorMessage",
+    "checkInput",
+    "commitPrescription",
+    "connectToPatientProfile",
+    "connectToPrescription",
+    "connectedToPatientProfile",
+    "createNewPrescription",
+    "createdAtX",
+    "createdBy",
+    "description",
+    "draftPrescription",
+    "draftingEmptyPrescriptionErrorMessage",
+    "drug",
+    "editDraftCommitPrescription",
+    "editDraftPrescription",
+    "editTaminPrescription",
+    "female",
+    "hasTaminPrivilege",
+    "imaging",
+    "inquiryPatient",
+    "inquiryTaminPrivilege",
+    "insuranceType",
+    "male",
+    "medicalDetails",
+    "medicationsList",
+    "moblieNumber",
+    "nationalCode",
+    "nationalId",
+    "newMedicalProfile",
+    "newPatientProfileRecord",
+    "newPrescriptionDetails",
+    "noTaminPrivilege",
+    "noUserSelectedLegend",
+    "notAssigned",
+    "otherParaclinicServices",
+    "patientDetails",
+    "patientNationalId",
+    "patientNotFoundErrorMessage",
+    "patientProfileCreatedAt",
+    "patientProfilesList",
+    "patientSymptoms",
+    "patinetProfileTitle",
+    "patinetProfileXHistory",
+    "physiotherpy",
+    "prescriptionDrafted",
+    "searchForTestName",
+    "searchPlaceholder",
+    "seeAttachment",
+    "seeHistory",
+    "seeThisPatientProfileDetails",
+    "selectPatientLegend",
+    "selectPatientProfileTip",
+    "selectpPatientFirstErrorMessage",
+    "startAgain",
+    "test",
+    "testCount",
+    "testDoDate",
+    "testName",
+    "treatingDoctor",
+    "unlinkThisPatientProfile",
+    "vitalCauses",
+    "xPatientProfileRecordDetails",
+    "xUnit",
+    "xYearsOld",
+  ],
+
+  // Components/DoctorPanel/Prescription/Overview/* (PrescriptionOverviewPage,
+  // DeletePrescriptionFromTaminPopup). Currently not rendered by any route
+  // (app/doctorpanel/prescription/[nodeId] renders PreviewPrescription2Page
+  // instead), so no route entry.
+  doctorPanelPrescriptionOverview: [
+    "age",
+    "commitPrescription",
+    "deletePrescriptionFromTamin",
+    "mutatePrescriptionFromTamin",
+    "nationalCode",
+    "patientDetails",
+    "patientName",
+    "prescriptionDetails",
+    "prescriptionEffectiveDate",
+    "prescriptionExpiryDate",
+    "prescriptionOverview",
+    "prescriptionRepeatCount",
+    "printPrescrtiption",
+    "reloadPrescriptionFromTamin",
+    "sureDeletePrescriptionFromTaminMessage",
+  ],
+
+  // ---- doctor panel (useScopedLocale migration, 2026-09) ----
+  // Components/DoctorPanel/Shift/useShiftUtils.tsx — shift validation
+  // messages. Reusable: the hook is also called from Components/Booking/*
+  // (DoctorCardBooking, BookingSessionSelectorPopup, Finalize/
+  // FinalizeBookingPage), so any page rendering those should include it.
+  doctorPanelShiftUtils: [
+    "shiftStartMustBeBeforeEnd",
+    "missingShiftOffice",
+    "missingShiftPatientStatus",
+    "missingShiftSessionType",
+    "shiftIsEmpty",
+  ],
+
+  // Components/DoctorPanel/BecomeADoctorPage.tsx (+ its
+  // SubmitABecomeDoctorRequest / ConfirmMedicalCodePopup). Reusable: rendered
+  // by app/become/doctor/page.tsx and inline by Components/Layout/
+  // DoctorPanelLayout.tsx (logged-in user with no doctor profile yet).
+  // BecomeADoctorPage also declares "becomeSomething" (BecomeDoneView).
+  doctorPanelBecomeDoctor: [
+    // BecomeADoctorPage stage tabs (becomeDoctorStageContentKeyDict)
+    "inquiryDetails",
+    "confirmInfo",
+    "finalizeRegister",
+    // InquiryStage / ConfirmStage
+    "yourIdentityDataWasNotFound",
+    "nationalId",
+    "logout",
+    "inquiryAndContinue",
+    "becomeDoctorInquiryNotice",
+    "firstName",
+    "lastName",
+    "mcCode",
+    "mcTitle",
+    "mcAcquiredAt",
+    "mcCity",
+    "confirmIncomingData",
+    // SubmitABecomeDoctorRequest (gender options via genders)
+    "male",
+    "female",
+    "medicalSystemTitle",
+    "medicalSystemCode",
+    "specialities",
+    "province",
+    "city",
+    "address",
+    "description",
+    // ConfirmMedicalCodePopup
+    "createDoctroProfielWithThisMcCodeMessage",
+    "confirm",
+    "cancel",
+  ],
+
+  // ---- pharmacy panel (useScopedLocale migration, 2026-09) ----
+  // Components/PharmacyPanel/CurrentLicenseWidget.tsx (rendered by
+  // PharmacyPanelPage on /pharmacypanel).
+  pharmacyPanelCurrentLicenseWidget: [
+    "currentLicense",
+    "licenses",
+    "licenseExpired",
+    "noLicensePurchasedYet",
+  ],
+
+  // ---- user dashboard (useScopedLocale migration, 2026-09) ----
+  // Components/Dashboard/UserIdentity.tsx (dashboard home, doctor panel
+  // patient pages). Gender values come from DoctorPanelPage's `genders`.
+  dashboardUserIdentity: [
+    "user",
+    "name",
+    "notAssigned",
+    "nationalId",
+    "gender",
+    "male",
+    "female",
+    "dateOfBirth",
+  ],
+  // Components/Dashboard/EditUserDetailsPopup.tsx (opened from UserIdentity).
+  dashboardEditUserDetailsPopup: ["notAssigned", "username", "submit", "cancel"],
+  // Components/Dashboard/UserVitals.tsx (VitalCard titles/units are passed as
+  // ContentKey props: heartRate/perMinute, bloodOxygen/percent,
+  // bodyTemperature/celsius, bloodPressure/mmHg).
+  dashboardUserVitals: [
+    "vitals",
+    "vitalHistory",
+    "noData",
+    "heartRate",
+    "bloodOxygen",
+    "bodyTemperature",
+    "bloodPressure",
+    "perMinute",
+    "percent",
+    "celsius",
+    "mmHg",
+  ],
+  // Components/Dashboard/UserMedicalDetails.tsx.
+  dashboardUserMedicalDetails: [
+    "medicalDetails",
+    "bloodType",
+    "height",
+    "weight",
+    "noData",
+  ],
+  // Components/Dashboard/MutateUserMedicalPopup.tsx (opened from
+  // UserMedicalDetails).
+  dashboardMutateUserMedicalPopup: ["bloodType", "height", "weight"],
+  // Components/Dashboard/VitalList.tsx (dashboard vitals, doctor panel
+  // patient vitals).
+  dashboardVitalList: [
+    "vitals",
+    "addVitals",
+    "createdAt",
+    "doctor",
+    "bloodOxygen",
+    "bloodPressure",
+    "bodyTemperature",
+    "heartRate",
+  ],
+  // Components/Dashboard/AddVitalPopup.tsx (opened from VitalList).
+  dashboardAddVitalPopup: [
+    "addVitalTitle",
+    "bloodOxygen",
+    "bloodPressure",
+    "bodyTemperature",
+    "heartRate",
+    "checkInput",
+  ],
+  // Components/Dashboard/Address/DashboardMutateAddressPopup.tsx (address
+  // book + Components/Cart/CartCheckoutPopup).
+  dashboardMutateAddressPopup: ["displayName", "address"],
+  // Components/Dashboard/Booking/ReservationStatusBadge.tsx (via
+  // reservationStatusContentKeyDict).
+  dashboardReservationStatusBadge: [
+    "reservationStatusPending",
+    "reservationStatusActive",
+    "reservationStatusCompleted",
+    "reservationStatusCancelled",
+    "reservationStatusNoShow",
+    "reservationStatusError",
+  ],
+  // Components/Dashboard/Booking/ReservationTimeline.tsx.
+  dashboardReservationTimeline: [
+    "submittedAt",
+    "reminderSent",
+    "sessionActivated",
+    "patientJoined",
+    "doctorJoined",
+    "noShowByPatient",
+    "noShowByDoctor",
+    "reservationErrorNotice",
+    "reservationStatusPending",
+    "reservationStatusActive",
+    "reservationStatusCompleted",
+    "reservationStatusCancelled",
+    "reservationStatusNoShow",
+    "reservationStatusError",
+  ],
+  // Components/Dashboard/Booking/ReservationJoinButton.tsx.
+  dashboardReservationJoinButton: ["joinSession"],
+  // Components/Dashboard/Order/OrderStatusBadge.tsx (via
+  // orderStatusContentKeyDict).
+  dashboardOrderStatusBadge: [
+    "orderStatusPending",
+    "orderStatusPaid",
+    "orderStatusCancelled",
+  ],
+  // Components/Dashboard/Order/OrderItemStatusBadge.tsx (via
+  // orderItemStatusContentKeyDict).
+  dashboardOrderItemStatusBadge: [
+    "orderItemStatusPending",
+    "orderItemStatusFulfilled",
+    "orderItemStatusCancelled",
+  ],
+  // Components/Dashboard/Call/DashboardManageCallsPage.tsx (not routed
+  // anywhere currently; its types are imported by admin CallRoom pages).
+  dashboardCall: ["createdAt", "actions"],
+  // Components/Dashboard/Call/UserManageCallPage.tsx (/call/[nodeId]).
+  dashboardUserManageCall: [
+    "accessMediaErrorMessage",
+    "yourDevicenotSupportingRequiredMedia",
+    "pleaseProvideAccessToMedia",
+    "connectionError",
+  ],
+
+  // ---- paraClinic panel (useScopedLocale migration, 2026-09) ----
+  // app/paraClinicPanel/page.tsx (ParaClinicDashboardHomePage + the
+  // CurrentLicenseWidget it renders). Mirrors pharmacyPanelHome.
+  paraClinicPanelHome: [
+    "dashboard",
+    "currentLicense",
+    "licenses",
+    "licenseExpired",
+    "noLicensePurchasedYet",
+  ],
+
+  // app/paraClinicPanel/license/** — the shared _Common/License/* pages
+  // (common-only), plus the legacy ParaClinicManageLicencePage +
+  // PurchaseLicensePopup. Mirrors pharmacyPanelLicense.
+  paraClinicPanelLicense: [
+    "dashboard",
+    "licenses",
+    "buyLicense",
+    "currentLicense",
+    "currentBalance",
+    "toman",
+    "buyLicenseConfirmationMessage",
+  ],
+
+  // app/paraClinicPanel/article/page.tsx + [nodeId]
+  // (ParaClinicManageArticlesPage, ParaClinicManageArticlePage,
+  // ParaClinicMutateArticlePopup, DeleteArticlePopup).
+  paraClinicPanelArticle: [
+    "dashboard",
+    "articles",
+    "newItem",
+    "title",
+    "summary",
+    "image",
+    "category",
+    "readTime",
+    "content",
+    "actions",
+    "publishStatus",
+    "articlePendingReview",
+    "articlePublished",
+    "articleModerationNotice",
+    "sureDeleteArticle",
+  ],
+
+  // app/paraClinicPanel/order/page.tsx + [nodeId]
+  // (ParaClinicIncomingOrdersPage, ParaClinicIncomingOrderPage). Also lists
+  // the Dashboard/Order/OrderStatusBadge + OrderItemStatusBadge keys so the
+  // page prefetches them. Mirrors pharmacyPanelOrder.
+  paraClinicPanelOrder: [
+    "dashboard",
+    "incomingOrders",
+    "submittedAt",
+    "buyer",
+    "orderItems",
+    "mySubtotal",
+    "toman",
+    "status",
+    "actions",
+    "view",
+    "orderDetails",
+    "name",
+    "quantity",
+    "price",
+    "total",
+    "fulfill",
+    "sureFulfillOrderItem",
+    "sureCancelOrderItem",
+    "orderStatusPending",
+    "orderStatusPaid",
+    "orderStatusCancelled",
+    "orderItemStatusPending",
+    "orderItemStatusFulfilled",
+    "orderItemStatusCancelled",
+  ],
+
+  // app/paraClinicPanel/profile/page.tsx (ParaClinicManageProfilePage,
+  // ParaClinicManageDetailsTab, ParaClinicManageLocationTab).
+  paraClinicPanelProfile: [
+    "profile",
+    "details",
+    "location",
+    "name",
+    "image",
+    "category",
+    "tags",
+    "establishment",
+    "businessTime",
+    "phone",
+    "onPremises",
+    "onlineResponse",
+    "basicInsurance",
+    "personelCount",
+    "summary",
+    "insurances",
+    "address",
+    "missingLocationErrorMessage",
+    "selectProvince",
+    "selectCity",
+    "selectDistrict",
+  ],
+
+  // app/paraClinicPanel/tamin/page.tsx (ParaClinicTaminPage + its tabs:
+  // GetParaClinicPrescriptions, RequestByRegisterId, TaminPhysio [no text]).
+  paraClinicPanelTamin: [
+    "prescriptions",
+    "getPrescriptions",
+    "getPrescription",
+    "physio",
+    "registerSession",
+    // GetParaClinicPrescriptions
+    "prescriptionSubmission",
+    "registerId",
+    "prescriptionId",
+    "doctorMedicalSystemCode",
+    "doctorName",
+    "doctorSpeciality",
+    "paraClinicCode",
+    "patientPrice",
+    "paraClinicType",
+    "prescriptionDate",
+    "registerDate",
+    "requestPrice",
+    "isPrice",
+    "techPrice",
+    "tarefCode",
+    "tarefName",
+    "quantity",
+    "itemPrice",
+    "supportAmount",
+    "patientAmount",
+    "subsidyPrice",
+    "familyDocPrice",
+    "prescription",
+    "precheckPresc",
+    "submitPresc",
+    "parTarefName",
+    "parTarefPrice",
+    "parTarefPrice2k",
+    "taminParType",
+    "requestedQuantity",
+    "remainingQuantity",
+    "maximumQuantity",
+    "selection",
+    "tarefPrice",
+    "precheckSuccessMessage",
+    "prescriptionParaClinicType",
+    "patientNationalCode",
+    "itemsCount",
+    "trackingCode",
+    // RequestByRegisterId
+    "comment",
+    "diagnosis",
+    "checkInput",
+    "price",
+    "sessionSubmitted",
+    "delete",
+    "registerDiagnosis",
+    "patientMobile",
+    "patientFirstName",
+    "patientLastName",
+    "patientBirthDate",
+    "patientGender",
+    "medicalOfficeName",
+    "patientInsuranceType",
+    "patinetInsuranceNo",
+    "patientInsuranceDate",
+    "regStatus",
+    "paraClinicName",
+    "prescriptionDeleted",
+  ],
+
+  // app/paraClinicPanel/test/page.tsx (ParaClinicTestsPage — my tests +
+  // available tests tabs, add/edit/delete popups).
+  paraClinicPanelTest: [
+    "dashboard",
+    "tests",
+    "myTests",
+    "availableTests",
+    "name",
+    "category",
+    "unset",
+    "actions",
+    "addTest",
+    "price",
+    "readyTime",
+    "sureDeleteMyTest",
+  ],
+
+  // ---- public medical-center pages (useScopedLocale migration, 2026-09) ----
+  // ---- Reusable components (Components/Clinic/*) shared by the public
+  // clinic / hospital / insurance / paraClinic detail pages.
+
+  // MedicalCenterSummary, MedicalCenterTagList, MedicalCenterContactInfo,
+  // MedicalCenterDepartments (+ the `title` values its callers pass:
+  // ClinicDepartments -> "clinicDepartments", HospitalPageClinics ->
+  // "hospitalClinics"), MedicalCenterSpecialities, MedicalCenterServices,
+  // MedicalCenterInsurances (+ callers' titles "clinicInsurances" /
+  // "hospitalInsurances"), MedicalCenterCertificates, MedicalCenterDoctors,
+  // WideIntro. (MedicalCenterDoctors also renders FilterCsr -> "all", in common.)
+  medicalCenter: [
+    "clinicCode",
+    "doctors",
+    "personel",
+    "nPerson",
+    "establishment",
+    "features",
+    "contactInfo",
+    "management",
+    "doctorsInThisDepartment",
+    "clinicDepartments",
+    "hospitalClinics",
+    "specialities",
+    "availableServices",
+    "clinicInsurances",
+    "hospitalInsurances",
+    "certificates",
+    "clinicDoctors",
+    "xComments",
+  ],
+  // Components/Clinic/StickyNav — renders `getContent(section.title)` for the
+  // SectionMap its callers build: ClinicNav, HospitalPage, ParaClinicNav,
+  // InsurancePage (empty map). PolicyPage only uses absTitle.
+  medicalCenterNav: [
+    "introduction",
+    "features",
+    "contactInfo",
+    "departments",
+    "specialities",
+    "service",
+    "insurances",
+    "doctors",
+    "location",
+    "comments",
+    "clinics",
+    "servicesAndTests",
+    "aboutParaCinic",
+    "map",
+    "usersComments",
+  ],
+  // Components/Clinic/LocationSection (clinic/hospital/insurance/paraClinic pages).
+  medicalCenterLocation: ["locationOnMap", "navigate"],
+
+  // ---- Cards (also rendered by Components/Layout/SearchModal).
+  clinicCard: ["roundTheClock", "seeDetails"],
+  hospitalCard: ["nBeds", "nSpeciality"],
+  insuranceCard: ["establishedAtx", "member", "center", "doctor"],
+  paraClinicCard: ["seeParaClinic"],
+
+  // ---- Pages.
+  // app/clinic/page.tsx (ClinicsListPage).
+  clinicsList: [
+    "clinicsListTitle",
+    "clinicsListLegend",
+    "clinicsListIntroTitle",
+    "clinicsListIntroDescription",
+    "specialNoyanClinics",
+    "specialNoyanClinicBadge",
+    "specialNoyanClinicLegend",
+    "noyanClinicSepcialButton",
+    "searchInClinics",
+    "clinicKind",
+  ],
+  // app/clinic/[slug]/page.tsx (ClinicPage).
+  clinicPage: ["backToClinicsList"],
+  // app/hospital/page.tsx (HospitalsPage).
+  hospitalsList: [
+    "hospitalsListTitle",
+    "hospitalsListLegend",
+    "specialNoyanHospitals",
+    "specialNoyanHospitalBadge",
+    "specialNoyanHospitalLegend",
+    "noyanHospitalSepcialButton",
+    "searchInHospitals",
+    "province",
+    "category",
+  ],
+  // app/hospital/[slug]/page.tsx (HospitalPage).
+  hospitalPage: ["backToHospitalsList"],
+  // app/insurance/page.tsx (InsurancesPage).
+  insurancesList: [
+    "iranInsurances",
+    "insurancesLegend",
+    "insureresCount",
+    "totalInsuranceCentersValue",
+    "totalInsuranceCenteresTitle",
+    "totalInsureesCountValue",
+    "totalInsureesCountTitle",
+    "searchInInsurances",
+  ],
+  // app/insurance/[slug]/page.tsx (InsurancePage, InsurancePageIntro,
+  // InsurancePageInfo, InsuranceCoverages, InsurancePlans,
+  // InsuranceAdvantages, InsuranceContact).
+  insurancePage: [
+    "backToList",
+    "xComment",
+    "insuranceCategory",
+    "pharmacy",
+    "doctor",
+    "hospital",
+    "insurerees",
+    "insuranceCoverages",
+    "popular",
+    "year",
+    "purchaseOnline",
+    "plansAndPrices",
+    "specialAdvantages",
+    "contactInfo",
+    "establishedAtx",
+  ],
+  // app/paraClinic/page.tsx (ParaClinicsListPage).
+  paraClinicsList: [
+    "noyanParaClinicTitle",
+    "noyanParaClinicLegend",
+    "specialParaClinicsBadge",
+    "sepcialParaClinincButton",
+    "specialParaClinicsDescription",
+    "specialParaClinicsTitle",
+    "paraClinics",
+    "searchInParaClinics",
+    "paraClinicKind",
+  ],
+  // app/paraClinic/[slug]/page.tsx (ParaClinicIntro, ParaClinicAbout,
+  // ParaClinicTests).
+  paraClinicPage: [
+    "nComments",
+    "establishedAtx",
+    "onPremisesSampling",
+    "onlineResponding",
+    "basicInsurance",
+    "reserveTest",
+    "call",
+    "servicesAndTests",
+    "specialistPersonel",
+    "nPerson",
+    "usersScore",
+    "submittedCommentsCount",
+    "aboutParaCinicX",
+    "paraClinicSpecialities",
+    "paraClinicFeatures",
+    "paraClinicInsurances",
+    "contactInfo",
+    "nPesrsonSpecialist",
+    "xToman",
+    "add",
+    "remove",
+    "searchInTests",
+  ],
+
+  // ---- booking / cart / product / service (useScopedLocale migration, 2026-09) ----
+  // Components/Booking/BookingSessionSelectorPopup.tsx — reusable session picker popup, opened from /book (DoctorCardBooking, DoctorCardWithSessions), /book/finalize and the public doctor profile (Components/Dr/PublicDrSessions.tsx).
+  bookingSessionSelectorPopup: [
+    "chooseSession",
+    "confirmAndContinue",
+    "fromTimeXtoTimeY",
+    "previousStage",
+    "seeDoctorProfile",
+    "selectFromOtherTimes",
+    "selectSessionTime",
+    "today",
+    "tomorrow",
+  ],
+  // Components/Booking/SelectSessionToReservePopup.tsx — legacy (System A) reserve popup; currently not rendered anywhere, kept for completeness.
+  bookingReservePopup: [
+    "inPerson",
+    "missingSessionChoiceErrorMessage",
+    "missingSessionKindErrorMessage",
+    "noSessionAvailableForSelectedPeriodMessage",
+    "selectKind",
+    "sipCall",
+    "textChat",
+    "videoCall",
+    "voiceCall",
+  ],
+  // app/cart/page.tsx (Components/Cart/CartPage.tsx).
+  cartPage: [
+    "balance",
+    "cart",
+    "cartIsEmpty",
+    "cartIsEmptyLegend",
+    "confirmAndPayOrder",
+    "itemsCount",
+    "paymentMethod",
+    "productPackages",
+    "products",
+    "remove",
+    "removeAll",
+    "servicePackages",
+    "services",
+    "tests",
+    "toman",
+    "totalPrice",
+    "wallet",
+  ],
+  // Components/Cart/CartCheckoutPopup.tsx — checkout popup opened from the cart page.
+  cartCheckoutPopup: [
+    "addNewAddress",
+    "balance",
+    "checkInput",
+    "confirmAndPayOrder",
+    "freeOfCharge",
+    "noAddressesRegisteredYet",
+    "orderSubmittedMessage",
+    "paymentMethod",
+    "selectDeliveryAddress",
+    "subtotal",
+    "tax",
+    "toman",
+    "totalPrice",
+    "wallet",
+  ],
+  // app/payment/[nodeId]/page.tsx (Components/Payment/SuccessPayment.tsx + FailPayment.tsx).
+  paymentResult: [
+    "dashboard",
+    "doctor",
+    "getSessionReciept",
+    "patientName",
+    "paymentFailedMessage",
+    "paymentFailedText",
+    "paymentSucceededMessage",
+    "sessionTime",
+  ],
+  // app/order/[nodeId]/page.tsx (Components/Order/OrderConfirmationPage.tsx). Includes the dynamic sectionTitle / statusContent map keys.
+  orderConfirmation: [
+    "backToHome",
+    "dashboard",
+    "deliveryAddress",
+    "orderConfirmedTitle",
+    "orderItems",
+    "orderNumber",
+    "orderStatusCancelled",
+    "orderStatusPaid",
+    "orderStatusPending",
+    "productPackages",
+    "products",
+    "servicePackages",
+    "services",
+    "tests",
+    "toman",
+    "totalPrice",
+  ],
+  // Shared cartable node-page pieces (Components/Product/Cartable/*, CartActions, PlusBox, ProductCartInfos, UpgradeProBox) used by /product/[slug], /productPackage/[slug], /service/[slug], /servicePackage/[slug]. Includes the cartTitle keys passed in (seller/provider) and the ProductCartInfos ternary keys.
+  productCartable: [
+    "addToCart",
+    "cartInfoItem0",
+    "cartInfoItem0Service",
+    "cartInfoItem1",
+    "cartInfoItem1Service",
+    "cartInfoItem2",
+    "cartInfoItem2Service",
+    "commentsSummary",
+    "nComments",
+    "nQna",
+    "othersAlsoBoughtThese",
+    "percentSymbol",
+    "plusMembers",
+    "plusTextPost",
+    "plusTextPre",
+    "productProBoxTitle",
+    "productProItem0",
+    "productProItem1",
+    "productProItem2",
+    "provider",
+    "seeAllSpecs",
+    "seeOtherBenefits",
+    "seller",
+    "specs",
+    "toman",
+    "upgradeAccount",
+    "xScoreFromBuyers",
+    "xToman",
+    "youSavedxToman",
+  ],
+  // Components/Product/ProductCard.tsx + Components/Service/ServiceOrProductCard.tsx — reusable product/service card (product & service list pages, product package page, Home pharmacy products, SearchModal).
+  productServiceCard: [
+    "and",
+    "availableInStock",
+    "nMore",
+    "package",
+    "percentSymbol",
+    "toman",
+    "xComments",
+  ],
+  // Components/Product/SwitchProductAndService.tsx — /product <-> /service toggle on both list pages.
+  productServiceSwitch: [
+    "noyanPharmacry",
+    "noyanServices",
+  ],
+  // app/productPackage/[slug]/page.tsx (Components/ProductPackage/*).
+  productPackagePage: [
+    "aboutPackage",
+    "comments",
+    "commentsSummary",
+    "nComments",
+    "nItems",
+    "nQna",
+    "packageIntroduction",
+    "packagePriceWithXDiscount",
+    "percentSymbol",
+    "product",
+    "provider",
+    "seeAllSpecs",
+    "seperatePrice",
+    "similarPackages",
+    "specs",
+    "thisPackageContains",
+    "totalSeperatePrice",
+    "xScoreFromBuyers",
+    "xToman",
+    "youSaveNToman",
+    "youSavedxToman",
+  ],
+  // app/servicePackage/[slug]/page.tsx (Components/ServicePackage/ServicePackagePage.tsx).
+  servicePackagePage: [
+    "aboutPackage",
+    "comments",
+    "procedure",
+    "resultsAndAdvantages",
+  ],
+
+  // ---- public content pages (useScopedLocale migration, 2026-09) ----
+  // app/about (AboutPage: AboutIntro/Cta/Missions/Privacy/Stats/Stories + TitleLegend titles passed by AboutMissions/Partners/Principles/Stories/Team/Whys).
+  aboutPage: [
+    "aboutCtaImageAlt",
+    "aboutCtaItem0",
+    "aboutCtaItem1",
+    "aboutCtaLegend",
+    "aboutCtaTitle",
+    "contactUs",
+    "joinNoyanAi",
+    "aboutBadgeTitle",
+    "aboutIntroImageAlt",
+    "aboutLegend",
+    "aboutTitleAi",
+    "aboutTitleNoyan",
+    "aboutTitlePost",
+    "badgeDescription",
+    "learnMore",
+    "ourMission",
+    "ourMission0",
+    "ourMission1",
+    "ourMission2",
+    "ourMissionAndPrespective",
+    "ourPrespective",
+    "ourPrespective0",
+    "ourPrespective1",
+    "ourPrespective2",
+    "aboutPrivacyDescription",
+    "aboutPrivacyImageAlt",
+    "aboutPrivacyTitle",
+    "aboutprivacyItem0Description",
+    "aboutprivacyItem0Title",
+    "aboutprivacyItem1Description",
+    "aboutprivacyItem1Title",
+    "aboutprivacyItem2Description",
+    "aboutprivacyItem2Title",
+    "aboutprivacyItem3Description",
+    "aboutprivacyItem3Title",
+    "aboutClinicCountTitle",
+    "aboutClinicCountValue",
+    "aboutConsult",
+    "aboutConsultValue",
+    "aboutDoctorsCountTitle",
+    "aboutSoctorsCountValue",
+    "aboutUsersTitle",
+    "aboutUsersValue",
+    "usersSatisfaction",
+    "usersSatisfactionValue",
+    "aboutStoriesDescription",
+    "aboutStory0Description",
+    "aboutStory0Title",
+    "aboutStory1Description",
+    "aboutStory1Title",
+    "aboutStory2Description",
+    "aboutStory2Title",
+    "ourStory",
+    "aboutPartnersTitle",
+    "aboutPartnersLegend",
+    "ourPrinciplesTitle",
+    "ourPrinciplesLegend",
+    "noyanTeamTitle",
+    "noyanTeamLegend",
+    "whyNoyanAi",
+    "whyNoyanLegend",
+  ],
+  // Components/Blog/BlogMainCard — reusable (mag list, HomeBlogs, SearchModal).
+  blogMainCard: [
+    "noyan",
+  ],
+  // app/mag/[blogSlug] (Blog/BlogPage).
+  magPost: [
+    "blogBookLegend",
+    "bookReservation",
+    "noyan",
+    "onlineConsult",
+    "share",
+    "tags",
+  ],
+  // app/contact (ContactPage, ContactForm incl. contactRequestSubjectContentKeys, ContactInfoBox).
+  contactPage: [
+    "badPhoneErrorMessage",
+    "emailAddress",
+    "fullName",
+    "messageContent",
+    "missinNameErrorMessage",
+    "missingMessageErrorMessage",
+    "missingPhoneErrorMessage",
+    "missingSubjectErrorMessage",
+    "phoneNumber",
+    "selectSubject",
+    "sendMessage",
+    "yourMessageSubmitted",
+    "reportProblem",
+    "profile",
+    "support",
+    "users",
+    "LinkedinTarget",
+    "addressValue",
+    "contactInfo",
+    "frequentlyAskedQuestions",
+    "instagramValue",
+    "mailValue",
+    "phoneValue",
+    "telegramValue",
+    "contactFeature1",
+    "contactFeature2",
+    "contactFeature3",
+    "contactPageLegend",
+    "contactPageTitle",
+    "submitContactRequestLegend",
+    "submitContactRequestTitle",
+  ],
+  // app/disease/[slug] (DiseasePage + ClinicCardAlt).
+  diseasePage: [
+    "visitProfile",
+    "bookASessionFromADoctor",
+    "diseaseAiSummaryTitle",
+    "diseaseCategory",
+    "inpectDiseaseWithAi",
+    "relatedClinics",
+    "relatedDoctors",
+    "relatedDrugs",
+    "relatedSpecialities",
+    "relatedSymptoms",
+    "similarDiseases",
+  ],
+  // Components/Disease/DiseaseCard — reusable (disease list, SearchModal).
+  diseaseCard: [
+    "nRecommendedDrugs",
+    "nSymptoms",
+  ],
+  // app/doctor/[slug] (Doctor/DoctorPage incl. section tab labels).
+  doctorPage: [
+    "about",
+    "claimProfileLegend",
+    "claimThisProfile",
+    "contactInfo",
+    "doctors",
+    "gallery",
+    "isThisYou",
+    "mainSpeciality",
+    "noName",
+    "nothingFound",
+    "faqs",
+  ],
+  // app/dr/[slug] (Dr/New/NewPublicDoctorProfilePage incl. tab labels + session types) and the legacy Dr/* profile pieces (PublicDrIntro, DrtIntroduction, DoctorOfficeItem, DoctorBookingCard).
+  drProfile: [
+    "patientsChoiceRate",
+    "officeAddress",
+    "officeName",
+    "officeTel",
+    "about",
+    "achivements",
+    "contactInfo",
+    "doctorWebsite",
+    "gallery",
+    "introduction",
+    "landLine",
+    "medicalSystemCode",
+    "mobileNumber",
+    "services",
+    "socialMedias",
+    "address",
+    "articles",
+    "comments",
+    "doctors",
+    "insurances",
+    "nothingFound",
+    "patientReviews",
+    "recordsAndDocuments",
+    "specialityAndServices",
+    "faqs",
+    "textChat",
+    "sipCall",
+    "voiceCall",
+    "videoCall",
+    "inPerson",
+    "boldPoints",
+    "faq",
+    "isThisYou",
+    "reviewsCount",
+    "seeAllReviews",
+    "socialMedia",
+    "succeededAppointmentsCount",
+  ],
+  // Components/Dr/New/BookingSidebar — reusable (/dr/[slug], /book/finalize/[nodeId]); incl. doctorSessionTypeContentKeyDict + patientTypeDict values.
+  drBookingSidebar: [
+    "availableSessionCount",
+    "clinic",
+    "insurance",
+    "insuranceCoverage",
+    "noSessionAvailableForSelectedPeriodMessage",
+    "patientType",
+    "reservation",
+    "reserveYourSpot",
+    "selfPay",
+    "sessionDate",
+    "sessionTime",
+    "sessionType",
+    "today",
+    "toman",
+    "tomorrow",
+    "inPerson",
+    "textChat",
+    "sipCall",
+    "voiceCall",
+    "videoCall",
+    "newPatient",
+    "oldPatient",
+  ],
+  // Components/Dr/PublicDrSessions — reusable session picker; incl. session types + patientTypeDict values.
+  drSessions: [
+    "availableSessionTypes",
+    "clinic",
+    "insurance",
+    "reservation",
+    "reserveYourSpot",
+    "timingDetails",
+    "toman",
+    "inPerson",
+    "newPatient",
+    "oldPatient",
+    "textChat",
+    "sipCall",
+    "voiceCall",
+    "videoCall",
+  ],
+  // Components/Dr/SelectClinicFirstPopup — reusable popup (BookingSidebar, PublicDrSessions).
+  drSelectClinicFirstPopup: [
+    "selectClinicFirstMessage",
+  ],
+  // Components/Drug/DrugCard — reusable (drug list, DiseasePage, SearchModal).
+  drugCard: [
+    "dosage",
+  ],
+  // app/drug/[slug] (DrugPage).
+  drugPage: [
+    "alternateName",
+    "drugAiSummary",
+    "inspectDrugWithAi",
+    "relatedDiseases",
+    "relatedDoctors",
+    "relatedDrugs",
+    "relatedSpecialities",
+    "seeNoyanClinic",
+  ],
+  // app/faq (FaqPage). Also renders HomeFaqs -> homeFaqs.
+  faqPage: [
+    "faqLegendLink",
+    "faqLegendPost",
+    "faqLegendPre",
+    "frequentlyAskedQuestions",
+    "searchInFaq",
+  ],
+  // Components/Home/HomeFaqs — reusable FAQ block (home page + /faq).
+  homeFaqs: [
+    "frequentlyAskedQuestions",
+    "seeAll",
+  ],
+  // app/onboarding (OnboardingPage sections incl. per-item title/description keys).
+  onboardingPage: [
+    "onboardingAiDescription",
+    "onboardingAiLegend",
+    "onboardingAiTitle",
+    "onbordingAiCard0Description",
+    "onbordingAiCard0Title",
+    "onbordingAiCard1Description",
+    "onbordingAiCard1Title",
+    "onbordingAiCard2Description",
+    "onbordingAiCard2Title",
+    "onboardingClinicDescription",
+    "onboardingClinicTitle",
+    "onboardingClinicItem0Description",
+    "onboardingClinicItem0Title",
+    "onboardingClinicItem1Description",
+    "onboardingClinicItem1Title",
+    "onboardingConsultDescription",
+    "onboardingConsultTitle",
+    "onboardingConsultCard0Description",
+    "onboardingConsultCard0Title",
+    "onboardingConsultCard1Description",
+    "onboardingConsultCard1Title",
+    "onboardingConsultCard2Description",
+    "onboardingConsultCard2Title",
+    "onboardingConsultItem0Description",
+    "onboardingConsultItem0Title",
+    "onboardingConsultItem1Description",
+    "onboardingConsultItem1Title",
+    "onboardingConsultItem2Description",
+    "onboardingConsultItem2Title",
+    "onboardingDoctorDescription",
+    "onboardingDoctorTitle",
+    "onboardingDoctorItem0Description",
+    "onboardingDoctorItem0Title",
+    "onboardingDoctorItem1Description",
+    "onboardingDoctorItem1Title",
+    "onboardingFeaturesItem0Description",
+    "onboardingFeaturesItem0Title",
+    "onboardingFeaturesItem1Description",
+    "onboardingFeaturesItem1Title",
+    "onboardingFeaturesItem2Description",
+    "onboardingFeaturesItem2Title",
+    "aboutTitleAi",
+    "aboutTitleNoyan",
+    "doctorsAndClinicsRegisteration",
+    "enterDashboard",
+    "onboardingTitlePre",
+    "onboardingIntroItem0Title",
+    "onboardingIntroItem1Title",
+    "onboardingIntroItem2Title",
+    "onboardingIntroItem3Legend",
+    "onboardingIntroItem3Title",
+    "onboardingIntroItem4Legend",
+    "onboardingIntroItem4Title",
+    "onboardingIntroItem5Legend",
+    "onboardingIntroItem5Title",
+    "onboardingMapCardDescription",
+    "onboardingMapCardTitle",
+    "onboardingMapDescription",
+    "onboardingMapTitle",
+    "onboardingProfileDescription",
+    "onboardingProfileSubtitle",
+    "onboardingProfileTitle",
+    "onboardingProfileItem0Description",
+    "onboardingProfileItem0Title",
+    "onboardingProfileItem1Description",
+    "onboardingProfileItem1Title",
+    "onboardingProfileItem2Description",
+    "onboardingProfileItem2Title",
+    "onboardingProfileItem3Description",
+    "onboardingProfileItem3Title",
+    "onboardingTestifyTitle",
+  ],
+  // app/policy + app/privacy (PolicyPage; title/legend passed in by each page).
+  policyPage: [
+    "policyPageTitle",
+    "policyPageLegend",
+    "privacyPageTitle",
+    "privacyPageLegend",
+  ],
+  // app/speciality (SpecialitiesPage).
+  specialitiesList: [
+    "category",
+    "deleteAll",
+    "searchInSpecialities",
+    "specialitiesListLegend",
+    "specialitiesListTitle",
+  ],
+  // Components/Speciality/SpecialityCard — reusable (speciality list, DiseasePage, SearchModal).
+  specialityCard: [
+    "bestDoctors",
+    "nDoctors",
+    "seeAll",
+  ],
+  // app/speciality/[slug] (SpecialityPage).
+  specialityPage: [
+    "aboutThisSpeciality",
+    "nDoctors",
+  ],
+  // Components/Symptom/SymptomCard — reusable (symptom list, DiseasePage, SearchModal).
+  symptomCard: [
+    "seeDetails",
+  ],
+  // app/symptom/[slug] (SymptomPage).
+  symptomPage: [
+    "bookASessionFromADoctor",
+    "inspectSymptomWithAi",
+    "relatedDiseases",
+    "relatedDoctors",
+    "relatedDrugs",
+    "relatedSpecialities",
+    "similarSymptoms",
+    "symptomAiSummaryTitle",
+    "symptomCategory",
+  ],
+  // Components/Test/TestCard — reusable (test list, SearchModal).
+  testCard: [
+    "seeDetails",
+  ],
+  // app/test (TestsListPage).
+  testsList: [
+    "searchInTests",
+    "testListPageIntroDescription",
+    "testListPageIntroTitle",
+    "testListPageLegend",
+    "testListPageTitle",
+  ],
+  // app/wizard + app/wizard/[nodeId] (WizardPage, ChatsSidebar incl. chatDateGroupLabelKeys, WizardSidebarItem).
+  wizardPage: [
+    "newChat",
+    "noChatYetMessage",
+    "lastMonth",
+    "lastWeek",
+    "older",
+    "today",
+    "yesterday",
+    "aiAssistant",
+    "aiIsTyping",
+    "askMeAnythingMessage",
+    "connectionError",
+    "menu",
+    "sendMessage",
+    "unknownErrorOccured",
+    "writeYourPrompt",
+    "chat",
+    "delete",
+    "sureDeleteThisChat",
+  ],
 } as const satisfies Record<string, readonly ContentKey[]>;
 
 export type ContentNamespace = keyof typeof contentNamespaces;

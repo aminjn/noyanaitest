@@ -1,12 +1,15 @@
 import PopupCard from "@/Components/UI/PopupCard";
 import { IArticle, IArticleCategory } from "./HospitalManageArticlesPage";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 
+const NS: ContentNamespace[] = ["common", "hospitalPanelArticle"];
+
 const HospitalMutateArticlePopup = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

@@ -7,8 +7,11 @@ import { useParams } from "next/navigation";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
+
+const NS: ContentNamespace[] = ["common", "hospitalPanelArticle"];
 
 const HospitalManageArticlePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -17,7 +20,7 @@ const HospitalManageArticlePage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/hospitalpanel" },

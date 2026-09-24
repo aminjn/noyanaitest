@@ -8,12 +8,15 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import UserIdentity from "@/Components/Dashboard/UserIdentity";
 import { Fragment } from "react";
 import UserVitals from "@/Components/Dashboard/UserVitals";
 import UserMedicalDetails from "@/Components/Dashboard/UserMedicalDetails";
 import PatientFiles, { IPatientProfile } from "./PatientFiles";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
 const DoctorManagePatientPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -31,7 +34,7 @@ const DoctorManagePatientPage = () => {
     fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

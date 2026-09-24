@@ -8,6 +8,16 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = [
+  "common",
+  "services",
+  "productServiceSwitch",
+  "productServiceCard",
+];
 
 export const generateMetadata = () => getListPageMetadata("/service");
 
@@ -27,15 +37,18 @@ const ServiceList = async (ctx: {
   if (search) params.append("query", search);
   if (category) params.append("category", category);
   if (packageOnly) params.append("packageOnly", "1");
-  const data = await getPublicData<ServiceListPageProps>(
-    `service?${params.toString()}`,
-  );
+  const [data, textContent] = await Promise.all([
+    getPublicData<ServiceListPageProps>(`service?${params.toString()}`),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/service");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <ServiceListPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <ServiceListPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

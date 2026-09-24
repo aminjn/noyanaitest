@@ -26,7 +26,8 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import BookingFilter from "./BookingFilter";
 import BookingSelectedFilter from "./BookingSelectedFilter";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import BookingFilterSegment from "./BookingFilterSegment";
 import Button from "../UI/Button";
 import usePopup from "../Hooks/usePopup";
@@ -50,6 +51,8 @@ import BookingAdvancedSearchPopup, {
 } from "./BookingAdvancedSearchPopup";
 import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
+const NS: ContentNamespace[] = ["common", "booking"];
+
 export type PharmacyBookingOptions = Partial<{
   query: string;
   productQuery: string;
@@ -71,7 +74,7 @@ const usePharmacyBookingFilterProps = ({
   options: PharmacyBookingOptions;
   setOptions: Dispatch<SetStateAction<PharmacyBookingOptions>>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 
@@ -349,7 +352,7 @@ const PharmacyBooking = ({
 }) => {
   const [options, setOptions] = useState<PharmacyBookingOptions>({});
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

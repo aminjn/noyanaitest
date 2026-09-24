@@ -1,12 +1,15 @@
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import HeartIcon from "../Icons/HeartIcon";
 import MedalIcon from "../Icons/MedalIcon";
 import IconTitle from "../UI/IconTitle";
 import Ixon from "../UI/Ixon";
 import { tsmRegular } from "../UI/Typography";
 import classes from "./MedicalCenterServices.module.css";
+
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const MedicalCenterServices = ({ nodes }: { nodes: string[] }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!nodes.length) return null;
   return (

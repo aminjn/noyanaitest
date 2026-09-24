@@ -4,7 +4,8 @@ import {
   IProductSeller,
 } from "../Admin/Product/AdminManageProductsPage";
 import useCart from "../Hooks/useCart";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./ProductCart.module.css";
 import Ixon from "../UI/Ixon";
 import VolleyBallIcon from "../Icons/VolleyBallIcon";
@@ -29,6 +30,8 @@ import PlusBox from "./PlusBox";
 import CartActions from "./CartActions";
 import ProductCartInfos from "./ProductCartInfos";
 
+const NS: ContentNamespace[] = ["common", "products"];
+
 const ProductCart = ({
   data,
 }: {
@@ -45,7 +48,7 @@ const ProductCart = ({
     );
   }, [cart?.products, data._id, data.sellers]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!currentSeller) return null;
   return (

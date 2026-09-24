@@ -2,7 +2,8 @@
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import { IServicePackage } from "../Admin/ServicePackage/AdminManageServicePackagesPage";
 import CommentSection from "../Comment/CommentSection";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import StarDotPlusIcon from "../Icons/StartDotPlusIcon";
 import CartableNodePage from "../Product/Cartable/CartabaleNodePage";
 import { ProductTab, WhyBox } from "../Product/ProductTabs";
@@ -10,6 +11,8 @@ import { DiffCalc } from "../ProductPackage/ProductPackagePageTabs";
 import ThinOwner from "../ProductPackage/ThinOwner";
 import ServiceCard from "../Service/ServiceCard";
 import RenderRtf from "../UI/RenderRtf";
+
+const NS: ContentNamespace[] = ["common", "servicePackagePage"];
 
 export type ServicepackagePageProps = {
   data: IServicePackage<{
@@ -27,7 +30,7 @@ export type ServicepackagePageProps = {
 };
 
 const ServicePackagePage = ({ data }: ServicepackagePageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   console.log(data);
 

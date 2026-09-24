@@ -2,10 +2,13 @@ import { Fragment, useState } from "react";
 import classes from "./ResubmitJoinClinicRequestPopup.module.css";
 import { IDoctorJoinClinicRequest } from "./DoctorJoinClinicsTab";
 import usePopup from "@/Components/Hooks/usePopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelClinic"];
 
 const ResubmitJoinClinicRequestPopup = ({
   node,
@@ -16,7 +19,7 @@ const ResubmitJoinClinicRequestPopup = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <Fragment>
       <ConfirmationPopup

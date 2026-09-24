@@ -6,9 +6,12 @@ import { IHospitalAdditionRequest } from "./DoctorHospitalAdditionsTab";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { provinceOptions } from "@/Components/Enums/Provinces";
 import { cityOptions } from "@/Components/Enums/Cities";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelHospital"];
 
 const SubmitHospitalAdditionRequestPopup = ({
   mutate,
@@ -17,7 +20,7 @@ const SubmitHospitalAdditionRequestPopup = ({
 }) => {
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const form = useForm<IHospitalAdditionRequest>({
     path: `${API}/doctor/hospitaladdition`,

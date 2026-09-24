@@ -3,11 +3,13 @@ import PrescriptionContext, {
   PrescriptionItem,
 } from "../../../PrescriptionContext";
 import { MongoDoc } from "@/Components/Hooks/useUser";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { useContext } from "react";
 import ListOfItems from "../../../ListOfItems";
 import PreviewPrescriptionItem from "../../../PreviewPrescriptionItem";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionDrugItem"];
 
 const SubmittedDrugsList = ({
   nodes,
@@ -16,9 +18,9 @@ const SubmittedDrugsList = ({
   nodes: (PrescriptionItem & MongoDoc)[];
   readOnly?: boolean;
 }) => {
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setItems, setWorking } = useContext(PrescriptionContext);
 

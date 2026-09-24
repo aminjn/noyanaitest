@@ -1,8 +1,11 @@
 import { usePathname } from "next/navigation";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import classes from "./SwitchProductAndService.module.css";
 import { ContentKey } from "../Enums/contentKeys";
+
+const NS: ContentNamespace[] = ["common", "productServiceSwitch"];
 
 const links = ["/product", "/service"] as const;
 
@@ -14,7 +17,7 @@ const linkContentKeyDict: Record<Link, ContentKey> = {
 };
 
 const SwitchProductAndService = () => {
-  const getContent = useScopedLocale(["products", "services"]);
+  const getContent = useScopedLocale(NS);
 
   const pathname = usePathname();
 

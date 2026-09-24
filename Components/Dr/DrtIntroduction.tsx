@@ -1,5 +1,6 @@
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { PublicDoctorProfilePageProps } from "./PublicDoctorProfilePage";
 
 import classes from "./DrIntroduction.module.css";
@@ -18,6 +19,8 @@ import { Fragment } from "react";
 import WebsiteIcon from "../Icons/WEbsiteIcon";
 import LandLineIcon from "../Icons/LandlineIcon";
 import MobileIcon from "../Icons/MobileIcon";
+
+const NS: ContentNamespace[] = ["common", "drProfile"];
 
 export const DrIntroductionInner = ({
   name,
@@ -40,7 +43,7 @@ export const DrIntroductionInner = ({
   mobile?: string;
   coords?: [number, number];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <section className={classes.main}>
       <h2 className={classes.h2}>{getContent("introduction")}</h2>

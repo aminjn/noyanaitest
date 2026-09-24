@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { t2xsRegular, tsmBold, tsmRegular } from "../UI/Typography";
 import classes from "./MedicalCenterSummary.module.css";
 import Ixon from "../UI/Ixon";
@@ -7,6 +8,8 @@ import HashtagIcon from "../Icons/HashtagIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import PeopleIcon from "../Icons/PeopleIcon";
 import BuildingIcon from "../Icons/BuildingIcon";
+
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
 const InfoIcon = ({
   bacCol,
@@ -59,7 +62,7 @@ const MedicalCenterSummary = ({
   personelCount?: number;
   establishment?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main} id="introduction">

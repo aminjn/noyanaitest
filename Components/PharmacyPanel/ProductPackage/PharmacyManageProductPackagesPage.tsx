@@ -7,7 +7,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
@@ -26,6 +27,8 @@ import {
   IProductSeller,
 } from "@/Components/Admin/Product/AdminManageProductsPage";
 import { IProductCategory } from "@/Components/Admin/ProductCategory/AdminManageProductCategoriesPage";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelProductPackage"];
 
 // Products this pharmacy actually sells (used as the source list when picking
 // which products go in a package) come back as ProductSeller docs.
@@ -74,7 +77,7 @@ const ProductPackageMutatePopup = ({
   mutate: () => unknown;
 }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const defaultValue: ProductPackageMutateFields | undefined = node
     ? {
@@ -158,7 +161,7 @@ const DeleteProductPackagePopup = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <Fragment>
@@ -188,7 +191,7 @@ const PharmacyManageProductPackagesPage = () => {
   );
 
   const { setPopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/pharmacypanel" },

@@ -1,10 +1,13 @@
 import Link from "next/link";
 import classes from "./Pagination.module.css";
-import useLocale from "../Hooks/useLocale";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { Fragment, useCallback, useMemo } from "react";
 import { range } from "../helpers/lib";
 import { WithStyleProps } from "../Layout/Layout";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const Page = ({
   current,
@@ -58,7 +61,7 @@ const Pagination = ({
   style,
   onClickPage,
 }: PaginationProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const renderPage = useCallback(
     (target: number) => (

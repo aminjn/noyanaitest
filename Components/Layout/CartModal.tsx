@@ -3,7 +3,6 @@ import useCart from "../Hooks/useCart";
 import useProgress from "../Hooks/useProgress";
 import classes from "./CartModal.module.css";
 import { buildCartRows, CartRow } from "../Cart/CartPage";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import HostedImage from "../UI/HostedImage";
 import CartItemActions from "../Cart/CartItemActions";
 import Button from "../UI/Button";
@@ -15,6 +14,10 @@ import {
   tsmRegular,
   txsRegular,
 } from "../UI/Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const CartModal = ({ close }: { close: () => unknown }) => {
   const push = useProgress();
@@ -54,7 +57,7 @@ const CartModal = ({ close }: { close: () => unknown }) => {
     return () => window.removeEventListener("click", listener, false);
   }, [close]);
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main} ref={containerRef}>

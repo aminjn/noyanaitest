@@ -8,9 +8,12 @@ import Ixon from "../UI/Ixon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import Button from "../UI/Button";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { t2xsRegular, tsmDemiBold, txsRegular } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "diseasePage"];
 
 const ClinicCardAlt = ({
   node,
@@ -21,7 +24,7 @@ const ClinicCardAlt = ({
     Province: Record<never, never>;
   }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

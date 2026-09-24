@@ -3,7 +3,6 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Table from "@/Components/Admin/UI/Table";
-import useLocale from "@/Components/Hooks/useLocale";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "@/Components/Admin/UI/IconButton";
@@ -15,6 +14,10 @@ import {
   SecretaryNodePath,
 } from "../Request/CreateSecretaryRequestPopup";
 import MutateSecretaryPopup from "./MutateSecretaryPopup";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 // import DeleteSecretaryPopup from "./DeleteSecretaryPopup";
 
 const SecretariesTab = ({ name }: { name: NodeWithAcl }) => {
@@ -24,7 +27,7 @@ const SecretariesTab = ({ name }: { name: NodeWithAcl }) => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 

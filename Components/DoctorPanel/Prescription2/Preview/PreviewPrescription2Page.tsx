@@ -10,7 +10,6 @@ import { useParams } from "next/navigation";
 import { fetcher } from "@/Components/helpers/fetcher";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
 import CreatePrescriptionPatient from "../UI/CreatePrescriptionPatient";
 import Prescription2Agent from "../Prescription2Agent";
 import CreatePrescriptionPage from "../CreatePrescriptionPage";

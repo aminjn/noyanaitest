@@ -13,7 +13,8 @@ import Link from "next/link";
 import { PublicDoctorProfilePageProps } from "../PublicDoctorProfilePage";
 import classes from "./NewPublicDoctorProfilePage.module.css";
 import BreadCrump from "@/Components/UI/BreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useMap from "@/Components/Hooks/useMap";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 import HostedImage from "@/Components/UI/HostedImage";
@@ -46,6 +47,8 @@ import { tmdMedium } from "@/Components/UI/Typography";
 import Badge from "@/Components/UI/Badge";
 import CommentSection from "@/Components/Comment/CommentSection";
 import BookingSidebar from "./BookingSidebar";
+
+const NS: ContentNamespace[] = ["common", "drProfile"];
 
 const visitTypeTagClass: Record<DoctorSessionType, string> = {
   videoCall: classes.tagSecondary,
@@ -87,7 +90,7 @@ const NewDoctorProfilePage = ({
   doctor,
   faqs,
 }: PublicDoctorProfilePageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const fullName = getDoctorProfileLabel(doctor);
 

@@ -1,6 +1,6 @@
 import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import Form from "@/Components/UI/Form";
 import FormTitle from "@/Components/UI/FormTitle";
@@ -12,9 +12,12 @@ import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
 
 import classes from "./DoctorAddPharmacyPopup.module.css";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelPharmacy"];
 
 const DoctorAddPharmacyPopup = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 

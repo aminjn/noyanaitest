@@ -8,9 +8,12 @@ import {
 } from "react";
 import classes from "./Calendxr2.module.css";
 import moment from "moment-jalaali";
-import useLocale from "@/Components/Hooks/useLocale";
 import Ixon from "../Ixon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiCalendar"];
 
 export type CalendxrView = { month: number; year: number };
 
@@ -93,7 +96,7 @@ const Calendxr2 = ({
     [view.month, view.year]
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { prevMonth, prevYear, nextMonth, nextYear, prevMonthDays } =
     useMemo(() => {

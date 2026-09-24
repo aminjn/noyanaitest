@@ -4,7 +4,6 @@ import DoctorSidebar from "./DoctorSidebar";
 import classes from "./PanelSidebar.module.css";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import useLocale from "../Hooks/useLocale";
 import { Fragment, ReactNode, useMemo } from "react";
 import { ContentKey } from "../Enums/contentKeys";
 import { usePathname } from "next/navigation";
@@ -13,6 +12,10 @@ import Link from "next/link";
 import Loading from "../Admin/UI/Loading";
 import ChevronIcon from "../Icons/ChevronIcon";
 import HostedImage from "../UI/HostedImage";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
 export type LinkMapItem = {
   icon: ReactNode;
@@ -34,7 +37,7 @@ const LinkItem = ({
   item: LinkMapItem;
   panel: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const pathname = usePathname();
 
   const isActive = useMemo<boolean>(() => {

@@ -2,14 +2,17 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import useInsurance from "@/Components/Hooks/useInsurance";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IInsuranceTag } from "@/Components/Admin/InsuranceTag/AdminManageInsuranceTagsPage";
 import { IInsuranceCategory } from "@/Components/Admin/InsuranceCategory/AdminManageInsuranceCategoriesPage";
+
+const NS: ContentNamespace[] = ["common", "insurancePanelProfile"];
 
 const InsuranceManageDetailsTab = () => {
   const { insurance, mutate } = useInsurance();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!insurance}>

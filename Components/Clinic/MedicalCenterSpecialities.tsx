@@ -1,11 +1,14 @@
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import Badge from "../UI/Badge";
 import IconTitle from "../UI/IconTitle";
 import classes from "./MedicalCenterSpecialities.module.css";
+
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const MedicalCenterSpecialities = ({ nodes }: { nodes: ISpeciality[] }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   if (!nodes.length) return null;
   return (
     <div className={classes.main} id="specialities">

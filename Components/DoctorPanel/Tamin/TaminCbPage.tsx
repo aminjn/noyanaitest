@@ -7,7 +7,10 @@ import Act from "@/Components/UI/Act";
 import { useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelTamin"];
 
 const TaminCbPage = () => {
   const [code, setCode] = useState<string | null>(null);
@@ -18,7 +21,7 @@ const TaminCbPage = () => {
 
   const searchParams = useSearchParams();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

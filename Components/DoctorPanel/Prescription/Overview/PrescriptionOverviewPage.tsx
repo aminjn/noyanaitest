@@ -5,7 +5,8 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { calculateAge } from "@/Components/helpers/lib";
@@ -19,6 +20,8 @@ import DeletePrescriptionFromTaminPopup from "./DeletePrescriptionFromTaminPopup
 import { DefaultPrescription } from "../PrescriptionContext";
 import useProgress from "@/Components/Hooks/useProgress";
 import Button from "@/Components/UI/Button";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionOverview"];
 
 const Section = ({
   data,
@@ -54,7 +57,7 @@ const PrescriptionOverviewPage = () => {
   );
 
   const [isCommitting, setIsCommitting] = useState<boolean>(false);
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   const { setPopup } = usePopup();
   const push = useProgress();
 

@@ -5,12 +5,15 @@ import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import LocationIcon from "../Icons/LocationIcon";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import Badge from "../UI/Badge";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
 import Link from "next/link";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "hospitalCard"];
 
 const HospitalCard = ({
   node,
@@ -21,7 +24,7 @@ const HospitalCard = ({
     Category: Record<never, never>;
   }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <li className={classes.main}>

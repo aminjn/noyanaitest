@@ -2,10 +2,10 @@ import Ixon from "@/Components/UI/Ixon";
 import { PrescriptionPatientProfile } from "./PatientProfileOverviewPopup";
 import classes from "./PatientProfileRecordsPopup.module.css";
 import CloseIcon from "@/Components/Icons/CloseIcon";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import PatientPersonalDetailsPopupTitle from "./PatientPersonalDetailsPopupTitle";
 import { PrescriptionCtx } from "../PrescriptionContext";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
 import { useMemo, useState } from "react";
 import SearchIcon from "@/Components/Icons/SearchIcon";
 import Button from "@/Components/UI/Button";
@@ -18,6 +18,8 @@ import { dateToString } from "@/Components/UI/FormatDate";
 import PatientProfileRecordPreviewPopup from "./PatientProfileRecordPreviewPopup";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
+
 const PatientProfileRecordsPopup = ({
   profile,
   ctx,
@@ -25,9 +27,9 @@ const PatientProfileRecordsPopup = ({
   profile: PrescriptionPatientProfile;
   ctx: PrescriptionCtx;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   const [query, setQuery] = useState<string>("");
 

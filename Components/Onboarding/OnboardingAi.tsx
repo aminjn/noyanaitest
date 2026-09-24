@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./OnboardingAi.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import StarsLineIcon from "../Icons/StarsLineIcon";
@@ -15,8 +16,9 @@ import {
   txlBold,
 } from "../UI/Typography";
 import SwiperSlider from "../UI/SwiperSlider";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import { SwiperSlide } from "swiper/react";
+
+const NS: ContentNamespace[] = ["common", "onboardingPage"];
 
 type CardProps = {
   icon: ReactNode;
@@ -43,7 +45,7 @@ const cards: CardProps[] = [
 ];
 
 const Card = ({ description, icon, title }: CardProps) => {
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <li key={title} className={classes.card}>
@@ -59,7 +61,7 @@ const Card = ({ description, icon, title }: CardProps) => {
 };
 
 const OnboardingAi = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <div className={classes.main} id="AI">
       <h2 className={`${classes.title} ${txlBold}`}>

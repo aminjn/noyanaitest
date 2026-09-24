@@ -1,5 +1,6 @@
 import Image from "next/image";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./WideIntro.module.css";
 import { FilePath } from "../config";
 import Badge from "../UI/Badge";
@@ -8,6 +9,8 @@ import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
 import StarIcon from "../Icons/StarIcon";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const WideIntro = ({
   category,
   image,
@@ -23,7 +26,7 @@ const WideIntro = ({
   score?: number;
   commentCount?: number;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

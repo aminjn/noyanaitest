@@ -3,19 +3,21 @@ import classes from "./PatientRenderer.module.css";
 import PrescriptionContext from "../PrescriptionContext";
 import Ixon from "@/Components/UI/Ixon";
 import UserIcon from "@/Components/Icons/UserIcon";
-import useLocale from "@/Components/Hooks/useLocale";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { calculateAge } from "@/Components/helpers/lib";
 import { WithStyleProps } from "@/Components/Layout/Layout";
 import Button from "@/Components/UI/Button";
 import PatientPrivilege from "./PatientPrivilege";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
+
 const PatientRenderer = ({ className = "", style }: WithStyleProps) => {
   const { patient } = useContext(PrescriptionContext);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   if (!patient)
     return (

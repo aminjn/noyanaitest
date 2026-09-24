@@ -3,7 +3,6 @@ import { ContentKey } from "../Enums/contentKeys";
 import classes from "./ClinicNav.module.css";
 import { ClinicPageNode } from "./ClinicPage";
 import Button from "../UI/Button";
-import useLocale from "../Hooks/useLocale";
 import StickyNav, { SectionMap } from "./StickyNav";
 
 const ClinicNav = ({ node }: { node: ClinicPageNode }) => {

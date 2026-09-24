@@ -2,15 +2,18 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import useClinic from "@/Components/Hooks/useClinic";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { IClinicTag } from "@/Components/Admin/ClinicTag/AdminManageClinicTagsPage";
 import { IClinicCategory } from "@/Components/Admin/ClinicCategory/AdminManageClinicCategoriesPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "clinicPanelProfile"];
 
 const ClinicManageDetailsTab = () => {
   const { clinic, mutate } = useClinic();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <HandleLoading data={!!clinic}>

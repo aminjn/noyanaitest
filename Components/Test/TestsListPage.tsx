@@ -3,7 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import { ITest } from "../Admin/Test/AdminManageTestsPage";
 import useDebounce from "../Hooks/useDebounce";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import BigAd from "../UI/ListPage/BigAd";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageIntro from "../UI/ListPage/ListPageIntro";
@@ -15,13 +16,15 @@ import ListPageList from "../UI/ListPage/ListPageList";
 import TestCard from "./TestCard";
 import SmallAd from "../UI/ListPage/SmallAd";
 
+const NS: ContentNamespace[] = ["common", "testsList"];
+
 export type TestsListPageProps = {
   data: ITest<{ Category: Record<never, never> }>[];
   pagesCount: number;
 };
 
 const TestsListPage = ({ data, pagesCount }: TestsListPageProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [query, setQuery] = useDebounce({ initialValue: "" });
 

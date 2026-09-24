@@ -1,9 +1,12 @@
 import classes from "./StickyNav.module.css";
 import { useEffect, useMemo, useState } from "react";
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import { WithStyleProps } from "../Layout/Layout";
+
+const NS: ContentNamespace[] = ["common", "medicalCenterNav"];
 
 export type SectionMap = ({ target: string } & (
   | { title: ContentKey; absTitle?: never }
@@ -15,7 +18,7 @@ const StickyNav = ({
   className = "",
   style,
 }: WithStyleProps<{ map: SectionMap }>) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [inView, setInView] = useState<string[]>([]);
 

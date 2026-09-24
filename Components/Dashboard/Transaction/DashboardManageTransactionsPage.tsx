@@ -6,7 +6,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Table from "@/Components/Admin/UI/Table";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import FormatDate from "@/Components/UI/FormatDate";
 import { currencize } from "@/Components/helpers/currencize";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
@@ -15,8 +16,10 @@ import { ITransaction } from "@/Components/Dashboard/Booking/DashboardManageBook
 import { IWallet } from "@/Components/Booking/Finalize/FinalizeBookingPage";
 import Badge from "@/Components/UI/Badge";
 
+const NS: ContentNamespace[] = ["common", "dashboardTransaction"];
+
 const DashboardManageTransactionsPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { data: wallet } = useSWR<IWallet>(`${API}/user/wallet`, (url: string) =>
     fetcher({ url }).then((res) => res.data),

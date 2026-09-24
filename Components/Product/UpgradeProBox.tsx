@@ -1,10 +1,13 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import StarsLineIcon from "../Icons/StarsLineIcon";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import { txsMedium, txsRegular } from "../UI/Typography";
 import classes from "./UpgradeProBox.module.css";
+
+const NS: ContentNamespace[] = ["common", "productCartable"];
 
 const Item = ({ children }: { children?: ReactNode }) => {
   return (
@@ -16,7 +19,7 @@ const Item = ({ children }: { children?: ReactNode }) => {
 };
 
 const UpgradeProBox = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

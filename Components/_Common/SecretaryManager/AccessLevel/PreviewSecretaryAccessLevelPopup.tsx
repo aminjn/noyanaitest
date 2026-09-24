@@ -1,7 +1,6 @@
 import classes from "./PreviewSecretaryAccessLevelPopup.module.css";
 import TableBox from "@/Components/UI/TableBox";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
 import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
@@ -13,6 +12,10 @@ import {
   categoriesAclMap,
   categorizedAclMap,
 } from "./MutateSecretaryAccessLevelPopup";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "secretaryManager"];
 
 const PreviewSecretaryAccessLevelPopup = ({
   node,
@@ -21,7 +24,7 @@ const PreviewSecretaryAccessLevelPopup = ({
   node: Acl<string[], unknown>;
   name: NodeWithAcl;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { closePopup } = usePopup();
 

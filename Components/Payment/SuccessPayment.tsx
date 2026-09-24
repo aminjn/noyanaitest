@@ -6,7 +6,8 @@ import HandleLoading from "../Admin/UI/HandleLoading";
 import { IInvoice } from "../Booking/SelectSessionToReservePopup";
 
 import classes from "./SuccessPayment.module.css";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import FormatDate from "../UI/FormatDate";
 import { Fragment } from "react";
@@ -19,6 +20,8 @@ import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import DownloadIcon from "../Icons/DownloadIcon";
 import useUser from "../Hooks/useUser";
 import LoginRequired from "../UI/LoginRequired";
+
+const NS: ContentNamespace[] = ["common", "paymentResult"];
 
 const SuccessPayment = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -38,7 +41,7 @@ const SuccessPayment = () => {
 
   console.log(data);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const push = useProgress();
 

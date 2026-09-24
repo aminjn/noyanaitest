@@ -10,7 +10,6 @@ import ChevronIcon from "../Icons/ChevronIcon";
 import Button from "../UI/Button";
 import SwiperSlider from "../UI/SwiperSlider";
 import useDebounce from "../Hooks/useDebounce";
-import useLocale from "../Hooks/useLocale";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
@@ -44,6 +43,10 @@ import InsuranceCard from "../Insurance/InsuranceCard";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 import DrugCard from "../Drug/DrugCard";
 import { tbaseMedium, tsmDemiBold } from "../UI/Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 type ProductNode =
   | (IProduct<{
@@ -124,7 +127,7 @@ const ResultSection = <T extends { _id: string }>({
   query?: string;
   onNavigate?: () => void;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!nodes.length) return null;
   return (
@@ -165,7 +168,7 @@ const ResultSection = <T extends { _id: string }>({
 };
 
 const SearchModal = ({ close }: { close: () => unknown }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [query, setQuery] = useDebounce<string>({ initialValue: "" });
 

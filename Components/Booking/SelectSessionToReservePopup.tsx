@@ -12,7 +12,8 @@ import { API } from "../config";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { Fragment, useEffect, useState } from "react";
 import { numberToTime } from "../DoctorPanel/Calendar/AddSessionsAgent";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import BooleanToIcon from "../UI/BooleanToIcon";
 import SelectInput from "../UI/SelectInput";
 import FormActions from "../Admin/UI/FormActions";
@@ -24,6 +25,8 @@ import { IUser, MongoDoc } from "../Hooks/useUser";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import PopupCard from "../UI/PopupCard";
 import usePopup from "../Hooks/usePopup";
+
+const NS: ContentNamespace[] = ["common", "bookingReservePopup"];
 
 export const paymentMethods = ["Manual"] as const;
 
@@ -89,7 +92,7 @@ const SelectSessionToReservePopup = ({
 
   const { closePopup } = usePopup();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
 

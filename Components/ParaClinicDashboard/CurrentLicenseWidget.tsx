@@ -4,7 +4,8 @@ import useSWR from "swr";
 import classes from "./CurrentLicenseWidget.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useAcl from "@/Components/Hooks/useAcl";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import IconTitle from "@/Components/UI/IconTitle";
@@ -14,6 +15,8 @@ import CartIcon from "@/Components/Icons/CartIcon";
 import { paraClinicDashboardModuleLabels } from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
 import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 
+const NS: ContentNamespace[] = ["common", "paraClinicPanelHome"];
+
 // Surfaces the paraClinic's current ParaClinicProfileLicense on the
 // dashboard home page (2026-09) so it's visible without going into the
 // licenses tab. Only fetched/rendered for whoever can already see the
@@ -22,7 +25,7 @@ import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 // Components/PharmacyPanel/CurrentLicenseWidget.tsx - fetches
 // paraClinicController.getMyCurrentLicense, not the purchasable catalog.
 const CurrentLicenseWidget = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const hasAccess = useAcl("paraClinic");
   const canView = hasAccess("readLicenses");
 

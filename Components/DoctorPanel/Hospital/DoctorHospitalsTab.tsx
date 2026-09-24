@@ -6,13 +6,16 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import TableBox from "@/Components/UI/TableBox";
 import Table from "@/Components/Admin/UI/Table";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import UnjoinHospitalPopup from "./UnjoinHospitalPopup";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelHospital"];
 
 const DoctorHospitalsTab = () => {
   const { data, error, mutate } = useSWR<
@@ -24,7 +27,7 @@ const DoctorHospitalsTab = () => {
     fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

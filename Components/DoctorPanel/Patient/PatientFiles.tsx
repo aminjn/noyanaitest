@@ -4,7 +4,8 @@ import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import { IUserFile, UserFilePopulation } from "@/Components/Chat/ChatSidebar";
 import Table from "@/Components/Admin/UI/Table";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
 import NewPatientFilePopup from "./NewPatientFilePopup";
@@ -19,6 +20,8 @@ import {
   IPart,
   PartPopulation,
 } from "@/Components/Admin/Disease/AdminManageDiseasesPage";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
 type SymptomPopulation = Population<{
   Part: PartPopulation;
@@ -98,7 +101,7 @@ const PatientFiles = ({
   mutate?: () => unknown;
   patientId?: string;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { setPopup } = usePopup();
 

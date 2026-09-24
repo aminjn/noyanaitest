@@ -3,7 +3,8 @@
 import classes from "./ClinicsListPage.module.css";
 import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IClinicCategory } from "../Admin/ClinicCategory/AdminManageClinicCategoriesPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import BigAd from "../UI/ListPage/BigAd";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageIntro from "../UI/ListPage/ListPageIntro";
@@ -29,6 +30,8 @@ import useProgress from "../Hooks/useProgress";
 import SpecialsBox from "./SpecialsBox";
 import { tsmBold, txsMedium } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+
+const NS: ContentNamespace[] = ["common", "clinicsList"];
 
 export type ClinicsListProps = {
   data: IClinic<{
@@ -84,7 +87,7 @@ const ClinicsListPage = ({
   pagesCount,
   specials,
 }: ClinicsListProps) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const searchParams = useSearchParams();
   const [query, setQuery] = useDebounce({

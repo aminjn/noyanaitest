@@ -12,7 +12,7 @@ import { useParams } from "next/navigation";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import TableBox from "@/Components/UI/TableBox";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Table from "@/Components/Admin/UI/Table";
 import FormatDate from "@/Components/UI/FormatDate";
 import { numberToTime } from "./AddSessionsAgent";
@@ -28,6 +28,9 @@ import Button from "@/Components/UI/Button";
 import MutateSessionPopup from "./MutateSessionPopup";
 import DeleteSessionPopup from "./DeleteSessionPopup";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelCalendar"];
 
 const DoctorManageCalendarDayPage = () => {
   const params = useParams<{ stamp: string }>();
@@ -38,7 +41,7 @@ const DoctorManageCalendarDayPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },

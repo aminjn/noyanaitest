@@ -13,18 +13,21 @@ import FancySelect from "@/Components/UI/FancySelect";
 import FavoriteButton from "./Drug/FavoriteButton";
 import LabItemGetter from "./Lab/LabItemGetter";
 import Counter from "@/Components/UI/Counter";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { clamp } from "@/Components/helpers/lib";
 import DateInput from "@/Components/UI/DateInput";
 import useNotification from "@/Components/Hooks/useNotification";
 import Input from "@/Components/UI/Input";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
+
 const LabAgent = () => {
   const { setWorkingLab, workingLab, setLabItems } =
     useContext(PrescriptionContext);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const pushNotification = useNotification();
 

@@ -6,17 +6,27 @@ import {
   getListPageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "aboutPage"];
 
 export const generateMetadata = () => getListPageMetadata("/about");
 
 const About = async () => {
-  const data = await getPublicData<AboutPageProps>("about");
+  const [data, textContent] = await Promise.all([
+    getPublicData<AboutPageProps>("about"),
+    getScopedTextContent(NS),
+  ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/about");
   return (
     <>
       <JsonLdSchema schema={webSchema} />
-      <AboutPage {...data} />
+      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
+        <AboutPage {...data} />
+      </LocaleScopeProvider>
     </>
   );
 };

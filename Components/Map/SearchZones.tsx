@@ -12,8 +12,11 @@ import { API } from "../config";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
 import { tsmRegular } from "../UI/Typography";
-import useLocale from "../Hooks/useLocale";
 import { isSea } from "node:sea";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "mapPage"];
 
 export type ZoneData = {
   provinces: IProvince[];
@@ -34,7 +37,7 @@ const SearchZones = ({
     { keepPreviousData: true },
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
 

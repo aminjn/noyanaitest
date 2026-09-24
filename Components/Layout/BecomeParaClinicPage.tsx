@@ -6,8 +6,11 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import { Fragment } from "react";
-import useLocale from "../Hooks/useLocale";
 import CreateForm from "../Admin/UI/CreateForm";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "becomeParaClinic"];
 
 export type BecomeParaClinicRequestPopulation = Population<{
   User: UserPopulation;
@@ -36,7 +39,7 @@ const BecomeParaClinicPage = () => {
       (url: string) => fetcher({ url }).then((res) => res.data),
     );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <HandleLoading data={!isLoading} error={error}>

@@ -13,7 +13,6 @@ import {
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Button from "@/Components/UI/Button";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useProgress from "@/Components/Hooks/useProgress";
 import RenderRtf from "@/Components/UI/RenderRtf";
 import LicenseDurationSelector from "./LicenseDurationSelector";
@@ -23,6 +22,10 @@ import ShareIcon from "@/Components/Icons/ShareIcon";
 import { tlgDemiBold, txsRegular } from "@/Components/UI/Typography";
 import Ixon from "@/Components/UI/Ixon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
 // Shared logic for the "/<panel>/license/[nodeId]" page across every org
 // panel (doctor/pharmacy/clinic/paraClinic) - fetches a single
@@ -46,7 +49,7 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
     setSelectedDuration(data.pricing[0].duration);
   }, [selectedDuration, data]);
 
-  const getContent = useScopedLocale(["common"]);
+  const getContent = useScopedLocale(LOCALE_NS);
   const push = useProgress();
 
   // TODO: render `license` (plan details + duration/price picker + purchase

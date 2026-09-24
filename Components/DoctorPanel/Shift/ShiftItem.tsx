@@ -8,7 +8,7 @@ import { IOffice } from "../Office/DoctorManageOfficesPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import Button from "@/Components/UI/Button";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import TimePicker from "@/Components/UI/TimePicker";
 import { tmdBold } from "@/Components/UI/Typography";
 import OptionInput from "@/Components/UI/OptionInput";
@@ -24,10 +24,13 @@ import ErrorIcon from "@/Components/Icons/ErrorIcon";
 import PopupCard from "@/Components/UI/PopupCard";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+
+const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
 const ShiftProblemsPopup = ({ problems }: { problems: string[] }) => {
   const { closePopup } = usePopup();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <PopupCard>
       <div className={classes.problems}>
@@ -60,7 +63,7 @@ const ShiftItem = ({
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { shiftHasProblem } = useShiftUtils();
 

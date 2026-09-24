@@ -1,5 +1,6 @@
 import classes from "./CreatePrescriptionPatinetSelector.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePrescription from "../Store/usePrescription";
 import { useState } from "react";
 import useNotification from "@/Components/Hooks/useNotification";
@@ -15,12 +16,14 @@ import { API } from "@/Components/config";
 import VisitPrescription from "./VisitPrescription";
 import ReferralPrescription from "./ReferralPrescription";
 
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
+
 const CreatePrescriptionPatinetSelector = ({
   className = "",
   style,
 }: WithStyleProps) => {
   const { setPatient, readOnly, defaultValue, patient } = usePrescription();
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const [isLoading, setIsLoading] = useState<{ nationalId: string } | null>(
     null,

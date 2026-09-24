@@ -7,7 +7,8 @@ import Table from "@/Components/Admin/UI/Table";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { IUser, MongoDoc } from "@/Components/Hooks/useUser";
@@ -15,6 +16,8 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import FormatDate from "@/Components/UI/FormatDate";
 import useSWR from "swr";
 import JoinCallPopup from "./JoinCallPopup";
+
+const NS: ContentNamespace[] = ["common", "dashboardCall"];
 
 export const callTypes = ["voice", "video"] as const;
 
@@ -44,7 +47,7 @@ const DashboardManageCallsPage = () => {
     fetcher({ url }).then((res) => res.data)
   );
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
 

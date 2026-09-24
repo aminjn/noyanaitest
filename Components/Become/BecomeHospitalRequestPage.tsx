@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent } from "react";
-import useLocale from "../Hooks/useLocale";
 import useForm from "../Hooks/useForm";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import { API } from "../config";

@@ -1,4 +1,5 @@
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import classes from "./FindPrescriptionAgent.module.css";
 import { useState } from "react";
 import useNotification from "@/Components/Hooks/useNotification";
@@ -8,6 +9,9 @@ import Form from "@/Components/UI/Form";
 import Input from "@/Components/UI/Input";
 import Button from "@/Components/UI/Button";
 import PrescriptionList from "./PrescriptionList";
+
+const NS: ContentNamespace[] = ["common", "pharmacyPanelPrescription"];
+
 export type IncomingTaminPharmacyResponse = {
   list: {
     headeprscid: number;
@@ -42,7 +46,7 @@ export type IncomingTaminPharmacyResponse = {
 };
 
 const FindPrescriptionAgent = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const [data, setData] = useState<IncomingTaminPharmacyResponse | null>(null);
 

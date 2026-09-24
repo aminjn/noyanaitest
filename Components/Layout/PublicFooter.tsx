@@ -1,5 +1,4 @@
 import Link from "next/link";
-import useLocale from "../Hooks/useLocale";
 import Ixon from "../UI/Ixon";
 import LogoLong from "../UI/LogoLong";
 import classes from "./PublicFooter.module.css";
@@ -11,6 +10,10 @@ import LocationIcon from "../Icons/LocationIcon";
 import CallingIcon from "../Icons/CallingIcon";
 import EnvelopeIcon from "../Icons/EnvelopeIcon";
 import CallingIconStroke from "../Icons/CallingIconStroke";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const linkMap: {
   title: ContentKey;
@@ -48,7 +51,7 @@ const linkMap: {
 ];
 
 const PublicFooter = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <footer className={classes.main}>

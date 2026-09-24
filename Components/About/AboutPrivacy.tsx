@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./AboutPrivacy.module.css";
 import { ContentKey } from "../Enums/contentKeys";
 import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
@@ -9,6 +10,8 @@ import BadgeCheckIcon from "../Icons/BadgeCheckIcon";
 import Ixon from "../UI/Ixon";
 import HostedImage from "../UI/HostedImage";
 import { t4xlBold, tmdBold, tsmRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "aboutPage"];
 
 const items: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
   [
@@ -35,7 +38,7 @@ const items: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
   ];
 
 const AboutPrivacy = ({ aboutSecurity }: { aboutSecurity?: string }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.main}>

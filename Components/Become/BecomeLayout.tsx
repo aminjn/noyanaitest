@@ -5,19 +5,21 @@ import classes from "./BecomeLayout.module.css";
 import { ReactNode } from "react";
 import Link from "next/link";
 import useUser from "../Hooks/useUser";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Loading from "../Admin/UI/Loading";
 import LoginRequired from "../UI/LoginRequired";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import { becomeOrgList } from "./becomeOrgs";
 import BreadCrump from "../UI/BreadCrump";
-import useScopedLocale from "../Hooks/useScopedLocale";
 import Ixon from "../UI/Ixon";
 import CheckIcon from "../Icons/CheckIcon";
 import { usePathname } from "next/navigation";
 import useProgress from "../Hooks/useProgress";
 import { tbaseMedium, tmdMedium, tsmRegular } from "../UI/Typography";
+
+const NS: ContentNamespace[] = ["common", "becomeSomething"];
 
 // Shared shell for every /become/[org] route (app/become/layout.tsx) plus
 // the /become index page itself. Just the useUser()+LoginRequired gate this
@@ -33,7 +35,7 @@ import { tbaseMedium, tmdMedium, tsmRegular } from "../UI/Typography";
 // JSX below is intentionally bare (no styling) - CSS/markup is meant to be
 // redone by hand.
 const BecomeLayout = ({ children }: { children: ReactNode }) => {
-  const getContent = useScopedLocale(["becomeSomething"]);
+  const getContent = useScopedLocale(NS);
   const { user, isUserLoading } = useUser();
 
   const pathname = usePathname();

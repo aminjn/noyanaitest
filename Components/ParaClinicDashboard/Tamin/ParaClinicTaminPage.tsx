@@ -1,14 +1,17 @@
 "use client";
 
 import TabSystem from "@/Components/Admin/UI/TabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import GetParaClinicPrescriptions from "./GetParaClinicPrescriptions";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import RequestByRegisterId from "./RequestByRegisterId";
 import RegisterPhysioSession from "./TaminPhysio";
 
+const NS: ContentNamespace[] = ["common", "paraClinicPanelTamin"];
+
 const ParaClinicTaminPage = () => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   return (
     <WithTitle title={getContent("prescriptions")}>
       <TabSystem

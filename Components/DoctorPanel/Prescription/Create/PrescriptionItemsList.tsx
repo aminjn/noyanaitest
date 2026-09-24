@@ -4,7 +4,8 @@ import PrescriptionContext, {
   PrescriptionItem,
 } from "../PrescriptionContext";
 import classes from "./PrescriptionItemsList.module.css";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { Fragment, useContext, useState } from "react";
 import {
   t2xsDemiBold,
@@ -15,13 +16,14 @@ import Ixon from "@/Components/UI/Ixon";
 import EditAltIcon from "@/Components/Icons/EditAltIcon";
 import TrashIcon from "@/Components/Icons/TrashIcon";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
-import useLocale from "@/Components/Hooks/useLocale";
 import PillIcon from "@/Components/Icons/PillIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import ListOfItems from "../ListOfItems";
 import SubmittedDrugsList from "./Items/Drug/SubmittedDrugsList";
 import FlaskIcon from "@/Components/Icons/FlaskIcon";
 import SubmittedTestsList from "./Items/Lab/SubmittedTestsList";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionEditor"];
 
 const PrescriptionItemsList = ({
   items,
@@ -32,7 +34,7 @@ const PrescriptionItemsList = ({
   labItems: (LabItem & MongoDoc)[];
   readOnly?: boolean;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
   return (
     <ClientTabSystem
       items={[

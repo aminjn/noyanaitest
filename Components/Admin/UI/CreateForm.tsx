@@ -18,13 +18,16 @@ import ImageInput from "@/Components/UI/ImageInput";
 import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
 import StringListInput from "@/Components/UI/StringListInput";
 import CheckboxGroupInput from "@/Components/UI/CheckboxGroupInput";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
 import RangeInput from "@/Components/UI/RangeInput";
 import FilesInput from "./FilesInput";
 import LicensePricingInput, {
   ILicensePricingEntry,
 } from "./LicensePricingInput";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 
 export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
   [key in keyof Partial<TInput>]: (
@@ -108,7 +111,7 @@ const CreateForm = <TInput, TResult = unknown>({
 
   const { setInput, isLoading, submit, input } = hookProvided || hookResult;
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <Form

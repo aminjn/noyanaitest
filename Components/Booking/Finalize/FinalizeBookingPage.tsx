@@ -26,8 +26,8 @@ import {
 import useProgress from "@/Components/Hooks/useProgress";
 import useShiftUtils from "@/Components/DoctorPanel/Shift/useShiftUtils";
 import ErrorMessage from "@/Components/Admin/UI/ErrorMessage";
-import useLocale from "@/Components/Hooks/useLocale";
-import useComplexLocale from "@/Components/Hooks/useComplexLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { numberToTime } from "@/Components/DoctorPanel/Calendar/AddSessionsAgent";
 import useUser, {
   IUser,
@@ -71,10 +71,11 @@ import Act from "@/Components/UI/Act";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import BookingSessionSelectorPopup from "@/Components/Booking/BookingSessionSelectorPopup";
 import BookingSidebar from "@/Components/Dr/New/BookingSidebar";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+
+const NS: ContentNamespace[] = ["common", "bookingFinalize"];
 
 const AddRelativePopup = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
 
@@ -140,7 +141,7 @@ const PatientStage = ({
 
   const { user } = useUser();
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   const push = useProgress();
 
@@ -252,9 +253,9 @@ const SessionTypeStage = ({
   doctor: FinalizeBookingDoctor;
   shift: IDoctorShift<{ Office: Record<never, never> }>;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = getContent;
 
   const sessionTypeAvailable = useCallback(
     (st: DoctorSessionType): boolean => {
@@ -406,8 +407,8 @@ const CheckoutStage = ({
   setStage: Dispatch<SetStateAction<BookingStage>>;
   onFinalize: () => unknown;
 }) => {
-  const getContent = useLocale();
-  const getCompContent = useComplexLocale();
+  const getContent = useScopedLocale(NS);
+  const getCompContent = getContent;
   const { data: wallet, error } = useSWR<IWallet>(
     `${API}/user/wallet`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -601,7 +602,7 @@ const BookingFlowSidebar = ({
   start?: number;
   end?: number;
 }) => {
-  const getContent = useScopedLocale(["booking"]);
+  const getContent = useScopedLocale(NS);
 
   return (
     <div className={classes.detail}>
@@ -686,9 +687,9 @@ const InnerBookingFlow = ({
 }) => {
   const [doesntExist, setDoesntExist] = useState<boolean>(false);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
-  const getCompContent = useComplexLocale();
+  const getCompContent = getContent;
 
   const { getShiftSessionBounds } = useShiftUtils();
 

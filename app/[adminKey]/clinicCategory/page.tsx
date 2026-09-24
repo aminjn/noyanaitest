@@ -1,7 +1,17 @@
 import AdminManageClinicCategoriesPage from "@/Components/Admin/ClinicCategory/AdminManageClinicCategoriesPage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const AdminManageClinicCategories = () => {
-  return <AdminManageClinicCategoriesPage />;
+const LOCALE_NS: ContentNamespace[] = ["common", "adminCommon"];
+
+const AdminManageClinicCategories = async () => {
+  const textContent = await getScopedTextContent(LOCALE_NS);
+  return (
+    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
+      <AdminManageClinicCategoriesPage />
+    </LocaleScopeProvider>
+  );
 };
 
 export default AdminManageClinicCategories;

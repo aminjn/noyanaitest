@@ -1,4 +1,3 @@
-import useLocale from "../Hooks/useLocale";
 import HeartIcon from "../Icons/HeartIcon";
 import MedalIcon from "../Icons/MedalIcon";
 import IconTitle from "../UI/IconTitle";

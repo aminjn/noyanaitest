@@ -1,9 +1,12 @@
 import { IInsurance } from "../DoctorPanel/Insurance/DoctorInsurancesTab";
 import { ContentKey } from "../Enums/contentKeys";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import Badge from "../UI/Badge";
 import IconTitle from "../UI/IconTitle";
 import classes from "./MedicalCenterInsurances.module.css";
+
+const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const MedicalCenterInsurances = ({
   nodes,
   title,
@@ -11,7 +14,7 @@ const MedicalCenterInsurances = ({
   nodes: IInsurance[];
   title: ContentKey;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!nodes.length) return null;
   return (

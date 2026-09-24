@@ -1,11 +1,14 @@
 import PopupCard from "@/Components/UI/PopupCard";
 import { IPatientProfileRecord } from "./PatientFiles";
 import classes from "./PreviewPatientProfileRecordPopup.module.css";
-import useLocale from "@/Components/Hooks/useLocale";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
 import FormatDate from "@/Components/UI/FormatDate";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 const PreviewPatientProfileRecordPopup = ({
   node,
 }: {
@@ -16,7 +19,7 @@ const PreviewPatientProfileRecordPopup = ({
 }) => {
   console.log(node);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <PopupCard>

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import classes from "./TimePicker.module.css";
-import useLocale from "../Hooks/useLocale";
 import ChevronIcon from "../Icons/ChevronIcon";
 import Ixon from "./Ixon";
 import { clamp } from "../helpers/lib";
@@ -8,6 +7,10 @@ import { WithStyleProps } from "../Layout/Layout";
 import { numberToTime } from "../DoctorPanel/Calendar/AddSessionsAgent";
 import { t2xsRegular } from "./Typography";
 import XMarkIcon from "../Icons/XMarkIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
 const TimePicker = ({
   onChange,
@@ -48,7 +51,7 @@ const TimePicker = ({
     }
   }, [isOpen, inner, onChange]);
 
-  const getContent = useLocale();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   useEffect(() => {
     const listener = (e: MouseEvent) => {

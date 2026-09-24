@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomePopular.module.css";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
@@ -10,12 +11,14 @@ import DoctorCardAlt from "../UI/DoctorCardAlt";
 import { t2xlBold, tlgMedium } from "../UI/Typography";
 import Button from "../UI/Button";
 
+const NS: ContentNamespace[] = ["common", "home"];
+
 const HomePopular = ({
   nodes,
 }: {
   nodes?: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
 
   if (!nodes?.length) return null;
   return (

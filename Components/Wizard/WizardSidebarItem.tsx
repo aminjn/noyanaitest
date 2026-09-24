@@ -2,7 +2,8 @@ import Link from "next/link";
 import { useState } from "react";
 import classes from "./WizardSidebarItem.module.css";
 import { IBotChat } from "./useBotChats";
-import useLocale from "../Hooks/useLocale";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
 import useNotification from "../Hooks/useNotification";
 import useProgress from "../Hooks/useProgress";
 import { API } from "../config";
@@ -12,6 +13,8 @@ import TrashIcon from "../Icons/TrashIcon";
 import CheckIcon from "../Icons/CheckIcon";
 import XMarkIcon from "../Icons/XMarkIcon";
 import FormatDate from "../UI/FormatDate";
+
+const NS: ContentNamespace[] = ["common", "wizardPage"];
 
 const WizardSidebarItem = ({
   chat,
@@ -24,7 +27,7 @@ const WizardSidebarItem = ({
   mutate: () => unknown;
   onNavigate?: () => void;
 }) => {
-  const getContent = useLocale();
+  const getContent = useScopedLocale(NS);
   const pushNotification = useNotification();
   const push = useProgress();
 

@@ -5,7 +5,6 @@ import Ixon from "./Ixon";
 import CrownIcon from "../Icons/CrownIcon";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import LocationIcon from "../Icons/LocationIcon";
-import useComplexLocale from "../Hooks/useComplexLocale";
 import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
 import {
@@ -15,13 +14,17 @@ import {
   tsmMedium,
   txsRegular,
 } from "./Typography";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common", "uiServiceCard"];
 
 const ServiceCard = ({
   node,
 }: {
   node: IService<{ Owner: Record<never, never> }>;
 }) => {
-  const getCompContent = useComplexLocale();
+  const getCompContent = useScopedLocale(LOCALE_NS);
 
   return (
     <div className={classes.main}>
