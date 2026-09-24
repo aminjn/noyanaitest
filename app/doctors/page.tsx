@@ -26,7 +26,7 @@ const DoctorsList = async (ctx: {
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
   const [data, textContent] = await Promise.all([
     getPublicData<DoctorPageProps>(`doctor?page=${page}`),
-    getScopedTextContent(["common", "doctorsList"]),
+    getScopedTextContent(["doctorsList"]),
   ]);
   if (!data) return notFound();
   const webSchema = await getListPageWebSchema("/doctors");
@@ -34,7 +34,7 @@ const DoctorsList = async (ctx: {
     <>
       <JsonLdSchema schema={webSchema} />
       <LocaleScopeProvider
-        namespaces={["common", "doctorsList"]}
+        namespaces={["doctorsList"]}
         initialTextContent={textContent}
       >
         <DoctorsListPage {...data} />

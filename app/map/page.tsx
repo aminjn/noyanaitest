@@ -10,7 +10,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 export const generateMetadata = () => getListPageMetadata("/map");
 
-const NAMESPACES: ContentNamespace[] = ["common", "mapPage", "uiForm"];
+const NAMESPACES: ContentNamespace[] = ["mapPage", "uiForm"];
 
 const Map = async () => {
   const [webSchema, textContent] = await Promise.all([

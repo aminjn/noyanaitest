@@ -3,10 +3,10 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
 const DoctorManageSettings = async () => {
-  const textContent = await getScopedTextContent(["common", "doctorPanelSettings"]);
+  const textContent = await getScopedTextContent(["doctorPanelSettings"]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "doctorPanelSettings"]}
+      namespaces={["doctorPanelSettings"]}
       initialTextContent={textContent}
     >
       <DoctorManageSettingsPage />

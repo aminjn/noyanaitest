@@ -3,10 +3,10 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
 const ParaClinicTest = async () => {
-  const textContent = await getScopedTextContent(["common", "paraClinicPanelTest"]);
+  const textContent = await getScopedTextContent(["paraClinicPanelTest"]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "paraClinicPanelTest"]}
+      namespaces={["paraClinicPanelTest"]}
       initialTextContent={textContent}
     >
       <ParaClinicTestsPage />

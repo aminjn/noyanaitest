@@ -1,23 +1,26 @@
 import { getPublicData } from "./getPublicData";
 import {
   ContentNamespace,
-  getNamespaceKeys,
+  toNamespacesParam,
 } from "../Enums/contentNamespaces";
 import { ITextContent } from "../Admin/TextContent/AdminManageTextContentPage";
 
-// Server-side fetch of only the text content keys a page needs, resolved
-// from one or more namespaces (see contentNamespaces.tsx). Hits the same
-// /public/site endpoint as the full sitewide fetch, just with a `keys` query
-// param so the backend can project down to a subset instead of returning
-// everything.
+// Server-side fetch of only the text content a page needs, by namespace (see
+// contentNamespaces.tsx). Hits /public/site with a `namespaces` query param —
+// the backend keeps a mirrored namespace map (noyanai-back/Lib/
+// contentNamespaces.ts) and resolves the names to the keys to select.
+//
+// "common" doesn't need to be requested by pages: app/layout.tsx fetches it
+// (plus the panel chrome's "layoutPanel") once, server-side, for the header/
+// footer/sidebars, and every page's LocaleScopeProvider inherits it.
 export const getScopedTextContent = async (
   namespaces: ContentNamespace[],
 ): Promise<Partial<ITextContent> | undefined> => {
-  const keys = getNamespaceKeys(namespaces);
-  if (!keys.length) return undefined;
+  const param = toNamespacesParam(namespaces);
+  if (!param) return undefined;
   const site = await getPublicData<{ textContent?: Partial<ITextContent> }>(
     "site",
-    { keys: keys.join(",") },
+    { namespaces: param },
   );
   return site?.textContent;
 };

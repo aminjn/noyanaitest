@@ -4,12 +4,11 @@ import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent"
 
 const PrintPrescription = async () => {
   const textContent = await getScopedTextContent([
-    "common",
     "doctorPanelPrescriptionPrint",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "doctorPanelPrescriptionPrint"]}
+      namespaces={["doctorPanelPrescriptionPrint"]}
       initialTextContent={textContent}
     >
       <PrintPrescriptionPage />

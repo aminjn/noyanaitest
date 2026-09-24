@@ -3,10 +3,10 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
 const PharmacyTamin = async () => {
-  const textContent = await getScopedTextContent(["common", "pharmacyPanelTamin"]);
+  const textContent = await getScopedTextContent(["pharmacyPanelTamin"]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "pharmacyPanelTamin"]}
+      namespaces={["pharmacyPanelTamin"]}
       initialTextContent={textContent}
     >
       <PharmacyTaminPage />

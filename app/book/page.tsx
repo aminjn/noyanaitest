@@ -14,7 +14,6 @@ import JsonLdSchema from "@/Components/UI/JsonLdSchema";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = [
-  "common",
   "booking",
   "bookingSessionSelectorPopup",
   "doctorPanelShiftUtils",

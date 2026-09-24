@@ -4,7 +4,7 @@
 // Services/pushNotificationService.ts (noyanai-back) sends:
 //   { title: string, message: string, link?: string }
 
-const DEFAULT_ICON = "/favicon.ico";
+const DEFAULT_ICON = "/icons/icon-192.png";
 
 self.addEventListener("install", () => {
   // Don't wait for old tabs to close before this version takes over - a

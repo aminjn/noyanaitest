@@ -12,7 +12,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["common", "symptomPage"];
+const NS: ContentNamespace[] = ["symptomPage"];
 
 export const generateMetadata = ({
   params: { slug },

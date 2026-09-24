@@ -9,7 +9,6 @@ import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent"
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = [
-  "common",
   "drProfile",
   "drBookingSidebar",
   "drSelectClinicFirstPopup",

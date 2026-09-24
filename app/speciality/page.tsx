@@ -12,7 +12,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["common", "specialitiesList", "specialityCard"];
+const NS: ContentNamespace[] = ["specialitiesList", "specialityCard"];
 
 export const generateMetadata = () => getListPageMetadata("/speciality");
 

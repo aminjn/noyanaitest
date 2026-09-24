@@ -3,10 +3,10 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
 const Chats = async () => {
-  const textContent = await getScopedTextContent(["common", "dashboardChat", "chat"]);
+  const textContent = await getScopedTextContent(["dashboardChat", "chat"]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "dashboardChat", "chat"]}
+      namespaces={["dashboardChat", "chat"]}
       initialTextContent={textContent}
     >
       <ChatsPage />

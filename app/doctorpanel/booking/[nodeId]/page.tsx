@@ -4,7 +4,6 @@ import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent"
 
 const DoctorManageBooking = async () => {
   const textContent = await getScopedTextContent([
-    "common",
     "doctorPanelBooking",
     "dashboardReservationStatusBadge",
     "dashboardReservationTimeline",
@@ -12,7 +11,7 @@ const DoctorManageBooking = async () => {
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "doctorPanelBooking", "dashboardReservationStatusBadge", "dashboardReservationTimeline", "dashboardReservationJoinButton"]}
+      namespaces={["doctorPanelBooking", "dashboardReservationStatusBadge", "dashboardReservationTimeline", "dashboardReservationJoinButton"]}
       initialTextContent={textContent}
     >
       <DoctorManageBookingPage />

@@ -26,7 +26,7 @@ const DrugsList = async (ctx: {
 
   const [data, textContent] = await Promise.all([
     getPublicData<DrugsListPageProps>(`drug?${params.toString()}`),
-    getScopedTextContent(["common", "drugsList", "drugCard"]),
+    getScopedTextContent(["drugsList", "drugCard"]),
   ]);
 
   if (!data) return notFound();
@@ -35,7 +35,7 @@ const DrugsList = async (ctx: {
     <>
       <JsonLdSchema schema={webSchema} />
       <LocaleScopeProvider
-        namespaces={["common", "drugsList", "drugCard"]}
+        namespaces={["drugsList", "drugCard"]}
         initialTextContent={textContent}
       >
         <DrugsListPage {...data} />

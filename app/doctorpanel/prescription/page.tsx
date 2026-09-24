@@ -5,7 +5,6 @@ import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent"
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NAMESPACES: ContentNamespace[] = [
-  "common",
   "doctorPanelPrescriptionCreate",
   "doctorPanelPrescriptionDrugItem",
 ];

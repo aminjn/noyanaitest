@@ -12,7 +12,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["common", "products", "productCartable", "commentSection"];
+const NS: ContentNamespace[] = ["products", "productCartable", "commentSection"];
 
 export const generateMetadata = (ctx: { params: { slug: string } }) =>
   getNodePageMetadata("/product/[slug]", ctx.params.slug);

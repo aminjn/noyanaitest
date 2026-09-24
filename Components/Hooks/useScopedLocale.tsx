@@ -1,7 +1,12 @@
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { ContentKey } from "../Enums/contentKeys";
-import { ContentNamespace, getNamespaceKeys } from "../Enums/contentNamespaces";
+import {
+  ContentNamespace,
+  contentNamespaces,
+  getNamespaceKeys,
+  toNamespacesParam,
+} from "../Enums/contentNamespaces";
 import { ITextContent } from "../Admin/TextContent/AdminManageTextContentPage";
 import LocaleContext from "../Store/LocaleContext";
 import { API } from "../config";
@@ -15,9 +20,9 @@ import { reportMissingContentKey } from "../helpers/reportMissingContentKey";
 //
 // Unlike LocaleScopeProvider (which wraps a whole page and fetches all of
 // its namespace's keys up front, ideally server-side), this hook is
-// component-local: it looks at whatever's already in context — today
-// that's everything, via the root layout's full fetch, so this is a no-op —
-// and only fetches the keys that are genuinely missing. That makes it safe
+// component-local: it looks at whatever's already in context (any ancestor
+// LocaleScopeProvider, incl. the root layout's "common"/"layoutPanel") and
+// only fetches the namespaces that still have missing keys. That makes it safe
 // to drop into any single component as-is, with or without a
 // LocaleScopeProvider above it, and it naturally does less work as more of
 // the tree gets migrated to namespaces.
@@ -30,9 +35,20 @@ const useScopedLocale = (namespaces: ContentNamespace[]) => {
   const { textContent: inherited } = useContext(LocaleContext);
 
   const keys = useMemo(() => getNamespaceKeys(namespaces), [namespaces]);
-  const missingKeys = useMemo(
-    () => keys.filter((key) => inherited[key] === undefined),
-    [keys, inherited],
+
+  // Only request the namespaces that still have at least one key missing
+  // from context. The backend resolves namespace names to keys via its
+  // mirrored map (noyanai-back/Lib/contentNamespaces.ts).
+  const missingNamespacesParam = useMemo(
+    () =>
+      toNamespacesParam(
+        namespaces.filter((ns) =>
+          (contentNamespaces[ns] as readonly ContentKey[]).some(
+            (key) => inherited[key] === undefined,
+          ),
+        ),
+      ),
+    [namespaces, inherited],
   );
 
   const [fetchedTextContent, setFetchedTextContent] = useState<
@@ -40,8 +56,8 @@ const useScopedLocale = (namespaces: ContentNamespace[]) => {
   >({});
 
   useSWR<{ textContent?: Partial<ITextContent> }>(
-    missingKeys.length
-      ? `${API}/public/site?keys=${missingKeys.join(",")}`
+    missingNamespacesParam
+      ? `${API}/public/site?namespaces=${missingNamespacesParam}`
       : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
     {
@@ -73,8 +89,8 @@ const useScopedLocale = (namespaces: ContentNamespace[]) => {
       if (process.env.NODE_ENV === "development") {
         // Two things worth flagging while migrating pages to namespaces:
         // 1. This component asked for a key its declared namespace(s)
-        //    don't actually list — works today only because an ancestor
-        //    (root layout) still fetches everything.
+        //    don't actually list — it only renders if some ancestor
+        //    provider happens to have loaded it.
         // 2. The key resolved to nothing at all — missing on the backend
         //    TextContent document, independent of namespaces.
         const notInNamespace = !keys.includes(key);

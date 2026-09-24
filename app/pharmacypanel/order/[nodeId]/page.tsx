@@ -4,14 +4,13 @@ import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent"
 
 const PharmacyOrderDetail = async () => {
   const textContent = await getScopedTextContent([
-    "common",
     "pharmacyPanelOrder",
     "dashboardOrderStatusBadge",
     "dashboardOrderItemStatusBadge",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["common", "pharmacyPanelOrder", "dashboardOrderStatusBadge", "dashboardOrderItemStatusBadge"]}
+      namespaces={["pharmacyPanelOrder", "dashboardOrderStatusBadge", "dashboardOrderItemStatusBadge"]}
       initialTextContent={textContent}
     >
       <PharmacyIncomingOrderPage />

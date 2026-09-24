@@ -6,6 +6,12 @@ import { ContentKey } from "./contentKeys";
 // truth for every valid key) — it does not replace or change it. A key can
 // appear in more than one namespace if it's genuinely shared.
 //
+// MIRRORED ON THE BACKEND: noyanai-back/Lib/contentNamespaces.ts holds a
+// verbatim copy of this object. Pages request text content by namespace name
+// (GET /public/site?namespaces=...) and the backend resolves the names to
+// keys with its copy — so any namespace/key change here must be copied there
+// too, or the server will return the old key set.
+//
 // Filled in page by page as they get migrated (home, doctorsList,
 // diseasesList, drugsList, symptomsList so far). The rest of the ~1200 keys
 // still get grouped the same way, one page/section at a time.
@@ -1828,7 +1834,12 @@ export const contentNamespaces = {
   // app/pharmacypanel/page.tsx (PharmacyPanelPage) — the panel shell, plus
   // the CurrentLicenseWidget it now renders (2026-09), mirrors
   // doctorPanelHome.
-  pharmacyPanelHome: ["dashboard", "currentLicense", "licenses", "noLicensePurchasedYet"],
+  pharmacyPanelHome: [
+    "dashboard",
+    "currentLicense",
+    "licenses",
+    "noLicensePurchasedYet",
+  ],
 
   // app/pharmacypanel/license/page.tsx (PharmacyManageLicencePage) - the
   // purchasable BasePharmacyLicense catalog + the pharmacy's own current
@@ -2309,82 +2320,155 @@ export const contentNamespaces = {
   // Input,NodesSelector} + Components/Hooks/useForm (loading/noResultFound/xToman
   // live in common). Include on any page with forms/selects.
   uiForm: [
-    "nothingFound", "operationWasSuccessful", "selectDate",
-    "selectPlaceholder", "selectTime",
+    "nothingFound",
+    "operationWasSuccessful",
+    "selectDate",
+    "selectPlaceholder",
+    "selectTime",
   ],
   // Components/UI/Calendar/Calendxr2 (doctorpanel/calendar).
-  uiCalendar: [
-    "nextMonth", "prevMonth",
-  ],
+  uiCalendar: ["nextMonth", "prevMonth"],
   // Components/UI/DoctorCardAlt (home, speciality/disease/drug/symptom pages, SearchModal).
   uiDoctorCard: [
-    "booking", "consultTime", "inPerson", "location", "onlineConsult",
-    "readyToRespond", "responseStatus", "sipCall", "visitProfile", "xMinutes",
+    "booking",
+    "consultTime",
+    "inPerson",
+    "location",
+    "onlineConsult",
+    "readyToRespond",
+    "responseStatus",
+    "sipCall",
+    "visitProfile",
+    "xMinutes",
     "xPeopleRecommended",
   ],
   // Components/UI/ServiceCard (home, service list/detail, service package, SearchModal).
-  uiServiceCard: [
-    "onlyXRemaining", "xComment",
-  ],
+  uiServiceCard: ["onlyXRemaining", "xComment"],
   // Panel chrome: Components/Layout/{PanelLayout,PanelSidebar,DoctorSidebar} + every
   // *Sidebar LinkMap title (Clinic/Dashboard/Doctor/Hospital/Insurance/ParaClinic/
   // Pharmacy/Secretary). Rendered by the panel layouts, above page providers.
   layoutPanel: [
-    "addresses", "articles", "bookings", "chatWithPatients", "chats",
-    "discounts", "drugsAndPrescriptions", "financialMangement",
-    "incomingOrders", "invoices", "licenses", "offers", "office", "orders",
-    "patientDocuments", "patients", "phrmaciesAndLabs", "prescriptions",
-    "productPackages", "profile", "schedule", "secrataries", "secretaries",
-    "servicePackages", "settings", "shifts", "tamin", "toman", "transactions",
+    "addresses",
+    "articles",
+    "bookings",
+    "chatWithPatients",
+    "chats",
+    "discounts",
+    "drugsAndPrescriptions",
+    "financialMangement",
+    "incomingOrders",
+    "invoices",
+    "licenses",
+    "offers",
+    "office",
+    "orders",
+    "patientDocuments",
+    "patients",
+    "phrmaciesAndLabs",
+    "prescriptions",
+    "productPackages",
+    "profile",
+    "schedule",
+    "secrataries",
+    "secretaries",
+    "servicePackages",
+    "settings",
+    "shifts",
+    "tamin",
+    "toman",
+    "transactions",
   ],
   // Components/Layout/DoctorPanelLicenseBalanceHeader (doctorpanel clinic/hospital
   // pages and DoctorPanel/_UI/WithBalanceHeader users).
   layoutDoctorLicenseBalance: [
-    "currentBalance", "currentLicense", "deposit", "toman",
+    "currentBalance",
+    "currentLicense",
+    "deposit",
+    "toman",
   ],
   // Components/_Common/License/* (all 6 panels' license/, license/all,
   // license/[nodeId], license/[nodeId]/checkout pages). "wallet" = checkout method.
   sharedLicense: [
-    "balance", "chooseLicense", "confirmAndContinue", "discount",
-    "licenseConsult", "licenseInfoItem0", "licenseInfoItem1",
-    "licenseInfoItem2", "name", "otherLicenses", "payablePrice",
-    "paymentMethod", "price", "primaryLicencesPageTitle",
-    "primaryLicensesIntroDescription", "primaryLicensesIntroTitle",
-    "primaryLicensesPageDescription", "selectNoyanLicense",
-    "selectNoyanLicenseLegend", "share", "specialDiscount", "specialOffer",
-    "toman", "totalPrice", "wallet",
+    "balance",
+    "chooseLicense",
+    "confirmAndContinue",
+    "discount",
+    "licenseConsult",
+    "licenseInfoItem0",
+    "licenseInfoItem1",
+    "licenseInfoItem2",
+    "name",
+    "otherLicenses",
+    "payablePrice",
+    "paymentMethod",
+    "price",
+    "primaryLicencesPageTitle",
+    "primaryLicensesIntroDescription",
+    "primaryLicensesIntroTitle",
+    "primaryLicensesPageDescription",
+    "selectNoyanLicense",
+    "selectNoyanLicenseLegend",
+    "share",
+    "specialDiscount",
+    "specialOffer",
+    "toman",
+    "totalPrice",
+    "wallet",
   ],
   // app/map: Components/Map/{MapPage,SearchZones} + Components/Hooks/useMap
   // (incl. MapPage filterContentKeys doctor/lab/hospital/pharmacy).
   mapPage: [
-    "doctor", "hospital", "lab", "mapIsNotReady", "mapLegend", "mapTitle",
-    "pharmacy", "searchProvinceOrCityOrDistrict",
-    "somethingWentWrongAcquiringYourLocation", "yourDeviceNotSupportingGPS",
+    "doctor",
+    "hospital",
+    "lab",
+    "mapIsNotReady",
+    "mapLegend",
+    "mapTitle",
+    "pharmacy",
+    "searchProvinceOrCityOrDistrict",
+    "somethingWentWrongAcquiringYourLocation",
+    "yourDeviceNotSupportingGPS",
   ],
   // app/not-found.tsx: Components/NotFound/NotFoundPage.
-  notFound: [
-    "goToHomePage", "pageNotFoundLegend", "pageNotFoundTitle",
-  ],
+  notFound: ["goToHomePage", "pageNotFoundLegend", "pageNotFoundTitle"],
   // Components/Notification/PushNotificationToggle (dashboard/notification).
   notificationPushToggle: [
-    "disablePushNotifications", "enablePushNotifications",
-    "pushNotificationsBlocked", "pushNotificationsEnabled",
+    "disablePushNotifications",
+    "enablePushNotifications",
+    "pushNotificationsBlocked",
+    "pushNotificationsEnabled",
     "pushSubscriptionFailed",
   ],
   // Components/Comment/{CommentSection,CommentsSummary,SubmitCommentForm} incl.
   // star filter keys. Any page rendering CommentSection (doctor/clinic/hospital/
   // insurance/paraClinic/product/service/package/blog pages, admin comments).
   commentSection: [
-    "3Star", "4Star", "5Star", "fromXComments", "lowStar",
-    "shareYourCommentPlaceholder", "submitComment", "submitYourComment",
-    "useComments", "wasUseful", "xComments",
+    "3Star",
+    "4Star",
+    "5Star",
+    "fromXComments",
+    "lowStar",
+    "shareYourCommentPlaceholder",
+    "submitComment",
+    "submitYourComment",
+    "useComments",
+    "wasUseful",
+    "xComments",
   ],
   // Components/Chat/{ChatSidebar,ChatSidebarItem,CurrentChat} (dashboard/chat,
   // doctorpanel/chat, DoctorPanel/Patient/PatientFiles).
   chat: [
-    "chat", "closeChat", "missingMessageOrFileErrorMessage",
-    "noChatYetMessage", "noMessagesYet", "open", "searchOrStartNewChat",
-    "selectAChatFirstMessage", "sendMessage", "status", "writeYourMessage",
+    "chat",
+    "closeChat",
+    "missingMessageOrFileErrorMessage",
+    "noChatYetMessage",
+    "noMessagesYet",
+    "open",
+    "searchOrStartNewChat",
+    "selectAChatFirstMessage",
+    "sendMessage",
+    "status",
+    "writeYourMessage",
   ],
 
   // ---- admin (useScopedLocale migration, 2026-09) ----
@@ -2611,7 +2695,12 @@ export const contentNamespaces = {
     "dateOfBirth",
   ],
   // Components/Dashboard/EditUserDetailsPopup.tsx (opened from UserIdentity).
-  dashboardEditUserDetailsPopup: ["notAssigned", "username", "submit", "cancel"],
+  dashboardEditUserDetailsPopup: [
+    "notAssigned",
+    "username",
+    "submit",
+    "cancel",
+  ],
   // Components/Dashboard/UserVitals.tsx (VitalCard titles/units are passed as
   // ContentKey props: heartRate/perMinute, bloodOxygen/percent,
   // bodyTemperature/celsius, bloodPressure/mmHg).
@@ -3201,10 +3290,7 @@ export const contentNamespaces = {
     "xComments",
   ],
   // Components/Product/SwitchProductAndService.tsx — /product <-> /service toggle on both list pages.
-  productServiceSwitch: [
-    "noyanPharmacry",
-    "noyanServices",
-  ],
+  productServiceSwitch: ["noyanPharmacry", "noyanServices"],
   // app/productPackage/[slug]/page.tsx (Components/ProductPackage/*).
   productPackagePage: [
     "aboutPackage",
@@ -3303,9 +3389,7 @@ export const contentNamespaces = {
     "whyNoyanLegend",
   ],
   // Components/Blog/BlogMainCard — reusable (mag list, HomeBlogs, SearchModal).
-  blogMainCard: [
-    "noyan",
-  ],
+  blogMainCard: ["noyan"],
   // app/mag/[blogSlug] (Blog/BlogPage).
   magPost: [
     "blogBookLegend",
@@ -3364,10 +3448,7 @@ export const contentNamespaces = {
     "similarDiseases",
   ],
   // Components/Disease/DiseaseCard — reusable (disease list, SearchModal).
-  diseaseCard: [
-    "nRecommendedDrugs",
-    "nSymptoms",
-  ],
+  diseaseCard: ["nRecommendedDrugs", "nSymptoms"],
   // app/doctor/[slug] (Doctor/DoctorPage incl. section tab labels).
   doctorPage: [
     "about",
@@ -3465,13 +3546,9 @@ export const contentNamespaces = {
     "videoCall",
   ],
   // Components/Dr/SelectClinicFirstPopup — reusable popup (BookingSidebar, PublicDrSessions).
-  drSelectClinicFirstPopup: [
-    "selectClinicFirstMessage",
-  ],
+  drSelectClinicFirstPopup: ["selectClinicFirstMessage"],
   // Components/Drug/DrugCard — reusable (drug list, DiseasePage, SearchModal).
-  drugCard: [
-    "dosage",
-  ],
+  drugCard: ["dosage"],
   // app/drug/[slug] (DrugPage).
   drugPage: [
     "alternateName",
@@ -3492,10 +3569,7 @@ export const contentNamespaces = {
     "searchInFaq",
   ],
   // Components/Home/HomeFaqs — reusable FAQ block (home page + /faq).
-  homeFaqs: [
-    "frequentlyAskedQuestions",
-    "seeAll",
-  ],
+  homeFaqs: ["frequentlyAskedQuestions", "seeAll"],
   // app/onboarding (OnboardingPage sections incl. per-item title/description keys).
   onboardingPage: [
     "onboardingAiDescription",
@@ -3586,20 +3660,11 @@ export const contentNamespaces = {
     "specialitiesListTitle",
   ],
   // Components/Speciality/SpecialityCard — reusable (speciality list, DiseasePage, SearchModal).
-  specialityCard: [
-    "bestDoctors",
-    "nDoctors",
-    "seeAll",
-  ],
+  specialityCard: ["bestDoctors", "nDoctors", "seeAll"],
   // app/speciality/[slug] (SpecialityPage).
-  specialityPage: [
-    "aboutThisSpeciality",
-    "nDoctors",
-  ],
+  specialityPage: ["aboutThisSpeciality", "nDoctors"],
   // Components/Symptom/SymptomCard — reusable (symptom list, DiseasePage, SearchModal).
-  symptomCard: [
-    "seeDetails",
-  ],
+  symptomCard: ["seeDetails"],
   // app/symptom/[slug] (SymptomPage).
   symptomPage: [
     "bookASessionFromADoctor",
@@ -3613,9 +3678,7 @@ export const contentNamespaces = {
     "symptomCategory",
   ],
   // Components/Test/TestCard — reusable (test list, SearchModal).
-  testCard: [
-    "seeDetails",
-  ],
+  testCard: ["seeDetails"],
   // app/test (TestsListPage).
   testsList: [
     "searchInTests",
@@ -3660,3 +3723,10 @@ export const getNamespaceKeys = (
   }
   return Array.from(set);
 };
+
+// Serializes namespaces for the `?namespaces=` param of GET /public/site
+// (resolved server-side via the mirrored map in
+// noyanai-back/Lib/contentNamespaces.ts). Deduped + sorted so the same set
+// always produces the same URL (stable SWR/HTTP cache keys).
+export const toNamespacesParam = (namespaces: ContentNamespace[]): string =>
+  Array.from(new Set(namespaces)).sort().join(",");

@@ -8,7 +8,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["common", "contactPage"];
+const NS: ContentNamespace[] = ["contactPage"];
 
 export const generateMetadata = () => getListPageMetadata("/contact");
 

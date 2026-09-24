@@ -3,8 +3,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = [
-  "common",
+const NS: ContentNamespace[] = [
   "dashboardVital",
   "dashboardVitalList",
   "dashboardAddVitalPopup",

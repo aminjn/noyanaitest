@@ -4,14 +4,12 @@ import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent"
 
 const PharmacyPanel = async () => {
   const textContent = await getScopedTextContent([
-    "common",
     "pharmacyPanelHome",
     "pharmacyPanelCurrentLicenseWidget",
   ]);
   return (
     <LocaleScopeProvider
       namespaces={[
-        "common",
         "pharmacyPanelHome",
         "pharmacyPanelCurrentLicenseWidget",
       ]}
