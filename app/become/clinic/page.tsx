@@ -1,16 +1,29 @@
 import BecomeClinicRequestPage from "@/Components/Become/BecomeClinicRequestPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/become/clinic");
 
 const BecomeClinic = async () => {
-  const textContent = await getScopedTextContent(["becomeClinic"]);
+  const [textContent, webSchema] = await Promise.all([
+    getScopedTextContent(["becomeClinic"]),
+    getListPageWebSchema("/become/clinic"),
+  ]);
   return (
-    <LocaleScopeProvider
-      namespaces={["becomeClinic"]}
-      initialTextContent={textContent}
-    >
-      <BecomeClinicRequestPage />
-    </LocaleScopeProvider>
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <LocaleScopeProvider
+        namespaces={["becomeClinic"]}
+        initialTextContent={textContent}
+      >
+        <BecomeClinicRequestPage />
+      </LocaleScopeProvider>
+    </>
   );
 };
 

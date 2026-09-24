@@ -6,6 +6,13 @@ import type {
   BookingDescriptionSegment,
   IBookingDescription,
 } from "@/Components/Admin/BookingDescription/AdminManageBookingDescriptionsPage";
+import {
+  getListPageMetadata,
+  getListPageWebSchema,
+} from "@/Components/helpers/getPageMetadata";
+import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+
+export const generateMetadata = () => getListPageMetadata("/book");
 
 // Groups the flat, order-sorted list the backend returns (see
 // publicController.getBookingDescriptions) into one bucket per booking
@@ -25,20 +32,24 @@ const groupBookingDescriptionsBySegment = (
 };
 
 const Booking = async () => {
-  const textContent = await getScopedTextContent(["common", "booking"]);
-  const bookingDescriptions = await getPublicData<{
-    data: IBookingDescription[];
-  }>("bookingDescription");
+  const [textContent, bookingDescriptions, webSchema] = await Promise.all([
+    getScopedTextContent(["common", "booking"]),
+    getPublicData<{ data: IBookingDescription[] }>("bookingDescription"),
+    getListPageWebSchema("/book"),
+  ]);
   const descriptions = groupBookingDescriptionsBySegment(
     bookingDescriptions?.data,
   );
   return (
-    <LocaleScopeProvider
-      namespaces={["common", "booking"]}
-      initialTextContent={textContent}
-    >
-      <BookingPage2 descriptions={descriptions} />
-    </LocaleScopeProvider>
+    <>
+      <JsonLdSchema schema={webSchema} />
+      <LocaleScopeProvider
+        namespaces={["common", "booking"]}
+        initialTextContent={textContent}
+      >
+        <BookingPage2 descriptions={descriptions} />
+      </LocaleScopeProvider>
+    </>
   );
 };
 

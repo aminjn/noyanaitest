@@ -16,6 +16,19 @@ export const pageMetaListResourceTypes = [
   "/symptom",
   "/insurance",
   "/faq",
+  "/",
+  "/book",
+  "/about",
+  "/contact",
+  "/policy",
+  "/privacy",
+  "/map",
+  "/become/doctor",
+  "/become/clinic",
+  "/become/hospital",
+  "/become/insurance",
+  "/become/paraClinic",
+  "/become/pharmacy",
 ] as const;
 
 // every single-document page in the app, e.g. /symptom/[slug]
@@ -62,6 +75,19 @@ export const pageMetaListResourceTypeLabels: Record<
   "/symptom": "علائم",
   "/insurance": "بیمه",
   "/faq": "سوالات متداول",
+  "/": "صفحه اصلی",
+  "/book": "نوبت دهی",
+  "/about": "درباره ما",
+  "/contact": "تماس با ما",
+  "/policy": "قوانین و مقررات",
+  "/privacy": "حریم خصوصی",
+  "/map": "نقشه",
+  "/become/doctor": "ثبت نام پزشک",
+  "/become/clinic": "ثبت نام کلینیک",
+  "/become/hospital": "ثبت نام بیمارستان",
+  "/become/insurance": "ثبت نام بیمه",
+  "/become/paraClinic": "ثبت نام پاراکلینیک",
+  "/become/pharmacy": "ثبت نام داروخانه",
 };
 
 export interface IPageMeta extends MongoDoc {
