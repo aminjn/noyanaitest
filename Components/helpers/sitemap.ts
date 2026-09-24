@@ -6,12 +6,19 @@ export type SitemapNode = { slug: string; lastmod: string };
 // most once an hour instead of on every request.
 export const SITEMAP_REVALIDATE_SECONDS = 3600;
 
+// keep in sync with Controllers/publicController's SITEMAP_PAGE_SIZE. Once a
+// node type has more publicly-visible documents than this, it needs more
+// than one sitemap file (doctor.xml, doctor02.xml, doctor03.xml, ...).
+export const SITEMAP_PAGE_SIZE = 10000;
+
 export const fetchSitemapNodes = async (
   type: string,
+  page = 1,
 ): Promise<SitemapNode[]> => {
-  const response = await fetch(`${BACKEND}/api/v1/public/sitemap/${type}`, {
-    next: { revalidate: SITEMAP_REVALIDATE_SECONDS },
-  });
+  const response = await fetch(
+    `${BACKEND}/api/v1/public/sitemap/${type}?page=${page}`,
+    { next: { revalidate: SITEMAP_REVALIDATE_SECONDS } },
+  );
   if (!response.ok) return [];
   try {
     const json = await response.json();
@@ -19,6 +26,34 @@ export const fetchSitemapNodes = async (
   } catch {
     return [];
   }
+};
+
+export const fetchSitemapNodeCount = async (type: string): Promise<number> => {
+  const response = await fetch(
+    `${BACKEND}/api/v1/public/sitemap/${type}/count`,
+    { next: { revalidate: SITEMAP_REVALIDATE_SECONDS } },
+  );
+  if (!response.ok) return 0;
+  try {
+    const json = await response.json();
+    const count = Number(json?.data?.count);
+    return Number.isFinite(count) ? count : 0;
+  } catch {
+    return 0;
+  }
+};
+
+// how many SITEMAP_PAGE_SIZE-sized files a node type needs, and what each
+// one is called: page 1 is "<type>.xml", page 2+ gets a zero-padded numeric
+// suffix ("<type>02.xml", "<type>03.xml", ...).
+export const sitemapFileNames = (type: string, count: number): string[] => {
+  const pageCount = Math.max(1, Math.ceil(count / SITEMAP_PAGE_SIZE));
+  return Array.from({ length: pageCount }, (_, index) => {
+    const page = index + 1;
+    return page === 1
+      ? `${type}.xml`
+      : `${type}${String(page).padStart(2, "0")}.xml`;
+  });
 };
 
 export const absoluteUrl = (path: string): string =>
