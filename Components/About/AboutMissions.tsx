@@ -8,6 +8,8 @@ import Ixon from "../UI/Ixon";
 import CheckIcon from "../Icons/CheckIcon";
 import TitleLegend from "./TitleLegend";
 import { tmdBold, tsmRegular } from "../UI/Typography";
+import SwiperSlider from "../UI/SwiperSlider";
+import { SwiperSlide } from "swiper/react";
 
 const Card = ({
   icon,
@@ -49,6 +51,25 @@ const AboutMissions = () => {
   return (
     <div className={classes.main}>
       <TitleLegend title="ourMissionAndPrespective" />
+      <div className={classes.cardsMobile}>
+        <SwiperSlider>
+          <SwiperSlide>
+            <Card
+              icon={<TargetIcon />}
+              title="ourMission"
+              items={["ourMission0", "ourMission1", "ourMission2"]}
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Card
+              icon={<EyeIcon />}
+              title="ourPrespective"
+              items={["ourPrespective0", "ourPrespective1", "ourPrespective2"]}
+              alt
+            />
+          </SwiperSlide>
+        </SwiperSlider>
+      </div>
       <ul className={classes.cards}>
         <Card
           icon={<TargetIcon />}

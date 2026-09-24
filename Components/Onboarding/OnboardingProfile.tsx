@@ -12,8 +12,13 @@ import {
   tlgDemiBold,
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import SwiperSlider from "../UI/SwiperSlider";
+import { SwiperSlide } from "swiper/react";
 
-const items: { title: ContentKey; description: ContentKey }[] = [
+type ItemProps = { title: ContentKey; description: ContentKey };
+
+const items: ItemProps[] = [
   {
     title: "onboardingProfileItem0Title",
     description: "onboardingProfileItem0Description",
@@ -31,6 +36,21 @@ const items: { title: ContentKey; description: ContentKey }[] = [
     description: "onboardingProfileItem3Description",
   },
 ];
+
+const Item = ({ description, title }: ItemProps) => {
+  const getContent = useScopedLocale(["common"]);
+
+  return (
+    <li className={classes.item}>
+      <h3 className={`${classes.itemTitle} ${tlgDemiBold}`}>
+        {getContent(title)}
+      </h3>
+      <p className={`${classes.itemDescription} ${tbaseRegular}`}>
+        {getContent(description)}
+      </p>
+    </li>
+  );
+};
 
 const OnboardingProfile = ({
   onboadingProfile,
@@ -52,16 +72,18 @@ const OnboardingProfile = ({
           {getContent("onboardingProfileDescription")}
         </p>
       </div>
+      <div className={classes.mobileGrid}>
+        <SwiperSlider>
+          {items.map((item) => (
+            <SwiperSlide key={item.title}>
+              <Item {...item} />
+            </SwiperSlide>
+          ))}
+        </SwiperSlider>
+      </div>
       <ul className={classes.grid}>
         {items.map((item) => (
-          <li key={item.title} className={classes.item}>
-            <h3 className={`${classes.itemTitle} ${tlgDemiBold}`}>
-              {getContent(item.title)}
-            </h3>
-            <p className={`${classes.itemDescription} ${tbaseRegular}`}>
-              {getContent(item.description)}
-            </p>
-          </li>
+          <Item key={item.title} {...item} />
         ))}
       </ul>
       <div className={classes.imageBox}>

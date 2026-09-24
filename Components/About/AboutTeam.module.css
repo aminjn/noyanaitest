@@ -9,6 +9,7 @@
   align-items: center;
   gap: 1.5rem;
   flex-wrap: wrap;
+  min-width: 15.375rem;
 }
 
 .item {

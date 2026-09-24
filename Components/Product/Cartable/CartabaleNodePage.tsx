@@ -67,7 +67,7 @@ const CartableNodePage = <T,>({
       )}
       <div className={classes.main}>
         <div className={classes.content}>
-          <div className={classes.intro} >
+          <div className={classes.intro}>
             <CartableNodePageIntro
               images={images}
               commentsCount={commentsCount}

@@ -21,7 +21,13 @@ const AboutCta = ({ aboutCta }: { aboutCta?: string }) => {
           {getContent("aboutCtaLegend")}
         </p>
         <div className={classes.actions}>
-          <Button variant="Primary" mode="Outline" size="M" radius="High" className={classes.primaryAction} >
+          <Button
+            variant="Primary"
+            mode="Outline"
+            size="M"
+            radius="High"
+            className={classes.primaryAction}
+          >
             {getContent("joinNoyanAi")}
           </Button>
           <Button

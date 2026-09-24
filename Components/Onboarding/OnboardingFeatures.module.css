@@ -5,10 +5,10 @@
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   gap: 2.0625rem;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .item {
@@ -20,6 +20,7 @@
   padding: 1rem;
   border-radius: 0.75rem;
   background-color: var(--white);
+  flex: 1;
 }
 
 .itemTitle {

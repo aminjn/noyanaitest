@@ -70,7 +70,6 @@ const SymptomPage = ({
 }: SymptomPageProps) => {
   const getContent = useLocale();
 
-  console.log(drugs);
   return (
     <ListPageLayout
       trail={[

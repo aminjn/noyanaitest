@@ -3,6 +3,7 @@
   display: flex;
   padding-block: 4.25rem;
   gap: 4.125rem;
+  flex-wrap: wrap;
 }
 
 .main::before {
@@ -55,8 +56,9 @@
 .image {
   position: relative;
   height: 32.875rem;
-  width: 28.875rem;
+  min-width: 28.875rem;
   border-radius: 1rem;
   overflow: hidden;
   flex-shrink: 0;
+  flex: 1;
 }

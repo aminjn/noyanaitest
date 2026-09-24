@@ -50,6 +50,8 @@
   border-radius: 0.75rem;
   padding-inline: 2rem;
   text-align: center;
+  width: 100%;
+  max-width: 100%;
 }
 
 .cardIcon {
@@ -64,4 +66,21 @@
 
 .cardDescription {
   color: var(--gray10);
+}
+
+.cardsMobile {
+  display: none;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}
+
+@media only screen and (max-width: 950px) {
+  .cards {
+    display: none;
+  }
+
+  .cardsMobile {
+    display: flex;
+  }
 }

@@ -20,7 +20,7 @@ const linkMap: {
     title: "links",
     items: [
       { title: "home", target: "/" },
-      { title: "forDoctors", target: "/doctorpanel" },
+      { title: "forDoctors", target: "/onboarding" },
       { title: "aiDetection", target: "/wizard" },
       { title: "blog", target: "/mag" },
       { title: "privacy", target: "/privacy" },
@@ -30,7 +30,7 @@ const linkMap: {
   {
     title: "contactUs",
     items: [
-      { title: "support", target: "/support" },
+      { title: "support", target: "/contact" },
       { title: "aboutUs", target: "/about" },
       { title: "contactUs", target: "/contact" },
     ],

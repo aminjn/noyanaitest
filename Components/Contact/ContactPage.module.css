@@ -21,3 +21,11 @@
 .featureValue {
   color: var(--gray13);
 }
+
+@media only screen and (max-width: 700px) {
+  .features {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}

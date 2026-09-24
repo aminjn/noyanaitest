@@ -14,25 +14,49 @@ import {
   tmdMedium,
   txlBold,
 } from "../UI/Typography";
+import SwiperSlider from "../UI/SwiperSlider";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { SwiperSlide } from "swiper/react";
 
-const cards: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
-  [
-    {
-      icon: <StarsLineIcon />,
-      title: "onbordingAiCard0Title",
-      description: "onbordingAiCard0Description",
-    },
-    {
-      icon: <StarsLineIcon />,
-      title: "onbordingAiCard1Title",
-      description: "onbordingAiCard1Description",
-    },
-    {
-      icon: <StarsLineIcon />,
-      title: "onbordingAiCard2Title",
-      description: "onbordingAiCard2Description",
-    },
-  ];
+type CardProps = {
+  icon: ReactNode;
+  title: ContentKey;
+  description: ContentKey;
+};
+
+const cards: CardProps[] = [
+  {
+    icon: <StarsLineIcon />,
+    title: "onbordingAiCard0Title",
+    description: "onbordingAiCard0Description",
+  },
+  {
+    icon: <StarsLineIcon />,
+    title: "onbordingAiCard1Title",
+    description: "onbordingAiCard1Description",
+  },
+  {
+    icon: <StarsLineIcon />,
+    title: "onbordingAiCard2Title",
+    description: "onbordingAiCard2Description",
+  },
+];
+
+const Card = ({ description, icon, title }: CardProps) => {
+  const getContent = useScopedLocale(["common"]);
+
+  return (
+    <li key={title} className={classes.card}>
+      <Ixon width="2rem" className={classes.cardIcon}>
+        {icon}
+      </Ixon>
+      <h3 className={`${classes.cardTitle} ${tlgBold}`}>{getContent(title)}</h3>
+      <p className={`${classes.cardDescription} ${tbaseRegular}`}>
+        {getContent(description)}
+      </p>
+    </li>
+  );
+};
 
 const OnboardingAi = () => {
   const getContent = useLocale();
@@ -47,19 +71,18 @@ const OnboardingAi = () => {
       <p className={`${classes.description} ${tbaseMedium}`}>
         {getContent("onboardingAiDescription")}
       </p>
+      <div className={classes.cardsMobile}>
+        <SwiperSlider>
+          {cards.map((card) => (
+            <SwiperSlide key={card.title}>
+              <Card {...card} />
+            </SwiperSlide>
+          ))}
+        </SwiperSlider>
+      </div>
       <ul className={classes.cards}>
         {cards.map((card) => (
-          <li key={card.title} className={classes.card}>
-            <Ixon width="2rem" className={classes.cardIcon}>
-              {card.icon}
-            </Ixon>
-            <h3 className={`${classes.cardTitle} ${tlgBold}`}>
-              {getContent(card.title)}
-            </h3>
-            <p className={`${classes.cardDescription} ${tbaseRegular}`}>
-              {getContent(card.description)}
-            </p>
-          </li>
+          <Card key={card.title} {...card} />
         ))}
       </ul>
     </div>

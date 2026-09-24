@@ -89,3 +89,19 @@
 .itemContent {
   color: var(--gray8);
 }
+
+.cardsMobile {
+  display: none;
+  width: 100%;
+  position: relative;
+}
+
+@media only screen and (max-width: 650px) {
+  .cards {
+    display: none;
+  }
+
+  .cardsMobile {
+    display: flex;
+  }
+}

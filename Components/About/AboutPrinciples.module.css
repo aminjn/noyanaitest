@@ -46,3 +46,25 @@
 .description {
   color: var(--gray10);
 }
+
+.listMobile {
+  display: none;
+  width: 100%;
+  position: relative;
+}
+
+.chunk {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media only screen and (max-width: 900px) {
+  .list {
+    display: none;
+  }
+
+  .listMobile {
+    display: flex;
+  }
+}

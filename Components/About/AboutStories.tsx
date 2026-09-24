@@ -43,13 +43,17 @@ const AboutStories = () => {
             <div className={classes.icon}>
               <Ixon width="2.5rem">{story.icon}</Ixon>
             </div>
-            <span className={`${classes.index} ${tsmBold}`}>{i + 1}</span>
-            <h3 className={`${classes.storyTitle} ${tlgBold}`}>
-              {getContent(story.title)}
-            </h3>
-            <p className={`${classes.storyDescription} ${tsmRegular}`}>
-              {getContent(story.description)}
-            </p>
+            <div className={classes.itemContent}>
+              <div className={classes.itemHeader}>
+                <span className={`${classes.index} ${tsmBold}`}>{i + 1}</span>
+                <h3 className={`${classes.storyTitle} ${tlgBold}`}>
+                  {getContent(story.title)}
+                </h3>
+              </div>
+              <p className={`${classes.storyDescription} ${tsmRegular}`}>
+                {getContent(story.description)}
+              </p>
+            </div>
           </li>
         ))}
       </ul>

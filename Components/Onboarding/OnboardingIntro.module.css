@@ -60,3 +60,13 @@
   margin-bottom: 1rem;
   color: var(--secondary7);
 }
+
+@media only screen and (max-width: 1072px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .h1 {
+    text-align: center;
+  }
+}

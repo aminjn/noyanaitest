@@ -72,3 +72,19 @@
   height: 100%;
   object-fit: contain;
 }
+
+.mobileGrid {
+  display: none;
+  position: relative;
+  width: 100%;
+}
+
+@media only screen and (max-width: 750px) {
+  .grid {
+    display: none;
+  }
+
+  .mobileGrid {
+    display: flex;
+  }
+}

@@ -24,8 +24,6 @@ export type AboutPageProps = {
 };
 
 const AboutPage = ({ partners, team, whys, staticImages }: AboutPageProps) => {
-  console.log({ partners, team, whys });
-
   return (
     <div className={classes.main}>
       <BreadCrump

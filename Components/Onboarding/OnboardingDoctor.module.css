@@ -58,3 +58,19 @@
 .itemDescription {
   color: var(--gray11);
 }
+
+.gridMobile {
+  display: none;
+  position: relative;
+  width: 100%;
+}
+
+@media only screen and (max-width: 650px) {
+  .grid {
+    display: none;
+  }
+
+  .gridMobile {
+    display: flex;
+  }
+}

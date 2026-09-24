@@ -15,27 +15,53 @@ import VideoIcon from "../Icons/VideoIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import HostedImage from "../UI/HostedImage";
+import SwiperSlider from "../UI/SwiperSlider";
+import { SwiperSlide } from "swiper/react";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
-const cards: { icon: ReactNode; title: ContentKey; description: ContentKey }[] =
-  [
-    {
-      icon: <VideoIcon />,
-      title: "onboardingConsultCard0Title",
-      description: "onboardingConsultCard0Description",
-    },
-    {
-      icon: <MicrophoneIcon />,
-      title: "onboardingConsultCard1Title",
-      description: "onboardingConsultCard1Description",
-    },
-    {
-      icon: <ChatBubbleIcon />,
-      title: "onboardingConsultCard2Title",
-      description: "onboardingConsultCard2Description",
-    },
-  ];
+type CardProps = {
+  icon: ReactNode;
+  title: ContentKey;
+  description: ContentKey;
+};
 
-const items: { title: ContentKey; description: ContentKey }[] = [
+const cards: CardProps[] = [
+  {
+    icon: <VideoIcon />,
+    title: "onboardingConsultCard0Title",
+    description: "onboardingConsultCard0Description",
+  },
+  {
+    icon: <MicrophoneIcon />,
+    title: "onboardingConsultCard1Title",
+    description: "onboardingConsultCard1Description",
+  },
+  {
+    icon: <ChatBubbleIcon />,
+    title: "onboardingConsultCard2Title",
+    description: "onboardingConsultCard2Description",
+  },
+];
+
+const Card = ({ description, icon, title }: CardProps) => {
+  const getContent = useScopedLocale(["common"]);
+
+  return (
+    <li className={classes.card}>
+      <Ixon width="2.5rem" className={classes.cardIcon}>
+        {icon}
+      </Ixon>
+      <h3 className={`${classes.cardTitle} ${tlgBold}`}>{getContent(title)}</h3>
+      <p className={`${classes.cardDescription} ${tbaseRegular}`}>
+        {getContent(description)}
+      </p>
+    </li>
+  );
+};
+
+type ItemProps = { title: ContentKey; description: ContentKey };
+
+const items: ItemProps[] = [
   {
     title: "onboardingConsultItem0Title",
     description: "onboardingConsultItem0Description",
@@ -49,6 +75,19 @@ const items: { title: ContentKey; description: ContentKey }[] = [
     description: "onboardingConsultItem2Description",
   },
 ];
+
+const Item = ({ description, title }: ItemProps) => {
+  const getContent = useScopedLocale(["common"]);
+
+  return (
+    <li className={classes.item}>
+      <h3 className={`${classes.itemTitle} ${txlBold}`}>{getContent(title)}</h3>
+      <p className={`${classes.itemDescription} ${tbaseRegular}`}>
+        {getContent(description)}
+      </p>
+    </li>
+  );
+};
 
 const OnboardingConsult = ({
   onboadrdinConsult,
@@ -67,32 +106,33 @@ const OnboardingConsult = ({
           {getContent("onboardingConsultDescription")}
         </p>
       </div>
+      <div className={classes.cardsMobile}>
+        <SwiperSlider>
+          {cards.map((card) => (
+            <SwiperSlide key={card.title}>
+              <Card {...card} />
+            </SwiperSlide>
+          ))}
+        </SwiperSlider>
+      </div>
       <ul className={classes.cards}>
         {cards.map((card) => (
-          <li key={card.title} className={classes.card}>
-            <Ixon width="2.5rem" className={classes.cardIcon}>
-              {card.icon}
-            </Ixon>
-            <h3 className={`${classes.cardTitle} ${tlgBold}`}>
-              {getContent(card.title)}
-            </h3>
-            <p className={`${classes.cardDescription} ${tbaseRegular}`}>
-              {getContent(card.description)}
-            </p>
-          </li>
+          <Card key={card.title} {...card} />
         ))}
       </ul>
       <div className={classes.content}>
+        <div className={classes.listMobile}>
+          <SwiperSlider>
+            {items.map((item) => (
+              <SwiperSlide key={item.title}>
+                <Item {...item} />
+              </SwiperSlide>
+            ))}
+          </SwiperSlider>
+        </div>
         <ul className={classes.list}>
           {items.map((item) => (
-            <li key={item.title} className={classes.item}>
-              <h3 className={`${classes.itemTitle} ${txlBold}`}>
-                {getContent(item.title)}
-              </h3>
-              <p className={`${classes.itemDescription} ${tbaseRegular}`}>
-                {getContent(item.description)}
-              </p>
-            </li>
+            <Item key={item.title} {...item} />
           ))}
         </ul>
         <div className={classes.imageBox}>
