@@ -1672,6 +1672,11 @@ const contentKeys = [
   "paraClinicDashboard",
   "pharmacyDashboard",
   "secretaryDashboard",
+  "yourIdentityDataWasNotFound",
+  "mcTitle",
+  "mcAcquiredAt",
+  "mcCity",
+  "confirmIncomingData",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

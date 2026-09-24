@@ -11,6 +11,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import useUserMenus from "./useUserMenus";
 import Link from "next/link";
 import { tbaseDemiBold, tbaseMedium, tsmRegular } from "../UI/Typography";
+import SwitchProfile, { SwitchProfilePopup } from "./SwitchProfile";
 const MobileUserButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -54,7 +55,10 @@ const MobileUserButton = () => {
       </button>
       {isOpen && (
         <div className={classes.menu}>
-          <div className={classes.user}>
+          <div
+            className={classes.user}
+            onClick={() => setPopup("switch", <SwitchProfilePopup />)}
+          >
             <div className={classes.avatar}>
               <HostedImage
                 src={user?.avatar}

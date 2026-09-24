@@ -66,7 +66,11 @@ const DoctorCardAlt = ({
           </span>
         </div>
       </div>
-      <VerifiedImage src={node.avatar} alt={getDoctorProfileLabel(node)}>
+      <VerifiedImage
+        style={{ marginInline: "auto", marginBottom: ".5rem" }}
+        src={node.avatar}
+        alt={getDoctorProfileLabel(node)}
+      >
         <span className={classes.onlineBadge} />
       </VerifiedImage>
       <div className={classes.identity}>

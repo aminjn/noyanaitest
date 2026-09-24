@@ -9,6 +9,13 @@
 
 .graphic {
   margin-bottom: 3rem;
+  max-width: 500px;
+  width: 90vmin;
+  height: 90vmin;
+  height: 100%;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  object-fit: contain;
 }
 
 .content {
@@ -30,6 +37,10 @@
 }
 
 @media only screen and (max-width: 450px) {
+  .main {
+    margin-block: 1rem 4rem;
+  }
+  
   .actions {
     flex-direction: column;
     width: 100%;

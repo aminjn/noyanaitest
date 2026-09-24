@@ -16,7 +16,7 @@ import { provinces } from "../Enums/Provinces";
 import useForm from "../Hooks/useForm";
 import { cities } from "../Enums/Cities";
 import SubmitABecomeDoctorRequest from "./SubmitABecomeDoctorRequest";
-import { Fragment, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import Button from "../UI/Button";
 import Act from "../UI/Act";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
@@ -30,6 +30,8 @@ import Input from "../UI/Input";
 import LogoutPopup from "../Popups/LogoutPopup";
 import { t2xsRegular, tsmRegular } from "../UI/Typography";
 import BecomeDoneView from "../Become/BecomeDoneView";
+import { IUserIdentity } from "../Dashboard/DashboardPage";
+import Loading from "../Admin/UI/Loading";
 
 export type McCodepopulation = Population<{ User: UserPopulation }>;
 export interface IMcCode<
@@ -38,6 +40,9 @@ export interface IMcCode<
   user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   mcCode: string;
   createdAt: Date;
+  title?: string;
+  city?: string;
+  acquiredAt?: string;
 }
 
 const becomeDoctorStages = ["inquiry", "confirm", "done"] as const;
@@ -50,18 +55,29 @@ const becomeDoctorStageContentKeyDict: Record<BecomeDoctorStage, ContentKey> = {
   inquiry: "inquiryDetails",
 };
 
-const InquiryStage = () => {
-  const { user } = useUser();
+const InquiryStage = ({
+  setStage,
+}: {
+  setStage: Dispatch<SetStateAction<BecomeDoctorStage>>;
+}) => {
+  const { data } = useSWR<IUserIdentity | null>(
+    `${API}/user/identity`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getContent = useScopedLocale(["becomeSomething"]);
 
   const { setPopup } = usePopup();
 
+  if (data === undefined) return <Loading />;
+  if (!data) return <p>{getContent("yourIdentityDataWasNotFound")}</p>;
   return (
     <div className={classes.form}>
       <Input
         readOnly
-        defaultValue={user?.nationalId}
+        defaultValue={data.nationalId}
         title={getContent("nationalId")}
       />
       <div className={classes.actions}>
@@ -74,19 +90,113 @@ const InquiryStage = () => {
         >
           {getContent("logout")}
         </Button>
-        <Button variant="Primary" mode="Fill" radius="High" size="L">
+        <Button
+          variant="Primary"
+          mode="Fill"
+          radius="High"
+          size="L"
+          isLoading={isLoading}
+          onClick={() => setIsLoading(true)}
+        >
           {getContent("inquiryAndContinue")}
         </Button>
         <span className={`${classes.notice} ${t2xsRegular}`}>
           {getContent("becomeDoctorInquiryNotice")}
         </span>
       </div>
+      <Act
+        path={isLoading ? `${API}/doctor/request` : null}
+        method="POST"
+        onDone={(status) => {
+          setIsLoading(false);
+          if (!status) return;
+          setStage("confirm");
+        }}
+      />
     </div>
   );
 };
 
-const ConfirmStage = () => {
-  return null;
+const ConfirmStage = ({ onDone }: { onDone: () => unknown }) => {
+  const { data, error } = useSWR<IMcCode[]>(
+    `${API}/doctor/request`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  );
+
+  const [isLoading, setIsLoading] = useState<IMcCode | null>(null);
+
+  const { data: identity } = useSWR<IUserIdentity | null>(
+    `${API}/user/identity`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+
+  const getContent = useScopedLocale(["becomeSomething"]);
+
+  return (
+    <HandleLoading data={!!data && !!identity} error={error}>
+      {!!data && (
+        <div className={classes.confirm}>
+          <div className={classes.wrap}>
+            <Input
+              title={getContent("firstName")}
+              readOnly={true}
+              defaultValue={identity?.givenName}
+            />
+            <Input
+              title={getContent("lastName")}
+              readOnly={true}
+              defaultValue={identity?.lastName}
+            />
+          </div>
+          <div className={classes.list}>
+            {data.map((code) => (
+              <div key={code._id} className={classes.code}>
+                <div className={classes.wrap}>
+                  <Input
+                    title={getContent("mcCode")}
+                    defaultValue={code.mcCode}
+                    readOnly={true}
+                  />
+                  <Input
+                    title={getContent("mcTitle")}
+                    defaultValue={code.title}
+                    readOnly={true}
+                  />
+                </div>
+                <div className={classes.wrap}>
+                  <Input
+                    title={getContent("mcAcquiredAt")}
+                    defaultValue={code.acquiredAt}
+                    readOnly={true}
+                  />
+                  <Input
+                    title={getContent("mcCity")}
+                    defaultValue={code.city}
+                    readOnly={true}
+                  />
+                </div>
+                <Button
+                  onClick={() => setIsLoading(code)}
+                  isLoading={!!isLoading}
+                >
+                  {getContent("confirmIncomingData")}
+                </Button>
+              </div>
+            ))}
+          </div>
+          <Act
+            path={isLoading ? `${API}/doctor/request/${isLoading._id}` : null}
+            method="PUT"
+            onDone={(status) => {
+              setIsLoading(null);
+              if (!status) return;
+              onDone();
+            }}
+          />
+        </div>
+      )}
+    </HandleLoading>
+  );
 };
 
 const DoneStage = () => {
@@ -97,24 +207,20 @@ const DoneStage = () => {
 };
 
 const BecomeADoctorPage = () => {
-  const {
-    data,
-    error,
-    isLoading: isMcsLoading,
-    mutate,
-  } = useSWR<IMcCode[]>(`${API}/doctor/request`, (url: string) =>
+  const { data } = useSWR<IMcCode[]>(`${API}/doctor/request`, (url: string) =>
     fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { doctor, isLoading } = useDoctor();
+  const { doctor, isLoading, mutate } = useDoctor();
 
   const getContent = useScopedLocale(["becomeSomething"]);
 
   const [stage, setStage] = useState<BecomeDoctorStage>("inquiry");
 
   useEffect(() => {
-    if (doctor) setStage("done");
-  }, [doctor]);
+    if (doctor) return setStage("done");
+    if (!!data?.length) return setStage("confirm");
+  }, [data?.length, doctor]);
 
   return (
     <HandleLoading data={!isLoading}>
@@ -130,8 +236,8 @@ const BecomeADoctorPage = () => {
             </div>
           ))}
         </div>
-        {stage === "inquiry" && <InquiryStage />}
-        {stage === "confirm" && <ConfirmStage />}
+        {stage === "inquiry" && <InquiryStage setStage={setStage} />}
+        {stage === "confirm" && <ConfirmStage onDone={mutate} />}
         {stage === "done" && <DoneStage />}
       </div>
     </HandleLoading>

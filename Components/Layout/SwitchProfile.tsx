@@ -19,8 +19,9 @@ import Link from "next/link";
 import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
+import usePanelsMap from "./usePanelsMaps";
 
-const panels = [
+export const panels = [
   "dashboard",
   "secetary",
   "doctor",
@@ -31,9 +32,9 @@ const panels = [
   "pharmacy",
 ] as const;
 
-type Panel = (typeof panels)[number];
+export type Panel = (typeof panels)[number];
 
-const panelToDashboardDict: Record<Panel, string> = {
+export const panelToDashboardDict: Record<Panel, string> = {
   clinic: "/clinicpanel",
   secetary: "/secretarypanel",
   dashboard: "/dashboard",
@@ -44,105 +45,12 @@ const panelToDashboardDict: Record<Panel, string> = {
   pharmacy: "/pharmacypanel",
 };
 
-const SwitchProfilePopup = () => {
+export const SwitchProfilePopup = () => {
   const getContent = useScopedLocale(["common"]);
-  const { user } = useUser();
-  const { doctor, isLoading: isDoctorLoading } = useDoctor();
-  const { pharmacy, isLoading: isPharmacyLoading } = usePharmacy();
-  const { clinic, isLoading: isClinicLoading } = useClinic();
-  const { paraClinic, isLoading: isParaClinicLoading } = useParaClinic();
-  const { hospital, isLoading: isHospitalLoading } = useHospital();
-  const { insurance, isLoading: isInsuranceLoading } = useInsurance();
 
   const { closePopup } = usePopup();
 
-  const isLoading = useMemo<boolean>(
-    () =>
-      !user ||
-      isDoctorLoading ||
-      isPharmacyLoading ||
-      isClinicLoading ||
-      isParaClinicLoading ||
-      isHospitalLoading ||
-      isInsuranceLoading,
-    [
-      user,
-      isDoctorLoading,
-      isPharmacyLoading,
-      isClinicLoading,
-      isParaClinicLoading,
-      isHospitalLoading,
-      isInsuranceLoading,
-    ],
-  );
-
-  const panelsMap = useMemo<
-    Record<
-      Panel,
-      { active?: boolean; name?: string; label: ContentKey; avatar?: string }
-    >
-  >(
-    () => ({
-      clinic: {
-        label: "clinicPanel",
-        active: !!clinic,
-        name: clinic?.name,
-        avatar: clinic?.image,
-      },
-      dashboard: {
-        label: "dashboard",
-        active: true,
-        name: user?.username,
-        avatar: user?.avatar,
-      },
-      doctor: {
-        label: "doctorDashboard",
-        active: !!doctor,
-        name: doctor ? getDoctorProfileLabel(doctor) : "پزشک",
-        avatar: doctor?.avatar,
-      },
-      hospital: {
-        label: "hospitalDashboard",
-        active: !!hospital,
-        name: hospital?.name,
-        avatar: hospital?.image,
-      },
-      insurance: {
-        label: "insuranceDashboard",
-        active: !!insurance,
-        name: insurance?.name,
-        avatar: insurance?.image,
-      },
-      paraClinic: {
-        label: "paraClinicDashboard",
-        active: !!paraClinic,
-        name: paraClinic?.name,
-        avatar: paraClinic?.image,
-      },
-      pharmacy: {
-        label: "pharmacyDashboard",
-        active: !!pharmacy,
-        name: pharmacy?.name,
-        avatar: pharmacy?.avatar,
-      },
-      secetary: {
-        label: "secretaryDashboard",
-        active: true,
-        name: user?.username,
-        avatar: user?.avatar,
-      },
-    }),
-    [user, doctor, pharmacy, clinic, paraClinic, hospital, insurance],
-  );
-
-  const pathname = usePathname();
-
-  const currentPanel = useMemo<Panel>(() => {
-    for (const p of panels) {
-      if (pathname.startsWith(panelToDashboardDict[p])) return p;
-    }
-    return "dashboard";
-  }, [pathname]);
+  const { currentPanel, isLoading, panelsMap } = usePanelsMap();
 
   return (
     <PopupCard title={getContent("myProfiles")}>
@@ -195,10 +103,12 @@ const SwitchProfile = () => {
 
   const { setPopup } = usePopup();
 
+  const { currentPanel, panelsMap } = usePanelsMap();
+
   return (
     <div className={classes.main}>
       <span className={`${classes.label} ${t2xsMedium}`}>
-        {getContent("publicProfile")}
+        {getContent(panelsMap[currentPanel].label)}
       </span>
       <button
         type="button"

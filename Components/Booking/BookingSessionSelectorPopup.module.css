@@ -40,6 +40,8 @@
 .week {
   display: flex;
   gap: 0.75rem;
+  max-width: 100%;
+  flex-wrap: wrap;
 }
 
 .week > * {

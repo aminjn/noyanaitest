@@ -197,6 +197,10 @@
 }
 
 @media only screen and (max-width: 1000px) {
+  .main {
+    margin-top: 7rem;
+  }
+
   .main::before {
     background-color: var(--primary1);
   }

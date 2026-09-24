@@ -50,3 +50,30 @@
 .notice {
   color: var(--gray8);
 }
+
+.confirm {
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+  width: 100%;
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.code {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.wrap {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
