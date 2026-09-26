@@ -1,4 +1,4 @@
-import AdminPage from "@/Components/Admin/AdminPage";
+import AdminDashboardPage from "@/Components/Admin/Dashboard/AdminDashboardPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -15,7 +15,7 @@ const Admin = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminPage />
+      <AdminDashboardPage />
     </LocaleScopeProvider>
   );
 };
