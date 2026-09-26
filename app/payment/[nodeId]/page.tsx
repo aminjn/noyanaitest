@@ -3,7 +3,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["paymentResult"];
+const NS: ContentNamespace[] = ["paymentResult", "onlinePayment"];
 
 const PaymentResult = async () => {
   const textContent = await getScopedTextContent(NS);

@@ -56,14 +56,18 @@ const DoctorCardAlt = ({
           {
             //TODO : claculate this
           }
-          <span className={`${classes.badgeValue} ${t2xsMedium}`}>4.5</span>
+          <span className={`${classes.badgeValue} ${t2xsMedium}`}>
+            {node.averageScore || "0"}
+          </span>
         </div>
         <div className={`${classes.badge} ${classes.recommendBadge}`}>
           <Ixon width=".75rem">
             <CheckCircleIcon />
           </Ixon>
           <span className={`${classes.badgeValue} ${t2xsMedium}`}>
-            {getCompContent("xPeopleRecommended", ["20"])}
+            {getCompContent("xPeopleRecommended", [
+              node.feedbackCount?.toString() || "0",
+            ])}
           </span>
         </div>
       </div>

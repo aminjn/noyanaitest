@@ -1,6 +1,6 @@
 import classes from "./SideAd.module.css";
 const SideAd = () => {
-  return <div className={classes.main}>SideAd</div>;
+  return null;
 };
 
 export default SideAd;

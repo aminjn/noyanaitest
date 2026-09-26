@@ -72,6 +72,10 @@ export interface ITransaction<
   doctor?: T["Doctor"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Doctor"]>
     : string;
+  // the cart order this transaction paid for
+  order?: string;
+  // set on the wallet credit from a verified SEP online payment (2026-09)
+  gatewayPayment?: string;
   createdAt: Date;
 }
 

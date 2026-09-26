@@ -101,7 +101,7 @@ export interface IOrder<
     price: number;
   }[];
   total: number;
-  paymentMethod: "wallet";
+  paymentMethod: "wallet" | "sep";
   status: OrderStatus;
   address?: IUserAddress;
   submittedAt: string;

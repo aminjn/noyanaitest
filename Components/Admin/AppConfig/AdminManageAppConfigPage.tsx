@@ -42,6 +42,15 @@ export interface IAppConfig extends MongoDoc {
   reservationReminderMinutesBefore: number;
   reservationReminderInterval: number;
   reservationFinalizationInterval: number;
+
+  // SEP (Saman) online payment gateway (2026-09)
+  sepEnabled: boolean;
+  sepTerminalId: string;
+  sepCallbackBaseUrl: string;
+  siteBaseUrl: string;
+  sepAmountMultiplier: number;
+  sepTokenExpiryMinutes: number;
+  onlinePaymentMinAmount: number;
 }
 
 const AdminManageAppConfigPage = () => {
@@ -130,6 +139,36 @@ const AdminManageAppConfigPage = () => {
               },
               reservationFinalizationInterval: {
                 title: "فاصله بررسی نهایی‌سازی نوبت‌ها (میلی‌ثانیه)",
+                type: "number",
+              },
+
+              sepEnabled: {
+                title: "فعال بودن پرداخت آنلاین (درگاه سامان / سپ)",
+                type: "bool",
+              },
+              sepTerminalId: {
+                title: "شماره ترمینال درگاه سپ (TerminalId)",
+                type: "text",
+              },
+              sepCallbackBaseUrl: {
+                title:
+                  "آدرس عمومی بک‌اند برای بازگشت از درگاه (مثال: https://api.example.com)",
+                type: "text",
+              },
+              siteBaseUrl: {
+                title: "آدرس عمومی سایت (مثال: https://example.com)",
+                type: "text",
+              },
+              sepAmountMultiplier: {
+                title: "ضریب تبدیل مبلغ به ریال برای درگاه (تومان ← ریال = ۱۰)",
+                type: "number",
+              },
+              sepTokenExpiryMinutes: {
+                title: "مدت اعتبار توکن پرداخت (دقیقه، ۲۰ تا ۳۶۰۰)",
+                type: "number",
+              },
+              onlinePaymentMinAmount: {
+                title: "حداقل مبلغ شارژ کیف پول (تومان)",
                 type: "number",
               },
             }}

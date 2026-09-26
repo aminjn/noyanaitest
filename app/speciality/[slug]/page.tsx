@@ -12,7 +12,13 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["specialityPage"];
+// doctorsList / uiDoctorCard: text for the Doctor (DoctorCard) and
+// DoctorProfile (DoctorCardAlt) cards, so it's in the server-rendered HTML.
+const NS: ContentNamespace[] = [
+  "specialityPage",
+  "doctorsList",
+  "uiDoctorCard",
+];
 
 export const generateMetadata = ({
   params: { slug },

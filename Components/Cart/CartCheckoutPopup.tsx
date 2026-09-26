@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import useSWR from "swr";
 import classes from "./CartCheckoutPopup.module.css";
 import PopupCard from "../UI/PopupCard";
@@ -16,6 +16,8 @@ import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import CheckIcon from "../Icons/CheckIcon";
 import WalletIcon from "../Icons/WalletIcon";
+import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
+import { usePaymentConfig } from "../Payment/paymentTypes";
 import Act from "../UI/Act";
 import { IWallet } from "../Booking/Finalize/FinalizeBookingPage";
 import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage";
@@ -27,14 +29,21 @@ import {
   tsmRegular,
 } from "../UI/Typography";
 
-const NS: ContentNamespace[] = ["common", "cartCheckoutPopup"];
+const NS: ContentNamespace[] = ["common", "cartCheckoutPopup", "onlinePayment"];
 
-// only "wallet" is wired up on the backend today (CartController.submitCart)
-type OrderPaymentMethod = "wallet";
+// Mirrors backend Models/Order.ts orderPaymentMethods (CartController.submitCart):
+// wallet -> debited immediately; sep -> SEP (Saman) online gateway (2026-09),
+// the order stays "pending" until the bank payment is verified.
+type OrderPaymentMethod = "wallet" | "sep";
 
-const checkoutMethods: OrderPaymentMethod[] = ["wallet"];
+const methodIcons: Record<OrderPaymentMethod, ReactNode> = {
+  wallet: <WalletIcon />,
+  sep: <ShieldCheckIcon />,
+};
 
-type SubmitCartResponse = { data: { _id: string } };
+// redirectUrl is only present for "sep": the SEP payment page to send the
+// browser to (the backend brings it back to /payment/<id> afterwards).
+type SubmitCartResponse = { data: { _id: string }; redirectUrl?: string };
 
 // Server-computed cart total, tax included - fetched fresh here rather than
 // trusting the `total` prop (which is only the client-side subtotal CartPage
@@ -72,11 +81,21 @@ const CartCheckoutPopup = ({
 
   const { data: summary } = useSWR<CartSummary>(
     `${API}/cart/summary`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    // fetcher already returns the response body, so `.data` is the summary
+    // itself - this used to read `.data.data` (always undefined), which
+    // silently fell back to the pre-tax subtotal as the "total".
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
+  // "sep" is only offered while online payment is enabled + configured in
+  // the admin AppConfig (GET /payment/config).
+  const { data: paymentConfig } = usePaymentConfig();
+  const checkoutMethods: OrderPaymentMethod[] = paymentConfig?.sepEnabled
+    ? ["wallet", "sep"]
+    : ["wallet"];
+
   const [address, setAddress] = useState<string | null>(null);
-  const [method] = useState<OrderPaymentMethod>("wallet");
+  const [method, setMethod] = useState<OrderPaymentMethod>("wallet");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
@@ -142,17 +161,16 @@ const CartCheckoutPopup = ({
               <div
                 key={m}
                 className={`${classes.method} ${method === m ? classes.activeMethod : ""}`}
+                onClick={() => setMethod(m)}
               >
                 <div className={classes.methodIcon}>
-                  <Ixon width="1.5rem">
-                    <WalletIcon />
-                  </Ixon>
+                  <Ixon width="1.5rem">{methodIcons[m]}</Ixon>
                 </div>
                 <span className={`${classes.methodName} ${tsmRegular}`}>
                   {getContent(m)}
                 </span>
                 <div className={classes.methodTail}>
-                  {!!wallet && (
+                  {m === "wallet" && !!wallet && (
                     <span className={`${classes.balance} ${t2xsRegular}`}>
                       {`${getContent("balance")}: ${currencize(wallet.balance)} ${getContent("toman")}`}
                     </span>
@@ -209,8 +227,16 @@ const CartCheckoutPopup = ({
         path={isSubmitting ? `${API}/cart/submit` : null}
         method="POST"
         payload={{ method, address: address || undefined }}
-        successMessage={getContent("orderSubmittedMessage")}
+        successMessage={
+          method === "wallet" ? getContent("orderSubmittedMessage") : undefined
+        }
         onDone={(status, result) => {
+          if (status && result?.redirectUrl) {
+            // keep the loading state on while the browser leaves for the bank
+            pushNotification(getContent("redirectingToGateway"));
+            window.location.assign(result.redirectUrl);
+            return;
+          }
           setIsSubmitting(false);
           if (status && result?.data?._id) {
             closePopup();

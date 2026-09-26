@@ -13,3 +13,7 @@
 .balanceValue {
   font-weight: 600;
 }
+
+.charge.charge {
+  margin-inline-start: auto;
+}

@@ -32,7 +32,7 @@ const DoctorCard = ({
 
   return (
     <div className={classes.main}>
-      <div className={classes.scores}>
+      {/* <div className={classes.scores}>
         <div className={`${classes.badge} ${classes.starBadge}`}>
           <Ixon width=".75rem">
             <StarIcon />
@@ -50,7 +50,7 @@ const DoctorCard = ({
             {getCompContent("xPeopleRecommended", ["20"])}
           </span>
         </div>
-      </div>
+      </div> */}
       <div className={classes.imageBox}>
         <div className={classes.image}>
           <HostedImage
@@ -72,11 +72,9 @@ const DoctorCard = ({
           &nbsp;{node.speciality?.name}&nbsp;
         </legend>
       </div>
-      <div className={classes.consult}>
+      {/* <div className={classes.consult}>
         <div className={`${classes.pair} ${t2xsRegular}`}>
-          <span className={classes.pairTitle}>
-            {getContent("consultTime")}
-          </span>
+          <span className={classes.pairTitle}>{getContent("consultTime")}</span>
           <span className={classes.pairValue}>
             {getCompContent("xMinutes", ["15"])}
           </span>
@@ -89,22 +87,13 @@ const DoctorCard = ({
             {getContent("readyToRespond")}
           </span>
         </div>
-      </div>
+      </div> */}
       <div className={`${classes.actions} ${txsMedium}`}>
         <Link
           className={`${classes.action} ${classes.primaryAction}`}
           href={target}
         >
           {getContent("visitProfile")}
-        </Link>
-        <Link
-          className={`${classes.action} ${classes.secondaryAction}`}
-          href="/book"
-        >
-          <span>{getContent("booking")}</span>
-          <Ixon width="1.25rem">
-            <ArrowLeftIcon />
-          </Ixon>
         </Link>
       </div>
     </div>

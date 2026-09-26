@@ -386,6 +386,8 @@ export const contentNamespaces = {
     "toman",
     "currentBalance",
     "doctor",
+    "description",
+    "order",
   ],
 
   // app/dashboard/order/page.tsx (DashboardManageOrdersPage,
@@ -3728,6 +3730,39 @@ export const contentNamespaces = {
     "chat",
     "delete",
     "sureDeleteThisChat",
+  ],
+  // Shared by every SEP online-payment component (2026-09): Components/Payment/*
+  // (result page, WalletChargePopup, WalletShortfallTopUp) and the "sep"
+  // method in CartCheckoutPopup.
+  onlinePayment: [
+    "sep",
+    "wallet",
+    "balance",
+    "toman",
+    "amount",
+    "chargeWallet",
+    "chargeAmount",
+    "payOnline",
+    "walletShortfall",
+    "topUpShortfall",
+    "walletTopUp",
+    "redirectingToGateway",
+    "paymentPendingMessage",
+    "paymentPendingText",
+    "paymentFailedMessage",
+    "paymentFailedText",
+    "paymentSucceededMessage",
+    "referenceNumber",
+    "trackingCode",
+    "viewOrder",
+    "continuePurchase",
+    "tryAgain",
+    "paymentCanceledByUser",
+    "paymentRefundNote",
+    "minimumChargeAmount",
+    "transactions",
+    "dashboard",
+    "submit",
   ],
 } as const satisfies Record<string, readonly ContentKey[]>;
 

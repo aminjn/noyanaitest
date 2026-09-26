@@ -109,7 +109,7 @@ const ServiceOrProductCard = ({
           <div className={classes.stats}>
             <span
               className={`${classes.count} ${t2xsRegular}`}
-            >{`(${getContent("xComments", [commentCount?.toString()])})`}</span>
+            >{`(${getContent("xComments", [commentCount?.toString() || "0"])})`}</span>
           </div>
           <div className={classes.score}>
             <span className={t2xsRegular}>{rating}</span>

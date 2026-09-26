@@ -5,12 +5,22 @@ import CloseIcon from "../Icons/CloseIcon";
 import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
 import classes from "./FailPayment.module.css";
+import { IGatewayPayment } from "./paymentTypes";
 
-const NS: ContentNamespace[] = ["common", "paymentResult"];
-const FailPayment = () => {
+const NS: ContentNamespace[] = ["common", "paymentResult", "onlinePayment"];
+
+// Failed / cancelled / expired / reversed SEP payment. Nothing was kept:
+// SEP refunds any unverified card debit on its own, and a reversed payment
+// was refunded explicitly - hence the refund note. "Try again" goes back to
+// where the payment started (cart for an order, else its returnPath).
+const FailPayment = ({ payment }: { payment: IGatewayPayment }) => {
   const getContent = useScopedLocale(NS);
-
   const push = useProgress();
+
+  const retryHref =
+    payment.purpose === "order"
+      ? "/cart"
+      : payment.returnPath || "/dashboard/transaction";
 
   return (
     <div className={classes.main}>
@@ -20,9 +30,18 @@ const FailPayment = () => {
       <legend className={classes.legend}>
         {getContent("paymentFailedMessage")}
       </legend>
-      <p className={classes.message}>{getContent("paymentFailedText")}</p>
+      <p className={classes.message}>
+        {payment.failureReason === "CanceledByUser"
+          ? getContent("paymentCanceledByUser")
+          : getContent("paymentFailedText")}
+      </p>
+      <p className={classes.message}>{getContent("paymentRefundNote")}</p>
+      <Button className={classes.action} onClick={() => push(retryHref)}>
+        {getContent("tryAgain")}
+      </Button>
       <Button
         className={classes.action}
+        mode="Outline"
         onClick={() => push("/dashboard")}
       >
         {getContent("dashboard")}

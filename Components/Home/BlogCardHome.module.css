@@ -38,3 +38,9 @@
   color: var(--gray8);
   padding-top: 0.75rem;
 }
+
+.readTime {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}

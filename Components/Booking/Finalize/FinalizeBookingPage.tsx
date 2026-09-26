@@ -68,6 +68,7 @@ import DateInput from "@/Components/UI/DateInput";
 import useForm from "@/Components/Hooks/useForm";
 import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
 import Act from "@/Components/UI/Act";
+import WalletShortfallTopUp from "@/Components/Payment/WalletShortfallTopUp";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import BookingSessionSelectorPopup from "@/Components/Booking/BookingSessionSelectorPopup";
 import BookingSidebar from "@/Components/Dr/New/BookingSidebar";
@@ -519,6 +520,12 @@ const CheckoutStage = ({
           ))}
         </div>
       </div>
+      {/* wallet can't cover the booking -> offer a SEP top-up of the gap,
+          returning here afterwards (2026-09) */}
+      <WalletShortfallTopUp
+        balance={wallet.balance}
+        total={sessionPrice + sessionTax}
+      />
       <div className={classes.tips}>
         <div className={classes.tipsHeader}>
           <Ixon className={classes.tipsIcon} width="1.5rem">

@@ -21,6 +21,7 @@ import Ixon from "@/Components/UI/Ixon";
 import WalletIcon from "@/Components/Icons/WalletIcon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import LicensePriceDetails from "./LicensePriceDetails";
+import WalletShortfallTopUp from "@/Components/Payment/WalletShortfallTopUp";
 import { tbaseDemiBold, tlgDemiBold, tsmDemiBold, tsmRegular } from "@/Components/UI/Typography";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -122,6 +123,11 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
               ))}
             </div>
           </div>
+          {/* wallet can't cover the plan -> offer a SEP top-up of the gap,
+              returning here afterwards (2026-09) */}
+          {!!wallet && (
+            <WalletShortfallTopUp balance={wallet.balance} total={price} />
+          )}
           <div className={classes.totalRow}>
             <span className={tsmRegular}>{getContent("totalPrice")}</span>
             <span className={`${classes.totalPrice} ${tbaseDemiBold}`}>

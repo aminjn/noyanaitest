@@ -58,7 +58,7 @@ const ProductCard = ({
                   <UserCircleIcon />
                 </Ixon>
               ),
-              title: `${node.sellers[0]?.seller.name}${node.sellers.length > 1 ? ` ${getContent("and")} ` : ""}${getContent("nMore", [(node.sellers.length - 1).toString()])}`,
+              title: `${node.sellers[0] ? `${node.sellers[0]?.seller.name || ""}${node.sellers.length > 1 ? ` ${getContent("and")} ` : ""}${getContent("nMore", [(node.sellers.length - 1).toString()])}` : ""}`,
             }
           : {
               icon: (

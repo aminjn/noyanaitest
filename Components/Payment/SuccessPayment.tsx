@@ -1,106 +1,71 @@
-import useSWR from "swr";
-import { API } from "../config";
-import { fetcher } from "../helpers/fetcher";
-import { useParams } from "next/navigation";
-import HandleLoading from "../Admin/UI/HandleLoading";
-import { IInvoice } from "../Booking/SelectSessionToReservePopup";
-
 import classes from "./SuccessPayment.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import FormatDate from "../UI/FormatDate";
-import { Fragment } from "react";
-import { numberToTime } from "../DoctorPanel/Calendar/AddSessionsAgent";
-import Button from "../UI/Button";
 import useProgress from "../Hooks/useProgress";
+import Button from "../UI/Button";
 import Ixon from "../UI/Ixon";
-import CheckIcon from "../Icons/CheckIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
-import DownloadIcon from "../Icons/DownloadIcon";
-import useUser from "../Hooks/useUser";
-import LoginRequired from "../UI/LoginRequired";
+import { currencize } from "../helpers/currencize";
+import { IGatewayPayment } from "./paymentTypes";
 
-const NS: ContentNamespace[] = ["common", "paymentResult"];
+const NS: ContentNamespace[] = ["common", "paymentResult", "onlinePayment"];
 
-const SuccessPayment = () => {
-  const { nodeId } = useParams<{ nodeId: string }>();
-  const { user, isUserLoading } = useUser();
+const Pair = ({ title, value }: { title: string; value?: string }) =>
+  value ? (
+    <div className={classes.pair}>
+      <span className={classes.title}>{title}</span>
+      <span className={classes.divider} />
+      <span dir="ltr">{value}</span>
+    </div>
+  ) : null;
 
-  const { data, error } = useSWR<
-    IInvoice<{
-      Checkout: Record<never, never>;
-      Session: {
-        Doctor: Record<never, never>;
-        Booking: { Patient: Record<never, never> };
-      };
-    }>
-  >(`${API}/user/invoice/${nodeId}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data),
-  );
-
-  console.log(data);
-
+// Verified SEP payment. An "order" payment has already paid its order out
+// of the wallet (Services/paymentService.ts), so the main action is to view
+// it; a wallet top-up offers to go back to wherever it was started from
+// (returnPath, e.g. the booking/license checkout) or to the transactions
+// list.
+const SuccessPayment = ({ payment }: { payment: IGatewayPayment }) => {
   const getContent = useScopedLocale(NS);
-
   const push = useProgress();
 
-  if (!isUserLoading && !user) return <LoginRequired />;
+  const primary =
+    payment.purpose === "order" && payment.order
+      ? { label: getContent("viewOrder"), href: `/order/${payment.order}` }
+      : payment.returnPath
+        ? { label: getContent("continuePurchase"), href: payment.returnPath }
+        : { label: getContent("transactions"), href: "/dashboard/transaction" };
 
   return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <div className={classes.main}>
-          <Ixon width="3.875rem" className={classes.icon}>
-            <CheckCircleIcon />
-          </Ixon>
-          <legend className={classes.legend}>
-            {getContent("paymentSucceededMessage")}
-          </legend>
-          {!!data.session && (
-            <div className={classes.details}>
-              <div className={classes.pair}>
-                <span className={classes.title}>{getContent("doctor")}</span>
-                <span className={classes.divider} />
-                <span>{getDoctorProfileLabel(data.session.doctor)}</span>
-              </div>
-              <div className={classes.pair}>
-                <span className={classes.title}>
-                  {getContent("sessionTime")}
-                </span>
-                <span className={classes.divider} />
-                <span>
-                  <FormatDate
-                    time={false}
-                    value={new Date(data.session.date)}
-                  />
-                  <span>-</span>
-                  <span>{numberToTime(data.session.start)}</span>
-                </span>
-              </div>
-              <div className={classes.pair}>
-                <span className={classes.title}>
-                  {getContent("patientName")}
-                </span>
-                <span className={classes.divider} />
-                <span>{`${data.session.booking?.patient.givenName} ${data.session.booking?.patient.lastName}`}</span>
-              </div>
-            </div>
-          )}
-          <div className={classes.actions}>
-            <Button leadIcon={<DownloadIcon />}>
-              {getContent("getSessionReciept")}
-            </Button>
-            <Button
-              onClick={() => push("/dashboard")}
-              className={classes.dashboard}
-            >
-              {getContent("dashboard")}
-            </Button>
-          </div>
-        </div>
-      )}
-    </HandleLoading>
+    <div className={classes.main}>
+      <Ixon width="3.875rem" className={classes.icon}>
+        <CheckCircleIcon />
+      </Ixon>
+      <legend className={classes.legend}>
+        {getContent("paymentSucceededMessage")}
+      </legend>
+      <div className={classes.details}>
+        <Pair
+          title={
+            payment.purpose === "walletCharge"
+              ? getContent("walletTopUp")
+              : getContent("amount")
+          }
+          value={`${currencize(payment.amount)} ${getContent("toman")}`}
+        />
+        <Pair title={getContent("trackingCode")} value={payment.traceNo} />
+        <Pair title={getContent("referenceNumber")} value={payment.rrn} />
+      </div>
+      <div className={classes.actions}>
+        <Button onClick={() => push(primary.href)}>{primary.label}</Button>
+        <Button
+          mode="Outline"
+          onClick={() => push("/dashboard")}
+          className={classes.dashboard}
+        >
+          {getContent("dashboard")}
+        </Button>
+      </div>
+    </div>
   );
 };
 

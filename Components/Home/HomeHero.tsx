@@ -23,7 +23,6 @@ import {
   txsDemiBold,
   txsMedium,
 } from "../UI/Typography";
-import HomeHeroBg from "./HomeHeroBg";
 import Badge from "../UI/Badge";
 import StarsLineIcon from "../Icons/StarsLineIcon";
 import Button from "../UI/Button";
@@ -61,9 +60,12 @@ const HomeHero = ({ homeMain }: { homeMain?: string }) => {
 
   return (
     <div className={classes.hero}>
-      <div className={classes.heroBg}>
-        <HomeHeroBg />
-      </div>
+      {/* Decorative background. This used to be an inline SVG (HomeHeroBg,
+          ~176KB of JSX with 122px feGaussianBlur filters, an 11000px
+          foreignObject and mix-blend-mode) that iOS WebKit rendered very
+          slowly and re-rasterized on every viewport change. It is now two
+          pre-rendered static layers set in HomeHero.module.css (.heroBg). */}
+      <div className={classes.heroBg} aria-hidden="true" />
       <div className={classes.top}>
         <div className={classes.content}>
           <Badge leadIcon={<StarsLineIcon />} color="SecondaryLight">
@@ -143,7 +145,8 @@ const HomeHero = ({ homeMain }: { homeMain?: string }) => {
                 src={homeMain}
                 alt="Noyan AI"
                 fill
-                sizes="32rem"
+                priority
+                sizes="(max-width: 800px) 100vw, 32rem"
                 style={{ objectFit: "cover" }}
               />
             </div>

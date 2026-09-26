@@ -15,6 +15,8 @@ import Button from "../UI/Button";
 import ArrowCircleDownIcon from "../Icons/ArrowCircleDownIcon";
 import ListPageList from "../UI/ListPage/ListPageList";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
+import DoctorCard from "../Doctor/DoctorCard";
+import { IDoctor } from "../Admin/Doctor/AdminManageDoctorsPage";
 import BigAd from "../UI/ListPage/BigAd";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
@@ -22,17 +24,25 @@ import { t2xlRegular, tsmRegular, txlRegular } from "../UI/Typography";
 
 const NS: ContentNamespace[] = ["common", "specialityPage"];
 
+// getSpeciality returns Doctor and DoctorProfile rows merged into one
+// paginated list, each tagged with the collection it came from.
+export type SpecialityDoctorProfileRow = IDoctorProfile<{
+  MainSpecialityPopulated: Record<never, never>;
+  TextChatSettings: Record<never, never>;
+  SipCallSettings: Record<never, never>;
+  InPersonSettings: Record<never, never>;
+  VideoCallSettings: Record<never, never>;
+  VoiceCallSettings: Record<never, never>;
+  Province: Record<never, never>;
+}> & { sessionTypes: DoctorSessionType[]; model: "DoctorProfile" };
+
+export type SpecialityDoctorRow = IDoctor<{
+  SpecialityPopulated: Record<never, never>;
+}> & { model: "Doctor" };
+
 export type SpecialityPageProps = {
   data: ISpeciality<{ Category: Record<never, never> }>;
-  doctors: (IDoctorProfile<{
-    MainSpecialityPopulated: Record<never, never>;
-    TextChatSettings: Record<never, never>;
-    SipCallSettings: Record<never, never>;
-    InPersonSettings: Record<never, never>;
-    VideoCallSettings: Record<never, never>;
-    VoiceCallSettings: Record<never, never>;
-    Province: Record<never, never>;
-  }> & { sessionTypes: DoctorSessionType[] })[];
+  doctors: (SpecialityDoctorProfileRow | SpecialityDoctorRow)[];
   pagesCount: number;
   count: number;
 };
@@ -99,10 +109,13 @@ const SpecialityPage = ({
             `/speciality/${data.slug || data._id}?page=${page}`,
         }}
       >
-        {doctors.map((node) => (
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          <DoctorCardAlt key={node._id} node={node as any} />
-        ))}
+        {doctors.map((node) =>
+          node.model === "Doctor" ? (
+            <DoctorCard key={`Doctor-${node._id}`} node={node} />
+          ) : (
+            <DoctorCardAlt key={`DoctorProfile-${node._id}`} node={node} />
+          ),
+        )}
       </ListPageList>
       <div className={classes.box}>
         <BigAd

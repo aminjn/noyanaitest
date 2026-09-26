@@ -8,7 +8,7 @@
   height: 23.5625rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadowMd);
-direction: rtl;
+  direction: rtl;
 }
 
 .image {
@@ -73,6 +73,7 @@ direction: rtl;
 
 .commentCount {
   color: var(--gray8);
+  white-space: nowrap;
 }
 
 .score {

@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  justify-content: center;
+  padding-block: 3rem;
+  padding-inline: 1rem;
+}
+
+.pending {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(21.5rem, 95dvw);
+  text-align: center;
+}
+
+.legend {
+  color: var(--gray13);
+  font-size: 1.125rem;
+  margin-block: 1rem 0.75rem;
+}
+
+.message {
+  color: var(--gray8);
+  font-size: 0.875rem;
+}

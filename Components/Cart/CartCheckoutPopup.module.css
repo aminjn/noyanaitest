@@ -83,6 +83,7 @@
 .method {
   display: flex;
   align-items: center;
+  cursor: pointer;
   padding: 0.75rem;
   border: 1px solid var(--gray4);
   border-radius: 0.5rem;

@@ -22,6 +22,14 @@
   width: 100dvw;
   border-radius: 1.25rem;
   z-index: -1;
+  /* Pre-rendered from the former HomeHeroBg SVG (1640x1110 artwork, drawn
+     top-left at 1:1 with no scaling, exactly like the SVG was). The blurred
+     blobs are a half-resolution WebP (the blur hides the resolution); the two
+     thin ellipse outlines stay vector so they're crisp on retina screens. */
+  background-image: url("./homeHeroBgLines.svg"), url("./homeHeroBg.webp");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 1640px 1110px;
 }
 
 .heroBg::before {

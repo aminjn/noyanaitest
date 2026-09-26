@@ -149,6 +149,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
   cartPage: ["/cart"],
   cartCheckoutPopup: ["/cart"],
   paymentResult: ["/payment"],
+  onlinePayment: ["/payment", "/dashboard/transaction", "/cart"],
   orderConfirmation: ["/order"],
   productCartable: ["/product", "/productPackage", "/service", "/servicePackage"],
   productServiceSwitch: ["/product", "/service"],
