@@ -2,8 +2,10 @@ import { ReactNode } from "react";
 import classes from "./AuthShell.module.css";
 import Link from "@/Components/i18n/Link";
 import LogoLong from "../UI/LogoLong";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 const AuthShell = ({ children }: { children: ReactNode }) => {
+  const getContent = useScopedLocale();
   return (
     <div className={classes.main}>
       <div className={classes.logo}>
@@ -11,11 +13,11 @@ const AuthShell = ({ children }: { children: ReactNode }) => {
       </div>
       {children}
       <p className={classes.notice}>
-        با ورود و ثبت نام در سایت،با{" "}
+        {getContent("authPolicyNoticePrefix")}{" "}
         <Link className={classes.inlineLink} href={"/policy"}>
-          قوانین نویان
-        </Link>{" "}
-        موافقت می‌کنم
+          {getContent("authPolicyNoticeLink")}
+        </Link>
+        {getContent("authPolicyNoticeSuffix")}
       </p>
     </div>
   );

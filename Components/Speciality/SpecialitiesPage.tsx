@@ -121,8 +121,8 @@ const SpecialitiesPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "تخصص ها", target: "/speciality" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("specialities"), target: "/speciality" },
       ]}
     >
       <ListPageHeader

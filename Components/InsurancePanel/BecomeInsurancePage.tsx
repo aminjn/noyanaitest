@@ -7,8 +7,10 @@ import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import { Fragment } from "react";
 import SubmitBecomeInsuranceRequest from "./SubmitBecomeInsuranceRequest";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 const BecomeInsurancePage = () => {
+  const getContent = useScopedLocale();
   const { data, error, isLoading, mutate } =
     useSWR<IBecomeInsuranceRequest | null>(
       `${API}/insurance/request`,
@@ -20,15 +22,15 @@ const BecomeInsurancePage = () => {
       {data ? (
         <Fragment>
           {data.status === "Pending" ? (
-            <p>در حال پردازش اطلاعات توسط ادمین</p>
+            <p>{getContent("insuranceRequestProcessingByAdmin")}</p>
           ) : (
             <Fragment>
               {data.status === "Approved" ? (
                 <p>
-                  درخواست شما تایید شده است در حال ساخت پروفایل برای شما هستیم
+                  {getContent("insuranceRequestApprovedBuildingProfile")}
                 </p>
               ) : (
-                <p>درخواست شما رد شده است</p>
+                <p>{getContent("yourRequestWasRejected")}</p>
               )}
             </Fragment>
           )}

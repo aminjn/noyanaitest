@@ -46,15 +46,13 @@ const BecomeParaClinicPage = () => {
       {data ? (
         <Fragment>
           {data.status === "Pending" ? (
-            <p>در حال پردازش اطلاعات توسط ادمین</p>
+            <p>{getContent("requestBeingProcessedByAdmin")}</p>
           ) : (
             <Fragment>
               {data.status === "Approved" ? (
-                <p>
-                  درخواست شما تایید شده است در حال ساخت پروفایل برای شما هستیم
-                </p>
+                <p>{getContent("requestApprovedCreatingProfile")}</p>
               ) : (
-                <p>درخواست شما رد شده است</p>
+                <p>{getContent("yourRequestRejected")}</p>
               )}
             </Fragment>
           )}

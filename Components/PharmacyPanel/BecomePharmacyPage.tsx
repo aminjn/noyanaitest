@@ -7,6 +7,7 @@ import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import { Fragment } from "react";
 import SubmitBecomePharmacyRequest from "./SubmitBecomePharmacyRequest";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 export type BecomePharmacyPopulation = Population<{ user: true }>;
 
@@ -32,20 +33,20 @@ const BecomePharmacyPage = () => {
       (url: string) => fetcher({ url }).then((res) => res.data),
     );
 
+  const getContent = useScopedLocale();
+
   return (
     <HandleLoading data={!isLoading} error={error}>
       {data ? (
         <Fragment>
           {data.status === "Pending" ? (
-            <p>در حال پردازش اطلاعات توسط ادمین</p>
+            <p>{getContent("requestBeingProcessedByAdmin")}</p>
           ) : (
             <Fragment>
               {data.status === "Approved" ? (
-                <p>
-                  درخواست شما تایید شده است در حال ساخت پروفایل برای شما هستیم
-                </p>
+                <p>{getContent("requestApprovedCreatingProfile")}</p>
               ) : (
-                <p>درخواست شما رد شده است</p>
+                <p>{getContent("yourRequestWasRejected")}</p>
               )}
             </Fragment>
           )}

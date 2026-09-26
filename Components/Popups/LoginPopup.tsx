@@ -45,6 +45,7 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
   const { reconnect } = useContext(SocketContext);
   const { closePopup } = usePopup();
   const [code, setCode] = useState<string>("");
+  const getContent = useScopedLocale(LOCALE_NS);
   const { isLoading, submit } = useForm({
     path: `${API}/auth`,
     method: "PATCH",
@@ -66,17 +67,19 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
         submit();
       }}
     >
-      <legend className={classes.legend}>تایید شماره موبایل</legend>
+      <legend className={classes.legend}>
+        {getContent("verifyMobileNumber")}
+      </legend>
       <div className={classes.middle}>
         <p
           className={classes.tip}
-        >{`کد ارسال شده به 0${ctx.phone} را وارد کنید`}</p>
+        >{getContent("enterCodeSentToX", [`0${ctx.phone}`])}</p>
         <button
           type="button"
           className={classes.back}
           onClick={() => setCtx((prev) => ({ ...prev, stage: "init" }))}
         >
-          ویرایش شماره موبایل
+          {getContent("editMobileNumber")}
         </button>
       </div>
       <CodeInput
@@ -86,7 +89,7 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
       />
       <div className={classes.resend}>
         <span>1:00</span>
-        <span>تا دریافت مجدد کد</span>
+        <span>{getContent("untilCodeResend")}</span>
       </div>
       <Button
         className={classes.submit}
@@ -96,7 +99,7 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
         size="L"
         radius="High"
       >
-        ورود
+        {getContent("login")}
       </Button>
     </Form>
   );
@@ -112,6 +115,7 @@ const InitStage = ({ ctx, setCtx }: StageProps) => {
     }),
     successCb: () => setCtx((prev) => ({ ...prev, stage: "otp" })),
   });
+  const getContent = useScopedLocale(LOCALE_NS);
 
   return (
     <Form
@@ -121,9 +125,9 @@ const InitStage = ({ ctx, setCtx }: StageProps) => {
         if (isMobile(ctx.phone)) submit();
       }}
     >
-      <legend className={classes.legend}>ورود/ثبت‌نام</legend>
+      <legend className={classes.legend}>{getContent("loginOrSignup")}</legend>
       <p className={classes.tip} style={{ marginBottom: "1rem" }}>
-        کد تایید به شماره‌ای که وارد می‌کنید ارسال خواهد شد
+        {getContent("verificationCodeWillBeSentToYourNumber")}
       </p>
       <MobileInput
         onChange={(e) => setCtx((prev) => ({ ...prev, phone: e.target.value }))}
@@ -139,7 +143,7 @@ const InitStage = ({ ctx, setCtx }: StageProps) => {
         radius="High"
         size="L"
       >
-        تایید و ادامه
+        {getContent("confirmAndContinue")}
       </Button>
     </Form>
   );

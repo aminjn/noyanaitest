@@ -60,8 +60,8 @@ const SpecialityPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "تخصص ها", target: "/speciality" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("specialities"), target: "/speciality" },
         {
           title: data.name || data._id,
           target: `/speciality/${data.slug || data._id}`,

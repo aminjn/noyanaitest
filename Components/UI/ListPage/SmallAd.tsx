@@ -18,6 +18,7 @@ import {
 } from "../Typography";
 import HostedImage from "../HostedImage";
 import AnnouncementIcon from "@/Components/Icons/AnnouncementIcon";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 const SmallAd = ({
   position,
@@ -26,6 +27,7 @@ const SmallAd = ({
 }: UseAdvertisementProps) => {
   const ad = useAdvertisement({ position, resourceModel, resource });
   const [isDismissed, setIsDismissed] = useState(false);
+  const getContent = useScopedLocale();
 
   if (!ad || isDismissed) return null;
 
@@ -75,14 +77,14 @@ const SmallAd = ({
               radius="High"
               className={classes.button}
             >
-              اطلاعات بیشتر
+              {getContent("learnMore")}
             </Button>
           )}
           <button
             type="button"
             className={classes.close}
             onClick={() => setIsDismissed(true)}
-            aria-label="بستن"
+            aria-label={getContent("close")}
           >
             <Ixon width="1rem">
               <XMarkIcon />

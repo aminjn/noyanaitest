@@ -10,9 +10,11 @@ import useHospital from "../Hooks/useHospital";
 import useInsurance from "../Hooks/useInsurance";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import { usePathname } from "@/Components/i18n/navigation";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 const usePanelsMap = () => {
   const { user } = useUser();
+  const getContent = useScopedLocale();
   const { doctor, isLoading: isDoctorLoading } = useDoctor();
   const { pharmacy, isLoading: isPharmacyLoading } = usePharmacy();
   const { clinic, isLoading: isClinicLoading } = useClinic();
@@ -62,7 +64,7 @@ const usePanelsMap = () => {
       doctor: {
         label: "doctorDashboard",
         active: !!doctor,
-        name: doctor ? getDoctorProfileLabel(doctor) : "پزشک",
+        name: doctor ? getDoctorProfileLabel(doctor) : getContent("doctor"),
         avatar: doctor?.avatar,
       },
       hospital: {
@@ -96,7 +98,16 @@ const usePanelsMap = () => {
         avatar: user?.avatar,
       },
     }),
-    [user, doctor, pharmacy, clinic, paraClinic, hospital, insurance],
+    [
+      user,
+      doctor,
+      pharmacy,
+      clinic,
+      paraClinic,
+      hospital,
+      insurance,
+      getContent,
+    ],
   );
 
   const pathname = usePathname();

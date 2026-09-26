@@ -3,6 +3,7 @@ import { WithStyleProps } from "../Layout/Layout";
 import classes from "./MobileInput.module.css";
 import { convertPersianToEnglishDigits } from "../helpers/lib";
 import { isMobile } from "../helpers/Validators";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 const MobileInput = ({
   onChange,
@@ -16,6 +17,7 @@ const MobileInput = ({
   defaultValue?: string;
 }>) => {
   const [value, setValue] = useState<string>("");
+  const getContent = useScopedLocale();
 
   return (
     <div
@@ -44,11 +46,11 @@ const MobileInput = ({
         inputMode="numeric"
         pattern="[0-9]*"
       />
-      <span className={classes.placeholder}>شماره موبایل</span>
+      <span className={classes.placeholder}>{getContent("mobileNumber")}</span>
       <span className={classes.pre}>+98</span>
       {!!value && !isMobile(value) && (
         <span className={classes.error}>
-          شماره موبایل را به شکل صحیح وارد کنید
+          {getContent("mobileNumberFormatError")}
         </span>
       )}
     </div>

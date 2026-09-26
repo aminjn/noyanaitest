@@ -9,6 +9,8 @@ import Ixon from "../UI/Ixon";
 import CallingIcon from "../Icons/CallingIcon";
 import CloseIcon from "../Icons/CloseIcon";
 import classes from "./IncomingCallBox.module.css";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentKey } from "../Enums/contentKeys";
 
 export type IncomingCall = {
   roomId: string;
@@ -18,9 +20,9 @@ export type IncomingCall = {
   initiatorUsername?: string;
 };
 
-const callTypeLabel: Record<CallType, string> = {
-  voice: "تماس صوتی",
-  video: "تماس تصویری",
+const callTypeLabel: Record<CallType, ContentKey> = {
+  voice: "voiceCall",
+  video: "videoCall",
 };
 
 const IncomingCallBox = ({
@@ -33,9 +35,10 @@ const IncomingCallBox = ({
   const push = useProgress();
   const pushNotification = useNotification();
   const [isBusy, setIsBusy] = useState(false);
+  const getContent = useScopedLocale();
 
   const callerLabel =
-    call.initiatorUsername || call.initiatorPhone || "کاربر ناشناس";
+    call.initiatorUsername || call.initiatorPhone || getContent("unknownUser");
 
   const handleAnswer = () => {
     if (isBusy) return;
@@ -68,7 +71,7 @@ const IncomingCallBox = ({
         </span>
         <div className={classes.text}>
           <span className={classes.caller}>{callerLabel}</span>
-          <span className={classes.type}>{callTypeLabel[call.callType]}</span>
+          <span className={classes.type}>{getContent(callTypeLabel[call.callType])}</span>
         </div>
       </div>
       <div className={classes.actions}>
@@ -80,7 +83,7 @@ const IncomingCallBox = ({
           onClick={handleAnswer}
           leadIcon={<CallingIcon />}
         >
-          پاسخ
+          {getContent("answer")}
         </Button>
         <Button
           variant="Error"
@@ -90,7 +93,7 @@ const IncomingCallBox = ({
           onClick={handleReject}
           leadIcon={<CloseIcon />}
         >
-          رد تماس
+          {getContent("declineCall")}
         </Button>
       </div>
     </div>

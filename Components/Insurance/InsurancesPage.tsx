@@ -69,8 +69,8 @@ const InsurancesPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "بیمه ها", target: "/insurance" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("insurances"), target: "/insurance" },
       ]}
     >
       <div className={classes.header}>

@@ -147,9 +147,7 @@ export const PublicDrIntroInner = ({
             </div>
             <div className={classes.reviewContent}>
               <p className={classes.reviewText}>
-                دکتر بسیار دقیق، باحوصله و دلسوز هستند. در تمام مراحل درمان با
-                دقت به سوالاتم پاسخ دادند و حس آرامش و اطمینان را منتقل کردند.
-                از تجربه مشاوره با ایشان کاملاً رضایت دارم و حتماً توصیه می‌کنم.
+                {getContent("drSampleReviewText")}
               </p>
               <button className={classes.allComments}>
                 {getContent("seeAllReviews")}
@@ -173,13 +171,13 @@ export const PublicDrIntroInner = ({
             {/* TODO:Calculate this */}
             <Point
               icon={<CupIcon />}
-              title="۹۸% انتخاب بیمار ها"
-              description="۹۸٪ بیماران به این دکتر امتیاز ۴٫۹۳ از ۵ داده‌اند"
+              title={getContent("drPointPatientsChoiceTitle")}
+              description={getContent("drPointPatientsChoiceDescription")}
             />
             <Point
               icon={<ClockIcon />}
-              title="مدت انتظار بسیار کم"
-              description="۱۰۰٪ بیماران کمتر از ۳۰ دقیقه منتظر مانده‌اند"
+              title={getContent("drPointShortWaitTitle")}
+              description={getContent("drPointShortWaitDescription")}
             />
           </ul>
         )}
@@ -189,19 +187,13 @@ export const PublicDrIntroInner = ({
               <Ixon width="1.5rem">
                 <ShieldCheckIcon />
               </Ixon>
-              <legend>
-                این ارائه‌دهنده نیاز به پرداخت هزینه توسط خود بیمار دارد.
-              </legend>
+              <legend>{getContent("drSelfPayNoticeTitle")}</legend>
             </div>
             <p className={classes.noticeText}>
-              ممکن است در زمان مراجعه، مسئول پرداخت کل هزینه‌ی ویزیت خود باشید.
-              ممکن است واجد شرایط دریافت بخشی از هزینه از بیمه خود
-              باشید.ارائه‌دهنده‌ی دیگری پیدا کنید.
+              {getContent("drSelfPayNoticeText1")}
             </p>
             <p className={classes.noticeText}>
-              ممکن است لازم باشد هنگام ویزیت، کل هزینه را پرداخت کنید. ممکن است
-              بیمه شما بخشی از هزینه را بازپرداخت کند.می‌توانید ارائه‌دهنده‌ی
-              دیگری انتخاب کنید.
+              {getContent("drSelfPayNoticeText2")}
             </p>
           </div>
         )}

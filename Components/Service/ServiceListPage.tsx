@@ -127,8 +127,8 @@ const ServiceListPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "خدمات", target: "/service" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("services"), target: "/service" },
       ]}
     >
       <SwitchProductAndService />

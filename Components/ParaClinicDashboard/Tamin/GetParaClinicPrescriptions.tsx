@@ -606,7 +606,7 @@ const PrescsList = ({
             filter: "Number",
           },
           actions: {
-            name: "عملیات",
+            name: getContent("actions"),
             component: (node) => (
               <TableActions>
                 <IconButton onClick={() => setPresc(node)}>

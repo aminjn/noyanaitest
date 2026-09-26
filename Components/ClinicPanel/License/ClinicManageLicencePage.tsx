@@ -94,7 +94,8 @@ const PriceOption = ({
           {`${currencize(price)} ${getContent("toman")}`}
         </span>
         <span className={tsmRegular}>
-          {option.duration.displayName || `${option.duration.duration} روز`}
+          {option.duration.displayName ||
+            getContent("xDays", [String(option.duration.duration)])}
         </span>
       </div>
       <Button
@@ -105,7 +106,11 @@ const PriceOption = ({
         onClick={() =>
           setPopup(
             "PurchaseLicense",
-            <PurchaseLicensePopup node={node} option={option} mutate={mutate} />,
+            <PurchaseLicensePopup
+              node={node}
+              option={option}
+              mutate={mutate}
+            />,
           )
         }
       >

@@ -97,7 +97,7 @@ const SignupPopup = ({
         ) : (
           <Fragment>
             <DateInput
-              title="تاریخ تولد"
+              title={getContent("dateOfBirth")}
               onChange={(e) => setInput((prev) => ({ ...prev, birthDate: e }))}
               readOnly={isLoading}
             />
@@ -108,7 +108,7 @@ const SignupPopup = ({
               }
             />
             <Input
-              title="کد ملی"
+              title={getContent("nationalCode")}
               onChange={(e) =>
                 setInput((prev) => ({ ...prev, nationalId: e.target.value }))
               }
@@ -122,7 +122,7 @@ const SignupPopup = ({
               size="L"
               radius="High"
             >
-              تایید
+              {getContent("confirm")}
             </Button>
           </Fragment>
         )}

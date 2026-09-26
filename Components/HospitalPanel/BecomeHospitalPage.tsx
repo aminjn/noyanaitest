@@ -7,6 +7,7 @@ import { fetcher } from "../helpers/fetcher";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import SubmitBecomeHospitalRequest from "./SubmitBecomeHospitalRequest";
 import { Fragment } from "react";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 export type BecomeHospitalPopulation = Population<{ user: true }>;
 export interface IBecomeHospitalRequest<
@@ -25,6 +26,7 @@ export interface IBecomeHospitalRequest<
 }
 
 const BecomeHospitalPage = () => {
+  const getContent = useScopedLocale();
   const { data, error, isLoading, mutate } =
     useSWR<IBecomeHospitalRequest | null>(
       `${API}/hospital/request`,
@@ -36,15 +38,13 @@ const BecomeHospitalPage = () => {
       {data ? (
         <Fragment>
           {data.status === "Pending" ? (
-            <p>در حال پردازش اطلاعات توسط ادمین</p>
+            <p>{getContent("requestProcessingByAdmin")}</p>
           ) : (
             <Fragment>
               {data.status === "Approved" ? (
-                <p>
-                  درخواست شما تایید شده است در حال ساخت پروفایل برای شما هستیم
-                </p>
+                <p>{getContent("requestApprovedCreatingProfile")}</p>
               ) : (
-                <p>درخواست شما رد شده است</p>
+                <p>{getContent("yourRequestRejected")}</p>
               )}
             </Fragment>
           )}

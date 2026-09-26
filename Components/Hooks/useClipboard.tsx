@@ -1,7 +1,9 @@
 import useNotification from "./useNotification";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 export const useClipboard = () => {
   const pushNotification = useNotification();
+  const getContent = useScopedLocale();
 
   function fallbackCopyTextToClipboard(text: string) {
     const textArea = document.createElement("textarea");
@@ -15,12 +17,12 @@ export const useClipboard = () => {
     try {
       const successful = document.execCommand("copy");
       if (successful) {
-        pushNotification("متن با موفقیت کپی شد", "Success");
+        pushNotification(getContent("textCopiedSuccessfully"), "Success");
       } else {
-        pushNotification("خطایی در کپی متن رخ داد", "Error");
+        pushNotification(getContent("copyTextError"), "Error");
       }
     } catch {
-      pushNotification("خطایی در کپی متن رخ داد", "Error");
+      pushNotification(getContent("copyTextError"), "Error");
     }
     document.body.removeChild(textArea);
   }
@@ -32,9 +34,9 @@ export const useClipboard = () => {
     }
     try {
       await navigator.clipboard.writeText(text);
-      pushNotification("متن با موفقیت کپی شد", "Success");
+      pushNotification(getContent("textCopiedSuccessfully"), "Success");
     } catch {
-      pushNotification("خطایی در کپی متن رخ داد", "Error");
+      pushNotification(getContent("copyTextError"), "Error");
     }
   };
   return copyTextToClipboard;

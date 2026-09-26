@@ -35,8 +35,8 @@ const InsurancePage = ({ data }: InsurancePageProps) => {
     <MedicalCenterLayout
       back={{ target: "/insurance", title: getContent("backToList") }}
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "بیمه ها", target: "/insurance" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("insurances"), target: "/insurance" },
         {
           title: data.name || data._id,
           target: `/insurance/${data.slug || data._id}`,

@@ -97,8 +97,8 @@ const ProductPage = ({ data }: ProductPageProps) => {
   return (
     <CartableNodePage
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "محصولات", target: "/product" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("products"), target: "/product" },
         {
           title: data.name || data._id,
           target: `/product/${data.slug || data._id}`,

@@ -67,7 +67,7 @@ const ServiceCard = ({
               <LocationIcon />
             </Ixon>
             <span className={t2xsRegular}>
-              {`${node.owner.province ? `${node.owner.province}، ` : ""}${node.owner.city || ""}`}
+              {`${node.owner.province ? `${node.owner.province}${getCompContent("listSeparator")}` : ""}${node.owner.city || ""}`}
             </span>
           </div>
         )}

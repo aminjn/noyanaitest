@@ -1,3 +1,4 @@
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import {
   Fragment,
   ReactNode,
@@ -179,7 +180,7 @@ const Calendxr2 = ({
           >
             {PERSIAN_MONTHS.map((month, i) => (
               <option key={month} value={i.toString()}>
-                {month}
+                {getContent(`jalaliMonth${i + 1}` as ContentKey)}
               </option>
             ))}
           </select>

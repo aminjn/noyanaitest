@@ -35,12 +35,12 @@ const SubmitABecomeDoctorRequest = ({
       defaultValue={defaultValue}
       styleManaged
       renderer={{
-        firstName: { type: "text", title: "نام" },
-        lastName: { type: "text", title: "نام خانوادگی" },
-        ssid: { type: "text", title: "کد ملی" },
+        firstName: { type: "text", title: getContent("firstName") },
+        lastName: { type: "text", title: getContent("lastName") },
+        ssid: { type: "text", title: getContent("nationalCode") },
         gender: {
           type: "select",
-          title: "جنسیت",
+          title: getContent("gender"),
           options: genders.reduce(
             (acc, el) => ({ ...acc, [el]: getContent(el) }),
             {},

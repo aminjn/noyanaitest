@@ -32,8 +32,8 @@ const ContactPage = () => {
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "تماس با ما", target: "/contact" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("contactUs"), target: "/contact" },
       ]}
     >
       <ListPageHeader

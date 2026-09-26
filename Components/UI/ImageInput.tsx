@@ -6,6 +6,7 @@ import Image from "next/image";
 import { FilePath } from "../config";
 import Ixon from "./Ixon";
 import HostedImage from "./HostedImage";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 const ImageInput = ({
   className = "",
@@ -23,6 +24,7 @@ const ImageInput = ({
   const [value, setValue] = useState<File | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const getContent = useScopedLocale();
 
   console.log({ title });
 
@@ -33,9 +35,7 @@ const ImageInput = ({
         {!!value ? (
           <span>{value.name}</span>
         ) : (
-          <span>
-            برای انتخاب فایل یا اینجا کلیک کنید یا فایل را اینجا رها کنید
-          </span>
+          <span>{getContent("clickOrDropFileHere")}</span>
         )}
         <input
           className={classes.input}

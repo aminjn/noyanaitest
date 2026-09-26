@@ -37,8 +37,8 @@ const FaqPage = ({ categories, data }: FaqPageProps) => {
     <div className={classes.main}>
       <BreadCrump
         trail={[
-          { title: "صفحه اصلی", target: "/" },
-          { title: "سوالات متداول", target: "/faq" },
+          { title: getContent("homePage"), target: "/" },
+          { title: getContent("faq"), target: "/faq" },
         ]}
         className={classes.crump}
       />

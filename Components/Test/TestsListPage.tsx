@@ -41,8 +41,8 @@ const TestsListPage = ({ data, pagesCount }: TestsListPageProps) => {
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "تست ها", target: "/test" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("tests"), target: "/test" },
       ]}
     >
       <ListPageHeader
