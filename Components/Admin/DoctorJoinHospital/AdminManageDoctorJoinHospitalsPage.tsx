@@ -15,7 +15,6 @@ import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
-import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -43,21 +42,8 @@ const AdminManageDoctorJoinHospitalsPage = () => {
           <Table
             data={data}
             renderer={{
-              hospital: {
-                name: "بیمارستان",
-                value: (node) => node.hospital?.name,
-                filter: "Multi",
-                component: (node) =>
-                  node.hospital ? (
-                    <InlineLink href={adminPath(`/hospital/${node.hospital._id}`)}>
-                      {node.hospital.name || node.hospital._id}
-                    </InlineLink>
-                  ) : (
-                    "حذف شده"
-                  ),
-              },
               doctor: {
-                name: "دکتر",
+                name: "پزشک",
                 value: (node) =>
                   node.doctor ? getDoctorProfileLabel(node.doctor) : "",
                 component: (node) =>
@@ -72,11 +58,18 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                   ),
                 filter: "Multi",
               },
-              submittedAt: {
-                name: "زمان ثبت",
-                value: (node) => new Date(node.submittedAt),
-                component: (node) => <FormatDate value={node.submittedAt} />,
-                filter: "Date",
+              hospital: {
+                name: "بیمارستان",
+                value: (node) => node.hospital?.name,
+                filter: "Multi",
+                component: (node) =>
+                  node.hospital ? (
+                    <InlineLink href={adminPath(`/hospital/${node.hospital._id}`)}>
+                      {node.hospital.name || node.hospital._id}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
               },
               status: {
                 name: "وضعیت",
@@ -84,29 +77,27 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                 filter: "Set",
               },
               submissionParty: {
-                name: "طرف ارسال کننده",
+                name: "ارسال‌کننده",
                 value: (node) =>
                   joinHospitalSubmissionPartyDict[node.submissionParty],
                 filter: "Set",
               },
+              submittedAt: {
+                name: "زمان ثبت",
+                value: (node) => new Date(node.submittedAt),
+                filter: "Date",
+              },
               statusLastChangedAt: {
                 name: "آخرین تغییر وضعیت",
                 value: (node) => new Date(node.statusLastChangedAt),
-                component: (node) => (
-                  <FormatDate value={node.statusLastChangedAt} />
-                ),
                 filter: "Date",
-              },
-              message: {
-                name: "پیام",
-                value: (node) => node.message,
-                filter: "Text",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="تغییر وضعیت"
                       onClick={() =>
                         setPopup(
                           "EditDoctorJoinHospital",
@@ -121,6 +112,7 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDoctorJoinHospital",

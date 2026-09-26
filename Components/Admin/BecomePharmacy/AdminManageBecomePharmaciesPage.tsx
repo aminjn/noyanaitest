@@ -7,7 +7,6 @@ import HandleLoading from "../UI/HandleLoading";
 import { IBecomePharmacyRequest } from "@/Components/PharmacyPanel/BecomePharmacyPage";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
-import FormatDate from "@/Components/UI/FormatDate";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -31,16 +30,10 @@ const AdminManageBecomePharmaciesPage = () => {
             data={data}
             name="AdminManageBecomePharmacies"
             renderer={{
-              createdAt: {
-                name: "تاریخ ایجاد",
-                value: (node) => new Date(node.createdAt),
-                filter: "Date",
-                component: (node) => <FormatDate value={node.createdAt} />,
-              },
+              name: { name: "نام", value: (node) => node.name, filter: "Text" },
               user: {
-                name: "یوزر",
-                filter: "Text",
-                value: (node) => node.user?.phone,
+                name: "کاربر",
+                value: (node) => node.user?.phone || "حذف شده",
                 component: (node) =>
                   node.user ? (
                     <InlineLink href={adminPath(`/user/${node.user._id}`)}>
@@ -49,8 +42,8 @@ const AdminManageBecomePharmaciesPage = () => {
                   ) : (
                     "حذف شده"
                   ),
+                filter: "Text",
               },
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
               status: {
                 name: "وضعیت",
                 value: (node) => becomeNodeStatusesDict[node.status],
@@ -66,19 +59,19 @@ const AdminManageBecomePharmaciesPage = () => {
                 value: (node) => node.nationalId,
                 filter: "Text",
               },
-              certificateDate: {
-                name: "تاریخ گواهی",
-                value: (node) => new Date(node.certificateDate),
-                component: (node) => (
-                  <FormatDate value={node.certificateDate} />
-                ),
+              createdAt: {
+                name: "تاریخ ثبت",
+                value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/becomepharmacy/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/becomepharmacy/${node._id}`)}
+                      title="بررسی"
+                    >
                       <EditIcon />
                     </IconLink>
                   </TableActions>

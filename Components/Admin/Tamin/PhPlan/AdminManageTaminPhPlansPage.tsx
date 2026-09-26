@@ -35,19 +35,19 @@ const AdminManageTaminPhPlansPage = () => {
               data={data}
               name="AdminManageTaminPhPlans"
               renderer={{
-                planId: {
-                  name: "planId",
-                  value: (node) => node.planId,
-                  filter: "Text",
-                },
                 planDesc: {
-                  name: "planDesc",
+                  name: "عنوان طرح",
                   value: (node) => node.planDesc,
                   filter: "Text",
                 },
                 planCode: {
-                  name: "planCode",
+                  name: "کد",
                   value: (node) => node.planCode,
+                  filter: "Text",
+                },
+                planId: {
+                  name: "شناسه تامین",
+                  value: (node) => node.planId,
                   filter: "Text",
                 },
               }}

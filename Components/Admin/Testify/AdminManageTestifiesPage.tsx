@@ -8,7 +8,7 @@ import { FormRenderer } from "../UI/CreateForm";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
@@ -45,6 +45,13 @@ const AdminManageTestifiesPage = () => {
       modelName="testify"
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
+        isActive: {
+          name: "وضعیت",
+          value: (node) => booleanToValue[`${node.isActive}`],
+          component: (node) => <BooleanToIcon value={node.isActive} />,
+          filter: "Set",
+        },
         order: {
           name: "رتبه",
           value: (node) => node.order,
@@ -58,21 +65,19 @@ const AdminManageTestifiesPage = () => {
             />
           ),
         },
-        isActive: {
-          name: "فعال",
-          value: (node) => booleanToValue[`${node.isActive}`],
-          component: (node) => <BooleanToIcon value={node.isActive} />,
-          filter: "Set",
-        },
-        title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/testify/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/testify/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

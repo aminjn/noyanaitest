@@ -48,6 +48,19 @@ const AdminManageUserAccessLevelsPage = () => {
             name="AdminManageUserAccessLevels"
             data={data}
             renderer={{
+              user: {
+                name: "کاربر",
+                value: (node) => node.user?.phone || node.user?._id,
+                filter: "Text",
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {node.user.phone || node.user._id}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
+              },
               accessLevel: {
                 name: "سطح دسترسی",
                 value: (node) =>
@@ -64,22 +77,13 @@ const AdminManageUserAccessLevelsPage = () => {
                   ),
                 filter: "Multi",
               },
-              user: {
-                name: "کاربر",
-                value: (node) => node.user.phone,
-                filter: "Text",
-                component: (node) => (
-                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                    {node.user.phone || node.user._id}
-                  </InlineLink>
-                ),
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "RemoveAccessLevelUserPopup",

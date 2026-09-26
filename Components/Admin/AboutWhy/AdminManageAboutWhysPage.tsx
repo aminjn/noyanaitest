@@ -3,11 +3,11 @@
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import NodesManager from "../UI/NodesManager";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -56,14 +56,15 @@ const AdminManageAboutWhysPage = () => {
       modelName="aboutWhy"
       table={({ mutate }) => ({
         title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
-        content: {
-          name: "توضیحات",
-          value: (node) => node.content,
-          filter: "Text",
+        elem: {
+          name: "قسمت",
+          value: (node) => aboutWhyElemDict[node.elem],
+          filter: "Set",
         },
         isActive: {
-          name: "فعال",
+          name: "وضعیت",
           value: (node) => booleanToValue[`${node.isActive}`],
+          component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
@@ -79,19 +80,16 @@ const AdminManageAboutWhysPage = () => {
             />
           ),
         },
-        elem: {
-          name: "قسمت",
-          value: (node) => aboutWhyElemDict[node.elem],
-          filter: "Set",
-        },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/aboutWhy/${node._id}`)}>
-                <EyeIcon />
+              <IconLink href={adminPath(`/aboutWhy/${node._id}`)} title="ویرایش">
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

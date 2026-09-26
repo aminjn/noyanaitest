@@ -199,7 +199,7 @@ const AdminManageDiseasePage = () => {
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -211,26 +211,33 @@ const AdminManageDiseasePage = () => {
                   />
                 ),
               },
-              slug: {
-                name: "اسلاگ",
-                value: (node) => node.slug,
-                filter: "Text",
+              genderSpecific: {
+                name: "جنسیت",
+                value: (node) =>
+                  node.genderSpecific
+                    ? genderSpecificOptionsDict[node.genderSpecific]
+                    : undefined,
+                filter: "Set",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/disease/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/disease/${node._id}`)}
+                      title="ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDiseasePopup",
                           <DeleteDiseasePopup mutate={mutate} node={node} />,
                         )
                       }
-                      variant="Danger"
                     >
                       <GarbageIcon />
                     </IconButton>

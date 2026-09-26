@@ -3,7 +3,6 @@ import useSWR from "swr";
 import classes from "./AdminManageBecomeDoctorsPage.module.css";
 import {
   becomeNodeStatusesDict,
-  genderDict,
   IBecomeDoctorRequest,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { API } from "@/Components/config";
@@ -13,8 +12,6 @@ import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import FormatDate from "@/Components/UI/FormatDate";
-import { provinces } from "@/Components/Enums/Provinces";
 import { cities } from "@/Components/Enums/Cities";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
@@ -44,63 +41,44 @@ const AdminManageBecomeDoctorsPage = () => {
             data={data}
             name="AdminManageBecomeDoctors"
             renderer={{
-              firstName: {
-                name: "نام",
-                value: (node) => node.firstName,
-                filter: "Text",
-              },
-              lastName: {
-                name: "نام خانوادگی",
-                value: (node) => node.lastName,
-                filter: "Text",
-              },
-              ssid: { name: "کد ملی", value: (node) => node.ssid },
-              user: {
-                name: "یوزر",
-                value: (node) => node.user.phone,
-                filter: "Text",
-                component: (node) => (
-                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                    {node.user.phone}
-                  </InlineLink>
-                ),
-              },
-              createdAt: {
-                name: "زمان درخواست",
-                value: (node) => new Date(node.createdAt),
-                component: (node) => <FormatDate value={node.createdAt} />,
-                filter: "Date",
-              },
-              province: {
-                name: "استان",
+              fullName: {
+                name: "نام و نام خانوادگی",
                 value: (node) =>
-                  provinces.find((p) => p.slug === node.province)?.name,
-                filter: "Multi",
+                  [node.firstName, node.lastName].filter(Boolean).join(" "),
+                filter: "Text",
               },
-              city: {
-                name: "شهر",
-                value: (node) => cities.find((c) => c.slug === node.city)?.name,
-                filter: "Multi",
-              },
-              gender: {
-                name: "جنسیت",
-                filter: "Set",
-                value: (node) => genderDict[node.gender],
+              user: {
+                name: "کاربر",
+                value: (node) => node.user?.phone,
+                filter: "Text",
+                component: (node) =>
+                  node.user?._id ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {node.user.phone || "—"}
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  ),
               },
               medicalSystemTitle: {
                 name: "عنوان نظام پزشکی",
                 value: (node) => node.medicalSystemTitle,
                 filter: "Set",
               },
-              medicalSystemCode: {
-                name: "کد نظام پزشکی",
-                value: (node) => node.medicalSystemCode,
-                filter: "Text",
+              city: {
+                name: "شهر",
+                value: (node) => cities.find((c) => c.slug === node.city)?.name,
+                filter: "Multi",
               },
               status: {
                 name: "وضعیت",
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
+              },
+              createdAt: {
+                name: "زمان درخواست",
+                value: (node) => new Date(node.createdAt),
+                filter: "Date",
               },
               actions: {
                 name: "عملیات",
@@ -110,6 +88,7 @@ const AdminManageBecomeDoctorsPage = () => {
                       <IconLink
                         href={adminPath(`/becomedoctor/${node._id}`)}
                         variant="Info"
+                        title="ویرایش"
                       >
                         <EditIcon />
                       </IconLink>
@@ -117,6 +96,7 @@ const AdminManageBecomeDoctorsPage = () => {
                     {hasAccess("BecomeDoctorRequest", "delete") && (
                       <IconButton
                         variant="Danger"
+                        title="حذف"
                         onClick={() =>
                           setPopup(
                             "DeleteBecomeDoctor",

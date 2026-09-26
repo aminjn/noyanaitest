@@ -14,6 +14,7 @@ import { AG_GRID_LOCALE_IR } from "@ag-grid-community/locale";
 import TableDateInput from "./TableDateInput";
 import { WithStyleProps } from "./Loading";
 import Ixon from "@/Components/UI/Ixon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
 
 // Light, quiet grid in the panel's own palette (white header, hairline
@@ -80,64 +81,119 @@ const Table = <T,>({
   name?: string;
 }>) => {
   const columnDefs = useMemo<ColDef<T>[]>(() => {
-    if (!true) return [{}];
-    return Object.keys(renderer).map(
-      (key) =>
-        ({
-          suppressKeyboardEvent: () => renderer[key].suppressKeyboardEvents,
+    // Phones: nothing is pinned (a pinned column would eat the screen) and
+    // the name column is narrower; the grid scrolls sideways instead.
+    const narrow =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 600px)").matches;
+    const dateFormat = new Intl.DateTimeFormat("fa-IR", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+    // Plain values get a sensible look without every page repeating it:
+    // dates formatted, booleans as status pills.
+    const display = (value: unknown): ReactNode => {
+      if (value instanceof Date)
+        return isNaN(value.getTime()) ? "—" : dateFormat.format(value);
+      if (typeof value === "boolean") return <BooleanToIcon value={value} />;
+      if (value === null || value === undefined || value === "") return "—";
+      return value as ReactNode;
+    };
+    // One record missing a field must not take the whole page down: a cell
+    // whose renderer throws just shows a dash.
+    const safe = (render: () => ReactNode): ReactNode => {
+      try {
+        return render();
+      } catch {
+        return "—";
+      }
+    };
+    const keys = Object.keys(renderer);
+    return keys.map((key, index) => {
+      const column = renderer[key];
+      // The first column is the record's name/title: it gets the room.
+      const isPrimary = index === 0;
+      // The row actions column (edit/view/delete): fixed on the end side.
+      const isActions =
+        key === "actions" || /^(عملیات|غملیات)$/.test(column.name.trim());
+      if (isActions)
+        return {
           colId: key,
-          filter: renderer[key].filter
-            ? `ag${renderer[key].filter}ColumnFilter`
-            : undefined,
-          width: renderer[key].width,
-          sortable: !!renderer[key].value,
-          initialPinned: renderer[key].pin,
-          valueGetter: ({ data }) =>
-            data
-              ? !!renderer[key].value
-                ? renderer[key].value?.(data)
-                : null
-              : null,
+          headerName: "",
+          pinned: narrow ? undefined : "left",
+          width: column.width || 116,
+          resizable: false,
+          sortable: false,
+          filter: false,
+          floatingFilter: false,
+          suppressHeaderMenuButton: true,
+          suppressMovable: true,
+          cellClass: classes.actionsCell,
           cellRenderer: ({ data }: { data: T }) =>
-            data
-              ? renderer[key].component?.(data) || renderer[key].value?.(data)
-              : "",
-          tooltipValueGetter: ({ data }) =>
-            data ? renderer[key].value?.(data) : null,
-          headerValueGetter: () => renderer[key].name,
-          editable: !!renderer[key].onEdit,
-          valueSetter: renderer[key].onEdit,
-          cellEditor: !!renderer[key].onEdit
-            ? `ag${renderer[key].filter}CellEditor`
-            : undefined,
-          cellEditorParams: renderer[key].editParams,
-        }) as ColDef<T>,
-    );
+            data ? safe(() => column.component?.(data)) : "",
+        } as ColDef<T>;
+      return {
+        suppressKeyboardEvent: () => column.suppressKeyboardEvents,
+        colId: key,
+        filter: column.filter ? `ag${column.filter}ColumnFilter` : undefined,
+        width: column.width,
+        ...(column.width
+          ? {}
+          : isPrimary
+            ? { flex: 2, minWidth: narrow ? 160 : 200 }
+            : { flex: 1, minWidth: 130 }),
+        sortable: !!column.value,
+        initialPinned: column.pin,
+        valueGetter: ({ data }) =>
+          data && column.value ? safe(() => column.value?.(data) as ReactNode) : null,
+        cellRenderer: ({ data }: { data: T }) =>
+          data
+            ? safe(
+                () => column.component?.(data) ?? display(column.value?.(data)),
+              )
+            : "",
+        tooltipValueGetter: ({ data }) => {
+          const value = data && column.value ? safe(() => column.value?.(data) as ReactNode) : null;
+          return value instanceof Date ? dateFormat.format(value) : value;
+        },
+        headerValueGetter: () => column.name,
+        editable: !!column.onEdit,
+        valueSetter: column.onEdit,
+        cellEditor: !!column.onEdit
+          ? `ag${column.filter}CellEditor`
+          : undefined,
+        cellEditorParams: column.editParams,
+      } as ColDef<T>;
+    });
   }, [renderer]);
 
   const defaultColDef = useMemo<ColDef>(() => ({ floatingFilter: true }), []);
 
+  // Saved column layout per table; the version suffix drops layouts saved
+  // before the column redesign.
+  const storageKey = name ? `${name}:v2` : undefined;
+
   const initialState = useMemo<GridState | undefined>(() => {
-    if (!name) return;
+    if (!storageKey) return;
     try {
-      const saved = localStorage.getItem(name);
+      const saved = localStorage.getItem(storageKey);
       if (!saved) return;
       return JSON.parse(saved);
     } catch {
       return;
     }
-  }, [name]);
+  }, [storageKey]);
 
   const onGridPreDestroyed = useCallback<
     (event: GridPreDestroyedEvent<T>) => void
   >(
     ({ state }) => {
-      if (!name) return;
+      if (!storageKey) return;
       try {
-        localStorage.setItem(name, JSON.stringify(state));
+        localStorage.setItem(storageKey, JSON.stringify(state));
       } catch {}
     },
-    [name],
+    [storageKey],
   );
 
   const [quickFilter, setQuickFilter] = useState("");

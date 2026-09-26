@@ -9,7 +9,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
-import FormatDate from "@/Components/UI/FormatDate";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -40,11 +39,15 @@ const AdminManageInsuranceAdditionsPage = () => {
             name="AdminManageInsuranceAdditionRequests"
             data={data}
             renderer={{
-              submittedAt: {
-                name: "زمان ثبت",
-                value: (node) => new Date(node.submittedAt),
-                component: (node) => <FormatDate value={node.submittedAt} />,
-                filter: "Date",
+              name: {
+                name: "نام بیمه",
+                value: (node) => node.name,
+                filter: "Text",
+              },
+              status: {
+                name: "وضعیت",
+                value: (node) => additionRequestStatusDict[node.status],
+                filter: "Set",
               },
               submittedBy: {
                 name: "ثبت کننده",
@@ -52,6 +55,7 @@ const AdminManageInsuranceAdditionsPage = () => {
                   node.submittedBy
                     ? getDoctorProfileLabel(node.submittedBy)
                     : "حذف شده",
+                filter: "Text",
                 component: (node) =>
                   node.submittedBy ? (
                     <InlineLink
@@ -60,30 +64,27 @@ const AdminManageInsuranceAdditionsPage = () => {
                       {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
-                    ""
+                    "حذف شده"
                   ),
               },
-              name: {
-                name: "نام بیمه",
-                value: (node) => node.name,
-                filter: "Text",
+              submittedAt: {
+                name: "زمان ثبت",
+                value: (node) => new Date(node.submittedAt),
+                filter: "Date",
               },
               description: {
                 name: "توضیحات",
                 value: (node) => node.description,
                 filter: "Text",
               },
-              status: {
-                name: "وضعیت",
-                value: (node) => additionRequestStatusDict[node.status],
-                filter: "Set",
-              },
               actions: {
                 name: "عملیات",
+                width: 150,
                 component: (node) => (
                   <TableActions>
                     <IconButton
                       variant="Success"
+                      title="ایجاد بیمه از درخواست"
                       onClick={() =>
                         setPopup(
                           "CreateInsuranceFromRequest",
@@ -95,6 +96,7 @@ const AdminManageInsuranceAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Info"
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateInsuranceRequest",
@@ -109,6 +111,7 @@ const AdminManageInsuranceAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteInsuranceAdditionRequest",

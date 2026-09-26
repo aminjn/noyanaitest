@@ -29,7 +29,8 @@ import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import IconLink from "../UI/IconLink";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
+import { currencize } from "@/Components/helpers/currencize";
 import { IProductPackage } from "../ProductPackage/AdminManageProductPackagesPage";
 import { IServicePackage } from "../ServicePackage/AdminManageServicePackagesPage";
 import { IService } from "../Service/AdminManageServicesPage";
@@ -242,32 +243,8 @@ const AdminManageProductsPage = () => {
             data={data}
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
-              slug: {
-                name: "اسلاگ",
-                value: (node) => node.slug,
-                filter: "Text",
-              },
-              order: {
-                name: "رتبه",
-                value: (node) => node.order,
-                filter: "Number",
-                component: (node) => (
-                  <OrderEditor
-                    value={node.order}
-                    _id={node._id}
-                    modelName="product"
-                    mutate={mutate}
-                  />
-                ),
-              },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
               category: {
-                name: "دسته بندی",
+                name: "دسته‌بندی",
                 value: (node) =>
                   node.category
                     ? node.category.name || node.category._id
@@ -284,11 +261,45 @@ const AdminManageProductsPage = () => {
                     "ندارد"
                   ),
               },
+              price: {
+                name: "قیمت (ریال)",
+                value: (node) => node.price,
+                component: (node) =>
+                  typeof node.price === "number" ? currencize(node.price) : "—",
+                filter: "Number",
+              },
+              isActive: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
+              order: {
+                name: "ترتیب",
+                value: (node) => node.order,
+                filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    _id={node._id}
+                    modelName="product"
+                    mutate={mutate}
+                  />
+                ),
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
+                    <IconLink
+                      href={adminPath(`/product/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
+                    </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteProduct",
@@ -298,9 +309,6 @@ const AdminManageProductsPage = () => {
                     >
                       <GarbageIcon />
                     </IconButton>
-                    <IconLink href={adminPath(`/product/${node._id}`)}>
-                      <EyeIcon />
-                    </IconLink>
                   </TableActions>
                 ),
               },

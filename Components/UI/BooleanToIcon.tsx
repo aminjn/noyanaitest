@@ -1,9 +1,7 @@
-import { errorCol, successCol } from "../Enums/Colors";
-import CheckIcon from "../Icons/CheckIcon";
-import CloseIcon from "../Icons/CloseIcon";
+"use client";
 import { WithStyleProps } from "../Layout/Layout";
+import useScopedLocale from "../Hooks/useScopedLocale";
 import classes from "./BooleanToIcon.module.css";
-import Ixon from "./Ixon";
 
 export const booleanToValue = { true: "فعال", false: "غیرفعال" } as const;
 
@@ -14,19 +12,21 @@ export const booleanToContentKey = {
   false: "inactive",
 } as const;
 
+// Yes/no state as a small status pill (green dot = on, grey = off).
 const BooleanToIcon = ({
   value,
   className = "",
   style = {},
 }: WithStyleProps<{ value: boolean }>) => {
+  const getContent = useScopedLocale();
   return (
-    <Ixon
-      className={className}
-      style={{ color: value ? successCol : errorCol, ...style }}
-      width="2rem"
+    <span
+      className={`${classes.main} ${value ? classes.on : classes.off} ${className}`}
+      style={style}
     >
-      {value ? <CheckIcon /> : <CloseIcon />}
-    </Ixon>
+      <span className={classes.dot} />
+      {getContent(booleanToContentKey[`${!!value}`])}
+    </span>
   );
 };
 

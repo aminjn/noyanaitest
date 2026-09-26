@@ -21,18 +21,13 @@ const AdminManageOldSpecialitiesPage = () => {
           name="AdminManageOldSpecialities"
           data={data}
           renderer={{
-            _id: { name: "آی دی", value: (node) => node._id, filter: "Text" },
             name: { name: "نام", value: (node) => node.name, filter: "Text" },
             order: {
-              name: "رتبه",
+              name: "ترتیب",
               value: (node) => node.order,
               filter: "Number",
             },
-            summary: {
-              name: "خلاصه",
-              value: (node) => node.summary,
-              filter: "Text",
-            },
+            _id: { name: "شناسه", value: (node) => node._id, filter: "Text" },
           }}
         />
       )}

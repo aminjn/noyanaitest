@@ -9,7 +9,6 @@ import Table from "../UI/Table";
 import WithTitle from "../UI/WithTitle";
 import Box from "../UI/Box";
 import DataPair from "../UI/DataPair";
-import FormatDate from "@/Components/UI/FormatDate";
 import classes from "./AdminManageAnalyticsPage.module.css";
 
 export interface IAnalyticsTotals {
@@ -100,16 +99,13 @@ const AdminManageAnalyticsPage = () => {
                   filter: "Number",
                 },
                 uniqueVisitors: {
-                  name: "بازدیدکننده یکتا",
+                  name: "بازدیدکننده‌ی یکتا",
                   value: (node) => node.uniqueVisitors,
                   filter: "Number",
                 },
                 lastVisitedAt: {
                   name: "آخرین بازدید",
-                  value: (node) => node.lastVisitedAt,
-                  component: (node) => (
-                    <FormatDate value={node.lastVisitedAt} />
-                  ),
+                  value: (node) => new Date(node.lastVisitedAt),
                   filter: "Date",
                 },
               }}
@@ -132,22 +128,18 @@ const AdminManageAnalyticsPage = () => {
                   filter: "Text",
                 },
                 count: {
-                  name: "تعداد بازدید",
+                  name: "تعداد",
                   value: (node) => node.count,
                   filter: "Number",
                 },
                 visitedAt: {
                   name: "اولین بازدید",
-                  value: (node) => node.visitedAt,
-                  component: (node) => <FormatDate value={node.visitedAt} />,
+                  value: (node) => new Date(node.visitedAt),
                   filter: "Date",
                 },
                 lastVisitedAt: {
                   name: "آخرین بازدید",
-                  value: (node) => node.lastVisitedAt,
-                  component: (node) => (
-                    <FormatDate value={node.lastVisitedAt} />
-                  ),
+                  value: (node) => new Date(node.lastVisitedAt),
                   filter: "Date",
                 },
               }}

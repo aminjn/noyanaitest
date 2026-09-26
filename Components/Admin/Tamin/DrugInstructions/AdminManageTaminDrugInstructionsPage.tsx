@@ -42,29 +42,29 @@ const AdminManageTaminDrugInstructionsPage = () => {
               data={data}
               name="AdminManageTaminDrugInstructions"
               renderer={{
-                drugInstId: {
-                  name: "drugInstId",
-                  value: (node) => node.drugInstId,
-                  filter: "Text",
-                },
-                drugInstCode: {
-                  name: "drugInstCode",
-                  value: (node) => node.drugInstCode,
-                  filter: "Text",
-                },
                 drugInstSumry: {
-                  name: "drugInstSumry",
+                  name: "عنوان",
                   value: (node) => node.drugInstSumry,
                   filter: "Text",
                 },
                 drugInstLatin: {
-                  name: "drugInstLatin",
+                  name: "نام لاتین",
                   value: (node) => node.drugInstLatin,
                   filter: "Text",
                 },
+                drugInstCode: {
+                  name: "کد",
+                  value: (node) => node.drugInstCode,
+                  filter: "Text",
+                },
                 drugInstConcept: {
-                  name: "drugInstConcept",
+                  name: "مفهوم",
                   value: (node) => node.drugInstConcept,
+                  filter: "Text",
+                },
+                drugInstId: {
+                  name: "شناسه تامین",
+                  value: (node) => node.drugInstId,
                   filter: "Text",
                 },
               }}

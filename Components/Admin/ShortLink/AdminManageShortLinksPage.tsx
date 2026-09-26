@@ -48,21 +48,22 @@ const AdminManageShortLinksPage = () => {
             name="AdminManageShortLinks"
             data={data}
             renderer={{
-              target: {
-                name: "مقصد",
-                filter: "Text",
-                value: (node) => node.target,
-              },
               token: {
                 name: "توکن",
                 value: (node) => node.token,
                 filter: "Text",
+              },
+              target: {
+                name: "مقصد",
+                filter: "Text",
+                value: (node) => node.target,
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateShortLink",
@@ -73,6 +74,7 @@ const AdminManageShortLinksPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      title="حذف"
                       variant="Danger"
                       onClick={() =>
                         setPopup(

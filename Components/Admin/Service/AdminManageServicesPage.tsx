@@ -213,27 +213,24 @@ const AdminManageServicesPage = () => {
             name="AdminManageService"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
-              order: {
-                name: "رتبه",
-                value: (node) => node.order,
-                filter: "Number",
-                component: (node) => (
-                  <OrderEditor
-                    _id={node._id}
-                    value={node.order}
-                    mutate={mutate}
-                    modelName="service"
-                  />
-                ),
-              },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
+              category: {
+                name: "دسته‌بندی",
+                value: (node) =>
+                  node.category ? node.category.title || node.category._id : "ندارد",
+                filter: "Multi",
+                component: (node) =>
+                  node.category ? (
+                    <InlineLink
+                      href={adminPath(`/serviceCategory/${node.category._id}`)}
+                    >
+                      {node.category.title || node.category._id}
+                    </InlineLink>
+                  ) : (
+                    "ندارد"
+                  ),
               },
               owner: {
-                name: "صاحب",
+                name: "ارائه‌دهنده",
                 value: (node) =>
                   !!node.owner ? getDoctorProfileLabel(node.owner) : "ندارد",
                 filter: "Multi",
@@ -248,22 +245,18 @@ const AdminManageServicesPage = () => {
                     "ندارد"
                   ),
               },
-              inventory: {
-                name: "موجودی",
-                value: (node) => node.inventory,
-                filter: "Number",
-              },
               price: {
-                name: "قیمت",
+                name: "قیمت (ریال)",
                 value: (node) => node.price,
                 filter: "Number",
-                component: (node) => currencize(node.price),
+                component: (node) =>
+                  typeof node.price === "number" ? currencize(node.price) : "—",
               },
-              discount: {
-                name: "تخفیف",
-                value: (node) => node.discount,
-                filter: "Number",
-                component: (node) => currencize(node.discount),
+              isActive: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
               },
               isHome: {
                 name: "نمایش در خانه",
@@ -271,30 +264,32 @@ const AdminManageServicesPage = () => {
                 component: (node) => <BooleanToIcon value={node.isHome} />,
                 filter: "Set",
               },
-              category: {
-                name: "دسته بندی",
-                value: (node) =>
-                  node.category ? node.category.title : "ندارد",
-                filter: "Multi",
-                component: (node) =>
-                  node.category ? (
-                    <InlineLink
-                      href={adminPath(`/serviceCategory/${node.category._id}`)}
-                    >
-                      {node.category.title}
-                    </InlineLink>
-                  ) : (
-                    "ندارد"
-                  ),
+              order: {
+                name: "ترتیب",
+                value: (node) => node.order,
+                filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    value={node.order}
+                    mutate={mutate}
+                    modelName="service"
+                  />
+                ),
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/service/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/service/${node._id}`)}
+                      title="ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteService",

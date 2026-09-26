@@ -64,7 +64,7 @@ const HospitalDoctorsTab = ({ hospital }: { hospital: IHospital }) => {
                   ),
               },
               department: {
-                name: "دپارتمان",
+                name: "بخش",
                 value: (node) =>
                   node.department
                     ? node.department.name || node.department._id
@@ -76,6 +76,7 @@ const HospitalDoctorsTab = ({ hospital }: { hospital: IHospital }) => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateHospitalDoctor",
@@ -91,6 +92,7 @@ const HospitalDoctorsTab = ({ hospital }: { hospital: IHospital }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalDoctor",

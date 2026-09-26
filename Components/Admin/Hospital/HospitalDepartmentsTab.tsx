@@ -51,13 +51,8 @@ const HospitalDepartmentsTab = ({ hospital }: { hospital: IHospital }) => {
             name="AdminManageHospitalDepartments"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
-              description: {
-                name: "توضیحات",
-                value: (node) => node.description,
-                filter: "Text",
-              },
               active: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.active}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.active} />,
@@ -87,6 +82,7 @@ const HospitalDepartmentsTab = ({ hospital }: { hospital: IHospital }) => {
                   <TableActions>
                     {node.image ? (
                       <IconButton
+                        title="مشاهده تصویر"
                         onClick={() =>
                           setPopup(
                             "FullscreenImagePreview",
@@ -108,6 +104,7 @@ const HospitalDepartmentsTab = ({ hospital }: { hospital: IHospital }) => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       variant="Info"
                       onClick={() =>
                         setPopup(
@@ -123,6 +120,7 @@ const HospitalDepartmentsTab = ({ hospital }: { hospital: IHospital }) => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      title="حذف"
                       variant="Danger"
                       onClick={() =>
                         setPopup(

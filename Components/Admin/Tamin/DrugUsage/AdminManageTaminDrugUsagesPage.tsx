@@ -44,39 +44,39 @@ const AdminManageTaminDrugUsagesPage = () => {
               data={data}
               name="AdminManageTaminDrugUsages"
               renderer={{
-                drugUsageId: {
-                  name: "drugUsageId",
-                  value: (node) => node.drugUsageId,
-                  filter: "Text",
-                },
-                drugUsageCode: {
-                  name: "drugUsageCode",
-                  value: (node) => node.drugUsageCode,
-                  filter: "Text",
-                },
                 drugUsageSumry: {
-                  name: "drugUsageSumry",
+                  name: "شرح مصرف",
                   value: (node) => node.drugUsageSumry,
                   filter: "Text",
                 },
                 drugUsageLatin: {
-                  name: "drugUsageLatin",
+                  name: "عنوان لاتین",
                   value: (node) => node.drugUsageLatin,
                   filter: "Text",
                 },
                 drugUsageConcept: {
-                  name: "drugUsageConcept",
+                  name: "مفهوم",
                   value: (node) => node.drugUsageConcept,
                   filter: "Text",
                 },
-                visible: {
-                  name: "visible",
-                  value: (node) => node.visible,
+                drugUsageCode: {
+                  name: "کد",
+                  value: (node) => node.drugUsageCode,
                   filter: "Text",
                 },
                 drugFormCode: {
-                  name: "drugFormCode",
+                  name: "کد شکل دارویی",
                   value: (node) => node.drugFormCode,
+                  filter: "Set",
+                },
+                visible: {
+                  name: "نمایش",
+                  value: (node) => node.visible,
+                  filter: "Set",
+                },
+                drugUsageId: {
+                  name: "شناسه تامین",
+                  value: (node) => node.drugUsageId,
                   filter: "Text",
                 },
               }}

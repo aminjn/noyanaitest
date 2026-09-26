@@ -21,7 +21,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
@@ -89,15 +89,16 @@ const AdminManageTestsPage = () => {
             />
           ),
         },
-        slug: { name: "اسلاگ", value: (node) => node.slug },
         actions: {
-          name: "غملیات",
+          name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/test/${node._id}`)}>
-                <EyeIcon />
+              <IconLink href={adminPath(`/test/${node._id}`)} title="ویرایش">
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

@@ -13,7 +13,6 @@ import CreateInlineAdPopup from "./CreateInlineAdPopup";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
-import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -82,18 +81,13 @@ const AdminManageInlineAdsPage = () => {
                 filter: "Text",
                 value: (node) => node.title,
               },
-              subTitle: {
-                name: "توضیحات",
-                filter: "Text",
-                value: (node) => node.subTitle,
-              },
               target: {
                 name: "مقصد",
                 value: (node) => node.target,
                 filter: "Text",
               },
               active: {
-                name: "فعال است؟",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.active}`],
                 component: (node) => <BooleanToIcon value={node.active} />,
                 filter: "Set",
@@ -101,15 +95,13 @@ const AdminManageInlineAdsPage = () => {
               expiration: {
                 name: "تاریخ انقضا",
                 value: (node) =>
-                  node.expiration ? new Date(node.expiration) : "",
-                component: (node) =>
-                  node.expiration ? <FormatDate value={node.expiration} /> : "",
+                  node.expiration ? new Date(node.expiration) : undefined,
                 filter: "Date",
               },
               createdAt: {
                 name: "تاریخ ایجاد",
-                component: (node) => <FormatDate value={node.createdAt} />,
-                value: (node) => new Date(node.createdAt),
+                value: (node) =>
+                  node.createdAt ? new Date(node.createdAt) : undefined,
                 filter: "Date",
               },
               actions: {
@@ -118,6 +110,7 @@ const AdminManageInlineAdsPage = () => {
                   <TableActions>
                     {hasAccess("InlineAdvertisement", "readOne") && (
                       <IconLink
+                        title="ویرایش"
                         variant="Info"
                         href={adminPath(`/inlinead/${node._id}`)}
                       >
@@ -126,6 +119,7 @@ const AdminManageInlineAdsPage = () => {
                     )}
                     {hasAccess("InlineAdvertisement", "delete") && (
                       <IconButton
+                        title="حذف"
                         variant="Danger"
                         onClick={() =>
                           setPopup(

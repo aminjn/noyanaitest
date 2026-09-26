@@ -3,7 +3,6 @@
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import NodesManager from "../UI/NodesManager";
-import FormatDate from "@/Components/UI/FormatDate";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
@@ -72,15 +71,8 @@ const AdminManageContactRequestsPage = () => {
       title="درخواست تماس ها"
       modelName="contactRequest"
       table={({ mutate }) => ({
-        submittedAt: {
-          name: "زمان ثبت",
-          value: (node) => node.submittedAt,
-          component: (node) => <FormatDate value={node.submittedAt} />,
-          filter: "Date",
-        },
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
         phone: { name: "شماره", value: (node) => node.phone, filter: "Text" },
-        email: { name: "ایمیل", value: (node) => node.email, filter: "Text" },
         subject: {
           name: "موضوع",
           value: (node) => contactRequestSubjectDict[node.subject],
@@ -91,14 +83,25 @@ const AdminManageContactRequestsPage = () => {
           value: (node) => contactRequestStatusDict[node.status],
           filter: "Set",
         },
+        email: { name: "ایمیل", value: (node) => node.email, filter: "Text" },
+        submittedAt: {
+          name: "زمان ثبت",
+          value: (node) => new Date(node.submittedAt),
+          filter: "Date",
+        },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/contactRequest/${node._id}`)}>
+              <IconLink
+                href={adminPath(`/contactRequest/${node._id}`)}
+                title="مشاهده"
+              >
                 <EyeIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

@@ -129,6 +129,12 @@ const AdminManageServiceCategoriesPage = () => {
                 value: (node) => node.title,
                 filter: "Text",
               },
+              isActive: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
               order: {
                 name: "رتبه",
                 value: (node) => node.order,
@@ -142,22 +148,12 @@ const AdminManageServiceCategoriesPage = () => {
                   />
                 ),
               },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
-              slug: {
-                name: "اسلاگ",
-                value: (node) => node.slug,
-                filter: "Text",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateServiceCategory",
@@ -171,6 +167,8 @@ const AdminManageServiceCategoriesPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteServiceCategory",

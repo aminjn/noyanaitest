@@ -9,7 +9,7 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
@@ -47,7 +47,7 @@ const AdminManageParaClinicTagsPage = () => {
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: "ترتیب",
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -63,10 +63,15 @@ const AdminManageParaClinicTagsPage = () => {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/paraClinicTag/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/paraClinicTag/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

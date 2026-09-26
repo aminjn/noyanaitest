@@ -162,42 +162,8 @@ const AdminManageAdvertisementsPage = () => {
                 value: (node) => node.title,
                 filter: "Text",
               },
-              description: {
-                name: "توضیحات",
-                value: (node) => node.description,
-                filter: "Text",
-              },
-              legend: {
-                name: "لجند",
-                value: (node) => node.legend,
-                filter: "Text",
-              },
-              target: {
-                name: "لینک اطلاعات بیشتر",
-                value: (node) => node.target,
-                filter: "Text",
-              },
-              order: {
-                name: "رتبه",
-                value: (node) => node.order,
-                filter: "Number",
-                component: (node) => (
-                  <OrderEditor
-                    modelName="advertisement"
-                    mutate={mutate}
-                    value={node.order}
-                    _id={node._id}
-                  />
-                ),
-              },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
               positions: {
-                name: "جایگاه ها",
+                name: "جایگاه‌ها",
                 value: (node) =>
                   (node.positions || [])
                     .map((position) => advertisementPositionLabels[position])
@@ -212,11 +178,31 @@ const AdminManageAdvertisementsPage = () => {
                     : "عمومی",
                 filter: "Text",
               },
+              isActive: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
+              order: {
+                name: "رتبه",
+                value: (node) => node.order,
+                filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    modelName="advertisement"
+                    mutate={mutate}
+                    value={node.order}
+                    _id={node._id}
+                  />
+                ),
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateAdvertisement",
@@ -230,6 +216,8 @@ const AdminManageAdvertisementsPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteAdvertisement",

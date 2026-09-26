@@ -51,11 +51,6 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
             name="AdminManageClinicDepartments"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
-              description: {
-                name: "توضیحات",
-                value: (node) => node.description,
-                filter: "Text",
-              },
               active: {
                 name: "فعال",
                 value: (node) => booleanToValue[`${node.active}`],
@@ -63,7 +58,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                 component: (node) => <BooleanToIcon value={node.active} />,
               },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -87,6 +82,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                   <TableActions>
                     {node.image ? (
                       <IconButton
+                        title="نمایش تصویر"
                         onClick={() =>
                           setPopup(
                             "FullscreenImagePreview",
@@ -97,7 +93,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                         <ImageIcon />
                       </IconButton>
                     ) : (
-                      ""
+                      "—"
                     )}
                   </TableActions>
                 ),
@@ -109,6 +105,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                   <TableActions>
                     <IconButton
                       variant="Info"
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateClinicDepartment",
@@ -124,6 +121,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteClinicDepartment",

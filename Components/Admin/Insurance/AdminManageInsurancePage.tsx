@@ -24,7 +24,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import useForm from "@/Components/Hooks/useForm";
@@ -122,8 +122,14 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
             name="AdminManageInsurancePlans"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              price: {
+                name: "قیمت",
+                value: (node) => node.price,
+                component: (node) => currencize(node.price),
+                filter: "Number",
+              },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
@@ -135,17 +141,11 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
                 component: (node) => (
                   <OrderEditor
                     value={node.order}
-                    modelName="insuracePlan"
+                    modelName="insurancePlan"
                     _id={node._id}
                     mutate={mutate}
                   />
                 ),
-              },
-              price: {
-                name: "قیمت",
-                value: (node) => node.price,
-                component: (node) => currencize(node.price),
-                filter: "Number",
               },
               isPopular: {
                 name: "محبوب",
@@ -158,6 +158,7 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "Mutate",
@@ -168,9 +169,11 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
                         )
                       }
                     >
-                      <EyeIcon />
+                      <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "Delete",

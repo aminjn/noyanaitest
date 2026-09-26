@@ -7,7 +7,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
@@ -41,6 +41,18 @@ const AdminManageBlogTagsPage = () => {
       modelName="blogTag"
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        isActive: {
+          name: "فعال",
+          value: (node) => booleanToValue[`${node.isActive}`],
+          component: (node) => <BooleanToIcon value={node.isActive} />,
+          filter: "Set",
+        },
+        hot: {
+          name: "داغ",
+          value: (node) => booleanToValue[`${node.hot}`],
+          component: (node) => <BooleanToIcon value={node.hot} />,
+          filter: "Set",
+        },
         order: {
           name: "رتبه",
           value: (node) => node.order,
@@ -54,26 +66,16 @@ const AdminManageBlogTagsPage = () => {
             />
           ),
         },
-        isActive: {
-          name: "فعال",
-          value: (node) => booleanToValue[`${node.isActive}`],
-          component: (node) => <BooleanToIcon value={node.isActive} />,
-          filter: "Set",
-        },
-        hot: {
-          name: "داغ",
-          value: (node) => booleanToValue[`${node.hot}`],
-          component: (node) => <BooleanToIcon value={node.hot} />,
-          filter: "Set",
-        },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/blogTag/${node._id}`)}>
-                <EyeIcon />
+              <IconLink href={adminPath(`/blogTag/${node._id}`)} title="ویرایش">
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

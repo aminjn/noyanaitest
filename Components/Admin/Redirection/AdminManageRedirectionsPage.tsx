@@ -53,14 +53,14 @@ const AdminManageRedirectionsPage = () => {
             data={data}
             name="AdminManageRedirections"
             renderer={{
-              old: { name: "قدیم", value: (node) => node.old, filter: "Text" },
+              old: { name: "آدرس قدیم", value: (node) => node.old, filter: "Text" },
               current: {
-                name: "جدید",
+                name: "آدرس جدید",
                 value: (node) => node.current,
                 filter: "Text",
               },
               statusCode: {
-                name: "کد",
+                name: "کد وضعیت",
                 value: (node) => node.statusCode,
                 filter: "Set",
               },
@@ -69,6 +69,7 @@ const AdminManageRedirectionsPage = () => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateRedirection",
@@ -79,6 +80,7 @@ const AdminManageRedirectionsPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      title="حذف"
                       variant="Danger"
                       onClick={() =>
                         setPopup(

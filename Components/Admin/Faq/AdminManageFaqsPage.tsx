@@ -144,12 +144,37 @@ const AdminManageFaqsPage = () => {
             data={data}
             name="AdminManageFaqs"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              question: {
+                name: "سوال",
+                value: (node) => node.question || node.name,
+                filter: "Text",
+              },
+              category: {
+                name: "دسته‌بندی",
+                filter: "Multi",
+                value: (node) => node.category?.name,
+                component: (node) =>
+                  node.category ? (
+                    <InlineLink
+                      href={adminPath(`/faqCategory/${node.category._id}`)}
+                    >
+                      {node.category.name || "—"}
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  ),
+              },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.isActive} />,
+              },
+              isHome: {
+                name: "نمایش در خانه",
+                filter: "Set",
+                value: (node) => booleanToValue[`${node.isHome}`],
+                component: (node) => <BooleanToIcon value={node.isHome} />,
               },
               order: {
                 name: "رتبه",
@@ -164,42 +189,13 @@ const AdminManageFaqsPage = () => {
                   />
                 ),
               },
-              isHome: {
-                name: "نمایش در هوم",
-                filter: "Set",
-                value: (node) => booleanToValue[`${node.isHome}`],
-                component: (node) => <BooleanToIcon value={node.isHome} />,
-              },
-              question: {
-                name: "سوال",
-                value: (node) => node.question,
-                filter: "Text",
-              },
-              answer: {
-                name: "جواب",
-                value: (node) => node.answer,
-                filter: "Text",
-              },
-              category: {
-                name: "دسته یندی",
-                filter: "Multi",
-                value: (node) => node.category?.name,
-                component: (node) =>
-                  node.category ? (
-                    <InlineLink
-                      href={adminPath(`/faqCategory/${node.category._id}`)}
-                    >
-                      {node.category.name}
-                    </InlineLink>
-                  ) : (
-                    ""
-                  ),
-              },
+              name: { name: "نام", value: (node) => node.name, filter: "Text" },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateFaq",
@@ -210,6 +206,8 @@ const AdminManageFaqsPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteFaq",

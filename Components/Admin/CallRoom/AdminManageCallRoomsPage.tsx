@@ -1,13 +1,15 @@
 "use client";
 
 import { API } from "@/Components/config";
-import { ICallRoom } from "@/Components/Dashboard/Call/DashboardManageCallsPage";
+import {
+  callTypeDict,
+  ICallRoom,
+} from "@/Components/Dashboard/Call/DashboardManageCallsPage";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
 import WithTitle from "../UI/WithTitle";
-import FormatDate from "@/Components/UI/FormatDate";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
@@ -42,41 +44,57 @@ const AdminManageCallRoomsPage = () => {
             name="AdminManageCallRooms"
             data={data}
             renderer={{
-              startedAt: {
-                name: "زمان ایجاد",
-                value: (node) => new Date(node.startedAt),
-                filter: "Date",
-                component: (node) => <FormatDate value={node.startedAt} />,
-              },
               partyA: {
-                name: "A Party",
-                value: (node) => node.participants[0]?.phone,
+                name: "طرف اول",
+                value: (node) => node.participants?.[0]?.phone,
                 filter: "Text",
-                component: (node) => (
-                  <InlineLink
-                    href={adminPath(`/user/${node.participants[0]?._id}`)}
-                  >
-                    {node.participants[0]?.phone || node.participants[0]?._id}
-                  </InlineLink>
-                ),
+                component: (node) => {
+                  const party = node.participants?.[0];
+                  if (!party) return "—";
+                  return (
+                    <InlineLink href={adminPath(`/user/${party._id}`)}>
+                      {party.phone || party._id}
+                    </InlineLink>
+                  );
+                },
               },
               partyB: {
-                name: "B Party",
+                name: "طرف دوم",
+                value: (node) => node.participants?.[1]?.phone,
                 filter: "Text",
-                value: (node) => node.participants[0]?.phone,
-                component: (node) => (
-                  <InlineLink
-                    href={adminPath(`/user/${node.participants[1]?._id}`)}
-                  >
-                    {node.participants[1]?.phone || node.participants[1]?._id}
-                  </InlineLink>
-                ),
+                component: (node) => {
+                  const party = node.participants?.[1];
+                  if (!party) return "—";
+                  return (
+                    <InlineLink href={adminPath(`/user/${party._id}`)}>
+                      {party.phone || party._id}
+                    </InlineLink>
+                  );
+                },
+              },
+              callType: {
+                name: "نوع تماس",
+                value: (node) => callTypeDict[node.callType],
+                filter: "Set",
+              },
+              startedAt: {
+                name: "شروع تماس",
+                value: (node) =>
+                  node.startedAt ? new Date(node.startedAt) : undefined,
+                filter: "Date",
+              },
+              endedAt: {
+                name: "پایان تماس",
+                value: (node) =>
+                  node.endedAt ? new Date(node.endedAt) : undefined,
+                filter: "Date",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="حذف"
                       variant="Danger"
                       onClick={() =>
                         setPopup(

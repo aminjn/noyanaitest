@@ -7,7 +7,6 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
-import FormatDate from "@/Components/UI/FormatDate";
 import IconButton from "../UI/IconButton";
 import TableActions from "../UI/TableActions";
 import ImageIcon from "@/Components/UI/RTFEditor/ImageIcon";
@@ -82,11 +81,10 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
             data={data}
             name="AdminManageDoctorGallery"
             renderer={{
-              createdAt: {
-                name: "زمان ایجاد",
-                value: (node) => new Date(node.createdAt),
-                component: (node) => <FormatDate value={node.createdAt} />,
-                filter: "Date",
+              alt: {
+                name: "عنوان تصویر",
+                value: (node) => node.alt,
+                filter: "Text",
               },
               image: {
                 name: "تصویر",
@@ -95,6 +93,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                   node.image ? (
                     <TableActions>
                       <IconButton
+                        title="نمایش تصویر"
                         onClick={() =>
                           setPopup(
                             "FullscreenImagePreview",
@@ -106,15 +105,9 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                       </IconButton>
                     </TableActions>
                   ) : (
-                    ""
+                    "—"
                   ),
                 filter: "Set",
-              },
-              alt: { name: "آلت", value: (node) => node.alt, filter: "Text" },
-              description: {
-                name: "توضیحات",
-                value: (node) => node.description,
-                filter: "Text",
               },
               active: {
                 name: "فعال",
@@ -123,7 +116,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -135,12 +128,18 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                   />
                 ),
               },
+              createdAt: {
+                name: "تاریخ ایجاد",
+                value: (node) => new Date(node.createdAt),
+                filter: "Date",
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     {hasAccess("GalleryItem", "update") && (
                       <IconButton
+                        title="ویرایش"
                         onClick={() =>
                           setPopup(
                             "MutateGalleryItem",
@@ -157,6 +156,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                     {hasAccess("GalleryItem", "delete") && (
                       <IconButton
                         variant="Danger"
+                        title="حذف"
                         onClick={() =>
                           setPopup(
                             "DeleteGalleryItem",

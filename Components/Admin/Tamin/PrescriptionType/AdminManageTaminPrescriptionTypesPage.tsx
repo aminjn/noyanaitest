@@ -40,20 +40,20 @@ const AdminManageTaminPrescriptionTypesPage = () => {
               data={data}
               name="AdminManageTaminPrescriptionTypes"
               renderer={{
-                prescTypeId: {
-                  name: "prescTypeId",
-                  value: (node) => node.prescTypeId,
+                prescTypeDesc: {
+                  name: "عنوان",
+                  value: (node) => node.prescTypeDesc,
                   filter: "Text",
                 },
                 prescTypeCode: {
-                  name: "prescTypeCode",
+                  name: "کد",
                   value: (node) => node.prescTypeCode,
                   filter: "Text",
                 },
-                prescTypeDesc: {
-                  name: "prescTypeDesc",
-                  value: (node) => node.prescTypeDesc,
-                  filter: "Text",
+                prescTypeId: {
+                  name: "شناسه تامین",
+                  value: (node) => node.prescTypeId,
+                  filter: "Number",
                 },
               }}
             />

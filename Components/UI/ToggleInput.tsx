@@ -25,20 +25,29 @@ const ToggleInput = ({
     setInnerValue(!!value);
   }, [value]);
 
+  const toggle = () => {
+    if (readOnly) return;
+    setInnerValue((prev) => !prev);
+    onChange?.();
+  };
+
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       <button
         type="button"
-        onClick={() => {
-          if (readOnly) return;
-          setInnerValue((prev) => !prev);
-          onChange?.();
-        }}
+        role="switch"
+        aria-checked={innerValue}
+        aria-label={title}
+        onClick={toggle}
         className={`${classes.track} ${innerValue ? classes.active : ""}`}
       >
         <span className={classes.thumb} />
       </button>
-      {!!title && <span className={classes.label}>{title}</span>}
+      {!!title && (
+        <span className={classes.label} onClick={toggle}>
+          {title}
+        </span>
+      )}
     </div>
   );
 };

@@ -21,7 +21,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import OrderEditor from "../UI/OrderEditor";
 
 export type ProductCategoryPopulation = Population<Record<never, never>>;
@@ -119,7 +119,7 @@ const AdminManageProductCategoriesPage = () => {
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.isActive} />,
@@ -141,10 +141,15 @@ const AdminManageProductCategoriesPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/productCategory/${node._id}`)}>
-                      <EyeIcon />
+                    <IconLink
+                      href={adminPath(`/productCategory/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteProductCategory",

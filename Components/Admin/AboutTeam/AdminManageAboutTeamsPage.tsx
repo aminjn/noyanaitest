@@ -9,7 +9,7 @@ import TableActions from "../UI/TableActions";
 import usePopup from "@/Components/Hooks/usePopup";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
@@ -50,13 +50,8 @@ const AdminManageAboutTeamsPage = () => {
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
         title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
-        description: {
-          name: "توضیحات",
-          value: (node) => node.description,
-          filter: "Text",
-        },
         isActive: {
-          name: "فعال",
+          name: "وضعیت",
           value: (node) => booleanToValue[`${node.isActive}`],
           filter: "Set",
           component: (node) => <BooleanToIcon value={node.isActive} />,
@@ -83,10 +78,15 @@ const AdminManageAboutTeamsPage = () => {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/aboutTeam/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/aboutTeam/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

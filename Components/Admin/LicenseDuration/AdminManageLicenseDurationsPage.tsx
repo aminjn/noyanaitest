@@ -19,7 +19,7 @@ import IconButton from "../UI/IconButton";
 import IconLink from "../UI/IconLink";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import OrderEditor from "../UI/OrderEditor";
 
 export type LicenseDurationPopulation = Population<Record<never, never>>;
@@ -144,10 +144,15 @@ const AdminManageLicenseDurationsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/licenseDuration/${node._id}`)}>
-                      <EyeIcon />
+                    <IconLink
+                      href={adminPath(`/licenseDuration/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteLicenseDuration",

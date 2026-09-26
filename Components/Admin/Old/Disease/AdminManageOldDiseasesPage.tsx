@@ -22,45 +22,16 @@ const AdminManageOldDiseasesPage = () => {
           data={data}
           name="AdminManageOldDiseases"
           renderer={{
-            _id: { name: "آی دی", value: (node) => node._id, filter: "Text" },
             name: { name: "نام", value: (node) => node.name, filter: "Text" },
-            description: {
-              name: "توضیحات",
-              value: (node) => node.description,
-              filter: "Text",
-            },
-            summary: {
-              name: "خلاصه",
-              value: (node) => node.summary,
-              filter: "Text",
-            },
-            //symptoms
-            // specialities
-            // drugs
             genderSpecific: {
-              name: "Gender Specific",
+              name: "مختص جنسیت",
               value: (node) => node.genderSpecific,
               filter: "Set",
             },
-            expectedPrognosis: {
-              name: "Expected Prognosis",
-              value: (node) => node.expectedPrognosis,
-              filter: "Text",
-            },
             naturalProgression: {
-              name: "Natural Progression",
+              name: "روند طبیعی",
               value: (node) => node.naturalProgression,
               filter: "Set",
-            },
-            pathophysiology: {
-              name: "Pathophysiology",
-              value: (node) => node.pathophysiology,
-              filter: "Text",
-            },
-            possibleComlplication: {
-              name: "Possible Complications",
-              value: (node) => node.possibleComlplication,
-              filter: "Text",
             },
             order: {
               name: "رتبه",
@@ -75,6 +46,7 @@ const AdminManageOldDiseasesPage = () => {
                 />
               ),
             },
+            _id: { name: "شناسه", value: (node) => node._id, filter: "Text" },
           }}
         />
       )}

@@ -43,55 +43,35 @@ const AdminManageTaminSpecsPage = () => {
               data={data}
               name="AdminManageTaminSpecs"
               renderer={{
-                specCode: {
-                  name: "specCode",
-                  value: (node) => node.specCode,
-                  filter: "Text",
-                },
                 specDesc: {
-                  name: "specDesc",
+                  name: "عنوان",
                   value: (node) => node.specDesc,
                   filter: "Text",
                 },
-                specGRP: {
-                  name: "specGRP",
-                  value: (node) => node.specGRP,
+                specCode: {
+                  name: "کد",
+                  value: (node) => node.specCode,
                   filter: "Text",
                 },
-                docComment: {
-                  name: "docComment",
-                  value: (node) => node.docComment,
-                  filter: "Text",
+                specGRP: {
+                  name: "گروه",
+                  value: (node) => node.specGRP,
+                  filter: "Set",
                 },
                 status: {
-                  name: "status",
+                  name: "وضعیت",
                   value: (node) => node.status,
-                  filter: "Text",
+                  filter: "Set",
                 },
                 statusstDate: {
-                  name: "statusstDate",
+                  name: "تاریخ وضعیت",
                   value: (node) => node.statusstDate,
                   filter: "Text",
                 },
-                typeSpec: {
-                  name: "typeSpec",
-                  value: (node) => node.typeSpec,
-                  filter: "Text",
-                },
-                maxNormal: {
-                  name: "maxNormal",
-                  value: (node) => node.maxNormal,
-                  filter: "Text",
-                },
-                maxSpecial: {
-                  name: "maxSpecial",
-                  value: (node) => node.maxSpecial,
-                  filter: "Text",
-                },
                 lstatus: {
-                  name: "lstatus",
+                  name: "وضعیت (l)",
                   value: (node) => node.lstatus,
-                  filter: "Text",
+                  filter: "Set",
                 },
               }}
             />

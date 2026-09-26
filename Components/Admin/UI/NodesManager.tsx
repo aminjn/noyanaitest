@@ -41,6 +41,7 @@ const NodesManager = <T,>({
                         "CreateShit",
                         <CreateShitPopup
                           modelName={modelName}
+                          title={title}
                           renderer={create}
                           mutate={mutate}
                         />,

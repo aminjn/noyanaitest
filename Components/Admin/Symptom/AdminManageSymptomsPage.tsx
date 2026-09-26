@@ -1,7 +1,10 @@
 "use client";
 
 import useSWR from "swr";
-import { ISymptom } from "../Disease/AdminManageDiseasesPage";
+import {
+  genderSpecificOptionsDict,
+  ISymptom,
+} from "../Disease/AdminManageDiseasesPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
@@ -53,7 +56,7 @@ const AdminManageSymptomsPage = () => {
                   filter: "Text",
                 },
                 order: {
-                  name: "رتبه",
+                  name: "ترتیب",
                   value: (node) => node.order,
                   filter: "Number",
                   component: (node) => (
@@ -65,26 +68,33 @@ const AdminManageSymptomsPage = () => {
                     />
                   ),
                 },
-                slug: {
-                  name: "اسلاگ",
-                  value: (node) => node.slug,
-                  filter: "Text",
+                genderSpecific: {
+                  name: "جنسیت",
+                  value: (node) =>
+                    node.genderSpecific
+                      ? genderSpecificOptionsDict[node.genderSpecific]
+                      : undefined,
+                  filter: "Set",
                 },
                 actions: {
                   name: "عملیات",
                   component: (node) => (
                     <TableActions>
-                      <IconLink href={adminPath(`/symptom/${node._id}`)}>
+                      <IconLink
+                        href={adminPath(`/symptom/${node._id}`)}
+                        title="ویرایش"
+                      >
                         <EditIcon />
                       </IconLink>
                       <IconButton
+                        variant="Danger"
+                        title="حذف"
                         onClick={() =>
                           setPopup(
                             "DeleteSymptom",
                             <DeleteSymptomPopup node={node} mutate={mutate} />,
                           )
                         }
-                        variant="Danger"
                       >
                         <GarbageIcon />
                       </IconButton>

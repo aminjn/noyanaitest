@@ -7,7 +7,6 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
 import Table from "../UI/Table";
-import FormatDate, { dateToString } from "@/Components/UI/FormatDate";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -124,19 +123,19 @@ const AdminManageOllamaInstructions = () => {
             data={data}
             name="AdminManageBotInstructions"
             renderer={{
-              createdAt: {
-                name: "زمان ایجاد",
-                value: (node) => new Date(node.createdAt),
-                component: (node) => <FormatDate value={node.createdAt} />,
-                filter: "Date",
-              },
               content: {
                 name: "دستور",
                 value: (node) => node.content,
                 filter: "Text",
               },
+              isActive: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -148,17 +147,17 @@ const AdminManageOllamaInstructions = () => {
                   />
                 ),
               },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
+              createdAt: {
+                name: "تاریخ ایجاد",
+                value: (node) => new Date(node.createdAt),
+                filter: "Date",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateBotInstruction",
@@ -172,6 +171,8 @@ const AdminManageOllamaInstructions = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteBotInstruction",

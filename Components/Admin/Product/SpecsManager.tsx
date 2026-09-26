@@ -142,8 +142,14 @@ const SpecsManager = ({
                 value: (node) => node.content,
                 filter: "Text",
               },
+              isActive: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -155,30 +161,13 @@ const SpecsManager = ({
                   />
                 ),
               },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      onClick={() =>
-                        setPopup(
-                          "DeleteProductSpec",
-                          <DeleteProductSpecPopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      <GarbageIcon />
-                    </IconButton>
-                    <IconButton
+                      variant="Info"
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateProductSpec",
@@ -191,6 +180,21 @@ const SpecsManager = ({
                       }
                     >
                       <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      variant="Danger"
+                      title="حذف"
+                      onClick={() =>
+                        setPopup(
+                          "DeleteProductSpec",
+                          <DeleteProductSpecPopup
+                            node={node}
+                            mutate={mutate}
+                          />,
+                        )
+                      }
+                    >
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

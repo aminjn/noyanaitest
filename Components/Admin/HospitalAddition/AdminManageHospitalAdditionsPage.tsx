@@ -11,7 +11,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
-import FormatDate from "@/Components/UI/FormatDate";
 import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -44,11 +43,29 @@ const AdminManageHospitalAdditionsPage = () => {
             name="AdminManageHospitalAdditionRequests"
             data={data}
             renderer={{
-              submittedAt: {
-                name: "زمان ثبت",
-                value: (node) => new Date(node.submittedAt),
-                component: (node) => <FormatDate value={node.submittedAt} />,
-                filter: "Date",
+              hospitalName: {
+                name: "نام بیمارستان",
+                value: (node) => node.hospitalName,
+                filter: "Text",
+              },
+              status: {
+                name: "وضعیت",
+                value: (node) => additionRequestStatusDict[node.status],
+                filter: "Set",
+              },
+              city: {
+                name: "استان / شهر",
+                value: (node) =>
+                  [findProvince(node.province), findCity(node.city)]
+                    .filter(Boolean)
+                    .join("، "),
+                filter: "Multi",
+              },
+              owner: {
+                name: "مالک",
+                value: (node) =>
+                  [node.ownerName, node.ownerPhone].filter(Boolean).join(" - "),
+                filter: "Text",
               },
               submittedBy: {
                 name: "ثبت کننده",
@@ -64,55 +81,23 @@ const AdminManageHospitalAdditionsPage = () => {
                       {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
-                    ""
+                    "حذف شده"
                   ),
-              },
-              hospitalName: {
-                name: "نام بیمارستان",
-                value: (node) => node.hospitalName,
                 filter: "Text",
               },
-              hospitalAddress: {
-                name: "آدرس بیمارستان",
-                value: (node) => node.hospitalAddress,
-                filter: "Text",
-              },
-              ownerName: {
-                name: "صاحب بیمارستان",
-                value: (node) => node.ownerName,
-                filter: "Text",
-              },
-              ownerPhone: {
-                name: "شماره صاحب بیمارستان",
-                value: (node) => node.ownerPhone,
-                filter: "Text",
-              },
-              province: {
-                name: "استان",
-                value: (node) => findProvince(node.province),
-                filter: "Multi",
-              },
-              city: {
-                name: "شهر",
-                value: (node) => findCity(node.city),
-                filter: "Multi",
-              },
-              description: {
-                name: "توضیحات",
-                value: (node) => node.description,
-                filter: "Text",
-              },
-              status: {
-                name: "وضعیت",
-                value: (node) => additionRequestStatusDict[node.status],
-                filter: "Set",
+              submittedAt: {
+                name: "تاریخ ثبت",
+                value: (node) => new Date(node.submittedAt),
+                filter: "Date",
               },
               actions: {
                 name: "عملیات",
+                width: 150,
                 component: (node) => (
                   <TableActions>
                     <IconButton
                       variant="Success"
+                      title="ایجاد بیمارستان از این درخواست"
                       onClick={() =>
                         setPopup(
                           "CreateHospitalFromRequest",
@@ -124,6 +109,7 @@ const AdminManageHospitalAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Info"
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateHospitalRequest",
@@ -138,6 +124,7 @@ const AdminManageHospitalAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalAdditionRequest",

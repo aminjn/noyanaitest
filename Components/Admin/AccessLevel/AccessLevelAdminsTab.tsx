@@ -57,12 +57,20 @@ const AccessLevelAdminsTab = ({
         renderer={{
           phone: {
             name: "موبایل",
-            value: (node) => node.user.phone,
-            component: (node) => (
-              <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                {node.user.phone || node.user._id}
-              </InlineLink>
-            ),
+            value: (node) => node.user?.phone,
+            component: (node) =>
+              node.user ? (
+                <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                  {node.user.phone || node.user._id}
+                </InlineLink>
+              ) : (
+                "—"
+              ),
+            filter: "Text",
+          },
+          username: {
+            name: "نام کاربری",
+            value: (node) => node.user?.username,
             filter: "Text",
           },
           actions: {
@@ -71,6 +79,7 @@ const AccessLevelAdminsTab = ({
               <TableActions>
                 <IconButton
                   variant="Danger"
+                  title="حذف دسترسی"
                   onClick={() =>
                     setPopup(
                       "RemoveAccessLevelUser",

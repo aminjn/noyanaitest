@@ -8,7 +8,6 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
-import FormatDate from "@/Components/UI/FormatDate";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
@@ -31,26 +30,23 @@ const AdminManageBecomeParaClinicsPage = () => {
             name="AdminManageBecomeParaClinicRequests"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
-              user: {
-                name: "کاربر",
-                value: (node) => node.user.phone,
-                filter: "Text",
-                component: (node) => (
-                  <InlineLink href={`${API}/user/${node.user._id}`}>
-                    {node.user.phone}
-                  </InlineLink>
-                ),
-              },
-              createdAt: {
-                name: "زمان ایجاد",
-                value: (node) => new Date(node.createdAt),
-                filter: "Date",
-                component: (node) => <FormatDate time value={node.createdAt} />,
-              },
               status: {
                 name: "وضعیت",
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
+              },
+              user: {
+                name: "کاربر",
+                value: (node) => node.user?.phone,
+                filter: "Text",
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {node.user.phone}
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  ),
               },
               siamCode: {
                 name: "کد سیام",
@@ -62,19 +58,19 @@ const AdminManageBecomeParaClinicsPage = () => {
                 value: (node) => node.nationalId,
                 filter: "Text",
               },
-              certificateDate: {
-                name: "تاریخ گواهی",
-                value: (node) => new Date(node.certificateDate),
-                component: (node) => (
-                  <FormatDate value={node.certificateDate} />
-                ),
+              createdAt: {
+                name: "تاریخ ثبت",
+                value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/becomeParaClinic/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/becomeParaClinic/${node._id}`)}
+                      title="مشاهده"
+                    >
                       <EyeIcon />
                     </IconLink>
                   </TableActions>

@@ -18,7 +18,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import IconButton from "../UI/IconButton";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
@@ -120,7 +120,7 @@ const AdminManageDrugtagsPage = () => {
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
@@ -139,13 +139,18 @@ const AdminManageDrugtagsPage = () => {
                 ),
               },
               actions: {
-                name: "غملیات",
+                name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/drugTag/${node._id}`)}>
-                      <EyeIcon />
+                    <IconLink
+                      href={adminPath(`/drugTag/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDrugTag",

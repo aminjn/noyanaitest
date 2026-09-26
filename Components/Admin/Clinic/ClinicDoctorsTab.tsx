@@ -76,6 +76,7 @@ const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateClinicDoctor",
@@ -91,6 +92,7 @@ const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteClinicDoctor",

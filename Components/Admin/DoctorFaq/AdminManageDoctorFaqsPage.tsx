@@ -58,13 +58,30 @@ const AdminManageDoctorFaqsPage = () => {
                 value: (node) => node.question,
                 filter: "Text",
               },
-              answer: {
-                name: "جواب",
-                value: (node) => node.answer,
-                filter: "Text",
+              doctor: {
+                name: "پزشک",
+                value: (node) =>
+                  node.doctor ? getDoctorProfileLabel(node.doctor) : "ندارد",
+                component: (node) =>
+                  node.doctor ? (
+                    <InlineLink
+                      href={adminPath(`/doctorprofile/${node.doctor._id}`)}
+                    >
+                      {getDoctorProfileLabel(node.doctor)}
+                    </InlineLink>
+                  ) : (
+                    "ندارد"
+                  ),
+                filter: "Multi",
+              },
+              active: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.active}`],
+                filter: "Set",
+                component: (node) => <BooleanToIcon value={node.active} />,
               },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -76,35 +93,19 @@ const AdminManageDoctorFaqsPage = () => {
                   />
                 ),
               },
-              active: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.active}`],
-                filter: "Set",
-                component: (node) => <BooleanToIcon value={node.active} />,
-              },
-              doctor: {
-                name: "دکتر",
-                value: (node) =>
-                  node.doctor ? getDoctorProfileLabel(node.doctor) : "ندارد",
-                component: (node) =>
-                  node.doctor ? (
-                    <InlineLink href={adminPath(`/doctorprofile/${node._id}`)}>
-                      {getDoctorProfileLabel(node.doctor)}
-                    </InlineLink>
-                  ) : (
-                    "ندارد"
-                  ),
-                filter: "Multi",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/doctorfaq/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/doctorfaq/${node._id}`)}
+                      title="ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDoctorFaq",

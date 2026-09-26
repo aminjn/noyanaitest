@@ -10,7 +10,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
@@ -111,7 +111,7 @@ const AdminManageBaseParaClinicLicensesPage = () => {
           filter: "Text",
         },
         order: {
-          name: "رتبه",
+          name: "ترتیب",
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -123,8 +123,20 @@ const AdminManageBaseParaClinicLicensesPage = () => {
             />
           ),
         },
+        isActive: {
+          name: "فعال",
+          value: (node) => booleanToValue[`${node.isActive}`],
+          component: (node) => <BooleanToIcon value={node.isActive} />,
+          filter: "Set",
+        },
+        isPrimary: {
+          name: "پلن اصلی",
+          value: (node) => booleanToValue[`${node.isPrimary}`],
+          component: (node) => <BooleanToIcon value={node.isPrimary} />,
+          filter: "Set",
+        },
         isDefault: {
-          name: "پیش فرض",
+          name: "پیش‌فرض",
           value: (node) => booleanToValue[`${node.isDefault}`],
           component: (node) => <BooleanToIcon value={node.isDefault} />,
           filter: "Set",
@@ -133,10 +145,15 @@ const AdminManageBaseParaClinicLicensesPage = () => {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/baseParaClinicLicense/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/baseParaClinicLicense/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

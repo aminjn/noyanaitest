@@ -9,7 +9,6 @@ import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import FormatDate from "@/Components/UI/FormatDate";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
@@ -29,9 +28,10 @@ const AdminManageBecomeHospitalsPage = () => {
             data={data}
             name="AdminManageBecomeHospitals"
             renderer={{
+              name: { name: "نام", value: (node) => node.name, filter: "Text" },
               user: {
-                name: " یوزر",
-                value: (node) => (node.user ? node.user.phone : "حذف شده"),
+                name: "کاربر",
+                value: (node) => node.user?.phone || "حذف شده",
                 component: (node) =>
                   node.user ? (
                     <InlineLink href={adminPath(`/user/${node.user._id}`)}>
@@ -42,18 +42,11 @@ const AdminManageBecomeHospitalsPage = () => {
                   ),
                 filter: "Text",
               },
-              createdAt: {
-                name: "تاریخ ایجاد",
-                value: (node) => new Date(node.createdAt),
-                component: (node) => <FormatDate value={node.createdAt} />,
-                filter: "Date",
-              },
               status: {
                 name: "وضعیت",
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
               },
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
               siamCode: {
                 name: "کد سیام",
                 value: (node) => node.siamCode,
@@ -64,19 +57,19 @@ const AdminManageBecomeHospitalsPage = () => {
                 value: (node) => node.nationalId,
                 filter: "Text",
               },
-              certificateDate: {
-                name: "تاریخ گواهی",
-                value: (node) => new Date(node.certificateDate),
-                component: (node) => (
-                  <FormatDate value={node.certificateDate} />
-                ),
+              createdAt: {
+                name: "تاریخ ایجاد",
+                value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/becomehospital/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/becomehospital/${node._id}`)}
+                      title="بررسی و ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                   </TableActions>

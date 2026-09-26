@@ -1,7 +1,6 @@
 "use client";
 
 import useSWR from "swr";
-import classes from "./AdminManageBlogsPage.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
@@ -17,7 +16,6 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
-import FormatDate from "@/Components/UI/FormatDate";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DeleteBlogPopup from "./DeleteBlogPopup";
@@ -123,94 +121,19 @@ const AdminManageBlogsPage = () => {
                 value: (node) => node.title,
                 component: (node) => (
                   <InlineLink href={adminPath(`/blog/${node._id}`)}>
-                    {node.title}
+                    {node.title || "—"}
                   </InlineLink>
                 ),
                 filter: "Text",
               },
-              summary: {
-                name: "حلاصه",
-                value: (node) => node.summary,
-                filter: "Text",
-              },
-              publishedAt: {
-                name: "تاریخ انتشار",
-                value: (node) => node.publishedAt,
-                component: (node) => <FormatDate value={node.publishedAt} />,
-              },
-              order: {
-                name: "رتبه",
-                filter: "Number",
-                value: (node) => node.order,
-                component: (node) => (
-                  <OrderEditor
-                    _id={node._id}
-                    modelName="blog"
-                    mutate={mutate}
-                    value={node.order}
-                  />
-                ),
-              },
-              slug: {
-                name: "اسلاگ",
-                value: (node) => node.slug,
-                filter: "Text",
-              },
-              author: {
-                name: "نویسنده",
-                value: (node) => node.author,
-                filter: "Multi",
-              },
-              authorType: {
-                name: "منبع",
-                value: (node) =>
-                  node.authorType
-                    ? authorTypeLabels[node.authorType] || node.authorType
-                    : "ادمین",
-                filter: "Set",
-              },
-              readTime: {
-                name: "مدت زمان مطالعه",
-                value: (node) => node.readTime,
-                filter: "Multi",
-              },
-              related: {
-                name: "مقالات مرتبط",
-                component: (node) => (
-                  <div className={classes.relateds}>
-                    {node.related.map((el) => (
-                      <InlineLink
-                        key={el._id}
-                        href={adminPath(`/blog/${el._id}`)}
-                      >
-                        {el.title || el._id}
-                      </InlineLink>
-                    ))}
-                  </div>
-                ),
-              },
-              thisWeekSpecial: {
-                name: "مطالب ویژه این هفته",
-                filter: "Set",
-                value: (node) => booleanToValue[`${node.thisWeekSpecial}`],
-                component: (node) => (
-                  <BooleanToIcon value={node.thisWeekSpecial} />
-                ),
-              },
-              home: {
-                name: "نمایش در خانه",
-                filter: "Set",
-                value: (node) => booleanToValue[`${node.home}`],
-                component: (node) => <BooleanToIcon value={node.home} />,
-              },
               published: {
-                name: "منتشر شده",
+                name: "انتشار",
                 value: (node) => booleanToValue[`${node.published}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.published} />,
               },
               category: {
-                name: "دسته بندی",
+                name: "دسته‌بندی",
                 value: (node) =>
                   node.category?.title || node.category?._id || "ندارد",
                 filter: "Multi",
@@ -225,18 +148,68 @@ const AdminManageBlogsPage = () => {
                     "ندارد"
                   ),
               },
+              author: {
+                name: "نویسنده",
+                value: (node) => node.author,
+                filter: "Multi",
+              },
+              authorType: {
+                name: "منبع",
+                value: (node) =>
+                  node.authorType
+                    ? authorTypeLabels[node.authorType] || node.authorType
+                    : "ادمین",
+                filter: "Set",
+              },
+              publishedAt: {
+                name: "تاریخ انتشار",
+                value: (node) =>
+                  node.publishedAt ? new Date(node.publishedAt) : undefined,
+                filter: "Date",
+              },
+              order: {
+                name: "رتبه",
+                filter: "Number",
+                value: (node) => node.order,
+                component: (node) => (
+                  <OrderEditor
+                    _id={node._id}
+                    modelName="blog"
+                    mutate={mutate}
+                    value={node.order}
+                  />
+                ),
+              },
+              home: {
+                name: "نمایش در خانه",
+                filter: "Set",
+                value: (node) => booleanToValue[`${node.home}`],
+                component: (node) => <BooleanToIcon value={node.home} />,
+              },
+              thisWeekSpecial: {
+                name: "ویژه هفته",
+                filter: "Set",
+                value: (node) => booleanToValue[`${node.thisWeekSpecial}`],
+                component: (node) => (
+                  <BooleanToIcon value={node.thisWeekSpecial} />
+                ),
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     {hasAccess("Blog", "readOne") && (
-                      <IconLink href={adminPath(`/blog/${node._id}`)}>
+                      <IconLink
+                        href={adminPath(`/blog/${node._id}`)}
+                        title="ویرایش"
+                      >
                         <EditIcon />
                       </IconLink>
                     )}
                     {hasAccess("Blog", "delete") && (
                       <IconButton
                         variant="Danger"
+                        title="حذف"
                         onClick={() =>
                           setPopup(
                             "DeleteBlog",

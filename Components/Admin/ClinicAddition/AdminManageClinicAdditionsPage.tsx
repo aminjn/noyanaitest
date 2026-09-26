@@ -11,12 +11,10 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
-import FormatDate from "@/Components/UI/FormatDate";
-import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
+import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { findCity } from "@/Components/Enums/Cities";
-import { findProvince } from "@/Components/Enums/Provinces";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import CheckIcon from "@/Components/Icons/CheckIcon";
@@ -44,14 +42,33 @@ const AdminManageClinicAdditionsPage = () => {
             name="AdminManageClinicAdditionRequests"
             data={data}
             renderer={{
-              submittedAt: {
-                name: "زمان ثبت",
-                value: (node) => new Date(node.submittedAt),
-                component: (node) => <FormatDate value={node.submittedAt} />,
-                filter: "Date",
+              clinicName: {
+                name: "نام کلینیک",
+                value: (node) => node.clinicName,
+                filter: "Text",
+              },
+              status: {
+                name: "وضعیت",
+                value: (node) => additionRequestStatusDict[node.status],
+                filter: "Set",
+              },
+              city: {
+                name: "شهر",
+                value: (node) => findCity(node.city),
+                filter: "Multi",
+              },
+              ownerName: {
+                name: "مالک",
+                value: (node) => node.ownerName,
+                filter: "Text",
+              },
+              ownerPhone: {
+                name: "تلفن مالک",
+                value: (node) => node.ownerPhone,
+                filter: "Text",
               },
               submittedBy: {
-                name: "ثبت کننده",
+                name: "ثبت‌کننده",
                 value: (node) =>
                   node.submittedBy
                     ? getDoctorProfileLabel(node.submittedBy)
@@ -64,48 +81,13 @@ const AdminManageClinicAdditionsPage = () => {
                       {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
-                    ""
+                    "حذف شده"
                   ),
               },
-              clinicName: {
-                name: "نام کلینیک",
-                value: (node) => node.clinicName,
-                filter: "Text",
-              },
-              clinicAddress: {
-                name: "آدرس کلینیک",
-                value: (node) => node.clinicAddress,
-                filter: "Text",
-              },
-              ownerName: {
-                name: "صاحب کلینیک",
-                value: (node) => node.ownerName,
-                filter: "Text",
-              },
-              ownerPhone: {
-                name: "شماره صاحب کلینیک",
-                value: (node) => node.ownerPhone,
-                filter: "Text",
-              },
-              province: {
-                name: "استان",
-                value: (node) => findProvince(node.province),
-                filter: "Multi",
-              },
-              city: {
-                name: "شهر",
-                value: (node) => findCity(node.city),
-                filter: "Multi",
-              },
-              description: {
-                name: "توضیحات",
-                value: (node) => node.description,
-                filter: "Text",
-              },
-              status: {
-                name: "وضعیت",
-                value: (node) => additionRequestStatusDict[node.status],
-                filter: "Set",
+              submittedAt: {
+                name: "تاریخ ثبت",
+                value: (node) => new Date(node.submittedAt),
+                filter: "Date",
               },
               actions: {
                 name: "عملیات",
@@ -113,6 +95,7 @@ const AdminManageClinicAdditionsPage = () => {
                   <TableActions>
                     <IconButton
                       variant="Success"
+                      title="ایجاد کلینیک"
                       onClick={() =>
                         setPopup(
                           "CreateClinicFromRequest",
@@ -124,6 +107,7 @@ const AdminManageClinicAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Info"
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateClinicRequest",
@@ -138,6 +122,7 @@ const AdminManageClinicAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteClinicAdditionRequest",

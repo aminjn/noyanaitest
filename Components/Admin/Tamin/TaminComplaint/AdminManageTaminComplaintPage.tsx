@@ -37,34 +37,34 @@ const AdminManageTaminComplaintsPage = () => {
               data={data}
               name="AdminManageTaminComplaints"
               renderer={{
-                taminId: {
-                  name: "id",
-                  value: (node) => node.taminId,
-                  filter: "Text",
-                },
-                code: {
-                  name: "code",
-                  value: (node) => node.code,
-                  filter: "Text",
-                },
                 displayName: {
-                  name: "displayName",
+                  name: "نام",
                   value: (node) => node.displayName,
                   filter: "Text",
                 },
                 englishName: {
-                  name: "englishName",
+                  name: "نام انگلیسی",
                   value: (node) => node.englishName,
                   filter: "Text",
                 },
-                terminology: {
-                  name: "Terminology",
-                  value: (node) => node.terminology,
+                code: {
+                  name: "کد",
+                  value: (node) => node.code,
                   filter: "Text",
                 },
+                terminology: {
+                  name: "ترمینولوژی",
+                  value: (node) => node.terminology,
+                  filter: "Set",
+                },
                 status: {
-                  name: "status",
+                  name: "وضعیت",
                   value: (node) => node.status,
+                  filter: "Set",
+                },
+                taminId: {
+                  name: "شناسه تامین",
+                  value: (node) => node.taminId,
                   filter: "Text",
                 },
               }}

@@ -11,7 +11,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
 
@@ -44,13 +44,13 @@ const AdminManageAboutPartnersPage = () => {
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "فعال",
+          name: "وضعیت",
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: "ترتیب",
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -66,10 +66,15 @@ const AdminManageAboutPartnersPage = () => {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/aboutPartner/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/aboutPartner/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

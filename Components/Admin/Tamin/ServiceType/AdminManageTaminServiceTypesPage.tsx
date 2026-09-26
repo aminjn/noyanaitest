@@ -43,40 +43,40 @@ const AdminManageTaminServiceTypesPage = () => {
               data={data}
               name="AdminManageTaminServiceTypes"
               renderer={{
-                srvType: {
-                  name: "srvType",
-                  value: (node) => node.srvType,
-                  filter: "Multi",
-                },
                 srvTypeDes: {
-                  name: "srvTypeDes",
+                  name: "شرح نوع خدمت",
                   value: (node) => node.srvTypeDes,
                   filter: "Text",
                 },
+                srvType: {
+                  name: "کد نوع خدمت",
+                  value: (node) => node.srvType,
+                  filter: "Multi",
+                },
                 status: {
-                  name: "status",
+                  name: "وضعیت",
                   value: (node) => node.status,
-                  filter: "Text",
+                  filter: "Set",
+                },
+                custType: {
+                  name: "نوع مشتری",
+                  value: (node) => node.custType,
+                  filter: "Set",
+                },
+                prescTypeId: {
+                  name: "نوع نسخه",
+                  value: (node) => node.prescTypeId,
+                  filter: "Set",
                 },
                 statusstDate: {
-                  name: "statusstDate",
+                  name: "تاریخ وضعیت",
                   value: (node) => node.statusstDate,
                   filter: "Text",
                 },
-                custType: {
-                  name: "custType",
-                  value: (node) => node.custType,
-                  filter: "Text",
-                },
-                prescTypeId: {
-                  name: "prescTypeId",
-                  value: (node) => node.prescTypeId,
-                  filter: "Text",
-                },
                 headExpireDate: {
-                  name: "headExpireDate",
+                  name: "انقضای سرنسخه",
                   value: (node) => node.headExpireDate,
-                  filter: "Text",
+                  filter: "Number",
                 },
               }}
             />
