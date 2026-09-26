@@ -34,14 +34,14 @@ const AdminManageTaminPhIllnessesPage = () => {
               data={data}
               name="AdminManageTaminPhIllnesses"
               renderer={{
-                illnessId: {
-                  name: "illnessId",
-                  value: (node) => node.illnessId,
+                illnessDesc: {
+                  name: "عنوان",
+                  value: (node) => node.illnessDesc,
                   filter: "Text",
                 },
-                illnessDesc: {
-                  name: "illnessDesc",
-                  value: (node) => node.illnessDesc,
+                illnessId: {
+                  name: "کد",
+                  value: (node) => node.illnessId,
                   filter: "Text",
                 },
               }}

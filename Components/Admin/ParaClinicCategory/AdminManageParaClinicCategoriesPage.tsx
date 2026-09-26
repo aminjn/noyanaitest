@@ -20,7 +20,7 @@ import IconButton from "../UI/IconButton";
 import IconLink from "../UI/IconLink";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import OrderEditor from "../UI/OrderEditor";
 
 export type ParaClinicCategoryPopulation = Population<Record<never, never>>;
@@ -125,13 +125,13 @@ const AdminManageParaClinicCategoriesPage = () => {
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رنبه",
+                name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -147,10 +147,15 @@ const AdminManageParaClinicCategoriesPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/paraClinicCategory/${node._id}`)}>
-                      <EyeIcon />
+                    <IconLink
+                      href={adminPath(`/paraClinicCategory/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteParaClinicCategory",

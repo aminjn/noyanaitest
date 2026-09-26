@@ -211,48 +211,41 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
             renderer={{
               seller: {
                 name: "فروشنده",
-                value: (node) => node.seller.name || node.seller._id,
-                component: (node) => (
-                  <InlineLink href={adminPath(`/pharmacy/${node.seller._id}`)}>
-                    {node.seller.name || node.seller._id}
-                  </InlineLink>
-                ),
+                value: (node) => node.seller?.name || node.seller?._id,
+                component: (node) =>
+                  node.seller ? (
+                    <InlineLink
+                      href={adminPath(`/pharmacy/${node.seller._id}`)}
+                    >
+                      {node.seller.name || node.seller._id}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
                 filter: "Multi",
-              },
-              order: {
-                name: "رتبه",
-                value: (node) => node.order,
-                filter: "Number",
-                component: (node) => (
-                  <OrderEditor
-                    value={node.order}
-                    modelName="productSeller"
-                    mutate={mutate}
-                    _id={node._id}
-                  />
-                ),
-              },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
               },
               price: {
                 name: "قیمت",
                 value: (node) => node.price,
-                component: (node) => (node.price ? currencize(node.price) : ""),
+                component: (node) =>
+                  node.price ? currencize(node.price) : "—",
                 filter: "Number",
               },
               discount: {
                 name: "تخفیف",
                 value: (node) => node.discount,
                 component: (node) =>
-                  node.discount ? currencize(node.discount) : "",
+                  node.discount ? currencize(node.discount) : "—",
                 filter: "Number",
               },
+              isActive: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
               fastDelivery: {
-                name: "تحویل سریغ",
+                name: "تحویل سریع",
                 value: (node) => booleanToValue[`${node.fastDelivery}`],
                 filter: "Set",
                 component: (node) => (
@@ -267,24 +260,25 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                   <BooleanToIcon value={node.freeDelivery} />
                 ),
               },
+              order: {
+                name: "رتبه",
+                value: (node) => node.order,
+                filter: "Number",
+                component: (node) => (
+                  <OrderEditor
+                    value={node.order}
+                    modelName="productSeller"
+                    mutate={mutate}
+                    _id={node._id}
+                  />
+                ),
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      onClick={() =>
-                        setPopup(
-                          "DeleteSeller",
-                          <DeleteProductSellerPopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      <GarbageIcon />
-                    </IconButton>
-                    <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateProductSeller",
@@ -296,6 +290,21 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                       }
                     >
                       <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      variant="Danger"
+                      title="حذف"
+                      onClick={() =>
+                        setPopup(
+                          "DeleteSeller",
+                          <DeleteProductSellerPopup
+                            node={node}
+                            mutate={mutate}
+                          />,
+                        )
+                      }
+                    >
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

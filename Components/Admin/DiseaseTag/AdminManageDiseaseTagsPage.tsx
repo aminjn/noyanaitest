@@ -19,7 +19,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
@@ -127,13 +127,13 @@ const AdminManageDiseaseTagsPage = () => {
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتیه",
+                name: "رتبه",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -146,7 +146,7 @@ const AdminManageDiseaseTagsPage = () => {
                 ),
               },
               level: {
-                name: "لول",
+                name: "سطح",
                 value: (node) => node.level,
                 filter: "Set",
               },
@@ -154,10 +154,15 @@ const AdminManageDiseaseTagsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/diseaseTag/${node._id}`)}>
-                      <EyeIcon />
+                    <IconLink
+                      href={adminPath(`/diseaseTag/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDiseaseTag",

@@ -6,11 +6,12 @@ import WithTitle from "../UI/WithTitle";
 import Box from "../UI/Box";
 import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
-import InlineLink from "../UI/InlineLink";
+import TableActions from "../UI/TableActions";
+import IconLink from "../UI/IconLink";
+import EyeIcon from "@/Components/Icons/EyeIcon";
 import Input from "@/Components/UI/Input";
 import Button from "@/Components/UI/Button";
 import Badge, { BadgeColor } from "@/Components/UI/Badge";
-import FormatDate from "@/Components/UI/FormatDate";
 import Act from "@/Components/UI/Act";
 import { API, adminKey } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -192,12 +193,6 @@ const AdminSepTestPage = () => {
               name="AdminSepTestPayments"
               data={data.payments}
               renderer={{
-                createdAt: {
-                  name: "زمان",
-                  value: (node) => new Date(node.createdAt),
-                  filter: "Date",
-                  component: (node) => <FormatDate value={node.createdAt} />,
-                },
                 amount: {
                   name: "مبلغ (تومان)",
                   value: (node) => node.amount,
@@ -214,39 +209,45 @@ const AdminSepTestPage = () => {
                     </Badge>
                   ),
                 },
-                state: {
-                  name: "State درگاه",
-                  value: (node) => node.state || "",
-                  filter: "Text",
+                createdAt: {
+                  name: "زمان",
+                  value: (node) => new Date(node.createdAt),
+                  filter: "Date",
                 },
                 traceNo: {
                   name: "کد رهگیری",
-                  value: (node) => node.traceNo || "",
-                  filter: "Text",
-                },
-                rrn: {
-                  name: "شماره مرجع",
-                  value: (node) => node.rrn || "",
+                  value: (node) => node.traceNo,
                   filter: "Text",
                 },
                 verifyResultCode: {
-                  name: "نتیجه تایید",
+                  name: "نتیجه درگاه",
                   value: (node) =>
                     node.verifyResultCode === undefined
-                      ? ""
+                      ? node.state
                       : `${node.verifyResultCode} ${node.verifyResultDescription || ""}`,
                   filter: "Text",
                 },
                 failureReason: {
                   name: "علت خطا",
-                  value: (node) => node.failureReason || "",
+                  value: (node) => node.failureReason,
                   filter: "Text",
                 },
-                _id: {
-                  name: "نتیجه",
-                  value: (node) => node._id,
+                rrn: {
+                  name: "شماره مرجع",
+                  value: (node) => node.rrn,
+                  filter: "Text",
+                },
+                actions: {
+                  name: "عملیات",
                   component: (node) => (
-                    <InlineLink href={`/payment/${node._id}`}>مشاهده</InlineLink>
+                    <TableActions>
+                      <IconLink
+                        href={`/payment/${node._id}`}
+                        title="مشاهده نتیجه"
+                      >
+                        <EyeIcon />
+                      </IconLink>
+                    </TableActions>
                   ),
                 },
               }}

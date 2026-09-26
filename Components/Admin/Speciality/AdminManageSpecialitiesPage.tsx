@@ -96,10 +96,11 @@ const AdminManageSpecialitiesPage = () => {
                   </InlineLink>
                 ),
               },
-              slug: {
-                name: "اسلاگ",
-                value: (node) => node.slug,
-                filter: "Text",
+              active: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.active}`],
+                filter: "Set",
+                component: (node) => <BooleanToIcon value={node.active} />,
               },
               order: {
                 name: "رتبه",
@@ -120,20 +121,14 @@ const AdminManageSpecialitiesPage = () => {
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.isHome} />,
               },
-              active: {
-                name: "فعال است؟",
-                value: (node) => booleanToValue[`${node.active}`],
-                filter: "Set",
-                component: (node) => <BooleanToIcon value={node.active} />,
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     {hasAccess("Sepciality", "readOne") && (
                       <IconLink
-                        variant="Info"
                         href={adminPath(`/speciality/${node._id}`)}
+                        title="ویرایش"
                       >
                         <EditIcon />
                       </IconLink>
@@ -150,6 +145,7 @@ const AdminManageSpecialitiesPage = () => {
                           )
                         }
                         variant="Danger"
+                        title="حذف"
                       >
                         <GarbageIcon />
                       </IconButton>

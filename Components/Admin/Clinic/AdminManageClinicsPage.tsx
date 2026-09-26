@@ -4,7 +4,6 @@ import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import classes from "./AdminManageClinicsPage.module.css";
 import {
   Province,
-  provinces,
   provinceSlugs,
 } from "@/Components/Enums/Provinces";
 import { cities, City } from "@/Components/Enums/Cities";
@@ -196,11 +195,6 @@ const AdminManageClinicsPage = () => {
           <Table
             data={data}
             renderer={{
-              slug: {
-                name: "اسلاگ",
-                value: (node) => node.slug,
-                filter: "Text",
-              },
               name: {
                 name: "نام",
                 filter: "Text",
@@ -211,54 +205,34 @@ const AdminManageClinicsPage = () => {
                   </InlineLink>
                 ),
               },
-              user: {
-                name: "یوزر",
-                value: (node) => (node.user ? node.user.phone : "ندارد"),
-                component: (node) =>
-                  node.user ? (
-                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                      {getUserLabel(node.user)}
-                    </InlineLink>
-                  ) : (
-                    ""
-                  ),
-                filter: "Text",
-              },
-              description: {
-                name: "توضیحات",
-                filter: "Text",
-                value: (node) => node.description,
-              },
-              address: {
-                name: "آدرس",
-                value: (node) => node.address,
-                filter: "Text",
-              },
-              phone: {
-                name: "تلفن",
-                filter: "Text",
-                value: (node) => node.phone,
-              },
-              province: {
-                name: "استان",
-                value: (node) =>
-                  provinces.find((p) => p.slug === node.province)?.name,
-                filter: "Multi",
+              active: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.active}`],
+                component: (node) => <BooleanToIcon value={node.active} />,
+                filter: "Set",
               },
               city: {
                 name: "شهر",
                 value: (node) => cities.find((c) => c.slug === node.city)?.name,
                 filter: "Multi",
               },
-              lat: {
-                name: "عرض جغرافیایی",
-                filter: "Number",
-                value: (node) => node.lat,
+              user: {
+                name: "مالک",
+                value: (node) => node.user?.phone,
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {getUserLabel(node.user)}
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  ),
+                filter: "Text",
               },
-              lng: {
-                name: "طول جغرافیایی",
-                value: (node) => node.lng,
-                filter: "Number",
+              phone: {
+                name: "تلفن",
+                filter: "Text",
+                value: (node) => node.phone,
               },
               order: {
                 name: "رتبه",
@@ -273,24 +247,19 @@ const AdminManageClinicsPage = () => {
                   />
                 ),
               },
-              active: {
-                name: "فعال؟",
-                value: (node) => booleanToValue[`${node.active}`],
-                component: (node) => <BooleanToIcon value={node.active} />,
-                filter: "Set",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconLink
-                      variant="Info"
                       href={adminPath(`/clinic/${node._id}`)}
+                      title="ویرایش"
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteClinic",

@@ -127,8 +127,13 @@ const AdminManageAiExamplesPage = () => {
             name="AdminManageAiExamples"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              category: {
+                name: "دسته",
+                value: (node) => node.category,
+                filter: "Set",
+              },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
@@ -146,21 +151,12 @@ const AdminManageAiExamplesPage = () => {
                   />
                 ),
               },
-              prompt: {
-                name: "پرامپت",
-                value: (node) => node.prompt,
-                filter: "Text",
-              },
-              category: {
-                name: "دسته",
-                value: (node) => node.category,
-                filter: "Text",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateAiExample",
@@ -171,6 +167,8 @@ const AdminManageAiExamplesPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "deleteAiExample",

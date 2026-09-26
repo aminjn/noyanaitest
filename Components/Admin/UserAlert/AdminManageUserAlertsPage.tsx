@@ -10,7 +10,7 @@ import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { getUserLabel } from "../Lib/LabelGetters";
@@ -127,23 +127,58 @@ const AdminManageUserAlertsPage = () => {
             renderer={{
               user: {
                 name: "کاربر",
-                value: (node) => getUserLabel(node.user),
+                value: (node) => (node.user ? getUserLabel(node.user) : ""),
                 filter: "Text",
-                component: (node) => (
-                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                    {getUserLabel(node.user)}
-                  </InlineLink>
-                ),
+                component: (node) =>
+                  node.user ? (
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {getUserLabel(node.user)}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
+              },
+              push: {
+                name: "پوش نوتیفیکیشن فعال",
+                value: (node) =>
+                  userAlertEvents.filter(
+                    (event) => node[`pushNotificationOn${capitalize(event)}`],
+                  ).length,
+                component: (node) =>
+                  `${
+                    userAlertEvents.filter(
+                      (event) => node[`pushNotificationOn${capitalize(event)}`],
+                    ).length
+                  } از ${userAlertEvents.length}`,
+                filter: "Number",
+              },
+              sms: {
+                name: "پیامک فعال",
+                value: (node) =>
+                  userAlertEvents.filter(
+                    (event) => node[`sendSMSOn${capitalize(event)}`],
+                  ).length,
+                component: (node) =>
+                  `${
+                    userAlertEvents.filter(
+                      (event) => node[`sendSMSOn${capitalize(event)}`],
+                    ).length
+                  } از ${userAlertEvents.length}`,
+                filter: "Number",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/userAlert/${node._id}`)}>
-                      <EyeIcon />
+                    <IconLink
+                      href={adminPath(`/userAlert/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "Delete",

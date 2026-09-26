@@ -81,6 +81,11 @@ const Table = <T,>({
   name?: string;
 }>) => {
   const columnDefs = useMemo<ColDef<T>[]>(() => {
+    // Phones: nothing is pinned (a pinned column would eat the screen) and
+    // the name column is narrower; the grid scrolls sideways instead.
+    const narrow =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 600px)").matches;
     const dateFormat = new Intl.DateTimeFormat("fa-IR", {
       dateStyle: "medium",
       timeStyle: "short",
@@ -115,7 +120,7 @@ const Table = <T,>({
         return {
           colId: key,
           headerName: "",
-          pinned: "left",
+          pinned: narrow ? undefined : "left",
           width: column.width || 116,
           resizable: false,
           sortable: false,
@@ -135,7 +140,7 @@ const Table = <T,>({
         ...(column.width
           ? {}
           : isPrimary
-            ? { flex: 2, minWidth: 200 }
+            ? { flex: 2, minWidth: narrow ? 160 : 200 }
             : { flex: 1, minWidth: 130 }),
         sortable: !!column.value,
         initialPinned: column.pin,
@@ -164,27 +169,31 @@ const Table = <T,>({
 
   const defaultColDef = useMemo<ColDef>(() => ({ floatingFilter: true }), []);
 
+  // Saved column layout per table; the version suffix drops layouts saved
+  // before the column redesign.
+  const storageKey = name ? `${name}:v2` : undefined;
+
   const initialState = useMemo<GridState | undefined>(() => {
-    if (!name) return;
+    if (!storageKey) return;
     try {
-      const saved = localStorage.getItem(name);
+      const saved = localStorage.getItem(storageKey);
       if (!saved) return;
       return JSON.parse(saved);
     } catch {
       return;
     }
-  }, [name]);
+  }, [storageKey]);
 
   const onGridPreDestroyed = useCallback<
     (event: GridPreDestroyedEvent<T>) => void
   >(
     ({ state }) => {
-      if (!name) return;
+      if (!storageKey) return;
       try {
-        localStorage.setItem(name, JSON.stringify(state));
+        localStorage.setItem(storageKey, JSON.stringify(state));
       } catch {}
     },
-    [name],
+    [storageKey],
   );
 
   const [quickFilter, setQuickFilter] = useState("");
