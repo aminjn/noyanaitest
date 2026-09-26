@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import useSWR from "swr";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { PublicDoctorProfilePageProps } from "../PublicDoctorProfilePage";
 import classes from "./NewPublicDoctorProfilePage.module.css";
 import BreadCrump from "@/Components/UI/BreadCrump";

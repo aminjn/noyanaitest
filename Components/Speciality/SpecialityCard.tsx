@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import classes from "./SpecialityCard.module.css";
 import { imagePath } from "../helpers/imagepath";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";

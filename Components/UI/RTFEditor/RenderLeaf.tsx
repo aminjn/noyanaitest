@@ -1,6 +1,6 @@
 import { RenderLeafProps } from "slate-react";
 import { CSSProperties } from "react";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 const RenderLeaf = ({ children, leaf, attributes }: RenderLeafProps) => {
   const style: CSSProperties = {
     fontSize: leaf.size || 16,

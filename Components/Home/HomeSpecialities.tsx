@@ -3,7 +3,7 @@ import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import classes from "./HomeSpecialities.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import HostedImage from "../UI/HostedImage";

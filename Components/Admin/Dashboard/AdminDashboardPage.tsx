@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useSWR from "swr";
 import classes from "./AdminDashboardPage.module.css";
 import { API } from "@/Components/config";

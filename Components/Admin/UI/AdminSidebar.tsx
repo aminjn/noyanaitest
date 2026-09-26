@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import classes from "./AdminSidebar.module.css";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "@/Components/i18n/Link";
+import { usePathname } from "@/Components/i18n/navigation";
 import Ixon from "@/Components/UI/Ixon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import SearchIcon from "@/Components/Icons/SearchIcon";

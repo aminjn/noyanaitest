@@ -4,7 +4,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import CrownIcon from "../Icons/CrownIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import DoubleChevronIcon from "../Icons/DoubleChevronIcon";
 import Image from "next/image";
 import serviceImage from "./services.png";

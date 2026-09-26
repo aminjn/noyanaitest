@@ -16,7 +16,7 @@ import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import { clamp } from "../helpers/lib";
 import { currencize } from "../helpers/currencize";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "productServiceCard"];

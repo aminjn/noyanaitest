@@ -17,7 +17,7 @@ import ListPageList from "../UI/ListPage/ListPageList";
 import InsuranceCard from "./InsuranceCard";
 import { useEffect } from "react";
 import { t2xsRegular, tlgMedium, tsmBold, tsmRegular } from "../UI/Typography";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 const NS: ContentNamespace[] = ["common", "insurancesList"];
 

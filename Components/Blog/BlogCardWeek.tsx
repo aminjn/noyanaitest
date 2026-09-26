@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import classes from "./BlogCardWeek.module.css";
 import Ixon from "../UI/Ixon";

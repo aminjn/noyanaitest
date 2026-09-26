@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import useUser from "../Hooks/useUser";
 import LoginRequired from "../UI/LoginRequired";
 import classes from "./ChatLayout.module.css";

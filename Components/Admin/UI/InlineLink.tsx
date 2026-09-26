@@ -1,7 +1,7 @@
 import { HTMLAttributeAnchorTarget, ReactNode } from "react";
 import classes from "./InlineLink.module.css";
 import { WithStyleProps } from "./Loading";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 const InlineLink = ({
   children,

@@ -4,7 +4,7 @@ import "swiper/css";
 
 import { CSSProperties, Fragment, ReactNode, useMemo } from "react";
 import classes from "./Layout.module.css";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import AdminLayout from "./AdminLayout";
 import PublicLayout from "./PublicLayout";
 import Popup from "../Popup/Popup";

@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import classes from "./DoctorPage.module.css";
 import BreadCrump from "@/Components/UI/BreadCrump";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";

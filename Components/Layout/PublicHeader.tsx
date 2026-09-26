@@ -1,8 +1,8 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import LogoLong from "../UI/LogoLong";
 import classes from "./PublicHeader.module.css";
 import UserButton from "./UserButton";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import Ixon from "../UI/Ixon";

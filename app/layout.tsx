@@ -10,6 +10,13 @@ import { SockectContextProvider } from "@/Components/Store/SocketContext";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { headers } from "next/headers";
+import {
+  defaultLocale,
+  isLocale,
+  LOCALE_HEADER,
+  localeDir,
+} from "@/Components/i18n/locales";
 
 const font = localFont({
   src: "./fonts/IRANYekanXVFaNumVF.woff",
@@ -60,6 +67,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerLocale = headers().get(LOCALE_HEADER);
+  const locale = isLocale(headerLocale) ? headerLocale : defaultLocale;
   const chromeTextContent = await getScopedTextContent(CHROME_NS);
 
   // No <Suspense> around the tree: it used to be here only because
@@ -68,11 +77,12 @@ export default async function RootLayout({
   // header/footer with no text content. useSearchParams now lives in its own
   // small Suspense boundary inside ProgressContextProvider instead.
   return (
-    <html lang="fa" dir="rtl">
+    <html lang={locale} dir={localeDir(locale)}>
       <body className={font.variable}>
         <LocaleScopeProvider
           namespaces={CHROME_NS}
           initialTextContent={chromeTextContent}
+          locale={locale}
         >
           <ProgressContextProvider>
             <NotificationContextProvider>

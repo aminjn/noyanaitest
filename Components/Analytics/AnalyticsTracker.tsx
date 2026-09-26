@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 import { fetcher } from "../helpers/fetcher";
 import { API, BACKEND } from "../config";
 

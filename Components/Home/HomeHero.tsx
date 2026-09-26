@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";

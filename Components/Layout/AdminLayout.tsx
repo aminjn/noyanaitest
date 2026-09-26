@@ -3,7 +3,7 @@ import classes from "./AdminLayout.module.css";
 import useUser, { UserRole } from "../Hooks/useUser";
 import NotFoundPage from "../NotFound/NotFoundPage";
 import AdminSidebar, { canNotAdminOpen } from "../Admin/UI/AdminSidebar";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import { useAccessLevelState } from "../Hooks/useAccessLevel";
 import Loading from "../Admin/UI/Loading";
 import { LicenseManager } from "ag-grid-enterprise";

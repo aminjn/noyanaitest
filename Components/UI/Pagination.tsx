@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import classes from "./Pagination.module.css";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { Fragment, useCallback, useMemo } from "react";

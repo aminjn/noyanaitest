@@ -10,7 +10,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import HandThumUpIcon from "../Icons/HandThumbUpIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import StarIcon from "../Icons/StarIcon";
 import LocationIcon from "../Icons/LocationIcon";

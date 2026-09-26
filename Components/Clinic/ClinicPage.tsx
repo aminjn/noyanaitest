@@ -3,7 +3,7 @@
 import classes from "./ClinicPage.module.css";
 
 import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";

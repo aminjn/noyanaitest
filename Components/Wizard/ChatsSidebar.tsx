@@ -3,7 +3,7 @@ import useBotChats, { IBotChat } from "./useBotChats";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import PlusIcon from "../Icons/PlusIcon";
 import XMarkIcon from "../Icons/XMarkIcon";
 import Loading from "../Admin/UI/Loading";

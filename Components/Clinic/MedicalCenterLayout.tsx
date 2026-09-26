@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import classes from "./MedicalCenterLayout.module.css";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { txsMedium } from "../UI/Typography";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";

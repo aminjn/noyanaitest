@@ -8,7 +8,7 @@ import usePopup from "../Hooks/usePopup";
 import AuthPopup from "../Popups/AuthPopup";
 import HostedImage from "../UI/HostedImage";
 import useUserMenus from "./useUserMenus";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { tbaseDemiBold, tbaseMedium, tsmRegular } from "../UI/Typography";
 import SwitchProfile, { SwitchProfilePopup } from "./SwitchProfile";
 import useScopedLocale from "../Hooks/useScopedLocale";

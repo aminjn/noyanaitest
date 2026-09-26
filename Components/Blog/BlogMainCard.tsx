@@ -1,7 +1,7 @@
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import classes from "./BlogMainCard.module.css";
 import HostedImage from "../UI/HostedImage";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import FormatDate from "../UI/FormatDate";
 import Ixon from "../UI/Ixon";
 import UserIcon from "../Icons/UserIcon";

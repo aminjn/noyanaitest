@@ -6,7 +6,7 @@ import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
 import Ixon from "../UI/Ixon";
 import classes from "./ProductSameAs.module.css";
 import { FilePath } from "../config";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { t2xsRegular, tlgMedium, txsDemiBold } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
 

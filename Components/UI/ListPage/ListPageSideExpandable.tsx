@@ -2,7 +2,7 @@ import { useState } from "react";
 import classes from "./ListPageSideExpandable.module.css";
 import Ixon from "../Ixon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import { t2xsRegular, txsMedium, txsRegular } from "../Typography";
 

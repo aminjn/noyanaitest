@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import classes from "./AuthShell.module.css";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import LogoLong from "../UI/LogoLong";
 
 const AuthShell = ({ children }: { children: ReactNode }) => {

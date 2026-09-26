@@ -25,7 +25,7 @@ import useSWR from "swr";
 import { API } from "../config";
 import Loading from "../Admin/UI/Loading";
 import { fetcher } from "../helpers/fetcher";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/Components/i18n/navigation";
 import ChevronIcon from "../Icons/ChevronIcon";
 
 const NS: ContentNamespace[] = ["common", "bookingSessionSelectorPopup"];

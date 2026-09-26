@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { WithStyleProps } from "../Layout/Layout";
 import classes from "./BreadCrump.module.css";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "./Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { BreadCrumpTrail } from "../Store/BreadCrumpStore";

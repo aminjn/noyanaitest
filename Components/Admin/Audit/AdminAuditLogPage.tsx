@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import classes from "./AdminAuditLogPage.module.css";

@@ -10,7 +10,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import Ixon from "@/Components/UI/Ixon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 import { Fragment, useMemo } from "react";

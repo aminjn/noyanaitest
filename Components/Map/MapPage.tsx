@@ -25,7 +25,7 @@ import {
   txsDemiBold,
 } from "../UI/Typography";
 import StarIcon from "../Icons/StarIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import LocationMarkIcon from "../Icons/LocationMarkIcon";
 import {
   ICity,

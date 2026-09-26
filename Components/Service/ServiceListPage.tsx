@@ -35,7 +35,7 @@ import SwitchProductAndService from "../Product/SwitchProductAndService";
 import HostedImage from "../UI/HostedImage";
 import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 const NS: ContentNamespace[] = ["common", "services"];
 

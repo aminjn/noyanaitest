@@ -6,7 +6,7 @@ import Ixon from "./Ixon";
 import StarIcon from "../Icons/StarIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import VerifyIcon from "../Icons/VerifyIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import {
   t2xsMedium,

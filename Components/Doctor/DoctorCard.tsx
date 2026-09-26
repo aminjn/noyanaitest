@@ -8,7 +8,7 @@ import VerifyIcon from "../Icons/VerifyIcon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import {
   t2xsMedium,
   t2xsRegular,

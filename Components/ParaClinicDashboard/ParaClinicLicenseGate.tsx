@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import useParaClinicLicenseModules from "@/Components/Hooks/useParaClinicLicenseModules";
 import LicenseNotCoveredNotice from "./LicenseNotCoveredNotice";
 import TemporarilyDisabledNotice from "@/Components/UI/TemporarilyDisabledNotice";

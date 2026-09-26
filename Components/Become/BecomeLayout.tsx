@@ -3,7 +3,7 @@
 import classes from "./BecomeLayout.module.css";
 
 import { ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useUser from "../Hooks/useUser";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -15,7 +15,7 @@ import { becomeOrgList } from "./becomeOrgs";
 import BreadCrump from "../UI/BreadCrump";
 import Ixon from "../UI/Ixon";
 import CheckIcon from "../Icons/CheckIcon";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import useProgress from "../Hooks/useProgress";
 import { tbaseMedium, tmdMedium, tsmRegular } from "../UI/Typography";
 

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import useUser, { IUser } from "../Hooks/useUser";
 import { IChat, getChatParticipantName } from "./ChatSidebar";
 import classes from "./ChatSidebarItem.module.css";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";

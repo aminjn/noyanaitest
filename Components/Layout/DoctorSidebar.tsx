@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import classes from "./DoctorSidebar.module.css";
 import Image from "next/image";
 import { imagePath } from "../helpers/imagepath";

@@ -39,7 +39,7 @@ import { BookingPageDoctor, BookingView } from "./BookingPage2";
 import ReportProblemPopup from "./ReportProblemPopup";
 import ScoreBadge from "./ScoreBadge";
 import HostedImage from "../UI/HostedImage";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import VerifiedImage from "../UI/VerifiedImage";
 import useProgress from "../Hooks/useProgress";
 

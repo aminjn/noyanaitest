@@ -16,7 +16,7 @@ import InstantCreateDoctorProfilePopup from "./InstantCreateDoctorProfilePopup";
 import CloneDoctorProfileFromExistingDoctorPopup from "./CloneDoctorProfileFromExistingDoctorPopup";
 import FormActions from "../UI/FormActions";
 import List from "../UI/List";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import RemoveUserFromDoctorProfilePopup from "./RemoveUserFromDoctorProfilePopup";
 import { adminPath } from "@/Components/helpers/adminPath";
 import InlineLink from "../UI/InlineLink";

@@ -10,6 +10,7 @@ import {
 } from "../Enums/contentNamespaces";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
+import { Locale } from "../i18n/locales";
 
 // Provides text content for a set of namespaces and merges it on top of
 // whatever an ancestor LocaleScopeProvider already supplied. The root layout
@@ -20,10 +21,13 @@ const LocaleScopeProvider = ({
   children,
   namespaces,
   initialTextContent,
+  locale,
 }: {
   children: ReactNode;
   namespaces: ContentNamespace[];
   initialTextContent?: Partial<ITextContent>;
+  // set once by the root layout; nested providers inherit it
+  locale?: Locale;
 }) => {
   const parent = useContext(LocaleContext);
   const [scopedTextContent, setScopedTextContent] = useState<
@@ -53,7 +57,7 @@ const LocaleScopeProvider = ({
   );
 
   return (
-    <LocaleContext.Provider value={{ textContent: merged }}>
+    <LocaleContext.Provider value={{ textContent: merged, locale: locale || parent.locale }}>
       {children}
     </LocaleContext.Provider>
   );
