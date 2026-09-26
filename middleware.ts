@@ -2,12 +2,24 @@ import { NextResponse, NextRequest } from "next/server";
 import { getPublicData } from "./Components/helpers/getPublicData";
 import { IShortLink } from "./Components/Admin/ShortLink/AdminManageShortLinksPage";
 import { IRedirection } from "./Components/Admin/Redirection/AdminManageRedirectionsPage";
-import { LOCALE_HEADER, localizePath, splitLocale } from "./Components/i18n/locales";
+import {
+  isEnabledLocale,
+  LOCALE_HEADER,
+  localizePath,
+  splitLocale,
+} from "./Components/i18n/locales";
 
 const middleware = async (req: NextRequest) => {
   // "/en/doctors" -> serve "/doctors" in English; "/fa/x" and "/x" are
   // Persian. The page tree itself has no locale segment.
   const { locale, path: pathname } = splitLocale(req.nextUrl.pathname);
+
+  // Not translated yet -> the Persian page (no prefix), not a half-done LTR one.
+  if (!isEnabledLocale(locale)) {
+    const url = req.nextUrl.clone();
+    url.pathname = pathname;
+    return NextResponse.redirect(url, 307);
+  }
 
   if (pathname.startsWith("/l/")) {
     const match = pathname.match(/^\/l\/([^/]+)$/);
