@@ -9,9 +9,9 @@ import {
 import { useCallback } from "react";
 import { fetcher } from "../helpers/fetcher";
 
-const useAccessLevel = () => {
+export const useAccessLevelState = () => {
   const { user } = useUser();
-  const { data } = useSWR<IAccessLevel>(
+  const { data, isLoading } = useSWR<IAccessLevel>(
     user?.role !== "user" ? `${API}/admin` : null,
     (url: string) => fetcher({ url }).then((res) => res.data.data)
   );
@@ -21,7 +21,9 @@ const useAccessLevel = () => {
     [data]
   );
 
-  return hasAccess;
+  return { hasAccess, isLoading };
 };
+
+const useAccessLevel = () => useAccessLevelState().hasAccess;
 
 export default useAccessLevel;

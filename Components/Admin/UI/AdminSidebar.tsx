@@ -9,7 +9,6 @@ import LogoLong from "@/Components/UI/LogoLong";
 import { adminPath } from "@/Components/helpers/adminPath";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { AccessLevelModel } from "../AccessLevel/AdminManageAccessLevelsPage";
-import Input from "@/Components/UI/Input";
 
 type LinkItem = {
   title: string;
@@ -70,7 +69,11 @@ const linkMap: LinkMap = [
         target: "becomeinsurance",
       },
       { title: "درخواست پاراکلینیک شدن", target: "becomeParaClinic" },
-      { title: "درخواست بیمارستان شدن", target: "becomehospital" },
+      {
+        title: "درخواست بیمارستان شدن",
+        target: "becomehospital",
+        access: "BecomeHospitalRequest",
+      },
       { title: "کاربران", target: "user", access: "User" },
       {
         title: "پروفایل پزشکان",
@@ -130,11 +133,16 @@ const linkMap: LinkMap = [
       { title: "تگ دارو ها", target: "drugTag" },
       { title: "دسته بندی تخصص ها", target: "specialityCategory" },
       { title: "تگ کلینیک ها", target: "clinicTag" },
-      { title: "بیمارستان ها", target: "hospital" },
-      { title: "عضویت پزشکان در بیمارستان", target: "doctorjoinhospital" },
+      { title: "بیمارستان ها", target: "hospital", access: "Hospital" },
+      {
+        title: "عضویت پزشکان در بیمارستان",
+        target: "doctorjoinhospital",
+        access: "DoctorJoinHospital",
+      },
       {
         title: "درخواست های اضافه شدن بیمارستان",
         target: "hospitaladdition",
+        access: "HospitalAdditionRequest",
       },
       { title: "دسته بندی بیمارستان ها", target: "hospitalCategory" },
       { title: "تگ بیمارستان", target: "hospitalTag" },
@@ -241,6 +249,25 @@ const linkMap: LinkMap = [
   },
 ];
 
+// Which AccessLevel (if any) guards each top-level admin route segment, and
+// whether it lives in a super-admin-only group. Used by AdminLayout to block
+// notadmin staff from opening pages by URL that the sidebar hides from them.
+const targetInfo = new Map<string, { super: boolean; access?: AccessLevelModel }>();
+for (const group of linkMap)
+  for (const link of group.links)
+    if (!targetInfo.has(link.target))
+      targetInfo.set(link.target, { super: !!group.super, access: link.access });
+
+export const canNotAdminOpen = (
+  target: string,
+  hasAccess: (model: AccessLevelModel, op: "readAll" | "readOne") => boolean,
+) => {
+  if (target === "") return true;
+  const info = targetInfo.get(target);
+  if (!info || info.super || !info.access) return false;
+  return hasAccess(info.access, "readAll") || hasAccess(info.access, "readOne");
+};
+
 const Waterfall = ({ item }: { item: LinkItem }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(
@@ -320,44 +347,28 @@ const AdminSidebar = () => {
 
   const readyLinks = useMemo<LinkMap>(() => {
     if (!user) return [];
-    const result: LinkMap = [];
-    for (let i = 0; i < linkMap.length; ++i) {
-      if (!linkMap[i].super) {
-        result.push({
-          ...linkMap[i],
-          links: linkMap[i].links
-            .filter(
-              (link) =>
-                link.access === undefined ||
-                user.role === "notadmin" ||
-                hasAccess(link.access, "readAll"),
-            )
-            .filter(
-              (el) =>
-                el.title.toLowerCase().includes(search.toLowerCase()) ||
-                el.target.toLowerCase().includes(search.toLowerCase()),
-            ),
-        });
-      } else {
-        if (user.role === "admin")
-          result.push({
-            ...linkMap[i],
-            links: linkMap[i].links
-              .filter(
-                (link) =>
-                  link.access === undefined ||
-                  user.role === "notadmin" ||
-                  hasAccess(link.access, "readAll"),
-              )
-              .filter(
-                (el) =>
-                  el.title.toLowerCase().includes(search.toLowerCase()) ||
-                  el.target.toLowerCase().includes(search.toLowerCase()),
-              ),
-          });
-      }
-    }
-    return result;
+    const isAdmin = user.role === "admin";
+    const term = search.toLowerCase();
+    // Full admins see everything. Restricted staff (notadmin) only see links
+    // backed by an AccessLevel they can readAll - links without `access` hit
+    // admin-only backend routes, so they're hidden too (except the dashboard).
+    const canSee = (link: LinkItem) =>
+      isAdmin ||
+      link.target === "" ||
+      (link.access !== undefined && hasAccess(link.access, "readAll"));
+    return linkMap
+      .filter((group) => !group.super || isAdmin)
+      .map((group) => ({
+        ...group,
+        links: group.links
+          .filter(canSee)
+          .filter(
+            (el) =>
+              el.title.toLowerCase().includes(term) ||
+              el.target.toLowerCase().includes(term),
+          ),
+      }))
+      .filter((group) => group.links.length > 0);
   }, [hasAccess, user, search]);
 
   return (

@@ -18,12 +18,7 @@ import FormActions from "./UI/FormActions";
 import { notificationStatuses } from "../Store/NotificationContext";
 import useNotification from "../Hooks/useNotification";
 import * as Colors from "@/Components/Enums/Colors";
-import Debugger from "./Debugger";
-import SipManager from "./SipManager";
 import VoiceManager from "./VoiceManager";
-import TelephonePopup from "./TelephonePopup";
-import FillIdentityPopup from "./FillIdentityPopup";
-import PodPopup from "./PodPopup";
 import TabSystem from "./UI/TabSystem";
 import ClientTabSystem from "../UI/ClientTabSystem";
 import CupIcon from "../Icons/CupIcon";
@@ -260,20 +255,9 @@ const AdminPage = () => {
           </div>
         ))}
       </div>
-      <Button onClick={() => setPopup("Debugger", <Debugger />)}>Debug</Button>
-      <Button onClick={() => setPopup("sipManager", <SipManager />)}>
-        Sip
-      </Button>
       <Button onClick={() => setPopup("voiceManager", <VoiceManager />)}>
         Voice
       </Button>
-      <Button onClick={() => setPopup("Telephone", <TelephonePopup />)}>
-        Telephone
-      </Button>
-      <Button onClick={() => setPopup("Tity", <FillIdentityPopup />)}>
-        Tity
-      </Button>
-      <Button onClick={() => setPopup("Pod", <PodPopup />)}>Pod</Button>
       <ClientTabSystem
         items={[
           { id: "one", title: "One", icon: <CupIcon />, content: <p>One</p> },
