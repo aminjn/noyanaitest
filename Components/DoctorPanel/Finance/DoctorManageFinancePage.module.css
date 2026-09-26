@@ -1,0 +1,252 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--gray13);
+}
+
+.subtitle,
+.muted {
+  font-size: 0.8125rem;
+  color: var(--gray9);
+}
+
+.card,
+.tile {
+  background: var(--white);
+  border-radius: 1rem;
+  box-shadow:
+    0px 2px 12px -3px #0000001a,
+    0px 4px 6px 0px #0000000d;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1rem 1.25rem;
+}
+
+.highlight {
+  background: linear-gradient(135deg, var(--primary6), var(--primary8));
+  color: var(--white);
+}
+
+.tileHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--gray10);
+}
+
+.highlight .tileHead,
+.highlight .tileIcon,
+.highlight .tileValue,
+.highlight .tileUnit {
+  color: var(--white);
+}
+
+.tileIcon {
+  color: var(--primary6);
+}
+
+.tileValue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray13);
+  white-space: nowrap;
+}
+
+.tileUnit {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray9);
+}
+
+.tileNote {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray13);
+}
+
+.chart {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 1rem;
+  height: 13rem;
+  padding-top: 0.5rem;
+  border-bottom: 1px solid var(--gray5);
+}
+
+.barCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  cursor: default;
+}
+
+.barValue {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray11);
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+.barValueShown {
+  visibility: visible;
+}
+
+.barTrack {
+  flex: 1;
+  width: 100%;
+  max-width: 3.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 4px 4px 0 0;
+  background: var(--primary6);
+  transition: background-color var(--transTime), height var(--transTime);
+}
+
+.barHover {
+  background: var(--primary8);
+}
+
+.barLabel {
+  font-size: 0.75rem;
+  color: var(--gray9);
+  padding-bottom: 0.375rem;
+}
+
+.empty {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--gray9);
+  background: var(--gray2);
+  border-radius: 0.75rem;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  transition: opacity var(--transTime);
+}
+
+.stale {
+  opacity: 0.6;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table th,
+.table td {
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--gray3);
+  text-align: start;
+}
+
+.table th {
+  color: var(--gray9);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.desc {
+  display: block;
+  color: var(--gray13);
+  font-weight: 600;
+}
+
+.descSub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.amountCol {
+  text-align: end !important;
+  white-space: nowrap;
+  font-weight: 700;
+  direction: ltr;
+}
+
+.credit {
+  color: #1d6b3a;
+}
+
+.debit {
+  color: #a12626;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: var(--gray10);
+}
+
+.pagination button {
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--gray4);
+  border-radius: 0.375rem;
+  background: var(--white);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

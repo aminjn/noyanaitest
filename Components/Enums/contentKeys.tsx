@@ -1723,6 +1723,27 @@ const contentKeys = [
   "dpdStepsLeft",
   // Doctor answering a clinic/hospital join invitation (2026-09).
   "respondToJoinInvitation",
+  // Doctor panel finance page (2026-09) - Components/DoctorPanel/Finance.
+  "dpfBalance",
+  "dpfThisMonth",
+  "dpfLastMonth",
+  "dpfUpcoming",
+  "dpfUpcomingNote",
+  "dpfAllTime",
+  "dpfLicenseSpend",
+  "dpfMonthlyIncome",
+  "dpfTransactions",
+  "dpfNoTransactions",
+  "dpfDate",
+  "dpfDescription",
+  "dpfAmount",
+  "dpfReservationPayout",
+  "dpfLicensePurchase",
+  "dpfOther",
+  "dpfPrev",
+  "dpfNext",
+  "dpfPage",
+  "dpfNote",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
