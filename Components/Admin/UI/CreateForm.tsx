@@ -111,6 +111,19 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
   };
 };
 
+// Field types that need the full form width; the rest sit two per row.
+const wideFieldTypes: string[] = [
+  "rtf",
+  "area",
+  "image",
+  "strings",
+  "files",
+  "multiselect",
+  "licensePricing",
+  "range",
+  "options",
+];
+
 const CreateForm = <TInput, TResult = unknown>({
   defaultValue,
   hookProps,
@@ -399,9 +412,19 @@ const CreateForm = <TInput, TResult = unknown>({
               />
             );
         }
-        return <Fragment key={key.toString()}>{content}</Fragment>;
+        if (!content) return null;
+        return (
+          <div
+            key={key.toString()}
+            className={
+              wideFieldTypes.includes(segment.type) ? classes.wide : classes.field
+            }
+          >
+            {content}
+          </div>
+        );
       })}
-      <FormActions>
+      <FormActions className={classes.actions}>
         {!!onCancel ? (
           <Button type="button" variant="Neutral" onClick={onCancel}>
             {getContent("cancel")}

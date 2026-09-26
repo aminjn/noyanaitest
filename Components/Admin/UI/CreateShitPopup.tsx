@@ -7,14 +7,17 @@ const CreateShitPopup = <T,>({
   renderer,
   mutate,
   modelName,
+  title,
 }: {
   renderer: FormRenderer<T>;
   mutate: () => unknown;
   modelName: string;
+  // Name of the list this record is added to (e.g. "مقالات").
+  title?: string;
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={title ? `افزودن به ${title}` : "افزودن مورد جدید"}>
       <CreateForm<T>
         renderer={renderer}
         onCancel={() => closePopup()}
