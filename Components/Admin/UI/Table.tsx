@@ -197,6 +197,8 @@ const Table = <T,>({
   );
 
   const [quickFilter, setQuickFilter] = useState("");
+  // Some endpoints answer with a non-array on errors; never crash on that.
+  const rows = Array.isArray(data) ? data.length : 0;
   const [shown, setShown] = useState<number | null>(null);
   const num = useMemo(() => new Intl.NumberFormat("fa-IR"), []);
 
@@ -218,9 +220,9 @@ const Table = <T,>({
           />
         </div>
         <span className={classes.count}>
-          {shown !== null && shown !== data.length
-            ? `${num.format(shown)} از ${num.format(data.length)} مورد`
-            : `${num.format(data.length)} مورد`}
+          {shown !== null && shown !== rows
+            ? `${num.format(shown)} از ${num.format(rows)} مورد`
+            : `${num.format(rows)} مورد`}
         </span>
       </div>
       <div className={classes.grid}>
@@ -236,7 +238,7 @@ const Table = <T,>({
         enableRtl
         localeText={AG_GRID_LOCALE_IR}
         theme={myTheme}
-        rowData={data}
+        rowData={Array.isArray(data) ? data : []}
         columnDefs={columnDefs}
         tooltipMouseTrack
         preventDefaultOnContextMenu

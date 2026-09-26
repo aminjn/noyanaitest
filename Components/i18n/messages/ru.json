@@ -1672,5 +1672,8 @@
  "jalaliMonth9": "Азар",
  "jalaliMonth10": "Дей",
  "jalaliMonth11": "Бахман",
- "jalaliMonth12": "Эсфанд"
+ "jalaliMonth12": "Эсфанд",
+ "hospitalPanelTitle": "Панель больницы",
+ "viewSite": "Открыть сайт",
+ "doctorPanelTitle": "Панель врача"
 }

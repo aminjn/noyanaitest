@@ -1672,5 +1672,8 @@
  "jalaliMonth9": "アーザル月",
  "jalaliMonth10": "デイ月",
  "jalaliMonth11": "バフマン月",
- "jalaliMonth12": "エスファンド月"
+ "jalaliMonth12": "エスファンド月",
+ "hospitalPanelTitle": "病院パネル",
+ "viewSite": "サイトを見る",
+ "doctorPanelTitle": "医師パネル"
 }

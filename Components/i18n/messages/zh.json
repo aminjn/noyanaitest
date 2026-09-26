@@ -1672,5 +1672,8 @@
  "jalaliMonth9": "阿扎尔月",
  "jalaliMonth10": "达伊月",
  "jalaliMonth11": "巴赫曼月",
- "jalaliMonth12": "埃斯凡德月"
+ "jalaliMonth12": "埃斯凡德月",
+ "hospitalPanelTitle": "医院面板",
+ "viewSite": "查看网站",
+ "doctorPanelTitle": "医生面板"
 }

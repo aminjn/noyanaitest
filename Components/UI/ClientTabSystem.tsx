@@ -38,20 +38,22 @@ const ClientTabSystem = ({
   }, [current, items, setCurrent]);
 
   return (
-    <div className={`${classes.main} ${className}`} style={style}>
-      <nav className={classes.nav}>
+    <div className={`${classes.main} ${className}`} style={style} data-tabs>
+      <nav className={classes.nav} role="tablist">
         {items
           .filter((el) => !el.exclude)
           .map((item) => (
             <button
               type="button"
+              role="tab"
+              aria-selected={current === item.id}
               key={item.id}
               onClick={() => setCurrent(item.id)}
               className={`${classes.navItem} ${
                 current === item.id ? classes.activeItem : ""
               }`}
             >
-              {!!item.icon && <Ixon width="1.5rem">{item.icon}</Ixon>}
+              {!!item.icon && <Ixon width="1.125rem">{item.icon}</Ixon>}
               <span>{item.title}</span>
             </button>
           ))}

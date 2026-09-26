@@ -209,7 +209,9 @@ const DoctorManageShiftsPage = () => {
 
   return (
     <HandleLoading data={!!data} error={error}>
-      {!!data && <Inner defaultValue={data} mutate={mutate} />}
+      {!!data && (
+        <Inner defaultValue={Array.isArray(data) ? data : []} mutate={mutate} />
+      )}
     </HandleLoading>
   );
 };
