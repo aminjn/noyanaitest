@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import useInsuranceLicenseModules from "../Hooks/useInsuranceLicenseModules";
 import LicenseNotCoveredNotice from "./LicenseNotCoveredNotice";
 import { InsuranceDashboardModule } from "../Admin/BaseInsuranceLicense/AdminManageBaseInsuranceLicensesPage";

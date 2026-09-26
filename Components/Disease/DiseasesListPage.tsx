@@ -20,7 +20,7 @@ import SmallAd from "../UI/ListPage/SmallAd";
 import { IDiseaseCategory } from "../Admin/DiseaseCategory/AdminManageDiseaseCategoriesPage";
 import Ixon from "../UI/Ixon";
 import FilterIcon from "../Icons/FilterIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { txsMedium } from "../UI/Typography";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 

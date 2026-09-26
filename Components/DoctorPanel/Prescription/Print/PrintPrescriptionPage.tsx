@@ -1,4 +1,5 @@
 "use client";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import { useParams } from "next/navigation";
 import useSWR from "swr";
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
 });
 
 const PrescrfiptionDocument = ({ node }: { node: DefaultPrescription }) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(LOCALE_NS);
 
   return (
@@ -53,7 +55,7 @@ const PrescrfiptionDocument = ({ node }: { node: DefaultPrescription }) => {
           <View style={styles.lineBig}>
             <Text style={styles.date}>{`${getContent(
               "prescriptionCreationDate"
-            )} : ${new Date(node.createdAt).toLocaleDateString("fa-IR", {
+            )} : ${new Date(node.createdAt).toLocaleDateString(intlTag, {
               month: "long",
               day: "numeric",
               year: "numeric",
@@ -93,7 +95,7 @@ const PrescrfiptionDocument = ({ node }: { node: DefaultPrescription }) => {
               <Text style={styles.line3Item}>{`${getContent(
                 "taminSendDate"
               )} : ${new Date(node.taminStatus.submittedAt).toLocaleDateString(
-                "fa-IR",
+                intlTag,
                 { month: "long", day: "numeric", year: "numeric" }
               )}`}</Text>
             </View>

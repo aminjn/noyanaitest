@@ -1,144 +1,257 @@
 "use client";
-import { MongoDoc } from "@/Components/Hooks/useUser";
-import classes from "./AdminManageTextContentPage.module.css";
-import { ContentKey } from "@/Components/Enums/contentKeys";
-import {
-  contentNamespaces,
-  ContentNamespace,
-} from "@/Components/Enums/contentNamespaces";
-import { namespaceRoutes } from "@/Components/Enums/namespaceRoutes";
+import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
+import classes from "./AdminManageTextContentPage.module.css";
+import { MongoDoc } from "@/Components/Hooks/useUser";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import HandleLoading from "../UI/HandleLoading";
-import { useCallback, useMemo, useState } from "react";
-import Table from "../UI/Table";
-import EditTextContentAgent from "./EditTextContentAgent";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
-import InlineLink from "../UI/InlineLink";
+import useNotification from "@/Components/Hooks/useNotification";
+import Loading from "../UI/Loading";
+import ErrorMessage from "../UI/ErrorMessage";
+import {
+  Locale,
+  locales,
+  localeNames,
+  localeDir,
+  enabledLocales,
+} from "@/Components/i18n/locales";
 
 export type ITextContent = MongoDoc & { [key in ContentKey]: string };
 
-// Reverse index of contentNamespaces: which namespace(s) a given key is
-// scoped to. Built once at module load since contentNamespaces is static.
-const keyNamespaces: Partial<Record<string, ContentNamespace[]>> = {};
-(Object.keys(contentNamespaces) as ContentNamespace[]).forEach((ns) => {
-  contentNamespaces[ns].forEach((key) => {
-    (keyNamespaces[key] ??= []).push(ns);
-  });
-});
+type Messages = Record<string, string>;
+type AllOverrides = Record<Locale, Messages>;
 
-// const LocationDict: Record<Location, string> = {
-//   header: "هدر",
-//   general: "عمومی",
-//   doctorPanel: "داشبور پزشک",
-// };
+const PAGE_SIZE = 40;
 
-const readOnlyKeys = ["singleton", "_id", "__v"];
+// Bundled texts of one language (what the site shows when nothing is
+// overridden), loaded on demand.
+const loadBundled = (locale: Locale): Promise<Messages> =>
+  import(`@/Components/i18n/messages/${locale}.json`).then((m) => m.default as Messages);
 
-const AdminManageTextContentPage = () => {
-  const { data, error, mutate } = useSWR<ITextContent>(
-    `${API}/auto/textcontent`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
-  );
+const Row = ({
+  textKey,
+  bundled,
+  fallback,
+  override,
+  dir,
+  readOnly,
+  onSave,
+}: {
+  textKey: string;
+  bundled?: string;
+  fallback?: string;
+  override?: string;
+  dir: "rtl" | "ltr";
+  readOnly: boolean;
+  onSave: (value: string | null) => Promise<void>;
+}) => {
+  const [value, setValue] = useState(override ?? "");
+  const [saving, setSaving] = useState(false);
+  useEffect(() => setValue(override ?? ""), [override]);
+  const dirty = value !== (override ?? "");
+  const shown = bundled && bundled !== textKey ? bundled : undefined;
 
-  const ready = useMemo<
-    { key: string; val: string; scopes: ContentNamespace[] }[] | null
-  >(() => {
-    if (!data) return null;
-    return Object.entries(data)
-      .map(([key, val]) => ({
-        key,
-        val,
-        scopes: keyNamespaces[key] || [],
-        // location: locationMap[key as ContentKey],
-      }))
-      .filter(({ key }) => !readOnlyKeys.includes(key));
-  }, [data]);
-
-  const hasAccess = useAccessLevel();
-
-  const renderValue = useCallback(
-    (node: { key: string; val: string; scopes: ContentNamespace[] }) => (
-      <EditTextContentAgent
-        readOnly={!hasAccess("TextContent", "update")}
-        mutate={mutate}
-        kay={node.key}
-        value={node.val}
-      />
-    ),
-    [mutate, hasAccess],
-  );
+  const save = async (next: string | null) => {
+    setSaving(true);
+    try {
+      await onSave(next);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
-    <HandleLoading data={!!ready} error={error}>
-      {!!ready && (
-        <Table
-          data={ready}
-          renderer={{
-            key: {
-              name: "کلید",
-              value: (node) => node.key,
-              filter: "Text",
-            },
-            // location: {
-            //   name: "مکان",
-            //   value: (node) => LocationDict[node.location],
-            //   filter: "Multi",
-            // },
-            scopes: {
-              name: "دامنه‌های استفاده",
-              value: (node) =>
-                node.scopes
-                  .map((ns) => (ns === "common" ? "عمومی" : ns))
-                  .join("، "),
-              filter: "Text",
-              component: (node) =>
-                node.scopes.length ? (
-                  <div className={classes.scopes}>
-                    {node.scopes.flatMap((ns) => {
-                      if (ns === "common") {
-                        return (
-                          <span key="common" className={classes.scopeTag}>
-                            عمومی
-                          </span>
-                        );
-                      }
-                      const routes = namespaceRoutes[ns];
-                      if (!routes?.length) {
-                        return (
-                          <span key={ns} className={classes.scopeTag}>
-                            {ns}
-                          </span>
-                        );
-                      }
-                      return routes.map((route) => (
-                        <InlineLink
-                          key={`${ns}-${route}`}
-                          href={route}
-                          target="_blank"
-                          className={classes.scopeTag}
-                        >
-                          {route}
-                        </InlineLink>
-                      ));
-                    })}
-                  </div>
-                ) : (
-                  <span className={classes.noScope}>—</span>
-                ),
-            },
-            val: {
-              name: "مقدار",
-              value: (node) => node.val,
-              filter: "Text",
-              component: renderValue,
-              suppressKeyboardEvents: true,
-            },
-          }}
+    <tr>
+      <td className={classes.keyCell}>
+        <code>{textKey}</code>
+      </td>
+      <td className={classes.baseCell} dir={dir}>
+        {shown ?? <span className={classes.missing}>{fallback ? `↩ ${fallback}` : "—"}</span>}
+      </td>
+      <td className={classes.editCell}>
+        <textarea
+          dir={dir}
+          rows={1}
+          value={value}
+          placeholder={shown || fallback || ""}
+          readOnly={readOnly || saving}
+          onChange={(e) => setValue(e.target.value)}
         />
-      )}
-    </HandleLoading>
+        {!readOnly && (
+          <div className={classes.rowActions}>
+            {dirty && (
+              <button type="button" className={classes.save} onClick={() => save(value)} disabled={saving}>
+                ذخیره
+              </button>
+            )}
+            {override !== undefined && !dirty && (
+              <button type="button" className={classes.reset} onClick={() => save(null)} disabled={saving}>
+                بازگشت به پیش‌فرض
+              </button>
+            )}
+          </div>
+        )}
+      </td>
+    </tr>
+  );
+};
+
+// UI text dictionary, per language. The site's texts come from the bundled
+// messages files; anything saved here overrides them for that language only.
+const AdminManageTextContentPage = () => {
+  const hasAccess = useAccessLevel();
+  const pushNotification = useNotification();
+  const [locale, setLocale] = useState<Locale>("fa");
+  const [search, setSearch] = useState("");
+  const [onlyEdited, setOnlyEdited] = useState(false);
+  const [onlyMissing, setOnlyMissing] = useState(false);
+  const [page, setPage] = useState(1);
+  const [bundled, setBundled] = useState<Messages | null>(null);
+  const [english, setEnglish] = useState<Messages>({});
+
+  const { data: overrides, error, mutate } = useSWR<AllOverrides>(
+    `${API}/admin/texts`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    setBundled(null);
+    Promise.all([loadBundled(locale), loadBundled("en")]).then(([own, en]) => {
+      if (cancelled) return;
+      setBundled(own);
+      setEnglish(en);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
+
+  useEffect(() => setPage(1), [locale, search, onlyEdited, onlyMissing]);
+
+  const keys = useMemo(() => {
+    if (!bundled) return [];
+    const own = overrides?.[locale] || {};
+    const term = search.trim().toLowerCase();
+    return Object.keys({ ...english, ...bundled })
+      .filter((key) => !onlyEdited || own[key] !== undefined)
+      .filter((key) => !onlyMissing || !bundled[key] || bundled[key] === key)
+      .filter(
+        (key) =>
+          !term ||
+          key.toLowerCase().includes(term) ||
+          (bundled[key] || "").toLowerCase().includes(term) ||
+          (own[key] || "").toLowerCase().includes(term),
+      )
+      .sort();
+  }, [bundled, english, overrides, locale, search, onlyEdited, onlyMissing]);
+
+  const readOnly = !hasAccess("TextContent", "update");
+  const pages = Math.max(1, Math.ceil(keys.length / PAGE_SIZE));
+  const visible = keys.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const editedCount = Object.keys(overrides?.[locale] || {}).length;
+
+  const saveText = async (key: string, value: string | null) => {
+    try {
+      await fetcher({ url: `${API}/admin/texts`, method: "PATCH", payload: { locale, key, value } });
+      await mutate();
+      pushNotification(value === null ? "به متن پیش‌فرض برگشت" : "ذخیره شد", "Success");
+    } catch (err) {
+      pushNotification((err as Error).message, "Error");
+    }
+  };
+
+  return (
+    <div className={classes.main}>
+      <header className={classes.header}>
+        <h1 className={classes.title}>لغت‌نامه</h1>
+        <p className={classes.subtitle}>
+          متن‌های سایت برای هر زبان. متن پیش‌فرض همراه برنامه است؛ هر چیزی این‌جا ذخیره کنید
+          فقط برای همان زبان جایگزین متن پیش‌فرض می‌شود.
+        </p>
+      </header>
+
+      <div className={classes.langs}>
+        {locales.map((code) => (
+          <button
+            key={code}
+            type="button"
+            className={`${classes.lang} ${code === locale ? classes.langActive : ""}`}
+            onClick={() => setLocale(code)}
+          >
+            <span>{localeNames[code]}</span>
+            {!enabledLocales.includes(code) && <span className={classes.off}>غیرفعال</span>}
+          </button>
+        ))}
+      </div>
+
+      <section className={classes.card}>
+        <div className={classes.toolbar}>
+          <input
+            className={classes.search}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="جستجو در کلید یا متن..."
+          />
+          <label className={classes.check}>
+            <input type="checkbox" checked={onlyEdited} onChange={(e) => setOnlyEdited(e.target.checked)} />
+            فقط ویرایش‌شده‌ها ({editedCount})
+          </label>
+          <label className={classes.check}>
+            <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} />
+            فقط بدون ترجمه
+          </label>
+          <span className={classes.count}>{keys.length} متن</span>
+        </div>
+
+        {error ? (
+          <ErrorMessage message={error.message} />
+        ) : !overrides || !bundled ? (
+          <Loading />
+        ) : (
+          <>
+            <div className={classes.tableWrap}>
+              <table className={classes.table}>
+                <thead>
+                  <tr>
+                    <th>کلید</th>
+                    <th>{`متن پیش‌فرض (${localeNames[locale]})`}</th>
+                    <th>متن جایگزین</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visible.map((key) => (
+                    <Row
+                      key={`${locale}:${key}`}
+                      textKey={key}
+                      bundled={bundled[key]}
+                      fallback={locale !== "en" ? english[key] : undefined}
+                      override={overrides[locale]?.[key]}
+                      dir={localeDir(locale)}
+                      readOnly={readOnly}
+                      onSave={(value) => saveText(key, value)}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {pages > 1 && (
+              <div className={classes.pagination}>
+                <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+                  قبلی
+                </button>
+                <span>{`صفحه ${page} از ${pages}`}</span>
+                <button type="button" disabled={page >= pages} onClick={() => setPage((p) => p + 1)}>
+                  بعدی
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </section>
+    </div>
   );
 };
 

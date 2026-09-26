@@ -11,7 +11,7 @@ import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import { FaqItem } from "../Home/HomeFaqs";
 import { tbaseMedium, tsmMedium, txlDemiBold } from "../UI/Typography";
 import BreadCrump from "../UI/BreadCrump";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 const NS: ContentNamespace[] = ["common", "faqPage"];
 

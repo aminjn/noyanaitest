@@ -10,7 +10,7 @@ import ChatSidebarItem from "./ChatSidebarItem";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import XMarkIcon from "../Icons/XMarkIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";

@@ -5,7 +5,7 @@ import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
 import Badge from "../UI/Badge";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import ChevronIcon from "../Icons/ChevronIcon";

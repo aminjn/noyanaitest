@@ -29,6 +29,10 @@ const fetcherInner = async <TResult,>({
 }: FethcerArgs): Promise<TResult> => {
   let body: undefined | FormData | string;
   const headers: Record<string, string> = { ..._headers };
+  // Current UI language (set on <html lang> by the root layout), so the
+  // backend can answer in it - error messages, translated content.
+  if (typeof document !== "undefined" && document.documentElement.lang)
+    headers["x-locale"] ??= document.documentElement.lang;
   if (payload) {
     switch (bodyParser) {
       case "JSON": {

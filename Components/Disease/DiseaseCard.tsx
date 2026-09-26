@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
 import classes from "./DiseaseCard.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";

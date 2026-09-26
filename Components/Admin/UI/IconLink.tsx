@@ -2,7 +2,7 @@ import classes from "./IconLink.module.css";
 import { ReactNode } from "react";
 import { IconButtonVariant } from "./IconButton";
 import { WithStyleProps } from "./Loading";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "@/Components/UI/Ixon";
 
 const IconLink = ({

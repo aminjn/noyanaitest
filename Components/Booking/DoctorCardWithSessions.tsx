@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import Image from "next/image";
 import {
   IDoctorAvailability,
@@ -10,7 +11,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
 import HandThumUpIcon from "../Icons/HandThumbUpIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
 import StarIcon from "../Icons/StarIcon";
 import LocationIcon from "../Icons/LocationIcon";
@@ -34,6 +35,7 @@ const NS: ContentNamespace[] = ["common", "booking"];
 // checkout step can never complete in production. See
 // AUDIT/FIXES_TODO.md F-01.
 export const Sessions = ({ node }: { node: IDoctorProfile }) => {
+  const intlTag = useIntlLocale();
   const { data, error } = useSWR<IDoctorAvailability[]>(
     `${API}/public/dr/${node._id}/availability`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -109,12 +111,12 @@ export const Sessions = ({ node }: { node: IDoctorProfile }) => {
                     }}
                   >
                     <span className={classes.weekDay}>
-                      {date.toLocaleDateString("fa-IR", {
+                      {date.toLocaleDateString(intlTag, {
                         weekday: "long",
                       })}
                     </span>
                     <span>
-                      {date.toLocaleDateString("fa-IR", {
+                      {date.toLocaleDateString(intlTag, {
                         month: "long",
                         day: "numeric",
                       })}

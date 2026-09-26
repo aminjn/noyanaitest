@@ -2,6 +2,7 @@ import { cache } from "react";
 import type { Metadata } from "next";
 import { getPublicData } from "./getPublicData";
 import { FilePath } from "../config";
+import { localeAlternates, localizeCanonical } from "../i18n/alternates";
 import {
   IPageMeta,
   PageMetaListResourceType,
@@ -40,8 +41,9 @@ const toMetadata = (data?: IPageMeta | null): Metadata => {
     title: data.title || undefined,
     description: data.description || undefined,
     keywords: data.keywords?.length ? data.keywords : undefined,
+    // Setting alternates here replaces the layout's, so carry hreflang too.
     alternates: data.canonicalUrl
-      ? { canonical: data.canonicalUrl }
+      ? { canonical: localizeCanonical(data.canonicalUrl), ...localeAlternates() }
       : undefined,
     robots:
       data.noIndex || data.noFollow

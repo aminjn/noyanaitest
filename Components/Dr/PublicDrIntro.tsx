@@ -5,7 +5,7 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
 import CupIcon from "../Icons/CupIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";

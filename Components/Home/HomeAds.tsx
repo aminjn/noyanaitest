@@ -5,7 +5,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomeAds.module.css";
 import HostedImage from "../UI/HostedImage";
 import mobileImage from "./mobile.png";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import { t3xlDemiBold, tlgDemiBold, tmdMedium } from "../UI/Typography";

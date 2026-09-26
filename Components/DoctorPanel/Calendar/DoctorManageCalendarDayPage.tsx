@@ -1,4 +1,5 @@
 "use client";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import useSWR from "swr";
 import classes from "./DoctorManageCalendarDayPage.module.css";
@@ -32,6 +33,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 const NS: ContentNamespace[] = ["common", "doctorPanelCalendar"];
 
 const DoctorManageCalendarDayPage = () => {
+  const intlTag = useIntlLocale();
   const params = useParams<{ stamp: string }>();
   const { data, error, mutate } = useSWR<
     IDoctorSession<{ Booking: { User: true }; Clinic: Record<never, never> }>[]
@@ -84,7 +86,7 @@ const DoctorManageCalendarDayPage = () => {
           }
           title={`${getContent("timeLine")} ${new Date(
             Number(params.stamp),
-          ).toLocaleDateString("fa-IR", {
+          ).toLocaleDateString(intlTag, {
             month: "long",
             day: "numeric",
             year: "numeric",

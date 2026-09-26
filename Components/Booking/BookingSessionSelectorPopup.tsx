@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import {
   IDoctorAvailability,
@@ -25,7 +26,7 @@ import useSWR from "swr";
 import { API } from "../config";
 import Loading from "../Admin/UI/Loading";
 import { fetcher } from "../helpers/fetcher";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/Components/i18n/navigation";
 import ChevronIcon from "../Icons/ChevronIcon";
 
 const NS: ContentNamespace[] = ["common", "bookingSessionSelectorPopup"];
@@ -89,24 +90,25 @@ const DayBadge = ({
   setSelectedDay: Dispatch<SetStateAction<Date>>;
   selectedDay: Date;
 }) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
 
   return (
     <div
       onClick={() => setSelectedDay(shiftDateFromNow(index))}
-      className={`${classes.dayTab} ${selectedDay.toLocaleDateString("fa-IR") === shiftDateFromNow(index).toLocaleDateString("fa-IR") ? classes.activeTab : ""}`}
+      className={`${classes.dayTab} ${selectedDay.toLocaleDateString(intlTag) === shiftDateFromNow(index).toLocaleDateString(intlTag) ? classes.activeTab : ""}`}
     >
       <span className={tbaseDemiBold}>
         {index === 0
           ? getContent("today")
           : index === 1
             ? getContent("tomorrow")
-            : shiftDateFromNow(index).toLocaleString("fa-IR", {
+            : shiftDateFromNow(index).toLocaleString(intlTag, {
                 weekday: "long",
               })}
       </span>
       <span className={tsmRegular}>
-        {shiftDateFromNow(index).toLocaleString("fa-IR", {
+        {shiftDateFromNow(index).toLocaleString(intlTag, {
           month: "long",
           day: "numeric",
         })}

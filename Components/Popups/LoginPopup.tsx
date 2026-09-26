@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Button from "../UI/Button";
 import LogoLong from "../UI/LogoLong";
 import MobileInput from "../UI/MobileInput";

@@ -57,7 +57,7 @@
 .option {
   padding-block: 0.25rem;
   padding-inline: 0.625rem;
-  text-align: right;
+  text-align: start;
   color: var(--black);
 }
 

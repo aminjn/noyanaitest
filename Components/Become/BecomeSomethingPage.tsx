@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import { becomeOrgList } from "./becomeOrgs";

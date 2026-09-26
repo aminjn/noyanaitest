@@ -10,7 +10,7 @@ import { WithStyleProps } from "../Layout/Layout";
 import Ixon from "./Ixon";
 import LoadingIcon from "../Icons/LoadingIcon";
 import { tbaseMedium, tmdMedium, tsmMedium, txsMedium } from "./Typography";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 export const buttonVariants = [
   "Primary",

@@ -19,7 +19,7 @@ import ReportProblemPopup from "./ReportProblemPopup";
 import EditIcon from "../Icons/EditIcon";
 import ShareIcon from "../Icons/ShareIcon";
 import Bitches from "./Bitches/Bitches";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import LocationIcon from "../Icons/LocationIcon";
 import PlusIcon from "../Icons/PlusIcon";
 import Button from "../UI/Button";

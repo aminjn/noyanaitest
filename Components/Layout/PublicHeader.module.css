@@ -90,8 +90,8 @@
   height: 2px;
   border-radius: 100dvw;
   background-color: currentColor;
-  left: 0;
-  right: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   transform: scaleX(0);
   opacity: 0;
   transition: all var(--transTime) ease-in-out;
@@ -161,7 +161,7 @@
 .categoriesDropdown {
   position: absolute;
   top: calc(100% + 0.875rem);
-  right: 0;
+  inset-inline-start: 0;
   display: flex;
   align-items: stretch;
   gap: 0.5rem;

@@ -6,7 +6,7 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HostedImage from "@/Components/UI/HostedImage";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 const AdvertisementItem = ({
   id,

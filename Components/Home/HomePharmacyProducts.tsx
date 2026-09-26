@@ -5,7 +5,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomePharmacyProducts.module.css";
 import Ixon from "../UI/Ixon";
 import CrownIcon from "../Icons/CrownIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import DoubleChevronIcon from "../Icons/DoubleChevronIcon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import PillIcon from "../Icons/PillIcon";

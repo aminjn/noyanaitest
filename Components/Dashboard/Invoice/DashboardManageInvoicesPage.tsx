@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import useSWR from "swr";
 import classes from "./DashboardManageinvoicesPagee.module.css";
 import { API } from "@/Components/config";

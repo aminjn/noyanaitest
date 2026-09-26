@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import { Dispatch, Fragment, SetStateAction } from "react";
 import classes from "./DoctorBookingFilters.module.css";
 import { BookingCommon, DoctorBookingOptions } from "./BookingPage2";
@@ -60,6 +61,7 @@ export const useDoctorBookingFilterProps = ({
   options: DoctorBookingOptions;
   setOptions: Dispatch<SetStateAction<DoctorBookingOptions>>;
 }) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
@@ -233,7 +235,7 @@ export const useDoctorBookingFilterProps = ({
             <BookingSelectedFilter
               onClick={() => setOptions((prev) => ({ ...prev, date: null }))}
             >
-              {`${options.date.start ? dateToString({ value: options.date.start }) : getContent("unset")}-${options.date.end ? dateToString({ value: options.date.end }) : getContent("unset")}`}
+              {`${options.date.start ? dateToString({ value: options.date.start, intlTag }) : getContent("unset")}-${options.date.end ? dateToString({ value: options.date.end, intlTag }) : getContent("unset")}`}
             </BookingSelectedFilter>
           )}
           {!!options.time && (

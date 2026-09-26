@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import Image from "next/image";
 import {
   IDoctorAvailability,
@@ -39,7 +40,7 @@ import { BookingPageDoctor, BookingView } from "./BookingPage2";
 import ReportProblemPopup from "./ReportProblemPopup";
 import ScoreBadge from "./ScoreBadge";
 import HostedImage from "../UI/HostedImage";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import VerifiedImage from "../UI/VerifiedImage";
 import useProgress from "../Hooks/useProgress";
 
@@ -58,6 +59,7 @@ const DayCard = ({
   date: Date;
   node: IDoctorProfile<{ Availabilities: Record<never, never> }>;
 }) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
@@ -127,7 +129,7 @@ const DayCard = ({
         {isToday && getContent("today")}
         {isTomorrow && getContent("tomorrow")}
         {isLater &&
-          new Date(date).toLocaleString("fa-IR", {
+          new Date(date).toLocaleString(intlTag, {
             month: "long",
             day: "numeric",
           })}

@@ -31,7 +31,7 @@ import usePopup from "../Hooks/usePopup";
 import AuthPopup from "../Popups/AuthPopup";
 import Act from "../UI/Act";
 import Pagination from "../UI/Pagination";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";

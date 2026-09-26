@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
+import { useMemo } from "react";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import useSWR from "swr";
 import classes from "./DoctorDashboard.module.css";
 import { API } from "@/Components/config";
@@ -55,13 +57,11 @@ type DoctorDashboardData = {
   setup: { key: string; done: boolean }[] | null;
 };
 
-const num = new Intl.NumberFormat("fa-IR");
-
-// minutes from midnight -> "۰۹:۳۰"
-const time = (minutes: number) =>
-  `${num.format(Math.floor(minutes / 60)).padStart(2, "۰")}:${num
-    .format(minutes % 60)
-    .padStart(2, "۰")}`;
+// minutes from midnight -> "09:30" in the current language's digits
+const formatTime = (num: Intl.NumberFormat, minutes: number) => {
+  const two = (n: number) => num.format(n).padStart(2, num.format(0));
+  return `${two(Math.floor(minutes / 60))}:${two(minutes % 60)}`;
+};
 
 const statusKeys: Record<string, ContentKey> = {
   pending: "reservationStatusPending",
@@ -122,6 +122,9 @@ const Tile = ({
 
 const DoctorDashboard = () => {
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const time = (minutes: number) => formatTime(num, minutes);
   const { data, error } = useSWR<DoctorDashboardData>(
     `${API}/doctor/dashboard`,
     (url: string) => fetcher({ url }).then((res) => res.data),

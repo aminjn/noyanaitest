@@ -17,7 +17,7 @@ import {
   tbaseMedium,
   txsDemiBold,
 } from "../UI/Typography";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "insuranceCard"];

@@ -21,7 +21,7 @@ import SendIcon from "../Icons/SendIcon";
 import useForm from "../Hooks/useForm";
 import Form from "../UI/Form";
 import CloseIcon from "../Icons/CloseIcon";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useAnimateOnScroll from "../Hooks/useAnimateOnScroll";
 import CheckIcon from "../Icons/CheckIcon";
 import DoubleCheckIcon from "../Icons/DoubleCheckIcon";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
 import LogoLong from "../UI/LogoLong";
 import classes from "./PublicFooter.module.css";

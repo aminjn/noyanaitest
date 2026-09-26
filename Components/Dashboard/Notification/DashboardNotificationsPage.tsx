@@ -2,8 +2,8 @@
 
 import { Fragment, useState } from "react";
 import useSWR, { mutate as globalMutate } from "swr";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "@/Components/i18n/Link";
+import { usePathname } from "@/Components/i18n/navigation";
 import classes from "./DashboardNotificationsPage.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";

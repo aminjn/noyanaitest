@@ -33,7 +33,7 @@
 
 .blobStart {
   position: absolute;
-  left: -2.8125rem;
+  inset-inline-end: -2.8125rem;
   top: -2.25rem;
   width: 12rem;
   height: 12rem;
@@ -44,7 +44,7 @@
 
 .blobEnd {
   position: absolute;
-  right: -2.9375rem;
+  inset-inline-start: -2.9375rem;
   top: -1.3125rem;
   width: 10rem;
   height: 10rem;
@@ -55,7 +55,7 @@
 
 .close {
   position: absolute;
-  left: 0.8125rem;
+  inset-inline-end: 0.8125rem;
   top: 0.875rem;
   z-index: 1;
   display: flex;

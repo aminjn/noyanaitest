@@ -14,7 +14,7 @@ import Ixon from "@/Components/UI/Ixon";
 import MenuIcon from "@/Components/Icons/MenuIcon";
 import IconButton from "./IconButton";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/Components/i18n/navigation";
 
 const WithTitle = ({
   children,

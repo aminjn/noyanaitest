@@ -106,7 +106,7 @@
 
 .moreSessions {
   color: var(--primary);
-  text-align: right;
+  text-align: start;
   width: 100%;
   text-decoration: underline;
   font-weight: 400;

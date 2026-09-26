@@ -41,11 +41,11 @@
 }
 
 .title {
-  text-align: right;
+  text-align: start;
 }
 
 .description {
-  text-align: right;
+  text-align: start;
   color: #ffffffcc;
 }
 

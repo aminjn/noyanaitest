@@ -8,7 +8,7 @@ import HeartRate from "./_Assets/HeartRate.png";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 const NS: ContentNamespace[] = ["common", "dashboardUserVitals"];
 

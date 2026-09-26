@@ -9,7 +9,7 @@ import useParaClinic from "../Hooks/useParaClinic";
 import useHospital from "../Hooks/useHospital";
 import useInsurance from "../Hooks/useInsurance";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 
 const usePanelsMap = () => {
   const { user } = useUser();

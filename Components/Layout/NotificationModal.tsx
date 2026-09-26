@@ -1,5 +1,5 @@
 import useSWR, { mutate as globalMutate } from "swr";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import classes from "./NotificationModal.module.css";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";

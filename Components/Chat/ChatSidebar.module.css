@@ -113,7 +113,7 @@
 .fab {
   position: absolute;
   bottom: 1.5rem;
-  right: 1.5rem;
+  inset-inline-start: 1.5rem;
   width: 3.75rem;
   height: 3.75rem;
   flex-shrink: 0;

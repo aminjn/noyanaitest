@@ -16,7 +16,7 @@ import ProductCart from "./ProductCart";
 import CartableNodePage from "./Cartable/CartabaleNodePage";
 import Image from "next/image";
 import { FilePath } from "../config";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { t2xsRegular, txsDemiBold, txsMedium } from "../UI/Typography";
 import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";

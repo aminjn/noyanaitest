@@ -1,4 +1,5 @@
 "use client";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useParams, useSearchParams } from "next/navigation";
 import classes from "./FinalizeBookingPage.module.css";
 import useSWR from "swr";
@@ -609,6 +610,7 @@ const BookingFlowSidebar = ({
   start?: number;
   end?: number;
 }) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
 
   return (
@@ -642,7 +644,7 @@ const BookingFlowSidebar = ({
           />
           <Pair
             title={getContent("sessionTime")}
-            value={`${date.toLocaleDateString("fa-IR", { month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
+            value={`${date.toLocaleDateString(intlTag, { month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
           />
         </div>
       )}

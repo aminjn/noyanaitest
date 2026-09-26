@@ -22,7 +22,7 @@ import HeadphoneIcon from "../Icons/HeadphoneIcon";
 import Bell01Icon from "../Icons/Bell01Icon";
 import LogoutIcon from "../Icons/LogoutIcon";
 import LogoutPopup from "../Popups/LogoutPopup";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
 import MobileUserButton from "./MobileUserButton";
 import useUserMenus from "./useUserMenus";

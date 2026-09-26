@@ -1,4 +1,5 @@
 "use client";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import classes from "./BookingSidebar.module.css";
@@ -61,6 +62,7 @@ const shiftDateFromNow = (shift: number) => {
 const DAYS_SHOWN = 7;
 
 const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
   const { setPopup } = usePopup();
   const { user } = useUser();
@@ -310,8 +312,8 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           <div className={classes.dateRow}>
             {days.map((date, index) => {
               const isActive =
-                selectedDay.toLocaleDateString("fa-IR") ===
-                date.toLocaleDateString("fa-IR");
+                selectedDay.toLocaleDateString(intlTag) ===
+                date.toLocaleDateString(intlTag);
               const count = availableCountByDay[getSessionDateKey(date)] || 0;
               return (
                 <button
@@ -327,10 +329,10 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
                       ? getContent("today")
                       : index === 1
                         ? getContent("tomorrow")
-                        : date.toLocaleString("fa-IR", { weekday: "long" })}
+                        : date.toLocaleString(intlTag, { weekday: "long" })}
                   </span>
                   <span className={classes.dayCardDate}>
-                    {date.toLocaleString("fa-IR", {
+                    {date.toLocaleString(intlTag, {
                       month: "long",
                       day: "numeric",
                     })}

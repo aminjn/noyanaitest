@@ -10,7 +10,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import Badge from "../UI/Badge";
 import { tbaseMedium, txsRegular } from "../UI/Typography";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "hospitalCard"];

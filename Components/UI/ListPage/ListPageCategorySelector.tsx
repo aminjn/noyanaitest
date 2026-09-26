@@ -2,7 +2,7 @@ import FilterIcon from "@/Components/Icons/FilterIcon";
 import Ixon from "../Ixon";
 import classes from "./ListPageCategorySelector.module.css";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { txsMedium } from "../Typography";
 import { WithStyleProps } from "@/Components/Layout/Layout";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";

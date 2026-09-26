@@ -2,7 +2,7 @@ import Image from "next/image";
 import { IDrug } from "../Admin/Disease/AdminManageDiseasesPage";
 import classes from "./DrugCard.module.css";
 import { imagePath } from "../helpers/imagepath";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import PillIcon from "../Icons/PillIcon";

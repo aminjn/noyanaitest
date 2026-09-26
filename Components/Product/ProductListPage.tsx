@@ -27,7 +27,7 @@ import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
 import { t2xsMedium, tsmBold, txsDemiBold } from "../UI/Typography";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 
 const NS: ContentNamespace[] = ["common", "products"];
 

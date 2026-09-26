@@ -4,7 +4,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./SymptomCard.module.css";
 import { imagePath } from "../helpers/imagepath";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import VirusIcon from "../Icons/VirusIcon";
 import Badge from "../UI/Badge";
 import Ixon from "../UI/Ixon";

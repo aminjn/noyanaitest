@@ -1,4 +1,5 @@
 "use client";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import useSWR from "swr";
 import classes from "./DoctorManageSchedulePage.module.css";
@@ -44,6 +45,7 @@ type ScheduleEntry =
     };
 
 const DoctorManageSchedulePage = () => {
+  const intlTag = useIntlLocale();
   const { data, error } = useSWR<{
     bookings: IScheduleBooking[];
     reservations: IScheduleReservation[];
@@ -88,7 +90,7 @@ const DoctorManageSchedulePage = () => {
       .map(([key, entries]) => ({
         key,
         entries: entries.sort((a, b) => a.start - b.start),
-        label: new Date(key).toLocaleDateString("fa-IR", {
+        label: new Date(key).toLocaleDateString(intlTag, {
           weekday: "long",
           day: "numeric",
           month: "long",

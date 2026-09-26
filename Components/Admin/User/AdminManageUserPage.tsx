@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import classes from "./AdminManageUserPage.module.css";

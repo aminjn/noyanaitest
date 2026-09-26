@@ -2,7 +2,7 @@ import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./CardWithSession.module.css";
 import HostedImage from "../UI/HostedImage";
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
 import HandThumUpIcon from "../Icons/HandThumbUpIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";

@@ -157,6 +157,32 @@ body {
   background-color: var(--backCol);
 }
 
+/* The bundled IRANYekan build ("FaNum") draws Persian digits for 0-9.
+   Outside Persian, take the digits from a system font instead. */
+@font-face {
+  font-family: "LatinDigits";
+  src: local("Segoe UI"), local("Roboto"), local("Helvetica Neue"),
+    local("Arial"), local("DejaVu Sans"), local("Noto Sans");
+  unicode-range: U+0030-0039;
+}
+
+/* Direction-bound icons (arrows drawn for RTL) mirror on LTR pages. */
+html[dir="ltr"] .dirFlip {
+  scale: -1 1;
+}
+
+html:not([lang="fa"]) body,
+body [lang]:not([lang="fa"]) {
+  font-family:
+    "LatinDigits",
+    var(--fontFa),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    sans-serif;
+}
+
 a {
   color: inherit;
   text-decoration: none;

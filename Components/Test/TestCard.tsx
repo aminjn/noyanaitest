@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { ITest } from "../Admin/Test/AdminManageTestsPage";
 import FlaskIcon from "../Icons/FlaskIcon";
 import Badge from "../UI/Badge";

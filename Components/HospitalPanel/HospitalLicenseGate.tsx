@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/Components/i18n/navigation";
 import useHospitalLicenseModules from "../Hooks/useHospitalLicenseModules";
 import LicenseNotCoveredNotice from "./LicenseNotCoveredNotice";
 import { HospitalDashboardModule } from "../Admin/BaseHospitalLicense/AdminManageBaseHospitalLicensesPage";

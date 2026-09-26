@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/Components/i18n/Link";
 import { useState } from "react";
 import classes from "./WizardSidebarItem.module.css";
 import { IBotChat } from "./useBotChats";
