@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import FormatDate from "@/Components/UI/FormatDate";
 import classes from "./DoctorCalendarDay.module.css";
 import useSWR from "swr";
@@ -109,6 +110,7 @@ const DoctorCalendarDay = ({
   selected?: boolean;
   onSelect: () => void;
 }) => {
+  const intlTag = useIntlLocale();
   const { data } = useSWR<IDoctorSession<{ Booking: Record<string, never> }>[]>(
     isOut ? null : `${API}/doctor/calendar/${getSessionDateKey(stamp)}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -147,7 +149,7 @@ const DoctorCalendarDay = ({
       )}
       <div className={classes.info}>
         <span className={classes.stamp}>
-          {new Date(stamp).toLocaleDateString("fa-IR", {
+          {new Date(stamp).toLocaleDateString(intlTag, {
             month: "long",
             day: "numeric",
           })}

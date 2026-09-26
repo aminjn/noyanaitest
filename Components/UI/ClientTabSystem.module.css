@@ -14,8 +14,8 @@
   position: absolute;
   content: "";
   display: block;
-  left: 0;
-  right: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   bottom: 0;
   height: 1px;
   background-color: var(--gray8);

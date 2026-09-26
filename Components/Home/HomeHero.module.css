@@ -181,7 +181,7 @@
 
 .title {
   color: var(--gray12);
-  text-align: right;
+  text-align: start;
 }
 
 .highlightPrimary {
@@ -194,7 +194,7 @@
 
 .legend {
   color: var(--gray8);
-  text-align: right;
+  text-align: start;
   width: 100%;
 }
 
@@ -248,7 +248,7 @@
   background-color: transparent;
   outline: none;
   color: var(--gray10);
-  text-align: right;
+  text-align: start;
 }
 
 .actions {

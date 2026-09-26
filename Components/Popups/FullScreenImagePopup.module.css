@@ -10,5 +10,5 @@
 .action {
   position: absolute;
   top: 1rem;
-  right: 1rem;
+  inset-inline-start: 1rem;
 }

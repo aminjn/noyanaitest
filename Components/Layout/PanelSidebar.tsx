@@ -82,6 +82,7 @@ const LinkItem = ({
 
 const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
   const { user } = useUser();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   if (!user) return <Loading />;
   return (
@@ -97,7 +98,7 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
           />
         </div>
         <div className={classes.userDetails}>
-          <span className={classes.userName}>{user.username || "کاربر"}</span>
+          <span className={classes.userName}>{user.username || getContent("user")}</span>
           <span className={classes.userPhone}>{user.phone}</span>
         </div>
         <Ixon width="1.5rem" style={{ transform: "rotateZ(90deg)" }}>

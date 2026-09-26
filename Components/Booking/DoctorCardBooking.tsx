@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import Image from "next/image";
 import {
   IDoctorAvailability,
@@ -58,6 +59,7 @@ const DayCard = ({
   date: Date;
   node: IDoctorProfile<{ Availabilities: Record<never, never> }>;
 }) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
@@ -127,7 +129,7 @@ const DayCard = ({
         {isToday && getContent("today")}
         {isTomorrow && getContent("tomorrow")}
         {isLater &&
-          new Date(date).toLocaleString("fa-IR", {
+          new Date(date).toLocaleString(intlTag, {
             month: "long",
             day: "numeric",
           })}

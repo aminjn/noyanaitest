@@ -61,7 +61,7 @@
 
 .itemName {
   color: var(--gray13);
-  text-align: right;
+  text-align: start;
 }
 
 .rowFooter {

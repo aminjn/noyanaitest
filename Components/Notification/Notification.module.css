@@ -42,7 +42,7 @@
 .icon {
   width: 1.5rem;
   display: flex;
-  margin-left: 0.5rem;
+  margin-inline-end: 0.5rem;
   justify-content: center;
   align-items: center;
 }
@@ -74,8 +74,8 @@
 .bar {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   height: 3px;
 }
 
@@ -84,7 +84,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-end: 0;
   background-color: var(--white);
 }
 

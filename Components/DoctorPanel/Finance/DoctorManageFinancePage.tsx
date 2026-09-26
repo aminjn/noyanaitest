@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import useSWR from "swr";
 import classes from "./DoctorManageFinancePage.module.css";
 import { API } from "@/Components/config";
@@ -40,16 +41,18 @@ type DoctorFinance = {
   transactions: { items: FinanceTransaction[]; total: number; page: number; limit: number };
 };
 
-const num = new Intl.NumberFormat("fa-IR");
-const monthLabel = new Intl.DateTimeFormat("fa-IR", { month: "long" });
-const dateTime = new Intl.DateTimeFormat("fa-IR", {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
+const makeFormats = (tag: string) => ({
+  num: new Intl.NumberFormat(tag),
+  monthLabel: new Intl.DateTimeFormat(tag, { month: "long" }),
+  dateTime: new Intl.DateTimeFormat(tag, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+  shortDate: new Intl.DateTimeFormat(tag, { month: "long", day: "numeric" }),
 });
-const shortDate = new Intl.DateTimeFormat("fa-IR", { month: "long", day: "numeric" });
 
 const Tile = ({
   icon,
@@ -83,6 +86,8 @@ const Tile = ({
 
 const DoctorManageFinancePage = () => {
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const { num, monthLabel, dateTime, shortDate } = useMemo(() => makeFormats(intlTag), [intlTag]);
   const [page, setPage] = useState(1);
   const [hover, setHover] = useState<number | null>(null);
 

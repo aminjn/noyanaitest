@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import { Fragment } from "react";
 import { WithStyleProps } from "../Layout/Layout";
 import classes from "./BreadCrump.module.css";
@@ -18,6 +19,7 @@ const BreadCrump = ({
 }: WithStyleProps<{
   trail: BreadCrumpTrail;
 }>) => {
+  const intlTag = useIntlLocale();
   const getContent = useScopedLocale(LOCALE_NS);
 
   const { hours, minutes } = useTime();
@@ -38,13 +40,15 @@ const BreadCrump = ({
         ))}
       </nav>
       <div className={classes.rest}>
-        <span
-          className={classes.time}
-        >{`${minutes} : ${hours} - ${new Date().toLocaleDateString("fa-IR", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        })}`}</span>
+        <span className={classes.time}>
+          {/* Isolated LTR so hours:minutes reads the same in RTL locales. */}
+          <bdi dir="ltr">{`${hours} : ${minutes}`}</bdi>
+          {` - ${new Date().toLocaleDateString(intlTag, {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}`}
+        </span>
         <span className={classes.online}>
           <span className={classes.flash}></span>
           <span>{getContent("online")}</span>

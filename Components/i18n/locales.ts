@@ -91,9 +91,8 @@ export const localizePath = (path: string, locale: Locale): string => {
 
 export const LOCALE_HEADER = "x-locale";
 
-// Languages that are actually served. A language is added here only once
-// its messages file is translated; until then "/<code>/..." redirects to the
-// Persian page instead of showing an LTR page full of Persian text.
-export const enabledLocales: readonly Locale[] = ["fa"];
+// Languages that are actually served. Drop a code from here to take it
+// offline: "/<code>/..." then redirects to the Persian page instead.
+export const enabledLocales: readonly Locale[] = locales;
 
 export const isEnabledLocale = (locale: Locale) => enabledLocales.includes(locale);

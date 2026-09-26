@@ -10,6 +10,6 @@
   text-decoration: underline solid 4%;
   text-underline-offset: 45%;
   color: var(--primary);
-  text-align: right;
+  text-align: start;
   width: fit-content;
 }

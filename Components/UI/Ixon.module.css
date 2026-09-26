@@ -4,3 +4,7 @@
   align-items: center;
   flex-shrink: 0;
 }
+
+:global(html[dir="ltr"]) .sideways > svg {
+  scale: 1 -1;
+}

@@ -45,7 +45,7 @@
 
 .title {
   color: var(--gray12);
-  text-align: left;
+  text-align: end;
 }
 
 .details {

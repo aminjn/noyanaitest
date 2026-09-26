@@ -10,7 +10,7 @@ import {
 } from "next/navigation";
 import { useContext, useMemo } from "react";
 import LocaleContext from "../Store/LocaleContext";
-import { localizePath, splitLocale } from "./locales";
+import { intlLocale, localizePath, splitLocale } from "./locales";
 
 export const useLocale = () => useContext(LocaleContext).locale;
 
@@ -41,3 +41,7 @@ export const useRouter = () => {
   );
 };
 
+
+// BCP-47 tag for Intl / toLocaleString in the current language ("fa-IR"
+// keeps the Persian calendar and digits; other languages use Gregorian).
+export const useIntlLocale = () => intlLocale[useLocale()];

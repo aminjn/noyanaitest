@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useMemo } from "react";
 import useUser, { IUser } from "../Hooks/useUser";
 import { IChat, getChatParticipantName } from "./ChatSidebar";
@@ -14,6 +15,7 @@ const ChatSidebarItem = ({
 }: {
   chat: IChat<{ Participants: { Identity: Record<never, never> } }>;
 }) => {
+  const intlTag = useIntlLocale();
   const { user } = useUser();
 
   const getContent = useScopedLocale(LOCALE_NS);
@@ -52,7 +54,7 @@ const ChatSidebarItem = ({
       </div>
       <div className={classes.last}>
         <span className={classes.date}>
-          {new Date(chat.createdAt).toLocaleString("fa-IR", {
+          {new Date(chat.createdAt).toLocaleString(intlTag, {
             month: "numeric",
             day: "numeric",
             year: "numeric",

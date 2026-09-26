@@ -1,3 +1,4 @@
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import Act from "@/Components/UI/Act";
@@ -6,6 +7,7 @@ import { Fragment, useState } from "react";
 import useSWR from "swr";
 
 const DoctorTaminTokenManager = () => {
+  const intlTag = useIntlLocale();
   const { data, error } = useSWR<Date>(
     `${API}/doctor/tamin/token`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -20,7 +22,7 @@ const DoctorTaminTokenManager = () => {
         onClick={() => setIsGettingToken(true)}
       >
         {data
-          ? new Date(data).toLocaleString("fa-IR", {
+          ? new Date(data).toLocaleString(intlTag, {
               month: "long",
               year: "numeric",
               day: "numeric",

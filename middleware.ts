@@ -14,8 +14,12 @@ const middleware = async (req: NextRequest) => {
   // Persian. The page tree itself has no locale segment.
   const { locale, path: pathname } = splitLocale(req.nextUrl.pathname);
 
-  // Not translated yet -> the Persian page (no prefix), not a half-done LTR one.
-  if (!isEnabledLocale(locale)) {
+  // Not translated yet -> the Persian page (no prefix), not a half-done LTR
+  // one. The super admin panel is Persian-only as well.
+  const adminKey = process.env.ADMIN_KEY;
+  const isAdmin =
+    !!adminKey && (pathname === `/${adminKey}` || pathname.startsWith(`/${adminKey}/`));
+  if (locale !== "fa" && (!isEnabledLocale(locale) || isAdmin)) {
     const url = req.nextUrl.clone();
     url.pathname = pathname;
     return NextResponse.redirect(url, 307);

@@ -2,6 +2,7 @@ import Link from "@/Components/i18n/Link";
 import LogoLong from "../UI/LogoLong";
 import classes from "./PublicHeader.module.css";
 import UserButton from "./UserButton";
+import LanguageSwitcher from "../i18n/LanguageSwitcher";
 import { usePathname } from "@/Components/i18n/navigation";
 import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
@@ -294,6 +295,7 @@ const PublicHeader = () => {
                 open={() => setOpenModel("notification")}
                 close={() => setOpenModel(null)}
               />
+              <LanguageSwitcher />
               <UserButton />
             </div>
             {!!openModel && (

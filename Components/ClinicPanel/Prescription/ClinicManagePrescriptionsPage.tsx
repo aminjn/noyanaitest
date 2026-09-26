@@ -1,4 +1,5 @@
 "use client";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import { Fragment, useCallback, useState } from "react";
 import classes from "./ClinicManagePrescriptionsPage.module.css";
@@ -25,6 +26,7 @@ type RequestPrescriptionsInput = {
 };
 
 const ClinicManagePrescriptionsPage = () => {
+  const intlTag = useIntlLocale();
   const { data } = useSWR<Date>(`${API}/clinic/tamin/token`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
@@ -60,7 +62,7 @@ const ClinicManagePrescriptionsPage = () => {
         onClick={() => setIsGettinngToken(true)}
       >
         {data
-          ? new Date(data).toLocaleString("fa-IR", {
+          ? new Date(data).toLocaleString(intlTag, {
               month: "long",
               year: "numeric",
               day: "numeric",

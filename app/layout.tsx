@@ -8,8 +8,7 @@ import { ProgressContextProvider } from "@/Components/Store/ProgressContext";
 import { BreadCrumpContextProvider } from "@/Components/Store/BreadCrumpStore";
 import { SockectContextProvider } from "@/Components/Store/SocketContext";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { getMessages } from "@/Components/i18n/getMessages";
 import { headers } from "next/headers";
 import {
   defaultLocale,
@@ -54,14 +53,6 @@ export const viewport: Viewport = {
   themeColor: "#1a80e5",
 };
 
-// Text content for the app chrome that <Layout> renders around every page:
-// "common" (public header/footer, mobile menu, user/cart/notification
-// buttons, auth popups, ...) and "layoutPanel" (dashboard/panel shell and
-// sidebars). Fetched here, server-side, so the chrome is in the initial HTML.
-// The root layout persists across client-side navigations, so this is only
-// fetched once per full page load — pages fetch just their own namespaces.
-const CHROME_NS: ContentNamespace[] = ["common", "layoutPanel"];
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -69,7 +60,7 @@ export default async function RootLayout({
 }>) {
   const headerLocale = headers().get(LOCALE_HEADER);
   const locale = isLocale(headerLocale) ? headerLocale : defaultLocale;
-  const chromeTextContent = await getScopedTextContent(CHROME_NS);
+  const messages = await getMessages(locale);
 
   // No <Suspense> around the tree: it used to be here only because
   // ProgressContextProvider called useSearchParams(), and its fallback
@@ -79,11 +70,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={localeDir(locale)}>
       <body className={font.variable}>
-        <LocaleScopeProvider
-          namespaces={CHROME_NS}
-          initialTextContent={chromeTextContent}
-          locale={locale}
-        >
+        <LocaleScopeProvider initialTextContent={messages} locale={locale}>
           <ProgressContextProvider>
             <NotificationContextProvider>
               <PopupContextProvider>
