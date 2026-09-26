@@ -76,3 +76,9 @@
     display: none;
   }
 }
+
+.actionsCell {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
