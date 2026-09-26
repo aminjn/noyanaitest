@@ -13,7 +13,7 @@ import { Population } from "../Clinic/AdminManageClinicsPage";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
-import FormatDate, { dateToString } from "@/Components/UI/FormatDate";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import Button from "@/Components/UI/Button";
 import CreateForm from "../UI/CreateForm";
@@ -275,48 +275,43 @@ const AdminManageOllamaModels = () => {
             name="AdminManageOllamaModels"
             renderer={{
               name: {
-                name: "Name",
+                name: "نام",
                 value: (node) => node.name,
                 filter: "Text",
               },
-              model: {
-                name: "Model",
-                value: (node) => node.modelName,
-                filter: "Text",
-              },
-              modifiedAt: {
-                name: "Modified At",
-                value: (node) => dateToString({ value: node.modifiedAt }),
-                filter: "Date",
-                component: (node) => <FormatDate value={node.modifiedAt} />,
-              },
-              size: {
-                name: "Size",
-                value: (node) => node.size,
-                filter: "Number",
-              },
-              digest: {
-                name: "Digest",
-                value: (node) => node.digest,
-                filter: "Text",
+              loaded: {
+                name: "بارگذاری شده",
+                value: (node) => booleanToValue[`${!!node.loaded}`],
+                component: (node) => <BooleanToIcon value={!!node.loaded} />,
+                filter: "Set",
               },
               family: {
-                name: "Family",
+                name: "خانواده",
                 value: (node) => node.family,
-                filter: "Text",
+                filter: "Set",
               },
               parameterSize: {
-                name: "Parameter Size",
+                name: "تعداد پارامتر",
                 value: (node) => node.parameterSize,
                 filter: "Text",
               },
-              quantizationLevel: {
-                name: "Quantization Level",
-                value: (node) => node.quantizationLevel,
-                filter: "Text",
+              size: {
+                name: "حجم",
+                value: (node) => node.size,
+                filter: "Number",
+                component: (node) =>
+                  typeof node.size === "number"
+                    ? `${(node.size / 1024 ** 3).toFixed(1)} GB`
+                    : "—",
+              },
+              modifiedAt: {
+                name: "آخرین تغییر",
+                value: (node) => new Date(node.modifiedAt),
+                filter: "Date",
               },
               actions: {
                 name: "عملیات",
+                width: 240,
                 component: (node) => (
                   <TableActions>
                     <ModelLoadToggler

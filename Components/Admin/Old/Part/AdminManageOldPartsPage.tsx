@@ -19,13 +19,13 @@ const AdminManageOldPartsPage = () => {
           data={data}
           name="AdminManageOldParts"
           renderer={{
-            _id: { name: "آی دی", value: (node) => node._id, filter: "Text" },
             name: { name: "نام", value: (node) => node.name, filter: "Text" },
             order: {
               name: "رتبه",
               value: (node) => node.order,
-              filter: "Text",
+              filter: "Number",
             },
+            _id: { name: "شناسه", value: (node) => node._id, filter: "Text" },
           }}
         />
       )}

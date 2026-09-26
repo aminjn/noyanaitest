@@ -198,11 +198,15 @@ const AdminManageAccessLevelsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/accesslevel/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/accesslevel/${node._id}`)}
+                      title="ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteAccessLevel",

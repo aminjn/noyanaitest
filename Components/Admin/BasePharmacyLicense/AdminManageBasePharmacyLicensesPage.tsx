@@ -10,7 +10,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
@@ -109,9 +109,33 @@ const AdminManageBasePharmacyLicensesPage = () => {
       title="پلن های مجوز داروخانه"
       table={({ mutate }) => ({
         displayName: {
-          name: "نام نمایشی",
+          name: "نام پلن",
           value: (node) => node.displayName,
           filter: "Text",
+        },
+        isActive: {
+          name: "فعال",
+          value: (node) => booleanToValue[`${!!node.isActive}`],
+          component: (node) => <BooleanToIcon value={node.isActive} />,
+          filter: "Set",
+        },
+        isPrimary: {
+          name: "پلن اصلی",
+          value: (node) => booleanToValue[`${!!node.isPrimary}`],
+          component: (node) => <BooleanToIcon value={node.isPrimary} />,
+          filter: "Set",
+        },
+        isDefault: {
+          name: "پیش‌فرض",
+          value: (node) => booleanToValue[`${!!node.isDefault}`],
+          component: (node) => <BooleanToIcon value={node.isDefault} />,
+          filter: "Set",
+        },
+        isRecommended: {
+          name: "پیشنهادی",
+          value: (node) => booleanToValue[`${!!node.isRecommended}`],
+          component: (node) => <BooleanToIcon value={node.isRecommended} />,
+          filter: "Set",
         },
         order: {
           name: "رتبه",
@@ -126,20 +150,19 @@ const AdminManageBasePharmacyLicensesPage = () => {
             />
           ),
         },
-        isDefault: {
-          name: "پیش فرض",
-          value: (node) => booleanToValue[`${node.isDefault}`],
-          component: (node) => <BooleanToIcon value={node.isDefault} />,
-          filter: "Set",
-        },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/basePharmacyLicense/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/basePharmacyLicense/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

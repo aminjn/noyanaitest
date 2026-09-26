@@ -134,7 +134,30 @@ const ImagesManager = ({
             name="AdminManageProductImages"
             data={data}
             renderer={{
-              alt: { name: "آلت", value: (node) => node.alt, filter: "Text" },
+              image: {
+                name: "تصویر",
+                value: (node) => node.image,
+                filter: "Text",
+                component: (node) =>
+                  node.image ? (
+                    <InlineLink target="_blank" href={`/files/${node.image}`}>
+                      مشاهده تصویر
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  ),
+              },
+              alt: {
+                name: "متن جایگزین",
+                value: (node) => node.alt,
+                filter: "Text",
+              },
+              isActive: {
+                name: "فعال",
+                filter: "Set",
+                value: (node) => booleanToValue[`${!!node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+              },
               order: {
                 name: "رتبه",
                 value: (node) => node.order,
@@ -148,40 +171,12 @@ const ImagesManager = ({
                   />
                 ),
               },
-              isActive: {
-                name: "فعال",
-                filter: "Set",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-              },
-              image: {
-                name: "نصویر",
-                value: (node) => node.image || "ندارد",
-                filter: "Text",
-                component: (node) => (
-                  <InlineLink target="_blank" href={`/files/${node.image}`}>
-                    مشاهده تصویر
-                  </InlineLink>
-                ),
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      onClick={() =>
-                        setPopup(
-                          "DeleteProductImage",
-                          <DeleteProductImagePopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      <GarbageIcon />
-                    </IconButton>
-                    <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateProductImage",
@@ -194,6 +189,21 @@ const ImagesManager = ({
                       }
                     >
                       <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      variant="Danger"
+                      title="حذف"
+                      onClick={() =>
+                        setPopup(
+                          "DeleteProductImage",
+                          <DeleteProductImagePopup
+                            node={node}
+                            mutate={mutate}
+                          />,
+                        )
+                      }
+                    >
+                      <GarbageIcon />
                     </IconButton>
                   </TableActions>
                 ),

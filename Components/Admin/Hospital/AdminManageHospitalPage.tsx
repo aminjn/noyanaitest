@@ -134,12 +134,15 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
             renderer={{
               clinic: {
                 name: "کلینیک",
-                value: (node) => node.clinic.name,
-                component: (node) => (
-                  <InlineLink href={adminPath(`/${node.clinic._id}`)}>
-                    {node.clinic.name}
-                  </InlineLink>
-                ),
+                value: (node) => node.clinic?.name,
+                component: (node) =>
+                  node.clinic ? (
+                    <InlineLink href={adminPath(`/clinic/${node.clinic._id}`)}>
+                      {node.clinic.name || node.clinic._id}
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  ),
                 filter: "Text",
               },
               actions: {
@@ -147,6 +150,7 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateHospitalClinic",
@@ -160,6 +164,8 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalClinic",

@@ -150,6 +150,12 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
             name="AdminManageCities"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              isActive: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
               order: {
                 name: "رتبه",
                 value: (node) => node.order,
@@ -163,20 +169,19 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
                   />
                 ),
               },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
               actions: {
                 name: "عملیات",
+                width: 150,
                 component: (city) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/city/${city._id}`)}>
+                    <IconLink
+                      href={adminPath(`/city/${city._id}`)}
+                      title="مشاهده"
+                    >
                       <EyeIcon />
                     </IconLink>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateCity",
@@ -187,6 +192,8 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteCity",

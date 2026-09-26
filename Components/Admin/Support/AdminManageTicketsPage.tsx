@@ -12,7 +12,6 @@ import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -38,32 +37,34 @@ const AdminManageTicketsPage = () => {
                 value: (node) => node.title,
                 filter: "Text",
               },
-              submittedBy: {
-                name: "کاربر",
-                value: (node) => node.submittedBy.phone,
-                filter: "Text",
-                component: (node) => (
-                  <InlineLink
-                    href={adminPath(`/user/${node.submittedBy._id}`)}
-                  >
-                    {node.submittedBy.phone}
-                  </InlineLink>
-                ),
+              status: {
+                name: "وضعیت",
+                value: (node) => ticketStatusDict[node.status],
+                filter: "Set",
               },
               subject: {
                 name: "موضوع",
                 value: (node) => ticketSubjectDict[node.subject],
                 filter: "Set",
               },
-              status: {
-                name: "وضعیت",
-                value: (node) => ticketStatusDict[node.status],
-                filter: "Set",
+              submittedBy: {
+                name: "کاربر",
+                value: (node) => node.submittedBy?.phone,
+                filter: "Text",
+                component: (node) =>
+                  node.submittedBy ? (
+                    <InlineLink
+                      href={adminPath(`/user/${node.submittedBy._id}`)}
+                    >
+                      {node.submittedBy.phone || node.submittedBy._id}
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  ),
               },
               submittedAt: {
                 name: "زمان ثبت",
                 value: (node) => new Date(node.submittedAt),
-                component: (node) => <FormatDate value={node.submittedAt} />,
                 filter: "Date",
               },
               actions: {
@@ -73,6 +74,7 @@ const AdminManageTicketsPage = () => {
                     <IconLink
                       href={adminPath(`/ticket/${node._id}`)}
                       variant="Info"
+                      title="مشاهده و پاسخ"
                     >
                       <EditIcon />
                     </IconLink>

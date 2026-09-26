@@ -107,7 +107,14 @@ const AdminManageDoctorSecretaryAccessLevelsPage = () => {
             name="AdminManageDoctorSecretaryAccessLevels"
             data={data}
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Set" },
+              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              permissions: {
+                name: "تعداد دسترسی ها",
+                value: (node) =>
+                  doctorSecretaryActions.filter((action) => node[action])
+                    .length,
+                filter: "Number",
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
@@ -116,11 +123,13 @@ const AdminManageDoctorSecretaryAccessLevelsPage = () => {
                       href={adminPath(
                         `/doctorsecretaryaccesslevel/${node._id}`
                       )}
+                      title="ویرایش"
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDoctorSecretaryAccessLevel",

@@ -13,7 +13,6 @@ import usePopup from "@/Components/Hooks/usePopup";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import FormatDate from "@/Components/UI/FormatDate";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import { getUserLabel } from "../Lib/LabelGetters";
 import DeletePushSubscriptionPopup from "./DeletePushSubscriptionPopup";
@@ -121,19 +120,18 @@ const AdminTestPushPage = () => {
             renderer={{
               user: {
                 name: getContent("user"),
-                value: (node) => getUserLabel(node.user),
+                value: (node) => (node.user ? getUserLabel(node.user) : ""),
                 filter: "Text",
               },
               userAgent: {
                 name: getContent("device"),
-                value: (node) => node.userAgent || "-",
+                value: (node) => node.userAgent,
                 filter: "Text",
               },
               createdAt: {
                 name: getContent("createdAt"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
-                component: (node) => <FormatDate value={node.createdAt} />,
               },
               actions: {
                 name: getContent("actions"),
@@ -141,6 +139,7 @@ const AdminTestPushPage = () => {
                   <TableActions>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeletePushSubscription",
