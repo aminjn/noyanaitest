@@ -21,6 +21,7 @@ const BlogCardHome = ({
           fill
           sizes="16.75rem"
           style={{ objectFit: "cover" }}
+          loading="lazy"
         />
       </div>
       <div className={classes.content}>

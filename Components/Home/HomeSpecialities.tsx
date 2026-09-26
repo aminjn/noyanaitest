@@ -114,6 +114,7 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
                   fill
                   style={{ objectFit: "contain" }}
                   sizes="3.5rem"
+                  loading="lazy"
                 />
               </div>
               <span className={`${classes.specialityName} ${tsmDemiBold}`}>

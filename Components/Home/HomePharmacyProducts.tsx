@@ -80,6 +80,7 @@ const HomePharmacyProducts = () => {
               fill
               style={{ objectFit: "contain" }}
               sizes="12rem"
+              loading="lazy"
             />
           </div>
           <div className={classes.introContent}>
@@ -105,7 +106,7 @@ const HomePharmacyProducts = () => {
         <div className={classes.list}>
           <SwiperSlider>
             {data.map((node) => (
-              <SwiperSlide tag="li" key={node._id} className={classes.slide}>
+              <SwiperSlide key={node._id} className={classes.slide}>
                 <ProductCard node={node} />
               </SwiperSlide>
             ))}

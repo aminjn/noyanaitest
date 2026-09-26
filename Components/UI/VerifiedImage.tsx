@@ -25,6 +25,7 @@ const VerifiedImage = ({
         fill
         style={{ objectFit: "cover" }}
         sizes="3.5rem"
+        loading="lazy"
       />
       <Ixon className={classes.verifiedBadge} width="1rem">
         <VerifySolidIcon />

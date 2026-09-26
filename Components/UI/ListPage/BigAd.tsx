@@ -36,6 +36,7 @@ const BigAd = ({
             fill
             sizes="70rem"
             style={{ objectFit: "cover" }}
+            loading="lazy"
           />
           <span className={classes.overlay} />
         </Fragment>

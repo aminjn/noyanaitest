@@ -35,6 +35,7 @@ const ServiceCard = ({
           style={{ objectFit: "contain" }}
           fill
           sizes="16.25rem"
+          loading="lazy"
         />
       </div>
       <div className={classes.titleBox}>
@@ -72,7 +73,7 @@ const ServiceCard = ({
         )}
         <div className={classes.scoreBox}>
           <span className={`${classes.commentCount} ${t2xsRegular}`}>
-            {getCompContent("xComment", [node.commentCount.toString()])}
+            {getCompContent("xComment", [node.commentCount?.toString() || "0"])}
           </span>
           <span className={`${classes.score} ${t2xsRegular}`}>
             {node.averageScore?.toFixed(1)}

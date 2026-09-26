@@ -22,6 +22,7 @@ const Item = ({
           fill
           sizes="200px"
           style={{ objectFit: "contain" }}
+          loading="lazy"
         />
       </div>
       <div className={classes.content}>

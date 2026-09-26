@@ -64,6 +64,7 @@ const ServiceOrProductCard = ({
           fill
           sizes="16.5rem"
           style={{ objectFit: "contain" }}
+          loading="lazy"
         />
         {!!category && (
           <Badge

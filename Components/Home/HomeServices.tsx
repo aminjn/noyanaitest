@@ -64,6 +64,7 @@ const HomeServices = ({
               fill
               style={{ objectFit: "contain" }}
               sizes="12rem"
+              loading="lazy"
             />
           </div>
           <div className={classes.introContent}>
