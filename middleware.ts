@@ -5,6 +5,7 @@ import { IRedirection } from "./Components/Admin/Redirection/AdminManageRedirect
 import {
   isEnabledLocale,
   LOCALE_HEADER,
+  PATH_HEADER,
   localizePath,
   splitLocale,
 } from "./Components/i18n/locales";
@@ -46,6 +47,7 @@ const middleware = async (req: NextRequest) => {
 
   const headers = new Headers(req.headers);
   headers.set(LOCALE_HEADER, locale);
+  headers.set(PATH_HEADER, pathname);
   if (pathname === req.nextUrl.pathname)
     return NextResponse.next({ request: { headers } });
   const url = req.nextUrl.clone();

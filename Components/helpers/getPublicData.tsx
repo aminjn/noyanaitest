@@ -1,4 +1,16 @@
+import { headers } from "next/headers";
 import { BACKEND } from "../config";
+import { defaultLocale, LOCALE_HEADER } from "../i18n/locales";
+
+// The page's language (set by middleware); the backend returns DB content
+// in it. Outside a request (build-time) there is none, so Persian.
+const requestLocale = () => {
+  try {
+    return headers().get(LOCALE_HEADER) || defaultLocale;
+  } catch {
+    return defaultLocale;
+  }
+};
 
 export const getPublicData = async <T,>(
   path: string,
@@ -10,6 +22,7 @@ export const getPublicData = async <T,>(
       : "";
   const response = await fetch(`${BACKEND}/api/v1/public/${path}${qs}`, {
     cache: "no-store",
+    headers: { [LOCALE_HEADER]: requestLocale() },
   });
   if (!response.ok) return;
   try {

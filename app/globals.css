@@ -171,7 +171,8 @@ html[dir="ltr"] .dirFlip {
   scale: -1 1;
 }
 
-html:not([lang="fa"]) body {
+html:not([lang="fa"]) body,
+body [lang]:not([lang="fa"]) {
   font-family:
     "LatinDigits",
     var(--fontFa),

@@ -90,6 +90,8 @@ export const localizePath = (path: string, locale: Locale): string => {
 };
 
 export const LOCALE_HEADER = "x-locale";
+// The request path without its locale prefix (set by middleware).
+export const PATH_HEADER = "x-path";
 
 // Languages that are actually served. Drop a code from here to take it
 // offline: "/<code>/..." then redirects to the Persian page instead.
