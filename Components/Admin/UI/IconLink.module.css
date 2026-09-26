@@ -4,52 +4,57 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0.25rem;
-  box-shadow: var(--shadow), inset var(--shadow);
-  color: var(--gray13);
-  border: 2px solid transparent;
-  transition: all var(--transTime);
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  transition:
+    background-color var(--transTime),
+    color var(--transTime),
+    border-color var(--transTime);
   box-sizing: border-box;
+  cursor: pointer;
 }
 
-.main:hover {
-  border-radius: 50%;
-  color: var(--white);
-  transform: scale(1.25);
+.main:focus-visible {
+  outline: 2px solid var(--primary4);
+  outline-offset: 2px;
 }
 
 .Info {
-  border-color: var(--infoS1);
-  background-color: var(--infoT3);
+  color: var(--primary7, #1a80e5);
+  background-color: var(--primary0, #f1f8fd);
 }
 
 .Info:hover {
-  background-color: var(--info);
+  background-color: var(--primary1, #e1effb);
+  border-color: var(--primary3, #b5d6f5);
 }
 
 .Danger {
-  background-color: var(--errorT3);
-  border-color: var(--errorS1);
+  color: #d92d20;
+  background-color: #fef3f2;
 }
 
 .Danger:hover {
-  background-color: var(--error);
+  background-color: #fee4e2;
+  border-color: #fecdca;
 }
 
 .Success {
-  background-color: var(--successT3);
-  border-color: var(--successS1);
+  color: #067647;
+  background-color: #ecfdf3;
 }
 
 .Success:hover {
-  background-color: var(--success);
+  background-color: #dcfae6;
+  border-color: #abefc6;
 }
 
 .Neutral {
-  background-color: var(--gray4);
-  border-color: var(--gray8);
+  color: var(--gray10);
+  background-color: var(--gray2);
 }
 
 .Neutral:hover {
-  background-color: var(--gray10);
+  background-color: var(--gray3);
+  border-color: var(--gray5);
 }

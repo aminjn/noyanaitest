@@ -80,7 +80,6 @@ const Group = ({
           {group.icon}
         </Ixon>
         <span className={classes.groupTitle}>{group.title}</span>
-        <span className={classes.count}>{group.items.length}</span>
         <Ixon width="1rem" className={classes.chevron}>
           <ChevronIcon />
         </Ixon>

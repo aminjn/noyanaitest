@@ -14,6 +14,7 @@ import Ixon from "@/Components/UI/Ixon";
 import MenuIcon from "@/Components/Icons/MenuIcon";
 import IconButton from "./IconButton";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
+import PlusIcon from "@/Components/Icons/PlusIcon";
 import { useRouter } from "@/Components/i18n/navigation";
 
 const WithTitle = ({
@@ -51,6 +52,7 @@ const WithTitle = ({
           <IconButton
             onClick={() => back()}
             variant="Neutral"
+            title="بازگشت"
             style={{ transform: "rotateZ(180deg)" }}
           >
             <ArrowLeftIcon />
@@ -69,7 +71,11 @@ const WithTitle = ({
                     {actions.length === 1 ? (
                       <Button
                         type="button"
-                        leadIcon={actions[0].icon}
+                        size="M"
+                        leadIcon={
+                          actions[0].icon ||
+                          (actions[0].title === "جدید" ? <PlusIcon /> : undefined)
+                        }
                         onClick={actions[0].action}
                       >
                         {actions[0].title}
