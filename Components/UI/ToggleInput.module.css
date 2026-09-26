@@ -1,45 +1,53 @@
 .main {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.5rem;
 }
 
+/* The thumb starts on the reading side (right in RTL) and moves across. */
 .track {
   flex-shrink: 0;
-  width: 2.25rem;
-  height: 1.25rem;
-  background-color: var(--gray4);
+  width: 2.5rem;
+  height: 1.375rem;
+  padding: 0;
+  border: none;
+  background-color: var(--gray5);
   border-radius: 100dvw;
-  transition: all var(--transTime);
+  cursor: pointer;
+  transition: background-color var(--transTime);
   position: relative;
 }
 
+.track:focus-visible {
+  outline: 2px solid var(--primary4);
+  outline-offset: 2px;
+}
+
 .active {
-  background-color: var(--info);
+  background-color: var(--primary6);
 }
 
 .thumb {
-  background-color: var(--white);
   position: absolute;
-  transition: all var(--transTime);
+  top: 0.1875rem;
+  inset-inline-start: 0.1875rem;
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
-  top: 50%;
-  transform: translate(0, -50%);
-  left: 0.12rem;
-  box-shadow:
-    0px 1px 3px 0px rgba(18, 18, 23, 0.1),
-    0px 1px 2px 0px rgba(18, 18, 23, 0.06);
+  background-color: var(--white);
+  box-shadow: 0 1px 2px 0 #0f172a33;
+  transition: inset-inline-start var(--transTime);
 }
 
 .active > .thumb {
-  background-color: var(--secondary);
-  left: calc(100% - 0.12rem);
-  transform: translate(-100%, -50%);
+  inset-inline-start: calc(100% - 1.1875rem);
 }
 
 .label {
-  color: var(--gray8);
+  color: var(--gray12);
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  user-select: none;
 }
