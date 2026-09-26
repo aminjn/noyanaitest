@@ -1,0 +1,20 @@
+.role {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  background: var(--gray3);
+  color: var(--gray10);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.role_admin {
+  background: var(--secondary1);
+  color: var(--secondary8);
+}
+
+.role_notadmin {
+  background: var(--primary1);
+  color: var(--primary8);
+}
