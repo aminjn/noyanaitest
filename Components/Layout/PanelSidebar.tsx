@@ -87,13 +87,20 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
   if (!user) return <Loading />;
   return (
     <div className={classes.main}>
+      <nav className={classes.bar}>
+        {links.map((item) => (
+          <Fragment key={`${item.target}${item.title}`}>
+            {item.show ? <LinkItem item={item} panel={panel} /> : null}
+          </Fragment>
+        ))}
+      </nav>
       <Link href="/dashboard" className={classes.user}>
         <div className={classes.avatar}>
           <HostedImage
             src={user.avatar}
             alt={user.username || ""}
             fill
-            sizes="2.75rem"
+            sizes="2.5rem"
             style={{ objectFit: "cover" }}
           />
         </div>
@@ -101,17 +108,10 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
           <span className={classes.userName}>{user.username || getContent("user")}</span>
           <span className={classes.userPhone}>{user.phone}</span>
         </div>
-        <Ixon width="1.5rem" style={{ transform: "rotateZ(90deg)" }}>
+        <Ixon width="1.125rem" className={classes.userChevron}>
           <ChevronIcon />
         </Ixon>
       </Link>
-      <div className={classes.bar}>
-        {links.map((item) => (
-          <Fragment key={`${item.target}${item.title}`}>
-            {item.show ? <LinkItem item={item} panel={panel} /> : null}
-          </Fragment>
-        ))}
-      </div>
     </div>
   );
 };

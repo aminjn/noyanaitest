@@ -1,41 +1,48 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  min-width: 0;
 }
 
 .nav {
   display: flex;
-  position: relative;
+  gap: 0.25rem;
   overflow-x: auto;
+  border-bottom: 1px solid var(--gray4);
+  scrollbar-width: none;
 }
 
-.nav::after {
-  position: absolute;
-  content: "";
-  display: block;
-  inset-inline-end: 0;
-  inset-inline-start: 0;
-  bottom: 0;
-  height: 1px;
-  background-color: var(--gray8);
+.nav::-webkit-scrollbar {
+  display: none;
 }
 
 .navItem {
-  padding-block: 0.75rem;
-  padding-inline: 1rem;
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  transition: all var(--transTime) ease-in-out;
-  font-weight: 400;
-  font-size: 0.875rem;
   gap: 0.5rem;
-  color: var(--gray8);
-  border-bottom: 4px solid transparent;
+  margin-bottom: -1px;
+  padding: 0.75rem 0.875rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--gray9);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--transTime), border-color var(--transTime);
 }
 
-.activeItem {
-  color: var(--primary);
-  border-color: var(--primary);
+.navItem:hover {
+  color: var(--gray12);
+}
+
+.activeItem,
+.activeItem:hover {
+  color: var(--primary7);
+  border-bottom-color: var(--primary6);
+  font-weight: 700;
 }

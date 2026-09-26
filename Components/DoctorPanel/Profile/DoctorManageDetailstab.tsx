@@ -66,11 +66,6 @@ const DoctorManageDetailsTab = () => {
                 {},
               ),
             },
-            mcCode: {
-              type: "text",
-              title: getContent("mcCode"),
-              readOnly: true,
-            },
             medicalSystemCode: {
               type: "text",
               title: getContent("medicalSystemCode"),

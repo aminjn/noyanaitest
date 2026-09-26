@@ -1694,5 +1694,8 @@
  "youtubeValue": "#",
  "telegramValue": "#",
  "instagramValue": "#",
- "LinkedinTarget": "#"
+ "LinkedinTarget": "#",
+ "hospitalPanelTitle": "پنل بیمارستان",
+ "viewSite": "مشاهده سایت",
+ "doctorPanelTitle": "پنل پزشک"
 }

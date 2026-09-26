@@ -1672,5 +1672,8 @@
  "jalaliMonth9": "آذر",
  "jalaliMonth10": "دي",
  "jalaliMonth11": "بهمن",
- "jalaliMonth12": "إسفند"
+ "jalaliMonth12": "إسفند",
+ "hospitalPanelTitle": "لوحة المستشفى",
+ "viewSite": "عرض الموقع",
+ "doctorPanelTitle": "لوحة الطبيب"
 }
