@@ -297,3 +297,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.headLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

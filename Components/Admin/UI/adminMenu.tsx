@@ -248,6 +248,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "تنظیمات مالیاتی", href: "globalTaxSettings" },
       { title: "پترن‌های پیامک", href: "smsPatterns" },
       { title: "تصاویر ثابت", href: "staticImages" },
+      { title: "لاگ عملیات", href: "audit" },
     ],
   },
   {

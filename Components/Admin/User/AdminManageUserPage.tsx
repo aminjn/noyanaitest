@@ -314,14 +314,21 @@ const AdminManageUserPage = () => {
           <section className={classes.card}>
             <div className={classes.cardHead}>
               <h2 className={classes.cardTitle}>نقش و دسترسی</h2>
-              {data.role === "notadmin" && data.accessLevel && (
-                <Link
-                  href={adminPath(`/accesslevel/${data.accessLevel._id}`)}
-                  className={classes.link}
-                >
-                  {`سطح دسترسی: ${data.accessLevel.name}`}
-                </Link>
-              )}
+              <div className={classes.headLinks}>
+                {data.role === "notadmin" && data.accessLevel && (
+                  <Link
+                    href={adminPath(`/accesslevel/${data.accessLevel._id}`)}
+                    className={classes.link}
+                  >
+                    {`سطح دسترسی: ${data.accessLevel.name}`}
+                  </Link>
+                )}
+                {viewer?.role === "admin" && data.role !== "user" && (
+                  <Link href={adminPath(`/audit?actor=${data._id}`)} className={classes.link}>
+                    لاگ عملیات این ادمین
+                  </Link>
+                )}
+              </div>
             </div>
             {viewer?.role === "admin" ? (
               <RoleManager user={data} onChanged={() => mutate()} />
