@@ -182,7 +182,7 @@ const DoctorJoinClinicsTab = () => {
                           onClick={() =>
                             setPopup(
                               "ToggleJoinClinicRequestStatus",
-                              <ToggleJoinClinicRequestStatusPopup />
+                              <ToggleJoinClinicRequestStatusPopup node={node} mutate={mutate} />
                             )
                           }
                         >

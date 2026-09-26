@@ -17,7 +17,6 @@ const PreviewPatientProfileRecordPopup = ({
     Author: Record<never, never>;
   }>;
 }) => {
-  console.log(node);
 
   const getContent = useScopedLocale(LOCALE_NS);
 

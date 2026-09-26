@@ -11,6 +11,8 @@ import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
 import FormTitle from "@/Components/UI/FormTitle";
 import SelectNoResult from "@/Components/UI/SelectNoResult";
+import { mutate as globalMutate } from "swr";
+import SubmitClinicAdditionRequestPopup from "./SubmitClinicAdditionRequestPopup";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelClinic"];
@@ -22,7 +24,7 @@ const SubmitAJoinClinicRequestPopup = ({
 }) => {
   const getContent = useScopedLocale(NS);
 
-  const { closePopup } = usePopup();
+  const { closePopup, setPopup } = usePopup();
 
   const { setInput, isLoading, submit } = useForm<{
     clinic: string;
@@ -55,9 +57,19 @@ const SubmitAJoinClinicRequestPopup = ({
             setInput((prev) => ({ ...prev, clinic: e?._id || "" }))
           }
           readOnly={isLoading}
-          //TODO:Hook this up
+          // Not listed yet -> switch to the "add this clinic" request form.
           noResult={
-            <SelectNoResult>
+            <SelectNoResult
+              onClick={() => {
+                closePopup();
+                setPopup(
+                  "SubmitClinicAdditionRequest",
+                  <SubmitClinicAdditionRequestPopup
+                    mutate={() => globalMutate(`${API}/doctor/clinicaddition`)}
+                  />,
+                );
+              }}
+            >
               {getContent("clickToRequestAddClinic")}
             </SelectNoResult>
           }

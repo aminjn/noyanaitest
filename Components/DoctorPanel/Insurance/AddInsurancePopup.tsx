@@ -11,6 +11,8 @@ import classes from "./AddInsurancePopup.module.css";
 import Button from "@/Components/UI/Button";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import SelectNoResult from "@/Components/UI/SelectNoResult";
+import { mutate as globalMutate } from "swr";
+import NewInsuranceAdditionRequestPopup from "./NewInsuranceAdditionRequestPopup";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelInsurance"];
@@ -18,13 +20,12 @@ const NS: ContentNamespace[] = ["common", "doctorPanelInsurance"];
 const AddInsurancePopup = ({ mutate }: { mutate: () => unknown }) => {
   const getContent = useScopedLocale(NS);
 
-  const { closePopup } = usePopup();
+  const { closePopup, setPopup } = usePopup();
 
   const { setInput, submit, isLoading } = useForm<{ insurance: string }>({
     path: (inp) => `${API}/doctor/insurance/${inp.insurance}`,
     method: "POST",
     hasProblem: (inp) => {
-      console.log(inp);
       if (!inp.insurance) return getContent("checkInput");
     },
     mutator: () => ({}),
@@ -46,9 +47,19 @@ const AddInsurancePopup = ({ mutate }: { mutate: () => unknown }) => {
             setInput((prev) => ({ ...prev, insurance: e?._id || "" }))
           }
           readOnly={isLoading}
-          //TODO:Hook this up
+          // Not listed yet -> switch to the "add this insurance" request form.
           noResult={
-            <SelectNoResult>
+            <SelectNoResult
+              onClick={() => {
+                closePopup();
+                setPopup(
+                  "NewInsuranceAdditionRequestPopup",
+                  <NewInsuranceAdditionRequestPopup
+                    mutate={() => globalMutate(`${API}/doctor/insuranceaddition`)}
+                  />,
+                );
+              }}
+            >
               {getContent("clickToRequestAddInsurance")}
             </SelectNoResult>
           }

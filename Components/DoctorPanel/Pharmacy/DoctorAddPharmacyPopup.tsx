@@ -8,6 +8,8 @@ import PopupCard from "@/Components/UI/PopupCard";
 import SearchServer from "@/Components/UI/SearchServer";
 import { IPharmacy } from "./DoctorPharmaciesTab";
 import SelectNoResult from "@/Components/UI/SelectNoResult";
+import { mutate as globalMutate } from "swr";
+import SubmitPharmacyAdditionRequestPopup from "./SubmitPharmacyAdditionRequestPopup";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
 
@@ -19,7 +21,7 @@ const NS: ContentNamespace[] = ["common", "doctorPanelPharmacy"];
 const DoctorAddPharmacyPopup = ({ mutate }: { mutate: () => unknown }) => {
   const getContent = useScopedLocale(NS);
 
-  const { closePopup } = usePopup();
+  const { closePopup, setPopup } = usePopup();
 
   const { isLoading, setInput, submit } = useForm<{ pharmacy: string }>({
     path: (inp) => `${API}/doctor/pharmacy/${inp.pharmacy}`,
@@ -44,9 +46,19 @@ const DoctorAddPharmacyPopup = ({ mutate }: { mutate: () => unknown }) => {
           path={`${API}/doctor/pharmacy`}
           onChange={(e) => setInput((prev) => ({ ...prev, pharmacy: e?._id }))}
           title={getContent("pharmacyName")}
-          //TODO: hook this shit
+          // Not listed yet -> switch to the "add this pharmacy" request form.
           noResult={
-            <SelectNoResult>
+            <SelectNoResult
+              onClick={() => {
+                closePopup();
+                setPopup(
+                  "SubmitPharmacyAdditionRequestPopup",
+                  <SubmitPharmacyAdditionRequestPopup
+                    mutate={() => globalMutate(`${API}/doctor/pharmacyaddition`)}
+                  />,
+                );
+              }}
+            >
               {getContent("clickToRequestAddPharmacy")}
             </SelectNoResult>
           }
@@ -54,7 +66,9 @@ const DoctorAddPharmacyPopup = ({ mutate }: { mutate: () => unknown }) => {
         />
         <FormActions>
           <Button type="submit">{getContent("submit")}</Button>
-          <Button variant="Neutral">{getContent("cancel")}</Button>
+          <Button variant="Neutral" onClick={() => closePopup()}>
+            {getContent("cancel")}
+          </Button>
         </FormActions>
       </Form>
     </PopupCard>

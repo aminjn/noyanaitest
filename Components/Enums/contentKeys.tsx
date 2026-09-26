@@ -1721,6 +1721,8 @@ const contentKeys = [
   "dpdViewPublicProfile",
   "dpdRating",
   "dpdStepsLeft",
+  // Doctor answering a clinic/hospital join invitation (2026-09).
+  "respondToJoinInvitation",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
