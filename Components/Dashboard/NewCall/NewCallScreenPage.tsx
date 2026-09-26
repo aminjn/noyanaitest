@@ -9,6 +9,7 @@ import {
   MediaTag,
 } from "@/Components/Call/CallClient";
 import useNotification from "@/Components/Hooks/useNotification";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useProgress from "@/Components/Hooks/useProgress";
 import useSocket from "@/Components/Hooks/useSocket";
 import useUser from "@/Components/Hooks/useUser";
@@ -217,37 +218,44 @@ const ParticipantTile = ({
   canKick?: boolean;
   onKick?: () => void;
   localPreview?: boolean;
-}) => (
-  <div className={classes.tile}>
-    {videoTrack && !videoMuted ? (
-      <VideoTrackView
-        track={videoTrack}
-        muted={localPreview}
-        className={classes.video}
-      />
-    ) : (
-      <div className={classes.avatarPlaceholder}>
-        <div className={classes.avatarCircle}>{label.slice(0, 2)}</div>
-      </div>
-    )}
-    {!localPreview && audioTrack && <AudioTrackView track={audioTrack} />}
-    <span className={classes.tileLabel}>
-      {isHost && <span className={classes.tileBadge}>میزبان ·</span>}
-      <span>{label}</span>
-      {audioMuted && <MicOffIcon size="0.9rem" className={classes.mutedIcon} />}
-    </span>
-    {canKick && (
-      <button
-        type="button"
-        className={classes.kickButton}
-        onClick={onKick}
-        title="حذف از تماس"
-      >
-        <CloseIcon />
-      </button>
-    )}
-  </div>
-);
+}) => {
+  const getContent = useScopedLocale();
+  return (
+    <div className={classes.tile}>
+      {videoTrack && !videoMuted ? (
+        <VideoTrackView
+          track={videoTrack}
+          muted={localPreview}
+          className={classes.video}
+        />
+      ) : (
+        <div className={classes.avatarPlaceholder}>
+          <div className={classes.avatarCircle}>{label.slice(0, 2)}</div>
+        </div>
+      )}
+      {!localPreview && audioTrack && <AudioTrackView track={audioTrack} />}
+      <span className={classes.tileLabel}>
+        {isHost && (
+          <span className={classes.tileBadge}>{getContent("callHost")} ·</span>
+        )}
+        <span>{label}</span>
+        {audioMuted && (
+          <MicOffIcon size="0.9rem" className={classes.mutedIcon} />
+        )}
+      </span>
+      {canKick && (
+        <button
+          type="button"
+          className={classes.kickButton}
+          onClick={onKick}
+          title={getContent("removeFromCall")}
+        >
+          <CloseIcon />
+        </button>
+      )}
+    </div>
+  );
+};
 
 // ---------------------------------------------------------------------------
 
@@ -264,6 +272,7 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
   const socket = useSocket();
   const push = useProgress();
   const pushNotification = useNotification();
+  const getContent = useScopedLocale();
 
   const call = useMemo(() => new CallClient(socket, userId), [socket, userId]);
 
@@ -305,13 +314,13 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       })
       .catch((err: Error) => {
         if (cancelled) return;
-        setLoadError(err.message || "بارگذاری اطلاعات تماس با خطا مواجه شد");
+        setLoadError(err.message || getContent("loadCallInfoError"));
         setJoining(false);
       });
     return () => {
       cancelled = true;
     };
-  }, [callId]);
+  }, [callId, getContent]);
 
   // -- wire up every CallClient event exactly once per client instance ----
   useEffect(() => {
@@ -368,13 +377,13 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
           return changed ? next : prev;
         });
         if (reason === "kicked") {
-          pushNotification("یکی از شرکت‌کنندگان از تماس حذف شد", "Notify");
+          pushNotification(getContent("callParticipantRemoved"), "Notify");
         }
       },
     );
 
     const offParticipantRejected = call.on("participantRejected", () => {
-      pushNotification("یکی از شرکت‌کنندگان تماس را رد کرد", "Notify");
+      pushNotification(getContent("callParticipantDeclined"), "Notify");
     });
 
     const offMuteChanged = call.on(
@@ -392,35 +401,35 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       else setCamOn(!muted);
       pushNotification(
         muted
-          ? "میزبان دسترسی شما را قطع کرد"
-          : "میزبان دسترسی شما را بازگرداند",
+          ? getContent("callHostMutedYou")
+          : getContent("callHostUnmutedYou"),
         "Warn",
       );
     });
 
     const offKicked = call.on("kicked", () => {
-      pushNotification("میزبان شما را از تماس حذف کرد", "Error");
+      pushNotification(getContent("callHostRemovedYou"), "Error");
       push("/dashboard");
     });
 
     const offCancelled = call.on("cancelled", () => {
-      pushNotification("تماس بدون پاسخ لغو شد", "Notify");
+      pushNotification(getContent("callCancelledNoAnswer"), "Notify");
       push("/dashboard");
     });
 
     const offEnded = call.on("ended", () => {
-      pushNotification("تماس به پایان رسید", "Notify");
+      pushNotification(getContent("callEndedMessage"), "Notify");
       push("/dashboard");
     });
 
     const offRecordingStarted = call.on("recordingStarted", () => {
       setRecording(true);
-      pushNotification("ضبط تماس آغاز شد", "Notify");
+      pushNotification(getContent("callRecordingStarted"), "Notify");
     });
 
     const offRecordingStopped = call.on("recordingStopped", () => {
       setRecording(false);
-      pushNotification("ضبط تماس متوقف شد", "Notify");
+      pushNotification(getContent("callRecordingStopped"), "Notify");
     });
 
     const offError = call.on("error", ({ message }) => {
@@ -433,14 +442,11 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       if (kind === "audio") {
         setMicOn(false);
         setMicAvailable(false);
-        pushNotification(
-          "میکروفون در دسترس نیست - شما تنها می‌توانید تماس را بشنوید",
-          "Warn",
-        );
+        pushNotification(getContent("callMicUnavailable"), "Warn");
       } else {
         setCamOn(false);
         setCamAvailable(false);
-        pushNotification("دوربین در دسترس نیست", "Warn");
+        pushNotification(getContent("callCameraUnavailable"), "Warn");
       }
     });
 
@@ -476,10 +482,7 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       .join(callId, { video: room.callType === "video" })
       .catch((err: Error) => {
         if (cancelled) return;
-        pushNotification(
-          err.message || "اتصال به تماس با خطا مواجه شد",
-          "Error",
-        );
+        pushNotification(err.message || getContent("callJoinError"), "Error");
         push("/dashboard");
       })
       .finally(() => {
@@ -579,7 +582,9 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
   if (!room || joining) {
     return (
       <div className={classes.main}>
-        <div className={classes.centerState}>در حال اتصال به تماس...</div>
+        <div className={classes.centerState}>
+          {getContent("connectingToCall")}
+        </div>
       </div>
     );
   }
@@ -591,7 +596,7 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       {recording && (
         <div className={classes.recordingBadge}>
           <span className={classes.recordingDot} />
-          در حال ضبط
+          {getContent("callRecordingInProgress")}
         </div>
       )}
 
@@ -605,7 +610,7 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
       ) : (
         <div className={classes.grid}>
           <ParticipantTile
-            label="شما"
+            label={getContent("callYou")}
             localPreview
             videoTrack={camOn ? (localVideoTrack ?? undefined) : undefined}
             audioMuted={!micOn}
@@ -614,7 +619,11 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
           {remoteUserIds.map((id) => (
             <ParticipantTile
               key={id}
-              label={room.host === id ? "میزبان" : `کاربر ${id.slice(-4)}`}
+              label={
+                room.host === id
+                  ? getContent("callHost")
+                  : getContent("callUserX", [id.slice(-4)])
+              }
               isHost={room.host === id}
               videoTrack={
                 remoteTrackList.find(
@@ -643,10 +652,10 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
           disabled={!micAvailable}
           title={
             !micAvailable
-              ? "میکروفونی یافت نشد"
+              ? getContent("callNoMicFound")
               : micOn
-                ? "قطع میکروفون"
-                : "روشن کردن میکروفون"
+                ? getContent("callMuteMic")
+                : getContent("callUnmuteMic")
           }
         >
           {micOn ? <MicIcon /> : <MicOffIcon />}
@@ -660,10 +669,10 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
             disabled={!camAvailable}
             title={
               !camAvailable
-                ? "دوربینی یافت نشد"
+                ? getContent("callNoCameraFound")
                 : camOn
-                  ? "خاموش کردن دوربین"
-                  : "روشن کردن دوربین"
+                  ? getContent("callTurnOffCamera")
+                  : getContent("callTurnOnCamera")
             }
           >
             {camOn ? <CameraIcon /> : <CameraOffIcon />}
@@ -674,7 +683,11 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
           type="button"
           className={`${classes.controlButton} ${sharingScreen ? classes.controlButtonActive : ""}`}
           onClick={toggleScreenShare}
-          title={sharingScreen ? "توقف اشتراک‌گذاری صفحه" : "اشتراک‌گذاری صفحه"}
+          title={
+            sharingScreen
+              ? getContent("callStopScreenShare")
+              : getContent("callShareScreen")
+          }
         >
           <ScreenShareIcon />
         </button>
@@ -684,7 +697,11 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
             type="button"
             className={`${classes.controlButton} ${recording ? classes.controlButtonActive : ""}`}
             onClick={handleToggleRecording}
-            title={recording ? "توقف ضبط تماس" : "شروع ضبط تماس"}
+            title={
+              recording
+                ? getContent("callStopRecording")
+                : getContent("callStartRecording")
+            }
           >
             <span className={classes.recordingDot} />
           </button>
@@ -694,7 +711,7 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
           type="button"
           className={`${classes.controlButton} ${classes.hangupButton}`}
           onClick={handleLeave}
-          title="خروج از تماس"
+          title={getContent("callLeave")}
         >
           <HangupIcon />
         </button>
@@ -704,7 +721,7 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
             type="button"
             className={`${classes.controlButton} ${classes.hangupButton}`}
             onClick={handleEndForAll}
-            title="پایان تماس برای همه"
+            title={getContent("callEndForAll")}
           >
             <CloseIcon size="1.4rem" />
           </button>

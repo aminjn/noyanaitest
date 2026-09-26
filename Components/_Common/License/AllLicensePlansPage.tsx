@@ -134,7 +134,7 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                     ]),
                   ),
                   actions: {
-                    name: "عملیات",
+                    name: getContent("actions"),
                     component: (node) => (
                       <TableActions>
                         <IconLink

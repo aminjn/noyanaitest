@@ -132,7 +132,7 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
                     data.district?.name,
                   ]
                     .filter(Boolean)
-                    .join("،")}
+                    .join(getContent("addressPartsSeparator"))}
                 />
               )}
               {!!data.businessTime && (

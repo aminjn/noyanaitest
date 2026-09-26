@@ -107,8 +107,8 @@ const ClinicsListPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "کلینیک ها", target: "/clinic" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("clinics"), target: "/clinic" },
       ]}
     >
       <ListPageHeader

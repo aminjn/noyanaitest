@@ -127,8 +127,8 @@ const ProductListPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "محصولات", target: "/product" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("products"), target: "/product" },
       ]}
     >
       <SwitchProductAndService />

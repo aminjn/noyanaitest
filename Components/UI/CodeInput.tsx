@@ -1,6 +1,7 @@
 import { ClipboardEventHandler, useCallback, useEffect, useState } from "react";
 import classes from "./CodeInput.module.css";
 import useNotification from "../Hooks/useNotification";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { WithStyleProps } from "../Layout/Layout";
 
 const CodeInput = ({
@@ -19,18 +20,22 @@ const CodeInput = ({
   const [value, setValue] = useState<string>("");
   const [shouldShow, setShouldShow] = useState<boolean>();
   const pushNotification = useNotification();
+  const getContent = useScopedLocale();
 
   const onPaste = useCallback<ClipboardEventHandler<HTMLInputElement>>(
     (e) => {
       const pasted = e.clipboardData.getData("text");
       const code = pasted.match(/\d{5}/)?.[0];
       if (!code)
-        return pushNotification("مقدار کپی شده شامل کد نمیباشد", "Error");
+        return pushNotification(
+          getContent("pastedValueContainsNoCode"),
+          "Error"
+        );
       setValue(code);
       onChange?.(code);
       setShouldShow(false);
     },
-    [onChange, pushNotification]
+    [onChange, pushNotification, getContent]
   );
 
   useEffect(() => {

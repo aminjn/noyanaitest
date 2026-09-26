@@ -43,8 +43,8 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "دارو ها", target: "/drug" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("drugsTitle"), target: "/drug" },
         {
           title: data.name || data._id,
           target: `/drug/${data.slug || data._id}`,

@@ -15,6 +15,7 @@ import AboutStories from "./AboutStories";
 import AboutTeam from "./AboutTeam";
 import AboutWhys from "./AboutWhys";
 import BreadCrump from "../UI/BreadCrump";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 export type AboutPageProps = {
   whys: IAboutWhy[];
@@ -24,12 +25,13 @@ export type AboutPageProps = {
 };
 
 const AboutPage = ({ partners, team, whys, staticImages }: AboutPageProps) => {
+  const getContent = useScopedLocale();
   return (
     <div className={classes.main}>
       <BreadCrump
         trail={[
-          { title: "صفحه اصلی", target: "/" },
-          { title: "درباره ما", target: "/about" },
+          { title: getContent("homePage"), target: "/" },
+          { title: getContent("aboutUs"), target: "/about" },
         ]}
         className={classes.crump}
       />

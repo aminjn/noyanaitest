@@ -106,8 +106,8 @@ const HospitalsPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "بیمارستان ها", target: "/hospital" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("hospitals"), target: "/hospital" },
       ]}
     >
       <ListPageHeader

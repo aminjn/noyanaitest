@@ -7,6 +7,13 @@ import Ixon from "./Ixon";
 
 export const booleanToValue = { true: "فعال", false: "غیرفعال" } as const;
 
+// Translation keys for booleanToValue: consumers outside the admin panel should
+// render getContent(booleanToContentKey[`${value}`]) instead.
+export const booleanToContentKey = {
+  true: "active",
+  false: "inactive",
+} as const;
+
 const BooleanToIcon = ({
   value,
   className = "",

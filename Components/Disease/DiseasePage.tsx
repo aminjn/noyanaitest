@@ -58,8 +58,8 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "بیماری ها", target: "/disease" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("diseases"), target: "/disease" },
         {
           title: data.name || data._id,
           target: `/disease/${data.slug || data._id}`,

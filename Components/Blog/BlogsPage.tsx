@@ -41,9 +41,9 @@ const blogSorts = ["order", "date"] as const;
 
 type BlogSort = (typeof blogSorts)[number];
 
-const blogSortDict: Record<BlogSort, string> = {
-  date: "تاریخ انتشار",
-  order: "پیش فرض",
+const blogSortDict: Record<BlogSort, ContentKey> = {
+  date: "publicationDate",
+  order: "isDefault",
 };
 
 const sorts = ["best", "newest"] as const;
@@ -82,8 +82,8 @@ const BlogsPage = (props: BlogsPageProps) => {
       <BreadCrump
         className={classes.crump}
         trail={[
-          { title: "صفحه اصلی", target: "/" },
-          { title: "بلاگ ها", target: "/mag" },
+          { title: getContent("homePage"), target: "/" },
+          { title: getContent("blog"), target: "/mag" },
           ...(params.nodeSlug
             ? [
                 {

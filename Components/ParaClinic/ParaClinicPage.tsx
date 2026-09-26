@@ -9,6 +9,7 @@ import ParaClinicNav from "./ParaClinicNav";
 import classes from "./ParaClinicPage.module.css";
 import ParaClinicTests from "./ParaClinicTests";
 import BreadCrump from "../UI/BreadCrump";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 export type ParaClinicPageProps = {
   data: IParaClinic<{
@@ -23,12 +24,13 @@ export type ParaClinicPageProps = {
 };
 
 const ParaClinicPage = ({ data }: ParaClinicPageProps) => {
+  const getContent = useScopedLocale();
   return (
     <div className={classes.main}>
       <BreadCrump
         trail={[
-          { title: "صفحه اصلی", target: "/" },
-          { title: "پاراکلینیک ها", target: "/paraClinic" },
+          { title: getContent("homePage"), target: "/" },
+          { title: getContent("paraClinics"), target: "/paraClinic" },
           {
             title: data.name || data._id,
             target: `/paraClinic/${data.slug || data._id}`,

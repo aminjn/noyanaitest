@@ -7,6 +7,7 @@ import { Alignment, BlockName, Color, HeadingLevel, Size } from "./RTFConfigs";
 import Toolbar from "./Toolbar";
 import RenderElement from "./RenderElement";
 import RenderLeaf from "./RenderLeaf";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 export type CustomText = {
   text: string;
@@ -72,6 +73,7 @@ const RTFEditor = forwardRef<
     hideMediaLibrary?: boolean;
   }
 >(({ defaultValue, onChange, hideMediaLibrary }, ref) => {
+  const getContent = useScopedLocale();
   const [editor] = useState(() =>
     withVoid(withHistory(withReact(createEditor()))),
   );
@@ -101,7 +103,7 @@ const RTFEditor = forwardRef<
           className={classes.main}
           renderElement={RenderElement}
           renderLeaf={RenderLeaf}
-          placeholder="یه داستان بنویس ..."
+          placeholder={getContent("rtfEditorPlaceholder")}
           renderPlaceholder={({ children, attributes }) => (
             <span className={classes.placeholder} {...attributes}>
               {children}

@@ -33,7 +33,7 @@ const PolicyPage = ({
     <div className={classes.main}>
       <BreadCrump
         trail={[
-          { title: "صفحه اصلی", target: "/" },
+          { title: getContent("homePage"), target: "/" },
           { title: getContent(title), target: path },
         ]}
       />

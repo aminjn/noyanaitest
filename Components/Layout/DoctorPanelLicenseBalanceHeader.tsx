@@ -73,7 +73,7 @@ const DoctorPanelLicenseBalanceHeader = () => {
         actionTitle={getContent("buyLicense")}
         icon={<CartIcon />}
         title={getContent("currentLicense")}
-        value="نمیدانم،اطلاعی ندارم"
+        value={getContent("licenseInfoUnknown")}
       />
       <Card
         bg="var(--secondary1)"

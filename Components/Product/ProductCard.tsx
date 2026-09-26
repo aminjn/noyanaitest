@@ -72,7 +72,7 @@ const ProductCard = ({
       pack={node.model === "ProductPackage" ? node.products.length : undefined}
       packageInfo={
         node.model === "ProductPackage"
-          ? node.products.map((el) => el.name || "").join("، ")
+          ? node.products.map((el) => el.name || "").join(getContent("listSeparator"))
           : undefined
       }
       target={`/${node.model === "Product" ? "product" : "productPackage"}/${node.slug || node._id}`}

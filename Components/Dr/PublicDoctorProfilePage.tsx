@@ -6,6 +6,7 @@ import DrIntroduction from "./DrtIntroduction";
 import classes from "./PublicDoctorProfilePage.module.css";
 import PublicDrIntro from "./PublicDrIntro";
 import BreadCrump from "../UI/BreadCrump";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
 export type PublicDoctorProfilePageProps = {
   doctor: IDoctorProfile<{
@@ -22,6 +23,7 @@ const PublicDoctorProfilePage = ({
   doctor,
   faqs,
 }: PublicDoctorProfilePageProps) => {
+  const getContent = useScopedLocale();
   const fullName =
     `${doctor.firstName || ""} ${doctor.lastName || ""}`.trim() || doctor._id;
 
@@ -29,8 +31,8 @@ const PublicDoctorProfilePage = ({
     <div>
       <BreadCrump
         trail={[
-          { title: "صفحه اصلی", target: "/" },
-          { title: "پزشکان", target: "/doctors" },
+          { title: getContent("homePage"), target: "/" },
+          { title: getContent("doctors"), target: "/doctors" },
           { title: fullName, target: `/dr/${doctor.slug || doctor._id}` },
         ]}
         className={classes.crump}

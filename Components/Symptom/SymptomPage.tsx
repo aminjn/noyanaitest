@@ -76,8 +76,8 @@ const SymptomPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "علائم", target: "/symptom" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("symptoms"), target: "/symptom" },
         {
           title: data.name || data._id,
           target: `/symptom/${data.slug || data._id}`,

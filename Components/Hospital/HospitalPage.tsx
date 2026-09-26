@@ -107,8 +107,8 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
       <MedicalCenterLayout
         back={{ target: "/hospital", title: getContent("backToHospitalsList") }}
         trail={[
-          { title: "صفحه اصلی", target: "/" },
-          { title: "بیمارستان ها", target: "/hospital" },
+          { title: getContent("homePage"), target: "/" },
+          { title: getContent("hospitals"), target: "/hospital" },
           {
             title: data.name || data._id,
             target: `/hospital/${data.slug || data._id}`,

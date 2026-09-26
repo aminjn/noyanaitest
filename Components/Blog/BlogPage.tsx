@@ -89,8 +89,8 @@ const BlogPage = (props: BlogPageProps) => {
     <div className={classes.container}>
       <BreadCrump
         trail={[
-          { title: "صفحه اصلی", target: "/" },
-          { title: "بلاگ ها", target: "/mag" },
+          { title: getContent("homePage"), target: "/" },
+          { title: getContent("blog"), target: "/mag" },
           {
             title: blog.title || blog._id,
             target: `/mag/${blog.slug || blog._id}`,

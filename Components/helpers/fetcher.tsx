@@ -12,6 +12,82 @@ export type FethcerArgs = {
   headers?: Record<string, string>;
 };
 
+// Fallback error texts for when the server gives no usable message. This is
+// not a React component, so the language is read from <html lang>.
+const fallbackErrorMessages: Record<
+  string,
+  { invalidResponse: string; unknownError: string }
+> = {
+  fa: {
+    invalidResponse: "جواب دریافت شده از سرور معتبر نیست",
+    unknownError: "خطای ناشناخته رخ داده",
+  },
+  en: {
+    invalidResponse: "The response received from the server is invalid",
+    unknownError: "An unknown error occurred",
+  },
+  ar: {
+    invalidResponse: "الاستجابة المستلمة من الخادم غير صالحة",
+    unknownError: "حدث خطأ غير معروف",
+  },
+  zh: {
+    invalidResponse: "服务器返回的响应无效",
+    unknownError: "发生未知错误",
+  },
+  hi: {
+    invalidResponse: "सर्वर से प्राप्त प्रतिक्रिया मान्य नहीं है",
+    unknownError: "एक अज्ञात त्रुटि हुई",
+  },
+  es: {
+    invalidResponse: "La respuesta recibida del servidor no es válida",
+    unknownError: "Se produjo un error desconocido",
+  },
+  fr: {
+    invalidResponse: "La réponse reçue du serveur n'est pas valide",
+    unknownError: "Une erreur inconnue s'est produite",
+  },
+  ru: {
+    invalidResponse: "Получен недопустимый ответ от сервера",
+    unknownError: "Произошла неизвестная ошибка",
+  },
+  pt: {
+    invalidResponse: "A resposta recebida do servidor não é válida",
+    unknownError: "Ocorreu um erro desconhecido",
+  },
+  de: {
+    invalidResponse: "Die vom Server erhaltene Antwort ist ungültig",
+    unknownError: "Ein unbekannter Fehler ist aufgetreten",
+  },
+  tr: {
+    invalidResponse: "Sunucudan alınan yanıt geçersiz",
+    unknownError: "Bilinmeyen bir hata oluştu",
+  },
+  ur: {
+    invalidResponse: "سرور سے موصول ہونے والا جواب درست نہیں ہے",
+    unknownError: "ایک نامعلوم خرابی پیش آئی",
+  },
+  bn: {
+    invalidResponse: "সার্ভার থেকে প্রাপ্ত প্রতিক্রিয়া বৈধ নয়",
+    unknownError: "একটি অজানা ত্রুটি ঘটেছে",
+  },
+  id: {
+    invalidResponse: "Respons yang diterima dari server tidak valid",
+    unknownError: "Terjadi kesalahan yang tidak diketahui",
+  },
+  ja: {
+    invalidResponse: "サーバーから無効な応答を受信しました",
+    unknownError: "不明なエラーが発生しました",
+  },
+};
+
+const getFallbackErrorMessages = () => {
+  const lang =
+    typeof document !== "undefined"
+      ? document.documentElement.lang.split("-")[0].toLowerCase()
+      : "";
+  return fallbackErrorMessages[lang] ?? fallbackErrorMessages.fa;
+};
+
 export class FetchError extends Error {
   status;
   constructor(message: string, status?: number) {
@@ -71,11 +147,14 @@ const fetcherInner = async <TResult,>({
     body,
   });
   if (!response.headers.get("content-type")?.includes("json"))
-    throw new FetchError("جواب دریافت شده از سرور معتبر نیست", response.status);
+    throw new FetchError(
+      getFallbackErrorMessages().invalidResponse,
+      response.status
+    );
   const data = await response.json();
   if (!response.ok)
     throw new FetchError(
-      data.message || "خطای ناشناخته رخ داده",
+      data.message || getFallbackErrorMessages().unknownError,
       response.status
     );
   return data;

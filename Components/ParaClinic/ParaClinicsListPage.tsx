@@ -70,8 +70,8 @@ const ParaClinicsListPage = ({
   return (
     <ListPageLayout
       trail={[
-        { title: "صفحه اصلی", target: "/" },
-        { title: "پاراکلینیک ها", target: "/paraClinic" },
+        { title: getContent("homePage"), target: "/" },
+        { title: getContent("paraClinics"), target: "/paraClinic" },
       ]}
     >
       <ListPageHeader
