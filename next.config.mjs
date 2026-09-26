@@ -1,3 +1,26 @@
+import { execSync } from "node:child_process";
+
+// Seed from env (.env) so every machine produces the same chunk filenames and buildId.
+const BUILD_SEED = (process.env.BUILD_SEED || "").trim().replace(/[^a-zA-Z0-9_-]/g, "");
+
+// buildId = seed + commit, so the same commit gives the same id everywhere,
+// but a new release still gets a new /_next/static/<buildId>/ folder
+// (those files are served as immutable, so the id must change per release).
+function seededBuildId() {
+  const commit =
+    process.env.BUILD_COMMIT ||
+    (() => {
+      try {
+        return execSync("git rev-parse --short=12 HEAD", { stdio: ["ignore", "pipe", "ignore"] })
+          .toString()
+          .trim();
+      } catch {
+        return "";
+      }
+    })();
+  return commit ? `${BUILD_SEED}-${commit}` : BUILD_SEED;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -14,6 +37,17 @@ const nextConfig = {
       { protocol: "http", hostname: "127.0.0.1", pathname: "**" },
     ],
   },
+  ...(BUILD_SEED && {
+    generateBuildId: async () => seededBuildId(),
+    webpack: (config, { dev }) => {
+      if (!dev) {
+        config.output.hashSalt = BUILD_SEED;
+        config.optimization.moduleIds = "deterministic";
+        config.optimization.chunkIds = "deterministic";
+      }
+      return config;
+    },
+  }),
 };
 
 export default nextConfig;
