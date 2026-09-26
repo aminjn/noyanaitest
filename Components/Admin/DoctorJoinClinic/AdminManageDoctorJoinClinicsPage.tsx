@@ -15,7 +15,6 @@ import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
-import FormatDate from "@/Components/UI/FormatDate";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -43,21 +42,8 @@ const AdminManageDoctorJoinClinicsPage = () => {
           <Table
             data={data}
             renderer={{
-              clinic: {
-                name: "کلینیک",
-                value: (node) => node.clinic?.name,
-                filter: "Multi",
-                component: (node) =>
-                  node.clinic ? (
-                    <InlineLink href={adminPath(`/clinic/${node.clinic._id}`)}>
-                      {node.clinic.name || node.clinic._id}
-                    </InlineLink>
-                  ) : (
-                    "حذف شده"
-                  ),
-              },
               doctor: {
-                name: "دکتر",
+                name: "پزشک",
                 value: (node) =>
                   node.doctor ? getDoctorProfileLabel(node.doctor) : "",
                 component: (node) =>
@@ -72,11 +58,18 @@ const AdminManageDoctorJoinClinicsPage = () => {
                   ),
                 filter: "Multi",
               },
-              submittedAt: {
-                name: "زمان ثبت",
-                value: (node) => new Date(node.submittedAt),
-                component: (node) => <FormatDate value={node.submittedAt} />,
-                filter: "Date",
+              clinic: {
+                name: "کلینیک",
+                value: (node) => node.clinic?.name,
+                filter: "Multi",
+                component: (node) =>
+                  node.clinic ? (
+                    <InlineLink href={adminPath(`/clinic/${node.clinic._id}`)}>
+                      {node.clinic.name || node.clinic._id}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
               },
               status: {
                 name: "وضعیت",
@@ -84,29 +77,31 @@ const AdminManageDoctorJoinClinicsPage = () => {
                 filter: "Set",
               },
               submissionParty: {
-                name: "طرف ارسال کننده",
+                name: "ارسال‌کننده",
                 value: (node) =>
                   joinClinicSubmissionPartyDict[node.submissionParty],
                 filter: "Set",
               },
-              statusLastChangedAt: {
-                name: "آخرین تغییر وضعیت",
-                value: (node) => new Date(node.statusLastChangedAt),
-                component: (node) => (
-                  <FormatDate value={node.statusLastChangedAt} />
-                ),
+              submittedAt: {
+                name: "زمان ثبت",
+                value: (node) =>
+                  node.submittedAt ? new Date(node.submittedAt) : undefined,
                 filter: "Date",
               },
-              message: {
-                name: "پیام",
-                value: (node) => node.message,
-                filter: "Text",
+              statusLastChangedAt: {
+                name: "آخرین تغییر وضعیت",
+                value: (node) =>
+                  node.statusLastChangedAt
+                    ? new Date(node.statusLastChangedAt)
+                    : undefined,
+                filter: "Date",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش وضعیت"
                       onClick={() =>
                         setPopup(
                           "EditDoctorJoinClinic",
@@ -120,6 +115,7 @@ const AdminManageDoctorJoinClinicsPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      title="حذف"
                       variant="Danger"
                       onClick={() =>
                         setPopup(

@@ -12,7 +12,7 @@ import TabSystem from "../UI/TabSystem";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 import CreateForm from "../UI/CreateForm";
 import Table from "../UI/Table";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import IconLink from "../UI/IconLink";
@@ -146,8 +146,14 @@ const CityDistricts = ({ node }: { node: ICity }) => {
             name="AdminManageDistricts"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              isActive: {
+                name: "فعال",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -159,19 +165,13 @@ const CityDistricts = ({ node }: { node: ICity }) => {
                   />
                 ),
               },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                filter: "Set",
-              },
               actions: {
                 name: "عملیات",
+                width: 150,
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/district/${node._id}`)}>
-                      <EyeIcon />
-                    </IconLink>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateDistrict",
@@ -181,7 +181,15 @@ const CityDistricts = ({ node }: { node: ICity }) => {
                     >
                       <EditIcon />
                     </IconButton>
+                    <IconLink
+                      href={adminPath(`/district/${node._id}`)}
+                      title="مشاهده"
+                    >
+                      <EyeIcon />
+                    </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDistrict",

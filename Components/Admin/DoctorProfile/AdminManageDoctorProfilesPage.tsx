@@ -8,9 +8,8 @@ import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import { provinces } from "@/Components/Enums/Provinces";
 import { cities } from "@/Components/Enums/Cities";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
@@ -62,14 +61,10 @@ const AdminManageDoctorProfilesPage = () => {
             data={data}
             name="AdminManageDoctorProfiles"
             renderer={{
-              firstName: {
-                name: "نام",
-                value: (node) => node.firstName,
-                filter: "Text",
-              },
-              lastName: {
-                name: "نام خانوادگی",
-                value: (node) => node.lastName,
+              fullName: {
+                name: "نام پزشک",
+                value: (node) =>
+                  [node.firstName, node.lastName].filter(Boolean).join(" "),
                 filter: "Text",
               },
               mainSpeciality: {
@@ -78,11 +73,13 @@ const AdminManageDoctorProfilesPage = () => {
                   node.mainSpeciality?.name || node.mainSpeciality?._id || "",
                 component: (node) =>
                   node.mainSpeciality ? (
-                    <InlineLink href={adminPath(`/speciality/${node._id}`)}>
+                    <InlineLink
+                      href={adminPath(`/speciality/${node.mainSpeciality._id}`)}
+                    >
                       {node.mainSpeciality.name || node.mainSpeciality._id}
                     </InlineLink>
                   ) : (
-                    ""
+                    "—"
                   ),
                 filter: "Multi",
               },
@@ -91,71 +88,58 @@ const AdminManageDoctorProfilesPage = () => {
                 value: (node) => node.medicalSystemCode,
                 filter: "Text",
               },
-              website: {
-                name: "سایت",
-                value: (node) => node.website,
-                filter: "Text",
-              },
-              landLine: {
-                name: "تلفن",
-                value: (node) => node.landLine,
-                filter: "Text",
-              },
-              province: {
-                name: "استان",
-                value: (node) =>
-                  provinces.find((p) => p.slug === node.province)?.name,
-                filter: "Multi",
-              },
               city: {
                 name: "شهر",
                 value: (node) => cities.find((c) => c.slug === node.city)?.name,
                 filter: "Multi",
               },
               user: {
-                name: "صاحب",
+                name: "مالک",
                 value: (node) => node.user?.phone,
                 filter: "Text",
                 component: (node) =>
                   node.user ? (
-                    <InlineLink href={adminPath(`/user/${node._id}`)}>
-                      {node.user.phone}
+                    <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                      {node.user.phone || node.user._id}
                     </InlineLink>
                   ) : (
-                    ""
+                    "—"
                   ),
               },
               phoneConsult: {
                 name: "مشاوره تلفنی",
                 value: (node) =>
                   booleanToValue[`${!!node.phoneConsultSettings?.active}`],
+                component: (node) => (
+                  <BooleanToIcon value={!!node.phoneConsultSettings?.active} />
+                ),
                 filter: "Set",
               },
-              phoneConsultDuration: {
-                name: "مدت زمان مشاوره تلفنی(دقیقه)",
-                value: (node) => node.phoneConsultSettings?.duration,
-                filter: "Number",
-              },
               phoneConsultPrice: {
-                name: "قیمت مشاوره تلفنی(ریال)",
+                name: "قیمت مشاوره (ریال)",
                 value: (node) => node.phoneConsultSettings?.price,
                 component: (node) =>
-                  node.phoneConsultSettings
+                  node.phoneConsultSettings?.price !== undefined
                     ? currencize(node.phoneConsultSettings.price)
-                    : "",
+                    : "—",
+                filter: "Number",
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     {hasAccess("DoctorProfile", "readOne") && (
-                      <IconLink href={adminPath(`/doctorprofile/${node._id}`)}>
+                      <IconLink
+                        href={adminPath(`/doctorprofile/${node._id}`)}
+                        title="ویرایش"
+                      >
                         <EditIcon />
                       </IconLink>
                     )}
                     {hasAccess("DoctorProfile", "delete") && (
                       <IconButton
                         variant="Danger"
+                        title="حذف"
                         onClick={() =>
                           setPopup(
                             "DeleetDoctorProfile",

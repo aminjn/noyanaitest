@@ -15,7 +15,7 @@ import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 import PopupCard from "@/Components/UI/PopupCard";
 import OrderEditor from "../UI/OrderEditor";
@@ -90,6 +90,25 @@ const AdminManageParaClinicsPage = () => {
           name="AdminManageParaClinics"
           renderer={{
             name: { name: "نام", value: (node) => node.name, filter: "Text" },
+            user: {
+              name: "کاربر",
+              filter: "Text",
+              value: (node) => node.user?.phone,
+              component: (node) =>
+                node.user?._id ? (
+                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                    {node.user.phone || node.user._id}
+                  </InlineLink>
+                ) : (
+                  "—"
+                ),
+            },
+            active: {
+              name: "وضعیت",
+              value: (node) => booleanToValue[`${node.active}`],
+              component: (node) => <BooleanToIcon value={node.active} />,
+              filter: "Set",
+            },
             order: {
               name: "رتبه",
               value: (node) => node.order,
@@ -103,31 +122,15 @@ const AdminManageParaClinicsPage = () => {
                 />
               ),
             },
-            active: {
-              name: "فعال",
-              value: (node) => booleanToValue[`${node.active}`],
-              component: (node) => <BooleanToIcon value={node.active} />,
-              filter: "Set",
-            },
-            user: {
-              name: "کاربر",
-              filter: "Text",
-              value: (node) => node.user?.phone || "ندارد",
-              component: (node) =>
-                node.user ? (
-                  <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                    {node.user.phone}
-                  </InlineLink>
-                ) : (
-                  "ندارد"
-                ),
-            },
             actions: {
               name: "عملیات",
               component: (node) => (
                 <TableActions>
-                  <IconLink href={adminPath(`/paraClinic/${node._id}`)}>
-                    <EyeIcon />
+                  <IconLink
+                    href={adminPath(`/paraClinic/${node._id}`)}
+                    title="ویرایش"
+                  >
+                    <EditIcon />
                   </IconLink>
                 </TableActions>
               ),

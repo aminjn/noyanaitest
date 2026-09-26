@@ -64,139 +64,34 @@ const AdminManageTaminServicesPage = () => {
               data={data}
               name="AdminManageTaminServices"
               renderer={{
-                srvId: {
-                  name: "srvId",
-                  value: (node) => node.srvId,
-                  filter: "Text",
-                },
-                srvType: {
-                  name: "srvType",
-                  value: (node) => node.srvType,
-                  filter: "Text",
-                },
-                srvCode: {
-                  name: "srvCode",
-                  value: (node) => node.srvCode,
-                  filter: "Text",
-                },
                 srvName: {
-                  name: "srvName",
+                  name: "نام خدمت",
                   value: (node) => node.srvName,
                   filter: "Text",
                 },
-                srvName2: {
-                  name: "srvName2",
-                  value: (node) => node.srvName2,
+                srvCode: {
+                  name: "کد خدمت",
+                  value: (node) => node.srvCode,
                   filter: "Text",
                 },
-                srvBimSw: {
-                  name: "srvBimSw",
-                  value: (node) => node.srvBimSw,
-                  filter: "Text",
-                },
-                srvSex: {
-                  name: "srvSex",
-                  value: (node) => node.srvSex,
-                  filter: "Text",
+                srvType: {
+                  name: "نوع",
+                  value: (node) => node.srvType,
+                  filter: "Set",
                 },
                 srvPrice: {
-                  name: "srvPrice",
+                  name: "قیمت",
                   value: (node) => node.srvPrice,
                   filter: "Text",
                 },
-                srvPriceDate: {
-                  name: "srvPriceDate",
-                  value: (node) => node.srvPriceDate,
-                  filter: "Text",
-                },
-                doseCode: {
-                  name: "doseCode",
-                  value: (node) => node.doseCode,
-                  filter: "Text",
-                },
-                formCode: {
-                  name: "formCode",
-                  value: (node) => node.formCode,
-                  filter: "Text",
-                },
-                parTarefGrp: {
-                  name: "parTarefGrp",
-                  value: (node) => node.parTarefGrp,
-                  filter: "Text",
-                },
                 status: {
-                  name: "status",
+                  name: "وضعیت",
                   value: (node) => node.status,
-                  filter: "Text",
+                  filter: "Set",
                 },
-                statusstDate: {
-                  name: "statusstDate",
-                  value: (node) => node.statusstDate,
-                  filter: "Text",
-                },
-                bGType: {
-                  name: "bGType",
-                  value: (node) => node.bGType,
-                  filter: "Text",
-                },
-                gSrvCode: {
-                  name: "gSrvCode",
-                  value: (node) => node.gSrvCode,
-                  filter: "Text",
-                },
-                agreementFlag: {
-                  name: "agreementFlag",
-                  value: (node) => node.agreementFlag,
-                  filter: "Text",
-                },
-                isDeleted: {
-                  name: "isDeleted",
-                  value: (node) => node.isDeleted,
-                  filter: "Text",
-                },
-                visible: {
-                  name: "visible",
-                  value: (node) => node.visible,
-                  filter: "Text",
-                },
-                dentalServiceType: {
-                  name: "dentalServiceType",
-                  value: (node) => node.dentalServiceType,
-                  filter: "Text",
-                },
-                wsSrvCode: {
-                  name: "wsSrvCode",
-                  value: (node) => node.wsSrvCode,
-                  filter: "Text",
-                },
-                hosprescType: {
-                  name: "hosprescType",
-                  value: (node) => node.hosprescType,
-                  filter: "Text",
-                },
-                srvRule: {
-                  name: "srvRule",
-                  value: (node) => node.srvRule,
-                  filter: "Text",
-                },
-                countIsRestricted: {
-                  name: "countIsRestricted",
-                  value: (node) => node.countIsRestricted,
-                  filter: "Text",
-                },
-                drugWarning: {
-                  name: "drugWarning",
-                  value: (node) => node.drugWarning,
-                  filter: "Text",
-                },
-                terminology: {
-                  name: "terminology",
-                  value: (node) => node.terminology,
-                  filter: "Text",
-                },
-                srvCodeComplete: {
-                  name: "srvCodeComplete",
-                  value: (node) => node.srvCodeComplete,
+                srvId: {
+                  name: "شناسه تامین",
+                  value: (node) => node.srvId,
                   filter: "Text",
                 },
               }}

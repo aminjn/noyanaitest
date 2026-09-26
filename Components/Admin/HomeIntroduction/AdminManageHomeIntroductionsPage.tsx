@@ -135,7 +135,7 @@ const AdminManageHomeIntroductionsPage = () => {
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -152,6 +152,7 @@ const AdminManageHomeIntroductionsPage = () => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateHomeIntroduction",
@@ -165,6 +166,8 @@ const AdminManageHomeIntroductionsPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteHomeintroduction",

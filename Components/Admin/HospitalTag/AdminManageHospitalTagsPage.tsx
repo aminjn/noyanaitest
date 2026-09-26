@@ -17,7 +17,7 @@ import Table from "../UI/Table";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
@@ -118,20 +118,20 @@ const AdminManageHospitalTagsPage = () => {
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: "وضعیت",
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
                   <OrderEditor
                     value={node.order}
                     _id={node._id}
-                    modelName="hopitalTag"
+                    modelName="hospitalTag"
                     mutate={mutate}
                   />
                 ),
@@ -140,10 +140,15 @@ const AdminManageHospitalTagsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/hospitalTag/${node._id}`)}>
-                      <EyeIcon />
+                    <IconLink
+                      href={adminPath(`/hospitalTag/${node._id}`)}
+                      title="ویرایش"
+                    >
+                      <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalTag",

@@ -58,8 +58,14 @@ const AdminManageInsurancesPage = () => {
                 ),
                 filter: "Text",
               },
+              active: {
+                name: "فعال",
+                component: (node) => <BooleanToIcon value={node.active} />,
+                value: (node) => booleanToValue[`${node.active}`],
+                filter: "Set",
+              },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -71,21 +77,19 @@ const AdminManageInsurancesPage = () => {
                   />
                 ),
               },
-              active: {
-                name: "فعال",
-                component: (node) => <BooleanToIcon value={node.active} />,
-                value: (node) => booleanToValue[`${node.active}`],
-                filter: "Set",
-              },
-              action: {
+              actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/insurance/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/insurance/${node._id}`)}
+                      title="ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteInsurance",

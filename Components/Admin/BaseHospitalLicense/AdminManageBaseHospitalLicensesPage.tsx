@@ -10,7 +10,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
@@ -89,6 +89,14 @@ export const baseHospitalLicenseFormRenderer: FormRenderer<IBaseHospitalLicense>
     },
   };
 
+// Cheapest active pricing option, shown as the plan's "starting from" price.
+const minActivePrice = (node: IBaseHospitalLicense) => {
+  const prices = (node.pricing || [])
+    .filter((entry) => entry?.isActive && typeof entry.price === "number")
+    .map((entry) => entry.price);
+  return prices.length ? Math.min(...prices) : undefined;
+};
+
 const AdminManageBaseHospitalLicensesPage = () => {
   const { setPopup } = usePopup();
 
@@ -103,6 +111,30 @@ const AdminManageBaseHospitalLicensesPage = () => {
           value: (node) => node.displayName,
           filter: "Text",
         },
+        isActive: {
+          name: "وضعیت",
+          value: (node) => booleanToValue[`${node.isActive}`],
+          component: (node) => <BooleanToIcon value={node.isActive} />,
+          filter: "Set",
+        },
+        isPrimary: {
+          name: "پلن اصلی",
+          value: (node) => booleanToValue[`${node.isPrimary}`],
+          component: (node) => <BooleanToIcon value={node.isPrimary} />,
+          filter: "Set",
+        },
+        isDefault: {
+          name: "پیش‌فرض",
+          value: (node) => booleanToValue[`${node.isDefault}`],
+          component: (node) => <BooleanToIcon value={node.isDefault} />,
+          filter: "Set",
+        },
+        minPrice: {
+          name: "شروع قیمت",
+          value: (node) => minActivePrice(node),
+          component: (node) => minActivePrice(node)?.toLocaleString("fa-IR"),
+          filter: "Number",
+        },
         order: {
           name: "رتبه",
           value: (node) => node.order,
@@ -116,20 +148,19 @@ const AdminManageBaseHospitalLicensesPage = () => {
             />
           ),
         },
-        isDefault: {
-          name: "پیش فرض",
-          value: (node) => booleanToValue[`${node.isDefault}`],
-          component: (node) => <BooleanToIcon value={node.isDefault} />,
-          filter: "Set",
-        },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/baseHospitalLicense/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/baseHospitalLicense/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

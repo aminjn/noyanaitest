@@ -64,15 +64,10 @@ const AdminManageBlogCategoriesPage = () => {
                   </InlineLink>
                 ),
               },
-              slug: {
-                name: "اسلاگ",
-                filter: "Text",
-                value: (node) => node.slug,
-              },
               order: {
                 name: "رتبه",
                 value: (node) => node.order,
-                filter: "Text",
+                filter: "Number",
                 component: (node) => (
                   <OrderEditor
                     value={node.order}
@@ -87,12 +82,16 @@ const AdminManageBlogCategoriesPage = () => {
                 component: (node) => (
                   <TableActions>
                     {hasAccess("BlogCategory", "readOne") && (
-                      <IconLink href={adminPath(`/blogcategory/${node._id}`)}>
+                      <IconLink
+                        href={adminPath(`/blogcategory/${node._id}`)}
+                        title="ویرایش"
+                      >
                         <EditIcon />
                       </IconLink>
                     )}
                     {hasAccess("BlogCategory", "delete") && (
                       <IconButton
+                        title="حذف"
                         variant="Danger"
                         onClick={() =>
                           setPopup(

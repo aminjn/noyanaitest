@@ -22,7 +22,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
@@ -102,38 +102,24 @@ const AdminManageServicePackagesPage = () => {
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
         owner: {
-          name: "صاحب",
-          value: (node) => getDoctorProfileLabel(node.owner),
-          component: (node) => (
-            <InlineLink href={adminPath(`/doctorProfile/${node.owner._id}`)}>
-              {getDoctorProfileLabel(node.owner)}
-            </InlineLink>
-          ),
+          name: "پزشک",
+          value: (node) =>
+            node.owner ? getDoctorProfileLabel(node.owner) : "حذف شده",
+          component: (node) =>
+            node.owner ? (
+              <InlineLink href={adminPath(`/doctorProfile/${node.owner._id}`)}>
+                {getDoctorProfileLabel(node.owner)}
+              </InlineLink>
+            ) : (
+              "حذف شده"
+            ),
           filter: "Multi",
         },
-        services: {
-          name: "تغداد اقلام",
-          value: (node) => node.services.length,
-          filter: "Number",
-        },
         isActive: {
-          name: "فعال",
+          name: "وضعیت",
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
-        },
-        order: {
-          name: "رتبه",
-          value: (node) => node.order,
-          filter: "Number",
-          component: (node) => (
-            <OrderEditor
-              _id={node._id}
-              value={node.order}
-              mutate={mutate}
-              modelName="servicePackage"
-            />
-          ),
         },
         price: {
           name: "قیمت",
@@ -147,14 +133,32 @@ const AdminManageServicePackagesPage = () => {
           component: (node) => currencize(node.discount),
           filter: "Number",
         },
+        order: {
+          name: "ترتیب",
+          value: (node) => node.order,
+          filter: "Number",
+          component: (node) => (
+            <OrderEditor
+              _id={node._id}
+              value={node.order}
+              mutate={mutate}
+              modelName="servicePackage"
+            />
+          ),
+        },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/servicePackage/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/servicePackage/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

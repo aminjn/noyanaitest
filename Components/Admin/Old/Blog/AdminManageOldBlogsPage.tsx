@@ -7,7 +7,6 @@ import { IOldBlog } from "../Doctor/AdminManageOldDoctorsPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
-import FormatDate from "@/Components/UI/FormatDate";
 
 const AdminManageOldBlogsPage = () => {
   const { data, error } = useSWR<IOldBlog[]>(`${API}/old/blog`, (url: string) =>
@@ -21,21 +20,14 @@ const AdminManageOldBlogsPage = () => {
           data={data}
           name="AdminManageOldBlogs"
           renderer={{
-            _id: { name: "آی دی", value: (node) => node._id, filter: "Text" },
+            name: { name: "نام", value: (node) => node.name, filter: "Text" },
             publishedAt: {
               name: "تاریخ انتشار",
               value: (node) =>
-                node.publishedAt ? new Date(node.publishedAt) : "",
-              component: (node) => <FormatDate value={node.publishedAt} />,
+                node.publishedAt ? new Date(node.publishedAt) : undefined,
+              filter: "Date",
             },
-            name: { name: "نام", value: (node) => node.name, filter: "Text" },
-            slug: { name: "اسلاگ", value: (node) => node.slug, filter: "Text" },
-            summary: {
-              name: "خلاصه",
-              value: (node) => node.summary,
-              filter: "Text",
-            },
-            content: { name: "محتوا", value: (node) => node.mainContent },
+            _id: { name: "شناسه", value: (node) => node._id, filter: "Text" },
           }}
         />
       )}

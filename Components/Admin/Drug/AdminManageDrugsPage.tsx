@@ -33,7 +33,7 @@ const AdminManageDrugsPage = () => {
           title="دارو ها"
           actions={[
             {
-              title: "حدید",
+              title: "جدید",
               action: () =>
                 setPopup("CreateDrug", <CreateDrugPopup mutate={mutate} />),
             },
@@ -44,8 +44,18 @@ const AdminManageDrugsPage = () => {
             name="AdminManageDrugs"
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              brand: {
+                name: "برند",
+                value: (node) => node.brand,
+                filter: "Text",
+              },
+              dosageForm: {
+                name: "شکل دارویی",
+                value: (node) => node.dosageForm,
+                filter: "Set",
+              },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -57,20 +67,19 @@ const AdminManageDrugsPage = () => {
                   />
                 ),
               },
-              slug: {
-                name: "اسلاگ",
-                value: (node) => node.slug,
-                filter: "Text",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/drug/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/drug/${node._id}`)}
+                      title="ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteDrug",

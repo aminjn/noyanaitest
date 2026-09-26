@@ -8,7 +8,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
@@ -43,7 +43,6 @@ const AdminManageFaqCategoriesPage = () => {
       title="دسته بندی سوالات متداول"
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
-        slug: { name: "اسلاگ", value: (node) => node.slug, filter: "Text" },
         isActive: {
           name: "فعال",
           value: (node) => booleanToValue[`${node.isActive}`],
@@ -51,7 +50,7 @@ const AdminManageFaqCategoriesPage = () => {
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: "ترتیب",
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -64,13 +63,18 @@ const AdminManageFaqCategoriesPage = () => {
           ),
         },
         actions: {
-          name: "غملیات",
+          name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/faqCategory/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/faqCategory/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

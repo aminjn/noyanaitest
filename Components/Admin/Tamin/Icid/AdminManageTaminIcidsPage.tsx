@@ -37,29 +37,29 @@ const AdminManageTaminIcidsPage = () => {
               data={data}
               name="AdminManageTaminIcds"
               renderer={{
-                icdId: {
-                  name: "icdId",
-                  value: (node) => node.icdId,
-                  filter: "Text",
-                },
-                icdCode: {
-                  name: "icdCode",
-                  value: (node) => node.icdCode,
-                  filter: "Text",
-                },
                 icdName: {
-                  name: "icdName",
+                  name: "نام",
                   value: (node) => node.icdName,
                   filter: "Text",
                 },
+                icdPersianName: {
+                  name: "نام فارسی",
+                  value: (node) => node.icdPersianName,
+                  filter: "Text",
+                },
+                icdCode: {
+                  name: "کد ICD",
+                  value: (node) => node.icdCode,
+                  filter: "Text",
+                },
                 countLimitation: {
-                  name: "countLimitation",
+                  name: "محدودیت تعداد",
                   value: (node) => node.countLimitation,
                   filter: "Text",
                 },
-                icdPersianName: {
-                  name: "icdPresianName",
-                  value: (node) => node.icdPersianName,
+                icdId: {
+                  name: "شناسه تامین",
+                  value: (node) => node.icdId,
                   filter: "Text",
                 },
               }}

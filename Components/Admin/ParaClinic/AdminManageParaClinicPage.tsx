@@ -175,12 +175,15 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
             renderer={{
               test: {
                 name: "آزمایش",
-                value: (node) => node.test.name,
-                component: (node) => (
-                  <InlineLink href={adminPath(`/test/${node.test._id}`)}>
-                    {node.test.name}
-                  </InlineLink>
-                ),
+                value: (node) => node.test?.name || "حذف شده",
+                component: (node) =>
+                  node.test ? (
+                    <InlineLink href={adminPath(`/test/${node.test._id}`)}>
+                      {node.test.name || node.test._id}
+                    </InlineLink>
+                  ) : (
+                    "حذف شده"
+                  ),
                 filter: "Multi",
               },
               price: {
@@ -188,11 +191,18 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
                 value: (node) => node.price,
                 filter: "Number",
               },
+              readyTime: {
+                name: "زمان جوابدهی",
+                value: (node) => node.readyTime,
+                filter: "Text",
+              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      variant="Info"
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "Edit",
@@ -206,6 +216,8 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "Delete",

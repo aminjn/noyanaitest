@@ -12,7 +12,6 @@ import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import FormatDate from "@/Components/UI/FormatDate";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import { getUserLabel } from "../Lib/LabelGetters";
 import MutateNotificationPopup from "./MutateNotificationPopup";
@@ -81,19 +80,14 @@ const AdminManageNotificationsPage = () => {
             name="AdminManageNotifications"
             data={data}
             renderer={{
-              user: {
-                name: "کاربر",
-                value: (node) => getUserLabel(node.user),
-                filter: "Text",
-              },
               title: {
                 name: "عنوان",
                 value: (node) => node.title,
                 filter: "Text",
               },
-              message: {
-                name: "متن",
-                value: (node) => node.message,
+              user: {
+                name: "کاربر",
+                value: (node) => (node.user ? getUserLabel(node.user) : ""),
                 filter: "Text",
               },
               source: {
@@ -107,16 +101,16 @@ const AdminManageNotificationsPage = () => {
                 filter: "Set",
               },
               createdAt: {
-                name: "تاریخ ثبت",
+                name: "تاریخ ارسال",
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
-                component: (node) => <FormatDate value={node.createdAt} />,
               },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
                     <IconButton
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateNotification",
@@ -128,6 +122,7 @@ const AdminManageNotificationsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteNotification",

@@ -58,8 +58,14 @@ const AdminManagePharmaciesPage = () => {
                 ),
                 filter: "Text",
               },
+              active: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.active}`],
+                component: (node) => <BooleanToIcon value={node.active} />,
+                filter: "Set",
+              },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -71,27 +77,25 @@ const AdminManagePharmaciesPage = () => {
                   />
                 ),
               },
-              active: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.active}`],
-                component: (node) => <BooleanToIcon value={node.active} />,
-                filter: "Set",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/pharmacy/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/pharmacy/${node._id}`)}
+                      title="ویرایش"
+                    >
                       <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeletePharmacy",
                           <DeletePharmacyPopup mutate={mutate} node={node} />,
                         )
                       }
-                      variant="Danger"
                     >
                       <GarbageIcon />
                     </IconButton>

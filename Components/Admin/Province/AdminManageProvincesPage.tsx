@@ -169,8 +169,14 @@ const AdminManageProvincesPage = () => {
             data={data}
             renderer={{
               name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              isActive: {
+                name: "وضعیت",
+                value: (node) => booleanToValue[`${node.isActive}`],
+                component: (node) => <BooleanToIcon value={node.isActive} />,
+                filter: "Set",
+              },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -182,20 +188,19 @@ const AdminManageProvincesPage = () => {
                   />
                 ),
               },
-              isActive: {
-                name: "فعال",
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
               actions: {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={adminPath(`/province/${node._id}`)}>
+                    <IconLink
+                      href={adminPath(`/province/${node._id}`)}
+                      title="شهرها و جزئیات"
+                    >
                       <EyeIcon />
                     </IconLink>
                     <IconButton
+                      variant="Info"
+                      title="ویرایش"
                       onClick={() =>
                         setPopup(
                           "MutateProvince",
@@ -206,6 +211,8 @@ const AdminManageProvincesPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteProvince",

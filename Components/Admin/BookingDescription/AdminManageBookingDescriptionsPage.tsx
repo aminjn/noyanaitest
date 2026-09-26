@@ -3,11 +3,11 @@
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import NodesManager from "../UI/NodesManager";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -66,23 +66,19 @@ const AdminManageBookingDescriptionsPage = () => {
       modelName="bookingDescription"
       table={({ mutate }) => ({
         title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
-        description: {
-          name: "توضیحات",
-          value: (node) => node.description,
-          filter: "Text",
-        },
         segment: {
           name: "بخش",
           value: (node) => bookingDescriptionSegmentDict[node.segment],
           filter: "Set",
         },
         isActive: {
-          name: "فعال",
+          name: "وضعیت",
           value: (node) => booleanToValue[`${node.isActive}`],
+          component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: "ترتیب",
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -98,10 +94,15 @@ const AdminManageBookingDescriptionsPage = () => {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/bookingDescription/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/bookingDescription/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

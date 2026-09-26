@@ -37,29 +37,29 @@ const AdminManageTaminParTarefsPage = () => {
               data={data}
               name="AdminManageTaminParTarefs"
               renderer={{
-                parGrpCode: {
-                  name: "parGrpCode",
-                  value: (node) => node.parGrpCode,
-                  filter: "Text",
-                },
                 parGrpDesc: {
-                  name: "parGrpDesc",
+                  name: "شرح گروه",
                   value: (node) => node.parGrpDesc,
                   filter: "Text",
                 },
-                parGrpRem: {
-                  name: "parGrpRem",
-                  value: (node) => node.parGrpRem,
+                parGrpCode: {
+                  name: "کد گروه",
+                  value: (node) => node.parGrpCode,
                   filter: "Text",
                 },
                 status: {
-                  name: "status",
+                  name: "وضعیت",
                   value: (node) => node.status,
-                  filter: "Text",
+                  filter: "Set",
                 },
                 statusStDate: {
-                  name: "statusStDate",
+                  name: "تاریخ وضعیت",
                   value: (node) => node.statusStDate,
+                  filter: "Text",
+                },
+                parGrpRem: {
+                  name: "ملاحظات",
+                  value: (node) => node.parGrpRem,
                   filter: "Text",
                 },
               }}

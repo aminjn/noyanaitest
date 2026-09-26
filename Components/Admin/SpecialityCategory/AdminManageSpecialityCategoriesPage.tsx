@@ -18,7 +18,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
@@ -129,7 +129,7 @@ const AdminManageSpecialityCategoriesPage = () => {
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: "ترتیب",
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -147,10 +147,13 @@ const AdminManageSpecialityCategoriesPage = () => {
                   <TableActions>
                     <IconLink
                       href={adminPath(`/specialityCategory/${node._id}`)}
+                      title="ویرایش"
                     >
-                      <EyeIcon />
+                      <EditIcon />
                     </IconLink>
                     <IconButton
+                      variant="Danger"
+                      title="حذف"
                       onClick={() =>
                         setPopup(
                           "DeleteSpecialityCategory",

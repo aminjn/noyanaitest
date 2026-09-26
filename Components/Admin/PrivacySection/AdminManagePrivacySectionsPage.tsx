@@ -8,7 +8,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
@@ -54,8 +54,13 @@ const AdminManagePrivacySectionsPage = () => {
       create={privacySectionFormRenderer}
       table={({ mutate }) => ({
         title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
+        page: {
+          name: "صفحه",
+          value: (node) => privacySectionPageDict[node.page],
+          filter: "Set",
+        },
         isActive: {
-          name: "فعال",
+          name: "وضعیت",
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
@@ -73,19 +78,19 @@ const AdminManagePrivacySectionsPage = () => {
             />
           ),
         },
-        page: {
-          name: "صفحه",
-          value: (node) => privacySectionPageDict[node.page],
-          filter: "Set",
-        },
         actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/privacy/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/privacy/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",

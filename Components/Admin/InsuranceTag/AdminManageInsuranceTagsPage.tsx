@@ -7,7 +7,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import EyeIcon from "@/Components/Icons/EyeIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
@@ -42,13 +42,13 @@ const AdminManageInsuranceTagsPage = () => {
       table={({ mutate }) => ({
         name: { name: "نام", value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "فعال",
+          name: "وضعیت",
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتیه",
+          name: "رتبه",
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -60,14 +60,19 @@ const AdminManageInsuranceTagsPage = () => {
             />
           ),
         },
-        action: {
+        actions: {
           name: "عملیات",
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/insuranceTag/${node._id}`)}>
-                <EyeIcon />
+              <IconLink
+                href={adminPath(`/insuranceTag/${node._id}`)}
+                title="ویرایش"
+              >
+                <EditIcon />
               </IconLink>
               <IconButton
+                variant="Danger"
+                title="حذف"
                 onClick={() =>
                   setPopup(
                     "Delete",
