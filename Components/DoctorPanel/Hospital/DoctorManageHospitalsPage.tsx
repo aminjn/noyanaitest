@@ -4,7 +4,6 @@ import useSWR from "swr";
 import classes from "./DoctorManageHospitalsPage.module.css";
 import { IHospital } from "@/Components/Admin/Hospital/AdminManageHospitalsPage";
 import { API } from "@/Components/config";
-import DoctorPanelLicenseBalanceHeader from "@/Components/Layout/DoctorPanelLicenseBalanceHeader";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import DoctorHospitalsTab from "./DoctorHospitalsTab";

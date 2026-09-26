@@ -30,6 +30,8 @@ import LogoutIcon from "../Icons/LogoutIcon";
 import { currencize } from "../helpers/currencize";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import useDoctorAcl from "../Hooks/useDoctorAcl";
+import usePopup from "../Hooks/usePopup";
+import LogoutPopup from "../Popups/LogoutPopup";
 import CogIcon from "../Icons/CogIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import CategoriesIcon from "../Icons/CategoriesIcon";
@@ -47,13 +49,14 @@ const DoctorSidebar = () => {
   const getContent = useScopedLocale(LOCALE_NS);
 
   const hasAccess = useDoctorAcl();
+  const { setPopup } = usePopup();
 
   const links = useMemo<LinkMap>(
     () => [
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
         title: "profile",
-        icon: <DashboardIcon />,
+        icon: <UserEditIcon />,
         target: "profile",
         show: true,
       },
@@ -149,25 +152,33 @@ const DoctorSidebar = () => {
         title: "offers",
         icon: <ReceiptIcon />,
         target: "offer",
-        show: hasAccess("readOffers"),
+        // Not built yet (placeholder page) - hidden until it is. Restore
+        // hasAccess("readOffers") then.
+        show: false,
       },
       {
         title: "discounts",
         icon: <DiscountIcon />,
         target: "discount",
-        show: hasAccess("readDiscounts"),
+        // Not built yet (placeholder page) - hidden until it is. Restore
+        // hasAccess("readDiscounts") then.
+        show: false,
       },
       {
         title: "articles",
         icon: <FileDuplicateIcon />,
         target: "article",
-        show: hasAccess("readArticles"),
+        // The doctor blog routes on noyanai-back are owner-only
+        // (blogRouter useAcl(true)), so secretaries would only get 403s.
+        show: hasAccess(),
       },
       {
         title: "chatWithPatients",
         icon: <ChatIcon />,
         target: "chat",
-        show: hasAccess("readChat"),
+        // Not built yet (placeholder page) - hidden until it is. Restore
+        // hasAccess("readChat") then.
+        show: false,
       },
       {
         title: "drugsAndPrescriptions",
@@ -184,7 +195,9 @@ const DoctorSidebar = () => {
         title: "patientDocuments",
         icon: <MedicalRecordIcon />,
         target: "document",
-        show: hasAccess("readDocuments"),
+        // Not built yet (placeholder page) - hidden until it is. Restore
+        // hasAccess("readDocuments") then.
+        show: false,
       },
       {
         title: "settings",
@@ -195,12 +208,12 @@ const DoctorSidebar = () => {
       {
         title: "logout",
         icon: <LogoutIcon />,
-        onClick: () => {},
+        onClick: () => setPopup("Logout", <LogoutPopup />),
         className: classes.logout,
         show: true,
       },
     ],
-    [balance, getContent, hasAccess],
+    [balance, getContent, hasAccess, setPopup],
   );
 
   return <PanelSidebar links={links} panel="doctorpanel" />;

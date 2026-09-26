@@ -42,12 +42,11 @@ const LinkItem = ({
 
   const isActive = useMemo<boolean>(() => {
     if (target === undefined) return false;
-    const cleaned = pathname
-      .replaceAll("/", "")
-      .replaceAll(panel, "")
-      .split("?")[0];
-    if (!target) return cleaned === "";
-    return cleaned == target;
+    // /<panel>/<target>/... -> active for the section and all its subpages
+    const segments = pathname.split("?")[0].split("/").filter(Boolean);
+    if (segments[0] !== panel) return false;
+    if (!target) return segments.length === 1;
+    return segments[1] === target;
   }, [panel, pathname, target]);
 
   const content = useMemo(

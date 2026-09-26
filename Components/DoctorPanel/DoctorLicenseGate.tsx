@@ -34,6 +34,7 @@ const pathModuleMap: Record<string, DoctorDashboardModule> = {
   schedule: "schedule",
   patient: "patients",
   clinic: "clinics",
+  hospital: "hospitals",
   pharmacy: "phrmaciesAndLabs",
   insurance: "insurances",
   drug: "drugsAndPrescriptions",

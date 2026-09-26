@@ -4,7 +4,6 @@ import useSWR from "swr";
 import classes from "./DoctorManageClinicsPage.module.css";
 import { IClinic } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import { API } from "@/Components/config";
-import DoctorPanelLicenseBalanceHeader from "@/Components/Layout/DoctorPanelLicenseBalanceHeader";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import DoctorClinicsTab from "./DoctorClinicsTab";

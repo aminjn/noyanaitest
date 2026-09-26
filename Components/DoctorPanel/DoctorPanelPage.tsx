@@ -1,6 +1,5 @@
 "use client";
 
-import { string } from "slate";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import {
   GalleryItemPopulation,
@@ -34,7 +33,7 @@ import {
   DoctorShiftPopulation,
   IDoctorShift,
 } from "./Shift/DoctorManageShiftsPage";
-import CurrentLicenseWidget from "./CurrentLicenseWidget";
+import DoctorDashboard from "./Dashboard/DoctorDashboard";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelHome"];
@@ -315,7 +314,7 @@ const DoctorPanelPage = () => {
 
   useBreadCrump([{ title: getContent("dashboard"), target: "/doctorpanel" }]);
 
-  return <CurrentLicenseWidget />;
+  return <DoctorDashboard />;
 };
 
 export default DoctorPanelPage;

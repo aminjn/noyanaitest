@@ -11,6 +11,8 @@ import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
 import FormTitle from "@/Components/UI/FormTitle";
 import SelectNoResult from "@/Components/UI/SelectNoResult";
+import { mutate as globalMutate } from "swr";
+import SubmitHospitalAdditionRequestPopup from "./SubmitHospitalAdditionRequestPopup";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelHospital"];
@@ -22,7 +24,7 @@ const SubmitAJoinHospitalRequestPopup = ({
 }) => {
   const getContent = useScopedLocale(NS);
 
-  const { closePopup } = usePopup();
+  const { closePopup, setPopup } = usePopup();
 
   const { setInput, isLoading, submit } = useForm<{
     hospital: string;
@@ -55,9 +57,19 @@ const SubmitAJoinHospitalRequestPopup = ({
             setInput((prev) => ({ ...prev, hospital: e?._id || "" }))
           }
           readOnly={isLoading}
-          //TODO:Hook this up
+          // Not listed yet -> switch to the "add this hospital" request form.
           noResult={
-            <SelectNoResult>
+            <SelectNoResult
+              onClick={() => {
+                closePopup();
+                setPopup(
+                  "SubmitHospitalAdditionRequest",
+                  <SubmitHospitalAdditionRequestPopup
+                    mutate={() => globalMutate(`${API}/doctor/hospitaladdition`)}
+                  />,
+                );
+              }}
+            >
               {getContent("clickToRequestAddHospital")}
             </SelectNoResult>
           }
