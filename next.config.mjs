@@ -21,6 +21,22 @@ function seededBuildId() {
   return commit ? `${BUILD_SEED}-${commit}` : BUILD_SEED;
 }
 
+// next/image only loads remote files from allowlisted hosts. Allow the host
+// in FILE_PATH (e.g. https://ts.noyanai.com/files) next to the local default.
+function fileHostPatterns() {
+  const patterns = [{ protocol: "http", hostname: "127.0.0.1", pathname: "**" }];
+  try {
+    const url = new URL(process.env.FILE_PATH || "");
+    patterns.push({
+      protocol: url.protocol.replace(":", ""),
+      hostname: url.hostname,
+      ...(url.port && { port: url.port }),
+      pathname: "**",
+    });
+  } catch {}
+  return patterns;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -33,9 +49,7 @@ const nextConfig = {
     FILE_PATH: process.env.FILE_PATH,
   },
   images: {
-    remotePatterns: [
-      { protocol: "http", hostname: "127.0.0.1", pathname: "**" },
-    ],
+    remotePatterns: fileHostPatterns(),
   },
   ...(BUILD_SEED && {
     generateBuildId: async () => seededBuildId(),

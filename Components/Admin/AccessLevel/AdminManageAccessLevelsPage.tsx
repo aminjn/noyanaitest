@@ -66,6 +66,7 @@ export const accessLevelModels = [
   "ClinicAdditionRequest",
   "DoctorSeretaryAccessLevel",
   "Insurance",
+  "InsuranceAdditionRequest",
   "Pharmacy",
   "CallRoom",
   "Redirection",
@@ -75,6 +76,12 @@ export const accessLevelModels = [
   "Symptom",
   "Part",
   "DoctorFaq",
+  "Hospital",
+  "HospitalDepartment",
+  "HospitalDoctor",
+  "DoctorJoinHospital",
+  "HospitalAdditionRequest",
+  "BecomeHospitalRequest",
 ] as const;
 
 export type AccessLevelModel = (typeof accessLevelModels)[number];
@@ -102,6 +109,7 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   ClinicAdditionRequest: "درخواست اضافه شدن کلینیک",
   DoctorSeretaryAccessLevel: "دسترسی پیش فرض منشی دکتر",
   Insurance: "بیمه",
+  InsuranceAdditionRequest: "درخواست اضافه شدن بیمه",
   Pharmacy: "داروخانه و آزمایشگاه",
   CallRoom: "تماس",
   ShortLink: "لینک کوتاه",
@@ -111,6 +119,12 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   Symptom: "علائم",
   Part: "اعضای بدن",
   DoctorFaq: "سوالات متداول پزشکان",
+  Hospital: "بیمارستان",
+  HospitalDepartment: "دپارتمان بیمارستان",
+  HospitalDoctor: "ارتباط بین پزشک و بیمارستان",
+  DoctorJoinHospital: "درخواست عضویت پزشکان در بیمارستان",
+  HospitalAdditionRequest: "درخواست اضافه شدن بیمارستان",
+  BecomeHospitalRequest: "درخواست بیمارستان شدن",
 };
 
 type AccessLevelPopuplation = { AdminsPopulated?: UserAccessLevelPopulation };
