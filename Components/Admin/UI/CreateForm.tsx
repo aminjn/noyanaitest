@@ -4,7 +4,9 @@ import useForm, {
 } from "@/Components/Hooks/useForm";
 import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
-import { Dispatch, Fragment, ReactNode, SetStateAction } from "react";
+import { Dispatch, Fragment, ReactNode, SetStateAction, useState } from "react";
+import Ixon from "@/Components/UI/Ixon";
+import EyeIcon from "@/Components/Icons/EyeIcon";
 import FormActions from "./FormActions";
 import Input from "@/Components/UI/Input";
 import SelectInput from "@/Components/UI/SelectInput";
@@ -29,11 +31,49 @@ import LicensePricingInput, {
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
+const SecretInput = ({
+  onChange,
+  ...props
+}: {
+  title: string;
+  defaultValue?: string;
+  placeholder?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  onChange: (value: string) => void;
+}) => {
+  const [visible, setVisible] = useState(false);
+  return (
+    <Input
+      {...props}
+      type={visible ? "text" : "password"}
+      autoComplete="new-password"
+      inputClass={classes.secretInput}
+      onChange={(e) => onChange(e.target.value)}
+      tail={
+        <button
+          type="button"
+          className={classes.secretToggle}
+          onClick={() => setVisible((prev) => !prev)}
+          aria-label={visible ? "پنهان کردن" : "نمایش"}
+          title={visible ? "پنهان کردن" : "نمایش"}
+        >
+          <Ixon width="1.25rem">
+            <EyeIcon />
+          </Ixon>
+        </button>
+      }
+    />
+  );
+};
+
 export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
   [key in keyof Partial<TInput>]: (
     | {
         type: "text" | "bool" | "area" | "date" | "image" | "strings";
       }
+    // API keys / passwords: masked, with a show/hide toggle, no autofill.
+    | { type: "secret" }
     | {
         type: "rtf";
         // Hides the image-picker/ad-inserter toolbar buttons, which browse
@@ -142,6 +182,17 @@ const CreateForm = <TInput, TResult = unknown>({
                 onChange={(e) => {
                   if (segment.readOnly) return;
                   setInput((prev) => ({ ...prev, [key]: e.target.value }));
+                }}
+              />
+            );
+            break;
+          case "secret":
+            content = (
+              <SecretInput
+                {...commons}
+                onChange={(value) => {
+                  if (segment.readOnly) return;
+                  setInput((prev) => ({ ...prev, [key]: value }));
                 }}
               />
             );

@@ -98,6 +98,7 @@ const AdminManageTaminSpecsPage = () => {
           </WithTitle>
           <Act
             path={isRefreshing ? `${API}/admin/tamin/spec` : null}
+        method="POST"
             onDone={(status, result) => {
               setIsRefreshing(false);
               if (!status) return;

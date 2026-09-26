@@ -1,62 +1,206 @@
 "use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import useSWR from "swr";
 import classes from "./AdminManageUsersPage.module.css";
-import { IUser } from "@/Components/Hooks/useUser";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import HandleLoading from "../UI/HandleLoading";
-import WithTitle from "../UI/WithTitle";
-import Table from "../UI/Table";
-import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import TableActions from "../UI/TableActions";
-import IconLink from "../UI/IconLink";
-import EditIcon from "@/Components/Icons/EditIcon";
-import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import Ixon from "@/Components/UI/Ixon";
+import SearchIcon from "@/Components/Icons/SearchIcon";
+import ChevronIcon from "@/Components/Icons/ChevronIcon";
+import Loading from "../UI/Loading";
+import ErrorMessage from "../UI/ErrorMessage";
+import { RoleBadge, displayPhone, faDate, num } from "./userShared";
+
+type UserRow = {
+  _id: string;
+  phone: string;
+  username?: string;
+  name?: string;
+  role: string;
+  createdAt: string;
+};
+
+type UsersResponse = {
+  items: UserRow[];
+  total: number;
+  page: number;
+  limit: number;
+  roleCounts: Record<string, number>;
+};
+
+const PAGE_SIZE = 25;
+
+const roleTabs: { role: string; title: string }[] = [
+  { role: "", title: "همه" },
+  { role: "admin", title: "سوپر ادمین" },
+  { role: "notadmin", title: "کارمند" },
+  { role: "user", title: "کاربر" },
+];
 
 const AdminManageUsersPage = () => {
-  const { data, error, mutate } = useSWR<IUser[]>(
-    `${API}/auto/user`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
+  const [role, setRole] = useState("");
+  const [page, setPage] = useState(1);
+
+  // Debounce typing so every keystroke doesn't hit the backend.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setQuery(search.trim());
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(PAGE_SIZE),
+    ...(query && { q: query }),
+    ...(role && { role }),
+  });
+  const { data, error, isValidating } = useSWR<UsersResponse>(
+    `${API}/admin/users?${params}`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    { keepPreviousData: true },
   );
 
-  const hasAccess = useAccessLevel();
+  const allCount = data
+    ? Object.values(data.roleCounts).reduce((sum, n) => sum + n, 0)
+    : 0;
+  const pages = data ? Math.max(1, Math.ceil(data.total / data.limit)) : 1;
 
   return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <WithTitle title="کابران">
-          <Table
-            data={data}
-            name="AdminManageUsers"
-            renderer={{
-              phone: {
-                name: "موبایل",
-                value: (node) => node.phone,
-                filter: "Text",
-                component: (node) => (
-                  <InlineLink href={adminPath(`/user/${node._id}`)}>
-                    {node.phone}
-                  </InlineLink>
-                ),
-              },
-              actions: {
-                name: "عملیات",
-                component: (node) => (
-                  <TableActions>
-                    {hasAccess("User", "readOne") && (
-                      <IconLink href={adminPath(`/user/${node._id}`)}>
-                        <EditIcon />
-                      </IconLink>
-                    )}
-                  </TableActions>
-                ),
-              },
-            }}
-          />
-        </WithTitle>
-      )}
-    </HandleLoading>
+    <div className={classes.main}>
+      <header className={classes.header}>
+        <div>
+          <h1 className={classes.title}>کاربران</h1>
+          {data && (
+            <span className={classes.subtitle}>
+              {`${num.format(allCount)} کاربر ثبت‌نام‌شده`}
+            </span>
+          )}
+        </div>
+      </header>
+
+      <section className={classes.card}>
+        <div className={classes.toolbar}>
+          <div className={classes.search}>
+            <Ixon width="1.1rem" className={classes.searchIcon}>
+              <SearchIcon />
+            </Ixon>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="جستجو با موبایل، نام، نام کاربری یا کد ملی..."
+            />
+          </div>
+          <div className={classes.tabs} role="tablist">
+            {roleTabs.map((tab) => (
+              <button
+                key={tab.role}
+                type="button"
+                role="tab"
+                aria-selected={role === tab.role}
+                className={`${classes.tab} ${role === tab.role ? classes.tabActive : ""}`}
+                onClick={() => {
+                  setRole(tab.role);
+                  setPage(1);
+                }}
+              >
+                <span>{tab.title}</span>
+                {data && (
+                  <span className={classes.tabCount}>
+                    {num.format(tab.role ? data.roleCounts[tab.role] || 0 : allCount)}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {error && !data ? (
+          <ErrorMessage message={error.message} />
+        ) : !data ? (
+          <Loading />
+        ) : (
+          <>
+            <div className={`${classes.tableWrap} ${isValidating ? classes.stale : ""}`}>
+              <table className={classes.table}>
+                <thead>
+                  <tr>
+                    <th>کاربر</th>
+                    <th>موبایل</th>
+                    <th>نقش</th>
+                    <th>تاریخ عضویت</th>
+                    <th aria-label="جزئیات" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.items.map((user) => (
+                    <tr key={user._id}>
+                      <td>
+                        <Link href={adminPath(`/user/${user._id}`)} className={classes.userCell}>
+                          <span className={classes.avatar}>
+                            {(user.name || user.username || "؟").trim().charAt(0)}
+                          </span>
+                          <span className={classes.userName}>
+                            {user.name || user.username || "بدون نام"}
+                            {user.name && user.username && (
+                              <span className={classes.userSub}>{user.username}</span>
+                            )}
+                          </span>
+                        </Link>
+                      </td>
+                      <td className={classes.phone}>{displayPhone(user.phone)}</td>
+                      <td>
+                        <RoleBadge role={user.role} />
+                      </td>
+                      <td className={classes.muted}>{faDate.format(new Date(user.createdAt))}</td>
+                      <td>
+                        <Link
+                          href={adminPath(`/user/${user._id}`)}
+                          className={classes.rowLink}
+                          aria-label="مشاهده کاربر"
+                        >
+                          <Ixon width="1rem">
+                            <ChevronIcon />
+                          </Ixon>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {data.items.length === 0 && (
+                <p className={classes.empty}>کاربری با این مشخصات پیدا نشد</p>
+              )}
+            </div>
+
+            {data.total > data.limit && (
+              <div className={classes.pagination}>
+                <button
+                  type="button"
+                  disabled={page <= 1}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  قبلی
+                </button>
+                <span>{`صفحه ${num.format(page)} از ${num.format(pages)}`}</span>
+                <button
+                  type="button"
+                  disabled={page >= pages}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  بعدی
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </section>
+    </div>
   );
 };
 

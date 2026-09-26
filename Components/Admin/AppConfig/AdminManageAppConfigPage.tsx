@@ -73,24 +73,24 @@ const AdminManageAppConfigPage = () => {
             renderer={{
               sipHost: { title: "آدرس سرور SIP", type: "text" },
               sipUsername: { title: "نام کاربری SIP", type: "text" },
-              sipPassword: { title: "رمز عبور SIP", type: "text" },
+              sipPassword: { title: "رمز عبور SIP", type: "secret" },
 
               getIdentityInfoApiKey: {
                 title: "کلید API استعلام هویت",
-                type: "text",
+                type: "secret",
               },
               matchNationalIdAndPhoneNumberApiKey: {
                 title: "کلید API تطبیق کدملی و شماره موبایل",
-                type: "text",
+                type: "secret",
               },
               getMedicalSystemCodeApiKey: {
                 title: "کلید API کد نظام پزشکی",
-                type: "text",
+                type: "secret",
               },
-              podiumToken: { title: "توکن پودیوم", type: "text" },
+              podiumToken: { title: "توکن پودیوم", type: "secret" },
               getMcCertificateApiKey: {
                 title: "کلید API گواهی نظام پزشکی",
-                type: "text",
+                type: "secret",
               },
 
               bookingHorizonDays: {

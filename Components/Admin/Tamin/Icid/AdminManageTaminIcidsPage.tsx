@@ -67,6 +67,7 @@ const AdminManageTaminIcidsPage = () => {
           </WithTitle>
           <Act
             path={isRefreshing ? `${API}/admin/tamin/icid` : null}
+        method="POST"
             onDone={(status, result) => {
               setIsRefreshing(false);
               if (!status) return;
