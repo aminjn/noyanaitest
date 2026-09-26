@@ -1,73 +1,156 @@
 "use client";
 
-import Button from "@/Components/UI/Button";
-import List from "../../UI/List";
+import { useState } from "react";
 import classes from "./AdminManageMigrationPage.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
-import ImportDoctorsPopup from "./ImportDoctorsPopup";
-import DropDoctorsPoppup from "./DropDoctorsPopup";
-import Box from "../../UI/Box";
-import TabSystem from "../../UI/TabSystem";
-import InfoIcon from "@/Components/Icons/InfoIcon";
-import PurgeDoctorsPopup from "./PurgeDoctoesPopup";
-import DeleteAllDoctorsPopup from "./DeleteAllDoctorsPopup";
+import useNotification from "@/Components/Hooks/useNotification";
+import { API } from "@/Components/config";
+import { fetcher, FetchMethod } from "@/Components/helpers/fetcher";
+import Button from "@/Components/UI/Button";
 
-const nodes = [
-  "doctor",
-  "blog",
-  "disease",
-  "drug",
-  "speciality",
-  "symptom",
-  "part",
-] as const;
+const nodes: { key: string; title: string }[] = [
+  { key: "doctor", title: "پزشکان" },
+  { key: "blog", title: "مقالات" },
+  { key: "disease", title: "بیماری‌ها" },
+  { key: "drug", title: "داروها" },
+  { key: "speciality", title: "تخصص‌ها" },
+  { key: "symptom", title: "علائم" },
+  { key: "part", title: "اعضای بدن" },
+];
+
+type MigrationAction = {
+  key: string;
+  method: FetchMethod;
+  title: string;
+  description: string;
+  danger: boolean;
+};
+
+const actions: MigrationAction[] = [
+  {
+    key: "import",
+    method: "POST",
+    title: "انتقال از دیتابیس قدیم",
+    description: "رکوردهای دیتابیس قدیم را به دیتابیس جدید منتقل می‌کند.",
+    danger: false,
+  },
+  {
+    key: "drop",
+    method: "PUT",
+    title: "حذف رکوردهای منتقل‌شده",
+    description:
+      "فقط رکوردهایی که از دیتابیس قدیم منتقل شده‌اند (و هنوز به آن متصل‌اند) حذف می‌شوند.",
+    danger: true,
+  },
+  {
+    key: "purge",
+    method: "PATCH",
+    title: "قطع اتصال از دیتابیس قدیم",
+    description:
+      "اتصال رکوردهای منتقل‌شده به دیتابیس قدیم حذف می‌شود؛ بعد از آن دیگر با «حذف رکوردهای منتقل‌شده» پاک نمی‌شوند.",
+    danger: true,
+  },
+  {
+    key: "dropAll",
+    method: "DELETE",
+    title: "حذف همه رکوردها",
+    description: "همه رکوردهای این بخش در دیتابیس جدید حذف می‌شوند، چه منتقل‌شده چه ساخته‌شده در پنل.",
+    danger: true,
+  },
+];
+
+// Destructive actions need the section name typed back, so a stray click
+// (or a re-submitted request) can't wipe a collection.
+const MigrationPopup = ({
+  node,
+  action,
+}: {
+  node: { key: string; title: string };
+  action: MigrationAction;
+}) => {
+  const { closePopup } = usePopup();
+  const pushNotification = useNotification();
+  const [typed, setTyped] = useState("");
+  const [loading, setLoading] = useState(false);
+  const confirmed = !action.danger || typed.trim() === node.title;
+
+  const run = async () => {
+    if (!confirmed || loading) return;
+    setLoading(true);
+    try {
+      await fetcher({ url: `${API}/migrate/${node.key}`, method: action.method });
+      pushNotification(`${action.title} (${node.title}) انجام شد`, "Success");
+      closePopup();
+    } catch (err) {
+      pushNotification((err as Error).message, "Error");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className={classes.popup}>
+      <h3 className={classes.popupTitle}>{`${action.title}: ${node.title}`}</h3>
+      <p className={classes.popupText}>{action.description}</p>
+      {action.danger && (
+        <label className={classes.confirmField}>
+          <span>
+            برای تایید، عبارت <strong>{node.title}</strong> را وارد کنید. این عملیات قابل بازگشت نیست.
+          </span>
+          <input value={typed} onChange={(e) => setTyped(e.target.value)} autoFocus />
+        </label>
+      )}
+      <div className={classes.popupActions}>
+        <Button
+          variant={!confirmed ? "Disable" : action.danger ? "Error" : "Primary"}
+          onClick={confirmed ? run : undefined}
+          isLoading={loading}
+        >
+          {action.title}
+        </Button>
+        <Button variant="Neutral" onClick={() => closePopup()}>
+          انصراف
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 const AdminManageMigrationPage = () => {
   const { setPopup } = usePopup();
 
   return (
-    <Box>
-      <TabSystem
-        name="AdminManageMigration"
-        items={[
-          ...nodes.map((node) => ({
-            icon: <InfoIcon />,
-            id: node,
-            content: (
-              <List>
-                <Button
+    <div className={classes.main}>
+      <header className={classes.header}>
+        <h1 className={classes.title}>مهاجرت داده‌ها</h1>
+        <p className={classes.subtitle}>
+          انتقال داده از دیتابیس قدیم. عملیات قرمز داده حذف می‌کنند و قابل بازگشت نیستند.
+        </p>
+      </header>
+      <div className={classes.grid}>
+        {nodes.map((node) => (
+          <section key={node.key} className={classes.card}>
+            <h2 className={classes.cardTitle}>{node.title}</h2>
+            <div className={classes.actions}>
+              {actions.map((action) => (
+                <button
+                  key={action.key}
+                  type="button"
+                  className={`${classes.action} ${action.danger ? classes.danger : ""}`}
                   onClick={() =>
                     setPopup(
-                      `import${node}`,
-                      <ImportDoctorsPopup node={node} />
+                      `migrate-${node.key}-${action.key}`,
+                      <MigrationPopup node={node} action={action} />,
                     )
                   }
-                >{`import ${node}s`}</Button>
-                <Button
-                  onClick={() =>
-                    setPopup(`drop${node}`, <DropDoctorsPoppup node={node} />)
-                  }
-                >{`drop ${node}s`}</Button>
-                <Button
-                  onClick={() =>
-                    setPopup(`Purge${node}`, <PurgeDoctorsPopup node={node} />)
-                  }
-                >{`Purge ${node}s`}</Button>
-                <Button
-                  onClick={() =>
-                    setPopup(
-                      `dropAll${node}`,
-                      <DeleteAllDoctorsPopup node={node} />
-                    )
-                  }
-                >{`Drop All ${node}s`}</Button>
-              </List>
-            ),
-            title: node,
-          })),
-        ]}
-      />
-    </Box>
+                >
+                  {action.title}
+                </button>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
   );
 };
 

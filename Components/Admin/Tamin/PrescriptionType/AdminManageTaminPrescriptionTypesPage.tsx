@@ -62,6 +62,7 @@ const AdminManageTaminPrescriptionTypesPage = () => {
       </HandleLoading>
       <Act
         path={isRefreshing ? `${API}/admin/tamin/prescriptionType` : null}
+        method="POST"
         onDone={(status) => {
           setIsRefreshing(false);
           if (!status) return;

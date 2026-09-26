@@ -43,6 +43,7 @@ const Input = forwardRef<
     required?: boolean;
     price?: boolean;
     placeholder?: string | boolean;
+    autoComplete?: string;
   }>
 >(
   (
@@ -66,6 +67,7 @@ const Input = forwardRef<
       required,
       price,
       placeholder,
+      autoComplete,
     },
     ref,
   ) => {
@@ -95,6 +97,7 @@ const Input = forwardRef<
           ref={ref}
           autoFocus={autoFocuse}
           inputMode={inputMode}
+          autoComplete={autoComplete}
         />
         {!!title && (
           <label className={classes.title}>

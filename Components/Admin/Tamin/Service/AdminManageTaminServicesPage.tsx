@@ -206,6 +206,7 @@ const AdminManageTaminServicesPage = () => {
       </HandleLoading>
       <Act
         path={isRefreshing ? `${API}/admin/tamin/service` : null}
+        method="POST"
         onDone={(status) => {
           setIsRefreshing(false);
           if (!status) return;

@@ -37,6 +37,12 @@ const Act = <TResult,>({
     (args) => fetcher({ ...args, bodyParser: parser }),
     {
       dedupingInterval: 0,
+      // Act fires one-off mutations (POST/PUT/DELETE...). Never re-run them
+      // on window focus, reconnect or error retry - that re-sent requests
+      // like migrations and refreshes while they were still pending.
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
       onSuccess: (data) => {
         if (successMessage) pushNotification(successMessage, "Success");
         onDone(true, data);

@@ -69,6 +69,7 @@ const AdminManageTaminParTarefsPage = () => {
       </HandleLoading>
       <Act
         path={isRefreshing ? `${API}/admin/tamin/parTaref` : null}
+        method="POST"
         onDone={(status) => {
           setIsRefreshing(false);
           if (!status) return;

@@ -57,3 +57,12 @@
   position: absolute;
   top: calc(100% + 0.25rem);
 }
+
+.tail {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  inset-inline-end: 0.75rem;
+  display: flex;
+  align-items: center;
+}

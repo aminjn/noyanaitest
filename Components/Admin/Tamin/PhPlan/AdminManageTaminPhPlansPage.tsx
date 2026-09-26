@@ -57,6 +57,7 @@ const AdminManageTaminPhPlansPage = () => {
       </HandleLoading>
       <Act
         path={isRefreshing ? `${API}/admin/tamin/phPlan` : null}
+        method="POST"
         onDone={(status) => {
           setIsRefreshing(false);
           if (!status) return;

@@ -72,6 +72,7 @@ const AdminManageTaminComplaintsPage = () => {
           </WithTitle>
           <Act
             path={isRefreshing ? `${API}/admin/tamin/complaint` : null}
+        method="POST"
             onDone={(status, result) => {
               setIsRefreshing(false);
               if (!status) return;

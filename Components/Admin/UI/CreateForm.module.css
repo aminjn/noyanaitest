@@ -6,3 +6,20 @@
   padding: 1rem min(3rem, 3dvw);
   overflow-y: visible;
 }
+
+.secretToggle {
+  display: flex;
+  padding: 0.25rem;
+  border: none;
+  background: none;
+  color: var(--gray8);
+  cursor: pointer;
+}
+
+.secretToggle:hover {
+  color: var(--gray12);
+}
+
+.secretInput {
+  padding-inline-end: 3rem;
+}

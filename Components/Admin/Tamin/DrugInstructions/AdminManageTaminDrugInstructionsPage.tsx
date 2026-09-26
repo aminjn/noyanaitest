@@ -74,6 +74,7 @@ const AdminManageTaminDrugInstructionsPage = () => {
       </HandleLoading>
       <Act
         path={isRefreshing ? `${API}/admin/tamin/drugInstruction` : null}
+        method="POST"
         onDone={(status) => {
           setIsRefreshing(false);
           if (!status) return;

@@ -84,8 +84,8 @@ const AdminManageTaminServiceTypesPage = () => {
         </WithTitle>
       </HandleLoading>
       <Act
-        method="GET"
         path={isRefreshing ? `${API}/admin/tamin/serviceType` : null}
+        method="POST"
         onDone={(status) => {
           setIsRefreshing(false);
           if (!status) return;
