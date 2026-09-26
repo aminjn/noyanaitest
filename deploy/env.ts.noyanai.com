@@ -5,9 +5,9 @@
 # Browser calls go same-origin; nginx proxies /api to the backend.
 API=/api/v1
 
-# Admin panel URL segment: https://ts.noyanai.com/<ADMIN_KEY>
-# Not a secret (it ends up in the JS bundle) - just pick something non-obvious.
-ADMIN_KEY=CHANGE_ME_admin_path
+# Super admin panel URL segment: https://ts.noyanai.com/notadmin
+# Intentionally "notadmin" - keep it.
+ADMIN_KEY=notadmin
 
 # Public origin of the site (sitemaps, canonical links, Tamin redirect).
 DOMAIN=https://ts.noyanai.com
