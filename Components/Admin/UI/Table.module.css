@@ -4,6 +4,75 @@
   z-index: 0;
   display: flex;
   flex-direction: column;
-  height: 80dvh;
-  min-height: 80dvh;
+  border: 1px solid var(--gray4);
+  border-radius: 0.75rem;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--gray3);
+  flex-wrap: wrap;
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 14rem;
+  max-width: 24rem;
+}
+
+.search input {
+  width: 100%;
+  height: 2.375rem;
+  padding: 0 0.75rem;
+  padding-inline-start: 2.25rem;
+  border: 1px solid var(--gray4);
+  border-radius: 0.5rem;
+  background: var(--gray2);
+  font: inherit;
+  font-size: 0.8125rem;
+  outline: none;
+  transition: border-color var(--transTime), background-color var(--transTime);
+}
+
+.search input:focus {
+  border-color: var(--primary4);
+  background: var(--white);
+}
+
+.searchIcon {
+  position: absolute;
+  inset-inline-start: 0.75rem;
+  color: var(--gray8);
+  pointer-events: none;
+}
+
+.count {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.grid {
+  height: 72dvh;
+  min-height: 24rem;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    height: 64dvh;
+  }
+
+  /* Paging bar: keep only the page arrows on phones. */
+  .main :global(.ag-paging-row-summary-panel),
+  .main :global(.ag-paging-page-size) {
+    display: none;
+  }
 }

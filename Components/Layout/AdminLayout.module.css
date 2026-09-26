@@ -8,5 +8,127 @@
 
 .content {
   flex: 1;
+  min-width: 0;
   max-width: calc(100dvw - var(--adminSidebarWidth) - 3rem);
+}
+
+.topbar,
+.backdrop,
+.closeButton {
+  display: none;
+}
+
+.drawer {
+  display: contents;
+}
+
+@media (max-width: 900px) {
+  .main {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .content {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 3.5rem;
+    margin-inline: -0.75rem;
+    padding-inline: 0.75rem;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray4);
+  }
+
+  .menuButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--gray2);
+    color: var(--gray12);
+    cursor: pointer;
+  }
+
+  .topbarLogo {
+    display: flex;
+    height: 2rem;
+  }
+
+  .topbarLogo svg {
+    height: 100%;
+    width: auto;
+  }
+
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: #0f172a66;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .backdropOpen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .drawer {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 0;
+    z-index: 60;
+    width: min(20rem, 86vw);
+    transform: translateX(105%);
+    transition: transform 0.25s ease;
+  }
+
+  :global(html[dir="ltr"]) .drawer {
+    transform: translateX(-105%);
+  }
+
+  .drawer.drawerOpen {
+    transform: none;
+  }
+
+  .drawer > aside {
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  .closeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0.75rem;
+    inset-inline-end: 0.75rem;
+    z-index: 1;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--gray2);
+    color: var(--gray11);
+    cursor: pointer;
+  }
 }

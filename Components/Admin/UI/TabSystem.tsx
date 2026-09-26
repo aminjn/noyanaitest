@@ -35,23 +35,19 @@ const TabSystem = ({
 
   return (
     <div className={classes.main}>
-      <div
-        className={classes.nav}
-        style={{
-          animationDuration: `calc(var(--transTime) * ${items.length})`,
-        }}
-      >
-        {items.map((tab, i) => (
+      <div className={classes.nav} role="tablist">
+        {items.map((tab) => (
           <button
             key={tab.id}
             type="button"
+            role="tab"
+            aria-selected={currentTab === tab.id}
             onClick={() => setCurrenTab(tab.id)}
             className={`${classes.button} ${
               currentTab === tab.id ? classes.active : ""
             }`}
-            style={{ animationDelay: `calc(${i} * var(--transTime))` }}
           >
-            {!!tab.icon && <Ixon width="2rem">{tab.icon}</Ixon>}
+            {!!tab.icon && <Ixon width="1.125rem">{tab.icon}</Ixon>}
             <span>{tab.title}</span>
           </button>
         ))}

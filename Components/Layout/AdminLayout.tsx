@@ -7,6 +7,10 @@ import { usePathname } from "@/Components/i18n/navigation";
 import { useAccessLevelState } from "../Hooks/useAccessLevel";
 import Loading from "../Admin/UI/Loading";
 import { LicenseManager } from "ag-grid-enterprise";
+import Ixon from "../UI/Ixon";
+import BarsIcon from "../Icons/BarsIcon";
+import CloseIcon from "../Icons/CloseIcon";
+import LogoLong from "../UI/LogoLong";
 
 const hasAccessToAdmin: UserRole[] = ["admin", "notadmin"];
 
@@ -16,6 +20,21 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   const { hasAccess, isLoading } = useAccessLevelState();
 
   const [keySat, setKeySat] = useState<boolean>(false);
+  // Phones/tablets: the menu is a drawer opened from the top bar.
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
+  useEffect(() => setMenuOpen(false), [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     LicenseManager.setLicenseKey(
@@ -35,7 +54,39 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   }
   return (
     <div className={classes.main}>
-      <AdminSidebar />
+      <header className={classes.topbar}>
+        <button
+          type="button"
+          className={classes.menuButton}
+          onClick={() => setMenuOpen(true)}
+          aria-label="باز کردن منو"
+        >
+          <Ixon width="1.5rem">
+            <BarsIcon />
+          </Ixon>
+        </button>
+        <span className={classes.topbarLogo}>
+          <LogoLong />
+        </span>
+      </header>
+      <div
+        className={`${classes.backdrop} ${menuOpen ? classes.backdropOpen : ""}`}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden
+      />
+      <div className={`${classes.drawer} ${menuOpen ? classes.drawerOpen : ""}`}>
+        <button
+          type="button"
+          className={classes.closeButton}
+          onClick={() => setMenuOpen(false)}
+          aria-label="بستن منو"
+        >
+          <Ixon width="1.25rem">
+            <CloseIcon />
+          </Ixon>
+        </button>
+        <AdminSidebar />
+      </div>
       <div className={classes.content}>{children}</div>
     </div>
   );

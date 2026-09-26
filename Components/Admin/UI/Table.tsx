@@ -1,6 +1,6 @@
 import { AgGridReact } from "ag-grid-react";
 import classes from "./Table.module.css";
-import { ReactNode, useCallback, useMemo } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import {
   ColDef,
   GridPreDestroyedEvent,
@@ -13,19 +13,37 @@ import { themeQuartz, iconSetMaterial } from "@ag-grid-community/theming";
 import { AG_GRID_LOCALE_IR } from "@ag-grid-community/locale";
 import TableDateInput from "./TableDateInput";
 import { WithStyleProps } from "./Loading";
-import Input from "@/Components/UI/Input";
+import Ixon from "@/Components/UI/Ixon";
+import SearchIcon from "@/Components/Icons/SearchIcon";
 
+// Light, quiet grid in the panel's own palette (white header, hairline
+// rows, blue only for focus/selection).
 const myTheme = themeQuartz.withPart(iconSetMaterial).withParams({
-  borderRadius: 16,
+  accentColor: "#1A80E5",
+  backgroundColor: "#FFFFFF",
+  borderColor: "#EEF0F3",
+  borderRadius: 8,
   browserColorScheme: "light",
+  cellHorizontalPadding: 14,
   columnBorder: false,
   fontFamily: "inherit",
-  headerBackgroundColor: "#1A80E5",
+  fontSize: 13,
+  foregroundColor: "#1F2937",
+  headerBackgroundColor: "#F8FAFC",
   headerFontFamily: "inherit",
-  headerFontSize: 14,
-  headerTextColor: "#FFFFFF",
+  headerFontSize: 12,
+  headerFontWeight: 600,
+  headerTextColor: "#6B7280",
+  headerRowBorder: true,
   iconSize: 14,
-  wrapperBorderRadius: 16,
+  oddRowBackgroundColor: "#FFFFFF",
+  rowBorder: true,
+  rowHoverColor: "#F5F9FE",
+  rowHeight: 48,
+  headerHeight: 44,
+  selectedRowBackgroundColor: "#EAF3FD",
+  wrapperBorder: false,
+  wrapperBorderRadius: 0,
 });
 
 const tableFilters = ["Number", "Text", "Date", "Multi", "Set"] as const;
@@ -122,13 +140,40 @@ const Table = <T,>({
     [name],
   );
 
+  const [quickFilter, setQuickFilter] = useState("");
+  const [shown, setShown] = useState<number | null>(null);
+  const num = useMemo(() => new Intl.NumberFormat("fa-IR"), []);
+
   const components = useMemo<{ [key: string]: unknown }>(() => {
     return { agDateInput: TableDateInput };
   }, []);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
+      <div className={classes.toolbar}>
+        <div className={classes.search}>
+          <Ixon width="1.05rem" className={classes.searchIcon}>
+            <SearchIcon />
+          </Ixon>
+          <input
+            value={quickFilter}
+            onChange={(e) => setQuickFilter(e.target.value)}
+            placeholder="جستجو در همه‌ی ستون‌ها..."
+          />
+        </div>
+        <span className={classes.count}>
+          {shown !== null && shown !== data.length
+            ? `${num.format(shown)} از ${num.format(data.length)} مورد`
+            : `${num.format(data.length)} مورد`}
+        </span>
+      </div>
+      <div className={classes.grid}>
       <AgGridReact
+        quickFilterText={quickFilter}
+        onModelUpdated={(e) => setShown(e.api.getDisplayedRowCount())}
+        overlayNoRowsTemplate='<span class="ag-overlay-no-rows-center">موردی برای نمایش وجود ندارد</span>'
+        paginationPageSize={50}
+        paginationPageSizeSelector={[20, 50, 100, 200]}
         components={components}
         onGridPreDestroyed={onGridPreDestroyed}
         initialState={initialState}
@@ -149,6 +194,7 @@ const Table = <T,>({
         //   console.log(e);
         // }}
       />
+      </div>
     </div>
   );
 };

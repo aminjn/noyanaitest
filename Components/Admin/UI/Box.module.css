@@ -1,7 +1,8 @@
 .main {
   background-color: var(--white);
+  border: 1px solid var(--gray4);
   border-radius: 0.75rem;
-  padding: 1.5rem min(1.5rem, 3dvw);
-  box-shadow: var(--shadow);
+  padding: 1.25rem min(1.5rem, 3dvw);
+  box-shadow: var(--shadowBase);
   height: fit-content;
 }
