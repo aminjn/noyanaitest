@@ -103,6 +103,7 @@ const linkMap: LinkMap = [
       { title: "تنظیمات اطلاع‌رسانی کاربران", target: "userAlert" },
       { title: "تست نوتیفیکیشن پوش", target: "pushTest" },
       { title: "تست اسنپ (پیک)", target: "snappTest" },
+      { title: "تست درگاه پرداخت (سپ)", target: "sepTest" },
       { title: "لینک کوتاه", access: "ShortLink", target: "shortlink" },
       { title: "انتقالات", access: "Redirection", target: "redirection" },
       { title: "بیماری ها", access: "Disease", target: "disease" },
