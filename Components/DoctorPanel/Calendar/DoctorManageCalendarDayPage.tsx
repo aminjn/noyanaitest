@@ -22,7 +22,6 @@ import IconButton from "@/Components/Admin/UI/IconButton";
 import { Fragment, useMemo } from "react";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import InlineLink from "@/Components/Admin/UI/InlineLink";
 import usePopup from "@/Components/Hooks/usePopup";
 import Button from "@/Components/UI/Button";
 import MutateSessionPopup from "./MutateSessionPopup";
@@ -157,16 +156,11 @@ const DoctorManageCalendarDayPage = () => {
                 name: getContent("bookingStatus"),
                 filter: "Text",
                 value: (node) => (node.booking ? node.booking.user.phone : ""),
+                // Legacy session Booking (not a Reservation): there is no
+                // detail page for it - /doctorpanel/booking/[id] loads
+                // Reservations only - so show the phone without a link.
                 component: (node) =>
-                  node.booking ? (
-                    <InlineLink
-                      href={`/doctorpanel/booking/${node.booking._id}`}
-                    >
-                      {node.booking.user.phone}
-                    </InlineLink>
-                  ) : (
-                    getContent("notBooked")
-                  ),
+                  node.booking ? node.booking.user.phone : getContent("notBooked"),
               },
               actions: {
                 name: getContent("actions"),
