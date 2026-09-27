@@ -12,7 +12,8 @@ import Loading from "../Admin/UI/Loading";
 import { useMemo, useRef } from "react";
 import useUser, { IUser } from "../Hooks/useUser";
 import Button from "../UI/Button";
-import HostedImage from "../UI/HostedImage";
+import InitialAvatar from "../UI/InitialAvatar";
+import SparkIcon from "../Icons/SparkIcon";
 import FormatDate from "../UI/FormatDate";
 import { fetcher } from "../helpers/fetcher";
 import Ixon from "../UI/Ixon";
@@ -29,6 +30,7 @@ import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import PlusSquareIcon from "../Icons/PlusSquareIcon";
 import SmileIcon from "../Icons/SmileIcon";
 import BarsIcon from "../Icons/BarsIcon";
+import ChatIcon from "../Icons/ChatIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -213,18 +215,7 @@ const InnerChat = ({
             <BarsIcon />
           </Ixon>
         </button>
-        {
-          //TODO: add user image later
-        }
-        <div className={classes.image}>
-          <HostedImage
-            src={undefined}
-            alt={title || getContent("chat")}
-            fill
-            sizes="6rem"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
+        <InitialAvatar name={title || "?"} seed={other?._id || chat._id} size="2.75rem" />
         <div className={classes.details}>
           <span className={classes.name}>{title || getContent("chat")}</span>
           <FormatDate className={classes.date} value={chat.createdAt} />
@@ -232,12 +223,18 @@ const InnerChat = ({
         <Button className={classes.action}>{getContent("closeChat")}</Button>
       </div>
       <div className={classes.body}>
+        <p className={classes.safety} role="note">
+          <Ixon width="0.9rem">
+            <SparkIcon />
+          </Ixon>
+          {getContent("chatUrgentNote")}
+        </p>
         {!!chat.messages.length ? (
           chat.messages.map((message) => (
             <ChatMessage key={message._id} _id={message._id} />
           ))
         ) : (
-          <p>{getContent("noMessagesYet")}</p>
+          <p className={classes.noMessages}>{getContent("noMessagesYet")}</p>
         )}
       </div>
       <MessageSender chat={chat} mutate={mutate} />
@@ -275,7 +272,17 @@ const CurrentChat = ({ onOpenSidebar }: { onOpenSidebar?: () => void }) => {
             </Ixon>
           </button>
         </div>
-        <p className={classes.empty}>{getContent("selectAChatFirstMessage")}</p>
+        <div className={classes.empty}>
+          <span className={classes.emptyIcon} aria-hidden>
+            <Ixon width="1.75rem">
+              <ChatIcon />
+            </Ixon>
+          </span>
+          <p>{getContent("selectAChatFirstMessage")}</p>
+          <button type="button" className={classes.emptyOpen} onClick={onOpenSidebar}>
+            {getContent("chats")}
+          </button>
+        </div>
       </div>
     );
   if (!data) return <Loading />;

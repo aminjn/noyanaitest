@@ -2035,6 +2035,7 @@ const contentKeys = [
   "poMore",
   "poProgress",
   "poDetails",
+  "chatUrgentNote",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

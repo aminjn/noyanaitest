@@ -1883,5 +1883,6 @@
  "poItems": "${1} 件商品",
  "poMore": "等另外 ${1} 件",
  "poProgress": "${2} 件中已备好 ${1} 件",
- "poDetails": "订单详情"
+ "poDetails": "订单详情",
+ "chatUrgentNote": "如有紧急症状请勿等待回复，请拨打急救电话（伊朗为 115）。"
 }

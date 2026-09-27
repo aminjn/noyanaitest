@@ -1883,5 +1883,6 @@
  "poItems": "${1} itens",
  "poMore": "e mais ${1}",
  "poProgress": "${1} de ${2} prontos",
- "poDetails": "Detalhes do pedido"
+ "poDetails": "Detalhes do pedido",
+ "chatUrgentNote": "Em sintomas urgentes não espere resposta: ligue para a emergência (115 no Irã)."
 }

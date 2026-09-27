@@ -1883,5 +1883,6 @@
  "poItems": "${1} articles",
  "poMore": "et ${1} de plus",
  "poProgress": "${1} sur ${2} prêts",
- "poDetails": "Détails de la commande"
+ "poDetails": "Détails de la commande",
+ "chatUrgentNote": "En cas de symptômes urgents, n’attendez pas : appelez les urgences (115 en Iran)."
 }
