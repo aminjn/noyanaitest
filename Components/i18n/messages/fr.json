@@ -1919,5 +1919,13 @@
  "adSetPin": "Épingler sur la carte",
  "adEmpty": "Vous n’avez pas encore ajouté d’adresse.",
  "adNew": "Ajouter une adresse",
- "adTip": "Pour la livraison de médicaments et les prélèvements à domicile, épinglez l’emplacement exact sur la carte afin que le coursier arrive directement à votre porte."
+ "adTip": "Pour la livraison de médicaments et les prélèvements à domicile, épinglez l’emplacement exact sur la carte afin que le coursier arrive directement à votre porte.",
+ "spHelpTitle": "Sur quel sujet avez-vous besoin d’aide ?",
+ "spTabActive": "En cours",
+ "spTabDone": "Fermés",
+ "spReplied": "Le support a répondu",
+ "spWaiting": "En attente du support",
+ "spYou": "Vous",
+ "spMessages": "${1} messages",
+ "spEmpty": "Vous n’avez aucun ticket. Pour une question ou un problème, choisissez un sujet ci-dessus."
 }

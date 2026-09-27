@@ -1919,5 +1919,13 @@
  "adSetPin": "Tandai di peta",
  "adEmpty": "Anda belum menambahkan alamat.",
  "adNew": "Tambah alamat baru",
- "adTip": "Untuk antar obat dan pengambilan sampel di rumah, tandai lokasi tepat di peta agar kurir langsung sampai ke pintu Anda."
+ "adTip": "Untuk antar obat dan pengambilan sampel di rumah, tandai lokasi tepat di peta agar kurir langsung sampai ke pintu Anda.",
+ "spHelpTitle": "Anda butuh bantuan tentang apa?",
+ "spTabActive": "Aktif",
+ "spTabDone": "Selesai",
+ "spReplied": "Dukungan membalas",
+ "spWaiting": "Menunggu dukungan",
+ "spYou": "Anda",
+ "spMessages": "${1} pesan",
+ "spEmpty": "Anda tidak punya tiket. Jika ada pertanyaan atau masalah, pilih salah satu topik di atas."
 }

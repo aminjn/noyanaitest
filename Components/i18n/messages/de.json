@@ -1919,5 +1919,13 @@
  "adSetPin": "Auf der Karte markieren",
  "adEmpty": "Sie haben noch keine Adresse hinzugefügt.",
  "adNew": "Neue Adresse hinzufügen",
- "adTip": "Markieren Sie für Medikamentenlieferung und Probenentnahme zu Hause den genauen Ort auf der Karte, damit der Kurier direkt zu Ihrer Tür kommt."
+ "adTip": "Markieren Sie für Medikamentenlieferung und Probenentnahme zu Hause den genauen Ort auf der Karte, damit der Kurier direkt zu Ihrer Tür kommt.",
+ "spHelpTitle": "Wobei brauchen Sie Hilfe?",
+ "spTabActive": "Aktiv",
+ "spTabDone": "Geschlossen",
+ "spReplied": "Support hat geantwortet",
+ "spWaiting": "Wartet auf den Support",
+ "spYou": "Sie",
+ "spMessages": "${1} Nachrichten",
+ "spEmpty": "Sie haben keine Tickets. Wählen Sie bei Fragen oder Problemen oben ein Thema."
 }

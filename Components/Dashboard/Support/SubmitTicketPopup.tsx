@@ -3,6 +3,7 @@ import classes from "./SubmitTicketPopup.module.css";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import {
   ITicket,
+  TicketSubject,
   ticketSubjectContentKeyDict,
   ticketSubjects,
 } from "./SupportPage";
@@ -14,7 +15,14 @@ import useProgress from "@/Components/Hooks/useProgress";
 
 const NS: ContentNamespace[] = ["common", "dashboardSupport"];
 
-const SubmitTicketPopup = ({ mutate }: { mutate: () => unknown }) => {
+// `subject` preselects the topic the patient picked on the support page
+const SubmitTicketPopup = ({
+  mutate,
+  subject,
+}: {
+  mutate: () => unknown;
+  subject?: TicketSubject;
+}) => {
   const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
@@ -24,6 +32,7 @@ const SubmitTicketPopup = ({ mutate }: { mutate: () => unknown }) => {
   return (
     <PopupCard>
       <CreateForm<ITicket & { content: string }, { data: ITicket }>
+        defaultValue={subject ? ({ subject } as ITicket & { content: string }) : undefined}
         renderer={{
           subject: {
             title: getContent("ticketSubject"),
@@ -47,6 +56,7 @@ const SubmitTicketPopup = ({ mutate }: { mutate: () => unknown }) => {
         hookProps={{
           path: `${API}/support`,
           method: "POST",
+          mutator: (inp) => ({ ...inp, subject: inp.subject || subject }),
           successCb: (data) => {
             mutate();
             closePopup();
@@ -55,7 +65,7 @@ const SubmitTicketPopup = ({ mutate }: { mutate: () => unknown }) => {
           hasProblem: (inp) => {
             if (!inp.title) return getContent("titleMissingError");
             if (!inp.content) return getContent("messageMissingError");
-            if (!inp.subject) return getContent("subjectMissingError");
+            if (!inp.subject && !subject) return getContent("subjectMissingError");
             return false;
           },
         }}

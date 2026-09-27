@@ -1919,5 +1919,13 @@
  "adSetPin": "Marcar no mapa",
  "adEmpty": "Você ainda não adicionou um endereço.",
  "adNew": "Adicionar endereço",
- "adTip": "Para entrega de medicamentos e coleta domiciliar, marque o local exato no mapa para que o entregador chegue direto à sua porta."
+ "adTip": "Para entrega de medicamentos e coleta domiciliar, marque o local exato no mapa para que o entregador chegue direto à sua porta.",
+ "spHelpTitle": "Com o que você precisa de ajuda?",
+ "spTabActive": "Em andamento",
+ "spTabDone": "Encerrados",
+ "spReplied": "O suporte respondeu",
+ "spWaiting": "Aguardando o suporte",
+ "spYou": "Você",
+ "spMessages": "${1} mensagens",
+ "spEmpty": "Você não tem chamados. Se tiver uma dúvida ou problema, escolha um dos assuntos acima."
 }

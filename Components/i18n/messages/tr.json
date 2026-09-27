@@ -1919,5 +1919,13 @@
  "adSetPin": "Haritada işaretle",
  "adEmpty": "Henüz adres eklemediniz.",
  "adNew": "Yeni adres ekle",
- "adTip": "İlaç kurye teslimatı ve evde numune alımı için haritada tam konumu işaretleyin; kurye doğrudan kapınıza gelsin."
+ "adTip": "İlaç kurye teslimatı ve evde numune alımı için haritada tam konumu işaretleyin; kurye doğrudan kapınıza gelsin.",
+ "spHelpTitle": "Hangi konuda yardıma ihtiyacınız var?",
+ "spTabActive": "Açık",
+ "spTabDone": "Kapalı",
+ "spReplied": "Destek yanıtladı",
+ "spWaiting": "Destek yanıtı bekleniyor",
+ "spYou": "Siz",
+ "spMessages": "${1} mesaj",
+ "spEmpty": "Talebiniz yok. Bir sorunuz ya da sorununuz varsa yukarıdaki konulardan birini seçin."
 }
