@@ -16,10 +16,12 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  background-color: var(--white);
-  border: 1px solid var(--gray4);
-  border-radius: 1rem;
-  box-shadow: var(--shadowSm);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  border-radius: var(--radiusLg);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   padding: 1.25rem 1.5rem;
 }
 

@@ -766,3 +766,9 @@ a.pill:hover {
     font-size: 0.9375rem;
   }
 }
+
+.flagLine {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--errorS1);
+}
