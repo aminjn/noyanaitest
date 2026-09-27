@@ -1852,5 +1852,21 @@
  "phBookAgain": "Записаться",
  "phLastVisit": "Последний визит: ${1}",
  "phHealthProfile": "Мой профиль здоровья",
- "visitNotePatientVisible": "Пациент увидит этот раздел после сохранения."
+ "visitNotePatientVisible": "Пациент увидит этот раздел после сохранения.",
+ "pbTitle": "Мои записи",
+ "pbTabUpcoming": "Предстоящие",
+ "pbTabPast": "Прошедшие",
+ "pbTabCancelled": "Отменённые",
+ "pbTabAll": "Все",
+ "pbBookNew": "Новая запись",
+ "pbAssistant": "Ассистент здоровья",
+ "pbClear": "Показать все",
+ "pbAiNoIntake": "${1} предстоящих визитов без анкеты",
+ "pbEmpty": "Записей нет",
+ "pbEmptyUpcoming": "Предстоящих записей нет.",
+ "pbIntakeDone": "Анкета заполнена",
+ "pbIntakeTodo": "Анкета ещё не заполнена",
+ "pbFillIntake": "Заполнить анкету",
+ "pbDetails": "Подробнее",
+ "pbBookAgain": "Записаться снова"
 }

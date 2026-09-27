@@ -1852,5 +1852,21 @@
  "phBookAgain": "Buchen",
  "phLastVisit": "Letzter Besuch: ${1}",
  "phHealthProfile": "Mein Gesundheitsprofil",
- "visitNotePatientVisible": "Dieser Abschnitt ist nach dem Speichern für den Patienten sichtbar."
+ "visitNotePatientVisible": "Dieser Abschnitt ist nach dem Speichern für den Patienten sichtbar.",
+ "pbTitle": "Meine Termine",
+ "pbTabUpcoming": "Anstehend",
+ "pbTabPast": "Vergangen",
+ "pbTabCancelled": "Storniert",
+ "pbTabAll": "Alle",
+ "pbBookNew": "Neuer Termin",
+ "pbAssistant": "Gesundheitsassistent",
+ "pbClear": "Alle zeigen",
+ "pbAiNoIntake": "${1} anstehende Termine ohne Fragebogen",
+ "pbEmpty": "Keine Termine",
+ "pbEmptyUpcoming": "Keine anstehenden Termine.",
+ "pbIntakeDone": "Fragebogen ausgefüllt",
+ "pbIntakeTodo": "Fragebogen noch offen",
+ "pbFillIntake": "Fragebogen ausfüllen",
+ "pbDetails": "Details",
+ "pbBookAgain": "Erneut buchen"
 }

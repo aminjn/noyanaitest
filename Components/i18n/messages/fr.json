@@ -1852,5 +1852,21 @@
  "phBookAgain": "Réserver",
  "phLastVisit": "Dernière visite : ${1}",
  "phHealthProfile": "Mon profil santé",
- "visitNotePatientVisible": "Le patient voit cette section après l’enregistrement."
+ "visitNotePatientVisible": "Le patient voit cette section après l’enregistrement.",
+ "pbTitle": "Mes rendez-vous",
+ "pbTabUpcoming": "À venir",
+ "pbTabPast": "Passés",
+ "pbTabCancelled": "Annulés",
+ "pbTabAll": "Tous",
+ "pbBookNew": "Nouveau rendez-vous",
+ "pbAssistant": "Assistant santé",
+ "pbClear": "Tout afficher",
+ "pbAiNoIntake": "${1} rendez-vous à venir sans questionnaire",
+ "pbEmpty": "Aucun rendez-vous",
+ "pbEmptyUpcoming": "Aucun rendez-vous à venir.",
+ "pbIntakeDone": "Questionnaire rempli",
+ "pbIntakeTodo": "Questionnaire à remplir",
+ "pbFillIntake": "Remplir le questionnaire",
+ "pbDetails": "Détails",
+ "pbBookAgain": "Reprendre rendez-vous"
 }

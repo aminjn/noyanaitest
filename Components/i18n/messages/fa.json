@@ -1874,5 +1874,21 @@
  "phBookAgain": "نوبت",
  "phLastVisit": "آخرین ویزیت: ${1}",
  "phHealthProfile": "پرونده‌ی سلامت من",
- "visitNotePatientVisible": "این بخش بعد از ذخیره در پنل بیمار نمایش داده می‌شود."
+ "visitNotePatientVisible": "این بخش بعد از ذخیره در پنل بیمار نمایش داده می‌شود.",
+ "pbTitle": "نوبت‌های من",
+ "pbTabUpcoming": "پیش رو",
+ "pbTabPast": "انجام‌شده",
+ "pbTabCancelled": "لغوشده",
+ "pbTabAll": "همه",
+ "pbBookNew": "نوبت جدید",
+ "pbAssistant": "دستیار سلامت",
+ "pbClear": "نمایش همه",
+ "pbAiNoIntake": "${1} نوبت پیش رو هنوز پرسش‌نامه ندارند",
+ "pbEmpty": "نوبتی در این بخش نیست",
+ "pbEmptyUpcoming": "نوبت پیش رویی ندارید.",
+ "pbIntakeDone": "پرسش‌نامه پر شده",
+ "pbIntakeTodo": "پرسش‌نامه هنوز پر نشده",
+ "pbFillIntake": "پر کردن پرسش‌نامه",
+ "pbDetails": "جزئیات نوبت",
+ "pbBookAgain": "نوبت دوباره"
 }

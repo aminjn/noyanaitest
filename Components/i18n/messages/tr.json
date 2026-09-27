@@ -1852,5 +1852,21 @@
  "phBookAgain": "Randevu al",
  "phLastVisit": "Son ziyaret: ${1}",
  "phHealthProfile": "Sağlık profilim",
- "visitNotePatientVisible": "Kaydettikten sonra bu bölüm hastanın panelinde görünür."
+ "visitNotePatientVisible": "Kaydettikten sonra bu bölüm hastanın panelinde görünür.",
+ "pbTitle": "Randevularım",
+ "pbTabUpcoming": "Yaklaşan",
+ "pbTabPast": "Geçmiş",
+ "pbTabCancelled": "İptal",
+ "pbTabAll": "Tümü",
+ "pbBookNew": "Yeni randevu",
+ "pbAssistant": "Sağlık asistanı",
+ "pbClear": "Tümünü göster",
+ "pbAiNoIntake": "${1} yaklaşan randevunun anketi eksik",
+ "pbEmpty": "Burada randevu yok",
+ "pbEmptyUpcoming": "Yaklaşan randevunuz yok.",
+ "pbIntakeDone": "Anket dolduruldu",
+ "pbIntakeTodo": "Anket henüz doldurulmadı",
+ "pbFillIntake": "Anketi doldur",
+ "pbDetails": "Ayrıntılar",
+ "pbBookAgain": "Tekrar randevu"
 }

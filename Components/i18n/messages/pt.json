@@ -1852,5 +1852,21 @@
  "phBookAgain": "Agendar",
  "phLastVisit": "Última consulta: ${1}",
  "phHealthProfile": "Meu perfil de saúde",
- "visitNotePatientVisible": "O paciente vê esta seção após salvar."
+ "visitNotePatientVisible": "O paciente vê esta seção após salvar.",
+ "pbTitle": "Minhas consultas",
+ "pbTabUpcoming": "Próximas",
+ "pbTabPast": "Anteriores",
+ "pbTabCancelled": "Canceladas",
+ "pbTabAll": "Todas",
+ "pbBookNew": "Nova consulta",
+ "pbAssistant": "Assistente de saúde",
+ "pbClear": "Mostrar tudo",
+ "pbAiNoIntake": "${1} consultas próximas sem questionário",
+ "pbEmpty": "Nenhuma consulta",
+ "pbEmptyUpcoming": "Você não tem consultas marcadas.",
+ "pbIntakeDone": "Questionário preenchido",
+ "pbIntakeTodo": "Questionário pendente",
+ "pbFillIntake": "Preencher questionário",
+ "pbDetails": "Detalhes",
+ "pbBookAgain": "Agendar de novo"
 }

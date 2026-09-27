@@ -1852,5 +1852,21 @@
  "phBookAgain": "Pesan",
  "phLastVisit": "Kunjungan terakhir: ${1}",
  "phHealthProfile": "Profil kesehatan saya",
- "visitNotePatientVisible": "Pasien melihat bagian ini setelah disimpan."
+ "visitNotePatientVisible": "Pasien melihat bagian ini setelah disimpan.",
+ "pbTitle": "Janji temu saya",
+ "pbTabUpcoming": "Mendatang",
+ "pbTabPast": "Selesai",
+ "pbTabCancelled": "Dibatalkan",
+ "pbTabAll": "Semua",
+ "pbBookNew": "Janji baru",
+ "pbAssistant": "Asisten kesehatan",
+ "pbClear": "Tampilkan semua",
+ "pbAiNoIntake": "${1} janji mendatang belum ada kuesioner",
+ "pbEmpty": "Tidak ada janji",
+ "pbEmptyUpcoming": "Tidak ada janji mendatang.",
+ "pbIntakeDone": "Kuesioner terisi",
+ "pbIntakeTodo": "Kuesioner belum diisi",
+ "pbFillIntake": "Isi kuesioner",
+ "pbDetails": "Detail",
+ "pbBookAgain": "Pesan lagi"
 }

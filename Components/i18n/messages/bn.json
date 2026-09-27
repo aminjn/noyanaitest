@@ -1852,5 +1852,21 @@
  "phBookAgain": "বুক করুন",
  "phLastVisit": "শেষ ভিজিট: ${1}",
  "phHealthProfile": "আমার স্বাস্থ্য প্রোফাইল",
- "visitNotePatientVisible": "সংরক্ষণের পর রোগী এই অংশ দেখতে পাবেন।"
+ "visitNotePatientVisible": "সংরক্ষণের পর রোগী এই অংশ দেখতে পাবেন।",
+ "pbTitle": "আমার অ্যাপয়েন্টমেন্ট",
+ "pbTabUpcoming": "আসন্ন",
+ "pbTabPast": "অতীত",
+ "pbTabCancelled": "বাতিল",
+ "pbTabAll": "সব",
+ "pbBookNew": "নতুন অ্যাপয়েন্টমেন্ট",
+ "pbAssistant": "স্বাস্থ্য সহকারী",
+ "pbClear": "সব দেখান",
+ "pbAiNoIntake": "${1}টি আসন্ন ভিজিটে প্রশ্নাবলি বাকি",
+ "pbEmpty": "এখানে কোনো অ্যাপয়েন্টমেন্ট নেই",
+ "pbEmptyUpcoming": "কোনো আসন্ন অ্যাপয়েন্টমেন্ট নেই।",
+ "pbIntakeDone": "প্রশ্নাবলি পূরণ হয়েছে",
+ "pbIntakeTodo": "প্রশ্নাবলি এখনো পূরণ হয়নি",
+ "pbFillIntake": "প্রশ্নাবলি পূরণ করুন",
+ "pbDetails": "বিস্তারিত",
+ "pbBookAgain": "আবার বুক করুন"
 }
