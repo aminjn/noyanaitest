@@ -1852,5 +1852,21 @@
  "phBookAgain": "预约",
  "phLastVisit": "上次就诊：${1}",
  "phHealthProfile": "我的健康档案",
- "visitNotePatientVisible": "保存后患者可在其面板中看到此部分。"
+ "visitNotePatientVisible": "保存后患者可在其面板中看到此部分。",
+ "pbTitle": "我的预约",
+ "pbTabUpcoming": "即将到来",
+ "pbTabPast": "已完成",
+ "pbTabCancelled": "已取消",
+ "pbTabAll": "全部",
+ "pbBookNew": "新预约",
+ "pbAssistant": "健康助手",
+ "pbClear": "显示全部",
+ "pbAiNoIntake": "${1} 个即将到来的预约尚未填问卷",
+ "pbEmpty": "暂无预约",
+ "pbEmptyUpcoming": "您暂无即将到来的预约。",
+ "pbIntakeDone": "问卷已填写",
+ "pbIntakeTodo": "问卷尚未填写",
+ "pbFillIntake": "填写问卷",
+ "pbDetails": "详情",
+ "pbBookAgain": "再次预约"
 }

@@ -1852,5 +1852,21 @@
  "phBookAgain": "بک کریں",
  "phLastVisit": "آخری ملاقات: ${1}",
  "phHealthProfile": "میرا صحت ریکارڈ",
- "visitNotePatientVisible": "محفوظ کرنے کے بعد یہ حصہ مریض کو نظر آتا ہے۔"
+ "visitNotePatientVisible": "محفوظ کرنے کے بعد یہ حصہ مریض کو نظر آتا ہے۔",
+ "pbTitle": "میری ملاقاتیں",
+ "pbTabUpcoming": "آنے والی",
+ "pbTabPast": "گزشتہ",
+ "pbTabCancelled": "منسوخ",
+ "pbTabAll": "سب",
+ "pbBookNew": "نئی ملاقات",
+ "pbAssistant": "صحت اسسٹنٹ",
+ "pbClear": "سب دکھائیں",
+ "pbAiNoIntake": "${1} آنے والی ملاقاتوں کا سوالنامہ باقی ہے",
+ "pbEmpty": "یہاں کوئی ملاقات نہیں",
+ "pbEmptyUpcoming": "کوئی آنے والی ملاقات نہیں۔",
+ "pbIntakeDone": "سوالنامہ بھر دیا گیا",
+ "pbIntakeTodo": "سوالنامہ ابھی نہیں بھرا",
+ "pbFillIntake": "سوالنامہ بھریں",
+ "pbDetails": "تفصیل",
+ "pbBookAgain": "دوبارہ بک کریں"
 }

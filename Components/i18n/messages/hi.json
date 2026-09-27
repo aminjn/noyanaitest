@@ -1852,5 +1852,21 @@
  "phBookAgain": "बुक करें",
  "phLastVisit": "पिछली विज़िट: ${1}",
  "phHealthProfile": "मेरा स्वास्थ्य प्रोफ़ाइल",
- "visitNotePatientVisible": "सहेजने के बाद यह हिस्सा मरीज़ को दिखता है।"
+ "visitNotePatientVisible": "सहेजने के बाद यह हिस्सा मरीज़ को दिखता है।",
+ "pbTitle": "मेरे अपॉइंटमेंट",
+ "pbTabUpcoming": "आगामी",
+ "pbTabPast": "पिछली",
+ "pbTabCancelled": "रद्द",
+ "pbTabAll": "सभी",
+ "pbBookNew": "नया अपॉइंटमेंट",
+ "pbAssistant": "स्वास्थ्य सहायक",
+ "pbClear": "सभी दिखाएँ",
+ "pbAiNoIntake": "${1} आगामी विज़िट की प्रश्नावली बाकी",
+ "pbEmpty": "यहाँ कोई अपॉइंटमेंट नहीं",
+ "pbEmptyUpcoming": "कोई आगामी अपॉइंटमेंट नहीं।",
+ "pbIntakeDone": "प्रश्नावली भरी गई",
+ "pbIntakeTodo": "प्रश्नावली अभी नहीं भरी",
+ "pbFillIntake": "प्रश्नावली भरें",
+ "pbDetails": "विवरण",
+ "pbBookAgain": "फिर से बुक करें"
 }

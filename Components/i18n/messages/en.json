@@ -1852,5 +1852,21 @@
  "phBookAgain": "Book",
  "phLastVisit": "Last visit: ${1}",
  "phHealthProfile": "My health profile",
- "visitNotePatientVisible": "The patient sees this section in their panel once you save."
+ "visitNotePatientVisible": "The patient sees this section in their panel once you save.",
+ "pbTitle": "My appointments",
+ "pbTabUpcoming": "Upcoming",
+ "pbTabPast": "Past",
+ "pbTabCancelled": "Cancelled",
+ "pbTabAll": "All",
+ "pbBookNew": "New appointment",
+ "pbAssistant": "Health assistant",
+ "pbClear": "Show all",
+ "pbAiNoIntake": "${1} upcoming visits still need the questionnaire",
+ "pbEmpty": "No appointments here",
+ "pbEmptyUpcoming": "You have no upcoming appointments.",
+ "pbIntakeDone": "Questionnaire filled",
+ "pbIntakeTodo": "Questionnaire not filled yet",
+ "pbFillIntake": "Fill in questionnaire",
+ "pbDetails": "Details",
+ "pbBookAgain": "Book again"
 }

@@ -1852,5 +1852,21 @@
  "phBookAgain": "احجز",
  "phLastVisit": "آخر زيارة: ${1}",
  "phHealthProfile": "ملفي الصحي",
- "visitNotePatientVisible": "يظهر هذا القسم للمريض بعد الحفظ."
+ "visitNotePatientVisible": "يظهر هذا القسم للمريض بعد الحفظ.",
+ "pbTitle": "مواعيدي",
+ "pbTabUpcoming": "القادمة",
+ "pbTabPast": "السابقة",
+ "pbTabCancelled": "الملغاة",
+ "pbTabAll": "الكل",
+ "pbBookNew": "موعد جديد",
+ "pbAssistant": "مساعد الصحة",
+ "pbClear": "عرض الكل",
+ "pbAiNoIntake": "${1} مواعيد قادمة بلا استبيان بعد",
+ "pbEmpty": "لا مواعيد هنا",
+ "pbEmptyUpcoming": "ليس لديك مواعيد قادمة.",
+ "pbIntakeDone": "الاستبيان مكتمل",
+ "pbIntakeTodo": "لم يُملأ الاستبيان بعد",
+ "pbFillIntake": "املأ الاستبيان",
+ "pbDetails": "التفاصيل",
+ "pbBookAgain": "احجز مجددًا"
 }

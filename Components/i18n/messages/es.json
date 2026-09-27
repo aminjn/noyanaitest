@@ -1852,5 +1852,21 @@
  "phBookAgain": "Reservar",
  "phLastVisit": "Última visita: ${1}",
  "phHealthProfile": "Mi perfil de salud",
- "visitNotePatientVisible": "El paciente ve esta sección al guardar."
+ "visitNotePatientVisible": "El paciente ve esta sección al guardar.",
+ "pbTitle": "Mis citas",
+ "pbTabUpcoming": "Próximas",
+ "pbTabPast": "Pasadas",
+ "pbTabCancelled": "Canceladas",
+ "pbTabAll": "Todas",
+ "pbBookNew": "Nueva cita",
+ "pbAssistant": "Asistente de salud",
+ "pbClear": "Mostrar todo",
+ "pbAiNoIntake": "${1} citas próximas sin cuestionario",
+ "pbEmpty": "No hay citas",
+ "pbEmptyUpcoming": "No tienes citas próximas.",
+ "pbIntakeDone": "Cuestionario completado",
+ "pbIntakeTodo": "Cuestionario pendiente",
+ "pbFillIntake": "Rellenar cuestionario",
+ "pbDetails": "Detalles",
+ "pbBookAgain": "Volver a reservar"
 }

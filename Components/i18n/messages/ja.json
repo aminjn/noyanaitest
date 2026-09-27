@@ -1852,5 +1852,21 @@
  "phBookAgain": "予約",
  "phLastVisit": "前回：${1}",
  "phHealthProfile": "私の健康プロフィール",
- "visitNotePatientVisible": "保存後、この欄は患者に表示されます。"
+ "visitNotePatientVisible": "保存後、この欄は患者に表示されます。",
+ "pbTitle": "私の予約",
+ "pbTabUpcoming": "今後",
+ "pbTabPast": "過去",
+ "pbTabCancelled": "キャンセル",
+ "pbTabAll": "すべて",
+ "pbBookNew": "新規予約",
+ "pbAssistant": "ヘルスアシスタント",
+ "pbClear": "すべて表示",
+ "pbAiNoIntake": "問診票が未記入の予約 ${1} 件",
+ "pbEmpty": "予約はありません",
+ "pbEmptyUpcoming": "今後の予約はありません。",
+ "pbIntakeDone": "問診票記入済み",
+ "pbIntakeTodo": "問診票未記入",
+ "pbFillIntake": "問診票に記入",
+ "pbDetails": "詳細",
+ "pbBookAgain": "再予約"
 }
