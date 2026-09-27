@@ -1,7 +1,7 @@
 .main {
   position: fixed;
   inset: 0;
-  background-color: var(--black);
+  background-color: var(--ink);
   display: flex;
   flex-direction: column;
   z-index: 50;
@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: var(--onColor);
   text-align: center;
   padding: 1rem;
 }
@@ -25,7 +25,7 @@
   align-items: center;
   gap: 0.5rem;
   background-color: rgba(0, 0, 0, 0.5);
-  color: var(--white);
+  color: var(--onColor);
   padding: 0.4rem 0.85rem;
   border-radius: 100dvw;
   font-size: 0.8rem;
@@ -102,7 +102,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: var(--onColor);
   font-size: 1.1rem;
 }
 
@@ -114,7 +114,7 @@
   align-items: center;
   gap: 0.35rem;
   background-color: rgba(0, 0, 0, 0.45);
-  color: var(--white);
+  color: var(--onColor);
   padding: 0.25rem 0.65rem;
   border-radius: 100dvw;
   font-size: 0.75rem;
@@ -139,7 +139,7 @@
   height: 1.75rem;
   border-radius: 100dvw;
   background-color: rgba(0, 0, 0, 0.45);
-  color: var(--white);
+  color: var(--onColor);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -176,7 +176,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--white);
+  color: var(--onColor);
   background-color: var(--gray11);
   transition: background-color var(--transTime) ease-in-out;
 }

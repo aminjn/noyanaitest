@@ -165,7 +165,7 @@
 
 .primaryAction {
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .secondaryAction {

@@ -72,7 +72,7 @@
 
 .activeOption {
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .option:not(.activeOption):hover {

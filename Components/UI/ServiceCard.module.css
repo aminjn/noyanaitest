@@ -110,7 +110,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--error);
-  color: var(--white);
+  color: var(--onColor);
   padding-inline: 0.25rem;
   padding-block: 0.125rem;
   border-radius: 100dvw;

@@ -17,7 +17,7 @@
   border-radius: 0.25rem;
   background-color: var(--white);
   transition: all var(--transTime);
-  color: var(--white);
+  color: var(--onColor);
   display: flex;
   align-items: center;
   justify-content: center;

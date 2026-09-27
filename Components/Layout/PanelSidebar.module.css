@@ -20,10 +20,10 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  min-height: 2.5rem;
-  padding: 0.5rem 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.875rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   background: transparent;
   color: var(--gray11);
   font: inherit;
@@ -37,7 +37,7 @@
 }
 
 .link:hover {
-  background: var(--gray2);
+  background: var(--glassStrong);
   color: var(--gray13);
 }
 
@@ -48,13 +48,15 @@
 
 .activeLink,
 .activeLink:hover {
-  background: var(--primary1);
-  color: var(--primary8, #0f5aa8);
-  font-weight: 700;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  color: var(--onColor);
+  font-weight: 800;
+  box-shadow: 0 10px 24px -10px rgba(79, 70, 229, 0.75);
 }
 
 .activeLink > :first-child {
-  color: var(--primary7);
+  color: var(--onColor);
 }
 
 .side {
@@ -67,7 +69,7 @@
   gap: 0.25rem;
   padding: 0.125rem 0.5rem;
   border-radius: 1rem;
-  background: var(--gray2);
+  background: var(--line);
   color: var(--gray11);
   font-weight: 600;
   font-size: 0.75rem;
@@ -75,7 +77,12 @@
 }
 
 .activeLink .balance {
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--onColor);
+}
+
+.activeLink .toman {
+  color: var(--onColor);
 }
 
 .toman {
@@ -90,8 +97,8 @@
 }
 
 .logout:hover {
-  background: #fef3f2;
-  color: #b42318;
+  background: var(--errorT1);
+  color: var(--errorS1);
 }
 
 /* Signed-in user, pinned to the bottom of the sidebar. */
@@ -101,15 +108,14 @@
   gap: 0.75rem;
   margin: 0.5rem 0.75rem 0.75rem;
   padding: 0.625rem 0.75rem;
-  border: 1px solid var(--gray4);
-  border-radius: 0.75rem;
-  background: var(--gray1, #fafafa);
+  border: 1px solid var(--glassLine);
+  border-radius: 1.125rem;
+  background: var(--glassStrong);
   transition: border-color var(--transTime), background-color var(--transTime);
 }
 
 .user:hover {
-  border-color: var(--gray6);
-  background: var(--white);
+  border-color: var(--primary3);
 }
 
 .avatar {

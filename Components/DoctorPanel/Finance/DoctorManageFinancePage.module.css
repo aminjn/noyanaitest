@@ -46,7 +46,7 @@
 
 .highlight {
   background: linear-gradient(135deg, var(--primary6), var(--primary8));
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .tileHead {
@@ -61,7 +61,7 @@
 .highlight .tileIcon,
 .highlight .tileValue,
 .highlight .tileUnit {
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .tileIcon {

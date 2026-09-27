@@ -214,7 +214,7 @@
   align-items: center;
   justify-content: center;
   background-color: #7e57c2;
-  color: var(--white);
+  color: var(--onColor);
   transition:
     background-color var(--transTime) ease-in-out,
     opacity var(--transTime) ease-in-out;

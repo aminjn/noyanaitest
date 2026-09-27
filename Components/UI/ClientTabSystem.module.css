@@ -9,7 +9,12 @@
   display: flex;
   gap: 0.25rem;
   overflow-x: auto;
-  border-bottom: 1px solid var(--gray4);
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: var(--line);
   scrollbar-width: none;
 }
 
@@ -22,10 +27,9 @@
   align-items: center;
   flex-shrink: 0;
   gap: 0.5rem;
-  margin-bottom: -1px;
-  padding: 0.75rem 0.875rem;
+  padding: 0.5rem 1rem;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-radius: 999px;
   background: none;
   color: var(--gray9);
   font: inherit;
@@ -33,7 +37,7 @@
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  transition: color var(--transTime), border-color var(--transTime);
+  transition: color var(--transTime), background-color var(--transTime);
 }
 
 .navItem:hover {
@@ -42,7 +46,8 @@
 
 .activeItem,
 .activeItem:hover {
-  color: var(--primary7);
-  border-bottom-color: var(--primary6);
-  font-weight: 700;
+  color: var(--gray13);
+  background: var(--glassStrong);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  font-weight: 800;
 }

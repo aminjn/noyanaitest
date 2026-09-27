@@ -77,7 +77,7 @@
 }
 
 .itemTitle {
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .topFooter {
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .content {

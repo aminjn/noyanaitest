@@ -64,7 +64,7 @@
 .activeToggle .toggleIcon {
   border-color: transparent;
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .activeToggle .toggleLabel {

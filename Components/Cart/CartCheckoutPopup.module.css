@@ -64,7 +64,7 @@
 }
 
 .activeAddress .addressCheck {
-  color: var(--white);
+  color: var(--onColor);
   border-color: transparent;
   background-color: var(--primary);
 }
@@ -127,7 +127,7 @@
 
 .activeMethod .methodCheck {
   background-color: var(--success);
-  color: var(--white);
+  color: var(--onColor);
   border-color: transparent;
 }
 

@@ -82,7 +82,7 @@
   height: 2.25rem;
   border-radius: 100dvw;
   background-color: #ffffff30;
-  color: var(--white);
+  color: var(--onColor);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,7 +135,7 @@
 
   .tabActive {
     background-color: var(--primary);
-    color: var(--white);
+    color: var(--onColor);
   }
 }
 

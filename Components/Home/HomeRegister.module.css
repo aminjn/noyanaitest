@@ -5,8 +5,9 @@
   padding: 3rem;
   border-radius: 1.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, var(--primary9), var(--primary5));
-  color: var(--white);
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  color: var(--onColor);
   flex-wrap: wrap;
 }
 
@@ -27,7 +28,7 @@
   border-radius: 1rem;
   background-color: #ffffff26;
   flex-direction: column;
-  color: var(--white);
+  color: var(--onColor);
   min-width: min(100%, 15.125rem);
   max-width: calc(50%);
 }
@@ -77,5 +78,5 @@
 .secondary.secondary {
   background-color: transparent;
   border: 2px solid var(--white);
-  color: var(--white);
+  color: var(--onColor);
 }

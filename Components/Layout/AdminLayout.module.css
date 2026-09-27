@@ -4,6 +4,9 @@
   padding: 1rem;
   min-height: 100dvh;
   max-width: 100dvw;
+  background-color: var(--meshBase);
+  background-image: var(--mesh);
+  background-attachment: fixed;
 }
 
 .content {
@@ -44,8 +47,10 @@
     height: 3.5rem;
     margin-inline: -0.75rem;
     padding-inline: 0.75rem;
-    background: var(--white);
-    border-bottom: 1px solid var(--gray4);
+    background: var(--glassStrong);
+    backdrop-filter: var(--glassBlur);
+    -webkit-backdrop-filter: var(--glassBlur);
+    border-bottom: 1px solid var(--line);
   }
 
   .menuButton {
@@ -55,8 +60,8 @@
     width: 2.75rem;
     height: 2.75rem;
     border: none;
-    border-radius: 0.5rem;
-    background: var(--gray2);
+    border-radius: 0.875rem;
+    background: var(--line);
     color: var(--gray12);
     cursor: pointer;
   }
@@ -113,6 +118,7 @@
     width: 100%;
     height: 100dvh;
     border-radius: 0;
+    background: var(--glassStrong);
   }
 
   .closeButton {

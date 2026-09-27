@@ -19,7 +19,7 @@
 
 .number {
   background-color: var(--gray12);
-  color: var(--white);
+  color: var(--onColor);
   border: 0.5px solid var(--white);
   display: flex;
   align-items: center;

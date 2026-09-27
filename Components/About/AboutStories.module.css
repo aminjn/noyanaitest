@@ -52,7 +52,7 @@
   height: 1.75rem;
   border-radius: 50%;
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
   margin-bottom: 0.5rem;
 }
 

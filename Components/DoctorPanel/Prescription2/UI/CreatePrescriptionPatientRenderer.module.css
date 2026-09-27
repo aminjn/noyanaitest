@@ -50,7 +50,7 @@
   padding-block: 0.5rem;
   padding-inline: 1rem;
   background-color: var(--success);
-  color: var(--white);
+  color: var(--onColor);
   font-size: 0.875rem;
   font-weight: 400;
   display: flex;

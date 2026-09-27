@@ -79,7 +79,7 @@
 }
 
 .percent {
-  color: var(--white);
+  color: var(--onColor);
   background-color: var(--error);
   border-radius: 100dvw;
   padding: 2px 6px;

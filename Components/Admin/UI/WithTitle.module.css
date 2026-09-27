@@ -31,7 +31,7 @@
   height: 3rem;
   transition: all var(--transTime);
   background-color: transparent;
-  border-radius: 0.5rem;
+  border-radius: 999px;
 }
 
 .context {
@@ -43,7 +43,8 @@
   transition: all var(--transTime) ease-in-out;
   display: flex;
   flex-direction: column;
-  border-radius: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radiusSm);
   box-shadow: var(--shadow);
   overflow: hidden;
   width: 15rem;
@@ -54,7 +55,7 @@
 }
 
 .contextBtn:hover {
-  background-color: var(--gray4);
+  background-color: var(--glassStrong);
 }
 
 .headerActions {
@@ -88,7 +89,7 @@
 }
 
 .action:hover {
-  background-color: var(--gray4);
+  background-color: var(--gray3);
 }
 
 .content {

@@ -21,7 +21,7 @@
   border-radius: 0.25rem;
   background-color: var(--primary);
   overflow: hidden;
-  color: var(--white);
+  color: var(--onColor);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -34,7 +34,7 @@
 }
 
 .icon {
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .close {
@@ -42,7 +42,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: var(--onColor);
   cursor: pointer;
   background: none;
   border: none;
@@ -72,19 +72,19 @@
 
 .legend {
   flex-shrink: 0;
-  color: var(--white);
+  color: var(--onColor);
   opacity: 0.8;
 }
 
 .title {
-  color: var(--white);
+  color: var(--onColor);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .description {
-  color: var(--white);
+  color: var(--onColor);
   opacity: 0.9;
   overflow: hidden;
   text-overflow: ellipsis;

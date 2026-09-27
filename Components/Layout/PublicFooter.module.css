@@ -1,6 +1,6 @@
 .main {
   position: sticky;
-  color: var(--white);
+  color: var(--onColor);
   padding-block-start: 8.1875rem;
   margin-top: 18rem;
   top: 100%;
@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 0.5rem;
   padding-block: 1.5rem;
-  background-color: var(--primary9);
+  background-color: var(--brandDeep);
   align-items: center;
   transform: translateY(-4.875rem);
   border-radius: 1rem;

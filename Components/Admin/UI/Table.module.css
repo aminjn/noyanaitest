@@ -4,9 +4,12 @@
   z-index: 0;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--gray4);
-  border-radius: 0.75rem;
-  background: var(--white);
+  border: 1px solid var(--glassLine);
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   overflow: hidden;
 }
 
@@ -15,8 +18,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--gray3);
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--line);
   flex-wrap: wrap;
 }
 
@@ -31,12 +34,13 @@
 
 .search input {
   width: 100%;
-  height: 2.375rem;
-  padding: 0 0.75rem;
-  padding-inline-start: 2.25rem;
-  border: 1px solid var(--gray4);
-  border-radius: 0.5rem;
-  background: var(--gray2);
+  height: 2.75rem;
+  padding: 0 0.875rem;
+  padding-inline-start: 2.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glassStrong);
+  color: var(--gray13);
   font: inherit;
   font-size: 0.8125rem;
   outline: none;
@@ -45,12 +49,12 @@
 
 .search input:focus {
   border-color: var(--primary4);
-  background: var(--white);
+  box-shadow: var(--focusRing);
 }
 
 .searchIcon {
   position: absolute;
-  inset-inline-start: 0.75rem;
+  inset-inline-start: 0.9rem;
   color: var(--gray8);
   pointer-events: none;
 }

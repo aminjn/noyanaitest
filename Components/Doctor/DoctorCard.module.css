@@ -57,6 +57,6 @@
 }
 
 .main:hover .more {
-  color: var(--white);
+  color: var(--onColor);
   background-color: var(--primary);
 }

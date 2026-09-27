@@ -60,12 +60,12 @@
 }
 
 .title {
-  color: var(--white);
+  color: var(--onColor);
   margin-bottom: 0.75rem;
 }
 
 .legend {
-  color: var(--white);
+  color: var(--onColor);
   margin-bottom: 1.25rem;
 }
 
@@ -79,7 +79,7 @@
 
 .altBtn.altBtn {
   background-color: transparent;
-  color: var(--white);
+  color: var(--onColor);
   box-shadow: none;
   border: 1px solid var(--white);
 }
@@ -92,7 +92,7 @@
 }
 
 .item {
-  color: var(--white);
+  color: var(--onColor);
   opacity: 0.7;
 }
 
