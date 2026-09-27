@@ -1894,5 +1894,17 @@
  "invFallback": "Faktur kunjungan",
  "invEmpty": "Tidak ada faktur.",
  "invDetails": "Detail",
- "invArchiveNote": "Faktur ini adalah riwayat sistem pemesanan sebelumnya dan tidak dapat dibayar lagi. Pembayaran janji temu baru muncul di «Transaksi»."
+ "invArchiveNote": "Faktur ini adalah riwayat sistem pemesanan sebelumnya dan tidak dapat dibayar lagi. Pembayaran janji temu baru muncul di «Transaksi».",
+ "trWallet": "Dompet NoyanAI",
+ "trInMonth": "Masuk bulan ini",
+ "trOutMonth": "Keluar bulan ini",
+ "trTabPayments": "Pembayaran",
+ "trTabCredits": "Dana masuk",
+ "trVisitPay": "Kunjungan dengan dr. ${1}",
+ "trVisitRefund": "Pengembalian: kunjungan dengan dr. ${1}",
+ "trOrderPay": "Pembayaran pesanan",
+ "trOrderRefund": "Pengembalian pesanan",
+ "trOther": "Transaksi",
+ "trEmpty": "Belum ada transaksi.",
+ "trSepNote": "Isi ulang aman lewat gateway Saman (SEP) dengan kartu Shetab apa pun"
 }

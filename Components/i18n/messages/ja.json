@@ -1894,5 +1894,17 @@
  "invFallback": "診察の請求書",
  "invEmpty": "請求書はありません。",
  "invDetails": "詳細",
- "invArchiveNote": "これらの請求書は旧予約システムの履歴で、今後は支払えません。新しい予約の支払いは「取引」に表示されます。"
+ "invArchiveNote": "これらの請求書は旧予約システムの履歴で、今後は支払えません。新しい予約の支払いは「取引」に表示されます。",
+ "trWallet": "NoyanAI ウォレット",
+ "trInMonth": "今月の入金",
+ "trOutMonth": "今月の支払い",
+ "trTabPayments": "支払い",
+ "trTabCredits": "入金",
+ "trVisitPay": "${1} 医師の診察",
+ "trVisitRefund": "返金：${1} 医師の診察",
+ "trOrderPay": "注文の支払い",
+ "trOrderRefund": "注文の返金",
+ "trOther": "取引",
+ "trEmpty": "取引はまだありません。",
+ "trSepNote": "Saman (SEP) ゲートウェイで Shetab カードから安全にチャージ"
 }

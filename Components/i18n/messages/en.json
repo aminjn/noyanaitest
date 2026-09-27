@@ -1894,5 +1894,17 @@
  "invFallback": "Visit invoice",
  "invEmpty": "No invoices found.",
  "invDetails": "Details",
- "invArchiveNote": "These invoices are history from the previous booking system and can no longer be paid. Payments for new appointments appear under Transactions."
+ "invArchiveNote": "These invoices are history from the previous booking system and can no longer be paid. Payments for new appointments appear under Transactions.",
+ "trWallet": "NoyanAI wallet",
+ "trInMonth": "In this month",
+ "trOutMonth": "Out this month",
+ "trTabPayments": "Payments",
+ "trTabCredits": "Credits",
+ "trVisitPay": "Visit with Dr. ${1}",
+ "trVisitRefund": "Refund: visit with Dr. ${1}",
+ "trOrderPay": "Order payment",
+ "trOrderRefund": "Order refund",
+ "trOther": "Transaction",
+ "trEmpty": "No transactions yet.",
+ "trSepNote": "Secure top-up through the Saman (SEP) gateway with any Shetab card"
 }
