@@ -1,12 +1,15 @@
 .main {
   display: flex;
   gap: 1rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radiusLg);
   padding-block: 1.5rem;
-  padding-inline: 2rem;
+  padding-inline: min(2rem, 5vw);
   align-items: center;
-  background-color: var(--white);
-  box-shadow: var(--shadow);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   max-width: 100%;
 }
 

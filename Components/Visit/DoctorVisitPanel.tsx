@@ -282,6 +282,9 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
             <label key={s.key} className={classes.field}>
               <span className={classes.label}>{getContent(s.label)}</span>
               <textarea rows={s.rows} maxLength={5000} value={fields[s.key]} onChange={(e) => edit(s.key, e.target.value)} />
+              {s.key === "patientInstructions" && (
+                <span className={classes.muted}>{getContent("visitNotePatientVisible")}</span>
+              )}
             </label>
           ))}
         </div>

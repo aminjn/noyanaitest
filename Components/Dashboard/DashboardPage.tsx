@@ -15,6 +15,7 @@ import { fetcher } from "../helpers/fetcher";
 import UserIdentity from "./UserIdentity";
 import UserVitals from "./UserVitals";
 import UserMedicalDetails, { IMedicalDetail } from "./UserMedicalDetails";
+import PatientHome from "./Home/PatientHome";
 
 export type UserIdentityPopulation = Population<{ User: UserPopulation }>;
 
@@ -48,6 +49,9 @@ const DashboardPage = () => {
 
   return (
     <div className={classes.main}>
+      <PatientHome
+        name={[identity?.givenName, identity?.lastName].filter(Boolean).join(" ") || user?.username}
+      />
       <UserIdentity
         identity={identity}
         avatar={user?.avatar}
