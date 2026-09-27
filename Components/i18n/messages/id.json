@@ -1884,5 +1884,15 @@
  "poMore": "dan ${1} lainnya",
  "poProgress": "${1} dari ${2} siap",
  "poDetails": "Detail pesanan",
- "chatUrgentNote": "Untuk gejala darurat jangan menunggu balasan: hubungi layanan darurat (115 di Iran)."
+ "chatUrgentNote": "Untuk gejala darurat jangan menunggu balasan: hubungi layanan darurat (115 di Iran).",
+ "invTabPaid": "Lunas",
+ "invTabUnpaid": "Belum lunas",
+ "invPaidSum": "Total dibayar",
+ "invUnpaidSum": "Sisa tagihan",
+ "invCount": "${1} faktur",
+ "invVisitWith": "Kunjungan dengan dr. ${1}",
+ "invFallback": "Faktur kunjungan",
+ "invEmpty": "Tidak ada faktur.",
+ "invDetails": "Detail",
+ "invArchiveNote": "Faktur ini adalah riwayat sistem pemesanan sebelumnya dan tidak dapat dibayar lagi. Pembayaran janji temu baru muncul di «Transaksi»."
 }

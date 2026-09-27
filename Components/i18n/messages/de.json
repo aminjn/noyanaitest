@@ -1884,5 +1884,15 @@
  "poMore": "und ${1} weitere",
  "poProgress": "${1} von ${2} Artikeln bereit",
  "poDetails": "Bestelldetails",
- "chatUrgentNote": "Bei dringenden Beschwerden nicht auf eine Antwort warten: Notruf wählen (115 im Iran)."
+ "chatUrgentNote": "Bei dringenden Beschwerden nicht auf eine Antwort warten: Notruf wählen (115 im Iran).",
+ "invTabPaid": "Bezahlt",
+ "invTabUnpaid": "Offen",
+ "invPaidSum": "Insgesamt bezahlt",
+ "invUnpaidSum": "Offener Betrag",
+ "invCount": "${1} Rechnungen",
+ "invVisitWith": "Termin bei Dr. ${1}",
+ "invFallback": "Terminrechnung",
+ "invEmpty": "Keine Rechnungen gefunden.",
+ "invDetails": "Details",
+ "invArchiveNote": "Diese Rechnungen stammen aus dem früheren Buchungssystem und können nicht mehr bezahlt werden. Zahlungen für neue Termine finden Sie unter „Transaktionen“."
 }

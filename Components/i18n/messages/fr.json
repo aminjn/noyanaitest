@@ -1884,5 +1884,15 @@
  "poMore": "et ${1} de plus",
  "poProgress": "${1} sur ${2} prêts",
  "poDetails": "Détails de la commande",
- "chatUrgentNote": "En cas de symptômes urgents, n’attendez pas : appelez les urgences (115 en Iran)."
+ "chatUrgentNote": "En cas de symptômes urgents, n’attendez pas : appelez les urgences (115 en Iran).",
+ "invTabPaid": "Payées",
+ "invTabUnpaid": "Impayées",
+ "invPaidSum": "Total payé",
+ "invUnpaidSum": "Reste à payer",
+ "invCount": "${1} factures",
+ "invVisitWith": "Consultation avec le Dr ${1}",
+ "invFallback": "Facture de consultation",
+ "invEmpty": "Aucune facture trouvée.",
+ "invDetails": "Détails",
+ "invArchiveNote": "Ces factures proviennent de l’ancien système de réservation et ne peuvent plus être payées. Les paiements des nouveaux rendez-vous figurent dans « Transactions »."
 }

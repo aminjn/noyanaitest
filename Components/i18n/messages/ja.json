@@ -1884,5 +1884,15 @@
  "poMore": "ほか ${1} 点",
  "poProgress": "${2} 点中 ${1} 点準備完了",
  "poDetails": "注文の詳細",
- "chatUrgentNote": "緊急の症状は返信を待たず、救急（イランでは115）に連絡してください。"
+ "chatUrgentNote": "緊急の症状は返信を待たず、救急（イランでは115）に連絡してください。",
+ "invTabPaid": "支払い済み",
+ "invTabUnpaid": "未払い",
+ "invPaidSum": "支払い合計",
+ "invUnpaidSum": "未払い残高",
+ "invCount": "${1} 件の請求書",
+ "invVisitWith": "${1} 医師の診察",
+ "invFallback": "診察の請求書",
+ "invEmpty": "請求書はありません。",
+ "invDetails": "詳細",
+ "invArchiveNote": "これらの請求書は旧予約システムの履歴で、今後は支払えません。新しい予約の支払いは「取引」に表示されます。"
 }
