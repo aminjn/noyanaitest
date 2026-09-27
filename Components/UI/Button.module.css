@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 700;
   white-space: nowrap;
   justify-content: center;
   transition: all var(--transTime) ease-in-out;
@@ -10,31 +11,34 @@
 }
 
 .Primary.Fill {
-  background-color: var(--primary6);
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
   --btnRingColor: transparent;
-  color: var(--white);
+  color: var(--onColor);
+  box-shadow: 0 10px 24px -12px rgba(79, 70, 229, 0.8);
 }
 
 .Primary.Fill:hover {
   background-color: var(--primary7);
   --btnRingColor: transparent;
-  color: var(--white);
+  color: var(--onColor);
+  filter: brightness(1.06);
 }
 
 .Primary.Fill:active {
   background-color: var(--primary6);
   --btnRingColor: var(--primary4);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .Primary.Fill:focus {
   background-color: var(--primary7);
   --btnRingColor: var(--primary3);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .Primary.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--primary6);
   --btnRingColor: var(--primary6);
 }
@@ -46,7 +50,7 @@
 }
 
 .Primary.Outline:active {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--primary6);
   --btnRingColor: var(--primary4);
 }
@@ -58,7 +62,7 @@
 }
 
 .Primary.Black {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--gray13);
   --btnRingColor: var(--gray13);
 }
@@ -70,7 +74,7 @@
 }
 
 .Primary.Black:active {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--gray13);
   --btnRingColor: var(--gray7);
 }
@@ -82,7 +86,7 @@
 }
 
 .Primary.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--primary6);
   --btnRingColor: transparent;
 }
@@ -94,7 +98,7 @@
 }
 
 .Primary.Inline:active {
-  background-color: var(--white);
+  background-color: transparent;
   --btnRingColor: var(--primary2);
   color: var(--primary6);
 }
@@ -107,30 +111,31 @@
 
 .Secondary.Fill {
   background-color: var(--secondary6);
-  color: var(--white);
+  box-shadow: 0 10px 24px -12px rgba(109, 74, 255, 0.8);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
 .Secondary.Fill:hover {
   background-color: var(--secondary7);
-  color: var(--white);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
 .Secondary.Fill:active {
   background-color: var(--secondary6);
   --btnRingColor: var(--secondary4);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .Secondary.Fill:focus {
   background-color: var(--secondary7);
   --btnRingColor: var(--secondary3);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .Secondary.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--secondary6);
   --btnRingColor: var(--secondary6);
 }
@@ -142,7 +147,7 @@
 }
 
 .Secondary.Outline:active {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--secondary6);
   --btnRingColor: var(--secondary4);
 }
@@ -154,7 +159,7 @@
 }
 
 .Secondary.Black {
-  background-color: var(--white);
+  background-color: transparent;
   --btnRingColor: var(--gray13);
   color: var(--gray13);
 }
@@ -166,7 +171,7 @@
 }
 
 .Secondary.Black:active {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--gray13);
   --btnRingColor: var(--gray7);
 }
@@ -178,7 +183,7 @@
 }
 
 .Secondary.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--secondary6);
   --btnRingColor: transparent;
 }
@@ -190,7 +195,7 @@
 }
 
 .Secondary.Inline:active {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--secondary6);
   --btnRingColor: var(--secondary2);
 }
@@ -203,7 +208,7 @@
 
 .Error.Fill {
   background-color: var(--error);
-  color: var(--white);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
@@ -211,12 +216,12 @@
 .Error.Fill:active,
 .Error.Fill:focus {
   background-color: var(--errorS1);
-  color: var(--white);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
 .Error.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--error);
   --btnRingColor: var(--error);
 }
@@ -230,7 +235,7 @@
 }
 
 .Error.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--error);
   --btnRingColor: transparent;
 }
@@ -245,7 +250,7 @@
 
 .Success.Fill {
   background-color: var(--success);
-  color: var(--white);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
@@ -253,12 +258,12 @@
 .Success.Fill:active,
 .Success.Fill:focus {
   background-color: var(--successS1);
-  color: var(--white);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
 .Success.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--successS1);
   --btnRingColor: var(--successS1);
 }
@@ -272,7 +277,7 @@
 }
 
 .Success.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--successS1);
   --btnRingColor: transparent;
 }
@@ -292,13 +297,13 @@
 }
 
 .Disable.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--gray7);
   --btnRingColor: var(--gray7);
 }
 
 .Disable.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--gray7);
   --btnRingColor: transparent;
 }
@@ -318,7 +323,7 @@
 }
 
 .Warning.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--warningS2);
   --btnRingColor: var(--warningS2);
 }
@@ -332,7 +337,7 @@
 }
 
 .Warning.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--warningS2);
   --btnRingColor: transparent;
 }
@@ -347,7 +352,7 @@
 
 .Info.Fill {
   background-color: var(--info);
-  color: var(--white);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
@@ -355,12 +360,12 @@
 .Info.Fill:active,
 .Info.Fill:focus {
   background-color: var(--infoS1);
-  color: var(--white);
+  color: var(--onColor);
   --btnRingColor: transparent;
 }
 
 .Info.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   --btnRingColor: var(--infoS1);
   color: var(--infoS1);
 }
@@ -374,7 +379,7 @@
 }
 
 .Info.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--infoS1);
   --btnRingColor: transparent;
 }
@@ -388,7 +393,7 @@
 }
 
 .Neutral.Inline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--gray11);
   --btnRingColor: transparent;
 }
@@ -402,7 +407,7 @@
 }
 
 .Neutral.Outline {
-  background-color: var(--white);
+  background-color: transparent;
   color: var(--gray11);
   --btnRingColor: var(--gray11);
 }
@@ -447,11 +452,11 @@
 }
 
 .Normal {
-  border-radius: 0.25rem;
+  border-radius: 0.625rem;
 }
 
 .Medium {
-  border-radius: 0.5rem;
+  border-radius: 0.875rem;
 }
 
 .High {

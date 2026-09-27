@@ -31,7 +31,7 @@
 
 .shiftName > input {
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
   border-radius: 100dvw;
   text-align: center;
 }

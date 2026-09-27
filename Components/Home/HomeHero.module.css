@@ -39,9 +39,9 @@
   height: 20.375rem;
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0) 0%,
-    #f9f9fa 69.69%,
-    #f7f7f8 100%
+    transparent 0%,
+    var(--backCol) 70%,
+    var(--backCol) 100%
   );
   position: absolute;
   left: 0;
@@ -238,7 +238,7 @@
 
 .searchIconButtonDark {
   background-color: var(--gray11);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .searchInput {
@@ -273,7 +273,7 @@
 
 .actionPrimary {
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .quickLinks {
@@ -354,4 +354,9 @@
   .actions > * {
     flex: 1;
   }
+}
+
+/* the pre-rendered light artwork is too bright on the dark theme */
+:global(html[data-theme="dark"]) .heroBg {
+  opacity: 0.16;
 }

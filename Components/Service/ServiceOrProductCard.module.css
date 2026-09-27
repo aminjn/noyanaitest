@@ -99,7 +99,7 @@
   align-items: center;
   justify-content: center;
   padding: 2px 0.365rem;
-  color: var(--white);
+  color: var(--onColor);
   background-color: var(--error);
   border-radius: 100dvw;
 }

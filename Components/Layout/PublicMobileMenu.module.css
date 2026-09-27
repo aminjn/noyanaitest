@@ -257,3 +257,7 @@
 .footerContact {
   color: var(--gray11);
 }
+
+.theme {
+  margin-inline-start: auto;
+}

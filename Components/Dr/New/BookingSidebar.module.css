@@ -20,7 +20,7 @@
 .pillActive {
   background-color: var(--primary);
   border-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .sidebar {
@@ -153,7 +153,7 @@
 
 .insuranceToggleOptionActive {
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .insuranceSelect {
@@ -218,7 +218,7 @@
 .dayCardActive .dayCardWeekday,
 .dayCardActive .dayCardDate,
 .dayCardActive .dayCardCount {
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .timeGrid {
@@ -242,7 +242,7 @@
 .timeSlotActive {
   background-color: var(--primary);
   border-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .noSessions {

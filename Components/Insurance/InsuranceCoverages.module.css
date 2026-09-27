@@ -27,7 +27,7 @@
   padding: 0.5rem;
   border-radius: 0.675rem;
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .itemValue {

@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--white);
+  color: var(--onColor);
   border-radius: 100dvw;
   padding: 0.5rem;
   background-color: var(--primary2);

@@ -7,6 +7,7 @@ import usePopup from "../Hooks/usePopup";
 import Ixon from "../UI/Ixon";
 import Button from "../UI/Button";
 import LogoLong from "../UI/LogoLong";
+import ThemeToggle from "../UI/Theme/ThemeToggle";
 import AuthPopup from "../Popups/AuthPopup";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
@@ -120,6 +121,7 @@ const PublicMobileMenu = ({
           <Link href="/" className={classes.logo} onClick={onClose}>
             <LogoLong width={104} height={36} />
           </Link>
+          <ThemeToggle className={classes.theme} />
         </div>
 
         <div className={classes.scroll}>

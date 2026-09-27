@@ -8,6 +8,7 @@ import SearchIcon from "@/Components/Icons/SearchIcon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
 import useUser from "@/Components/Hooks/useUser";
 import LogoLong from "@/Components/UI/LogoLong";
+import ThemeToggle from "@/Components/UI/Theme/ThemeToggle";
 import { adminPath } from "@/Components/helpers/adminPath";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import {
@@ -180,9 +181,12 @@ const AdminSidebar = () => {
   return (
     <aside className={classes.main}>
       <div className={classes.header}>
-        <Link className={classes.logo} href={"/"}>
-          <LogoLong />
-        </Link>
+        <div className={classes.logoRow}>
+          <Link className={classes.logo} href={"/"}>
+            <LogoLong />
+          </Link>
+          <ThemeToggle />
+        </div>
         <div className={classes.search}>
           <Ixon width="1.1rem" className={classes.searchIcon}>
             <SearchIcon />

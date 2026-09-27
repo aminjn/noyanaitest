@@ -123,7 +123,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid var(--gray10);
-  color: var(--white);
+  color: var(--onColor);
   border-radius: 50%;
 }
 
@@ -132,7 +132,7 @@
 }
 
 .activeIdentity .identityCheck {
-  color: var(--white);
+  color: var(--onColor);
   border-color: transparent;
   background-color: var(--primary);
 }
@@ -168,7 +168,7 @@
 
 .activeConsent .consentCheck {
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
   border-color: transparent;
 }
 
@@ -239,7 +239,7 @@
 .activeSessionType .sessionTypeCheck {
   border-color: transparent;
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .boxs {
@@ -344,7 +344,7 @@
 
 .activeMethod .methodCheck {
   background-color: var(--success);
-  color: var(--white);
+  color: var(--onColor);
   border-color: transparent;
 }
 

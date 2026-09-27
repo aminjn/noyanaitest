@@ -1,0 +1,53 @@
+.orb {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  border-radius: 50%;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.spin,
+.shine {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.spin {
+  background: conic-gradient(from 210deg, #7c5cff, #22d3ee, #f472b6, #7c5cff);
+  animation: turn 8s linear infinite;
+}
+
+.shine {
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 45%);
+}
+
+.icon {
+  position: absolute;
+  inset: 29%;
+  color: #fff;
+  display: flex;
+}
+
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 1.5rem rgba(124, 92, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 2.75rem rgba(124, 92, 255, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .spin {
+    animation: none;
+  }
+}

@@ -8,7 +8,7 @@
 
 .icon {
   background-color: var(--error);
-  color: var(--white);
+  color: var(--onColor);
   border-radius: 50%;
   padding: 1rem;
   margin-bottom: 0.5rem;

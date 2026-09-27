@@ -38,7 +38,7 @@
   justify-content: center;
   border-radius: 100dvw;
   padding: 2px 0.375rem;
-  color: var(--white);
+  color: var(--onColor);
   background-color: var(--error);
 }
 

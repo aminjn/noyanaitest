@@ -181,7 +181,7 @@
 .save {
   border: none;
   background: var(--primary6);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .reset {

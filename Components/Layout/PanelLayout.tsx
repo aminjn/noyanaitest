@@ -14,6 +14,7 @@ import { usePathname } from "@/Components/i18n/navigation";
 import LanguageSwitcher from "../i18n/LanguageSwitcher";
 import NotificationButton from "./NotificationButton";
 import UserButton from "./UserButton";
+import ThemeToggle from "../UI/Theme/ThemeToggle";
 import BreadCrumpContext from "../Store/BreadCrumpStore";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -150,6 +151,7 @@ const PanelLayout = ({
             <Link href="/" className={classes.siteLink}>
               {getContent("viewSite")}
             </Link>
+            <ThemeToggle />
             <LanguageSwitcher />
             <NotificationButton
               isOpen={notificationsOpen}

@@ -25,7 +25,7 @@
   justify-content: center;
   align-items: center;
   font-weight: 500;
-  color: var(--white);
+  color: var(--onColor);
   border: 2px solid currentColor;
   overflow: hidden;
 }

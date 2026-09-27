@@ -21,7 +21,7 @@
   padding: 0.75rem;
   border-radius: 1rem;
   background-color: var(--secondary1);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .headerDetails {
@@ -110,7 +110,7 @@
 .doctorIcon {
   padding: 0.625rem;
   background-color: var(--primary);
-  color: var(--white);
+  color: var(--onColor);
   border-radius: 0.625rem;
 }
 

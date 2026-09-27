@@ -40,7 +40,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .scoreBox {

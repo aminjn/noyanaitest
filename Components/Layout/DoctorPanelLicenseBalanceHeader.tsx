@@ -44,7 +44,7 @@ const Card = ({
       </div>
       <div className={classes.action}>
         <Button
-          style={{ backgroundColor: fg, color: "var(--white)" }}
+          style={{ backgroundColor: fg, color: "var(--onColor)" }}
           leadIcon={<PlusIcon />}
           onClick={action}
         >

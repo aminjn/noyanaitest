@@ -47,7 +47,7 @@
   height: 1.5rem;
   border-radius: 50%;
   background-color: var(--errorT4);
-  color: var(--white);
+  color: var(--onColor);
   display: flex;
   align-items: center;
   justify-content: center;

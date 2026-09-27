@@ -10,6 +10,7 @@ import { SockectContextProvider } from "@/Components/Store/SocketContext";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getMessages } from "@/Components/i18n/getMessages";
 import { headers } from "next/headers";
+import { themeInitScript } from "@/Components/UI/Theme/theme";
 import { localeAlternates } from "@/Components/i18n/alternates";
 import {
   defaultLocale,
@@ -56,7 +57,7 @@ export const generateMetadata = (): Metadata => ({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#1a80e5",
+  themeColor: "#4f46e5",
 };
 
 export default async function RootLayout({
@@ -74,7 +75,10 @@ export default async function RootLayout({
   // header/footer with no text content. useSearchParams now lives in its own
   // small Suspense boundary inside ProgressContextProvider instead.
   return (
-    <html lang={locale} dir={localeDir(locale)}>
+    <html lang={locale} dir={localeDir(locale)} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className={font.variable}>
         <LocaleScopeProvider initialTextContent={messages} locale={locale}>
           <ProgressContextProvider>

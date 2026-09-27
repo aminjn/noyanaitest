@@ -44,7 +44,7 @@
   padding-block: 2px;
   padding-inline: 0.375rem;
   border-radius: 100dvw;
-  color: var(--white);
+  color: var(--onColor);
   background-color: var(--error);
 }
 

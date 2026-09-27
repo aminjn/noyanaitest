@@ -3,32 +3,29 @@
 
   --white: #fff;
   --black: #0b0c17;
-  /* 
-  --black: #fff;
-  --white: #0b0c17; */
 
-  --primary0: #f1f8fd;
-  --primary1: #e8f2fc;
-  --primary2: #bad9f7;
-  --primary3: #8dc0f2;
-  --primary4: #5fa6ed;
-  --primary5: #3e96ed;
-  --primary6: #1a80e5;
-  --primary7: #166cc2;
-  --primary8: #125aa0;
-  --primary9: #0d4073;
-  --primary10: #082645;
+  --primary0: #f5f5ff;
+  --primary1: #eef0ff;
+  --primary2: #dde1ff;
+  --primary3: #c0c6ff;
+  --primary4: #9aa2fb;
+  --primary5: #6f74f1;
+  --primary6: #4f46e5;
+  --primary7: #4338ca;
+  --primary8: #3730a3;
+  --primary9: #2a267a;
+  --primary10: #1b1a4b;
 
-  --secondary1: #e7e1f6;
-  --secondary2: #d8cdf0;
-  --secondary3: #c4b3e9;
-  --secondary4: #b09ae1;
-  --secondary5: #9d81da;
-  --secondary6: #8968d2;
-  --secondary7: #7257af;
-  --secondary8: #533f80;
-  --secondary9: #392b57;
-  --secondary10: #241c38;
+  --secondary1: #efeaff;
+  --secondary2: #e0d6ff;
+  --secondary3: #c8b8ff;
+  --secondary4: #ad96ff;
+  --secondary5: #8f71ff;
+  --secondary6: #6d4aff;
+  --secondary7: #5a36e8;
+  --secondary8: #4b2fd1;
+  --secondary9: #33208f;
+  --secondary10: #1f1457;
 
   --yellowLight: #fffcf0;
   --yellow: #ffcd60;
@@ -46,20 +43,6 @@
   --gray11: #3c3d45;
   --gray12: #2e2f39;
   --gray13: #23242e;
-
-  /* --gray1: #23242e;
-  --gray2: #2e2f39;
-  --gray3: #3c3d45;
-  --gray4: #54555d;
-  --gray5: #6d6d74;
-  --gray6: #85858b;
-  --gray7: #9d9ea2;
-  --gray8: #b6b6b9;
-  --gray9: #ceced1;
-  --gray10: #e7e7e8;
-  --gray11: #f2f2f3;
-  --gray12: #f7f7f8;
-  --gray13: #fafafa; */
 
   --errorS4: #2f090d;
   --errorS3: #5e121b;
@@ -101,7 +84,32 @@
   --infoT2: #a0dded;
   --infoT1: #cfeef6;
 
-  --backCol: var(--gray2);
+  --backCol: var(--meshBase);
+
+  /* ---- Aurora design system (see docs/design-system.md) ---- */
+  --onColor: #fff; /* text/icons on accent or colored fills, both themes */
+  --ink: #0b0c17; /* always-dark surfaces (call rooms, video) */
+  --gradAccent: linear-gradient(135deg, #6d4aff, #2563eb);
+  --gradAccentSolid: #4f46e5; /* fallback color under --gradAccent */
+  --brandDeep: #2a267a; /* deep brand band (footer, CTA strips) */
+  --ai: #6d4aff;
+  --aiText: #4b2fd1;
+  --aiSoft: rgba(109, 74, 255, 0.1);
+  --aiLine: rgba(109, 74, 255, 0.28);
+  --meshBase: #eef0f8;
+  --mesh: radial-gradient(55% 60% at 92% 0%, #c7d2fe 0%, rgba(199, 210, 254, 0) 70%),
+    radial-gradient(45% 55% at 8% 12%, #fbcfe8 0%, rgba(251, 207, 232, 0) 70%),
+    radial-gradient(60% 55% at 45% 105%, #bff0e6 0%, rgba(191, 240, 230, 0) 70%);
+  --glass: rgba(255, 255, 255, 0.64);
+  --glassStrong: rgba(255, 255, 255, 0.82);
+  --glassLine: rgba(255, 255, 255, 0.9);
+  --glassBlur: blur(22px) saturate(150%);
+  --glassShadow: 0 12px 40px -16px rgba(40, 48, 120, 0.25);
+  --line: rgba(30, 35, 70, 0.08);
+  --radiusLg: 1.75rem;
+  --radiusMd: 1.25rem;
+  --radiusSm: 0.875rem;
+  --focusRing: 0 0 0 3px rgba(79, 70, 229, 0.28);
 
   --primary: var(--primary6);
   --secondary: var(--secondary6);
@@ -122,6 +130,117 @@
   --shadowBase: 0 1px 3px 0 #00000010;
   --shadowSm: 0 1px 2px 0 #00000010;
   --shadowMd: 0 2px 4px -2px #00000050;
+
+  color-scheme: light;
+}
+
+/* Dark theme: the same token names, re-stepped for a dark surface.
+   Set by the inline script in app/layout.tsx (saved choice, else the OS). */
+html[data-theme="dark"] {
+  --white: #151a36;
+  --black: #f1f2fa;
+
+  --primary0: #161a3a;
+  --primary1: #1b2048;
+  --primary2: #262c63;
+  --primary3: #353d85;
+  --primary4: #5a62c8;
+  --primary5: #7b82f0;
+  --primary6: #6366f1;
+  --primary7: #a5a8ff;
+  --primary8: #c0c2ff;
+  --primary9: #d9daff;
+  --primary10: #efefff;
+
+  --secondary1: #1f1a45;
+  --secondary2: #2a2260;
+  --secondary3: #3b2f86;
+  --secondary4: #5a47c4;
+  --secondary5: #8b73ff;
+  --secondary6: #a18bff;
+  --secondary7: #b8a6ff;
+  --secondary8: #cbbdff;
+  --secondary9: #ddd3ff;
+  --secondary10: #efeaff;
+
+  --yellowLight: #2a2412;
+
+  --gray1: #0e1226;
+  --gray2: #11152c;
+  --gray3: #1a1e3a;
+  --gray4: #252a4a;
+  --gray5: #30365a;
+  --gray6: #464c73;
+  --gray7: #666d93;
+  --gray8: #8e94b5;
+  --gray9: #a4aac8;
+  --gray10: #babed8;
+  --gray11: #cfd2e7;
+  --gray12: #e2e4f2;
+  --gray13: #f1f2fa;
+
+  --errorS4: #ffe1e4;
+  --errorS3: #ffc4ca;
+  --errorS2: #ffa1ab;
+  --errorS1: #ff7e8b;
+  --error: #f25264;
+  --errorT4: #a8303f;
+  --errorT3: #6e1d2a;
+  --errorT2: #4a1520;
+  --errorT1: #2c0f18;
+
+  --successS4: #d8f8e6;
+  --successS3: #b0efcb;
+  --successS2: #7fe0ab;
+  --successS1: #4fcf8a;
+  --success: #34c07a;
+  --successT4: #1f8a55;
+  --successT3: #155c3a;
+  --successT2: #103f29;
+  --successT1: #0b261a;
+
+  --warningS4: #fff1cc;
+  --warningS3: #ffe29a;
+  --warningS2: #fbd06a;
+  --warningS1: #f5bd3f;
+  --warning: #e9ab1c;
+  --warningT4: #8a6512;
+  --warningT3: #57400d;
+  --warningT2: #3b2c0b;
+  --warningT1: #251c08;
+
+  --infoS4: #d4f4fb;
+  --infoS3: #a6e7f5;
+  --infoS2: #72d6ec;
+  --infoS1: #45c3df;
+  --info: #22aacb;
+  --infoT4: #137a93;
+  --infoT3: #0d4f60;
+  --infoT2: #0a3541;
+  --infoT1: #07212a;
+
+  --brandDeep: #0f1230;
+  --ai: #a18bff;
+  --aiText: #c4b5ff;
+  --aiSoft: rgba(161, 139, 255, 0.14);
+  --aiLine: rgba(161, 139, 255, 0.34);
+  --meshBase: #070a18;
+  --mesh: radial-gradient(55% 60% at 92% 0%, rgba(99, 86, 255, 0.38) 0%, rgba(99, 86, 255, 0) 70%),
+    radial-gradient(45% 55% at 8% 12%, rgba(219, 39, 119, 0.22) 0%, rgba(219, 39, 119, 0) 70%),
+    radial-gradient(60% 55% at 45% 105%, rgba(20, 184, 166, 0.22) 0%, rgba(20, 184, 166, 0) 70%);
+  --glass: rgba(22, 26, 52, 0.58);
+  --glassStrong: rgba(30, 35, 68, 0.78);
+  --glassLine: rgba(255, 255, 255, 0.08);
+  --glassShadow: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
+  --line: rgba(255, 255, 255, 0.08);
+  --focusRing: 0 0 0 3px rgba(161, 139, 255, 0.35);
+
+  --shadow: 0 0 0.75rem #00000080;
+  --shadowBase: 0 1px 3px 0 #00000060;
+  --shadowSm: 0 1px 2px 0 #00000060;
+  --shadowMd: 0 2px 6px -2px #000000a0;
+
+  color-scheme: dark;
 }
 
 * {
@@ -155,6 +274,21 @@ body {
     "Helvetica Neue",
     sans-serif;
   background-color: var(--backCol);
+  color: var(--gray13);
+}
+
+/* Aurora surfaces, shared by panels and pages */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
 }
 
 /* The bundled IRANYekan build ("FaNum") draws Persian digits for 0-9.

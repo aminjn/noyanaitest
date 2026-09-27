@@ -14,13 +14,13 @@
 }
 
 .h1 {
-  color: var(--white);
+  color: var(--onColor);
   margin-top: 1.5rem;
   text-align: center;
 }
 
 .legend {
-  color: var(--white);
+  color: var(--onColor);
   text-align: center;
   margin-top: 0.75rem;
 }
@@ -62,7 +62,7 @@
 }
 
 .recTitle {
-  color: var(--white);
+  color: var(--onColor);
   opacity: 0.6;
 }
 

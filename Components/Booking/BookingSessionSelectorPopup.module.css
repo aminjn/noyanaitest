@@ -102,7 +102,7 @@
 
 .sessionCheck {
   transition: all var(--transTime);
-  color: var(--white);
+  color: var(--onColor);
   opacity: 0;
 }
 
@@ -147,7 +147,7 @@
   padding: 2px;
   border-radius: 50%;
   border: 1px solid var(--gray10);
-  color: var(--white);
+  color: var(--onColor);
 }
 
 .activeToggle {
