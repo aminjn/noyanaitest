@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Reembolso de pedido",
  "trOther": "Transacción",
  "trEmpty": "Aún no hay transacciones.",
- "trSepNote": "Recarga segura por la pasarela Saman (SEP) con cualquier tarjeta Shetab"
+ "trSepNote": "Recarga segura por la pasarela Saman (SEP) con cualquier tarjeta Shetab",
+ "nfUnreadTab": "No leídas",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "Estás al día."
 }

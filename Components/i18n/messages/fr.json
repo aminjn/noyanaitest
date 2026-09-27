@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Remboursement de commande",
  "trOther": "Transaction",
  "trEmpty": "Aucune transaction pour l’instant.",
- "trSepNote": "Recharge sécurisée via la passerelle Saman (SEP) avec toute carte Shetab"
+ "trSepNote": "Recharge sécurisée via la passerelle Saman (SEP) avec toute carte Shetab",
+ "nfUnreadTab": "Non lues",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "Vous êtes à jour."
 }

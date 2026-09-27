@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Pengembalian pesanan",
  "trOther": "Transaksi",
  "trEmpty": "Belum ada transaksi.",
- "trSepNote": "Isi ulang aman lewat gateway Saman (SEP) dengan kartu Shetab apa pun"
+ "trSepNote": "Isi ulang aman lewat gateway Saman (SEP) dengan kartu Shetab apa pun",
+ "nfUnreadTab": "Belum dibaca",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "Semua notifikasi sudah dibaca."
 }

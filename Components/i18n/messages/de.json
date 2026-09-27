@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Bestellerstattung",
  "trOther": "Transaktion",
  "trEmpty": "Noch keine Transaktionen.",
- "trSepNote": "Sicheres Aufladen über das Saman-Gateway (SEP) mit jeder Shetab-Karte"
+ "trSepNote": "Sicheres Aufladen über das Saman-Gateway (SEP) mit jeder Shetab-Karte",
+ "nfUnreadTab": "Ungelesen",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "Sie haben alles gelesen."
 }

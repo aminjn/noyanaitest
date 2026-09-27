@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Sipariş iadesi",
  "trOther": "İşlem",
  "trEmpty": "Henüz işlem yok.",
- "trSepNote": "Herhangi bir Shetab kartıyla Saman (SEP) ağ geçidi üzerinden güvenli yükleme"
+ "trSepNote": "Herhangi bir Shetab kartıyla Saman (SEP) ağ geçidi üzerinden güvenli yükleme",
+ "nfUnreadTab": "Okunmamış",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "Tüm bildirimleri okudunuz."
 }

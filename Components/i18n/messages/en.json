@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Order refund",
  "trOther": "Transaction",
  "trEmpty": "No transactions yet.",
- "trSepNote": "Secure top-up through the Saman (SEP) gateway with any Shetab card"
+ "trSepNote": "Secure top-up through the Saman (SEP) gateway with any Shetab card",
+ "nfUnreadTab": "Unread",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "You're all caught up."
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import useSWR, { mutate as globalMutate } from "swr";
 import Link from "@/Components/i18n/Link";
-import { usePathname } from "@/Components/i18n/navigation";
+import { usePathname, useIntlLocale } from "@/Components/i18n/navigation";
 import classes from "./DashboardNotificationsPage.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -12,12 +12,12 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
-import Button from "@/Components/UI/Button";
 import Pagination from "@/Components/UI/Pagination";
 import Act from "@/Components/UI/Act";
-import FormatDate from "@/Components/UI/FormatDate";
 import Ixon from "@/Components/UI/Ixon";
 import Bell01Icon from "@/Components/Icons/Bell01Icon";
+import SparkIcon from "@/Components/Icons/SparkIcon";
+import InitialAvatar from "@/Components/UI/InitialAvatar";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import DoubleCheckIcon from "@/Components/Icons/DoubleCheckIcon";
 import PushNotificationToggle from "@/Components/Notification/PushNotificationToggle";
@@ -48,6 +48,23 @@ export interface INotification<
   createdAt: Date;
 }
 
+// "2 hours ago" for the last day, then the clock time (the day is the
+// group heading)
+const useWhen = () => {
+  const intlTag = useIntlLocale();
+  return useMemo(() => {
+    const rel = new Intl.RelativeTimeFormat(intlTag, { numeric: "auto", style: "short" });
+    const time = new Intl.DateTimeFormat(intlTag, { hour: "2-digit", minute: "2-digit" });
+    return (value: Date | string) => {
+      const d = new Date(value);
+      const mins = Math.round((Date.now() - d.getTime()) / 6e4);
+      if (mins < 60) return rel.format(-Math.max(mins, 0), "minute");
+      if (mins < 24 * 60) return rel.format(-Math.round(mins / 60), "hour");
+      return time.format(d);
+    };
+  }, [intlTag]);
+};
+
 const NotificationItem = ({
   node,
   mutate,
@@ -57,40 +74,52 @@ const NotificationItem = ({
 }) => {
   const [isMarking, setIsMarking] = useState<boolean>(false);
   const getContent = useScopedLocale(NS);
+  const when = useWhen();
 
   const markRead = () => {
     if (!node.isRead && !isMarking) setIsMarking(true);
   };
 
   const itemClassName = `${classes.item} ${!node.isRead ? classes.unread : ""}`;
+  const fromAdmin = node.source === "Admin";
 
   const inner = (
     <Fragment>
-      <span
-        className={`${classes.dot} ${!node.isRead ? classes.dotActive : ""}`}
-      />
+      {fromAdmin ? (
+        <InitialAvatar name={getContent("support")} seed="support" size="2.5rem" />
+      ) : (
+        <span className={classes.sourceIcon} aria-hidden>
+          <Ixon width="1.125rem">
+            <SparkIcon />
+          </Ixon>
+        </span>
+      )}
       <div className={classes.body}>
-        <div className={classes.itemHead}>
-          <span className={classes.itemTitle}>{node.title}</span>
-          <FormatDate className={classes.date} value={node.createdAt} />
-        </div>
-        <p className={classes.message}>{node.message}</p>
+        <span className={classes.itemTitle}>{node.title}</span>
+        {!!node.message && <p className={classes.message}>{node.message}</p>}
+        <span className={classes.source}>
+          {getContent(fromAdmin ? "support" : "nfSystem")}
+          {!!node.createdAt && <span className={classes.date}>{when(node.createdAt)}</span>}
+        </span>
       </div>
       {!node.isRead && (
-        <Button
+        <button
+          type="button"
           className={classes.readButton}
-          mode="Inline"
-          size="S"
-          isLoading={isMarking}
-          leadIcon={<CheckIcon />}
+          aria-label={getContent("markAsRead")}
+          title={getContent("markAsRead")}
+          disabled={isMarking}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             markRead();
           }}
         >
-          {getContent("markAsRead")}
-        </Button>
+          <span className={classes.dot} aria-hidden />
+          <Ixon width="1rem">
+            <CheckIcon />
+          </Ixon>
+        </button>
       )}
     </Fragment>
   );
@@ -119,6 +148,8 @@ const NotificationItem = ({
   );
 };
 
+const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+
 const DashboardNotificationsPage = () => {
   const [page, setPage] = useState<number>(1);
   const [unreadOnly, setUnreadOnly] = useState<boolean>(false);
@@ -137,72 +168,108 @@ const DashboardNotificationsPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
+  const intlTag = useIntlLocale();
+  const groups = useMemo(() => {
+    const list = Array.isArray(data?.data) ? data.data : [];
+    const rel = new Intl.RelativeTimeFormat(intlTag, { numeric: "auto" });
+    const day = new Intl.DateTimeFormat(intlTag, { weekday: "long", day: "numeric", month: "long" });
+    const today = dayKey(new Date());
+    const yesterday = dayKey(new Date(Date.now() - 864e5));
+    const out: { key: string; label: string; items: typeof list }[] = [];
+    for (const n of list) {
+      const d = new Date(n.createdAt);
+      const key = dayKey(d);
+      let g = out.find((x) => x.key === key);
+      if (!g) {
+        const label = key === today ? rel.format(0, "day") : key === yesterday ? rel.format(-1, "day") : day.format(d);
+        g = { key, label, items: [] };
+        out.push(g);
+      }
+      g.items.push(n);
+    }
+    return out;
+  }, [data, intlTag]);
+
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <div className={classes.main}>
-          <div className={classes.head}>
-            <div className={classes.titleBox}>
-              <h1 className={classes.title}>{getContent("notifications")}</h1>
-              {!!data.unreadCount && (
-                <span className={classes.unreadBadge}>{data.unreadCount}</span>
-              )}
+          <header className={classes.head}>
+            <h1 className={classes.title}>{getContent("notifications")}</h1>
+            <div className={classes.tabs} role="tablist">
+              {[false, true].map((u) => (
+                <button
+                  key={String(u)}
+                  type="button"
+                  role="tab"
+                  aria-selected={unreadOnly === u}
+                  className={`${classes.tab} ${unreadOnly === u ? classes.tabOn : ""}`}
+                  onClick={() => {
+                    setUnreadOnly(u);
+                    setPage(1);
+                  }}
+                >
+                  {getContent(u ? "nfUnreadTab" : "all")}
+                  {u && !!data.unreadCount && (
+                    <span className={classes.unreadBadge}>{num.format(data.unreadCount)}</span>
+                  )}
+                </button>
+              ))}
             </div>
             <div className={classes.headActions}>
               <PushNotificationToggle />
-              <Button
-                variant={unreadOnly ? "Primary" : "Disable"}
-                mode="Fill"
-                size="S"
-                radius="High"
-                onClick={() => {
-                  setUnreadOnly((prev) => !prev);
-                  setPage(1);
-                }}
-              >
-                {getContent("unreadOnly")}
-              </Button>
-              <Button
-                variant={data.unreadCount ? "Secondary" : "Disable"}
-                mode="Outline"
-                size="S"
-                radius="High"
-                leadIcon={<DoubleCheckIcon />}
-                isLoading={isMarkingAll}
-                onClick={() => {
-                  if (!isMarkingAll && data.unreadCount) setIsMarkingAll(true);
-                }}
-              >
-                {getContent("markAllAsRead")}
-              </Button>
+              {!!data.unreadCount && (
+                <button
+                  type="button"
+                  className={classes.markAll}
+                  disabled={isMarkingAll}
+                  onClick={() => {
+                    if (!isMarkingAll) setIsMarkingAll(true);
+                  }}
+                >
+                  <Ixon width="1rem">
+                    <DoubleCheckIcon />
+                  </Ixon>
+                  {getContent("markAllAsRead")}
+                </button>
+              )}
             </div>
-          </div>
+          </header>
 
-          {!!data.data.length ? (
-            <div className={classes.list}>
-              {data.data.map((notification) => (
-                <NotificationItem
-                  key={notification._id}
-                  node={notification}
-                  mutate={mutate}
-                />
+          {groups.length ? (
+            <div className={classes.feed}>
+              {groups.map((g) => (
+                <section key={g.key} className={classes.group}>
+                  <h2 className={classes.groupTitle}>{g.label}</h2>
+                  <div className={classes.list}>
+                    {g.items.map((notification) => (
+                      <NotificationItem key={notification._id} node={notification} mutate={mutate} />
+                    ))}
+                  </div>
+                </section>
               ))}
             </div>
           ) : (
             <div className={classes.nothing}>
-              <Ixon width="2rem">
-                <Bell01Icon />
-              </Ixon>
-              <span>{getContent("noNotificationsYet")}</span>
+              <span className={classes.nothingIcon}>
+                <Ixon width="1.75rem">
+                  <Bell01Icon />
+                </Ixon>
+              </span>
+              <span>{getContent(unreadOnly ? "nfAllRead" : "noNotificationsYet")}</span>
             </div>
           )}
-          <Pagination
-            className={classes.pagination}
-            currentPage={page}
-            pagesCount={Math.ceil(data.total / NOTIFICATIONS_PAGE_LIMIT)}
-            makePath={() => pathname}
-            onClickPage={setPage}
-          />
+          {data.total > NOTIFICATIONS_PAGE_LIMIT && (
+            <Pagination
+              className={classes.pagination}
+              currentPage={page}
+              pagesCount={Math.ceil(data.total / NOTIFICATIONS_PAGE_LIMIT)}
+              makePath={() => pathname}
+              onClickPage={setPage}
+            />
+          )}
           <Act
             path={isMarkingAll ? `${API}/user/notification/read-all` : null}
             method="POST"

@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Возврат за заказ",
  "trOther": "Операция",
  "trEmpty": "Операций пока нет.",
- "trSepNote": "Безопасное пополнение через шлюз Saman (SEP) любой картой Shetab"
+ "trSepNote": "Безопасное пополнение через шлюз Saman (SEP) любой картой Shetab",
+ "nfUnreadTab": "Непрочитанные",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "Все уведомления прочитаны."
 }
