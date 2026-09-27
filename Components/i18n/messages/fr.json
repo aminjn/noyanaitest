@@ -1909,5 +1909,15 @@
  "trSepNote": "Recharge sécurisée via la passerelle Saman (SEP) avec toute carte Shetab",
  "nfUnreadTab": "Non lues",
  "nfSystem": "NoyanAI",
- "nfAllRead": "Vous êtes à jour."
+ "nfAllRead": "Vous êtes à jour.",
+ "adEdit": "Modifier",
+ "adDeleteAsk": "Supprimer cette adresse ?",
+ "adDeleteYes": "Oui, supprimer",
+ "adDeleted": "Adresse supprimée.",
+ "adPinned": "Épinglée sur la carte",
+ "adNoPin": "Non épinglée sur la carte",
+ "adSetPin": "Épingler sur la carte",
+ "adEmpty": "Vous n’avez pas encore ajouté d’adresse.",
+ "adNew": "Ajouter une adresse",
+ "adTip": "Pour la livraison de médicaments et les prélèvements à domicile, épinglez l’emplacement exact sur la carte afin que le coursier arrive directement à votre porte."
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import useSWR from "swr";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import classes from "./DashboardManageAddressPage.module.css";
 import { IUserAddress } from "./DashboardManageAddressesPage";
 import { API } from "@/Components/config";
@@ -23,12 +24,15 @@ const DashboardManageAddressPage = () => {
   );
 
   const getContent = useScopedLocale(NS);
+  // the addresses list links "pin on map" here with ?tab=Location
+  const tabState = useState<string>(useSearchParams().get("tab") === "Location" ? "Location" : "Details");
 
   return (
     <div className={classes.main}>
       <HandleLoading data={!!data} error={error}>
         {!!data && (
           <ClientTabSystem
+            viewState={tabState}
             items={[
               {
                 id: "Details",

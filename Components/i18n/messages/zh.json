@@ -1909,5 +1909,15 @@
  "trSepNote": "通过 Saman (SEP) 网关使用任意 Shetab 卡安全充值",
  "nfUnreadTab": "未读",
  "nfSystem": "NoyanAI",
- "nfAllRead": "您已读完所有通知。"
+ "nfAllRead": "您已读完所有通知。",
+ "adEdit": "编辑",
+ "adDeleteAsk": "删除此地址？",
+ "adDeleteYes": "是，删除",
+ "adDeleted": "地址已删除。",
+ "adPinned": "已在地图上标记",
+ "adNoPin": "未在地图上标记",
+ "adSetPin": "在地图上标记",
+ "adEmpty": "您还没有添加地址。",
+ "adNew": "添加新地址",
+ "adTip": "为了快递送药和上门采样，请在地图上标记准确位置，让骑手直接送到门口。"
 }

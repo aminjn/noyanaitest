@@ -8,7 +8,16 @@ import { API } from "@/Components/config";
 
 const NS: ContentNamespace[] = ["common", "dashboardMutateAddressPopup"];
 
-const DashboardMutateAddressPopup = ({ mutate }: { mutate: () => unknown }) => {
+// popupName must match the name the opener passed to setPopup (the cart
+// opens it as "CartAddAddress", the addresses page as
+// "DashboardMutateAddress")
+const DashboardMutateAddressPopup = ({
+  mutate,
+  popupName = "CartAddAddress",
+}: {
+  mutate: () => unknown;
+  popupName?: string;
+}) => {
   const getContent = useScopedLocale(NS);
 
   const { closePopup } = usePopup();
@@ -25,10 +34,10 @@ const DashboardMutateAddressPopup = ({ mutate }: { mutate: () => unknown }) => {
           path: `${API}/user/address`,
           successCb: () => {
             mutate();
-            closePopup("CartAddAddress");
+            closePopup(popupName);
           },
         }}
-        onCancel={() => closePopup("CartAddAddress")}
+        onCancel={() => closePopup(popupName)}
       />
     </PopupCard>
   );

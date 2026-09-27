@@ -1909,5 +1909,15 @@
  "trSepNote": "Herhangi bir Shetab kartıyla Saman (SEP) ağ geçidi üzerinden güvenli yükleme",
  "nfUnreadTab": "Okunmamış",
  "nfSystem": "NoyanAI",
- "nfAllRead": "Tüm bildirimleri okudunuz."
+ "nfAllRead": "Tüm bildirimleri okudunuz.",
+ "adEdit": "Düzenle",
+ "adDeleteAsk": "Bu adres silinsin mi?",
+ "adDeleteYes": "Evet, sil",
+ "adDeleted": "Adres silindi.",
+ "adPinned": "Haritada işaretli",
+ "adNoPin": "Haritada işaretli değil",
+ "adSetPin": "Haritada işaretle",
+ "adEmpty": "Henüz adres eklemediniz.",
+ "adNew": "Yeni adres ekle",
+ "adTip": "İlaç kurye teslimatı ve evde numune alımı için haritada tam konumu işaretleyin; kurye doğrudan kapınıza gelsin."
 }

@@ -1909,5 +1909,15 @@
  "trSepNote": "Secure top-up through the Saman (SEP) gateway with any Shetab card",
  "nfUnreadTab": "Unread",
  "nfSystem": "NoyanAI",
- "nfAllRead": "You're all caught up."
+ "nfAllRead": "You're all caught up.",
+ "adEdit": "Edit",
+ "adDeleteAsk": "Delete this address?",
+ "adDeleteYes": "Yes, delete",
+ "adDeleted": "Address deleted.",
+ "adPinned": "Pinned on the map",
+ "adNoPin": "Not pinned on the map",
+ "adSetPin": "Pin on map",
+ "adEmpty": "You haven't added an address yet.",
+ "adNew": "Add a new address",
+ "adTip": "For courier delivery of medicines and home sample collection, pin the exact spot on the map so the courier comes straight to your door."
 }

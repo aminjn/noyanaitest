@@ -1909,5 +1909,15 @@
  "trSepNote": "Recarga segura por la pasarela Saman (SEP) con cualquier tarjeta Shetab",
  "nfUnreadTab": "No leídas",
  "nfSystem": "NoyanAI",
- "nfAllRead": "Estás al día."
+ "nfAllRead": "Estás al día.",
+ "adEdit": "Editar",
+ "adDeleteAsk": "¿Eliminar esta dirección?",
+ "adDeleteYes": "Sí, eliminar",
+ "adDeleted": "Dirección eliminada.",
+ "adPinned": "Marcada en el mapa",
+ "adNoPin": "Sin marcar en el mapa",
+ "adSetPin": "Marcar en el mapa",
+ "adEmpty": "Aún no has añadido ninguna dirección.",
+ "adNew": "Añadir una dirección",
+ "adTip": "Para la entrega de medicamentos y la toma de muestras a domicilio, marca el punto exacto en el mapa para que el repartidor llegue directo a tu puerta."
 }
