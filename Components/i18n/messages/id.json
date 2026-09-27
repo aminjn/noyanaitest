@@ -1909,5 +1909,15 @@
  "trSepNote": "Isi ulang aman lewat gateway Saman (SEP) dengan kartu Shetab apa pun",
  "nfUnreadTab": "Belum dibaca",
  "nfSystem": "NoyanAI",
- "nfAllRead": "Semua notifikasi sudah dibaca."
+ "nfAllRead": "Semua notifikasi sudah dibaca.",
+ "adEdit": "Ubah",
+ "adDeleteAsk": "Hapus alamat ini?",
+ "adDeleteYes": "Ya, hapus",
+ "adDeleted": "Alamat dihapus.",
+ "adPinned": "Ditandai di peta",
+ "adNoPin": "Belum ditandai di peta",
+ "adSetPin": "Tandai di peta",
+ "adEmpty": "Anda belum menambahkan alamat.",
+ "adNew": "Tambah alamat baru",
+ "adTip": "Untuk antar obat dan pengambilan sampel di rumah, tandai lokasi tepat di peta agar kurir langsung sampai ke pintu Anda."
 }

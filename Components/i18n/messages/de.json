@@ -1909,5 +1909,15 @@
  "trSepNote": "Sicheres Aufladen über das Saman-Gateway (SEP) mit jeder Shetab-Karte",
  "nfUnreadTab": "Ungelesen",
  "nfSystem": "NoyanAI",
- "nfAllRead": "Sie haben alles gelesen."
+ "nfAllRead": "Sie haben alles gelesen.",
+ "adEdit": "Bearbeiten",
+ "adDeleteAsk": "Diese Adresse löschen?",
+ "adDeleteYes": "Ja, löschen",
+ "adDeleted": "Adresse gelöscht.",
+ "adPinned": "Auf der Karte markiert",
+ "adNoPin": "Nicht auf der Karte markiert",
+ "adSetPin": "Auf der Karte markieren",
+ "adEmpty": "Sie haben noch keine Adresse hinzugefügt.",
+ "adNew": "Neue Adresse hinzufügen",
+ "adTip": "Markieren Sie für Medikamentenlieferung und Probenentnahme zu Hause den genauen Ort auf der Karte, damit der Kurier direkt zu Ihrer Tür kommt."
 }

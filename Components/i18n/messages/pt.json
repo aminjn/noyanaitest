@@ -1909,5 +1909,15 @@
  "trSepNote": "Recarga segura pelo gateway Saman (SEP) com qualquer cartão Shetab",
  "nfUnreadTab": "Não lidas",
  "nfSystem": "NoyanAI",
- "nfAllRead": "Você está em dia."
+ "nfAllRead": "Você está em dia.",
+ "adEdit": "Editar",
+ "adDeleteAsk": "Excluir este endereço?",
+ "adDeleteYes": "Sim, excluir",
+ "adDeleted": "Endereço excluído.",
+ "adPinned": "Marcado no mapa",
+ "adNoPin": "Não marcado no mapa",
+ "adSetPin": "Marcar no mapa",
+ "adEmpty": "Você ainda não adicionou um endereço.",
+ "adNew": "Adicionar endereço",
+ "adTip": "Para entrega de medicamentos e coleta domiciliar, marque o local exato no mapa para que o entregador chegue direto à sua porta."
 }
