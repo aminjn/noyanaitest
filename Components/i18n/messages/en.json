@@ -1919,5 +1919,13 @@
  "adSetPin": "Pin on map",
  "adEmpty": "You haven't added an address yet.",
  "adNew": "Add a new address",
- "adTip": "For courier delivery of medicines and home sample collection, pin the exact spot on the map so the courier comes straight to your door."
+ "adTip": "For courier delivery of medicines and home sample collection, pin the exact spot on the map so the courier comes straight to your door.",
+ "spHelpTitle": "What do you need help with?",
+ "spTabActive": "Active",
+ "spTabDone": "Closed",
+ "spReplied": "Support replied",
+ "spWaiting": "Waiting for support",
+ "spYou": "You",
+ "spMessages": "${1} messages",
+ "spEmpty": "You have no tickets. If you have a question or a problem, pick one of the topics above."
 }

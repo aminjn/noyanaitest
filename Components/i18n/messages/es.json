@@ -1919,5 +1919,13 @@
  "adSetPin": "Marcar en el mapa",
  "adEmpty": "Aún no has añadido ninguna dirección.",
  "adNew": "Añadir una dirección",
- "adTip": "Para la entrega de medicamentos y la toma de muestras a domicilio, marca el punto exacto en el mapa para que el repartidor llegue directo a tu puerta."
+ "adTip": "Para la entrega de medicamentos y la toma de muestras a domicilio, marca el punto exacto en el mapa para que el repartidor llegue directo a tu puerta.",
+ "spHelpTitle": "¿Con qué necesitas ayuda?",
+ "spTabActive": "Activos",
+ "spTabDone": "Cerrados",
+ "spReplied": "Soporte respondió",
+ "spWaiting": "Esperando a soporte",
+ "spYou": "Tú",
+ "spMessages": "${1} mensajes",
+ "spEmpty": "No tienes tickets. Si tienes una pregunta o un problema, elige uno de los temas de arriba."
 }
