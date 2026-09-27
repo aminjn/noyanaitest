@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "Questionnaire not filled yet",
  "pbFillIntake": "Fill in questionnaire",
  "pbDetails": "Details",
- "pbBookAgain": "Book again"
+ "pbBookAgain": "Book again",
+ "poTitle": "My orders",
+ "poTabAll": "All",
+ "poTabPaid": "Paid",
+ "poTabPending": "Awaiting payment",
+ "poTabCancelled": "Cancelled",
+ "poAssistant": "Health assistant",
+ "poClear": "Show all",
+ "poAiUnpaid": "${1} orders aren't paid yet",
+ "poAiPreparing": "${1} orders are being prepared",
+ "poEmpty": "No orders here",
+ "poShop": "Shop the pharmacy",
+ "poItems": "${1} items",
+ "poMore": "and ${1} more",
+ "poProgress": "${1} of ${2} items ready",
+ "poDetails": "Order details"
 }

@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "問診票未記入",
  "pbFillIntake": "問診票に記入",
  "pbDetails": "詳細",
- "pbBookAgain": "再予約"
+ "pbBookAgain": "再予約",
+ "poTitle": "注文履歴",
+ "poTabAll": "すべて",
+ "poTabPaid": "支払い済み",
+ "poTabPending": "支払い待ち",
+ "poTabCancelled": "キャンセル",
+ "poAssistant": "ヘルスアシスタント",
+ "poClear": "すべて表示",
+ "poAiUnpaid": "未払いの注文 ${1} 件",
+ "poAiPreparing": "準備中の注文 ${1} 件",
+ "poEmpty": "注文はありません",
+ "poShop": "薬局で購入",
+ "poItems": "${1} 点",
+ "poMore": "ほか ${1} 点",
+ "poProgress": "${2} 点中 ${1} 点準備完了",
+ "poDetails": "注文の詳細"
 }

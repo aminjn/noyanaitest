@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "Fragebogen noch offen",
  "pbFillIntake": "Fragebogen ausfüllen",
  "pbDetails": "Details",
- "pbBookAgain": "Erneut buchen"
+ "pbBookAgain": "Erneut buchen",
+ "poTitle": "Meine Bestellungen",
+ "poTabAll": "Alle",
+ "poTabPaid": "Bezahlt",
+ "poTabPending": "Zahlung offen",
+ "poTabCancelled": "Storniert",
+ "poAssistant": "Gesundheitsassistent",
+ "poClear": "Alle zeigen",
+ "poAiUnpaid": "${1} Bestellungen noch unbezahlt",
+ "poAiPreparing": "${1} Bestellungen in Vorbereitung",
+ "poEmpty": "Keine Bestellungen",
+ "poShop": "In der Apotheke einkaufen",
+ "poItems": "${1} Artikel",
+ "poMore": "und ${1} weitere",
+ "poProgress": "${1} von ${2} Artikeln bereit",
+ "poDetails": "Bestelldetails"
 }

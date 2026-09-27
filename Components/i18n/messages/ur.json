@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "سوالنامہ ابھی نہیں بھرا",
  "pbFillIntake": "سوالنامہ بھریں",
  "pbDetails": "تفصیل",
- "pbBookAgain": "دوبارہ بک کریں"
+ "pbBookAgain": "دوبارہ بک کریں",
+ "poTitle": "میرے آرڈر",
+ "poTabAll": "سب",
+ "poTabPaid": "ادا شدہ",
+ "poTabPending": "ادائیگی باقی",
+ "poTabCancelled": "منسوخ",
+ "poAssistant": "صحت اسسٹنٹ",
+ "poClear": "سب دکھائیں",
+ "poAiUnpaid": "${1} آرڈرز کی ادائیگی باقی ہے",
+ "poAiPreparing": "${1} آرڈر تیار ہو رہے ہیں",
+ "poEmpty": "یہاں کوئی آرڈر نہیں",
+ "poShop": "فارمیسی سے خریدیں",
+ "poItems": "${1} اشیاء",
+ "poMore": "اور ${1} مزید",
+ "poProgress": "${2} میں سے ${1} تیار",
+ "poDetails": "آرڈر کی تفصیل"
 }

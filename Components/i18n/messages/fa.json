@@ -1890,5 +1890,20 @@
  "pbIntakeTodo": "پرسش‌نامه هنوز پر نشده",
  "pbFillIntake": "پر کردن پرسش‌نامه",
  "pbDetails": "جزئیات نوبت",
- "pbBookAgain": "نوبت دوباره"
+ "pbBookAgain": "نوبت دوباره",
+ "poTitle": "سفارش‌های من",
+ "poTabAll": "همه",
+ "poTabPaid": "پرداخت‌شده",
+ "poTabPending": "در انتظار پرداخت",
+ "poTabCancelled": "لغوشده",
+ "poAssistant": "دستیار سلامت",
+ "poClear": "نمایش همه",
+ "poAiUnpaid": "${1} سفارش هنوز پرداخت نشده است",
+ "poAiPreparing": "${1} سفارش در حال آماده‌سازی است",
+ "poEmpty": "سفارشی در این بخش نیست",
+ "poShop": "خرید از داروخانه",
+ "poItems": "${1} قلم",
+ "poMore": "و ${1} مورد دیگر",
+ "poProgress": "${1} از ${2} قلم آماده شده",
+ "poDetails": "جزئیات سفارش"
 }

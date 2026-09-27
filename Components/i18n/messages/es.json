@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "Cuestionario pendiente",
  "pbFillIntake": "Rellenar cuestionario",
  "pbDetails": "Detalles",
- "pbBookAgain": "Volver a reservar"
+ "pbBookAgain": "Volver a reservar",
+ "poTitle": "Mis pedidos",
+ "poTabAll": "Todos",
+ "poTabPaid": "Pagados",
+ "poTabPending": "Pendientes de pago",
+ "poTabCancelled": "Cancelados",
+ "poAssistant": "Asistente de salud",
+ "poClear": "Mostrar todo",
+ "poAiUnpaid": "${1} pedidos sin pagar",
+ "poAiPreparing": "${1} pedidos en preparación",
+ "poEmpty": "No hay pedidos",
+ "poShop": "Comprar en la farmacia",
+ "poItems": "${1} artículos",
+ "poMore": "y ${1} más",
+ "poProgress": "${1} de ${2} listos",
+ "poDetails": "Detalles del pedido"
 }

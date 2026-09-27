@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "प्रश्नावली अभी नहीं भरी",
  "pbFillIntake": "प्रश्नावली भरें",
  "pbDetails": "विवरण",
- "pbBookAgain": "फिर से बुक करें"
+ "pbBookAgain": "फिर से बुक करें",
+ "poTitle": "मेरे ऑर्डर",
+ "poTabAll": "सभी",
+ "poTabPaid": "भुगतान हुआ",
+ "poTabPending": "भुगतान बाकी",
+ "poTabCancelled": "रद्द",
+ "poAssistant": "स्वास्थ्य सहायक",
+ "poClear": "सभी दिखाएँ",
+ "poAiUnpaid": "${1} ऑर्डर का भुगतान बाकी",
+ "poAiPreparing": "${1} ऑर्डर तैयार हो रहे हैं",
+ "poEmpty": "यहाँ कोई ऑर्डर नहीं",
+ "poShop": "फ़ार्मेसी से ख़रीदें",
+ "poItems": "${1} आइटम",
+ "poMore": "और ${1} अन्य",
+ "poProgress": "${2} में से ${1} तैयार",
+ "poDetails": "ऑर्डर विवरण"
 }

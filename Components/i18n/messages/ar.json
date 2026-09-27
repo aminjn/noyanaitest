@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "لم يُملأ الاستبيان بعد",
  "pbFillIntake": "املأ الاستبيان",
  "pbDetails": "التفاصيل",
- "pbBookAgain": "احجز مجددًا"
+ "pbBookAgain": "احجز مجددًا",
+ "poTitle": "طلباتي",
+ "poTabAll": "الكل",
+ "poTabPaid": "مدفوعة",
+ "poTabPending": "بانتظار الدفع",
+ "poTabCancelled": "ملغاة",
+ "poAssistant": "مساعد الصحة",
+ "poClear": "عرض الكل",
+ "poAiUnpaid": "${1} طلبات لم تُدفع بعد",
+ "poAiPreparing": "${1} طلبات قيد التجهيز",
+ "poEmpty": "لا طلبات هنا",
+ "poShop": "تسوّق من الصيدلية",
+ "poItems": "${1} عناصر",
+ "poMore": "و${1} أخرى",
+ "poProgress": "${1} من ${2} جاهزة",
+ "poDetails": "تفاصيل الطلب"
 }
