@@ -1883,5 +1883,6 @@
  "poItems": "${1} kalem",
  "poMore": "ve ${1} tane daha",
  "poProgress": "${2} kalemden ${1} hazır",
- "poDetails": "Sipariş ayrıntıları"
+ "poDetails": "Sipariş ayrıntıları",
+ "chatUrgentNote": "Acil belirtilerde yanıt beklemeyin; acil servisi arayın (İran'da 115)."
 }

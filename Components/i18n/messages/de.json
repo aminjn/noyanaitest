@@ -1883,5 +1883,6 @@
  "poItems": "${1} Artikel",
  "poMore": "und ${1} weitere",
  "poProgress": "${1} von ${2} Artikeln bereit",
- "poDetails": "Bestelldetails"
+ "poDetails": "Bestelldetails",
+ "chatUrgentNote": "Bei dringenden Beschwerden nicht auf eine Antwort warten: Notruf wählen (115 im Iran)."
 }

@@ -4,7 +4,8 @@ import useUser, { IUser } from "../Hooks/useUser";
 import { IChat, getChatParticipantName } from "./ChatSidebar";
 import classes from "./ChatSidebarItem.module.css";
 import Link from "@/Components/i18n/Link";
-import HostedImage from "../UI/HostedImage";
+import InitialAvatar from "../UI/InitialAvatar";
+import { useParams } from "next/navigation";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -19,6 +20,8 @@ const ChatSidebarItem = ({
   const { user } = useUser();
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const params = useParams<{ nodeId?: string }>();
+  const isActive = params?.nodeId === chat._id;
 
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
     () => chat.participants.find((p) => p._id !== user?._id),
@@ -32,37 +35,21 @@ const ChatSidebarItem = ({
 
 
   return (
-    <Link href={`/dashboard/chat/${chat._id}`} className={classes.main}>
-      <div className={classes.image}>
-        {
-          //TODO: add image later
-        }
-        <HostedImage
-          alt={title || "chat"}
-          src={undefined}
-          style={{ objectFit: "cover" }}
-          sizes="10rem"
-          fill
-        />
-      </div>
+    <Link
+      href={`/dashboard/chat/${chat._id}`}
+      className={`${classes.main} ${isActive ? classes.active : ""}`}
+      aria-current={isActive ? "page" : undefined}
+    >
+      <InitialAvatar name={title || "?"} seed={other?._id || chat._id} size="3rem" />
       <div className={classes.info}>
         <span className={classes.name}>{title || getContent("chat")}</span>
-        <span className={classes.status}>
-          {getContent("status")} :{" "}
+        <span className={`${classes.status} ${chat.closedAt ? classes.closed : ""}`}>
           {getContent(chat.closedAt ? "close" : "open")}
         </span>
       </div>
-      <div className={classes.last}>
-        <span className={classes.date}>
-          {new Date(chat.createdAt).toLocaleString(intlTag, {
-            month: "numeric",
-            day: "numeric",
-            year: "numeric",
-            minute: "numeric",
-            hour: "numeric",
-          })}
-        </span>
-      </div>
+      <span className={classes.date}>
+        {new Date(chat.createdAt).toLocaleDateString(intlTag, { month: "short", day: "numeric" })}
+      </span>
     </Link>
   );
 };

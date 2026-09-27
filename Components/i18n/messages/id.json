@@ -1883,5 +1883,6 @@
  "poItems": "${1} item",
  "poMore": "dan ${1} lainnya",
  "poProgress": "${1} dari ${2} siap",
- "poDetails": "Detail pesanan"
+ "poDetails": "Detail pesanan",
+ "chatUrgentNote": "Untuk gejala darurat jangan menunggu balasan: hubungi layanan darurat (115 di Iran)."
 }

@@ -1,13 +1,26 @@
 .main {
   display: flex;
-  max-height: min(80dvh, 44.5rem);
-  min-height: min(80dvh, 44.5rem);
+  max-height: calc(100dvh - 8rem);
+  min-height: min(calc(100dvh - 8rem), 46rem);
   height: 100%;
-  border-radius: 1.5rem;
+  border-radius: var(--radiusLg);
   overflow: hidden;
-  box-shadow: var(--shadowMd);
-  background-color: var(--white);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   position: relative;
+}
+
+.sidebarWrap {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.sidebarWrap > * {
+  height: auto;
+  max-height: none;
 }
 
 .sidebarBackdrop {
