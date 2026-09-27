@@ -1906,5 +1906,8 @@
  "trOrderRefund": "Reembolso do pedido",
  "trOther": "Transação",
  "trEmpty": "Ainda não há transações.",
- "trSepNote": "Recarga segura pelo gateway Saman (SEP) com qualquer cartão Shetab"
+ "trSepNote": "Recarga segura pelo gateway Saman (SEP) com qualquer cartão Shetab",
+ "nfUnreadTab": "Não lidas",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "Você está em dia."
 }

@@ -1906,5 +1906,8 @@
  "trOrderRefund": "订单退款",
  "trOther": "交易",
  "trEmpty": "暂无交易。",
- "trSepNote": "通过 Saman (SEP) 网关使用任意 Shetab 卡安全充值"
+ "trSepNote": "通过 Saman (SEP) 网关使用任意 Shetab 卡安全充值",
+ "nfUnreadTab": "未读",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "您已读完所有通知。"
 }

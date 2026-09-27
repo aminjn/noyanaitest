@@ -2058,6 +2058,9 @@ const contentKeys = [
   "trOther",
   "trEmpty",
   "trSepNote",
+  "nfUnreadTab",
+  "nfSystem",
+  "nfAllRead",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

@@ -1906,5 +1906,8 @@
  "trOrderRefund": "注文の返金",
  "trOther": "取引",
  "trEmpty": "取引はまだありません。",
- "trSepNote": "Saman (SEP) ゲートウェイで Shetab カードから安全にチャージ"
+ "trSepNote": "Saman (SEP) ゲートウェイで Shetab カードから安全にチャージ",
+ "nfUnreadTab": "未読",
+ "nfSystem": "NoyanAI",
+ "nfAllRead": "すべて既読です。"
 }
