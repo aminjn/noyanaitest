@@ -1,6 +1,10 @@
 .main {
-  background-color: var(--white);
-  border-radius: 1rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+  border-radius: var(--radiusLg);
   padding-block-start: 1rem;
   padding-block-end: 1.5rem;
   padding-inline: 2rem;
@@ -28,7 +32,7 @@
   flex-direction: column;
   padding: 1rem;
   border-radius: 1rem;
-  background-color: var(--gray2);
+  background-color: var(--glassStrong);
   gap: 1rem;
 }
 

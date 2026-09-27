@@ -34,11 +34,14 @@
   flex-direction: column;
   flex: 1;
   padding-block: 1.5rem;
-  padding-inline: 3rem;
+  padding-inline: min(3rem, 4vw);
   gap: 0.5rem;
-  background-color: var(--white);
-  border-radius: 1rem;
-  border: 1px solid var(--gray5);
+  border-radius: 1.5rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   align-items: center;
   justify-content: center;
 }
