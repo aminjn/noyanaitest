@@ -1884,5 +1884,15 @@
  "poMore": "等另外 ${1} 件",
  "poProgress": "${2} 件中已备好 ${1} 件",
  "poDetails": "订单详情",
- "chatUrgentNote": "如有紧急症状请勿等待回复，请拨打急救电话（伊朗为 115）。"
+ "chatUrgentNote": "如有紧急症状请勿等待回复，请拨打急救电话（伊朗为 115）。",
+ "invTabPaid": "已支付",
+ "invTabUnpaid": "未支付",
+ "invPaidSum": "已付总额",
+ "invUnpaidSum": "未付余额",
+ "invCount": "${1} 张发票",
+ "invVisitWith": "${1} 医生的问诊",
+ "invFallback": "问诊发票",
+ "invEmpty": "没有找到发票。",
+ "invDetails": "详情",
+ "invArchiveNote": "这些发票是旧预约系统的历史记录，已无法支付。新预约的付款显示在“交易”中。"
 }

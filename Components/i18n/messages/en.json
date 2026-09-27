@@ -1884,5 +1884,15 @@
  "poMore": "and ${1} more",
  "poProgress": "${1} of ${2} items ready",
  "poDetails": "Order details",
- "chatUrgentNote": "For urgent symptoms don't wait for a reply: call emergency services (115 in Iran)."
+ "chatUrgentNote": "For urgent symptoms don't wait for a reply: call emergency services (115 in Iran).",
+ "invTabPaid": "Paid",
+ "invTabUnpaid": "Unpaid",
+ "invPaidSum": "Total paid",
+ "invUnpaidSum": "Outstanding",
+ "invCount": "${1} invoices",
+ "invVisitWith": "Visit with Dr. ${1}",
+ "invFallback": "Visit invoice",
+ "invEmpty": "No invoices found.",
+ "invDetails": "Details",
+ "invArchiveNote": "These invoices are history from the previous booking system and can no longer be paid. Payments for new appointments appear under Transactions."
 }

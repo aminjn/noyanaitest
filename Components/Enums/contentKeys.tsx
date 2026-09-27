@@ -2036,6 +2036,16 @@ const contentKeys = [
   "poProgress",
   "poDetails",
   "chatUrgentNote",
+  "invTabPaid",
+  "invTabUnpaid",
+  "invPaidSum",
+  "invUnpaidSum",
+  "invCount",
+  "invVisitWith",
+  "invFallback",
+  "invEmpty",
+  "invDetails",
+  "invArchiveNote",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

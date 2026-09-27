@@ -1884,5 +1884,15 @@
  "poMore": "e mais ${1}",
  "poProgress": "${1} de ${2} prontos",
  "poDetails": "Detalhes do pedido",
- "chatUrgentNote": "Em sintomas urgentes não espere resposta: ligue para a emergência (115 no Irã)."
+ "chatUrgentNote": "Em sintomas urgentes não espere resposta: ligue para a emergência (115 no Irã).",
+ "invTabPaid": "Pagas",
+ "invTabUnpaid": "Em aberto",
+ "invPaidSum": "Total pago",
+ "invUnpaidSum": "Saldo em aberto",
+ "invCount": "${1} faturas",
+ "invVisitWith": "Consulta com Dr. ${1}",
+ "invFallback": "Fatura de consulta",
+ "invEmpty": "Nenhuma fatura encontrada.",
+ "invDetails": "Detalhes",
+ "invArchiveNote": "Estas faturas são o histórico do sistema de agendamento anterior e não podem mais ser pagas. Os pagamentos de novas consultas aparecem em «Transações»."
 }

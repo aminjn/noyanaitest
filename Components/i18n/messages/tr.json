@@ -1884,5 +1884,15 @@
  "poMore": "ve ${1} tane daha",
  "poProgress": "${2} kalemden ${1} hazır",
  "poDetails": "Sipariş ayrıntıları",
- "chatUrgentNote": "Acil belirtilerde yanıt beklemeyin; acil servisi arayın (İran'da 115)."
+ "chatUrgentNote": "Acil belirtilerde yanıt beklemeyin; acil servisi arayın (İran'da 115).",
+ "invTabPaid": "Ödendi",
+ "invTabUnpaid": "Ödenmedi",
+ "invPaidSum": "Toplam ödenen",
+ "invUnpaidSum": "Kalan borç",
+ "invCount": "${1} fatura",
+ "invVisitWith": "Dr. ${1} ile muayene",
+ "invFallback": "Muayene faturası",
+ "invEmpty": "Fatura bulunamadı.",
+ "invDetails": "Ayrıntılar",
+ "invArchiveNote": "Bu faturalar önceki randevu sisteminin kayıtlarıdır ve artık ödenemez. Yeni randevuların ödemeleri «İşlemler» bölümünde görünür."
 }
