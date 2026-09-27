@@ -1894,5 +1894,17 @@
  "invFallback": "Factura de consulta",
  "invEmpty": "No se encontraron facturas.",
  "invDetails": "Detalles",
- "invArchiveNote": "Estas facturas son historial del sistema de reservas anterior y ya no se pueden pagar. Los pagos de citas nuevas aparecen en «Transacciones»."
+ "invArchiveNote": "Estas facturas son historial del sistema de reservas anterior y ya no se pueden pagar. Los pagos de citas nuevas aparecen en «Transacciones».",
+ "trWallet": "Monedero NoyanAI",
+ "trInMonth": "Entradas este mes",
+ "trOutMonth": "Salidas este mes",
+ "trTabPayments": "Pagos",
+ "trTabCredits": "Abonos",
+ "trVisitPay": "Consulta con el Dr. ${1}",
+ "trVisitRefund": "Reembolso: consulta con el Dr. ${1}",
+ "trOrderPay": "Pago de pedido",
+ "trOrderRefund": "Reembolso de pedido",
+ "trOther": "Transacción",
+ "trEmpty": "Aún no hay transacciones.",
+ "trSepNote": "Recarga segura por la pasarela Saman (SEP) con cualquier tarjeta Shetab"
 }

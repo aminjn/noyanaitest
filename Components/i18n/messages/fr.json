@@ -1894,5 +1894,17 @@
  "invFallback": "Facture de consultation",
  "invEmpty": "Aucune facture trouvée.",
  "invDetails": "Détails",
- "invArchiveNote": "Ces factures proviennent de l’ancien système de réservation et ne peuvent plus être payées. Les paiements des nouveaux rendez-vous figurent dans « Transactions »."
+ "invArchiveNote": "Ces factures proviennent de l’ancien système de réservation et ne peuvent plus être payées. Les paiements des nouveaux rendez-vous figurent dans « Transactions ».",
+ "trWallet": "Portefeuille NoyanAI",
+ "trInMonth": "Entrées ce mois-ci",
+ "trOutMonth": "Sorties ce mois-ci",
+ "trTabPayments": "Paiements",
+ "trTabCredits": "Crédits",
+ "trVisitPay": "Consultation avec le Dr ${1}",
+ "trVisitRefund": "Remboursement : consultation avec le Dr ${1}",
+ "trOrderPay": "Paiement de commande",
+ "trOrderRefund": "Remboursement de commande",
+ "trOther": "Transaction",
+ "trEmpty": "Aucune transaction pour l’instant.",
+ "trSepNote": "Recharge sécurisée via la passerelle Saman (SEP) avec toute carte Shetab"
 }

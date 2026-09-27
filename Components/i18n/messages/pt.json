@@ -1894,5 +1894,17 @@
  "invFallback": "Fatura de consulta",
  "invEmpty": "Nenhuma fatura encontrada.",
  "invDetails": "Detalhes",
- "invArchiveNote": "Estas faturas são o histórico do sistema de agendamento anterior e não podem mais ser pagas. Os pagamentos de novas consultas aparecem em «Transações»."
+ "invArchiveNote": "Estas faturas são o histórico do sistema de agendamento anterior e não podem mais ser pagas. Os pagamentos de novas consultas aparecem em «Transações».",
+ "trWallet": "Carteira NoyanAI",
+ "trInMonth": "Entradas este mês",
+ "trOutMonth": "Saídas este mês",
+ "trTabPayments": "Pagamentos",
+ "trTabCredits": "Créditos",
+ "trVisitPay": "Consulta com Dr. ${1}",
+ "trVisitRefund": "Reembolso: consulta com Dr. ${1}",
+ "trOrderPay": "Pagamento do pedido",
+ "trOrderRefund": "Reembolso do pedido",
+ "trOther": "Transação",
+ "trEmpty": "Ainda não há transações.",
+ "trSepNote": "Recarga segura pelo gateway Saman (SEP) com qualquer cartão Shetab"
 }

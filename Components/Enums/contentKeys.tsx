@@ -2046,6 +2046,18 @@ const contentKeys = [
   "invEmpty",
   "invDetails",
   "invArchiveNote",
+  "trWallet",
+  "trInMonth",
+  "trOutMonth",
+  "trTabPayments",
+  "trTabCredits",
+  "trVisitPay",
+  "trVisitRefund",
+  "trOrderPay",
+  "trOrderRefund",
+  "trOther",
+  "trEmpty",
+  "trSepNote",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

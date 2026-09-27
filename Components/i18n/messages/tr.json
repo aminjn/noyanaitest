@@ -1894,5 +1894,17 @@
  "invFallback": "Muayene faturası",
  "invEmpty": "Fatura bulunamadı.",
  "invDetails": "Ayrıntılar",
- "invArchiveNote": "Bu faturalar önceki randevu sisteminin kayıtlarıdır ve artık ödenemez. Yeni randevuların ödemeleri «İşlemler» bölümünde görünür."
+ "invArchiveNote": "Bu faturalar önceki randevu sisteminin kayıtlarıdır ve artık ödenemez. Yeni randevuların ödemeleri «İşlemler» bölümünde görünür.",
+ "trWallet": "NoyanAI cüzdanı",
+ "trInMonth": "Bu ay gelen",
+ "trOutMonth": "Bu ay giden",
+ "trTabPayments": "Ödemeler",
+ "trTabCredits": "Yatırılanlar",
+ "trVisitPay": "Dr. ${1} ile muayene",
+ "trVisitRefund": "İade: Dr. ${1} ile muayene",
+ "trOrderPay": "Sipariş ödemesi",
+ "trOrderRefund": "Sipariş iadesi",
+ "trOther": "İşlem",
+ "trEmpty": "Henüz işlem yok.",
+ "trSepNote": "Herhangi bir Shetab kartıyla Saman (SEP) ağ geçidi üzerinden güvenli yükleme"
 }

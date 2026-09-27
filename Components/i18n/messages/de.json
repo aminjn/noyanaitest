@@ -1894,5 +1894,17 @@
  "invFallback": "Terminrechnung",
  "invEmpty": "Keine Rechnungen gefunden.",
  "invDetails": "Details",
- "invArchiveNote": "Diese Rechnungen stammen aus dem früheren Buchungssystem und können nicht mehr bezahlt werden. Zahlungen für neue Termine finden Sie unter „Transaktionen“."
+ "invArchiveNote": "Diese Rechnungen stammen aus dem früheren Buchungssystem und können nicht mehr bezahlt werden. Zahlungen für neue Termine finden Sie unter „Transaktionen“.",
+ "trWallet": "NoyanAI-Wallet",
+ "trInMonth": "Eingang diesen Monat",
+ "trOutMonth": "Ausgang diesen Monat",
+ "trTabPayments": "Zahlungen",
+ "trTabCredits": "Gutschriften",
+ "trVisitPay": "Termin bei Dr. ${1}",
+ "trVisitRefund": "Erstattung: Termin bei Dr. ${1}",
+ "trOrderPay": "Bestellzahlung",
+ "trOrderRefund": "Bestellerstattung",
+ "trOther": "Transaktion",
+ "trEmpty": "Noch keine Transaktionen.",
+ "trSepNote": "Sicheres Aufladen über das Saman-Gateway (SEP) mit jeder Shetab-Karte"
 }

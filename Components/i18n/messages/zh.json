@@ -1894,5 +1894,17 @@
  "invFallback": "问诊发票",
  "invEmpty": "没有找到发票。",
  "invDetails": "详情",
- "invArchiveNote": "这些发票是旧预约系统的历史记录，已无法支付。新预约的付款显示在“交易”中。"
+ "invArchiveNote": "这些发票是旧预约系统的历史记录，已无法支付。新预约的付款显示在“交易”中。",
+ "trWallet": "NoyanAI 钱包",
+ "trInMonth": "本月收入",
+ "trOutMonth": "本月支出",
+ "trTabPayments": "付款",
+ "trTabCredits": "入账",
+ "trVisitPay": "${1} 医生的问诊",
+ "trVisitRefund": "退款：${1} 医生的问诊",
+ "trOrderPay": "订单付款",
+ "trOrderRefund": "订单退款",
+ "trOther": "交易",
+ "trEmpty": "暂无交易。",
+ "trSepNote": "通过 Saman (SEP) 网关使用任意 Shetab 卡安全充值"
 }
