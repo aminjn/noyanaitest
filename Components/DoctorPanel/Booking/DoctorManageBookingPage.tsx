@@ -18,6 +18,7 @@ import ReservationStatusBadge from "@/Components/Dashboard/Booking/ReservationSt
 import ReservationTimeline from "@/Components/Dashboard/Booking/ReservationTimeline";
 import ReservationJoinButton from "@/Components/Dashboard/Booking/ReservationJoinButton";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import DoctorVisitPanel from "@/Components/Visit/DoctorVisitPanel";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
@@ -155,6 +156,8 @@ const DoctorManageBookingPage = () => {
               )}
             </div>
           </div>
+
+          <DoctorVisitPanel reservationId={data._id} />
 
           <div className={classes.card}>
             <span className={classes.title}>

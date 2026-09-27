@@ -65,6 +65,7 @@ type DoctorDashboardData = {
   noShowHistory?: Record<string, { missed: number; visits: number }> | null;
   month?: { days: number; elapsed: number; daily: number[]; booked: number } | null;
   unreadMessages?: number | null;
+  intakes?: Record<string, { complaint?: string; aiSummary?: string; redFlags?: string[] }> | null;
 };
 
 type Suggestion = {
@@ -564,6 +565,23 @@ const DoctorDashboard = () => {
                         </span>
                       </div>
                     </div>
+                    {(() => {
+                      const intake = data.intakes?.[view.next._id];
+                      const flags = Array.isArray(intake?.redFlags) ? intake.redFlags.length : 0;
+                      if (!intake) return null;
+                      return (
+                        <div className={classes.aiBox}>
+                          <span className={classes.aiLabel}>
+                            <Ixon width="0.85rem">
+                              <SparkIcon />
+                            </Ixon>
+                            {getContent("dpdIntakeSummary")}
+                          </span>
+                          <span>{intake.aiSummary || intake.complaint}</span>
+                          {flags > 0 && <span className={classes.flagLine}>{getContent("dpdIntakeRedFlags")}</span>}
+                        </div>
+                      );
+                    })()}
                     <div className={classes.aiBox}>
                       <span className={classes.aiLabel}>
                         <Ixon width="0.85rem">
@@ -580,6 +598,9 @@ const DoctorDashboard = () => {
                             : getContent("dpdPastVisits", [num.format(h.visits)]);
                         })()}
                       </span>
+                      {data.intakes && !data.intakes[view.next._id] && (
+                        <span className={classes.muted}>{getContent("dpdIntakeMissing")}</span>
+                      )}
                     </div>
                     <div className={classes.nextActions}>
                       <Link href={`/doctorpanel/booking/${view.next._id}`} className={classes.cta}>

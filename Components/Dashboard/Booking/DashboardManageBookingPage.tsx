@@ -19,6 +19,7 @@ import { IReservation } from "./DashboardManageBookingsPage";
 import ReservationStatusBadge from "./ReservationStatusBadge";
 import ReservationTimeline from "./ReservationTimeline";
 import ReservationJoinButton from "./ReservationJoinButton";
+import PatientIntakeCard from "@/Components/Visit/PatientIntakeCard";
 
 const NS: ContentNamespace[] = ["common", "dashboardBooking"];
 
@@ -145,6 +146,8 @@ const DashboardManageBookingPage = () => {
               </div>
             )}
           </div>
+
+          <PatientIntakeCard reservationId={data._id} />
 
           <div className={classes.card}>
             <span className={classes.title}>
