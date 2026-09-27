@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "Kuesioner belum diisi",
  "pbFillIntake": "Isi kuesioner",
  "pbDetails": "Detail",
- "pbBookAgain": "Pesan lagi"
+ "pbBookAgain": "Pesan lagi",
+ "poTitle": "Pesanan saya",
+ "poTabAll": "Semua",
+ "poTabPaid": "Dibayar",
+ "poTabPending": "Menunggu pembayaran",
+ "poTabCancelled": "Dibatalkan",
+ "poAssistant": "Asisten kesehatan",
+ "poClear": "Tampilkan semua",
+ "poAiUnpaid": "${1} pesanan belum dibayar",
+ "poAiPreparing": "${1} pesanan sedang disiapkan",
+ "poEmpty": "Tidak ada pesanan",
+ "poShop": "Belanja di apotek",
+ "poItems": "${1} item",
+ "poMore": "dan ${1} lainnya",
+ "poProgress": "${1} dari ${2} siap",
+ "poDetails": "Detail pesanan"
 }

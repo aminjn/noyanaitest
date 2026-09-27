@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "Questionnaire à remplir",
  "pbFillIntake": "Remplir le questionnaire",
  "pbDetails": "Détails",
- "pbBookAgain": "Reprendre rendez-vous"
+ "pbBookAgain": "Reprendre rendez-vous",
+ "poTitle": "Mes commandes",
+ "poTabAll": "Toutes",
+ "poTabPaid": "Payées",
+ "poTabPending": "En attente de paiement",
+ "poTabCancelled": "Annulées",
+ "poAssistant": "Assistant santé",
+ "poClear": "Tout afficher",
+ "poAiUnpaid": "${1} commandes non payées",
+ "poAiPreparing": "${1} commandes en préparation",
+ "poEmpty": "Aucune commande",
+ "poShop": "Acheter en pharmacie",
+ "poItems": "${1} articles",
+ "poMore": "et ${1} de plus",
+ "poProgress": "${1} sur ${2} prêts",
+ "poDetails": "Détails de la commande"
 }

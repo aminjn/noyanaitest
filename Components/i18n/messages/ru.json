@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "Анкета ещё не заполнена",
  "pbFillIntake": "Заполнить анкету",
  "pbDetails": "Подробнее",
- "pbBookAgain": "Записаться снова"
+ "pbBookAgain": "Записаться снова",
+ "poTitle": "Мои заказы",
+ "poTabAll": "Все",
+ "poTabPaid": "Оплаченные",
+ "poTabPending": "Ожидают оплаты",
+ "poTabCancelled": "Отменённые",
+ "poAssistant": "Ассистент здоровья",
+ "poClear": "Показать все",
+ "poAiUnpaid": "${1} заказов не оплачено",
+ "poAiPreparing": "${1} заказов готовится",
+ "poEmpty": "Заказов нет",
+ "poShop": "Купить в аптеке",
+ "poItems": "Позиций: ${1}",
+ "poMore": "и ещё ${1}",
+ "poProgress": "Готово ${1} из ${2}",
+ "poDetails": "Детали заказа"
 }

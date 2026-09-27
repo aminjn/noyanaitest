@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "Anket henüz doldurulmadı",
  "pbFillIntake": "Anketi doldur",
  "pbDetails": "Ayrıntılar",
- "pbBookAgain": "Tekrar randevu"
+ "pbBookAgain": "Tekrar randevu",
+ "poTitle": "Siparişlerim",
+ "poTabAll": "Tümü",
+ "poTabPaid": "Ödendi",
+ "poTabPending": "Ödeme bekleniyor",
+ "poTabCancelled": "İptal",
+ "poAssistant": "Sağlık asistanı",
+ "poClear": "Tümünü göster",
+ "poAiUnpaid": "${1} sipariş henüz ödenmedi",
+ "poAiPreparing": "${1} sipariş hazırlanıyor",
+ "poEmpty": "Burada sipariş yok",
+ "poShop": "Eczaneden alışveriş",
+ "poItems": "${1} kalem",
+ "poMore": "ve ${1} tane daha",
+ "poProgress": "${2} kalemden ${1} hazır",
+ "poDetails": "Sipariş ayrıntıları"
 }

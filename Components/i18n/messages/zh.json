@@ -1868,5 +1868,20 @@
  "pbIntakeTodo": "问卷尚未填写",
  "pbFillIntake": "填写问卷",
  "pbDetails": "详情",
- "pbBookAgain": "再次预约"
+ "pbBookAgain": "再次预约",
+ "poTitle": "我的订单",
+ "poTabAll": "全部",
+ "poTabPaid": "已支付",
+ "poTabPending": "待支付",
+ "poTabCancelled": "已取消",
+ "poAssistant": "健康助手",
+ "poClear": "显示全部",
+ "poAiUnpaid": "${1} 个订单尚未支付",
+ "poAiPreparing": "${1} 个订单正在准备",
+ "poEmpty": "暂无订单",
+ "poShop": "去药房购买",
+ "poItems": "${1} 件商品",
+ "poMore": "等另外 ${1} 件",
+ "poProgress": "${2} 件中已备好 ${1} 件",
+ "poDetails": "订单详情"
 }

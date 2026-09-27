@@ -2020,6 +2020,21 @@ const contentKeys = [
   "pbFillIntake",
   "pbDetails",
   "pbBookAgain",
+  "poTitle",
+  "poTabAll",
+  "poTabPaid",
+  "poTabPending",
+  "poTabCancelled",
+  "poAssistant",
+  "poClear",
+  "poAiUnpaid",
+  "poAiPreparing",
+  "poEmpty",
+  "poShop",
+  "poItems",
+  "poMore",
+  "poProgress",
+  "poDetails",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
