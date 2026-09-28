@@ -2105,5 +2105,8 @@
  "orgNationalId": "संस्था की राष्ट्रीय पहचान संख्या",
  "receiverPhone": "प्राप्तकर्ता का फ़ोन",
  "postalCode": "पिन कोड",
- "selectAddressFirst": "कृपया डिलीवरी का पता चुनें।"
+ "selectAddressFirst": "कृपया डिलीवरी का पता चुनें।",
+ "cancelOrder": "ऑर्डर रद्द करें",
+ "cancelOrderConfirm": "जो आइटम अभी तैयार नहीं हुए वे रद्द होंगे और राशि आपके वॉलेट में लौटेगी। जारी रखें?",
+ "orderCancelledRefunded": "ऑर्डर रद्द हुआ और राशि आपके वॉलेट में लौट गई।"
 }

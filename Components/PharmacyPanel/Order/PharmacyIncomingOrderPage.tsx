@@ -27,6 +27,8 @@ import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import OrderItemStatusBadge from "@/Components/Dashboard/Order/OrderItemStatusBadge";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
 import { IIncomingOrder } from "./PharmacyIncomingOrdersPage";
+import { localPhone } from "@/Components/Dashboard/Address/DashboardManageAddressesPage";
+import { navigationUrl } from "@/Components/helpers/navigationUrl";
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
@@ -146,6 +148,41 @@ const PharmacyIncomingOrderPage = () => {
               value={`${currencize(data.subtotal)} ${getContent("toman")}`}
             />
           </List>
+          {!!data.address?.address && (
+            <List>
+              <DataPair
+                title={getContent("deliveryAddress")}
+                value={[data.address.displayName, data.address.address].filter(Boolean).join(" - ")}
+              />
+              {!!data.address.receiverPhone && (
+                <DataPair
+                  title={getContent("receiverPhone")}
+                  value={
+                    <a href={`tel:+${data.address.receiverPhone}`} dir="ltr">
+                      {localPhone(data.address.receiverPhone)}
+                    </a>
+                  }
+                />
+              )}
+              {!!data.address.postalCode && (
+                <DataPair title={getContent("postalCode")} value={data.address.postalCode} />
+              )}
+              {!!navigationUrl(data.address.location?.coordinates) && (
+                <DataPair
+                  title={getContent("locationOnMap")}
+                  value={
+                    <a
+                      href={navigationUrl(data.address.location?.coordinates)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {getContent("navigate")}
+                    </a>
+                  }
+                />
+              )}
+            </List>
+          )}
           <Table
             name="PharmacyIncomingOrderItems"
             data={buildItemRows(data)}
@@ -204,7 +241,7 @@ const PharmacyIncomingOrderPage = () => {
                       </IconButton>
                       <IconButton
                         variant="Danger"
-                        title={getContent("cancel")}
+                        title={getContent("ioMarkCancel")}
                         onClick={() =>
                           setPopup(
                             "CancelIncomingOrderItem",

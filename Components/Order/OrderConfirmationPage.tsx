@@ -41,6 +41,12 @@ import {
 } from "../Admin/ParaClinic/AdminManageParaClinicPage";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage";
+import OrderItemStatusBadge from "../Dashboard/Order/OrderItemStatusBadge";
+import { OrderItemStatus } from "../Dashboard/Order/orderItemStatus";
+import usePopup from "../Hooks/usePopup";
+import useNotification from "../Hooks/useNotification";
+import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
+import { useRef, useState } from "react";
 import {
   t2xsRegular,
   tlgBold,
@@ -48,7 +54,7 @@ import {
   tsmRegular,
 } from "../UI/Typography";
 
-const NS: ContentNamespace[] = ["common", "orderConfirmation"];
+const NS: ContentNamespace[] = ["common", "orderConfirmation", "dashboardOrderItemStatusBadge"];
 
 export const orderStatuses = ["pending", "paid", "cancelled"] as const;
 
@@ -71,6 +77,8 @@ export interface IOrder<
       : string;
     qty: number;
     price: number;
+    // per-line fulfillment, set by the seller (Models/Order.ts)
+    status?: OrderItemStatus;
   }[];
   productPackages: {
     item: T["ProductPackages"] extends ProductPackagePopulation
@@ -78,6 +86,8 @@ export interface IOrder<
       : string;
     qty: number;
     price: number;
+    // per-line fulfillment, set by the seller (Models/Order.ts)
+    status?: OrderItemStatus;
   }[];
   services: {
     item: T["Services"] extends ServicePopulation
@@ -85,6 +95,8 @@ export interface IOrder<
       : string;
     qty: number;
     price: number;
+    // per-line fulfillment, set by the seller (Models/Order.ts)
+    status?: OrderItemStatus;
   }[];
   servicePackages: {
     item: T["ServicePackages"] extends ServicePackagePopulation
@@ -92,6 +104,8 @@ export interface IOrder<
       : string;
     qty: number;
     price: number;
+    // per-line fulfillment, set by the seller (Models/Order.ts)
+    status?: OrderItemStatus;
   }[];
   tests: {
     item: T["Tests"] extends ParaClinicTestPopulation
@@ -99,6 +113,8 @@ export interface IOrder<
       : string;
     qty: number;
     price: number;
+    // per-line fulfillment, set by the seller (Models/Order.ts)
+    status?: OrderItemStatus;
   }[];
   total: number;
   paymentMethod: "wallet" | "sep";
@@ -124,6 +140,7 @@ type OrderRow = {
   subtitle?: string;
   price: number;
   qty: number;
+  status?: OrderItemStatus;
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -143,7 +160,7 @@ const statusContent: Record<OrderStatus, ContentKey> = {
 const buildRows = (order: OrderNode): OrderRow[] => {
   const rows: OrderRow[] = [];
 
-  (Array.isArray(order.products) ? order.products : []).forEach(({ item, qty, price }) => {
+  (Array.isArray(order.products) ? order.products : []).forEach(({ item, qty, price, status }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -153,10 +170,11 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       subtitle: item.seller?.name,
       price,
       qty,
+      status,
     });
   });
 
-  (Array.isArray(order.productPackages) ? order.productPackages : []).forEach(({ item, qty, price }) => {
+  (Array.isArray(order.productPackages) ? order.productPackages : []).forEach(({ item, qty, price, status }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -165,10 +183,11 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       title: item.name || "",
       price,
       qty,
+      status,
     });
   });
 
-  (Array.isArray(order.services) ? order.services : []).forEach(({ item, qty, price }) => {
+  (Array.isArray(order.services) ? order.services : []).forEach(({ item, qty, price, status }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -177,10 +196,11 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       title: item.name || "",
       price,
       qty,
+      status,
     });
   });
 
-  (Array.isArray(order.servicePackages) ? order.servicePackages : []).forEach(({ item, qty, price }) => {
+  (Array.isArray(order.servicePackages) ? order.servicePackages : []).forEach(({ item, qty, price, status }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -189,10 +209,11 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       title: item.name || "",
       price,
       qty,
+      status,
     });
   });
 
-  (Array.isArray(order.tests) ? order.tests : []).forEach(({ item, qty, price }) => {
+  (Array.isArray(order.tests) ? order.tests : []).forEach(({ item, qty, price, status }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -202,6 +223,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       subtitle: item.paraClinic?.name,
       price,
       qty,
+      status,
     });
   });
 
@@ -212,7 +234,7 @@ const OrderConfirmationPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const { user, isUserLoading } = useUser();
 
-  const { data: order, error } = useSWR<OrderNode>(
+  const { data: order, error, mutate } = useSWR<OrderNode>(
     `${API}/user/order/${nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
@@ -220,10 +242,41 @@ const OrderConfirmationPage = () => {
   const getContent = useScopedLocale(NS);
 
   const push = useProgress();
+  const { setPopup, closePopup } = usePopup();
+  const notify = useNotification();
+  const [cancelling, setCancelling] = useState(false);
+  const cancelBusy = useRef(false);
+
+  // Cancel before the seller prepares it (Digikala / Halodoc): only lines
+  // still pending are cancelled, and each is refunded to the wallet.
+  const cancelOrder = async () => {
+    if (cancelBusy.current) return;
+    cancelBusy.current = true;
+    setCancelling(true);
+    try {
+      await fetcher({ url: `${API}/user/order/${nodeId}/cancel`, method: "POST" });
+      closePopup("CancelOrder");
+      notify(getContent("orderCancelledRefunded"), "Success");
+      await mutate();
+    } catch (err) {
+      notify((err as Error).message, "Error");
+    } finally {
+      cancelBusy.current = false;
+      setCancelling(false);
+    }
+  };
 
   if (!isUserLoading && !user) return <LoginRequired />;
 
   const rows = order ? buildRows(order) : [];
+  const canCancel =
+    order?.status === "paid" && rows.some((row) => row.status === "pending");
+  // every line cancelled (by the buyer or the sellers): the order reads as
+  // cancelled, not "paid"
+  const shownStatus: OrderStatus | undefined =
+    order && rows.length && rows.every((row) => row.status === "cancelled")
+      ? "cancelled"
+      : order?.status;
 
   const grouped = cartModels
     .map((model) => ({
@@ -247,8 +300,8 @@ const OrderConfirmationPage = () => {
               <span className={t2xsRegular}>{getContent("orderNumber")}</span>
               <span className={tsmRegular}>{order._id}</span>
             </div>
-            <span className={`${classes.status} ${classes[order.status]}`}>
-              {getContent(statusContent[order.status])}
+            <span className={`${classes.status} ${classes[shownStatus || order.status]}`}>
+              {getContent(statusContent[shownStatus || order.status])}
             </span>
           </div>
           <div className={classes.sections}>
@@ -286,6 +339,11 @@ const OrderConfirmationPage = () => {
                             {row.subtitle}
                           </span>
                         )}
+                        {!!row.status && (
+                          <span className={classes.itemStatus}>
+                            <OrderItemStatusBadge status={row.status} />
+                          </span>
+                        )}
                       </div>
                       <span className={`${classes.qty} ${t2xsRegular}`}>
                         {`x${row.qty}`}
@@ -315,6 +373,26 @@ const OrderConfirmationPage = () => {
               </div>
             )}
           </div>
+          {canCancel && (
+            <Button
+              variant="Error"
+              mode="Outline"
+              className={classes.action}
+              isLoading={cancelling}
+              onClick={() =>
+                setPopup(
+                  "CancelOrder",
+                  <ConfirmationPopup
+                    message={getContent("cancelOrderConfirm")}
+                    isLoading={cancelling}
+                    onConfirm={cancelOrder}
+                  />,
+                )
+              }
+            >
+              {getContent("cancelOrder")}
+            </Button>
+          )}
           <Button onClick={() => push("/dashboard")} className={classes.action}>
             {getContent("dashboard")}
           </Button>

@@ -2257,6 +2257,9 @@ const contentKeys = [
   "receiverPhone",
   "postalCode",
   "selectAddressFirst",
+  "cancelOrder",
+  "cancelOrderConfirm",
+  "orderCancelledRefunded",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

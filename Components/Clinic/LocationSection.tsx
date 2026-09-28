@@ -9,6 +9,7 @@ import { tbaseBold, tsmRegular } from "../UI/Typography";
 import Button from "../UI/Button";
 import SendIcon from "../Icons/SendIcon";
 import MapMarker from "../UI/MapMarker";
+import { navigationUrl } from "../helpers/navigationUrl";
 import { WithStyleProps } from "../Layout/Layout";
 
 const NS: ContentNamespace[] = ["common", "medicalCenterLocation"];
@@ -54,6 +55,10 @@ const LocationSection = ({
             mode="Fill"
             size="S"
             radius="High"
+            onClick={() => {
+              const url = navigationUrl(coords);
+              if (url) window.open(url, "_blank", "noopener");
+            }}
           >
             {getContent("navigate")}
           </Button>

@@ -2105,5 +2105,8 @@
  "orgNationalId": "Nomor identitas nasional lembaga",
  "receiverPhone": "Telepon penerima",
  "postalCode": "Kode pos",
- "selectAddressFirst": "Silakan pilih alamat pengiriman."
+ "selectAddressFirst": "Silakan pilih alamat pengiriman.",
+ "cancelOrder": "Batalkan pesanan",
+ "cancelOrderConfirm": "Item yang belum disiapkan akan dibatalkan dan dananya dikembalikan ke dompet Anda. Lanjutkan?",
+ "orderCancelledRefunded": "Pesanan dibatalkan dan dana dikembalikan ke dompet Anda."
 }

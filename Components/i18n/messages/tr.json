@@ -2105,5 +2105,8 @@
  "orgNationalId": "Kurum ulusal kimlik numarası",
  "receiverPhone": "Alıcı telefonu",
  "postalCode": "Posta kodu",
- "selectAddressFirst": "Lütfen bir teslimat adresi seçin."
+ "selectAddressFirst": "Lütfen bir teslimat adresi seçin.",
+ "cancelOrder": "Siparişi iptal et",
+ "cancelOrderConfirm": "Henüz hazırlanmamış ürünler iptal edilip cüzdanınıza iade edilecek. Devam edilsin mi?",
+ "orderCancelledRefunded": "Sipariş iptal edildi ve cüzdanınıza iade edildi."
 }

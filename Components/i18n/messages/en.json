@@ -2105,5 +2105,8 @@
  "orgNationalId": "Organization national ID",
  "receiverPhone": "Recipient phone",
  "postalCode": "Postal code",
- "selectAddressFirst": "Please choose a delivery address."
+ "selectAddressFirst": "Please choose a delivery address.",
+ "cancelOrder": "Cancel order",
+ "cancelOrderConfirm": "Items not yet prepared will be cancelled and refunded to your wallet. Continue?",
+ "orderCancelledRefunded": "The order was cancelled and refunded to your wallet."
 }

@@ -2105,5 +2105,8 @@
  "orgNationalId": "Nationale Kennnummer der Einrichtung",
  "receiverPhone": "Telefon des Empfängers",
  "postalCode": "Postleitzahl",
- "selectAddressFirst": "Bitte wählen Sie eine Lieferadresse."
+ "selectAddressFirst": "Bitte wählen Sie eine Lieferadresse.",
+ "cancelOrder": "Bestellung stornieren",
+ "cancelOrderConfirm": "Noch nicht vorbereitete Artikel werden storniert und Ihrem Wallet gutgeschrieben. Fortfahren?",
+ "orderCancelledRefunded": "Die Bestellung wurde storniert und Ihrem Wallet erstattet."
 }

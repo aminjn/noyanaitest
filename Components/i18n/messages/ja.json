@@ -2105,5 +2105,8 @@
  "orgNationalId": "施設の国家識別番号",
  "receiverPhone": "受取人の電話番号",
  "postalCode": "郵便番号",
- "selectAddressFirst": "お届け先の住所を選択してください。"
+ "selectAddressFirst": "お届け先の住所を選択してください。",
+ "cancelOrder": "注文をキャンセル",
+ "cancelOrderConfirm": "まだ準備されていない商品はキャンセルされ、ウォレットに返金されます。続けますか？",
+ "orderCancelledRefunded": "注文はキャンセルされ、ウォレットに返金されました。"
 }
