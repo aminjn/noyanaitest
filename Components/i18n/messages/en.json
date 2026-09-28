@@ -1965,5 +1965,17 @@
  "csDiscounts": "Create discount codes for loyal patients or special occasions, with a usage limit and an expiry date.",
  "csDocuments": "Documents patients send you (lab results, imaging, prescriptions) will be collected here in one place. Until then, each patient's files are on their patient page and in chat.",
  "csToPatients": "Go to patients",
- "csToPackages": "Create a service package"
+ "csToPackages": "Create a service package",
+ "smInvite": "Invite a secretary",
+ "smRemove": "Remove from team",
+ "smRemoveAsk": "Remove this secretary from your team? They will lose access to your panel.",
+ "smCancelInvite": "Cancel invite",
+ "smCancelInviteAsk": "Cancel this invite? You can invite them again later.",
+ "smNoSecretary": "No secretaries yet. Use “Invite a secretary” to invite your assistant by phone number.",
+ "shoInvites": "New invites",
+ "shoInviteFrom": "${1} invited you as a secretary",
+ "shoAccept": "Accept",
+ "shoWorkplaces": "My workplaces",
+ "shoEnter": "Open panel",
+ "shoEmpty": "You're not a secretary anywhere yet. Ask the doctor or centre to invite ${1} from their Secretaries page; the invite will appear here."
 }

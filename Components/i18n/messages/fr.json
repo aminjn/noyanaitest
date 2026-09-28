@@ -1965,5 +1965,17 @@
  "csDiscounts": "Créez des codes de réduction pour vos patients fidèles ou pour des occasions, avec une limite d’utilisation et une date d’expiration.",
  "csDocuments": "Les documents envoyés par vos patients (analyses, imagerie, ordonnances) seront réunis ici. En attendant, les fichiers de chaque patient sont sur sa page et dans la discussion.",
  "csToPatients": "Voir les patients",
- "csToPackages": "Créer un forfait"
+ "csToPackages": "Créer un forfait",
+ "smInvite": "Inviter un secrétaire",
+ "smRemove": "Retirer de l’équipe",
+ "smRemoveAsk": "Retirer ce secrétaire de votre équipe ? Il n’aura plus accès à votre espace.",
+ "smCancelInvite": "Annuler l’invitation",
+ "smCancelInviteAsk": "Annuler cette invitation ? Vous pourrez réinviter plus tard.",
+ "smNoSecretary": "Aucun secrétaire pour l’instant. Utilisez « Inviter un secrétaire » pour inviter votre assistant par téléphone.",
+ "shoInvites": "Nouvelles invitations",
+ "shoInviteFrom": "${1} vous a invité comme secrétaire",
+ "shoAccept": "Accepter",
+ "shoWorkplaces": "Mes lieux de travail",
+ "shoEnter": "Ouvrir l’espace",
+ "shoEmpty": "Vous n’êtes encore secrétaire nulle part. Demandez au médecin ou au centre d’inviter ${1} depuis sa page Secrétaires ; l’invitation apparaîtra ici."
 }

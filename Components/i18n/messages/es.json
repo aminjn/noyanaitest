@@ -1965,5 +1965,17 @@
  "csDiscounts": "Crea códigos de descuento para pacientes fieles u ocasiones especiales, con límite de uso y fecha de caducidad.",
  "csDocuments": "Los documentos que te envían los pacientes (análisis, imágenes, recetas) se reunirán aquí. Mientras tanto, los archivos de cada paciente están en su página y en el chat.",
  "csToPatients": "Ir a pacientes",
- "csToPackages": "Crear un paquete"
+ "csToPackages": "Crear un paquete",
+ "smInvite": "Invitar a un secretario",
+ "smRemove": "Quitar del equipo",
+ "smRemoveAsk": "¿Quitar a este secretario de tu equipo? Perderá el acceso a tu panel.",
+ "smCancelInvite": "Cancelar invitación",
+ "smCancelInviteAsk": "¿Cancelar esta invitación? Podrás invitar de nuevo más tarde.",
+ "smNoSecretary": "Aún no hay secretarios. Usa «Invitar a un secretario» para invitar a tu asistente por teléfono.",
+ "shoInvites": "Invitaciones nuevas",
+ "shoInviteFrom": "${1} te invitó como secretario",
+ "shoAccept": "Aceptar",
+ "shoWorkplaces": "Mis lugares de trabajo",
+ "shoEnter": "Abrir panel",
+ "shoEmpty": "Aún no eres secretario en ningún lugar. Pide al médico o centro que invite a ${1} desde su página de secretarios; la invitación aparecerá aquí."
 }

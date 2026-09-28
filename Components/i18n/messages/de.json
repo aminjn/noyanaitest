@@ -1965,5 +1965,17 @@
  "csDiscounts": "Erstellen Sie Rabattcodes für treue Patienten oder besondere Anlässe, mit Nutzungslimit und Ablaufdatum.",
  "csDocuments": "Von Patienten gesendete Unterlagen (Laborwerte, Bildgebung, Rezepte) werden hier gesammelt. Bis dahin finden Sie die Dateien auf der Seite des Patienten und im Chat.",
  "csToPatients": "Zu den Patienten",
- "csToPackages": "Leistungspaket erstellen"
+ "csToPackages": "Leistungspaket erstellen",
+ "smInvite": "Sekretär einladen",
+ "smRemove": "Aus dem Team entfernen",
+ "smRemoveAsk": "Diesen Sekretär aus dem Team entfernen? Der Zugriff auf Ihr Panel entfällt.",
+ "smCancelInvite": "Einladung zurückziehen",
+ "smCancelInviteAsk": "Diese Einladung zurückziehen? Sie können später erneut einladen.",
+ "smNoSecretary": "Noch keine Sekretäre. Laden Sie Ihre Assistenz über „Sekretär einladen“ per Telefonnummer ein.",
+ "shoInvites": "Neue Einladungen",
+ "shoInviteFrom": "${1} hat Sie als Sekretär eingeladen",
+ "shoAccept": "Annehmen",
+ "shoWorkplaces": "Meine Arbeitsstellen",
+ "shoEnter": "Panel öffnen",
+ "shoEmpty": "Sie sind noch nirgends Sekretär. Bitten Sie die Praxis, ${1} über die Seite „Sekretäre“ einzuladen; die Einladung erscheint hier."
 }

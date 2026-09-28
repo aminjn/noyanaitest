@@ -11,7 +11,7 @@ import {
   SecretaryNodePath,
 } from "../_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
 
-const nameToPanelPath: Record<NodeWithAcl, string> = {
+export const nameToPanelPath: Record<NodeWithAcl, string> = {
   clinic: "clinicpanel",
   doctor: "doctorpanel",
   insurance: "insurancepanel",

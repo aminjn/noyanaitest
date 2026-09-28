@@ -1965,5 +1965,17 @@
  "csDiscounts": "Sadık hastalar veya özel günler için kullanım sınırı ve son kullanma tarihi olan indirim kodları oluşturun.",
  "csDocuments": "Hastaların gönderdiği belgeler (tahlil, görüntüleme, reçete) burada tek yerde toplanacak. O zamana kadar her hastanın dosyaları kendi sayfasında ve sohbette.",
  "csToPatients": "Hastalara git",
- "csToPackages": "Hizmet paketi oluştur"
+ "csToPackages": "Hizmet paketi oluştur",
+ "smInvite": "Sekreter davet et",
+ "smRemove": "Ekipten çıkar",
+ "smRemoveAsk": "Bu sekreter ekibinizden çıkarılsın mı? Panelinize erişimi kalmayacak.",
+ "smCancelInvite": "Daveti iptal et",
+ "smCancelInviteAsk": "Bu davet iptal edilsin mi? Daha sonra tekrar davet edebilirsiniz.",
+ "smNoSecretary": "Henüz sekreter yok. Asistanınızı telefon numarasıyla davet etmek için «Sekreter davet et»i kullanın.",
+ "shoInvites": "Yeni davetler",
+ "shoInviteFrom": "${1} sizi sekreter olarak davet etti",
+ "shoAccept": "Kabul et",
+ "shoWorkplaces": "Çalıştığım yerler",
+ "shoEnter": "Panele gir",
+ "shoEmpty": "Henüz hiçbir yerde sekreter değilsiniz. Doktordan veya merkezden Sekreterler sayfasından ${1} numarasını davet etmesini isteyin; davet burada görünür."
 }

@@ -43,7 +43,7 @@ const EditSecretaryRequestPopup = ({
         }}
         onCancel={() => closePopup()}
         renderer={{
-          displayName: { type: "text", title: getContent("phone") },
+          displayName: { type: "text", title: getContent("displayName") },
           acl: {
             type: "nodes",
             path: `${API}/acl/${name}/acl`,

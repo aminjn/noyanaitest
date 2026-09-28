@@ -1965,5 +1965,17 @@
  "csDiscounts": "为老患者或特殊场合创建优惠码，可设置使用次数和有效期。",
  "csDocuments": "患者发送的资料（化验、影像、处方）将集中在这里。在此之前，可在患者页面和聊天中查看。",
  "csToPatients": "前往患者",
- "csToPackages": "创建服务套餐"
+ "csToPackages": "创建服务套餐",
+ "smInvite": "邀请秘书",
+ "smRemove": "从团队移除",
+ "smRemoveAsk": "将此秘书移出团队？其将无法访问您的面板。",
+ "smCancelInvite": "取消邀请",
+ "smCancelInviteAsk": "取消此邀请？之后可以再次邀请。",
+ "smNoSecretary": "还没有秘书。使用“邀请秘书”通过手机号邀请您的助理。",
+ "shoInvites": "新邀请",
+ "shoInviteFrom": "${1} 邀请您担任秘书",
+ "shoAccept": "接受",
+ "shoWorkplaces": "我的工作单位",
+ "shoEnter": "进入面板",
+ "shoEmpty": "您还不是任何地方的秘书。请医生或机构在“秘书”页面邀请 ${1}，邀请会显示在这里。"
 }
