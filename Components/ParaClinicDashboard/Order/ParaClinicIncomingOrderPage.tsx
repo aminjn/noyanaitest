@@ -189,7 +189,7 @@ const ParaClinicIncomingOrderPage = () => {
                       </IconButton>
                       <IconButton
                         variant="Danger"
-                        title={getContent("cancel")}
+                        title={getContent("ioMarkCancel")}
                         onClick={() =>
                           setPopup(
                             "CancelIncomingOrderItem",

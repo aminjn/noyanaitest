@@ -2721,6 +2721,12 @@ export const contentNamespaces = {
     "cancel",
     "sureFulfillOrderItem",
     "sureCancelOrderItem",
+    "deliveryAddress",
+    "receiverPhone",
+    "postalCode",
+    "locationOnMap",
+    "navigate",
+    "ioMarkCancel",
   ],
 
   // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,
@@ -3505,6 +3511,7 @@ export const contentNamespaces = {
     "orderItemStatusPending",
     "orderItemStatusFulfilled",
     "orderItemStatusCancelled",
+    "ioMarkCancel",
   ],
 
   // app/paraClinicPanel/profile/page.tsx (ParaClinicManageProfilePage,
@@ -3874,6 +3881,9 @@ export const contentNamespaces = {
     "tests",
     "toman",
     "totalPrice",
+    "cancelOrder",
+    "cancelOrderConfirm",
+    "orderCancelledRefunded",
   ],
   // Shared cartable node-page pieces (Components/Product/Cartable/*, CartActions, PlusBox, ProductCartInfos, UpgradeProBox) used by /product/[slug], /productPackage/[slug], /service/[slug], /servicePackage/[slug]. Includes the cartTitle keys passed in (seller/provider) and the ProductCartInfos ternary keys.
   productCartable: [

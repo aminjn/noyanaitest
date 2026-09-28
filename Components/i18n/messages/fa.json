@@ -2127,5 +2127,8 @@
  "orgNationalId": "شناسه ملی مجموعه",
  "receiverPhone": "شماره تماس گیرنده",
  "postalCode": "کد پستی",
- "selectAddressFirst": "لطفاً آدرس تحویل را انتخاب کنید."
+ "selectAddressFirst": "لطفاً آدرس تحویل را انتخاب کنید.",
+ "cancelOrder": "لغو سفارش",
+ "cancelOrderConfirm": "اقلامی که هنوز آماده نشده‌اند لغو می‌شوند و مبلغشان به کیف پول شما برمی‌گردد. ادامه می‌دهید؟",
+ "orderCancelledRefunded": "سفارش لغو شد و مبلغ به کیف پول شما برگشت."
 }

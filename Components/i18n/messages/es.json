@@ -2105,5 +2105,8 @@
  "orgNationalId": "Identificador nacional de la entidad",
  "receiverPhone": "Teléfono del destinatario",
  "postalCode": "Código postal",
- "selectAddressFirst": "Elige una dirección de entrega."
+ "selectAddressFirst": "Elige una dirección de entrega.",
+ "cancelOrder": "Cancelar pedido",
+ "cancelOrderConfirm": "Los artículos aún no preparados se cancelarán y se reembolsarán a tu monedero. ¿Continuar?",
+ "orderCancelledRefunded": "El pedido se canceló y se reembolsó a tu monedero."
 }

@@ -2105,5 +2105,8 @@
  "orgNationalId": "Identifiant national de l'établissement",
  "receiverPhone": "Téléphone du destinataire",
  "postalCode": "Code postal",
- "selectAddressFirst": "Veuillez choisir une adresse de livraison."
+ "selectAddressFirst": "Veuillez choisir une adresse de livraison.",
+ "cancelOrder": "Annuler la commande",
+ "cancelOrderConfirm": "Les articles pas encore préparés seront annulés et remboursés sur votre portefeuille. Continuer ?",
+ "orderCancelledRefunded": "La commande a été annulée et remboursée sur votre portefeuille."
 }

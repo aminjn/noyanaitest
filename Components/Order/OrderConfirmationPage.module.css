@@ -161,3 +161,8 @@
 .action.action {
   width: 100%;
 }
+
+.itemStatus {
+  display: flex;
+  margin-block-start: 0.25rem;
+}

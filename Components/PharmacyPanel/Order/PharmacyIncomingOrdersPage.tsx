@@ -48,6 +48,14 @@ export interface IIncomingOrder extends MongoDoc {
   products: IIncomingOrderProductItem[];
   productPackages: IIncomingOrderPackageItem[];
   subtotal: number;
+  // where to deliver (only the delivery fields of the buyer's address)
+  address?: {
+    displayName?: string;
+    address?: string;
+    receiverPhone?: string;
+    postalCode?: string;
+    location?: { coordinates?: number[] };
+  };
 }
 
 const buyerLabel = (order: IIncomingOrder) =>
