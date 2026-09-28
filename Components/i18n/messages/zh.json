@@ -1944,5 +1944,14 @@
  "tbSearch": "搜索所有列...",
  "tbCount": "${1} 项",
  "tbCountOf": "${2} 项中的 ${1} 项",
- "tbEmpty": "暂无内容。"
+ "tbEmpty": "暂无内容。",
+ "ioTodo": "待处理",
+ "ioAwaiting": "待付款",
+ "ioDone": "已完成",
+ "ioMarkDone": "标记完成",
+ "ioMarkCancel": "取消",
+ "ioConfirm": "确认",
+ "ioProgress": "已完成 ${1}/${2}",
+ "ioEmpty": "这里没有订单。",
+ "ioAwaitingNote": "患者付款后即可处理这些项目。"
 }

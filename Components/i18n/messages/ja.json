@@ -1944,5 +1944,14 @@
  "tbSearch": "すべての列を検索...",
  "tbCount": "${1} 件",
  "tbCountOf": "${2} 件中 ${1} 件",
- "tbEmpty": "表示する項目はありません。"
+ "tbEmpty": "表示する項目はありません。",
+ "ioTodo": "対応待ち",
+ "ioAwaiting": "支払い待ち",
+ "ioDone": "完了",
+ "ioMarkDone": "完了にする",
+ "ioMarkCancel": "取り消す",
+ "ioConfirm": "確認",
+ "ioProgress": "${2} 件中 ${1} 件完了",
+ "ioEmpty": "ここに注文はありません。",
+ "ioAwaitingNote": "患者の支払い後に対応できます。"
 }

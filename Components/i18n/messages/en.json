@@ -1944,5 +1944,14 @@
  "tbSearch": "Search all columns...",
  "tbCount": "${1} items",
  "tbCountOf": "${1} of ${2} items",
- "tbEmpty": "Nothing to show yet."
+ "tbEmpty": "Nothing to show yet.",
+ "ioTodo": "To do",
+ "ioAwaiting": "Awaiting payment",
+ "ioDone": "Done",
+ "ioMarkDone": "Mark done",
+ "ioMarkCancel": "Cancel item",
+ "ioConfirm": "Confirm",
+ "ioProgress": "${1} of ${2} items done",
+ "ioEmpty": "No orders here.",
+ "ioAwaitingNote": "Once the patient pays, you can fulfil the items."
 }

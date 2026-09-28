@@ -1944,5 +1944,14 @@
  "tbSearch": "Buscar en todas las columnas...",
  "tbCount": "${1} elementos",
  "tbCountOf": "${1} de ${2} elementos",
- "tbEmpty": "No hay nada que mostrar."
+ "tbEmpty": "No hay nada que mostrar.",
+ "ioTodo": "Pendientes",
+ "ioAwaiting": "Pago pendiente",
+ "ioDone": "Completadas",
+ "ioMarkDone": "Hecho",
+ "ioMarkCancel": "Cancelar",
+ "ioConfirm": "Confirmar",
+ "ioProgress": "${1} de ${2} hechos",
+ "ioEmpty": "No hay pedidos aquí.",
+ "ioAwaitingNote": "Cuando el paciente pague, podrás completar los elementos."
 }
