@@ -2110,5 +2110,9 @@
  "cancelOrderConfirm": "尚未准备的商品将被取消并退款至您的钱包。是否继续？",
  "orderCancelledRefunded": "订单已取消，款项已退回您的钱包。",
  "pharmacyProductsTitle": "从这家药店订购",
- "pharmacyNoProducts": "这家药店暂未在线销售商品。"
+ "pharmacyNoProducts": "这家药店暂未在线销售商品。",
+ "pfNote": "每个订单项送达后计入您的钱包。金额单位为托曼。",
+ "pfUpcoming": "待准备",
+ "pfUpcomingNote": "来自 ${1} 个已付款订单",
+ "pfOrderPayout": "订单销售 ${1}"
 }

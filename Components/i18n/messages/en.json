@@ -2110,5 +2110,9 @@
  "cancelOrderConfirm": "Items not yet prepared will be cancelled and refunded to your wallet. Continue?",
  "orderCancelledRefunded": "The order was cancelled and refunded to your wallet.",
  "pharmacyProductsTitle": "Order from this pharmacy",
- "pharmacyNoProducts": "This pharmacy has nothing for sale online yet."
+ "pharmacyNoProducts": "This pharmacy has nothing for sale online yet.",
+ "pfNote": "Each order line is credited to your wallet once it is delivered. Amounts are in toman.",
+ "pfUpcoming": "Waiting to be prepared",
+ "pfUpcomingNote": "from ${1} paid orders",
+ "pfOrderPayout": "Order sale, ${1}"
 }

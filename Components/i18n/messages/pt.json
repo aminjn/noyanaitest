@@ -2110,5 +2110,9 @@
  "cancelOrderConfirm": "Os itens ainda não preparados serão cancelados e reembolsados na sua carteira. Continuar?",
  "orderCancelledRefunded": "O pedido foi cancelado e reembolsado na sua carteira.",
  "pharmacyProductsTitle": "Peça nesta farmácia",
- "pharmacyNoProducts": "Esta farmácia ainda não vende nada online."
+ "pharmacyNoProducts": "Esta farmácia ainda não vende nada online.",
+ "pfNote": "Cada item do pedido é creditado na sua carteira após a entrega. Valores em tomans.",
+ "pfUpcoming": "Aguardando preparo",
+ "pfUpcomingNote": "de ${1} pedidos pagos",
+ "pfOrderPayout": "Venda do pedido ${1}"
 }

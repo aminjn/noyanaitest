@@ -2110,5 +2110,9 @@
  "cancelOrderConfirm": "Les articles pas encore préparés seront annulés et remboursés sur votre portefeuille. Continuer ?",
  "orderCancelledRefunded": "La commande a été annulée et remboursée sur votre portefeuille.",
  "pharmacyProductsTitle": "Commander dans cette pharmacie",
- "pharmacyNoProducts": "Cette pharmacie ne vend encore rien en ligne."
+ "pharmacyNoProducts": "Cette pharmacie ne vend encore rien en ligne.",
+ "pfNote": "Chaque ligne de commande est créditée sur votre portefeuille après livraison. Montants en tomans.",
+ "pfUpcoming": "En attente de préparation",
+ "pfUpcomingNote": "sur ${1} commandes payées",
+ "pfOrderPayout": "Vente de commande ${1}"
 }
