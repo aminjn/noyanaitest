@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "Los pacientes ya pueden reservar contigo. Un perfil completo atrae a más pacientes.",
  "dpdSugProfile": "${1} pasos para un perfil completo",
  "dpdSugProfileMeta": "Ya se puede reservar contigo; un perfil completo genera confianza",
- "checkInOpensHint": "El registro de llegada del paciente se abre una hora antes de la cita."
+ "checkInOpensHint": "El registro de llegada del paciente se abre una hora antes de la cita.",
+ "cancelBooking": "Cancelar la cita",
+ "cancelBookingConfirmPatient": "Se devolverán ${1} tomanes a tu monedero y este horario quedará libre para otros pacientes.",
+ "cancelBookingConfirmDoctor": "El importe completo vuelve al monedero del paciente y se le avisa de la cancelación.",
+ "cancelBookingYes": "Sí, cancelar",
+ "cancelBookingKeep": "No, mantenerla",
+ "cancelReasonOptional": "Motivo (opcional)",
+ "cancelClosedHint": "La cancelación en línea es posible hasta 24 horas antes; para cambios ahora, contacta con la consulta.",
+ "cancelledRefunded": "La cita se canceló y su importe volvió al monedero del paciente."
 }

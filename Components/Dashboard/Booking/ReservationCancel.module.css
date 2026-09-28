@@ -1,0 +1,52 @@
+.popup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 28rem;
+}
+
+.text {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--gray12);
+  text-align: start;
+}
+
+.reason {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--gray10);
+}
+
+.reason textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--glassLine);
+  border-radius: 0.75rem;
+  background: var(--glass);
+  color: var(--gray13);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.reason textarea:focus {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hint,
+.done {
+  font-size: 0.8125rem;
+  color: var(--gray10);
+  text-align: start;
+}

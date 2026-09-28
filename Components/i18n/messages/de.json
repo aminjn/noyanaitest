@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "Patienten können jetzt bei Ihnen buchen. Ein vollständiges Profil zieht mehr Patienten an.",
  "dpdSugProfile": "${1} Schritte zum vollständigen Profil",
  "dpdSugProfileMeta": "Sie sind buchbar; ein vollständiges Profil stärkt das Vertrauen",
- "checkInOpensHint": "Der Patienten-Check-in ist ab einer Stunde vor dem Termin möglich."
+ "checkInOpensHint": "Der Patienten-Check-in ist ab einer Stunde vor dem Termin möglich.",
+ "cancelBooking": "Termin stornieren",
+ "cancelBookingConfirmPatient": "${1} Toman werden Ihrem Guthaben erstattet und der Termin wird für andere Patienten frei.",
+ "cancelBookingConfirmDoctor": "Der volle Betrag geht an das Guthaben des Patienten zurück und er wird benachrichtigt.",
+ "cancelBookingYes": "Ja, stornieren",
+ "cancelBookingKeep": "Nein, behalten",
+ "cancelReasonOptional": "Grund (optional)",
+ "cancelClosedHint": "Online-Stornierung ist bis 24 Stunden vorher möglich; für Änderungen jetzt die Praxis kontaktieren.",
+ "cancelledRefunded": "Der Termin wurde storniert und der Betrag dem Guthaben des Patienten erstattet."
 }

@@ -19,6 +19,7 @@ import ReservationTimeline from "@/Components/Dashboard/Booking/ReservationTimel
 import ReservationJoinButton from "@/Components/Dashboard/Booking/ReservationJoinButton";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import DoctorVisitPanel from "@/Components/Visit/DoctorVisitPanel";
+import ReservationCancel from "@/Components/Dashboard/Booking/ReservationCancel";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
@@ -168,6 +169,12 @@ const DoctorManageBookingPage = () => {
                   {getContent("checkInOpensHint")}
                 </span>
               )}
+              <ReservationCancel
+                side="doctor"
+                reservation={data}
+                ns={NS}
+                onDone={() => mutate()}
+              />
               {data.sessionType === "inPerson" && !!data.patientPresentAt && (
                 <span className={classes.present}>
                   <CheckCircleIcon />
@@ -178,7 +185,10 @@ const DoctorManageBookingPage = () => {
             </div>
           </div>
 
-          <DoctorVisitPanel reservationId={data._id} />
+          {/* no note / intake for a visit that was cancelled */}
+          {data.status !== "cancelled" && (
+            <DoctorVisitPanel reservationId={data._id} />
+          )}
 
           <div className={classes.card}>
             <span className={classes.title}>

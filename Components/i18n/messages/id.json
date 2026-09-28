@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "Pasien kini dapat membuat janji dengan Anda. Profil yang lengkap menarik lebih banyak pasien.",
  "dpdSugProfile": "${1} langkah menuju profil lengkap",
  "dpdSugProfileMeta": "Anda sudah bisa dipesan; profil lengkap meningkatkan kepercayaan pasien",
- "checkInOpensHint": "Check-in pasien dibuka satu jam sebelum janji temu."
+ "checkInOpensHint": "Check-in pasien dibuka satu jam sebelum janji temu.",
+ "cancelBooking": "Batalkan janji temu",
+ "cancelBookingConfirmPatient": "${1} toman akan dikembalikan ke dompet Anda dan waktu ini akan terbuka untuk pasien lain.",
+ "cancelBookingConfirmDoctor": "Seluruh biaya dikembalikan ke dompet pasien dan pasien diberi tahu tentang pembatalan.",
+ "cancelBookingYes": "Ya, batalkan",
+ "cancelBookingKeep": "Tidak, pertahankan",
+ "cancelReasonOptional": "Alasan (opsional)",
+ "cancelClosedHint": "Pembatalan online bisa hingga 24 jam sebelumnya; untuk perubahan sekarang, hubungi klinik.",
+ "cancelledRefunded": "Janji temu dibatalkan dan biayanya dikembalikan ke dompet pasien."
 }

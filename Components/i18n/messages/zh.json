@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "患者现在可以向您预约了。完整的资料能吸引更多患者。",
  "dpdSugProfile": "还差 ${1} 步完善资料",
  "dpdSugProfileMeta": "您已可被预约；完整的资料更能赢得患者信任",
- "checkInOpensHint": "预约开始前一小时起可为患者签到。"
+ "checkInOpensHint": "预约开始前一小时起可为患者签到。",
+ "cancelBooking": "取消预约",
+ "cancelBookingConfirmPatient": "${1} 托曼将退回您的钱包，该时段将开放给其他患者。",
+ "cancelBookingConfirmDoctor": "全部金额将退回患者钱包，并通知其预约已取消。",
+ "cancelBookingYes": "是，取消",
+ "cancelBookingKeep": "不，保留",
+ "cancelReasonOptional": "原因（可选）",
+ "cancelClosedHint": "可在预约前 24 小时之前在线取消；现在如需更改，请联系诊所。",
+ "cancelledRefunded": "预约已取消，费用已退回患者钱包。"
 }

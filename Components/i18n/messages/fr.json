@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "Les patients peuvent désormais prendre rendez-vous avec vous. Un profil complet en attire davantage.",
  "dpdSugProfile": "${1} étapes pour un profil complet",
  "dpdSugProfileMeta": "Vous êtes réservable ; un profil complet renforce la confiance",
- "checkInOpensHint": "L'enregistrement du patient ouvre une heure avant le rendez-vous."
+ "checkInOpensHint": "L'enregistrement du patient ouvre une heure avant le rendez-vous.",
+ "cancelBooking": "Annuler le rendez-vous",
+ "cancelBookingConfirmPatient": "${1} tomans seront remboursés sur votre portefeuille et ce créneau sera libéré pour d'autres patients.",
+ "cancelBookingConfirmDoctor": "Le montant total est remboursé sur le portefeuille du patient, qui est informé de l'annulation.",
+ "cancelBookingYes": "Oui, annuler",
+ "cancelBookingKeep": "Non, le garder",
+ "cancelReasonOptional": "Motif (facultatif)",
+ "cancelClosedHint": "L'annulation en ligne est possible jusqu'à 24 heures avant ; pour un changement maintenant, contactez le cabinet.",
+ "cancelledRefunded": "Le rendez-vous a été annulé et son montant remboursé sur le portefeuille du patient."
 }

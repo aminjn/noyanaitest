@@ -117,6 +117,12 @@ export interface IReservation<
   doctorPresentAt?: Date;
   noShowParty?: ReservationParty;
   finalizedAt?: Date;
+  subtotal?: number;
+  tax?: number;
+  total?: number;
+  cancelledAt?: Date;
+  cancelledBy?: ReservationParty;
+  cancelReason?: string;
   createdAt: Date;
 }
 
