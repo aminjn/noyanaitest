@@ -11,3 +11,99 @@
   font-weight: 500;
   font-size: 1rem;
 }
+
+/* react-select themed with the Aurora tokens so it follows light/dark */
+.main :global(.nsel__control) {
+  min-height: 2.875rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--gray5);
+  background-color: var(--white);
+  box-shadow: none;
+  transition: border-color var(--transTime), box-shadow var(--transTime);
+}
+
+.main :global(.nsel__control:hover) {
+  border-color: var(--gray7);
+}
+
+.main :global(.nsel__control--is-focused) {
+  border-color: var(--primary5);
+  box-shadow: var(--focusRing);
+}
+
+.main :global(.nsel__control--is-disabled) {
+  opacity: 0.8;
+}
+
+.main :global(.nsel__value-container) {
+  padding-inline: 0.75rem;
+}
+
+.main :global(.nsel__single-value),
+.main :global(.nsel__input-container) {
+  color: var(--gray13);
+}
+
+.main :global(.nsel__placeholder) {
+  color: var(--gray8);
+}
+
+.main :global(.nsel__indicator-separator) {
+  background-color: var(--gray5);
+}
+
+.main :global(.nsel__indicator) {
+  color: var(--gray8);
+}
+
+.main :global(.nsel__menu) {
+  z-index: 20;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--glassLine);
+  background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+  box-shadow: var(--glassShadow);
+}
+
+.main :global(.nsel__option) {
+  color: var(--gray12);
+  background: transparent;
+  cursor: pointer;
+}
+
+.main :global(.nsel__option--is-focused) {
+  background: var(--aiSoft);
+  color: var(--aiText);
+}
+
+.main :global(.nsel__option--is-selected) {
+  background-color: var(--gradAccentSolid);
+  color: var(--onColor);
+}
+
+.main :global(.nsel__multi-value) {
+  border-radius: 999px;
+  background: var(--aiSoft);
+}
+
+.main :global(.nsel__multi-value__label) {
+  padding-inline: 0.625rem 0.25rem;
+  color: var(--aiText);
+  font-weight: 700;
+}
+
+.main :global(.nsel__multi-value__remove) {
+  border-radius: 999px;
+  color: var(--aiText);
+}
+
+.main :global(.nsel__multi-value__remove:hover) {
+  background: var(--error);
+  color: var(--onColor);
+}
+
+.main :global(.nsel__menu-notice) {
+  color: var(--gray9);
+}

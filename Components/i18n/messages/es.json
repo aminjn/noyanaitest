@@ -1927,5 +1927,18 @@
  "spWaiting": "Esperando a soporte",
  "spYou": "Tú",
  "spMessages": "${1} mensajes",
- "spEmpty": "No tienes tickets. Si tienes una pregunta o un problema, elige uno de los temas de arriba."
+ "spEmpty": "No tienes tickets. Si tienes una pregunta o un problema, elige uno de los temas de arriba.",
+ "ppStrength": "Solidez del perfil",
+ "ppStrengthHint": "Los pacientes confían más en un perfil completo y reservan con más facilidad.",
+ "ppDone": "Tu perfil está completo.",
+ "ppViewPublic": "Ver página pública",
+ "ppItemAvatar": "Foto de perfil",
+ "ppItemSpeciality": "Especialidad principal",
+ "ppItemIntro": "Presentación (mín. 80 caracteres)",
+ "ppItemServices": "Servicios",
+ "ppItemContact": "Teléfono y dirección del consultorio",
+ "ppItemLocation": "Ubicación en el mapa",
+ "ppItemGallery": "Galería de fotos",
+ "ppItemSocial": "Redes sociales",
+ "ppItemFaq": "Preguntas frecuentes"
 }

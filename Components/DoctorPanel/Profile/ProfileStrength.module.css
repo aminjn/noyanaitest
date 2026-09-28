@@ -1,0 +1,133 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ring {
+  --p: 0;
+  width: 4rem;
+  height: 4rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(var(--gradAccentSolid) calc(var(--p) * 1%), var(--line) 0);
+}
+
+.ring span {
+  width: 3.125rem;
+  height: 3.125rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--gray13);
+  font-size: 0.875rem;
+  font-weight: 900;
+}
+
+.text {
+  flex: 1;
+  min-width: 12rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  line-height: 1.7;
+}
+
+.text strong {
+  font-size: 1.0625rem;
+  font-weight: 900;
+  color: var(--gray13);
+}
+
+.text span {
+  font-size: 0.8125rem;
+  color: var(--gray10);
+}
+
+.public {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  background: var(--glassStrong);
+  border: 1px solid var(--line);
+  color: var(--gray12);
+  font-size: 0.8125rem;
+  font-weight: 800;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: 999px;
+  border: 1px dashed var(--aiLine);
+  background: var(--aiSoft);
+  color: var(--aiText);
+  font-size: 0.8125rem;
+  font-weight: 800;
+}
+
+.item:not(:disabled):hover {
+  border-style: solid;
+}
+
+.check {
+  width: 1.125rem;
+  height: 1.125rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+
+.done {
+  border: 1px solid transparent;
+  background: var(--successT1);
+  color: var(--successS3);
+  cursor: default;
+}
+
+.done .check {
+  background: var(--successS3);
+  border-color: var(--successS3);
+  color: var(--successT1);
+}
+
+@media (max-width: 40rem) {
+  .main {
+    padding: 1rem;
+  }
+
+  .public {
+    width: 100%;
+    justify-content: center;
+  }
+}

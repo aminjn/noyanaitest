@@ -1927,5 +1927,18 @@
  "spWaiting": "En attente du support",
  "spYou": "Vous",
  "spMessages": "${1} messages",
- "spEmpty": "Vous n’avez aucun ticket. Pour une question ou un problème, choisissez un sujet ci-dessus."
+ "spEmpty": "Vous n’avez aucun ticket. Pour une question ou un problème, choisissez un sujet ci-dessus.",
+ "ppStrength": "Force du profil",
+ "ppStrengthHint": "Les patients font davantage confiance à un profil complet et réservent plus facilement.",
+ "ppDone": "Votre profil est complet.",
+ "ppViewPublic": "Voir la page publique",
+ "ppItemAvatar": "Photo de profil",
+ "ppItemSpeciality": "Spécialité principale",
+ "ppItemIntro": "Présentation (80 caractères min.)",
+ "ppItemServices": "Services",
+ "ppItemContact": "Téléphone et adresse du cabinet",
+ "ppItemLocation": "Emplacement sur la carte",
+ "ppItemGallery": "Galerie photos",
+ "ppItemSocial": "Réseaux sociaux",
+ "ppItemFaq": "FAQ"
 }

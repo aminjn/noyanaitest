@@ -2079,6 +2079,19 @@ const contentKeys = [
   "spYou",
   "spMessages",
   "spEmpty",
+  "ppStrength",
+  "ppStrengthHint",
+  "ppDone",
+  "ppViewPublic",
+  "ppItemAvatar",
+  "ppItemSpeciality",
+  "ppItemIntro",
+  "ppItemServices",
+  "ppItemContact",
+  "ppItemLocation",
+  "ppItemGallery",
+  "ppItemSocial",
+  "ppItemFaq",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

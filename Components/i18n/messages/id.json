@@ -1927,5 +1927,18 @@
  "spWaiting": "Menunggu dukungan",
  "spYou": "Anda",
  "spMessages": "${1} pesan",
- "spEmpty": "Anda tidak punya tiket. Jika ada pertanyaan atau masalah, pilih salah satu topik di atas."
+ "spEmpty": "Anda tidak punya tiket. Jika ada pertanyaan atau masalah, pilih salah satu topik di atas.",
+ "ppStrength": "Kekuatan profil",
+ "ppStrengthHint": "Pasien lebih percaya pada profil yang lengkap dan lebih mudah membuat janji.",
+ "ppDone": "Profil Anda sudah lengkap.",
+ "ppViewPublic": "Lihat halaman publik",
+ "ppItemAvatar": "Foto profil",
+ "ppItemSpeciality": "Spesialisasi utama",
+ "ppItemIntro": "Perkenalan (min. 80 karakter)",
+ "ppItemServices": "Layanan",
+ "ppItemContact": "Telepon dan alamat praktik",
+ "ppItemLocation": "Lokasi di peta",
+ "ppItemGallery": "Galeri foto",
+ "ppItemSocial": "Media sosial",
+ "ppItemFaq": "FAQ"
 }

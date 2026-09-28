@@ -1927,5 +1927,18 @@
  "spWaiting": "Aguardando o suporte",
  "spYou": "Você",
  "spMessages": "${1} mensagens",
- "spEmpty": "Você não tem chamados. Se tiver uma dúvida ou problema, escolha um dos assuntos acima."
+ "spEmpty": "Você não tem chamados. Se tiver uma dúvida ou problema, escolha um dos assuntos acima.",
+ "ppStrength": "Força do perfil",
+ "ppStrengthHint": "Os pacientes confiam mais em um perfil completo e agendam com mais facilidade.",
+ "ppDone": "Seu perfil está completo.",
+ "ppViewPublic": "Ver página pública",
+ "ppItemAvatar": "Foto do perfil",
+ "ppItemSpeciality": "Especialidade principal",
+ "ppItemIntro": "Apresentação (mín. 80 caracteres)",
+ "ppItemServices": "Serviços",
+ "ppItemContact": "Telefone e endereço do consultório",
+ "ppItemLocation": "Localização no mapa",
+ "ppItemGallery": "Galeria de fotos",
+ "ppItemSocial": "Redes sociais",
+ "ppItemFaq": "Perguntas frequentes"
 }

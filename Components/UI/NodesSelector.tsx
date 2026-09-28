@@ -56,6 +56,7 @@ const NodesSelector = <TMulti extends boolean = false>({
     <div className={`${classes.main} ${className}`} style={style}>
       {!!title && <span className={classes.title}>{title}</span>}
       <Select
+        classNamePrefix="nsel"
         isClearable={clearable}
         isDisabled={readOnly}
         isLoading={!data}
