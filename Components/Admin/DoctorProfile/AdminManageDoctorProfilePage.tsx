@@ -1,4 +1,6 @@
 "use client";
+import EntityOverview from "../UI/EntityOverview";
+import useUser from "@/Components/Hooks/useUser";
 import { useParams } from "next/navigation";
 import classes from "./AdminManageDoctorProfilePage.module.css";
 import useSWR from "swr";
@@ -30,6 +32,8 @@ import CartIcon from "@/Components/Icons/CartIcon";
 
 const AdminManageDoctorProfilePage = () => {
   const params = useParams<{ nodeId: string }>();
+  // Entity 360 tab (its endpoint is full-admin only)
+  const isAdmin = useUser(true).user?.role === "admin";
   const { data, error, mutate } = useSWR<
     IDoctorProfile<{
       PhoneConsultSettingsPopulated: Record<never, never>;
@@ -56,6 +60,21 @@ const AdminManageDoctorProfilePage = () => {
         >
           <TabSystem
             items={[
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: "نمای کلی",
+                      content: (
+                        <EntityOverview
+                          kind="doctorprofile"
+                          nodeId={params?.nodeId || ""}
+                        />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 id: "Info",
                 title: "جزئیات",

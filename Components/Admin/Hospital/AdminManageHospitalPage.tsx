@@ -1,4 +1,7 @@
 "use client";
+import EntityOverview from "../UI/EntityOverview";
+import useUser from "@/Components/Hooks/useUser";
+import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import { useParams } from "next/navigation";
 import useSWR, { mutate } from "swr";
@@ -228,6 +231,8 @@ const HospitalLocationManager = ({
 
 const AdminManageHospitalPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
+  // Entity 360 tab (its endpoint is full-admin only)
+  const isAdmin = useUser(true).user?.role === "admin";
   const { data, error, mutate } = useSWR<
     IHospital<{ User: Record<never, never> }>
   >(`${API}/auto/hospital/${nodeId}`, (url: string) =>
@@ -241,6 +246,18 @@ const AdminManageHospitalPage = () => {
           <TabSystem
             name="AdminManageHospital"
             items={[
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: "نمای کلی",
+                      content: (
+                        <EntityOverview kind="hospital" nodeId={nodeId} />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 title: "اطلاعات",
                 content: (

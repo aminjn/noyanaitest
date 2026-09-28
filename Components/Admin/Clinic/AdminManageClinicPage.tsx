@@ -1,4 +1,7 @@
 "use client";
+import EntityOverview from "../UI/EntityOverview";
+import useUser from "@/Components/Hooks/useUser";
+import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import useSWR from "swr";
 import classes from "./AdminManageClinicPage.module.css";
@@ -67,6 +70,8 @@ const ClinicLocationManager = ({
 
 const AdminManageClinicPage = () => {
   const params = useParams<{ nodeId: string }>();
+  // Entity 360 tab (its endpoint is full-admin only)
+  const isAdmin = useUser(true).user?.role === "admin";
 
   const { data, error, mutate } = useSWR<IClinic>(
     params ? `${API}/auto/clinic/${params.nodeId}` : null,
@@ -83,6 +88,21 @@ const AdminManageClinicPage = () => {
         <WithTitle title={data.name || data._id}>
           <TabSystem
             items={[
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: "نمای کلی",
+                      content: (
+                        <EntityOverview
+                          kind="clinic"
+                          nodeId={params?.nodeId || ""}
+                        />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 title: "اطلاعات",
                 icon: <InfoIcon />,
@@ -119,7 +139,10 @@ const AdminManageClinicPage = () => {
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
-                  <PageMetaEditor resourceType="/clinic/[slug]" slug={data.slug} />
+                  <PageMetaEditor
+                    resourceType="/clinic/[slug]"
+                    slug={data.slug}
+                  />
                 ),
               },
               {

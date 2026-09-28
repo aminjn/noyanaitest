@@ -1,4 +1,7 @@
 "use client";
+import EntityOverview from "../UI/EntityOverview";
+import useUser from "@/Components/Hooks/useUser";
+import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import { API } from "@/Components/config";
 import { IPharmacy } from "@/Components/DoctorPanel/Pharmacy/DoctorPharmaciesTab";
@@ -92,6 +95,8 @@ const PharmacyLocationTab = ({
 
 const AdminManagePharmacyPage = () => {
   const params = useParams<{ nodeId: string }>();
+  // Entity 360 tab (its endpoint is full-admin only)
+  const isAdmin = useUser(true).user?.role === "admin";
   const { data, error, mutate } = useSWR<IPharmacy>(
     params ? `${API}/auto/pharmacy/${params.nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
@@ -106,6 +111,21 @@ const AdminManagePharmacyPage = () => {
           <TabSystem
             name="AdminManagePharmacy"
             items={[
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: "نمای کلی",
+                      content: (
+                        <EntityOverview
+                          kind="pharmacy"
+                          nodeId={params?.nodeId || ""}
+                        />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 title: "جزئیات",
                 id: "Info",

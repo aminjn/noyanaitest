@@ -1,4 +1,7 @@
 "use client";
+import EntityOverview from "../UI/EntityOverview";
+import useUser from "@/Components/Hooks/useUser";
+import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -280,6 +283,8 @@ const ParaClinicGeoManager = ({
 
 const AdminManageParaClinicPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
+  // Entity 360 tab (its endpoint is full-admin only)
+  const isAdmin = useUser(true).user?.role === "admin";
   const { data, error, mutate } = useSWR<
     IParaClinic<{ User: Record<never, never> }>
   >(`${API}/auto/paraClinic/${nodeId}`, (url: string) =>
@@ -293,6 +298,18 @@ const AdminManageParaClinicPage = () => {
           <TabSystem
             name="AdminManageClinic"
             items={[
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: "نمای کلی",
+                      content: (
+                        <EntityOverview kind="paraClinic" nodeId={nodeId} />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 id: "Info",
                 title: "اطلاعات",
@@ -330,7 +347,8 @@ const AdminManageParaClinicPage = () => {
                         title: "تخصص ها",
                         path: `${API}/auto/speciality`,
                         getOptionLabel: (node) =>
-                          (node as ISpeciality).name || (node as ISpeciality)._id,
+                          (node as ISpeciality).name ||
+                          (node as ISpeciality)._id,
                         getOptionValue: (node) => (node as ISpeciality)._id,
                         getDefaultValue: (inp) => inp.specialities,
                         multi: true,

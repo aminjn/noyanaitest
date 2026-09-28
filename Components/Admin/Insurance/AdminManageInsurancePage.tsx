@@ -1,4 +1,7 @@
 "use client";
+import EntityOverview from "../UI/EntityOverview";
+import useUser from "@/Components/Hooks/useUser";
+import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import useSWR from "swr";
 import TabSystem from "../UI/TabSystem";
@@ -234,11 +237,12 @@ const InsuranceLocationManager = ({
 
 const AdminManageInsurancePage = () => {
   const params = useParams<{ nodeId: string }>();
+  // Entity 360 tab (its endpoint is full-admin only)
+  const isAdmin = useUser(true).user?.role === "admin";
   const { data, error, mutate } = useSWR<
     IInsurance<{ User: Record<never, never> }>
-  >(
-    params ? `${API}/auto/insurance/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  >(params ? `${API}/auto/insurance/${params.nodeId}` : null, (url: string) =>
+    fetcher({ url }).then((res) => res.data.data),
   );
 
   return (
@@ -248,6 +252,21 @@ const AdminManageInsurancePage = () => {
           <TabSystem
             name="AdminManageInsurance"
             items={[
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: "نمای کلی",
+                      content: (
+                        <EntityOverview
+                          kind="insurance"
+                          nodeId={params?.nodeId || ""}
+                        />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 title: "جزئیات",
                 id: "Info",
