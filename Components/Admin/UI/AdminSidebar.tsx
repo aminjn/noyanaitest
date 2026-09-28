@@ -12,11 +12,16 @@ import ThemeToggle from "@/Components/UI/Theme/ThemeToggle";
 import { adminPath } from "@/Components/helpers/adminPath";
 import CommandPalette, { CommandItem } from "@/Components/UI/CommandPalette";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import useSWR from "swr";
+import { API } from "@/Components/config";
+import { fetcher } from "@/Components/helpers/fetcher";
 import {
   AdminMenuGroup,
   AdminMenuItem,
+  adminHubs,
   adminMenu,
   adminPinnedItems,
+  canNotAdminOpen,
 } from "./adminMenu";
 
 export { canNotAdminOpen } from "./adminMenu";
@@ -29,19 +34,32 @@ const useAdminSubPath = () => {
   return pathname.split("/").slice(2).join("/");
 };
 
-const isItemActive = (item: AdminMenuItem, subPath: string) =>
-  item.href === ""
+const isUnder = (href: string, subPath: string) =>
+  href === ""
     ? subPath === ""
-    : subPath === item.href || subPath.startsWith(`${item.href}/`);
+    : subPath === href || subPath.startsWith(`${href}/`);
+
+// A hub item (e.g. "taxonomy") is also active on every page it lists.
+const isItemActive = (item: AdminMenuItem, subPath: string) =>
+  isUnder(item.href, subPath) ||
+  adminHubs.some(
+    (hub) =>
+      hub.hub === item.href &&
+      hub.sections.some((section) =>
+        section.items.some((el) => isUnder(el.href, subPath)),
+      ),
+  );
 
 const ItemLink = ({
   item,
   active,
   icon,
+  badge,
 }: {
   item: AdminMenuItem;
   active: boolean;
   icon?: ReactNode;
+  badge?: number;
 }) => (
   <Link
     href={adminPath(item.href ? `/${item.href}` : "")}
@@ -55,6 +73,11 @@ const ItemLink = ({
       </Ixon>
     )}
     <span>{item.title}</span>
+    {!!badge && (
+      <span className={classes.badge}>
+        {badge > 99 ? "99+" : badge.toLocaleString("fa-IR")}
+      </span>
+    )}
   </Link>
 );
 
@@ -114,17 +137,61 @@ const AdminSidebar = () => {
     const isAdmin = user.role === "admin";
     const canSee = (item: AdminMenuItem) =>
       isAdmin ||
-      (item.access !== undefined && hasAccess(item.access, "readAll"));
+      (item.access !== undefined && hasAccess(item.access, "readAll")) ||
+      (adminHubs.some((hub) => hub.hub === item.href) &&
+        canNotAdminOpen(item.href, hasAccess));
     return adminMenu
       .filter((group) => !group.super || isAdmin)
       .map((group) => ({ ...group, items: group.items.filter(canSee) }))
       .filter((group) => group.items.length > 0);
   }, [hasAccess, user]);
 
+  const isAdmin = user?.role === "admin";
+
+  // Pending-work count on the inbox item, refreshed every minute.
+  const { data: inboxCount } = useSWR<number>(
+    isAdmin ? `${API}/admin/inbox?countOnly=1` : null,
+    (url: string) =>
+      fetcher({ url }).then((res) =>
+        (res.data.data?.kinds || []).reduce(
+          (sum: number, kind: { count?: number }) => sum + (kind.count || 0),
+          0,
+        ),
+      ),
+    { refreshInterval: 60_000 },
+  );
+
+  // Hub pages (categories/tags, dev tools) aren't in the sidebar, but Ctrl+K
+  // finds them.
+  const hubCommands = useMemo<CommandItem[]>(() => {
+    if (!user) return [];
+    return adminHubs.flatMap((hub) =>
+      hub.sections
+        .filter((section) => !section.super || isAdmin)
+        .flatMap((section) =>
+          section.items
+            .filter(
+              (item) =>
+                isAdmin ||
+                canNotAdminOpen(item.href.split("/")[0], hasAccess),
+            )
+            .map((item) => ({
+              id: `${section.id}:${item.href}`,
+              label: item.title,
+              hint: section.title,
+              icon: section.icon,
+              href: adminPath(`/${item.href}`),
+            })),
+        ),
+    );
+  }, [hasAccess, isAdmin, user]);
+
   // Ctrl+K: jump to any of the (100+) admin pages by name or group
   const commands = useMemo<CommandItem[]>(
     () => [
-      ...adminPinnedItems.map((item) => ({
+      ...adminPinnedItems
+        .filter((item) => isAdmin || !item.adminOnly)
+        .map((item) => ({
         id: `pin:${item.href}`,
         label: item.title,
         icon: item.icon,
@@ -139,8 +206,9 @@ const AdminSidebar = () => {
           href: adminPath(item.href ? `/${item.href}` : ""),
         })),
       ),
+      ...hubCommands,
     ],
-    [visibleGroups],
+    [hubCommands, isAdmin, visibleGroups],
   );
 
   // Restore open groups, and always open the group of the current page.
@@ -237,12 +305,13 @@ const AdminSidebar = () => {
       <nav className={classes.nav}>
         {!term &&
           adminPinnedItems
-            .filter((item) => user?.role === "admin" || item.href === "")
+            .filter((item) => isAdmin || !item.adminOnly)
             .map((item) => (
               <ItemLink
                 key={item.href}
                 item={item}
                 icon={item.icon}
+                badge={item.href === "inbox" ? inboxCount : undefined}
                 active={isItemActive(item, subPath)}
               />
             ))}

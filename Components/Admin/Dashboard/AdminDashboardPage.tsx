@@ -185,9 +185,12 @@ const AdminDashboard = () => {
               className={classes.pendingCard}
               action={
                 data.pending.length > 0 && (
-                  <span className={classes.badge}>
-                    {num.format(data.pending.reduce((s, p) => s + p.count, 0))}
-                  </span>
+                  <Link href={adminPath("/inbox")} className={classes.inboxLink}>
+                    <span>صندوق درخواست‌ها</span>
+                    <span className={classes.badge}>
+                      {num.format(data.pending.reduce((s, p) => s + p.count, 0))}
+                    </span>
+                  </Link>
                 )
               }
             >
