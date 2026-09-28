@@ -1,6 +1,7 @@
 "use client";
 
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
+import { FetchError } from "@/Components/helpers/fetcher";
 import {
   CallApi,
   CallClient,
@@ -308,13 +309,27 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
     CallApi.getOne(callId)
       .then(({ room, connectedUserIds }) => {
         if (cancelled) return;
+        // an unknown / malformed room is a load error, not a crash
+        if (!room) {
+          setLoadError(getContent("loadCallInfoError"));
+          setJoining(false);
+          return;
+        }
         setRoom(room);
         setCamOn(room.callType === "video");
-        setConnectedUsers(new Set(connectedUserIds));
+        setConnectedUsers(
+          new Set(Array.isArray(connectedUserIds) ? connectedUserIds : []),
+        );
       })
       .catch((err: Error) => {
         if (cancelled) return;
-        setLoadError(err.message || getContent("loadCallInfoError"));
+        // server messages are already translated; anything else (a JS error)
+        // gets the friendly text instead of "Cannot read properties of..."
+        setLoadError(
+          err instanceof FetchError && err.message
+            ? err.message
+            : getContent("loadCallInfoError"),
+        );
         setJoining(false);
       });
     return () => {
