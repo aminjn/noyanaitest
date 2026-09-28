@@ -2100,5 +2100,6 @@
  "reviewsRecommends": "推薦",
  "visitReviewPending": "ありがとうございます。レビューは確認後に公開されます。",
  "visitReviewApproved": "レビューは承認され、医師のページに公開されました。",
- "visitReviewRejected": "レビューは掲載基準に合わず、公開されませんでした。"
+ "visitReviewRejected": "レビューは掲載基準に合わず、公開されませんでした。",
+ "schTabCancelled": "キャンセル"
 }

@@ -2100,5 +2100,6 @@
  "reviewsRecommends": "Öneriyor",
  "visitReviewPending": "Teşekkürler! Değerlendirmeniz alındı, incelendikten sonra yayınlanacak.",
  "visitReviewApproved": "Değerlendirmeniz onaylandı ve doktorun sayfasında yayınlandı.",
- "visitReviewRejected": "Değerlendirmeniz yayın kurallarına uymadığı için yayınlanmadı."
+ "visitReviewRejected": "Değerlendirmeniz yayın kurallarına uymadığı için yayınlanmadı.",
+ "schTabCancelled": "İptal"
 }

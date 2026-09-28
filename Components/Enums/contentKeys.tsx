@@ -2252,6 +2252,7 @@ const contentKeys = [
   "visitReviewPending",
   "visitReviewApproved",
   "visitReviewRejected",
+  "schTabCancelled",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

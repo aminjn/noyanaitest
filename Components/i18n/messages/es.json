@@ -2100,5 +2100,6 @@
  "reviewsRecommends": "Lo recomienda",
  "visitReviewPending": "¡Gracias! Recibimos tu opinión y se publicará tras revisarla.",
  "visitReviewApproved": "Tu opinión se aprobó y está publicada en la página del médico.",
- "visitReviewRejected": "Tu opinión no cumplía las normas de publicación y no se publicó."
+ "visitReviewRejected": "Tu opinión no cumplía las normas de publicación y no se publicó.",
+ "schTabCancelled": "Canceladas"
 }

@@ -2100,5 +2100,6 @@
  "reviewsRecommends": "ينصح به",
  "visitReviewPending": "شكرًا! استلمنا تقييمك وسيُنشر بعد المراجعة.",
  "visitReviewApproved": "تمت الموافقة على تقييمك ونُشر في صفحة الطبيب.",
- "visitReviewRejected": "لم يتوافق تقييمك مع قواعد النشر ولم يُنشر."
+ "visitReviewRejected": "لم يتوافق تقييمك مع قواعد النشر ولم يُنشر.",
+ "schTabCancelled": "الملغاة"
 }

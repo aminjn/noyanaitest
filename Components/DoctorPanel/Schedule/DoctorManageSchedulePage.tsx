@@ -61,12 +61,13 @@ type Row = {
   intake: "filled" | "missing" | null;
 };
 
-const TABS = ["today", "upcoming", "past", "all"] as const;
+const TABS = ["today", "upcoming", "past", "cancelled", "all"] as const;
 type Tab = (typeof TABS)[number];
 const tabKeys: Record<Tab, ContentKey> = {
   today: "schTabToday",
   upcoming: "schTabUpcoming",
   past: "schTabPast",
+  cancelled: "schTabCancelled",
   all: "schTabAll",
 };
 
@@ -150,7 +151,10 @@ const DoctorManageSchedulePage = () => {
       // "upcoming" = still ahead (pending / in progress); a visit that is
       // over (completed, no-show, cancelled...) is "past" even if it was today
       upcoming: rows.filter((r) => r.open).length,
-      past: rows.filter((r) => !r.open).length,
+      past: rows.filter((r) => !r.open && r.status !== "cancelled").length,
+      // a cancelled visit gets its own tab instead of sitting among the
+      // past ones (often with a date that is still ahead)
+      cancelled: rows.filter((r) => r.status === "cancelled").length,
       all: rows.length,
       risk: rows.filter((r) => r.missed > 0).length,
       noIntake: rows.filter((r) => r.intake === "missing").length,
@@ -166,7 +170,8 @@ const DoctorManageSchedulePage = () => {
       if (!filter) {
         if (tab === "today" && r.dateKey !== todayKey) return false;
         if (tab === "upcoming" && !r.open) return false;
-        if (tab === "past" && r.open) return false;
+        if (tab === "past" && (r.open || r.status === "cancelled")) return false;
+        if (tab === "cancelled" && r.status !== "cancelled") return false;
       }
       if (q && !`${r.name} ${r.phone}`.toLowerCase().includes(q)) return false;
       return true;

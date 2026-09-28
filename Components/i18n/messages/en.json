@@ -2100,5 +2100,6 @@
  "reviewsRecommends": "Recommends",
  "visitReviewPending": "Thank you! Your review was received and will be published after moderation.",
  "visitReviewApproved": "Your review was approved and is published on the doctor's page.",
- "visitReviewRejected": "Your review didn't meet the publishing guidelines and wasn't published."
+ "visitReviewRejected": "Your review didn't meet the publishing guidelines and wasn't published.",
+ "schTabCancelled": "Cancelled"
 }
