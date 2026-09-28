@@ -1,18 +1,16 @@
 "use client";
 
-import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import ComingSoon from "./ComingSoon";
+import MedalStarIcon from "@/Components/Icons/MedalStarIcon";
 
-const NS: ContentNamespace[] = ["common", "doctorPanelStub"];
-
-const DoctorManageOffers = () => {
-  const getContent = useScopedLocale(NS);
-  useBreadCrump([
-    { title: getContent("dashboard"), target: "/doctorpanel" },
-    { title: getContent("offers"), target: "/doctorpanel/offer" },
-  ]);
-  return <p>DoctorManageOffers</p>;
-};
+const DoctorManageOffers = () => (
+  <ComingSoon
+    title="offers"
+    target="/doctorpanel/offer"
+    text="csOffers"
+    icon={<MedalStarIcon />}
+    cta={{ label: "csToPackages", href: "/doctorpanel/servicepackage" }}
+  />
+);
 
 export default DoctorManageOffers;

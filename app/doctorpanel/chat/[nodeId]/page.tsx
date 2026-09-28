@@ -1,16 +1,14 @@
-import ChatsPage from "@/Components/Chat/ChatsPage";
+import ChatPage from "@/Components/Chat/ChatPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
-// the doctor's inbox reuses the patient chat UI; GET /chat returns every
-// chat the logged-in user takes part in, whichever side they are on
-const DoctorChats = async () => {
+const DoctorChat = async () => {
   const textContent = await getScopedTextContent(["dashboardChat", "chat"]);
   return (
     <LocaleScopeProvider namespaces={["dashboardChat", "chat"]} initialTextContent={textContent}>
-      <ChatsPage />
+      <ChatPage />
     </LocaleScopeProvider>
   );
 };
 
-export default DoctorChats;
+export default DoctorChat;

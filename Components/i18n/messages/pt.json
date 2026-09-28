@@ -1959,5 +1959,11 @@
  "shWorkDays": "${1} dias de trabalho",
  "shWeekHours": "${1} horas de trabalho",
  "shNoShift": "Sem turnos",
- "shWeekHint": "Toque em um dia para editar os turnos."
+ "shWeekHint": "Toque em um dia para editar os turnos.",
+ "csSoon": "Em breve",
+ "csOffers": "Publique ofertas especiais do seu consultório, como primeira consulta com desconto ou um pacote de check-up anual. Elas aparecerão na sua página pública e nos resultados de busca.",
+ "csDiscounts": "Crie códigos de desconto para pacientes fiéis ou datas especiais, com limite de uso e validade.",
+ "csDocuments": "Os documentos que os pacientes enviam (exames, imagens, receitas) serão reunidos aqui. Até lá, os arquivos de cada paciente estão na página dele e no chat.",
+ "csToPatients": "Ir para pacientes",
+ "csToPackages": "Criar um pacote"
 }

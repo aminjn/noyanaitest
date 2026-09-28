@@ -1959,5 +1959,11 @@
  "shWorkDays": "${1} jours travaillés",
  "shWeekHours": "${1} heures de travail",
  "shNoShift": "Aucun créneau",
- "shWeekHint": "Touchez un jour pour modifier ses créneaux."
+ "shWeekHint": "Touchez un jour pour modifier ses créneaux.",
+ "csSoon": "Bientôt",
+ "csOffers": "Publiez des offres spéciales pour votre cabinet, comme une première consultation à prix réduit ou un bilan annuel. Elles apparaîtront sur votre page publique et dans les résultats de recherche.",
+ "csDiscounts": "Créez des codes de réduction pour vos patients fidèles ou pour des occasions, avec une limite d’utilisation et une date d’expiration.",
+ "csDocuments": "Les documents envoyés par vos patients (analyses, imagerie, ordonnances) seront réunis ici. En attendant, les fichiers de chaque patient sont sur sa page et dans la discussion.",
+ "csToPatients": "Voir les patients",
+ "csToPackages": "Créer un forfait"
 }

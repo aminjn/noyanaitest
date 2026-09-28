@@ -1959,5 +1959,11 @@
  "shWorkDays": "${1} çalışma günü",
  "shWeekHours": "${1} çalışma saati",
  "shNoShift": "Vardiya yok",
- "shWeekHint": "Vardiyalarını düzenlemek için bir güne dokunun."
+ "shWeekHint": "Vardiyalarını düzenlemek için bir güne dokunun.",
+ "csSoon": "Çok yakında",
+ "csOffers": "Muayenehaneniz için özel teklifler yayınlayın; örneğin indirimli ilk muayene veya yıllık check-up paketi. Herkese açık sayfanızda ve arama sonuçlarında görünür.",
+ "csDiscounts": "Sadık hastalar veya özel günler için kullanım sınırı ve son kullanma tarihi olan indirim kodları oluşturun.",
+ "csDocuments": "Hastaların gönderdiği belgeler (tahlil, görüntüleme, reçete) burada tek yerde toplanacak. O zamana kadar her hastanın dosyaları kendi sayfasında ve sohbette.",
+ "csToPatients": "Hastalara git",
+ "csToPackages": "Hizmet paketi oluştur"
 }

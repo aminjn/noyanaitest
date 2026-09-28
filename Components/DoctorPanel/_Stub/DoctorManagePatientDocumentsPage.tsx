@@ -1,18 +1,16 @@
 "use client";
 
-import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import ComingSoon from "./ComingSoon";
+import FolderIcon from "@/Components/Icons/FolderIcon";
 
-const NS: ContentNamespace[] = ["common", "doctorPanelStub"];
-
-const DoctorManagePatientDocuments = () => {
-  const getContent = useScopedLocale(NS);
-  useBreadCrump([
-    { title: getContent("dashboard"), target: "/doctorpanel" },
-    { title: getContent("patientDocuments"), target: "/doctorpanel/document" },
-  ]);
-  return <p>DoctorManagePatientDocuments</p>;
-};
+const DoctorManagePatientDocuments = () => (
+  <ComingSoon
+    title="patientDocuments"
+    target="/doctorpanel/document"
+    text="csDocuments"
+    icon={<FolderIcon />}
+    cta={{ label: "csToPatients", href: "/doctorpanel/patient" }}
+  />
+);
 
 export default DoctorManagePatientDocuments;

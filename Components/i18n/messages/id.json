@@ -1959,5 +1959,11 @@
  "shWorkDays": "${1} hari kerja",
  "shWeekHours": "${1} jam kerja",
  "shNoShift": "Tidak ada shift",
- "shWeekHint": "Ketuk hari untuk mengubah shiftnya."
+ "shWeekHint": "Ketuk hari untuk mengubah shiftnya.",
+ "csSoon": "Segera hadir",
+ "csOffers": "Terbitkan penawaran khusus praktik Anda, misalnya kunjungan pertama berdiskon atau paket pemeriksaan tahunan. Penawaran tampil di halaman publik dan hasil pencarian.",
+ "csDiscounts": "Buat kode diskon untuk pasien setia atau momen khusus, dengan batas pemakaian dan tanggal kedaluwarsa.",
+ "csDocuments": "Dokumen yang dikirim pasien (lab, pencitraan, resep) akan dikumpulkan di sini. Sampai saat itu, berkas tiap pasien ada di halaman pasien dan di chat.",
+ "csToPatients": "Ke pasien",
+ "csToPackages": "Buat paket layanan"
 }
