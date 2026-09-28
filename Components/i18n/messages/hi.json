@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "भुगतान किए गए ऑर्डर जिनकी कुछ वस्तुएँ अभी तैयार नहीं हुईं।",
  "homeToFulfil": "तैयारी हेतु लंबित",
  "homeInvitesPending": "${1} आमंत्रण लंबित",
- "groupCenter": "केंद्र और व्यवसाय"
+ "groupCenter": "केंद्र और व्यवसाय",
+ "homeTrend": "पिछले 30 दिन",
+ "homeTrendOrders": "ऑर्डर",
+ "homeTrendSales": "बिक्री",
+ "homeTrendSummary": "पिछले ${2} दिनों में ${1}",
+ "homeChartView": "चार्ट",
+ "homeTableView": "तालिका",
+ "homeDay": "दिन"
 }

@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "পরিশোধিত অর্ডার যার কিছু আইটেম এখনও প্রস্তুত হয়নি।",
  "homeToFulfil": "প্রস্তুতির অপেক্ষায়",
  "homeInvitesPending": "${1}টি আমন্ত্রণ অপেক্ষমাণ",
- "groupCenter": "কেন্দ্র ও ব্যবসা"
+ "groupCenter": "কেন্দ্র ও ব্যবসা",
+ "homeTrend": "গত ৩০ দিন",
+ "homeTrendOrders": "অর্ডার",
+ "homeTrendSales": "বিক্রি",
+ "homeTrendSummary": "গত ${2} দিনে ${1}",
+ "homeChartView": "চার্ট",
+ "homeTableView": "টেবিল",
+ "homeDay": "দিন"
 }

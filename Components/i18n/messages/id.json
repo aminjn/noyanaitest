@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "Pesanan lunas dengan item yang belum diproses.",
  "homeToFulfil": "perlu diproses",
  "homeInvitesPending": "${1} undangan tertunda",
- "groupCenter": "Pusat & bisnis"
+ "groupCenter": "Pusat & bisnis",
+ "homeTrend": "30 hari terakhir",
+ "homeTrendOrders": "Pesanan",
+ "homeTrendSales": "Penjualan",
+ "homeTrendSummary": "${1} dalam ${2} hari terakhir",
+ "homeChartView": "Grafik",
+ "homeTableView": "Tabel",
+ "homeDay": "Hari"
 }

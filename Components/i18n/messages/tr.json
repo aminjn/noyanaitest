@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "Ödenmiş ama bazı kalemleri henüz hazırlanmamış siparişler.",
  "homeToFulfil": "hazırlanacak",
  "homeInvitesPending": "${1} yanıtsız davet",
- "groupCenter": "Merkez ve işletme"
+ "groupCenter": "Merkez ve işletme",
+ "homeTrend": "Son 30 gün",
+ "homeTrendOrders": "Siparişler",
+ "homeTrendSales": "Satışlar",
+ "homeTrendSummary": "Son ${2} günde ${1}",
+ "homeChartView": "Grafik",
+ "homeTableView": "Tablo",
+ "homeDay": "Gün"
 }

@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "ادا شدہ آرڈر جن کی کچھ اشیاء ابھی تیار نہیں ہوئیں۔",
  "homeToFulfil": "تیاری کے منتظر",
  "homeInvitesPending": "${1} دعوت نامے زیرِ التوا",
- "groupCenter": "مرکز اور کاروبار"
+ "groupCenter": "مرکز اور کاروبار",
+ "homeTrend": "پچھلے 30 دن",
+ "homeTrendOrders": "آرڈر",
+ "homeTrendSales": "فروخت",
+ "homeTrendSummary": "پچھلے ${2} دنوں میں ${1}",
+ "homeChartView": "چارٹ",
+ "homeTableView": "جدول",
+ "homeDay": "دن"
 }

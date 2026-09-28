@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "Commandes payées dont des articles ne sont pas encore traités.",
  "homeToFulfil": "à traiter",
  "homeInvitesPending": "${1} invitation(s) en attente",
- "groupCenter": "Établissement"
+ "groupCenter": "Établissement",
+ "homeTrend": "30 derniers jours",
+ "homeTrendOrders": "Commandes",
+ "homeTrendSales": "Ventes",
+ "homeTrendSummary": "${1} sur les ${2} derniers jours",
+ "homeChartView": "Graphique",
+ "homeTableView": "Tableau",
+ "homeDay": "Jour"
 }
