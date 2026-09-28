@@ -1,4 +1,5 @@
 "use client";
+import ActingAsBanner from "./ActingAsBanner";
 import { ReactNode } from "react";
 import PanelLayout from "./PanelLayout";
 import PharmacyPanelSidebar from "./PharmacyPanelSidebar";
@@ -25,6 +26,7 @@ const PharmacyPanelLayout = ({ children }: { children: ReactNode }) => {
         <LoginRequired />
       ) : data ? (
         <PanelLayout sidebar={<PharmacyPanelSidebar />}>
+          <ActingAsBanner kind="pharmacy" ownerName={data?.name} />
           <PharmacyLicenseGate>{children}</PharmacyLicenseGate>
         </PanelLayout>
       ) : (

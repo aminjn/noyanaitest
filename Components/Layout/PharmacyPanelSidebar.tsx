@@ -24,7 +24,7 @@ const PharmacyPanelSidebar = () => {
         target: "profile",
       },
       {
-        title: "secrataries",
+        title: "teamTitle",
         icon: <UserEditIcon />,
         // Managing secretaries/access-levels is never delegable — only the
         // real owner (hasAccess() with no action, true only for "FULL") can

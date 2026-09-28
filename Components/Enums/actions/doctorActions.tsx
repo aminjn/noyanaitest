@@ -23,6 +23,25 @@ export const doctorActions = [
   "readPharmacy",
   "mutatePharmacy",
   "pharmacyAddition",
+  // Profile / office / services / patients (2026-09) - these existed on the
+  // backend (Models/DoctorAcl.ts) and gate real routes, but were missing
+  // here, so they could never be granted: a secretary saw the menu items
+  // and got 403s.
+  "mutateProfile",
+  "readPatient",
+  "mutatePatient",
+  "readGallery",
+  "mutateGallery",
+  "readOffices",
+  "mutateOffices",
+  "readSocial",
+  "mutateSocial",
+  "readFaq",
+  "mutateFaq",
+  "readServices",
+  "mutateServices",
+  "readServicePackages",
+  "mutateServicePackages",
   // Sidebar-gating actions (2026-08) — one per DoctorSidebar nav item that
   // isn't a baseline (always-visible) page or the secretary-management item
   // itself (owner-only by design). Kept in sync with
@@ -53,6 +72,10 @@ export const doctorActions = [
 // MutateSecretaryAccessLevelPopup / PreviewSecretaryAccessLevelPopup to
 // render the owner-facing ACL editor for the "doctor" node.
 export const doctorActionCategories = [
+  "profile",
+  "office",
+  "services",
+  "servicePackages",
   "clinic",
   "hospital",
   "calendar",
@@ -76,6 +99,18 @@ export const doctorActionCategories = [
 export const categorizedDoctorActions: Readonly<
   Record<(typeof doctorActionCategories)[number], readonly ContentKey[]>
 > = {
+  profile: [
+    "mutateProfile",
+    "readGallery",
+    "mutateGallery",
+    "readSocial",
+    "mutateSocial",
+    "readFaq",
+    "mutateFaq",
+  ],
+  office: ["readOffices", "mutateOffices"],
+  services: ["readServices", "mutateServices"],
+  servicePackages: ["readServicePackages", "mutateServicePackages"],
   clinic: [
     "clinicAddition",
     "joinClinic",
@@ -95,10 +130,10 @@ export const categorizedDoctorActions: Readonly<
   financialMangement: ["readFinance"],
   shifts: ["readShifts"],
   schedule: ["readSchedule"],
-  patients: ["readPatients"],
+  patients: ["readPatients", "readPatient", "mutatePatient"],
   licenses: ["readLicenses"],
-  phrmaciesAndLabs: ["readPharmacy"],
-  insurances: ["readInsurance"],
+  phrmaciesAndLabs: ["readPharmacy", "mutatePharmacy", "pharmacyAddition"],
+  insurances: ["readInsurance", "mutateInsurance", "insuranceAddition"],
   offers: ["readOffers"],
   discounts: ["readDiscounts"],
   articles: ["readArticles"],
@@ -107,3 +142,35 @@ export const categorizedDoctorActions: Readonly<
   patientDocuments: ["readDocuments"],
   incomingOrders: ["readOrders", "mutateOrders"],
 } as const;
+
+type DoctorActionName = (typeof doctorActions)[number];
+
+// Ready-made roles for the invite flow (2026-09): picking one creates (or
+// reuses) an access level with exactly these actions, so the owner never
+// has to wade through the full toggle list. "full" is every action.
+export const doctorRolePresets: Record<"appointments" | "reception" | "finance", readonly DoctorActionName[]> = {
+  appointments: [
+    "readCalendar",
+    "mutateCalendar",
+    "readSchedule",
+    "readShifts",
+    "readPatients",
+    "readPatient",
+  ],
+  reception: [
+    "readCalendar",
+    "mutateCalendar",
+    "readSchedule",
+    "readShifts",
+    "readPatients",
+    "readPatient",
+    "mutatePatient",
+    "readOrders",
+    "mutateOrders",
+    "readServices",
+    "readServicePackages",
+    "readOffices",
+    "readChat",
+  ],
+  finance: ["readFinance", "readOrders", "readLicenses"],
+};

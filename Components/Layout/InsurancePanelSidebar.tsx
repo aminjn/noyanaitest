@@ -13,7 +13,7 @@ const InsurancePanelSidebar = () => {
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
         icon: <UserEditIcon />,
-        title: "secrataries",
+        title: "teamTitle",
         // Managing secretaries/access-levels is never delegable — only the
         // real owner (hasAccess() with no action, true only for "FULL") can
         // see this.

@@ -1,4 +1,5 @@
 "use client";
+import ActingAsBanner from "./ActingAsBanner";
 
 import useSWR from "swr";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
@@ -119,6 +120,7 @@ const ParaClinicPanelLayout = ({ children }: { children: ReactNode }) => {
         <LoginRequired />
       ) : !!data ? (
         <PanelLayout sidebar={<ParaClinicSidebar />}>
+          <ActingAsBanner kind="paraClinic" ownerName={data?.name} />
           <ParaClinicLicenseGate>{children}</ParaClinicLicenseGate>
         </PanelLayout>
       ) : (

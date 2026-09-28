@@ -30,7 +30,7 @@ const HospitalPanelSidebar = () => {
         target: "doctor",
       },
       {
-        title: "secretaries",
+        title: "teamTitle",
         icon: <UserEditIcon />,
         // Managing secretaries/access-levels is never delegable — only the
         // real owner (hasAccess() with no action, true only for "FULL") can
