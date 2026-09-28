@@ -378,3 +378,11 @@
 .tip {
   color: var(--gray13);
 }
+
+.identityGate {
+  width: 100%;
+  max-width: 44rem;
+  margin: 2rem auto;
+  padding-inline: 1rem;
+  box-sizing: border-box;
+}

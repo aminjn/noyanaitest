@@ -2065,5 +2065,10 @@
  "homeTrendVisits": "Kunjungan",
  "homeVisitsNoOffices": "Belum ada dokter yang menautkan praktik ke pusat ini. Dokter anggota memilih di halaman «Praktik» mana yang ada di sini — kunjungannya lalu tampil di grafik ini.",
  "listEmptyTitle": "Belum ada yang bisa ditampilkan",
- "listEmptyHint": "Entri baru akan segera muncul di sini. Anda juga bisa mencoba pencarian atau filter lain."
+ "listEmptyHint": "Entri baru akan segera muncul di sini. Anda juga bisa mencoba pencarian atau filter lain.",
+ "identityVerifyTitle": "Verifikasi identitas",
+ "identityVerifyIntro": "Untuk melanjutkan, masukkan nomor induk kependudukan dan tanggal lahir Anda. Data diperiksa ke catatan sipil, dan nomor tersebut harus milik pemilik nomor ponsel ini.",
+ "identityNationalId": "Nomor induk kependudukan",
+ "identityBirthDate": "Tanggal lahir",
+ "identityVerifySubmit": "Verifikasi dan lanjutkan"
 }

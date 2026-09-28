@@ -66,6 +66,7 @@ import PopupCard from "@/Components/UI/PopupCard";
 import Input from "@/Components/UI/Input";
 import Form from "@/Components/UI/Form";
 import DateInput from "@/Components/UI/DateInput";
+import IdentityVerifyForm from "@/Components/_Common/Identity/IdentityVerifyForm";
 import useForm from "@/Components/Hooks/useForm";
 import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
 import Act from "@/Components/UI/Act";
@@ -895,7 +896,11 @@ const FinalizeBookingPage = () => {
   const searchParams = useSearchParams();
   const { user, isUserLoading } = useUser();
 
-  const { data: identity, error: identityError } = useSWR<IUserIdentity>(
+  const {
+    data: identity,
+    error: identityError,
+    mutate: mutateIdentity,
+  } = useSWR<IUserIdentity | null>(
     `${API}/user/identity`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
@@ -954,6 +959,14 @@ const FinalizeBookingPage = () => {
 
   if (isUserLoading) return <Loading />;
   if (!user) return <LoginRequired />;
+  // no identity on this account yet: booking for yourself needs one, so
+  // verify it here (this used to spin forever)
+  if (identity === null)
+    return (
+      <div className={classes.identityGate}>
+        <IdentityVerifyForm onDone={() => mutateIdentity()} />
+      </div>
+    );
 
   return (
     <HandleLoading data={!!identity} error={identityError}>
