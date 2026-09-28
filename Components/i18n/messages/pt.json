@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "Para continuar, informe seu documento de identidade e data de nascimento. Eles são verificados no registro civil e o documento deve pertencer ao titular deste número de celular.",
  "identityNationalId": "Documento de identidade",
  "identityBirthDate": "Data de nascimento",
- "identityVerifySubmit": "Verificar e continuar"
+ "identityVerifySubmit": "Verificar e continuar",
+ "officeNew": "Novo consultório"
 }

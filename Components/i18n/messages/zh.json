@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "请输入身份证号和出生日期以继续。信息将与户籍登记核验，且身份证号须属于此手机号的持有人。",
  "identityNationalId": "身份证号",
  "identityBirthDate": "出生日期",
- "identityVerifySubmit": "验证并继续"
+ "identityVerifySubmit": "验证并继续",
+ "officeNew": "新诊室"
 }

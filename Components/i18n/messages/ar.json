@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "للمتابعة، أدخل رقمك الوطني وتاريخ ميلادك. يتم التحقق منهما لدى سجل الأحوال المدنية، ويجب أن يعود الرقم الوطني لصاحب رقم الجوال هذا.",
  "identityNationalId": "الرقم الوطني",
  "identityBirthDate": "تاريخ الميلاد",
- "identityVerifySubmit": "تحقق ومتابعة"
+ "identityVerifySubmit": "تحقق ومتابعة",
+ "officeNew": "عيادة جديدة"
 }

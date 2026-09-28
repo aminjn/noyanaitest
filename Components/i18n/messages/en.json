@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "To continue, enter your national ID and date of birth. They are checked with the civil registry, and the national ID must belong to the owner of this mobile number.",
  "identityNationalId": "National ID",
  "identityBirthDate": "Date of birth",
- "identityVerifySubmit": "Verify and continue"
+ "identityVerifySubmit": "Verify and continue",
+ "officeNew": "New office"
 }

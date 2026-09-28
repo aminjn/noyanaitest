@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "Untuk melanjutkan, masukkan nomor induk kependudukan dan tanggal lahir Anda. Data diperiksa ke catatan sipil, dan nomor tersebut harus milik pemilik nomor ponsel ini.",
  "identityNationalId": "Nomor induk kependudukan",
  "identityBirthDate": "Tanggal lahir",
- "identityVerifySubmit": "Verifikasi dan lanjutkan"
+ "identityVerifySubmit": "Verifikasi dan lanjutkan",
+ "officeNew": "Praktik baru"
 }

@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "続行するには国民IDと生年月日を入力してください。住民登録で照合され、IDはこの携帯番号の所有者のものである必要があります。",
  "identityNationalId": "国民ID",
  "identityBirthDate": "生年月日",
- "identityVerifySubmit": "確認して続行"
+ "identityVerifySubmit": "確認して続行",
+ "officeNew": "新しい診療所"
 }

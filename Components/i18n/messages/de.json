@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "Geben Sie zum Fortfahren Ihre nationale ID und Ihr Geburtsdatum ein. Sie werden beim Melderegister geprüft; die ID muss dem Inhaber dieser Mobilnummer gehören.",
  "identityNationalId": "Nationale ID",
  "identityBirthDate": "Geburtsdatum",
- "identityVerifySubmit": "Prüfen und weiter"
+ "identityVerifySubmit": "Prüfen und weiter",
+ "officeNew": "Neue Praxis"
 }
