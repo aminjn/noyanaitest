@@ -29,6 +29,7 @@ import MutateSessionPopup from "./MutateSessionPopup";
 import DeleteSessionPopup from "./DeleteSessionPopup";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelCalendar"];
 
@@ -84,13 +85,14 @@ const DoctorManageCalendarDayPage = () => {
                   },
                 ]
           }
-          title={`${getContent("timeLine")} ${new Date(
+          title={`${getContent("timeLine")} ${safeFormatDate(
+            new Intl.DateTimeFormat(intlTag, {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }),
             Number(params.stamp),
-          ).toLocaleDateString(intlTag, {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}`}
+          )}`}
         >
           <Table
             name="DoctorManageCalendarDay"

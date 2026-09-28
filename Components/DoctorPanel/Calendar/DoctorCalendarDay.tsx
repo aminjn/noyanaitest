@@ -23,6 +23,7 @@ import {
 } from "@/Components/Dashboard/DashboardPage";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelCalendar"];
 
@@ -149,10 +150,10 @@ const DoctorCalendarDay = ({
       )}
       <div className={classes.info}>
         <span className={classes.stamp}>
-          {new Date(stamp).toLocaleDateString(intlTag, {
-            month: "long",
-            day: "numeric",
-          })}
+          {safeFormatDate(
+            new Intl.DateTimeFormat(intlTag, { month: "long", day: "numeric" }),
+            stamp,
+          )}
         </span>
         {!isOut && (
           <Fragment>
