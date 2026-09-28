@@ -248,6 +248,7 @@ const ProviderHome = ({
       {hasOrders && (kind === "pharmacy" || kind === "paraClinic") && (
         <ProviderTrend kind={kind} />
       )}
+      {hasDoctors && <ProviderTrend kind={kind as "clinic" | "hospital"} />}
 
       {children}
     </div>

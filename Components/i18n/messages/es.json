@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "${1} en los últimos ${2} días",
  "homeChartView": "Gráfico",
  "homeTableView": "Tabla",
- "homeDay": "Día"
+ "homeDay": "Día",
+ "officeNoCenter": "Ninguno (consultorio propio)",
+ "officeClinic": "¿En qué clínica está este consultorio?",
+ "officeHospital": "¿En qué hospital está este consultorio?",
+ "homeTrendVisits": "Citas",
+ "homeVisitsNoOffices": "Ningún médico ha vinculado aún un consultorio a este centro. Los médicos miembros eligen en su página «Consultorio» cuál está aquí; sus citas aparecerán en este gráfico."
 }

@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "Son ${2} günde ${1}",
  "homeChartView": "Grafik",
  "homeTableView": "Tablo",
- "homeDay": "Gün"
+ "homeDay": "Gün",
+ "officeNoCenter": "Hiçbiri (bağımsız muayenehane)",
+ "officeClinic": "Bu muayenehane hangi klinikte?",
+ "officeHospital": "Bu muayenehane hangi hastanede?",
+ "homeTrendVisits": "Randevular",
+ "homeVisitsNoOffices": "Henüz hiçbir doktor bu merkeze muayenehane bağlamadı. Üye doktorlar «Muayenehane» sayfasında hangisinin burada olduğunu seçer; randevuları bu grafikte görünür."
 }

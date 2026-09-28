@@ -39,3 +39,23 @@
   opacity: 0.85;
   cursor: not-allowed;
 }
+
+.wrap {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+.title {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 1.25rem;
+  transform: translateY(-50%);
+  padding-inline: 0.25rem;
+  border-radius: 100dvw;
+  background-color: var(--white);
+  color: var(--gray7);
+  font-size: 0.75rem;
+  pointer-events: none;
+  user-select: none;
+}

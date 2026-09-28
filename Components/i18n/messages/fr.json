@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "${1} sur les ${2} derniers jours",
  "homeChartView": "Graphique",
  "homeTableView": "Tableau",
- "homeDay": "Jour"
+ "homeDay": "Jour",
+ "officeNoCenter": "Aucun (cabinet indépendant)",
+ "officeClinic": "Dans quelle clinique se trouve ce cabinet ?",
+ "officeHospital": "Dans quel hôpital se trouve ce cabinet ?",
+ "homeTrendVisits": "Rendez-vous",
+ "homeVisitsNoOffices": "Aucun médecin n’a encore rattaché de cabinet à cet établissement. Les médecins membres indiquent sur leur page « Cabinet » lequel se trouve ici ; ses rendez-vous apparaîtront alors ici."
 }

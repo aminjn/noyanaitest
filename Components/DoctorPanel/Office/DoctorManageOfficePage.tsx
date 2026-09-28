@@ -13,6 +13,7 @@ import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import DoctorManageOfficeLocationTab from "./DoctorManageOfficeLocationTab";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import useOfficeCenterFields from "./useOfficeCenterFields";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelOffice"];
 
@@ -24,6 +25,7 @@ const DoctorManageOfficePage = () => {
   );
 
   const getContent = useScopedLocale(NS);
+  const centerFields = useOfficeCenterFields();
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },
@@ -48,6 +50,7 @@ const DoctorManageOfficePage = () => {
                     tel: { title: getContent("telephone"), type: "text" },
                     order: { title: getContent("order"), type: "number" },
                     active: { title: getContent("isActive"), type: "bool" },
+                    ...centerFields,
                   }}
                   hookProps={{
                     path: `${API}/doctor/office/${data._id}`,

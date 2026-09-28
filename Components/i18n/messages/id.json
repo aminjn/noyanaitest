@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "${1} dalam ${2} hari terakhir",
  "homeChartView": "Grafik",
  "homeTableView": "Tabel",
- "homeDay": "Hari"
+ "homeDay": "Hari",
+ "officeNoCenter": "Tidak ada (praktik mandiri)",
+ "officeClinic": "Praktik ini ada di klinik mana?",
+ "officeHospital": "Praktik ini ada di rumah sakit mana?",
+ "homeTrendVisits": "Kunjungan",
+ "homeVisitsNoOffices": "Belum ada dokter yang menautkan praktik ke pusat ini. Dokter anggota memilih di halaman «Praktik» mana yang ada di sini — kunjungannya lalu tampil di grafik ini."
 }

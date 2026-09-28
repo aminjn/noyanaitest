@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "近${2}天共${1}",
  "homeChartView": "图表",
  "homeTableView": "表格",
- "homeDay": "日期"
+ "homeDay": "日期",
+ "officeNoCenter": "无（独立诊室）",
+ "officeClinic": "该诊室位于哪家诊所？",
+ "officeHospital": "该诊室位于哪家医院？",
+ "homeTrendVisits": "就诊",
+ "homeVisitsNoOffices": "尚无医生将诊室关联到本机构。成员医生在「诊室」页面选择哪个诊室位于此处后，其就诊数据会显示在此图表中。"
 }
