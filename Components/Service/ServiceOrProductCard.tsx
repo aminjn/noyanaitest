@@ -126,15 +126,14 @@ const ServiceOrProductCard = ({
           )}
           <div className={classes.prices}>
             <span className={classes.price}>
-              <span className={tsmMedium}>{currencize(price)}</span>
+              {/* the price the user pays; the list price is struck through */}
+              <span className={tsmMedium}>
+                {currencize(clamp(0, price - (discount || 0), Number.MAX_SAFE_INTEGER))}
+              </span>
               <span className={txsMedium}>{getContent("toman")}</span>
             </span>
             {!!discount && (
-              <s className={`${classes.striked} ${t2xsMedium}`}>
-                {currencize(
-                  clamp(0, price - discount, Number.MAX_SAFE_INTEGER),
-                )}
-              </s>
+              <s className={`${classes.striked} ${t2xsMedium}`}>{currencize(price)}</s>
             )}
           </div>
         </div>

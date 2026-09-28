@@ -27,8 +27,14 @@ export interface IUserAddress extends MongoDoc {
   user: string;
   displayName: string;
   address: string;
+  receiverPhone?: string;
+  postalCode?: string;
   location?: { type: "Point"; coordinates?: [number, number] };
 }
+
+// 989121234567 -> 09121234567 (how an Iranian number is read aloud)
+export const localPhone = (phone?: string) =>
+  phone ? phone.replace(/^98(9\d{9})$/, "0$1") : "";
 
 const POPUP = "DashboardMutateAddress";
 
@@ -63,6 +69,16 @@ const AddressCard = ({ node, mutate }: { node: IUserAddress; mutate: () => unkno
         <strong className={classes.name}>{node.displayName || "—"}</strong>
       </div>
       <p className={classes.address}>{node.address}</p>
+      {(!!node.receiverPhone || !!node.postalCode) && (
+        <p className={classes.meta}>
+          {[
+            node.receiverPhone ? `${getContent("receiverPhone")}: ${localPhone(node.receiverPhone)}` : "",
+            node.postalCode ? `${getContent("postalCode")}: ${node.postalCode}` : "",
+          ]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+      )}
       {pinned ? (
         <span className={classes.pinned}>
           <Ixon width="0.875rem">

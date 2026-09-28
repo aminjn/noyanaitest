@@ -2102,5 +2102,8 @@
  "visitReviewApproved": "レビューは承認され、医師のページに公開されました。",
  "visitReviewRejected": "レビューは掲載基準に合わず、公開されませんでした。",
  "schTabCancelled": "キャンセル",
- "orgNationalId": "施設の国家識別番号"
+ "orgNationalId": "施設の国家識別番号",
+ "receiverPhone": "受取人の電話番号",
+ "postalCode": "郵便番号",
+ "selectAddressFirst": "お届け先の住所を選択してください。"
 }

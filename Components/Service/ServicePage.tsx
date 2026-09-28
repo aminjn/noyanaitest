@@ -46,7 +46,6 @@ const ServicePage = ({ data }: ServicePageProps) => {
       images={data.images}
       itemId={data._id}
       model="services"
-      qnaCount={500}
       sameAs={data.sameAs.map((el) => (
         <ServiceCard key={el._id} node={{ ...el, model: "Service" }} />
       ))}

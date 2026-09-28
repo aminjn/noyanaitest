@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode, useState } from "react";
-import useSWR from "swr";
+import { ReactNode, useEffect, useState } from "react";
+import useSWR, { mutate as globalMutate } from "swr";
 import classes from "./CartCheckoutPopup.module.css";
 import PopupCard from "../UI/PopupCard";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -20,7 +20,7 @@ import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
 import { usePaymentConfig } from "../Payment/paymentTypes";
 import Act from "../UI/Act";
 import { IWallet } from "../Booking/Finalize/FinalizeBookingPage";
-import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage";
+import { IUserAddress, localPhone } from "../Dashboard/Address/DashboardManageAddressesPage";
 import DashboardMutateAddressPopup from "../Dashboard/Address/DashboardMutateAddressPopup";
 import {
   t2xsRegular,
@@ -95,6 +95,13 @@ const CartCheckoutPopup = ({
     : ["wallet"];
 
   const [address, setAddress] = useState<string | null>(null);
+  // preselect the newest saved address (usually the only one) so the buyer
+  // does not have to tap it every time
+  useEffect(() => {
+    if (!Array.isArray(addresses) || !addresses.length) return;
+    if (!address || !addresses.some((a) => a._id === address))
+      setAddress(addresses[addresses.length - 1]._id);
+  }, [addresses, address]);
   const [method, setMethod] = useState<OrderPaymentMethod>("wallet");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -125,6 +132,11 @@ const CartCheckoutPopup = ({
                     <span className={`${classes.addressValue} ${t2xsRegular}`}>
                       {node.address}
                     </span>
+                    {!!node.receiverPhone && (
+                      <span className={`${classes.addressValue} ${t2xsRegular}`}>
+                        {`${getContent("receiverPhone")}: ${localPhone(node.receiverPhone)}`}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -191,14 +203,16 @@ const CartCheckoutPopup = ({
             {`${currencize(summary ? summary.subtotal : total)} ${getContent("toman")}`}
           </span>
         </div>
-        <div className={classes.totalRow}>
-          <span className={tsmRegular}>{getContent("tax")}</span>
-          <span className={tsmRegular}>
-            {summary && summary.tax > 0
-              ? `${currencize(summary.tax)} ${getContent("toman")}`
-              : getContent("freeOfCharge")}
-          </span>
-        </div>
+        {/* a zero tax is not "free of charge"; the row only shows when
+            the seller actually charges tax */}
+        {!!summary && summary.tax > 0 && (
+          <div className={classes.totalRow}>
+            <span className={tsmRegular}>{getContent("tax")}</span>
+            <span className={tsmRegular}>
+              {`${currencize(summary.tax)} ${getContent("toman")}`}
+            </span>
+          </div>
+        )}
         <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("totalPrice")}</span>
           <span className={`${classes.totalPrice} ${tbaseDemiBold}`}>
@@ -214,7 +228,7 @@ const CartCheckoutPopup = ({
           onClick={() => {
             if (isSubmitting) return;
             if (requiresAddress && !address) {
-              pushNotification(getContent("checkInput"), "Warn");
+              pushNotification(getContent("selectAddressFirst"), "Warn");
               return;
             }
             setIsSubmitting(true);
@@ -238,10 +252,15 @@ const CartCheckoutPopup = ({
             return;
           }
           setIsSubmitting(false);
-          if (status && result?.data?._id) {
-            closePopup();
-            push(`/order/${result.data._id}`);
-          }
+          if (!status) return;
+          // the server emptied the cart and debited the wallet: drop the
+          // stale copies (cart page, header badge, balance)
+          globalMutate(`${API}/cart`);
+          globalMutate(`${API}/cart/size`);
+          globalMutate(`${API}/cart/summary`);
+          globalMutate(`${API}/user/wallet`);
+          closePopup();
+          if (result?.data?._id) push(`/order/${result.data._id}`);
         }}
       />
     </PopupCard>

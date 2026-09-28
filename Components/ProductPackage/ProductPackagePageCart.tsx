@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { ProductPackagePageProps } from "./ProductPackagePage";
 import classes from "./ProductPackagePageCart.module.css";
-import PlusBox from "../Product/PlusBox";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Image from "next/image";
@@ -52,7 +51,7 @@ const ProductPackagePageCart = ({ data }: ProductPackagePageProps) => {
               </s>
               <span className={`${classes.percent} ${t2xsRegular}`}>
                 {getContent("percentSymbol", [
-                  Math.ceil(data.discount / (data.price || 1)).toString(),
+                  Math.ceil((data.discount / (data.price || 1)) * 100).toString(),
                 ])}
               </span>
             </div>
@@ -69,7 +68,6 @@ const ProductPackagePageCart = ({ data }: ProductPackagePageProps) => {
         <CartActions itemId={data._id} model="productPackages" />
         <ProductCartInfos />
       </div>
-      <PlusBox value={data.discount || 0} />
     </Fragment>
   );
 };

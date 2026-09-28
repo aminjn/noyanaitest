@@ -23,7 +23,6 @@ import StarIcon from "@/Components/Icons/StarIcon";
 import Button from "@/Components/UI/Button";
 import StarsSolidIcon from "@/Components/Icons/StarsSolidIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
-import UpgradeProBox from "../UpgradeProBox";
 import HostedImage from "@/Components/UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "productCartable"];
@@ -125,7 +124,6 @@ const CartableNodePageIntro = ({
   score,
   totalScore,
   commentsCount,
-  qnaCount,
   specs,
 }: {
   images: IProductImage[];
@@ -135,7 +133,6 @@ const CartableNodePageIntro = ({
   score: number;
   totalScore: number;
   commentsCount: number;
-  qnaCount: number;
   specs: IProductSpec[];
 }) => {
   const [currentImage, setCurrentImage] = useState<IProductImage | undefined>(
@@ -157,7 +154,7 @@ const CartableNodePageIntro = ({
           <div className={classes.image}>
             <HostedImage
               src={currentImage?.image}
-              alt={currentImage?.alt || ""}
+              alt={currentImage?.alt || name || ""}
               sizes="17rem"
               fill
               style={{ objectFit: "contain" }}
@@ -196,18 +193,12 @@ const CartableNodePageIntro = ({
               <span className={t2xsRegular}>{score}</span>
             </div>
             <span className={`${classes.commentCount} ${t2xsRegular}`}>
-              {getContent("xScoreFromBuyers", [totalScore.toString()])}
+              {getContent("xScoreFromBuyers", [String(totalScore || 0)])}
             </span>
+            {/* jumps to the reviews tab (the "AI summary" and Q&A buttons
+                were placeholders: no action and a hardcoded count) */}
             <Button
-              variant="Secondary"
-              mode="Fill"
-              size="S"
-              radius="High"
-              leadIcon={<StarsSolidIcon />}
-            >
-              {getContent("commentsSummary")}
-            </Button>
-            <Button
+              href="#TABS"
               variant="Disable"
               radius="High"
               size="S"
@@ -218,24 +209,10 @@ const CartableNodePageIntro = ({
                 </Ixon>
               }
             >
-              {getContent("nComments", [commentsCount.toString()])}
-            </Button>
-            <Button
-              variant="Disable"
-              radius="High"
-              size="S"
-              mode="Fill"
-              tailIcon={
-                <Ixon style={{ transform: "rotateZ(90deg)" }}>
-                  <ChevronIcon />
-                </Ixon>
-              }
-            >
-              {getContent("nQna", [qnaCount.toString()])}
+              {getContent("nComments", [String(commentsCount || 0)])}
             </Button>
           </div>
           <SpecBox specs={specs} />
-          <UpgradeProBox />
         </div>
       </div>
     </div>

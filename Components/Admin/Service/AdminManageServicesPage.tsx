@@ -246,7 +246,7 @@ const AdminManageServicesPage = () => {
                   ),
               },
               price: {
-                name: "قیمت (ریال)",
+                name: "قیمت (تومان)",
                 value: (node) => node.price,
                 filter: "Number",
                 component: (node) =>

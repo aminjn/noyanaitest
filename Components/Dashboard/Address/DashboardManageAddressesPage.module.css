@@ -106,6 +106,12 @@
   overflow-wrap: anywhere;
 }
 
+.meta {
+  font-size: 0.75rem;
+  color: var(--gray10);
+  overflow-wrap: anywhere;
+}
+
 .pinned,
 .noPin {
   align-self: flex-start;

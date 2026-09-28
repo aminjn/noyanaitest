@@ -28,6 +28,9 @@ const DashboardMutateAddressPopup = ({
         renderer={{
           displayName: { type: "text", title: getContent("displayName") },
           address: { type: "text", title: getContent("address") },
+          // left empty, the account's own number is used
+          receiverPhone: { type: "text", title: getContent("receiverPhone") },
+          postalCode: { type: "text", title: getContent("postalCode") },
         }}
         hookProps={{
           method: "POST",

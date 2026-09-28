@@ -2102,5 +2102,8 @@
  "visitReviewApproved": "آپ کی رائے منظور ہو کر ڈاکٹر کے صفحے پر شائع ہو گئی ہے۔",
  "visitReviewRejected": "آپ کی رائے اشاعت کے اصولوں کے مطابق نہیں تھی اور شائع نہیں ہوئی۔",
  "schTabCancelled": "منسوخ",
- "orgNationalId": "ادارے کا قومی شناختی نمبر"
+ "orgNationalId": "ادارے کا قومی شناختی نمبر",
+ "receiverPhone": "وصول کنندہ کا فون",
+ "postalCode": "پوسٹل کوڈ",
+ "selectAddressFirst": "براہ کرم ترسیل کا پتہ منتخب کریں۔"
 }

@@ -2102,5 +2102,8 @@
  "visitReviewApproved": "Votre avis a été approuvé et publié sur la page du médecin.",
  "visitReviewRejected": "Votre avis ne respectait pas les règles de publication et n'a pas été publié.",
  "schTabCancelled": "Annulés",
- "orgNationalId": "Identifiant national de l'établissement"
+ "orgNationalId": "Identifiant national de l'établissement",
+ "receiverPhone": "Téléphone du destinataire",
+ "postalCode": "Code postal",
+ "selectAddressFirst": "Veuillez choisir une adresse de livraison."
 }

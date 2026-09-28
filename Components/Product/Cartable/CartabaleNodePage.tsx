@@ -17,7 +17,6 @@ const CartableNodePage = <T,>({
   beforeTabs,
   commentsCount,
   images,
-  qnaCount,
   score,
   specs,
   totalScore,
@@ -36,6 +35,8 @@ const CartableNodePage = <T,>({
   owner,
   price,
   trail,
+  fastDelivery,
+  freeDelivery,
 }: {
   beforeTabs?: ReactNode;
   images: IProductImage[];
@@ -45,7 +46,6 @@ const CartableNodePage = <T,>({
   score: number;
   totalScore: number;
   commentsCount: number;
-  qnaCount: number;
   specs: IProductSpec[];
   tabs: ClientTabSystemItems;
   sameAsTitle: ContentKey;
@@ -59,6 +59,8 @@ const CartableNodePage = <T,>({
   itemId: string;
   model: CartModel;
   trail?: BreadCrumpTrail;
+  fastDelivery?: boolean;
+  freeDelivery?: boolean;
 }) => {
   return (
     <div className={classes.container}>
@@ -71,7 +73,6 @@ const CartableNodePage = <T,>({
             <CartableNodePageIntro
               images={images}
               commentsCount={commentsCount}
-              qnaCount={qnaCount}
               score={score}
               specs={specs}
               totalScore={totalScore}
@@ -89,6 +90,8 @@ const CartableNodePage = <T,>({
                 discount={discount}
                 owner={owner}
                 price={price}
+                fastDelivery={fastDelivery}
+                freeDelivery={freeDelivery}
               />
             </div>
           </div>
@@ -110,6 +113,8 @@ const CartableNodePage = <T,>({
             discount={discount}
             owner={owner}
             price={price}
+            fastDelivery={fastDelivery}
+            freeDelivery={freeDelivery}
           />
         </div>
       </div>
