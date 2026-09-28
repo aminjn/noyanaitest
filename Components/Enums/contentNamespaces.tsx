@@ -3760,6 +3760,16 @@ export const contentNamespaces = {
     "searchInParaClinics",
     "paraClinicKind",
   ],
+  // app/pharmacy/[slug]/page.tsx (Components/Pharmacy/PharmacyPage).
+  pharmacyPage: [
+    "homePage",
+    "products",
+    "productPackages",
+    "about",
+    "address",
+    "pharmacyProductsTitle",
+    "pharmacyNoProducts",
+  ],
   // app/paraClinic/[slug]/page.tsx (ParaClinicIntro, ParaClinicAbout,
   // ParaClinicTests).
   paraClinicPage: [

@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Lütfen bir teslimat adresi seçin.",
  "cancelOrder": "Siparişi iptal et",
  "cancelOrderConfirm": "Henüz hazırlanmamış ürünler iptal edilip cüzdanınıza iade edilecek. Devam edilsin mi?",
- "orderCancelledRefunded": "Sipariş iptal edildi ve cüzdanınıza iade edildi."
+ "orderCancelledRefunded": "Sipariş iptal edildi ve cüzdanınıza iade edildi.",
+ "pharmacyProductsTitle": "Bu eczaneden sipariş verin",
+ "pharmacyNoProducts": "Bu eczane henüz çevrimiçi satış yapmıyor."
 }

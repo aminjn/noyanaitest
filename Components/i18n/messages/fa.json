@@ -2130,5 +2130,7 @@
  "selectAddressFirst": "لطفاً آدرس تحویل را انتخاب کنید.",
  "cancelOrder": "لغو سفارش",
  "cancelOrderConfirm": "اقلامی که هنوز آماده نشده‌اند لغو می‌شوند و مبلغشان به کیف پول شما برمی‌گردد. ادامه می‌دهید؟",
- "orderCancelledRefunded": "سفارش لغو شد و مبلغ به کیف پول شما برگشت."
+ "orderCancelledRefunded": "سفارش لغو شد و مبلغ به کیف پول شما برگشت.",
+ "pharmacyProductsTitle": "قابل سفارش از این داروخانه",
+ "pharmacyNoProducts": "این داروخانه هنوز محصولی برای فروش آنلاین ندارد."
 }

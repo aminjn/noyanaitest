@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Veuillez choisir une adresse de livraison.",
  "cancelOrder": "Annuler la commande",
  "cancelOrderConfirm": "Les articles pas encore préparés seront annulés et remboursés sur votre portefeuille. Continuer ?",
- "orderCancelledRefunded": "La commande a été annulée et remboursée sur votre portefeuille."
+ "orderCancelledRefunded": "La commande a été annulée et remboursée sur votre portefeuille.",
+ "pharmacyProductsTitle": "Commander dans cette pharmacie",
+ "pharmacyNoProducts": "Cette pharmacie ne vend encore rien en ligne."
 }

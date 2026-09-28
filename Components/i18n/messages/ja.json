@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "お届け先の住所を選択してください。",
  "cancelOrder": "注文をキャンセル",
  "cancelOrderConfirm": "まだ準備されていない商品はキャンセルされ、ウォレットに返金されます。続けますか？",
- "orderCancelledRefunded": "注文はキャンセルされ、ウォレットに返金されました。"
+ "orderCancelledRefunded": "注文はキャンセルされ、ウォレットに返金されました。",
+ "pharmacyProductsTitle": "この薬局で注文",
+ "pharmacyNoProducts": "この薬局はまだオンライン販売をしていません。"
 }
