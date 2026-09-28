@@ -1,18 +1,22 @@
 .main {
   display: flex;
+  align-items: flex-start;
   gap: 1rem;
-  padding-inline-end: 0.5rem;
 }
 
 .shiftsBox {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background-color: var(--white);
   flex: 1;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: var(--shadow);
+  min-width: 0;
+  padding: 1.25rem;
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .header {
@@ -40,4 +44,22 @@
   inset: 0;
   content: "";
   backdrop-filter: blur(2px) brightness(80%);
+}
+
+@media (max-width: 64rem) {
+  .main {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 40rem) {
+  .shiftsBox {
+    padding: 0.875rem;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 }

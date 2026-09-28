@@ -1953,5 +1953,11 @@
  "ioConfirm": "Confirmer",
  "ioProgress": "${1} sur ${2} terminés",
  "ioEmpty": "Aucune commande ici.",
- "ioAwaitingNote": "Une fois le paiement du patient reçu, vous pourrez traiter les éléments."
+ "ioAwaitingNote": "Une fois le paiement du patient reçu, vous pourrez traiter les éléments.",
+ "shWeekTitle": "Vue de la semaine",
+ "shWeekSessions": "${1} créneaux par semaine",
+ "shWorkDays": "${1} jours travaillés",
+ "shWeekHours": "${1} heures de travail",
+ "shNoShift": "Aucun créneau",
+ "shWeekHint": "Touchez un jour pour modifier ses créneaux."
 }

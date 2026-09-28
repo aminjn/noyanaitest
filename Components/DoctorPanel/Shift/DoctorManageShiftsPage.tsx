@@ -25,6 +25,7 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import DayShifts from "./DayShifts";
+import WeekOverview from "./WeekOverview";
 import Ixon from "@/Components/UI/Ixon";
 import ErrorIcon from "@/Components/Icons/ErrorIcon";
 import useShiftUtils from "./useShiftUtils";
@@ -82,6 +83,7 @@ const Inner = ({
 }) => {
   const [offDays, setOffDays] = useState<DoctorShiftDay[]>([]);
   const [value, setValue] = useState<ShiftContext>(defaultValue);
+  const tabState = useState<string>("Day0");
 
   const [isLoading, setIsLoading] = useState<
     Partial<ShiftContext[number]>[] | null
@@ -129,7 +131,14 @@ const Inner = ({
 
   return (
     <div className={classes.main}>
+      <WeekOverview
+        value={value}
+        offDays={offDays}
+        current={Number(tabState[0].replace("Day", "")) as DoctorShiftDay}
+        onPick={(day) => tabState[1](`Day${day}`)}
+      />
       <TabSystem
+        viewState={tabState}
         items={doctorShiftDays.map((day) => ({
           title: (
             <div className={classes.tabButton}>

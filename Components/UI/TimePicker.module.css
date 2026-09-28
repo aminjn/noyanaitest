@@ -6,15 +6,18 @@
 .picker {
   position: absolute;
   top: 100%;
-  background-color: var(--white);
   display: flex;
   align-items: center;
   gap: 0.5rem;
   direction: ltr;
   padding: 0.5rem;
-  box-shadow: var(--shadow);
-  border-radius: 0.5rem;
-  z-index: 1;
+  border-radius: 1rem;
+  border: 1px solid var(--glassLine);
+  background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+  box-shadow: var(--glassShadow);
+  z-index: 3;
 }
 
 .segment {
@@ -27,10 +30,12 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--onColor);
+  color: var(--aiText);
+  border: 1px solid var(--aiLine);
   border-radius: 100dvw;
-  padding: 0.5rem;
-  background-color: var(--primary2);
+  padding: 0.5rem 0.875rem;
+  background-color: var(--aiSoft);
+  cursor: pointer;
 }
 
 .clear {

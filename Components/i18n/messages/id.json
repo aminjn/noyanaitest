@@ -1953,5 +1953,11 @@
  "ioConfirm": "Konfirmasi",
  "ioProgress": "${1} dari ${2} selesai",
  "ioEmpty": "Tidak ada pesanan di sini.",
- "ioAwaitingNote": "Setelah pasien membayar, Anda bisa menyelesaikan itemnya."
+ "ioAwaitingNote": "Setelah pasien membayar, Anda bisa menyelesaikan itemnya.",
+ "shWeekTitle": "Sekilas seminggu",
+ "shWeekSessions": "${1} slot per minggu",
+ "shWorkDays": "${1} hari kerja",
+ "shWeekHours": "${1} jam kerja",
+ "shNoShift": "Tidak ada shift",
+ "shWeekHint": "Ketuk hari untuk mengubah shiftnya."
 }
