@@ -66,7 +66,9 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const pricing =
-    data?.pricing.find((p) => p.duration._id === durationId) || null;
+    (Array.isArray(data?.pricing) ? data.pricing : []).find(
+      (p) => p?.duration?._id === durationId,
+    ) || null;
   const price = pricing
     ? Math.max(0, (pricing.price || 0) - (pricing.discount || 0))
     : 0;

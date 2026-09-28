@@ -51,9 +51,9 @@ const DoctorManagePatientProfilePage = () => {
         <div className={classes.main}>
           <div className={classes.header}>
             <UserIdentity
-              identity={data.user.identity}
-              avatar={data.user.avatar}
-              username={data.user.username}
+              identity={data.user?.identity}
+              avatar={data.user?.avatar}
+              username={data.user?.username}
             />
           </div>
           <WithTitle

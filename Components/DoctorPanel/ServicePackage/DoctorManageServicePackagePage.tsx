@@ -65,7 +65,10 @@ const DoctorManageServicePackagePage = () => {
               getOptionLabel: (node) =>
                 (node as IService).name || (node as IService)._id,
               getOptionValue: (node) => (node as IService)._id,
-              getDefaultValue: (inp) => inp.services.map((s) => s._id),
+              getDefaultValue: (inp) =>
+                (Array.isArray(inp.services) ? inp.services : []).map(
+                  (s) => s._id,
+                ),
             },
             price: { title: getContent("price"), type: "number", price: true },
             discount: {
