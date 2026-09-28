@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "Bezahlte Bestellungen mit noch offenen Positionen.",
  "homeToFulfil": "offen",
  "homeInvitesPending": "${1} Einladung(en) offen",
- "groupCenter": "Einrichtung & Betrieb"
+ "groupCenter": "Einrichtung & Betrieb",
+ "homeTrend": "Letzte 30 Tage",
+ "homeTrendOrders": "Bestellungen",
+ "homeTrendSales": "Umsatz",
+ "homeTrendSummary": "${1} in den letzten ${2} Tagen",
+ "homeChartView": "Diagramm",
+ "homeTableView": "Tabelle",
+ "homeDay": "Tag"
 }

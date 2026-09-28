@@ -15,7 +15,39 @@ import WalletIcon from "@/Components/Icons/WalletIcon";
 import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
 import RetryIcon from "@/Components/Icons/RetryIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
-import DailyBarChart, { DailyPoint } from "./DailyBarChart";
+import DailyBarChart from "@/Components/UI/DailyBarChart";
+
+type DailyPoint = { date: string; count: number };
+
+// The admin panel is Persian-only.
+const AdminDailyChart = ({
+  title,
+  unit,
+  points,
+}: {
+  title: string;
+  unit: string;
+  points: DailyPoint[];
+}) => {
+  const list = Array.isArray(points) ? points : [];
+  const total = list.reduce((sum, p) => sum + (p?.count || 0), 0);
+  return (
+    <DailyBarChart
+      title={title}
+      locale="fa-IR"
+      rtl
+      points={list.map((p) => ({ date: p.date, value: p.count }))}
+      formatValue={(value) => `${num.format(value)} ${unit}`}
+      labels={{
+        summary: `${num.format(total)} ${unit} در ${num.format(list.length)} روز اخیر`,
+        chart: "نمودار",
+        table: "جدول",
+        day: "روز",
+        value: unit,
+      }}
+    />
+  );
+};
 
 type Dashboard = {
   generatedAt: string;
@@ -272,14 +304,14 @@ const AdminDashboard = () => {
 
           <div className={classes.charts}>
             <section className={classes.card}>
-              <DailyBarChart
+              <AdminDailyChart
                 title="ثبت‌نام روزانه"
                 unit="ثبت‌نام"
                 points={data.series.signups}
               />
             </section>
             <section className={classes.card}>
-              <DailyBarChart
+              <AdminDailyChart
                 title="رزرو روزانه"
                 unit="رزرو"
                 points={data.series.reservations}

@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "طلبات مدفوعة فيها عناصر لم تُجهَّز بعد.",
  "homeToFulfil": "بانتظار التجهيز",
  "homeInvitesPending": "${1} دعوة بانتظار الرد",
- "groupCenter": "المركز والأعمال"
+ "groupCenter": "المركز والأعمال",
+ "homeTrend": "آخر ٣٠ يومًا",
+ "homeTrendOrders": "الطلبات",
+ "homeTrendSales": "المبيعات",
+ "homeTrendSummary": "${1} في آخر ${2} يومًا",
+ "homeChartView": "مخطط",
+ "homeTableView": "جدول",
+ "homeDay": "اليوم"
 }

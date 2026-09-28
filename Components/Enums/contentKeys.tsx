@@ -2203,6 +2203,13 @@ const contentKeys = [
   "homeToFulfil",
   "homeInvitesPending",
   "groupCenter",
+  "homeTrend",
+  "homeTrendOrders",
+  "homeTrendSales",
+  "homeTrendSummary",
+  "homeChartView",
+  "homeTableView",
+  "homeDay",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

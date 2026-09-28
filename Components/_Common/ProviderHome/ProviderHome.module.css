@@ -99,6 +99,53 @@
   color: var(--aiText);
 }
 
+.trendHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.segment {
+  display: inline-flex;
+  padding: 0.1875rem;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+}
+
+.segment button {
+  padding: 0.3125rem 0.875rem;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--gray10);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.segment button:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+
+.segment .segmentActive {
+  background: var(--gradAccent);
+  color: var(--onColor);
+  font-weight: 600;
+}
+
+.chartCard {
+  padding: 1rem 1.125rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  border-radius: var(--radiusLg);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: blur(var(--glassBlur));
+}
+
 @media (max-width: 40em) {
   .tiles {
     grid-template-columns: repeat(2, minmax(0, 1fr));

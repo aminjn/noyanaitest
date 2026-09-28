@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "Paid orders with items you haven't fulfilled yet.",
  "homeToFulfil": "to fulfil",
  "homeInvitesPending": "${1} invite(s) pending",
- "groupCenter": "Your centre"
+ "groupCenter": "Your centre",
+ "homeTrend": "Last 30 days",
+ "homeTrendOrders": "Orders",
+ "homeTrendSales": "Sales",
+ "homeTrendSummary": "${1} in the last ${2} days",
+ "homeChartView": "Chart",
+ "homeTableView": "Table",
+ "homeDay": "Day"
 }

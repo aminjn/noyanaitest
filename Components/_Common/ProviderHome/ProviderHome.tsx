@@ -19,6 +19,7 @@ import useCenterDoctors, {
   CenterKind,
 } from "@/Components/_Common/CenterDoctors/useCenterDoctors";
 import useOrdersTodo from "./useOrdersTodo";
+import ProviderTrend from "./ProviderTrend";
 import CenterJoinInbox from "@/Components/_Common/CenterDoctors/CenterJoinInbox";
 
 export type ProviderKind =
@@ -242,6 +243,10 @@ const ProviderHome = ({
             ))}
           </div>
         </section>
+      )}
+
+      {hasOrders && (kind === "pharmacy" || kind === "paraClinic") && (
+        <ProviderTrend kind={kind} />
       )}
 
       {children}

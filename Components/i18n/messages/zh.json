@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "已付款但仍有商品未处理的订单。",
  "homeToFulfil": "待处理",
  "homeInvitesPending": "${1} 个邀请待回复",
- "groupCenter": "机构与经营"
+ "groupCenter": "机构与经营",
+ "homeTrend": "近30天",
+ "homeTrendOrders": "订单",
+ "homeTrendSales": "销售额",
+ "homeTrendSummary": "近${2}天共${1}",
+ "homeChartView": "图表",
+ "homeTableView": "表格",
+ "homeDay": "日期"
 }

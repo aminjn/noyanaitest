@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "Оплаченные заказы, в которых есть необработанные позиции.",
  "homeToFulfil": "к сборке",
  "homeInvitesPending": "Приглашений без ответа: ${1}",
- "groupCenter": "Центр и бизнес"
+ "groupCenter": "Центр и бизнес",
+ "homeTrend": "Последние 30 дней",
+ "homeTrendOrders": "Заказы",
+ "homeTrendSales": "Продажи",
+ "homeTrendSummary": "${1} за последние ${2} дн.",
+ "homeChartView": "График",
+ "homeTableView": "Таблица",
+ "homeDay": "День"
 }

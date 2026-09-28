@@ -2073,5 +2073,12 @@
  "homeOrdersTodoHint": "سفارش‌های پرداخت‌شده‌ای که هنوز اقلامی از آن‌ها آماده یا ارسال نشده است.",
  "homeToFulfil": "در انتظار آماده‌سازی",
  "homeInvitesPending": "${1} دعوت بی‌پاسخ",
- "groupCenter": "مرکز و کسب‌وکار"
+ "groupCenter": "مرکز و کسب‌وکار",
+ "homeTrend": "روند ۳۰ روز اخیر",
+ "homeTrendOrders": "سفارش‌ها",
+ "homeTrendSales": "فروش",
+ "homeTrendSummary": "${1} در ${2} روز اخیر",
+ "homeChartView": "نمودار",
+ "homeTableView": "جدول",
+ "homeDay": "روز"
 }

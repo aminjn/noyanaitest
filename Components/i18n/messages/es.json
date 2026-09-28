@@ -2051,5 +2051,12 @@
  "homeOrdersTodoHint": "Pedidos pagados con artículos aún sin preparar.",
  "homeToFulfil": "por preparar",
  "homeInvitesPending": "${1} invitación(es) pendiente(s)",
- "groupCenter": "Centro y negocio"
+ "groupCenter": "Centro y negocio",
+ "homeTrend": "Últimos 30 días",
+ "homeTrendOrders": "Pedidos",
+ "homeTrendSales": "Ventas",
+ "homeTrendSummary": "${1} en los últimos ${2} días",
+ "homeChartView": "Gráfico",
+ "homeTableView": "Tabla",
+ "homeDay": "Día"
 }
