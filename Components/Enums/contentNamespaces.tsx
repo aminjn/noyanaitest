@@ -506,6 +506,13 @@ export const contentNamespaces = {
     "pbFillIntake",
     "pbDetails",
     "pbBookAgain",
+    "cancelBooking",
+    "cancelBookingConfirmPatient",
+    "cancelBookingYes",
+    "cancelBookingKeep",
+    "cancelReasonOptional",
+    "cancelClosedHint",
+    "cancelledRefunded",
   ],
 
   // app/dashboard/transaction/page.tsx (DashboardManageTransactionsPage) —
@@ -2023,6 +2030,12 @@ export const contentNamespaces = {
     "visitMicDenied",
     "visitNotePatientVisible",
     "checkInOpensHint",
+    "cancelBooking",
+    "cancelBookingConfirmDoctor",
+    "cancelBookingYes",
+    "cancelBookingKeep",
+    "cancelReasonOptional",
+    "cancelledRefunded",
   ],
 
   // app/doctorpanel/office/page.tsx + [nodeId] (DoctorManageOfficesPage,

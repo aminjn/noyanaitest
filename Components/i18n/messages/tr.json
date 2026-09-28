@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "Hastalar artık sizden randevu alabilir. Eksiksiz bir profil daha fazla hasta çeker.",
  "dpdSugProfile": "Eksiksiz profile ${1} adım",
  "dpdSugProfileMeta": "Randevuya açıksınız; eksiksiz profil hastaların güvenini artırır",
- "checkInOpensHint": "Hasta girişi randevudan bir saat önce açılır."
+ "checkInOpensHint": "Hasta girişi randevudan bir saat önce açılır.",
+ "cancelBooking": "Randevuyu iptal et",
+ "cancelBookingConfirmPatient": "${1} toman cüzdanınıza iade edilir ve bu saat diğer hastalara açılır.",
+ "cancelBookingConfirmDoctor": "Tutarın tamamı hastanın cüzdanına iade edilir ve hastaya iptal bildirilir.",
+ "cancelBookingYes": "Evet, iptal et",
+ "cancelBookingKeep": "Hayır, kalsın",
+ "cancelReasonOptional": "Neden (isteğe bağlı)",
+ "cancelClosedHint": "Çevrimiçi iptal 24 saat öncesine kadar mümkündür; şimdi değişiklik için muayenehaneyle iletişime geçin.",
+ "cancelledRefunded": "Randevu iptal edildi ve tutarı hastanın cüzdanına iade edildi."
 }

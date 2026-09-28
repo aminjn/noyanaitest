@@ -2227,6 +2227,14 @@ const contentKeys = [
   "dpdSugProfile",
   "dpdSugProfileMeta",
   "checkInOpensHint",
+  "cancelBooking",
+  "cancelBookingConfirmPatient",
+  "cancelBookingConfirmDoctor",
+  "cancelBookingYes",
+  "cancelBookingKeep",
+  "cancelReasonOptional",
+  "cancelClosedHint",
+  "cancelledRefunded",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

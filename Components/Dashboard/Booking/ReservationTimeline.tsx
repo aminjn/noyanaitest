@@ -26,6 +26,8 @@ export type ReservationLifecycleData = {
   doctorPresentAt?: Date;
   noShowParty?: ReservationParty;
   finalizedAt?: Date;
+  cancelledAt?: Date;
+  cancelReason?: string;
 };
 
 type StepState = "done" | "pending" | "error" | "skipped";
@@ -107,9 +109,11 @@ const ReservationTimeline = ({ data }: { data: ReservationLifecycleData }) => {
     key: "outcome",
     state: outcomeStateDict[data.status],
     label: getContent(reservationStatusContentKeyDict[data.status]),
-    date: data.finalizedAt,
+    date: data.finalizedAt ?? (isCancelled ? data.cancelledAt : undefined),
     caption:
-      data.status === "noShow" && data.noShowParty
+      isCancelled && data.cancelReason
+        ? data.cancelReason
+        : data.status === "noShow" && data.noShowParty
         ? getContent(noShowCaptionKey[data.noShowParty])
         : data.status === "error"
           ? getContent("reservationErrorNotice")

@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "Os pacientes já podem agendar com você. Um perfil completo atrai mais pacientes.",
  "dpdSugProfile": "${1} passos para um perfil completo",
  "dpdSugProfileMeta": "Você já pode ser agendado; um perfil completo gera confiança",
- "checkInOpensHint": "O check-in do paciente abre uma hora antes da consulta."
+ "checkInOpensHint": "O check-in do paciente abre uma hora antes da consulta.",
+ "cancelBooking": "Cancelar consulta",
+ "cancelBookingConfirmPatient": "${1} tomans voltarão para sua carteira e este horário ficará livre para outros pacientes.",
+ "cancelBookingConfirmDoctor": "O valor total volta para a carteira do paciente, que é avisado do cancelamento.",
+ "cancelBookingYes": "Sim, cancelar",
+ "cancelBookingKeep": "Não, manter",
+ "cancelReasonOptional": "Motivo (opcional)",
+ "cancelClosedHint": "O cancelamento online é possível até 24 horas antes; para mudanças agora, contate o consultório.",
+ "cancelledRefunded": "A consulta foi cancelada e o valor voltou para a carteira do paciente."
 }

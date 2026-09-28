@@ -2075,5 +2075,13 @@
  "dpdSetupBookableDone": "Patients can now book with you. A complete profile attracts more of them.",
  "dpdSugProfile": "${1} steps to a complete profile",
  "dpdSugProfileMeta": "You're bookable; a complete profile builds patients' trust",
- "checkInOpensHint": "Patient check-in opens one hour before the appointment."
+ "checkInOpensHint": "Patient check-in opens one hour before the appointment.",
+ "cancelBooking": "Cancel appointment",
+ "cancelBookingConfirmPatient": "${1} toman will be returned to your wallet and this time will be freed for other patients.",
+ "cancelBookingConfirmDoctor": "The full amount goes back to the patient's wallet and they are notified of the cancellation.",
+ "cancelBookingYes": "Yes, cancel it",
+ "cancelBookingKeep": "No, keep it",
+ "cancelReasonOptional": "Reason (optional)",
+ "cancelClosedHint": "Online cancellation is possible up to 24 hours before; for changes now, contact the office.",
+ "cancelledRefunded": "The appointment was cancelled and its amount returned to the patient's wallet."
 }

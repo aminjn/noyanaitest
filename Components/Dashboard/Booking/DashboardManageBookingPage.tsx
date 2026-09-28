@@ -20,13 +20,14 @@ import ReservationStatusBadge from "./ReservationStatusBadge";
 import ReservationTimeline from "./ReservationTimeline";
 import ReservationJoinButton from "./ReservationJoinButton";
 import PatientIntakeCard from "@/Components/Visit/PatientIntakeCard";
+import ReservationCancel from "./ReservationCancel";
 
 const NS: ContentNamespace[] = ["common", "dashboardBooking"];
 
 const DashboardManageBookingPage = () => {
   const params = useParams<{ nodeId: string }>();
 
-  const { data, error } = useSWR<
+  const { data, error, mutate } = useSWR<
     IReservation<{
       Doctor: Record<never, never>;
       Office: Record<never, never>;
@@ -145,9 +146,28 @@ const DashboardManageBookingPage = () => {
                 />
               </div>
             )}
+
+            <div className={classes.joinRow}>
+              <ReservationCancel
+                side="patient"
+                reservation={{
+                  ...data,
+                  total:
+                    data.total ??
+                    (data.transaction
+                      ? Math.abs(data.transaction.amount)
+                      : undefined),
+                }}
+                ns={NS}
+                onDone={() => mutate()}
+              />
+            </div>
           </div>
 
-          <PatientIntakeCard reservationId={data._id} />
+          {/* no questionnaire for a cancelled visit */}
+          {data.status !== "cancelled" && (
+            <PatientIntakeCard reservationId={data._id} />
+          )}
 
           <div className={classes.card}>
             <span className={classes.title}>
