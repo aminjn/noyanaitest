@@ -1981,5 +1981,14 @@
  "cmdOpen": "Suchen und öffnen…",
  "cmdPlaceholder": "Wohin möchten Sie?",
  "cmdEmpty": "Nichts gefunden.",
- "cmdHint": "↑↓ wählen, Enter öffnen, Esc schließen"
+ "cmdHint": "↑↓ wählen, Enter öffnen, Esc schließen",
+ "cdPendingTitle": "Beitrittsanfragen von Ärzten",
+ "cdApprove": "Aufnehmen",
+ "cdMembers": "Ärzte im Team",
+ "cdInvited": "Eingeladen, wartet auf den Arzt",
+ "cdRemove": "Entfernen",
+ "cdRemoveAsk": "Diesen Arzt aus Ihrem Zentrum entfernen?",
+ "cdEmpty": "Noch keine Ärzte. Beitrittsanfragen erscheinen hier und im Dashboard.",
+ "cdTodo": "Wartet auf Sie",
+ "cdAllDone": "Nichts zu erledigen."
 }

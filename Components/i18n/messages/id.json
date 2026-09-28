@@ -1981,5 +1981,14 @@
  "cmdOpen": "Cari dan buka…",
  "cmdPlaceholder": "Mau ke mana?",
  "cmdEmpty": "Tidak ditemukan.",
- "cmdHint": "↑↓ pilih, Enter buka, Esc tutup"
+ "cmdHint": "↑↓ pilih, Enter buka, Esc tutup",
+ "cdPendingTitle": "Dokter yang ingin bergabung",
+ "cdApprove": "Setujui",
+ "cdMembers": "Dokter anggota",
+ "cdInvited": "Diundang, menunggu dokter",
+ "cdRemove": "Keluarkan",
+ "cdRemoveAsk": "Keluarkan dokter ini dari pusat Anda?",
+ "cdEmpty": "Belum ada dokter. Saat dokter meminta bergabung, permintaan muncul di sini dan di dasbor.",
+ "cdTodo": "Menunggu Anda",
+ "cdAllDone": "Tidak ada yang menunggu."
 }

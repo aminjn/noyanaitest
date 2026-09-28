@@ -1981,5 +1981,14 @@
  "cmdOpen": "Search and go to…",
  "cmdPlaceholder": "Where do you want to go?",
  "cmdEmpty": "Nothing found.",
- "cmdHint": "↑↓ to choose, Enter to open, Esc to close"
+ "cmdHint": "↑↓ to choose, Enter to open, Esc to close",
+ "cdPendingTitle": "Doctors asking to join",
+ "cdApprove": "Approve",
+ "cdMembers": "Member doctors",
+ "cdInvited": "Invited, waiting for the doctor",
+ "cdRemove": "Remove",
+ "cdRemoveAsk": "Remove this doctor from your centre?",
+ "cdEmpty": "No doctors yet. When a doctor asks to join, the request appears here and on your dashboard.",
+ "cdTodo": "Waiting for you",
+ "cdAllDone": "Nothing waiting for you."
 }

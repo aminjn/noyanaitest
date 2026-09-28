@@ -1,0 +1,132 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 900;
+  color: var(--gray13);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 900;
+  color: var(--gray13);
+}
+
+.count {
+  min-width: 1.5rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  color: var(--onColor);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 0.75rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1.25rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+}
+
+.pending {
+  border-style: dashed;
+  opacity: 0.85;
+}
+
+.meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+}
+
+.meta strong {
+  font-size: 0.9375rem;
+  font-weight: 900;
+  color: var(--gray13);
+}
+
+.meta span {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.ghost,
+.danger {
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--gray11);
+}
+
+.danger {
+  background: var(--error);
+  color: var(--onColor);
+}
+
+.ask {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--gray12);
+}
+
+.ask > div {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.empty {
+  padding: 2rem 1.25rem;
+  border-radius: var(--radiusLg);
+  background: var(--aiSoft);
+  color: var(--aiText);
+  line-height: 2;
+  font-weight: 600;
+}
+
+@media (max-width: 40rem) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -2133,6 +2133,15 @@ const contentKeys = [
   "cmdPlaceholder",
   "cmdEmpty",
   "cmdHint",
+  "cdPendingTitle",
+  "cdApprove",
+  "cdMembers",
+  "cdInvited",
+  "cdRemove",
+  "cdRemoveAsk",
+  "cdEmpty",
+  "cdTodo",
+  "cdAllDone",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

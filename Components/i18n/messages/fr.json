@@ -1981,5 +1981,14 @@
  "cmdOpen": "Rechercher et ouvrir…",
  "cmdPlaceholder": "Où voulez-vous aller ?",
  "cmdEmpty": "Aucun résultat.",
- "cmdHint": "↑↓ pour choisir, Entrée pour ouvrir, Échap pour fermer"
+ "cmdHint": "↑↓ pour choisir, Entrée pour ouvrir, Échap pour fermer",
+ "cdPendingTitle": "Médecins souhaitant rejoindre",
+ "cdApprove": "Accepter",
+ "cdMembers": "Médecins membres",
+ "cdInvited": "Invité, en attente du médecin",
+ "cdRemove": "Retirer",
+ "cdRemoveAsk": "Retirer ce médecin de votre centre ?",
+ "cdEmpty": "Aucun médecin pour l’instant. Les demandes d’adhésion apparaîtront ici et sur le tableau de bord.",
+ "cdTodo": "En attente",
+ "cdAllDone": "Rien en attente."
 }
