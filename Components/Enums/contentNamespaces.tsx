@@ -1187,6 +1187,24 @@ export const contentNamespaces = {
     "netMore",
   ],
 
+  providerHome: [
+    "dashboard",
+    "incomingOrders",
+    "doctors",
+    "products",
+    "productPackages",
+    "tests",
+    "teamTitle",
+    "articles",
+    "homeTodoTitle",
+    "homeAllClear",
+    "homeOverview",
+    "homeOpen",
+    "homeOrdersTodo",
+    "homeOrdersTodoHint",
+    "homeToFulfil",
+    "homeInvitesPending",
+  ],
   secretaryPanelHome: [
     "dashboard",
     "bosses",
@@ -2916,6 +2934,7 @@ export const contentNamespaces = {
     "groupDaily",
     "groupPractice",
     "groupNetwork",
+    "groupCenter",
   ],
   // Components/Layout/DoctorPanelLicenseBalanceHeader (doctorpanel clinic/hospital
   // pages and DoctorPanel/_UI/WithBalanceHeader users).

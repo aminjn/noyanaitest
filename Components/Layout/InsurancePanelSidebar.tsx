@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
+import UserCircleIcon from "../Icons/UserCircleIcon";
+import CartIcon from "../Icons/CartIcon";
 import useAcl from "../Hooks/useAcl";
 
 const InsurancePanelSidebar = () => {
@@ -12,8 +14,16 @@ const InsurancePanelSidebar = () => {
     () => [
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
+        icon: <UserCircleIcon />,
+        title: "profile",
+        group: "groupCenter",
+        show: true,
+        target: "profile",
+      },
+      {
         icon: <UserEditIcon />,
         title: "teamTitle",
+        group: "groupCenter",
         // Managing secretaries/access-levels is never delegable — only the
         // real owner (hasAccess() with no action, true only for "FULL") can
         // see this.
@@ -21,22 +31,18 @@ const InsurancePanelSidebar = () => {
         target: "secretary",
       },
       {
-        icon: <UserEditIcon />,
+        icon: <CartIcon />,
         title: "licenses",
+        group: "groupCenter",
         show: hasAccess("readLicenses"),
         target: "license",
       },
       {
         icon: <FileDuplicateIcon />,
         title: "articles",
+        group: "groupCenter",
         show: hasAccess("readArticles"),
         target: "article",
-      },
-      {
-        icon: <UserEditIcon />,
-        title: "profile",
-        show: true,
-        target: "profile",
       },
     ],
     [hasAccess],

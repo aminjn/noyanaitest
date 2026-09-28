@@ -1,18 +1,12 @@
 "use client";
 
-import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import CurrentLicenseWidget from "./CurrentLicenseWidget";
+import ProviderHome from "@/Components/_Common/ProviderHome/ProviderHome";
 
-const NS: ContentNamespace[] = ["common", "pharmacyPanelHome"];
-
-const PharmacyPanelPage = () => {
-  const getContent = useScopedLocale(NS);
-  useBreadCrump([
-    { title: getContent("dashboard"), target: "/pharmacypanel" },
-  ]);
-  return <CurrentLicenseWidget />;
-};
+const PharmacyPanelPage = () => (
+  <ProviderHome kind="pharmacy">
+    <CurrentLicenseWidget />
+  </ProviderHome>
+);
 
 export default PharmacyPanelPage;

@@ -2042,5 +2042,14 @@
  "netManage": "Verwalten",
  "netNone": "Noch nichts.",
  "netPending": "${1} ausstehend",
- "netMore": "und ${1} weitere"
+ "netMore": "und ${1} weitere",
+ "homeTodoTitle": "Wartet auf Sie",
+ "homeAllClear": "Alles erledigt – nichts wartet auf Sie.",
+ "homeOverview": "Überblick",
+ "homeOpen": "Bearbeiten",
+ "homeOrdersTodo": "Bestellungen warten auf Bearbeitung",
+ "homeOrdersTodoHint": "Bezahlte Bestellungen mit noch offenen Positionen.",
+ "homeToFulfil": "offen",
+ "homeInvitesPending": "${1} Einladung(en) offen",
+ "groupCenter": "Einrichtung & Betrieb"
 }

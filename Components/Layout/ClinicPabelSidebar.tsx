@@ -7,6 +7,8 @@ import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
+import UserCircleIcon from "../Icons/UserCircleIcon";
+import CartIcon from "../Icons/CartIcon";
 import useAcl from "../Hooks/useAcl";
 
 const ClinicPanelSidebar = () => {
@@ -24,19 +26,11 @@ const ClinicPanelSidebar = () => {
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
         title: "doctors",
+        group: "groupDaily",
         icon: <StetoscopeIcon />,
         badge: joinRequests,
         show: hasAccess(),
         target: "doctor",
-      },
-      {
-        title: "teamTitle",
-        icon: <UserEditIcon />,
-        // Managing secretaries/access-levels is never delegable — only the
-        // real owner (hasAccess() with no action, true only for "FULL") can
-        // see this.
-        show: hasAccess(),
-        target: "secretary",
       },
       // Tamin end-user lockout (2026-09) - hard-hidden regardless of ACL
       // while Tamin only talks to its sandbox API; see
@@ -45,27 +39,41 @@ const ClinicPanelSidebar = () => {
       // `hasAccess("readPrescriptions")` once Tamin goes live.
       {
         title: "prescriptions",
+        group: "groupDaily",
         icon: <UserEditIcon />,
         show: false,
         target: "prescription",
       },
       {
-        title: "licenses",
+        title: "profile",
+        group: "groupCenter",
+        icon: <UserCircleIcon />,
+        show: true,
+        target: "profile",
+      },
+      {
+        title: "teamTitle",
+        group: "groupCenter",
         icon: <UserEditIcon />,
+        // Managing secretaries/access-levels is never delegable — only the
+        // real owner (hasAccess() with no action, true only for "FULL") can
+        // see this.
+        show: hasAccess(),
+        target: "secretary",
+      },
+      {
+        title: "licenses",
+        group: "groupCenter",
+        icon: <CartIcon />,
         show: hasAccess("readLicenses"),
         target: "license",
       },
       {
         title: "articles",
+        group: "groupCenter",
         icon: <FileDuplicateIcon />,
         show: hasAccess("readArticles"),
         target: "article",
-      },
-      {
-        title: "profile",
-        icon: <UserEditIcon />,
-        show: true,
-        target: "profile",
       },
     ],
     [hasAccess, joinRequests],

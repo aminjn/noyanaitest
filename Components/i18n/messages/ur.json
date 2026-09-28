@@ -2042,5 +2042,14 @@
  "netManage": "انتظام",
  "netNone": "ابھی کچھ نہیں۔",
  "netPending": "${1} زیرِ التوا",
- "netMore": "اور ${1} مزید"
+ "netMore": "اور ${1} مزید",
+ "homeTodoTitle": "آپ کے منتظر",
+ "homeAllClear": "سب ٹھیک ہے؛ کوئی کام آپ کا منتظر نہیں۔",
+ "homeOverview": "جائزہ",
+ "homeOpen": "نمٹائیں",
+ "homeOrdersTodo": "تیاری کے منتظر آرڈر",
+ "homeOrdersTodoHint": "ادا شدہ آرڈر جن کی کچھ اشیاء ابھی تیار نہیں ہوئیں۔",
+ "homeToFulfil": "تیاری کے منتظر",
+ "homeInvitesPending": "${1} دعوت نامے زیرِ التوا",
+ "groupCenter": "مرکز اور کاروبار"
 }

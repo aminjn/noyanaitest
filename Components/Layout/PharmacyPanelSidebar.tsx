@@ -8,53 +8,37 @@ import FolderIcon from "../Icons/FolderIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import useAcl from "../Hooks/useAcl";
+import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
 const PharmacyPanelSidebar = () => {
   const hasAccess = useAcl("pharmacy");
+
+  const orders = useOrdersTodo("pharmacy", hasAccess("readOrders"));
 
   const links = useMemo<LinkMap>(
     () => [
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
-        title: "profile",
-        icon: <UserCircleIcon />,
-        // Baseline page, same as every other panel's profile nav item —
-        // always visible, not gated behind an ACL action.
-        show: true,
-        target: "profile",
-      },
-      {
-        title: "teamTitle",
-        icon: <UserEditIcon />,
-        // Managing secretaries/access-levels is never delegable — only the
-        // real owner (hasAccess() with no action, true only for "FULL") can
-        // see this.
-        show: hasAccess(),
-        target: "secretary",
+        title: "incomingOrders",
+        icon: <PackageIcon />,
+        group: "groupDaily",
+        badge: orders.count,
+        show: hasAccess("readOrders"),
+        target: "order",
       },
       {
         title: "products",
         icon: <CartIcon />,
+        group: "groupDaily",
         show: hasAccess("readProducts"),
         target: "product",
       },
       {
         title: "productPackages",
         icon: <FolderIcon />,
+        group: "groupDaily",
         show: hasAccess("readProductPackages"),
         target: "productPackage",
-      },
-      {
-        title: "incomingOrders",
-        icon: <PackageIcon />,
-        show: hasAccess("readOrders"),
-        target: "order",
-      },
-      {
-        title: "licenses",
-        icon: <CartIcon />,
-        show: hasAccess("readLicenses"),
-        target: "license",
       },
       // Tamin end-user lockout (2026-09) - "prescriptions" and "tamin" are
       // hard-hidden regardless of ACL while Tamin only talks to its sandbox
@@ -64,23 +48,52 @@ const PharmacyPanelSidebar = () => {
       {
         title: "prescriptions",
         icon: <UserEditIcon />,
+        group: "groupDaily",
         show: false,
         target: "prescription",
-      },
-      {
-        title: "articles",
-        icon: <FileDuplicateIcon />,
-        show: hasAccess("readArticles"),
-        target: "article",
       },
       {
         title: "tamin",
         show: false,
         icon: <UserEditIcon />,
+        group: "groupDaily",
         target: "tamin",
       },
+      {
+        title: "profile",
+        icon: <UserCircleIcon />,
+        group: "groupCenter",
+        // Baseline page, same as every other panel's profile nav item —
+        // always visible, not gated behind an ACL action.
+        show: true,
+        target: "profile",
+      },
+      {
+        title: "teamTitle",
+        icon: <UserEditIcon />,
+        group: "groupCenter",
+        // Managing secretaries/access-levels is never delegable — only the
+        // real owner (hasAccess() with no action, true only for "FULL") can
+        // see this.
+        show: hasAccess(),
+        target: "secretary",
+      },
+      {
+        title: "licenses",
+        icon: <CartIcon />,
+        group: "groupCenter",
+        show: hasAccess("readLicenses"),
+        target: "license",
+      },
+      {
+        title: "articles",
+        icon: <FileDuplicateIcon />,
+        group: "groupCenter",
+        show: hasAccess("readArticles"),
+        target: "article",
+      },
     ],
-    [hasAccess],
+    [hasAccess, orders.count],
   );
 
   return <PanelSidebar links={links} panel="pharmacypanel" />;

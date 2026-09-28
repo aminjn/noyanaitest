@@ -2042,5 +2042,14 @@
  "netManage": "Gérer",
  "netNone": "Rien pour l’instant.",
  "netPending": "${1} en attente",
- "netMore": "et ${1} de plus"
+ "netMore": "et ${1} de plus",
+ "homeTodoTitle": "En attente de vous",
+ "homeAllClear": "Tout est à jour : rien ne vous attend.",
+ "homeOverview": "Vue d’ensemble",
+ "homeOpen": "Traiter",
+ "homeOrdersTodo": "Commandes en attente de préparation",
+ "homeOrdersTodoHint": "Commandes payées dont des articles ne sont pas encore traités.",
+ "homeToFulfil": "à traiter",
+ "homeInvitesPending": "${1} invitation(s) en attente",
+ "groupCenter": "Établissement"
 }

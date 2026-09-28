@@ -2042,5 +2042,14 @@
  "netManage": "Yönet",
  "netNone": "Henüz yok.",
  "netPending": "${1} beklemede",
- "netMore": "ve ${1} tane daha"
+ "netMore": "ve ${1} tane daha",
+ "homeTodoTitle": "Sizi bekleyenler",
+ "homeAllClear": "Her şey yolunda — sizi bekleyen bir iş yok.",
+ "homeOverview": "Genel bakış",
+ "homeOpen": "İlgilen",
+ "homeOrdersTodo": "Hazırlanmayı bekleyen siparişler",
+ "homeOrdersTodoHint": "Ödenmiş ama bazı kalemleri henüz hazırlanmamış siparişler.",
+ "homeToFulfil": "hazırlanacak",
+ "homeInvitesPending": "${1} yanıtsız davet",
+ "groupCenter": "Merkez ve işletme"
 }

@@ -2042,5 +2042,14 @@
  "netManage": "Gestionar",
  "netNone": "Nada todavía.",
  "netPending": "${1} pendientes",
- "netMore": "y ${1} más"
+ "netMore": "y ${1} más",
+ "homeTodoTitle": "Pendiente para ti",
+ "homeAllClear": "Todo al día: no hay nada pendiente.",
+ "homeOverview": "Resumen",
+ "homeOpen": "Atender",
+ "homeOrdersTodo": "Pedidos pendientes de preparar",
+ "homeOrdersTodoHint": "Pedidos pagados con artículos aún sin preparar.",
+ "homeToFulfil": "por preparar",
+ "homeInvitesPending": "${1} invitación(es) pendiente(s)",
+ "groupCenter": "Centro y negocio"
 }

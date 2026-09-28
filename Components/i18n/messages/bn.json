@@ -2042,5 +2042,14 @@
  "netManage": "ব্যবস্থাপনা",
  "netNone": "এখনো কিছু নেই।",
  "netPending": "${1}টি অপেক্ষমাণ",
- "netMore": "আরও ${1}টি"
+ "netMore": "আরও ${1}টি",
+ "homeTodoTitle": "আপনার অপেক্ষায়",
+ "homeAllClear": "সব ঠিক আছে — আপনার জন্য কিছু অপেক্ষমাণ নেই।",
+ "homeOverview": "সংক্ষিপ্ত বিবরণ",
+ "homeOpen": "দেখুন",
+ "homeOrdersTodo": "প্রস্তুতির অপেক্ষায় থাকা অর্ডার",
+ "homeOrdersTodoHint": "পরিশোধিত অর্ডার যার কিছু আইটেম এখনও প্রস্তুত হয়নি।",
+ "homeToFulfil": "প্রস্তুতির অপেক্ষায়",
+ "homeInvitesPending": "${1}টি আমন্ত্রণ অপেক্ষমাণ",
+ "groupCenter": "কেন্দ্র ও ব্যবসা"
 }

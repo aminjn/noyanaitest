@@ -7,6 +7,8 @@ import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
+import UserCircleIcon from "../Icons/UserCircleIcon";
+import CartIcon from "../Icons/CartIcon";
 import useAcl from "../Hooks/useAcl";
 
 const HospitalPanelSidebar = () => {
@@ -24,13 +26,22 @@ const HospitalPanelSidebar = () => {
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
         title: "doctors",
+        group: "groupDaily",
         icon: <StetoscopeIcon />,
         badge: joinRequests,
         show: hasAccess(),
         target: "doctor",
       },
       {
+        title: "profile",
+        group: "groupCenter",
+        icon: <UserCircleIcon />,
+        show: true,
+        target: "profile",
+      },
+      {
         title: "teamTitle",
+        group: "groupCenter",
         icon: <UserEditIcon />,
         // Managing secretaries/access-levels is never delegable — only the
         // real owner (hasAccess() with no action, true only for "FULL") can
@@ -40,21 +51,17 @@ const HospitalPanelSidebar = () => {
       },
       {
         title: "licenses",
-        icon: <UserEditIcon />,
+        group: "groupCenter",
+        icon: <CartIcon />,
         show: hasAccess("readLicenses"),
         target: "license",
       },
       {
         title: "articles",
+        group: "groupCenter",
         icon: <FileDuplicateIcon />,
         show: hasAccess("readArticles"),
         target: "article",
-      },
-      {
-        title: "profile",
-        icon: <UserEditIcon />,
-        show: true,
-        target: "profile",
       },
     ],
     [hasAccess, joinRequests],

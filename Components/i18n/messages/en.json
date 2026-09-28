@@ -2042,5 +2042,14 @@
  "netManage": "Manage",
  "netNone": "Nothing yet.",
  "netPending": "${1} pending",
- "netMore": "and ${1} more"
+ "netMore": "and ${1} more",
+ "homeTodoTitle": "Waiting for you",
+ "homeAllClear": "All caught up — nothing is waiting for you.",
+ "homeOverview": "Overview",
+ "homeOpen": "Handle",
+ "homeOrdersTodo": "Orders waiting to be fulfilled",
+ "homeOrdersTodoHint": "Paid orders with items you haven't fulfilled yet.",
+ "homeToFulfil": "to fulfil",
+ "homeInvitesPending": "${1} invite(s) pending",
+ "groupCenter": "Your centre"
 }

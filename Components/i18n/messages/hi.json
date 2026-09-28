@@ -2042,5 +2042,14 @@
  "netManage": "प्रबंधन",
  "netNone": "अभी कुछ नहीं।",
  "netPending": "${1} लंबित",
- "netMore": "और ${1}"
+ "netMore": "और ${1}",
+ "homeTodoTitle": "आपके लिए लंबित",
+ "homeAllClear": "सब कुछ ठीक है — आपके लिए कुछ भी लंबित नहीं है।",
+ "homeOverview": "अवलोकन",
+ "homeOpen": "देखें",
+ "homeOrdersTodo": "तैयारी के लिए लंबित ऑर्डर",
+ "homeOrdersTodoHint": "भुगतान किए गए ऑर्डर जिनकी कुछ वस्तुएँ अभी तैयार नहीं हुईं।",
+ "homeToFulfil": "तैयारी हेतु लंबित",
+ "homeInvitesPending": "${1} आमंत्रण लंबित",
+ "groupCenter": "केंद्र और व्यवसाय"
 }
