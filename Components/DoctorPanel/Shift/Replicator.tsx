@@ -11,6 +11,7 @@ import Button from "@/Components/UI/Button";
 import { nanoid } from "nanoid";
 import useNotification from "@/Components/Hooks/useNotification";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
@@ -30,6 +31,8 @@ const Replicator = ({
   const getContent = useScopedLocale(NS);
 
   const pushNotification = useNotification();
+
+  const intlTag = useIntlLocale();
 
   return (
     <div className={`${classes.main}`}>
@@ -126,7 +129,7 @@ const Replicator = ({
                 }}
               >
                 {getContent("applySettingsOnXDays", [
-                  seletcedDays.length.toString(),
+                  seletcedDays.length.toLocaleString(intlTag),
                 ])}
               </Button>
             </div>

@@ -102,10 +102,20 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
     );
   }, [config]);
 
+  // bookable in-person places; a single one is picked for the patient
+  // (the "pick a clinic" popup used to open on page load, before any click)
+  const offices = useMemo(
+    () =>
+      (Array.isArray(config?.offices) ? config.offices : []).filter(
+        (office) => office && office.active !== false,
+      ),
+    [config],
+  );
+
   useEffect(() => {
-    if (sessionType === "inPerson" && !selectedClinic)
-      setPopup("SelectClinicFirst", <SelectClinicFirstPopup />);
-  }, [sessionType, selectedClinic, setPopup]);
+    if (offices.length === 1 && !selectedClinic)
+      setSelectedClinic(offices[0]._id);
+  }, [offices, selectedClinic]);
 
   // Same reset-on-day-change behavior as the popup, so a stale [start, end]
   // from a previously selected day is never carried over silently.
@@ -171,6 +181,10 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
   }, [availabilities, selectedDay]);
 
   const confirmReservation = () => {
+    if (sessionType === "inPerson" && !!offices.length && !selectedClinic) {
+      setPopup("SelectClinicFirst", <SelectClinicFirstPopup />);
+      return;
+    }
     if (!selectedSession) return;
     if (!user) {
       setPopup("Auth", <AuthPopup />);
@@ -283,13 +297,13 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           )}
         </div>
       )}
-      {!!config && sessionType === "inPerson" && !!config.offices.length && (
+      {!!config && sessionType === "inPerson" && !!offices.length && (
         <div className={classes.sidebarBlock}>
           <legend className={classes.sidebarLabel}>
             {getContent("clinic")}
           </legend>
           <div className={classes.pillRow}>
-            {config.offices.map((office) => (
+            {offices.map((office) => (
               <button
                 type="button"
                 key={office._id}
@@ -338,7 +352,8 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
                     })}
                   </span>
                   <span className={classes.dayCardCount}>
-                    {count} {getContent("availableSessionCount")}
+                    {count.toLocaleString(intlTag)}{" "}
+                    {getContent("availableSessionCount")}
                   </span>
                 </button>
               );
@@ -383,7 +398,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           )}`}</span>
         </div>
       )}
-      {!!config && !(sessionType === "inPerson" && !selectedClinic) && (
+      {!!config && (
         <Button
           className={classes.bookButton}
           radius="High"
