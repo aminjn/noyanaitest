@@ -1959,5 +1959,11 @@
  "shWorkDays": "${1} working days",
  "shWeekHours": "${1} working hours",
  "shNoShift": "No shifts",
- "shWeekHint": "Tap a day to edit its shifts."
+ "shWeekHint": "Tap a day to edit its shifts.",
+ "csSoon": "Coming soon",
+ "csOffers": "Publish special offers for your practice, such as a discounted first visit or an annual check-up package. They'll appear on your public page and in search results.",
+ "csDiscounts": "Create discount codes for loyal patients or special occasions, with a usage limit and an expiry date.",
+ "csDocuments": "Documents patients send you (lab results, imaging, prescriptions) will be collected here in one place. Until then, each patient's files are on their patient page and in chat.",
+ "csToPatients": "Go to patients",
+ "csToPackages": "Create a service package"
 }

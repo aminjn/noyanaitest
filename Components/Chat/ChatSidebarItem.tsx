@@ -1,4 +1,4 @@
-import { useIntlLocale } from "@/Components/i18n/navigation";
+import { useIntlLocale, usePathname } from "@/Components/i18n/navigation";
 import { useMemo } from "react";
 import useUser, { IUser } from "../Hooks/useUser";
 import { IChat, getChatParticipantName } from "./ChatSidebar";
@@ -22,6 +22,8 @@ const ChatSidebarItem = ({
   const getContent = useScopedLocale(LOCALE_NS);
   const params = useParams<{ nodeId?: string }>();
   const isActive = params?.nodeId === chat._id;
+  // the same inbox serves patients (/dashboard) and doctors (/doctorpanel)
+  const base = usePathname().startsWith("/doctorpanel") ? "/doctorpanel/chat" : "/dashboard/chat";
 
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
     () => chat.participants.find((p) => p._id !== user?._id),
@@ -36,7 +38,7 @@ const ChatSidebarItem = ({
 
   return (
     <Link
-      href={`/dashboard/chat/${chat._id}`}
+      href={`${base}/${chat._id}`}
       className={`${classes.main} ${isActive ? classes.active : ""}`}
       aria-current={isActive ? "page" : undefined}
     >

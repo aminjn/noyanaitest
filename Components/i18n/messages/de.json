@@ -1959,5 +1959,11 @@
  "shWorkDays": "${1} Arbeitstage",
  "shWeekHours": "${1} Arbeitsstunden",
  "shNoShift": "Keine Schichten",
- "shWeekHint": "Tippen Sie auf einen Tag, um seine Schichten zu bearbeiten."
+ "shWeekHint": "Tippen Sie auf einen Tag, um seine Schichten zu bearbeiten.",
+ "csSoon": "Demnächst",
+ "csOffers": "Veröffentlichen Sie Sonderangebote Ihrer Praxis, etwa einen vergünstigten Ersttermin oder ein jährliches Check-up-Paket. Sie erscheinen auf Ihrer öffentlichen Seite und in den Suchergebnissen.",
+ "csDiscounts": "Erstellen Sie Rabattcodes für treue Patienten oder besondere Anlässe, mit Nutzungslimit und Ablaufdatum.",
+ "csDocuments": "Von Patienten gesendete Unterlagen (Laborwerte, Bildgebung, Rezepte) werden hier gesammelt. Bis dahin finden Sie die Dateien auf der Seite des Patienten und im Chat.",
+ "csToPatients": "Zu den Patienten",
+ "csToPackages": "Leistungspaket erstellen"
 }

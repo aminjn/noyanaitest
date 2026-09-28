@@ -2111,6 +2111,12 @@ const contentKeys = [
   "shWeekHours",
   "shNoShift",
   "shWeekHint",
+  "csSoon",
+  "csOffers",
+  "csDiscounts",
+  "csDocuments",
+  "csToPatients",
+  "csToPackages",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

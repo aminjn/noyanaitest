@@ -23,6 +23,7 @@ import useForm from "../Hooks/useForm";
 import Form from "../UI/Form";
 import CloseIcon from "../Icons/CloseIcon";
 import Link from "@/Components/i18n/Link";
+import { usePathname } from "@/Components/i18n/navigation";
 import useAnimateOnScroll from "../Hooks/useAnimateOnScroll";
 import CheckIcon from "../Icons/CheckIcon";
 import DoubleCheckIcon from "../Icons/DoubleCheckIcon";
@@ -193,6 +194,7 @@ const InnerChat = ({
   onOpenSidebar?: () => void;
 }) => {
   const { user } = useUser();
+  const isDoctorSide = usePathname().startsWith("/doctorpanel");
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
     () => chat.participants.find((p) => p._id !== user?._id),
     [chat, user],
@@ -223,12 +225,15 @@ const InnerChat = ({
         <Button className={classes.action}>{getContent("closeChat")}</Button>
       </div>
       <div className={classes.body}>
-        <p className={classes.safety} role="note">
-          <Ixon width="0.9rem">
-            <SparkIcon />
-          </Ixon>
-          {getContent("chatUrgentNote")}
-        </p>
+        {/* the "call 115" note is for patients, not the doctor's side */}
+        {!isDoctorSide && (
+          <p className={classes.safety} role="note">
+            <Ixon width="0.9rem">
+              <SparkIcon />
+            </Ixon>
+            {getContent("chatUrgentNote")}
+          </p>
+        )}
         {!!chat.messages.length ? (
           chat.messages.map((message) => (
             <ChatMessage key={message._id} _id={message._id} />
