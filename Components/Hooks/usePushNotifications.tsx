@@ -6,13 +6,18 @@ import { fetcher } from "../helpers/fetcher";
 // PushManager.subscribe() wants applicationServerKey as raw bytes but the
 // backend hands us VAPID_PUBLIC_KEY as the base64url string web-push uses
 // (see Lib/Env.ts on noyanai-back).
-const urlBase64ToUint8Array = (base64String: string): Uint8Array => {
+// Backed by a plain ArrayBuffer (not ArrayBufferLike), which is what
+// PushManager.subscribe's applicationServerKey (BufferSource) accepts under
+// TypeScript 5.7+ lib types - this used to be the one known tsc error.
+const urlBase64ToUint8Array = (
+  base64String: string,
+): Uint8Array<ArrayBuffer> => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)
     .replace(/-/g, "+")
     .replace(/_/g, "/");
   const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
+  const outputArray = new Uint8Array(new ArrayBuffer(rawData.length));
   for (let i = 0; i < rawData.length; ++i)
     outputArray[i] = rawData.charCodeAt(i);
   return outputArray;

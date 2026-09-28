@@ -189,6 +189,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "ادمین‌ها", href: "useraccesslevel" },
       { title: "سطوح دسترسی", href: "accesslevel" },
       { title: "تنظیمات سیستم", href: "appConfig" },
+      { title: "زبان‌های سایت", href: "languages" },
       { title: "تنظیمات مالی", href: "globalFinanceSettings" },
       { title: "تنظیمات مالیاتی", href: "globalTaxSettings" },
       { title: "پترن‌های پیامک", href: "smsPatterns" },

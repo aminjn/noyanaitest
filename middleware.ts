@@ -2,8 +2,8 @@ import { NextResponse, NextRequest } from "next/server";
 import { getPublicData } from "./Components/helpers/getPublicData";
 import { IShortLink } from "./Components/Admin/ShortLink/AdminManageShortLinksPage";
 import { IRedirection } from "./Components/Admin/Redirection/AdminManageRedirectionsPage";
+import { getEnabledLocales } from "./Components/i18n/getEnabledLocales";
 import {
-  isEnabledLocale,
   LOCALE_HEADER,
   PATH_HEADER,
   localizePath,
@@ -15,12 +15,15 @@ const middleware = async (req: NextRequest) => {
   // Persian. The page tree itself has no locale segment.
   const { locale, path: pathname } = splitLocale(req.nextUrl.pathname);
 
-  // Not translated yet -> the Persian page (no prefix), not a half-done LTR
-  // one. The super admin panel is Persian-only as well.
+  // A language the super admin switched off -> the Persian page (no
+  // prefix). The super admin panel is Persian-only as well.
   const adminKey = process.env.ADMIN_KEY;
   const isAdmin =
     !!adminKey && (pathname === `/${adminKey}` || pathname.startsWith(`/${adminKey}/`));
-  if (locale !== "fa" && (!isEnabledLocale(locale) || isAdmin)) {
+  if (
+    locale !== "fa" &&
+    (isAdmin || !(await getEnabledLocales()).includes(locale))
+  ) {
     const url = req.nextUrl.clone();
     url.pathname = pathname;
     return NextResponse.redirect(url, 307);
@@ -52,6 +55,14 @@ const middleware = async (req: NextRequest) => {
     return NextResponse.next({ request: { headers } });
   const url = req.nextUrl.clone();
   url.pathname = pathname;
+  // Behind nginx (TLS terminated there, `X-Forwarded-Proto: https`), Next's
+  // router takes the request origin as https://127.0.0.1:3100 while this URL
+  // says http:// - an origin mismatch it treats as an *external* rewrite, so
+  // it proxies over TLS to its own plain-HTTP port and every "/<locale>/..."
+  // page became a 500 in production. Same protocol rule as Next's own
+  // (resolve-routes: x-forwarded-proto includes "https") keeps it internal.
+  if (req.headers.get("x-forwarded-proto")?.includes("https"))
+    url.protocol = "https:";
   return NextResponse.rewrite(url, { request: { headers } });
 };
 

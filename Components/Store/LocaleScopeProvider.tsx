@@ -14,17 +14,23 @@ const LocaleScopeProvider = ({
   children,
   initialTextContent,
   locale,
+  enabledLocales,
 }: {
   children: ReactNode;
   namespaces?: ContentNamespace[];
   initialTextContent?: Partial<ITextContent>;
   locale?: Locale;
+  enabledLocales?: readonly Locale[];
 }) => {
   const parent = useContext(LocaleContext);
   if (!locale) return <>{children}</>;
   return (
     <LocaleContext.Provider
-      value={{ textContent: initialTextContent || parent.textContent, locale }}
+      value={{
+        textContent: initialTextContent || parent.textContent,
+        locale,
+        enabledLocales: enabledLocales || parent.enabledLocales,
+      }}
     >
       {children}
     </LocaleContext.Provider>

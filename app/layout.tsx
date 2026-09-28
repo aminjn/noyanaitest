@@ -9,6 +9,7 @@ import { BreadCrumpContextProvider } from "@/Components/Store/BreadCrumpStore";
 import { SockectContextProvider } from "@/Components/Store/SocketContext";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getMessages } from "@/Components/i18n/getMessages";
+import { getEnabledLocales } from "@/Components/i18n/getEnabledLocales";
 import { headers } from "next/headers";
 import { themeInitScript } from "@/Components/UI/Theme/theme";
 import { localeAlternates } from "@/Components/i18n/alternates";
@@ -67,7 +68,10 @@ export default async function RootLayout({
 }>) {
   const headerLocale = headers().get(LOCALE_HEADER);
   const locale = isLocale(headerLocale) ? headerLocale : defaultLocale;
-  const messages = await getMessages(locale);
+  const [messages, enabledLocales] = await Promise.all([
+    getMessages(locale),
+    getEnabledLocales(),
+  ]);
 
   // No <Suspense> around the tree: it used to be here only because
   // ProgressContextProvider called useSearchParams(), and its fallback
@@ -80,7 +84,11 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className={font.variable}>
-        <LocaleScopeProvider initialTextContent={messages} locale={locale}>
+        <LocaleScopeProvider
+          initialTextContent={messages}
+          locale={locale}
+          enabledLocales={enabledLocales}
+        >
           <ProgressContextProvider>
             <NotificationContextProvider>
               <PopupContextProvider>
