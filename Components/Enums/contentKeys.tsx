@@ -2235,6 +2235,20 @@ const contentKeys = [
   "cancelReasonOptional",
   "cancelClosedHint",
   "cancelledRefunded",
+  "visitReviewTitle",
+  "visitReviewIntro",
+  "visitReviewScore",
+  "visitReviewRecommend",
+  "visitReviewPublic",
+  "visitReviewPrivate",
+  "visitReviewSubmit",
+  "visitReviewThanks",
+  "visitReviewPickScore",
+  "reviewsVerified",
+  "reviewsRecommendPercent",
+  "reviewsEmpty",
+  "reviewsMore",
+  "reviewsRecommends",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

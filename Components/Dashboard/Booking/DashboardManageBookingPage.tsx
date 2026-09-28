@@ -21,6 +21,7 @@ import ReservationTimeline from "./ReservationTimeline";
 import ReservationJoinButton from "./ReservationJoinButton";
 import PatientIntakeCard from "@/Components/Visit/PatientIntakeCard";
 import ReservationCancel from "./ReservationCancel";
+import VisitFeedbackCard from "@/Components/Visit/VisitFeedbackCard";
 
 const NS: ContentNamespace[] = ["common", "dashboardBooking"];
 
@@ -163,6 +164,10 @@ const DashboardManageBookingPage = () => {
               />
             </div>
           </div>
+
+          {data.status === "completed" && (
+            <VisitFeedbackCard reservationId={data._id} />
+          )}
 
           {/* no questionnaire for a cancelled visit */}
           {data.status !== "cancelled" && (
