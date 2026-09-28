@@ -13,7 +13,7 @@ import {
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Ixon from "@/Components/UI/Ixon";
 import LockCloseIcon from "@/Components/Icons/LockCloseIcon";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Button from "@/Components/UI/Button";
 import LicenseCard from "./LicenseCard";
 import LicenseDurationSelector from "./LicenseDurationSelector";
@@ -39,10 +39,14 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   const [selectedDuration, setSelectedDuration] =
     useState<ILicenseDuration | null>(null);
 
+  // a non-array field (error payload) must not take the page down
+  const durations = useMemo(() => (Array.isArray(data?.durations) ? data.durations : []), [data]);
+  const licenses = useMemo(() => (Array.isArray(data?.licenses) ? data.licenses : []), [data]);
+
   useEffect(() => {
-    if (!!selectedDuration || !data?.durations.length) return;
-    setSelectedDuration(data.durations[0]);
-  }, [selectedDuration, data]);
+    if (!!selectedDuration || !durations.length) return;
+    setSelectedDuration(durations[0]);
+  }, [selectedDuration, durations]);
 
   const getContent = useScopedLocale(LOCALE_NS);
 
@@ -77,14 +81,14 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
               </p>
             </div>
             <LicenseDurationSelector
-              durations={data.durations}
+              durations={durations}
               selectedDuration={selectedDuration}
               onSelect={setSelectedDuration}
               className={classes.durationSelector}
             />
-            {!!data.licenses.length && (
+            {!!licenses.length && (
               <div className={classes.list}>
-                {data.licenses.map((license) => (
+                {licenses.map((license) => (
                   <LicenseCard
                     key={license._id}
                     duration={selectedDuration}
@@ -109,15 +113,9 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
               {getContent("otherLicenses")}
             </Button>
             <div className={classes.infos}>
-              <p className={classes.info} style={{ textAlign: "start" }}>
-                {getContent("licenseInfoItem0")}
-              </p>
-              <p className={classes.info} style={{ textAlign: "center" }}>
-                {getContent("licenseInfoItem1")}
-              </p>
-              <p className={classes.info} style={{ textAlign: "end" }}>
-                {getContent("licenseInfoItem2")}
-              </p>
+              <p className={classes.info}>{getContent("licenseInfoItem0")}</p>
+              <p className={classes.info}>{getContent("licenseInfoItem1")}</p>
+              <p className={classes.info}>{getContent("licenseInfoItem2")}</p>
             </div>
             <div className={classes.outro}>
               <p className={classes.consult}>{getContent("licenseConsult")}</p>

@@ -12,6 +12,7 @@ import CrownIcon from "@/Components/Icons/CrownIcon";
 import { useMemo } from "react";
 import Button from "@/Components/UI/Button";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
+import CheckIcon from "@/Components/Icons/CheckIcon";
 import { tsmBold } from "@/Components/UI/Typography";
 import LicensePriceDetails from "./LicensePriceDetails";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
@@ -31,12 +32,20 @@ const LicenseCard = ({
   const getContent = useScopedLocale(LOCALE_NS);
 
   const pricing = useMemo<IBaseLicensePricing | null>(
-    () => license.pricing.find((el) => el.duration === duration?._id) || null,
+    () =>
+      (Array.isArray(license.pricing) ? license.pricing : []).find(
+        (el) => el.duration === duration?._id,
+      ) || null,
     [license, duration],
   );
+  const features = Array.isArray(license.descriptions) ? license.descriptions.filter(Boolean) : [];
 
   return (
-    <div className={`${classes.main} ${license.isGolden ? classes.alt : ""}`}>
+    <div
+      className={`${classes.main} ${license.isGolden ? classes.alt : ""} ${
+        license.isRecommended ? classes.recommended : ""
+      }`}
+    >
       <div className={classes.badges}>
         {license.isDiscounted && (
           <Badge color="Error" radius="High" mode="Fill" size="L">
@@ -58,13 +67,17 @@ const LicenseCard = ({
         </span>
       </div>
       <LicensePriceDetails duration={duration} pricing={pricing} />
-      <div className={classes.features}>
-        {license.descriptions.map((el) => (
-          <p key={el} className={classes.feature}>
+      {!!license.summary && <p className={classes.summary}>{license.summary}</p>}
+      <ul className={classes.features}>
+        {features.map((el, i) => (
+          <li key={`${i}-${el}`} className={classes.feature}>
+            <Ixon width="0.875rem" className={classes.check}>
+              <CheckIcon />
+            </Ixon>
             {el}
-          </p>
+          </li>
         ))}
-      </div>
+      </ul>
       <Button
         className={classes.action}
         href={`${licensePanelRootByOrg[org]}/license/${license._id}`}

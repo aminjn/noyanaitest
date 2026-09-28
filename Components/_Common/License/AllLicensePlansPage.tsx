@@ -12,7 +12,7 @@ import {
   licensePanelRootByOrg,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Table, { TableRenderer } from "@/Components/Admin/UI/Table";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { currencize } from "@/Components/helpers/currencize";
@@ -44,10 +44,13 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   const [selectedDuration, setSelectedDuration] =
     useState<ILicenseDuration | null>(null);
 
+  const durations = useMemo(() => (Array.isArray(data?.durations) ? data.durations : []), [data]);
+  const licenses = useMemo(() => (Array.isArray(data?.licenses) ? data.licenses : []), [data]);
+
   useEffect(() => {
-    if (!!selectedDuration || !data?.durations.length) return;
-    setSelectedDuration(data.durations[0]);
-  }, [selectedDuration, data]);
+    if (!!selectedDuration || !durations.length) return;
+    setSelectedDuration(durations[0]);
+  }, [selectedDuration, durations]);
 
   // Looks up a plan's pricing option for the currently-selected duration -
   // undefined if that plan doesn't offer this duration at all (its pricing
@@ -55,7 +58,9 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   // already only returns plans it considers sellable).
   const getPricingOption = (node: IBaseLicense) =>
     selectedDuration
-      ? node.pricing.find((p) => p.duration === selectedDuration._id)
+      ? (Array.isArray(node.pricing) ? node.pricing : []).find(
+          (p) => p.duration === selectedDuration._id,
+        )
       : undefined;
 
   // TODO: render `licenses`/`durations` (full plan list + duration picker)
@@ -73,7 +78,7 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
               {getContent("selectNoyanLicenseLegend")}
             </legend>
             <LicenseDurationSelector
-              durations={data.durations}
+              durations={durations}
               selectedDuration={selectedDuration}
               onSelect={setSelectedDuration}
               className={classes.durationSelector}
@@ -81,7 +86,7 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
           </div>
           <div className={classes.table}>
             <Table
-              data={data.licenses}
+              data={licenses}
               renderer={
                 {
                   displayName: {

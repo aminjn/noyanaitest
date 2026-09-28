@@ -1,5 +1,4 @@
 import classes from "./LicenseDurationSelector.module.css";
-import Button from "@/Components/UI/Button";
 import { ILicenseDuration } from "./licenseTypes";
 
 // Shared duration picker used by both LicensePlansPage ("/<panel>/license")
@@ -19,21 +18,21 @@ const LicenseDurationSelector = ({
   onSelect: (duration: ILicenseDuration) => void;
   className?: string;
 }) => {
-  if (!durations.length) return null;
+  if (!Array.isArray(durations) || !durations.length) return null;
 
   return (
-    <div className={`${classes.selector} ${className}`}>
+    <div className={`${classes.selector} ${className}`} role="tablist">
       {durations.map((dur) => (
-        <Button
+        <button
           key={dur._id}
-          variant="Primary"
-          mode={selectedDuration?._id === dur._id ? "Fill" : "Outline"}
-          size="M"
-          radius="Medium"
+          type="button"
+          role="tab"
+          aria-selected={selectedDuration?._id === dur._id}
+          className={`${classes.option} ${selectedDuration?._id === dur._id ? classes.on : ""}`}
           onClick={() => onSelect(dur)}
         >
           {dur.displayName}
-        </Button>
+        </button>
       ))}
     </div>
   );

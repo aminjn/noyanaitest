@@ -9,6 +9,7 @@ import {
 } from "@/Components/UI/Typography";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -25,35 +26,31 @@ const LicensePriceDetails = ({
   pricing: IBaseLicensePricing<unknown> | null;
 }) => {
   const getContent = useScopedLocale(LOCALE_NS);
+  const intlTag = useIntlLocale();
 
   if (!pricing) return null;
+
+  // what is actually charged - mirrors LicenseCheckoutPage and the backend
+  // (price - discount); the list price is shown struck through
+  const price = Math.max(0, pricing.price || 0);
+  const off = Math.min(Math.max(0, pricing.discount || 0), price);
+  const final = price - off;
+  const percent = price > 0 ? Math.round((off / price) * 100) : 0;
 
   return (
     <div className={classes.details}>
       <div className={classes.duraBox}>
-        <span className={`${classes.duraName} ${txsRegular}`}>
-          {duration?.displayName}
-        </span>
-        {pricing.discount && (
+        <span className={`${classes.duraName} ${txsRegular}`}>{duration?.displayName}</span>
+        {off > 0 && percent > 0 && (
           <span className={`${classes.percent} ${t2xsRegular}`}>
-            {getContent("percentSymbol", [
-              Math.ceil((pricing.discount / pricing.price) * 100).toString(),
-            ])}
+            {getContent("percentSymbol", [new Intl.NumberFormat(intlTag).format(percent)])}
           </span>
         )}
       </div>
       <div className={classes.priceBox}>
-        <div className={classes.prices}>
-          <span className={`${classes.price} ${txlBold}`}>
-            {currencize(pricing.price)}
-          </span>
-          {pricing.discount && (
-            <s className={`${classes.discount} ${tbaseRegular}`}>
-              {pricing.discount}
-            </s>
-          )}
-        </div>
+        <span className={`${classes.price} ${txlBold}`}>{currencize(final)}</span>
         <span className={classes.toman}>{getContent("toman")}</span>
+        {off > 0 && <s className={`${classes.discount} ${tbaseRegular}`}>{currencize(price)}</s>}
       </div>
     </div>
   );
