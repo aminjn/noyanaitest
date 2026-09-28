@@ -2030,5 +2030,17 @@
  "teamMembers": "Membros",
  "teamRoles": "Funções e acesso (avançado)",
  "teamNoRole": "Sem função — ainda sem acesso",
- "teamNoRoleShort": "Sem função"
+ "teamNoRoleShort": "Sem função",
+ "myNetwork": "Minha rede",
+ "groupDaily": "Dia a dia",
+ "groupPractice": "Consultório",
+ "groupNetwork": "Rede e conteúdo",
+ "netIntro": "Todos os locais com que você trabalha: vínculos, convites e pedidos.",
+ "netInvites": "Convites de centros",
+ "netInviteFrom": "${1} convidou você",
+ "netAccept": "Aceitar",
+ "netManage": "Gerenciar",
+ "netNone": "Nada ainda.",
+ "netPending": "${1} pendentes",
+ "netMore": "e mais ${1}"
 }

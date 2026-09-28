@@ -2182,6 +2182,18 @@ const contentKeys = [
   "teamRoles",
   "teamNoRole",
   "teamNoRoleShort",
+  "myNetwork",
+  "groupDaily",
+  "groupPractice",
+  "groupNetwork",
+  "netIntro",
+  "netInvites",
+  "netInviteFrom",
+  "netAccept",
+  "netManage",
+  "netNone",
+  "netPending",
+  "netMore",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

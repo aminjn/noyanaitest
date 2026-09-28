@@ -2030,5 +2030,17 @@
  "teamMembers": "أعضاء الفريق",
  "teamRoles": "الأدوار ومستويات الوصول (متقدم)",
  "teamNoRole": "بلا دور؛ لا يمكنه فتح أي شيء",
- "teamNoRoleShort": "بلا دور"
+ "teamNoRoleShort": "بلا دور",
+ "myNetwork": "شبكتي",
+ "groupDaily": "اليومي",
+ "groupPractice": "العيادة والأعمال",
+ "groupNetwork": "الشبكة والمحتوى",
+ "netIntro": "كل الجهات التي تعمل معها في مكان واحد: العضويات والدعوات والطلبات.",
+ "netInvites": "دعوات من المراكز",
+ "netInviteFrom": "دعاك ${1} للانضمام",
+ "netAccept": "قبول",
+ "netManage": "إدارة",
+ "netNone": "لا شيء بعد.",
+ "netPending": "${1} قيد الانتظار",
+ "netMore": "و ${1} أخرى"
 }

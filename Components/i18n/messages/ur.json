@@ -2030,5 +2030,17 @@
  "teamMembers": "ٹیم ارکان",
  "teamRoles": "کردار اور رسائی (ایڈوانسڈ)",
  "teamNoRole": "کوئی کردار نہیں؛ کچھ نہیں کھول سکتا",
- "teamNoRoleShort": "کوئی کردار نہیں"
+ "teamNoRoleShort": "کوئی کردار نہیں",
+ "myNetwork": "میرا نیٹ ورک",
+ "groupDaily": "روزمرہ",
+ "groupPractice": "پریکٹس",
+ "groupNetwork": "نیٹ ورک اور مواد",
+ "netIntro": "جن مراکز کے ساتھ آپ کام کرتے ہیں، ایک جگہ: رکنیت، دعوتیں اور درخواستیں۔",
+ "netInvites": "مراکز کی دعوتیں",
+ "netInviteFrom": "${1} نے آپ کو شامل ہونے کی دعوت دی ہے",
+ "netAccept": "قبول کریں",
+ "netManage": "انتظام",
+ "netNone": "ابھی کچھ نہیں۔",
+ "netPending": "${1} زیرِ التوا",
+ "netMore": "اور ${1} مزید"
 }

@@ -2030,5 +2030,17 @@
  "teamMembers": "Miembros",
  "teamRoles": "Roles y acceso (avanzado)",
  "teamNoRole": "Sin rol: aún no puede abrir nada",
- "teamNoRoleShort": "Sin rol"
+ "teamNoRoleShort": "Sin rol",
+ "myNetwork": "Mi red",
+ "groupDaily": "Día a día",
+ "groupPractice": "Consulta",
+ "groupNetwork": "Red y contenido",
+ "netIntro": "Todos los lugares con los que trabajas: membresías, invitaciones y solicitudes.",
+ "netInvites": "Invitaciones de centros",
+ "netInviteFrom": "${1} te invitó a unirte",
+ "netAccept": "Aceptar",
+ "netManage": "Gestionar",
+ "netNone": "Nada todavía.",
+ "netPending": "${1} pendientes",
+ "netMore": "y ${1} más"
 }

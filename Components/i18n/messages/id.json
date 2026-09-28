@@ -2030,5 +2030,17 @@
  "teamMembers": "Anggota tim",
  "teamRoles": "Peran & akses (lanjutan)",
  "teamNoRole": "Tanpa peran — belum ada akses",
- "teamNoRoleShort": "Tanpa peran"
+ "teamNoRoleShort": "Tanpa peran",
+ "myNetwork": "Jaringan saya",
+ "groupDaily": "Harian",
+ "groupPractice": "Praktik",
+ "groupNetwork": "Jaringan & konten",
+ "netIntro": "Semua tempat Anda bekerja dalam satu tampilan: keanggotaan, undangan, permintaan.",
+ "netInvites": "Undangan dari pusat",
+ "netInviteFrom": "${1} mengundang Anda bergabung",
+ "netAccept": "Terima",
+ "netManage": "Kelola",
+ "netNone": "Belum ada.",
+ "netPending": "${1} menunggu",
+ "netMore": "dan ${1} lainnya"
 }
