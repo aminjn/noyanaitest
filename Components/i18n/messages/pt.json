@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "O cancelamento online é possível até 24 horas antes; para mudanças agora, contate o consultório.",
  "cancelledRefunded": "A consulta foi cancelada e o valor voltou para a carteira do paciente.",
  "visitReviewTitle": "Avalie esta consulta",
- "visitReviewIntro": "Sua avaliação aparece na página do médico com o selo \"paciente verificado\" e ajuda outros a escolher.",
+ "visitReviewIntro": "Após a revisão, sua avaliação aparece na página do médico com o selo \"paciente verificado\".",
  "visitReviewScore": "Nota geral",
  "visitReviewRecommend": "Você recomendaria este médico?",
  "visitReviewPublic": "Sua experiência (visível para outros)",
  "visitReviewPrivate": "Mensagem privada para a Noyan (opcional, não exibida)",
  "visitReviewSubmit": "Enviar avaliação",
- "visitReviewThanks": "Obrigado! Sua avaliação foi enviada.",
+ "visitReviewThanks": "Obrigado! Recebemos sua avaliação e ela será publicada após a revisão.",
  "visitReviewPickScore": "Escolha uma nota e se você recomendaria.",
  "reviewsVerified": "Paciente verificado",
  "reviewsRecommendPercent": "${1} dos pacientes recomendam este médico",
  "reviewsEmpty": "Ainda não há avaliações. Só pacientes que tiveram consulta podem avaliar.",
  "reviewsMore": "Mais avaliações",
- "reviewsRecommends": "Recomenda"
+ "reviewsRecommends": "Recomenda",
+ "visitReviewPending": "Obrigado! Recebemos sua avaliação e ela será publicada após a revisão.",
+ "visitReviewApproved": "Sua avaliação foi aprovada e está publicada na página do médico.",
+ "visitReviewRejected": "Sua avaliação não atendia às regras de publicação e não foi publicada."
 }

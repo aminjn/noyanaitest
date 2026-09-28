@@ -102,6 +102,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "تیکت‌های پشتیبانی", href: "ticket" },
       { title: "درخواست‌های تماس", href: "contactRequest" },
       { title: "نظرات کاربران", href: "comment" },
+      { title: "نظرات بیماران درباره‌ی پزشکان", href: "doctorFeedback" },
       { title: "تماس‌ها", href: "callroom", access: "CallRoom" },
       { title: "اعلان‌ها", href: "notification" },
       { title: "تنظیمات اطلاع‌رسانی کاربران", href: "userAlert" },

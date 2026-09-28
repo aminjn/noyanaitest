@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "Çevrimiçi iptal 24 saat öncesine kadar mümkündür; şimdi değişiklik için muayenehaneyle iletişime geçin.",
  "cancelledRefunded": "Randevu iptal edildi ve tutarı hastanın cüzdanına iade edildi.",
  "visitReviewTitle": "Bu muayeneyi değerlendirin",
- "visitReviewIntro": "Değerlendirmeniz doktorun sayfasında \"doğrulanmış hasta\" rozetiyle görünür ve başkalarının seçimine yardımcı olur.",
+ "visitReviewIntro": "İncelendikten sonra değerlendirmeniz \"doğrulanmış hasta\" rozetiyle doktorun sayfasında görünür.",
  "visitReviewScore": "Genel puan",
  "visitReviewRecommend": "Bu doktoru başkalarına önerir misiniz?",
  "visitReviewPublic": "Deneyiminiz (başkalarına gösterilir)",
  "visitReviewPrivate": "Noyan'a özel not (isteğe bağlı, gösterilmez)",
  "visitReviewSubmit": "Değerlendirmeyi gönder",
- "visitReviewThanks": "Teşekkürler! Değerlendirmeniz kaydedildi.",
+ "visitReviewThanks": "Teşekkürler! Değerlendirmeniz alındı, incelendikten sonra yayınlanacak.",
  "visitReviewPickScore": "Lütfen bir puan ve öneri seçin.",
  "reviewsVerified": "Doğrulanmış hasta",
  "reviewsRecommendPercent": "Hastaların ${1}'i bu doktoru öneriyor",
  "reviewsEmpty": "Henüz değerlendirme yok. Yalnızca muayene olmuş hastalar değerlendirme yapabilir.",
  "reviewsMore": "Daha fazla değerlendirme",
- "reviewsRecommends": "Öneriyor"
+ "reviewsRecommends": "Öneriyor",
+ "visitReviewPending": "Teşekkürler! Değerlendirmeniz alındı, incelendikten sonra yayınlanacak.",
+ "visitReviewApproved": "Değerlendirmeniz onaylandı ve doktorun sayfasında yayınlandı.",
+ "visitReviewRejected": "Değerlendirmeniz yayın kurallarına uymadığı için yayınlanmadı."
 }

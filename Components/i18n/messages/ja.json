@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "オンラインキャンセルは24時間前までです。今変更するにはクリニックへ連絡してください。",
  "cancelledRefunded": "予約はキャンセルされ、料金は患者のウォレットに返金されました。",
  "visitReviewTitle": "この受診を評価",
- "visitReviewIntro": "レビューは「認証済み患者」バッジ付きで医師のページに表示され、他の人の参考になります。",
+ "visitReviewIntro": "確認後、レビューは「認証済み患者」バッジ付きで医師のページに表示されます。",
  "visitReviewScore": "総合評価",
  "visitReviewRecommend": "この医師を人に勧めますか？",
  "visitReviewPublic": "あなたの体験（他の人に表示されます）",
  "visitReviewPrivate": "Noyanへの非公開メッセージ（任意・非表示）",
  "visitReviewSubmit": "レビューを送信",
- "visitReviewThanks": "ありがとうございます。レビューを受け付けました。",
+ "visitReviewThanks": "ありがとうございます。レビューは確認後に公開されます。",
  "visitReviewPickScore": "評価とおすすめの有無を選んでください。",
  "reviewsVerified": "認証済み患者",
  "reviewsRecommendPercent": "患者の${1}がこの医師を推薦しています",
  "reviewsEmpty": "まだレビューはありません。受診した患者のみがレビューできます。",
  "reviewsMore": "さらにレビューを表示",
- "reviewsRecommends": "推薦"
+ "reviewsRecommends": "推薦",
+ "visitReviewPending": "ありがとうございます。レビューは確認後に公開されます。",
+ "visitReviewApproved": "レビューは承認され、医師のページに公開されました。",
+ "visitReviewRejected": "レビューは掲載基準に合わず、公開されませんでした。"
 }

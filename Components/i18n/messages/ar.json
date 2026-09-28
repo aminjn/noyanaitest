@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "يمكن الإلغاء عبر الإنترنت حتى 24 ساعة قبل الموعد؛ للتغيير الآن تواصل مع العيادة.",
  "cancelledRefunded": "أُلغي الموعد وأُعيد مبلغه إلى محفظة المريض.",
  "visitReviewTitle": "قيّم هذه الزيارة",
- "visitReviewIntro": "يظهر تقييمك في صفحة الطبيب بشارة \"مريض موثّق\" ويساعد الآخرين في الاختيار.",
+ "visitReviewIntro": "بعد المراجعة يظهر تقييمك في صفحة الطبيب بشارة \"مريض موثّق\" ويساعد الآخرين في الاختيار.",
  "visitReviewScore": "التقييم العام",
  "visitReviewRecommend": "هل تنصح بهذا الطبيب؟",
  "visitReviewPublic": "تجربتك (تظهر للآخرين)",
  "visitReviewPrivate": "رسالة خاصة إلى نويان (اختيارية، لا تُعرض)",
  "visitReviewSubmit": "إرسال التقييم",
- "visitReviewThanks": "شكرًا! تم تسجيل تقييمك.",
+ "visitReviewThanks": "شكرًا! استلمنا تقييمك وسيُنشر بعد المراجعة.",
  "visitReviewPickScore": "يرجى اختيار التقييم وما إذا كنت تنصح به.",
  "reviewsVerified": "مريض موثّق",
  "reviewsRecommendPercent": "${1} من المرضى ينصحون بهذا الطبيب",
  "reviewsEmpty": "لا توجد تقييمات بعد. فقط المرضى الذين تمت زيارتهم يمكنهم التقييم.",
  "reviewsMore": "المزيد من التقييمات",
- "reviewsRecommends": "ينصح به"
+ "reviewsRecommends": "ينصح به",
+ "visitReviewPending": "شكرًا! استلمنا تقييمك وسيُنشر بعد المراجعة.",
+ "visitReviewApproved": "تمت الموافقة على تقييمك ونُشر في صفحة الطبيب.",
+ "visitReviewRejected": "لم يتوافق تقييمك مع قواعد النشر ولم يُنشر."
 }

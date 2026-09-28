@@ -2249,6 +2249,9 @@ const contentKeys = [
   "reviewsEmpty",
   "reviewsMore",
   "reviewsRecommends",
+  "visitReviewPending",
+  "visitReviewApproved",
+  "visitReviewRejected",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

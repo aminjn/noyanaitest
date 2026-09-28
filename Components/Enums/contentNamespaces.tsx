@@ -524,6 +524,9 @@ export const contentNamespaces = {
     "visitReviewPickScore",
     "yes",
     "no",
+    "visitReviewPending",
+    "visitReviewApproved",
+    "visitReviewRejected",
   ],
 
   // app/dashboard/transaction/page.tsx (DashboardManageTransactionsPage) —

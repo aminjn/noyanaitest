@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "Online cancellation is possible up to 24 hours before; for changes now, contact the office.",
  "cancelledRefunded": "The appointment was cancelled and its amount returned to the patient's wallet.",
  "visitReviewTitle": "Rate this visit",
- "visitReviewIntro": "Your review appears on the doctor's page with a \"verified patient\" badge and helps others choose.",
+ "visitReviewIntro": "After moderation, your review appears on the doctor's page with a \"verified patient\" badge and helps others choose.",
  "visitReviewScore": "Overall rating",
  "visitReviewRecommend": "Would you recommend this doctor?",
  "visitReviewPublic": "Your experience (shown to others)",
  "visitReviewPrivate": "Private note to Noyan (optional, not shown)",
  "visitReviewSubmit": "Submit review",
- "visitReviewThanks": "Thank you! Your review was submitted.",
+ "visitReviewThanks": "Thank you! Your review was received and will be published after moderation.",
  "visitReviewPickScore": "Please choose a rating and whether you'd recommend.",
  "reviewsVerified": "Verified patient",
  "reviewsRecommendPercent": "${1} of patients recommend this doctor",
  "reviewsEmpty": "No reviews yet. Only patients who have had a visit can leave one.",
  "reviewsMore": "More reviews",
- "reviewsRecommends": "Recommends"
+ "reviewsRecommends": "Recommends",
+ "visitReviewPending": "Thank you! Your review was received and will be published after moderation.",
+ "visitReviewApproved": "Your review was approved and is published on the doctor's page.",
+ "visitReviewRejected": "Your review didn't meet the publishing guidelines and wasn't published."
 }
