@@ -1953,5 +1953,11 @@
  "ioConfirm": "Confirm",
  "ioProgress": "${1} of ${2} items done",
  "ioEmpty": "No orders here.",
- "ioAwaitingNote": "Once the patient pays, you can fulfil the items."
+ "ioAwaitingNote": "Once the patient pays, you can fulfil the items.",
+ "shWeekTitle": "Week at a glance",
+ "shWeekSessions": "${1} slots a week",
+ "shWorkDays": "${1} working days",
+ "shWeekHours": "${1} working hours",
+ "shNoShift": "No shifts",
+ "shWeekHint": "Tap a day to edit its shifts."
 }

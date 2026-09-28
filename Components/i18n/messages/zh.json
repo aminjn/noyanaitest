@@ -1953,5 +1953,11 @@
  "ioConfirm": "确认",
  "ioProgress": "已完成 ${1}/${2}",
  "ioEmpty": "这里没有订单。",
- "ioAwaitingNote": "患者付款后即可处理这些项目。"
+ "ioAwaitingNote": "患者付款后即可处理这些项目。",
+ "shWeekTitle": "一周概览",
+ "shWeekSessions": "每周 ${1} 个时段",
+ "shWorkDays": "${1} 个工作日",
+ "shWeekHours": "${1} 个工作小时",
+ "shNoShift": "无班次",
+ "shWeekHint": "点击某一天以编辑其班次。"
 }

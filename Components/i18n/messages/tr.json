@@ -1953,5 +1953,11 @@
  "ioConfirm": "Onayla",
  "ioProgress": "${2} kalemden ${1} tamamlandı",
  "ioEmpty": "Burada sipariş yok.",
- "ioAwaitingNote": "Hasta ödedikten sonra kalemleri tamamlayabilirsiniz."
+ "ioAwaitingNote": "Hasta ödedikten sonra kalemleri tamamlayabilirsiniz.",
+ "shWeekTitle": "Haftaya bakış",
+ "shWeekSessions": "Haftada ${1} randevu",
+ "shWorkDays": "${1} çalışma günü",
+ "shWeekHours": "${1} çalışma saati",
+ "shNoShift": "Vardiya yok",
+ "shWeekHint": "Vardiyalarını düzenlemek için bir güne dokunun."
 }

@@ -9,19 +9,30 @@ export type TabSystemTab = {
   icon?: ReactNode;
 };
 
+const readSaved = (name?: string) => {
+  if (!name) return null;
+  try {
+    return localStorage.getItem(name);
+  } catch {
+    return null;
+  }
+};
+
+// `viewState` lets the parent drive the open tab (e.g. an overview that
+// jumps to a tab); otherwise the tab is local and, with `name`, remembered
 const TabSystem = ({
   items,
   name,
+  viewState,
 }: {
   items: TabSystemTab[];
   name?: string;
+  viewState?: [string, (v: string) => unknown];
 }) => {
-  const [currentTab, setCurrenTab] = useState<string>(
-    name
-      ? items.find((el) => el.id === localStorage.getItem(name))?.id ||
-          items[0]?.id
-      : items[0]?.id,
+  const innerState = useState<string>(
+    items.find((el) => el.id === readSaved(name))?.id || items[0]?.id,
   );
+  const [currentTab, setCurrenTab] = viewState || innerState;
 
   const currentContent = useMemo<ReactNode>(
     () => items.find((tab) => tab.id === currentTab)?.content || null,
@@ -30,7 +41,11 @@ const TabSystem = ({
 
   useEffect(() => {
     if (!name) return;
-    localStorage.setItem(name, currentTab);
+    try {
+      localStorage.setItem(name, currentTab);
+    } catch {
+      // storage blocked (private mode): the tab just isn't remembered
+    }
   }, [currentTab, name]);
 
   return (

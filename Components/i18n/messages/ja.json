@@ -1953,5 +1953,11 @@
  "ioConfirm": "確認",
  "ioProgress": "${2} 件中 ${1} 件完了",
  "ioEmpty": "ここに注文はありません。",
- "ioAwaitingNote": "患者の支払い後に対応できます。"
+ "ioAwaitingNote": "患者の支払い後に対応できます。",
+ "shWeekTitle": "週の概要",
+ "shWeekSessions": "週 ${1} 枠",
+ "shWorkDays": "勤務日 ${1} 日",
+ "shWeekHours": "勤務 ${1} 時間",
+ "shNoShift": "シフトなし",
+ "shWeekHint": "日をタップしてシフトを編集します。"
 }

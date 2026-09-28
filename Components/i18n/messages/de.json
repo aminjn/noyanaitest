@@ -1953,5 +1953,11 @@
  "ioConfirm": "Bestätigen",
  "ioProgress": "${1} von ${2} erledigt",
  "ioEmpty": "Hier gibt es keine Bestellungen.",
- "ioAwaitingNote": "Sobald der Patient bezahlt hat, können Sie die Positionen erledigen."
+ "ioAwaitingNote": "Sobald der Patient bezahlt hat, können Sie die Positionen erledigen.",
+ "shWeekTitle": "Wochenüberblick",
+ "shWeekSessions": "${1} Termine pro Woche",
+ "shWorkDays": "${1} Arbeitstage",
+ "shWeekHours": "${1} Arbeitsstunden",
+ "shNoShift": "Keine Schichten",
+ "shWeekHint": "Tippen Sie auf einen Tag, um seine Schichten zu bearbeiten."
 }

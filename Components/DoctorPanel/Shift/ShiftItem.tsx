@@ -58,10 +58,12 @@ const ShiftItem = ({
   shift: ShiftContext[number];
   setData: Dispatch<SetStateAction<ShiftContext>>;
 }) => {
-  const { data: offices } = useSWR<IOffice[]>(
+  const { data: officesData } = useSWR<IOffice[]>(
     `${API}/doctor/office`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+  // a non-array answer (error payload) must not crash the editor
+  const offices = Array.isArray(officesData) ? officesData : undefined;
 
   const getContent = useScopedLocale(NS);
 

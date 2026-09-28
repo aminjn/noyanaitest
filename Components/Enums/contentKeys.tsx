@@ -2105,6 +2105,12 @@ const contentKeys = [
   "ioProgress",
   "ioEmpty",
   "ioAwaitingNote",
+  "shWeekTitle",
+  "shWeekSessions",
+  "shWorkDays",
+  "shWeekHours",
+  "shNoShift",
+  "shWeekHint",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
