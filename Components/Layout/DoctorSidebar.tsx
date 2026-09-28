@@ -1,11 +1,6 @@
 import Link from "@/Components/i18n/Link";
 import classes from "./PanelSidebar.module.css";
-import Image from "next/image";
 import { imagePath } from "../helpers/imagepath";
-import useUser from "../Hooks/useUser";
-import Loading from "../Admin/UI/Loading";
-import Ixon from "../UI/Ixon";
-import ChevronIcon from "../Icons/ChevronIcon";
 import { Fragment, ReactNode, useMemo } from "react";
 import { ContentKey } from "../Enums/contentKeys";
 import useSWR from "swr";
@@ -19,13 +14,9 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import CartIcon from "../Icons/CartIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
 import BuildingIcon from "../Icons/BuildingIcon";
-import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
-import ReceiptIcon from "../Icons/ReceiptIcon";
-import DiscountIcon from "../Icons/DicountIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import ChatIcon from "../Icons/ChatIcon";
 import PillIcon from "../Icons/PillIcon";
-import MedicalRecordIcon from "../Icons/MedicalRecordIcon";
 import LogoutIcon from "../Icons/LogoutIcon";
 import { currencize } from "../helpers/currencize";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
@@ -65,40 +56,86 @@ const DoctorSidebar = () => {
   ).length;
   const { setPopup } = usePopup();
 
+  const canNetwork =
+    hasAccess("readClinics") || hasAccess("readHospitals") || hasAccess("readPharmacy") || hasAccess("readInsurance");
+
+  // Grouped menu (2026-09): what you do every day first, then running the
+  // practice, then network & content. The four network pages (clinics,
+  // hospitals, pharmacies & labs, insurers) sit behind one "My network"
+  // hub; their own pages stay reachable from it and highlight this item.
   const links = useMemo<LinkMap>(
     () => [
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
+        title: "schedule",
+        icon: <ClockIcon />,
+        target: "schedule",
+        group: "groupDaily",
+        show: hasAccess("readSchedule"),
+      },
+      {
+        title: "patients",
+        icon: <StetoscopeIcon />,
+        target: "patient",
+        group: "groupDaily",
+        show: hasAccess("readPatients"),
+      },
+      {
+        title: "incomingOrders",
+        icon: <PackageIcon />,
+        target: "order",
+        group: "groupDaily",
+        badge: ordersTodo,
+        show: hasAccess("readOrders"),
+      },
+      {
+        title: "chatWithPatients",
+        icon: <ChatIcon />,
+        target: "chat",
+        group: "groupDaily",
+        show: hasAccess("readChat"),
+      },
+      {
+        title: "shifts",
+        icon: <CalendarIcon />,
+        target: "shift",
+        group: "groupDaily",
+        show: hasAccess("readShifts"),
+      },
+      {
         title: "profile",
         icon: <UserEditIcon />,
         target: "profile",
+        group: "groupPractice",
         // owner, or a secretary allowed to edit the profile
         show: hasAccess("mutateProfile"),
       },
-      { title: "office", icon: <BuildingIcon />, target: "office", show: hasAccess("readOffices") },
+      {
+        title: "office",
+        icon: <BuildingIcon />,
+        target: "office",
+        group: "groupPractice",
+        show: hasAccess("readOffices"),
+      },
       {
         title: "services",
         icon: <CategoriesIcon />,
         target: "service",
+        group: "groupPractice",
         show: hasAccess("readServices"),
       },
       {
         title: "servicePackages",
         icon: <PackageIcon />,
         target: "servicepackage",
+        group: "groupPractice",
         show: hasAccess("readServicePackages"),
-      },
-      {
-        title: "incomingOrders",
-        icon: <PackageIcon />,
-        target: "order",
-        badge: ordersTodo,
-        show: hasAccess("readOrders"),
       },
       {
         title: "financialMangement",
         icon: <WalletIcon />,
         target: "finance",
+        group: "groupPractice",
         side: (
           <span className={classes.balance}>
             <span>{currencize(balance || 0)}</span>
@@ -111,90 +148,41 @@ const DoctorSidebar = () => {
         title: "teamTitle",
         icon: <UserEditIcon />,
         target: "secretary",
-        // Managing secretaries/access-levels is never delegable — only the
-        // real owner (hasAccess() with no action, true only for "FULL") can
-        // see this, same as every panel's secretary-management nav item.
+        group: "groupPractice",
+        // Managing the team is never delegable — only the real owner
+        // (hasAccess() with no action, true only for "FULL") sees this.
         show: hasAccess(),
-      },
-      {
-        title: "shifts",
-        icon: <CalendarIcon />,
-        target: "shift",
-        show: hasAccess("readShifts"),
-      },
-      {
-        title: "schedule",
-        icon: <ClockIcon />,
-        target: "schedule",
-        show: hasAccess("readSchedule"),
-      },
-      {
-        title: "patients",
-        icon: <StetoscopeIcon />,
-        target: "patient",
-        show: hasAccess("readPatients"),
       },
       {
         title: "licenses",
         icon: <CartIcon />,
         target: "license",
+        group: "groupPractice",
         show: hasAccess("readLicenses"),
       },
       {
-        title: "clinics",
+        title: "settings",
+        icon: <CogIcon />,
+        target: "settings",
+        group: "groupPractice",
+        show: hasAccess("readSettings"),
+      },
+      {
+        title: "myNetwork",
         icon: <HospitalIcon />,
-        target: "clinic",
-        show: hasAccess("readClinics"),
-      },
-      {
-        title: "hospitals",
-        icon: <BuildingIcon />,
-        target: "hospital",
-        show: hasAccess("readHospitals"),
-      },
-      {
-        title: "phrmaciesAndLabs",
-        icon: <BuildingIcon />,
-        target: "pharmacy",
-        show: hasAccess("readPharmacy"),
-      },
-      {
-        title: "insurances",
-        icon: <ShieldCheckIcon />,
-        target: "insurance",
-        show: hasAccess("readInsurance"),
-      },
-      {
-        title: "offers",
-        icon: <ReceiptIcon />,
-        target: "offer",
-        // Not built yet (placeholder page) - hidden until it is. Restore
-        // hasAccess("readOffers") then.
-        show: false,
-      },
-      {
-        title: "discounts",
-        icon: <DiscountIcon />,
-        target: "discount",
-        // Not built yet (placeholder page) - hidden until it is. Restore
-        // hasAccess("readDiscounts") then.
-        show: false,
+        target: "network",
+        group: "groupNetwork",
+        match: ["clinic", "hospital", "pharmacy", "insurance"],
+        show: canNetwork,
       },
       {
         title: "articles",
         icon: <FileDuplicateIcon />,
         target: "article",
+        group: "groupNetwork",
         // The doctor blog routes on noyanai-back are owner-only
         // (blogRouter useAcl(true)), so secretaries would only get 403s.
         show: hasAccess(),
-      },
-      {
-        title: "chatWithPatients",
-        icon: <ChatIcon />,
-        target: "chat",
-        // Not built yet (placeholder page) - hidden until it is. Restore
-        // hasAccess("readChat") then.
-        show: false,
       },
       {
         title: "drugsAndPrescriptions",
@@ -208,20 +196,6 @@ const DoctorSidebar = () => {
         show: false,
       },
       {
-        title: "patientDocuments",
-        icon: <MedicalRecordIcon />,
-        target: "document",
-        // Not built yet (placeholder page) - hidden until it is. Restore
-        // hasAccess("readDocuments") then.
-        show: false,
-      },
-      {
-        title: "settings",
-        icon: <CogIcon />,
-        target: "settings",
-        show: hasAccess("readSettings"),
-      },
-      {
         title: "logout",
         icon: <LogoutIcon />,
         onClick: () => setPopup("Logout", <LogoutPopup />),
@@ -229,7 +203,7 @@ const DoctorSidebar = () => {
         show: true,
       },
     ],
-    [balance, getContent, hasAccess, ordersTodo, setPopup],
+    [balance, canNetwork, getContent, hasAccess, ordersTodo, setPopup],
   );
 
   return <PanelSidebar links={links} panel="doctorpanel" />;

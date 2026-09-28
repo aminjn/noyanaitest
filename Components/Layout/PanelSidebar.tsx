@@ -25,6 +25,11 @@ export type LinkMapItem = {
   side?: ReactNode;
   // pending work on this page (invites, orders…) shown as a count pill
   badge?: number;
+  // section heading shown above the first item of each group
+  group?: ContentKey;
+  // other first-level segments that also light this item up (a hub page
+  // whose detail pages live elsewhere)
+  match?: string[];
   show: boolean;
 } & (
   | { target: string; onClick?: never }
@@ -35,7 +40,7 @@ export type LinkMap = LinkMapItem[];
 
 const LinkItem = ({
   panel,
-  item: { icon, title, className, onClick, side, target, badge },
+  item: { icon, title, className, onClick, side, target, badge, match },
 }: {
   item: LinkMapItem;
   panel: string;
@@ -49,8 +54,8 @@ const LinkItem = ({
     const segments = pathname.split("?")[0].split("/").filter(Boolean);
     if (segments[0] !== panel) return false;
     if (!target) return segments.length === 1;
-    return segments[1] === target;
-  }, [panel, pathname, target]);
+    return segments[1] === target || (!!match && match.includes(segments[1]));
+  }, [match, panel, pathname, target]);
 
   const content = useMemo(
     () => (
@@ -95,6 +100,7 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
         .map((l) => ({
           id: `${l.target}${l.title}`,
           label: getContent(l.title),
+          hint: l.group ? getContent(l.group) : undefined,
           icon: l.icon,
           href: `/${panel}${l.target ? `/${l.target}` : ""}`,
         })),
@@ -106,11 +112,16 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
     <div className={classes.main}>
       <CommandPalette items={commands} className={classes.command} />
       <nav className={classes.bar}>
-        {links.map((item) => (
-          <Fragment key={`${item.target}${item.title}`}>
-            {item.show ? <LinkItem item={item} panel={panel} /> : null}
-          </Fragment>
-        ))}
+        {links
+          .filter((item) => item.show)
+          .map((item, i, shown) => (
+            <Fragment key={`${item.target}${item.title}`}>
+              {!!item.group && item.group !== shown[i - 1]?.group && (
+                <span className={classes.group}>{getContent(item.group)}</span>
+              )}
+              <LinkItem item={item} panel={panel} />
+            </Fragment>
+          ))}
       </nav>
       <Link href="/dashboard" className={classes.user}>
         <div className={classes.avatar}>

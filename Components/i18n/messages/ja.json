@@ -2030,5 +2030,17 @@
  "teamMembers": "メンバー",
  "teamRoles": "役割とアクセス（詳細）",
  "teamNoRole": "役割なし（アクセス不可）",
- "teamNoRoleShort": "役割なし"
+ "teamNoRoleShort": "役割なし",
+ "myNetwork": "ネットワーク",
+ "groupDaily": "日々の業務",
+ "groupPractice": "診療所",
+ "groupNetwork": "ネットワークと記事",
+ "netIntro": "連携先をひと目で：所属・招待・申請。",
+ "netInvites": "施設からの招待",
+ "netInviteFrom": "${1} から参加の招待",
+ "netAccept": "承諾",
+ "netManage": "管理",
+ "netNone": "まだありません。",
+ "netPending": "保留中 ${1}",
+ "netMore": "ほか ${1} 件"
 }

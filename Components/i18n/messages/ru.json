@@ -2030,5 +2030,17 @@
  "teamMembers": "Участники",
  "teamRoles": "Роли и доступ (расширенно)",
  "teamNoRole": "Без роли — пока нет доступа",
- "teamNoRoleShort": "Без роли"
+ "teamNoRoleShort": "Без роли",
+ "myNetwork": "Моя сеть",
+ "groupDaily": "Каждый день",
+ "groupPractice": "Практика",
+ "groupNetwork": "Сеть и контент",
+ "netIntro": "Все места работы в одном окне: членство, приглашения и заявки.",
+ "netInvites": "Приглашения от центров",
+ "netInviteFrom": "${1} приглашает вас",
+ "netAccept": "Принять",
+ "netManage": "Управлять",
+ "netNone": "Пока пусто.",
+ "netPending": "В ожидании: ${1}",
+ "netMore": "и ещё ${1}"
 }

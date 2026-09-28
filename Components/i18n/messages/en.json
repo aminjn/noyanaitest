@@ -2030,5 +2030,17 @@
  "teamMembers": "Team members",
  "teamRoles": "Roles & access levels (advanced)",
  "teamNoRole": "No role — can't open anything yet",
- "teamNoRoleShort": "No role"
+ "teamNoRoleShort": "No role",
+ "myNetwork": "My network",
+ "groupDaily": "Day to day",
+ "groupPractice": "Practice",
+ "groupNetwork": "Network & content",
+ "netIntro": "Every place you work with, in one view: memberships, invites and requests.",
+ "netInvites": "Invites from centres",
+ "netInviteFrom": "${1} invited you to join",
+ "netAccept": "Accept",
+ "netManage": "Manage",
+ "netNone": "Nothing yet.",
+ "netPending": "${1} pending",
+ "netMore": "and ${1} more"
 }

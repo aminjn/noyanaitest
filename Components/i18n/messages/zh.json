@@ -2030,5 +2030,17 @@
  "teamMembers": "团队成员",
  "teamRoles": "角色与权限（高级）",
  "teamNoRole": "无角色，暂无权限",
- "teamNoRoleShort": "无角色"
+ "teamNoRoleShort": "无角色",
+ "myNetwork": "我的网络",
+ "groupDaily": "日常",
+ "groupPractice": "诊所经营",
+ "groupNetwork": "网络与内容",
+ "netIntro": "您合作的所有机构一目了然：成员关系、邀请和申请。",
+ "netInvites": "机构邀请",
+ "netInviteFrom": "${1} 邀请您加入",
+ "netAccept": "接受",
+ "netManage": "管理",
+ "netNone": "暂无。",
+ "netPending": "${1} 个待处理",
+ "netMore": "另外 ${1} 个"
 }

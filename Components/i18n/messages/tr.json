@@ -2030,5 +2030,17 @@
  "teamMembers": "Ekip üyeleri",
  "teamRoles": "Roller ve erişim (gelişmiş)",
  "teamNoRole": "Rol yok; hiçbir şeyi açamaz",
- "teamNoRoleShort": "Rol yok"
+ "teamNoRoleShort": "Rol yok",
+ "myNetwork": "Ağım",
+ "groupDaily": "Günlük",
+ "groupPractice": "Muayenehane",
+ "groupNetwork": "Ağ ve içerik",
+ "netIntro": "Birlikte çalıştığınız her yer tek bakışta: üyelikler, davetler ve talepler.",
+ "netInvites": "Merkez davetleri",
+ "netInviteFrom": "${1} sizi katılmaya davet etti",
+ "netAccept": "Kabul et",
+ "netManage": "Yönet",
+ "netNone": "Henüz yok.",
+ "netPending": "${1} beklemede",
+ "netMore": "ve ${1} tane daha"
 }
