@@ -7,6 +7,7 @@ import CartIcon from "../Icons/CartIcon";
 import FolderIcon from "../Icons/FolderIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
+import WalletIcon from "../Icons/WalletIcon";
 import useAcl from "../Hooks/useAcl";
 import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
@@ -77,6 +78,13 @@ const PharmacyPanelSidebar = () => {
         // see this.
         show: hasAccess(),
         target: "secretary",
+      },
+      {
+        title: "financialMangement",
+        icon: <WalletIcon />,
+        group: "groupCenter",
+        show: hasAccess("readFinance"),
+        target: "finance",
       },
       {
         title: "licenses",

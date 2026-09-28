@@ -2110,5 +2110,9 @@
  "cancelOrderConfirm": "Noch nicht vorbereitete Artikel werden storniert und Ihrem Wallet gutgeschrieben. Fortfahren?",
  "orderCancelledRefunded": "Die Bestellung wurde storniert und Ihrem Wallet erstattet.",
  "pharmacyProductsTitle": "Bei dieser Apotheke bestellen",
- "pharmacyNoProducts": "Diese Apotheke bietet noch nichts online an."
+ "pharmacyNoProducts": "Diese Apotheke bietet noch nichts online an.",
+ "pfNote": "Jede Bestellposition wird nach der Lieferung Ihrem Wallet gutgeschrieben. Beträge in Toman.",
+ "pfUpcoming": "Wartet auf Vorbereitung",
+ "pfUpcomingNote": "aus ${1} bezahlten Bestellungen",
+ "pfOrderPayout": "Bestellverkauf ${1}"
 }

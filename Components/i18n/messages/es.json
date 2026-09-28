@@ -2110,5 +2110,9 @@
  "cancelOrderConfirm": "Los artículos aún no preparados se cancelarán y se reembolsarán a tu monedero. ¿Continuar?",
  "orderCancelledRefunded": "El pedido se canceló y se reembolsó a tu monedero.",
  "pharmacyProductsTitle": "Pide en esta farmacia",
- "pharmacyNoProducts": "Esta farmacia aún no vende nada en línea."
+ "pharmacyNoProducts": "Esta farmacia aún no vende nada en línea.",
+ "pfNote": "Cada línea del pedido se abona a tu monedero al entregarse. Importes en tomanes.",
+ "pfUpcoming": "Pendiente de preparar",
+ "pfUpcomingNote": "de ${1} pedidos pagados",
+ "pfOrderPayout": "Venta de pedido ${1}"
 }
