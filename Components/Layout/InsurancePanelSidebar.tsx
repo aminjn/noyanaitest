@@ -1,3 +1,4 @@
+import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
@@ -9,6 +10,7 @@ const InsurancePanelSidebar = () => {
 
   const links = useMemo<LinkMap>(
     () => [
+      { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
         icon: <UserEditIcon />,
         title: "secrataries",

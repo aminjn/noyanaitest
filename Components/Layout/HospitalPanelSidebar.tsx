@@ -1,3 +1,8 @@
+import DashboardIcon from "../Icons/DashboardIcon";
+import useSWR from "swr";
+import { API } from "../config";
+import { fetcher } from "../helpers/fetcher";
+import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
@@ -7,8 +12,23 @@ import useAcl from "../Hooks/useAcl";
 const HospitalPanelSidebar = () => {
   const hasAccess = useAcl("hospital");
 
+  // doctors waiting for an answer (same SWR key as the doctors page)
+  const { data: doctors } = useSWR<{ incoming?: unknown[] }>(
+    hasAccess() ? `${API}/hospital/doctor` : null,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+  const joinRequests = Array.isArray(doctors?.incoming) ? doctors.incoming.length : 0;
+
   const links = useMemo<LinkMap>(
     () => [
+      { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
+      {
+        title: "doctors",
+        icon: <StetoscopeIcon />,
+        badge: joinRequests,
+        show: hasAccess(),
+        target: "doctor",
+      },
       {
         title: "secretaries",
         icon: <UserEditIcon />,
@@ -37,7 +57,7 @@ const HospitalPanelSidebar = () => {
         target: "profile",
       },
     ],
-    [hasAccess],
+    [hasAccess, joinRequests],
   );
 
   return <PanelSidebar links={links} panel="hospitalpanel" />;

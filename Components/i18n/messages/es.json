@@ -1981,5 +1981,14 @@
  "cmdOpen": "Buscar e ir a…",
  "cmdPlaceholder": "¿Adónde quieres ir?",
  "cmdEmpty": "No se encontró nada.",
- "cmdHint": "↑↓ para elegir, Enter para abrir, Esc para cerrar"
+ "cmdHint": "↑↓ para elegir, Enter para abrir, Esc para cerrar",
+ "cdPendingTitle": "Médicos que quieren unirse",
+ "cdApprove": "Aprobar",
+ "cdMembers": "Médicos miembros",
+ "cdInvited": "Invitado, esperando al médico",
+ "cdRemove": "Quitar",
+ "cdRemoveAsk": "¿Quitar a este médico de tu centro?",
+ "cdEmpty": "Aún no hay médicos. Cuando un médico pida unirse, la solicitud aparecerá aquí y en el panel.",
+ "cdTodo": "Pendiente para ti",
+ "cdAllDone": "No tienes nada pendiente."
 }

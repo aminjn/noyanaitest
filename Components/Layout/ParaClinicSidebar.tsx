@@ -1,3 +1,4 @@
+import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
 import UserEditIcon from "../Icons/UserEditIcon";
@@ -12,6 +13,7 @@ const ParaClinicSidebar = () => {
 
   const links = useMemo<LinkMap>(
     () => [
+      { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
         title: "secretaries",
         icon: <UserEditIcon />,

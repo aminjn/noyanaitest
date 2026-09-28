@@ -1981,5 +1981,14 @@
  "cmdOpen": "Ara ve git…",
  "cmdPlaceholder": "Nereye gitmek istersiniz?",
  "cmdEmpty": "Bir şey bulunamadı.",
- "cmdHint": "Seçmek için ↑↓, açmak için Enter, kapatmak için Esc"
+ "cmdHint": "Seçmek için ↑↓, açmak için Enter, kapatmak için Esc",
+ "cdPendingTitle": "Katılmak isteyen doktorlar",
+ "cdApprove": "Onayla",
+ "cdMembers": "Üye doktorlar",
+ "cdInvited": "Davet edildi, doktorun yanıtı bekleniyor",
+ "cdRemove": "Çıkar",
+ "cdRemoveAsk": "Bu doktor merkezinizden çıkarılsın mı?",
+ "cdEmpty": "Henüz doktor yok. Bir doktor katılmak istediğinde istek burada ve panonuzda görünür.",
+ "cdTodo": "Sizi bekleyenler",
+ "cdAllDone": "Bekleyen bir şey yok."
 }

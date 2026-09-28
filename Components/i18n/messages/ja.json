@@ -1981,5 +1981,14 @@
  "cmdOpen": "検索して移動…",
  "cmdPlaceholder": "どこへ移動しますか？",
  "cmdEmpty": "見つかりません。",
- "cmdHint": "↑↓ で選択、Enter で開く、Esc で閉じる"
+ "cmdHint": "↑↓ で選択、Enter で開く、Esc で閉じる",
+ "cdPendingTitle": "参加を希望する医師",
+ "cdApprove": "承認",
+ "cdMembers": "所属医師",
+ "cdInvited": "招待済み、医師の返答待ち",
+ "cdRemove": "外す",
+ "cdRemoveAsk": "この医師を施設から外しますか？",
+ "cdEmpty": "まだ医師はいません。参加申請はこことダッシュボードに表示されます。",
+ "cdTodo": "あなたの対応待ち",
+ "cdAllDone": "対応待ちはありません。"
 }
