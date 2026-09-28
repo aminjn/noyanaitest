@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "请选择收货地址。",
  "cancelOrder": "取消订单",
  "cancelOrderConfirm": "尚未准备的商品将被取消并退款至您的钱包。是否继续？",
- "orderCancelledRefunded": "订单已取消，款项已退回您的钱包。"
+ "orderCancelledRefunded": "订单已取消，款项已退回您的钱包。",
+ "pharmacyProductsTitle": "从这家药店订购",
+ "pharmacyNoProducts": "这家药店暂未在线销售商品。"
 }

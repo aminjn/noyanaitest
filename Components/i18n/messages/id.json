@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Silakan pilih alamat pengiriman.",
  "cancelOrder": "Batalkan pesanan",
  "cancelOrderConfirm": "Item yang belum disiapkan akan dibatalkan dan dananya dikembalikan ke dompet Anda. Lanjutkan?",
- "orderCancelledRefunded": "Pesanan dibatalkan dan dana dikembalikan ke dompet Anda."
+ "orderCancelledRefunded": "Pesanan dibatalkan dan dana dikembalikan ke dompet Anda.",
+ "pharmacyProductsTitle": "Pesan dari apotek ini",
+ "pharmacyNoProducts": "Apotek ini belum menjual apa pun secara online."
 }

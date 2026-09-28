@@ -1,3 +1,4 @@
+import Link from "@/Components/i18n/Link";
 import { IProductSeller } from "../Admin/Product/AdminManageProductsPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -48,7 +49,7 @@ const Item = ({
       </div>
       <div className={classes.itemContent}>
         <div className={classes.itemHeader}>
-          <span>{node.seller.name}</span>
+          <Link href={`/pharmacy/${node.seller.slug || node.seller._id}`}>{node.seller.name}</Link>
           <Ixon width=".75rem" className={classes.itemVerifyIcon}>
             <VerifyIcon />
           </Ixon>

@@ -138,9 +138,14 @@ const ProductPage = ({ data }: ProductPageProps) => {
             <VolleyBallIcon />
           </Ixon>
           <div className={classes.sellerContent}>
-            <span className={classes.sellerName}>
-              {currentSeller?.seller?.name}
-            </span>
+            {currentSeller?.seller ? (
+              <Link
+                className={classes.sellerName}
+                href={`/pharmacy/${currentSeller.seller.slug || currentSeller.seller._id}`}
+              >
+                {currentSeller.seller.name}
+              </Link>
+            ) : null}
           </div>
         </div>
       }

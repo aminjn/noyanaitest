@@ -41,6 +41,7 @@ export const pageMetaNodeResourceTypes = [
   "/clinic/[slug]",
   "/hospital/[slug]",
   "/paraClinic/[slug]",
+  "/pharmacy/[slug]",
   "/product/[slug]",
   "/productPackage/[slug]",
   "/symptom/[slug]",

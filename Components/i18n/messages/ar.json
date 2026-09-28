@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "يرجى اختيار عنوان التوصيل.",
  "cancelOrder": "إلغاء الطلب",
  "cancelOrderConfirm": "ستُلغى العناصر التي لم تُجهّز بعد ويُعاد مبلغها إلى محفظتك. هل تتابع؟",
- "orderCancelledRefunded": "أُلغي الطلب وأُعيد المبلغ إلى محفظتك."
+ "orderCancelledRefunded": "أُلغي الطلب وأُعيد المبلغ إلى محفظتك.",
+ "pharmacyProductsTitle": "اطلب من هذه الصيدلية",
+ "pharmacyNoProducts": "لا تعرض هذه الصيدلية منتجات للبيع عبر الإنترنت بعد."
 }

@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Bitte wählen Sie eine Lieferadresse.",
  "cancelOrder": "Bestellung stornieren",
  "cancelOrderConfirm": "Noch nicht vorbereitete Artikel werden storniert und Ihrem Wallet gutgeschrieben. Fortfahren?",
- "orderCancelledRefunded": "Die Bestellung wurde storniert und Ihrem Wallet erstattet."
+ "orderCancelledRefunded": "Die Bestellung wurde storniert und Ihrem Wallet erstattet.",
+ "pharmacyProductsTitle": "Bei dieser Apotheke bestellen",
+ "pharmacyNoProducts": "Diese Apotheke bietet noch nichts online an."
 }

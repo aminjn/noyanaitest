@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "कृपया डिलीवरी का पता चुनें।",
  "cancelOrder": "ऑर्डर रद्द करें",
  "cancelOrderConfirm": "जो आइटम अभी तैयार नहीं हुए वे रद्द होंगे और राशि आपके वॉलेट में लौटेगी। जारी रखें?",
- "orderCancelledRefunded": "ऑर्डर रद्द हुआ और राशि आपके वॉलेट में लौट गई।"
+ "orderCancelledRefunded": "ऑर्डर रद्द हुआ और राशि आपके वॉलेट में लौट गई।",
+ "pharmacyProductsTitle": "इस फ़ार्मेसी से ऑर्डर करें",
+ "pharmacyNoProducts": "यह फ़ार्मेसी अभी ऑनलाइन कुछ नहीं बेचती।"
 }

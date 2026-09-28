@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Elige una dirección de entrega.",
  "cancelOrder": "Cancelar pedido",
  "cancelOrderConfirm": "Los artículos aún no preparados se cancelarán y se reembolsarán a tu monedero. ¿Continuar?",
- "orderCancelledRefunded": "El pedido se canceló y se reembolsó a tu monedero."
+ "orderCancelledRefunded": "El pedido se canceló y se reembolsó a tu monedero.",
+ "pharmacyProductsTitle": "Pide en esta farmacia",
+ "pharmacyNoProducts": "Esta farmacia aún no vende nada en línea."
 }

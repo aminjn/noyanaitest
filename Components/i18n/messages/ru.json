@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Выберите адрес доставки.",
  "cancelOrder": "Отменить заказ",
  "cancelOrderConfirm": "Ещё не подготовленные товары будут отменены, деньги вернутся в кошелёк. Продолжить?",
- "orderCancelledRefunded": "Заказ отменён, деньги возвращены в кошелёк."
+ "orderCancelledRefunded": "Заказ отменён, деньги возвращены в кошелёк.",
+ "pharmacyProductsTitle": "Заказать в этой аптеке",
+ "pharmacyNoProducts": "Эта аптека пока ничего не продаёт онлайн."
 }

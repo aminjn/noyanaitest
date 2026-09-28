@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Escolha um endereço de entrega.",
  "cancelOrder": "Cancelar pedido",
  "cancelOrderConfirm": "Os itens ainda não preparados serão cancelados e reembolsados na sua carteira. Continuar?",
- "orderCancelledRefunded": "O pedido foi cancelado e reembolsado na sua carteira."
+ "orderCancelledRefunded": "O pedido foi cancelado e reembolsado na sua carteira.",
+ "pharmacyProductsTitle": "Peça nesta farmácia",
+ "pharmacyNoProducts": "Esta farmácia ainda não vende nada online."
 }

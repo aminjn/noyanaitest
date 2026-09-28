@@ -2108,5 +2108,7 @@
  "selectAddressFirst": "Please choose a delivery address.",
  "cancelOrder": "Cancel order",
  "cancelOrderConfirm": "Items not yet prepared will be cancelled and refunded to your wallet. Continue?",
- "orderCancelledRefunded": "The order was cancelled and refunded to your wallet."
+ "orderCancelledRefunded": "The order was cancelled and refunded to your wallet.",
+ "pharmacyProductsTitle": "Order from this pharmacy",
+ "pharmacyNoProducts": "This pharmacy has nothing for sale online yet."
 }
