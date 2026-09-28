@@ -2074,5 +2074,6 @@
  "officeNew": "Nouveau cabinet",
  "dpdSetupBookableDone": "Les patients peuvent désormais prendre rendez-vous avec vous. Un profil complet en attire davantage.",
  "dpdSugProfile": "${1} étapes pour un profil complet",
- "dpdSugProfileMeta": "Vous êtes réservable ; un profil complet renforce la confiance"
+ "dpdSugProfileMeta": "Vous êtes réservable ; un profil complet renforce la confiance",
+ "checkInOpensHint": "L'enregistrement du patient ouvre une heure avant le rendez-vous."
 }

@@ -28,6 +28,8 @@ type DoctorReservation = IReservation<{
   Patient: Record<never, never>;
 }>;
 
+const CHECK_IN_EARLY_MINUTES = 60;
+
 const CheckInAction = ({
   nodeId,
   mutate,
@@ -70,11 +72,18 @@ const DoctorManageBookingPage = () => {
     { title: getContent("schedule"), target: "/doctorpanel/schedule" },
   ]);
 
-  const canCheckIn =
+  const checkInPossible =
     !!data &&
     data.sessionType === "inPerson" &&
     ["pending", "active"].includes(data.status) &&
     !data.patientPresentAt;
+  // same window the API enforces: from an hour before the start (checking a
+  // patient in a day early would complete the visit and pay out regardless)
+  const checkInOpen =
+    !!data &&
+    Date.now() >=
+      new Date(data.date).getTime() + (data.start - CHECK_IN_EARLY_MINUTES) * 60000;
+  const canCheckIn = checkInPossible && checkInOpen;
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -153,6 +162,18 @@ const DoctorManageBookingPage = () => {
               )}
               {canCheckIn && (
                 <CheckInAction nodeId={data._id} mutate={mutate} />
+              )}
+              {checkInPossible && !checkInOpen && (
+                <span className={classes.hint}>
+                  {getContent("checkInOpensHint")}
+                </span>
+              )}
+              {data.sessionType === "inPerson" && !!data.patientPresentAt && (
+                <span className={classes.present}>
+                  <CheckCircleIcon />
+                  <span>{getContent("patientJoined")}</span>
+                  <FormatDate value={data.patientPresentAt} />
+                </span>
               )}
             </div>
           </div>
