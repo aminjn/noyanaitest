@@ -1940,5 +1940,9 @@
  "ppItemLocation": "地図上の位置",
  "ppItemGallery": "フォトギャラリー",
  "ppItemSocial": "SNS",
- "ppItemFaq": "よくある質問"
+ "ppItemFaq": "よくある質問",
+ "tbSearch": "すべての列を検索...",
+ "tbCount": "${1} 件",
+ "tbCountOf": "${2} 件中 ${1} 件",
+ "tbEmpty": "表示する項目はありません。"
 }

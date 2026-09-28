@@ -1940,5 +1940,9 @@
  "ppItemLocation": "Lokasi di peta",
  "ppItemGallery": "Galeri foto",
  "ppItemSocial": "Media sosial",
- "ppItemFaq": "FAQ"
+ "ppItemFaq": "FAQ",
+ "tbSearch": "Cari di semua kolom...",
+ "tbCount": "${1} item",
+ "tbCountOf": "${1} dari ${2} item",
+ "tbEmpty": "Belum ada data."
 }

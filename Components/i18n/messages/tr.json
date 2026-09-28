@@ -1940,5 +1940,9 @@
  "ppItemLocation": "Haritada konum",
  "ppItemGallery": "Fotoğraf galerisi",
  "ppItemSocial": "Sosyal medya",
- "ppItemFaq": "SSS"
+ "ppItemFaq": "SSS",
+ "tbSearch": "Tüm sütunlarda ara...",
+ "tbCount": "${1} kayıt",
+ "tbCountOf": "${2} kayıttan ${1}",
+ "tbEmpty": "Gösterilecek kayıt yok."
 }

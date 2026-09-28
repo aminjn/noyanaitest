@@ -1940,5 +1940,9 @@
  "ppItemLocation": "نقشے پر مقام",
  "ppItemGallery": "تصویری گیلری",
  "ppItemSocial": "سوشل میڈیا",
- "ppItemFaq": "عام سوالات"
+ "ppItemFaq": "عام سوالات",
+ "tbSearch": "تمام کالموں میں تلاش کریں...",
+ "tbCount": "${1} آئٹمز",
+ "tbCountOf": "${2} میں سے ${1} آئٹمز",
+ "tbEmpty": "دکھانے کے لیے کچھ نہیں۔"
 }

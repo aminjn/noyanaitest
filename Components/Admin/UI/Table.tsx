@@ -10,7 +10,23 @@ import {
 } from "ag-grid-enterprise";
 import "ag-grid-enterprise";
 import { themeQuartz, iconSetMaterial } from "@ag-grid-community/theming";
-import { AG_GRID_LOCALE_IR } from "@ag-grid-community/locale";
+import {
+  AG_GRID_LOCALE_BR,
+  AG_GRID_LOCALE_CN,
+  AG_GRID_LOCALE_DE,
+  AG_GRID_LOCALE_EG,
+  AG_GRID_LOCALE_EN,
+  AG_GRID_LOCALE_ES,
+  AG_GRID_LOCALE_FR,
+  AG_GRID_LOCALE_IR,
+  AG_GRID_LOCALE_JP,
+  AG_GRID_LOCALE_PK,
+  AG_GRID_LOCALE_TR,
+} from "@ag-grid-community/locale";
+import { useIntlLocale, useLocale } from "@/Components/i18n/navigation";
+import { rtlLocales } from "@/Components/i18n/locales";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import TableDateInput from "./TableDateInput";
 import { WithStyleProps } from "./Loading";
 import Ixon from "@/Components/UI/Ixon";
@@ -74,6 +90,30 @@ export type TableRenderer<T> = {
   [key: string]: TableColumn<T>;
 };
 
+const LOCALE_NS: ContentNamespace[] = ["common"];
+
+// ag-grid's own UI strings (menus, filters, paging) per site language;
+// languages it doesn't ship fall back to English
+const gridLocales: Record<string, Record<string, string>> = {
+  fa: AG_GRID_LOCALE_IR,
+  ar: AG_GRID_LOCALE_EG,
+  ur: AG_GRID_LOCALE_PK,
+  tr: AG_GRID_LOCALE_TR,
+  de: AG_GRID_LOCALE_DE,
+  fr: AG_GRID_LOCALE_FR,
+  es: AG_GRID_LOCALE_ES,
+  pt: AG_GRID_LOCALE_BR,
+  zh: AG_GRID_LOCALE_CN,
+  ja: AG_GRID_LOCALE_JP,
+};
+
+const escapeHtml = (v: string) =>
+  v.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+// the no-rows overlay is an HTML string (ag-grid), styled from Table.module.css
+const emptyIcon =
+  '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7l2.5-4h13L21 7"/><path d="M9 12h6"/></svg>';
+
 const Table = <T,>({
   data,
   renderer,
@@ -85,13 +125,18 @@ const Table = <T,>({
   renderer: TableRenderer<T>;
   name?: string;
 }>) => {
+  const locale = useLocale();
+  const intlTag = useIntlLocale();
+  const isRtl = (rtlLocales as readonly string[]).includes(locale);
+  const getContent = useScopedLocale(LOCALE_NS);
+
   const columnDefs = useMemo<ColDef<T>[]>(() => {
     // Phones: nothing is pinned (a pinned column would eat the screen) and
     // the name column is narrower; the grid scrolls sideways instead.
     const narrow =
       typeof window !== "undefined" &&
       window.matchMedia("(max-width: 600px)").matches;
-    const dateFormat = new Intl.DateTimeFormat("fa-IR", {
+    const dateFormat = new Intl.DateTimeFormat(intlTag, {
       dateStyle: "medium",
       timeStyle: "short",
     });
@@ -125,7 +170,8 @@ const Table = <T,>({
         return {
           colId: key,
           headerName: "",
-          pinned: narrow ? undefined : "left",
+          // the end side: left in RTL, right in LTR
+          pinned: narrow ? undefined : isRtl ? "left" : "right",
           width: column.width || 116,
           resizable: false,
           sortable: false,
@@ -170,7 +216,7 @@ const Table = <T,>({
         cellEditorParams: column.editParams,
       } as ColDef<T>;
     });
-  }, [renderer]);
+  }, [renderer, intlTag, isRtl]);
 
   const defaultColDef = useMemo<ColDef>(() => ({ floatingFilter: true }), []);
 
@@ -205,7 +251,13 @@ const Table = <T,>({
   // Some endpoints answer with a non-array on errors; never crash on that.
   const rows = Array.isArray(data) ? data.length : 0;
   const [shown, setShown] = useState<number | null>(null);
-  const num = useMemo(() => new Intl.NumberFormat("fa-IR"), []);
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const emptyText = getContent("tbEmpty");
+  const noRowsTemplate = useMemo(
+    () =>
+      `<div class="tb-empty"><span class="tb-empty-icon">${emptyIcon}</span><span>${escapeHtml(emptyText)}</span></div>`,
+    [emptyText],
+  );
 
   const components = useMemo<{ [key: string]: unknown }>(() => {
     return { agDateInput: TableDateInput };
@@ -221,27 +273,28 @@ const Table = <T,>({
           <input
             value={quickFilter}
             onChange={(e) => setQuickFilter(e.target.value)}
-            placeholder="جستجو در همه‌ی ستون‌ها..."
+            placeholder={getContent("tbSearch")}
+            aria-label={getContent("tbSearch")}
           />
         </div>
         <span className={classes.count}>
           {shown !== null && shown !== rows
-            ? `${num.format(shown)} از ${num.format(rows)} مورد`
-            : `${num.format(rows)} مورد`}
+            ? getContent("tbCountOf", [num.format(shown), num.format(rows)])
+            : getContent("tbCount", [num.format(rows)])}
         </span>
       </div>
-      <div className={classes.grid}>
+      <div className={`${classes.grid} ${!rows ? classes.gridEmpty : ""}`}>
       <AgGridReact
         quickFilterText={quickFilter}
         onModelUpdated={(e) => setShown(e.api.getDisplayedRowCount())}
-        overlayNoRowsTemplate='<span class="ag-overlay-no-rows-center">موردی برای نمایش وجود ندارد</span>'
+        overlayNoRowsTemplate={noRowsTemplate}
         paginationPageSize={50}
         paginationPageSizeSelector={[20, 50, 100, 200]}
         components={components}
         onGridPreDestroyed={onGridPreDestroyed}
         initialState={initialState}
-        enableRtl
-        localeText={AG_GRID_LOCALE_IR}
+        enableRtl={isRtl}
+        localeText={gridLocales[locale] || AG_GRID_LOCALE_EN}
         theme={myTheme}
         rowData={Array.isArray(data) ? data : []}
         columnDefs={columnDefs}
