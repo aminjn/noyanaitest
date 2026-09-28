@@ -1,17 +1,13 @@
-import DoctorManageCalendarPage from "@/Components/DoctorPanel/Calendar/DoctorManageCalendarPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { redirect } from "next/navigation";
+import { getServerLocale } from "@/Components/i18n/serverContent";
+import { localizePath } from "@/Components/i18n/locales";
 
-const DoctorManageCalendar = async () => {
-  const textContent = await getScopedTextContent(["doctorPanelCalendar", "uiCalendar"]);
-  return (
-    <LocaleScopeProvider
-      namespaces={["doctorPanelCalendar", "uiCalendar"]}
-      initialTextContent={textContent}
-    >
-      <DoctorManageCalendarPage />
-    </LocaleScopeProvider>
-  );
+// The month calendar here read the retired System-A sessions (DoctorSession),
+// so it showed 0 available / 0 booked on every day even with live shifts and
+// reservations. The doctor's live agenda is the schedule page; the day view
+// under /doctorpanel/calendar/[stamp] stays for old System-A bookings.
+const DoctorManageCalendar = () => {
+  redirect(localizePath("/doctorpanel/schedule", getServerLocale()));
 };
 
 export default DoctorManageCalendar;

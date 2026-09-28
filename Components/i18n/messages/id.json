@@ -2071,5 +2071,8 @@
  "identityNationalId": "Nomor induk kependudukan",
  "identityBirthDate": "Tanggal lahir",
  "identityVerifySubmit": "Verifikasi dan lanjutkan",
- "officeNew": "Praktik baru"
+ "officeNew": "Praktik baru",
+ "dpdSetupBookableDone": "Pasien kini dapat membuat janji dengan Anda. Profil yang lengkap menarik lebih banyak pasien.",
+ "dpdSugProfile": "${1} langkah menuju profil lengkap",
+ "dpdSugProfileMeta": "Anda sudah bisa dipesan; profil lengkap meningkatkan kepercayaan pasien"
 }

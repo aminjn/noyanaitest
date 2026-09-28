@@ -2071,5 +2071,8 @@
  "identityNationalId": "National ID",
  "identityBirthDate": "Date of birth",
  "identityVerifySubmit": "Verify and continue",
- "officeNew": "New office"
+ "officeNew": "New office",
+ "dpdSetupBookableDone": "Patients can now book with you. A complete profile attracts more of them.",
+ "dpdSugProfile": "${1} steps to a complete profile",
+ "dpdSugProfileMeta": "You're bookable; a complete profile builds patients' trust"
 }
