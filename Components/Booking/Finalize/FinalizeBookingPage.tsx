@@ -3,6 +3,7 @@ import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useParams, useSearchParams } from "next/navigation";
 import classes from "./FinalizeBookingPage.module.css";
 import useSWR from "swr";
+import { currencize } from "@/Components/helpers/currencize";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -314,6 +315,17 @@ const SessionTypeStage = ({
 
   const pushNotification = useNotification();
 
+  // the only visit type on offer is picked for the patient (they already
+  // chose it on the doctor's page) instead of an empty radio to click again
+  const availableTypes = useMemo(
+    () => doctorSessionTypes.filter((st) => sessionTypeAvailable(st)),
+    [sessionTypeAvailable],
+  );
+  useEffect(() => {
+    if (!context.sessionType && availableTypes.length === 1)
+      setContext((prev) => ({ ...prev, sessionType: availableTypes[0] }));
+  }, [availableTypes, context.sessionType, setContext]);
+
   return (
     <div className={classes.box}>
       <span className={`${classes.title} ${classes.sessionsTitle}`}>
@@ -345,7 +357,9 @@ const SessionTypeStage = ({
                     : getCompContent("xMinutes", [shift.duration.toString()])}
                 </span>
                 <span className={`${classes.sessionTypePrice} ${t2xsMedium}`}>
-                  {getSessionTypePrice(st)}
+                  {getCompContent("xToman", [
+                    currencize(getSessionTypePrice(st)),
+                  ])}
                 </span>
               </div>
             ) : null}
@@ -403,9 +417,11 @@ const CheckoutStage = ({
   doctor,
   setContext,
   onFinalize,
+  busy,
 }: {
   context: FinalizeBookingContext;
   setContext: Dispatch<SetStateAction<FinalizeBookingContext>>;
+  busy?: boolean;
   doctor: FinalizeBookingDoctor;
   setStage: Dispatch<SetStateAction<BookingStage>>;
   onFinalize: () => unknown;
@@ -468,13 +484,13 @@ const CheckoutStage = ({
           <div className={classes.paymentDetails}>
             <div className={`${classes.paymentDetail} ${tsmMedium}`}>
               <span>{getContent("downPayment")}</span>
-              <span>{getCompContent("xToman", [sessionPrice.toString()])}</span>
+              <span>{getCompContent("xToman", [currencize(sessionPrice)])}</span>
             </div>
             <div className={`${classes.paymentDetail} ${tsmMedium}`}>
               <span>{getContent("tax")}</span>
               <span>
                 {sessionTax > 0
-                  ? getCompContent("xToman", [sessionTax.toString()])
+                  ? getCompContent("xToman", [currencize(sessionTax)])
                   : getContent("freeOfCharge")}
               </span>
             </div>
@@ -485,7 +501,7 @@ const CheckoutStage = ({
             </span>
             <span className={`${classes.totalValue} ${tbaseDemiBold}`}>
               {getCompContent("xToman", [
-                (sessionPrice + sessionTax).toString(),
+                currencize(sessionPrice + sessionTax),
               ])}
             </span>
           </div>
@@ -509,7 +525,7 @@ const CheckoutStage = ({
               <div className={classes.methodTail}>
                 {method === "wallet" && (
                   <div className={`${classes.balance} ${t2xsRegular}`}>
-                    {`${getContent("balance")}: ${getCompContent("xToman", [wallet.balance.toString()])}`}
+                    {`${getContent("balance")}: ${getCompContent("xToman", [currencize(wallet.balance)])}`}
                   </div>
                 )}
                 <div className={classes.methodCheck}>
@@ -550,6 +566,7 @@ const CheckoutStage = ({
         variant="Primary"
         mode="Fill"
         size="M"
+        isLoading={busy}
         onClick={onFinalize}
       >
         {getContent("payAndReserveBooking")}
@@ -748,8 +765,10 @@ const InnerBookingFlow = ({
     method: CheckoutOption;
   } | null>(null);
 
+  const [reserved, setReserved] = useState(false);
+
   const onFinalize = useCallback(() => {
-    if (!!isLoading || !data) return;
+    if (!!isLoading || reserved || !data) return;
     if (!context.sessionType || !context.patient || !context.checkout)
       return pushNotification(getContent("checkInput"), "Warn");
     setIsLoading({
@@ -771,6 +790,7 @@ const InnerBookingFlow = ({
     getContent,
     isLoading,
     pushNotification,
+    reserved,
     start,
   ]);
 
@@ -794,6 +814,7 @@ const InnerBookingFlow = ({
                 doctor={data}
                 setStage={setStage}
                 onFinalize={onFinalize}
+                busy={!!isLoading || reserved}
               />
             ),
             Patient: (
@@ -806,7 +827,7 @@ const InnerBookingFlow = ({
             ),
           }
         : { Checkout: <Loading />, Patient: <Loading />, Session: <Loading /> },
-    [context, data, identity, onFinalize, shift],
+    [context, data, identity, isLoading, onFinalize, reserved, shift],
   );
 
   const push = useProgress();
@@ -839,6 +860,9 @@ const InnerBookingFlow = ({
         onDone={(status, result) => {
           setIsLoading(null);
           if (!status || !result) return;
+          // paid: keep the button busy until the booking page opens, so a
+          // second click can't book (and charge the wallet) twice
+          setReserved(true);
           push(`/dashboard/booking/${result.data._id}`);
         }}
       />

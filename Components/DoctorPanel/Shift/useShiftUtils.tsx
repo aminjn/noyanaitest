@@ -47,9 +47,9 @@ const useShiftUtils = () => {
       if (shift.start >= shift.end)
         problems.push(getContent("shiftStartMustBeBeforeEnd"));
       if (!shift.office) problems.push(getContent("missingShiftOffice"));
-      if (!shift.patientTypes)
+      if (!shift.patientTypes?.length)
         problems.push(getContent("missingShiftPatientStatus"));
-      if (!shift.sessionTypes)
+      if (!shift.sessionTypes?.length)
         problems.push(getContent("missingShiftSessionType"));
       if (!getShiftSessions(shift).length)
         problems.push(getContent("shiftIsEmpty"));

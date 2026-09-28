@@ -15,6 +15,10 @@ import Replicator from "./Replicator";
 import ShiftItem from "./ShiftItem";
 import ShiftsPreview from "./ShiftsPreview";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import useSWR from "swr";
+import { API } from "@/Components/config";
+import { fetcher } from "@/Components/helpers/fetcher";
+import { IOffice } from "../Office/DoctorManageOfficesPage";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
@@ -34,6 +38,19 @@ const DayShifts = ({
   const getCompContent = useScopedLocale(NS);
   const getContent = useScopedLocale(NS);
 
+  // same key as ShiftItem's office list, so SWR serves it from cache
+  const { data: officesData } = useSWR<IOffice[]>(
+    `${API}/doctor/office`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+  const offices = Array.isArray(officesData) ? officesData : [];
+  // a new shift starts at the office the doctor used last on this day (or
+  // any active office), instead of empty and flagged as an error
+  const defaultOffice =
+    [...data].reverse().find((shift) => shift.day === day && shift.office)
+      ?.office ||
+    (offices.find((el) => el?.active) || offices[0])?._id;
+
   const todaysShifts = useMemo<ShiftContext>(
     () => data.filter((shift) => shift.day === day),
     [data, day],
@@ -49,10 +66,10 @@ const DayShifts = ({
             ])}
           </span>
           <div className={classes.activeBox}>
-            {/* TODO: calc this */}
+            {/* on = the day takes bookings; off = a day off */}
             <ToggleInput
               title={getContent("active")}
-              value={offDays.includes(day)}
+              value={!offDays.includes(day)}
               onChange={() =>
                 setOffDays((prev) => {
                   const clone = [...prev];
@@ -91,6 +108,7 @@ const DayShifts = ({
                   {
                     _id: `${nanoid()}${new Date().getTime()}`,
                     day,
+                    office: defaultOffice,
                     end: 1200,
                     start: 480,
                     gap: 0,

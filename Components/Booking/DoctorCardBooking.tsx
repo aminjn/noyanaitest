@@ -43,6 +43,10 @@ import HostedImage from "../UI/HostedImage";
 import Link from "@/Components/i18n/Link";
 import VerifiedImage from "../UI/VerifiedImage";
 import useProgress from "../Hooks/useProgress";
+import {
+  DoctorSessionType,
+  doctorSessionTypes,
+} from "../DoctorPanel/Calendar/DoctorCalendarDay";
 
 const NS: ContentNamespace[] = ["common", "booking"];
 
@@ -67,13 +71,16 @@ const DayCard = ({
   const { getShiftSessions } = useShiftUtils();
 
   const todaysShifs = useMemo<IDoctorAvailability | null>(() => {
-    const now = new Date(date);
-    now.setHours(0, 0, 0, 0);
-    const then = new Date(now);
-    now.setDate(now.getDate() + 1);
+    // [start of `date`, start of the next day) - the bounds used to be
+    // swapped, so no availability ever matched and every day showed 0
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(start);
+    end.setDate(end.getDate() + 1);
+    const list = Array.isArray(node.availabilities) ? node.availabilities : [];
     return (
-      node.availabilities.find(
-        (el) => new Date(el.date) >= now && new Date(el.date) < then,
+      list.find(
+        (el) => new Date(el.date) >= start && new Date(el.date) < end,
       ) || null
     );
   }, [date, node.availabilities]);
@@ -101,11 +108,7 @@ const DayCard = ({
   );
 
   const sessionsCount = useMemo<number>(() => {
-    if (!todaysShifs) return 0;
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const then = new Date(now);
-    then.setDate(then.getDate() + 1);
+    if (!todaysShifs || !Array.isArray(todaysShifs.bounds)) return 0;
     if (isToday) {
       const hour = new Date().getHours();
       return todaysShifs.bounds.filter((b) => b.start >= (hour + 1) * 60)
@@ -117,7 +120,7 @@ const DayCard = ({
 
   return (
     <div
-      className={classes.dayCard}
+      className={`${classes.dayCard} ${sessionsCount ? "" : classes.dayCardEmpty}`}
       onClick={() =>
         setPopup(
           "BookingSessionSelector",
@@ -135,8 +138,10 @@ const DayCard = ({
           })}
       </span>
       <div className={`${classes.dayCardContent} ${t2xsMedium}`}>
+        <span className={classes.dayCount}>
+          {sessionsCount.toLocaleString(intlTag)}
+        </span>
         <span>{getContent("availableSessionsCount")}</span>
-        <span>{sessionsCount}</span>
       </div>
     </div>
   );
@@ -172,11 +177,39 @@ const DoctorCardBooking = ({
 
   const push = useProgress();
 
+  const intlTag = useIntlLocale();
+
+  // e.g. "ونک، تهران" - district, city, province, whichever are set
+  const locationLabel = useMemo<string>(() => {
+    const parts = [node.district?.name, node.city?.name, node.province?.name]
+      .filter((el): el is string => !!el)
+      .filter((el, i, arr) => arr.indexOf(el) === i);
+    if (!parts.length) return "";
+    try {
+      return new Intl.ListFormat(intlTag, {
+        style: "short",
+        type: "unit",
+      }).format(parts);
+    } catch {
+      return parts.join(" - ");
+    }
+  }, [intlTag, node.city, node.district, node.province]);
+
+  // types the doctor really offers (search API: active settings covered by
+  // a shift); an older API without the field shows no type badges
+  const apiTypes = (node as { sessionTypes?: unknown }).sessionTypes;
+  const officeAddress = (node as { officeAddress?: unknown }).officeAddress;
+  const offeredTypes = useMemo<DoctorSessionType[]>(
+    () =>
+      Array.isArray(apiTypes)
+        ? doctorSessionTypes.filter((el) => apiTypes.includes(el))
+        : [],
+    [apiTypes],
+  );
+
   const identityBlock = (
     <div className={classes.identity}>
-      <VerifiedImage src={node.avatar} alt={getDoctorProfileLabel(node)}>
-        <div className={classes.onlineBadge} />
-      </VerifiedImage>
+      <VerifiedImage src={node.avatar} alt={getDoctorProfileLabel(node)} />
       <div className={classes.identityContent}>
         <div className={classes.identityDetails}>
           <Link href={`/dr/${node.slug || node._id}`}>
@@ -190,17 +223,13 @@ const DoctorCardBooking = ({
             </span>
           )}
         </div>
-        <div className={classes.tags}>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag1</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag2</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag3</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag4</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-          <span className={`${classes.tag} ${t2xsMedium}`}>tag5</span>
-        </div>
+        {!!locationLabel && (
+          <div className={classes.tags}>
+            <span className={`${classes.tag} ${t2xsMedium}`}>
+              {locationLabel}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -233,9 +262,10 @@ const DoctorCardBooking = ({
           {
             title: getContent("share"),
             onClick: () => {
-              navigator.share({
-                text: `${location.protocol}//${location.host}/doctor/${node.slug || node._id}`,
-              });
+              const url = `${location.protocol}//${location.host}/dr/${node.slug || node._id}`;
+              // navigator.share is missing on most desktop browsers
+              if (navigator.share) navigator.share({ url }).catch(() => {});
+              else navigator.clipboard?.writeText(url).catch(() => {});
             },
             icon: <ShareIcon />,
           },
@@ -244,7 +274,9 @@ const DoctorCardBooking = ({
     </div>
   );
 
-  const onlinesBlock = (
+  const onlineTypes = offeredTypes.filter((el) => el !== "inPerson");
+
+  const onlinesBlock = !!onlineTypes.length && (
     <div className={classes.onlines}>
       <div className={classes.inlineHeader}>
         <div className={`${classes.inlineTitle} ${t2xsRegular}`}>
@@ -255,45 +287,41 @@ const DoctorCardBooking = ({
         </div>
       </div>
       <div className={classes.badges}>
-        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-          {getContent("videoCall")}
-        </Badge>
-        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-          {getContent("voiceCall")}
-        </Badge>
-        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-          {getContent("textChat")}
-        </Badge>
+        {onlineTypes.map((type) => (
+          <Badge
+            key={type}
+            radius="High"
+            color="Primarylight"
+            mode="Fill"
+            size="S"
+          >
+            {getContent(type)}
+          </Badge>
+        ))}
       </div>
     </div>
   );
 
-  const inPersonsBlock = (
+  const inPersonsBlock = offeredTypes.includes("inPerson") && (
     <div className={classes.inPersons}>
       <div className={classes.inlineHeader}>
-        <div className={classes.withMap}>
-          <div className={`${classes.inlineTitle} ${t2xsRegular}`}>
-            <Ixon width="1rem">
-              <LocationIcon />
-            </Ixon>
-            <span
-              className={classes.inlineTitle}
-            >{`${getContent("address")}: ${node.province ? node.province.name || "-" : "-"}`}</span>
-          </div>
-          <button
-            className={`${classes.mapButton} ${t2xsRegular}`}
-            type="button"
-          >
-            {getContent("seeOnMap")}
-          </button>
+        <div className={`${classes.inlineTitle} ${t2xsRegular}`}>
+          <Ixon width="1rem">
+            <LocationIcon />
+          </Ixon>
+          <span className={classes.inlineTitle}>
+            {`${getContent("address")}: ${
+              (typeof officeAddress === "string" && officeAddress) ||
+              node.address ||
+              locationLabel ||
+              "—"
+            }`}
+          </span>
         </div>
       </div>
       <div className={classes.badges}>
         <Badge radius="High" color="Primarylight" mode="Fill" size="S">
           {getContent("inPerson")}
-        </Badge>
-        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-          {getContent("sipCall")}
         </Badge>
       </div>
     </div>
@@ -321,6 +349,31 @@ const DoctorCardBooking = ({
     </div>
   );
 
+  // one primary action (book) and the profile as the secondary one, the same
+  // in both views - the two views used to swap labels and targets
+  const actionsBlock = (
+    <div className={classes.actions}>
+      <Button
+        size="M"
+        radius="Medium"
+        variant="Primary"
+        mode="Fill"
+        href={`/book/finalize/${node._id}`}
+      >
+        {getContent("reservation")}
+      </Button>
+      <Button
+        size="M"
+        radius="Medium"
+        variant="Primary"
+        mode="Outline"
+        href={`/dr/${node.slug || node._id}`}
+      >
+        {getContent("seeProfile")}
+      </Button>
+    </div>
+  );
+
   if (view === "Grid") {
     return (
       <div className={classes.gridMain}>
@@ -331,26 +384,7 @@ const DoctorCardBooking = ({
         {onlinesBlock}
         {inPersonsBlock}
         {sessionsBlock}
-        <div className={classes.actions}>
-          <Button
-            size="M"
-            radius="Medium"
-            variant="Primary"
-            mode="Fill"
-            href={`/book/finalize/${node._id}`}
-          >
-            {getContent("onlineConsult")}
-          </Button>
-          <Button
-            size="M"
-            radius="Medium"
-            variant="Primary"
-            mode="Fill"
-            href={`/dr/${node.slug || node._id}`}
-          >
-            {getContent("reservation")}
-          </Button>
-        </div>
+        {actionsBlock}
       </div>
     );
   }
@@ -362,26 +396,7 @@ const DoctorCardBooking = ({
       {onlinesBlock}
       {inPersonsBlock}
       {sessionsBlock}
-      <div className={classes.actions}>
-        <Button
-          size="M"
-          radius="Medium"
-          variant="Primary"
-          mode="Fill"
-          href={`/book/finalize/${node._id}`}
-        >
-          {getContent("reservation")}
-        </Button>
-        <Button
-          size="M"
-          radius="Medium"
-          variant="Primary"
-          mode="Fill"
-          href={`/dr/${node.slug || node._id}`}
-        >
-          {getContent("onlineConsult")}
-        </Button>
-      </div>
+      {actionsBlock}
     </div>
   );
 };

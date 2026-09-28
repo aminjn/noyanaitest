@@ -102,7 +102,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   padding-inline: 0.25rem;
+  min-width: 0;
 }
 
 .inlineHeader {
@@ -120,6 +123,7 @@
 .badges {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
@@ -136,15 +140,16 @@
 
 .sessions {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0.5rem;
 }
 
 .sessions > * {
   width: calc(((100% - 1.5rem) / 4));
   border-radius: 0.25rem;
-  height: 4.5rem;
-  padding-inline: 0.5rem;
+  /* grows with the label on narrow cards instead of clipping it */
+  min-height: 4.5rem;
+  padding: 0.5rem;
   overflow: hidden;
   flex-shrink: 0;
   flex: 1;
@@ -160,6 +165,7 @@
 }
 
 .dayCard {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -173,10 +179,22 @@
 }
 
 .dayCardContent {
-  color: var(--gray13);
+  color: var(--gray10);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+}
+
+.dayCount {
+  color: var(--primary6);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dayCardEmpty .dayCount {
+  color: var(--gray7);
 }
 
 .actions {
@@ -198,8 +216,16 @@
   border-radius: 0.5rem;
   padding: 1rem;
   max-width: calc(50% - 0.5rem);
-  min-width: 25.375rem;
+  /* never wider than the screen (390px phones) */
+  min-width: min(25.375rem, 100%);
   margin-inline: auto;
+}
+
+@media (max-width: 48rem) {
+  .gridMain {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 .gridTop {
