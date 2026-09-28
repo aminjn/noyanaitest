@@ -1977,5 +1977,9 @@
  "shoAccept": "Accepter",
  "shoWorkplaces": "Mes lieux de travail",
  "shoEnter": "Ouvrir l’espace",
- "shoEmpty": "Vous n’êtes encore secrétaire nulle part. Demandez au médecin ou au centre d’inviter ${1} depuis sa page Secrétaires ; l’invitation apparaîtra ici."
+ "shoEmpty": "Vous n’êtes encore secrétaire nulle part. Demandez au médecin ou au centre d’inviter ${1} depuis sa page Secrétaires ; l’invitation apparaîtra ici.",
+ "cmdOpen": "Rechercher et ouvrir…",
+ "cmdPlaceholder": "Où voulez-vous aller ?",
+ "cmdEmpty": "Aucun résultat.",
+ "cmdHint": "↑↓ pour choisir, Entrée pour ouvrir, Échap pour fermer"
 }

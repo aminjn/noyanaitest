@@ -1977,5 +1977,9 @@
  "shoAccept": "Accept",
  "shoWorkplaces": "My workplaces",
  "shoEnter": "Open panel",
- "shoEmpty": "You're not a secretary anywhere yet. Ask the doctor or centre to invite ${1} from their Secretaries page; the invite will appear here."
+ "shoEmpty": "You're not a secretary anywhere yet. Ask the doctor or centre to invite ${1} from their Secretaries page; the invite will appear here.",
+ "cmdOpen": "Search and go to…",
+ "cmdPlaceholder": "Where do you want to go?",
+ "cmdEmpty": "Nothing found.",
+ "cmdHint": "↑↓ to choose, Enter to open, Esc to close"
 }

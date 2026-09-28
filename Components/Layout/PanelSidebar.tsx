@@ -14,6 +14,7 @@ import ChevronIcon from "../Icons/ChevronIcon";
 import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import CommandPalette, { CommandItem } from "../UI/CommandPalette";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
@@ -22,6 +23,8 @@ export type LinkMapItem = {
   title: ContentKey;
   className?: string;
   side?: ReactNode;
+  // pending work on this page (invites, orders…) shown as a count pill
+  badge?: number;
   show: boolean;
 } & (
   | { target: string; onClick?: never }
@@ -32,7 +35,7 @@ export type LinkMap = LinkMapItem[];
 
 const LinkItem = ({
   panel,
-  item: { icon, title, className, onClick, side, target },
+  item: { icon, title, className, onClick, side, target, badge },
 }: {
   item: LinkMapItem;
   panel: string;
@@ -55,9 +58,10 @@ const LinkItem = ({
         <Ixon width="1.25rem">{icon}</Ixon>
         <span>{getContent(title)}</span>
         {!!side && <span className={classes.side}>{side}</span>}
+        {!!badge && badge > 0 && <span className={classes.badge}>{badge > 99 ? "99+" : badge}</span>}
       </Fragment>
     ),
-    [getContent, icon, side, title],
+    [badge, getContent, icon, side, title],
   );
 
   return (
@@ -84,9 +88,23 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
   const { user } = useUser();
   const getContent = useScopedLocale(LOCALE_NS);
 
+  const commands = useMemo<CommandItem[]>(
+    () =>
+      links
+        .filter((l) => l.show && l.target !== undefined)
+        .map((l) => ({
+          id: `${l.target}${l.title}`,
+          label: getContent(l.title),
+          icon: l.icon,
+          href: `/${panel}${l.target ? `/${l.target}` : ""}`,
+        })),
+    [getContent, links, panel],
+  );
+
   if (!user) return <Loading />;
   return (
     <div className={classes.main}>
+      <CommandPalette items={commands} className={classes.command} />
       <nav className={classes.bar}>
         {links.map((item) => (
           <Fragment key={`${item.target}${item.title}`}>

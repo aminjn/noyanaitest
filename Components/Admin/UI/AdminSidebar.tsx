@@ -10,6 +10,7 @@ import useUser from "@/Components/Hooks/useUser";
 import LogoLong from "@/Components/UI/LogoLong";
 import ThemeToggle from "@/Components/UI/Theme/ThemeToggle";
 import { adminPath } from "@/Components/helpers/adminPath";
+import CommandPalette, { CommandItem } from "@/Components/UI/CommandPalette";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import {
   AdminMenuGroup,
@@ -120,6 +121,28 @@ const AdminSidebar = () => {
       .filter((group) => group.items.length > 0);
   }, [hasAccess, user]);
 
+  // Ctrl+K: jump to any of the (100+) admin pages by name or group
+  const commands = useMemo<CommandItem[]>(
+    () => [
+      ...adminPinnedItems.map((item) => ({
+        id: `pin:${item.href}`,
+        label: item.title,
+        icon: item.icon,
+        href: adminPath(item.href ? `/${item.href}` : ""),
+      })),
+      ...visibleGroups.flatMap((group) =>
+        group.items.map((item) => ({
+          id: `${group.id}:${item.href}`,
+          label: item.title,
+          hint: group.title,
+          icon: group.icon,
+          href: adminPath(item.href ? `/${item.href}` : ""),
+        })),
+      ),
+    ],
+    [visibleGroups],
+  );
+
   // Restore open groups, and always open the group of the current page.
   useEffect(() => {
     let saved: string[] = [];
@@ -194,7 +217,7 @@ const AdminSidebar = () => {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="جستجو در منو..."
+            placeholder="جستجو در منو… (Ctrl+K)"
           />
           {search && (
             <button
@@ -210,6 +233,7 @@ const AdminSidebar = () => {
           )}
         </div>
       </div>
+      <CommandPalette items={commands} trigger={false} />
       <nav className={classes.nav}>
         {!term &&
           adminPinnedItems

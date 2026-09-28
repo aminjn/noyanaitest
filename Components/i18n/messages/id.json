@@ -1977,5 +1977,9 @@
  "shoAccept": "Terima",
  "shoWorkplaces": "Tempat kerja saya",
  "shoEnter": "Buka panel",
- "shoEmpty": "Anda belum menjadi sekretaris di mana pun. Minta dokter atau pusat mengundang ${1} dari halaman Sekretaris; undangan akan muncul di sini."
+ "shoEmpty": "Anda belum menjadi sekretaris di mana pun. Minta dokter atau pusat mengundang ${1} dari halaman Sekretaris; undangan akan muncul di sini.",
+ "cmdOpen": "Cari dan buka…",
+ "cmdPlaceholder": "Mau ke mana?",
+ "cmdEmpty": "Tidak ditemukan.",
+ "cmdHint": "↑↓ pilih, Enter buka, Esc tutup"
 }

@@ -174,6 +174,10 @@ export const contentNamespaces = {
     "tbCount",
     "tbCountOf",
     "tbEmpty",
+    "cmdOpen",
+    "cmdPlaceholder",
+    "cmdEmpty",
+    "cmdHint",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,

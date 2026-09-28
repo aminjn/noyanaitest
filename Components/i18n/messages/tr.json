@@ -1977,5 +1977,9 @@
  "shoAccept": "Kabul et",
  "shoWorkplaces": "Çalıştığım yerler",
  "shoEnter": "Panele gir",
- "shoEmpty": "Henüz hiçbir yerde sekreter değilsiniz. Doktordan veya merkezden Sekreterler sayfasından ${1} numarasını davet etmesini isteyin; davet burada görünür."
+ "shoEmpty": "Henüz hiçbir yerde sekreter değilsiniz. Doktordan veya merkezden Sekreterler sayfasından ${1} numarasını davet etmesini isteyin; davet burada görünür.",
+ "cmdOpen": "Ara ve git…",
+ "cmdPlaceholder": "Nereye gitmek istersiniz?",
+ "cmdEmpty": "Bir şey bulunamadı.",
+ "cmdHint": "Seçmek için ↑↓, açmak için Enter, kapatmak için Esc"
 }
