@@ -513,6 +513,17 @@ export const contentNamespaces = {
     "cancelReasonOptional",
     "cancelClosedHint",
     "cancelledRefunded",
+    "visitReviewTitle",
+    "visitReviewIntro",
+    "visitReviewScore",
+    "visitReviewRecommend",
+    "visitReviewPublic",
+    "visitReviewPrivate",
+    "visitReviewSubmit",
+    "visitReviewThanks",
+    "visitReviewPickScore",
+    "yes",
+    "no",
   ],
 
   // app/dashboard/transaction/page.tsx (DashboardManageTransactionsPage) —
@@ -4102,6 +4113,11 @@ export const contentNamespaces = {
     "seeAllReviews",
     "socialMedia",
     "succeededAppointmentsCount",
+    "reviewsVerified",
+    "reviewsRecommendPercent",
+    "reviewsEmpty",
+    "reviewsMore",
+    "reviewsRecommends",
   ],
   // Components/Dr/New/BookingSidebar — reusable (/dr/[slug], /book/finalize/[nodeId]); incl. doctorSessionTypeContentKeyDict + patientTypeDict values.
   drBookingSidebar: [

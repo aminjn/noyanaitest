@@ -1,0 +1,142 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--glassLine);
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+}
+
+.title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--gray13);
+}
+
+.muted {
+  font-size: 0.8125rem;
+  color: var(--gray10);
+  line-height: 1.8;
+}
+
+.thanks {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--successS2);
+}
+
+.quote {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--gray12);
+  padding-inline-start: 0.75rem;
+  border-inline-start: 3px solid var(--aiLine);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--gray12);
+}
+
+.field textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--glassLine);
+  border-radius: 0.75rem;
+  background: var(--glassStrong);
+  color: var(--gray13);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.field textarea:focus {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+
+.stars {
+  display: inline-flex;
+  gap: 0.125rem;
+}
+
+.stars span,
+.pick {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+}
+
+.stars svg,
+.pick svg {
+  width: 100%;
+  height: 100%;
+}
+
+.picker {
+  display: flex;
+  gap: 0.375rem;
+  font-size: 2rem;
+}
+
+.pick {
+  /* explicit size: global button styles reset font-size */
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0.125rem;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: transform var(--transTime);
+}
+
+.pick:hover {
+  transform: scale(1.1);
+}
+
+.pick:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+
+.on {
+  color: var(--yellow);
+}
+
+.off {
+  color: var(--gray5);
+}
+
+.choices {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.choice {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--glassLine);
+  border-radius: 999px;
+  background: var(--glassStrong);
+  color: var(--gray12);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.choiceOn {
+  border-color: var(--aiLine);
+  background: var(--aiSoft);
+  color: var(--aiText);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -45,7 +45,7 @@ import MountIcon from "@/Components/Icons/MountIcon";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { tmdMedium } from "@/Components/UI/Typography";
 import Badge from "@/Components/UI/Badge";
-import CommentSection from "@/Components/Comment/CommentSection";
+import DoctorReviews from "./DoctorReviews";
 import BookingSidebar from "./BookingSidebar";
 
 const NS: ContentNamespace[] = ["common", "drProfile"];
@@ -404,17 +404,8 @@ const NewDoctorProfilePage = ({
               </span>
             }
           >
-            {!!doctor.feedbackCount && !!doctor.averageScore && (
-              <p className={classes.paragraph}>
-                <b>{doctor.averageScore.toFixed(1)}</b>
-                {` ${getContent("comments")} (${currencize(
-                  doctor.feedbackCount,
-                )})`}
-              </p>
-            )}
-            {/* TODO: wire the real feedback list once a public listing
-                endpoint for DoctorFeedback (Models/DoctorFeedback.ts) exists. */}
-            <CommentSection model="DoctorProfile" nodeId={doctor._id} />
+            {/* verified visit reviews only (one per completed visit) */}
+            <DoctorReviews doctorId={doctor._id} />
           </SectionCard>
 
           <SectionCard
