@@ -119,6 +119,42 @@ const ProviderHome = ({
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
+  // Pharmacy setup checklist (2026-09, like the doctor panel's): what a new
+  // pharmacy must do before patients can find and order from it. Same SWR key
+  // as PharmacyPanelLayout, so no extra request.
+  const profile = useSWR<{
+    name?: string;
+    address?: string;
+    avatar?: string;
+    location?: { coordinates?: number[] };
+  } | null>(kind === "pharmacy" && isOwner ? `${API}/pharmacy` : null, load);
+  const setup =
+    kind === "pharmacy" && isOwner && profile.data && products.data
+      ? [
+          {
+            key: "profile",
+            label: "phSetupProfile" as ContentKey,
+            target: "profile",
+            done: !!profile.data.name && !!profile.data.address && !!profile.data.avatar,
+          },
+          {
+            key: "location",
+            label: "phSetupLocation" as ContentKey,
+            target: "profile",
+            done: profile.data.location?.coordinates?.length === 2,
+          },
+          {
+            key: "products",
+            label: "phSetupProducts" as ContentKey,
+            target: "product",
+            done: list<{ isActive?: boolean; price?: number }>(products.data).some(
+              (p) => p?.isActive && (p?.price || 0) > 0,
+            ),
+          },
+        ]
+      : [];
+  const setupLeft = setup.filter((s) => !s.done).length;
+
   const num = new Intl.NumberFormat(locale);
   const todo = hasOrders ? orders.count : 0;
   const pendingInvites = list<{ status?: string }>(invites.data).filter(
@@ -204,6 +240,40 @@ const ProviderHome = ({
   const allClear = todos.length === 0 && joinRequests === 0;
   return (
     <div className={classes.main}>
+      {setupLeft > 0 && (
+        <section className={classes.setup}>
+          <div className={classes.setupHead}>
+            <h2 className={classes.title}>{getContent("phSetupTitle")}</h2>
+            <span className={classes.setupBadge}>
+              {getContent("dpdStepsLeft", [num.format(setupLeft)])}
+            </span>
+          </div>
+          <p className={classes.setupHint}>{getContent("phSetupHint")}</p>
+          <div className={classes.setupBar} aria-hidden>
+            <span style={{ width: `${((setup.length - setupLeft) / setup.length) * 100}%` }} />
+          </div>
+          <ul className={classes.setupSteps}>
+            {setup.map((step) => (
+              <li key={step.key}>
+                <Link
+                  href={`${root}/${step.target}`}
+                  className={`${classes.setupStep} ${step.done ? classes.setupDone : ""}`}
+                >
+                  <span className={classes.setupCheck}>
+                    {step.done && (
+                      <Ixon width="1rem">
+                        <CheckCircleIcon />
+                      </Ixon>
+                    )}
+                  </span>
+                  <span>{getContent(step.label)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className={classes.section}>
         <h2 className={classes.title}>{getContent("homeTodoTitle")}</h2>
         {joinRequests > 0 && (kind === "clinic" || kind === "hospital") && (

@@ -160,3 +160,96 @@
   font-size: 0.8125rem;
   line-height: 1.7;
 }
+
+/* pharmacy setup checklist */
+.setup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.125rem 1.25rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  border-radius: var(--radiusLg);
+  box-shadow: var(--glassShadow);
+}
+
+.setupHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.setupBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary7);
+  background: var(--primary1);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+}
+
+.setupHint {
+  font-size: 0.85rem;
+  color: var(--gray10);
+}
+
+.setupBar {
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.setupBar span {
+  display: block;
+  height: 100%;
+  background: var(--primary6);
+  border-radius: inherit;
+}
+
+.setupSteps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.setupStep {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--line);
+  color: var(--gray12);
+  font-size: 0.875rem;
+}
+
+.setupStep:hover {
+  border-color: var(--primary5);
+}
+
+.setupDone {
+  color: var(--gray9);
+  text-decoration: line-through;
+}
+
+.setupCheck {
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--gray7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--successS3, #16a34a);
+}
+
+.setupDone .setupCheck {
+  border-color: transparent;
+}

@@ -2114,5 +2114,10 @@
  "pfNote": "Each order line is credited to your wallet once it is delivered. Amounts are in toman.",
  "pfUpcoming": "Waiting to be prepared",
  "pfUpcomingNote": "from ${1} paid orders",
- "pfOrderPayout": "Order sale, ${1}"
+ "pfOrderPayout": "Order sale, ${1}",
+ "phSetupTitle": "Set up your pharmacy",
+ "phSetupHint": "Finish these steps so patients can find you and order from you.",
+ "phSetupProfile": "Add your pharmacy's name, address and photo",
+ "phSetupLocation": "Pin your pharmacy on the map (for the map and couriers)",
+ "phSetupProducts": "List your first product with a price"
 }

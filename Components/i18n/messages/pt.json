@@ -2114,5 +2114,10 @@
  "pfNote": "Cada item do pedido é creditado na sua carteira após a entrega. Valores em tomans.",
  "pfUpcoming": "Aguardando preparo",
  "pfUpcomingNote": "de ${1} pedidos pagos",
- "pfOrderPayout": "Venda do pedido ${1}"
+ "pfOrderPayout": "Venda do pedido ${1}",
+ "phSetupTitle": "Configure sua farmácia",
+ "phSetupHint": "Conclua estas etapas para que os pacientes encontrem você e façam pedidos.",
+ "phSetupProfile": "Adicione nome, endereço e foto da farmácia",
+ "phSetupLocation": "Marque a farmácia no mapa (para o mapa e entregadores)",
+ "phSetupProducts": "Anuncie seu primeiro produto com preço"
 }

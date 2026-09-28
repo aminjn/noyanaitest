@@ -1246,6 +1246,12 @@ export const contentNamespaces = {
     "toman",
     "homeTrendVisits",
     "homeVisitsNoOffices",
+    "phSetupTitle",
+    "phSetupHint",
+    "phSetupProfile",
+    "phSetupLocation",
+    "phSetupProducts",
+    "dpdStepsLeft",
   ],
   secretaryPanelHome: [
     "dashboard",
