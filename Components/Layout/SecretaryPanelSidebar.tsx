@@ -6,10 +6,17 @@ import BuildingIcon from "../Icons/BuildingIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
 import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
 import MedicalRecordIcon from "../Icons/MedicalRecordIcon";
+import DashboardIcon from "../Icons/DashboardIcon";
 
 const SecretaryPanelSidebar = () => {
   const links = useMemo<LinkMap>(
     () => [
+      {
+        title: "dashboard",
+        icon: <DashboardIcon />,
+        target: "",
+        show: true,
+      },
       {
         title: "doctors",
         icon: <StetoscopeIcon />,
@@ -26,6 +33,12 @@ const SecretaryPanelSidebar = () => {
         title: "clinics",
         icon: <HospitalIcon />,
         target: "clinic",
+        show: true,
+      },
+      {
+        title: "hospitals",
+        icon: <HospitalIcon />,
+        target: "hospital",
         show: true,
       },
       {

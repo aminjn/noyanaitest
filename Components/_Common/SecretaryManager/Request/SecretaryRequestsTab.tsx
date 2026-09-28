@@ -20,6 +20,8 @@ import CreateSecretaryRequestPopup, {
   SecretaryNodePath,
 } from "./CreateSecretaryRequestPopup";
 import EditSecretaryRequestPopup from "./EditSecretaryRequestPopup";
+import CancelSecretaryRequestPopup from "./CancelSecretaryRequestPopup";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
@@ -36,7 +38,7 @@ export type SecretaryRequestStatus = (typeof secretaryRequestStatuses)[number];
 export type SecretaryRequestPopulation = Population<{ Owner: true; Acl: true }>;
 export interface ISecretaryRequest<
   T extends SecretaryNodePath,
-  K extends SecretaryRequestPopulation = SecretaryRequestPopulation
+  K extends SecretaryRequestPopulation = SecretaryRequestPopulation,
 > extends MongoDoc {
   submittedAt: Date;
   owner: K["Owner"] extends true ? ModelNameToModelType[T] : string;
@@ -53,7 +55,7 @@ const SecretaryRequestsTab = ({ name }: { name: NodeWithAcl }) => {
   const { data, error, mutate } = useSWR<
     ISecretaryRequest<SecretaryNodePath, { Acl: true }>[]
   >(`${API}/acl/${name}/secretaryrequest`, (url: string) =>
-    fetcher({ url }).then((res) => res.data)
+    fetcher({ url }).then((res) => res.data),
   );
   const getContent = useScopedLocale(LOCALE_NS);
 
@@ -75,11 +77,11 @@ const SecretaryRequestsTab = ({ name }: { name: NodeWithAcl }) => {
                       <CreateSecretaryRequestPopup
                         name={name}
                         mutate={mutate}
-                      />
+                      />,
                     )
                   }
                 >
-                  {getContent("newItem")}
+                  {getContent("smInvite")}
                 </Button>
               ),
             },
@@ -123,25 +125,43 @@ const SecretaryRequestsTab = ({ name }: { name: NodeWithAcl }) => {
               },
               actions: {
                 name: getContent("actions"),
-                component: (node) => (
-                  <TableActions>
-                    <IconButton
-                      variant="Info"
-                      onClick={() =>
-                        setPopup(
-                          "EditSecretaryRequest",
-                          <EditSecretaryRequestPopup
-                            mutate={mutate}
-                            node={node}
-                            name={name}
-                          />
-                        )
-                      }
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableActions>
-                ),
+                // only an open invite can be edited or withdrawn
+                component: (node) =>
+                  node.status !== "Pending" ? null : (
+                    <TableActions>
+                      <IconButton
+                        variant="Info"
+                        onClick={() =>
+                          setPopup(
+                            "EditSecretaryRequest",
+                            <EditSecretaryRequestPopup
+                              mutate={mutate}
+                              node={node}
+                              name={name}
+                            />,
+                          )
+                        }
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        variant="Danger"
+                        title={getContent("smCancelInvite")}
+                        onClick={() =>
+                          setPopup(
+                            "CancelSecretaryRequest",
+                            <CancelSecretaryRequestPopup
+                              mutate={mutate}
+                              nodeId={node._id}
+                              name={name}
+                            />,
+                          )
+                        }
+                      >
+                        <GarbageIcon />
+                      </IconButton>
+                    </TableActions>
+                  ),
               },
             }}
           />

@@ -1965,5 +1965,17 @@
  "csDiscounts": "Buat kode diskon untuk pasien setia atau momen khusus, dengan batas pemakaian dan tanggal kedaluwarsa.",
  "csDocuments": "Dokumen yang dikirim pasien (lab, pencitraan, resep) akan dikumpulkan di sini. Sampai saat itu, berkas tiap pasien ada di halaman pasien dan di chat.",
  "csToPatients": "Ke pasien",
- "csToPackages": "Buat paket layanan"
+ "csToPackages": "Buat paket layanan",
+ "smInvite": "Undang sekretaris",
+ "smRemove": "Keluarkan dari tim",
+ "smRemoveAsk": "Keluarkan sekretaris ini dari tim? Aksesnya ke panel Anda akan dicabut.",
+ "smCancelInvite": "Batalkan undangan",
+ "smCancelInviteAsk": "Batalkan undangan ini? Anda bisa mengundang lagi nanti.",
+ "smNoSecretary": "Belum ada sekretaris. Gunakan «Undang sekretaris» untuk mengundang asisten lewat nomor telepon.",
+ "shoInvites": "Undangan baru",
+ "shoInviteFrom": "${1} mengundang Anda sebagai sekretaris",
+ "shoAccept": "Terima",
+ "shoWorkplaces": "Tempat kerja saya",
+ "shoEnter": "Buka panel",
+ "shoEmpty": "Anda belum menjadi sekretaris di mana pun. Minta dokter atau pusat mengundang ${1} dari halaman Sekretaris; undangan akan muncul di sini."
 }

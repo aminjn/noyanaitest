@@ -71,7 +71,6 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "تخصص‌ها", href: "speciality", access: "Sepciality" },
       { title: "دسته‌بندی تخصص‌ها", href: "specialityCategory" },
       { title: "سوالات متداول پزشکان", href: "doctorfaq", access: "DoctorFaq" },
-      { title: "دسترسی پیش‌فرض منشی", href: "doctorsecretaryaccesslevel", access: "DoctorSeretaryAccessLevel" },
     ],
   },
   {
