@@ -132,7 +132,8 @@ const DoctorManageSchedulePage = () => {
         name: [r.patient?.givenName, r.patient?.lastName].filter(Boolean).join(" ") || "—",
         phone: r.user?.phone || "",
         type: r.sessionType ? getContent(r.sessionType as ContentKey) : "",
-        place: r.office?.name,
+        // an online visit has no office
+        place: r.sessionType === "inPerson" ? r.office?.name : undefined,
         href: `/doctorpanel/booking/${r._id}`,
         status: r.status,
         open,
@@ -146,8 +147,10 @@ const DoctorManageSchedulePage = () => {
   const counts = useMemo(
     () => ({
       today: rows.filter((r) => r.dateKey === todayKey).length,
-      upcoming: rows.filter((r) => r.dateKey >= todayKey).length,
-      past: rows.filter((r) => r.dateKey < todayKey).length,
+      // "upcoming" = still ahead (pending / in progress); a visit that is
+      // over (completed, no-show, cancelled...) is "past" even if it was today
+      upcoming: rows.filter((r) => r.open).length,
+      past: rows.filter((r) => !r.open).length,
       all: rows.length,
       risk: rows.filter((r) => r.missed > 0).length,
       noIntake: rows.filter((r) => r.intake === "missing").length,
@@ -162,8 +165,8 @@ const DoctorManageSchedulePage = () => {
       if (filter === "noIntake" && r.intake !== "missing") return false;
       if (!filter) {
         if (tab === "today" && r.dateKey !== todayKey) return false;
-        if (tab === "upcoming" && r.dateKey < todayKey) return false;
-        if (tab === "past" && r.dateKey >= todayKey) return false;
+        if (tab === "upcoming" && !r.open) return false;
+        if (tab === "past" && r.open) return false;
       }
       if (q && !`${r.name} ${r.phone}`.toLowerCase().includes(q)) return false;
       return true;
