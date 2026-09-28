@@ -72,20 +72,21 @@ const DoctorSidebar = () => {
         title: "profile",
         icon: <UserEditIcon />,
         target: "profile",
-        show: true,
+        // owner, or a secretary allowed to edit the profile
+        show: hasAccess("mutateProfile"),
       },
-      { title: "office", icon: <BuildingIcon />, target: "office", show: true },
+      { title: "office", icon: <BuildingIcon />, target: "office", show: hasAccess("readOffices") },
       {
         title: "services",
         icon: <CategoriesIcon />,
         target: "service",
-        show: true,
+        show: hasAccess("readServices"),
       },
       {
         title: "servicePackages",
         icon: <PackageIcon />,
         target: "servicepackage",
-        show: true,
+        show: hasAccess("readServicePackages"),
       },
       {
         title: "incomingOrders",
@@ -107,7 +108,7 @@ const DoctorSidebar = () => {
         show: hasAccess("readFinance"),
       },
       {
-        title: "secrataries",
+        title: "teamTitle",
         icon: <UserEditIcon />,
         target: "secretary",
         // Managing secretaries/access-levels is never delegable — only the

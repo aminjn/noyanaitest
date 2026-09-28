@@ -154,6 +154,7 @@ export type SmsPatternNameFor<E extends string> =
 
 export type SmsPatternName =
   | "OTP_PATTERN"
+  | "SECRETARY_INVITE_PATTERN"
   | SmsPatternNameFor<UserAlertEvent>
   | SmsPatternNameFor<ReservationSmsEvent>
   | SmsPatternNameFor<OrderSmsEvent>;
@@ -198,6 +199,10 @@ const withVariables = (title: string, variables: string[]): string =>
 const patternFormRenderer = {
   OTP_PATTERN: {
     title: "پترن کد تایید (OTP) (متغیرها: OTP)",
+    type: "text",
+  },
+  SECRETARY_INVITE_PATTERN: {
+    title: "پترن دعوت منشی (متغیرها: owner) — خالی بماند یعنی پیامک ارسال نمی‌شود",
     type: "text",
   },
 } as FormRenderer<ISmsPatterns>;

@@ -1,3 +1,4 @@
+import ActingAsBanner from "./ActingAsBanner";
 import { ReactNode } from "react";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import ErrorMessage from "../Admin/UI/ErrorMessage";
@@ -23,6 +24,7 @@ const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
         <LoginRequired />
       ) : doctor ? (
         <PanelLayout sidebar={<DoctorSidebar />}>
+          <ActingAsBanner kind="doctor" ownerName={[doctor.firstName, doctor.lastName].filter(Boolean).join(" ")} />
           <DoctorLicenseGate>{children}</DoctorLicenseGate>
         </PanelLayout>
       ) : notADoctor ? (
