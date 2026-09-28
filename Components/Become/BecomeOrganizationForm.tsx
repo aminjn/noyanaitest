@@ -109,11 +109,6 @@ const BecomeOrganizationForm = ({
             readOnly
             defaultValue={user?.phone}
           />
-          <Input
-            title={getContent("nationalId")}
-            readOnly
-            defaultValue={user?.nationalId}
-          />
         </div>
         <div className={classes.row}>
           <Input
@@ -125,8 +120,11 @@ const BecomeOrganizationForm = ({
             required
             defaultValue={pending?.siamCode}
           />
+          {/* the organization's national ID, not the applicant's own code
+              (two identical "national code" fields sat side by side, the
+              read-only one always empty) */}
           <Input
-            title={getContent("nationalCode")}
+            title={getContent("orgNationalId")}
             readOnly={!!pending || isLoading}
             onChange={(e) =>
               setInput((prev) => ({ ...prev, nationalId: e.target.value }))
@@ -156,6 +154,7 @@ const BecomeOrganizationForm = ({
         </div>
         <div className={classes.row}>
           <ImageInput
+            required
             readOnly={!!pending || isLoading}
             onChange={(e) =>
               setInput((prev) => ({

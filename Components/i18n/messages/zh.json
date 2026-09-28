@@ -2101,5 +2101,6 @@
  "visitReviewPending": "谢谢！已收到您的评价，审核后发布。",
  "visitReviewApproved": "您的评价已通过审核，并发布在医生页面上。",
  "visitReviewRejected": "您的评价不符合发布规则，未予发布。",
- "schTabCancelled": "已取消"
+ "schTabCancelled": "已取消",
+ "orgNationalId": "机构国家识别码"
 }

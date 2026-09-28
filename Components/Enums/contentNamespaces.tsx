@@ -929,6 +929,7 @@ export const contentNamespaces = {
     "becomeSupprtPost",
     "otherOrganizations",
     "requestPanel",
+    "orgNationalId",
   ],
 
   // app/become/clinic/page.tsx (new BecomeClinicRequestPage, 2026-09) — the

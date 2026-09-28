@@ -72,3 +72,7 @@
     padding: 1rem;
   }
 }
+
+.required {
+  color: var(--error);
+}

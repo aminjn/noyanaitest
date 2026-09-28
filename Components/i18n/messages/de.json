@@ -2101,5 +2101,6 @@
  "visitReviewPending": "Danke! Ihre Bewertung ist eingegangen und wird nach Prüfung veröffentlicht.",
  "visitReviewApproved": "Ihre Bewertung wurde freigegeben und ist auf der Arztseite veröffentlicht.",
  "visitReviewRejected": "Ihre Bewertung entsprach nicht den Richtlinien und wurde nicht veröffentlicht.",
- "schTabCancelled": "Storniert"
+ "schTabCancelled": "Storniert",
+ "orgNationalId": "Nationale Kennnummer der Einrichtung"
 }

@@ -2101,5 +2101,6 @@
  "visitReviewPending": "Obrigado! Recebemos sua avaliação e ela será publicada após a revisão.",
  "visitReviewApproved": "Sua avaliação foi aprovada e está publicada na página do médico.",
  "visitReviewRejected": "Sua avaliação não atendia às regras de publicação e não foi publicada.",
- "schTabCancelled": "Canceladas"
+ "schTabCancelled": "Canceladas",
+ "orgNationalId": "Identificação nacional da instituição"
 }
