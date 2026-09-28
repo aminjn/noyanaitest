@@ -2042,5 +2042,14 @@
  "netManage": "管理",
  "netNone": "暂无。",
  "netPending": "${1} 个待处理",
- "netMore": "另外 ${1} 个"
+ "netMore": "另外 ${1} 个",
+ "homeTodoTitle": "待您处理",
+ "homeAllClear": "一切就绪，没有待处理事项。",
+ "homeOverview": "概览",
+ "homeOpen": "处理",
+ "homeOrdersTodo": "待处理订单",
+ "homeOrdersTodoHint": "已付款但仍有商品未处理的订单。",
+ "homeToFulfil": "待处理",
+ "homeInvitesPending": "${1} 个邀请待回复",
+ "groupCenter": "机构与经营"
 }

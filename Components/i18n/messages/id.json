@@ -2042,5 +2042,14 @@
  "netManage": "Kelola",
  "netNone": "Belum ada.",
  "netPending": "${1} menunggu",
- "netMore": "dan ${1} lainnya"
+ "netMore": "dan ${1} lainnya",
+ "homeTodoTitle": "Menunggu Anda",
+ "homeAllClear": "Semua beres — tidak ada yang menunggu Anda.",
+ "homeOverview": "Ikhtisar",
+ "homeOpen": "Tangani",
+ "homeOrdersTodo": "Pesanan menunggu diproses",
+ "homeOrdersTodoHint": "Pesanan lunas dengan item yang belum diproses.",
+ "homeToFulfil": "perlu diproses",
+ "homeInvitesPending": "${1} undangan tertunda",
+ "groupCenter": "Pusat & bisnis"
 }

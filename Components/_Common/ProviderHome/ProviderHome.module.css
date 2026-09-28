@@ -1,0 +1,106 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray13);
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: var(--gradAccent);
+  color: var(--onColor);
+  font-weight: 800;
+}
+
+.allClear {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 1rem 1.25rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  border-radius: var(--radiusLg);
+  color: var(--successS3);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.75rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.125rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  border-radius: var(--radiusLg);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: blur(var(--glassBlur));
+  color: var(--gray12);
+  transition:
+    transform var(--transTime),
+    background-color var(--transTime);
+}
+
+.tile:hover {
+  background: var(--glassStrong);
+  transform: translateY(-1px);
+}
+
+.tile:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+
+.tileValue {
+  font-size: 1.625rem;
+  font-weight: 800;
+  color: var(--gray13);
+}
+
+.tileLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.tileNote {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.alert {
+  border-color: var(--aiLine);
+  background: var(--aiSoft);
+}
+
+.alert .tileValue {
+  color: var(--aiText);
+}
+
+@media (max-width: 40em) {
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

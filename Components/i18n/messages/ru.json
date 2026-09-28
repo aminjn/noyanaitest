@@ -2042,5 +2042,14 @@
  "netManage": "Управлять",
  "netNone": "Пока пусто.",
  "netPending": "В ожидании: ${1}",
- "netMore": "и ещё ${1}"
+ "netMore": "и ещё ${1}",
+ "homeTodoTitle": "Ждёт вашего решения",
+ "homeAllClear": "Всё сделано — ничего не ждёт вашего решения.",
+ "homeOverview": "Обзор",
+ "homeOpen": "Обработать",
+ "homeOrdersTodo": "Заказы ждут сборки",
+ "homeOrdersTodoHint": "Оплаченные заказы, в которых есть необработанные позиции.",
+ "homeToFulfil": "к сборке",
+ "homeInvitesPending": "Приглашений без ответа: ${1}",
+ "groupCenter": "Центр и бизнес"
 }

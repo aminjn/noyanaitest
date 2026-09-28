@@ -30,6 +30,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
   dashboardNotification: ["/dashboard/notification"],
   dashboardSupport: ["/dashboard/support"],
   doctorPanelNetwork: ["/doctorpanel/network"],
+  providerHome: ["/clinicpanel", "/hospitalpanel", "/pharmacypanel", "/paraClinicPanel", "/insurancepanel"],
   centerDoctors: ["/clinicpanel", "/clinicpanel/doctor", "/hospitalpanel", "/hospitalpanel/doctor"],
   dashboardChat: ["/dashboard/chat", "/doctorpanel/chat"],
 

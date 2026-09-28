@@ -2042,5 +2042,14 @@
  "netManage": "إدارة",
  "netNone": "لا شيء بعد.",
  "netPending": "${1} قيد الانتظار",
- "netMore": "و ${1} أخرى"
+ "netMore": "و ${1} أخرى",
+ "homeTodoTitle": "بانتظارك",
+ "homeAllClear": "كل شيء على ما يرام؛ لا شيء بانتظارك.",
+ "homeOverview": "نظرة عامة",
+ "homeOpen": "معالجة",
+ "homeOrdersTodo": "طلبات بانتظار التجهيز",
+ "homeOrdersTodoHint": "طلبات مدفوعة فيها عناصر لم تُجهَّز بعد.",
+ "homeToFulfil": "بانتظار التجهيز",
+ "homeInvitesPending": "${1} دعوة بانتظار الرد",
+ "groupCenter": "المركز والأعمال"
 }

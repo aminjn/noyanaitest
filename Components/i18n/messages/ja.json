@@ -2042,5 +2042,14 @@
  "netManage": "管理",
  "netNone": "まだありません。",
  "netPending": "保留中 ${1}",
- "netMore": "ほか ${1} 件"
+ "netMore": "ほか ${1} 件",
+ "homeTodoTitle": "対応待ち",
+ "homeAllClear": "すべて対応済みです。待機中の項目はありません。",
+ "homeOverview": "概要",
+ "homeOpen": "対応する",
+ "homeOrdersTodo": "準備待ちの注文",
+ "homeOrdersTodoHint": "支払い済みで未処理の品目がある注文です。",
+ "homeToFulfil": "準備待ち",
+ "homeInvitesPending": "未回答の招待 ${1} 件",
+ "groupCenter": "施設と運営"
 }

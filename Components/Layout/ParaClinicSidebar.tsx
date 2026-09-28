@@ -6,34 +6,32 @@ import FlaskIcon from "../Icons/FlaskIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import CartIcon from "../Icons/CartIcon";
+import UserCircleIcon from "../Icons/UserCircleIcon";
 import useAcl from "../Hooks/useAcl";
+import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
 const ParaClinicSidebar = () => {
   const hasAccess = useAcl("paraClinic");
+
+  const orders = useOrdersTodo("paraClinic", hasAccess("readOrders"));
 
   const links = useMemo<LinkMap>(
     () => [
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
       {
-        title: "teamTitle",
-        icon: <UserEditIcon />,
-        // Managing secretaries/access-levels is never delegable — only the
-        // real owner (hasAccess() with no action, true only for "FULL") can
-        // see this.
-        show: hasAccess(),
-        target: "secretary",
+        title: "incomingOrders",
+        icon: <PackageIcon />,
+        group: "groupDaily",
+        badge: orders.count,
+        show: hasAccess("readOrders"),
+        target: "order",
       },
       {
         title: "tests",
         icon: <FlaskIcon />,
+        group: "groupDaily",
         show: hasAccess("readTests"),
         target: "test",
-      },
-      {
-        title: "incomingOrders",
-        icon: <PackageIcon />,
-        show: hasAccess("readOrders"),
-        target: "order",
       },
       // Tamin end-user lockout (2026-09) - "prescriptions" (already an
       // orphan route with no page.tsx) and "tamin" are hard-hidden
@@ -44,35 +42,50 @@ const ParaClinicSidebar = () => {
       {
         title: "prescriptions",
         icon: <UserEditIcon />,
+        group: "groupDaily",
         show: false,
         target: "prescription",
       },
       {
-        title: "articles",
-        icon: <FileDuplicateIcon />,
-        show: hasAccess("readArticles"),
-        target: "article",
-      },
-      {
         title: "tamin",
         icon: <UserEditIcon />,
+        group: "groupDaily",
         show: false,
         target: "tamin",
       },
       {
+        title: "profile",
+        icon: <UserCircleIcon />,
+        group: "groupCenter",
+        show: true,
+        target: "profile",
+      },
+      {
+        title: "teamTitle",
+        icon: <UserEditIcon />,
+        group: "groupCenter",
+        // Managing secretaries/access-levels is never delegable — only the
+        // real owner (hasAccess() with no action, true only for "FULL") can
+        // see this.
+        show: hasAccess(),
+        target: "secretary",
+      },
+      {
         title: "licenses",
         icon: <CartIcon />,
+        group: "groupCenter",
         show: hasAccess("readLicenses"),
         target: "license",
       },
       {
-        title: "profile",
-        icon: <UserEditIcon />,
-        show: true,
-        target: "profile",
+        title: "articles",
+        icon: <FileDuplicateIcon />,
+        group: "groupCenter",
+        show: hasAccess("readArticles"),
+        target: "article",
       },
     ],
-    [hasAccess],
+    [hasAccess, orders.count],
   );
 
   return <PanelSidebar links={links} panel="paraClinicPanel" />;
