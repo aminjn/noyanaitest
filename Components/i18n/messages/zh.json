@@ -2114,5 +2114,10 @@
  "pfNote": "每个订单项送达后计入您的钱包。金额单位为托曼。",
  "pfUpcoming": "待准备",
  "pfUpcomingNote": "来自 ${1} 个已付款订单",
- "pfOrderPayout": "订单销售 ${1}"
+ "pfOrderPayout": "订单销售 ${1}",
+ "phSetupTitle": "设置您的药店",
+ "phSetupHint": "完成这些步骤，患者才能找到您并下单。",
+ "phSetupProfile": "填写药店名称、地址和照片",
+ "phSetupLocation": "在地图上标注药店（用于地图和配送）",
+ "phSetupProducts": "上架第一个带价格的商品"
 }

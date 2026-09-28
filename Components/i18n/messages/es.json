@@ -2114,5 +2114,10 @@
  "pfNote": "Cada línea del pedido se abona a tu monedero al entregarse. Importes en tomanes.",
  "pfUpcoming": "Pendiente de preparar",
  "pfUpcomingNote": "de ${1} pedidos pagados",
- "pfOrderPayout": "Venta de pedido ${1}"
+ "pfOrderPayout": "Venta de pedido ${1}",
+ "phSetupTitle": "Configura tu farmacia",
+ "phSetupHint": "Completa estos pasos para que los pacientes te encuentren y te compren.",
+ "phSetupProfile": "Añade nombre, dirección y foto de la farmacia",
+ "phSetupLocation": "Marca la farmacia en el mapa (para el mapa y los repartidores)",
+ "phSetupProducts": "Publica tu primer producto con precio"
 }

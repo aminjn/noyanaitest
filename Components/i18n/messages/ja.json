@@ -2114,5 +2114,10 @@
  "pfNote": "注文の各商品は配達後にウォレットに入金されます。金額はトマンです。",
  "pfUpcoming": "準備待ち",
  "pfUpcomingNote": "支払い済み注文 ${1} 件",
- "pfOrderPayout": "注文の売上 ${1}"
+ "pfOrderPayout": "注文の売上 ${1}",
+ "phSetupTitle": "薬局のセットアップ",
+ "phSetupHint": "患者があなたを見つけて注文できるよう、これらの手順を完了してください。",
+ "phSetupProfile": "薬局の名前・住所・写真を追加",
+ "phSetupLocation": "地図に薬局の位置を登録（地図と配達用）",
+ "phSetupProducts": "最初の商品を価格付きで出品"
 }

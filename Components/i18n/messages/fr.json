@@ -2114,5 +2114,10 @@
  "pfNote": "Chaque ligne de commande est créditée sur votre portefeuille après livraison. Montants en tomans.",
  "pfUpcoming": "En attente de préparation",
  "pfUpcomingNote": "sur ${1} commandes payées",
- "pfOrderPayout": "Vente de commande ${1}"
+ "pfOrderPayout": "Vente de commande ${1}",
+ "phSetupTitle": "Configurer votre pharmacie",
+ "phSetupHint": "Terminez ces étapes pour que les patients vous trouvent et commandent.",
+ "phSetupProfile": "Ajoutez le nom, l'adresse et la photo",
+ "phSetupLocation": "Placez la pharmacie sur la carte (carte et coursiers)",
+ "phSetupProducts": "Proposez votre premier produit avec un prix"
 }

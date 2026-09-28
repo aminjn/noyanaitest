@@ -2114,5 +2114,10 @@
  "pfNote": "Her sipariş kalemi teslim edildikten sonra cüzdanınıza eklenir. Tutarlar toman cinsindendir.",
  "pfUpcoming": "Hazırlanmayı bekliyor",
  "pfUpcomingNote": "${1} ödenmiş siparişten",
- "pfOrderPayout": "Sipariş satışı ${1}"
+ "pfOrderPayout": "Sipariş satışı ${1}",
+ "phSetupTitle": "Eczanenizi kurun",
+ "phSetupHint": "Hastaların sizi bulup sipariş verebilmesi için bu adımları tamamlayın.",
+ "phSetupProfile": "Eczane adını, adresini ve fotoğrafını ekleyin",
+ "phSetupLocation": "Eczaneyi haritada işaretleyin (harita ve kurye için)",
+ "phSetupProducts": "İlk ürününüzü fiyatıyla ekleyin"
 }

@@ -2114,5 +2114,10 @@
  "pfNote": "Setiap item pesanan dikreditkan ke dompet Anda setelah dikirim. Jumlah dalam toman.",
  "pfUpcoming": "Menunggu disiapkan",
  "pfUpcomingNote": "dari ${1} pesanan dibayar",
- "pfOrderPayout": "Penjualan pesanan ${1}"
+ "pfOrderPayout": "Penjualan pesanan ${1}",
+ "phSetupTitle": "Siapkan apotek Anda",
+ "phSetupHint": "Selesaikan langkah ini agar pasien dapat menemukan dan memesan dari Anda.",
+ "phSetupProfile": "Tambahkan nama, alamat, dan foto apotek",
+ "phSetupLocation": "Tandai apotek di peta (untuk peta dan kurir)",
+ "phSetupProducts": "Tambahkan produk pertama dengan harga"
 }

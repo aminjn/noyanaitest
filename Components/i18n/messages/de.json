@@ -2114,5 +2114,10 @@
  "pfNote": "Jede Bestellposition wird nach der Lieferung Ihrem Wallet gutgeschrieben. Beträge in Toman.",
  "pfUpcoming": "Wartet auf Vorbereitung",
  "pfUpcomingNote": "aus ${1} bezahlten Bestellungen",
- "pfOrderPayout": "Bestellverkauf ${1}"
+ "pfOrderPayout": "Bestellverkauf ${1}",
+ "phSetupTitle": "Apotheke einrichten",
+ "phSetupHint": "Schließen Sie diese Schritte ab, damit Patienten Sie finden und bestellen können.",
+ "phSetupProfile": "Name, Adresse und Foto der Apotheke hinzufügen",
+ "phSetupLocation": "Apotheke auf der Karte markieren (für Karte und Kuriere)",
+ "phSetupProducts": "Erstes Produkt mit Preis anbieten"
 }
