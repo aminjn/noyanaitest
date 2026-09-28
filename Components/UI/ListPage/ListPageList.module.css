@@ -26,3 +26,29 @@
     margin-block: 1.5rem;
   }
 }
+
+.empty {
+  margin-block-start: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem 1.5rem;
+  border-radius: 1rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  text-align: center;
+  color: var(--gray10);
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.empty strong {
+  color: var(--gray13);
+  font-size: 1rem;
+}
+
+.emptyIcon {
+  color: var(--gray7);
+  margin-block-end: 0.25rem;
+}

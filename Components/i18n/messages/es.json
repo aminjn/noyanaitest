@@ -2063,5 +2063,7 @@
  "officeClinic": "¿En qué clínica está este consultorio?",
  "officeHospital": "¿En qué hospital está este consultorio?",
  "homeTrendVisits": "Citas",
- "homeVisitsNoOffices": "Ningún médico ha vinculado aún un consultorio a este centro. Los médicos miembros eligen en su página «Consultorio» cuál está aquí; sus citas aparecerán en este gráfico."
+ "homeVisitsNoOffices": "Ningún médico ha vinculado aún un consultorio a este centro. Los médicos miembros eligen en su página «Consultorio» cuál está aquí; sus citas aparecerán en este gráfico.",
+ "listEmptyTitle": "Todavía no hay nada que mostrar",
+ "listEmptyHint": "Pronto aparecerán nuevos elementos aquí. También puedes probar otra búsqueda o filtro."
 }

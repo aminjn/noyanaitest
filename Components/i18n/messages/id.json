@@ -2063,5 +2063,7 @@
  "officeClinic": "Praktik ini ada di klinik mana?",
  "officeHospital": "Praktik ini ada di rumah sakit mana?",
  "homeTrendVisits": "Kunjungan",
- "homeVisitsNoOffices": "Belum ada dokter yang menautkan praktik ke pusat ini. Dokter anggota memilih di halaman «Praktik» mana yang ada di sini — kunjungannya lalu tampil di grafik ini."
+ "homeVisitsNoOffices": "Belum ada dokter yang menautkan praktik ke pusat ini. Dokter anggota memilih di halaman «Praktik» mana yang ada di sini — kunjungannya lalu tampil di grafik ini.",
+ "listEmptyTitle": "Belum ada yang bisa ditampilkan",
+ "listEmptyHint": "Entri baru akan segera muncul di sini. Anda juga bisa mencoba pencarian atau filter lain."
 }
