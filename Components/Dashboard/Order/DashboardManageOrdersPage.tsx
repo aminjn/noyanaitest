@@ -18,6 +18,7 @@ import Ixon from "@/Components/UI/Ixon";
 import PackageIcon from "@/Components/Icons/PackageIcon";
 import OrderStatusBadge from "./OrderStatusBadge";
 import { OrderStatus } from "./orderStatus";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "dashboardOrder"];
 
@@ -181,7 +182,7 @@ const DashboardManageOrdersPage = () => {
                       </Ixon>
                     </span>
                     <div className={classes.meta}>
-                      <strong>{o.submittedAt ? day.format(new Date(o.submittedAt)) : "—"}</strong>
+                      <strong>{o.submittedAt ? safeFormatDate(day, o.submittedAt) : "—"}</strong>
                       <span>{getContent("poItems", [num.format(count)])}</span>
                     </div>
                     <OrderStatusBadge status={o.status} />

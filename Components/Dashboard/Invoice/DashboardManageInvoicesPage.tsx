@@ -21,6 +21,7 @@ import {
   DoctorSessionType,
   doctorSessionTypeContentKeyDict,
 } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "dashboardInvoice"];
 
@@ -157,7 +158,7 @@ const DashboardManageinvoicesPage = () => {
                           {currencize(inv.total)} <small>{getContent("toman")}</small>
                         </span>
                         <span className={classes.date}>
-                          {inv.submittedAt ? day.format(new Date(inv.submittedAt)) : "—"}
+                          {inv.submittedAt ? safeFormatDate(day, inv.submittedAt) : "—"}
                         </span>
                       </div>
                       <Link href={`/dashboard/invoice/${inv._id}`} className={classes.primary}>

@@ -2,8 +2,8 @@ import { NextResponse, NextRequest } from "next/server";
 import { getPublicData } from "./Components/helpers/getPublicData";
 import { IShortLink } from "./Components/Admin/ShortLink/AdminManageShortLinksPage";
 import { IRedirection } from "./Components/Admin/Redirection/AdminManageRedirectionsPage";
+import { getEnabledLocales } from "./Components/i18n/getEnabledLocales";
 import {
-  isEnabledLocale,
   LOCALE_HEADER,
   PATH_HEADER,
   localizePath,
@@ -15,12 +15,15 @@ const middleware = async (req: NextRequest) => {
   // Persian. The page tree itself has no locale segment.
   const { locale, path: pathname } = splitLocale(req.nextUrl.pathname);
 
-  // Not translated yet -> the Persian page (no prefix), not a half-done LTR
-  // one. The super admin panel is Persian-only as well.
+  // A language the super admin switched off -> the Persian page (no
+  // prefix). The super admin panel is Persian-only as well.
   const adminKey = process.env.ADMIN_KEY;
   const isAdmin =
     !!adminKey && (pathname === `/${adminKey}` || pathname.startsWith(`/${adminKey}/`));
-  if (locale !== "fa" && (!isEnabledLocale(locale) || isAdmin)) {
+  if (
+    locale !== "fa" &&
+    (isAdmin || !(await getEnabledLocales()).includes(locale))
+  ) {
     const url = req.nextUrl.clone();
     url.pathname = pathname;
     return NextResponse.redirect(url, 307);
@@ -48,11 +51,10 @@ const middleware = async (req: NextRequest) => {
   const headers = new Headers(req.headers);
   headers.set(LOCALE_HEADER, locale);
   headers.set(PATH_HEADER, pathname);
-  if (pathname === req.nextUrl.pathname)
-    return NextResponse.next({ request: { headers } });
-  const url = req.nextUrl.clone();
-  url.pathname = pathname;
-  return NextResponse.rewrite(url, { request: { headers } });
+  // No rewrite here: the "/<locale>" prefix is stripped by next.config's
+  // rewrites (see the note there on why a middleware rewrite 500s behind
+  // nginx). The page still gets the locale / path through these headers.
+  return NextResponse.next({ request: { headers } });
 };
 
 // Skip Next internals, API proxying and static files (the redirect lookup

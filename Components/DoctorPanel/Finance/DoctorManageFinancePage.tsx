@@ -16,6 +16,7 @@ import WalletIcon from "@/Components/Icons/WalletIcon";
 import CalendarIcon from "@/Components/Icons/CalendarIcon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import MedalIcon from "@/Components/Icons/MedalIcon";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelFinance"];
 
@@ -113,7 +114,7 @@ const DoctorManageFinancePage = () => {
       const who = t.reservation.patient
         ? `${t.reservation.patient.givenName} ${t.reservation.patient.lastName}`
         : "";
-      const when = shortDate.format(new Date(t.reservation.date));
+      const when = safeFormatDate(shortDate, t.reservation.date);
       return {
         title: getContent("dpfReservationPayout", [when]),
         sub: [who, getContent(t.reservation.sessionType as ContentKey)]
@@ -185,7 +186,7 @@ const DoctorManageFinancePage = () => {
                       style={{ height: `${(m.total / maxMonth) * 100}%` }}
                     />
                   </div>
-                  <span className={classes.barLabel}>{monthLabel.format(new Date(m.month))}</span>
+                  <span className={classes.barLabel}>{safeFormatDate(monthLabel, m.month)}</span>
                 </div>
               ))}
             </div>
@@ -210,7 +211,7 @@ const DoctorManageFinancePage = () => {
                       const d = describe(t);
                       return (
                         <tr key={t._id}>
-                          <td className={classes.muted}>{dateTime.format(new Date(t.createdAt))}</td>
+                          <td className={classes.muted}>{safeFormatDate(dateTime, t.createdAt)}</td>
                           <td>
                             <span className={classes.desc}>{d.title}</span>
                             {d.sub && <span className={classes.descSub}>{d.sub}</span>}

@@ -160,13 +160,13 @@ const DoctorCalendarDay = ({
               <span className={classes.pairTitle}>
                 {getContent("availableSessionsCount")}
               </span>
-              <span>{data?.filter((el) => !el.booking).length}</span>
+              <span>{(Array.isArray(data) ? data : []).filter((el) => !el.booking).length}</span>
             </span>
             <span className={classes.pair}>
               <span className={classes.pairTitle}>
                 {getContent("reservedSessionsCount")}
               </span>
-              <span>{data?.filter((el) => !!el.booking).length}</span>
+              <span>{(Array.isArray(data) ? data : []).filter((el) => !!el.booking).length}</span>
             </span>
           </Fragment>
         )}
@@ -192,7 +192,7 @@ const DoctorCalendarDay = ({
             {doctorSessionTypes.map((kind) => (
               <div key={kind} className={classes.tooltipPair}>
                 <span>{getContent(kind)}</span>
-                <span>{data?.filter((el) => !!el[kind]).length}</span>
+                <span>{(Array.isArray(data) ? data : []).filter((el) => !!el[kind]).length}</span>
               </div>
             ))}
           </div>

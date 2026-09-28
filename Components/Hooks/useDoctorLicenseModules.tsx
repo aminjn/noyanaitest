@@ -13,7 +13,10 @@ const useDoctorLicenseModules = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  return { modules: data, isLoading: !data && !error, error };
+  // a malformed (non-array) response is treated like no answer yet, so
+  // the gates fail open instead of crashing on modules.includes
+  const modules = Array.isArray(data) ? data : undefined;
+  return { modules, isLoading: !data && !error, error };
 };
 
 export default useDoctorLicenseModules;

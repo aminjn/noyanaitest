@@ -46,12 +46,12 @@ const DoctorManagePatientPage = () => {
       {!!data && (
         <div className={classes.main}>
           <UserIdentity
-            identity={data.user.identity}
-            avatar={data.user.avatar}
-            username={data.user.username}
+            identity={data.user?.identity}
+            avatar={data.user?.avatar}
+            username={data.user?.username}
           />
-          <UserVitals vitals={data.user.vital} patient={data._id} />
-          <UserMedicalDetails data={data.user.medical} />
+          <UserVitals vitals={data.user?.vital} patient={data._id} />
+          <UserMedicalDetails data={data.user?.medical} />
           {!!files && (
             <PatientFiles
               data={files}

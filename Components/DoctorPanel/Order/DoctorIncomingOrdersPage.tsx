@@ -23,6 +23,7 @@ import InitialAvatar from "@/Components/UI/InitialAvatar";
 import Ixon from "@/Components/UI/Ixon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelOrder"];
 
@@ -218,7 +219,7 @@ const DoctorIncomingOrdersPage = () => {
                       <InitialAvatar name={buyer} seed={o.user?._id || o._id} size="2.75rem" />
                       <div className={classes.meta}>
                         <strong>{buyer}</strong>
-                        <span>{o.submittedAt ? day.format(new Date(o.submittedAt)) : "—"}</span>
+                        <span>{o.submittedAt ? safeFormatDate(day, o.submittedAt) : "—"}</span>
                       </div>
                       <OrderStatusBadge status={o.status} />
                     </div>

@@ -45,7 +45,7 @@ interface OrderItemRow {
 }
 
 const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
-  ...order.services.map((s) => ({
+  ...(Array.isArray(order.services) ? order.services : []).map((s) => ({
     key: `services:${s.item._id}`,
     model: "services" as const,
     itemId: s.item._id,
@@ -54,7 +54,7 @@ const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
     price: s.price,
     status: s.status,
   })),
-  ...order.servicePackages.map((s) => ({
+  ...(Array.isArray(order.servicePackages) ? order.servicePackages : []).map((s) => ({
     key: `servicePackages:${s.item._id}`,
     model: "servicePackages" as const,
     itemId: s.item._id,

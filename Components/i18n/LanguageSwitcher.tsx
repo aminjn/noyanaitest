@@ -2,17 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import classes from "./LanguageSwitcher.module.css";
-import { usePathname, useLocale } from "./navigation";
-import { enabledLocales, localeDir, localeNames, localizePath } from "./locales";
+import { usePathname, useLocale, useEnabledLocales } from "./navigation";
+import { Locale, localeDir, localeNames, localizePath } from "./locales";
 import Ixon from "../UI/Ixon";
 import WEbsiteIcon from "../Icons/WEbsiteIcon";
 
-// Header language menu. Only languages whose texts are translated
-// (enabledLocales) are listed; hidden entirely while Persian is the only one.
+// Header language menu. Only the languages the super admin has switched on
+// (useEnabledLocales) are listed; hidden entirely while Persian is the only one.
 // Switching does a full page load so the root layout re-renders with the
 // new language's texts and direction.
 const LanguageSwitcher = () => {
   const locale = useLocale();
+  const enabledLocales = useEnabledLocales();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -28,7 +29,7 @@ const LanguageSwitcher = () => {
 
   if (enabledLocales.length < 2) return null;
 
-  const go = (target: (typeof enabledLocales)[number]) => {
+  const go = (target: Locale) => {
     setOpen(false);
     if (target === locale) return;
     window.location.assign(localizePath(pathname, target) + window.location.search);

@@ -23,6 +23,7 @@ import HelpCircleIcon from "@/Components/Icons/HelpCircleIcon";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import SubmitTicketPopup from "./SubmitTicketPopup";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "dashboardSupport"];
 
@@ -225,7 +226,7 @@ const SupportPage = () => {
                         <span className={classes.itemTop}>
                           <strong className={classes.itemTitle}>{ticket.title || "—"}</strong>
                           <span className={classes.date}>
-                            {fmt.day.format(new Date(last?.submittedAt || ticket.submittedAt))}
+                            {safeFormatDate(fmt.day, last?.submittedAt || ticket.submittedAt)}
                           </span>
                         </span>
                         {!!last?.content && (

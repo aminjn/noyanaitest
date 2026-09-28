@@ -16,6 +16,7 @@ import SparkIcon from "../Icons/SparkIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import IntakeAnswers from "./IntakeAnswers";
 import { IVisitIntake, IVisitNote } from "./visitTypes";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
@@ -218,7 +219,7 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
             </h2>
             {note?.updatedAt && (
               <span className={classes.muted}>
-                {getContent("visitNoteLastSaved", [clock.format(new Date(note.updatedAt))])}
+                {getContent("visitNoteLastSaved", [safeFormatDate(clock, note.updatedAt)])}
               </span>
             )}
           </div>

@@ -19,6 +19,7 @@ import InitialAvatar from "@/Components/UI/InitialAvatar";
 import Ixon from "@/Components/UI/Ixon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
@@ -169,14 +170,14 @@ const DoctorManagePatientsPage = () => {
                         {getContent("patVisitsLabel")}
                       </span>
                       <span>
-                        <em>{s.lastVisit ? day.format(new Date(s.lastVisit)) : "—"}</em>
+                        <em>{s.lastVisit ? safeFormatDate(day, s.lastVisit) : "—"}</em>
                         {getContent("patLastVisitLabel")}
                       </span>
                     </div>
                     <div className={classes.chips}>
                       {s.nextVisit && (
                         <span className={classes.next}>
-                          {getContent("patNextVisit", [day.format(new Date(s.nextVisit))])}
+                          {getContent("patNextVisit", [safeFormatDate(day, s.nextVisit)])}
                         </span>
                       )}
                       {recall && (

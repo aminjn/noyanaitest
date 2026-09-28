@@ -45,7 +45,12 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
     useState<ILicenseDuration | null>(null);
 
   useEffect(() => {
-    if (!!selectedDuration || !data?.pricing.length) return;
+    if (
+      !!selectedDuration ||
+      !Array.isArray(data?.pricing) ||
+      !data.pricing.length
+    )
+      return;
     setSelectedDuration(data.pricing[0].duration);
   }, [selectedDuration, data]);
 
@@ -88,14 +93,17 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
             <div className={classes.bot}>
               <LicenseDurationSelector
                 className={classes.selector}
-                durations={data.pricing.map((el) => el.duration)}
+                durations={(Array.isArray(data.pricing)
+                  ? data.pricing
+                  : []
+                ).map((el) => el.duration)}
                 onSelect={setSelectedDuration}
                 selectedDuration={selectedDuration}
               />
               <LicensePriceDetails
                 duration={selectedDuration}
                 pricing={
-                  data.pricing.find(
+                  (Array.isArray(data.pricing) ? data.pricing : []).find(
                     (el) => el.duration._id === selectedDuration?._id,
                   ) || null
                 }
@@ -107,7 +115,7 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
             <LicensePriceDetails
               duration={selectedDuration}
               pricing={
-                data.pricing.find(
+                (Array.isArray(data.pricing) ? data.pricing : []).find(
                   (el) => el.duration._id === selectedDuration?._id,
                 ) || null
               }

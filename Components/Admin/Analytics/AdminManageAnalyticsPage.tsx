@@ -61,24 +61,24 @@ const AdminManageAnalyticsPage = () => {
         <div className={classes.main}>
           <div className={classes.stats}>
             <Box className={classes.stat}>
-              <DataPair title="مجموع بازدید ها" value={data.totals.totalVisits} />
+              <DataPair title="مجموع بازدید ها" value={data.totals?.totalVisits ?? 0} />
             </Box>
             <Box className={classes.stat}>
               <DataPair
                 title="بازدیدکننده‌های یکتا"
-                value={data.totals.uniqueVisitors}
+                value={data.totals?.uniqueVisitors ?? 0}
               />
             </Box>
             <Box className={classes.stat}>
               <DataPair
                 title="صفحات بازدید شده"
-                value={data.totals.uniquePages}
+                value={data.totals?.uniquePages ?? 0}
               />
             </Box>
             <Box className={classes.stat}>
               <DataPair
                 title="تعداد رکورد ها"
-                value={data.totals.totalRecords}
+                value={data.totals?.totalRecords ?? 0}
               />
             </Box>
           </div>

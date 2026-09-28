@@ -125,14 +125,19 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                     filter: "Number",
                   },
                   ...Object.fromEntries(
-                    data.modules.map((mod) => [
+                    (Array.isArray(data.modules) ? data.modules : []).map((mod) => [
                       mod,
                       {
                         name: licenseModuleLabelsByOrg[name][mod] || mod,
                         value: (node) =>
-                          booleanToValue[`${node.modules.includes(mod)}`],
+                          booleanToValue[`${Array.isArray(node.modules) && node.modules.includes(mod)}`],
                         component: (node) => (
-                          <BooleanToIcon value={node.modules.includes(mod)} />
+                          <BooleanToIcon
+                            value={
+                              Array.isArray(node.modules) &&
+                              node.modules.includes(mod)
+                            }
+                          />
                         ),
                         filter: "Set",
                       },

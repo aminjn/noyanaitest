@@ -1,0 +1,86 @@
+.intro {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--gray10);
+  margin-block-end: 0.75rem;
+}
+
+.summary {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--aiText);
+  margin-block-end: 0.75rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.625rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--glassLine);
+  border-radius: 0.875rem;
+  background: var(--glass);
+  cursor: pointer;
+  transition:
+    background-color var(--transTime),
+    border-color var(--transTime);
+}
+
+.item:hover {
+  background: var(--glassStrong);
+}
+
+.item:focus-within {
+  box-shadow: var(--focusRing);
+}
+
+.item input {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--primary6);
+  flex-shrink: 0;
+}
+
+.on {
+  border-color: var(--aiLine);
+  background: var(--aiSoft);
+}
+
+.locked {
+  cursor: default;
+}
+
+.name {
+  flex: 1;
+  font-weight: 600;
+  color: var(--gray13);
+  text-align: start;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.code,
+.tag {
+  padding: 0.0625rem 0.4375rem;
+  border-radius: 999px;
+  background: var(--glassStrong);
+  font-size: 0.6875rem;
+  color: var(--gray10);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-start: 1rem;
+}

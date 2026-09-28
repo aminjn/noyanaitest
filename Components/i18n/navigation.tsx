@@ -14,6 +14,9 @@ import { intlLocale, localizePath, splitLocale } from "./locales";
 
 export const useLocale = () => useContext(LocaleContext).locale;
 
+// Languages the site currently serves (set by the root layout).
+export const useEnabledLocales = () => useContext(LocaleContext).enabledLocales;
+
 export const usePathname = () => {
   const pathname = useNextPathname();
   return splitLocale(pathname || "/").path;
