@@ -117,7 +117,13 @@ export const CallApi = {
     }).then((r) => r.data),
 
   getOne: (roomId: string) =>
-    fetcher<ApiEnvelope<{ room: ICallRoom; connectedUserIds: string[] }>>({
+    fetcher<
+      ApiEnvelope<{
+        room: ICallRoom;
+        connectedUserIds: string[];
+        participantNames?: Record<string, string>;
+      }>
+    >({
       url: `${API}/call/${roomId}`,
     }).then((r) => r.data),
 

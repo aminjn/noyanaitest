@@ -155,8 +155,12 @@
 .controls {
   position: absolute;
   bottom: 1.25rem;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
+  /* centered in both directions: inset-inline-start:50% + translateX(-50%)
+     pushed the bar off to the left in RTL */
+  inset-inline: 0;
+  margin-inline: auto;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
   display: flex;
   align-items: center;
   gap: 0.75rem;

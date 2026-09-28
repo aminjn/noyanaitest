@@ -278,6 +278,8 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
   const call = useMemo(() => new CallClient(socket, userId), [socket, userId]);
 
   const [room, setRoom] = useState<ICallRoom | null>(null);
+  // real names for the remote tiles (from GET /call/:id)
+  const [names, setNames] = useState<Record<string, string>>({});
   const [loadError, setLoadError] = useState<string | null>(null);
   const [joining, setJoining] = useState(true);
 
@@ -307,8 +309,10 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
   useEffect(() => {
     let cancelled = false;
     CallApi.getOne(callId)
-      .then(({ room, connectedUserIds }) => {
+      .then(({ room, connectedUserIds, participantNames }) => {
         if (cancelled) return;
+        if (participantNames && typeof participantNames === "object")
+          setNames(participantNames);
         // an unknown / malformed room is a load error, not a crash
         if (!room) {
           setLoadError(getContent("loadCallInfoError"));
@@ -635,9 +639,10 @@ const Inner = ({ callId, userId }: { callId: string; userId: string }) => {
             <ParticipantTile
               key={id}
               label={
-                room.host === id
+                names[id] ||
+                (room.host === id
                   ? getContent("callHost")
-                  : getContent("callUserX", [id.slice(-4)])
+                  : getContent("callUserX", [id.slice(-4)]))
               }
               isHost={room.host === id}
               videoTrack={

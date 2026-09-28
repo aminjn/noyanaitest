@@ -99,12 +99,17 @@ const DashboardManageBookingPage = () => {
                 </span>
               </div>
 
-              <div className={classes.infoRow}>
-                <span className={classes.infoLabel}>
-                  {getContent("office")}
-                </span>
-                <span className={classes.infoValue}>{data.office.name}</span>
-              </div>
+              {/* an online visit has no office */}
+              {data.sessionType === "inPerson" && (
+                <div className={classes.infoRow}>
+                  <span className={classes.infoLabel}>
+                    {getContent("office")}
+                  </span>
+                  <span className={classes.infoValue}>
+                    {data.office?.name || "—"}
+                  </span>
+                </div>
+              )}
 
               <div className={classes.infoRow}>
                 <span className={classes.infoLabel}>

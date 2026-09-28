@@ -35,8 +35,9 @@
   content: "";
   position: absolute;
   bottom: 0;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
+  /* centered in both directions (the translate pushed it off in RTL) */
+  inset-inline: 0;
+  margin-inline: auto;
   width: 5rem;
   height: 1px;
   background-image: linear-gradient(
