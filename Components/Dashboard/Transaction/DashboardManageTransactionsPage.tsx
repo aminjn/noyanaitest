@@ -24,6 +24,7 @@ import PackageIcon from "@/Components/Icons/PackageIcon";
 import DocumentIcon from "@/Components/Icons/DocumentIcon";
 import ArrowCircleDownIcon from "@/Components/Icons/ArrowCircleDownIcon";
 import PlusIcon from "@/Components/Icons/PlusIcon";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "dashboardTransaction", "onlinePayment"];
 
@@ -223,7 +224,7 @@ const DashboardManageTransactionsPage = () => {
                             </span>
                             <span className={classes.what}>
                               <strong>{title}</strong>
-                              <span>{fmt.time.format(new Date(t.createdAt))}</span>
+                              <span>{safeFormatDate(fmt.time, t.createdAt)}</span>
                             </span>
                             <span className={`${classes.amount} ${t.amount >= 0 ? classes.plus : classes.minus}`}>
                               <bdi dir="ltr">

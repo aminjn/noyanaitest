@@ -26,6 +26,7 @@ import PackageIcon from "@/Components/Icons/PackageIcon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
 import ReservationJoinButton from "../Booking/ReservationJoinButton";
 import { DoctorSessionType } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
+import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
 const NS: ContentNamespace[] = ["common", "dashboardHome"];
 
@@ -138,7 +139,7 @@ const PatientHome = ({ name }: { name?: string }) => {
         icon: <SparkIcon />,
         tone: "violet",
         title: getContent("phSugInstructions", [doctorName(withNotes.doctor)]),
-        meta: fmt.full.format(new Date(withNotes.date)),
+        meta: safeFormatDate(fmt.full, withNotes.date),
         href: "#after-visit",
       });
     if (data.unreadMessages)
@@ -173,7 +174,7 @@ const PatientHome = ({ name }: { name?: string }) => {
         icon: <CalendarIcon />,
         tone: "amber",
         title: getContent("phSugRebook", [doctorName(data.rebook[0].doctor)]),
-        meta: getContent("phLastVisit", [fmt.full.format(new Date(data.rebook[0].lastVisit))]),
+        meta: getContent("phLastVisit", [safeFormatDate(fmt.full, data.rebook[0].lastVisit)]),
         href: `/dr/${data.rebook[0].doctor.slug}`,
       });
     if (data.unreadNotifications)
@@ -226,7 +227,7 @@ const PatientHome = ({ name }: { name?: string }) => {
             {next
               ? getContent("phBriefNext", [
                   doctorName(next.doctor),
-                  `${fmt.weekday.format(new Date(next.date))} ${fmt.day.format(new Date(next.date))}`,
+                  `${safeFormatDate(fmt.weekday, next.date)} ${safeFormatDate(fmt.day, next.date)}`,
                   time(next.start),
                 ])
               : data
@@ -284,8 +285,8 @@ const PatientHome = ({ name }: { name?: string }) => {
               </div>
               <div className={classes.when}>
                 <div>
-                  <span>{fmt.weekday.format(new Date(next.date))}</span>
-                  <strong>{fmt.day.format(new Date(next.date))}</strong>
+                  <span>{safeFormatDate(fmt.weekday, next.date)}</span>
+                  <strong>{safeFormatDate(fmt.day, next.date)}</strong>
                 </div>
                 <div>
                   <span>{getContent(next.sessionType as ContentKey)}</span>
@@ -347,7 +348,7 @@ const PatientHome = ({ name }: { name?: string }) => {
                       <DoctorAvatar doctor={v.doctor} size="2.5rem" />
                       <div className={classes.doctorText}>
                         <strong>{doctorName(v.doctor) || "—"}</strong>
-                        <span>{fmt.full.format(new Date(v.date))}</span>
+                        <span>{safeFormatDate(fmt.full, v.date)}</span>
                       </div>
                     </div>
                     {v.instructions ? (
@@ -375,7 +376,7 @@ const PatientHome = ({ name }: { name?: string }) => {
                       <DoctorAvatar doctor={r.doctor} size="2.75rem" />
                       <div className={classes.doctorText}>
                         <strong>{doctorName(r.doctor) || "—"}</strong>
-                        <span>{getContent("phLastVisit", [fmt.full.format(new Date(r.lastVisit))])}</span>
+                        <span>{getContent("phLastVisit", [safeFormatDate(fmt.full, r.lastVisit)])}</span>
                       </div>
                       {r.doctor.slug && (
                         <Link href={`/dr/${r.doctor.slug}`} className={classes.ghost}>

@@ -207,7 +207,12 @@ const Table = <T,>({
             : "",
         tooltipValueGetter: ({ data }) => {
           const value = data && column.value ? safe(() => column.value?.(data) as ReactNode) : null;
-          return value instanceof Date ? dateFormat.format(value) : value;
+          // same invalid-date guard as the cell itself
+          return value instanceof Date
+            ? isNaN(value.getTime())
+              ? "—"
+              : dateFormat.format(value)
+            : value;
         },
         headerValueGetter: () => column.name,
         editable: !!column.onEdit,
