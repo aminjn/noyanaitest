@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./ProductCartInfos.module.css";
@@ -21,18 +21,34 @@ const Info = ({ content, icon }: { icon: ReactNode; content: string }) => {
   );
 };
 
-const ProductCartInfos = ({ service }: { service?: boolean }) => {
+// For a product the delivery lines follow the chosen offer: "fast delivery"
+// / "free delivery" only when that pharmacy actually offers it.
+const ProductCartInfos = ({
+  service,
+  fastDelivery,
+  freeDelivery,
+}: {
+  service?: boolean;
+  fastDelivery?: boolean;
+  freeDelivery?: boolean;
+}) => {
   const getContent = useScopedLocale(NS);
   return (
     <div className={classes.infos}>
-      <Info
-        icon={<TruckIcon />}
-        content={getContent(service ? "cartInfoItem0Service" : "cartInfoItem0")}
-      />
-      <Info
-        icon={<LocationIcon />}
-        content={getContent(service ? "cartInfoItem1Service" : "cartInfoItem1")}
-      />
+      {service ? (
+        <Fragment>
+          <Info icon={<TruckIcon />} content={getContent("cartInfoItem0Service")} />
+          <Info icon={<LocationIcon />} content={getContent("cartInfoItem1Service")} />
+        </Fragment>
+      ) : (
+        <Fragment>
+          <Info
+            icon={<TruckIcon />}
+            content={getContent(fastDelivery ? "cartInfoItem0" : "cartInfoItem1")}
+          />
+          {!!freeDelivery && <Info icon={<LocationIcon />} content={getContent("freeDelivery")} />}
+        </Fragment>
+      )}
       <Info
         icon={<ShieldIcon />}
         content={getContent(service ? "cartInfoItem2Service" : "cartInfoItem2")}

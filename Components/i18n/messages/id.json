@@ -2102,5 +2102,8 @@
  "visitReviewApproved": "Ulasan Anda disetujui dan dipublikasikan di halaman dokter.",
  "visitReviewRejected": "Ulasan Anda tidak sesuai pedoman publikasi dan tidak dipublikasikan.",
  "schTabCancelled": "Dibatalkan",
- "orgNationalId": "Nomor identitas nasional lembaga"
+ "orgNationalId": "Nomor identitas nasional lembaga",
+ "receiverPhone": "Telepon penerima",
+ "postalCode": "Kode pos",
+ "selectAddressFirst": "Silakan pilih alamat pengiriman."
 }

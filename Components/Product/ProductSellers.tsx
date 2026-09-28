@@ -1,4 +1,3 @@
-import Link from "@/Components/i18n/Link";
 import { IProductSeller } from "../Admin/Product/AdminManageProductsPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -7,25 +6,23 @@ import ShieldIcon from "../Icons/ShieldIcon";
 import Ixon from "../UI/Ixon";
 import classes from "./ProductSellers.module.css";
 import Button from "../UI/Button";
-import ChevronIcon from "../Icons/ChevronIcon";
 import {
-  t2xsRegular,
   tbaseMedium,
   tsmBold,
   txsMedium,
   txsRegular,
 } from "../UI/Typography";
 import useCart from "../Hooks/useCart";
-import Image from "next/image";
-import { FilePath } from "../config";
 import VerifyIcon from "../Icons/VerifyIcon";
-import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
 import Badge from "../UI/Badge";
 import { useMemo } from "react";
 import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "products"];
+
+const finalPrice = (el: { price?: number; discount?: number }) =>
+  Math.max(0, (el.price || 0) - (el.discount || 0));
 
 const Item = ({
   node,
@@ -65,15 +62,6 @@ const Item = ({
               <span>{node.seller.province.name}</span>
             </div>
           )}
-          <div className={classes.stats}>
-            <div className={`${classes.score} ${t2xsRegular}`}>
-              <Ixon width="1rem">
-                <StarIcon />
-              </Ixon>
-              <span>4.5</span>
-            </div>
-            <span className={classes.count}>{`(${currencize(1242)})`}</span>
-          </div>
         </div>
         <div className={classes.itemFooter}>
           {!!node.freeDelivery && (
@@ -86,11 +74,6 @@ const Item = ({
               {getContent("fastDelivery")}
             </Badge>
           )}
-          {!!cheapest && (
-            <Badge color="Primarylight" size="S" mode="Fill" radius="High">
-              {getContent("cheapest")}
-            </Badge>
-          )}
         </div>
       </div>
       <div className={classes.itemTail}>
@@ -101,7 +84,7 @@ const Item = ({
         )}
         <span className={`${classes.itemPrice} ${tsmBold}`}>
           {getContent("xToman", [
-            currencize((node.price || 0) - (node.discount || 0)),
+            currencize(finalPrice(node)),
           ])}
         </span>
         <Button
@@ -125,12 +108,12 @@ const ProductSellers = ({
 }) => {
   const getContent = useScopedLocale(NS);
 
+  // what the buyer pays; "cheapest" only means something with 2+ offers
   const cheapest = useMemo(
     () =>
-      data.reduce(
-        (acc, el) => (!!el.price ? (el.price < acc ? el.price : acc) : acc),
-        Number.MAX_SAFE_INTEGER,
-      ),
+      data.length > 1
+        ? Math.min(...data.map((el) => finalPrice(el)))
+        : 0,
     [data],
   );
 
@@ -151,7 +134,7 @@ const ProductSellers = ({
             <Item
               key={item._id}
               node={item}
-              cheapest={!!cheapest && cheapest === item.price}
+              cheapest={!!cheapest && cheapest === finalPrice(item)}
             />
           ))}
         </div>
@@ -163,16 +146,6 @@ const ProductSellers = ({
           </Ixon>
           <span>{getContent("sellersFooterText")}</span>
         </div>
-        <Button
-          href="/pharmacy"
-          variant="Primary"
-          mode="Outline"
-          size="S"
-          radius="Medium"
-          tailIcon={<ChevronIcon />}
-        >
-          {getContent("seeAll")}
-        </Button>
       </div>
     </div>
   );

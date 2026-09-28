@@ -2102,5 +2102,8 @@
  "visitReviewApproved": "Değerlendirmeniz onaylandı ve doktorun sayfasında yayınlandı.",
  "visitReviewRejected": "Değerlendirmeniz yayın kurallarına uymadığı için yayınlanmadı.",
  "schTabCancelled": "İptal",
- "orgNationalId": "Kurum ulusal kimlik numarası"
+ "orgNationalId": "Kurum ulusal kimlik numarası",
+ "receiverPhone": "Alıcı telefonu",
+ "postalCode": "Posta kodu",
+ "selectAddressFirst": "Lütfen bir teslimat adresi seçin."
 }

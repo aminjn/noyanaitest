@@ -2102,5 +2102,8 @@
  "visitReviewApproved": "Tu opinión se aprobó y está publicada en la página del médico.",
  "visitReviewRejected": "Tu opinión no cumplía las normas de publicación y no se publicó.",
  "schTabCancelled": "Canceladas",
- "orgNationalId": "Identificador nacional de la entidad"
+ "orgNationalId": "Identificador nacional de la entidad",
+ "receiverPhone": "Teléfono del destinatario",
+ "postalCode": "Código postal",
+ "selectAddressFirst": "Elige una dirección de entrega."
 }

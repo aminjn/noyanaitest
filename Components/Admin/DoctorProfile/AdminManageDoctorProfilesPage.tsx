@@ -116,7 +116,7 @@ const AdminManageDoctorProfilesPage = () => {
                 filter: "Set",
               },
               phoneConsultPrice: {
-                name: "قیمت مشاوره (ریال)",
+                name: "قیمت مشاوره (تومان)",
                 value: (node) => node.phoneConsultSettings?.price,
                 component: (node) =>
                   node.phoneConsultSettings?.price !== undefined

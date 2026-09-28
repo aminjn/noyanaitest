@@ -262,7 +262,7 @@ const AdminManageProductsPage = () => {
                   ),
               },
               price: {
-                name: "قیمت (ریال)",
+                name: "قیمت (تومان)",
                 value: (node) => node.price,
                 component: (node) =>
                   typeof node.price === "number" ? currencize(node.price) : "—",

@@ -60,7 +60,7 @@ const AddMyProductPopup = ({
         onCancel={() => closePopup()}
         renderer={{
           price: { type: "number", title: getContent("price"), price: true },
-          discount: { type: "number", title: getContent("discount") },
+          discount: { type: "number", title: getContent("discount"), price: true },
           isActive: { type: "bool", title: getContent("isActive") },
           freeDelivery: { type: "bool", title: getContent("freeDelivery") },
           fastDelivery: { type: "bool", title: getContent("fastDelivery") },
@@ -94,8 +94,8 @@ const EditMyProductPopup = ({
         defaultValue={node}
         onCancel={() => closePopup()}
         renderer={{
-          price: { type: "number", title: getContent("price") , price:true  },
-          discount: { type: "number", title: getContent("discount") , price:true  },
+          price: { type: "number", title: getContent("price"), price: true },
+          discount: { type: "number", title: getContent("discount"), price: true },
           isActive: { type: "bool", title: getContent("isActive") },
           freeDelivery: { type: "bool", title: getContent("freeDelivery") },
           fastDelivery: { type: "bool", title: getContent("fastDelivery") },

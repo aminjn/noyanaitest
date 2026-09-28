@@ -33,11 +33,11 @@ const ProductCard = ({
       commentCount={node.commentCount}
       discount={
         node.model === "Product"
-          ? node.sellers[0]?.discount || 0
+          ? node.sellers?.[0]?.discount || 0
           : node.discount || 0
       }
       price={
-        node.model === "Product" ? node.sellers[0]?.price || 0 : node.price || 0
+        node.model === "Product" ? node.sellers?.[0]?.price || 0 : node.price || 0
       }
       rating={node.averageScore}
       category={node.category?.name}
@@ -58,7 +58,15 @@ const ProductCard = ({
                   <UserCircleIcon />
                 </Ixon>
               ),
-              title: `${node.sellers[0] ? `${node.sellers[0]?.seller.name || ""}${node.sellers.length > 1 ? ` ${getContent("and")} ` : ""}${getContent("nMore", [(node.sellers.length - 1).toString()])}` : ""}`,
+              // "Pharmacy X and 2 more"; a single seller shows just its name
+              title: [
+                node.sellers?.[0]?.seller?.name,
+                (node.sellers?.length || 0) > 1
+                  ? getContent("nMore", [(node.sellers.length - 1).toString()])
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(` ${getContent("and")} `),
             }
           : {
               icon: (

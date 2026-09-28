@@ -58,7 +58,6 @@ const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
       images={data.images}
       itemId={data._id}
       model="productPackages"
-      qnaCount={500}
       sameAs={data.sameAs.map((el) => (
         <ProductCard key={el._id} node={{ ...el, model: "ProductPackage" }} />
       ))}

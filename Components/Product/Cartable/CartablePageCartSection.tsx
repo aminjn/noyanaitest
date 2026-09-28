@@ -13,7 +13,6 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import { currencize } from "@/Components/helpers/currencize";
 import CartActions from "../CartActions";
 import ProductCartInfos from "../ProductCartInfos";
-import PlusBox from "../PlusBox";
 
 const NS: ContentNamespace[] = ["common", "productCartable"];
 const CartablePageCartSection = ({
@@ -25,6 +24,8 @@ const CartablePageCartSection = ({
   itemId,
   model,
   service,
+  fastDelivery,
+  freeDelivery,
 }: {
   cartTitle: ContentKey;
   cartTitleTail?: ReactNode;
@@ -34,6 +35,8 @@ const CartablePageCartSection = ({
   itemId: string;
   model: CartModel;
   service?: boolean;
+  fastDelivery?: boolean;
+  freeDelivery?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
 
@@ -58,7 +61,7 @@ const CartablePageCartSection = ({
               >{`${currencize((price || 0) * (getItemQty({ itemId, model }) || 1))} ${getContent("toman")}`}</s>
               <span className={`${classes.percent} ${t2xsRegular}`}>
                 {getContent("percentSymbol", [
-                  Math.ceil(discount / (price || 1)).toString(),
+                  Math.ceil((discount / (price || 1)) * 100).toString(),
                 ])}
               </span>
             </div>
@@ -75,9 +78,12 @@ const CartablePageCartSection = ({
           )}
         </div>
         <CartActions itemId={itemId} model={model} />
-        <ProductCartInfos service={service} />
+        <ProductCartInfos
+          service={service}
+          fastDelivery={fastDelivery}
+          freeDelivery={freeDelivery}
+        />
       </div>
-      <PlusBox value={discount || 0} />
     </Fragment>
   );
 };

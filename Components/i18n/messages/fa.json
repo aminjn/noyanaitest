@@ -2124,5 +2124,8 @@
  "visitReviewApproved": "نظر شما تأیید شد و روی صفحه‌ی پزشک منتشر شده است.",
  "visitReviewRejected": "نظر شما با قوانین انتشار سازگار نبود و منتشر نشد.",
  "schTabCancelled": "لغوشده",
- "orgNationalId": "شناسه ملی مجموعه"
+ "orgNationalId": "شناسه ملی مجموعه",
+ "receiverPhone": "شماره تماس گیرنده",
+ "postalCode": "کد پستی",
+ "selectAddressFirst": "لطفاً آدرس تحویل را انتخاب کنید."
 }

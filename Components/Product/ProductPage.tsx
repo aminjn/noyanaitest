@@ -28,8 +28,6 @@ import PillIcon from "../Icons/PillIcon";
 import AlertTriangleIcon from "../Icons/AlertTriangleIcon";
 import CommentSection from "../Comment/CommentSection";
 import StarIcon from "../Icons/StarIcon";
-import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
-import QnaSection from "./QnaSection";
 import useCart from "../Hooks/useCart";
 import VolleyBallIcon from "../Icons/VolleyBallIcon";
 import HostedImage from "../UI/HostedImage";
@@ -90,7 +88,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
   >(() => {
     return (
       cart?.products.find((el) => el.item._id === data._id)?.item ||
-      data.sellers[0]
+      data.sellers?.[0]
     );
   }, [cart?.products, data._id, data.sellers]);
 
@@ -106,7 +104,6 @@ const ProductPage = ({ data }: ProductPageProps) => {
       ]}
       commentsCount={data.commentCount}
       images={data.images}
-      qnaCount={22}
       sameAs={data.sameAs.map((item) => (
         <Item key={item._id} node={item} />
       ))}
@@ -123,7 +120,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
       itemId={currentSeller?._id || ""}
       model={"products"}
       cartTitleTail={
-        data.sellers.length > 1 && (
+        (data.sellers?.length || 0) > 1 && (
           <span className={`${classes.otherCount} ${txsMedium}`}>
             {getContent("nOtherSellers", [
               (data.sellers.length - 1).toString(),
@@ -133,6 +130,8 @@ const ProductPage = ({ data }: ProductPageProps) => {
       }
       discount={currentSeller?.discount}
       price={currentSeller?.price || data.price}
+      fastDelivery={!!currentSeller?.fastDelivery}
+      freeDelivery={!!currentSeller?.freeDelivery}
       owner={
         <div className={classes.seller}>
           <Ixon className={classes.sellerIcon} width="1.25rem">
@@ -140,7 +139,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
           </Ixon>
           <div className={classes.sellerContent}>
             <span className={classes.sellerName}>
-              {currentSeller?.seller.name}
+              {currentSeller?.seller?.name}
             </span>
           </div>
         </div>
@@ -196,12 +195,6 @@ const ProductPage = ({ data }: ProductPageProps) => {
           id: "Comments",
           content: <CommentSection model="Product" nodeId={data._id} />,
           icon: <StarIcon />,
-        },
-        {
-          title: getContent("qna"),
-          id: "Qna",
-          icon: <ChatBubbleIcon />,
-          content: <QnaSection />,
         },
       ]}
     />

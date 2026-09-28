@@ -50,6 +50,14 @@ const DashboardManageAddressPage = () => {
                         title: getContent("address"),
                         type: "text",
                       },
+                      receiverPhone: {
+                        title: getContent("receiverPhone"),
+                        type: "text",
+                      },
+                      postalCode: {
+                        title: getContent("postalCode"),
+                        type: "text",
+                      },
                     }}
                     hookProps={{
                       path: `${API}/user/address/${data._id}`,

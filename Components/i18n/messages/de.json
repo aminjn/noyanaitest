@@ -2102,5 +2102,8 @@
  "visitReviewApproved": "Ihre Bewertung wurde freigegeben und ist auf der Arztseite veröffentlicht.",
  "visitReviewRejected": "Ihre Bewertung entsprach nicht den Richtlinien und wurde nicht veröffentlicht.",
  "schTabCancelled": "Storniert",
- "orgNationalId": "Nationale Kennnummer der Einrichtung"
+ "orgNationalId": "Nationale Kennnummer der Einrichtung",
+ "receiverPhone": "Telefon des Empfängers",
+ "postalCode": "Postleitzahl",
+ "selectAddressFirst": "Bitte wählen Sie eine Lieferadresse."
 }
