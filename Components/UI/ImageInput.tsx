@@ -15,8 +15,11 @@ const ImageInput = ({
   style,
   title,
   readOnly,
+  required,
 }: WithStyleProps<{
   title?: string;
+  // shows the same red "*" as Input for a mandatory file
+  required?: boolean;
   defaultValue?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   readOnly?: boolean;
@@ -26,12 +29,15 @@ const ImageInput = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const getContent = useScopedLocale();
 
-  console.log({ title });
-
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       <div className={classes.inputContainer}>
-        {!!title && <span className={classes.title}>{title}</span>}
+        {!!title && (
+          <span className={classes.title}>
+            {!!required && <span className={classes.required}>* </span>}
+            {title}
+          </span>
+        )}
         {!!value ? (
           <span>{value.name}</span>
         ) : (

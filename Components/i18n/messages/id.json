@@ -2101,5 +2101,6 @@
  "visitReviewPending": "Terima kasih! Ulasan Anda diterima dan akan dipublikasikan setelah ditinjau.",
  "visitReviewApproved": "Ulasan Anda disetujui dan dipublikasikan di halaman dokter.",
  "visitReviewRejected": "Ulasan Anda tidak sesuai pedoman publikasi dan tidak dipublikasikan.",
- "schTabCancelled": "Dibatalkan"
+ "schTabCancelled": "Dibatalkan",
+ "orgNationalId": "Nomor identitas nasional lembaga"
 }

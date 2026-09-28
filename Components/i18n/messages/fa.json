@@ -2123,5 +2123,6 @@
  "visitReviewPending": "ممنون! نظر شما ثبت شد و پس از بررسی منتشر می‌شود.",
  "visitReviewApproved": "نظر شما تأیید شد و روی صفحه‌ی پزشک منتشر شده است.",
  "visitReviewRejected": "نظر شما با قوانین انتشار سازگار نبود و منتشر نشد.",
- "schTabCancelled": "لغوشده"
+ "schTabCancelled": "لغوشده",
+ "orgNationalId": "شناسه ملی مجموعه"
 }
