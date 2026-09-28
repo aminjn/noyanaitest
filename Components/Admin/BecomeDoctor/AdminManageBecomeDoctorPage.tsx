@@ -61,8 +61,8 @@ const AdminManageBecomeDoctorPage = () => {
                     <DataPair
                       title="کاربر"
                       value={
-                        <InlineLink href={adminPath(`/user/${data.user._id}`)}>
-                          {data.user.phone}
+                        <InlineLink href={adminPath(`/user/${data.user?._id}`)}>
+                          {data.user?.phone || "—"}
                         </InlineLink>
                       }
                     />
@@ -97,7 +97,7 @@ const AdminManageBecomeDoctorPage = () => {
                     <div>
                       <legend>تخصص ها</legend>
                       <List>
-                        {data.specialities.map((speciality) => (
+                        {(Array.isArray(data.specialities) ? data.specialities : []).map((speciality) => (
                           <InlineLink
                             key={speciality._id}
                             href={adminPath(`/speciality/${speciality._id}`)}

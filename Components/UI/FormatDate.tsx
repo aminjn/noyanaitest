@@ -14,11 +14,16 @@ export const dateToString = ({
   time?: boolean;
   // Intl tag of the current language (useIntlLocale); Persian by default
   intlTag?: string;
-}) =>
-  new Date(value).toLocaleString(intlTag, {
+}) => {
+  const parsed = new Date(value);
+  // a missing / malformed date shows a dash, not "Invalid Date"
+  if (value === undefined || value === null || isNaN(parsed.getTime()))
+    return "—";
+  return parsed.toLocaleString(intlTag, {
     ...(date ? { day: "numeric", month: "long", year: "numeric" } : {}),
     ...(time ? { hour: "numeric", minute: "numeric", second: "numeric" } : {}),
   });
+};
 
 const FormatDate = ({
   value,
