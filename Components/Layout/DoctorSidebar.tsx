@@ -49,6 +49,20 @@ const DoctorSidebar = () => {
   const getContent = useScopedLocale(LOCALE_NS);
 
   const hasAccess = useDoctorAcl();
+
+  // paid orders with lines still to fulfil (same SWR key as the orders page)
+  const { data: orders } = useSWR<
+    { status?: string; services?: { status?: string }[]; servicePackages?: { status?: string }[] }[]
+  >(hasAccess("readOrders") ? `${API}/doctor/order` : null, (url: string) =>
+    fetcher({ url }).then((res) => res.data),
+  );
+  const ordersTodo = (Array.isArray(orders) ? orders : []).filter(
+    (o) =>
+      o?.status === "paid" &&
+      [...(Array.isArray(o.services) ? o.services : []), ...(Array.isArray(o.servicePackages) ? o.servicePackages : [])].some(
+        (l) => l?.status === "pending",
+      ),
+  ).length;
   const { setPopup } = usePopup();
 
   const links = useMemo<LinkMap>(
@@ -77,6 +91,7 @@ const DoctorSidebar = () => {
         title: "incomingOrders",
         icon: <PackageIcon />,
         target: "order",
+        badge: ordersTodo,
         show: hasAccess("readOrders"),
       },
       {
@@ -213,7 +228,7 @@ const DoctorSidebar = () => {
         show: true,
       },
     ],
-    [balance, getContent, hasAccess, setPopup],
+    [balance, getContent, hasAccess, ordersTodo, setPopup],
   );
 
   return <PanelSidebar links={links} panel="doctorpanel" />;

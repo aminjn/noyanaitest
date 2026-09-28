@@ -1977,5 +1977,9 @@
  "shoAccept": "Aceptar",
  "shoWorkplaces": "Mis lugares de trabajo",
  "shoEnter": "Abrir panel",
- "shoEmpty": "Aún no eres secretario en ningún lugar. Pide al médico o centro que invite a ${1} desde su página de secretarios; la invitación aparecerá aquí."
+ "shoEmpty": "Aún no eres secretario en ningún lugar. Pide al médico o centro que invite a ${1} desde su página de secretarios; la invitación aparecerá aquí.",
+ "cmdOpen": "Buscar e ir a…",
+ "cmdPlaceholder": "¿Adónde quieres ir?",
+ "cmdEmpty": "No se encontró nada.",
+ "cmdHint": "↑↓ para elegir, Enter para abrir, Esc para cerrar"
 }

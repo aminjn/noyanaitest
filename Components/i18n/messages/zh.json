@@ -1977,5 +1977,9 @@
  "shoAccept": "接受",
  "shoWorkplaces": "我的工作单位",
  "shoEnter": "进入面板",
- "shoEmpty": "您还不是任何地方的秘书。请医生或机构在“秘书”页面邀请 ${1}，邀请会显示在这里。"
+ "shoEmpty": "您还不是任何地方的秘书。请医生或机构在“秘书”页面邀请 ${1}，邀请会显示在这里。",
+ "cmdOpen": "搜索并前往…",
+ "cmdPlaceholder": "您想去哪里？",
+ "cmdEmpty": "未找到内容。",
+ "cmdHint": "↑↓ 选择，Enter 打开，Esc 关闭"
 }

@@ -114,6 +114,8 @@ const escapeHtml = (v: string) =>
 const emptyIcon =
   '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7l2.5-4h13L21 7"/><path d="M9 12h6"/></svg>';
 
+const COMPACT_ROWS = 12;
+
 const Table = <T,>({
   data,
   renderer,
@@ -218,7 +220,12 @@ const Table = <T,>({
     });
   }, [renderer, intlTag, isRtl]);
 
-  const defaultColDef = useMemo<ColDef>(() => ({ floatingFilter: true }), []);
+  // Short lists (offices, secretaries, FAQs…) don't need a spreadsheet:
+  // no filter row, no paging, and the grid is only as tall as its rows.
+  // Long lists keep the full toolset.
+  const dataRows = Array.isArray(data) ? data.length : 0;
+  const compact = dataRows > 0 && dataRows <= COMPACT_ROWS;
+  const defaultColDef = useMemo<ColDef>(() => ({ floatingFilter: !compact }), [compact]);
 
   // Saved column layout per table; the version suffix drops layouts saved
   // before the column redesign.
@@ -265,6 +272,7 @@ const Table = <T,>({
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
+      {dataRows > 5 && (
       <div className={classes.toolbar}>
         <div className={classes.search}>
           <Ixon width="1.05rem" className={classes.searchIcon}>
@@ -283,7 +291,10 @@ const Table = <T,>({
             : getContent("tbCount", [num.format(rows)])}
         </span>
       </div>
-      <div className={`${classes.grid} ${!rows ? classes.gridEmpty : ""}`}>
+      )}
+      <div
+        className={`${classes.grid} ${!rows ? classes.gridEmpty : ""} ${compact ? classes.gridCompact : ""}`}
+      >
       <AgGridReact
         quickFilterText={quickFilter}
         onModelUpdated={(e) => setShown(e.api.getDisplayedRowCount())}
@@ -302,7 +313,8 @@ const Table = <T,>({
         preventDefaultOnContextMenu
         tooltipShowDelay={500}
         defaultColDef={defaultColDef}
-        pagination
+        pagination={!compact}
+        domLayout={compact ? "autoHeight" : "normal"}
         suppressScrollOnNewData
         stopEditingWhenCellsLoseFocus
         singleClickEdit
