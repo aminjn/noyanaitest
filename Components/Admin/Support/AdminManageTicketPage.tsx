@@ -115,7 +115,7 @@ const InnerAdminTicket = ({
 
   const messages = useMemo(
     () =>
-      [...ticket.messages].sort(
+      [...(Array.isArray(ticket.messages) ? ticket.messages : [])].sort(
         (a, b) =>
           new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime(),
       ),
@@ -157,9 +157,13 @@ const InnerAdminTicket = ({
         <DataPair
           title="کاربر"
           value={
-            <InlineLink href={adminPath(`/user/${ticket.submittedBy._id}`)}>
-              {ticket.submittedBy.phone}
-            </InlineLink>
+            ticket.submittedBy?._id ? (
+              <InlineLink href={adminPath(`/user/${ticket.submittedBy._id}`)}>
+                {ticket.submittedBy.phone || "—"}
+              </InlineLink>
+            ) : (
+              "—"
+            )
           }
         />
         <DataPair title="موضوع" value={ticketSubjectDict[ticket.subject]} />

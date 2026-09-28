@@ -23,22 +23,24 @@ import {
 // for a minute). Persian is the source language and always stays on.
 const AdminSiteLanguagesPage = () => {
   const pushNotification = useNotification();
-  const { data, error, mutate } = useSWR<{ enabled?: unknown }>(
+  const { data, error, mutate } = useSWR<{ enabled?: unknown } | null>(
     `${API}/public/locales`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    // GET /public/locales answers { message, data: { enabled, default } }
+    (url: string) => fetcher({ url }).then((res) => res?.data),
   );
   const [enabled, setEnabled] = useState<Locale[] | null>(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!data || enabled) return;
-    const list = Array.isArray(data.enabled)
+    // null / malformed answer -> treat as "nothing saved yet": all on
+    if (data === undefined || enabled) return;
+    const list = Array.isArray(data?.enabled)
       ? data.enabled.filter(isLocale)
       : [...locales];
     setEnabled(list.includes(defaultLocale) ? list : [defaultLocale, ...list]);
   }, [data, enabled]);
 
-  const saved = Array.isArray(data?.enabled) ? data.enabled : [];
+  const saved = Array.isArray(data?.enabled) ? data.enabled : [...locales];
   const dirty =
     !!enabled &&
     (enabled.length !== saved.length ||
