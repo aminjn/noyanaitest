@@ -2065,5 +2065,10 @@
  "homeTrendVisits": "受診数",
  "homeVisitsNoOffices": "まだこの施設に診療所を紐づけた医師はいません。所属医師が「診療所」ページで選ぶと、その受診数がここに表示されます。",
  "listEmptyTitle": "まだ表示する項目がありません",
- "listEmptyHint": "まもなくここに新しい項目が表示されます。別の検索やフィルターもお試しください。"
+ "listEmptyHint": "まもなくここに新しい項目が表示されます。別の検索やフィルターもお試しください。",
+ "identityVerifyTitle": "本人確認",
+ "identityVerifyIntro": "続行するには国民IDと生年月日を入力してください。住民登録で照合され、IDはこの携帯番号の所有者のものである必要があります。",
+ "identityNationalId": "国民ID",
+ "identityBirthDate": "生年月日",
+ "identityVerifySubmit": "確認して続行"
 }

@@ -2065,5 +2065,10 @@
  "homeTrendVisits": "Consultas",
  "homeVisitsNoOffices": "Nenhum médico vinculou ainda um consultório a este centro. Os médicos membros escolhem na página «Consultório» qual fica aqui — as consultas aparecem então neste gráfico.",
  "listEmptyTitle": "Ainda não há nada para mostrar",
- "listEmptyHint": "Novos itens aparecerão aqui em breve. Você também pode tentar outra busca ou filtro."
+ "listEmptyHint": "Novos itens aparecerão aqui em breve. Você também pode tentar outra busca ou filtro.",
+ "identityVerifyTitle": "Verifique sua identidade",
+ "identityVerifyIntro": "Para continuar, informe seu documento de identidade e data de nascimento. Eles são verificados no registro civil e o documento deve pertencer ao titular deste número de celular.",
+ "identityNationalId": "Documento de identidade",
+ "identityBirthDate": "Data de nascimento",
+ "identityVerifySubmit": "Verificar e continuar"
 }

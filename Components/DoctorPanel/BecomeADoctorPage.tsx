@@ -31,6 +31,7 @@ import { t2xsRegular, tsmRegular } from "../UI/Typography";
 import BecomeDoneView from "../Become/BecomeDoneView";
 import { IUserIdentity } from "../Dashboard/DashboardPage";
 import Loading from "../Admin/UI/Loading";
+import IdentityVerifyForm from "@/Components/_Common/Identity/IdentityVerifyForm";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "becomeSomething", "doctorPanelBecomeDoctor"];
@@ -62,7 +63,7 @@ const InquiryStage = ({
 }: {
   setStage: Dispatch<SetStateAction<BecomeDoctorStage>>;
 }) => {
-  const { data } = useSWR<IUserIdentity | null>(
+  const { data, mutate } = useSWR<IUserIdentity | null>(
     `${API}/user/identity`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
@@ -74,7 +75,9 @@ const InquiryStage = ({
   const { setPopup } = usePopup();
 
   if (data === undefined) return <Loading />;
-  if (!data) return <p>{getContent("yourIdentityDataWasNotFound")}</p>;
+  // no identity yet (e.g. an account migrated from the old site): verify
+  // it right here instead of a dead-end "identity not found" message
+  if (!data) return <IdentityVerifyForm onDone={() => mutate()} />;
   return (
     <div className={classes.form}>
       <Input

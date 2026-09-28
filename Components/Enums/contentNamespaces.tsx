@@ -180,6 +180,11 @@ export const contentNamespaces = {
     "cmdHint",
     "listEmptyTitle",
     "listEmptyHint",
+    "identityVerifyTitle",
+    "identityVerifyIntro",
+    "identityNationalId",
+    "identityBirthDate",
+    "identityVerifySubmit",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,

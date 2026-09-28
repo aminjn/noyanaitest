@@ -2065,5 +2065,10 @@
  "homeTrendVisits": "Rendez-vous",
  "homeVisitsNoOffices": "Aucun médecin n’a encore rattaché de cabinet à cet établissement. Les médecins membres indiquent sur leur page « Cabinet » lequel se trouve ici ; ses rendez-vous apparaîtront alors ici.",
  "listEmptyTitle": "Rien à afficher pour le moment",
- "listEmptyHint": "De nouveaux éléments apparaîtront bientôt ici. Vous pouvez aussi essayer une autre recherche ou un autre filtre."
+ "listEmptyHint": "De nouveaux éléments apparaîtront bientôt ici. Vous pouvez aussi essayer une autre recherche ou un autre filtre.",
+ "identityVerifyTitle": "Vérifiez votre identité",
+ "identityVerifyIntro": "Pour continuer, saisissez votre numéro d’identité national et votre date de naissance. Ils sont vérifiés auprès de l’état civil ; le numéro doit appartenir au titulaire de ce numéro de mobile.",
+ "identityNationalId": "Numéro d’identité national",
+ "identityBirthDate": "Date de naissance",
+ "identityVerifySubmit": "Vérifier et continuer"
 }
