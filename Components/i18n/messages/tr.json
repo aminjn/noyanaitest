@@ -2063,5 +2063,7 @@
  "officeClinic": "Bu muayenehane hangi klinikte?",
  "officeHospital": "Bu muayenehane hangi hastanede?",
  "homeTrendVisits": "Randevular",
- "homeVisitsNoOffices": "Henüz hiçbir doktor bu merkeze muayenehane bağlamadı. Üye doktorlar «Muayenehane» sayfasında hangisinin burada olduğunu seçer; randevuları bu grafikte görünür."
+ "homeVisitsNoOffices": "Henüz hiçbir doktor bu merkeze muayenehane bağlamadı. Üye doktorlar «Muayenehane» sayfasında hangisinin burada olduğunu seçer; randevuları bu grafikte görünür.",
+ "listEmptyTitle": "Henüz gösterilecek bir şey yok",
+ "listEmptyHint": "Yakında burada yeni kayıtlar görünecek. Başka bir arama veya filtre de deneyebilirsiniz."
 }

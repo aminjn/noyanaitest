@@ -2063,5 +2063,7 @@
  "officeClinic": "Dans quelle clinique se trouve ce cabinet ?",
  "officeHospital": "Dans quel hôpital se trouve ce cabinet ?",
  "homeTrendVisits": "Rendez-vous",
- "homeVisitsNoOffices": "Aucun médecin n’a encore rattaché de cabinet à cet établissement. Les médecins membres indiquent sur leur page « Cabinet » lequel se trouve ici ; ses rendez-vous apparaîtront alors ici."
+ "homeVisitsNoOffices": "Aucun médecin n’a encore rattaché de cabinet à cet établissement. Les médecins membres indiquent sur leur page « Cabinet » lequel se trouve ici ; ses rendez-vous apparaîtront alors ici.",
+ "listEmptyTitle": "Rien à afficher pour le moment",
+ "listEmptyHint": "De nouveaux éléments apparaîtront bientôt ici. Vous pouvez aussi essayer une autre recherche ou un autre filtre."
 }

@@ -2063,5 +2063,7 @@
  "officeClinic": "In welcher Klinik ist diese Praxis?",
  "officeHospital": "In welchem Krankenhaus ist diese Praxis?",
  "homeTrendVisits": "Termine",
- "homeVisitsNoOffices": "Noch hat kein Arzt eine Praxis mit dieser Einrichtung verknüpft. Mitglieder wählen auf ihrer Seite „Praxis“, welche Praxis hier liegt – deren Termine erscheinen dann hier."
+ "homeVisitsNoOffices": "Noch hat kein Arzt eine Praxis mit dieser Einrichtung verknüpft. Mitglieder wählen auf ihrer Seite „Praxis“, welche Praxis hier liegt – deren Termine erscheinen dann hier.",
+ "listEmptyTitle": "Noch nichts vorhanden",
+ "listEmptyHint": "Neue Einträge erscheinen hier bald. Sie können auch eine andere Suche oder einen anderen Filter versuchen."
 }
