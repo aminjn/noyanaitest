@@ -1927,5 +1927,18 @@
  "spWaiting": "Destek yanıtı bekleniyor",
  "spYou": "Siz",
  "spMessages": "${1} mesaj",
- "spEmpty": "Talebiniz yok. Bir sorunuz ya da sorununuz varsa yukarıdaki konulardan birini seçin."
+ "spEmpty": "Talebiniz yok. Bir sorunuz ya da sorununuz varsa yukarıdaki konulardan birini seçin.",
+ "ppStrength": "Profil gücü",
+ "ppStrengthHint": "Hastalar eksiksiz bir profile daha çok güvenir ve daha kolay randevu alır.",
+ "ppDone": "Profiliniz eksiksiz.",
+ "ppViewPublic": "Herkese açık sayfayı gör",
+ "ppItemAvatar": "Profil fotoğrafı",
+ "ppItemSpeciality": "Ana uzmanlık",
+ "ppItemIntro": "Tanıtım (en az 80 karakter)",
+ "ppItemServices": "Hizmetler",
+ "ppItemContact": "Muayenehane telefonu ve adresi",
+ "ppItemLocation": "Haritada konum",
+ "ppItemGallery": "Fotoğraf galerisi",
+ "ppItemSocial": "Sosyal medya",
+ "ppItemFaq": "SSS"
 }

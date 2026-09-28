@@ -1927,5 +1927,18 @@
  "spWaiting": "サポートの返信待ち",
  "spYou": "あなた",
  "spMessages": "${1} 件のメッセージ",
- "spEmpty": "チケットはありません。ご質問やお困りごとがあれば、上のトピックを選んでください。"
+ "spEmpty": "チケットはありません。ご質問やお困りごとがあれば、上のトピックを選んでください。",
+ "ppStrength": "プロフィールの充実度",
+ "ppStrengthHint": "患者は充実したプロフィールをより信頼し、予約もしやすくなります。",
+ "ppDone": "プロフィールは完成しています。",
+ "ppViewPublic": "公開ページを見る",
+ "ppItemAvatar": "プロフィール写真",
+ "ppItemSpeciality": "主な専門",
+ "ppItemIntro": "紹介文（80文字以上）",
+ "ppItemServices": "診療内容",
+ "ppItemContact": "診療所の電話と住所",
+ "ppItemLocation": "地図上の位置",
+ "ppItemGallery": "フォトギャラリー",
+ "ppItemSocial": "SNS",
+ "ppItemFaq": "よくある質問"
 }

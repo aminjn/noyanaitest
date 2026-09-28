@@ -1927,5 +1927,18 @@
  "spWaiting": "Wartet auf den Support",
  "spYou": "Sie",
  "spMessages": "${1} Nachrichten",
- "spEmpty": "Sie haben keine Tickets. Wählen Sie bei Fragen oder Problemen oben ein Thema."
+ "spEmpty": "Sie haben keine Tickets. Wählen Sie bei Fragen oder Problemen oben ein Thema.",
+ "ppStrength": "Profilstärke",
+ "ppStrengthHint": "Patienten vertrauen einem vollständigen Profil mehr und buchen leichter.",
+ "ppDone": "Ihr Profil ist vollständig.",
+ "ppViewPublic": "Öffentliche Seite ansehen",
+ "ppItemAvatar": "Profilfoto",
+ "ppItemSpeciality": "Hauptfachgebiet",
+ "ppItemIntro": "Vorstellung (mind. 80 Zeichen)",
+ "ppItemServices": "Leistungen",
+ "ppItemContact": "Praxistelefon und Adresse",
+ "ppItemLocation": "Standort auf der Karte",
+ "ppItemGallery": "Fotogalerie",
+ "ppItemSocial": "Soziale Medien",
+ "ppItemFaq": "Häufige Fragen"
 }

@@ -1927,5 +1927,18 @@
  "spWaiting": "Waiting for support",
  "spYou": "You",
  "spMessages": "${1} messages",
- "spEmpty": "You have no tickets. If you have a question or a problem, pick one of the topics above."
+ "spEmpty": "You have no tickets. If you have a question or a problem, pick one of the topics above.",
+ "ppStrength": "Profile strength",
+ "ppStrengthHint": "Patients trust a complete profile more and book more easily.",
+ "ppDone": "Your profile is complete.",
+ "ppViewPublic": "View public page",
+ "ppItemAvatar": "Profile photo",
+ "ppItemSpeciality": "Main specialty",
+ "ppItemIntro": "Introduction (80+ characters)",
+ "ppItemServices": "Services",
+ "ppItemContact": "Office phone and address",
+ "ppItemLocation": "Location on the map",
+ "ppItemGallery": "Photo gallery",
+ "ppItemSocial": "Social media",
+ "ppItemFaq": "FAQs"
 }

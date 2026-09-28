@@ -1927,5 +1927,18 @@
  "spWaiting": "等待客服回复",
  "spYou": "您",
  "spMessages": "${1} 条消息",
- "spEmpty": "您没有工单。如有问题，请选择上方的一个主题。"
+ "spEmpty": "您没有工单。如有问题，请选择上方的一个主题。",
+ "ppStrength": "资料完整度",
+ "ppStrengthHint": "患者更信任完整的资料，也更容易预约。",
+ "ppDone": "您的资料已完整。",
+ "ppViewPublic": "查看公开页面",
+ "ppItemAvatar": "头像",
+ "ppItemSpeciality": "主要专科",
+ "ppItemIntro": "简介（至少 80 字）",
+ "ppItemServices": "服务项目",
+ "ppItemContact": "诊所电话和地址",
+ "ppItemLocation": "地图位置",
+ "ppItemGallery": "图库",
+ "ppItemSocial": "社交媒体",
+ "ppItemFaq": "常见问题"
 }
