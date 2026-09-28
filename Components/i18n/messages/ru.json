@@ -2071,5 +2071,8 @@
  "identityNationalId": "Национальный код",
  "identityBirthDate": "Дата рождения",
  "identityVerifySubmit": "Проверить и продолжить",
- "officeNew": "Новый кабинет"
+ "officeNew": "Новый кабинет",
+ "dpdSetupBookableDone": "Пациенты уже могут записаться к вам. Полный профиль привлекает больше пациентов.",
+ "dpdSugProfile": "${1} шага до полного профиля",
+ "dpdSugProfileMeta": "Запись к вам открыта; полный профиль повышает доверие"
 }

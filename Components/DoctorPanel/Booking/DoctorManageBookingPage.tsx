@@ -67,7 +67,7 @@ const DoctorManageBookingPage = () => {
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },
-    { title: getContent("bookingCalendar"), target: "/doctorpanel/calendar" },
+    { title: getContent("schedule"), target: "/doctorpanel/schedule" },
   ]);
 
   const canCheckIn =

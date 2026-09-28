@@ -2071,5 +2071,8 @@
  "identityNationalId": "قومی شناختی نمبر",
  "identityBirthDate": "تاریخِ پیدائش",
  "identityVerifySubmit": "تصدیق کریں اور جاری رکھیں",
- "officeNew": "نیا مطب"
+ "officeNew": "نیا مطب",
+ "dpdSetupBookableDone": "مریض اب آپ سے وقت لے سکتے ہیں۔ مکمل پروفائل زیادہ مریضوں کو متوجہ کرتا ہے۔",
+ "dpdSugProfile": "مکمل پروفائل تک ${1} قدم",
+ "dpdSugProfileMeta": "آپ سے وقت لیا جا سکتا ہے؛ مکمل پروفائل مریضوں کا اعتماد بڑھاتا ہے"
 }

@@ -2093,5 +2093,8 @@
  "identityNationalId": "کد ملی",
  "identityBirthDate": "تاریخ تولد",
  "identityVerifySubmit": "استعلام و ادامه",
- "officeNew": "مطب جدید"
+ "officeNew": "مطب جدید",
+ "dpdSetupBookableDone": "بیماران اکنون می‌توانند از شما نوبت بگیرند. پروفایل کامل‌تر، بیماران بیشتری جذب می‌کند.",
+ "dpdSugProfile": "${1} قدم تا پروفایل کامل",
+ "dpdSugProfileMeta": "شما قابل رزرو هستید؛ پروفایل کامل اعتماد بیماران را بیشتر می‌کند"
 }

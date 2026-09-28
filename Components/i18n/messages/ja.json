@@ -2071,5 +2071,8 @@
  "identityNationalId": "国民ID",
  "identityBirthDate": "生年月日",
  "identityVerifySubmit": "確認して続行",
- "officeNew": "新しい診療所"
+ "officeNew": "新しい診療所",
+ "dpdSetupBookableDone": "患者があなたの予約を取れるようになりました。プロフィールを充実させると患者が増えます。",
+ "dpdSugProfile": "プロフィール完成まであと ${1} ステップ",
+ "dpdSugProfileMeta": "予約受付中です。プロフィールを充実させると信頼が高まります"
 }

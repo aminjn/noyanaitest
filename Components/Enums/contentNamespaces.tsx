@@ -1661,6 +1661,9 @@ export const contentNamespaces = {
     "dpdIntakeSummary",
     "dpdIntakeRedFlags",
     "dpdIntakeMissing",
+    "dpdSetupBookableDone",
+    "dpdSugProfile",
+    "dpdSugProfileMeta",
   ],
 
   // app/doctorpanel/finance/page.tsx (DoctorManageFinancePage, 2026-09).
@@ -1932,6 +1935,7 @@ export const contentNamespaces = {
     "dashboard",
     "reservation",
     "bookingCalendar",
+    "schedule",
     "patientName",
     "sessionDate",
     "sessionStart",

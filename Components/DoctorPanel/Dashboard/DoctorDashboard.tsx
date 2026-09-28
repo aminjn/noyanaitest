@@ -106,6 +106,10 @@ const setupSteps: Record<string, { label: ContentKey; href: string }> = {
   service: { label: "dpdSetupService", href: "/doctorpanel/service" },
 };
 
+// the steps without which patients can't book at all; the rest (profile,
+// introduction, services) only make the profile stronger
+const BOOKING_STEPS = ["office", "settings", "shift"];
+
 const QUIET_WEEK = 5;
 
 const patientName = (r: TodayReservation) =>
@@ -300,13 +304,18 @@ const DoctorDashboard = () => {
       });
     }
     if (remainingSteps.length) {
-      const first = setupSteps[remainingSteps[0].key];
+      // "N steps to be bookable" only while a booking step is missing; a
+      // doctor who already takes bookings sees "complete your profile"
+      const blocking = remainingSteps.filter((s) => BOOKING_STEPS.includes(s.key));
+      const first = setupSteps[(blocking[0] || remainingSteps[0]).key];
       suggestions.push({
         key: "setup",
         icon: <UserCheckIcon />,
         tone: "ok",
-        title: getContent("dpdSugSetup", [num.format(remainingSteps.length)]),
-        meta: getContent("dpdSugSetupMeta"),
+        title: blocking.length
+          ? getContent("dpdSugSetup", [num.format(blocking.length)])
+          : getContent("dpdSugProfile", [num.format(remainingSteps.length)]),
+        meta: getContent(blocking.length ? "dpdSugSetupMeta" : "dpdSugProfileMeta"),
         href: first?.href || "/doctorpanel/profile",
       });
     }
@@ -500,7 +509,13 @@ const DoctorDashboard = () => {
                   {getContent("dpdStepsLeft", [num.format(view.remainingSteps.length)])}
                 </span>
               </div>
-              <p className={classes.muted}>{getContent("dpdSetupDescription")}</p>
+              <p className={classes.muted}>
+                {getContent(
+                  view.remainingSteps.some((s) => BOOKING_STEPS.includes(s.key))
+                    ? "dpdSetupDescription"
+                    : "dpdSetupBookableDone",
+                )}
+              </p>
               <div className={classes.progress} aria-hidden>
                 <span
                   style={{

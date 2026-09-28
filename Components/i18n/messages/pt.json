@@ -2071,5 +2071,8 @@
  "identityNationalId": "Documento de identidade",
  "identityBirthDate": "Data de nascimento",
  "identityVerifySubmit": "Verificar e continuar",
- "officeNew": "Novo consultório"
+ "officeNew": "Novo consultório",
+ "dpdSetupBookableDone": "Os pacientes já podem agendar com você. Um perfil completo atrai mais pacientes.",
+ "dpdSugProfile": "${1} passos para um perfil completo",
+ "dpdSugProfileMeta": "Você já pode ser agendado; um perfil completo gera confiança"
 }

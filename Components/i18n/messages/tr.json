@@ -2071,5 +2071,8 @@
  "identityNationalId": "Kimlik numarası",
  "identityBirthDate": "Doğum tarihi",
  "identityVerifySubmit": "Doğrula ve devam et",
- "officeNew": "Yeni muayenehane"
+ "officeNew": "Yeni muayenehane",
+ "dpdSetupBookableDone": "Hastalar artık sizden randevu alabilir. Eksiksiz bir profil daha fazla hasta çeker.",
+ "dpdSugProfile": "Eksiksiz profile ${1} adım",
+ "dpdSugProfileMeta": "Randevuya açıksınız; eksiksiz profil hastaların güvenini artırır"
 }

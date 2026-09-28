@@ -2071,5 +2071,8 @@
  "identityNationalId": "身份证号",
  "identityBirthDate": "出生日期",
  "identityVerifySubmit": "验证并继续",
- "officeNew": "新诊室"
+ "officeNew": "新诊室",
+ "dpdSetupBookableDone": "患者现在可以向您预约了。完整的资料能吸引更多患者。",
+ "dpdSugProfile": "还差 ${1} 步完善资料",
+ "dpdSugProfileMeta": "您已可被预约；完整的资料更能赢得患者信任"
 }
