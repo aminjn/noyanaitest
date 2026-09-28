@@ -1940,5 +1940,9 @@
  "ppItemLocation": "Место на карте",
  "ppItemGallery": "Фотогалерея",
  "ppItemSocial": "Соцсети",
- "ppItemFaq": "Частые вопросы"
+ "ppItemFaq": "Частые вопросы",
+ "tbSearch": "Поиск по всем столбцам...",
+ "tbCount": "Записей: ${1}",
+ "tbCountOf": "${1} из ${2}",
+ "tbEmpty": "Пока ничего нет."
 }

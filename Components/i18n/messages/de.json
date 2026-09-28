@@ -1940,5 +1940,9 @@
  "ppItemLocation": "Standort auf der Karte",
  "ppItemGallery": "Fotogalerie",
  "ppItemSocial": "Soziale Medien",
- "ppItemFaq": "Häufige Fragen"
+ "ppItemFaq": "Häufige Fragen",
+ "tbSearch": "In allen Spalten suchen...",
+ "tbCount": "${1} Einträge",
+ "tbCountOf": "${1} von ${2} Einträgen",
+ "tbEmpty": "Noch nichts vorhanden."
 }

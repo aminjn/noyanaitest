@@ -1940,5 +1940,9 @@
  "ppItemLocation": "Location on the map",
  "ppItemGallery": "Photo gallery",
  "ppItemSocial": "Social media",
- "ppItemFaq": "FAQs"
+ "ppItemFaq": "FAQs",
+ "tbSearch": "Search all columns...",
+ "tbCount": "${1} items",
+ "tbCountOf": "${1} of ${2} items",
+ "tbEmpty": "Nothing to show yet."
 }

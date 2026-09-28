@@ -1940,5 +1940,9 @@
  "ppItemLocation": "地图位置",
  "ppItemGallery": "图库",
  "ppItemSocial": "社交媒体",
- "ppItemFaq": "常见问题"
+ "ppItemFaq": "常见问题",
+ "tbSearch": "搜索所有列...",
+ "tbCount": "${1} 项",
+ "tbCountOf": "${2} 项中的 ${1} 项",
+ "tbEmpty": "暂无内容。"
 }
