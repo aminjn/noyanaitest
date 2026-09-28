@@ -1,7 +1,10 @@
 .main {
   position: sticky;
   color: var(--onColor);
-  padding-block-start: 8.1875rem;
+  /* the slogan card below sits in the flow now (pulled up by a negative
+     margin) instead of absolutely over reserved space, so a longer
+     translation can't overlap the columns under it */
+  padding-block-start: 0;
   margin-top: 18rem;
   top: 100%;
 }
@@ -20,17 +23,25 @@
 }
 
 .indent {
-  position: absolute;
+  position: relative;
   width: 100%;
-  top: 0;
+  margin-block-start: -4.875rem;
+  margin-block-end: 5.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding-block: 1.5rem;
+  /* the slogan used to run edge to edge on phones */
+  padding-inline: 1.5rem;
+  box-sizing: border-box;
   background-color: var(--brandDeep);
   align-items: center;
-  transform: translateY(-4.875rem);
   border-radius: 1rem;
+}
+
+.indent p {
+  text-align: center;
+  line-height: 1.8;
 }
 
 .content {

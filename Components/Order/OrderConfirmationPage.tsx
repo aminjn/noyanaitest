@@ -143,7 +143,7 @@ const statusContent: Record<OrderStatus, ContentKey> = {
 const buildRows = (order: OrderNode): OrderRow[] => {
   const rows: OrderRow[] = [];
 
-  order.products.forEach(({ item, qty, price }) => {
+  (Array.isArray(order.products) ? order.products : []).forEach(({ item, qty, price }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -156,7 +156,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  order.productPackages.forEach(({ item, qty, price }) => {
+  (Array.isArray(order.productPackages) ? order.productPackages : []).forEach(({ item, qty, price }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -168,7 +168,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  order.services.forEach(({ item, qty, price }) => {
+  (Array.isArray(order.services) ? order.services : []).forEach(({ item, qty, price }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -180,7 +180,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  order.servicePackages.forEach(({ item, qty, price }) => {
+  (Array.isArray(order.servicePackages) ? order.servicePackages : []).forEach(({ item, qty, price }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -192,7 +192,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  order.tests.forEach(({ item, qty, price }) => {
+  (Array.isArray(order.tests) ? order.tests : []).forEach(({ item, qty, price }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,

@@ -60,7 +60,7 @@ const sectionTitle: Record<CartModel, ContentKey> = {
 export const buildCartRows = (cart: UseCartNode): CartRow[] => {
   const rows: CartRow[] = [];
 
-  cart.products.forEach(({ item, qty }) => {
+  (Array.isArray(cart.products) ? cart.products : []).forEach(({ item, qty }) => {
     if (!item) return;
     rows.push({
       itemId: item._id,
@@ -74,7 +74,7 @@ export const buildCartRows = (cart: UseCartNode): CartRow[] => {
     });
   });
 
-  cart.productPackages.forEach(({ item, qty }) => {
+  (Array.isArray(cart.productPackages) ? cart.productPackages : []).forEach(({ item, qty }) => {
     if (!item) return;
     rows.push({
       itemId: item._id,
@@ -87,7 +87,7 @@ export const buildCartRows = (cart: UseCartNode): CartRow[] => {
     });
   });
 
-  cart.services.forEach(({ item, qty }) => {
+  (Array.isArray(cart.services) ? cart.services : []).forEach(({ item, qty }) => {
     if (!item) return;
     rows.push({
       itemId: item._id,
@@ -100,7 +100,7 @@ export const buildCartRows = (cart: UseCartNode): CartRow[] => {
     });
   });
 
-  cart.servicePackages.forEach(({ item, qty }) => {
+  (Array.isArray(cart.servicePackages) ? cart.servicePackages : []).forEach(({ item, qty }) => {
     if (!item) return;
     rows.push({
       itemId: item._id,
@@ -113,7 +113,7 @@ export const buildCartRows = (cart: UseCartNode): CartRow[] => {
     });
   });
 
-  cart.tests.forEach(({ item, qty }) => {
+  (Array.isArray(cart.tests) ? cart.tests : []).forEach(({ item, qty }) => {
     if (!item) return;
     rows.push({
       itemId: item._id,
@@ -318,7 +318,7 @@ const CartPage = () => {
         <legend className={`${classes.pageTitle} ${tmdDemiBold}`}>
           {getContent("cart")}
         </legend>
-        <div className={classes.layout}>
+        <div className={`${classes.layout} ${isEmpty ? classes.single : ""}`}>
           <div className={classes.sections}>
             {isEmpty && (
               <div className={classes.empty}>
