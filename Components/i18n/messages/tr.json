@@ -2074,5 +2074,6 @@
  "officeNew": "Yeni muayenehane",
  "dpdSetupBookableDone": "Hastalar artık sizden randevu alabilir. Eksiksiz bir profil daha fazla hasta çeker.",
  "dpdSugProfile": "Eksiksiz profile ${1} adım",
- "dpdSugProfileMeta": "Randevuya açıksınız; eksiksiz profil hastaların güvenini artırır"
+ "dpdSugProfileMeta": "Randevuya açıksınız; eksiksiz profil hastaların güvenini artırır",
+ "checkInOpensHint": "Hasta girişi randevudan bir saat önce açılır."
 }

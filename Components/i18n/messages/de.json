@@ -2074,5 +2074,6 @@
  "officeNew": "Neue Praxis",
  "dpdSetupBookableDone": "Patienten können jetzt bei Ihnen buchen. Ein vollständiges Profil zieht mehr Patienten an.",
  "dpdSugProfile": "${1} Schritte zum vollständigen Profil",
- "dpdSugProfileMeta": "Sie sind buchbar; ein vollständiges Profil stärkt das Vertrauen"
+ "dpdSugProfileMeta": "Sie sind buchbar; ein vollständiges Profil stärkt das Vertrauen",
+ "checkInOpensHint": "Der Patienten-Check-in ist ab einer Stunde vor dem Termin möglich."
 }

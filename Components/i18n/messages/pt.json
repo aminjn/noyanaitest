@@ -2074,5 +2074,6 @@
  "officeNew": "Novo consultório",
  "dpdSetupBookableDone": "Os pacientes já podem agendar com você. Um perfil completo atrai mais pacientes.",
  "dpdSugProfile": "${1} passos para um perfil completo",
- "dpdSugProfileMeta": "Você já pode ser agendado; um perfil completo gera confiança"
+ "dpdSugProfileMeta": "Você já pode ser agendado; um perfil completo gera confiança",
+ "checkInOpensHint": "O check-in do paciente abre uma hora antes da consulta."
 }

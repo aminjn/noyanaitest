@@ -2074,5 +2074,6 @@
  "officeNew": "Nuevo consultorio",
  "dpdSetupBookableDone": "Los pacientes ya pueden reservar contigo. Un perfil completo atrae a más pacientes.",
  "dpdSugProfile": "${1} pasos para un perfil completo",
- "dpdSugProfileMeta": "Ya se puede reservar contigo; un perfil completo genera confianza"
+ "dpdSugProfileMeta": "Ya se puede reservar contigo; un perfil completo genera confianza",
+ "checkInOpensHint": "El registro de llegada del paciente se abre una hora antes de la cita."
 }

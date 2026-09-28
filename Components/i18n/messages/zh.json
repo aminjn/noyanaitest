@@ -2074,5 +2074,6 @@
  "officeNew": "新诊室",
  "dpdSetupBookableDone": "患者现在可以向您预约了。完整的资料能吸引更多患者。",
  "dpdSugProfile": "还差 ${1} 步完善资料",
- "dpdSugProfileMeta": "您已可被预约；完整的资料更能赢得患者信任"
+ "dpdSugProfileMeta": "您已可被预约；完整的资料更能赢得患者信任",
+ "checkInOpensHint": "预约开始前一小时起可为患者签到。"
 }

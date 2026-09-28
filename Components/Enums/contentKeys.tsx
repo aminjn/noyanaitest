@@ -2226,6 +2226,7 @@ const contentKeys = [
   "dpdSetupBookableDone",
   "dpdSugProfile",
   "dpdSugProfileMeta",
+  "checkInOpensHint",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

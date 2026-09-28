@@ -63,6 +63,33 @@
   flex-wrap: wrap;
 }
 
+.actionsRow:empty {
+  display: none;
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--gray10);
+}
+
+.present {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  /* T1 / S2 flip between the light and dark theme: readable in both */
+  background: var(--successT1);
+  color: var(--successS2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.present svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 @media (max-width: 560px) {
   .infoGrid {
     grid-template-columns: 1fr;
