@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "চালিয়ে যেতে জাতীয় পরিচয় নম্বর ও জন্মতারিখ দিন। এগুলো সিভিল রেজিস্ট্রিতে যাচাই হয় এবং নম্বরটি এই মোবাইল নম্বরের মালিকের হতে হবে।",
  "identityNationalId": "জাতীয় পরিচয় নম্বর",
  "identityBirthDate": "জন্মতারিখ",
- "identityVerifySubmit": "যাচাই করে এগিয়ে যান"
+ "identityVerifySubmit": "যাচাই করে এগিয়ে যান",
+ "officeNew": "নতুন চেম্বার"
 }

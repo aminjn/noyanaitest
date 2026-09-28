@@ -17,10 +17,13 @@ const DoctorMutateOfficePopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={getContent("officeNew")}>
       <CreateForm<IOffice>
+        // new offices are active by default (the backend does the same)
+        defaultValue={{ active: true } as IOffice}
         renderer={{
           name: { type: "text", title: getContent("name") },
+          address: { type: "text", title: getContent("address") },
           active: { title: getContent("isActive"), type: "bool" },
           order: { title: getContent("order"), type: "number" },
           tel: { title: getContent("telephone"), type: "text" },

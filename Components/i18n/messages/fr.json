@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "Pour continuer, saisissez votre numéro d’identité national et votre date de naissance. Ils sont vérifiés auprès de l’état civil ; le numéro doit appartenir au titulaire de ce numéro de mobile.",
  "identityNationalId": "Numéro d’identité national",
  "identityBirthDate": "Date de naissance",
- "identityVerifySubmit": "Vérifier et continuer"
+ "identityVerifySubmit": "Vérifier et continuer",
+ "officeNew": "Nouveau cabinet"
 }

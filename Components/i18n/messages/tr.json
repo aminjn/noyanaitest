@@ -2070,5 +2070,6 @@
  "identityVerifyIntro": "Devam etmek için kimlik numaranızı ve doğum tarihinizi girin. Nüfus kayıtlarından doğrulanır; kimlik numarası bu cep telefonu numarasının sahibine ait olmalıdır.",
  "identityNationalId": "Kimlik numarası",
  "identityBirthDate": "Doğum tarihi",
- "identityVerifySubmit": "Doğrula ve devam et"
+ "identityVerifySubmit": "Doğrula ve devam et",
+ "officeNew": "Yeni muayenehane"
 }
