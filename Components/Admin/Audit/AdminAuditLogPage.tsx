@@ -9,7 +9,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { adminPath } from "@/Components/helpers/adminPath";
 import Loading from "../UI/Loading";
 import ErrorMessage from "../UI/ErrorMessage";
-import { adminMenu } from "../UI/adminMenu";
+import { adminAllGroups } from "../UI/adminMenu";
 import { RoleBadge, displayPhone, faDateTime, num, roleLabels } from "../User/userShared";
 
 type AuditLog = {
@@ -64,7 +64,7 @@ const actionLabels: Record<string, string> = {
 
 // "blog" -> "مقالات", "tamin/service" -> "سرویس‌ها", from the sidebar menu.
 const targetTitles = new Map<string, string>();
-for (const group of adminMenu)
+for (const group of adminAllGroups)
   for (const item of group.items)
     if (!targetTitles.has(item.href)) targetTitles.set(item.href, item.title);
 targetTitles.set("user", "کاربران");

@@ -5,22 +5,21 @@ import TargetIcon from "@/Components/Icons/TargetIcon";
 import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import StetoscopeIcon from "@/Components/Icons/StetoscopeIcon";
 import BuildingIcon from "@/Components/Icons/BuildingIcon";
-import HospitalIcon from "@/Components/Icons/HospitalIcon";
 import FlaskIcon from "@/Components/Icons/FlaskIcon";
 import PillIcon from "@/Components/Icons/PillIcon";
-import ShieldCheckIcon from "@/Components/Icons/ShieldCheckIcon";
 import PackageIcon from "@/Components/Icons/PackageIcon";
 import MedicalRecordIcon from "@/Components/Icons/MedicalRecordIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import WEbsiteIcon from "@/Components/Icons/WEbsiteIcon";
 import LinkIcon from "@/Components/Icons/LinkIcon";
-import HeadphoneIcon from "@/Components/Icons/HeadphoneIcon";
 import MedalIcon from "@/Components/Icons/MedalIcon";
 import AiIcon from "@/Components/Icons/AiIcon";
 import CrownIcon from "@/Components/Icons/CrownIcon";
 import MedicalReportIcon from "@/Components/Icons/MedicalReportIcon";
 import CogIcon from "@/Components/Icons/CogIcon";
 import FolderIcon from "@/Components/Icons/FolderIcon";
+import Bell01Icon from "@/Components/Icons/Bell01Icon";
+import TagIcon from "@/Components/Icons/TagIcon";
 
 export type AdminMenuItem = {
   title: string;
@@ -40,170 +39,66 @@ export type AdminMenuGroup = {
   items: AdminMenuItem[];
 };
 
-// Always visible at the top, outside the collapsible groups.
-export const adminPinnedItems: (AdminMenuItem & { icon: ReactNode })[] = [
+// Always visible at the top, outside the collapsible groups. `adminOnly`
+// items hit admin-only backend routes (staff only get the dashboard).
+export const adminPinnedItems: (AdminMenuItem & {
+  icon: ReactNode;
+  adminOnly?: boolean;
+})[] = [
   { title: "داشبورد", href: "", icon: <DashboardIcon /> },
-  { title: "آمار بازدید", href: "analytics", icon: <TargetIcon /> },
+  {
+    title: "صندوق درخواست‌ها",
+    href: "inbox",
+    icon: <Bell01Icon />,
+    adminOnly: true,
+  },
+  { title: "آمار بازدید", href: "analytics", icon: <TargetIcon />, adminOnly: true },
 ];
 
+// 2026-09 restructure: 17 groups became 8 spaces + 2 super spaces. Every
+// pending request now surfaces in the inbox above, the ~20 category/tag and
+// reference-data pages live behind one "taxonomy" hub, and developer test
+// tools / the legacy database behind one "devtools" hub (see adminHubs).
 export const adminMenu: AdminMenuGroup[] = [
   {
-    id: "users",
-    title: "کاربران و درخواست‌ها",
-    icon: <UserGroupIcon />,
-    items: [
-      { title: "کاربران", href: "user", access: "User" },
-      { title: "درخواست پزشک شدن", href: "becomedoctor", access: "BecomeDoctorRequest" },
-      { title: "درخواست کلینیک شدن", href: "becomeclinic", access: "BecomeClinicRequest" },
-      { title: "درخواست داروخانه شدن", href: "becomepharmacy", access: "BecomePharmacyRequest" },
-      { title: "درخواست بیمه شدن", href: "becomeinsurance", access: "BecomeInsuranceRequest" },
-      { title: "درخواست پاراکلینیک شدن", href: "becomeParaClinic" },
-      { title: "درخواست بیمارستان شدن", href: "becomehospital", access: "BecomeHospitalRequest" },
-    ],
-  },
-  {
-    id: "doctors",
-    title: "پزشکان",
+    id: "providers",
+    title: "ارائه‌دهندگان",
     icon: <StetoscopeIcon />,
     items: [
       { title: "پزشکان", href: "doctor", access: "Doctor" },
       { title: "پروفایل پزشکان", href: "doctorprofile", access: "DoctorProfile" },
-      { title: "تخصص‌ها", href: "speciality", access: "Sepciality" },
-      { title: "دسته‌بندی تخصص‌ها", href: "specialityCategory" },
+      { title: "کلینیک‌ها", href: "clinic", access: "Clinic" },
+      { title: "بیمارستان‌ها", href: "hospital", access: "Hospital" },
+      { title: "پاراکلینیک‌ها", href: "paraClinic" },
+      { title: "داروخانه و آزمایشگاه", href: "pharmacy", access: "Pharmacy" },
+      { title: "بیمه‌ها", href: "insurance", access: "Insurance" },
+      { title: "عضویت پزشکان در کلینیک", href: "doctorjoinclinic", access: "DoctorJoinClinic" },
+      { title: "عضویت پزشکان در بیمارستان", href: "doctorjoinhospital", access: "DoctorJoinHospital" },
       { title: "سوالات متداول پزشکان", href: "doctorfaq", access: "DoctorFaq" },
     ],
   },
   {
-    id: "clinics",
-    title: "کلینیک‌ها",
-    icon: <BuildingIcon />,
+    id: "requests",
+    title: "درخواست‌های ثبت",
+    icon: <MedalIcon />,
     items: [
-      { title: "کلینیک‌ها", href: "clinic", access: "Clinic" },
-      { title: "عضویت پزشکان در کلینیک", href: "doctorjoinclinic", access: "DoctorJoinClinic" },
-      { title: "درخواست‌های اضافه شدن کلینیک", href: "clinicaddition", access: "ClinicAdditionRequest" },
-      { title: "دسته‌بندی کلینیک‌ها", href: "clinicCategory" },
-      { title: "تگ کلینیک‌ها", href: "clinicTag" },
+      { title: "درخواست پزشک شدن", href: "becomedoctor", access: "BecomeDoctorRequest" },
+      { title: "درخواست کلینیک شدن", href: "becomeclinic", access: "BecomeClinicRequest" },
+      { title: "درخواست بیمارستان شدن", href: "becomehospital", access: "BecomeHospitalRequest" },
+      { title: "درخواست داروخانه شدن", href: "becomepharmacy", access: "BecomePharmacyRequest" },
+      { title: "درخواست پاراکلینیک شدن", href: "becomeParaClinic" },
+      { title: "درخواست بیمه شدن", href: "becomeinsurance", access: "BecomeInsuranceRequest" },
+      { title: "اضافه شدن کلینیک", href: "clinicaddition", access: "ClinicAdditionRequest" },
+      { title: "اضافه شدن بیمارستان", href: "hospitaladdition", access: "HospitalAdditionRequest" },
+      { title: "اضافه شدن بیمه", href: "insuranceaddition" },
     ],
   },
   {
-    id: "hospitals",
-    title: "بیمارستان‌ها",
-    icon: <HospitalIcon />,
+    id: "users",
+    title: "کاربران و پشتیبانی",
+    icon: <UserGroupIcon />,
     items: [
-      { title: "بیمارستان‌ها", href: "hospital", access: "Hospital" },
-      { title: "عضویت پزشکان در بیمارستان", href: "doctorjoinhospital", access: "DoctorJoinHospital" },
-      { title: "درخواست‌های اضافه شدن بیمارستان", href: "hospitaladdition", access: "HospitalAdditionRequest" },
-      { title: "دسته‌بندی بیمارستان‌ها", href: "hospitalCategory" },
-      { title: "تگ بیمارستان‌ها", href: "hospitalTag" },
-    ],
-  },
-  {
-    id: "paraclinic",
-    title: "پاراکلینیک و آزمایش",
-    icon: <FlaskIcon />,
-    items: [
-      { title: "پاراکلینیک‌ها", href: "paraClinic" },
-      { title: "دسته‌بندی پاراکلینیک", href: "paraClinicCategory" },
-      { title: "تگ پاراکلینیک", href: "paraClinicTag" },
-      { title: "تست‌ها", href: "test" },
-      { title: "دسته‌بندی تست‌ها", href: "testCategory" },
-    ],
-  },
-  {
-    id: "pharmacy",
-    title: "داروخانه و فروشگاه",
-    icon: <PillIcon />,
-    items: [
-      { title: "داروخانه و آزمایشگاه", href: "pharmacy", access: "Pharmacy" },
-      { title: "محصولات", href: "product" },
-      { title: "دسته‌بندی محصولات", href: "productCategory" },
-      { title: "بسته‌های محصول", href: "productPackage" },
-    ],
-  },
-  {
-    id: "insurance",
-    title: "بیمه",
-    icon: <ShieldCheckIcon />,
-    items: [
-      { title: "بیمه‌ها", href: "insurance", access: "Insurance" },
-      { title: "درخواست‌های اضافه شدن بیمه", href: "insuranceaddition" },
-      { title: "دسته‌بندی بیمه‌ها", href: "insuranceCategory" },
-      { title: "تگ بیمه", href: "insuranceTag" },
-    ],
-  },
-  {
-    id: "services",
-    title: "خدمات و رزرو",
-    icon: <PackageIcon />,
-    items: [
-      { title: "خدمات", href: "service" },
-      { title: "دسته‌بندی خدمات", href: "serviceCategory" },
-      { title: "پکیج‌های خدمات", href: "servicePackage" },
-      { title: "توضیحات رزرو", href: "bookingDescription" },
-    ],
-  },
-  {
-    id: "medical",
-    title: "دانشنامه پزشکی",
-    icon: <MedicalRecordIcon />,
-    items: [
-      { title: "بیماری‌ها", href: "disease", access: "Disease" },
-      { title: "دسته‌بندی بیماری‌ها", href: "diseaseCategory" },
-      { title: "تگ بیماری‌ها", href: "diseaseTag" },
-      { title: "داروها", href: "drug", access: "Drug" },
-      { title: "تگ داروها", href: "drugTag" },
-      { title: "علائم", href: "symptom", access: "Symptom" },
-      { title: "دسته‌بندی علائم", href: "symptomCategory" },
-      { title: "اعضای بدن", href: "part", access: "Part" },
-    ],
-  },
-  {
-    id: "blog",
-    title: "وبلاگ",
-    icon: <BookOpenIcon />,
-    items: [
-      { title: "مقالات", href: "blog", access: "Blog" },
-      { title: "دسته‌بندی مقالات", href: "blogcategory", access: "BlogCategory" },
-      { title: "تگ‌های وبلاگ", href: "blogTag" },
-      { title: "مولتی‌مدیا وبلاگ", href: "blogmedia", access: "BlogMedia" },
-      { title: "خبرنامه", href: "blogRrs" },
-    ],
-  },
-  {
-    id: "site",
-    title: "محتوای سایت",
-    icon: <WEbsiteIcon />,
-    items: [
-      { title: "معرفی صفحه اصلی", href: "homeIntroduction" },
-      { title: "تبلیغات", href: "advertisement" },
-      { title: "تبلیغات خطی", href: "inlinead", access: "InlineAdvertisement" },
-      { title: "سوالات متداول", href: "faq" },
-      { title: "دسته‌بندی سوالات متداول", href: "faqCategory" },
-      { title: "درباره همکاران", href: "aboutPartner" },
-      { title: "درباره تیم", href: "aboutTeam" },
-      { title: "چرا ما", href: "aboutWhy" },
-      { title: "نظرات مشتریان", href: "testify" },
-      { title: "قوانین و مقررات", href: "privacy" },
-      { title: "متن‌های رابط کاربری", href: "textcontent", access: "TextContent" },
-      { title: "ترجمه محتوا", href: "translations" },
-      { title: "استان‌ها و شهرها", href: "province" },
-    ],
-  },
-  {
-    id: "seo",
-    title: "سئو و لینک‌ها",
-    icon: <LinkIcon />,
-    items: [
-      { title: "متادیتای صفحات", href: "pageMeta" },
-      { title: "لینک‌های کوتاه", href: "shortlink", access: "ShortLink" },
-      { title: "ریدایرکت‌ها", href: "redirection", access: "Redirection" },
-    ],
-  },
-  {
-    id: "support",
-    title: "پشتیبانی و ارتباطات",
-    icon: <HeadphoneIcon />,
-    items: [
+      { title: "کاربران", href: "user", access: "User" },
       { title: "تیکت‌های پشتیبانی", href: "ticket" },
       { title: "درخواست‌های تماس", href: "contactRequest" },
       { title: "نظرات کاربران", href: "comment" },
@@ -213,15 +108,65 @@ export const adminMenu: AdminMenuGroup[] = [
     ],
   },
   {
+    id: "catalog",
+    title: "خدمات و کاتالوگ",
+    icon: <PackageIcon />,
+    items: [
+      { title: "تخصص‌ها", href: "speciality", access: "Sepciality" },
+      { title: "خدمات", href: "service" },
+      { title: "پکیج‌های خدمات", href: "servicePackage" },
+      { title: "تست‌های آزمایشگاهی", href: "test" },
+      { title: "محصولات", href: "product" },
+      { title: "بسته‌های محصول", href: "productPackage" },
+      { title: "توضیحات رزرو", href: "bookingDescription" },
+      { title: "دسته‌بندی‌ها، تگ‌ها و مناطق", href: "taxonomy" },
+    ],
+  },
+  {
+    id: "medical",
+    title: "دانشنامه پزشکی",
+    icon: <MedicalRecordIcon />,
+    items: [
+      { title: "بیماری‌ها", href: "disease", access: "Disease" },
+      { title: "داروها", href: "drug", access: "Drug" },
+      { title: "علائم", href: "symptom", access: "Symptom" },
+      { title: "اعضای بدن", href: "part", access: "Part" },
+    ],
+  },
+  {
+    id: "content",
+    title: "محتوا و سئو",
+    icon: <WEbsiteIcon />,
+    items: [
+      { title: "مقالات", href: "blog", access: "Blog" },
+      { title: "مولتی‌مدیا وبلاگ", href: "blogmedia", access: "BlogMedia" },
+      { title: "خبرنامه", href: "blogRrs" },
+      { title: "معرفی صفحه اصلی", href: "homeIntroduction" },
+      { title: "تبلیغات", href: "advertisement" },
+      { title: "تبلیغات خطی", href: "inlinead", access: "InlineAdvertisement" },
+      { title: "سوالات متداول", href: "faq" },
+      { title: "درباره همکاران", href: "aboutPartner" },
+      { title: "درباره تیم", href: "aboutTeam" },
+      { title: "چرا ما", href: "aboutWhy" },
+      { title: "نظرات مشتریان", href: "testify" },
+      { title: "قوانین و مقررات", href: "privacy" },
+      { title: "متن‌های رابط کاربری", href: "textcontent", access: "TextContent" },
+      { title: "ترجمه محتوا", href: "translations" },
+      { title: "متادیتای صفحات", href: "pageMeta" },
+      { title: "لینک‌های کوتاه", href: "shortlink", access: "ShortLink" },
+      { title: "ریدایرکت‌ها", href: "redirection", access: "Redirection" },
+    ],
+  },
+  {
     id: "licenses",
-    title: "مجوزها و پلن‌ها",
-    icon: <MedalIcon />,
+    title: "پلن‌ها و مجوزها",
+    icon: <CrownIcon />,
     items: [
       { title: "پلن‌های پزشک", href: "baseDoctorLicense" },
-      { title: "پلن‌های داروخانه", href: "basePharmacyLicense" },
       { title: "پلن‌های کلینیک", href: "baseClinicLicense" },
-      { title: "پلن‌های پاراکلینیک", href: "baseParaClinicLicense" },
       { title: "پلن‌های بیمارستان", href: "baseHospitalLicense" },
+      { title: "پلن‌های داروخانه", href: "basePharmacyLicense" },
+      { title: "پلن‌های پاراکلینیک", href: "baseParaClinicLicense" },
       { title: "پلن‌های بیمه", href: "baseInsuranceLicense" },
       { title: "مدت زمان مجوز", href: "licenseDuration" },
     ],
@@ -238,7 +183,7 @@ export const adminMenu: AdminMenuGroup[] = [
   {
     id: "superAdmin",
     title: "مدیریت سیستم",
-    icon: <CrownIcon />,
+    icon: <CogIcon />,
     super: true,
     items: [
       { title: "ادمین‌ها", href: "useraccesslevel" },
@@ -249,6 +194,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "پترن‌های پیامک", href: "smsPatterns" },
       { title: "تصاویر ثابت", href: "staticImages" },
       { title: "لاگ عملیات", href: "audit" },
+      { title: "ابزار توسعه و دیتابیس قدیم", href: "devtools" },
     ],
   },
   {
@@ -271,44 +217,143 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "تخصص‌ها", href: "tamin/spec" },
     ],
   },
+];
+
+// Pages that aren't in the sidebar but are one click away on a hub page
+// (and in Ctrl+K). `hub` is the href of the menu item that lists them; the
+// sidebar marks that item active while one of these pages is open.
+export type AdminHub = {
+  hub: string;
+  sections: AdminMenuGroup[];
+};
+
+export const adminHubs: AdminHub[] = [
   {
-    id: "tests",
-    title: "ابزارهای تست",
-    icon: <CogIcon />,
-    super: true,
-    items: [
-      { title: "تست نوتیفیکیشن پوش", href: "pushTest" },
-      { title: "تست پیک اسنپ", href: "snappTest" },
-      { title: "تست درگاه پرداخت سپ", href: "sepTest" },
-      // Tamin sandbox consoles - see Components/Admin/Tamin/AdminTaminTestConsole.tsx.
-      { title: "تست تامین: پزشک", href: "tamin/doctorTest" },
-      { title: "تست تامین: داروخانه", href: "tamin/pharmacyTest" },
-      { title: "تست تامین: کلینیک", href: "tamin/clinicTest" },
-      { title: "تست تامین: پاراکلینیک", href: "tamin/paraClinicTest" },
+    hub: "taxonomy",
+    sections: [
+      {
+        id: "taxProviders",
+        title: "مراکز درمانی",
+        icon: <BuildingIcon />,
+        items: [
+          { title: "دسته‌بندی تخصص‌ها", href: "specialityCategory" },
+          { title: "دسته‌بندی کلینیک‌ها", href: "clinicCategory" },
+          { title: "تگ کلینیک‌ها", href: "clinicTag" },
+          { title: "دسته‌بندی بیمارستان‌ها", href: "hospitalCategory" },
+          { title: "تگ بیمارستان‌ها", href: "hospitalTag" },
+          { title: "دسته‌بندی پاراکلینیک", href: "paraClinicCategory" },
+          { title: "تگ پاراکلینیک", href: "paraClinicTag" },
+          { title: "دسته‌بندی بیمه‌ها", href: "insuranceCategory" },
+          { title: "تگ بیمه", href: "insuranceTag" },
+        ],
+      },
+      {
+        id: "taxCatalog",
+        title: "خدمات و محصولات",
+        icon: <PillIcon />,
+        items: [
+          { title: "دسته‌بندی خدمات", href: "serviceCategory" },
+          { title: "دسته‌بندی تست‌ها", href: "testCategory" },
+          { title: "دسته‌بندی محصولات", href: "productCategory" },
+        ],
+      },
+      {
+        id: "taxMedical",
+        title: "دانشنامه پزشکی",
+        icon: <FlaskIcon />,
+        items: [
+          { title: "دسته‌بندی بیماری‌ها", href: "diseaseCategory" },
+          { title: "تگ بیماری‌ها", href: "diseaseTag" },
+          { title: "تگ داروها", href: "drugTag" },
+          { title: "دسته‌بندی علائم", href: "symptomCategory" },
+        ],
+      },
+      {
+        id: "taxContent",
+        title: "محتوا",
+        icon: <BookOpenIcon />,
+        items: [
+          { title: "دسته‌بندی مقالات", href: "blogcategory", access: "BlogCategory" },
+          { title: "تگ‌های وبلاگ", href: "blogTag" },
+          { title: "دسته‌بندی سوالات متداول", href: "faqCategory" },
+        ],
+      },
+      {
+        id: "taxPlaces",
+        title: "مناطق",
+        icon: <TagIcon />,
+        items: [{ title: "استان‌ها و شهرها", href: "province" }],
+      },
     ],
   },
   {
-    id: "old",
-    title: "دیتابیس قدیم",
-    icon: <FolderIcon />,
-    super: true,
-    items: [
-      { title: "پزشکان", href: "old/doctor" },
-      { title: "کاربران", href: "old/user" },
-      { title: "تخصص‌ها", href: "old/speciality" },
-      { title: "مقالات", href: "old/blog" },
-      { title: "بیماری‌ها", href: "old/disease" },
-      { title: "داروها", href: "old/drug" },
-      { title: "اعضا", href: "old/part" },
-      { title: "علائم", href: "old/symptom" },
-      { title: "مهاجرت داده‌ها", href: "cold/migrate" },
+    hub: "devtools",
+    sections: [
+      {
+        id: "tests",
+        title: "تست سرویس‌ها",
+        icon: <LinkIcon />,
+        super: true,
+        items: [
+          { title: "تست نوتیفیکیشن پوش", href: "pushTest" },
+          { title: "تست پیک اسنپ", href: "snappTest" },
+          { title: "تست درگاه پرداخت سپ", href: "sepTest" },
+          { title: "تست تامین: پزشک", href: "tamin/doctorTest" },
+          { title: "تست تامین: داروخانه", href: "tamin/pharmacyTest" },
+          { title: "تست تامین: کلینیک", href: "tamin/clinicTest" },
+          { title: "تست تامین: پاراکلینیک", href: "tamin/paraClinicTest" },
+        ],
+      },
+      {
+        id: "old",
+        title: "دیتابیس قدیم",
+        icon: <FolderIcon />,
+        super: true,
+        items: [
+          { title: "پزشکان", href: "old/doctor" },
+          { title: "کاربران", href: "old/user" },
+          { title: "تخصص‌ها", href: "old/speciality" },
+          { title: "مقالات", href: "old/blog" },
+          { title: "بیماری‌ها", href: "old/disease" },
+          { title: "داروها", href: "old/drug" },
+          { title: "اعضا", href: "old/part" },
+          { title: "علائم", href: "old/symptom" },
+          { title: "مهاجرت داده‌ها", href: "cold/migrate" },
+        ],
+      },
     ],
   },
 ];
 
+// Every group, sidebar and hub alike - for lookups by page (audit log,
+// page guard, Ctrl+K).
+export const adminAllGroups: AdminMenuGroup[] = [
+  ...adminMenu,
+  ...adminHubs.flatMap((hub) =>
+    hub.sections.map((section) => ({
+      ...section,
+      // A hub under a super-only menu item is super-only too.
+      super:
+        section.super ||
+        adminMenu.some(
+          (group) =>
+            group.super && group.items.some((item) => item.href === hub.hub),
+        ),
+    })),
+  ),
+];
+
+// Hub item href a (hub-listed) page belongs to, e.g. "clinicTag" -> "taxonomy".
+export const hubOfPage = (href: string) =>
+  adminHubs.find((hub) =>
+    hub.sections.some((section) =>
+      section.items.some((item) => item.href === href),
+    ),
+  )?.hub;
+
 // First URL segment -> what guards it, for AdminLayout's page guard.
 const segmentInfo = new Map<string, { super: boolean; access?: AccessLevelModel }>();
-for (const group of adminMenu)
+for (const group of adminAllGroups)
   for (const item of group.items) {
     const segment = item.href.split("/")[0];
     if (!segmentInfo.has(segment))
@@ -318,8 +363,18 @@ for (const group of adminMenu)
 export const canNotAdminOpen = (
   segment: string,
   hasAccess: (model: AccessLevelModel, op: "readAll" | "readOne") => boolean,
-) => {
+): boolean => {
   if (segment === "") return true;
+  // A hub page opens for staff who can open at least one page on it.
+  const hub = adminHubs.find((el) => el.hub === segment);
+  if (hub)
+    return hub.sections.some(
+      (section) =>
+        !section.super &&
+        section.items.some((item) =>
+          canNotAdminOpen(item.href.split("/")[0], hasAccess),
+        ),
+    );
   const info = segmentInfo.get(segment);
   if (!info || info.super || !info.access) return false;
   return hasAccess(info.access, "readAll") || hasAccess(info.access, "readOne");

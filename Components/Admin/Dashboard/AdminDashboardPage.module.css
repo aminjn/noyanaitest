@@ -330,3 +330,12 @@ a.pendingItem:hover {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.inboxLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--aiText);
+}

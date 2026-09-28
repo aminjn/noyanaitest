@@ -197,3 +197,16 @@
   font-size: 0.8125rem;
   text-align: center;
 }
+
+.badge {
+  margin-inline-start: auto;
+  min-width: 1.375rem;
+  padding: 0.0625rem 0.4375rem;
+  border-radius: 999px;
+  background: var(--gradAccentSolid);
+  color: var(--onColor);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.25rem;
+}
