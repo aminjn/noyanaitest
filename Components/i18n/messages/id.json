@@ -2100,5 +2100,6 @@
  "reviewsRecommends": "Merekomendasikan",
  "visitReviewPending": "Terima kasih! Ulasan Anda diterima dan akan dipublikasikan setelah ditinjau.",
  "visitReviewApproved": "Ulasan Anda disetujui dan dipublikasikan di halaman dokter.",
- "visitReviewRejected": "Ulasan Anda tidak sesuai pedoman publikasi dan tidak dipublikasikan."
+ "visitReviewRejected": "Ulasan Anda tidak sesuai pedoman publikasi dan tidak dipublikasikan.",
+ "schTabCancelled": "Dibatalkan"
 }

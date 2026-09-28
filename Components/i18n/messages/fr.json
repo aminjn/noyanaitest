@@ -2100,5 +2100,6 @@
  "reviewsRecommends": "Recommande",
  "visitReviewPending": "Merci ! Votre avis a été reçu et sera publié après modération.",
  "visitReviewApproved": "Votre avis a été approuvé et publié sur la page du médecin.",
- "visitReviewRejected": "Votre avis ne respectait pas les règles de publication et n'a pas été publié."
+ "visitReviewRejected": "Votre avis ne respectait pas les règles de publication et n'a pas été publié.",
+ "schTabCancelled": "Annulés"
 }
