@@ -51,19 +51,10 @@ const middleware = async (req: NextRequest) => {
   const headers = new Headers(req.headers);
   headers.set(LOCALE_HEADER, locale);
   headers.set(PATH_HEADER, pathname);
-  if (pathname === req.nextUrl.pathname)
-    return NextResponse.next({ request: { headers } });
-  const url = req.nextUrl.clone();
-  url.pathname = pathname;
-  // Behind nginx (TLS terminated there, `X-Forwarded-Proto: https`), Next's
-  // router takes the request origin as https://127.0.0.1:3100 while this URL
-  // says http:// - an origin mismatch it treats as an *external* rewrite, so
-  // it proxies over TLS to its own plain-HTTP port and every "/<locale>/..."
-  // page became a 500 in production. Same protocol rule as Next's own
-  // (resolve-routes: x-forwarded-proto includes "https") keeps it internal.
-  if (req.headers.get("x-forwarded-proto")?.includes("https"))
-    url.protocol = "https:";
-  return NextResponse.rewrite(url, { request: { headers } });
+  // No rewrite here: the "/<locale>" prefix is stripped by next.config's
+  // rewrites (see the note there on why a middleware rewrite 500s behind
+  // nginx). The page still gets the locale / path through these headers.
+  return NextResponse.next({ request: { headers } });
 };
 
 // Skip Next internals, API proxying and static files (the redirect lookup

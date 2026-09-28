@@ -37,9 +37,29 @@ function fileHostPatterns() {
   return patterns;
 }
 
+// Site languages - keep in sync with Components/i18n/locales.ts. The page
+// tree has no locale segment: "/en/doctors" is served by "/doctors" (the
+// middleware reads the prefix and sets the x-locale header). The prefix is
+// stripped here, by the router itself, rather than by a middleware rewrite:
+// behind nginx (`X-Forwarded-Proto: https`, `next start -H 127.0.0.1`) Next
+// 14 compares a middleware rewrite's origin (https://localhost:3100) with its
+// own (https://127.0.0.1:3100), sees a mismatch, proxies the request to
+// itself as an external URL over TLS and every "/<locale>/..." page was a
+// 500 in production. Config rewrites have no origin, so no such check.
+const LOCALES = ["fa", "en", "ar", "zh", "hi", "es", "fr", "ru", "pt", "de", "tr", "ur", "bn", "id", "ja"];
+const LOCALE_PATTERN = LOCALES.join("|");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: `/:locale(${LOCALE_PATTERN})`, destination: "/" },
+        { source: `/:locale(${LOCALE_PATTERN})/:path*`, destination: "/:path*" },
+      ],
+    };
+  },
   env: {
     API: process.env.API,
     ADMIN_KEY: process.env.ADMIN_KEY,
