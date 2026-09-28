@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "過去${2}日間で${1}",
  "homeChartView": "グラフ",
  "homeTableView": "表",
- "homeDay": "日"
+ "homeDay": "日",
+ "officeNoCenter": "なし（独立した診療所）",
+ "officeClinic": "この診療所はどのクリニック内ですか？",
+ "officeHospital": "この診療所はどの病院内ですか？",
+ "homeTrendVisits": "受診数",
+ "homeVisitsNoOffices": "まだこの施設に診療所を紐づけた医師はいません。所属医師が「診療所」ページで選ぶと、その受診数がここに表示されます。"
 }

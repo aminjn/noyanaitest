@@ -6,11 +6,13 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import useOfficeCenterFields from "./useOfficeCenterFields";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelOffice"];
 
 const DoctorMutateOfficePopup = ({ mutate }: { mutate: () => unknown }) => {
   const getContent = useScopedLocale(NS);
+  const centerFields = useOfficeCenterFields();
 
   const { closePopup } = usePopup();
 
@@ -22,6 +24,7 @@ const DoctorMutateOfficePopup = ({ mutate }: { mutate: () => unknown }) => {
           active: { title: getContent("isActive"), type: "bool" },
           order: { title: getContent("order"), type: "number" },
           tel: { title: getContent("telephone"), type: "text" },
+          ...centerFields,
         }}
         hookProps={{
           method: "POST",

@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "پچھلے ${2} دنوں میں ${1}",
  "homeChartView": "چارٹ",
  "homeTableView": "جدول",
- "homeDay": "دن"
+ "homeDay": "دن",
+ "officeNoCenter": "کوئی نہیں (آزاد مطب)",
+ "officeClinic": "یہ مطب کس کلینک میں ہے؟",
+ "officeHospital": "یہ مطب کس ہسپتال میں ہے؟",
+ "homeTrendVisits": "اپوائنٹمنٹس",
+ "homeVisitsNoOffices": "ابھی تک کسی ڈاکٹر نے اس مرکز سے کوئی مطب نہیں جوڑا۔ رکن ڈاکٹر «مطب» صفحے پر منتخب کرتے ہیں کہ کون سا مطب یہاں ہے، پھر اس کی اپوائنٹمنٹس یہاں نظر آئیں گی۔"
 }

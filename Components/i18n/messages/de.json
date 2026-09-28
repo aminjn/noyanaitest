@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "${1} in den letzten ${2} Tagen",
  "homeChartView": "Diagramm",
  "homeTableView": "Tabelle",
- "homeDay": "Tag"
+ "homeDay": "Tag",
+ "officeNoCenter": "Keine (eigene Praxis)",
+ "officeClinic": "In welcher Klinik ist diese Praxis?",
+ "officeHospital": "In welchem Krankenhaus ist diese Praxis?",
+ "homeTrendVisits": "Termine",
+ "homeVisitsNoOffices": "Noch hat kein Arzt eine Praxis mit dieser Einrichtung verknüpft. Mitglieder wählen auf ihrer Seite „Praxis“, welche Praxis hier liegt – deren Termine erscheinen dann hier."
 }

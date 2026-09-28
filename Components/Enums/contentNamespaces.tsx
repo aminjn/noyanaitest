@@ -1212,6 +1212,8 @@ export const contentNamespaces = {
     "homeTableView",
     "homeDay",
     "toman",
+    "homeTrendVisits",
+    "homeVisitsNoOffices",
   ],
   secretaryPanelHome: [
     "dashboard",
@@ -2028,6 +2030,9 @@ export const contentNamespaces = {
     "location",
     "submit",
     "sureDeleteOffice",
+    "officeNoCenter",
+    "officeClinic",
+    "officeHospital",
   ],
 
   // app/doctorpanel/tamin/page.tsx (TaminCbPage).

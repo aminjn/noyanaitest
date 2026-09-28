@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "${1} في آخر ${2} يومًا",
  "homeChartView": "مخطط",
  "homeTableView": "جدول",
- "homeDay": "اليوم"
+ "homeDay": "اليوم",
+ "officeNoCenter": "لا شيء (عيادة مستقلة)",
+ "officeClinic": "في أي عيادة تقع هذه العيادة؟",
+ "officeHospital": "في أي مستشفى تقع هذه العيادة؟",
+ "homeTrendVisits": "المواعيد",
+ "homeVisitsNoOffices": "لم يربط أي طبيب عيادة بهذا المركز بعد. يحدد الأطباء الأعضاء في صفحة «العيادة» أي عيادة لهم هنا، لتظهر مواعيدها في هذا المخطط."
 }

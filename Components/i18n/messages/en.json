@@ -2058,5 +2058,10 @@
  "homeTrendSummary": "${1} in the last ${2} days",
  "homeChartView": "Chart",
  "homeTableView": "Table",
- "homeDay": "Day"
+ "homeDay": "Day",
+ "officeNoCenter": "None (independent office)",
+ "officeClinic": "Which clinic is this office in?",
+ "officeHospital": "Which hospital is this office in?",
+ "homeTrendVisits": "Visits",
+ "homeVisitsNoOffices": "No doctor has linked an office to this centre yet. Member doctors choose, on their Office page, which of their offices is here — its visits then show up on this chart."
 }

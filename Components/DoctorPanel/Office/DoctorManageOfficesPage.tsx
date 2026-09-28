@@ -39,6 +39,9 @@ export interface IOffice<
   order: number;
   active: boolean;
   location?: { type: "Point"; coordinates?: [number, number] };
+  // the member clinic / hospital this office is inside, if any
+  clinic?: string;
+  hospital?: string;
 }
 
 const DoctorManageOfficesPage = () => {
