@@ -17,7 +17,14 @@ type MyFeedback = {
   overalScore: number;
   suggest: boolean;
   publicMessage?: string;
+  status?: "Pending" | "Approved" | "Rejected";
 } | null;
+
+const statusKey = {
+  Pending: "visitReviewPending",
+  Approved: "visitReviewApproved",
+  Rejected: "visitReviewRejected",
+} as const;
 
 export const Stars = ({ value, size = "1rem" }: { value: number; size?: string }) => (
   <span className={classes.stars} style={{ fontSize: size }} aria-hidden>
@@ -51,7 +58,13 @@ const VisitFeedbackCard = ({ reservationId }: { reservationId: string }) => {
     return (
       <section className={classes.card}>
         <h2 className={classes.title}>{getContent("visitReviewTitle")}</h2>
-        <p className={classes.thanks}>{getContent("visitReviewThanks")}</p>
+        <p
+          className={
+            data.status === "Rejected" ? classes.muted : classes.thanks
+          }
+        >
+          {getContent(statusKey[data.status || "Pending"])}
+        </p>
         <Stars value={data.overalScore} size="1.25rem" />
         {!!data.publicMessage && (
           <p className={classes.quote}>{data.publicMessage}</p>

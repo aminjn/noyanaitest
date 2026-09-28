@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "Online-Stornierung ist bis 24 Stunden vorher möglich; für Änderungen jetzt die Praxis kontaktieren.",
  "cancelledRefunded": "Der Termin wurde storniert und der Betrag dem Guthaben des Patienten erstattet.",
  "visitReviewTitle": "Diesen Termin bewerten",
- "visitReviewIntro": "Ihre Bewertung erscheint mit dem Abzeichen „verifizierter Patient“ auf der Arztseite und hilft anderen bei der Wahl.",
+ "visitReviewIntro": "Nach Prüfung erscheint Ihre Bewertung mit dem Abzeichen „verifizierter Patient“ auf der Arztseite.",
  "visitReviewScore": "Gesamtbewertung",
  "visitReviewRecommend": "Würden Sie diesen Arzt empfehlen?",
  "visitReviewPublic": "Ihre Erfahrung (für andere sichtbar)",
  "visitReviewPrivate": "Private Nachricht an Noyan (optional, nicht sichtbar)",
  "visitReviewSubmit": "Bewertung abschicken",
- "visitReviewThanks": "Danke! Ihre Bewertung wurde gespeichert.",
+ "visitReviewThanks": "Danke! Ihre Bewertung ist eingegangen und wird nach Prüfung veröffentlicht.",
  "visitReviewPickScore": "Bitte Bewertung und Empfehlung auswählen.",
  "reviewsVerified": "Verifizierter Patient",
  "reviewsRecommendPercent": "${1} der Patienten empfehlen diesen Arzt",
  "reviewsEmpty": "Noch keine Bewertungen. Nur Patienten mit einem Termin können bewerten.",
  "reviewsMore": "Weitere Bewertungen",
- "reviewsRecommends": "Empfiehlt"
+ "reviewsRecommends": "Empfiehlt",
+ "visitReviewPending": "Danke! Ihre Bewertung ist eingegangen und wird nach Prüfung veröffentlicht.",
+ "visitReviewApproved": "Ihre Bewertung wurde freigegeben und ist auf der Arztseite veröffentlicht.",
+ "visitReviewRejected": "Ihre Bewertung entsprach nicht den Richtlinien und wurde nicht veröffentlicht."
 }

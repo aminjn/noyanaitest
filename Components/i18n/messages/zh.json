@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "可在预约前 24 小时之前在线取消；现在如需更改，请联系诊所。",
  "cancelledRefunded": "预约已取消，费用已退回患者钱包。",
  "visitReviewTitle": "为本次就诊评分",
- "visitReviewIntro": "您的评价将以“已验证患者”标识显示在医生页面上，帮助他人选择。",
+ "visitReviewIntro": "审核后，您的评价将以“已验证患者”标识显示在医生页面上。",
  "visitReviewScore": "总体评分",
  "visitReviewRecommend": "您会推荐这位医生吗？",
  "visitReviewPublic": "您的体验（将向他人展示）",
  "visitReviewPrivate": "给 Noyan 的私信（可选，不公开）",
  "visitReviewSubmit": "提交评价",
- "visitReviewThanks": "谢谢！您的评价已提交。",
+ "visitReviewThanks": "谢谢！已收到您的评价，审核后发布。",
  "visitReviewPickScore": "请选择评分以及是否推荐。",
  "reviewsVerified": "已验证患者",
  "reviewsRecommendPercent": "${1} 的患者推荐这位医生",
  "reviewsEmpty": "暂无评价。只有已就诊的患者才能评价。",
  "reviewsMore": "更多评价",
- "reviewsRecommends": "推荐"
+ "reviewsRecommends": "推荐",
+ "visitReviewPending": "谢谢！已收到您的评价，审核后发布。",
+ "visitReviewApproved": "您的评价已通过审核，并发布在医生页面上。",
+ "visitReviewRejected": "您的评价不符合发布规则，未予发布。"
 }

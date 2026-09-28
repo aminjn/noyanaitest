@@ -191,7 +191,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
       return;
     }
     push(
-      `/book/finalize/${doctor._id}?d=${getSessionDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
+      `/book/finalize/${doctor._id}?d=${getSessionDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}${sessionType ? `&t=${sessionType}` : ""}`,
     );
   };
 

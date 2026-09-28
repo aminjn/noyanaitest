@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "Pembatalan online bisa hingga 24 jam sebelumnya; untuk perubahan sekarang, hubungi klinik.",
  "cancelledRefunded": "Janji temu dibatalkan dan biayanya dikembalikan ke dompet pasien.",
  "visitReviewTitle": "Nilai kunjungan ini",
- "visitReviewIntro": "Ulasan Anda tampil di halaman dokter dengan lencana \"pasien terverifikasi\" dan membantu orang lain memilih.",
+ "visitReviewIntro": "Setelah ditinjau, ulasan Anda tampil di halaman dokter dengan lencana \"pasien terverifikasi\".",
  "visitReviewScore": "Nilai keseluruhan",
  "visitReviewRecommend": "Apakah Anda merekomendasikan dokter ini?",
  "visitReviewPublic": "Pengalaman Anda (ditampilkan ke orang lain)",
  "visitReviewPrivate": "Pesan pribadi untuk Noyan (opsional, tidak ditampilkan)",
  "visitReviewSubmit": "Kirim ulasan",
- "visitReviewThanks": "Terima kasih! Ulasan Anda telah dikirim.",
+ "visitReviewThanks": "Terima kasih! Ulasan Anda diterima dan akan dipublikasikan setelah ditinjau.",
  "visitReviewPickScore": "Silakan pilih nilai dan apakah Anda merekomendasikan.",
  "reviewsVerified": "Pasien terverifikasi",
  "reviewsRecommendPercent": "${1} pasien merekomendasikan dokter ini",
  "reviewsEmpty": "Belum ada ulasan. Hanya pasien yang sudah berkunjung yang dapat memberi ulasan.",
  "reviewsMore": "Ulasan lainnya",
- "reviewsRecommends": "Merekomendasikan"
+ "reviewsRecommends": "Merekomendasikan",
+ "visitReviewPending": "Terima kasih! Ulasan Anda diterima dan akan dipublikasikan setelah ditinjau.",
+ "visitReviewApproved": "Ulasan Anda disetujui dan dipublikasikan di halaman dokter.",
+ "visitReviewRejected": "Ulasan Anda tidak sesuai pedoman publikasi dan tidak dipublikasikan."
 }

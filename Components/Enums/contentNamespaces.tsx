@@ -524,6 +524,9 @@ export const contentNamespaces = {
     "visitReviewPickScore",
     "yes",
     "no",
+    "visitReviewPending",
+    "visitReviewApproved",
+    "visitReviewRejected",
   ],
 
   // app/dashboard/transaction/page.tsx (DashboardManageTransactionsPage) —
@@ -866,6 +869,7 @@ export const contentNamespaces = {
     "xToman",
     // (useScopedLocale migration, 2026-09)
     "fromTimeXtoTimeY",
+    "sessionType",
   ],
 
   // bookingLegacyList (app/book/page/[page]/page.tsx, BookingPage) removed
@@ -3080,6 +3084,7 @@ export const contentNamespaces = {
     "writeYourMessage",
     "chatUrgentNote",
     "chats",
+    "dashboard",
   ],
 
   // ---- admin (useScopedLocale migration, 2026-09) ----

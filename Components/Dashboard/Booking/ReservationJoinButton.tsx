@@ -17,16 +17,26 @@ const ReservationJoinButton = ({
   chat,
   callRoom,
   sessionType,
+  panel = "patient",
 }: {
   chat?: string;
   callRoom?: string;
   sessionType: DoctorSessionType;
+  // which panel's chat page to open (the call page is shared)
+  panel?: "patient" | "doctor";
 }) => {
   const getContent = useScopedLocale(NS);
 
   if (chat)
     return (
-      <Button href={`/dashboard/chat/${chat}`} leadIcon={<ChatBubbleIcon />}>
+      <Button
+        href={
+          panel === "doctor"
+            ? `/doctorpanel/chat/${chat}`
+            : `/dashboard/chat/${chat}`
+        }
+        leadIcon={<ChatBubbleIcon />}
+      >
         {getContent("joinSession")}
       </Button>
     );

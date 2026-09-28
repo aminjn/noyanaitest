@@ -159,6 +159,7 @@ const DoctorManageBookingPage = () => {
                   chat={data.chat}
                   callRoom={data.callRoom}
                   sessionType={data.sessionType}
+                  panel="doctor"
                 />
               )}
               {canCheckIn && (

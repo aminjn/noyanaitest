@@ -2085,17 +2085,20 @@
  "cancelClosedHint": "L'annulation en ligne est possible jusqu'à 24 heures avant ; pour un changement maintenant, contactez le cabinet.",
  "cancelledRefunded": "Le rendez-vous a été annulé et son montant remboursé sur le portefeuille du patient.",
  "visitReviewTitle": "Évaluez cette consultation",
- "visitReviewIntro": "Votre avis apparaît sur la page du médecin avec le badge « patient vérifié » et aide les autres à choisir.",
+ "visitReviewIntro": "Après modération, votre avis apparaît sur la page du médecin avec le badge « patient vérifié ».",
  "visitReviewScore": "Note globale",
  "visitReviewRecommend": "Recommanderiez-vous ce médecin ?",
  "visitReviewPublic": "Votre expérience (visible par les autres)",
  "visitReviewPrivate": "Message privé à Noyan (facultatif, non affiché)",
  "visitReviewSubmit": "Envoyer l'avis",
- "visitReviewThanks": "Merci ! Votre avis a été enregistré.",
+ "visitReviewThanks": "Merci ! Votre avis a été reçu et sera publié après modération.",
  "visitReviewPickScore": "Veuillez choisir une note et indiquer si vous recommandez.",
  "reviewsVerified": "Patient vérifié",
  "reviewsRecommendPercent": "${1} des patients recommandent ce médecin",
  "reviewsEmpty": "Aucun avis pour l'instant. Seuls les patients ayant consulté peuvent en laisser un.",
  "reviewsMore": "Plus d'avis",
- "reviewsRecommends": "Recommande"
+ "reviewsRecommends": "Recommande",
+ "visitReviewPending": "Merci ! Votre avis a été reçu et sera publié après modération.",
+ "visitReviewApproved": "Votre avis a été approuvé et publié sur la page du médecin.",
+ "visitReviewRejected": "Votre avis ne respectait pas les règles de publication et n'a pas été publié."
 }

@@ -315,16 +315,21 @@ const SessionTypeStage = ({
 
   const pushNotification = useNotification();
 
-  // the only visit type on offer is picked for the patient (they already
-  // chose it on the doctor's page) instead of an empty radio to click again
+  // the type picked on the doctor's page (?t=) - or the only one on offer -
+  // is preselected instead of an empty radio to click again
+  const searchParams = useSearchParams();
+  const pickedType = searchParams.get("t");
   const availableTypes = useMemo(
     () => doctorSessionTypes.filter((st) => sessionTypeAvailable(st)),
     [sessionTypeAvailable],
   );
   useEffect(() => {
-    if (!context.sessionType && availableTypes.length === 1)
-      setContext((prev) => ({ ...prev, sessionType: availableTypes[0] }));
-  }, [availableTypes, context.sessionType, setContext]);
+    if (context.sessionType) return;
+    const fromLink = availableTypes.find((st) => st === pickedType);
+    const next =
+      fromLink || (availableTypes.length === 1 ? availableTypes[0] : null);
+    if (next) setContext((prev) => ({ ...prev, sessionType: next }));
+  }, [availableTypes, context.sessionType, pickedType, setContext]);
 
   return (
     <div className={classes.box}>
@@ -621,12 +626,14 @@ const BookingFlowSidebar = ({
   date,
   end,
   start,
+  sessionType,
 }: {
   doctor: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
   shift?: IDoctorShift<{ Office: Record<never, never> }>;
   date?: Date;
   start?: number;
   end?: number;
+  sessionType?: DoctorSessionType | null;
 }) => {
   const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
@@ -656,10 +663,18 @@ const BookingFlowSidebar = ({
       </div>
       {!!shift && !!date && !!start && !!end && (
         <div className={classes.sessionDetails}>
-          <Pair
-            title={getContent("sessionOffice")}
-            value={shift.office.name || "-"}
-          />
+          {/* an online visit has no place: show its type instead */}
+          {!!sessionType && sessionType !== "inPerson" ? (
+            <Pair
+              title={getContent("sessionType")}
+              value={getContent(sessionType)}
+            />
+          ) : (
+            <Pair
+              title={getContent("sessionOffice")}
+              value={shift.office.name || "-"}
+            />
+          )}
           <Pair
             title={getContent("sessionTime")}
             value={`${date.toLocaleDateString(intlTag, { month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
@@ -677,6 +692,7 @@ const BookingFlowContent = ({
   date,
   end,
   start,
+  sessionType,
 }: {
   children?: ReactNode;
   data: IDoctorProfile;
@@ -684,6 +700,7 @@ const BookingFlowContent = ({
   shift?: IDoctorShift<{ Office: Record<never, never> }>;
   start?: number;
   end?: number;
+  sessionType?: DoctorSessionType | null;
 }) => {
   return (
     <div className={classes.main}>
@@ -694,6 +711,7 @@ const BookingFlowContent = ({
         shift={shift}
         start={start}
         end={end}
+        sessionType={sessionType}
       />
     </div>
   );
@@ -841,6 +859,7 @@ const InnerBookingFlow = ({
           end={end}
           shift={shift}
           date={date}
+          sessionType={context.sessionType}
         >
           {stageDict[stage]}
         </BookingFlowContent>
