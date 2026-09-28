@@ -1944,5 +1944,14 @@
  "tbSearch": "Tüm sütunlarda ara...",
  "tbCount": "${1} kayıt",
  "tbCountOf": "${2} kayıttan ${1}",
- "tbEmpty": "Gösterilecek kayıt yok."
+ "tbEmpty": "Gösterilecek kayıt yok.",
+ "ioTodo": "Yapılacak",
+ "ioAwaiting": "Ödeme bekleniyor",
+ "ioDone": "Tamamlandı",
+ "ioMarkDone": "Tamamlandı",
+ "ioMarkCancel": "İptal et",
+ "ioConfirm": "Onayla",
+ "ioProgress": "${2} kalemden ${1} tamamlandı",
+ "ioEmpty": "Burada sipariş yok.",
+ "ioAwaitingNote": "Hasta ödedikten sonra kalemleri tamamlayabilirsiniz."
 }

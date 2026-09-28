@@ -1944,5 +1944,14 @@
  "tbSearch": "In allen Spalten suchen...",
  "tbCount": "${1} Einträge",
  "tbCountOf": "${1} von ${2} Einträgen",
- "tbEmpty": "Noch nichts vorhanden."
+ "tbEmpty": "Noch nichts vorhanden.",
+ "ioTodo": "Zu erledigen",
+ "ioAwaiting": "Zahlung ausstehend",
+ "ioDone": "Erledigt",
+ "ioMarkDone": "Erledigt",
+ "ioMarkCancel": "Stornieren",
+ "ioConfirm": "Bestätigen",
+ "ioProgress": "${1} von ${2} erledigt",
+ "ioEmpty": "Hier gibt es keine Bestellungen.",
+ "ioAwaitingNote": "Sobald der Patient bezahlt hat, können Sie die Positionen erledigen."
 }
