@@ -1,50 +1,49 @@
 "use client";
 
 import useSWR from "swr";
-import classes from "./AdminManageClinicAdditionsPage.module.css";
-import {
-  additionRequestStatusDict,
-  IClinicAdditionRequest,
-} from "@/Components/DoctorPanel/Clinic/DoctorClinicAdditionsTab";
+import { additionRequestStatusDict } from "@/Components/DoctorPanel/Hospital/DoctorHospitalAdditionsTab";
+import { IPharmacyAdditionRequest } from "@/Components/DoctorPanel/Pharmacy/DoctorPharmacyRequestsTab";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
+import { adminPath } from "@/Components/helpers/adminPath";
+import { findCity } from "@/Components/Enums/Cities";
+import { findProvince } from "@/Components/Enums/Provinces";
+import usePopup from "@/Components/Hooks/usePopup";
+import CheckIcon from "@/Components/Icons/CheckIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
-import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
-import { adminPath } from "@/Components/helpers/adminPath";
-import { findCity } from "@/Components/Enums/Cities";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import CheckIcon from "@/Components/Icons/CheckIcon";
-import EditIcon from "@/Components/Icons/EditIcon";
-import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import usePopup from "@/Components/Hooks/usePopup";
+import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
-import MutateClinicRequestPopup from "./MutateClinicRequestPopup";
-import DeleteClinicAdditionRequestPopup from "./DeleteClinicAdditionRequestPopup";
+import DeleteShitPopup from "../UI/DeleteShitPopup";
 
-const AdminManageClinicAdditionsPage = () => {
+// Doctors' "add the pharmacy I work with" requests (2026-09): they could be
+// submitted from the doctor panel, but no admin page listed them.
+const AdminManagePharmacyAdditionsPage = () => {
   const { data, error, mutate } = useSWR<
-    IClinicAdditionRequest<{ user: Record<never, never> }>[]
-  >(`${API}/auto/clinicaddition`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data),
+    IPharmacyAdditionRequest<{ Doctor: Record<never, never> }>[]
+  >(`${API}/auto/pharmacyaddition`, (url: string) =>
+    fetcher({ url }).then((res) =>
+      Array.isArray(res.data?.data) ? res.data.data : [],
+    ),
   );
-
   const { setPopup } = usePopup();
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های اضافه شدن کلینیک">
+        <WithTitle title="درخواست های اضافه شدن داروخانه">
           <Table
-            name="AdminManageClinicAdditionRequests"
+            name="AdminManagePharmacyAdditionRequests"
             data={data}
             renderer={{
-              clinicName: {
-                name: "نام کلینیک",
-                value: (node) => node.clinicName,
+              name: {
+                name: "نام داروخانه",
+                value: (node) => node.name,
                 filter: "Text",
               },
               status: {
@@ -53,22 +52,20 @@ const AdminManageClinicAdditionsPage = () => {
                 filter: "Set",
               },
               city: {
-                name: "شهر",
-                value: (node) => findCity(node.city),
+                name: "استان / شهر",
+                value: (node) =>
+                  [findProvince(node.province), findCity(node.city)]
+                    .filter(Boolean)
+                    .join("، "),
                 filter: "Multi",
               },
-              ownerName: {
-                name: "مالک",
-                value: (node) => node.ownerName,
-                filter: "Text",
-              },
-              ownerPhone: {
-                name: "تلفن مالک",
-                value: (node) => node.ownerPhone,
+              address: {
+                name: "نشانی",
+                value: (node) => node.address,
                 filter: "Text",
               },
               submittedBy: {
-                name: "ثبت‌کننده",
+                name: "ثبت کننده",
                 value: (node) =>
                   node.submittedBy
                     ? getDoctorProfileLabel(node.submittedBy)
@@ -83,25 +80,28 @@ const AdminManageClinicAdditionsPage = () => {
                   ) : (
                     "حذف شده"
                   ),
+                filter: "Text",
               },
               submittedAt: {
                 name: "تاریخ ثبت",
-                value: (node) => new Date(node.submittedAt),
+                value: (node) =>
+                  node.submittedAt ? new Date(node.submittedAt) : undefined,
                 filter: "Date",
               },
               actions: {
                 name: "عملیات",
+                width: 120,
                 component: (node) => (
                   <TableActions>
                     {node.status !== "Done" && node.status !== "Rejected" && (
                       <IconButton
                         variant="Success"
-                        title="ایجاد کلینیک"
+                        title="ایجاد داروخانه از این درخواست"
                         onClick={() =>
                           setPopup(
-                            "CreateClinicFromRequest",
+                            "CreatePharmacyFromRequest",
                             <CreateFromAdditionPopup
-                              kind="clinic"
+                              kind="pharmacy"
                               requestId={node._id}
                               mutate={mutate}
                             />,
@@ -112,28 +112,14 @@ const AdminManageClinicAdditionsPage = () => {
                       </IconButton>
                     )}
                     <IconButton
-                      variant="Info"
-                      title="ویرایش"
-                      onClick={() =>
-                        setPopup(
-                          "MutateClinicRequest",
-                          <MutateClinicRequestPopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
                       variant="Danger"
                       title="حذف"
                       onClick={() =>
                         setPopup(
-                          "DeleteClinicAdditionRequest",
-                          <DeleteClinicAdditionRequestPopup
-                            node={node}
+                          "DeletePharmacyAdditionRequest",
+                          <DeleteShitPopup
+                            nodeId={node._id}
+                            modelName="pharmacyaddition"
                             mutate={mutate}
                           />,
                         )
@@ -152,4 +138,4 @@ const AdminManageClinicAdditionsPage = () => {
   );
 };
 
-export default AdminManageClinicAdditionsPage;
+export default AdminManagePharmacyAdditionsPage;

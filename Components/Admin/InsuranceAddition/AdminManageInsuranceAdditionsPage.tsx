@@ -18,7 +18,7 @@ import CheckIcon from "@/Components/Icons/CheckIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateInsuranceFromRequestPopup from "./CreateInsuranceFromRequestPopup";
+import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
 import MutateInsuranceRequestPopup from "./MutateInsuranceRequestPopup";
 import DeleteInsuranceAdditionRequestPopup from "./DeleteInsuranceAdditionRequestPopup";
 
@@ -82,18 +82,24 @@ const AdminManageInsuranceAdditionsPage = () => {
                 width: 150,
                 component: (node) => (
                   <TableActions>
-                    <IconButton
-                      variant="Success"
-                      title="ایجاد بیمه از درخواست"
-                      onClick={() =>
-                        setPopup(
-                          "CreateInsuranceFromRequest",
-                          <CreateInsuranceFromRequestPopup node={node} />,
-                        )
-                      }
-                    >
-                      <CheckIcon />
-                    </IconButton>
+                    {node.status !== "Done" && node.status !== "Rejected" && (
+                      <IconButton
+                        variant="Success"
+                        title="ایجاد بیمه از درخواست"
+                        onClick={() =>
+                          setPopup(
+                            "CreateInsuranceFromRequest",
+                            <CreateFromAdditionPopup
+                              kind="insurance"
+                              requestId={node._id}
+                              mutate={mutate}
+                            />,
+                          )
+                        }
+                      >
+                        <CheckIcon />
+                      </IconButton>
+                    )}
                     <IconButton
                       variant="Info"
                       title="ویرایش"

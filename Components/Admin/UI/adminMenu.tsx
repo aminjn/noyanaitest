@@ -92,6 +92,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "اضافه شدن کلینیک", href: "clinicaddition", access: "ClinicAdditionRequest" },
       { title: "اضافه شدن بیمارستان", href: "hospitaladdition", access: "HospitalAdditionRequest" },
       { title: "اضافه شدن بیمه", href: "insuranceaddition" },
+      { title: "اضافه شدن داروخانه", href: "pharmacyaddition" },
     ],
   },
   {

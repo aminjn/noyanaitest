@@ -11,7 +11,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
-import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
+import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { findCity } from "@/Components/Enums/Cities";
@@ -22,7 +22,7 @@ import CheckIcon from "@/Components/Icons/CheckIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateHospitalFromRequestPopup from "./CreateHospitalFromRequestPopup";
+import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
 import MutateHospitalRequestPopup from "./MutateHospitalRequestPopup";
 import DeleteHospitalAdditionRequestPopup from "./DeleteHospitalAdditionRequestPopup";
 
@@ -95,18 +95,24 @@ const AdminManageHospitalAdditionsPage = () => {
                 width: 150,
                 component: (node) => (
                   <TableActions>
-                    <IconButton
-                      variant="Success"
-                      title="ایجاد بیمارستان از این درخواست"
-                      onClick={() =>
-                        setPopup(
-                          "CreateHospitalFromRequest",
-                          <CreateHospitalFromRequestPopup node={node} />,
-                        )
-                      }
-                    >
-                      <CheckIcon />
-                    </IconButton>
+                    {node.status !== "Done" && node.status !== "Rejected" && (
+                      <IconButton
+                        variant="Success"
+                        title="ایجاد بیمارستان از این درخواست"
+                        onClick={() =>
+                          setPopup(
+                            "CreateHospitalFromRequest",
+                            <CreateFromAdditionPopup
+                              kind="hospital"
+                              requestId={node._id}
+                              mutate={mutate}
+                            />,
+                          )
+                        }
+                      >
+                        <CheckIcon />
+                      </IconButton>
+                    )}
                     <IconButton
                       variant="Info"
                       title="ویرایش"
