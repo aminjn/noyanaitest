@@ -2119,5 +2119,6 @@
  "phSetupHint": "Conclua estas etapas para que os pacientes encontrem você e façam pedidos.",
  "phSetupProfile": "Adicione nome, endereço e foto da farmácia",
  "phSetupLocation": "Marque a farmácia no mapa (para o mapa e entregadores)",
- "phSetupProducts": "Anuncie seu primeiro produto com preço"
+ "phSetupProducts": "Anuncie seu primeiro produto com preço",
+ "siteTitle": "NoyanAI | Consultas médicas, teleconsulta e farmácia"
 }

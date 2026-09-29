@@ -2119,5 +2119,6 @@
  "phSetupHint": "Schließen Sie diese Schritte ab, damit Patienten Sie finden und bestellen können.",
  "phSetupProfile": "Name, Adresse und Foto der Apotheke hinzufügen",
  "phSetupLocation": "Apotheke auf der Karte markieren (für Karte und Kuriere)",
- "phSetupProducts": "Erstes Produkt mit Preis anbieten"
+ "phSetupProducts": "Erstes Produkt mit Preis anbieten",
+ "siteTitle": "NoyanAI | Arzttermine, Online-Beratung und Apotheke"
 }

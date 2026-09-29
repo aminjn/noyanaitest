@@ -2119,5 +2119,6 @@
  "phSetupHint": "Completa estos pasos para que los pacientes te encuentren y te compren.",
  "phSetupProfile": "Añade nombre, dirección y foto de la farmacia",
  "phSetupLocation": "Marca la farmacia en el mapa (para el mapa y los repartidores)",
- "phSetupProducts": "Publica tu primer producto con precio"
+ "phSetupProducts": "Publica tu primer producto con precio",
+ "siteTitle": "NoyanAI | Citas médicas, consultas online y farmacia"
 }
