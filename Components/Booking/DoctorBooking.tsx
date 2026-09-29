@@ -1,3 +1,6 @@
+import { useSearchParams } from "next/navigation";
+import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
+import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
 import {
   Dispatch,
   Fragment,
@@ -59,7 +62,18 @@ const DoctorBooking = ({
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
   descriptions?: IBookingDescription[];
 }) => {
-  const [options, setOptions] = useState<DoctorBookingOptions>({});
+  // deep links from other pages preselect a filter, e.g. a disease page's
+  // "book a doctor" -> /book?disease=<id>&name=<its name>
+  const searchParams = useSearchParams();
+  const [options, setOptions] = useState<DoctorBookingOptions>(() => {
+    const name = searchParams?.get("name") || "";
+    const disease = searchParams?.get("disease");
+    const speciality = searchParams?.get("speciality");
+    return {
+      ...(disease ? { disease: [{ _id: disease, name } as unknown as IDisease] } : {}),
+      ...(speciality ? { speciality: [{ _id: speciality, name } as unknown as ISpeciality] } : {}),
+    };
+  });
 
   const [debouncedOptions, setDebouncedOptions] =
     useDebounce<DoctorBookingOptions>({

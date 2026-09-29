@@ -189,7 +189,7 @@ const PatientHome = ({ name }: { name?: string }) => {
   }, [data, getContent, num, fmt]);
 
   const actions: { href: string; icon: ReactNode; title: ContentKey; note: ContentKey; tone: string }[] = [
-    { href: "/doctors", icon: <CalendarIcon />, title: "phActBook", note: "phActBookNote", tone: "blue" },
+    { href: "/book", icon: <CalendarIcon />, title: "phActBook", note: "phActBookNote", tone: "blue" },
     { href: "/wizard", icon: <SparkIcon />, title: "phActSymptoms", note: "phActSymptomsNote", tone: "violet" },
     { href: "/drug", icon: <PackageIcon />, title: "phActDrugs", note: "phActDrugsNote", tone: "green" },
     { href: "/paraClinic", icon: <SearchIcon />, title: "phActLabs", note: "phActLabsNote", tone: "amber" },
@@ -311,7 +311,7 @@ const PatientHome = ({ name }: { name?: string }) => {
           ) : (
             <div className={classes.emptyNext}>
               <p>{getContent("phNoNext")}</p>
-              <Link href="/doctors" className={classes.cta}>
+              <Link href="/book" className={classes.cta}>
                 {getContent("phActBook")}
               </Link>
             </div>

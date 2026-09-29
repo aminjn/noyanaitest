@@ -265,7 +265,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   nodes={data.doctorProfiles}
                   width="14.75rem"
                   render={(node) => <DoctorCardAlt node={node} />}
-                  all="/doctors"
+                  all="/book"
                   onNavigate={close}
                 />
                 <ResultSection

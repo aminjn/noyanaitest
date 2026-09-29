@@ -52,7 +52,7 @@ const HomeHero = ({ homeMain }: { homeMain?: string }) => {
     href: string;
     icon: ReactNode;
   }[] = [
-    { key: "doctors", href: "/doctors", icon: <StetoscopeIcon /> },
+    { key: "doctors", href: "/book", icon: <StetoscopeIcon /> },
     { key: "aiDetection", href: "/wizard", icon: <BrainIcon /> },
     { key: "homeHeroQuickLinkPharmacy", href: "/product", icon: <PillIcon /> },
     { key: "homeHeroQuickLinkLab", href: "/paraClinic", icon: <FlaskIcon /> },

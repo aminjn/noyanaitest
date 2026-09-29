@@ -1,16 +1,16 @@
 import { IDoctorJoinClinicRequest } from "@/Components/DoctorPanel/Clinic/DoctorJoinClinicsTab";
-import classes from "./EditDoctorJoinClinicStatusPopup.module.css";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
-import ConfirmationPopup from "../UI/ConfirmationPopup";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import Act from "@/Components/UI/Act";
-import {
-  getClinicLabel,
-  getDoctorLabel,
-  getDoctorProfileLabel,
-} from "../Lib/LabelGetters";
+import Button from "@/Components/UI/Button";
+import FormActions from "../UI/FormActions";
+import Box from "../UI/Box";
+import { getClinicLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
 
+// Approve or reject a doctor's request to join a clinic (2026-09): the backend
+// creates the membership on approval and always closes the request - it used
+// to create the membership only and leave the request pending forever.
 const EditDoctorJoinClinicStatusPopup = ({
   mutate,
   node,
@@ -21,29 +21,36 @@ const EditDoctorJoinClinicStatusPopup = ({
   }>;
   mutate: () => unknown;
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [decision, setDecision] = useState<"Approved" | "Rejected" | null>(null);
   const { closePopup } = usePopup();
   return (
-    <Fragment>
-      <ConfirmationPopup
-        message={`از اتصال دکتر ${
-          node.doctor ? getDoctorProfileLabel(node.doctor) : ""
-        } به کلینیک ${node.clinic ? getClinicLabel(node.clinic) : ""} مطمئنید؟`}
-        isLoading={isLoading}
-        onConfirm={() => setIsLoading(true)}
-      />
+    <Box>
+      <p>
+        {`درخواست عضویت دکتر ${node.doctor ? getDoctorProfileLabel(node.doctor) : ""} در ${node.clinic ? getClinicLabel(node.clinic) : ""}`}
+      </p>
+      <FormActions>
+        <Button isLoading={decision === "Approved"} onClick={() => setDecision("Approved")}>
+          تأیید و اتصال پزشک
+        </Button>
+        <Button variant="Error" isLoading={decision === "Rejected"} onClick={() => setDecision("Rejected")}>
+          رد درخواست
+        </Button>
+        <Button variant="Neutral" onClick={() => closePopup()}>
+          انصراف
+        </Button>
+      </FormActions>
       <Act
-        path={isLoading ? `${API}/auto/clinicdoctor` : null}
+        path={decision ? `${API}/admin/doctorjoin/clinic/${node._id}/decide` : null}
         method="POST"
+        payload={{ decision: decision || undefined }}
         onDone={(status) => {
-          setIsLoading(false);
+          setDecision(null);
           if (!status) return;
           mutate();
           closePopup();
         }}
-        payload={{ clinic: node.clinic?._id, doctor: node.doctor?._id }}
       />
-    </Fragment>
+    </Box>
   );
 };
 

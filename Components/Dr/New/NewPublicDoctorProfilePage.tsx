@@ -206,7 +206,7 @@ const NewDoctorProfilePage = ({
                 </Ixon>
               </button>
               <Link
-                href="/doctors"
+                href="/book"
                 className={classes.bannerButton}
                 aria-label="back"
               >

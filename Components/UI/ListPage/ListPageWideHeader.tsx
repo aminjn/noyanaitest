@@ -18,8 +18,9 @@ const ListPageWideHeader = ({
   name: string;
   category?: { title: string; value: string };
   summary?: string;
-  primaryAction: { title: string };
-  secondaryAction: { title: string };
+  // every action goes somewhere (they used to be buttons with no handler)
+  primaryAction: { title: string; href: string };
+  secondaryAction: { title: string; href: string };
 }) => {
   return (
     <div className={classes.main}>
@@ -48,7 +49,7 @@ const ListPageWideHeader = ({
         <p className={`${classes.summary} ${tsmRegular}`}>{summary}</p>
       )}
       <div className={classes.actions}>
-        <Button variant="Primary" mode="Outline" size="L" radius="Medium">
+        <Button variant="Primary" mode="Outline" size="L" radius="Medium" href={secondaryAction.href}>
           {secondaryAction.title}
         </Button>
         <Button
@@ -57,6 +58,7 @@ const ListPageWideHeader = ({
           size="L"
           radius="Medium"
           tailIcon={<ArrowLeftIcon />}
+          href={primaryAction.href}
         >
           {primaryAction.title}
         </Button>

@@ -22,8 +22,8 @@ const DestroyCallPopup = ({
         message="آیا از اتمام این تماس مطمئنید؟"
       />
       <Act
-        path={isLoading ? `${API}/auto/callroom/${node._id}` : null}
-        method="PUT"
+        path={isLoading ? `${API}/admin/call/${node._id}/end` : null}
+        method="POST"
         onDone={(status) => {
           setIsLoading(false);
           if (!status) return;
