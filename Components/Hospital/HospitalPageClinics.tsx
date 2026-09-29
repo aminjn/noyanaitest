@@ -14,6 +14,7 @@ const HospitalPageClinics = ({ node }: { node: HospitalPageNode }) => {
           MainSpecialityPopulated: Record<never, never>;
         }>[],
         name: el.clinic.name,
+        href: `/clinic/${el.clinic.slug || el.clinic._id}`,
         phone: el.clinic.phone,
         summary: el.clinic.summary,
       }))}

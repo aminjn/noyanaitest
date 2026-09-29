@@ -2123,5 +2123,6 @@
  "siteTitle": "NoyanAI | 医師予約・オンライン相談・薬局",
  "noOnlineBooking": "オンライン予約なし",
  "rejectedApplicationTitle": "前回の申請は却下されました",
- "rejectedApplicationLegend": "情報と書類を修正して再度送信してください。却下の理由はサポートにお問い合わせください。"
+ "rejectedApplicationLegend": "情報と書類を修正して再度送信してください。却下の理由はサポートにお問い合わせください。",
+ "seePharmacy": "薬局を見る"
 }

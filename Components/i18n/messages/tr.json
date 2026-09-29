@@ -2123,5 +2123,6 @@
  "siteTitle": "NoyanAI | Doktor randevusu, online danışma ve eczane",
  "noOnlineBooking": "Çevrimiçi randevu yok",
  "rejectedApplicationTitle": "Önceki başvurunuz reddedildi",
- "rejectedApplicationLegend": "Bilgilerinizi ve belgelerinizi düzeltip yeniden gönderin. Ret nedenini öğrenmek için destekle iletişime geçin."
+ "rejectedApplicationLegend": "Bilgilerinizi ve belgelerinizi düzeltip yeniden gönderin. Ret nedenini öğrenmek için destekle iletişime geçin.",
+ "seePharmacy": "Eczaneyi görüntüle"
 }

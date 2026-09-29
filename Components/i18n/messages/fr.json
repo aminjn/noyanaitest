@@ -2123,5 +2123,6 @@
  "siteTitle": "NoyanAI | Rendez-vous médicaux, téléconsultation et pharmacie",
  "noOnlineBooking": "Pas de réservation en ligne",
  "rejectedApplicationTitle": "Votre demande précédente a été refusée",
- "rejectedApplicationLegend": "Corrigez vos informations et documents puis renvoyez la demande. Contactez le support pour connaître la raison du refus."
+ "rejectedApplicationLegend": "Corrigez vos informations et documents puis renvoyez la demande. Contactez le support pour connaître la raison du refus.",
+ "seePharmacy": "Voir la pharmacie"
 }

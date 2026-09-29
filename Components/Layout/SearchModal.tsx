@@ -98,6 +98,10 @@ type GlobalSearchData = {
   specialities: ISpeciality<{ Doctors: { Province: Record<never, never> } }>[];
   symptoms: ISymptom[];
   insurances: InsurancesPageNode[];
+  pharmacies?: IParaClinic<{
+    Tags: Record<never, never>;
+    Province: Record<never, never>;
+  }>[];
   doctorProfiles: IDoctorProfile<{
     MainSpecialityPopulated: Record<never, never>;
     TextChatSettings: Record<never, never>;
@@ -232,6 +236,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
       data.specialities.length ||
       data.symptoms.length ||
       data.insurances.length ||
+      !!data.pharmacies?.length ||
       data.doctorProfiles.length ||
       data.drugs.length
     );
@@ -310,6 +315,16 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   width="24.0625rem"
                   render={(node) => <ParaClinicCard node={node} />}
                   all="/paraClinic"
+                  query={trimmed}
+                  onNavigate={close}
+                />
+                <ResultSection
+                  title={getContent("pharmacies")}
+                  nodes={data.pharmacies || []}
+                  width="24.0625rem"
+                  render={(node) => (
+                    <ParaClinicCard node={node} kind="pharmacy" />
+                  )}
                   query={trimmed}
                   onNavigate={close}
                 />
