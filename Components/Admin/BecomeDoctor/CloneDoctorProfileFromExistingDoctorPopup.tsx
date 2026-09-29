@@ -54,28 +54,34 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
     mutator: (inp) => {
       const doc = doctor || data?.find((d) => d._id === inp.doctor);
       if (!doc) return {};
-      const {
-        name: firstName,
-        summary: introduction,
-        site: website,
-        landLine,
-        province,
-        city,
-        lat,
-        lng,
-      } = doc;
+      const { name, summary: introduction, site: website, landLine, lat, lng } = doc;
+      // "دکتر رضا احمدی" -> first "دکتر رضا", last "احمدی"
+      const parts = (name || "").trim().split(/\s+/);
+      const lastName = parts.length > 1 ? parts.pop() : "";
+      const idOf = (el: unknown) => String((el as { _id?: unknown })?._id ?? el);
+      const specialities = [doc.speciality, ...(doc.specialities || [])]
+        .filter(Boolean)
+        .map(idOf)
+        .filter((el, i, arr) => arr.indexOf(el) === i);
+      const latNum = Number(lat);
+      const lngNum = Number(lng);
       return {
         user: inp.user || user?._id,
-        firstName,
+        firstName: parts.join(" "),
+        lastName,
         introduction,
         website,
         landLine,
-        province,
-        city,
-        lat,
-        lng,
-        specialities: doc.specialities,
-        speciality: doc.speciality?._id,
+        // the profile's main speciality field is mainSpeciality (a
+        // "speciality" field doesn't exist, so the main one was lost); the
+        // legacy province/city are slugs, not Geo ids, so they're left for
+        // the admin to pick; lat/lng become the map point
+        mainSpeciality: specialities[0],
+        // compound fields are JSON-parsed by the endpoint (editBodyMutator)
+        specialities: JSON.stringify(specialities),
+        ...(Number.isFinite(latNum) && Number.isFinite(lngNum) && lat && lng
+          ? { location: JSON.stringify({ type: "Point", coordinates: [lngNum, latNum] }) }
+          : {}),
       };
     },
   });

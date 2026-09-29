@@ -17,9 +17,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
-import useNotification from "@/Components/Hooks/useNotification";
-import useProgress from "@/Components/Hooks/useProgress";
-import { useState } from "react";
+import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import ChangeBecomePharmacyRequestStatusPopup from "./ChangeBecomePharmacyRequestStatusPopup";
 import AssignPharmacyToBecomePharmacyRequestPopup from "./AssignPharmayToBecomePharmacyRequestPopup";
 
@@ -32,32 +30,6 @@ const AdminManageBecomePharmacyPage = () => {
   );
 
   const { setPopup } = usePopup();
-  const pushNotification = useNotification();
-  const push = useProgress();
-  const [approving, setApproving] = useState(false);
-
-  // one step: create the pharmacy from this request, link the applicant,
-  // activate it and mark the request approved (it used to take three
-  // manual steps, and "approved" alone created nothing)
-  const approve = async () => {
-    if (approving) return;
-    setApproving(true);
-    try {
-      const res = await fetcher({
-        url: `${API}/admin/becomepharmacy/${nodeId}/approve`,
-        method: "POST",
-      });
-      pushNotification("داروخانه ساخته و فعال شد.", "Success");
-      await mutate();
-      const id = res?.data?.pharmacy?._id;
-      if (id) push(adminPath(`/pharmacy/${id}`));
-    } catch (e) {
-      pushNotification(e instanceof Error ? e.message : String(e), "Error");
-    } finally {
-      setApproving(false);
-    }
-  };
-
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
@@ -124,14 +96,15 @@ const AdminManageBecomePharmacyPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
-                    {data.status !== "Approved" && (
-                      <Button
-                        isLoading={approving}
-                        onClick={approve}
-                      >
-                        تأیید و ساخت داروخانه
-                      </Button>
-                    )}
+                    <ApproveBecomeRequestButton
+                      requestPath="becomepharmacy"
+                      nodeId={nodeId}
+                      status={data.status}
+                      label="تأیید و ساخت داروخانه"
+                      done="داروخانه ساخته و فعال شد."
+                      target={(id) => `/pharmacy/${id}`}
+                      mutate={mutate}
+                    />
                     <Button
                       onClick={() =>
                         setPopup(

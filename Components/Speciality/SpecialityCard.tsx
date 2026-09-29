@@ -91,12 +91,9 @@ const SpecialityCard = ({
               <UserGroupIcon />
             </Ixon>
             <span>
-              {getContent("nDoctors", [
-                (
-                  (node.doctorsCountWithMainSpeciality || 0) +
-                  (node.doctorsCountWithSideSpeciality || 0)
-                )?.toString(),
-              ])}
+              {/* every active doctor with this speciality, once (the main
+                  one is always in the list, so main + side counted twice) */}
+              {getContent("nDoctors", [String(node.doctorsCountWithSideSpeciality || 0)])}
             </span>
           </div>
         </div>

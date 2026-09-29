@@ -4,6 +4,7 @@ import { IBecomeHospitalRequest } from "@/Components/HospitalPanel/BecomeHospita
 import { API, FilePath } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { useParams } from "next/navigation";
+import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -89,6 +90,15 @@ const AdminManageBecomeHospitalPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
+                    <ApproveBecomeRequestButton
+                      requestPath="becomehospital"
+                      nodeId={String(nodeId)}
+                      status={data.status}
+                      label="تأیید و ساخت بیمارستان"
+                      done="بیمارستان ساخته و فعال شد."
+                      target={(id) => `/hospital/${id}`}
+                      mutate={mutate}
+                    />
                     <Button
                       onClick={() =>
                         setPopup(

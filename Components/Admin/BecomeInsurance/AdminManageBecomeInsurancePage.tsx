@@ -4,6 +4,7 @@ import { API, FilePath } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { IBecomeInsuranceRequest } from "@/Components/Layout/InsurancePanelLayout";
 import { useParams } from "next/navigation";
+import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -96,6 +97,15 @@ const AdminManageBecomeInsurancePage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
+                    <ApproveBecomeRequestButton
+                      requestPath="becomeinsurance"
+                      nodeId={String(nodeId)}
+                      status={data.status}
+                      label="تأیید و ساخت بیمه"
+                      done="بیمه ساخته و فعال شد."
+                      target={(id) => `/insurance/${id}`}
+                      mutate={mutate}
+                    />
                     <Button
                       onClick={() =>
                         setPopup(

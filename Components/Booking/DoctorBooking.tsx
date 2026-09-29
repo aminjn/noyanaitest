@@ -491,7 +491,8 @@ const DoctorBooking = ({
           },
           {
             active: !!options.speciality?.length,
-            title: "specialityGroup",
+            // it lists specialities, not groups
+            title: "specialities",
             drawer: (close) => (
               <BookingFilterDrawerField type="select" close={close}>
                 <MultiSelectInputServer

@@ -1,5 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
+import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import classes from "./AdminManageBecomeDoctorPage.module.css";
 import useSWR from "swr";
 import {
@@ -127,6 +128,15 @@ const AdminManageBecomeDoctorPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <FormActions>
+                    <ApproveBecomeRequestButton
+                      requestPath="becomedoctor"
+                      nodeId={data._id}
+                      status={data.status}
+                      label="تأیید و ساخت پروفایل پزشک"
+                      done="پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد."
+                      target={(id) => `/doctorprofile/${id}`}
+                      mutate={mutate}
+                    />
                     {hasAccess("BecomeDoctorRequest", "delete") && (
                       <Button
                         variant="Error"
