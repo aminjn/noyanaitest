@@ -1,7 +1,5 @@
 import NewDoctorProfilePage from "@/Components/Dr/New/NewPublicDoctorProfilePage";
-import PublicDoctorProfilePage, {
-  PublicDoctorProfilePageProps,
-} from "@/Components/Dr/PublicDoctorProfilePage";
+import { PublicDoctorProfilePageProps } from "@/Components/Dr/publicDoctorTypes";
 import { getPublicData } from "@/Components/helpers/getPublicData";
 import { notFound } from "next/navigation";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
@@ -32,7 +30,6 @@ const PublicDoctorProfile = async ({
       <NewDoctorProfilePage {...data} />
     </LocaleScopeProvider>
   );
-  // return <PublicDoctorProfilePage {...data} />;
 };
 
 export default PublicDoctorProfile;

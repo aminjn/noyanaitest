@@ -1,26 +1,15 @@
-import { Fragment } from "react";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import CallCallingIcon from "../Icons/CallCallingIcon";
 import PeopleIcon from "../Icons/PeopleIcon";
+import DoctorCardAlt from "../UI/DoctorCardAlt";
 import Ixon from "../UI/Ixon";
-import {
-  tbaseMedium,
-  tsmBold,
-  tsmRegular,
-  txsMedium,
-  txsRegular,
-} from "../UI/Typography";
+import { tbaseMedium, tsmBold, txsMedium, txsRegular } from "../UI/Typography";
 import classes from "./MedicalCenterDepartments.module.css";
-import Image from "next/image";
-import { FilePath } from "../config";
-import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import StarIcon from "../Icons/StarIcon";
 import IconTitle from "../UI/IconTitle";
 import BuildingIcon from "../Icons/BuildingIcon";
-import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
@@ -76,36 +65,12 @@ const DepartmentItem = ({
             <span>{getContent(doctorsTitle)}</span>
           </div>
           <div className={classes.doctorsList}>
-            {doctors.map((doctor) => (
-              <Fragment key={doctor._id}>
-                {!!doctor ? (
-                  <div className={classes.doctor}>
-                    <div className={classes.image}>
-                      <HostedImage
-                        fill
-                        src={doctor?.avatar}
-                        alt={getDoctorProfileLabel(doctor)}
-                      />
-                    </div>
-                    <div className={classes.doctorContent}>
-                      <span className={`${classes.doctorName} ${tsmBold}`}>
-                        {getDoctorProfileLabel(doctor)}
-                      </span>
-                      {!!doctor?.mainSpeciality && (
-                        <span className={`${classes.speciality} ${tsmRegular}`}>
-                          {doctor.mainSpeciality.name}
-                        </span>
-                      )}
-                    </div>
-                    <div className={`${classes.score} ${tsmRegular}`}>
-                      <span>4.9</span>
-                      <Ixon width=".675rem">
-                        <StarIcon />
-                      </Ixon>
-                    </div>
-                  </div>
-                ) : null}
-              </Fragment>
+            {doctors.filter(Boolean).map((doctor) => (
+              <DoctorCardAlt
+                key={doctor._id}
+                variant="row"
+                node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]}
+              />
             ))}
           </div>
         </div>

@@ -12,7 +12,7 @@ import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
 import PopupCard from "../UI/PopupCard";
 import SearchZones from "../Map/SearchZones";
-import MapInnerShit from "../Map/MapInnerShit";
+import MapMarkers from "../Map/MapMarkers";
 import Button from "../UI/Button";
 import { LngLat } from "maplibre-gl";
 import { TerraDraw, TerraDrawCircleMode, TerraDrawPointMode } from "terra-draw";
@@ -160,7 +160,7 @@ const BookingMap2 = ({
           ))}
         </div>
         <div className={classes.map} ref={containerRef}>
-          <MapInnerShit {...mapHook} data={data} />
+          <MapMarkers {...mapHook} data={data} />
         </div>
         <Button
           variant={selected ? "Primary" : "Disable"}

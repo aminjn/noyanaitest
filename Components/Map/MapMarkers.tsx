@@ -74,7 +74,7 @@ const MapMarker = ({
   );
 };
 
-const MapInnerShit = ({
+const MapMarkers = ({
   data,
   ready,
   map,
@@ -128,4 +128,4 @@ const MapInnerShit = ({
   );
 };
 
-export default MapInnerShit;
+export default MapMarkers;

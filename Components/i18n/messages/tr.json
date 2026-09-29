@@ -2120,5 +2120,6 @@
  "phSetupProfile": "Eczane adını, adresini ve fotoğrafını ekleyin",
  "phSetupLocation": "Eczaneyi haritada işaretleyin (harita ve kurye için)",
  "phSetupProducts": "İlk ürününüzü fiyatıyla ekleyin",
- "siteTitle": "NoyanAI | Doktor randevusu, online danışma ve eczane"
+ "siteTitle": "NoyanAI | Doktor randevusu, online danışma ve eczane",
+ "noOnlineBooking": "Çevrimiçi randevu yok"
 }

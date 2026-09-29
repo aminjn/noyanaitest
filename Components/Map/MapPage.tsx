@@ -1,10 +1,7 @@
 "use client";
-import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import useMap from "../Hooks/useMap";
 import classes from "./MapPage.module.css";
-import Input from "../UI/Input";
-import Ixon from "../UI/Ixon";
-import SearchIcon from "../Icons/SearchIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import PillIcon from "../Icons/PillIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
@@ -15,26 +12,10 @@ import useSWR from "swr";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import mlgl from "maplibre-gl";
-import {
-  t2xsMedium,
-  tlgMedium,
-  tsmMedium,
-  tsmRegular,
-  txsDemiBold,
-} from "../UI/Typography";
-import StarIcon from "../Icons/StarIcon";
-import Link from "@/Components/i18n/Link";
-import LocationMarkIcon from "../Icons/LocationMarkIcon";
-import {
-  ICity,
-  IDistrict,
-  IProvince,
-} from "../Admin/Province/AdminManageProvincesPage";
-import LoadingIcon from "../Icons/LoadingIcon";
-import MapInnerShit from "./MapInnerShit";
+import { tlgMedium, tsmMedium, tsmRegular } from "../UI/Typography";
+import MapMarkers from "./MapMarkers";
 import SearchZones from "./SearchZones";
+import DoctorCardAlt from "../UI/DoctorCardAlt";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -61,44 +42,6 @@ export const filterContentKeys: Record<MapFilter, ContentKey> = {
   labs: "lab",
   hospitals: "hospital",
   pharmacies: "pharmacy",
-};
-
-const ResultItem = ({
-  mode,
-  title,
-  description,
-  target,
-  score,
-}: {
-  mode: MapFilter;
-  title: string;
-  description?: string;
-  target: string;
-  score?: number;
-}) => {
-  return (
-    <Link className={classes.item} href={target}>
-      <div className={classes.itemIcon}>
-        <Ixon width="1rem">{filterIcon[mode]}</Ixon>
-      </div>
-      <div className={classes.itemContent}>
-        <span className={`${classes.itemTitle} ${txsDemiBold}`}>{title}</span>
-        {!!description && (
-          <span className={`${classes.itemDescription} ${t2xsMedium}`}>
-            {description}
-          </span>
-        )}
-      </div>
-      {typeof score === "number" && (
-        <div className={classes.itemScore}>
-          <span>{score.toFixed(1)}</span>
-          <Ixon width=".75rem">
-            <StarIcon />
-          </Ixon>
-        </div>
-      )}
-    </Link>
-  );
 };
 
 const MapPage = () => {
@@ -167,7 +110,9 @@ const MapPage = () => {
             >
               <div className={classes.filterContent}>
                 {getContent(filterContentKeys[filter])}
-                <span className={classes.glass}>8</span>
+                {filter === "doctors" && !!data?.doctors?.length && (
+                  <span className={classes.glass}>{data.doctors.length}</span>
+                )}
               </div>
             </Button>
           ))}
@@ -175,23 +120,23 @@ const MapPage = () => {
       </div>
       <div className={classes.content}>
         <div className={classes.map} ref={containerRef}>
-          <MapInnerShit {...mapHook} data={data} />
+          <MapMarkers {...mapHook} data={data} />
         </div>
         <div className={classes.resultsBox}>
-          <span
-            className={`${classes.resultsTitle} ${tsmMedium}`}
-          >{`${getContent("results")} (${20})`}</span>
+          {/* only doctors are on the map for now; the count is the real
+              number of results in view (it was a fixed "20") */}
+          <span className={`${classes.resultsTitle} ${tsmMedium}`}>
+            {`${getContent("results")} (${filters.includes("doctors") ? data?.doctors?.length || 0 : 0})`}
+          </span>
           <div className={classes.results}>
-            {data?.doctors.map((doctor) => (
-              <ResultItem
-                mode="doctors"
-                title={getDoctorProfileLabel(doctor)}
-                key={doctor._id}
-                description={doctor.mainSpeciality?.name}
-                target={`/dr/${doctor.slug || doctor._id}`}
-                score={doctor.averageScore}
-              />
-            ))}
+            {filters.includes("doctors") &&
+              (Array.isArray(data?.doctors) ? data.doctors : []).map((doctor) => (
+                <DoctorCardAlt
+                  key={doctor._id}
+                  variant="row"
+                  node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]}
+                />
+              ))}
           </div>
         </div>
       </div>

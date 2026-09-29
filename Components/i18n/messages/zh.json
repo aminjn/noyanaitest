@@ -727,7 +727,7 @@
  "myTests": "我的检验",
  "myself": "本人",
  "nBeds": "${1} 张床位",
- "nComments": "${1} 条评论",
+ "nComments": "${1} 条评价",
  "nDoctors": "${1} 位医生",
  "nItems": "${1} 项",
  "nMore": "还有 ${1} 个",
@@ -2120,5 +2120,6 @@
  "phSetupProfile": "填写药店名称、地址和照片",
  "phSetupLocation": "在地图上标注药店（用于地图和配送）",
  "phSetupProducts": "上架第一个带价格的商品",
- "siteTitle": "NoyanAI | 预约医生、在线问诊与药店"
+ "siteTitle": "NoyanAI | 预约医生、在线问诊与药店",
+ "noOnlineBooking": "不支持在线预约"
 }

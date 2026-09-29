@@ -296,6 +296,7 @@ export interface IDoctorProfile<
     : never;
   averageScore?: number;
   feedbackCount?: number;
+  recommendCount?: number;
 }
 
 type PhoneConsultSettingsPopulation = { DoctorPopulated?: boolean };

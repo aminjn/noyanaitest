@@ -1,8 +1,5 @@
-import Image from "next/image";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import classes from "./SpecialityCard.module.css";
-import { imagePath } from "../helpers/imagepath";
-import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
@@ -10,15 +7,13 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import CrownIcon from "../Icons/CrownIcon";
-import Bitches from "../Booking/Bitches/Bitches";
+import DoctorCardAlt from "../UI/DoctorCardAlt";
 import Button from "../UI/Button";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { Swiper, SwiperClass } from "swiper/react";
 import { chunk } from "../helpers/lib";
 import { SwiperSlide } from "swiper/react";
-import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import StarIcon from "../Icons/StarIcon";
-import { t2xsMedium, tsmBold, txsDemiBold, txsMedium } from "../UI/Typography";
+import { tsmBold, txsMedium } from "../UI/Typography";
 import { useMemo, useState } from "react";
 
 const NS: ContentNamespace[] = ["common", "specialityCard"];
@@ -50,29 +45,11 @@ const DoctorsSlider = ({
             <SwiperSlide key={`Chunk${i}`}>
               <div className={classes.chunk}>
                 {chunk.map((doctor) => (
-                  <div className={classes.doctor} key={doctor._id}>
-                    <div className={classes.doctorIcon}>
-                      <Ixon width="1rem">
-                        <StetoscopeIcon />
-                      </Ixon>
-                    </div>
-                    <div className={classes.doctorDetail}>
-                      <span className={`${classes.doctorName} ${txsDemiBold}`}>
-                        {getDoctorProfileLabel(doctor)}
-                      </span>
-                      {doctor.province && (
-                        <span className={`${classes.province} ${t2xsMedium}`}>
-                          {doctor.province.name}
-                        </span>
-                      )}
-                    </div>
-                    <div className={`${classes.score} ${txsMedium}`}>
-                      <Ixon width=".75rem">
-                        <StarIcon />
-                      </Ixon>
-                      <span>4.9</span>
-                    </div>
-                  </div>
+                  <DoctorCardAlt
+                    key={doctor._id}
+                    variant="row"
+                    node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]}
+                  />
                 ))}
               </div>
             </SwiperSlide>
@@ -143,7 +120,6 @@ const SpecialityCard = ({
         </div>
       </div>
       <div className={classes.actions}>
-        <Bitches />
         <Button
           variant="Primary"
           mode="Inline"

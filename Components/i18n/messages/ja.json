@@ -727,7 +727,7 @@
  "myTests": "マイ検査",
  "myself": "本人",
  "nBeds": "${1}床",
- "nComments": "${1}件のコメント",
+ "nComments": "${1} 件のレビュー",
  "nDoctors": "${1}人の医師",
  "nItems": "${1}件",
  "nMore": "他${1}件",
@@ -2120,5 +2120,6 @@
  "phSetupProfile": "薬局の名前・住所・写真を追加",
  "phSetupLocation": "地図に薬局の位置を登録（地図と配達用）",
  "phSetupProducts": "最初の商品を価格付きで出品",
- "siteTitle": "NoyanAI | 医師予約・オンライン相談・薬局"
+ "siteTitle": "NoyanAI | 医師予約・オンライン相談・薬局",
+ "noOnlineBooking": "オンライン予約なし"
 }

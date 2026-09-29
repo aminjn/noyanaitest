@@ -159,8 +159,10 @@
   justify-content: center;
   gap: 0.5rem;
   border-radius: 0.5rem;
-  padding-inline: 0.75rem;
+  padding-inline: 0.5rem;
   height: 2rem;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .primaryAction {
@@ -172,4 +174,71 @@
   background-color: transparent;
   color: var(--primary7);
   border: 2px solid currentColor;
+}
+
+.disabledAction {
+  color: var(--gray9);
+  border: 1px dashed var(--gray6);
+  font-size: 0.65rem;
+  line-height: 1.3;
+  text-align: center;
+  white-space: normal;
+  height: auto;
+  min-height: 2rem;
+  padding-block: 0.25rem;
+}
+
+/* compact row variant: lists inside other pages */
+.rowBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.rowMain {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.rowText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  text-align: start;
+}
+
+.rowMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray10);
+}
+
+.rowStar {
+  color: var(--warning);
+}
+
+.rowNote {
+  flex-shrink: 0;
+  color: var(--gray9);
+}
+
+.row .action {
+  flex: 0 0 auto;
 }
