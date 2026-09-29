@@ -45,23 +45,36 @@ export type HospitalPageProps = {
   data: HospitalPageNode;
 };
 
+export const liveHospitalClinics = (list: HospitalPageNode["clinics"]) =>
+  (Array.isArray(list) ? list : [])
+    .filter((c) => !!c?.clinic)
+    .map((c) => ({
+      ...c,
+      clinic: {
+        ...c.clinic,
+        doctors: Array.isArray(c.clinic.doctors) ? c.clinic.doctors : [],
+      },
+    }));
+
 const HospitalPage = ({ data }: HospitalPageProps) => {
-  console.log(data);
   const getContent = useScopedLocale(NS);
+  // a linked clinic may have been deleted (populate gives null): skip it
+  const clinics = useMemo(
+    () => liveHospitalClinics(data.clinics),
+    [data.clinics],
+  );
 
   const specialities = useMemo<ISpeciality[]>(
     () =>
-      data.clinics
+      clinics
         .map((c) => c.clinic.doctors)
         .reduce(
           (acc, el) => [...acc, ...el.map((c) => c.doctor?.mainSpeciality)],
           [] as (ISpeciality | undefined)[],
         )
         .filter(Boolean) as ISpeciality[],
-    [data.clinics],
+    [clinics],
   );
-
-  console.log(specialities);
 
   const sections = useMemo<SectionMap>(() => {
     const result: SectionMap = [
@@ -88,7 +101,7 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
   const doctors = useMemo<
     IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[]
   >(() => {
-    const result = data.clinics
+    const result = clinics
       .map((c) => c.clinic)
       .reduce(
         (acc, el) => [...acc, ...el.doctors.map((e) => e.doctor)],
@@ -100,7 +113,7 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
     return result as IDoctorProfile<{
       MainSpecialityPopulated: Record<never, never>;
     }>[];
-  }, [data.clinics]);
+  }, [clinics]);
 
   return (
     <div className={classes.main}>
@@ -126,7 +139,7 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
         <StickyNav map={sections} />
         <MedicalCenterSummary
           code={data.code}
-          doctorCount={data.clinics.reduce(
+          doctorCount={clinics.reduce(
             (acc, el) => acc + el.clinic.doctors.length,
             0,
           )}

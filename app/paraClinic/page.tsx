@@ -21,14 +21,17 @@ const ParaClinics = async (ctx: {
     search?: string;
     category?: string[] | string;
     page?: string;
+    // labs offering one test (a test card links here)
+    test?: string;
   }>;
 }) => {
-  const { page: _page, search, category } = await ctx.searchParams;
+  const { page: _page, search, category, test } = await ctx.searchParams;
   const page = Number(_page || 1);
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
   const params = new URLSearchParams();
   params.append("page", page.toString());
   if (search) params.append("query", search);
+  if (test) params.append("test", test);
   if (category)
     for (const cat of Array.isArray(category) ? category : [category])
       params.append("category", cat);

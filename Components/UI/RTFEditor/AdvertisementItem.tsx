@@ -2,7 +2,6 @@ import { Fragment, ReactNode, useMemo } from "react";
 import classes from "./AdvertisementItem.module.css";
 import useSWR from "swr";
 import { IInlineAdvertisement } from "@/Components/Admin/InlineAds/AdminManageInlineAdsPage";
-import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HostedImage from "@/Components/UI/HostedImage";
@@ -15,9 +14,12 @@ const AdvertisementItem = ({
   id: string;
   children?: ReactNode;
 }) => {
-  const { data, error } = useSWR<IInlineAdvertisement>(
-    `${API}/auto/inlinead/${id}`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+  // public endpoint: only an active, unexpired ad (the admin-only /auto
+  // endpoint showed visitors an error box)
+  const { data } = useSWR<IInlineAdvertisement>(
+    `${API}/public/inlineAd/${id}`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    { shouldRetryOnError: false },
   );
 
   const content = useMemo<ReactNode>(() => {
@@ -41,8 +43,8 @@ const AdvertisementItem = ({
 
   return (
     <Fragment>
-      <HandleLoading data={!!data} error={error}>
-        {!!data && (
+      {!!data && (
+        <Fragment>
           <Fragment>
             {data.target ? (
               <Link href={data.target} target="_blank" className={classes.main}>
@@ -52,8 +54,8 @@ const AdvertisementItem = ({
               <div className={classes.main}>{content}</div>
             )}
           </Fragment>
-        )}
-      </HandleLoading>
+        </Fragment>
+      )}
       {children}
     </Fragment>
   );

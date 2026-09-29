@@ -102,6 +102,7 @@ export const categoryTabs: {
     key: "blogCategories",
     label: "blogs",
     allTarget: "/mag",
-    hrefFor: (v) => `/mag/category/${v}`,
+    // the blog list filters by ?category= (there is no /mag/category route)
+    hrefFor: (v) => `/mag?category=${encodeURIComponent(v)}`,
   },
 ];

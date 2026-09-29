@@ -40,6 +40,7 @@ export interface ICallRoom<T extends CallRoomPopulation = CallRoomPopulation>
   participants: T["participants"] extends true ? IUser[] : string[];
   joined: T["joined"] extends true ? IUser[] : string[];
   callType: CallType;
+  status?: "ringing" | "ongoing" | "ended" | "cancelled" | string;
 }
 
 const DashboardManageCallsPage = () => {

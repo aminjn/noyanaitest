@@ -95,8 +95,8 @@ const SymptomPage = ({
               }
             : undefined
         }
-        primaryAction={{ title: getContent("bookASessionFromADoctor") }}
-        secondaryAction={{ title: getContent("inspectSymptomWithAi") }}
+        primaryAction={{ title: getContent("bookASessionFromADoctor"), href: "/book" }}
+        secondaryAction={{ title: getContent("inspectSymptomWithAi"), href: "/wizard" }}
         summary={data.summary}
       />
       <BigAd position="symptom1" resourceModel="Symptom" resource={data._id} />

@@ -92,7 +92,7 @@ const BlogsPage = (props: BlogsPageProps) => {
                       (c) => (c.slug || c._id) === params.nodeSlug,
                     )?.title || params.nodeSlug,
                   ),
-                  target: `/mag/category/${params.nodeSlug}`,
+                  target: `/mag?category=${params.nodeSlug}`,
                 },
               ]
             : []),

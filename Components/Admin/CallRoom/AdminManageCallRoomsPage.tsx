@@ -14,7 +14,7 @@ import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import CreateCallPopup from "./CreateCallPopup";
 import DestroyCallPopup from "./DestroyCallPopup";
@@ -22,7 +22,7 @@ import DestroyCallPopup from "./DestroyCallPopup";
 const AdminManageCallRoomsPage = () => {
   const { data, error, mutate } = useSWR<ICallRoom<{ participants: true }>[]>(
     `${API}/auto/callroom`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
@@ -83,6 +83,19 @@ const AdminManageCallRoomsPage = () => {
                   node.startedAt ? new Date(node.startedAt) : undefined,
                 filter: "Date",
               },
+              status: {
+                name: "وضعیت",
+                value: (node) =>
+                  ({
+                    ringing: "در حال زنگ",
+                    ongoing: "در جریان",
+                    ended: "پایان‌یافته",
+                    cancelled: "لغو شده",
+                  })[node.status || ""] ||
+                  node.status ||
+                  "—",
+                filter: "Set",
+              },
               endedAt: {
                 name: "پایان تماس",
                 value: (node) =>
@@ -93,18 +106,21 @@ const AdminManageCallRoomsPage = () => {
                 name: "عملیات",
                 component: (node) => (
                   <TableActions>
-                    <IconButton
-                      title="حذف"
-                      variant="Danger"
-                      onClick={() =>
-                        setPopup(
-                          "DestroyCall",
-                          <DestroyCallPopup node={node} mutate={mutate} />
-                        )
-                      }
-                    >
-                      <GarbageIcon />
-                    </IconButton>
+                    {(node.status === "ringing" ||
+                      node.status === "ongoing") && (
+                      <IconButton
+                        title="پایان تماس"
+                        variant="Danger"
+                        onClick={() =>
+                          setPopup(
+                            "DestroyCall",
+                            <DestroyCallPopup node={node} mutate={mutate} />,
+                          )
+                        }
+                      >
+                        <XMarkIcon />
+                      </IconButton>
+                    )}
                   </TableActions>
                 ),
               },

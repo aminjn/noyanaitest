@@ -37,7 +37,8 @@ const TestCard = ({
           )}
         </div>
       </div>
-      <Link href={`/test/${node.slug || node._id}`} className={classes.link}>
+      {/* the labs that perform this test (there is no /test/<slug> page) */}
+      <Link href={`/paraClinic?test=${node._id}`} className={classes.link}>
         {getContent("seeDetails")}
       </Link>
     </li>

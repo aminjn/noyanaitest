@@ -74,8 +74,12 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
           value: data.category?.name || "",
         }}
         summary={data.summary}
-        primaryAction={{ title: getContent("bookASessionFromADoctor") }}
-        secondaryAction={{ title: getContent("inpectDiseaseWithAi") }}
+        primaryAction={{
+          title: getContent("bookASessionFromADoctor"),
+          // doctors who treat this disease, on the booking search
+          href: `/book?disease=${data._id}&name=${encodeURIComponent(data.name || "")}`,
+        }}
+        secondaryAction={{ title: getContent("inpectDiseaseWithAi"), href: "/wizard" }}
       />
       <BigAd position="disease1" />
       <ListPageWithSide
@@ -120,7 +124,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
               title={getContent("relatedDrugs")}
               items={data.drugs.map((el) => ({
                 title: el.name || "",
-                target: `/drug/${el._id}`,
+                target: `/drug/${el.slug || el._id}`,
               }))}
             />
           </Fragment>

@@ -58,8 +58,8 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
           value: data.alternateName || "",
         }}
         summary={data.summary}
-        primaryAction={{ title: getContent("seeNoyanClinic") }}
-        secondaryAction={{ title: getContent("inspectDrugWithAi") }}
+        primaryAction={{ title: getContent("seeNoyanClinic"), href: "/product" }}
+        secondaryAction={{ title: getContent("inspectDrugWithAi"), href: "/wizard" }}
         icon={<PillIcon />}
       />
       <BigAd position="drug1" />

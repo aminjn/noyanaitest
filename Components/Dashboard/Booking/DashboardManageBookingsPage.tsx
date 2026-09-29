@@ -202,7 +202,7 @@ const DashboardManageBookingsPage = () => {
                 </button>
               ))}
             </div>
-            <Link href="/doctors" className={classes.newBtn}>
+            <Link href="/book" className={classes.newBtn}>
               {getContent("pbBookNew")}
             </Link>
           </header>
@@ -229,7 +229,7 @@ const DashboardManageBookingsPage = () => {
             <div className={classes.empty}>
               <p>{tab === "upcoming" && !onlyNoIntake ? getContent("pbEmptyUpcoming") : getContent("pbEmpty")}</p>
               {tab === "upcoming" && (
-                <Link href="/doctors" className={classes.newBtn}>
+                <Link href="/book" className={classes.newBtn}>
                   {getContent("pbBookNew")}
                 </Link>
               )}
