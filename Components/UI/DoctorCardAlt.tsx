@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./DoctorCardAlt.module.css";
 import HostedImage from "./HostedImage";
@@ -28,11 +29,28 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "uiDoctorCard"];
 
+// The ONE doctor card of the site (2026-09): the homepage design, used on
+// every page that shows a doctor. `variant="row"` is its compact form for
+// lists inside other pages (clinic/hospital doctors, speciality sliders, the
+// map); `bookable={false}` is a doctor without online booking (the legacy
+// directory), shown with the same card but no "book" action - the
+// Paziresh24 / Doctolib pattern for unclaimed profiles.
 const DoctorCardAlt = ({
   node,
   className = "",
   style,
+  variant = "grid",
+  href,
+  bookable = true,
+  footer,
 }: WithStyleProps<{
+  // page-specific extra under the card body (e.g. the free-slots strip on
+  // the booking search) - the card itself stays the same everywhere
+  footer?: ReactNode;
+  variant?: "grid" | "row";
+  // profile link; defaults to the bookable profile page /dr/<slug>
+  href?: string;
+  bookable?: boolean;
   node: IDoctorProfile<{
     MainSpecialityPopulated: Record<never, never>;
     TextChatSettings: Record<never, never>;
@@ -45,6 +63,65 @@ const DoctorCardAlt = ({
 }>) => {
   const getCompContent = useScopedLocale(LOCALE_NS);
   const getContent = useScopedLocale(LOCALE_NS);
+  const profileHref = href || `/dr/${node.slug || node._id}`;
+  // A visit type is "on" when the doctor offers it: the search API sends the
+  // real list (active setting AND a shift that covers it) as sessionTypes;
+  // elsewhere the per-type settings' active flag is used.
+  const apiTypes = (node as { sessionTypes?: unknown }).sessionTypes;
+  const offers = (
+    type: "textChat" | "sipCall" | "voiceCall" | "videoCall" | "inPerson",
+  ) =>
+    Array.isArray(apiTypes)
+      ? apiTypes.includes(type)
+      : !!node[`${type}Settings`]?.active;
+  const score = node.averageScore ? node.averageScore.toFixed(1) : "0";
+
+  if (variant === "row")
+    return (
+      <div className={`${classes.rowBox} ${className}`} style={style}>
+        <div className={classes.row}>
+          <Link href={profileHref} className={classes.rowMain}>
+            <VerifiedImage
+              src={node.avatar}
+              alt={getDoctorProfileLabel(node)}
+              style={{ width: "3rem", height: "3rem" }}
+            />
+            <span className={classes.rowText}>
+              <span className={`${classes.doctorName} ${tsmDemiBold}`}>
+                {getDoctorProfileLabel(node)}
+              </span>
+              {!!node.mainSpeciality?.name && (
+                <span className={`${classes.speciality} ${txsRegular}`}>
+                  {node.mainSpeciality.name}
+                </span>
+              )}
+              <span className={`${classes.rowMeta} ${t2xsRegular}`}>
+                <Ixon width=".75rem" className={classes.rowStar}>
+                  <StarIcon />
+                </Ixon>
+                {score}
+                {!!node.feedbackCount && (
+                  <span>{`(${getContent("nComments", [String(node.feedbackCount)])})`}</span>
+                )}
+              </span>
+            </span>
+          </Link>
+          {bookable ? (
+            <Link
+              className={`${classes.action} ${classes.secondaryAction} ${txsMedium}`}
+              href={`/book/finalize/${node._id}`}
+            >
+              {getContent("booking")}
+            </Link>
+          ) : (
+            <span className={`${classes.rowNote} ${t2xsRegular}`}>
+              {getContent("noOnlineBooking")}
+            </span>
+          )}
+        </div>
+        {footer}
+      </div>
+    );
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
@@ -53,12 +130,7 @@ const DoctorCardAlt = ({
           <Ixon width=".75rem">
             <StarIcon />
           </Ixon>
-          {
-            //TODO : claculate this
-          }
-          <span className={`${classes.badgeValue} ${t2xsMedium}`}>
-            {node.averageScore || "0"}
-          </span>
+          <span className={`${classes.badgeValue} ${t2xsMedium}`}>{score}</span>
         </div>
         <div className={`${classes.badge} ${classes.recommendBadge}`}>
           <Ixon width=".75rem">
@@ -66,7 +138,7 @@ const DoctorCardAlt = ({
           </Ixon>
           <span className={`${classes.badgeValue} ${t2xsMedium}`}>
             {getCompContent("xPeopleRecommended", [
-              node.feedbackCount?.toString() || "0",
+              String(node.recommendCount || 0),
             ])}
           </span>
         </div>
@@ -75,9 +147,7 @@ const DoctorCardAlt = ({
         style={{ marginInline: "auto", marginBottom: ".5rem" }}
         src={node.avatar}
         alt={getDoctorProfileLabel(node)}
-      >
-        <span className={classes.onlineBadge} />
-      </VerifiedImage>
+      />
       <div className={classes.identity}>
         <h5 className={`${classes.doctorName} ${tsmDemiBold}`}>
           {getDoctorProfileLabel(node)}
@@ -111,7 +181,7 @@ const DoctorCardAlt = ({
                 leadIcon={<VideoIcon />}
                 size="S"
                 color={
-                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                  offers("videoCall") ? "Primarylight" : "Disabled"
                 }
                 mode="Fill"
                 radius="High"
@@ -120,7 +190,7 @@ const DoctorCardAlt = ({
                 leadIcon={<MicrophoneIcon />}
                 size="S"
                 color={
-                  node.voiceCallSettings?.active ? "Primarylight" : "Disabled"
+                  offers("voiceCall") ? "Primarylight" : "Disabled"
                 }
                 mode="Fill"
                 radius="High"
@@ -129,7 +199,7 @@ const DoctorCardAlt = ({
                 leadIcon={<ChatBubbleIcon />}
                 size="S"
                 color={
-                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                  offers("textChat") ? "Primarylight" : "Disabled"
                 }
                 mode="Fill"
                 radius="High"
@@ -147,7 +217,7 @@ const DoctorCardAlt = ({
               <Badge
                 size="S"
                 color={
-                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                  offers("inPerson") ? "Primarylight" : "Disabled"
                 }
                 mode="Fill"
                 radius="High"
@@ -157,7 +227,7 @@ const DoctorCardAlt = ({
               <Badge
                 size="S"
                 color={
-                  node.videoCallSettings?.active ? "Primarylight" : "Disabled"
+                  offers("sipCall") ? "Primarylight" : "Disabled"
                 }
                 mode="Fill"
                 radius="High"
@@ -168,22 +238,29 @@ const DoctorCardAlt = ({
           </div>
         </div>
       </div>
+      {footer}
       <div className={`${classes.actions} ${txsMedium}`}>
         <Link
           className={`${classes.action} ${classes.primaryAction}`}
-          href={`/dr/${node.slug || node._id}`}
+          href={profileHref}
         >
           {getContent("visitProfile")}
         </Link>
-        <Link
-          className={`${classes.action} ${classes.secondaryAction}`}
-          href={`/book/finalize/${node._id}`}
-        >
-          <span>{getContent("booking")}</span>
-          <Ixon width="1.25rem">
-            <ArrowLeftIcon />
-          </Ixon>
-        </Link>
+        {bookable ? (
+          <Link
+            className={`${classes.action} ${classes.secondaryAction}`}
+            href={`/book/finalize/${node._id}`}
+          >
+            <span>{getContent("booking")}</span>
+            <Ixon width="1.25rem">
+              <ArrowLeftIcon />
+            </Ixon>
+          </Link>
+        ) : (
+          <span className={`${classes.action} ${classes.disabledAction}`}>
+            {getContent("noOnlineBooking")}
+          </span>
+        )}
       </div>
     </div>
   );

@@ -7,51 +7,9 @@ import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import IconTitle from "../UI/IconTitle";
 import PeopleIcon from "../Icons/PeopleIcon";
 import FilterCsr from "./FilterCsr";
-import Image from "next/image";
-import { FilePath } from "../config";
-import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
-import { tsmDemiBold, tsmRegular, txsRegular } from "../UI/Typography";
-import Ixon from "../UI/Ixon";
-import StarIcon from "../Icons/StarIcon";
-import HostedImage from "../UI/HostedImage";
+import DoctorCardAlt from "../UI/DoctorCardAlt";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
-
-const Item = ({
-  node,
-}: {
-  node: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
-}) => {
-  return (
-    <div className={classes.item}>
-      <div className={classes.image}>
-        <HostedImage
-          src={node.avatar}
-          alt={getDoctorProfileLabel(node)}
-          fill
-          sizes="3.5rem"
-          style={{ objectFit: "cover" }}
-        />
-      </div>
-      <div className={classes.itemContent}>
-        <span className={`${classes.itemName} ${tsmDemiBold}`}>
-          {getDoctorProfileLabel(node)}
-        </span>
-        {!!node.mainSpeciality && (
-          <span className={`${classes.itemSpeciality} ${txsRegular}`}>
-            {node.mainSpeciality.name}
-          </span>
-        )}
-        <div className={`${classes.score} ${tsmRegular}`}>
-          <Ixon width=".75rem">
-            <StarIcon />
-          </Ixon>
-          <span>4.9</span>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const MedicalCenterDoctors = ({
   nodes,
@@ -92,8 +50,9 @@ const MedicalCenterDoctors = ({
         setFilter={setFilter}
       />
       <div className={classes.list}>
+        {/* the one shared doctor card, same as the homepage */}
         {filtered.map((doctor) => (
-          <Item key={doctor._id} node={doctor} />
+          <DoctorCardAlt key={doctor._id} node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]} />
         ))}
       </div>
     </div>

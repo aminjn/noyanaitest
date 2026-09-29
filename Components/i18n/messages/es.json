@@ -727,7 +727,7 @@
  "myTests": "Mis análisis",
  "myself": "Yo mismo",
  "nBeds": "${1} camas",
- "nComments": "${1} comentarios",
+ "nComments": "${1} opiniones",
  "nDoctors": "${1} médicos",
  "nItems": "${1} artículos",
  "nMore": "${1} más",
@@ -2120,5 +2120,6 @@
  "phSetupProfile": "Añade nombre, dirección y foto de la farmacia",
  "phSetupLocation": "Marca la farmacia en el mapa (para el mapa y los repartidores)",
  "phSetupProducts": "Publica tu primer producto con precio",
- "siteTitle": "NoyanAI | Citas médicas, consultas online y farmacia"
+ "siteTitle": "NoyanAI | Citas médicas, consultas online y farmacia",
+ "noOnlineBooking": "Sin reserva en línea"
 }

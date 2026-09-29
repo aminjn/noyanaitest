@@ -2120,5 +2120,6 @@
  "phSetupProfile": "Ajoutez le nom, l'adresse et la photo",
  "phSetupLocation": "Placez la pharmacie sur la carte (carte et coursiers)",
  "phSetupProducts": "Proposez votre premier produit avec un prix",
- "siteTitle": "NoyanAI | Rendez-vous médicaux, téléconsultation et pharmacie"
+ "siteTitle": "NoyanAI | Rendez-vous médicaux, téléconsultation et pharmacie",
+ "noOnlineBooking": "Pas de réservation en ligne"
 }

@@ -1,16 +1,6 @@
-import Image from "next/image";
 import classes from "./CommonCenterCard.module.css";
-import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
-import VerifyIcon from "../Icons/VerifyIcon";
-import {
-  t2xsMedium,
-  t2xsRegular,
-  tsmDemiBold,
-  txsRegular,
-} from "../UI/Typography";
-import ScoreBadge from "./ScoreBadge";
-import StarIcon from "../Icons/StarIcon";
+import { t2xsRegular, tsmDemiBold, txsRegular } from "../UI/Typography";
 import MoreMenusButton from "../UI/MoreMenusButton";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -18,10 +8,8 @@ import usePopup from "../Hooks/usePopup";
 import ReportProblemPopup from "./ReportProblemPopup";
 import EditIcon from "../Icons/EditIcon";
 import ShareIcon from "../Icons/ShareIcon";
-import Bitches from "./Bitches/Bitches";
 import Link from "@/Components/i18n/Link";
 import LocationIcon from "../Icons/LocationIcon";
-import PlusIcon from "../Icons/PlusIcon";
 import Button from "../UI/Button";
 import { BookingView } from "./BookingPage2";
 import HostedImage from "../UI/HostedImage";
@@ -51,9 +39,17 @@ const CommonCenterCard = ({
 }) => {
   const getContent = useScopedLocale(NS);
 
-  const getCompContent = getContent;
 
   const { setPopup } = usePopup();
+  const profile = `/${nodeName}/${slug}`;
+
+  // Only real data (2026-09): no placeholder tags, scores or counts, and no
+  // button that does nothing - "map" and "profile" go to the center's page.
+  const mapLink = !!coords && (
+    <Link className={`${classes.inlineLink} ${t2xsRegular}`} href={`${profile}#location`}>
+      {getContent("seeOnMap")}
+    </Link>
+  );
 
   const introBlock = (
     <div className={classes.intro}>
@@ -67,21 +63,12 @@ const CommonCenterCard = ({
             </span>
           )}
         </div>
-        <div className={classes.tags}>
-          <div className={t2xsMedium}>Tag1</div>
-          <div className={t2xsMedium}>Tag2</div>
-          <div className={t2xsMedium}>Tag3</div>
-          <div className={t2xsMedium}>Tag4</div>
-          <div className={t2xsMedium}>Tag5</div>
-          <div className={t2xsMedium}>Tag6</div>
-        </div>
       </div>
     </div>
   );
 
   const scoreBlock = (
     <div className={classes.score}>
-      <ScoreBadge icon={<StarIcon />} iconColor="var(--yellow)" value="4.5" />
       <MoreMenusButton
         options={[
           {
@@ -111,6 +98,7 @@ const CommonCenterCard = ({
         radius="Medium"
         size="M"
         className={classes.cta}
+        href={profile}
       >
         {getContent("seeProfile")}
       </Button>
@@ -124,31 +112,10 @@ const CommonCenterCard = ({
           {introBlock}
           {scoreBlock}
         </div>
-        <div className={classes.gridMeta}>
-          <div className={classes.gridMetaRow}>
-            <button
-              className={`${classes.inlineLink} ${t2xsRegular}`}
-              type="button"
-            >
-              {getContent("seeBookings")}
-            </button>
-            <div className={classes.gridDoctorsCount}>
-              <span className={t2xsRegular}>
-                {getCompContent("xDoctorsRegisteredInCenter", ["50"])}
-              </span>
-              <Bitches />
-            </div>
-          </div>
-          {address && (
+        {!!address && (
+          <div className={classes.gridMeta}>
             <div className={classes.gridMetaRow}>
-              {!!coords && (
-                <button
-                  className={`${classes.inlineLink} ${t2xsRegular}`}
-                  type="button"
-                >
-                  {getContent("seeOnMap")}
-                </button>
-              )}
+              {mapLink}
               <div className={classes.gridAddress}>
                 <span className={t2xsRegular}>{address}</span>
                 <Ixon width="1rem">
@@ -156,41 +123,13 @@ const CommonCenterCard = ({
                 </Ixon>
               </div>
             </div>
-          )}
-        </div>
-        <div className={classes.gridTiles}>
-          <div className={classes.gridTileCol}>
-            <button
-              className={`${classes.gridTile} ${classes.gridTileBlue}`}
-              type="button"
-            >
-              <span className={t2xsRegular}>{getContent("seeServices")}</span>
-              <Ixon width="1rem">
-                <PlusIcon />
-              </Ixon>
-            </button>
-            <button
-              className={`${classes.gridTile} ${classes.gridTilePurple}`}
-              type="button"
-            >
-              <span className={t2xsRegular}>{getContent("seeDoctors")}</span>
-              <Ixon width="1rem">
-                <PlusIcon />
-              </Ixon>
-            </button>
           </div>
-          {!!banner && (
-            <div className={classes.gridBanner}>
-              <HostedImage
-                src={banner}
-                alt={name}
-                style={{ objectFit: "cover" }}
-                fill
-                sizes="11.25rem"
-              />
-            </div>
-          )}
-        </div>
+        )}
+        {!!banner && (
+          <div className={classes.gridBanner}>
+            <HostedImage src={banner} alt={name} style={{ objectFit: "cover" }} fill sizes="11.25rem" />
+          </div>
+        )}
         {ctaBlock}
       </div>
     );
@@ -200,68 +139,24 @@ const CommonCenterCard = ({
     <div className={classes.main}>
       {introBlock}
       {scoreBlock}
-      <div className={classes.lines}>
-        <div className={classes.line}>
-          <Bitches />
-          <span className={`${classes.lineValue} ${t2xsRegular}`}>
-            {getContent("xProductsRegisteredInPharmacy", ["50"])}
-          </span>
-          <Link
-            className={`${classes.inlineLink} ${t2xsRegular}`}
-            href={`/${nodeName}/${slug}`}
-          >
-            {getContent("seeProducts")}
-          </Link>
-        </div>
-        {address && (
+      {!!address && (
+        <div className={classes.lines}>
           <div className={classes.line}>
             <Ixon width="1rem">
               <LocationIcon />
             </Ixon>
-            <span className={`${classes.lineValue} ${t2xsRegular}`}>
-              {address}
-            </span>
-            {!!coords && (
-              <button className={`${classes.inlineLink} ${t2xsRegular}`}>
-                {getContent("seeOnMap")}
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-      <div className={classes.side}>
-        <div className={classes.banner}>
-          <HostedImage
-            src={banner}
-            alt={name}
-            style={{ objectFit: "contain" }}
-            fill
-            sizes="12rem"
-          />
-        </div>
-        <div className={classes.buttons}>
-          <button className={classes.button}>
-            <Ixon width="1rem">
-              <PlusIcon />
-            </Ixon>
-            <span>{getContent("seeServices")}</span>
-          </button>
-          <div className={classes.buttonRow}>
-            <button className={classes.button}>
-              <Ixon width="1rem">
-                <PlusIcon />
-              </Ixon>
-              <span>{getContent("services")}</span>
-            </button>
-            <button className={classes.button}>
-              <Ixon width="1rem">
-                <PlusIcon />
-              </Ixon>
-              <span>{getContent("reservation")}</span>
-            </button>
+            <span className={`${classes.lineValue} ${t2xsRegular}`}>{address}</span>
+            {mapLink}
           </div>
         </div>
-      </div>
+      )}
+      {!!banner && (
+        <div className={classes.side}>
+          <div className={classes.banner}>
+            <HostedImage src={banner} alt={name} style={{ objectFit: "contain" }} fill sizes="12rem" />
+          </div>
+        </div>
+      )}
       {ctaBlock}
     </div>
   );

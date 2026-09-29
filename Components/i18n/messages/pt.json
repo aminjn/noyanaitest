@@ -727,7 +727,7 @@
  "myTests": "Meus exames",
  "myself": "Eu mesmo",
  "nBeds": "${1} leitos",
- "nComments": "${1} comentários",
+ "nComments": "${1} avaliações",
  "nDoctors": "${1} médicos",
  "nItems": "${1} itens",
  "nMore": "Mais ${1}",
@@ -2120,5 +2120,6 @@
  "phSetupProfile": "Adicione nome, endereço e foto da farmácia",
  "phSetupLocation": "Marque a farmácia no mapa (para o mapa e entregadores)",
  "phSetupProducts": "Anuncie seu primeiro produto com preço",
- "siteTitle": "NoyanAI | Consultas médicas, teleconsulta e farmácia"
+ "siteTitle": "NoyanAI | Consultas médicas, teleconsulta e farmácia",
+ "noOnlineBooking": "Sem agendamento online"
 }

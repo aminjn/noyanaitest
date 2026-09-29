@@ -10,7 +10,7 @@ import {
 } from "react";
 import useSWR from "swr";
 import Link from "@/Components/i18n/Link";
-import { PublicDoctorProfilePageProps } from "../PublicDoctorProfilePage";
+import { PublicDoctorProfilePageProps } from "../publicDoctorTypes";
 import classes from "./NewPublicDoctorProfilePage.module.css";
 import BreadCrump from "@/Components/UI/BreadCrump";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";

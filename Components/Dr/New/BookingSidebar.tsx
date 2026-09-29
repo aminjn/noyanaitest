@@ -30,7 +30,7 @@ import ChatBubbleIcon from "@/Components/Icons/ChatBubbleIcon";
 import UserAddIcon from "@/Components/Icons/UserAddIcon";
 import UserCheckIcon from "@/Components/Icons/UserCheckIcon";
 import AuthPopup from "@/Components/Popups/AuthPopup";
-import { PublicDoctorProfilePageProps } from "../PublicDoctorProfilePage";
+import { PublicDoctorProfilePageProps } from "../publicDoctorTypes";
 import SelectClinicFirstPopup from "../SelectClinicFirstPopup";
 import {
   DoctorConfig,

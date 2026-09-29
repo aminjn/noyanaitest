@@ -727,7 +727,7 @@
  "myTests": "My Tests",
  "myself": "Myself",
  "nBeds": "${1} beds",
- "nComments": "${1} comments",
+ "nComments": "${1} reviews",
  "nDoctors": "${1} doctors",
  "nItems": "${1} items",
  "nMore": "${1} more",
@@ -2120,5 +2120,6 @@
  "phSetupProfile": "Add your pharmacy's name, address and photo",
  "phSetupLocation": "Pin your pharmacy on the map (for the map and couriers)",
  "phSetupProducts": "List your first product with a price",
- "siteTitle": "NoyanAI | Book doctors, online consultations and pharmacy"
+ "siteTitle": "NoyanAI | Book doctors, online consultations and pharmacy",
+ "noOnlineBooking": "No online booking"
 }
