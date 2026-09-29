@@ -934,6 +934,8 @@ export const contentNamespaces = {
     "otherOrganizations",
     "requestPanel",
     "orgNationalId",
+    "rejectedApplicationTitle",
+    "rejectedApplicationLegend",
   ],
 
   // app/become/clinic/page.tsx (new BecomeClinicRequestPage, 2026-09) — the

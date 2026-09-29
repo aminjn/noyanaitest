@@ -36,7 +36,8 @@ const middleware = async (req: NextRequest) => {
       const data = await getPublicData<IShortLink>(
         `shortlink/${encodeURIComponent(token)}`,
       );
-      if (data) return NextResponse.redirect(data.target, 301);
+      // 302: a short link can be re-pointed later, so browsers must not cache it
+      if (data) return NextResponse.redirect(data.target, 302);
     }
   }
   const data = await getPublicData<IRedirection | null>("redirect", {

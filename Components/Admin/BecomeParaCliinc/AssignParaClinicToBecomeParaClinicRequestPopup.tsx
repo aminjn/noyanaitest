@@ -44,7 +44,6 @@ const AssignParaClinicToBecomeParaClinicRequestPopup = ({
           }
           getOptionValue={(node) => (node as IParaClinic)._id}
           title="انتخاب پاراکلینیک"
-          defaultValue={node._id}
           onChange={(e) =>
             setInput((prev) => ({ ...prev, paraClinic: e || undefined }))
           }

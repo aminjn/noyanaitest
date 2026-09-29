@@ -27,6 +27,15 @@ type BecomeInsuranceRequestInput = {
 // nationalId/certificateDate/certificateFile/description (the rest of the
 // insurance's profile is filled in later, once an admin approves this
 // request).
+const toForm = (r: IBecomeInsuranceRequest) => ({
+  certificateDate: r.certificateDate,
+  name: r.name,
+  nationalId: r.nationalId,
+  siamCode: r.siamCode,
+  certificateFile: r.certificateFile,
+  description: r.description,
+});
+
 const BecomeInsuranceRequestPage = () => {
   const { request, mutate } = useBecomeRequestStatus<IBecomeInsuranceRequest>(
     org.requestApiPath,
@@ -35,24 +44,16 @@ const BecomeInsuranceRequestPage = () => {
   const { insurance } = useInsurance();
 
   if (insurance)
-    return <BecomeDoneView title="becomeInsuranceDone" target={org.panelPath} />;
+    return (
+      <BecomeDoneView title="becomeInsuranceDone" target={org.panelPath} />
+    );
 
   return (
     <BecomeOrganizationForm
       org={org}
       mutate={mutate}
-      pending={
-        request
-          ? {
-              certificateDate: request.certificateDate,
-              name: request.name,
-              nationalId: request.nationalId,
-              siamCode: request.siamCode,
-              certificateFile: request.certificateFile,
-              description: request.description,
-            }
-          : undefined
-      }
+      pending={request?.status === "Pending" ? toForm(request) : undefined}
+      rejected={request?.status === "Rejected" ? toForm(request) : undefined}
     />
   );
 };

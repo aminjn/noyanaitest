@@ -2121,5 +2121,7 @@
  "phSetupLocation": "Apotheke auf der Karte markieren (für Karte und Kuriere)",
  "phSetupProducts": "Erstes Produkt mit Preis anbieten",
  "siteTitle": "NoyanAI | Arzttermine, Online-Beratung und Apotheke",
- "noOnlineBooking": "Keine Online-Buchung"
+ "noOnlineBooking": "Keine Online-Buchung",
+ "rejectedApplicationTitle": "Ihr vorheriger Antrag wurde abgelehnt",
+ "rejectedApplicationLegend": "Korrigieren Sie Ihre Angaben und Unterlagen und senden Sie sie erneut. Den Ablehnungsgrund erfahren Sie beim Support."
 }

@@ -44,7 +44,6 @@ const AssignClinicToClinicRequestPopup = ({
           }
           getOptionValue={(node) => (node as IClinic)._id}
           title="انتخاب کلینیک"
-          defaultValue={node._id}
           onChange={(e) =>
             setInput((prev) => ({ ...prev, clinic: e || undefined }))
           }

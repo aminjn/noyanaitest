@@ -1,5 +1,5 @@
 import {
-  becomeNodeStatusesDict,
+  becomeNodeManualStatusesDict,
   IBecomeDoctorRequest,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
 import classes from "./ChangeBecomeDoctorStatusPopup.module.css";
@@ -26,7 +26,7 @@ const ChangeBecomeDoctorStatusPopup = ({
           status: {
             type: "select",
             title: "وضعیت",
-            options: becomeNodeStatusesDict,
+            options: becomeNodeManualStatusesDict,
           },
         }}
         hookProps={{

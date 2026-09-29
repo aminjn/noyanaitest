@@ -2,28 +2,14 @@ import { Fragment, useState } from "react";
 import classes from "./ProductPackagePageintro.module.css";
 import Ixon from "../UI/Ixon";
 import ShareIcon from "../Icons/ShareIcon";
-import Image from "next/image";
-import {
-  IProduct,
-  IProductImage,
-  IProductSpec,
-} from "../Admin/Product/AdminManageProductsPage";
-import { FILE_PATH, FilePath } from "../config";
+import { IProductImage, IProductSpec } from "../Admin/Product/AdminManageProductsPage";
 import StarIcon from "../Icons/StarIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Button from "../UI/Button";
 import StarsSolidIcon from "../Icons/StarsSolidIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
-import {
-  t2xsRegular,
-  tmdDemiBold,
-  tsmDemiBold,
-  tsmRegular,
-  txlMedium,
-  txsMedium,
-  txsRegular,
-} from "../UI/Typography";
+import { t2xsRegular, tmdDemiBold, tsmDemiBold, txlMedium, txsMedium, txsRegular } from "../UI/Typography";
 import { ProductPackagePageProps } from "./ProductPackagePage";
 import HostedImage from "../UI/HostedImage";
 
@@ -194,12 +180,6 @@ const ProductPackagePageIntro = ({
               <div className={classes.ownerContent}>
                 <div className={`${classes.ownerName} ${tsmDemiBold}`}>
                   {data.owner.name}
-                </div>
-                <div className={classes.ownerScore}>
-                  <Ixon width=".75rem">
-                    <StarIcon />
-                  </Ixon>
-                  <span>4.9</span>
                 </div>
               </div>
               <Ixon

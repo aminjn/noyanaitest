@@ -2273,6 +2273,8 @@ const contentKeys = [
   "phSetupProducts",
   "siteTitle",
   "noOnlineBooking",
+  "rejectedApplicationTitle",
+  "rejectedApplicationLegend",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

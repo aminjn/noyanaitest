@@ -2121,5 +2121,7 @@
  "phSetupLocation": "Placez la pharmacie sur la carte (carte et coursiers)",
  "phSetupProducts": "Proposez votre premier produit avec un prix",
  "siteTitle": "NoyanAI | Rendez-vous médicaux, téléconsultation et pharmacie",
- "noOnlineBooking": "Pas de réservation en ligne"
+ "noOnlineBooking": "Pas de réservation en ligne",
+ "rejectedApplicationTitle": "Votre demande précédente a été refusée",
+ "rejectedApplicationLegend": "Corrigez vos informations et documents puis renvoyez la demande. Contactez le support pour connaître la raison du refus."
 }

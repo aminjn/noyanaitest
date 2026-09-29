@@ -27,22 +27,26 @@ const AdminManageCommentPage = () => {
             {
               title: "اطلاعات",
               content: (
-                <CreateForm
-                  defaultValue={node}
-                  renderer={{
-                    content: { title: "محتوا", type: "area" },
-                    status: {
-                      title: "وضعیت",
-                      type: "select",
-                      options: commentStatusDict,
-                    },
-                  }}
-                  hookProps={{
-                    path: `${API}/auto/comment/${node._id}`,
-                    method: "POST",
-                    successCb: () => mutate(),
-                  }}
-                />
+                <>
+                  <p style={{ whiteSpace: "pre-wrap", marginBottom: "1rem" }}>
+                    {node.content}
+                  </p>
+                  <CreateForm
+                    defaultValue={node}
+                    renderer={{
+                      status: {
+                        title: "وضعیت",
+                        type: "select",
+                        options: commentStatusDict,
+                      },
+                    }}
+                    hookProps={{
+                      path: `${API}/auto/comment/${node._id}`,
+                      method: "POST",
+                      successCb: () => mutate(),
+                    }}
+                  />
+                </>
               ),
               id: "Info",
             },

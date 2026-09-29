@@ -14,7 +14,7 @@ import ImageInput from "../UI/ImageInput";
 import Button from "../UI/Button";
 import usePopup from "../Hooks/usePopup";
 import LogoutPopup from "../Popups/LogoutPopup";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Ixon from "../UI/Ixon";
 import ClockIcon from "../Icons/ClockIcon";
 import ClockSolidIcon from "../Icons/ClockSolidIcon";
@@ -44,10 +44,14 @@ const BecomeOrganizationForm = ({
   org,
   mutate,
   pending,
+  rejected,
 }: {
   org: BecomeOrgConfig;
   mutate: () => unknown;
+  // an open request: the form is shown read-only
   pending?: BecomeRequest;
+  // the last request was declined: the form is editable again, prefilled
+  rejected?: BecomeRequest;
 }) => {
   const getContent = useScopedLocale(NS);
 
@@ -64,6 +68,21 @@ const BecomeOrganizationForm = ({
         ? getContent("checkInput")
         : false,
   });
+
+  // a declined request is resubmitted from its old values: seed them into
+  // the form state (the inputs only show them as defaults)
+  // (keyed by content: the page builds a new object on every render)
+  const rejectedKey = rejected ? JSON.stringify(rejected) : "";
+  useEffect(() => {
+    if (!rejectedKey) return;
+    const values = JSON.parse(rejectedKey) as Record<string, unknown>;
+    setInput((prev) => ({
+      ...(Object.fromEntries(
+        Object.entries(values).filter(([, v]) => v !== undefined && v !== null),
+      ) as Partial<BecomeOrgInput>),
+      ...prev,
+    }));
+  }, [rejectedKey, setInput]);
 
   const { user } = useUser();
 
@@ -96,6 +115,16 @@ const BecomeOrganizationForm = ({
           </p>
         </div>
       )}
+      {!pending && !!rejected && (
+        <div className={classes.pending}>
+          <h2 className={`${classes.title} ${txlBold}`}>
+            {getContent("rejectedApplicationTitle")}
+          </h2>
+          <p className={classes.legend}>
+            {getContent("rejectedApplicationLegend")}
+          </p>
+        </div>
+      )}
       <Form
         className={classes.main}
         onSubmit={() => {
@@ -118,7 +147,7 @@ const BecomeOrganizationForm = ({
               setInput((prev) => ({ ...prev, siamCode: e.target.value }))
             }
             required
-            defaultValue={pending?.siamCode}
+            defaultValue={(pending || rejected)?.siamCode}
           />
           {/* the organization's national ID, not the applicant's own code
               (two identical "national code" fields sat side by side, the
@@ -130,7 +159,7 @@ const BecomeOrganizationForm = ({
               setInput((prev) => ({ ...prev, nationalId: e.target.value }))
             }
             required
-            defaultValue={pending?.nationalId}
+            defaultValue={(pending || rejected)?.nationalId}
           />
         </div>
         <div className={classes.row}>
@@ -141,7 +170,7 @@ const BecomeOrganizationForm = ({
               setInput((prev) => ({ ...prev, name: e.target.value }))
             }
             required
-            defaultValue={pending?.name}
+            defaultValue={(pending || rejected)?.name}
           />
           <DateInput
             title={getContent("certificateDate")}
@@ -149,7 +178,7 @@ const BecomeOrganizationForm = ({
             onChange={(e) =>
               setInput((prev) => ({ ...prev, certificateDate: e }))
             }
-            defaultValue={pending?.certificateDate}
+            defaultValue={(pending || rejected)?.certificateDate}
           />
         </div>
         <div className={classes.row}>
@@ -163,7 +192,7 @@ const BecomeOrganizationForm = ({
               }))
             }
             title={getContent("certificateFile")}
-            defaultValue={pending?.certificateFile}
+            defaultValue={(pending || rejected)?.certificateFile}
           />
         </div>
         <div className={classes.row}>
@@ -173,7 +202,7 @@ const BecomeOrganizationForm = ({
               setInput((prev) => ({ ...prev, description: e.target.value }))
             }
             title={getContent("description")}
-            defaultValue={pending?.description}
+            defaultValue={(pending || rejected)?.description}
           />
         </div>
         {!!pending ? (

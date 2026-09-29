@@ -2121,5 +2121,7 @@
  "phSetupLocation": "Pin your pharmacy on the map (for the map and couriers)",
  "phSetupProducts": "List your first product with a price",
  "siteTitle": "NoyanAI | Book doctors, online consultations and pharmacy",
- "noOnlineBooking": "No online booking"
+ "noOnlineBooking": "No online booking",
+ "rejectedApplicationTitle": "Your previous application was declined",
+ "rejectedApplicationLegend": "Correct your details and documents and submit again. Contact support to find out why it was declined."
 }

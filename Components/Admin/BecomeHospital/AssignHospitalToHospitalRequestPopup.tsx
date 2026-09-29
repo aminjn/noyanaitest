@@ -44,7 +44,6 @@ const AssignHospitalToHospitalRequestPopup = ({
           }
           getOptionValue={(node) => (node as IHospital)._id}
           title="انتخاب بیمارستان"
-          defaultValue={node._id}
           onChange={(e) =>
             setInput((prev) => ({ ...prev, hospital: e || undefined }))
           }

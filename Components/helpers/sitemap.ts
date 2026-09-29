@@ -1,5 +1,5 @@
 import { BACKEND, DOMAIN } from "../config";
-import { enabledLocales, localizePath } from "../i18n/locales";
+import { enabledLocales, Locale, localizePath } from "../i18n/locales";
 
 export type SitemapNode = { slug: string; lastmod: string };
 
@@ -70,14 +70,14 @@ const escapeXml = (value: string): string =>
 
 // Every page exists in each served language ("/x", "/en/x", ...); list
 // them as hreflang alternates of the Persian URL.
-const alternateLinks = (loc: string): string => {
-  if (enabledLocales.length < 2 || !loc.startsWith(DOMAIN)) return "";
+const alternateLinks = (loc: string, served: readonly Locale[]): string => {
+  if (served.length < 2 || !loc.startsWith(DOMAIN)) return "";
   const path = loc.slice(DOMAIN.length) || "/";
   const link = (hreflang: string, href: string) =>
     `\n    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${escapeXml(href)}"/>`;
   return (
     link("x-default", loc) +
-    enabledLocales
+    served
       .map((locale) => link(locale, DOMAIN + localizePath(path, locale)))
       .join("")
   );
@@ -85,13 +85,14 @@ const alternateLinks = (loc: string): string => {
 
 export const buildUrlsetXml = (
   urls: { loc: string; lastmod?: string }[],
+  served: readonly Locale[] = enabledLocales,
 ): string =>
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls
     .map(
       (url) =>
         `  <url>\n    <loc>${escapeXml(url.loc)}</loc>${
           url.lastmod ? `\n    <lastmod>${url.lastmod}</lastmod>` : ""
-        }${alternateLinks(url.loc)}\n  </url>`,
+        }${alternateLinks(url.loc, served)}\n  </url>`,
     )
     .join("\n")}\n</urlset>\n`;
 

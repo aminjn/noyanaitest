@@ -1,3 +1,4 @@
+import { getEnabledLocales } from "@/Components/i18n/getEnabledLocales";
 import { DOMAIN } from "@/Components/config";
 import {
   buildUrlsetXml,
@@ -44,6 +45,7 @@ export const GET = async (
     return xmlResponse(
       buildUrlsetXml(
         sitemapStaticPages.map((path) => ({ loc: `${DOMAIN}${path}` })),
+        await getEnabledLocales(),
       ),
     );
   }
@@ -65,6 +67,7 @@ export const GET = async (
         loc: `${DOMAIN}${toPath(node.slug)}`,
         lastmod: node.lastmod,
       })),
+      await getEnabledLocales(),
     ),
   );
 };
