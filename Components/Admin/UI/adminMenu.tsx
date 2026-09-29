@@ -20,6 +20,7 @@ import CogIcon from "@/Components/Icons/CogIcon";
 import FolderIcon from "@/Components/Icons/FolderIcon";
 import Bell01Icon from "@/Components/Icons/Bell01Icon";
 import TagIcon from "@/Components/Icons/TagIcon";
+import WalletIcon from "@/Components/Icons/WalletIcon";
 
 export type AdminMenuItem = {
   title: string;
@@ -182,6 +183,17 @@ export const adminMenu: AdminMenuGroup[] = [
     items: [
       { title: "مدل‌ها و تنظیمات", href: "ollama" },
       { title: "مثال‌های بات", href: "aiExample" },
+    ],
+  },
+  {
+    id: "finance",
+    title: "مالی",
+    icon: <WalletIcon />,
+    super: true,
+    items: [
+      { title: "سفارش‌ها", href: "finance/orders" },
+      { title: "تراکنش‌های کیف پول", href: "finance/transactions" },
+      { title: "پرداخت‌های درگاه", href: "finance/payments" },
     ],
   },
   {
