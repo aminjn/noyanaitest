@@ -4,6 +4,7 @@ import { API, FilePath } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { IBecomeParaClinicRequest } from "@/Components/Layout/BecomeParaClinicPage";
 import { useParams } from "next/navigation";
+import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -94,6 +95,15 @@ const AdminManageBecomeParaClinicPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
+                    <ApproveBecomeRequestButton
+                      requestPath="becomeParaClinic"
+                      nodeId={String(nodeId)}
+                      status={data.status}
+                      label="تأیید و ساخت مرکز پاراکلینیک"
+                      done="مرکز پاراکلینیک ساخته و فعال شد."
+                      target={(id) => `/paraClinic/${id}`}
+                      mutate={mutate}
+                    />
                     <Button
                       onClick={() =>
                         setPopup(

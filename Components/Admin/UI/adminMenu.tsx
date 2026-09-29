@@ -114,6 +114,9 @@ export const adminMenu: AdminMenuGroup[] = [
     icon: <PackageIcon />,
     items: [
       { title: "تخصص‌ها", href: "speciality", access: "Sepciality" },
+      // groups only arrange specialities in the menu / list chips; a doctor
+      // is always given specialities, never a group
+      { title: "گروه تخصص‌ها (برای منو)", href: "specialityCategory", access: "Sepciality" },
       { title: "خدمات", href: "service" },
       { title: "پکیج‌های خدمات", href: "servicePackage" },
       { title: "تست‌های آزمایشگاهی", href: "test" },
@@ -238,7 +241,6 @@ export const adminHubs: AdminHub[] = [
         title: "مراکز درمانی",
         icon: <BuildingIcon />,
         items: [
-          { title: "دسته‌بندی تخصص‌ها", href: "specialityCategory" },
           { title: "دسته‌بندی کلینیک‌ها", href: "clinicCategory" },
           { title: "تگ کلینیک‌ها", href: "clinicTag" },
           { title: "دسته‌بندی بیمارستان‌ها", href: "hospitalCategory" },

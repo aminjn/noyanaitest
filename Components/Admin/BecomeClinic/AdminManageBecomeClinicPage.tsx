@@ -4,6 +4,7 @@ import { IBecomeClinicRequest } from "@/Components/ClinicPanel/BecomeClinicPage"
 import { API, FilePath } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { useParams } from "next/navigation";
+import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -89,6 +90,15 @@ const AdminManageBecomeClinicPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
+                    <ApproveBecomeRequestButton
+                      requestPath="becomeclinic"
+                      nodeId={String(nodeId)}
+                      status={data.status}
+                      label="تأیید و ساخت کلینیک"
+                      done="کلینیک ساخته و فعال شد."
+                      target={(id) => `/clinic/${id}`}
+                      mutate={mutate}
+                    />
                     <Button
                       onClick={() =>
                         setPopup(
