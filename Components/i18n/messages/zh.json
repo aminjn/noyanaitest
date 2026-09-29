@@ -2119,5 +2119,6 @@
  "phSetupHint": "完成这些步骤，患者才能找到您并下单。",
  "phSetupProfile": "填写药店名称、地址和照片",
  "phSetupLocation": "在地图上标注药店（用于地图和配送）",
- "phSetupProducts": "上架第一个带价格的商品"
+ "phSetupProducts": "上架第一个带价格的商品",
+ "siteTitle": "NoyanAI | 预约医生、在线问诊与药店"
 }

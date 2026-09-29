@@ -2119,5 +2119,6 @@
  "phSetupHint": "Selesaikan langkah ini agar pasien dapat menemukan dan memesan dari Anda.",
  "phSetupProfile": "Tambahkan nama, alamat, dan foto apotek",
  "phSetupLocation": "Tandai apotek di peta (untuk peta dan kurir)",
- "phSetupProducts": "Tambahkan produk pertama dengan harga"
+ "phSetupProducts": "Tambahkan produk pertama dengan harga",
+ "siteTitle": "NoyanAI | Janji dokter, konsultasi online, dan apotek"
 }

@@ -185,6 +185,7 @@ export const contentNamespaces = {
     "identityNationalId",
     "identityBirthDate",
     "identityVerifySubmit",
+    "siteTitle",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,

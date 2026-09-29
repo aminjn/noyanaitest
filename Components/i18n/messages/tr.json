@@ -2119,5 +2119,6 @@
  "phSetupHint": "Hastaların sizi bulup sipariş verebilmesi için bu adımları tamamlayın.",
  "phSetupProfile": "Eczane adını, adresini ve fotoğrafını ekleyin",
  "phSetupLocation": "Eczaneyi haritada işaretleyin (harita ve kurye için)",
- "phSetupProducts": "İlk ürününüzü fiyatıyla ekleyin"
+ "phSetupProducts": "İlk ürününüzü fiyatıyla ekleyin",
+ "siteTitle": "NoyanAI | Doktor randevusu, online danışma ve eczane"
 }

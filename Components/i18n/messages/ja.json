@@ -2119,5 +2119,6 @@
  "phSetupHint": "患者があなたを見つけて注文できるよう、これらの手順を完了してください。",
  "phSetupProfile": "薬局の名前・住所・写真を追加",
  "phSetupLocation": "地図に薬局の位置を登録（地図と配達用）",
- "phSetupProducts": "最初の商品を価格付きで出品"
+ "phSetupProducts": "最初の商品を価格付きで出品",
+ "siteTitle": "NoyanAI | 医師予約・オンライン相談・薬局"
 }
