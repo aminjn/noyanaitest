@@ -240,7 +240,7 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
         <Card
           icon={<UserIcon />}
           title={getContent("specialistPersonel")}
-          value={getContent("nPerson", [data.personelCount.toString()])}
+          value={getContent("nPerson", [String(data.personelCount ?? 0)])}
         />
         <Card
           icon={<StarLineIcon />}

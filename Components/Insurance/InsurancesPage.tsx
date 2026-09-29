@@ -48,7 +48,6 @@ const InsurancesPage = ({
   totalCount,
   categories,
 }: InsurancesPageProps) => {
-  console.log({ data, pagesCount, totalCount, categories });
   const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
 

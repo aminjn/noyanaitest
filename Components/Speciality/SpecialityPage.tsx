@@ -96,6 +96,7 @@ const SpecialityPage = ({
           size="L"
           radius="High"
           tailIcon={<ArrowCircleDownIcon />}
+          href="#about"
         >
           {getContent("aboutThisSpeciality")}
         </Button>
@@ -117,7 +118,7 @@ const SpecialityPage = ({
           ),
         )}
       </ListPageList>
-      <div className={classes.box}>
+      <div className={classes.box} id="about">
         <BigAd
           position="speciality1"
           resourceModel="Speciality"

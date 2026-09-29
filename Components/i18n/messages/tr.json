@@ -2124,5 +2124,6 @@
  "noOnlineBooking": "Çevrimiçi randevu yok",
  "rejectedApplicationTitle": "Önceki başvurunuz reddedildi",
  "rejectedApplicationLegend": "Bilgilerinizi ve belgelerinizi düzeltip yeniden gönderin. Ret nedenini öğrenmek için destekle iletişime geçin.",
- "seePharmacy": "Eczaneyi görüntüle"
+ "seePharmacy": "Eczaneyi görüntüle",
+ "featuredSpecialities": "Öne çıkan uzmanlıklar"
 }

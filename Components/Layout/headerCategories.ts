@@ -96,7 +96,7 @@ export const categoryTabs: {
     key: "testCategories",
     label: "tests",
     allTarget: "/test",
-    hrefFor: () => "/test",
+    hrefFor: (v) => `/test?category=${encodeURIComponent(v)}`,
   },
   {
     key: "blogCategories",

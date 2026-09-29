@@ -1,14 +1,10 @@
 "use client";
 
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IBlog, IBlogCategory } from "../Admin/Blog/AdminManageBlogsPage";
 import classes from "./BlogsPage.module.css";
 import { useEffect, useMemo, useState } from "react";
-import useSWR from "swr";
-import { API } from "../config";
-import { fetcher } from "../helpers/fetcher";
 import useProgress from "../Hooks/useProgress";
-import SelectInput from "../UI/SelectInput";
 import BlogMainCard from "./BlogMainCard";
 import BreadCrump from "../UI/BreadCrump";
 import BlogsSearch from "./BlogsSearch";
@@ -57,7 +53,8 @@ const sortContentKeyDict: Record<Sort, ContentKey> = {
 
 const BlogsPage = (props: BlogsPageProps) => {
   const searchParams = useSearchParams();
-  const params = useParams<{ nodeSlug?: string; page?: string }>();
+  // the category comes as ?category= (there is no /mag/category/<slug>)
+  const categorySlug = searchParams.get("category") || undefined;
   const [currentSort, setCurrentSort] = useState<Sort>(
     () => sorts.find((el) => el === searchParams.get("sort")) || "newest",
   );
@@ -84,15 +81,14 @@ const BlogsPage = (props: BlogsPageProps) => {
         trail={[
           { title: getContent("homePage"), target: "/" },
           { title: getContent("blog"), target: "/mag" },
-          ...(params.nodeSlug
+          ...(categorySlug
             ? [
                 {
-                  title: decodeURIComponent(
+                  title:
                     categories?.find(
-                      (c) => (c.slug || c._id) === params.nodeSlug,
-                    )?.title || params.nodeSlug,
-                  ),
-                  target: `/mag?category=${params.nodeSlug}`,
+                      (c) => (c.slug || c._id) === categorySlug,
+                    )?.title || categorySlug,
+                  target: `/mag?category=${encodeURIComponent(categorySlug)}`,
                 },
               ]
             : []),

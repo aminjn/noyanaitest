@@ -16,6 +16,25 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 
+// admin route of each commentable model (lower-casing broke the camelCase
+// ones: /paracliniC, /productpackage...)
+const commentTargetPath: Record<string, string> = {
+  Blog: "blog",
+  Disease: "disease",
+  Symptom: "symptom",
+  Drug: "drug",
+  Comment: "comment",
+  Product: "product",
+  Clinic: "clinic",
+  ProductPackage: "productPackage",
+  Service: "service",
+  ServicePackage: "servicePackage",
+  ParaClinic: "paraClinic",
+  Hospital: "hospital",
+  Insurance: "insurance",
+  DoctorProfile: "doctorprofile",
+};
+
 const AdminManageCommentsPage = () => {
   const { setPopup } = usePopup();
 
@@ -61,7 +80,7 @@ const AdminManageCommentsPage = () => {
             node.resource ? (
               <InlineLink
                 href={adminPath(
-                  `/${node.refPath?.toLowerCase()}/${node.resource._id}`,
+                  `/${commentTargetPath[node.refPath as string] || node.refPath?.toLowerCase()}/${node.resource._id}`,
                 )}
               >
                 {node.resource._id}
