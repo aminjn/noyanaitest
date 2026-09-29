@@ -9,12 +9,15 @@ import Ixon from "../UI/Ixon";
 import { tbaseMedium, tsmBold, txsMedium, txsRegular } from "../UI/Typography";
 import classes from "./MedicalCenterDepartments.module.css";
 import IconTitle from "../UI/IconTitle";
+import Link from "@/Components/i18n/Link";
 import BuildingIcon from "../Icons/BuildingIcon";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
 export type MedicalCenterDepartmentItemProps = {
   name?: string;
+  // the department's own page (a hospital's clinic), when it has one
+  href?: string;
   summary?: string;
   phone?: string;
   doctors: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
@@ -22,6 +25,7 @@ export type MedicalCenterDepartmentItemProps = {
 
 const DepartmentItem = ({
   name,
+  href,
   summary,
   phone,
   doctors,
@@ -32,7 +36,9 @@ const DepartmentItem = ({
   return (
     <div className={classes.item}>
       <div className={classes.header}>
-        <legend className={`${classes.name} ${tsmBold}`}>{name}</legend>
+        <legend className={`${classes.name} ${tsmBold}`}>
+          {href ? <Link href={href}>{name}</Link> : name}
+        </legend>
         {!!summary && (
           <span className={`${classes.summary} ${txsRegular}`}>{summary}</span>
         )}
@@ -52,7 +58,7 @@ const DepartmentItem = ({
           <Ixon width=".75rem">
             <CallCallingIcon />
           </Ixon>
-          <span>{phone}</span>
+          <a href={`tel:${phone}`}>{phone}</a>
         </div>
       )}
       {!!doctors.length && (

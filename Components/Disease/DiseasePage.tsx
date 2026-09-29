@@ -81,7 +81,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
         }}
         secondaryAction={{ title: getContent("inpectDiseaseWithAi"), href: "/wizard" }}
       />
-      <BigAd position="disease1" />
+      <BigAd position="disease1" resourceModel="Disease" resource={data._id} />
       <ListPageWithSide
         side={
           <Fragment>
@@ -140,7 +140,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
           </div>
         </Fragment>
       </ListPageWithSide>
-      <SmallAd position="disease1" />
+      <SmallAd position="disease2" resourceModel="Disease" resource={data._id} />
     </ListPageLayout>
   );
 };

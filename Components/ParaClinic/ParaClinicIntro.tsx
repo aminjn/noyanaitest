@@ -85,8 +85,10 @@ const Card = ({
 };
 
 const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
-  const [currentImage, setCurrentImage] = useState<IProductImage>(
-    data.images[0],
+  // gallery first; a paraclinic with only its main image still shows it
+  const images: IProductImage[] = Array.isArray(data.images) ? data.images : [];
+  const [currentImage, setCurrentImage] = useState<IProductImage | undefined>(
+    images[0],
   );
 
   const getContent = useScopedLocale(NS);
@@ -97,8 +99,8 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
         <div className={classes.intro}>
           <div className={classes.image}>
             <HostedImage
-              src={currentImage?.image}
-              alt={currentImage?.alt || ""}
+              src={currentImage?.image || data.image}
+              alt={currentImage?.alt || data.name || ""}
               sizes="36rem"
               fill
               style={{ objectFit: "contain" }}
@@ -181,6 +183,7 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
                 radius="High"
                 size="M"
                 tailIcon={<FlaskIcon />}
+                href="#Tests"
               >
                 {getContent("reserveTest")}
               </Button>
@@ -193,25 +196,28 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
               >
                 {getContent("onPremisesSampling")}
               </Button> */}
-              <Button
-                variant="Neutral"
-                mode="Outline"
-                size="M"
-                radius="High"
-                tailIcon={<CallingIcon />}
-              >
-                {getContent("call")}
-              </Button>
+              {!!data.phone && (
+                <Button
+                  variant="Neutral"
+                  mode="Outline"
+                  size="M"
+                  radius="High"
+                  tailIcon={<CallingIcon />}
+                  href={`tel:${data.phone}`}
+                >
+                  {getContent("call")}
+                </Button>
+              )}
             </div>
           </div>
         </div>
-        {data.images.length > 1 && (
+        {images.length > 1 && (
           <div className={classes.navs}>
-            {data.images.map((image) => (
+            {images.map((image) => (
               <div
                 key={image._id}
                 onClick={() => setCurrentImage(image)}
-                className={`${classes.nav} ${currentImage._id === image._id ? classes.activeNav : ""} `}
+                className={`${classes.nav} ${currentImage?._id === image._id ? classes.activeNav : ""} `}
               >
                 <HostedImage
                   fill

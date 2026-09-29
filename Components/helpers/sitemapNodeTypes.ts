@@ -15,6 +15,7 @@ export const sitemapNodeTypes = [
   "servicePackage",
   "product",
   "productPackage",
+  "pharmacy",
   "blog",
 ] as const;
 
@@ -44,6 +45,7 @@ export const sitemapNodePath: Record<
   servicePackage: (slug) => `/servicePackage/${slug}`,
   product: (slug) => `/product/${slug}`,
   productPackage: (slug) => `/productPackage/${slug}`,
+  pharmacy: (slug) => `/pharmacy/${slug}`,
   blog: (slug) => `/mag/${slug}`,
 };
 

@@ -14,9 +14,13 @@ import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "paraClinicCard"];
 
+// Also the card of a pharmacy in search results (same shape: image, name,
+// province, tags) - `kind` only changes the link and its label.
 const ParaClinicCard = ({
   node,
+  kind = "paraClinic",
 }: {
+  kind?: "paraClinic" | "pharmacy";
   node: IParaClinic<{
     Tags: Record<never, never>;
     Province: Record<never, never>;
@@ -46,7 +50,7 @@ const ParaClinicCard = ({
           </div>
         )}
       </div>
-      {!!node.tags.length && (
+      {!!node.tags?.length && (
         <div className={classes.tags}>
           {node.tags.map((tag) => (
             <Badge
@@ -64,9 +68,11 @@ const ParaClinicCard = ({
       <div className={classes.footer}>
         <Link
           className={classes.link}
-          href={`/paraClinic/${node.slug || node._id}`}
+          href={`/${kind}/${node.slug || node._id}`}
         >
-          <span>{getContent("seeParaClinic")}</span>
+          <span>
+            {getContent(kind === "pharmacy" ? "seePharmacy" : "seeParaClinic")}
+          </span>
           <Ixon width="1.25rem" style={{ transform: "rotateZ(90deg)" }}>
             <ChevronIcon />
           </Ixon>
