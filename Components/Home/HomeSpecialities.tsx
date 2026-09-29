@@ -83,7 +83,8 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
     <div className={classes.main}>
       <div className={classes.header}>
         <h2 className={`${classes.title} ${t2xlBold}`}>
-          {getContent("mostViewedSpecialities")}
+          {/* the admin's picks (isHome), not a view ranking */}
+          {getContent("featuredSpecialities")}
         </h2>
         <Button
           href={"/speciality"}

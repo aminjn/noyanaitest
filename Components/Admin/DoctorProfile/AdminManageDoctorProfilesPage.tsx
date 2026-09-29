@@ -8,7 +8,6 @@ import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import { cities } from "@/Components/Enums/Cities";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "../UI/TableActions";
@@ -90,7 +89,10 @@ const AdminManageDoctorProfilesPage = () => {
               },
               city: {
                 name: "شهر",
-                value: (node) => cities.find((c) => c.slug === node.city)?.name,
+                // the profile references a Geo City document (populated)
+                value: (node) =>
+                  (node.city as unknown as { name?: string } | undefined)
+                    ?.name,
                 filter: "Multi",
               },
               user: {

@@ -137,7 +137,7 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
         <Detail
           icon={<UserIcon />}
           value={getContent("nPesrsonSpecialist", [
-            data.personelCount.toString(),
+            String(data.personelCount ?? 0),
           ])}
         />
         <Button

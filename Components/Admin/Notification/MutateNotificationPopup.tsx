@@ -38,11 +38,16 @@ const MutateNotificationPopup = ({
           },
           title: { title: "عنوان", type: "text" },
           message: { title: "متن پیام", type: "area" },
-          source: {
-            title: "منبع",
-            type: "select",
-            options: notificationSourceDict,
-          },
+          // a new admin message is always "Admin" (set by the server)
+          ...(isEdit
+            ? {
+                source: {
+                  title: "منبع",
+                  type: "select" as const,
+                  options: notificationSourceDict,
+                },
+              }
+            : {}),
           link: { title: "لینک (اختیاری)", type: "text" },
         }}
         hookProps={{
@@ -65,7 +70,6 @@ const MutateNotificationPopup = ({
                 users: inp.user,
                 title: inp.title,
                 message: inp.message,
-                source: inp.source,
                 link: inp.link,
               }),
           successCb: () => {

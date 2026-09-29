@@ -55,7 +55,6 @@ const ModelLoadToggler = ({
           setIsLoading(false);
           if (!status) return;
           mutate();
-          console.log(result);
         }}
       />
     </Fragment>
@@ -337,12 +336,11 @@ const AdminManageOllamaModels = () => {
       )}
       <Act
         path={isRefreshing ? `${API}/ollama/tags` : null}
-        method="GET"
+        method="POST"
         onDone={(status, result) => {
           setIsRefreshing(false);
           if (!status) return;
           mutate();
-          console.log(result);
         }}
         initMessage="Refreshing"
         successMessage="Refreshed"

@@ -2124,5 +2124,6 @@
  "noOnlineBooking": "Нет онлайн-записи",
  "rejectedApplicationTitle": "Ваша предыдущая заявка отклонена",
  "rejectedApplicationLegend": "Исправьте данные и документы и отправьте заявку снова. Причину отказа можно узнать в поддержке.",
- "seePharmacy": "Открыть аптеку"
+ "seePharmacy": "Открыть аптеку",
+ "featuredSpecialities": "Избранные специальности"
 }

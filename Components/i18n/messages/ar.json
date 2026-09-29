@@ -2124,5 +2124,6 @@
  "noOnlineBooking": "لا يوجد حجز عبر الإنترنت",
  "rejectedApplicationTitle": "تم رفض طلبك السابق",
  "rejectedApplicationLegend": "صحّح بياناتك ومستنداتك وأرسلها مرة أخرى. تواصل مع الدعم لمعرفة سبب الرفض.",
- "seePharmacy": "عرض الصيدلية"
+ "seePharmacy": "عرض الصيدلية",
+ "featuredSpecialities": "تخصصات مختارة"
 }

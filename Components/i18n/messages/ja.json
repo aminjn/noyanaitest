@@ -2124,5 +2124,6 @@
  "noOnlineBooking": "オンライン予約なし",
  "rejectedApplicationTitle": "前回の申請は却下されました",
  "rejectedApplicationLegend": "情報と書類を修正して再度送信してください。却下の理由はサポートにお問い合わせください。",
- "seePharmacy": "薬局を見る"
+ "seePharmacy": "薬局を見る",
+ "featuredSpecialities": "注目の専門分野"
 }

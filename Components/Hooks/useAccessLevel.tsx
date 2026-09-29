@@ -12,7 +12,8 @@ import { fetcher } from "../helpers/fetcher";
 export const useAccessLevelState = () => {
   const { user } = useUser();
   const { data, isLoading } = useSWR<IAccessLevel>(
-    user?.role !== "user" ? `${API}/admin` : null,
+    // only staff have an access level (no request for visitors or users)
+    user && user.role !== "user" ? `${API}/admin` : null,
     (url: string) => fetcher({ url }).then((res) => res.data.data)
   );
 
