@@ -75,6 +75,16 @@ export const becomeNodeStatusesDict: Record<BecomeANodeStatus, string> = {
   Rejected: "رد شده",
 };
 
+// what the admin status popup may set by hand - approval goes through the
+// "approve" button, which also creates the profile / centre
+export const becomeNodeManualStatusesDict: Record<
+  Exclude<BecomeANodeStatus, "Approved">,
+  string
+> = {
+  Pending: "منتظر تایید (بازگشایی)",
+  Rejected: "رد شده",
+};
+
 type BecomeDoctorPopulation = {
   UserPopulated?: boolean;
   SpecialitiesPopulated?: boolean;

@@ -2,7 +2,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import { IBecomeInsuranceRequest } from "@/Components/Layout/InsurancePanelLayout";
 import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
-import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { becomeNodeManualStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { API } from "@/Components/config";
 
 const ChangeBecomeInsuranceStatusPopup = ({
@@ -21,7 +21,7 @@ const ChangeBecomeInsuranceStatusPopup = ({
           status: {
             type: "select",
             title: "وضعیت",
-            options: becomeNodeStatusesDict,
+            options: becomeNodeManualStatusesDict,
           },
         }}
         onCancel={() => closePopup()}

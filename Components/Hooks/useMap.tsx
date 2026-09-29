@@ -8,10 +8,19 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "mapPage"];
 
-mlgl.setRTLTextPlugin(
-  "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
-  true,
-);
+// Browser only, and never fatal: on the server (SSR) maplibre has no
+// worker ("No actors found") and a blocked CDN must not take the page down.
+if (typeof window !== "undefined")
+  try {
+    Promise.resolve(
+      mlgl.setRTLTextPlugin(
+        "https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js",
+        true,
+      ),
+    ).catch(() => {});
+  } catch {
+    // already set (hot reload) or unavailable
+  }
 
 export type UseMapProps = {
   containerRef: RefObject<HTMLDivElement>;

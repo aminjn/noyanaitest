@@ -27,6 +27,15 @@ type BecomeClinicRequestInput = {
 // nationalId/certificateDate/certificateFile/description (the rest of the
 // clinic's profile is filled in later, once an admin approves this
 // request).
+const toForm = (r: IBecomeClinicRequest) => ({
+  certificateDate: r.certificateDate,
+  name: r.name,
+  nationalId: r.nationalId,
+  siamCode: r.siamCode,
+  certificateFile: r.certificateFile,
+  description: r.description,
+});
+
 const BecomeClinicRequestPage = () => {
   const { request, mutate } = useBecomeRequestStatus<IBecomeClinicRequest>(
     org.requestApiPath,
@@ -41,18 +50,8 @@ const BecomeClinicRequestPage = () => {
     <BecomeOrganizationForm
       org={org}
       mutate={mutate}
-      pending={
-        request
-          ? {
-              certificateDate: request.certificateDate,
-              name: request.name,
-              nationalId: request.nationalId,
-              siamCode: request.siamCode,
-              certificateFile: request.certificateFile,
-              description: request.description,
-            }
-          : undefined
-      }
+      pending={request?.status === "Pending" ? toForm(request) : undefined}
+      rejected={request?.status === "Rejected" ? toForm(request) : undefined}
     />
   );
 };

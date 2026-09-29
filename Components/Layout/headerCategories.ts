@@ -54,7 +54,7 @@ export const categoryTabs: {
     key: "symptomCategories",
     label: "symptoms",
     allTarget: "/symptom",
-    hrefFor: () => "/symptom",
+    hrefFor: (v) => `/symptom?category=${encodeURIComponent(v)}`,
   },
   {
     key: "clinicCategories",

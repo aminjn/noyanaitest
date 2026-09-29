@@ -27,6 +27,15 @@ type BecomePharmacyRequestInput = {
 // nationalId/certificateDate/certificateFile/description (the rest of the
 // pharmacy's profile is filled in later, once an admin approves this
 // request).
+const toForm = (r: IBecomePharmacyRequest) => ({
+  certificateDate: r.certificateDate,
+  name: r.name,
+  nationalId: r.nationalId,
+  siamCode: r.siamCode,
+  certificateFile: r.certificateFile,
+  description: r.description,
+});
+
 const BecomePharmacyRequestPage = () => {
   const { request, mutate } = useBecomeRequestStatus<IBecomePharmacyRequest>(
     org.requestApiPath,
@@ -41,18 +50,8 @@ const BecomePharmacyRequestPage = () => {
     <BecomeOrganizationForm
       org={org}
       mutate={mutate}
-      pending={
-        request
-          ? {
-              certificateDate: request.certificateDate,
-              name: request.name,
-              nationalId: request.nationalId,
-              siamCode: request.siamCode,
-              certificateFile: request.certificateFile,
-              description: request.description,
-            }
-          : undefined
-      }
+      pending={request?.status === "Pending" ? toForm(request) : undefined}
+      rejected={request?.status === "Rejected" ? toForm(request) : undefined}
     />
   );
 };

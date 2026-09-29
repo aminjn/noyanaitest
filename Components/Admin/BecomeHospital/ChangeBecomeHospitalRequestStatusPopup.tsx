@@ -1,7 +1,7 @@
 import { IBecomeHospitalRequest } from "@/Components/HospitalPanel/BecomeHospitalPage";
 import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
-import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { becomeNodeManualStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 
@@ -21,7 +21,7 @@ const ChangeBecomeHospitalRequestPopup = ({
         renderer={{
           status: {
             type: "select",
-            options: becomeNodeStatusesDict,
+            options: becomeNodeManualStatusesDict,
             title: "وضعیت",
           },
         }}

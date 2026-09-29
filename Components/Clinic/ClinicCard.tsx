@@ -77,7 +77,7 @@ const ClinicCard = ({
             <span>{node.province.name}</span>
           </div>
         )}
-        {!!node.tags.length && (
+        {!!node.tags?.length && (
           <div className={classes.tags}>
             {node.tags.map((tag) => (
               <Badge

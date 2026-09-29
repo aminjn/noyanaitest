@@ -1,7 +1,7 @@
 import { IBecomePharmacyRequest } from "@/Components/PharmacyPanel/BecomePharmacyPage";
 import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
-import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { becomeNodeManualStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 
@@ -21,7 +21,7 @@ const ChangeBecomePharmacyRequestStatusPopup = ({
           status: {
             title: "وضعیت",
             type: "select",
-            options: becomeNodeStatusesDict,
+            options: becomeNodeManualStatusesDict,
           },
         }}
         hookProps={{

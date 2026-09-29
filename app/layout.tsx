@@ -62,7 +62,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
     ...baseMetadata,
     title: { default: messages.siteTitle || brand, template: `%s | ${brand}` },
     description: messages.footerText,
-    alternates: localeAlternates(),
+    alternates: localeAlternates(await getEnabledLocales()),
   };
 };
 

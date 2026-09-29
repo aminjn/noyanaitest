@@ -4,6 +4,7 @@ import {
   defaultLocale,
   enabledLocales,
   isLocale,
+  Locale,
   LOCALE_HEADER,
   localizePath,
   PATH_HEADER,
@@ -25,14 +26,16 @@ const requestInfo = () => {
 };
 
 // <link rel="alternate" hreflang="..."> for every served language of the
-// current page (Persian doubles as x-default).
-export const localeAlternates = () => {
+// current page (Persian doubles as x-default). Pass the languages the super
+// admin has switched on (getEnabledLocales) - a disabled one must not be
+// advertised to search engines.
+export const localeAlternates = (served: readonly Locale[] = enabledLocales) => {
   const { path } = requestInfo();
   if (!path || path.startsWith(`/${process.env.ADMIN_KEY}`)) return undefined;
   const languages: Record<string, string> = {
     "x-default": origin + localizePath(path, defaultLocale),
   };
-  for (const locale of enabledLocales)
+  for (const locale of served)
     languages[locale] = origin + localizePath(path, locale);
   return { languages };
 };

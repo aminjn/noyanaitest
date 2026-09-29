@@ -1,9 +1,7 @@
-import Image from "next/image";
 import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
 import StarIcon from "../Icons/StarIcon";
 import Badge from "../UI/Badge";
 import classes from "./ClinicCardAlt.module.css";
-import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import LocationIcon from "../Icons/LocationIcon";
@@ -28,18 +26,21 @@ const ClinicCardAlt = ({
 
   return (
     <li className={classes.main}>
-      <div className={classes.header}>
-        <Badge
-          size="S"
-          radius="High"
-          mode="Fill"
-          color="Warning"
-          leadIcon={<StarIcon />}
-          className={classes.score}
-        >
-          4.5
-        </Badge>
-      </div>
+      {/* the clinic's real rating - never a placeholder number */}
+      {!!node.averageScore && (
+        <div className={classes.header}>
+          <Badge
+            size="S"
+            radius="High"
+            mode="Fill"
+            color="Warning"
+            leadIcon={<StarIcon />}
+            className={classes.score}
+          >
+            {node.averageScore.toFixed(1)}
+          </Badge>
+        </div>
+      )}
       <div className={classes.image}>
         <HostedImage
           src={node.image}

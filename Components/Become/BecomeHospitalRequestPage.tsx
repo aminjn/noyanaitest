@@ -31,6 +31,15 @@ type BecomeHospitalRequestInput = {
 // nationalId/certificateDate/certificateFile/description (the rest of the
 // hospital's profile is filled in later, once an admin approves this
 // request). JSX is bare - CSS and markup are meant to be redone by hand.
+const toForm = (r: IBecomeHospitalRequest) => ({
+  certificateDate: r.certificateDate,
+  name: r.name,
+  nationalId: r.nationalId,
+  siamCode: r.siamCode,
+  certificateFile: r.certificateFile,
+  description: r.description,
+});
+
 const BecomeHospitalRequestPage = () => {
   const { request, mutate } = useBecomeRequestStatus<IBecomeHospitalRequest>(
     org.requestApiPath,
@@ -45,18 +54,8 @@ const BecomeHospitalRequestPage = () => {
     <BecomeOrganizationForm
       org={org}
       mutate={mutate}
-      pending={
-        request
-          ? {
-              certificateDate: request.certificateDate,
-              name: request.name,
-              nationalId: request.nationalId,
-              siamCode: request.siamCode,
-              certificateFile: request.certificateFile,
-              description: request.description,
-            }
-          : undefined
-      }
+      pending={request?.status === "Pending" ? toForm(request) : undefined}
+      rejected={request?.status === "Rejected" ? toForm(request) : undefined}
     />
   );
 };

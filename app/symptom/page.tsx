@@ -14,14 +14,15 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 export const generateMetadata = () => getListPageMetadata("/symptom");
 
 const SymptomsList = async (ctx: {
-  searchParams: Promise<{ page?: string; search?: string }>;
+  searchParams: Promise<{ page?: string; search?: string; category?: string }>;
 }) => {
-  const { page: _page, search } = await ctx.searchParams;
+  const { page: _page, search, category } = await ctx.searchParams;
   const page = Number(_page || 1);
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
   const params = new URLSearchParams();
   params.append("page", page.toString());
   if (search) params.append("query", search);
+  if (category) params.append("category", category);
   const [data, textContent] = await Promise.all([
     getPublicData<SymptomsListPageProps>(`symptom?${params.toString()}`),
     getScopedTextContent(["symptomsList", "symptomCard"]),

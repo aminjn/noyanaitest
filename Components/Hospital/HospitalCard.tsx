@@ -62,19 +62,18 @@ const HospitalCard = ({
             <span>{node.province.name}</span>
           </div>
         )}
-        <div className={`${classes.counts} ${txsRegular}`}>
-          <div className={classes.count}>
-            <Ixon width=".75rem"></Ixon>
-            <span>{getContent("nBeds", [node.bedCount.toString()])}</span>
+        {/* real numbers only: the speciality count used to be a fixed "6" */}
+        {!!node.bedCount && (
+          <div className={`${classes.counts} ${txsRegular}`}>
+            <div className={classes.count}>
+              <Ixon width=".75rem">
+                <StetoscopeIcon />
+              </Ixon>
+              <span>{getContent("nBeds", [String(node.bedCount)])}</span>
+            </div>
           </div>
-          <div className={classes.count}>
-            <Ixon width=".75rem">
-              <StetoscopeIcon />
-            </Ixon>
-            <span>{getContent("nSpeciality", ["6"])}</span>
-          </div>
-        </div>
-        {!!node.tags.length && (
+        )}
+        {!!node.tags?.length && (
           <div className={classes.tags}>
             {node.tags.map((tag) => (
               <Badge

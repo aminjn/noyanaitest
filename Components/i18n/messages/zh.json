@@ -2121,5 +2121,7 @@
  "phSetupLocation": "在地图上标注药店（用于地图和配送）",
  "phSetupProducts": "上架第一个带价格的商品",
  "siteTitle": "NoyanAI | 预约医生、在线问诊与药店",
- "noOnlineBooking": "不支持在线预约"
+ "noOnlineBooking": "不支持在线预约",
+ "rejectedApplicationTitle": "您之前的申请未通过",
+ "rejectedApplicationLegend": "请更正资料和文件后重新提交。如需了解未通过的原因，请联系客服。"
 }

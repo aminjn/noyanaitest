@@ -2121,5 +2121,7 @@
  "phSetupLocation": "Marca la farmacia en el mapa (para el mapa y los repartidores)",
  "phSetupProducts": "Publica tu primer producto con precio",
  "siteTitle": "NoyanAI | Citas médicas, consultas online y farmacia",
- "noOnlineBooking": "Sin reserva en línea"
+ "noOnlineBooking": "Sin reserva en línea",
+ "rejectedApplicationTitle": "Su solicitud anterior fue rechazada",
+ "rejectedApplicationLegend": "Corrija sus datos y documentos y vuelva a enviarlos. Contacte con soporte para saber el motivo del rechazo."
 }
