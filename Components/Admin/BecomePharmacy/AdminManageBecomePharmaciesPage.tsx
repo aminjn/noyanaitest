@@ -13,6 +13,7 @@ import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomePharmaciesPage = () => {
   const { data, error } = useSWR<IBecomePharmacyRequest<{ user: true }>[]>(
@@ -25,52 +26,52 @@ const AdminManageBecomePharmaciesPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های داروخانه شدن">
+        <WithTitle title={ta("درخواست های داروخانه شدن")}>
           <Table
             data={data}
             name="AdminManageBecomePharmacies"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               user: {
-                name: "کاربر",
-                value: (node) => node.user?.phone || "حذف شده",
+                name: ta("کاربر"),
+                value: (node) => node.user?.phone || ta("حذف شده"),
                 component: (node) =>
                   node.user ? (
                     <InlineLink href={adminPath(`/user/${node.user._id}`)}>
                       {node.user.phone}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
                 filter: "Text",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
               },
               siamCode: {
-                name: "کد سیام",
+                name: ta("کد سیام"),
                 value: (node) => node.siamCode,
                 filter: "Text",
               },
               nationalId: {
-                name: "کد ملی",
+                name: ta("کد ملی"),
                 value: (node) => node.nationalId,
                 filter: "Text",
               },
               createdAt: {
-                name: "تاریخ ثبت",
+                name: ta("تاریخ ثبت"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/becomepharmacy/${node._id}`)}
-                      title="بررسی"
+                      title={ta("بررسی")}
                     >
                       <EditIcon />
                     </IconLink>

@@ -14,6 +14,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { adminPath } from "@/Components/helpers/adminPath";
 import InlineLink from "../UI/InlineLink";
 import classes from "./AdminSmsSettingsPage.module.css";
+import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 
 // Super admin: SMS gateway (IPPanel) credentials, set here instead of only
 // in the server's .env (which stays the fallback). The token is never shown
@@ -37,9 +38,15 @@ type SmsSettings = {
 };
 
 const sourceLabel = {
-  panel: "از همین صفحه",
-  env: "از فایل ‎.env سرور",
-  none: "تنظیم نشده",
+  get panel() {
+  return ta("از همین صفحه");
+},
+  get env() {
+  return ta("از فایل ‎.env سرور");
+},
+  get none() {
+  return ta("تنظیم نشده");
+},
 } as const;
 
 const AdminSmsSettingsPage = () => {
@@ -55,14 +62,14 @@ const AdminSmsSettingsPage = () => {
   const [test, setTest] = useState<Record<string, unknown> | null>(null);
 
   return (
-    <WithTitle title="تنظیمات درگاه پیامک">
+    <WithTitle title={ta("تنظیمات درگاه پیامک")}>
       <HandleLoading data={!!data} error={error}>
         {!!data && (
           <>
             <Box className={classes.box}>
-              <span className={classes.sectionTitle}>وضعیت فعلی</span>
+              <span className={classes.sectionTitle}>{ta("وضعیت فعلی")}</span>
               <div className={classes.checkRow}>
-                <span className={classes.checkTitle}>توکن:</span>
+                <span className={classes.checkTitle}>{ta("توکن:")}</span>
                 <Badge
                   size="S"
                   radius="High"
@@ -78,62 +85,60 @@ const AdminSmsSettingsPage = () => {
                 )}
               </div>
               <div className={classes.checkRow}>
-                <span className={classes.checkTitle}>شماره فرستنده:</span>
+                <span className={classes.checkTitle}>{ta("شماره فرستنده:")}</span>
                 <span className={classes.checkValue} dir="ltr">
                   {data.effective.fromNumber || "—"}
                 </span>
               </div>
               <div className={classes.checkRow}>
-                <span className={classes.checkTitle}>آدرس ارسال:</span>
+                <span className={classes.checkTitle}>{ta("آدرس ارسال:")}</span>
                 <span className={classes.checkValue} dir="ltr">
                   {data.effective.url}
                 </span>
               </div>
               {data.dryRun && (
                 <p className={classes.note}>
-                  تا وقتی توکن تنظیم نشده (یا سرور در حالت development است)
-                  پیامکی ارسال نمی‌شود و فقط در لاگ سرور ثبت می‌شود.
+                  {ta("تا وقتی توکن تنظیم نشده (یا سرور در حالت development است) پیامکی ارسال نمی‌شود و فقط در لاگ سرور ثبت می‌شود.")}
                 </p>
               )}
               {!!data.updatedAt && (
                 <p className={classes.note}>
-                  {`آخرین تغییر: ${new Date(data.updatedAt).toLocaleString("fa-IR")}${data.updatedBy?.phone ? ` - ${data.updatedBy.phone}` : ""}`}
+                  {ta("آخرین تغییر: ${1}${2}", [new Date(data.updatedAt).toLocaleString(adminIntlTag()), data.updatedBy?.phone ? ` - ${data.updatedBy.phone}` : ""])}
                 </p>
               )}
             </Box>
 
             <Box className={classes.box}>
-              <span className={classes.sectionTitle}>اطلاعات API پیامک</span>
+              <span className={classes.sectionTitle}>{ta("اطلاعات API پیامک")}</span>
               <p className={classes.note}>
-                توکن را از پنل آی‌پی‌پنل (بخش توسعه‌دهندگان / کلید دسترسی)
-                بردارید. کد هر پیامک (پترن) جداگانه در صفحه‌ی{" "}
+                {ta("توکن را از پنل آی‌پی‌پنل (بخش توسعه‌دهندگان / کلید دسترسی) بردارید. کد هر پیامک (پترن) جداگانه در صفحه‌ی")}{" "}
                 <InlineLink href={adminPath("/smsPatterns")}>
-                  پترن‌های پیامک
+                  {ta("پترن‌های پیامک")}
                 </InlineLink>{" "}
-                وارد می‌شود.
+                {ta("وارد می‌شود.")}
               </p>
               <div className={classes.grid}>
                 <Input
-                  title={data.tokenSet ? "توکن API جدید" : "توکن API"}
+                  title={data.tokenSet ? ta("توکن API جدید") : ta("توکن API")}
                   type="password"
                   onChange={(e) => setToken(e.target.value)}
                 />
                 <Input
-                  title="شماره فرستنده (مثلا ‎+983000505)"
+                  title={ta("شماره فرستنده (مثلا ‎+983000505)")}
                   defaultValue={data.fromNumber}
                   onChange={(e) => setFromNumber(e.target.value)}
                 />
                 <Input
-                  title="آدرس ارسال (خالی = پیش‌فرض آی‌پی‌پنل)"
+                  title={ta("آدرس ارسال (خالی = پیش‌فرض آی‌پی‌پنل)")}
                   defaultValue={data.requestUrl}
                   onChange={(e) => setRequestUrl(e.target.value)}
                 />
               </div>
               {data.tokenSet && (
                 <p className={classes.note}>
-                  {`توکن ذخیره‌شده: `}
+                  {ta("توکن ذخیره‌شده: ")}
                   <span dir="ltr">{data.tokenHint}</span>
-                  {" - فیلد توکن را خالی بگذارید تا همان بماند."}
+                  {ta(" - فیلد توکن را خالی بگذارید تا همان بماند.")}
                 </p>
               )}
               <div className={classes.actions}>
@@ -147,7 +152,7 @@ const AdminSmsSettingsPage = () => {
                     })
                   }
                 >
-                  ذخیره
+                  {ta("ذخیره")}
                 </Button>
                 {data.tokenSet && (
                   <Button
@@ -156,7 +161,7 @@ const AdminSmsSettingsPage = () => {
                     isLoading={!!save?.clearToken}
                     onClick={() => setSave({ clearToken: true })}
                   >
-                    حذف توکن ذخیره‌شده
+                    {ta("حذف توکن ذخیره‌شده")}
                   </Button>
                 )}
               </div>
@@ -164,7 +169,7 @@ const AdminSmsSettingsPage = () => {
                 path={save ? `${API}/admin/sms/settings` : null}
                 method="POST"
                 payload={save || undefined}
-                successMessage="تنظیمات پیامک ذخیره شد"
+                successMessage={ta("تنظیمات پیامک ذخیره شد")}
                 onDone={(status) => {
                   setSave(null);
                   if (status) {
@@ -176,15 +181,13 @@ const AdminSmsSettingsPage = () => {
             </Box>
 
             <Box className={classes.box}>
-              <span className={classes.sectionTitle}>پیامک آزمایشی</span>
+              <span className={classes.sectionTitle}>{ta("پیامک آزمایشی")}</span>
               <p className={classes.note}>
-                پترن کد ورود (OTP_PATTERN) با کد نمونه‌ی 12345 به این شماره
-                فرستاده می‌شود؛ اگر درگاه خطا بدهد، متن خطا همان‌جا نمایش داده
-                می‌شود.
+                {ta("پترن کد ورود (OTP_PATTERN) با کد نمونه‌ی 12345 به این شماره فرستاده می‌شود؛ اگر درگاه خطا بدهد، متن خطا همان‌جا نمایش داده می‌شود.")}
               </p>
               <div className={classes.grid}>
                 <Input
-                  title="شماره موبایل (مثلا 09121234567)"
+                  title={ta("شماره موبایل (مثلا 09121234567)")}
                   inputMode="numeric"
                   onChange={(e) => setTestPhone(e.target.value)}
                 />
@@ -194,7 +197,7 @@ const AdminSmsSettingsPage = () => {
                 isLoading={!!test}
                 onClick={() => testPhone.trim() && setTest({ phone: testPhone.trim() })}
               >
-                ارسال پیامک آزمایشی
+                {ta("ارسال پیامک آزمایشی")}
               </Button>
               <Act
                 path={test ? `${API}/admin/sms/test` : null}
@@ -202,8 +205,8 @@ const AdminSmsSettingsPage = () => {
                 payload={test || undefined}
                 successMessage={
                   data.dryRun
-                    ? "حالت آزمایشی: پیامک ارسال نشد و فقط در لاگ سرور ثبت شد"
-                    : "پیامک آزمایشی ارسال شد"
+                    ? ta("حالت آزمایشی: پیامک ارسال نشد و فقط در لاگ سرور ثبت شد")
+                    : ta("پیامک آزمایشی ارسال شد")
                 }
                 onDone={() => setTest(null)}
               />

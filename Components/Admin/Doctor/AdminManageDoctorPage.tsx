@@ -16,6 +16,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import AdminManageDoctorActionsTab from "./AdminManageDoctorActionsTab";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 const AdminManageDoctorPage = () => {
   const params = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<
@@ -37,7 +38,7 @@ const AdminManageDoctorPage = () => {
             name="AdminManageDoctor"
             items={[
               {
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 icon: <InfoIcon />,
                 id: "Info",
                 content: (
@@ -47,7 +48,7 @@ const AdminManageDoctorPage = () => {
               ...(hasAccess("GalleryItem", "readAll")
                 ? [
                     {
-                      title: "گالری",
+                      title: ta("گالری"),
                       id: "Gallery",
                       content: <AdminManageDoctorGalleryTab node={data} />,
                       icon: <InfoIcon />,
@@ -55,7 +56,7 @@ const AdminManageDoctorPage = () => {
                   ]
                 : []),
               {
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 id: "Meta",
                 icon: <InfoIcon />,
                 content: (
@@ -66,7 +67,7 @@ const AdminManageDoctorPage = () => {
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: <AdminManageDoctorActionsTab node={data} />,

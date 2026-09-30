@@ -22,6 +22,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HospitalCategoryPopulation = Population<Record<never, never>>;
 
@@ -41,10 +42,10 @@ const CreateHospitalCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
       <CreateForm<IHospitalCategory>
         onCancel={() => closePopup()}
         renderer={{
-          name: { type: "text", title: "نام" },
-          slug: { type: "text", title: "اسلاگ" },
-          isActive: { type: "bool", title: "فعال" },
-          order: { type: "number", title: "رتبه" },
+          name: { type: "text", title: ta("نام") },
+          slug: { type: "text", title: ta("اسلاگ") },
+          isActive: { type: "bool", title: ta("فعال") },
+          order: { type: "number", title: ta("رتبه") },
         }}
         hookProps={{
           path: `${API}/auto/hospitalCategory`,
@@ -72,7 +73,7 @@ const DeleteHospitalCategoryPopup = ({
     <Fragment>
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         isLoading={isLoading}
       />
       <Act
@@ -101,10 +102,10 @@ const AdminManageHospitalCategoriesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دسته بندی بیمارتان ها"
+          title={ta("دسته بندی بیمارتان ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateHospitalCategory",
@@ -117,15 +118,15 @@ const AdminManageHospitalCategoriesPage = () => {
             data={data}
             name="AdminManageHospitalCategories"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -138,18 +139,18 @@ const AdminManageHospitalCategoriesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/hospitalCategory/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalCategory",

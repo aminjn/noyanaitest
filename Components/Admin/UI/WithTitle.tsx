@@ -16,6 +16,7 @@ import IconButton from "./IconButton";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import { useRouter } from "@/Components/i18n/navigation";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const WithTitle = ({
   children,
@@ -52,12 +53,12 @@ const WithTitle = ({
           <IconButton
             onClick={() => back()}
             variant="Neutral"
-            title="بازگشت"
+            title={ta("بازگشت")}
             style={{ transform: "rotateZ(180deg)" }}
           >
             <ArrowLeftIcon />
           </IconButton>
-          <Title>{title}</Title>
+          <Title>{typeof title === "string" ? ta(title) : title}</Title>
         </div>
         <div className={classes.headerActions}>
           {(!!actions?.length || !!collapsed) && (
@@ -74,11 +75,11 @@ const WithTitle = ({
                         size="M"
                         leadIcon={
                           actions[0].icon ||
-                          (actions[0].title === "جدید" ? <PlusIcon /> : undefined)
+                          ([ta("جدید"), "جدید"].includes(actions[0].title) ? <PlusIcon /> : undefined)
                         }
                         onClick={actions[0].action}
                       >
-                        {actions[0].title}
+                        {ta(actions[0].title)}
                       </Button>
                     ) : (
                       <Fragment>
@@ -116,7 +117,7 @@ const WithTitle = ({
                                   {action.icon}
                                 </Ixon>
                               )}
-                              <span>{action.title}</span>
+                              <span>{ta(action.title)}</span>
                             </button>
                           ))}
                         </div>

@@ -3,6 +3,7 @@ import CreateForm from "../Admin/UI/CreateForm";
 import { API } from "../config";
 import usePopup from "../Hooks/usePopup";
 import { IBlogMedia } from "./AdminManageBlogMediasPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateBlogMediaPopup = ({
   mutate,
@@ -13,7 +14,7 @@ const MutateBlogMediaPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard title="رسانه‌ی مقاله">
+    <PopupCard title={ta("رسانه‌ی مقاله")}>
       <CreateForm
         onCancel={() => closePopup("MutateBlogMedia")}
         hookProps={{
@@ -27,8 +28,8 @@ const MutateBlogMediaPopup = ({
           },
         }}
         renderer={{
-          name: { type: "text", title: "نام" },
-          file: { type: "image", title: "تصویر" },
+          name: { type: "text", title: ta("نام") },
+          file: { type: "image", title: ta("تصویر") },
         }}
         styleManaged
         defaultValue={defaultValue}

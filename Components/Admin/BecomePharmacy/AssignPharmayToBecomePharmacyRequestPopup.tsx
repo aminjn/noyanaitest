@@ -8,6 +8,7 @@ import NodesSelector from "@/Components/UI/NodesSelector";
 import PopupCard from "@/Components/UI/PopupCard";
 import TableActions from "../UI/TableActions";
 import Button from "@/Components/UI/Button";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AssignPharmacyToBecomePharmacyRequestPopup = ({
   mutate,
@@ -21,7 +22,7 @@ const AssignPharmacyToBecomePharmacyRequestPopup = ({
     path: (inp) => `${API}/auto/pharmacy/${inp.pharmacy}`,
     method: "POST",
     hasProblem: (inp) => {
-      if (!inp.pharmacy) return "لطفا داروخانه را انتخاب نمایید";
+      if (!inp.pharmacy) return ta("لطفا داروخانه را انتخاب نمایید");
     },
     mutator: () => ({ user: node.user?._id }),
     successCb: () => {
@@ -36,7 +37,7 @@ const AssignPharmacyToBecomePharmacyRequestPopup = ({
         <NodesSelector
           path={`${API}/auto/pharmacy`}
           multi={false}
-          title="داروخانه"
+          title={ta("داروخانه")}
           getOptionLabel={(node) =>
             (node as IPharmacy).name || (node as IPharmacy)._id
           }
@@ -48,10 +49,10 @@ const AssignPharmacyToBecomePharmacyRequestPopup = ({
         />
         <TableActions>
           <Button type="submit" isLoading={isLoading}>
-            تایید
+            {ta("تایید")}
           </Button>
           <Button variant="Neutral" type="button" onClick={() => closePopup()}>
-            انصراف
+            {ta("انصراف")}
           </Button>
         </TableActions>
       </Form>

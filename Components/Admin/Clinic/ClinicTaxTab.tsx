@@ -11,6 +11,7 @@ import CreateForm from "../UI/CreateForm";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./ClinicTaxTab.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/ClinicTaxSettings.ts - one doc per clinic (unique
 // on `clinic`), fetched here by filtering the generic
@@ -48,7 +49,7 @@ const ClinicTaxTab = ({ node }: { node: IClinic }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="درصد مالیات پیش‌فرض سیستم (در صورت تنظیم نشدن)"
+                title={ta("درصد مالیات پیش‌فرض سیستم (در صورت تنظیم نشدن)")}
                 value={`${globalSettings.defaultClinicTaxPercent}%`}
               />
             </List>
@@ -65,7 +66,7 @@ const ClinicTaxTab = ({ node }: { node: IClinic }) => {
             }}
             renderer={{
               taxPercent: {
-                title: "درصد مالیات این کلینیک",
+                title: ta("درصد مالیات این کلینیک"),
                 type: "number",
                 required: true,
               },

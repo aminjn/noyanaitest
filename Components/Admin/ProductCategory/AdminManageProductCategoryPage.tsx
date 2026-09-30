@@ -8,6 +8,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageProductCategoryPage = () => {
   const { nodeId } = useParams();
@@ -23,9 +24,9 @@ const AdminManageProductCategoryPage = () => {
           <CreateForm
             defaultValue={data}
             renderer={{
-              name: { title: "نام", type: "text" },
-              order: { title: "رتبه", type: "number" },
-              isActive: { type: "bool", title: "فعال" },
+              name: { title: ta("نام"), type: "text" },
+              order: { title: ta("رتبه"), type: "number" },
+              isActive: { type: "bool", title: ta("فعال") },
             }}
             hookProps={{
               path: `${API}/auto/productCategory/${data._id}`,

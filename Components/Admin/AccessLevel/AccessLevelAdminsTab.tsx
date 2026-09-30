@@ -12,6 +12,7 @@ import RemoveAccessLevelUserPopup from "./RemoveAccessLevelUserPopup";
 import { IUser, MongoDoc } from "@/Components/Hooks/useUser";
 import WithTitle from "../UI/WithTitle";
 import ConnectAccessLevelToUserPopup from "./ConnectAccessLevelToUserPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type UserAccessLevelPopulation = {
   UserPopulated?: boolean;
@@ -36,10 +37,10 @@ const AccessLevelAdminsTab = ({
 
   return (
     <WithTitle
-      title="ادمین های دارای این دسترسی"
+      title={ta("ادمین های دارای این دسترسی")}
       actions={[
         {
-          title: "جدید",
+          title: ta("جدید"),
           action: () =>
             setPopup(
               "ConnectAccessLevelToUser",
@@ -56,7 +57,7 @@ const AccessLevelAdminsTab = ({
         data={node.admins}
         renderer={{
           phone: {
-            name: "موبایل",
+            name: ta("موبایل"),
             value: (node) => node.user?.phone,
             component: (node) =>
               node.user ? (
@@ -69,17 +70,17 @@ const AccessLevelAdminsTab = ({
             filter: "Text",
           },
           username: {
-            name: "نام کاربری",
+            name: ta("نام کاربری"),
             value: (node) => node.user?.username,
             filter: "Text",
           },
           actions: {
-            name: "عملیات",
+            name: ta("عملیات"),
             component: (node) => (
               <TableActions>
                 <IconButton
                   variant="Danger"
-                  title="حذف دسترسی"
+                  title={ta("حذف دسترسی")}
                   onClick={() =>
                     setPopup(
                       "RemoveAccessLevelUser",

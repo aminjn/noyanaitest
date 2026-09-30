@@ -32,6 +32,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ProductPackagePopulation = Population<{
   Owner: PharmacyPopulation;
@@ -84,19 +85,19 @@ const AdminManageProductPackagesPage = () => {
         owner: {
           type: "nodes",
           path: `${API}/auto/pharmacy`,
-          title: "صاحب",
+          title: ta("صاحب"),
           multi: false,
           getOptionLabel: (node) =>
             (node as IPharmacy).name || (node as IPharmacy)._id,
           getOptionValue: (node) => (node as IPharmacy)._id,
         },
-        name: { type: "text", title: "نام" },
+        name: { type: "text", title: ta("نام") },
       }}
       modelName="productPackage"
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         owner: {
-          name: "صاحب",
+          name: ta("صاحب"),
           value: (node) => node.owner?.name,
           filter: "Multi",
           component: (node) =>
@@ -109,25 +110,25 @@ const AdminManageProductPackagesPage = () => {
             ),
         },
         price: {
-          name: "قیمت",
+          name: ta("قیمت"),
           value: (node) => node.price,
           component: (node) => currencize(node.price || 0),
           filter: "Number",
         },
         discount: {
-          name: "تخفیف",
+          name: ta("تخفیف"),
           value: (node) => node.discount,
           filter: "Number",
           component: (node) => currencize(node.discount || 0),
         },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -140,18 +141,18 @@ const AdminManageProductPackagesPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/productPackage/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",
@@ -169,7 +170,7 @@ const AdminManageProductPackagesPage = () => {
           ),
         },
       })}
-      title="بسته محصول"
+      title={ta("بسته محصول")}
     />
   );
 };

@@ -10,6 +10,7 @@ import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { IFinanceUser, transactionKindDict, userLabel } from "./adminFinance";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 interface IAdminTransactionRow {
   _id: string;
@@ -40,16 +41,16 @@ const AdminFinanceTransactionsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="تراکنش‌های کیف پول">
+        <WithTitle title={ta("تراکنش‌های کیف پول")}>
           <p style={{ marginBottom: "1rem" }}>
-            {`درآمد پلتفرم از کمیسیون (کل تسویه‌ها): ${currencize(body?.commissionTotal || 0)} تومان`}
+            {ta("درآمد پلتفرم از کمیسیون (کل تسویه‌ها): ${1} تومان", [currencize(body?.commissionTotal || 0)])}
           </p>
           <Table
             name="AdminFinanceTransactions"
             data={data}
             renderer={{
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => userLabel(node.user),
                 filter: "Text",
                 component: (node) =>
@@ -62,28 +63,28 @@ const AdminFinanceTransactionsPage = () => {
                   ),
               },
               amount: {
-                name: "مبلغ (تومان)",
+                name: ta("مبلغ (تومان)"),
                 value: (node) => node.amount,
                 component: (node) =>
                   `${node.amount > 0 ? "+" : node.amount < 0 ? "−" : ""}${currencize(Math.abs(node.amount || 0))}`,
                 filter: "Number",
               },
               commission: {
-                name: "کمیسیون نویان (تومان)",
+                name: ta("کمیسیون نویان (تومان)"),
                 value: (node) => node.commission || 0,
                 component: (node) =>
                   node.commission
-                    ? `${currencize(node.commission)} (${node.commissionPercent ?? 0}٪ از ${currencize(node.grossAmount || 0)})`
+                    ? ta("${1} (${2}٪ از ${3})", [currencize(node.commission), node.commissionPercent ?? 0, currencize(node.grossAmount || 0)])
                     : "—",
                 filter: "Number",
               },
               kind: {
-                name: "بابت",
+                name: ta("بابت"),
                 value: (node) => transactionKindDict[node.kind] || node.kind,
                 filter: "Set",
               },
               createdAt: {
-                name: "تاریخ",
+                name: ta("تاریخ"),
                 value: (node) =>
                   node.createdAt ? new Date(node.createdAt) : undefined,
                 filter: "Date",

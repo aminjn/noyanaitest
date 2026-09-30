@@ -12,6 +12,7 @@ import {
   InsuranceDashboardModule,
   IBaseInsuranceLicense,
 } from "../BaseInsuranceLicense/AdminManageBaseInsuranceLicensesPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/InsuranceProfileLicense.ts - one doc per insurance
 // (unique on `owner`), fetched here by filtering the generic
@@ -57,9 +58,9 @@ const InsuranceProfileLicenseTab = ({ node }: { node: IInsurance }) => {
             successCb: () => mutate(),
           }}
           renderer={{
-            displayName: { title: "نام نمایشی", type: "text" },
+            displayName: { title: ta("نام نمایشی"), type: "text" },
             baseLicense: {
-              title: "پلن مرجع",
+              title: ta("پلن مرجع"),
               type: "nodes",
               multi: false,
               path: `${API}/auto/baseInsuranceLicense`,
@@ -69,10 +70,10 @@ const InsuranceProfileLicenseTab = ({ node }: { node: IInsurance }) => {
               getOptionValue: (node) => (node as IBaseInsuranceLicense)._id,
               getDefaultValue: (inp) => inp.baseLicense,
             },
-            startedAt: { title: "تاریخ شروع", type: "date" },
-            expiresAt: { title: "تاریخ انقضا", type: "date" },
+            startedAt: { title: ta("تاریخ شروع"), type: "date" },
+            expiresAt: { title: ta("تاریخ انقضا"), type: "date" },
             modules: {
-              title: "منوهای قابل دسترسی",
+              title: ta("منوهای قابل دسترسی"),
               type: "multiselect",
               options: insuranceDashboardModuleLabels,
             },

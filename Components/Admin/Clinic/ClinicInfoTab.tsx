@@ -13,6 +13,7 @@ import {
 } from "../Province/AdminManageProvincesPage";
 import { IClinicTag } from "../ClinicTag/AdminManageClinicTagsPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ClinicInfoTab = ({
   clinic,
@@ -32,14 +33,14 @@ const ClinicInfoTab = ({
       defaultValue={clinic}
       hookProvided={form}
       renderer={{
-        name: { type: "text", title: "نام" },
-        image: { type: "image", title: "تصویر" },
-        slug: { title: "اسلاگ", type: "text" },
-        description: { title: "توصیحات", type: "text" },
-        address: { title: "آدرس", type: "text" },
-        phone: { title: "شماره تلفن", type: "text" },
+        name: { type: "text", title: ta("نام") },
+        image: { type: "image", title: ta("تصویر") },
+        slug: { title: ta("اسلاگ"), type: "text" },
+        description: { title: ta("توصیحات"), type: "text" },
+        address: { title: ta("آدرس"), type: "text" },
+        phone: { title: ta("شماره تلفن"), type: "text" },
         province: {
-          title: "استان",
+          title: ta("استان"),
           type: "nodes",
           path: `${API}/auto/province`,
           getOptionLabel: (node) =>
@@ -49,7 +50,7 @@ const ClinicInfoTab = ({
           getDefaultValue: (inp) => inp.province,
         },
         city: {
-          title: "شهر",
+          title: ta("شهر"),
           type: "nodes",
           getOptionLabel: (node) => (node as ICity).name || (node as ICity)._id,
           getOptionValue: (node) => (node as ICity)._id,
@@ -58,7 +59,7 @@ const ClinicInfoTab = ({
           path: `${API}/auto/city`,
         },
         district: {
-          title: "محله",
+          title: ta("محله"),
           getOptionLabel: (node) =>
             (node as IDistrict).name || (node as IDistrict)._id,
           type: "nodes",
@@ -67,12 +68,12 @@ const ClinicInfoTab = ({
           multi: false,
           path: `${API}/auto/district`,
         },
-        order: { type: "number", title: "رتبه" },
-        active: { type: "bool", title: "فعال" },
-        special: { type: "bool", title: "ویژه" },
+        order: { type: "number", title: ta("رتبه") },
+        active: { type: "bool", title: ta("فعال") },
+        special: { type: "bool", title: ta("ویژه") },
         category: {
           type: "nodes",
-          title: "دسته بندی",
+          title: ta("دسته بندی"),
           multi: false,
           getOptionLabel: (node) =>
             (node as IClinicCategory).name || (node as IClinicCategory)._id,
@@ -84,7 +85,7 @@ const ClinicInfoTab = ({
         tags: {
           type: "nodes",
           multi: true,
-          title: "تگ ها",
+          title: ta("تگ ها"),
           getOptionLabel: (node) =>
             (node as IClinicTag).name || (node as IClinicTag)._id,
           getOptionValue: (node) => (node as IClinicTag)._id,
@@ -94,22 +95,22 @@ const ClinicInfoTab = ({
         insurances: {
           type: "nodes",
           multi: true,
-          title: "بیمه ها",
+          title: ta("بیمه ها"),
           path: `${API}/auto/insurance`,
           getOptionLabel: (node) =>
             (node as IInsurance).name || (node as IInsurance)._id,
           getOptionValue: (node) => (node as IInsurance)._id,
           getDefaultValue: (inp) => inp.insurances,
         },
-        clinicCode: { type: "text", title: "کد کلینیک" },
-        personelCount: { type: "number", title: "تغداد پرسنل" },
-        establishment: { type: "text", title: "تاسیس" },
-        website: { type: "text", title: "سایت" },
-        mail: { type: "text", title: "ایمیل" },
-        businessTimes: { type: "text", title: "ساعات کاری" },
-        services: { title: "خدمات", type: "strings" },
-        certificates: { title: "اعتبار نامه ها", type: "strings" },
-        summary: { type: "text", title: "حلاصه" },
+        clinicCode: { type: "text", title: ta("کد کلینیک") },
+        personelCount: { type: "number", title: ta("تغداد پرسنل") },
+        establishment: { type: "text", title: ta("تاسیس") },
+        website: { type: "text", title: ta("سایت") },
+        mail: { type: "text", title: ta("ایمیل") },
+        businessTimes: { type: "text", title: ta("ساعات کاری") },
+        services: { title: ta("خدمات"), type: "strings" },
+        certificates: { title: ta("اعتبار نامه ها"), type: "strings" },
+        summary: { type: "text", title: ta("حلاصه") },
       }}
     />
   );

@@ -22,6 +22,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import EditDoctorJoinHospitalStatusPopup from "./EditDoctorJoinHospitalStatusPopup";
 import DeleteDoctorJoinHospitalPopup from "./DeleteDoctorJoinHospitalPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorJoinHospitalsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -38,12 +39,12 @@ const AdminManageDoctorJoinHospitalsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های عضویت پزشکان در بیمارستان ها">
+        <WithTitle title={ta("درخواست های عضویت پزشکان در بیمارستان ها")}>
           <Table
             data={data}
             renderer={{
               doctor: {
-                name: "پزشک",
+                name: ta("پزشک"),
                 value: (node) =>
                   node.doctor ? getDoctorProfileLabel(node.doctor) : "",
                 component: (node) =>
@@ -54,12 +55,12 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                       {getDoctorProfileLabel(node.doctor)}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
                 filter: "Multi",
               },
               hospital: {
-                name: "بیمارستان",
+                name: ta("بیمارستان"),
                 value: (node) => node.hospital?.name,
                 filter: "Multi",
                 component: (node) =>
@@ -68,36 +69,36 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                       {node.hospital.name || node.hospital._id}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => doctorJoinHospitalStatusesDict[node.status],
                 filter: "Set",
               },
               submissionParty: {
-                name: "ارسال‌کننده",
+                name: ta("ارسال‌کننده"),
                 value: (node) =>
                   joinHospitalSubmissionPartyDict[node.submissionParty],
                 filter: "Set",
               },
               submittedAt: {
-                name: "زمان ثبت",
+                name: ta("زمان ثبت"),
                 value: (node) => new Date(node.submittedAt),
                 filter: "Date",
               },
               statusLastChangedAt: {
-                name: "آخرین تغییر وضعیت",
+                name: ta("آخرین تغییر وضعیت"),
                 value: (node) => new Date(node.statusLastChangedAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="تغییر وضعیت"
+                      title={ta("تغییر وضعیت")}
                       onClick={() =>
                         setPopup(
                           "EditDoctorJoinHospital",
@@ -112,7 +113,7 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDoctorJoinHospital",

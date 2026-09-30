@@ -8,6 +8,7 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useForm from "@/Components/Hooks/useForm";
 import PopupCard from "@/Components/UI/PopupCard";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AssignParaClinicToBecomeParaClinicRequestPopup = ({
   node,
@@ -22,7 +23,7 @@ const AssignParaClinicToBecomeParaClinicRequestPopup = ({
     path: (inp) => `${API}/auto/paraClinic/${inp.paraClinic}`,
     method: "POST",
     hasProblem: (inp) => {
-      if (!inp.paraClinic) return "پاراکلینیک را انتخاب نمایید";
+      if (!inp.paraClinic) return ta("پاراکلینیک را انتخاب نمایید");
     },
     mutator: () => ({
       user: node.user?._id,
@@ -43,15 +44,15 @@ const AssignParaClinicToBecomeParaClinicRequestPopup = ({
             (node as IParaClinic).name || (node as IParaClinic)._id
           }
           getOptionValue={(node) => (node as IParaClinic)._id}
-          title="انتخاب پاراکلینیک"
+          title={ta("انتخاب پاراکلینیک")}
           onChange={(e) =>
             setInput((prev) => ({ ...prev, paraClinic: e || undefined }))
           }
         />
         <FormActions>
-          <Button type="submit">تایید</Button>
+          <Button type="submit">{ta("تایید")}</Button>
           <Button type="button" onClick={() => closePopup()}>
-            انصراف
+            {ta("انصراف")}
           </Button>
         </FormActions>
       </Form>

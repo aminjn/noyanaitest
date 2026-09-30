@@ -34,6 +34,7 @@ import SpecsManager from "./SpecsManager";
 import ImagesManager from "./ImagesManager";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ProductDetailsManager = ({
   node,
@@ -46,18 +47,18 @@ const ProductDetailsManager = ({
     <CreateForm
       defaultValue={node}
       renderer={{
-        name: { type: "text", title: "نام" },
-        slug: { type: "text", title: "اسلاگ" },
-        order: { type: "number", title: "رتبه" },
-        isActive: { type: "bool", title: "فعال" },
-        summary: { type: "text", title: "خلاصه" },
-        whyChoose: { type: "text", title: "چرا این محصول" },
-        description: { type: "rtf", title: "توضیحات" },
-        details: { title: "مشخصات", type: "rtf" },
-        usage: { title: "نحوه مصرف", type: "rtf" },
-        warning: { title: "هشدار ها", type: "rtf" },
+        name: { type: "text", title: ta("نام") },
+        slug: { type: "text", title: ta("اسلاگ") },
+        order: { type: "number", title: ta("رتبه") },
+        isActive: { type: "bool", title: ta("فعال") },
+        summary: { type: "text", title: ta("خلاصه") },
+        whyChoose: { type: "text", title: ta("چرا این محصول") },
+        description: { type: "rtf", title: ta("توضیحات") },
+        details: { title: ta("مشخصات"), type: "rtf" },
+        usage: { title: ta("نحوه مصرف"), type: "rtf" },
+        warning: { title: ta("هشدار ها"), type: "rtf" },
         category: {
-          title: "دسته بندی",
+          title: ta("دسته بندی"),
           type: "nodes",
           multi: false,
           getOptionLabel: (node) =>
@@ -66,10 +67,10 @@ const ProductDetailsManager = ({
           getDefaultValue: (inp) => inp.category,
           path: `${API}/auto/productCategory`,
         },
-        image: { title: "نصویر", type: "image" },
-        original: { title: "اصالت", type: "text" },
+        image: { title: ta("نصویر"), type: "image" },
+        original: { title: ta("اصالت"), type: "text" },
         sameAs: {
-          title: "مشابهات",
+          title: ta("مشابهات"),
           type: "nodes",
           path: `${API}/auto/product`,
           getOptionLabel: (node) =>
@@ -78,7 +79,7 @@ const ProductDetailsManager = ({
           multi: true,
           getDefaultValue: (inp) => inp.sameAs,
         },
-        price: { title: "قیمت پایه", type: "number" },
+        price: { title: ta("قیمت پایه"), type: "number" },
       }}
       hookProps={{
         path: `${API}/auto/product/${node._id}`,
@@ -113,7 +114,7 @@ const DeleteProductSellerPopup = ({
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
       />
       <Act
         path={isLoading ? `${API}/auto/productSeller/${node._id}` : null}
@@ -147,7 +148,7 @@ const MutateProductSellerPopup = ({
         renderer={{
           seller: {
             type: "nodes",
-            title: "فروشنده",
+            title: ta("فروشنده"),
             multi: false,
             path: `${API}/auto/pharmacy`,
             getOptionLabel: (node) =>
@@ -155,13 +156,13 @@ const MutateProductSellerPopup = ({
             getOptionValue: (node) => (node as IPharmacy)._id,
             getDefaultValue: (inp) => inp.seller._id,
           },
-          order: { type: "number", title: "رتبه" },
-          isActive: { type: "bool", title: "فعال" },
-          price: { type: "number", title: "قیمت", price: true },
-          discount: { type: "number", title: "تخفیف", price: true },
-          special: { type: "bool", title: "ویژه" },
-          freeDelivery: { type: "bool", title: "ارسال رایگان" },
-          fastDelivery: { type: "bool", title: "ارسال سریغ" },
+          order: { type: "number", title: ta("رتبه") },
+          isActive: { type: "bool", title: ta("فعال") },
+          price: { type: "number", title: ta("قیمت"), price: true },
+          discount: { type: "number", title: ta("تخفیف"), price: true },
+          special: { type: "bool", title: ta("ویژه") },
+          freeDelivery: { type: "bool", title: ta("ارسال رایگان") },
+          fastDelivery: { type: "bool", title: ta("ارسال سریغ") },
         }}
         hookProps={{
           path: `${API}/auto/productSeller${node ? `/${node._id}` : ""}`,
@@ -190,10 +191,10 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="فروشندگان"
+          title={ta("فروشندگان")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateProductSeller",
@@ -210,7 +211,7 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
             data={data}
             renderer={{
               seller: {
-                name: "فروشنده",
+                name: ta("فروشنده"),
                 value: (node) => node.seller?.name || node.seller?._id,
                 component: (node) =>
                   node.seller ? (
@@ -220,32 +221,32 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                       {node.seller.name || node.seller._id}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
                 filter: "Multi",
               },
               price: {
-                name: "قیمت",
+                name: ta("قیمت"),
                 value: (node) => node.price,
                 component: (node) =>
                   node.price ? currencize(node.price) : "—",
                 filter: "Number",
               },
               discount: {
-                name: "تخفیف",
+                name: ta("تخفیف"),
                 value: (node) => node.discount,
                 component: (node) =>
                   node.discount ? currencize(node.discount) : "—",
                 filter: "Number",
               },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               fastDelivery: {
-                name: "تحویل سریع",
+                name: ta("تحویل سریع"),
                 value: (node) => booleanToValue[`${node.fastDelivery}`],
                 filter: "Set",
                 component: (node) => (
@@ -253,7 +254,7 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                 ),
               },
               freeDelivery: {
-                name: "ارسال رایگان",
+                name: ta("ارسال رایگان"),
                 value: (node) => booleanToValue[`${node.freeDelivery}`],
                 filter: "Set",
                 component: (node) => (
@@ -261,7 +262,7 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                 ),
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -274,11 +275,11 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateProductSeller",
@@ -293,7 +294,7 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteSeller",
@@ -334,26 +335,26 @@ const AdminManageProductPage = () => {
               {
                 id: "Details",
                 content: <ProductDetailsManager mutate={mutate} node={data} />,
-                title: "جزئیات",
+                title: ta("جزئیات"),
               },
               {
                 id: "Images",
                 content: <ProductImagesManager product={data} />,
-                title: "تصاویر",
+                title: ta("تصاویر"),
               },
               {
                 id: "Specs",
                 content: <ProductSpecsManager product={data} />,
-                title: "ویژگی ها",
+                title: ta("ویژگی ها"),
               },
               {
                 id: "Sellers",
                 content: <ProductSellersManager product={data} />,
-                title: "فروشندگان",
+                title: ta("فروشندگان"),
               },
               {
                 id: "Meta",
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 content: (
                   <PageMetaEditor
                     resourceType="/product/[slug]"

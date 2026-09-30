@@ -14,6 +14,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type FaqCategoryPopulation = Population<Record<never, never>>;
 
@@ -27,10 +28,18 @@ export interface IFaqCategory<
 }
 
 export const FaqCategoryFormRenderer: FormRenderer<IFaqCategory> = {
-  name: { type: "text", title: "نام" },
-  slug: { type: "text", title: "اسلاگ" },
-  isActive: { type: "bool", title: "فعال" },
-  order: { type: "number", title: "رتبه" },
+  name: { type: "text", get title() {
+  return ta("نام");
+} },
+  slug: { type: "text", get title() {
+  return ta("اسلاگ");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
 };
 
 const AdminManageFaqCategoriesPage = () => {
@@ -40,17 +49,17 @@ const AdminManageFaqCategoriesPage = () => {
     <NodesManager<IFaqCategory>
       create={FaqCategoryFormRenderer}
       modelName="faqCategory"
-      title="دسته بندی سوالات متداول"
+      title={ta("دسته بندی سوالات متداول")}
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "فعال",
+          name: ta("فعال"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "ترتیب",
+          name: ta("ترتیب"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -63,18 +72,18 @@ const AdminManageFaqCategoriesPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/faqCategory/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

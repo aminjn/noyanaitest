@@ -23,6 +23,7 @@ import {
   adminPinnedItems,
   canNotAdminOpen,
 } from "./adminMenu";
+import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 
 export { canNotAdminOpen } from "./adminMenu";
 
@@ -72,10 +73,10 @@ const ItemLink = ({
         {icon}
       </Ixon>
     )}
-    <span>{item.title}</span>
+    <span>{ta(item.title)}</span>
     {!!badge && (
       <span className={classes.badge}>
-        {badge > 99 ? "99+" : badge.toLocaleString("fa-IR")}
+        {badge > 99 ? "99+" : badge.toLocaleString(adminIntlTag())}
       </span>
     )}
   </Link>
@@ -104,7 +105,7 @@ const Group = ({
         <Ixon width="1.25rem" className={classes.icon}>
           {group.icon}
         </Ixon>
-        <span className={classes.groupTitle}>{group.title}</span>
+        <span className={classes.groupTitle}>{ta(group.title)}</span>
         <Ixon width="1rem" className={classes.chevron}>
           <ChevronIcon />
         </Ixon>
@@ -177,8 +178,8 @@ const AdminSidebar = () => {
             )
             .map((item) => ({
               id: `${section.id}:${item.href}`,
-              label: item.title,
-              hint: section.title,
+              label: ta(item.title),
+              hint: ta(section.title),
               icon: section.icon,
               href: adminPath(`/${item.href}`),
             })),
@@ -193,15 +194,15 @@ const AdminSidebar = () => {
         .filter((item) => isAdmin || !item.adminOnly)
         .map((item) => ({
         id: `pin:${item.href}`,
-        label: item.title,
+        label: ta(item.title),
         icon: item.icon,
         href: adminPath(item.href ? `/${item.href}` : ""),
       })),
       ...visibleGroups.flatMap((group) =>
         group.items.map((item) => ({
           id: `${group.id}:${item.href}`,
-          label: item.title,
-          hint: group.title,
+          label: ta(item.title),
+          hint: ta(group.title),
           icon: group.icon,
           href: adminPath(item.href ? `/${item.href}` : ""),
         })),
@@ -285,14 +286,14 @@ const AdminSidebar = () => {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="جستجو در منو… (Ctrl+K)"
+            placeholder={ta("جستجو در منو… (Ctrl+K)")}
           />
           {search && (
             <button
               type="button"
               className={classes.clear}
               onClick={() => setSearch("")}
-              aria-label="پاک کردن جستجو"
+              aria-label={ta("پاک کردن جستجو")}
             >
               <Ixon width="0.9rem">
                 <CloseIcon />
@@ -317,18 +318,18 @@ const AdminSidebar = () => {
             ))}
         {normalGroups.length > 0 && (
           <div className={classes.section}>
-            <span className={classes.sectionTitle}>مدیریت</span>
+            <span className={classes.sectionTitle}>{ta("مدیریت")}</span>
             {renderGroups(normalGroups)}
           </div>
         )}
         {superGroups.length > 0 && (
           <div className={classes.section}>
-            <span className={classes.sectionTitle}>سوپر ادمین</span>
+            <span className={classes.sectionTitle}>{ta("سوپر ادمین")}</span>
             {renderGroups(superGroups)}
           </div>
         )}
         {term && searchedGroups.length === 0 && (
-          <p className={classes.empty}>موردی پیدا نشد</p>
+          <p className={classes.empty}>{ta("موردی پیدا نشد")}</p>
         )}
       </nav>
     </aside>

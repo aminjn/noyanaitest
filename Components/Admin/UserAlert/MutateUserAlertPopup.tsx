@@ -8,6 +8,7 @@ import {
   FullUserAlert,
   userAlertToggleFormRenderer,
 } from "./AdminManageUserAlertsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateUserAlertPopup = ({
   mutate,
@@ -23,7 +24,7 @@ const MutateUserAlertPopup = ({
   return (
     <PopupCard
       title={
-        isEdit ? "ویرایش تنظیمات اطلاع‌رسانی" : "تنظیمات اطلاع‌رسانی جدید"
+        isEdit ? ta("ویرایش تنظیمات اطلاع‌رسانی") : ta("تنظیمات اطلاع‌رسانی جدید")
       }
     >
       <CreateForm
@@ -33,7 +34,7 @@ const MutateUserAlertPopup = ({
         renderer={{
           user: {
             type: "nodes",
-            title: "کاربر",
+            title: ta("کاربر"),
             path: `${API}/auto/user`,
             getOptionLabel: (n) => getUserLabel(n as IUser),
             getOptionValue: (n) => (n as IUser)._id,
@@ -49,7 +50,7 @@ const MutateUserAlertPopup = ({
             : `${API}/auto/userAlert`,
           method: "POST",
           hasProblem: (inp) => {
-            if (!isEdit && !inp.user) return "لطفا کاربر را انتخاب کنید";
+            if (!isEdit && !inp.user) return ta("لطفا کاربر را انتخاب کنید");
           },
           successCb: () => {
             mutate();

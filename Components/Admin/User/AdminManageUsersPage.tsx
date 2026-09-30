@@ -12,6 +12,7 @@ import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import Loading from "../UI/Loading";
 import ErrorMessage from "../UI/ErrorMessage";
 import { RoleBadge, displayPhone, faDate, num } from "./userShared";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 type UserRow = {
   _id: string;
@@ -33,10 +34,18 @@ type UsersResponse = {
 const PAGE_SIZE = 25;
 
 const roleTabs: { role: string; title: string }[] = [
-  { role: "", title: "همه" },
-  { role: "admin", title: "سوپر ادمین" },
-  { role: "notadmin", title: "کارمند" },
-  { role: "user", title: "کاربر" },
+  { role: "", get title() {
+  return ta("همه");
+} },
+  { role: "admin", get title() {
+  return ta("سوپر ادمین");
+} },
+  { role: "notadmin", get title() {
+  return ta("کارمند");
+} },
+  { role: "user", get title() {
+  return ta("کاربر");
+} },
 ];
 
 const AdminManageUsersPage = () => {
@@ -75,10 +84,10 @@ const AdminManageUsersPage = () => {
     <div className={classes.main}>
       <header className={classes.header}>
         <div>
-          <h1 className={classes.title}>کاربران</h1>
+          <h1 className={classes.title}>{ta("کاربران")}</h1>
           {data && (
             <span className={classes.subtitle}>
-              {`${num.format(allCount)} کاربر ثبت‌نام‌شده`}
+              {ta("${1} کاربر ثبت‌نام‌شده", [num.format(allCount)])}
             </span>
           )}
         </div>
@@ -93,7 +102,7 @@ const AdminManageUsersPage = () => {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="جستجو با موبایل، نام، نام کاربری یا کد ملی..."
+              placeholder={ta("جستجو با موبایل، نام، نام کاربری یا کد ملی...")}
             />
           </div>
           <div className={classes.tabs} role="tablist">
@@ -130,11 +139,11 @@ const AdminManageUsersPage = () => {
               <table className={classes.table}>
                 <thead>
                   <tr>
-                    <th>کاربر</th>
-                    <th>موبایل</th>
-                    <th>نقش</th>
-                    <th>تاریخ عضویت</th>
-                    <th aria-label="جزئیات" />
+                    <th>{ta("کاربر")}</th>
+                    <th>{ta("موبایل")}</th>
+                    <th>{ta("نقش")}</th>
+                    <th>{ta("تاریخ عضویت")}</th>
+                    <th aria-label={ta("جزئیات")} />
                   </tr>
                 </thead>
                 <tbody>
@@ -143,10 +152,10 @@ const AdminManageUsersPage = () => {
                       <td>
                         <Link href={adminPath(`/user/${user._id}`)} className={classes.userCell}>
                           <span className={classes.avatar}>
-                            {(user.name || user.username || "؟").trim().charAt(0)}
+                            {(user.name || user.username || ta("؟")).trim().charAt(0)}
                           </span>
                           <span className={classes.userName}>
-                            {user.name || user.username || "بدون نام"}
+                            {user.name || user.username || ta("بدون نام")}
                             {user.name && user.username && (
                               <span className={classes.userSub}>{user.username}</span>
                             )}
@@ -162,7 +171,7 @@ const AdminManageUsersPage = () => {
                         <Link
                           href={adminPath(`/user/${user._id}`)}
                           className={classes.rowLink}
-                          aria-label="مشاهده کاربر"
+                          aria-label={ta("مشاهده کاربر")}
                         >
                           <Ixon width="1rem">
                             <ChevronIcon />
@@ -174,7 +183,7 @@ const AdminManageUsersPage = () => {
                 </tbody>
               </table>
               {data.items.length === 0 && (
-                <p className={classes.empty}>کاربری با این مشخصات پیدا نشد</p>
+                <p className={classes.empty}>{ta("کاربری با این مشخصات پیدا نشد")}</p>
               )}
             </div>
 
@@ -185,15 +194,15 @@ const AdminManageUsersPage = () => {
                   disabled={page <= 1}
                   onClick={() => setPage((p) => p - 1)}
                 >
-                  قبلی
+                  {ta("قبلی")}
                 </button>
-                <span>{`صفحه ${num.format(page)} از ${num.format(pages)}`}</span>
+                <span>{ta("صفحه ${1} از ${2}", [num.format(page), num.format(pages)])}</span>
                 <button
                   type="button"
                   disabled={page >= pages}
                   onClick={() => setPage((p) => p + 1)}
                 >
-                  بعدی
+                  {ta("بعدی")}
                 </button>
               </div>
             )}

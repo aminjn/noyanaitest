@@ -9,6 +9,7 @@ import { BreadCrumpTrail } from "../Store/BreadCrumpStore";
 import { useTime } from "react-timer-hook";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -29,7 +30,7 @@ const BreadCrump = ({
         {trail.map((segment, i, arr) => (
           <Fragment key={segment.target}>
             <Link href={segment.target} className={classes.link}>
-              {segment.title}
+              {typeof segment.title === "string" ? ta(segment.title) : segment.title}
             </Link>
             {arr.length - 1 !== i && (
               <Ixon width="1.125rem" style={{ transform: "rotateZ(90deg)" }}>

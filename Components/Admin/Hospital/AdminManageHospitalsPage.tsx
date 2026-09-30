@@ -52,6 +52,7 @@ import {
 import OrderEditor from "../UI/OrderEditor";
 import { getUserLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HospitalPopulation = Population<{
   Province: ProvincePopulation;
@@ -180,10 +181,10 @@ const CreateHospitalPopup = ({ mutate }: { mutate: () => unknown }) => {
       <CreateForm<IHospital>
         onCancel={() => closePopup()}
         renderer={{
-          name: { type: "text", title: "نام" },
-          isActive: { type: "bool", title: "فعال" },
-          slug: { title: "اسلاگ", type: "text" },
-          order: { type: "number", title: "رتبه" },
+          name: { type: "text", title: ta("نام") },
+          isActive: { type: "bool", title: ta("فعال") },
+          slug: { title: ta("اسلاگ"), type: "text" },
+          order: { type: "number", title: ta("رتبه") },
         }}
         hookProps={{
           path: `${API}/auto/hospital`,
@@ -210,7 +211,7 @@ const DeleteHospitalPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />
@@ -241,10 +242,10 @@ const AdminManageHospitalsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="بیمارستان ها"
+          title={ta("بیمارستان ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateHospital",
@@ -258,36 +259,36 @@ const AdminManageHospitalsPage = () => {
             name="AdminManageHospitals"
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 value: (node) => node.name,
                 filter: "Text",
               },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               phone: {
-                name: "تلفن",
+                name: ta("تلفن"),
                 value: (node) => node.phone,
                 filter: "Text",
               },
               user: {
-                name: "حساب کاربری",
-                value: (node) => (node.user ? node.user.phone : "ندارد"),
+                name: ta("حساب کاربری"),
+                value: (node) => (node.user ? node.user.phone : ta("ندارد")),
                 component: (node) =>
                   node.user ? (
                     <InlineLink href={adminPath(`/user/${node.user._id}`)}>
                       {getUserLabel(node.user)}
                     </InlineLink>
                   ) : (
-                    "ندارد"
+                    ta("ندارد")
                   ),
                 filter: "Text",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -300,18 +301,18 @@ const AdminManageHospitalsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/hospital/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteHospital",

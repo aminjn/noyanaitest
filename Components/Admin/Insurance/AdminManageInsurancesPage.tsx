@@ -19,6 +19,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteInsurancePopup from "./DeleteInsurancePopup";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInsurancesPage = () => {
   const { data, error, mutate } = useSWR<IInsurance[]>(
@@ -32,10 +33,10 @@ const AdminManageInsurancesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="بیمه ها"
+          title={ta("بیمه ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateInsurance",
@@ -49,7 +50,7 @@ const AdminManageInsurancesPage = () => {
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 value: (node) => node.name,
                 component: (node) => (
                   <InlineLink href={adminPath(`/insurance/${node._id}`)}>
@@ -59,13 +60,13 @@ const AdminManageInsurancesPage = () => {
                 filter: "Text",
               },
               active: {
-                name: "فعال",
+                name: ta("فعال"),
                 component: (node) => <BooleanToIcon value={node.active} />,
                 value: (node) => booleanToValue[`${node.active}`],
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -78,18 +79,18 @@ const AdminManageInsurancesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/insurance/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteInsurance",

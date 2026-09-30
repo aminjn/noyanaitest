@@ -20,6 +20,7 @@ import IconButton from "../UI/IconButton";
 import DeleteSymptomPopup from "./DeleteSymptomPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageSymptomsPage = () => {
   const { data, error, mutate } = useSWR<ISymptom[]>(
@@ -33,10 +34,10 @@ const AdminManageSymptomsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="علائم"
+          title={ta("علائم")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateSymptom",
@@ -51,12 +52,12 @@ const AdminManageSymptomsPage = () => {
               name="AdminManageSymptoms"
               renderer={{
                 name: {
-                  name: "نام",
+                  name: ta("نام"),
                   value: (node) => node.name,
                   filter: "Text",
                 },
                 order: {
-                  name: "ترتیب",
+                  name: ta("ترتیب"),
                   value: (node) => node.order,
                   filter: "Number",
                   component: (node) => (
@@ -69,7 +70,7 @@ const AdminManageSymptomsPage = () => {
                   ),
                 },
                 genderSpecific: {
-                  name: "جنسیت",
+                  name: ta("جنسیت"),
                   value: (node) =>
                     node.genderSpecific
                       ? genderSpecificOptionsDict[node.genderSpecific]
@@ -77,18 +78,18 @@ const AdminManageSymptomsPage = () => {
                   filter: "Set",
                 },
                 actions: {
-                  name: "عملیات",
+                  name: ta("عملیات"),
                   component: (node) => (
                     <TableActions>
                       <IconLink
                         href={adminPath(`/symptom/${node._id}`)}
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                       >
                         <EditIcon />
                       </IconLink>
                       <IconButton
                         variant="Danger"
-                        title="حذف"
+                        title={ta("حذف")}
                         onClick={() =>
                           setPopup(
                             "DeleteSymptom",

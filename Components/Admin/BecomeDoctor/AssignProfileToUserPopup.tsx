@@ -5,6 +5,7 @@ import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 import { getDoctorProfileLabel, getUserLabel } from "../Lib/LabelGetters";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AssignDoctorProfileToUserPopup = ({
   mutate,
@@ -17,7 +18,7 @@ const AssignDoctorProfileToUserPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard title="اتصال پروفایل به کاربر">
+    <PopupCard title={ta("اتصال پروفایل به کاربر")}>
       <CreateForm<{ user: string; profile: string }>
         onCancel={() => closePopup()}
         renderer={{
@@ -29,7 +30,7 @@ const AssignDoctorProfileToUserPopup = ({
                   path: `${API}/auto/user`,
                   getOptionLabel: (node) => getUserLabel(node as IUser),
                   getOptionValue: (node) => (node as IUser)._id,
-                  title: "یوزر",
+                  title: ta("یوزر"),
                 },
               }),
           ...(profile
@@ -41,7 +42,7 @@ const AssignDoctorProfileToUserPopup = ({
                   getOptionLabel: (node) =>
                     getDoctorProfileLabel(node as IDoctorProfile),
                   getOptionValue: (node) => (node as IDoctorProfile)._id,
-                  title: "پروفایل",
+                  title: ta("پروفایل"),
                 },
               }),
         }}
@@ -52,8 +53,8 @@ const AssignDoctorProfileToUserPopup = ({
             : (inp) => `${API}/auto/doctorprofile/${inp.profile}`,
           method: "POST",
           hasProblem: (inp) => {
-            if (!profile && !inp.profile) return "لطفا پروفایل را انتخاب کنید";
-            if (!user && !inp.user) return "لطفا یوزر را انتخاب کنید";
+            if (!profile && !inp.profile) return ta("لطفا پروفایل را انتخاب کنید");
+            if (!user && !inp.user) return ta("لطفا یوزر را انتخاب کنید");
           },
           mutator: (inp) => ({ user: user ? user._id : inp.user }),
           successCb: () => {

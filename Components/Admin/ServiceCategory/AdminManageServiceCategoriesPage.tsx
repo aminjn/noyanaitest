@@ -20,6 +20,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import CreateForm from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ServiceCategoryPopulation = Population<Record<never, never>>;
 export interface IServiceCategory<
@@ -45,10 +46,10 @@ const MutateServiceCategoryPopup = ({
       <CreateForm
         defaultValue={node}
         renderer={{
-          title: { title: "عنوان", type: "text" },
-          isActive: { title: "فعال", type: "bool" },
-          order: { title: "رتبه", type: "number" },
-          slug: { title: "اسلاگ", type: "text" },
+          title: { title: ta("عنوان"), type: "text" },
+          isActive: { title: ta("فعال"), type: "bool" },
+          order: { title: ta("رتبه"), type: "number" },
+          slug: { title: ta("اسلاگ"), type: "text" },
         }}
         hookProps={{
           path: `${API}/auto/serviceCategory${!!node ? `/${node._id}` : ""}`,
@@ -80,7 +81,7 @@ const DeleteServiceCategoryPopup = ({
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
-        message="آیا از حذف این آیتم مطمئنید؟"
+        message={ta("آیا از حذف این آیتم مطمئنید؟")}
       />
       <Act
         path={isLoading ? `${API}/auto/serviceCategory/${node._id}` : null}
@@ -108,10 +109,10 @@ const AdminManageServiceCategoriesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دسته بندی های خدمات"
+          title={ta("دسته بندی های خدمات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateServiceCategory",
@@ -125,18 +126,18 @@ const AdminManageServiceCategoriesPage = () => {
             name="AdminManageServiceCategories"
             renderer={{
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 value: (node) => node.title,
                 filter: "Text",
               },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -149,11 +150,11 @@ const AdminManageServiceCategoriesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateServiceCategory",
@@ -168,7 +169,7 @@ const AdminManageServiceCategoriesPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteServiceCategory",

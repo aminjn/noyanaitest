@@ -20,6 +20,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import ChangeBecomePharmacyRequestStatusPopup from "./ChangeBecomePharmacyRequestStatusPopup";
 import AssignPharmacyToBecomePharmacyRequestPopup from "./AssignPharmayToBecomePharmacyRequestPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomePharmacyPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -33,22 +34,22 @@ const AdminManageBecomePharmacyPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست داروخانه شدن">
+        <WithTitle title={ta("درخواست داروخانه شدن")}>
           <TabSystem
             name="AdminManageBecomePharmacy"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
                   <List>
                     <DataPair
-                      title="تاریخ ایجاد"
+                      title={ta("تاریخ ایجاد")}
                       value={<FormatDate value={data.createdAt} />}
                     />
                     <DataPair
-                      title="کاربر"
+                      title={ta("کاربر")}
                       value={
                         data.user ? (
                           <InlineLink
@@ -57,41 +58,41 @@ const AdminManageBecomePharmacyPage = () => {
                             {data.user?.phone || data.user?._id}
                           </InlineLink>
                         ) : (
-                          "حذف شده"
+                          ta("حذف شده")
                         )
                       }
                     />
                     <DataPair
                       value={becomeNodeStatusesDict[data.status]}
-                      title="وضعیت"
+                      title={ta("وضعیت")}
                     />
-                    <DataPair value={data.name} title="نام" />
-                    <DataPair title="کد سیام" value={data.siamCode} />
-                    <DataPair title="کد ملی" value={data.nationalId} />
+                    <DataPair value={data.name} title={ta("نام")} />
+                    <DataPair title={ta("کد سیام")} value={data.siamCode} />
+                    <DataPair title={ta("کد ملی")} value={data.nationalId} />
                     <DataPair
-                      title="تاریخ گواهی"
+                      title={ta("تاریخ گواهی")}
                       value={<FormatDate value={data.certificateDate} />}
                     />
                     <DataPair
-                      title="فایل گواهی"
+                      title={ta("فایل گواهی")}
                       value={
                         data.certificateFile ? (
                           <InlineLink
                             href={`${FilePath}/${data.certificateFile}`}
                           >
-                            مشاهده فایل
+                            {ta("مشاهده فایل")}
                           </InlineLink>
                         ) : (
-                          "ثبت نشده"
+                          ta("ثبت نشده")
                         )
                       }
                     />
-                    <DataPair title="توضیحات" value={data.description} />
+                    <DataPair title={ta("توضیحات")} value={data.description} />
                   </List>
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "actions",
                 icon: <InfoIcon />,
                 content: (
@@ -100,8 +101,8 @@ const AdminManageBecomePharmacyPage = () => {
                       requestPath="becomepharmacy"
                       nodeId={nodeId}
                       status={data.status}
-                      label="تأیید و ساخت داروخانه"
-                      done="داروخانه ساخته و فعال شد."
+                      label={ta("تأیید و ساخت داروخانه")}
+                      done={ta("داروخانه ساخته و فعال شد.")}
                       target={(id) => `/pharmacy/${id}`}
                       mutate={mutate}
                     />
@@ -116,7 +117,7 @@ const AdminManageBecomePharmacyPage = () => {
                         )
                       }
                     >
-                      تغییر وضعیت
+                      {ta("تغییر وضعیت")}
                     </Button>
                     <Button
                       onClick={() =>
@@ -129,7 +130,7 @@ const AdminManageBecomePharmacyPage = () => {
                         )
                       }
                     >
-                      تخصیص داروخانه
+                      {ta("تخصیص داروخانه")}
                     </Button>
                   </List>
                 ),

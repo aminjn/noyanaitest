@@ -8,6 +8,7 @@ import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorFaqPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -24,10 +25,10 @@ const AdminManageDoctorFaqPage = () => {
           <CreateForm
             defaultValue={data}
             renderer={{
-              question: { type: "text", title: "سوال" },
-              answer: { type: "text", title: "جواب" },
-              order: { type: "number", title: "رتبه" },
-              active: { type: "bool", title: "فعال" },
+              question: { type: "text", title: ta("سوال") },
+              answer: { type: "text", title: ta("جواب") },
+              order: { type: "number", title: ta("رتبه") },
+              active: { type: "bool", title: ta("فعال") },
             }}
             hookProps={{
               path: `${API}/auto/doctorfaq/${data._id}`,

@@ -10,6 +10,7 @@ import Button from "@/Components/UI/Button";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import useNotification from "@/Components/Hooks/useNotification";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Internal, admin-only debug tool for Lib/snappClient.ts on noyanai-back
 // (2026-09) - not part of any real business flow. Two independent testers:
@@ -21,16 +22,36 @@ import useNotification from "@/Components/Hooks/useNotification";
 // (Components/Admin/Ollama/AdminManageOllamaModels.tsx) rather than the
 // customer-facing convention.
 const snappTestActionOptions: Record<string, string> = {
-  balance: "موجودی حساب (balance)",
-  price: "استعلام قیمت سفر (price)",
-  requestRide: "ثبت درخواست سفر (requestRide)",
-  activeRides: "سفرهای فعال (activeRides)",
-  refreshRide: "بروزرسانی سفر با hri (refreshRide)",
-  rideStatus: "وضعیت سفر با hri (rideStatus)",
-  cancelRide: "لغو سفر با hri (cancelRide)",
-  rideHistory: "تاریخچه سفرها (rideHistory)",
-  financialHistory: "تاریخچه مالی (financialHistory)",
-  payment: "ایجاد پرداخت (payment)",
+  get balance() {
+  return ta("موجودی حساب (balance)");
+},
+  get price() {
+  return ta("استعلام قیمت سفر (price)");
+},
+  get requestRide() {
+  return ta("ثبت درخواست سفر (requestRide)");
+},
+  get activeRides() {
+  return ta("سفرهای فعال (activeRides)");
+},
+  get refreshRide() {
+  return ta("بروزرسانی سفر با hri (refreshRide)");
+},
+  get rideStatus() {
+  return ta("وضعیت سفر با hri (rideStatus)");
+},
+  get cancelRide() {
+  return ta("لغو سفر با hri (cancelRide)");
+},
+  get rideHistory() {
+  return ta("تاریخچه سفرها (rideHistory)");
+},
+  get financialHistory() {
+  return ta("تاریخچه مالی (financialHistory)");
+},
+  get payment() {
+  return ta("ایجاد پرداخت (payment)");
+},
 };
 
 const responseBoxStyle = {
@@ -59,7 +80,7 @@ const AdminSnappTestPage = () => {
       try {
         payload = JSON.parse(payloadText);
       } catch {
-        pushNotification("ورودی JSON معتبر نیست", "Error");
+        pushNotification(ta("ورودی JSON معتبر نیست"), "Error");
         return;
       }
     }
@@ -77,7 +98,7 @@ const AdminSnappTestPage = () => {
 
   const startDelivery = (method: "GET" | "POST") => {
     if (!pharmacyId.trim() || !orderId.trim()) {
-      pushNotification("شناسه داروخانه و شناسه سفارش الزامی است", "Warn");
+      pushNotification(ta("شناسه داروخانه و شناسه سفارش الزامی است"), "Warn");
       return;
     }
     setDeliveryResponse(null);
@@ -85,16 +106,16 @@ const AdminSnappTestPage = () => {
   };
 
   return (
-    <WithTitle title="تست اتصال اسنپ">
+    <WithTitle title={ta("تست اتصال اسنپ")}>
       <Box style={{ marginBottom: "1rem" }}>
         <SelectInput
-          title="عملیات"
+          title={ta("عملیات")}
           options={snappTestActionOptions}
           defaultValue={action}
           onChange={(e) => setAction(e.target.value)}
         />
         <AreaInput
-          title="ورودی (JSON)"
+          title={ta("ورودی (JSON)")}
           defaultValue={payloadText}
           onChange={(e) => setPayloadText(e.target.value)}
         />
@@ -103,7 +124,7 @@ const AdminSnappTestPage = () => {
           isLoading={!!consolePayload}
           style={{ marginTop: "1rem" }}
         >
-          اجرا
+          {ta("اجرا")}
         </Button>
         {consoleResponse !== null && (
           <pre style={responseBoxStyle}>
@@ -114,11 +135,11 @@ const AdminSnappTestPage = () => {
 
       <Box>
         <Input
-          title="شناسه داروخانه (pharmacyId)"
+          title={ta("شناسه داروخانه (pharmacyId)")}
           onChange={(e) => setPharmacyId(e.target.value)}
         />
         <Input
-          title="شناسه سفارش (orderId)"
+          title={ta("شناسه سفارش (orderId)")}
           onChange={(e) => setOrderId(e.target.value)}
         />
         <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
@@ -126,14 +147,14 @@ const AdminSnappTestPage = () => {
             onClick={() => startDelivery("POST")}
             isLoading={deliveryMethod === "POST"}
           >
-            ارسال درخواست پیک
+            {ta("ارسال درخواست پیک")}
           </Button>
           <Button
             variant="Secondary"
             onClick={() => startDelivery("GET")}
             isLoading={deliveryMethod === "GET"}
           >
-            بروزرسانی وضعیت
+            {ta("بروزرسانی وضعیت")}
           </Button>
         </div>
         {deliveryResponse !== null && (
@@ -150,7 +171,7 @@ const AdminSnappTestPage = () => {
         onDone={(status, result) => {
           setConsolePayload(null);
           setConsoleResponse(
-            status ? result : { error: "درخواست با خطا مواجه شد" },
+            status ? result : { error: ta("درخواست با خطا مواجه شد") },
           );
         }}
       />
@@ -172,7 +193,7 @@ const AdminSnappTestPage = () => {
         onDone={(status, result) => {
           setDeliveryMethod(null);
           setDeliveryResponse(
-            status ? result : { error: "درخواست با خطا مواجه شد" },
+            status ? result : { error: ta("درخواست با خطا مواجه شد") },
           );
         }}
       />

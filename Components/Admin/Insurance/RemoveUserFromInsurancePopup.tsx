@@ -5,6 +5,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const RemoveUserFromInsurancePopup = ({
   mutate,
@@ -18,7 +19,7 @@ const RemoveUserFromInsurancePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این یوزر از روی این بیمه مطمئنید؟"
+        message={ta("آیا از حذف این یوزر از روی این بیمه مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

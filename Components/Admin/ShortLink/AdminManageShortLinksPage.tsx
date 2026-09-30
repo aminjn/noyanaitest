@@ -14,6 +14,7 @@ import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeletShortLinkPopup from "./DeleteShortLinkPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IShortLink extends MongoDoc {
   token: string;
@@ -32,10 +33,10 @@ const AdminManageShortLinksPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="لینک های کوتاه"
+          title={ta("لینک های کوتاه")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateShortLink",
@@ -49,21 +50,21 @@ const AdminManageShortLinksPage = () => {
             data={data}
             renderer={{
               token: {
-                name: "توکن",
+                name: ta("توکن"),
                 value: (node) => node.token,
                 filter: "Text",
               },
               target: {
-                name: "مقصد",
+                name: ta("مقصد"),
                 filter: "Text",
                 value: (node) => node.target,
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateShortLink",
@@ -74,7 +75,7 @@ const AdminManageShortLinksPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
-                      title="حذف"
+                      title={ta("حذف")}
                       variant="Danger"
                       onClick={() =>
                         setPopup(

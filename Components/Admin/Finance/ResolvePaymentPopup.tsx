@@ -9,6 +9,7 @@ import Box from "../UI/Box";
 import FormActions from "../UI/FormActions";
 import { IAdminPaymentRow } from "./AdminFinancePaymentsPage";
 import { userLabel } from "./adminFinance";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // A "needsReview" payment: the card was charged, but crediting the wallet
 // and the automatic reverse both failed. The admin either credits the wallet
@@ -29,10 +30,10 @@ const ResolvePaymentPopup = ({
   return (
     <Box>
       <p>
-        {`پرداخت ${currencize(node.amount || 0)} تومانی ${userLabel(node.user)} (کد پیگیری ${node.rrn || node.refNum || "—"}) از کارت کسر شده، اما نه به کیف پول رسیده و نه به کارت برگشته است.`}
+        {ta("پرداخت ${1} تومانی ${2} (کد پیگیری ${3}) از کارت کسر شده، اما نه به کیف پول رسیده و نه به کارت برگشته است.", [currencize(node.amount || 0), userLabel(node.user), node.rrn || node.refNum || "—"])}
       </p>
       <AreaInput
-        title="توضیح (الزامی، در لاگ ثبت می‌شود)"
+        title={ta("توضیح (الزامی، در لاگ ثبت می‌شود)")}
         required
         onChange={(e) => setNote(e.target.value)}
       />
@@ -42,17 +43,17 @@ const ResolvePaymentPopup = ({
           isLoading={resolution === "credit"}
           onClick={() => noteOk && setResolution("credit")}
         >
-          واریز به کیف پول کاربر
+          {ta("واریز به کیف پول کاربر")}
         </Button>
         <Button
           variant={noteOk ? "Secondary" : "Disable"}
           isLoading={resolution === "refunded"}
           onClick={() => noteOk && setResolution("refunded")}
         >
-          به کارت برگشت داده شد
+          {ta("به کارت برگشت داده شد")}
         </Button>
         <Button variant="Neutral" onClick={() => closePopup()}>
-          انصراف
+          {ta("انصراف")}
         </Button>
       </FormActions>
       <Act

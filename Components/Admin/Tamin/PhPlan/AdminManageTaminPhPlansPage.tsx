@@ -9,6 +9,7 @@ import HandleLoading from "../../UI/HandleLoading";
 import WithTitle from "../../UI/WithTitle";
 import Table from "../../UI/Table";
 import Act from "@/Components/UI/Act";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface ITaminPhPlan extends MongoDoc {
   planId?: string;
@@ -27,8 +28,8 @@ const AdminManageTaminPhPlansPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="طرح درمان"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("طرح درمان")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -36,17 +37,17 @@ const AdminManageTaminPhPlansPage = () => {
               name="AdminManageTaminPhPlans"
               renderer={{
                 planDesc: {
-                  name: "عنوان طرح",
+                  name: ta("عنوان طرح"),
                   value: (node) => node.planDesc,
                   filter: "Text",
                 },
                 planCode: {
-                  name: "کد",
+                  name: ta("کد"),
                   value: (node) => node.planCode,
                   filter: "Text",
                 },
                 planId: {
-                  name: "شناسه تامین",
+                  name: ta("شناسه تامین"),
                   value: (node) => node.planId,
                   filter: "Text",
                 },

@@ -13,6 +13,7 @@ import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import { fetcher } from "@/Components/helpers/fetcher";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeInsurancesPage = () => {
   const { data, error } = useSWR<
@@ -24,18 +25,18 @@ const AdminManageBecomeInsurancesPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های بیمه شدن">
+        <WithTitle title={ta("درخواست های بیمه شدن")}>
           <Table
             name="AdminManageBecomeInsurances"
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 value: (node) => node.name,
                 filter: "Text",
               },
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => node.user?.phone || "",
                 filter: "Text",
                 component: (node) =>
@@ -48,32 +49,32 @@ const AdminManageBecomeInsurancesPage = () => {
                   ),
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
               },
               siamCode: {
-                name: "کد سیام",
+                name: ta("کد سیام"),
                 value: (node) => node.siamCode,
                 filter: "Text",
               },
               nationalId: {
-                name: "کد ملی",
+                name: ta("کد ملی"),
                 value: (node) => node.nationalId,
                 filter: "Text",
               },
               createdAt: {
-                name: "تاریخ ثبت",
+                name: ta("تاریخ ثبت"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/becomeinsurance/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>

@@ -20,6 +20,7 @@ import IconButton from "../UI/IconButton";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Doctors' "add the pharmacy I work with" requests (2026-09): they could be
 // submitted from the doctor panel, but no admin page listed them.
@@ -36,40 +37,40 @@ const AdminManagePharmacyAdditionsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های اضافه شدن داروخانه">
+        <WithTitle title={ta("درخواست های اضافه شدن داروخانه")}>
           <Table
             name="AdminManagePharmacyAdditionRequests"
             data={data}
             renderer={{
               name: {
-                name: "نام داروخانه",
+                name: ta("نام داروخانه"),
                 value: (node) => node.name,
                 filter: "Text",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => additionRequestStatusDict[node.status],
                 filter: "Set",
               },
               city: {
-                name: "استان / شهر",
+                name: ta("استان / شهر"),
                 value: (node) =>
                   [findProvince(node.province), findCity(node.city)]
                     .filter(Boolean)
-                    .join("، "),
+                    .join(ta("، ")),
                 filter: "Multi",
               },
               address: {
-                name: "نشانی",
+                name: ta("نشانی"),
                 value: (node) => node.address,
                 filter: "Text",
               },
               submittedBy: {
-                name: "ثبت کننده",
+                name: ta("ثبت کننده"),
                 value: (node) =>
                   node.submittedBy
                     ? getDoctorProfileLabel(node.submittedBy)
-                    : "حذف شده",
+                    : ta("حذف شده"),
                 component: (node) =>
                   node.submittedBy ? (
                     <InlineLink
@@ -78,25 +79,25 @@ const AdminManagePharmacyAdditionsPage = () => {
                       {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
                 filter: "Text",
               },
               submittedAt: {
-                name: "تاریخ ثبت",
+                name: ta("تاریخ ثبت"),
                 value: (node) =>
                   node.submittedAt ? new Date(node.submittedAt) : undefined,
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 width: 120,
                 component: (node) => (
                   <TableActions>
                     {node.status !== "Done" && node.status !== "Rejected" && (
                       <IconButton
                         variant="Success"
-                        title="ایجاد داروخانه از این درخواست"
+                        title={ta("ایجاد داروخانه از این درخواست")}
                         onClick={() =>
                           setPopup(
                             "CreatePharmacyFromRequest",
@@ -113,7 +114,7 @@ const AdminManagePharmacyAdditionsPage = () => {
                     )}
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeletePharmacyAdditionRequest",

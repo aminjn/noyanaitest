@@ -14,6 +14,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type AboutTeamPopulation = Population<Record<never, never>>;
 
@@ -30,13 +31,27 @@ export interface IAboutTeam<
 }
 
 export const aboutTeamFormRenderer: FormRenderer<IAboutTeam> = {
-  name: { type: "text", title: "نام" },
-  avatar: { type: "image", title: "تصویر" },
-  description: { type: "text", title: "توضیحات" },
-  isActive: { type: "bool", title: "فعال" },
-  order: { type: "number", title: "رتبه" },
-  title: { title: "عنوان", type: "text" },
-  linkedin: { type: "text", title: "لینکدین" },
+  name: { type: "text", get title() {
+  return ta("نام");
+} },
+  avatar: { type: "image", get title() {
+  return ta("تصویر");
+} },
+  description: { type: "text", get title() {
+  return ta("توضیحات");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
+  title: { get title() {
+  return ta("عنوان");
+}, type: "text" },
+  linkedin: { type: "text", get title() {
+  return ta("لینکدین");
+} },
 };
 
 const AdminManageAboutTeamsPage = () => {
@@ -45,19 +60,19 @@ const AdminManageAboutTeamsPage = () => {
   return (
     <NodesManager<IAboutTeam>
       create={aboutTeamFormRenderer}
-      title="تیم"
+      title={ta("تیم")}
       modelName="aboutTeam"
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
-        title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
+        title: { name: ta("عنوان"), value: (node) => node.title, filter: "Text" },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           filter: "Set",
           component: (node) => <BooleanToIcon value={node.isActive} />,
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -70,23 +85,23 @@ const AdminManageAboutTeamsPage = () => {
           ),
         },
         linkedin: {
-          name: "لینکدین",
+          name: ta("لینکدین"),
           value: (node) => node.linkedin,
           filter: "Text",
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/aboutTeam/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

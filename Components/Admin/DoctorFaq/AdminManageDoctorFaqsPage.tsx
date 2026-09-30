@@ -26,6 +26,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import DeleteDoctorFaqPopup from "./DeleteDoctorFaqPopup";
 import { IDoctorFaq } from "@/Components/DoctorPanel/Profile/DoctorManageFaqTab";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorFaqsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -40,10 +41,10 @@ const AdminManageDoctorFaqsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="سوالات متداول"
+          title={ta("سوالات متداول")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup("CreateFaq", <CreateFaqPopup mutate={mutate} />),
             },
@@ -54,14 +55,14 @@ const AdminManageDoctorFaqsPage = () => {
             name="AdminManageDoctorFaqs"
             renderer={{
               question: {
-                name: "سوال",
+                name: ta("سوال"),
                 value: (node) => node.question,
                 filter: "Text",
               },
               doctor: {
-                name: "پزشک",
+                name: ta("پزشک"),
                 value: (node) =>
-                  node.doctor ? getDoctorProfileLabel(node.doctor) : "ندارد",
+                  node.doctor ? getDoctorProfileLabel(node.doctor) : ta("ندارد"),
                 component: (node) =>
                   node.doctor ? (
                     <InlineLink
@@ -70,18 +71,18 @@ const AdminManageDoctorFaqsPage = () => {
                       {getDoctorProfileLabel(node.doctor)}
                     </InlineLink>
                   ) : (
-                    "ندارد"
+                    ta("ندارد")
                   ),
                 filter: "Multi",
               },
               active: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.active}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.active} />,
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -94,18 +95,18 @@ const AdminManageDoctorFaqsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/doctorfaq/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDoctorFaq",

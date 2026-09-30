@@ -36,6 +36,7 @@ import { IServicePackage } from "../ServicePackage/AdminManageServicePackagesPag
 import { IService } from "../Service/AdminManageServicesPage";
 import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ProductPopulation = Population<{
   Category: ProductCategoryPopulation;
@@ -154,12 +155,12 @@ const CreateProductPopup = ({ mutate }: { mutate: () => unknown }) => {
       <CreateForm<IProduct>
         onCancel={() => closePopup()}
         renderer={{
-          name: { type: "text", title: "نام" },
-          slug: { type: "text", title: "اسلاگ" },
-          order: { type: "number", title: "رتبه" },
-          isActive: { type: "bool", title: "فعال" },
+          name: { type: "text", title: ta("نام") },
+          slug: { type: "text", title: ta("اسلاگ") },
+          order: { type: "number", title: ta("رتبه") },
+          isActive: { type: "bool", title: ta("فعال") },
           category: {
-            title: "دسته بندی",
+            title: ta("دسته بندی"),
             type: "nodes",
             path: `${API}/auto/productCategory`,
             multi: false,
@@ -193,7 +194,7 @@ const DeleteProductPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -226,10 +227,10 @@ const AdminManageProductsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="محصولات"
+          title={ta("محصولات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateProduct",
@@ -242,13 +243,13 @@ const AdminManageProductsPage = () => {
             name="AdminManageProducts"
             data={data}
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               category: {
-                name: "دسته‌بندی",
+                name: ta("دسته‌بندی"),
                 value: (node) =>
                   node.category
                     ? node.category.name || node.category._id
-                    : "ندارد",
+                    : ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
@@ -258,24 +259,24 @@ const AdminManageProductsPage = () => {
                       {node.category.name || node.category._id}
                     </InlineLink>
                   ) : (
-                    "ندارد"
+                    ta("ندارد")
                   ),
               },
               price: {
-                name: "قیمت (تومان)",
+                name: ta("قیمت (تومان)"),
                 value: (node) => node.price,
                 component: (node) =>
                   typeof node.price === "number" ? currencize(node.price) : "—",
                 filter: "Number",
               },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -288,18 +289,18 @@ const AdminManageProductsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/product/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteProduct",

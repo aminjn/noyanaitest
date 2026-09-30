@@ -21,9 +21,12 @@ Before you design or build a feature, a page, or a UX flow, check how the leader
 
 ## 2. Language and direction
 - The site has 15 languages. Every user-visible text is a key in `Components/i18n/messages/*.json`: add it to all 15 files, to `Components/Enums/contentKeys.tsx`, and to the backend's `Models/TextContent.ts`.
-- Never hardcode Persian or English text in components. Only admin pages (under `Components/Admin`) stay Persian-only.
+- Never hardcode Persian or English text in components.
+- The site's default language is set by the super admin («زبان‌های سایت», site languages). It has no URL prefix, and the super admin panel always shows it. Other enabled languages exist only for the public site and the user and provider panels.
+- Admin texts (under `Components/Admin` and `app/[adminKey]`) are written in Persian inside `ta("…")` (`Components/Admin/i18n/adminText.ts`). Each language has a dictionary keyed by the Persian text in `Components/Admin/i18n/dict/<locale>.json`; when you add an admin text, add it to all 14 dictionaries.
+- A `ta()` call at module level runs before the dictionary loads. Put it inside an object property as a getter (`get title() { return ta("…"); }`), or translate it where it's shown.
 - Persian, Arabic, and Urdu are RTL. Use logical CSS properties (`inline-start/end`, `text-align: start`), not physical `left/right`.
-- Dates and numbers use `useIntlLocale()`; never hardcode `fa-IR` outside the admin panel.
+- Dates and numbers use `useIntlLocale()`, or `adminIntlTag()` in the admin panel. Never hardcode `fa-IR`.
 
 ## 3. Design and UI
 - Check every page on both desktop (1440px) and mobile (390px) before you merge.

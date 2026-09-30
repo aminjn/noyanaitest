@@ -13,6 +13,7 @@ import {
   getDoctorProfileLabel,
 } from "../Lib/LabelGetters";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateHospitalDoctorPopup = ({
   mutate,
@@ -28,7 +29,7 @@ const MutateHospitalDoctorPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard title="پزشک بیمارستان">
+    <PopupCard title={ta("پزشک بیمارستان")}>
       <CreateForm
         defaultValue={node}
         hookProps={{
@@ -44,7 +45,7 @@ const MutateHospitalDoctorPopup = ({
         renderer={{
           department: {
             path: `${API}/auto/hospitaldepartment?hospital=${hospital._id}`,
-            title: "دپارتمان",
+            title: ta("دپارتمان"),
             type: "nodes",
             getOptionLabel: (node) =>
               getHospitalDepartmentLabel(node as IHospitalDepartment),
@@ -53,7 +54,7 @@ const MutateHospitalDoctorPopup = ({
           },
           doctor: {
             path: `${API}/auto/doctorprofile`,
-            title: "پزشک",
+            title: ta("پزشک"),
             type: "nodes",
             getOptionLabel: (node) =>
               getDoctorProfileLabel(node as IDoctorProfile),

@@ -11,6 +11,7 @@ import Loading from "../UI/Loading";
 import ErrorMessage from "../UI/ErrorMessage";
 import { adminAllGroups } from "../UI/adminMenu";
 import { RoleBadge, displayPhone, faDateTime, num, roleLabels } from "../User/userShared";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 type AuditLog = {
   _id: string;
@@ -51,15 +52,33 @@ type AuditResponse = {
 };
 
 const actionLabels: Record<string, string> = {
-  create: "ایجاد",
-  update: "ویرایش",
-  delete: "حذف",
-  settings: "تغییر تنظیمات",
-  role: "تغییر نقش",
-  logout: "خروج اجباری",
-  sync: "همگام‌سازی",
-  migrate: "مهاجرت داده",
-  other: "سایر",
+  get create() {
+  return ta("ایجاد");
+},
+  get update() {
+  return ta("ویرایش");
+},
+  get delete() {
+  return ta("حذف");
+},
+  get settings() {
+  return ta("تغییر تنظیمات");
+},
+  get role() {
+  return ta("تغییر نقش");
+},
+  get logout() {
+  return ta("خروج اجباری");
+},
+  get sync() {
+  return ta("همگام‌سازی");
+},
+  get migrate() {
+  return ta("مهاجرت داده");
+},
+  get other() {
+  return ta("سایر");
+},
 };
 
 // "blog" -> "مقالات", "tamin/service" -> "سرویس‌ها", from the sidebar menu.
@@ -69,11 +88,12 @@ for (const group of adminAllGroups)
     if (!targetTitles.has(item.href)) targetTitles.set(item.href, item.title);
 targetTitles.set("user", "کاربران");
 
-const targetLabel = (target: string) => targetTitles.get(target) || target;
+// built once at load, so it holds the Persian source: translated when shown
+const targetLabel = (target: string) => ta(targetTitles.get(target) || target);
 
 const actorName = (actor: AuditLog["actor"]) =>
   !actor
-    ? "کاربر حذف‌شده"
+    ? ta("کاربر حذف‌شده")
     : actor.identity
       ? `${actor.identity.givenName} ${actor.identity.lastName}`
       : actor.username || displayPhone(actor.phone);
@@ -102,17 +122,16 @@ const AdminAuditLogPage = () => {
   return (
     <div className={classes.main}>
       <header className={classes.header}>
-        <h1 className={classes.title}>لاگ عملیات ادمین‌ها</h1>
+        <h1 className={classes.title}>{ta("لاگ عملیات ادمین‌ها")}</h1>
         <span className={classes.subtitle}>
-          هر ایجاد، ویرایش، حذف و تغییر تنظیمات در پنل این‌جا ثبت می‌شود. مقدار فیلدها ذخیره
-          نمی‌شود، فقط نام آن‌ها.
+          {ta("هر ایجاد، ویرایش، حذف و تغییر تنظیمات در پنل این‌جا ثبت می‌شود. مقدار فیلدها ذخیره نمی‌شود، فقط نام آن‌ها.")}
         </span>
       </header>
 
       <section className={classes.card}>
         <div className={classes.filters}>
           <label>
-            <span>ادمین</span>
+            <span>{ta("ادمین")}</span>
             <select
               value={actor}
               onChange={(e) => {
@@ -120,7 +139,7 @@ const AdminAuditLogPage = () => {
                 setPage(1);
               }}
             >
-              <option value="">همه</option>
+              <option value="">{ta("همه")}</option>
               {data?.actors.map((a) => (
                 <option key={a._id} value={a._id}>
                   {`${a.givenName ? `${a.givenName} ${a.lastName}` : a.username || displayPhone(a.phone)} (${num.format(a.count)})`}
@@ -129,7 +148,7 @@ const AdminAuditLogPage = () => {
             </select>
           </label>
           <label>
-            <span>نوع عملیات</span>
+            <span>{ta("نوع عملیات")}</span>
             <select
               value={action}
               onChange={(e) => {
@@ -137,7 +156,7 @@ const AdminAuditLogPage = () => {
                 setPage(1);
               }}
             >
-              <option value="">همه</option>
+              <option value="">{ta("همه")}</option>
               {Object.entries(actionLabels).map(([key, label]) => (
                 <option key={key} value={key}>
                   {label}
@@ -147,11 +166,11 @@ const AdminAuditLogPage = () => {
           </label>
           {targetId && (
             <span className={classes.chip}>
-              {`فقط رکورد ${targetId.slice(-6)}`}
+              {ta("فقط رکورد ${1}", [targetId.slice(-6)])}
               <Link href={adminPath("/audit")}>×</Link>
             </span>
           )}
-          {data && <span className={classes.total}>{`${num.format(data.total)} مورد`}</span>}
+          {data && <span className={classes.total}>{ta("${1} مورد", [num.format(data.total)])}</span>}
         </div>
 
         {error && !data ? (
@@ -159,17 +178,17 @@ const AdminAuditLogPage = () => {
         ) : !data ? (
           <Loading />
         ) : data.items.length === 0 ? (
-          <p className={classes.empty}>هنوز عملیاتی ثبت نشده است.</p>
+          <p className={classes.empty}>{ta("هنوز عملیاتی ثبت نشده است.")}</p>
         ) : (
           <div className={`${classes.tableWrap} ${isValidating ? classes.stale : ""}`}>
             <table className={classes.table}>
               <thead>
                 <tr>
-                  <th>زمان</th>
-                  <th>ادمین</th>
-                  <th>عملیات</th>
-                  <th>بخش</th>
-                  <th>جزئیات</th>
+                  <th>{ta("زمان")}</th>
+                  <th>{ta("ادمین")}</th>
+                  <th>{ta("عملیات")}</th>
+                  <th>{ta("بخش")}</th>
+                  <th>{ta("جزئیات")}</th>
                   <th>IP</th>
                 </tr>
               </thead>
@@ -214,9 +233,9 @@ const AdminAuditLogPage = () => {
                       </td>
                       <td className={classes.details}>
                         {log.action === "role" && typeof log.details?.role === "string"
-                          ? `نقش جدید: ${roleLabels[log.details.role] || log.details.role}`
+                          ? ta("نقش جدید: ${1}", [roleLabels[log.details.role] || log.details.role])
                           : log.fields.length
-                            ? `فیلدها: ${log.fields.slice(0, 6).join("، ")}${log.fields.length > 6 ? ` و ${num.format(log.fields.length - 6)} مورد دیگر` : ""}`
+                            ? ta("فیلدها: ${1}${2}", [log.fields.slice(0, 6).join("، "), log.fields.length > 6 ? ` و ${num.format(log.fields.length - 6)} مورد دیگر` : ""])
                             : "—"}
                       </td>
                       <td className={classes.ip}>{log.ip || "—"}</td>
@@ -231,11 +250,11 @@ const AdminAuditLogPage = () => {
         {data && data.total > data.limit && (
           <div className={classes.pagination}>
             <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-              قبلی
+              {ta("قبلی")}
             </button>
-            <span>{`صفحه ${num.format(page)} از ${num.format(pages)}`}</span>
+            <span>{ta("صفحه ${1} از ${2}", [num.format(page), num.format(pages)])}</span>
             <button type="button" disabled={page >= pages} onClick={() => setPage((p) => p + 1)}>
-              بعدی
+              {ta("بعدی")}
             </button>
           </div>
         )}

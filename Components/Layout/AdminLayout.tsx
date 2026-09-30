@@ -11,6 +11,7 @@ import Ixon from "../UI/Ixon";
 import BarsIcon from "../Icons/BarsIcon";
 import CloseIcon from "../Icons/CloseIcon";
 import LogoLong from "../UI/LogoLong";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const hasAccessToAdmin: UserRole[] = ["admin", "notadmin"];
 
@@ -59,7 +60,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
           type="button"
           className={classes.menuButton}
           onClick={() => setMenuOpen(true)}
-          aria-label="باز کردن منو"
+          aria-label={ta("باز کردن منو")}
         >
           <Ixon width="1.5rem">
             <BarsIcon />
@@ -79,7 +80,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
           type="button"
           className={classes.closeButton}
           onClick={() => setMenuOpen(false)}
-          aria-label="بستن منو"
+          aria-label={ta("بستن منو")}
         >
           <Ixon width="1.25rem">
             <CloseIcon />

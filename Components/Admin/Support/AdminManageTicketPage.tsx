@@ -28,6 +28,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import ChangeTicketStatusPopup from "./ChangeTicketStatusPopup";
 import DeleteTicketPopup from "./DeleteTicketPopup";
 import { useEffect, useMemo, useRef } from "react";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 type AdminTicket = ITicket<{
   SubmittedBy: Record<never, never>;
@@ -61,7 +62,7 @@ const ReplySender = ({
     path: `${API}/auto/ticketmessage`,
     method: "POST",
     decorators: { ticket: ticketId, isAdmin: true },
-    hasProblem: (inp) => !inp.content?.trim() && "متن پاسخ را وارد کنید",
+    hasProblem: (inp) => !inp.content?.trim() && ta("متن پاسخ را وارد کنید"),
     successCb: () => {
       mutate();
       reset();
@@ -74,7 +75,7 @@ const ReplySender = ({
       <textarea
         ref={textRef}
         className={classes.textInput}
-        placeholder="پاسخ خود را بنویسید..."
+        placeholder={ta("پاسخ خود را بنویسید...")}
         rows={1}
         onChange={(e) =>
           setInput((prev) => ({ ...prev, content: e.target.value }))
@@ -90,7 +91,7 @@ const ReplySender = ({
         type="submit"
         className={classes.send}
         disabled={isLoading}
-        aria-label="ارسال پاسخ"
+        aria-label={ta("ارسال پاسخ")}
       >
         <Ixon width="1.25rem">
           <SendIcon />
@@ -128,10 +129,10 @@ const InnerAdminTicket = ({
 
   return (
     <WithTitle
-      title={`تیکت: ${ticket.title}`}
+      title={ta("تیکت: ${1}", [ticket.title])}
       actions={[
         {
-          title: "تغییر وضعیت",
+          title: ta("تغییر وضعیت"),
           icon: <EditIcon />,
           action: () =>
             setPopup(
@@ -140,7 +141,7 @@ const InnerAdminTicket = ({
             ),
         },
         {
-          title: "حذف تیکت",
+          title: ta("حذف تیکت"),
           icon: <GarbageIcon />,
           action: () =>
             setPopup(
@@ -155,7 +156,7 @@ const InnerAdminTicket = ({
     >
       <List>
         <DataPair
-          title="کاربر"
+          title={ta("کاربر")}
           value={
             ticket.submittedBy?._id ? (
               <InlineLink href={adminPath(`/user/${ticket.submittedBy._id}`)}>
@@ -166,15 +167,15 @@ const InnerAdminTicket = ({
             )
           }
         />
-        <DataPair title="موضوع" value={ticketSubjectDict[ticket.subject]} />
+        <DataPair title={ta("موضوع")} value={ticketSubjectDict[ticket.subject]} />
         <DataPair
-          title="وضعیت"
+          title={ta("وضعیت")}
           value={
             <Badge mode="Outline">{ticketStatusDict[ticket.status]}</Badge>
           }
         />
         <DataPair
-          title="زمان ثبت"
+          title={ta("زمان ثبت")}
           value={<FormatDate value={ticket.submittedAt} />}
         />
       </List>
@@ -189,7 +190,7 @@ const InnerAdminTicket = ({
               <div ref={bottomRef} />
             </>
           ) : (
-            <p className={classes.empty}>هنوز پیامی ثبت نشده است</p>
+            <p className={classes.empty}>{ta("هنوز پیامی ثبت نشده است")}</p>
           )}
         </div>
         <ReplySender ticketId={ticket._id} mutate={mutate} />

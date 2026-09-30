@@ -8,6 +8,7 @@ import {
   IInsuranceCategory,
   insuranceCategoryFormRenderer,
 } from "./AdminManageInsuranceCategoriesPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInsuranceCategoryPage = () => {
   return (
@@ -20,7 +21,7 @@ const AdminManageInsuranceCategoryPage = () => {
           items={[
             {
               id: "Info",
-              title: "جزئیات",
+              title: ta("جزئیات"),
               content: (
                 <CreateForm
                   renderer={insuranceCategoryFormRenderer}

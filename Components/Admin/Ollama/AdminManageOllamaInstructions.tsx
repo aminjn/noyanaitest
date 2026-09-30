@@ -18,6 +18,7 @@ import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type BotInstructionPopulation = Population<Record<never, never>>;
 
@@ -55,9 +56,9 @@ const MutateBotInstructionPopup = ({
           },
         }}
         renderer={{
-          order: { title: "رتبه", type: "number" },
-          isActive: { title: "فعال", type: "bool" },
-          content: { title: "دستور", type: "area" },
+          order: { title: ta("رتبه"), type: "number" },
+          isActive: { title: ta("فعال"), type: "bool" },
+          content: { title: ta("دستور"), type: "area" },
         }}
       />
     </PopupCard>
@@ -78,7 +79,7 @@ const DeleteBotInstructionPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message="آیا از حذف این آیتم مطمئنید؟"
+        message={ta("آیا از حذف این آیتم مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
       />
       <Act
@@ -107,10 +108,10 @@ const AdminManageOllamaInstructions = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دستورالعمل ها"
+          title={ta("دستورالعمل ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateBotInstruction",
@@ -124,18 +125,18 @@ const AdminManageOllamaInstructions = () => {
             name="AdminManageBotInstructions"
             renderer={{
               content: {
-                name: "دستور",
+                name: ta("دستور"),
                 value: (node) => node.content,
                 filter: "Text",
               },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -148,16 +149,16 @@ const AdminManageOllamaInstructions = () => {
                 ),
               },
               createdAt: {
-                name: "تاریخ ایجاد",
+                name: ta("تاریخ ایجاد"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateBotInstruction",
@@ -172,7 +173,7 @@ const AdminManageOllamaInstructions = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteBotInstruction",

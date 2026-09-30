@@ -9,6 +9,7 @@ import { Fragment, useState } from "react";
 import WithTitle from "../../UI/WithTitle";
 import Table from "../../UI/Table";
 import Act from "@/Components/UI/Act";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface ITaminSpec extends MongoDoc {
   specCode: string;
@@ -37,39 +38,39 @@ const AdminManageTaminSpecsPage = () => {
         <Fragment>
           <WithTitle
             title="Specs"
-            actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+            actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
           >
             <Table
               data={data}
               name="AdminManageTaminSpecs"
               renderer={{
                 specDesc: {
-                  name: "عنوان",
+                  name: ta("عنوان"),
                   value: (node) => node.specDesc,
                   filter: "Text",
                 },
                 specCode: {
-                  name: "کد",
+                  name: ta("کد"),
                   value: (node) => node.specCode,
                   filter: "Text",
                 },
                 specGRP: {
-                  name: "گروه",
+                  name: ta("گروه"),
                   value: (node) => node.specGRP,
                   filter: "Set",
                 },
                 status: {
-                  name: "وضعیت",
+                  name: ta("وضعیت"),
                   value: (node) => node.status,
                   filter: "Set",
                 },
                 statusstDate: {
-                  name: "تاریخ وضعیت",
+                  name: ta("تاریخ وضعیت"),
                   value: (node) => node.statusstDate,
                   filter: "Text",
                 },
                 lstatus: {
-                  name: "وضعیت (l)",
+                  name: ta("وضعیت (l)"),
                   value: (node) => node.lstatus,
                   filter: "Set",
                 },

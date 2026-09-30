@@ -18,6 +18,7 @@ import DeleteDrugPopup from "./DeleetDrugPopup";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { IDrugTag } from "../DrugTag/AdminManageDrugTagsPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDrugPage = () => {
   const { nodeId } = useParams();
@@ -37,7 +38,7 @@ const AdminManageDrugPage = () => {
             name="AdminManageDrug"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
@@ -49,27 +50,27 @@ const AdminManageDrugPage = () => {
                     }}
                     defaultValue={data}
                     renderer={{
-                      name: { type: "text", title: "نام" },
-                      summary: { type: "text", title: "خلاصه" },
-                      description: { type: "area", title: "توضیحات" },
-                      order: { type: "number", title: "رتبه" },
-                      slug: { type: "text", title: "اسلاگ" },
-                      image: { type: "image", title: "تصویر" },
-                      brand: { type: "text", title: "برند" },
+                      name: { type: "text", title: ta("نام") },
+                      summary: { type: "text", title: ta("خلاصه") },
+                      description: { type: "area", title: ta("توضیحات") },
+                      order: { type: "number", title: ta("رتبه") },
+                      slug: { type: "text", title: ta("اسلاگ") },
+                      image: { type: "image", title: ta("تصویر") },
+                      brand: { type: "text", title: ta("برند") },
                       tag: {
                         type: "nodes",
                         multi: false,
-                        title: "تگ",
+                        title: ta("تگ"),
                         getOptionLabel: (node) =>
                           (node as IDrugTag).name || (node as IDrugTag)._id,
                         getOptionValue: (node) => (node as IDrugTag)._id,
                         path: `${API}/auto/drugTag`,
                         getDefaultValue: (inp) => inp.tag,
                       },
-                      dosage: { type: "text", title: "دوز مصرفی" },
+                      dosage: { type: "text", title: ta("دوز مصرفی") },
                       sameAs: {
                         type: "nodes",
-                        title: "مشابهات",
+                        title: ta("مشابهات"),
                         path: `${API}/auto/drug`,
                         getOptionLabel: (node) =>
                           (node as IDrug).name || (node as IDrug)._id,
@@ -77,14 +78,14 @@ const AdminManageDrugPage = () => {
                         getDefaultValue: (inp) => inp.sameAs,
                         multi: true,
                       },
-                      aiSummary: { type: "rtf", title: "خلاصه AI" },
-                      content: { type: "rtf", title: "محتوا" },
+                      aiSummary: { type: "rtf", title: ta("خلاصه AI") },
+                      content: { type: "rtf", title: ta("محتوا") },
                     }}
                   />
                 ),
               },
               {
-                title: "توضیحات",
+                title: ta("توضیحات"),
                 icon: <InfoIcon />,
                 id: "More",
                 content: (
@@ -141,7 +142,7 @@ const AdminManageDrugPage = () => {
                 ),
               },
               {
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
@@ -149,7 +150,7 @@ const AdminManageDrugPage = () => {
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 icon: <InfoIcon />,
                 content: (
                   <List>
@@ -165,7 +166,7 @@ const AdminManageDrugPage = () => {
                       }
                       variant="Error"
                     >
-                      حذف
+                      {ta("حذف")}
                     </Button>
                   </List>
                 ),

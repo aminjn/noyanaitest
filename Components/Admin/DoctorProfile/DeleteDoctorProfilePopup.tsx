@@ -5,6 +5,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteDoctorProfilePopup = ({
   mutate,
@@ -18,9 +19,7 @@ const DeleteDoctorProfilePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف پروفایل پزشک ${node.firstName || ""} ${
-          node.lastName || ""
-        } مطمئنید؟`}
+        message={ta("آیا از حذف پروفایل پزشک ${1} ${2} مطمئنید؟", [node.firstName || "", node.lastName || ""])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

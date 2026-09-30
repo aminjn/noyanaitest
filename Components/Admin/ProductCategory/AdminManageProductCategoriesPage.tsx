@@ -23,6 +23,7 @@ import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import EditIcon from "@/Components/Icons/EditIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ProductCategoryPopulation = Population<Record<never, never>>;
 
@@ -40,9 +41,9 @@ const CreateProductCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
     <PopupCard>
       <CreateForm<IProductCategory>
         renderer={{
-          name: { title: "نام", type: "text" },
-          isActive: { type: "bool", title: "فعال" },
-          order: { type: "number", title: "رتبه" },
+          name: { title: ta("نام"), type: "text" },
+          isActive: { type: "bool", title: ta("فعال") },
+          order: { type: "number", title: ta("رتبه") },
         }}
         hookProps={{
           path: `${API}/auto/productCategory`,
@@ -73,7 +74,7 @@ const DeleteProductCategoryPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message="ایا از حذف این مورد مطمئنید؟"
+        message={ta("ایا از حذف این مورد مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
       />
       <Act
@@ -102,10 +103,10 @@ const AdminManageProductCategoriesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دسته بندی محصولات"
+          title={ta("دسته بندی محصولات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateProductCategory",
@@ -117,15 +118,15 @@ const AdminManageProductCategoriesPage = () => {
           <Table
             data={data}
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.isActive} />,
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 filter: "Number",
                 value: (node) => node.order,
                 component: (node) => (
@@ -138,18 +139,18 @@ const AdminManageProductCategoriesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/productCategory/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteProductCategory",

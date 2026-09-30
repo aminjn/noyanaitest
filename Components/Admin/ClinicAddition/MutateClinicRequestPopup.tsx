@@ -6,6 +6,7 @@ import {
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateClinicRequestPopup = ({
   mutate,
@@ -17,7 +18,7 @@ const MutateClinicRequestPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="درخواست افزودن کلینیک">
+    <PopupCard title={ta("درخواست افزودن کلینیک")}>
       <CreateForm<IClinicAdditionRequest>
         defaultValue={node}
         onCancel={() => closePopup()}
@@ -32,7 +33,7 @@ const MutateClinicRequestPopup = ({
         renderer={{
           status: {
             type: "select",
-            title: "وضعیت",
+            title: ta("وضعیت"),
             options: additionRequestStatusDict,
           },
         }}

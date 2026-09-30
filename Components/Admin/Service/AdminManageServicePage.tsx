@@ -8,6 +8,7 @@ import TabSystem from "../UI/TabSystem";
 import SpecsManager from "../Product/SpecsManager";
 import ImagesManager from "../Product/ImagesManager";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageServicePage = () => {
   return (
@@ -20,7 +21,7 @@ const AdminManageServicePage = () => {
           items={[
             {
               id: "Info",
-              title: "اطلاعات",
+              title: ta("اطلاعات"),
               content: (
                 <CreateForm
                   defaultValue={node}
@@ -37,17 +38,17 @@ const AdminManageServicePage = () => {
             },
             {
               id: "Specs",
-              title: "ویژگی ها",
+              title: ta("ویژگی ها"),
               content: <SpecsManager model="Service" node={node} />,
             },
             {
               id: "Images",
               content: <ImagesManager model="Service" node={node} />,
-              title: "تصاویر",
+              title: ta("تصاویر"),
             },
             {
               id: "Meta",
-              title: "متادیتا",
+              title: ta("متادیتا"),
               content: (
                 <PageMetaEditor resourceType="/service/[slug]" slug={node.slug} />
               ),

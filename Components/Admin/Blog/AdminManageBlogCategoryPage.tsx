@@ -10,11 +10,18 @@ import HandleLoading from "../UI/HandleLoading";
 import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import Box from "../UI/Box";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const blogCategoryFormRenderer: FormRenderer<IBlogCategory> = {
-  title: { title: "عنوان", type: "text" },
-  slug: { title: "اسلاگ", type: "text" },
-  order: { type: "number", title: "رتبه" },
+  title: { get title() {
+  return ta("عنوان");
+}, type: "text" },
+  slug: { get title() {
+  return ta("اسلاگ");
+}, type: "text" },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
 };
 
 const AdminManageBlogCategoryPage = () => {

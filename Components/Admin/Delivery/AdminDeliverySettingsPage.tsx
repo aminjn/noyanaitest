@@ -13,6 +13,7 @@ import {
   IAddressCity,
 } from "@/Components/Dashboard/Address/DashboardManageAddressesPage";
 import classes from "./AdminDeliverySettingsPage.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Super admin: shipping of cart orders (backend Lib/delivery.ts). Same city
 // as the pharmacy -> Tapsi at this flat fee (until its API is connected);
@@ -32,27 +33,23 @@ const AdminDeliverySettingsPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
   const origin = data?.defaultOriginCity || data?.fallbackOriginCity;
-  const cityField = addressCityField("مبدأ پیش‌فرض (داروخانه‌ی بدون شهر)");
+  const cityField = addressCityField(ta("مبدأ پیش‌فرض (داروخانه‌ی بدون شهر)"));
 
   return (
-    <WithTitle title="تنظیمات ارسال">
+    <WithTitle title={ta("تنظیمات ارسال")}>
       <HandleLoading data={!!data} error={error}>
         {!!data && (
           <>
             <Box className={classes.box}>
-              <span className={classes.sectionTitle}>منطق ارسال</span>
+              <span className={classes.sectionTitle}>{ta("منطق ارسال")}</span>
               <p className={classes.rule}>
-                مبدأ و مقصد در یک شهر: پیک تپسی با هزینه‌ی ثابت که هنگام خرید از
-                خریدار گرفته می‌شود و با تحویل اولین قلم به کیف پول داروخانه
-                می‌رود.
+                {ta("مبدأ و مقصد در یک شهر: پیک تپسی با هزینه‌ی ثابت که هنگام خرید از خریدار گرفته می‌شود و با تحویل اولین قلم به کیف پول داروخانه می‌رود.")}
               </p>
               <p className={classes.rule}>
-                مبدأ و مقصد در دو شهر: تیپاکس به‌صورت پس‌کرایه. در سایت چیزی
-                گرفته نمی‌شود و خریدار هزینه را هنگام تحویل به مأمور تیپاکس
-                می‌پردازد.
+                {ta("مبدأ و مقصد در دو شهر: تیپاکس به‌صورت پس‌کرایه. در سایت چیزی گرفته نمی‌شود و خریدار هزینه را هنگام تحویل به مأمور تیپاکس می‌پردازد.")}
               </p>
               <p className={classes.rule}>
-                {`مبدأ هر سفارش شهر داروخانه است. داروخانه‌ای که شهرش ثبت نشده از «${addressCityLabel(origin || undefined) || "تهران"}» ارسال می‌کند. هر داروخانه در سبد خرید یک مرسوله‌ی جدا حساب می‌شود.`}
+                {ta("مبدأ هر سفارش شهر داروخانه است. داروخانه‌ای که شهرش ثبت نشده از «${1}» ارسال می‌کند. هر داروخانه در سبد خرید یک مرسوله‌ی جدا حساب می‌شود.", [addressCityLabel(origin || undefined) || "تهران"])}
               </p>
             </Box>
             <CreateForm<{
@@ -67,7 +64,7 @@ const AdminDeliverySettingsPage = () => {
                 tapsiFlatFee: {
                   type: "number",
                   price: true,
-                  title: "هزینه‌ی ثابت تپسی (تومان)",
+                  title: ta("هزینه‌ی ثابت تپسی (تومان)"),
                 },
                 defaultOriginCity: {
                   ...cityField,

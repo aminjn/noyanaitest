@@ -9,14 +9,18 @@ import { BreadCrumpContextProvider } from "@/Components/Store/BreadCrumpStore";
 import { SockectContextProvider } from "@/Components/Store/SocketContext";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getMessages } from "@/Components/i18n/getMessages";
-import { getEnabledLocales } from "@/Components/i18n/getEnabledLocales";
+import { getSiteLocales } from "@/Components/i18n/getEnabledLocales";
+import AdminTextProvider from "@/Components/Admin/i18n/AdminTextProvider";
+import { loadAdminDictionary } from "@/Components/Admin/i18n/loadAdminDictionary";
+import { setAdminDictionary } from "@/Components/Admin/i18n/adminText";
 import { headers } from "next/headers";
 import { themeInitScript } from "@/Components/UI/Theme/theme";
 import { localeAlternates } from "@/Components/i18n/alternates";
 import {
-  defaultLocale,
   isLocale,
   LOCALE_HEADER,
+  PATH_HEADER,
+  setSiteDefaultLocale,
   localeDir,
 } from "@/Components/i18n/locales";
 
@@ -54,15 +58,16 @@ const baseMetadata: Metadata = {
 // (a doctor, a pharmacy, an article...) reads "<page> | <brand>"; a page with
 // no SEO entry at all still gets the real site title, never a placeholder.
 export const generateMetadata = async (): Promise<Metadata> => {
+  const site = await getSiteLocales();
   const headerLocale = headers().get(LOCALE_HEADER);
-  const locale = isLocale(headerLocale) ? headerLocale : defaultLocale;
+  const locale = isLocale(headerLocale) ? headerLocale : site.default;
   const messages = await getMessages(locale);
   const brand = messages.aboutTitleNoyan || "NoyanAI";
   return {
     ...baseMetadata,
     title: { default: messages.siteTitle || brand, template: `%s | ${brand}` },
     description: messages.footerText,
-    alternates: localeAlternates(await getEnabledLocales()),
+    alternates: localeAlternates(site.enabled),
   };
 };
 
@@ -75,12 +80,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const site = await getSiteLocales();
   const headerLocale = headers().get(LOCALE_HEADER);
-  const locale = isLocale(headerLocale) ? headerLocale : defaultLocale;
-  const [messages, enabledLocales] = await Promise.all([
+  const locale = isLocale(headerLocale) ? headerLocale : site.default;
+  // the super admin panel shows the site default: its texts' dictionary
+  // (Components/Admin/i18n) is sent with admin pages only
+  const path = headers().get(PATH_HEADER) || "";
+  const adminKey = process.env.ADMIN_KEY;
+  const isAdmin =
+    !!adminKey && (path === `/${adminKey}` || path.startsWith(`/${adminKey}/`));
+  const [messages, adminDict] = await Promise.all([
     getMessages(locale),
-    getEnabledLocales(),
+    isAdmin ? loadAdminDictionary(site.default) : Promise.resolve(null),
   ]);
+  setSiteDefaultLocale(site.default);
+  setAdminDictionary(adminDict);
 
   // No <Suspense> around the tree: it used to be here only because
   // ProgressContextProvider called useSearchParams(), and its fallback
@@ -96,8 +110,10 @@ export default async function RootLayout({
         <LocaleScopeProvider
           initialTextContent={messages}
           locale={locale}
-          enabledLocales={enabledLocales}
+          enabledLocales={site.enabled}
+          siteDefaultLocale={site.default}
         >
+          <AdminTextProvider dict={adminDict}>
           <ProgressContextProvider>
             <NotificationContextProvider>
               <PopupContextProvider>
@@ -109,6 +125,7 @@ export default async function RootLayout({
               </PopupContextProvider>
             </NotificationContextProvider>
           </ProgressContextProvider>
+          </AdminTextProvider>
         </LocaleScopeProvider>
       </body>
     </html>

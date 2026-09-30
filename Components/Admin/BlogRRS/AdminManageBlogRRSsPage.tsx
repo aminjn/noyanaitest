@@ -3,6 +3,7 @@
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import NodesManager from "../UI/NodesManager";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type BlogRRSPopulation = Population<Record<never, never>>;
 
@@ -19,14 +20,14 @@ const AdminManageBlogRRSsPage = () => {
     <NodesManager<IBlogRRS>
       modelName="blogRrs"
       table={() => ({
-        email: { name: "ایمیل", value: (node) => node.email, filter: "Text" },
+        email: { name: ta("ایمیل"), value: (node) => node.email, filter: "Text" },
         createdAt: {
-          name: "تاریخ عضویت",
+          name: ta("تاریخ عضویت"),
           value: (node) => new Date(node.createdAt),
           filter: "Date",
         },
       })}
-      title="عضویت در خبرنامه"
+      title={ta("عضویت در خبرنامه")}
     />
   );
 };

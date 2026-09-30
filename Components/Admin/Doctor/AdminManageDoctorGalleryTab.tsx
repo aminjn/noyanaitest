@@ -20,6 +20,7 @@ import DeleteGalleryItemPopup from "./DeleteGalleryItemPopup";
 import WithTitle from "../UI/WithTitle";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type GalleryItemPopulation = { OwnerPopulated?: true };
 
@@ -61,12 +62,12 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title={`گالری ${node.name}`}
+          title={ta("گالری ${1}", [node.name])}
           actions={
             hasAccess("GalleryItem", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "MutateGalleryItem",
@@ -82,18 +83,18 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
             name="AdminManageDoctorGallery"
             renderer={{
               alt: {
-                name: "عنوان تصویر",
+                name: ta("عنوان تصویر"),
                 value: (node) => node.alt,
                 filter: "Text",
               },
               image: {
-                name: "تصویر",
-                value: (node) => (node.image ? "دارد" : "ندارد"),
+                name: ta("تصویر"),
+                value: (node) => (node.image ? ta("دارد") : ta("ندارد")),
                 component: (node) =>
                   node.image ? (
                     <TableActions>
                       <IconButton
-                        title="نمایش تصویر"
+                        title={ta("نمایش تصویر")}
                         onClick={() =>
                           setPopup(
                             "FullscreenImagePreview",
@@ -110,13 +111,13 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                 filter: "Set",
               },
               active: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.active}`],
                 component: (node) => <BooleanToIcon value={node.active} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -129,17 +130,17 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                 ),
               },
               createdAt: {
-                name: "تاریخ ایجاد",
+                name: ta("تاریخ ایجاد"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("GalleryItem", "update") && (
                       <IconButton
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                         onClick={() =>
                           setPopup(
                             "MutateGalleryItem",
@@ -156,7 +157,7 @@ const AdminManageDoctorGalleryTab = ({ node }: { node: IDoctor }) => {
                     {hasAccess("GalleryItem", "delete") && (
                       <IconButton
                         variant="Danger"
-                        title="حذف"
+                        title={ta("حذف")}
                         onClick={() =>
                           setPopup(
                             "DeleteGalleryItem",

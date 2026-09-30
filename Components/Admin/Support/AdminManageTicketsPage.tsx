@@ -15,6 +15,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type AdminTicket = ITicket<{ SubmittedBy: Record<never, never> }>;
 
@@ -27,28 +28,28 @@ const AdminManageTicketsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="تیکت های پشتیبانی">
+        <WithTitle title={ta("تیکت های پشتیبانی")}>
           <Table
             data={data}
             name="AdminManageTickets"
             renderer={{
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 value: (node) => node.title,
                 filter: "Text",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => ticketStatusDict[node.status],
                 filter: "Set",
               },
               subject: {
-                name: "موضوع",
+                name: ta("موضوع"),
                 value: (node) => ticketSubjectDict[node.subject],
                 filter: "Set",
               },
               submittedBy: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => node.submittedBy?.phone,
                 filter: "Text",
                 component: (node) =>
@@ -63,18 +64,18 @@ const AdminManageTicketsPage = () => {
                   ),
               },
               submittedAt: {
-                name: "زمان ثبت",
+                name: ta("زمان ثبت"),
                 value: (node) => new Date(node.submittedAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/ticket/${node._id}`)}
                       variant="Info"
-                      title="مشاهده و پاسخ"
+                      title={ta("مشاهده و پاسخ")}
                     >
                       <EditIcon />
                     </IconLink>

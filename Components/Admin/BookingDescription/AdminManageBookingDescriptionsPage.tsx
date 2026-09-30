@@ -14,6 +14,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const bookingDescriptionSegments = [
   "Doctor",
@@ -26,9 +27,15 @@ export type BookingDescriptionSegment =
 
 const bookingDescriptionSegmentDict: Record<BookingDescriptionSegment, string> =
   {
-    Doctor: "پزشک",
-    Clinic: "کلینیک",
-    Pharmacy: "داروخانه",
+    get Doctor() {
+  return ta("پزشک");
+},
+    get Clinic() {
+  return ta("کلینیک");
+},
+    get Pharmacy() {
+  return ta("داروخانه");
+},
   };
 
 export type BookingDescriptionPopulation = Population<Record<never, never>>;
@@ -45,15 +52,25 @@ export interface IBookingDescription<
 
 export const bookingDescriptionFormRenderer: FormRenderer<IBookingDescription> =
   {
-    title: { type: "text", title: "عنوان" },
-    order: { type: "number", title: "رتبه" },
+    title: { type: "text", get title() {
+  return ta("عنوان");
+} },
+    order: { type: "number", get title() {
+  return ta("رتبه");
+} },
     segment: {
       type: "select",
-      title: "بخش",
+      get title() {
+  return ta("بخش");
+},
       options: bookingDescriptionSegmentDict,
     },
-    description: { type: "area", title: "توضیحات" },
-    isActive: { type: "bool", title: "فعال" },
+    description: { type: "area", get title() {
+  return ta("توضیحات");
+} },
+    isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
   };
 
 const AdminManageBookingDescriptionsPage = () => {
@@ -61,24 +78,24 @@ const AdminManageBookingDescriptionsPage = () => {
 
   return (
     <NodesManager<IBookingDescription>
-      title="توضیحات رزرو"
+      title={ta("توضیحات رزرو")}
       create={bookingDescriptionFormRenderer}
       modelName="bookingDescription"
       table={({ mutate }) => ({
-        title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
+        title: { name: ta("عنوان"), value: (node) => node.title, filter: "Text" },
         segment: {
-          name: "بخش",
+          name: ta("بخش"),
           value: (node) => bookingDescriptionSegmentDict[node.segment],
           filter: "Set",
         },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "ترتیب",
+          name: ta("ترتیب"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -91,18 +108,18 @@ const AdminManageBookingDescriptionsPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/bookingDescription/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

@@ -5,6 +5,7 @@ import { mutate } from "swr";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteInsurancePopup = ({
   mutate,
@@ -18,7 +19,7 @@ const DeleteInsurancePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف بیمه ${node.name || node._id} مطمئن هستید؟`}
+        message={ta("آیا از حذف بیمه ${1} مطمئن هستید؟", [node.name || node._id])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

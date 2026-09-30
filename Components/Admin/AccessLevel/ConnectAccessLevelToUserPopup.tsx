@@ -6,6 +6,7 @@ import { IUserAccessLevel } from "./AccessLevelAdminsTab";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import { getAccessLevelLabel, getUserLabel } from "../Lib/LabelGetters";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ConnectAccessLevelToUserPopup = ({
   accessLevel,
@@ -18,7 +19,7 @@ const ConnectAccessLevelToUserPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard title="اتصال سطح دسترسی به کاربر">
+    <PopupCard title={ta("اتصال سطح دسترسی به کاربر")}>
       <CreateForm<IUserAccessLevel>
         renderer={{
           ...(user
@@ -26,7 +27,7 @@ const ConnectAccessLevelToUserPopup = ({
             : {
                 user: {
                   type: "nodes",
-                  title: "یوزر",
+                  title: ta("یوزر"),
                   path: `${API}/auto/user`,
                   getOptionLabel: (node) => getUserLabel(node as IUser),
                   getOptionValue: (node) => (node as IUser)._id,
@@ -37,7 +38,7 @@ const ConnectAccessLevelToUserPopup = ({
             : {
                   accessLevel: {
                     type: "nodes",
-                    title: "سطح دسترسی",
+                    title: ta("سطح دسترسی"),
                     path: `${API}/auto/accesslevel`,
                     getOptionLabel: (node) =>
                       getAccessLevelLabel(node as IAccessLevel),
@@ -57,9 +58,9 @@ const ConnectAccessLevelToUserPopup = ({
             user: inp.user || user?._id,
           }),
           hasProblem: (inp) => {
-            if (!user && !inp.user) return "لطفا کاربر را انتخاب فرمایید";
+            if (!user && !inp.user) return ta("لطفا کاربر را انتخاب فرمایید");
             if (!accessLevel && !inp.accessLevel)
-              return "لطفا سطح دسترسی را انتخاب فرمایید";
+              return ta("لطفا سطح دسترسی را انتخاب فرمایید");
           },
         }}
         onCancel={() => closePopup()}

@@ -48,6 +48,7 @@ import HospitalDepartmentsTab from "./HospitalDepartmentsTab";
 import HospitalDoctorsTab from "./HospitalDoctorsTab";
 import HospitalProfileLicenseTab from "./HospitalProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HospitalClinicPopulation = Population<{
   Hospital: HospitalPopulation;
@@ -92,7 +93,7 @@ const MutateHospitalClinicPopup = ({
         renderer={{
           clinic: {
             type: "nodes",
-            title: "کلینیک",
+            title: ta("کلینیک"),
             path: `${API}/auto/clinic`,
             getOptionLabel: (node) =>
               (node as IClinic).name || (node as IClinic)._id,
@@ -119,10 +120,10 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="کلینیک ها"
+          title={ta("کلینیک ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateHospitalClinic",
@@ -136,7 +137,7 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
             data={data}
             renderer={{
               clinic: {
-                name: "کلینیک",
+                name: ta("کلینیک"),
                 value: (node) => node.clinic?.name,
                 component: (node) =>
                   node.clinic ? (
@@ -149,11 +150,11 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
                 filter: "Text",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateHospitalClinic",
@@ -168,7 +169,7 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalClinic",
@@ -211,7 +212,7 @@ const HospitalLocationManager = ({
     mutator: (inp) => ({
       location: { type: "Point", coordinates: inp.coordinates },
     }),
-    hasProblem: (inp) => (!inp.coordinates ? "مختصات را انتخاب کنید" : false),
+    hasProblem: (inp) => (!inp.coordinates ? ta("مختصات را انتخاب کنید") : false),
   });
 
   return (
@@ -222,7 +223,7 @@ const HospitalLocationManager = ({
       />
       <FormActions>
         <Button onClick={() => submit()} isLoading={isLoading}>
-          تایید
+          {ta("تایید")}
         </Button>
       </FormActions>
     </div>
@@ -250,7 +251,7 @@ const AdminManageHospitalPage = () => {
                 ? [
                     {
                       id: "Overview",
-                      title: "نمای کلی",
+                      title: ta("نمای کلی"),
                       content: (
                         <EntityOverview kind="hospital" nodeId={nodeId} />
                       ),
@@ -259,18 +260,18 @@ const AdminManageHospitalPage = () => {
                   ]
                 : []),
               {
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 content: (
                   <CreateForm
                     defaultValue={data}
                     renderer={{
-                      name: { type: "text", title: "نام" },
-                      isActive: { type: "bool", title: "فعال" },
-                      order: { type: "number", title: "رتبه" },
-                      slug: { type: "text", title: "اسلاگ" },
-                      bedCount: { type: "number", title: "تعداد تخت" },
+                      name: { type: "text", title: ta("نام") },
+                      isActive: { type: "bool", title: ta("فعال") },
+                      order: { type: "number", title: ta("رتبه") },
+                      slug: { type: "text", title: ta("اسلاگ") },
+                      bedCount: { type: "number", title: ta("تعداد تخت") },
                       isRoundTheClock: { type: "bool", title: "24X7" },
-                      special: { type: "bool", title: "ویژه" },
+                      special: { type: "bool", title: ta("ویژه") },
                       category: {
                         type: "nodes",
                         multi: false,
@@ -281,7 +282,7 @@ const AdminManageHospitalPage = () => {
                         getOptionValue: (node) =>
                           (node as IHospitalCategory)._id,
                         getDefaultValue: (inp) => inp.category,
-                        title: "دسنه بندی",
+                        title: ta("دسنه بندی"),
                       },
                       province: {
                         type: "nodes",
@@ -290,11 +291,11 @@ const AdminManageHospitalPage = () => {
                         getOptionLabel: (node) =>
                           (node as IProvince).name || (node as IProvince)._id,
                         getOptionValue: (node) => (node as IProvince)._id,
-                        title: "استان",
+                        title: ta("استان"),
                         getDefaultValue: (inp) => inp.province,
                       },
                       city: {
-                        title: "شهر",
+                        title: ta("شهر"),
                         type: "nodes",
                         path: `${API}/auto/city`,
                         getOptionLabel: (node) =>
@@ -304,7 +305,7 @@ const AdminManageHospitalPage = () => {
                         getDefaultValue: (inp) => inp.city,
                       },
                       district: {
-                        title: "محله",
+                        title: ta("محله"),
                         type: "nodes",
                         multi: false,
                         getOptionLabel: (node) =>
@@ -313,10 +314,10 @@ const AdminManageHospitalPage = () => {
                         path: `${API}/auto/district`,
                         getDefaultValue: (inp) => inp.district,
                       },
-                      image: { type: "image", title: "تصویر" },
+                      image: { type: "image", title: ta("تصویر") },
                       tags: {
                         type: "nodes",
-                        title: "تگ ها",
+                        title: ta("تگ ها"),
                         getOptionLabel: (node) =>
                           (node as IHospitalTag).name ||
                           (node as IHospitalTag)._id,
@@ -325,16 +326,16 @@ const AdminManageHospitalPage = () => {
                         getDefaultValue: (inp) => inp.tags,
                         path: `${API}/auto/hospitalTag`,
                       },
-                      code: { type: "text", title: "کد" },
-                      establishment: { type: "text", title: "تاسیس" },
-                      personelCount: { type: "number", title: "تغداد پرسنل" },
-                      summary: { type: "text", title: "خلاصه" },
-                      address: { type: "text", title: "آدرس" },
-                      businessTimes: { type: "text", title: "ساعات کاری" },
-                      mail: { type: "text", title: "ایمیل" },
+                      code: { type: "text", title: ta("کد") },
+                      establishment: { type: "text", title: ta("تاسیس") },
+                      personelCount: { type: "number", title: ta("تغداد پرسنل") },
+                      summary: { type: "text", title: ta("خلاصه") },
+                      address: { type: "text", title: ta("آدرس") },
+                      businessTimes: { type: "text", title: ta("ساعات کاری") },
+                      mail: { type: "text", title: ta("ایمیل") },
                       owner: {
                         type: "nodes",
-                        title: "صاحب",
+                        title: ta("صاحب"),
                         path: `${API}/auto/doctorProfile`,
                         getOptionLabel: (node) =>
                           getDoctorProfileLabel(node as IDoctorProfile),
@@ -342,12 +343,12 @@ const AdminManageHospitalPage = () => {
                         multi: false,
                         getDefaultValue: (inp) => inp.owner,
                       },
-                      phone: { type: "text", title: "شماره تماس" },
-                      website: { type: "text", title: "سایت" },
-                      services: { type: "strings", title: "حدمات" },
+                      phone: { type: "text", title: ta("شماره تماس") },
+                      website: { type: "text", title: ta("سایت") },
+                      services: { type: "strings", title: ta("حدمات") },
                       insurances: {
                         type: "nodes",
-                        title: "بیمه ها",
+                        title: ta("بیمه ها"),
                         getOptionLabel: (node) =>
                           (node as IInsurance).name || (node as IInsurance)._id,
                         getOptionValue: (node) => (node as IInsurance)._id,
@@ -357,7 +358,7 @@ const AdminManageHospitalPage = () => {
                       },
                       certificates: {
                         type: "strings",
-                        title: "اعتبار نامه ها",
+                        title: ta("اعتبار نامه ها"),
                       },
                     }}
                     hookProps={{
@@ -372,40 +373,40 @@ const AdminManageHospitalPage = () => {
                 id: "Details",
               },
               {
-                title: "موقعیت",
+                title: ta("موقعیت"),
                 id: "Geo",
                 content: (
                   <HospitalLocationManager node={data} mutate={mutate} />
                 ),
               },
               {
-                title: "کلینیک ها",
+                title: ta("کلینیک ها"),
                 id: "Clinic",
                 content: <HospitalClinicsManager node={data} />,
               },
               {
-                title: "یوزر",
+                title: ta("یوزر"),
                 id: "User",
                 content: <HospitalUserTab node={data} mutate={mutate} />,
               },
               {
-                title: "دپارتمان ها",
+                title: ta("دپارتمان ها"),
                 id: "Departments",
                 content: <HospitalDepartmentsTab hospital={data} />,
               },
               {
-                title: "پزشکان",
+                title: ta("پزشکان"),
                 id: "Doctors",
                 content: <HospitalDoctorsTab hospital={data} />,
               },
               {
-                title: "مجوز",
+                title: ta("مجوز"),
                 id: "License",
                 icon: <CartIcon />,
                 content: <HospitalProfileLicenseTab node={data} />,
               },
               {
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 id: "Meta",
                 content: (
                   <PageMetaEditor

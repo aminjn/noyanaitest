@@ -14,6 +14,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type BlogTagPopulation = Population<Record<never, never>>;
 
@@ -27,10 +28,18 @@ export interface IBlogTag<
 }
 
 export const blogTagFormRenderer: FormRenderer<IBlogTag> = {
-  name: { title: "نام", type: "text" },
-  isActive: { title: "فعال", type: "bool" },
-  order: { title: "رتبه", type: "number" },
-  hot: { title: "داغ", type: "bool" },
+  name: { get title() {
+  return ta("نام");
+}, type: "text" },
+  isActive: { get title() {
+  return ta("فعال");
+}, type: "bool" },
+  order: { get title() {
+  return ta("رتبه");
+}, type: "number" },
+  hot: { get title() {
+  return ta("داغ");
+}, type: "bool" },
 };
 
 const AdminManageBlogTagsPage = () => {
@@ -40,21 +49,21 @@ const AdminManageBlogTagsPage = () => {
     <NodesManager<IBlogTag>
       modelName="blogTag"
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "فعال",
+          name: ta("فعال"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         hot: {
-          name: "داغ",
+          name: ta("داغ"),
           value: (node) => booleanToValue[`${node.hot}`],
           component: (node) => <BooleanToIcon value={node.hot} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -67,15 +76,15 @@ const AdminManageBlogTagsPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/blogTag/${node._id}`)} title="ویرایش">
+              <IconLink href={adminPath(`/blogTag/${node._id}`)} title={ta("ویرایش")}>
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",
@@ -93,7 +102,7 @@ const AdminManageBlogTagsPage = () => {
           ),
         },
       })}
-      title="تگ بلاگ"
+      title={ta("تگ بلاگ")}
       create={blogTagFormRenderer}
     />
   );

@@ -22,6 +22,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteProductImagePopup = ({
   mutate,
@@ -35,7 +36,7 @@ const DeleteProductImagePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -75,10 +76,10 @@ const MutateProductImagePopup = ({
         onCancel={() => closePopup()}
         defaultValue={node}
         renderer={{
-          image: { type: "image", title: "نصویر" },
-          alt: { type: "text", title: "الت" },
-          isActive: { type: "bool", title: "فعال" },
-          order: { type: "number", title: "رتبه" },
+          image: { type: "image", title: ta("نصویر") },
+          alt: { type: "text", title: ta("الت") },
+          isActive: { type: "bool", title: ta("فعال") },
+          order: { type: "number", title: ta("رتبه") },
         }}
         hookProps={{
           path: `${API}/auto/productImage${node ? `/${node._id}` : ""}`,
@@ -114,10 +115,10 @@ const ImagesManager = ({
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تصاویر"
+          title={ta("تصاویر")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateProductImage",
@@ -135,31 +136,31 @@ const ImagesManager = ({
             data={data}
             renderer={{
               image: {
-                name: "تصویر",
+                name: ta("تصویر"),
                 value: (node) => node.image,
                 filter: "Text",
                 component: (node) =>
                   node.image ? (
                     <InlineLink target="_blank" href={`/files/${node.image}`}>
-                      مشاهده تصویر
+                      {ta("مشاهده تصویر")}
                     </InlineLink>
                   ) : (
                     "—"
                   ),
               },
               alt: {
-                name: "متن جایگزین",
+                name: ta("متن جایگزین"),
                 value: (node) => node.alt,
                 filter: "Text",
               },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 filter: "Set",
                 value: (node) => booleanToValue[`${!!node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -172,11 +173,11 @@ const ImagesManager = ({
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateProductImage",
@@ -192,7 +193,7 @@ const ImagesManager = ({
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteProductImage",

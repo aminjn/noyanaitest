@@ -10,6 +10,7 @@ import {
   pageMetaNodeResourceTypes,
   PageMetaResourceType,
 } from "./pageMetaConstants";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // finds the PageMeta record matching this resourceType (+ slug for node pages),
 // or falls back to creating a new one on first submit
@@ -33,7 +34,7 @@ const PageMetaEditor = ({
   );
 
   if (isNodeType && !slug)
-    return <div>برای مدیریت متادیتا ابتدا اسلاگ را تنظیم و ذخیره کنید</div>;
+    return <div>{ta("برای مدیریت متادیتا ابتدا اسلاگ را تنظیم و ذخیره کنید")}</div>;
 
   const existing = data?.[0];
 
@@ -60,20 +61,20 @@ const PageMetaEditor = ({
             successCb: () => mutate(),
           }}
           renderer={{
-            title: { type: "text", title: "عنوان (title)" },
-            description: { type: "area", title: "توضیحات (description)" },
-            keywords: { type: "strings", title: "کلمات کلیدی" },
-            ogTitle: { type: "text", title: "عنوان اشتراک گذاری (og:title)" },
+            title: { type: "text", title: ta("عنوان (title)") },
+            description: { type: "area", title: ta("توضیحات (description)") },
+            keywords: { type: "strings", title: ta("کلمات کلیدی") },
+            ogTitle: { type: "text", title: ta("عنوان اشتراک گذاری (og:title)") },
             ogDescription: {
               type: "area",
-              title: "توضیحات اشتراک گذاری (og:description)",
+              title: ta("توضیحات اشتراک گذاری (og:description)"),
             },
             ogImage: {
               type: "image",
-              title: "تصویر اشتراک گذاری (og:image)",
+              title: ta("تصویر اشتراک گذاری (og:image)"),
             },
-            canonicalUrl: { type: "text", title: "آدرس کنونیکال" },
-            webSchema: { type: "area", title: "اسکیمای وب (JSON-LD)" },
+            canonicalUrl: { type: "text", title: ta("آدرس کنونیکال") },
+            webSchema: { type: "area", title: ta("اسکیمای وب (JSON-LD)") },
             noIndex: { type: "bool", title: "noindex" },
             noFollow: { type: "bool", title: "nofollow" },
           }}

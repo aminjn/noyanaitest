@@ -15,6 +15,7 @@ import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // admin route of each commentable model (lower-casing broke the camelCase
 // ones: /paracliniC, /productpackage...)
@@ -43,10 +44,10 @@ const AdminManageCommentsPage = () => {
       IComment<{ Author: Record<never, never>; resource: Record<never, never> }>
     >
       modelName="comment"
-      title={"نظرات"}
+      title={ta("نظرات")}
       table={({ mutate }) => ({
         author: {
-          name: "نویسنده",
+          name: ta("نویسنده"),
           value: (node) => node.author?.phone,
           component: (node) =>
             node.author ? (
@@ -59,22 +60,22 @@ const AdminManageCommentsPage = () => {
           filter: "Multi",
         },
         status: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => commentStatusDict[node.status],
           filter: "Set",
         },
         score: {
-          name: "امتیاز",
+          name: ta("امتیاز"),
           value: (node) => node.score,
           filter: "Number",
         },
         refPath: {
-          name: "بخش",
+          name: ta("بخش"),
           value: (node) => commentDocumentsDict[node.refPath],
           filter: "Set",
         },
         resource: {
-          name: "مربوط به",
+          name: ta("مربوط به"),
           value: (node) => node.resource?._id,
           component: (node) =>
             node.resource ? (
@@ -91,20 +92,20 @@ const AdminManageCommentsPage = () => {
           filter: "Multi",
         },
         createdAt: {
-          name: "تاریخ ثبت",
+          name: ta("تاریخ ثبت"),
           value: (node) => new Date(node.createdAt),
           filter: "Date",
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/comment/${node._id}`)} title="ویرایش">
+              <IconLink href={adminPath(`/comment/${node._id}`)} title={ta("ویرایش")}>
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

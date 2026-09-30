@@ -9,6 +9,7 @@ import useSWR from "swr";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface ITaminIcid extends MongoDoc {
   icdId: string;
@@ -31,34 +32,34 @@ const AdminManageTaminIcidsPage = () => {
         <Fragment>
           <WithTitle
             title="icids"
-            actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+            actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
           >
             <Table
               data={data}
               name="AdminManageTaminIcds"
               renderer={{
                 icdName: {
-                  name: "نام",
+                  name: ta("نام"),
                   value: (node) => node.icdName,
                   filter: "Text",
                 },
                 icdPersianName: {
-                  name: "نام فارسی",
+                  name: ta("نام فارسی"),
                   value: (node) => node.icdPersianName,
                   filter: "Text",
                 },
                 icdCode: {
-                  name: "کد ICD",
+                  name: ta("کد ICD"),
                   value: (node) => node.icdCode,
                   filter: "Text",
                 },
                 countLimitation: {
-                  name: "محدودیت تعداد",
+                  name: ta("محدودیت تعداد"),
                   value: (node) => node.countLimitation,
                   filter: "Text",
                 },
                 icdId: {
-                  name: "شناسه تامین",
+                  name: ta("شناسه تامین"),
                   value: (node) => node.icdId,
                   filter: "Text",
                 },

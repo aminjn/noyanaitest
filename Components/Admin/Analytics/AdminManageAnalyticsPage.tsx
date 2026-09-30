@@ -10,6 +10,7 @@ import WithTitle from "../UI/WithTitle";
 import Box from "../UI/Box";
 import DataPair from "../UI/DataPair";
 import classes from "./AdminManageAnalyticsPage.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IAnalyticsTotals {
   totalVisits: number;
@@ -47,7 +48,7 @@ export interface IAnalyticsSummary {
 const visitorLabel = (node: IAnalyticsPageVisit): string =>
   node.identity?.user?.phone ||
   node.identity?.user?.username ||
-  (node.identity?.visitorId ? `مهمان (${node.identity.visitorId.slice(0, 8)})` : "ناشناس");
+  (node.identity?.visitorId ? ta("مهمان (${1})", [node.identity.visitorId.slice(0, 8)]) : ta("ناشناس"));
 
 const AdminManageAnalyticsPage = () => {
   const { data, error } = useSWR<IAnalyticsSummary>(
@@ -61,50 +62,50 @@ const AdminManageAnalyticsPage = () => {
         <div className={classes.main}>
           <div className={classes.stats}>
             <Box className={classes.stat}>
-              <DataPair title="مجموع بازدید ها" value={data.totals?.totalVisits ?? 0} />
+              <DataPair title={ta("مجموع بازدید ها")} value={data.totals?.totalVisits ?? 0} />
             </Box>
             <Box className={classes.stat}>
               <DataPair
-                title="بازدیدکننده‌های یکتا"
+                title={ta("بازدیدکننده‌های یکتا")}
                 value={data.totals?.uniqueVisitors ?? 0}
               />
             </Box>
             <Box className={classes.stat}>
               <DataPair
-                title="صفحات بازدید شده"
+                title={ta("صفحات بازدید شده")}
                 value={data.totals?.uniquePages ?? 0}
               />
             </Box>
             <Box className={classes.stat}>
               <DataPair
-                title="تعداد رکورد ها"
+                title={ta("تعداد رکورد ها")}
                 value={data.totals?.totalRecords ?? 0}
               />
             </Box>
           </div>
 
-          <WithTitle title="پربازدیدترین صفحات">
+          <WithTitle title={ta("پربازدیدترین صفحات")}>
             <Table
               name="AdminAnalyticsTopPages"
               data={data.pages}
               renderer={{
                 page: {
-                  name: "صفحه",
+                  name: ta("صفحه"),
                   value: (node) => node.page,
                   filter: "Text",
                 },
                 totalVisits: {
-                  name: "تعداد بازدید",
+                  name: ta("تعداد بازدید"),
                   value: (node) => node.totalVisits,
                   filter: "Number",
                 },
                 uniqueVisitors: {
-                  name: "بازدیدکننده‌ی یکتا",
+                  name: ta("بازدیدکننده‌ی یکتا"),
                   value: (node) => node.uniqueVisitors,
                   filter: "Number",
                 },
                 lastVisitedAt: {
-                  name: "آخرین بازدید",
+                  name: ta("آخرین بازدید"),
                   value: (node) => new Date(node.lastVisitedAt),
                   filter: "Date",
                 },
@@ -112,33 +113,33 @@ const AdminManageAnalyticsPage = () => {
             />
           </WithTitle>
 
-          <WithTitle title="بازدید های اخیر">
+          <WithTitle title={ta("بازدید های اخیر")}>
             <Table
               name="AdminAnalyticsRecentVisits"
               data={data.recent}
               renderer={{
                 page: {
-                  name: "صفحه",
+                  name: ta("صفحه"),
                   value: (node) => node.page,
                   filter: "Text",
                 },
                 visitor: {
-                  name: "بازدیدکننده",
+                  name: ta("بازدیدکننده"),
                   value: (node) => visitorLabel(node),
                   filter: "Text",
                 },
                 count: {
-                  name: "تعداد",
+                  name: ta("تعداد"),
                   value: (node) => node.count,
                   filter: "Number",
                 },
                 visitedAt: {
-                  name: "اولین بازدید",
+                  name: ta("اولین بازدید"),
                   value: (node) => new Date(node.visitedAt),
                   filter: "Date",
                 },
                 lastVisitedAt: {
-                  name: "آخرین بازدید",
+                  name: ta("آخرین بازدید"),
                   value: (node) => new Date(node.lastVisitedAt),
                   filter: "Date",
                 },

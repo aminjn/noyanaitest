@@ -20,6 +20,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteBlogCategoryPopup from "./DeleteBlogCategoryPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBlogCategoriesPage = () => {
   const { data, error, mutate } = useSWR<IBlogCategory[]>(
@@ -35,12 +36,12 @@ const AdminManageBlogCategoriesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دسته بندی مقالات"
+          title={ta("دسته بندی مقالات")}
           actions={
             hasAccess("BlogCategory", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "NewBlogCategory",
@@ -55,7 +56,7 @@ const AdminManageBlogCategoriesPage = () => {
             data={data}
             renderer={{
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 filter: "Text",
                 value: (node) => node.title,
                 component: (node) => (
@@ -65,7 +66,7 @@ const AdminManageBlogCategoriesPage = () => {
                 ),
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -78,20 +79,20 @@ const AdminManageBlogCategoriesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("BlogCategory", "readOne") && (
                       <IconLink
                         href={adminPath(`/blogcategory/${node._id}`)}
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                       >
                         <EditIcon />
                       </IconLink>
                     )}
                     {hasAccess("BlogCategory", "delete") && (
                       <IconButton
-                        title="حذف"
+                        title={ta("حذف")}
                         variant="Danger"
                         onClick={() =>
                           setPopup(

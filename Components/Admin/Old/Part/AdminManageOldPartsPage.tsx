@@ -6,6 +6,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageOldPartsPage = () => {
   const { data, error } = useSWR<IOldPart[]>(`${API}/old/part`, (url: string) =>
@@ -19,13 +20,13 @@ const AdminManageOldPartsPage = () => {
           data={data}
           name="AdminManageOldParts"
           renderer={{
-            name: { name: "نام", value: (node) => node.name, filter: "Text" },
+            name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
             order: {
-              name: "رتبه",
+              name: ta("رتبه"),
               value: (node) => node.order,
               filter: "Number",
             },
-            _id: { name: "شناسه", value: (node) => node._id, filter: "Text" },
+            _id: { name: ta("شناسه"), value: (node) => node._id, filter: "Text" },
           }}
         />
       )}

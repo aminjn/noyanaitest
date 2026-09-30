@@ -8,6 +8,7 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useForm from "@/Components/Hooks/useForm";
 import PopupCard from "@/Components/UI/PopupCard";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AssignHospitalToHospitalRequestPopup = ({
   node,
@@ -22,7 +23,7 @@ const AssignHospitalToHospitalRequestPopup = ({
     path: (inp) => `${API}/auto/hospital/${inp.hospital}`,
     method: "POST",
     hasProblem: (inp) => {
-      if (!inp.hospital) return "بیمارستان را انتخاب نمایید";
+      if (!inp.hospital) return ta("بیمارستان را انتخاب نمایید");
     },
     mutator: () => ({
       user: node.user?._id,
@@ -43,15 +44,15 @@ const AssignHospitalToHospitalRequestPopup = ({
             (node as IHospital).name || (node as IHospital)._id
           }
           getOptionValue={(node) => (node as IHospital)._id}
-          title="انتخاب بیمارستان"
+          title={ta("انتخاب بیمارستان")}
           onChange={(e) =>
             setInput((prev) => ({ ...prev, hospital: e || undefined }))
           }
         />
         <FormActions>
-          <Button type="submit">تایید</Button>
+          <Button type="submit">{ta("تایید")}</Button>
           <Button type="button" onClick={() => closePopup()}>
-            انصراف
+            {ta("انصراف")}
           </Button>
         </FormActions>
       </Form>

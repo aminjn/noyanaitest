@@ -14,14 +14,19 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const privacySectionpages = ["Privacy", "Policy"] as const;
 
 export type PrivacySectionPage = (typeof privacySectionpages)[number];
 
 export const privacySectionPageDict: Record<PrivacySectionPage, string> = {
-  Policy: "مقررات",
-  Privacy: "خریم خصوصی",
+  get Policy() {
+  return ta("مقررات");
+},
+  get Privacy() {
+  return ta("خریم خصوصی");
+},
 };
 
 export type PrivacySectionPopulation = Population<Record<never, never>>;
@@ -37,11 +42,21 @@ export interface IPrivacySection<
 }
 
 export const privacySectionFormRenderer: FormRenderer<IPrivacySection> = {
-  title: { type: "text", title: "عنوان" },
-  content: { type: "area", title: "محتوا" },
-  order: { type: "number", title: "رتبه" },
-  isActive: { type: "bool", title: "فعال" },
-  page: { type: "select", options: privacySectionPageDict, title: "صفحه" },
+  title: { type: "text", get title() {
+  return ta("عنوان");
+} },
+  content: { type: "area", get title() {
+  return ta("محتوا");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  page: { type: "select", options: privacySectionPageDict, get title() {
+  return ta("صفحه");
+} },
 };
 
 const AdminManagePrivacySectionsPage = () => {
@@ -50,23 +65,23 @@ const AdminManagePrivacySectionsPage = () => {
   return (
     <NodesManager<IPrivacySection>
       modelName="privacySection"
-      title="بخش های مقررات"
+      title={ta("بخش های مقررات")}
       create={privacySectionFormRenderer}
       table={({ mutate }) => ({
-        title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
+        title: { name: ta("عنوان"), value: (node) => node.title, filter: "Text" },
         page: {
-          name: "صفحه",
+          name: ta("صفحه"),
           value: (node) => privacySectionPageDict[node.page],
           filter: "Set",
         },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -79,18 +94,18 @@ const AdminManagePrivacySectionsPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/privacy/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

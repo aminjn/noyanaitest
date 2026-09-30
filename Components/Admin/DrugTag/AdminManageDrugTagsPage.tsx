@@ -22,6 +22,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type DrugTagPopulation = Population<Record<never, never>>;
 
@@ -51,9 +52,9 @@ const CreateDrugTagPopup = ({ mutate }: { mutate: () => unknown }) => {
           },
         }}
         renderer={{
-          name: { type: "text", title: "نام" },
-          isActive: { title: "فعال", type: "bool" },
-          order: { title: "رتبه", type: "number" },
+          name: { type: "text", title: ta("نام") },
+          isActive: { title: ta("فعال"), type: "bool" },
+          order: { title: ta("رتبه"), type: "number" },
         }}
       />
     </PopupCard>
@@ -74,7 +75,7 @@ const DeleteDrugTagPopup = ({
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
-        message="آیا از حذذف این مورد مطمئنید؟"
+        message={ta("آیا از حذذف این مورد مطمئنید؟")}
       />
       <Act
         path={isLoading ? `${API}/auto/drugTag/${node._id}` : null}
@@ -102,10 +103,10 @@ const AdminManageDrugtagsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تگ دارو ها"
+          title={ta("تگ دارو ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateDrugTag",
@@ -118,15 +119,15 @@ const AdminManageDrugtagsPage = () => {
             data={data}
             name="AdminManageDrugTags"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -139,18 +140,18 @@ const AdminManageDrugtagsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/drugTag/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDrugTag",

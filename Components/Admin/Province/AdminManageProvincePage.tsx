@@ -26,6 +26,7 @@ import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import PolygonPicker from "@/Components/UI/PolygonPicker";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateCityPopup = ({
   mutate,
@@ -53,9 +54,9 @@ const MutateCityPopup = ({
         }}
         defaultValue={node}
         renderer={{
-          name: { title: "نام", type: "text" },
-          order: { title: "رتبه", type: "number" },
-          isActive: { title: "فعال", type: "bool" },
+          name: { title: ta("نام"), type: "text" },
+          order: { title: ta("رتبه"), type: "number" },
+          isActive: { title: ta("فعال"), type: "bool" },
         }}
       />
     </PopupCard>
@@ -76,7 +77,7 @@ const DeleteCityPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -112,10 +113,10 @@ const ProvinceDetails = ({
         },
       }}
       renderer={{
-        name: { type: "text", title: "نام" },
-        order: { type: "number", title: "رتبه" },
-        isActive: { type: "bool", title: "فعال" },
-        slug: { type: "text", title: "اسلاگ" },
+        name: { type: "text", title: ta("نام") },
+        order: { type: "number", title: ta("رتبه") },
+        isActive: { type: "bool", title: ta("فعال") },
+        slug: { type: "text", title: ta("اسلاگ") },
       }}
     />
   );
@@ -133,10 +134,10 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="شهرها"
+          title={ta("شهرها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateCity",
@@ -149,15 +150,15 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
             data={data}
             name="AdminManageCities"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -170,18 +171,18 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 width: 150,
                 component: (city) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/city/${city._id}`)}
-                      title="مشاهده"
+                      title={ta("مشاهده")}
                     >
                       <EyeIcon />
                     </IconLink>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateCity",
@@ -193,7 +194,7 @@ const ProvinceCities = ({ node }: { node: IProvince }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteCity",
@@ -261,19 +262,19 @@ const AdminManageProvincePage = () => {
             name="AdminManageProvince"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 content: <ProvinceDetails node={data} mutate={mutate} />,
                 id: "Details",
                 icon: <DashboardIcon />,
               },
               {
-                title: "شهرها",
+                title: ta("شهرها"),
                 content: <ProvinceCities node={data} />,
                 id: "Cities",
                 icon: <DashboardIcon />,
               },
               {
-                title: "جئومتری",
+                title: ta("جئومتری"),
                 content: <ProvinceGeometry node={data} mutate={mutate} />,
                 id: "Geometry",
                 icon: <DashboardIcon />,

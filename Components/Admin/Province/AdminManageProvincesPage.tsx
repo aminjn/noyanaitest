@@ -23,6 +23,7 @@ import IconLink from "../UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type IPosition = [longitude: number, latitude: number];
 export type ILinearRing = IPosition[];
@@ -99,9 +100,9 @@ const MutateProvincePopup = ({
           },
         }}
         renderer={{
-          name: { title: "نام", type: "text" },
-          order: { type: "number", title: "رتبه" },
-          isActive: { title: "فعال", type: "bool" },
+          name: { title: ta("نام"), type: "text" },
+          order: { type: "number", title: ta("رتبه") },
+          isActive: { title: ta("فعال"), type: "bool" },
         }}
       />
     </PopupCard>
@@ -122,7 +123,7 @@ const DeleteProvincePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئیند؟"
+        message={ta("آیا از حذف این مورد مطمئیند؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -152,10 +153,10 @@ const AdminManageProvincesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="استان ها"
+          title={ta("استان ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateProvince",
@@ -168,15 +169,15 @@ const AdminManageProvincesPage = () => {
             name="AdminManageProvinces"
             data={data}
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -189,18 +190,18 @@ const AdminManageProvincesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/province/${node._id}`)}
-                      title="شهرها و جزئیات"
+                      title={ta("شهرها و جزئیات")}
                     >
                       <EyeIcon />
                     </IconLink>
                     <IconButton
                       variant="Info"
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateProvince",
@@ -212,7 +213,7 @@ const AdminManageProvincesPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteProvince",

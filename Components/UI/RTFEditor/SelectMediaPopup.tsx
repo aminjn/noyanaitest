@@ -18,6 +18,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import Input from "../Input";
 import Button from "../Button";
 import useNotification from "@/Components/Hooks/useNotification";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const SelectMediaPopup = ({
   onDone,
@@ -41,10 +42,10 @@ const SelectMediaPopup = ({
       {!!data && (
         <WithTitle
           className={classes.main}
-          title="انتخاب تصویر"
+          title={ta("انتخاب تصویر")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateBlogMedia",
@@ -55,25 +56,25 @@ const SelectMediaPopup = ({
         >
           <div className={classes.container}>
             <div className={classes.actions}>
-              <Input title="آلت" onChange={(e) => setAlt(e.target.value)} />
+              <Input title={ta("آلت")} onChange={(e) => setAlt(e.target.value)} />
               <Button
                 onClick={() => {
                   if (!selected)
                     return pushNotification(
-                      "لطفا یک تصویر انتخاب کنید",
+                      ta("لطفا یک تصویر انتخاب کنید"),
                       "Warn",
                     );
                   if (!selected.file)
                     return pushNotification(
-                      "نتصویر انتخابی فایلی ندارد",
+                      ta("نتصویر انتخابی فایلی ندارد"),
                       "Warn",
                     );
                   if (!alt)
-                    return pushNotification("لطفا آلت را وارد کنید", "Warn");
+                    return pushNotification(ta("لطفا آلت را وارد کنید"), "Warn");
                   onDone(selected.file, alt);
                 }}
               >
-                تایید
+                {ta("تایید")}
               </Button>
             </div>
             <div className={classes.items}>

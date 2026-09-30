@@ -18,6 +18,7 @@ import { getUserLabel } from "../Lib/LabelGetters";
 import DeletePushSubscriptionPopup from "./DeletePushSubscriptionPopup";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "adminPushTest"];
 
@@ -139,7 +140,7 @@ const AdminTestPushPage = () => {
                   <TableActions>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeletePushSubscription",

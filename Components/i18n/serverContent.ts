@@ -2,15 +2,15 @@ import { cache } from "react";
 import { headers } from "next/headers";
 import { ContentKey } from "../Enums/contentKeys";
 import { getMessages } from "./getMessages";
-import { defaultLocale, isLocale, Locale, LOCALE_HEADER } from "./locales";
+import { siteDefaultLocale, isLocale, Locale, LOCALE_HEADER } from "./locales";
 
 // Server components: the request's language (set by middleware).
 export const getServerLocale = (): Locale => {
   try {
     const locale = headers().get(LOCALE_HEADER);
-    return isLocale(locale) ? locale : defaultLocale;
+    return isLocale(locale) ? locale : siteDefaultLocale();
   } catch {
-    return defaultLocale;
+    return siteDefaultLocale();
   }
 };
 

@@ -23,6 +23,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteProductSpecPopup = ({
   mutate,
@@ -37,7 +38,7 @@ const DeleteProductSpecPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
       />
       <Act
@@ -72,10 +73,10 @@ const MutateProductSpecPopup = ({
           closePopup();
         }}
         renderer={{
-          order: { type: "number", title: "رتبه" },
-          isActive: { type: "bool", title: "فعال" },
-          title: { type: "text", title: "عنوان" },
-          content: { type: "text", title: "مقدار" },
+          order: { type: "number", title: ta("رتبه") },
+          isActive: { type: "bool", title: ta("فعال") },
+          title: { type: "text", title: ta("عنوان") },
+          content: { type: "text", title: ta("مقدار") },
         }}
         defaultValue={node}
         hookProps={{
@@ -112,10 +113,10 @@ const SpecsManager = ({
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="ویژگی ها"
+          title={ta("ویژگی ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateProductSpec",
@@ -133,23 +134,23 @@ const SpecsManager = ({
             data={data}
             renderer={{
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 value: (node) => node.title,
                 filter: "Text",
               },
               content: {
-                name: "مقدار",
+                name: ta("مقدار"),
                 value: (node) => node.content,
                 filter: "Text",
               },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -162,12 +163,12 @@ const SpecsManager = ({
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
                       variant="Info"
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateProductSpec",
@@ -183,7 +184,7 @@ const SpecsManager = ({
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteProductSpec",

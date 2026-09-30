@@ -7,6 +7,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
 import { IOldSymptom } from "../Doctor/AdminManageOldDoctorsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageOldSymptomsPage = () => {
   const { data, error } = useSWR<IOldSymptom[]>(
@@ -21,18 +22,18 @@ const AdminManageOldSymptomsPage = () => {
           data={data}
           name="AdminManageOldSymptoms"
           renderer={{
-            name: { name: "نام", value: (node) => node.name, filter: "Text" },
+            name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
             genderSpecific: {
-              name: "مختص جنسیت",
+              name: ta("مختص جنسیت"),
               value: (node) => node.genderSpecific,
               filter: "Set",
             },
             order: {
-              name: "رتبه",
+              name: ta("رتبه"),
               filter: "Number",
               value: (node) => node.order,
             },
-            _id: { name: "شناسه", value: (node) => node._id, filter: "Text" },
+            _id: { name: ta("شناسه"), value: (node) => node._id, filter: "Text" },
           }}
         />
       )}

@@ -18,6 +18,7 @@ import useProgress from "../Hooks/useProgress";
 import { adminPath } from "../helpers/adminPath";
 import useAccessLevel from "../Hooks/useAccessLevel";
 import List from "../Admin/UI/List";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBlogMediaPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -39,7 +40,7 @@ const AdminManageBlogMediaPage = () => {
           <TabSystem
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 icon: <InfoIcon />,
                 id: "Info",
                 content: (
@@ -52,15 +53,15 @@ const AdminManageBlogMediaPage = () => {
                       successCb: () => mutate(),
                     }}
                     renderer={{
-                      name: { type: "text", title: "نام" },
-                      file: { title: "فایل", type: "image" },
+                      name: { type: "text", title: ta("نام") },
+                      file: { title: ta("فایل"), type: "image" },
                     }}
                     styleManaged
                   />
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 icon: <InfoIcon />,
                 id: "Actions",
                 content: (
@@ -78,7 +79,7 @@ const AdminManageBlogMediaPage = () => {
                           )
                         }
                       >
-                        حذف
+                        {ta("حذف")}
                       </Button>
                     )}
                   </List>

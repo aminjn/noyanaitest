@@ -25,6 +25,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteAccessLevelPopup from "./DeleteAccessLevelPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageAccessLevelPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -41,12 +42,12 @@ const AdminManageAccessLevelPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={`سطح دسترسی ${data.name || data._id}`}>
+        <WithTitle title={ta("سطح دسترسی ${1}", [data.name || data._id])}>
           <TabSystem
             name="AdminManageAccessLevel"
             items={[
               {
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 icon: <InfoIcon />,
                 content: (
                   <CreateForm
@@ -56,7 +57,7 @@ const AdminManageAccessLevelPage = () => {
                       method: "POST",
                       successCb: () => mutate(),
                     }}
-                    renderer={{ name: { type: "text", title: "نام" } }}
+                    renderer={{ name: { type: "text", title: ta("نام") } }}
                   />
                 ),
                 id: "Info",
@@ -96,13 +97,13 @@ const AdminManageAccessLevelPage = () => {
                 ),
               })),
               {
-                title: "ادمین های این سطح دسترسی",
+                title: ta("ادمین های این سطح دسترسی"),
                 id: "AdminsInThis",
                 content: <AccessLevelAdminsTab mutate={mutate} node={data} />,
                 icon: <InfoIcon />,
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
@@ -119,7 +120,7 @@ const AdminManageAccessLevelPage = () => {
                         )
                       }
                     >
-                      حذف کامل این سطح دسترسی
+                      {ta("حذف کامل این سطح دسترسی")}
                     </Button>
                   </List>
                 ),

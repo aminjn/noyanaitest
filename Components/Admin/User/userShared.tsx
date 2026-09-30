@@ -1,9 +1,16 @@
 import classes from "./userShared.module.css";
+import { adminDateTimeFormat, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 
 export const roleLabels: Record<string, string> = {
-  admin: "سوپر ادمین",
-  notadmin: "کارمند",
-  user: "کاربر",
+  get admin() {
+  return ta("سوپر ادمین");
+},
+  get notadmin() {
+  return ta("کارمند");
+},
+  get user() {
+  return ta("کاربر");
+},
 };
 
 export const RoleBadge = ({ role }: { role: string }) => (
@@ -16,15 +23,15 @@ export const RoleBadge = ({ role }: { role: string }) => (
 export const displayPhone = (phone?: string) =>
   phone?.startsWith("98") ? `0${phone.slice(2)}` : phone || "";
 
-export const num = new Intl.NumberFormat("fa-IR");
+export const num = adminNumberFormat();
 
-export const faDate = new Intl.DateTimeFormat("fa-IR", {
+export const faDate = adminDateTimeFormat({
   year: "numeric",
   month: "long",
   day: "numeric",
 });
 
-export const faDateTime = new Intl.DateTimeFormat("fa-IR", {
+export const faDateTime = adminDateTimeFormat({
   year: "numeric",
   month: "long",
   day: "numeric",

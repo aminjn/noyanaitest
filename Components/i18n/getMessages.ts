@@ -1,5 +1,5 @@
 import { getPublicData } from "../helpers/getPublicData";
-import { defaultLocale, Locale } from "./locales";
+import { Locale, SOURCE_LOCALE } from "./locales";
 import fa from "./messages/fa.json";
 import en from "./messages/en.json";
 
@@ -30,13 +30,13 @@ const loaders: Partial<Record<Locale, () => Promise<Messages>>> = {
 // that language (GET /public/texts) on top.
 export const getMessages = async (locale: Locale): Promise<Messages> => {
   const [own, overrides, faOverrides] = await Promise.all([
-    (loaders[locale] || loaders[defaultLocale]!)().catch(() => ({}) as Messages),
+    (loaders[locale] || loaders[SOURCE_LOCALE]!)().catch(() => ({}) as Messages),
     getPublicData<Messages>("texts", { locale }).catch(() => undefined),
-    locale === defaultLocale
+    locale === SOURCE_LOCALE
       ? undefined
-      : getPublicData<Messages>("texts", { locale: defaultLocale }).catch(() => undefined),
+      : getPublicData<Messages>("texts", { locale: SOURCE_LOCALE }).catch(() => undefined),
   ]);
-  if (locale === defaultLocale) return { ...(fa as Messages), ...(overrides || {}) };
+  if (locale === SOURCE_LOCALE) return { ...(fa as Messages), ...(overrides || {}) };
   // Persian (with its admin edits) at the bottom: content-like keys that
   // aren't in the bundled files (phone, address, social links, stats) come
   // from there for every language; translated keys override it.

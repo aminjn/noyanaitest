@@ -17,6 +17,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import DeleteDrugPopup from "./DeleetDrugPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDrugsPage = () => {
   const { data, error, mutate } = useSWR<IDrug[]>(
@@ -30,10 +31,10 @@ const AdminManageDrugsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دارو ها"
+          title={ta("دارو ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup("CreateDrug", <CreateDrugPopup mutate={mutate} />),
             },
@@ -43,19 +44,19 @@ const AdminManageDrugsPage = () => {
             data={data}
             name="AdminManageDrugs"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               brand: {
-                name: "برند",
+                name: ta("برند"),
                 value: (node) => node.brand,
                 filter: "Text",
               },
               dosageForm: {
-                name: "شکل دارویی",
+                name: ta("شکل دارویی"),
                 value: (node) => node.dosageForm,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -68,18 +69,18 @@ const AdminManageDrugsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/drug/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDrug",

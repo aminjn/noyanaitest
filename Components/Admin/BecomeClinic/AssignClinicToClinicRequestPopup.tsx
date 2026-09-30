@@ -8,6 +8,7 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useForm from "@/Components/Hooks/useForm";
 import PopupCard from "@/Components/UI/PopupCard";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AssignClinicToClinicRequestPopup = ({
   node,
@@ -22,7 +23,7 @@ const AssignClinicToClinicRequestPopup = ({
     path: (inp) => `${API}/auto/clinic/${inp.clinic}`,
     method: "POST",
     hasProblem: (inp) => {
-      if (!inp.clinic) return "کلینیک را انتخاب نمایید";
+      if (!inp.clinic) return ta("کلینیک را انتخاب نمایید");
     },
     mutator: () => ({
       user: node.user?._id,
@@ -43,15 +44,15 @@ const AssignClinicToClinicRequestPopup = ({
             (node as IClinic).name || (node as IClinic)._id
           }
           getOptionValue={(node) => (node as IClinic)._id}
-          title="انتخاب کلینیک"
+          title={ta("انتخاب کلینیک")}
           onChange={(e) =>
             setInput((prev) => ({ ...prev, clinic: e || undefined }))
           }
         />
         <FormActions>
-          <Button type="submit">تایید</Button>
+          <Button type="submit">{ta("تایید")}</Button>
           <Button type="button" onClick={() => closePopup()}>
-            انصراف
+            {ta("انصراف")}
           </Button>
         </FormActions>
       </Form>

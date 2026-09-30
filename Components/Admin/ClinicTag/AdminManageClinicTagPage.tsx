@@ -8,6 +8,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageClinicTagPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -23,9 +24,9 @@ const AdminManageClinicTagPage = () => {
           <CreateForm
             defaultValue={data}
             renderer={{
-              name: { title: "نام", type: "text" },
-              isActive: { type: "bool", title: "فعال" },
-              order: { type: "number", title: "رتبه" },
+              name: { title: ta("نام"), type: "text" },
+              isActive: { type: "bool", title: ta("فعال") },
+              order: { type: "number", title: ta("رتبه") },
             }}
             hookProps={{
               path: `${API}/auto/clinicTag/${data._id}`,

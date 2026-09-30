@@ -7,6 +7,7 @@ import Button from "@/Components/UI/Button";
 import FormActions from "../UI/FormActions";
 import Box from "../UI/Box";
 import { getClinicLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Approve or reject a doctor's request to join a clinic (2026-09): the backend
 // creates the membership on approval and always closes the request - it used
@@ -26,17 +27,17 @@ const EditDoctorJoinClinicStatusPopup = ({
   return (
     <Box>
       <p>
-        {`درخواست عضویت دکتر ${node.doctor ? getDoctorProfileLabel(node.doctor) : ""} در ${node.clinic ? getClinicLabel(node.clinic) : ""}`}
+        {ta("درخواست عضویت دکتر ${1} در ${2}", [node.doctor ? getDoctorProfileLabel(node.doctor) : "", node.clinic ? getClinicLabel(node.clinic) : ""])}
       </p>
       <FormActions>
         <Button isLoading={decision === "Approved"} onClick={() => setDecision("Approved")}>
-          تأیید و اتصال پزشک
+          {ta("تأیید و اتصال پزشک")}
         </Button>
         <Button variant="Error" isLoading={decision === "Rejected"} onClick={() => setDecision("Rejected")}>
-          رد درخواست
+          {ta("رد درخواست")}
         </Button>
         <Button variant="Neutral" onClick={() => closePopup()}>
-          انصراف
+          {ta("انصراف")}
         </Button>
       </FormActions>
       <Act

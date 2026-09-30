@@ -10,6 +10,7 @@ import Table from "../../UI/Table";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import Act from "@/Components/UI/Act";
 import { Population } from "../../Clinic/AdminManageClinicsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type TaminDrugInstructionPopulation = Population<Record<never, never>>;
 export interface ITaminDrugInstruction<
@@ -34,8 +35,8 @@ const AdminManageTaminDrugInstructionsPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="زمان مصرف"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("زمان مصرف")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -43,27 +44,27 @@ const AdminManageTaminDrugInstructionsPage = () => {
               name="AdminManageTaminDrugInstructions"
               renderer={{
                 drugInstSumry: {
-                  name: "عنوان",
+                  name: ta("عنوان"),
                   value: (node) => node.drugInstSumry,
                   filter: "Text",
                 },
                 drugInstLatin: {
-                  name: "نام لاتین",
+                  name: ta("نام لاتین"),
                   value: (node) => node.drugInstLatin,
                   filter: "Text",
                 },
                 drugInstCode: {
-                  name: "کد",
+                  name: ta("کد"),
                   value: (node) => node.drugInstCode,
                   filter: "Text",
                 },
                 drugInstConcept: {
-                  name: "مفهوم",
+                  name: ta("مفهوم"),
                   value: (node) => node.drugInstConcept,
                   filter: "Text",
                 },
                 drugInstId: {
-                  name: "شناسه تامین",
+                  name: ta("شناسه تامین"),
                   value: (node) => node.drugInstId,
                   filter: "Text",
                 },

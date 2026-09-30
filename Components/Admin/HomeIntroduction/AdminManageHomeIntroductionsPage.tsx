@@ -20,6 +20,7 @@ import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HomeIntroductionPopulation = Population<Record<never, never>>;
 
@@ -55,10 +56,10 @@ const MutateHomeIntroductionPopup = ({
           },
         }}
         renderer={{
-          title: { title: "عنوان", type: "text" },
-          order: { title: "رتبه", type: "number" },
-          isActive: { type: "bool", title: "فعال" },
-          image: { title: "تصویر", type: "image" },
+          title: { title: ta("عنوان"), type: "text" },
+          order: { title: ta("رتبه"), type: "number" },
+          isActive: { type: "bool", title: ta("فعال") },
+          image: { title: ta("تصویر"), type: "image" },
         }}
       />
     </PopupCard>
@@ -78,7 +79,7 @@ const DeleteHomeIntroductionPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message="آیا از حذف این ایتم مطمئنید؟"
+        message={ta("آیا از حذف این ایتم مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
       />
       <Act
@@ -107,10 +108,10 @@ const AdminManageHomeIntroductionsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="معرقی خانه"
+          title={ta("معرقی خانه")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateHomeIntroduction",
@@ -124,18 +125,18 @@ const AdminManageHomeIntroductionsPage = () => {
             name="AdminManageHomeIntroductions"
             renderer={{
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 value: (node) => node.title,
                 filter: "Text",
               },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -148,11 +149,11 @@ const AdminManageHomeIntroductionsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateHomeIntroduction",
@@ -167,7 +168,7 @@ const AdminManageHomeIntroductionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteHomeintroduction",

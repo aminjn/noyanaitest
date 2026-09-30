@@ -20,6 +20,7 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import ChangeBecomeHospitalRequestPopup from "./ChangeBecomeHospitalRequestStatusPopup";
 import AssignHospitalToHospitalRequestPopup from "./AssignHospitalToHospitalRequestPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeHospitalPage = () => {
   const { nodeId } = useParams();
@@ -33,23 +34,23 @@ const AdminManageBecomeHospitalPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست تبدیل به بیمارستان">
+        <WithTitle title={ta("درخواست تبدیل به بیمارستان")}>
           <TabSystem
             name="AdminManageBecomeHospital"
             items={[
               {
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
                   <List>
-                    <DataPair title="نام" value={data.name} />
+                    <DataPair title={ta("نام")} value={data.name} />
                     <DataPair
-                      title="تاریخ ثبت"
+                      title={ta("تاریخ ثبت")}
                       value={<FormatDate value={data.createdAt} />}
                     />
                     <DataPair
-                      title="یوزر"
+                      title={ta("یوزر")}
                       value={
                         <InlineLink href={adminPath(`/user/${data.user?._id}`)}>
                           {data.user?.phone}
@@ -57,35 +58,35 @@ const AdminManageBecomeHospitalPage = () => {
                       }
                     />
                     <DataPair
-                      title="وضعیت"
+                      title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
-                    <DataPair title="کد سیام" value={data.siamCode} />
-                    <DataPair title="کد ملی" value={data.nationalId} />
+                    <DataPair title={ta("کد سیام")} value={data.siamCode} />
+                    <DataPair title={ta("کد ملی")} value={data.nationalId} />
                     <DataPair
-                      title="تاریخ گواهی"
+                      title={ta("تاریخ گواهی")}
                       value={<FormatDate value={data.certificateDate} />}
                     />
                     <DataPair
-                      title="فایل گواهی"
+                      title={ta("فایل گواهی")}
                       value={
                         data.certificateFile ? (
                           <InlineLink
                             href={`${FilePath}/${data.certificateFile}`}
                           >
-                            مشاهده فایل
+                            {ta("مشاهده فایل")}
                           </InlineLink>
                         ) : (
-                          "ثبت نشده"
+                          ta("ثبت نشده")
                         )
                       }
                     />
-                    <DataPair title="توضیحات" value={data.description} />
+                    <DataPair title={ta("توضیحات")} value={data.description} />
                   </List>
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
@@ -94,8 +95,8 @@ const AdminManageBecomeHospitalPage = () => {
                       requestPath="becomehospital"
                       nodeId={String(nodeId)}
                       status={data.status}
-                      label="تأیید و ساخت بیمارستان"
-                      done="بیمارستان ساخته و فعال شد."
+                      label={ta("تأیید و ساخت بیمارستان")}
+                      done={ta("بیمارستان ساخته و فعال شد.")}
                       target={(id) => `/hospital/${id}`}
                       mutate={mutate}
                     />
@@ -110,7 +111,7 @@ const AdminManageBecomeHospitalPage = () => {
                         )
                       }
                     >
-                      تغییر وضعیت
+                      {ta("تغییر وضعیت")}
                     </Button>
                     <Button
                       onClick={() =>
@@ -123,7 +124,7 @@ const AdminManageBecomeHospitalPage = () => {
                         )
                       }
                     >
-                      تخصیص بیمارستان
+                      {ta("تخصیص بیمارستان")}
                     </Button>
                   </List>
                 ),

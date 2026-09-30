@@ -11,6 +11,7 @@ import Ixon from "@/Components/UI/Ixon";
 import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import RetryIcon from "@/Components/Icons/RetryIcon";
+import { adminIntlTag, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 
 type InboxKind = { key: string; title: string; count: number };
 type InboxItem = {
@@ -46,12 +47,12 @@ const kindListPage: Record<string, string> = {
 const STALE_DAYS = 3;
 const DAY = 24 * 60 * 60 * 1000;
 
-const num = new Intl.NumberFormat("fa-IR");
+const num = adminNumberFormat();
 
 // 09123456789 instead of 989123456789
 const displaySubtitle = (text: string) =>
   /^98\d{10}$/.test(text) ? `0${text.slice(2)}` : text;
-const relative = new Intl.RelativeTimeFormat("fa-IR", { numeric: "auto" });
+const relative = new Intl.RelativeTimeFormat(adminIntlTag(), { numeric: "auto" });
 
 const age = (date?: string) => {
   if (!date) return { label: "", stale: false };
@@ -102,15 +103,13 @@ const AdminInboxPage = () => {
         <div className={classes.main}>
           <header className={classes.header}>
             <div>
-              <h1 className={classes.pageTitle}>صندوق درخواست‌ها</h1>
+              <h1 className={classes.pageTitle}>{ta("صندوق درخواست‌ها")}</h1>
               <span className={classes.sub}>
                 {total === 0
-                  ? "همه‌ی درخواست‌ها رسیدگی شده‌اند"
-                  : `${num.format(total)} مورد در انتظار رسیدگی${
-                      staleCount
+                  ? ta("همه‌ی درخواست‌ها رسیدگی شده‌اند")
+                  : ta("${1} مورد در انتظار رسیدگی${2}", [num.format(total), staleCount
                         ? ` · ${num.format(staleCount)} مورد بیش از ${num.format(STALE_DAYS)} روز`
-                        : ""
-                    }`}
+                        : ""])}
               </span>
             </div>
             <button
@@ -122,7 +121,7 @@ const AdminInboxPage = () => {
               <Ixon width="1rem">
                 <RetryIcon />
               </Ixon>
-              <span>{isValidating ? "در حال بارگذاری..." : "به‌روزرسانی"}</span>
+              <span>{isValidating ? ta("در حال بارگذاری...") : ta("به‌روزرسانی")}</span>
             </button>
           </header>
 
@@ -131,7 +130,7 @@ const AdminInboxPage = () => {
               <Ixon width="2rem">
                 <CheckCircleIcon />
               </Ixon>
-              <span>کار معوقه‌ای وجود ندارد</span>
+              <span>{ta("کار معوقه‌ای وجود ندارد")}</span>
             </div>
           ) : (
             <>
@@ -143,7 +142,7 @@ const AdminInboxPage = () => {
                   className={`${classes.chip} ${kind === "all" ? classes.chipActive : ""}`}
                   onClick={() => setKind("all")}
                 >
-                  همه
+                  {ta("همه")}
                   <span className={classes.chipCount}>{num.format(total)}</span>
                 </button>
                 {kinds.map((el) => (
@@ -206,7 +205,7 @@ const AdminInboxPage = () => {
                   href={adminPath(`/${kindListPage[selected.key]}`)}
                   className={classes.more}
                 >
-                  {`مشاهده‌ی همه‌ی ${num.format(selected.count)} مورد «${selected.title}»`}
+                  {ta("مشاهده‌ی همه‌ی ${1} مورد «${2}»", [num.format(selected.count), selected.title])}
                 </Link>
               )}
             </>

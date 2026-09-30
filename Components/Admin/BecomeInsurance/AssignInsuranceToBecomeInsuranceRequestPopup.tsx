@@ -8,6 +8,7 @@ import NodesSelector from "@/Components/UI/NodesSelector";
 import PopupCard from "@/Components/UI/PopupCard";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AssignInsuranceToBecomeInsuranceRequestPopup = ({
   mutate,
@@ -22,7 +23,7 @@ const AssignInsuranceToBecomeInsuranceRequestPopup = ({
     path: (inp) => `${API}/auto/insurance/${inp.insurance}`,
     method: "POST",
     hasProblem: (inp) => {
-      if (!inp.insurance) return "لطفا بیمه را انتخاب کنید";
+      if (!inp.insurance) return ta("لطفا بیمه را انتخاب کنید");
     },
     mutator: () => ({ user: node.user?._id }),
     successCb: () => {
@@ -40,15 +41,15 @@ const AssignInsuranceToBecomeInsuranceRequestPopup = ({
             (node as IInsurance).name || (node as IInsurance)._id
           }
           getOptionValue={(node) => (node as IInsurance)._id}
-          title="بیمه"
+          title={ta("بیمه")}
           onChange={(e) =>
             setInput((prev) => ({ ...prev, insurance: e || undefined }))
           }
         />
         <FormActions>
-          <Button type="submit">تایید</Button>
+          <Button type="submit">{ta("تایید")}</Button>
           <Button type="button" variant="Neutral" onClick={() => closePopup()}>
-            انصراف
+            {ta("انصراف")}
           </Button>
         </FormActions>
       </Form>

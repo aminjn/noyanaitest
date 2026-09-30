@@ -4,6 +4,7 @@ import useUser, { IUser } from "@/Components/Hooks/useUser";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 type CreateCallInput = {
   participantIds: string[];
@@ -22,7 +23,7 @@ const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
         renderer={{
           participantIds: {
             type: "nodes",
-            title: "شرکت کنندگان",
+            title: ta("شرکت کنندگان"),
             getOptionLabel: (node) =>
               (node as IUser).phone || (node as IUser)._id,
             getOptionValue: (node) => (node as IUser)._id,
@@ -31,12 +32,12 @@ const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
           },
           callType: {
             type: "select",
-            title: "نوع تماس",
+            title: ta("نوع تماس"),
             options: callTypeDict,
           },
           joinMyself: {
             type: "bool",
-            title: "خودم هم عضو تماس شوم",
+            title: ta("خودم هم عضو تماس شوم"),
           },
         }}
         hookProps={{
@@ -45,7 +46,7 @@ const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
           hasProblem: (inp) => {
             const count =
               (inp.participantIds?.length || 0) + (inp.joinMyself ? 1 : 0);
-            if (count < 2) return "حداقل باید دو شرکت کننده انتخاب شود";
+            if (count < 2) return ta("حداقل باید دو شرکت کننده انتخاب شود");
           },
           mutator: (inp) => ({
             participantIds:

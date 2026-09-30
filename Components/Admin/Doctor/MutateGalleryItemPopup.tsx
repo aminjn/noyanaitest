@@ -5,6 +5,7 @@ import { IDoctor } from "./AdminManageDoctorsPage";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateGalleryItemPopup = ({
   mutate,
@@ -16,7 +17,7 @@ const MutateGalleryItemPopup = ({
 )) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard title="تصویر گالری">
+    <PopupCard title={ta("تصویر گالری")}>
       <CreateForm
         styleManaged
         defaultValue={node}
@@ -37,11 +38,11 @@ const MutateGalleryItemPopup = ({
         }}
         onCancel={() => closePopup()}
         renderer={{
-          image: { type: "image", title: "تصویر" },
-          active: { type: "bool", title: "فعال" },
-          alt: { title: "آلت", type: "text" },
-          description: { type: "text", title: "توضیحات" },
-          order: { type: "number", title: "رتبه" },
+          image: { type: "image", title: ta("تصویر") },
+          active: { type: "bool", title: ta("فعال") },
+          alt: { title: ta("آلت"), type: "text" },
+          description: { type: "text", title: ta("توضیحات") },
+          order: { type: "number", title: ta("رتبه") },
         }}
       />
     </PopupCard>

@@ -34,6 +34,7 @@ import {
   ProductSpecPopulation,
 } from "../Product/AdminManageProductsPage";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ServicePackagePopulation = Population<{
   Owner: DoctorProfilePopulation;
@@ -88,53 +89,53 @@ const AdminManageServicePackagesPage = () => {
       create={{
         owner: {
           type: "nodes",
-          title: "صاحب",
+          title: ta("صاحب"),
           path: `${API}/auto/doctorProfile`,
           getOptionLabel: (node) =>
             getDoctorProfileLabel(node as IDoctorProfile),
           getOptionValue: (node) => (node as IDoctorProfile)._id,
           multi: false,
         },
-        name: { type: "text", title: "نام" },
+        name: { type: "text", title: ta("نام") },
       }}
-      title="پکیج سرویس"
+      title={ta("پکیج سرویس")}
       modelName="servicePackage"
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         owner: {
-          name: "پزشک",
+          name: ta("پزشک"),
           value: (node) =>
-            node.owner ? getDoctorProfileLabel(node.owner) : "حذف شده",
+            node.owner ? getDoctorProfileLabel(node.owner) : ta("حذف شده"),
           component: (node) =>
             node.owner ? (
               <InlineLink href={adminPath(`/doctorProfile/${node.owner._id}`)}>
                 {getDoctorProfileLabel(node.owner)}
               </InlineLink>
             ) : (
-              "حذف شده"
+              ta("حذف شده")
             ),
           filter: "Multi",
         },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         price: {
-          name: "قیمت",
+          name: ta("قیمت"),
           value: (node) => node.price,
           component: (node) => currencize(node.price),
           filter: "Number",
         },
         discount: {
-          name: "تخفیف",
+          name: ta("تخفیف"),
           value: (node) => node.discount,
           component: (node) => currencize(node.discount),
           filter: "Number",
         },
         order: {
-          name: "ترتیب",
+          name: ta("ترتیب"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -147,18 +148,18 @@ const AdminManageServicePackagesPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/servicePackage/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

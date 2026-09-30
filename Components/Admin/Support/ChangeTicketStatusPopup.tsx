@@ -6,6 +6,7 @@ import {
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ChangeTicketStatusPopup = ({
   ticket,
@@ -17,14 +18,14 @@ const ChangeTicketStatusPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="تغییر وضعیت تیکت">
+    <PopupCard title={ta("تغییر وضعیت تیکت")}>
       <CreateForm
         styleManaged
         defaultValue={ticket}
         renderer={{
           status: {
             type: "select",
-            title: "وضعیت",
+            title: ta("وضعیت"),
             options: ticketStatusDict,
           },
         }}

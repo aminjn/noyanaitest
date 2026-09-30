@@ -6,6 +6,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const RemoveAccessLevelUserPopup = ({
   mutate,
@@ -19,7 +20,7 @@ const RemoveAccessLevelUserPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف دسترسی از این یوزر مطمئنید؟`}
+        message={ta("آیا از حذف دسترسی از این یوزر مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

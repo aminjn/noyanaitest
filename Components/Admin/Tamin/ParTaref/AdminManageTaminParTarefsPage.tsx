@@ -9,6 +9,7 @@ import Table from "../../UI/Table";
 import HandleLoading from "../../UI/HandleLoading";
 import WithTitle from "../../UI/WithTitle";
 import Act from "@/Components/UI/Act";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface ITaminParTaref extends MongoDoc {
   parGrpCode?: string;
@@ -29,8 +30,8 @@ const AdminManageTaminParTarefsPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="زیر گروه نسخ آزمایش"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("زیر گروه نسخ آزمایش")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -38,27 +39,27 @@ const AdminManageTaminParTarefsPage = () => {
               name="AdminManageTaminParTarefs"
               renderer={{
                 parGrpDesc: {
-                  name: "شرح گروه",
+                  name: ta("شرح گروه"),
                   value: (node) => node.parGrpDesc,
                   filter: "Text",
                 },
                 parGrpCode: {
-                  name: "کد گروه",
+                  name: ta("کد گروه"),
                   value: (node) => node.parGrpCode,
                   filter: "Text",
                 },
                 status: {
-                  name: "وضعیت",
+                  name: ta("وضعیت"),
                   value: (node) => node.status,
                   filter: "Set",
                 },
                 statusStDate: {
-                  name: "تاریخ وضعیت",
+                  name: ta("تاریخ وضعیت"),
                   value: (node) => node.statusStDate,
                   filter: "Text",
                 },
                 parGrpRem: {
-                  name: "ملاحظات",
+                  name: ta("ملاحظات"),
                   value: (node) => node.parGrpRem,
                   filter: "Text",
                 },

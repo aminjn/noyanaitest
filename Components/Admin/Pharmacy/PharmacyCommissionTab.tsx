@@ -11,6 +11,7 @@ import CreateForm from "../UI/CreateForm";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./PharmacyCommissionTab.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/PharmacyFinanceSettings.ts - one doc per pharmacy
 // (unique on `pharmacy`), fetched here by filtering the generic
@@ -45,7 +46,7 @@ const PharmacyCommissionTab = ({ node }: { node: IPharmacy }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="درصد کمیسیون پیش‌فرض سیستم (در صورت تنظیم نشدن)"
+                title={ta("درصد کمیسیون پیش‌فرض سیستم (در صورت تنظیم نشدن)")}
                 value={`${globalSettings.defaultPharmacyCommissionPercent}%`}
               />
             </List>
@@ -62,7 +63,7 @@ const PharmacyCommissionTab = ({ node }: { node: IPharmacy }) => {
             }}
             renderer={{
               commissionPercent: {
-                title: "درصد کمیسیون این داروخانه",
+                title: ta("درصد کمیسیون این داروخانه"),
                 type: "number",
                 required: true,
               },

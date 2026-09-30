@@ -32,6 +32,7 @@ import {
   IGalleryItem,
 } from "./AdminManageDoctorGalleryTab";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type DoctorPopulation = Population<{
   SpecialityPopulated?: SpecialityPopulation;
@@ -95,12 +96,12 @@ const AdminManageDoctorsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="پزشکان"
+          title={ta("پزشکان")}
           actions={
             hasAccess("Doctor", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "CreateDoctor",
@@ -116,7 +117,7 @@ const AdminManageDoctorsPage = () => {
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 value: (node) => node.name,
                 filter: "Text",
                 component: (node) => (
@@ -126,7 +127,7 @@ const AdminManageDoctorsPage = () => {
                 ),
               },
               speciality: {
-                name: "تخصص",
+                name: ta("تخصص"),
                 value: (node) => node.speciality?.name,
                 filter: "Multi",
                 component: (node) =>
@@ -141,23 +142,23 @@ const AdminManageDoctorsPage = () => {
                   ),
               },
               city: {
-                name: "شهر",
+                name: ta("شهر"),
                 value: (node) => (node.city ? findCity(node.city) : ""),
                 filter: "Multi",
               },
               mobile: {
-                name: "موبایل",
+                name: ta("موبایل"),
                 value: (node) => node.mobile,
                 filter: "Text",
               },
               active: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${!!node.active}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={!!node.active} />,
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -170,14 +171,14 @@ const AdminManageDoctorsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("Doctor", "readOne") && (
                       <IconLink
                         variant="Info"
                         href={adminPath(`/doctor/${node._id}`)}
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                       >
                         <EditIcon />
                       </IconLink>
@@ -185,7 +186,7 @@ const AdminManageDoctorsPage = () => {
                     {hasAccess("Doctor", "delete") && (
                       <IconButton
                         variant="Danger"
-                        title="حذف"
+                        title={ta("حذف")}
                         onClick={() =>
                           setPopup(
                             "DeleteDoctor",

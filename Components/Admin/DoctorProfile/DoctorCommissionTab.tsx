@@ -11,6 +11,7 @@ import CreateForm from "../UI/CreateForm";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./DoctorCommissionTab.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/DoctorFinanceSettings.ts - one doc per doctor
 // (unique on `doctor`), fetched here by filtering the generic
@@ -45,11 +46,11 @@ const DoctorCommissionTab = ({ node }: { node: IDoctorProfile }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="پیش‌فرض سیستم - ویزیت آنلاین و خدمات"
+                title={ta("پیش‌فرض سیستم - ویزیت آنلاین و خدمات")}
                 value={`${globalSettings.defaultDoctorCommissionPercent}%`}
               />
               <DataPair
-                title="پیش‌فرض سیستم - ویزیت حضوری"
+                title={ta("پیش‌فرض سیستم - ویزیت حضوری")}
                 value={`${globalSettings.defaultDoctorInPersonCommissionPercent ?? 0}%`}
               />
             </List>
@@ -66,12 +67,12 @@ const DoctorCommissionTab = ({ node }: { node: IDoctorProfile }) => {
             }}
             renderer={{
               commissionPercent: {
-                title: "درصد کمیسیون این پزشک - ویزیت آنلاین و خدمات",
+                title: ta("درصد کمیسیون این پزشک - ویزیت آنلاین و خدمات"),
                 type: "number",
                 required: true,
               },
               inPersonCommissionPercent: {
-                title: "درصد کمیسیون این پزشک - ویزیت حضوری (خالی = پیش‌فرض)",
+                title: ta("درصد کمیسیون این پزشک - ویزیت حضوری (خالی = پیش‌فرض)"),
                 type: "number",
               },
             }}

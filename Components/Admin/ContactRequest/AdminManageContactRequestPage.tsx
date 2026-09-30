@@ -9,6 +9,7 @@ import {
   contactRequestSubjectDict,
   IContactRequest,
 } from "./AdminManageContactRequestsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageContactRequestPage = () => {
   return (
@@ -19,7 +20,7 @@ const AdminManageContactRequestPage = () => {
         <TabSystem
           items={[
             {
-              title: "اطلاعات",
+              title: ta("اطلاعات"),
               id: "Info",
               content: (
                 <CreateForm
@@ -32,24 +33,24 @@ const AdminManageContactRequestPage = () => {
                   }}
                   defaultValue={node}
                   renderer={{
-                    name: { type: "text", title: "نام", readOnly: true },
-                    phone: { type: "text", title: "شماره", readOnly: true },
-                    email: { type: "text", title: "ایمیل", readOnly: true },
+                    name: { type: "text", title: ta("نام"), readOnly: true },
+                    phone: { type: "text", title: ta("شماره"), readOnly: true },
+                    email: { type: "text", title: ta("ایمیل"), readOnly: true },
                     subject: {
                       type: "select",
-                      title: "موضوع",
+                      title: ta("موضوع"),
                       options: contactRequestSubjectDict,
                       readOnly: true,
                     },
-                    content: { type: "area", title: "پیام", readOnly: true },
+                    content: { type: "area", title: ta("پیام"), readOnly: true },
                     submittedAt: {
                       type: "date",
-                      title: "زمان ثبت",
+                      title: ta("زمان ثبت"),
                       readOnly: true,
                     },
                     status: {
                       type: "select",
-                      title: "وضعیت",
+                      title: ta("وضعیت"),
                       options: contactRequestStatusDict,
                     },
                   }}

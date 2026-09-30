@@ -7,6 +7,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageOldDrugsPage = () => {
   const { data, error } = useSWR<IOldDrug[]>(`${API}/old/drug`, (url: string) =>
@@ -19,29 +20,29 @@ const AdminManageOldDrugsPage = () => {
         <Table
           data={data}
           renderer={{
-            name: { name: "نام", value: (node) => node.name, filter: "Text" },
+            name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
             alternateName: {
-              name: "نام دیگر",
+              name: ta("نام دیگر"),
               value: (node) => node.alternateName,
               filter: "Text",
             },
             activeIngridient: {
-              name: "ماده مؤثره",
+              name: ta("ماده مؤثره"),
               value: (node) => node.activeIngridient,
               filter: "Text",
             },
             dosageForm: {
-              name: "شکل دارویی",
+              name: ta("شکل دارویی"),
               value: (node) => node.dosageForm,
               filter: "Multi",
             },
             adminstrationRoute: {
-              name: "طریقه مصرف",
+              name: ta("طریقه مصرف"),
               value: (node) => node.adminstrationRoute,
               filter: "Multi",
             },
             prescriptionStatus: {
-              name: "وضعیت نسخه",
+              name: ta("وضعیت نسخه"),
               value: (node) => node.prescriptionStatus,
               filter: "Set",
             },

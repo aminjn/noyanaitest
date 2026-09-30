@@ -1,4 +1,5 @@
 import { MongoDoc } from "@/Components/Hooks/useUser";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // every listing page in the app, e.g. /symptom
 export const pageMetaListResourceTypes = [
@@ -62,33 +63,87 @@ export const pageMetaListResourceTypeLabels: Record<
   PageMetaListResourceType,
   string
 > = {
-  "/mag": "مقالات",
-  "/doctors": "پزشکان",
-  "/disease": "بیماری ها",
-  "/drug": "دارو ها",
-  "/speciality": "تخصص ها",
-  "/clinic": "کلینیک ها",
-  "/hospital": "بیمارستان ها",
-  "/paraClinic": "پاراکلینیک",
-  "/test": "تست ها",
-  "/service": "خدمات",
-  "/product": "محصولات",
-  "/symptom": "علائم",
-  "/insurance": "بیمه",
-  "/faq": "سوالات متداول",
-  "/": "صفحه اصلی",
-  "/book": "نوبت دهی",
-  "/about": "درباره ما",
-  "/contact": "تماس با ما",
-  "/policy": "قوانین و مقررات",
-  "/privacy": "حریم خصوصی",
-  "/map": "نقشه",
-  "/become/doctor": "ثبت نام پزشک",
-  "/become/clinic": "ثبت نام کلینیک",
-  "/become/hospital": "ثبت نام بیمارستان",
-  "/become/insurance": "ثبت نام بیمه",
-  "/become/paraClinic": "ثبت نام پاراکلینیک",
-  "/become/pharmacy": "ثبت نام داروخانه",
+  get "/mag"() {
+  return ta("مقالات");
+},
+  get "/doctors"() {
+  return ta("پزشکان");
+},
+  get "/disease"() {
+  return ta("بیماری ها");
+},
+  get "/drug"() {
+  return ta("دارو ها");
+},
+  get "/speciality"() {
+  return ta("تخصص ها");
+},
+  get "/clinic"() {
+  return ta("کلینیک ها");
+},
+  get "/hospital"() {
+  return ta("بیمارستان ها");
+},
+  get "/paraClinic"() {
+  return ta("پاراکلینیک");
+},
+  get "/test"() {
+  return ta("تست ها");
+},
+  get "/service"() {
+  return ta("خدمات");
+},
+  get "/product"() {
+  return ta("محصولات");
+},
+  get "/symptom"() {
+  return ta("علائم");
+},
+  get "/insurance"() {
+  return ta("بیمه");
+},
+  get "/faq"() {
+  return ta("سوالات متداول");
+},
+  get "/"() {
+  return ta("صفحه اصلی");
+},
+  get "/book"() {
+  return ta("نوبت دهی");
+},
+  get "/about"() {
+  return ta("درباره ما");
+},
+  get "/contact"() {
+  return ta("تماس با ما");
+},
+  get "/policy"() {
+  return ta("قوانین و مقررات");
+},
+  get "/privacy"() {
+  return ta("حریم خصوصی");
+},
+  get "/map"() {
+  return ta("نقشه");
+},
+  get "/become/doctor"() {
+  return ta("ثبت نام پزشک");
+},
+  get "/become/clinic"() {
+  return ta("ثبت نام کلینیک");
+},
+  get "/become/hospital"() {
+  return ta("ثبت نام بیمارستان");
+},
+  get "/become/insurance"() {
+  return ta("ثبت نام بیمه");
+},
+  get "/become/paraClinic"() {
+  return ta("ثبت نام پاراکلینیک");
+},
+  get "/become/pharmacy"() {
+  return ta("ثبت نام داروخانه");
+},
 };
 
 export interface IPageMeta extends MongoDoc {

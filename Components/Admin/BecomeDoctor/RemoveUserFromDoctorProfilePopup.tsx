@@ -6,6 +6,7 @@ import { getDoctorProfileLabel, getUserLabel } from "../Lib/LabelGetters";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const RemoveUserFromDoctorProfilePopup = ({
   mutate,
@@ -21,9 +22,9 @@ const RemoveUserFromDoctorProfilePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف پروفایل ${getDoctorProfileLabel(
+        message={ta("آیا از حذف پروفایل ${1} از کاربر ${2} مطمئنید؟", [getDoctorProfileLabel(
           profile
-        )} از کاربر ${profile.user ? getUserLabel(profile.user) : ""} مطمئنید؟`}
+        ), profile.user ? getUserLabel(profile.user) : ""])}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

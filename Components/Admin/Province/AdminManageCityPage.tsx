@@ -26,6 +26,7 @@ import Act from "@/Components/UI/Act";
 import PopupCard from "@/Components/UI/PopupCard";
 import PolygonPicker from "@/Components/UI/PolygonPicker";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateDistrictPopup = ({
   mutate,
@@ -52,9 +53,9 @@ const MutateDistrictPopup = ({
           },
         }}
         renderer={{
-          name: { title: "نام", type: "text" },
-          order: { title: "رتبه", type: "number" },
-          isActive: { title: "فعال", type: "bool" },
+          name: { title: ta("نام"), type: "text" },
+          order: { title: ta("رتبه"), type: "number" },
+          isActive: { title: ta("فعال"), type: "bool" },
         }}
       />
     </PopupCard>
@@ -73,7 +74,7 @@ const DeleteDistrictPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />
@@ -109,9 +110,9 @@ const CityDetails = ({
         },
       }}
       renderer={{
-        name: { title: "نام", type: "text" },
-        order: { title: "رتبه", type: "number" },
-        isActive: { title: "فعال", type: "bool" },
+        name: { title: ta("نام"), type: "text" },
+        order: { title: ta("رتبه"), type: "number" },
+        isActive: { title: ta("فعال"), type: "bool" },
       }}
     />
   );
@@ -129,10 +130,10 @@ const CityDistricts = ({ node }: { node: ICity }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="محلات"
+          title={ta("محلات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateDistrict",
@@ -145,15 +146,15 @@ const CityDistricts = ({ node }: { node: ICity }) => {
             data={data}
             name="AdminManageDistricts"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -166,12 +167,12 @@ const CityDistricts = ({ node }: { node: ICity }) => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 width: 150,
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateDistrict",
@@ -183,13 +184,13 @@ const CityDistricts = ({ node }: { node: ICity }) => {
                     </IconButton>
                     <IconLink
                       href={adminPath(`/district/${node._id}`)}
-                      title="مشاهده"
+                      title={ta("مشاهده")}
                     >
                       <EyeIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDistrict",
@@ -257,19 +258,19 @@ const AdminManageCityPage = () => {
             name="AdminManageCity"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Details",
                 content: <CityDetails node={data} mutate={mutate} />,
                 icon: <DashboardIcon />,
               },
               {
-                title: "محلات",
+                title: ta("محلات"),
                 id: "Districts",
                 content: <CityDistricts node={data} />,
                 icon: <DashboardIcon />,
               },
               {
-                title: "جئومتری",
+                title: ta("جئومتری"),
                 id: "Geometry",
                 icon: <DashboardIcon />,
                 content: <CityGeometry node={data} mutate={mutate} />,

@@ -26,6 +26,7 @@ import {
   AdvertisementResourceModel,
 } from "./advertisementConstants";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type AdvertisementPopulation = Population<Record<never, never>>;
 
@@ -71,25 +72,25 @@ const MutateAdvertisementPopup = ({
         }}
         renderer={{
           name: { title: "name", type: "text" },
-          order: { title: "رتبه", type: "number" },
-          isActive: { title: "فعال", type: "bool" },
-          image: { title: "تصویر", type: "image" },
-          title: { title: "عنوان", type: "text" },
-          description: { title: "توضیحات", type: "area" },
-          legend: { title: "لجند", type: "text" },
-          target: { title: "لینک اطلاعات بیشتر", type: "text" },
+          order: { title: ta("رتبه"), type: "number" },
+          isActive: { title: ta("فعال"), type: "bool" },
+          image: { title: ta("تصویر"), type: "image" },
+          title: { title: ta("عنوان"), type: "text" },
+          description: { title: ta("توضیحات"), type: "area" },
+          legend: { title: ta("لجند"), type: "text" },
+          target: { title: ta("لینک اطلاعات بیشتر"), type: "text" },
           positions: {
-            title: "جایگاه ها",
+            title: ta("جایگاه ها"),
             type: "multiselect",
             options: advertisementPositionLabels,
           },
           resourceModel: {
-            title: "نوع منبع هدف (اختیاری)",
+            title: ta("نوع منبع هدف (اختیاری)"),
             type: "select",
             options: advertisementResourceModelLabels,
           },
           resource: {
-            title: "شناسه منبع هدف (اختیاری)",
+            title: ta("شناسه منبع هدف (اختیاری)"),
             type: "text",
           },
         }}
@@ -111,7 +112,7 @@ const DeleteAdvertisementPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message="آیا از حذف این آیتم مطمئنید؟"
+        message={ta("آیا از حذف این آیتم مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
       />
       <Act
@@ -140,10 +141,10 @@ const AdminManageAdvertisementsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تبلیغ ها"
+          title={ta("تبلیغ ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateAdvertisement",
@@ -156,36 +157,36 @@ const AdminManageAdvertisementsPage = () => {
             data={data}
             name="AdminManageAdvertisement"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 value: (node) => node.title,
                 filter: "Text",
               },
               positions: {
-                name: "جایگاه‌ها",
+                name: ta("جایگاه‌ها"),
                 value: (node) =>
                   (node.positions || [])
                     .map((position) => advertisementPositionLabels[position])
-                    .join("، "),
+                    .join(ta("، ")),
                 filter: "Text",
               },
               resource: {
-                name: "منبع هدف",
+                name: ta("منبع هدف"),
                 value: (node) =>
                   node.resourceModel && node.resource
                     ? `${advertisementResourceModelLabels[node.resourceModel]} / ${node.resource}`
-                    : "عمومی",
+                    : ta("عمومی"),
                 filter: "Text",
               },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -198,11 +199,11 @@ const AdminManageAdvertisementsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateAdvertisement",
@@ -217,7 +218,7 @@ const AdminManageAdvertisementsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteAdvertisement",

@@ -51,6 +51,7 @@ import ParaClinicCommissionTab from "./ParaClinicCommissionTab";
 import ParaClinicTaxTab from "./ParaClinicTaxTab";
 import ParaClinicProfileLicenseTab from "./ParaClinicProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ParaClinicTestPopulation = Population<{
   Test: TestPopulation;
@@ -98,7 +99,7 @@ const MutateParaClinicTestPopup = ({
         renderer={{
           test: {
             type: "nodes",
-            title: "آزمایش",
+            title: ta("آزمایش"),
             path: `${API}/auto/test`,
             getOptionLabel: (node) =>
               (node as ITest).name || (node as ITest)._id,
@@ -106,8 +107,8 @@ const MutateParaClinicTestPopup = ({
             getDefaultValue: (inp) => inp.test._id,
             multi: false,
           },
-          price: { type: "number", title: "قیمت" },
-          readyTime: { type: "text", title: "زمان آماده سازی" },
+          price: { type: "number", title: ta("قیمت") },
+          readyTime: { type: "text", title: ta("زمان آماده سازی") },
         }}
       />
     </PopupCard>
@@ -127,7 +128,7 @@ const DeleteParaClinicTestPopup = ({
     <Fragment>
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         isLoading={isLoading}
       />
       <Act
@@ -157,10 +158,10 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="آزمایشات"
+          title={ta("آزمایشات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "Create",
@@ -177,35 +178,35 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
             data={data}
             renderer={{
               test: {
-                name: "آزمایش",
-                value: (node) => node.test?.name || "حذف شده",
+                name: ta("آزمایش"),
+                value: (node) => node.test?.name || ta("حذف شده"),
                 component: (node) =>
                   node.test ? (
                     <InlineLink href={adminPath(`/test/${node.test._id}`)}>
                       {node.test.name || node.test._id}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
                 filter: "Multi",
               },
               price: {
-                name: "قیمت",
+                name: ta("قیمت"),
                 value: (node) => node.price,
                 filter: "Number",
               },
               readyTime: {
-                name: "زمان جوابدهی",
+                name: ta("زمان جوابدهی"),
                 value: (node) => node.readyTime,
                 filter: "Text",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
                       variant="Info"
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "Edit",
@@ -220,7 +221,7 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "Delete",
@@ -260,7 +261,7 @@ const ParaClinicGeoManager = ({
       mutate();
     },
     hasProblem: (inp) => {
-      if (!inp.location) return "لطفا موقعیت را انتخاب کنید";
+      if (!inp.location) return ta("لطفا موقعیت را انتخاب کنید");
       return false;
     },
     mutator: (inp) => ({
@@ -275,7 +276,7 @@ const ParaClinicGeoManager = ({
         onChange={(e) => setInput((prev) => ({ ...prev, location: e }))}
       />
       <FormActions>
-        <Button onClick={submit}>تایید</Button>
+        <Button onClick={submit}>{ta("تایید")}</Button>
       </FormActions>
     </div>
   );
@@ -302,7 +303,7 @@ const AdminManageParaClinicPage = () => {
                 ? [
                     {
                       id: "Overview",
-                      title: "نمای کلی",
+                      title: ta("نمای کلی"),
                       content: (
                         <EntityOverview kind="paraClinic" nodeId={nodeId} />
                       ),
@@ -312,27 +313,27 @@ const AdminManageParaClinicPage = () => {
                 : []),
               {
                 id: "Info",
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 content: (
                   <CreateForm
                     defaultValue={data}
                     renderer={{
-                      name: { type: "text", title: "نام" },
-                      order: { type: "number", title: "رتبه" },
-                      active: { type: "bool", title: "فعال" },
+                      name: { type: "text", title: ta("نام") },
+                      order: { type: "number", title: ta("رتبه") },
+                      active: { type: "bool", title: ta("فعال") },
                       user: {
                         type: "nodes",
-                        title: "کاربر",
+                        title: ta("کاربر"),
                         getOptionLabel: (node) => getUserLabel(node as IUser),
                         getOptionValue: (node) => (node as IUser)._id,
                         multi: false,
                         getDefaultValue: (inp) => inp.user?._id,
                         path: `${API}/auto/user`,
                       },
-                      special: { type: "bool", title: "ویژه" },
+                      special: { type: "bool", title: ta("ویژه") },
                       category: {
                         type: "nodes",
-                        title: "دسته بندی",
+                        title: ta("دسته بندی"),
                         multi: false,
                         getOptionLabel: (node) =>
                           (node as IParaClinicCategory).name ||
@@ -344,7 +345,7 @@ const AdminManageParaClinicPage = () => {
                       },
                       specialities: {
                         type: "nodes",
-                        title: "تخصص ها",
+                        title: ta("تخصص ها"),
                         path: `${API}/auto/speciality`,
                         getOptionLabel: (node) =>
                           (node as ISpeciality).name ||
@@ -355,7 +356,7 @@ const AdminManageParaClinicPage = () => {
                       },
                       tags: {
                         type: "nodes",
-                        title: "تگ ها",
+                        title: ta("تگ ها"),
                         path: `${API}/auto/paraClinicTag`,
                         getOptionLabel: (node) =>
                           (node as IParaClinicTag).name ||
@@ -366,7 +367,7 @@ const AdminManageParaClinicPage = () => {
                       },
                       province: {
                         type: "nodes",
-                        title: "استان",
+                        title: ta("استان"),
                         path: `${API}/auto/province`,
                         getOptionLabel: (node) =>
                           (node as IProvince).name || (node as IProvince)._id,
@@ -375,7 +376,7 @@ const AdminManageParaClinicPage = () => {
                       },
                       city: {
                         type: "nodes",
-                        title: "شهر",
+                        title: ta("شهر"),
                         path: `${API}/auto/city`,
                         getOptionLabel: (node) =>
                           (node as ICity).name || (node as ICity)._id,
@@ -384,26 +385,26 @@ const AdminManageParaClinicPage = () => {
                       },
                       district: {
                         type: "nodes",
-                        title: "مخله",
+                        title: ta("مخله"),
                         path: `${API}/auto/district`,
                         getOptionLabel: (node) =>
                           (node as IDistrict).name || (node as IDistrict)._id,
                         getOptionValue: (node) => (node as IDistrict)._id,
                         getDefaultValue: (inp) => inp.district,
                       },
-                      image: { type: "image", title: "نصویر" },
-                      slug: { type: "text", title: "اسلاگ" },
-                      establishment: { type: "text", title: "تاسیس" },
-                      businessTime: { type: "text", title: "ساعات کاری" },
-                      phone: { type: "text", title: "تلفن" },
-                      basicInsurance: { type: "bool", title: "بیمه پایه" },
-                      onlineResponse: { type: "bool", title: "پاسخ آنلاین" },
-                      onPremises: { type: "bool", title: "نمونه گیری در محل" },
-                      personelCount: { type: "number", title: "کادر تخصصی" },
-                      summary: { type: "text", title: "خلاصه" },
+                      image: { type: "image", title: ta("نصویر") },
+                      slug: { type: "text", title: ta("اسلاگ") },
+                      establishment: { type: "text", title: ta("تاسیس") },
+                      businessTime: { type: "text", title: ta("ساعات کاری") },
+                      phone: { type: "text", title: ta("تلفن") },
+                      basicInsurance: { type: "bool", title: ta("بیمه پایه") },
+                      onlineResponse: { type: "bool", title: ta("پاسخ آنلاین") },
+                      onPremises: { type: "bool", title: ta("نمونه گیری در محل") },
+                      personelCount: { type: "number", title: ta("کادر تخصصی") },
+                      summary: { type: "text", title: ta("خلاصه") },
                       insurances: {
                         type: "nodes",
-                        title: "بیمه ها",
+                        title: ta("بیمه ها"),
                         getOptionLabel: (node) =>
                           (node as IInsurance).name || (node as IInsurance)._id,
                         getOptionValue: (node) => (node as IInsurance)._id,
@@ -411,7 +412,7 @@ const AdminManageParaClinicPage = () => {
                         getDefaultValue: (inp) => inp.insurances,
                         path: `${API}/auto/insurance`,
                       },
-                      address: { type: "text", title: "آدرس" },
+                      address: { type: "text", title: ta("آدرس") },
                     }}
                     hookProps={{
                       path: `${API}/auto/paraClinic/${data._id}`,
@@ -425,22 +426,22 @@ const AdminManageParaClinicPage = () => {
               },
               {
                 id: "Images",
-                title: "تصاویر",
+                title: ta("تصاویر"),
                 content: <ImagesManager model="ParaClinic" node={data} />,
               },
               {
                 id: "Tests",
-                title: "آزمایش ها",
+                title: ta("آزمایش ها"),
                 content: <ParaClinicTestManager paraClinic={data} />,
               },
               {
                 id: "Geo",
-                title: "موقعیت",
+                title: ta("موقعیت"),
                 content: <ParaClinicGeoManager mutate={mutate} node={data} />,
               },
               {
                 id: "Meta",
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 content: (
                   <PageMetaEditor
                     resourceType="/paraClinic/[slug]"
@@ -450,17 +451,17 @@ const AdminManageParaClinicPage = () => {
               },
               {
                 id: "Commission",
-                title: "کمیسیون",
+                title: ta("کمیسیون"),
                 content: <ParaClinicCommissionTab node={data} />,
               },
               {
                 id: "Tax",
-                title: "مالیات",
+                title: ta("مالیات"),
                 content: <ParaClinicTaxTab node={data} />,
               },
               {
                 id: "License",
-                title: "مجوز",
+                title: ta("مجوز"),
                 icon: <CartIcon />,
                 content: <ParaClinicProfileLicenseTab node={data} />,
               },

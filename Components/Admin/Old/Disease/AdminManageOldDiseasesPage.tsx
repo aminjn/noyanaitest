@@ -8,6 +8,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
 import OrderEditor from "../../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageOldDiseasesPage = () => {
   const { data, error, mutate } = useSWR<IOldDisease[]>(
@@ -22,19 +23,19 @@ const AdminManageOldDiseasesPage = () => {
           data={data}
           name="AdminManageOldDiseases"
           renderer={{
-            name: { name: "نام", value: (node) => node.name, filter: "Text" },
+            name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
             genderSpecific: {
-              name: "مختص جنسیت",
+              name: ta("مختص جنسیت"),
               value: (node) => node.genderSpecific,
               filter: "Set",
             },
             naturalProgression: {
-              name: "روند طبیعی",
+              name: ta("روند طبیعی"),
               value: (node) => node.naturalProgression,
               filter: "Set",
             },
             order: {
-              name: "رتبه",
+              name: ta("رتبه"),
               value: (node) => node.order,
               filter: "Number",
               component: (node) => (
@@ -46,7 +47,7 @@ const AdminManageOldDiseasesPage = () => {
                 />
               ),
             },
-            _id: { name: "شناسه", value: (node) => node._id, filter: "Text" },
+            _id: { name: ta("شناسه"), value: (node) => node._id, filter: "Text" },
           }}
         />
       )}

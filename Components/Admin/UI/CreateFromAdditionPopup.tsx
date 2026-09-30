@@ -8,14 +8,23 @@ import useProgress from "@/Components/Hooks/useProgress";
 import { API } from "@/Components/config";
 import { adminPath } from "@/Components/helpers/adminPath";
 import FormActions from "./FormActions";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type AdditionKind = "clinic" | "hospital" | "insurance" | "pharmacy";
 
 const labels: Record<AdditionKind, string> = {
-  clinic: "کلینیک",
-  hospital: "بیمارستان",
-  insurance: "بیمه",
-  pharmacy: "داروخانه",
+  get clinic() {
+  return ta("کلینیک");
+},
+  get hospital() {
+  return ta("بیمارستان");
+},
+  get insurance() {
+  return ta("بیمه");
+},
+  get pharmacy() {
+  return ta("داروخانه");
+},
 };
 
 // One "create the centre from this addition request" popup for all four
@@ -39,20 +48,20 @@ const CreateFromAdditionPopup = ({
   return (
     <PopupCard>
       <p>
-        {`${label} با نام، نشانی، تلفن و موقعیت این درخواست ساخته می‌شود (غیرفعال، تا پس از تکمیل پروفایل فعالش کنید)، پزشک درخواست‌دهنده عضو آن می‌شود و درخواست «انجام شده» می‌شود.`}
+        {ta("${1} با نام، نشانی، تلفن و موقعیت این درخواست ساخته می‌شود (غیرفعال، تا پس از تکمیل پروفایل فعالش کنید)، پزشک درخواست‌دهنده عضو آن می‌شود و درخواست «انجام شده» می‌شود.", [label])}
       </p>
       <ToggleInput
         value={proceed}
         readOnly={isLoading}
         onChange={() => setProceed((prev) => !prev)}
-        title={`رفتن به صفحه‌ی ${label} ساخته‌شده`}
+        title={ta("رفتن به صفحه‌ی ${1} ساخته‌شده", [label])}
       />
       <FormActions>
         <Button isLoading={isLoading} onClick={() => setIsLoading(true)}>
-          {`ساخت ${label}`}
+          {ta("ساخت ${1}", [label])}
         </Button>
         <Button variant="Neutral" onClick={() => closePopup()}>
-          انصراف
+          {ta("انصراف")}
         </Button>
       </FormActions>
       <Act<{ data: { node: { _id: string } } }>

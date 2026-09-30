@@ -7,6 +7,7 @@ import RemoveUserFromInsurancePopup from "./RemoveUserFromInsurancePopup";
 import { getUserLabel } from "../Lib/LabelGetters";
 import { IUser } from "@/Components/Hooks/useUser";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const InsuranceUserTab = ({
   mutate,
@@ -23,7 +24,7 @@ const InsuranceUserTab = ({
         defaultValue={node}
         renderer={{
           user: {
-            title: "یوزر",
+            title: ta("یوزر"),
             type: "nodes",
             getOptionLabel: (node) => getUserLabel(node as IUser),
             path: `${API}/auto/user`,
@@ -48,7 +49,7 @@ const InsuranceUserTab = ({
             }
             variant="Error"
           >
-            حذف یوزر از روی این بیمه
+            {ta("حذف یوزر از روی این بیمه")}
           </Button>
         )}
       </FormActions>

@@ -19,6 +19,7 @@ import DeletePharmacyPopup from "./DeletePharmacyPopup";
 import WithTitle from "../UI/WithTitle";
 import CreatePharmacyPopup from "./CreatePharmacyPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManagePharmaciesPage = () => {
   const { data, error, mutate } = useSWR<IPharmacy[]>(
@@ -32,10 +33,10 @@ const AdminManagePharmaciesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="داروخانه ها و آزمایشگاه ها"
+          title={ta("داروخانه ها و آزمایشگاه ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreatePharmacy",
@@ -49,7 +50,7 @@ const AdminManagePharmaciesPage = () => {
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 value: (node) => node.name,
                 component: (node) => (
                   <InlineLink href={adminPath(`/pharmacy/${node._id}`)}>
@@ -59,13 +60,13 @@ const AdminManagePharmaciesPage = () => {
                 filter: "Text",
               },
               active: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.active}`],
                 component: (node) => <BooleanToIcon value={node.active} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -78,18 +79,18 @@ const AdminManagePharmaciesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/pharmacy/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeletePharmacy",

@@ -18,6 +18,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import List from "../UI/List";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInlineAdPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -40,19 +41,19 @@ const AdminManageInlineAdPage = () => {
             name="AdminManageInlineAd"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 content: (
                   <CreateForm
                     readOnly={!hasAccess("InlineAdvertisement", "update")}
                     renderer={{
-                      name: { title: "نام", type: "text" },
-                      title: { title: "عنوان", type: "text" },
-                      subTitle: { title: "توضیحات", type: "text" },
-                      image: { title: "تصویر", type: "image" },
-                      target: { title: "مقصد", type: "text" },
-                      active: { type: "bool", title: "فعال" },
-                      expiration: { type: "date", title: "تاریخ انقضا" },
+                      name: { title: ta("نام"), type: "text" },
+                      title: { title: ta("عنوان"), type: "text" },
+                      subTitle: { title: ta("توضیحات"), type: "text" },
+                      image: { title: ta("تصویر"), type: "image" },
+                      target: { title: ta("مقصد"), type: "text" },
+                      active: { type: "bool", title: ta("فعال") },
+                      expiration: { type: "date", title: ta("تاریخ انقضا") },
                     }}
                     defaultValue={data}
                     hookProps={{
@@ -68,7 +69,7 @@ const AdminManageInlineAdPage = () => {
                 icon: <InfoIcon />,
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 icon: <InfoIcon />,
                 content: (
                   <List>
@@ -85,7 +86,7 @@ const AdminManageInlineAdPage = () => {
                           )
                         }
                       >
-                        حذف
+                        {ta("حذف")}
                       </Button>
                     )}
                   </List>

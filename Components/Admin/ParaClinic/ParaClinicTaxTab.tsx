@@ -11,6 +11,7 @@ import CreateForm from "../UI/CreateForm";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./ParaClinicTaxTab.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/ParaClinicTaxSettings.ts - one doc per paraClinic
 // (unique on `paraClinic`), fetched here by filtering the generic
@@ -43,7 +44,7 @@ const ParaClinicTaxTab = ({ node }: { node: IParaClinic }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="درصد مالیات پیش‌فرض سیستم (در صورت تنظیم نشدن)"
+                title={ta("درصد مالیات پیش‌فرض سیستم (در صورت تنظیم نشدن)")}
                 value={`${globalSettings.defaultParaClinicTaxPercent}%`}
               />
             </List>
@@ -60,7 +61,7 @@ const ParaClinicTaxTab = ({ node }: { node: IParaClinic }) => {
             }}
             renderer={{
               taxPercent: {
-                title: "درصد مالیات این پاراکلینیک",
+                title: ta("درصد مالیات این پاراکلینیک"),
                 type: "number",
                 required: true,
               },

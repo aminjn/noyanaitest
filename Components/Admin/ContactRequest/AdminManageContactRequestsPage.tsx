@@ -12,6 +12,7 @@ import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const contactRequestSubjects = [
   "support",
@@ -24,10 +25,18 @@ export type ContactRequestSubject = (typeof contactRequestSubjects)[number];
 
 export const contactRequestSubjectDict: Record<ContactRequestSubject, string> =
   {
-    bug: "گزارش خطا",
-    profile: "حساب کاربری",
-    support: "پشتیبانی",
-    users: "کاربران",
+    get bug() {
+  return ta("گزارش خطا");
+},
+    get profile() {
+  return ta("حساب کاربری");
+},
+    get support() {
+  return ta("پشتیبانی");
+},
+    get users() {
+  return ta("کاربران");
+},
   };
 
 export const contactRequestSubjectContentKeys: Record<
@@ -45,8 +54,12 @@ export const contactRequestStatuses = ["pending", "done"] as const;
 export type ContactRequestStatus = (typeof contactRequestStatuses)[number];
 
 export const contactRequestStatusDict: Record<ContactRequestStatus, string> = {
-  done: "تمام شده",
-  pending: "منتظر",
+  get done() {
+  return ta("تمام شده");
+},
+  get pending() {
+  return ta("منتظر");
+},
 };
 
 export type ContatcRequestPopulation = Population<Record<never, never>>;
@@ -68,40 +81,40 @@ const AdminManageContactRequestsPage = () => {
 
   return (
     <NodesManager<IContactRequest>
-      title="درخواست تماس ها"
+      title={ta("درخواست تماس ها")}
       modelName="contactRequest"
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
-        phone: { name: "شماره", value: (node) => node.phone, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
+        phone: { name: ta("شماره"), value: (node) => node.phone, filter: "Text" },
         subject: {
-          name: "موضوع",
+          name: ta("موضوع"),
           value: (node) => contactRequestSubjectDict[node.subject],
           filter: "Set",
         },
         status: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => contactRequestStatusDict[node.status],
           filter: "Set",
         },
-        email: { name: "ایمیل", value: (node) => node.email, filter: "Text" },
+        email: { name: ta("ایمیل"), value: (node) => node.email, filter: "Text" },
         submittedAt: {
-          name: "زمان ثبت",
+          name: ta("زمان ثبت"),
           value: (node) => new Date(node.submittedAt),
           filter: "Date",
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/contactRequest/${node._id}`)}
-                title="مشاهده"
+                title={ta("مشاهده")}
               >
                 <EyeIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

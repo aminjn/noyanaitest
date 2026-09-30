@@ -10,6 +10,7 @@ import { provinceOptions, provinces } from "@/Components/Enums/Provinces";
 import { cityOptions } from "@/Components/Enums/Cities";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { ICity, IDistrict, IProvince } from "../Province/AdminManageProvincesPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DoctorProfileInfoTab = ({
   mutate,
@@ -34,33 +35,33 @@ const DoctorProfileInfoTab = ({
       defaultValue={node}
       styleManaged
       renderer={{
-        firstName: { type: "text", title: "نام" },
-        lastName: { type: "text", title: "نام خانوادگی" },
-        slug: { type: "text", title: "اسلاگ" },
+        firstName: { type: "text", title: ta("نام") },
+        lastName: { type: "text", title: ta("نام خانوادگی") },
+        slug: { type: "text", title: ta("اسلاگ") },
         medicalSystemCode: {
           type: "text",
-          title: "کد نظام پزشکی",
+          title: ta("کد نظام پزشکی"),
         },
-        address: { type: "text", title: "آدرس" },
-        landLine: { type: "text", title: "تلفن ثابت" },
-        website: { type: "text", title: "سایت" },
-        introduction: { type: "area", title: "معرفی" },
-        services: { type: "strings", title: "خدمات" },
-        achivements: { type: "strings", title: "دستاوردها" },
-        active: { type: "bool", title: "فعال" },
-        order: { type: "number", title: "رتبه" },
-        avatar: { type: "image", title: "تصویر اصلی" },
-        popular: { type: "bool", title: "محبوب" },
+        address: { type: "text", title: ta("آدرس") },
+        landLine: { type: "text", title: ta("تلفن ثابت") },
+        website: { type: "text", title: ta("سایت") },
+        introduction: { type: "area", title: ta("معرفی") },
+        services: { type: "strings", title: ta("خدمات") },
+        achivements: { type: "strings", title: ta("دستاوردها") },
+        active: { type: "bool", title: ta("فعال") },
+        order: { type: "number", title: ta("رتبه") },
+        avatar: { type: "image", title: ta("تصویر اصلی") },
+        popular: { type: "bool", title: ta("محبوب") },
         tier: {
           type: "select",
-          title: "رده",
+          title: ta("رده"),
           options: doctorProfileTiers.reduce(
             (acc, el) => ({ ...acc, [el]: el }),
             {},
           ),
         },
         province: {
-          title: "استان",
+          title: ta("استان"),
           type: "nodes",
           path: `${API}/auto/province`,
           getOptionLabel: (node) =>
@@ -70,7 +71,7 @@ const DoctorProfileInfoTab = ({
           getDefaultValue: (inp) => inp.province,
         },
         city: {
-          title: "شهر",
+          title: ta("شهر"),
           type: "nodes",
           getOptionLabel: (node) => (node as ICity).name || (node as ICity)._id,
           getOptionValue: (node) => (node as ICity)._id,
@@ -79,7 +80,7 @@ const DoctorProfileInfoTab = ({
           path: `${API}/auto/city`,
         },
         district: {
-          title: "محله",
+          title: ta("محله"),
           getOptionLabel: (node) =>
             (node as IDistrict).name || (node as IDistrict)._id,
           type: "nodes",

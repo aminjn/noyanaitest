@@ -19,6 +19,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 import PopupCard from "@/Components/UI/PopupCard";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
@@ -44,11 +45,11 @@ const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
           },
         }}
         renderer={{
-          name: { title: "نام", type: "text" },
-          active: { title: "فعال", type: "bool" },
-          order: { title: "رتبه", type: "number" },
+          name: { title: ta("نام"), type: "text" },
+          active: { title: ta("فعال"), type: "bool" },
+          order: { title: ta("رتبه"), type: "number" },
           user: {
-            title: "کاربر",
+            title: ta("کاربر"),
             type: "nodes",
             multi: false,
             getOptionLabel: (node) => getUserLabel(node as IUser),
@@ -72,10 +73,10 @@ const AdminManageParaClinicsPage = () => {
 
   return (
     <WithTitle
-      title="پاراکلینیک ها"
+      title={ta("پاراکلینیک ها")}
       actions={[
         {
-          title: "جدید",
+          title: ta("جدید"),
           action: () =>
             setPopup(
               "CreateParaClinic",
@@ -89,9 +90,9 @@ const AdminManageParaClinicsPage = () => {
           data={data}
           name="AdminManageParaClinics"
           renderer={{
-            name: { name: "نام", value: (node) => node.name, filter: "Text" },
+            name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
             user: {
-              name: "کاربر",
+              name: ta("کاربر"),
               filter: "Text",
               value: (node) => node.user?.phone,
               component: (node) =>
@@ -104,13 +105,13 @@ const AdminManageParaClinicsPage = () => {
                 ),
             },
             active: {
-              name: "وضعیت",
+              name: ta("وضعیت"),
               value: (node) => booleanToValue[`${node.active}`],
               component: (node) => <BooleanToIcon value={node.active} />,
               filter: "Set",
             },
             order: {
-              name: "رتبه",
+              name: ta("رتبه"),
               value: (node) => node.order,
               filter: "Number",
               component: (node) => (
@@ -123,12 +124,12 @@ const AdminManageParaClinicsPage = () => {
               ),
             },
             actions: {
-              name: "عملیات",
+              name: ta("عملیات"),
               component: (node) => (
                 <TableActions>
                   <IconLink
                     href={adminPath(`/paraClinic/${node._id}`)}
-                    title="ویرایش"
+                    title={ta("ویرایش")}
                   >
                     <EditIcon />
                   </IconLink>

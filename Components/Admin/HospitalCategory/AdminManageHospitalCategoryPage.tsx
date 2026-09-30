@@ -8,6 +8,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageHospitalCategoryPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -23,10 +24,10 @@ const AdminManageHospitalCategoryPage = () => {
           <CreateForm
             defaultValue={data}
             renderer={{
-              name: { type: "text", title: "نام" },
-              slug: { type: "text", title: "اسلاگ" },
-              isActive: { type: "bool", title: "فعال" },
-              order: { type: "number", title: "رتبه" },
+              name: { type: "text", title: ta("نام") },
+              slug: { type: "text", title: ta("اسلاگ") },
+              isActive: { type: "bool", title: ta("فعال") },
+              order: { type: "number", title: ta("رتبه") },
             }}
             hookProps={{
               path: `${API}/auto/hospitalCategory/${data._id}`,
