@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
+import { useLocale } from "../i18n/navigation";
 
 // atob/btoa-free base64url -> Uint8Array, needed because
 // PushManager.subscribe() wants applicationServerKey as raw bytes but the
@@ -36,6 +37,7 @@ export type PushSupportState =
 // callers should gate those behind useUser() the same way
 // Components/Layout/NotificationButton.tsx does.
 const usePushNotifications = () => {
+  const locale = useLocale();
   const [support, setSupport] = useState<PushSupportState>("checking");
   const [permission, setPermission] = useState<NotificationPermission>(
     typeof Notification === "undefined" ? "denied" : Notification.permission,
@@ -64,6 +66,20 @@ const usePushNotifications = () => {
         setSupport("supported");
         const existing = await reg.pushManager.getSubscription();
         if (!cancelled) setIsSubscribed(!!existing);
+        // re-send an existing subscription so the backend knows this
+        // browser's current language (pushes are translated into it)
+        if (existing) {
+          const json = existing.toJSON();
+          fetcher({
+            url: `${API}/user/push/subscribe`,
+            method: "POST",
+            payload: {
+              endpoint: json.endpoint,
+              keys: json.keys,
+              userAgent: navigator.userAgent,
+            },
+          }).catch(() => undefined);
+        }
       })
       .catch((err) => {
         console.error("Failed to register service worker:", err);
@@ -72,7 +88,7 @@ const usePushNotifications = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [locale]);
 
   const subscribe = useCallback(async (): Promise<boolean> => {
     if (!registration) return false;
