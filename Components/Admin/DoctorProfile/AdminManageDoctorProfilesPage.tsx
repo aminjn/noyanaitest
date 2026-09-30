@@ -1,6 +1,5 @@
 "use client";
 import useSWR from "swr";
-import classes from "./AdminManageDoctorProfilesPage.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -9,7 +8,6 @@ import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
-import { currencize } from "@/Components/helpers/currencize";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
@@ -27,7 +25,6 @@ const AdminManageDoctorProfilesPage = () => {
     IDoctorProfile<{
       UserPopulated: Record<never, never>;
       MainSpecialityPopulated: Record<never, never>;
-      PhoneConsultSettingsPopulated: Record<never, never>;
     }>[]
   >(`${API}/auto/doctorprofile`, (url: string) =>
     fetcher({ url }).then((res) => res.data.data),
@@ -70,13 +67,13 @@ const AdminManageDoctorProfilesPage = () => {
               mainSpeciality: {
                 name: ta("تخصص"),
                 value: (node) =>
-                  node.mainSpeciality?.name || node.mainSpeciality?._id || "",
+                  node.mainSpeciality?.name || "",
                 component: (node) =>
                   node.mainSpeciality ? (
                     <InlineLink
                       href={adminPath(`/speciality/${node.mainSpeciality._id}`)}
                     >
-                      {node.mainSpeciality.name || node.mainSpeciality._id}
+                      {node.mainSpeciality.name || ta("بدون نام")}
                     </InlineLink>
                   ) : (
                     "—"
@@ -111,29 +108,20 @@ const AdminManageDoctorProfilesPage = () => {
                 component: (node) =>
                   node.user ? (
                     <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                      {node.user.phone || node.user._id}
+                      {node.user.phone || ta("بدون نام")}
                     </InlineLink>
                   ) : (
                     "—"
                   ),
               },
-              phoneConsult: {
-                name: ta("مشاوره تلفنی"),
-                value: (node) =>
-                  booleanToValue[`${!!node.phoneConsultSettings?.active}`],
-                component: (node) => (
-                  <BooleanToIcon value={!!node.phoneConsultSettings?.active} />
-                ),
+              // replaces the «مشاوره تلفنی» / price columns: nothing can
+              // set PhoneConsultSettings (no admin endpoint, the doctor panel
+              // does not offer the "phone" kind), so they were always empty
+              active: {
+                name: ta("فعال"),
+                value: (node) => booleanToValue[`${!!node.active}`],
+                component: (node) => <BooleanToIcon value={!!node.active} />,
                 filter: "Set",
-              },
-              phoneConsultPrice: {
-                name: ta("قیمت مشاوره (تومان)"),
-                value: (node) => node.phoneConsultSettings?.price,
-                component: (node) =>
-                  node.phoneConsultSettings?.price !== undefined
-                    ? currencize(node.phoneConsultSettings.price)
-                    : "—",
-                filter: "Number",
               },
               actions: {
                 name: ta("عملیات"),

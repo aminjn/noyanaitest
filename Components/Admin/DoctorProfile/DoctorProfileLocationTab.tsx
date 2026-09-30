@@ -6,7 +6,6 @@ import Button from "@/Components/UI/Button";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
-import { mutate } from "swr";
 import MapMarker from "@/Components/UI/MapMarker";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -43,6 +42,11 @@ const DoctorProfileLocationTab = ({
 
   return (
     <div className={classes.main}>
+      <p className={classes.hint}>
+        {ta(
+          "روی نقشه، محل مطب را انتخاب کنید؛ جستجوی «نزدیک من» و نقشه‌ی سایت از همین نقطه استفاده می‌کنند.",
+        )}
+      </p>
       <div className={classes.map} ref={mapRef}>
         {ready && (
           <Fragment>
@@ -61,8 +65,12 @@ const DoctorProfileLocationTab = ({
         )}
       </div>
       <FormActions>
-        <Button isLoading={isLoading} onClick={submit}>
-          {ta("تایید")}
+        <Button
+          isLoading={isLoading}
+          variant={input.lat && input.lng ? "Primary" : "Disable"}
+          onClick={input.lat && input.lng ? submit : undefined}
+        >
+          {ta("ذخیره موقعیت")}
         </Button>
       </FormActions>
     </div>

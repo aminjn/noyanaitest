@@ -1,6 +1,5 @@
 import PopupCard from "@/Components/UI/PopupCard";
 import { API } from "@/Components/config";
-import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
 import CreateForm from "../UI/CreateForm";
 import {
   IHospital,
@@ -58,7 +57,7 @@ const MutateHospitalDoctorPopup = ({
             type: "nodes",
             getOptionLabel: (node) =>
               getDoctorProfileLabel(node as IDoctorProfile),
-            getOptionValue: (node) => (node as IDoctor)._id,
+            getOptionValue: (node) => (node as IDoctorProfile)._id,
             getDefaultValue: (node) => node.doctor?._id,
           },
         }}

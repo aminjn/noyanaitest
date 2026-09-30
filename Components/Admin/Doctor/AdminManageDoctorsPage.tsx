@@ -1,38 +1,20 @@
-"use client";
-
-import useSWR from "swr";
-import classes from "./AdminManageDoctorsPage.module.css";
-import { API } from "@/Components/config";
+// Types of the legacy `Doctor` model (Models/Doctor.ts in the backend).
+// The admin UI for it was retired when the doctors directory was merged into
+// doctor profiles (2026-09, /notadmin/doctor redirects to /doctorprofile);
+// only these types are still imported (clinic/hospital doctor links, label
+// getters, the clone-from-doctor popup).
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { Province } from "@/Components/Enums/Provinces";
-import { City, findCity } from "@/Components/Enums/Cities";
+import { City } from "@/Components/Enums/Cities";
 import {
   ISpeciality,
   SpecialityPopulation,
 } from "../Speciality/AdminManageSpecialitiesPage";
-import { fetcher } from "@/Components/helpers/fetcher";
-import HandleLoading from "../UI/HandleLoading";
-import Table from "../UI/Table";
-import InlineLink from "../UI/InlineLink";
-import { adminPath } from "@/Components/helpers/adminPath";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
-import TableActions from "../UI/TableActions";
-import IconButton from "../UI/IconButton";
-import IconLink from "../UI/IconLink";
-import EditIcon from "@/Components/Icons/EditIcon";
-import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import usePopup from "@/Components/Hooks/usePopup";
-import DeleteDoctorPopup from "./DeleteDoctorPopup";
-import WithTitle from "../UI/WithTitle";
-import CreateDoctorPopup from "./CreateDoctorPopup";
-import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import {
   GalleryItemPopulation,
   IGalleryItem,
 } from "./AdminManageDoctorGalleryTab";
-import OrderEditor from "../UI/OrderEditor";
-import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type DoctorPopulation = Population<{
   SpecialityPopulated?: SpecialityPopulation;
@@ -80,132 +62,3 @@ export interface IDoctor<
     ? IGalleryItem<boolean, T["Gallery"]>[]
     : never;
 }
-
-const AdminManageDoctorsPage = () => {
-  const { data, error, mutate } = useSWR<
-    IDoctor<{ SpecialityPopulated: Record<never, never> }>[]
-  >(`${API}/auto/doctor`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data),
-  );
-
-  const { setPopup } = usePopup();
-
-  const hasAccess = useAccessLevel();
-
-  return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <WithTitle
-          title={ta("پزشکان")}
-          actions={
-            hasAccess("Doctor", "write")
-              ? [
-                  {
-                    title: ta("جدید"),
-                    action: () =>
-                      setPopup(
-                        "CreateDoctor",
-                        <CreateDoctorPopup mutate={mutate} />,
-                      ),
-                  },
-                ]
-              : undefined
-          }
-        >
-          <Table
-            name="AdminManageDoctors"
-            data={data}
-            renderer={{
-              name: {
-                name: ta("نام"),
-                value: (node) => node.name,
-                filter: "Text",
-                component: (node) => (
-                  <InlineLink href={adminPath(`/doctor/${node._id}`)}>
-                    {node.name || node._id}
-                  </InlineLink>
-                ),
-              },
-              speciality: {
-                name: ta("تخصص"),
-                value: (node) => node.speciality?.name,
-                filter: "Multi",
-                component: (node) =>
-                  node.speciality ? (
-                    <InlineLink
-                      href={adminPath(`/speciality/${node.speciality._id}`)}
-                    >
-                      {node.speciality.name}
-                    </InlineLink>
-                  ) : (
-                    "—"
-                  ),
-              },
-              city: {
-                name: ta("شهر"),
-                value: (node) => (node.city ? findCity(node.city) : ""),
-                filter: "Multi",
-              },
-              mobile: {
-                name: ta("موبایل"),
-                value: (node) => node.mobile,
-                filter: "Text",
-              },
-              active: {
-                name: ta("فعال"),
-                value: (node) => booleanToValue[`${!!node.active}`],
-                filter: "Set",
-                component: (node) => <BooleanToIcon value={!!node.active} />,
-              },
-              order: {
-                name: ta("رتبه"),
-                value: (node) => node.order,
-                filter: "Number",
-                component: (node) => (
-                  <OrderEditor
-                    _id={node._id}
-                    modelName="doctor"
-                    value={node.order || 0}
-                    mutate={mutate}
-                  />
-                ),
-              },
-              actions: {
-                name: ta("عملیات"),
-                component: (node) => (
-                  <TableActions>
-                    {hasAccess("Doctor", "readOne") && (
-                      <IconLink
-                        variant="Info"
-                        href={adminPath(`/doctor/${node._id}`)}
-                        title={ta("ویرایش")}
-                      >
-                        <EditIcon />
-                      </IconLink>
-                    )}
-                    {hasAccess("Doctor", "delete") && (
-                      <IconButton
-                        variant="Danger"
-                        title={ta("حذف")}
-                        onClick={() =>
-                          setPopup(
-                            "DeleteDoctor",
-                            <DeleteDoctorPopup node={node} mutate={mutate} />,
-                          )
-                        }
-                      >
-                        <GarbageIcon />
-                      </IconButton>
-                    )}
-                  </TableActions>
-                ),
-              },
-            }}
-          />
-        </WithTitle>
-      )}
-    </HandleLoading>
-  );
-};
-
-export default AdminManageDoctorsPage;

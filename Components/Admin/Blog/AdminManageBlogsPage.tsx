@@ -146,14 +146,14 @@ const AdminManageBlogsPage = () => {
               category: {
                 name: ta("دسته‌بندی"),
                 value: (node) =>
-                  node.category?.title || node.category?._id || ta("ندارد"),
+                  node.category?.title || ta("بدون نام") || ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
                     <InlineLink
                       href={adminPath("/blog?tab=categories")}
                     >
-                      {node.category.title || node.category._id}
+                      {node.category.title || ta("بدون نام")}
                     </InlineLink>
                   ) : (
                     ta("ندارد")

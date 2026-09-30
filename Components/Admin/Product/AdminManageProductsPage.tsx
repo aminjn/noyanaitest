@@ -166,7 +166,7 @@ const CreateProductPopup = ({ mutate }: { mutate: () => unknown }) => {
             creatable: { path: `${API}/auto/productCategory` },
             multi: false,
             getOptionLabel: (node) =>
-              (node as IProductCategory).name || (node as IProductCategory)._id,
+              (node as IProductCategory).name || ta("بدون نام"),
             getOptionValue: (node) => (node as IProductCategory)._id,
           },
         }}
@@ -249,7 +249,7 @@ const AdminManageProductsPage = () => {
                 name: ta("دسته‌بندی"),
                 value: (node) =>
                   node.category
-                    ? node.category.name || node.category._id
+                    ? node.category.name || ta("بدون نام")
                     : ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
@@ -257,7 +257,7 @@ const AdminManageProductsPage = () => {
                     <InlineLink
                       href={adminPath("/product?tab=categories")}
                     >
-                      {node.category.name || node.category._id}
+                      {node.category.name || ta("بدون نام")}
                     </InlineLink>
                   ) : (
                     ta("ندارد")

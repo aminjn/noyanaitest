@@ -10,14 +10,12 @@ import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import CreateForm from "../UI/CreateForm";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import DeleteSpecialityPopup from "./DeletSpecialityPopup";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { useParams } from "next/navigation";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
-import List from "../UI/List";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -37,7 +35,27 @@ const AdminManageSpecialityPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || ta("تخصص")}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={
+            hasAccess("Sepciality", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeleteSpeciality",
+                        <DeleteSpecialityPopup
+                          node={data}
+                          mutate={() => push(adminPath("/speciality"))}
+                        />,
+                      ),
+                  },
+                ]
+              : undefined
+          }
+        >
           <TabSystem
             name="AdminManageSpeciality"
             items={[
@@ -71,7 +89,7 @@ const AdminManageSpecialityPage = () => {
                 icon: <InfoIcon />,
               },
               {
-                title: ta("متادیتا"),
+                title: ta("سئو"),
                 id: "Meta",
                 icon: <InfoIcon />,
                 content: (
@@ -79,31 +97,6 @@ const AdminManageSpecialityPage = () => {
                     resourceType="/speciality/[slug]"
                     slug={data.slug}
                   />
-                ),
-              },
-              {
-                title: ta("عملیات"),
-                id: "Actions",
-                icon: <InfoIcon />,
-                content: (
-                  <List>
-                    {hasAccess("Sepciality", "delete") && (
-                      <Button
-                        variant="Error"
-                        onClick={() =>
-                          setPopup(
-                            "DeleteSpeciality",
-                            <DeleteSpecialityPopup
-                              node={data}
-                              mutate={() => push(adminPath("/speciality"))}
-                            />,
-                          )
-                        }
-                      >
-                        {ta("حذف")}
-                      </Button>
-                    )}
-                  </List>
                 ),
               },
               {

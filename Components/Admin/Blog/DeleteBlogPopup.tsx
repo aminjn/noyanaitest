@@ -20,7 +20,7 @@ const DeleteBlogPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={ta("آیا از حذف مقاله ${1} مطمئنید؟", [node.title || node._id])}
+        message={ta("آیا از حذف مقاله ${1} مطمئنید؟", [node.title || ta("بدون نام")])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

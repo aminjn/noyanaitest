@@ -11,14 +11,12 @@ import HandleLoading from "../UI/HandleLoading";
 import CreateForm from "../UI/CreateForm";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import Box from "../UI/Box";
-import Button from "@/Components/UI/Button";
+import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteInlineAdPopup from "./DeleteInlineAdPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
-import List from "../UI/List";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInlineAdPage = () => {
@@ -37,7 +35,27 @@ const AdminManageInlineAdPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <Box>
+        <WithTitle
+          title={data.name || data.title || ta("بدون نام")}
+          actions={
+            hasAccess("InlineAdvertisement", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeleteInlineAd",
+                        <DeleteInlineAdPopup
+                          node={data}
+                          mutate={() => push(adminPath("/inlinead"))}
+                        />,
+                      ),
+                  },
+                ]
+              : undefined
+          }
+        >
           <TabSystem
             name="AdminManageInlineAd"
             items={[
@@ -70,38 +88,13 @@ const AdminManageInlineAdPage = () => {
                 icon: <InfoIcon />,
               },
               {
-                title: ta("عملیات"),
-                icon: <InfoIcon />,
-                content: (
-                  <List>
-                    {hasAccess("InlineAdvertisement", "delete") && (
-                      <Button
-                        variant="Error"
-                        onClick={() =>
-                          setPopup(
-                            "DeleteInlineAd",
-                            <DeleteInlineAdPopup
-                              node={data}
-                              mutate={() => push(adminPath("/inlinead"))}
-                            />,
-                          )
-                        }
-                      >
-                        {ta("حذف")}
-                      </Button>
-                    )}
-                  </List>
-                ),
-                id: "Actions",
-              },
-              {
                 id: "translations",
                 title: ta("ترجمه‌ها"),
                 content: <AdminContentTranslationPage segment="inlinead" />,
               },
             ]}
           />
-        </Box>
+        </WithTitle>
       )}
     </HandleLoading>
   );

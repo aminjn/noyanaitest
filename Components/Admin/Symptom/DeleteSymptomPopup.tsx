@@ -19,7 +19,7 @@ const DeleteSymptomPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={ta("آیا از حذف علامت ${1} مطمئنید؟", [node.name || node._id])}
+        message={ta("آیا از حذف علامت ${1} مطمئنید؟", [node.name || ta("بدون نام")])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

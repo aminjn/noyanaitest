@@ -10,12 +10,11 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import Box from "../UI/Box";
+import WithTitle from "../UI/WithTitle";
+import { adminPath } from "@/Components/helpers/adminPath";
 import CreateForm from "../UI/CreateForm";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import useProgress from "@/Components/Hooks/useProgress";
-import List from "../UI/List";
-import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteBlogPopup from "./DeleteBlogPopup";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
@@ -38,7 +37,27 @@ const AdminManageBlogPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <Box>
+        <WithTitle
+          title={data.title || ta("بدون نام")}
+          actions={
+            hasAccess("Blog", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeleteBlog",
+                        <DeleteBlogPopup
+                          mutate={() => push(adminPath("/blog"))}
+                          node={data}
+                        />,
+                      ),
+                  },
+                ]
+              : undefined
+          }
+        >
           <TabSystem
             name="AdminManageBlog"
             items={[
@@ -72,8 +91,7 @@ const AdminManageBlogPage = () => {
                         type: "nodes",
                         multi: false,
                         getOptionLabel: (node) =>
-                          (node as IBlogCategory).title ||
-                          (node as IBlogCategory)._id,
+                          (node as IBlogCategory).title || ta("بدون نام"),
                         getOptionValue: (node) => (node as IBlogCategory)._id,
                         getDefaultValue: (node) => node.category,
                         path: `${API}/auto/blogcategory`,
@@ -85,7 +103,7 @@ const AdminManageBlogPage = () => {
                         multi: true,
                         path: `${API}/auto/blog`,
                         getOptionLabel: (node) =>
-                          (node as IBlog).title || (node as IBlog)._id,
+                          (node as IBlog).title || ta("بدون نام"),
                         getOptionValue: (node) => (node as IBlog)._id,
                         getDefaultValue: (node) => node.related,
                       },
@@ -93,7 +111,7 @@ const AdminManageBlogPage = () => {
                         title: ta("تگ ها"),
                         type: "nodes",
                         getOptionLabel: (node) =>
-                          (node as IBlogTag).name || (node as IBlogTag)._id,
+                          (node as IBlogTag).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IBlogTag)._id,
                         getDefaultValue: (inp) => inp.tags,
                         path: `${API}/auto/blogtag`,
@@ -129,7 +147,7 @@ const AdminManageBlogPage = () => {
               {
                 icon: <InfoIcon />,
                 id: "Meta",
-                title: ta("متادیتا"),
+                title: ta("سئو"),
                 content: (
                   <PageMetaEditor
                     resourceType="/mag/[blogSlug]"
@@ -138,35 +156,13 @@ const AdminManageBlogPage = () => {
                 ),
               },
               {
-                icon: <InfoIcon />,
-                id: "Actions",
-                content: (
-                  <List>
-                    {hasAccess("Blog", "delete") && (
-                      <Button
-                        variant="Error"
-                        onClick={() =>
-                          setPopup(
-                            "DeleteBlog",
-                            <DeleteBlogPopup mutate={mutate} node={data} />,
-                          )
-                        }
-                      >
-                        {ta("حذف این مقاله")}
-                      </Button>
-                    )}
-                  </List>
-                ),
-                title: ta("عملیات"),
-              },
-              {
                 id: "translations",
                 title: ta("ترجمه‌ها"),
                 content: <AdminContentTranslationPage segment="blog" />,
               },
             ]}
           />
-        </Box>
+        </WithTitle>
       )}
     </HandleLoading>
   );

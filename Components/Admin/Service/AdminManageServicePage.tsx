@@ -15,7 +15,8 @@ const AdminManageServicePage = () => {
   return (
     <NodeManager<IService>
       modelName="service"
-      getTitle={(node) => node.name || node._id}
+      deleteBackTo="/service?tab=services"
+      getTitle={(node) => node.name || ta("بدون نام")}
       content={({ mutate, node }) => (
         <TabSystem
           name="AdminManageService"
@@ -49,7 +50,7 @@ const AdminManageServicePage = () => {
             },
             {
               id: "Meta",
-              title: ta("متادیتا"),
+              title: ta("سئو"),
               content: (
                 <PageMetaEditor resourceType="/service/[slug]" slug={node.slug} />
               ),

@@ -16,8 +16,6 @@ import {
   ISymptom,
 } from "./AdminManageDiseasesPage";
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
-import List from "../UI/List";
-import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteDiseasePopup from "./DeleteDiseasePopup";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -26,6 +24,7 @@ import { IDiseaseCategory } from "../DiseaseCategory/AdminManageDiseaseCategorie
 import { IDiseaseTag } from "../DiseaseTag/AdminManageDiseaseTagsPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 const AdminManageDiseasePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -46,7 +45,23 @@ const AdminManageDiseasePage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleetDisease",
+                  <DeleteDiseasePopup
+                    mutate={() => push(adminPath(`/disease`))}
+                    node={data}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageDisease"
             items={[
@@ -77,8 +92,7 @@ const AdminManageDiseasePage = () => {
                         title: ta("تگ"),
                         multi: false,
                         getOptionLabel: (node) =>
-                          (node as IDiseaseTag).name ||
-                          (node as IDiseaseTag)._id,
+                          (node as IDiseaseTag).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IDiseaseTag)._id,
                         getDefaultValue: (inp) => inp.tag,
                         path: `${API}/auto/diseasetag`,
@@ -90,8 +104,7 @@ const AdminManageDiseasePage = () => {
                         path: `${API}/auto/diseaseCategory`,
                         creatable: { path: `${API}/auto/diseaseCategory` },
                         getOptionLabel: (node) =>
-                          (node as IDiseaseCategory).name ||
-                          (node as IDiseaseCategory)._id,
+                          (node as IDiseaseCategory).name || ta("بدون نام"),
                         getOptionValue: (node) =>
                           (node as IDiseaseCategory)._id,
                         multi: false,
@@ -106,7 +119,7 @@ const AdminManageDiseasePage = () => {
                 id: "Details",
               },
               {
-                title: ta("توضیحات"),
+                title: ta("اطلاعات پزشکی"),
                 icon: <InfoIcon />,
                 id: "More",
                 content: (
@@ -118,21 +131,21 @@ const AdminManageDiseasePage = () => {
                       successCb: () => mutate(),
                     }}
                     renderer={{
-                      expectedPrognosis: {
+                      pathophysiology: {
                         type: "area",
-                        title: "Expected Prognosis",
+                        title: ta("پاتوفیزیولوژی"),
                       },
                       naturalProgression: {
                         type: "area",
-                        title: "Natural Progression",
-                      },
-                      pathophysiology: {
-                        type: "area",
-                        title: "Pathophysiology",
+                        title: ta("سیر طبیعی"),
                       },
                       possibleComplication: {
                         type: "area",
-                        title: "Possible Complications",
+                        title: ta("عوارض احتمالی"),
+                      },
+                      expectedPrognosis: {
+                        type: "area",
+                        title: ta("پیش‌آگهی"),
                       },
                     }}
                   />
@@ -159,7 +172,7 @@ const AdminManageDiseasePage = () => {
                         getDefaultValue: (val) =>
                           val.symptoms?.map((el) => el._id),
                         getOptionLabel: (node) =>
-                          (node as ISymptom).name || (node as ISymptom)._id,
+                          (node as ISymptom).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as ISymptom)._id,
                         clearable: true,
                       },
@@ -169,17 +182,16 @@ const AdminManageDiseasePage = () => {
                         path: `${API}/auto/speciality`,
                         multi: true,
                         getOptionLabel: (node) =>
-                          (node as ISpeciality).name ||
-                          (node as ISpeciality)._id,
+                          (node as ISpeciality).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as ISpeciality)._id,
                         getDefaultValue: (val) =>
-                          val.specialities.map((el) => el._id),
+                          val.specialities?.map((el) => el._id),
                       },
                       drugs: {
                         title: ta("دارو ها"),
                         type: "nodes",
                         getOptionLabel: (node) =>
-                          (node as IDrug).name || (node as IDrug)._id,
+                          (node as IDrug).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IDrug)._id,
                         path: `${API}/auto/drug`,
                         multi: true,
@@ -192,17 +204,17 @@ const AdminManageDiseasePage = () => {
                         path: `${API}/auto/disease`,
                         multi: true,
                         getOptionLabel: (node) =>
-                          (node as IDisease).name || (node as IDisease)._id,
+                          (node as IDisease).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IDisease)._id,
                         getDefaultValue: (val) =>
-                          val.sameAs.map((el) => el._id),
+                          val.sameAs?.map((el) => el._id),
                       },
                     }}
                   />
                 ),
               },
               {
-                title: ta("متادیتا"),
+                title: ta("سئو"),
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
@@ -210,27 +222,9 @@ const AdminManageDiseasePage = () => {
                 ),
               },
               {
-                title: ta("عملیات"),
-                id: "Actions",
-                icon: <InfoIcon />,
-                content: (
-                  <List>
-                    <Button
-                      variant="Error"
-                      onClick={() =>
-                        setPopup(
-                          "DeleetDisease",
-                          <DeleteDiseasePopup
-                            mutate={() => push(adminPath(`/disease`))}
-                            node={data}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("حذف")}
-                    </Button>
-                  </List>
-                ),
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="disease" />,
               },
             ]}
           />

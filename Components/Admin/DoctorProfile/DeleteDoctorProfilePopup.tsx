@@ -1,5 +1,4 @@
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
-import classes from "./DeleteDoctorProfilePopup.module.css";
 import { Fragment, useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
@@ -19,7 +18,7 @@ const DeleteDoctorProfilePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={ta("آیا از حذف پروفایل پزشک ${1} ${2} مطمئنید؟", [node.firstName || "", node.lastName || ""])}
+        message={ta("آیا از حذف پروفایل پزشک ${1} ${2} مطمئنید؟", [node.firstName || ta("بدون نام"), node.lastName || ""])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

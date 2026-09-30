@@ -21,7 +21,6 @@ import Form from "@/Components/UI/Form";
 import Ixon from "@/Components/UI/Ixon";
 import SendIcon from "@/Components/Icons/SendIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
-import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import useForm from "@/Components/Hooks/useForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -129,7 +128,7 @@ const InnerAdminTicket = ({
 
   return (
     <WithTitle
-      title={ta("تیکت: ${1}", [ticket.title])}
+      title={ta("تیکت: ${1}", [ticket.title || ta("بدون عنوان")])}
       actions={[
         {
           title: ta("تغییر وضعیت"),
@@ -141,8 +140,8 @@ const InnerAdminTicket = ({
             ),
         },
         {
-          title: ta("حذف تیکت"),
-          icon: <GarbageIcon />,
+          title: ta("حذف"),
+          danger: true,
           action: () =>
             setPopup(
               "DeleteTicket",
@@ -167,11 +166,13 @@ const InnerAdminTicket = ({
             )
           }
         />
-        <DataPair title={ta("موضوع")} value={ticketSubjectDict[ticket.subject]} />
+        <DataPair title={ta("موضوع")} value={ticketSubjectDict[ticket.subject] || ticket.subject || "—"} />
         <DataPair
           title={ta("وضعیت")}
           value={
-            <Badge mode="Outline">{ticketStatusDict[ticket.status]}</Badge>
+            <Badge mode="Outline">
+              {ticketStatusDict[ticket.status] || ticket.status || "—"}
+            </Badge>
           }
         />
         <DataPair

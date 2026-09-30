@@ -21,7 +21,7 @@ const DeleteDiseasePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={ta("آیا از حذف بیماری ${1} مطمئنید؟", [node.name || node._id])}
+        message={ta("آیا از حذف بیماری ${1} مطمئنید؟", [node.name || ta("بدون نام")])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

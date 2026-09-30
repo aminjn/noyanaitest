@@ -1,11 +1,8 @@
 "use client";
 import { useParams } from "next/navigation";
-import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
-import RequestDecisionActions from "../Requests/RequestDecisionActions";
-import classes from "./AdminManageBecomeDoctorPage.module.css";
 import useSWR from "swr";
+import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
 import {
-  becomeNodeStatusesDict,
   genderDict,
   IBecomeDoctorRequest,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -15,171 +12,207 @@ import HandleLoading from "../UI/HandleLoading";
 import TabSystem from "../UI/TabSystem";
 import WithTitle from "../UI/WithTitle";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import DataPair from "../UI/DataPair";
 import InlineLink from "../UI/InlineLink";
 import FormatDate from "@/Components/UI/FormatDate";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { provinces } from "@/Components/Enums/Provinces";
 import { cities } from "@/Components/Enums/Cities";
-import List from "../UI/List";
-import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
-import DeleteBecomeDoctorPopup from "./DeleteBecomeDoctorPopup";
-import FormActions from "../UI/FormActions";
 import BecomeDoctorProfileSelector from "./BecomeDoctorProfileSelector";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import RequestDecisionBanner from "../BecomeRequest/RequestDecisionBanner";
+import RequestInfoGrid from "../BecomeRequest/RequestInfoGrid";
+import DeleteShitPopup from "../UI/DeleteShitPopup";
+import pageClasses from "../BecomeRequest/BecomeRequestPage.module.css";
+import classes from "./AdminManageBecomeDoctorPage.module.css";
 
+type DoctorRequest = IBecomeDoctorRequest<{
+  SpecialitiesPopulated: true;
+  UserPopulated: true;
+}> & { decidedAt?: string };
+
+// A doctor's "become a doctor" request (2026-09): the decision on top (the
+// approve button creates the doctor profile from the stated specialities),
+// the applicant's statement as a read-only grid, and - for staff who can
+// see doctor profiles - the tab to attach an existing profile instead.
 const AdminManageBecomeDoctorPage = () => {
   const params = useParams<{ nodeId: string }>();
-  const { data, error, mutate } = useSWR<
-    IBecomeDoctorRequest<{ SpecialitiesPopulated: true; UserPopulated: true }>
-  >(
-    params ? `${API}/auto/becomedoctor/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  const { data, error, mutate } = useSWR<DoctorRequest | null>(
+    params?.nodeId ? `${API}/auto/becomedoctor/${params.nodeId}` : null,
+    (url: string) => fetcher({ url }).then((res) => res?.data?.data ?? null),
   );
 
   const { setPopup } = usePopup();
-
   const push = useProgress();
-
   const hasAccess = useAccessLevel();
 
+  if (!data) return <HandleLoading data={false} error={error} />;
+
+  const user = data.user && typeof data.user === "object" ? data.user : null;
+  const specialities = (
+    Array.isArray(data.specialities) ? data.specialities : []
+  ).filter((s) => s && typeof s === "object" && s._id);
+  const fullName = [data.firstName, data.lastName].filter(Boolean).join(" ");
+
+  const info = (
+    <div className={pageClasses.body}>
+      <RequestInfoGrid
+        title={ta("متقاضی")}
+        items={[
+          {
+            label: ta("کاربر"),
+            value: user?._id ? (
+              <InlineLink href={adminPath(`/user/${user._id}`)}>
+                {user.phone || ta("مشاهده کاربر")}
+              </InlineLink>
+            ) : (
+              ta("حذف شده")
+            ),
+          },
+          {
+            label: ta("تاریخ ثبت"),
+            value: data.createdAt ? (
+              <FormatDate value={data.createdAt} />
+            ) : undefined,
+          },
+        ]}
+      />
+      <RequestInfoGrid
+        title={ta("اطلاعات شخصی")}
+        items={[
+          { label: ta("نام"), value: data.firstName },
+          { label: ta("نام خانوادگی"), value: data.lastName },
+          { label: ta("کد ملی"), value: data.ssid },
+          {
+            label: ta("جنسیت"),
+            value: data.gender ? genderDict[data.gender] : undefined,
+          },
+        ]}
+      />
+      <RequestInfoGrid
+        title={ta("نظام پزشکی")}
+        items={[
+          {
+            label: ta("عنوان نظام پزشکی"),
+            value: data.medicalSystemTitle
+              ? ta(data.medicalSystemTitle)
+              : undefined,
+          },
+          { label: ta("کد نظام پزشکی"), value: data.medicalSystemCode },
+          {
+            label: ta("تخصص ها"),
+            wide: true,
+            value: specialities.length ? (
+              <span className={classes.chips}>
+                {specialities.map((speciality) => (
+                  <InlineLink
+                    key={speciality._id}
+                    href={adminPath(`/speciality/${speciality._id}`)}
+                  >
+                    {speciality.name || ta("بدون نام")}
+                  </InlineLink>
+                ))}
+              </span>
+            ) : undefined,
+          },
+        ]}
+      />
+      <RequestInfoGrid
+        title={ta("نشانی")}
+        items={[
+          {
+            label: ta("استان"),
+            value: provinces.find((p) => p.slug === data.province)?.name,
+          },
+          {
+            label: ta("شهر"),
+            value: cities.find((c) => c.slug === data.city)?.name,
+          },
+          { label: ta("آدرس"), value: data.address, wide: true },
+          { label: ta("توضیحات"), value: data.description, wide: true },
+        ]}
+      />
+    </div>
+  );
+
+  const showProfile = !!user?._id && hasAccess("DoctorProfile", "readAll");
+
   return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <WithTitle title={ta("درخواست پزشک شدن")}>
+    <WithTitle
+      title={
+        fullName
+          ? ta("درخواست پزشک شدن: ${1}", [fullName])
+          : ta("درخواست پزشک شدن")
+      }
+      actions={
+        hasAccess("BecomeDoctorRequest", "delete")
+          ? [
+              {
+                title: ta("حذف"),
+                danger: true,
+                action: () =>
+                  setPopup(
+                    "DeleteBecomeDoctor",
+                    <DeleteShitPopup
+                      modelName="becomedoctor"
+                      nodeId={data._id}
+                      mutate={() =>
+                        push(adminPath("/requests?group=become&kind=doctor"))
+                      }
+                    />,
+                  ),
+              },
+            ]
+          : undefined
+      }
+    >
+      <div className={pageClasses.body}>
+        <RequestDecisionBanner
+          group="become"
+          kind="doctor"
+          nodeId={data._id}
+          status={data.status}
+          rejectReason={data.rejectReason}
+          createdAt={data.createdAt}
+          decidedAt={data.decidedAt}
+          mutate={mutate}
+          approve={
+            <ApproveBecomeRequestButton
+              requestPath="becomedoctor"
+              nodeId={data._id}
+              status={data.status}
+              label={ta("تأیید و ساخت پروفایل پزشک")}
+              done={ta("پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد.")}
+              target={(id) => `/doctorprofile/${id}`}
+              mutate={mutate}
+            />
+          }
+        />
+        {showProfile ? (
           <TabSystem
+            name="AdminManageBecomeDoctor"
             items={[
               {
                 id: "Input",
-                content: (
-                  <List>
-                    <DataPair
-                      title={ta("تاریخ ثبت")}
-                      value={<FormatDate value={new Date(data.createdAt)} />}
-                    />
-                    <DataPair
-                      title={ta("کاربر")}
-                      value={
-                        <InlineLink href={adminPath(`/user/${data.user?._id}`)}>
-                          {data.user?.phone || "—"}
-                        </InlineLink>
-                      }
-                    />
-                    <DataPair title={ta("نام")} value={data.firstName} />
-                    <DataPair title={ta("نام خانوادگی")} value={data.lastName} />
-                    <DataPair title={ta("کد ملی")} value={data.ssid} />
-                    <DataPair title={ta("جنسیت")} value={genderDict[data.gender]} />
-                    <DataPair
-                      title={ta("عنوان نظام پزشکی")}
-                      value={data.medicalSystemTitle && ta(data.medicalSystemTitle)}
-                    />
-                    <DataPair
-                      title={ta("کد نظام پزشکی")}
-                      value={data.medicalSystemCode}
-                    />
-                    <DataPair
-                      title={ta("استان")}
-                      value={
-                        provinces.find((p) => p.slug === data.province)?.name
-                      }
-                    />
-                    <DataPair
-                      title={ta("شهر")}
-                      value={cities.find((c) => c.slug === data.city)?.name}
-                    />
-                    <DataPair title={ta("آدرس")} value={data.address} />
-                    <DataPair title={ta("توضیحات")} value={data.description} />
-                    <DataPair
-                      title={ta("وضعیت")}
-                      value={becomeNodeStatusesDict[data.status]}
-                    />
-                    {!!data.rejectReason && (
-                      <DataPair title={ta("دلیل رد")} value={data.rejectReason} />
-                    )}
-                    <div>
-                      <legend>{ta("تخصص ها")}</legend>
-                      <List>
-                        {(Array.isArray(data.specialities) ? data.specialities : []).map((speciality) => (
-                          <InlineLink
-                            key={speciality._id}
-                            href={adminPath(`/speciality/${speciality._id}`)}
-                          >
-                            {speciality.name}
-                          </InlineLink>
-                        ))}
-                      </List>
-                    </div>
-                  </List>
-                ),
                 title: ta("اطلاعات"),
                 icon: <InfoIcon />,
+                content: info,
               },
-              ...(hasAccess("DoctorProfile", "readAll")
-                ? [
-                    {
-                      title: ta("پروفایل"),
-                      icon: <InfoIcon />,
-                      id: "Profile",
-                      content: <BecomeDoctorProfileSelector req={data} />,
-                    },
-                  ]
-                : []),
               {
-                id: "Actions",
+                id: "Profile",
+                title: ta("پروفایل پزشک"),
                 icon: <InfoIcon />,
-                content: (
-                  <List>
-                    <RequestDecisionActions
-                      group="become"
-                      kind="doctor"
-                      nodeId={data._id}
-                      status={data.status}
-                      rejectReason={data.rejectReason}
-                      mutate={mutate}
-                      approve={
-                        <ApproveBecomeRequestButton
-                          requestPath="becomedoctor"
-                          nodeId={data._id}
-                          status={data.status}
-                          label={ta("تأیید و ساخت پروفایل پزشک")}
-                          done={ta("پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد.")}
-                          target={(id) => `/doctorprofile/${id}`}
-                          mutate={mutate}
-                        />
-                      }
-                    />
-                    {hasAccess("BecomeDoctorRequest", "delete") && (
-                      <FormActions>
-                        <Button
-                          variant="Error"
-                          mode="Outline"
-                          onClick={() =>
-                            setPopup(
-                              "DeleteBecomeDoctor",
-                              <DeleteBecomeDoctorPopup
-                                node={data}
-                                mutate={() => push(adminPath("/requests?group=become&kind=doctor"))}
-                              />,
-                            )
-                          }
-                        >
-                          {ta("حذف")}
-                        </Button>
-                      </FormActions>
-                    )}
-                  </List>
-                ),
-                title: ta("عملیات"),
+                content: <BecomeDoctorProfileSelector req={data} />,
               },
             ]}
-            name="AdminManageBecomeDoctor"
           />
-        </WithTitle>
-      )}
-    </HandleLoading>
+        ) : (
+          info
+        )}
+      </div>
+    </WithTitle>
   );
 };
 

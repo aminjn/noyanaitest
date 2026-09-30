@@ -88,7 +88,7 @@ const AdminManageProductPackagesPage = () => {
           title: ta("صاحب"),
           multi: false,
           getOptionLabel: (node) =>
-            (node as IPharmacy).name || (node as IPharmacy)._id,
+            (node as IPharmacy).name || ta("بدون نام"),
           getOptionValue: (node) => (node as IPharmacy)._id,
         },
         name: { type: "text", title: ta("نام") },
@@ -103,7 +103,7 @@ const AdminManageProductPackagesPage = () => {
           component: (node) =>
             node.owner ? (
               <InlineLink href={adminPath(`/pharmacy/${node.owner._id}`)}>
-                {node.owner.name || node.owner._id}
+                {node.owner.name || ta("بدون نام")}
               </InlineLink>
             ) : (
               "—"

@@ -17,7 +17,8 @@ const AdminManageServicePackagePage = () => {
   return (
     <NodeManager<IServicePackage>
       modelName="servicePackage"
-      getTitle={(node) => node.name || node._id}
+      deleteBackTo="/service?tab=packages"
+      getTitle={(node) => node.name || ta("بدون نام")}
       content={({ mutate, node }) => (
         <TabSystem
           name="AdminManageServicePackage"
@@ -32,7 +33,7 @@ const AdminManageServicePackagePage = () => {
                     name: { type: "text", title: ta("نام") },
                     isActive: { type: "bool", title: ta("فعال") },
                     order: { type: "number", title: ta("رتبه") },
-                    price: { type: "number", title: ta("فیمت"), price: true },
+                    price: { type: "number", title: ta("قیمت"), price: true },
                     discount: { type: "number", title: ta("تخفیف"), price: true },
                     category: {
                       type: "nodes",
@@ -41,8 +42,7 @@ const AdminManageServicePackagePage = () => {
                       creatable: { path: `${API}/auto/serviceCategory`, field: "title" },
                       multi: false,
                       getOptionLabel: (node) =>
-                        (node as IServiceCategory).title ||
-                        (node as IServiceCategory)._id,
+                        (node as IServiceCategory).title || ta("بدون نام"),
                       getOptionValue: (node) => (node as IServiceCategory)._id,
                       getDefaultValue: (inp) => inp.category,
                     },
@@ -50,7 +50,7 @@ const AdminManageServicePackagePage = () => {
                       type: "nodes",
                       title: ta("اقلام"),
                       getOptionLabel: (node) =>
-                        (node as IService).name || (node as IService)._id,
+                        (node as IService).name || ta("بدون نام"),
                       getOptionValue: (node) => (node as IService)._id,
                       getDefaultValue: (inp) => inp.services,
                       path: `${API}/auto/service?owner=${node.owner}`,
@@ -67,8 +67,7 @@ const AdminManageServicePackagePage = () => {
                       title: ta("مشابهات"),
                       path: `${API}/auto/servicePackage`,
                       getOptionLabel: (node) =>
-                        (node as IServicePackage).name ||
-                        (node as IServicePackage)._id,
+                        (node as IServicePackage).name || ta("بدون نام"),
                       getOptionValue: (node) => (node as IServicePackage)._id,
                       getDefaultValue: (inp) => inp.sameAs,
                       multi: true,
@@ -97,7 +96,7 @@ const AdminManageServicePackagePage = () => {
             },
             {
               id: "Meta",
-              title: ta("متادیتا"),
+              title: ta("سئو"),
               content: (
                 <PageMetaEditor
                   resourceType="/servicePackage/[slug]"

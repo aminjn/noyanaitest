@@ -5,7 +5,6 @@ import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import useSWR from "swr";
-import classes from "./AdminManageClinicPage.module.css";
 import { IClinic } from "./AdminManageClinicsPage";
 import { API } from "@/Components/config";
 import { useParams } from "next/navigation";
@@ -18,7 +17,6 @@ import ClinicInfoTab from "./ClinicInfoTab";
 import ClinicDepartmentsTab from "./ClinicDepartmentsTab";
 import ClinicDoctorsTab from "./ClinicDoctorsTab";
 import ClinicUserTab from "./ClinicUserTab";
-import List from "../UI/List";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteClinicPopup from "./DeleteClinicPopup";
@@ -31,9 +29,8 @@ import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import ClinicProfileLicenseTab from "./ClinicProfileLicenseTab";
-import ClinicTaxTab from "./ClinicTaxTab";
 import CartIcon from "@/Components/Icons/CartIcon";
-import WalletIcon from "@/Components/Icons/WalletIcon";
+import { CentreSections } from "./CentreSections";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ClinicLocationManager = ({
@@ -47,7 +44,8 @@ const ClinicLocationManager = ({
     {
       path: `${API}/auto/clinic/${node._id}`,
       method: "POST",
-      hasProblem: (inp) => (!inp.coords ? ta("یک موقعیت را انتخاب کنید") : false),
+      hasProblem: (inp) =>
+        !inp.coords ? ta("یک موقعیت را انتخاب کنید") : false,
       mutator: (inp) => ({
         location: { type: "Point", coordinates: inp.coords },
       }),
@@ -84,10 +82,32 @@ const AdminManageClinicPage = () => {
 
   const push = useProgress();
 
+  // Few tabs, as in the Doctolib Pro / Practo Ray back-offices: overview,
+  // details, location, team (panel owner + doctors + departments),
+  // license, SEO, translations. Delete sits in the header behind a
+  // confirmation. The per-clinic tax setting was dropped: no checkout or
+  // payout reads it (Lib/taxSettings.ts getClinicTaxPercent is unused).
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              //TODO: server-side clean up of the clinic's departments and doctor relations
+              action: () =>
+                setPopup(
+                  "DeleteClinic",
+                  <DeleteClinicPopup
+                    node={data}
+                    mutate={() => push(adminPath("/clinic"))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             items={[
               ...(isAdmin
@@ -112,39 +132,21 @@ const AdminManageClinicPage = () => {
                 content: <ClinicInfoTab clinic={data} mutate={mutate} />,
               },
               {
-                title: ta("لوکیشن"),
+                title: ta("موقعیت"),
                 id: "GEO",
                 icon: <LocationIcon />,
                 content: <ClinicLocationManager mutate={mutate} node={data} />,
               },
               {
-                title: ta("کاربر"),
-                content: <ClinicUserTab node={data} mutate={mutate} />,
-
+                title: ta("تیم"),
+                id: "Team",
                 icon: <InfoIcon />,
-                id: "User",
-              },
-              {
-                title: ta("دپارتمان ها"),
-                icon: <InfoIcon />,
-                id: "Departments",
-                content: <ClinicDepartmentsTab clinic={data} />,
-              },
-              {
-                title: ta("پزشکان"),
-                icon: <InfoIcon />,
-                content: <ClinicDoctorsTab clinic={data} />,
-                id: "Doctors",
-              },
-              {
-                title: ta("متادیتا"),
-                icon: <InfoIcon />,
-                id: "Meta",
                 content: (
-                  <PageMetaEditor
-                    resourceType="/clinic/[slug]"
-                    slug={data.slug}
-                  />
+                  <CentreSections>
+                    <ClinicUserTab node={data} mutate={mutate} />
+                    <ClinicDoctorsTab clinic={data} />
+                    <ClinicDepartmentsTab clinic={data} />
+                  </CentreSections>
                 ),
               },
               {
@@ -154,33 +156,14 @@ const AdminManageClinicPage = () => {
                 content: <ClinicProfileLicenseTab node={data} />,
               },
               {
-                title: ta("مالیات"),
-                id: "Tax",
-                icon: <WalletIcon />,
-                content: <ClinicTaxTab node={data} />,
-              },
-              {
-                title: ta("عملیات"),
+                title: ta("سئو"),
                 icon: <InfoIcon />,
-                id: "Actions",
+                id: "Meta",
                 content: (
-                  <List>
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "DeleteClinic",
-                          <DeleteClinicPopup
-                            node={data}
-                            mutate={() => push(adminPath("/clinic"))}
-                          />,
-                        )
-                      }
-                      variant="Error"
-                      //TODO:Clean up coroutine to remove departments and doctor department relations server side
-                    >
-                      {ta("حذف کامل این کلینیک")}
-                    </Button>
-                  </List>
+                  <PageMetaEditor
+                    resourceType="/clinic/[slug]"
+                    slug={data.slug}
+                  />
                 ),
               },
               {

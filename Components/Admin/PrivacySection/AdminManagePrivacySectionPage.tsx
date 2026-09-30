@@ -2,6 +2,7 @@
 
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 import NodeManager from "../UI/NodeManger";
 import {
   IPrivacySection,
@@ -11,8 +12,9 @@ import {
 const AdminManagePrivacySectionPage = () => {
   return (
     <NodeManager<IPrivacySection>
+      deleteBackTo="/privacy"
       modelName="privacySection"
-      getTitle={(node) => node.title || node._id}
+      getTitle={(node) => node.title || ta("بدون نام")}
       content={({ mutate, node }) => (
         <CreateForm
           renderer={privacySectionFormRenderer}

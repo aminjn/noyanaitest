@@ -32,7 +32,7 @@ const HospitalDepartmentsTab = ({ hospital }: { hospital: IHospital }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title={ta("دپارتمان های بیمارستان ${1}", [hospital.name || hospital._id])}
+          title={ta("دپارتمان ها")}
           actions={[
             {
               title: ta("جدید"),

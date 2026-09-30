@@ -19,7 +19,7 @@ const DeleteDrugPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={ta("آیا از حذف دارو ${1} مطمئنید؟", [node.name || node._id])}
+        message={ta("آیا از حذف دارو ${1} مطمئنید؟", [node.name || ta("بدون نام")])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

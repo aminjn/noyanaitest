@@ -15,8 +15,6 @@ import CreateForm from "../UI/CreateForm";
 import WithTitle from "../UI/WithTitle";
 import AccessLevelAdminsTab from "./AccessLevelAdminsTab";
 import AccessLevelMatrix from "./AccessLevelMatrix";
-import List from "../UI/List";
-import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteAccessLevelPopup from "./DeleteAccessLevelPopup";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -38,7 +36,23 @@ const AdminManageAccessLevelPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={ta("سطح دسترسی ${1}", [data.name || data._id])}>
+        <WithTitle
+          title={ta("سطح دسترسی ${1}", [data.name || ta("بدون نام")])}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteAccessLevel",
+                  <DeleteAccessLevelPopup
+                    node={data as unknown as IAccessLevel}
+                    mutate={() => push(adminPath(`/accesslevel`))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageAccessLevel"
             items={[
@@ -73,29 +87,6 @@ const AdminManageAccessLevelPage = () => {
                 id: "AdminsInThis",
                 content: <AccessLevelAdminsTab mutate={mutate} node={data} />,
                 icon: <InfoIcon />,
-              },
-              {
-                title: ta("عملیات"),
-                id: "Actions",
-                icon: <InfoIcon />,
-                content: (
-                  <List>
-                    <Button
-                      variant="Error"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteAccessLevel",
-                          <DeleteAccessLevelPopup
-                            node={data as unknown as IAccessLevel}
-                            mutate={() => push(adminPath(`/accesslevel`))}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("حذف کامل این سطح دسترسی")}
-                    </Button>
-                  </List>
-                ),
               },
             ]}
           />
