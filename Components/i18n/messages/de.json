@@ -2128,5 +2128,6 @@
  "featuredSpecialities": "Ausgewählte Fachgebiete",
  "unclaimedProfileTitle": "Online-Terminbuchung nicht verfügbar",
  "unclaimedProfileLegend": "Dieser Arzt hat noch kein NoyanAI-Konto und nimmt keine Online-Termine an. Wenn diese Seite Ihnen gehört, aktivieren Sie sie mit einem Beitrittsantrag.",
- "dpfCommission": "Gesamt ${1} - NoyanAI-Gebühr ${2} % (${3})"
+ "dpfCommission": "Gesamt ${1} - NoyanAI-Gebühr ${2} % (${3})",
+ "filterTheseDoctors": "Termine suchen und filtern"
 }

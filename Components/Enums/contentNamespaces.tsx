@@ -831,6 +831,7 @@ export const contentNamespaces = {
     "xPeopleRecommended",
     "xResults",
     "specialities",
+    "serviceType",
   ],
 
   // app/book/finalize/[nodeId]/page.tsx (FinalizeBookingPage) — the
@@ -4127,7 +4128,7 @@ export const contentNamespaces = {
     "submitContactRequestLegend",
     "submitContactRequestTitle",
   ],
-  // app/disease/[slug] (DiseasePage + ClinicCardAlt).
+  // app/disease/[slug] (DiseasePage).
   diseasePage: [
     "visitProfile",
     "bookASessionFromADoctor",
@@ -4364,7 +4365,7 @@ export const contentNamespaces = {
   // Components/Speciality/SpecialityCard — reusable (speciality list, DiseasePage, SearchModal).
   specialityCard: ["bestDoctors", "nDoctors", "seeAll"],
   // app/speciality/[slug] (SpecialityPage).
-  specialityPage: ["aboutThisSpeciality", "nDoctors"],
+  specialityPage: ["aboutThisSpeciality", "nDoctors", "filterTheseDoctors"],
   // Components/Symptom/SymptomCard — reusable (symptom list, DiseasePage, SearchModal).
   symptomCard: ["seeDetails"],
   // app/symptom/[slug] (SymptomPage).

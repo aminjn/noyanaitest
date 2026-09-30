@@ -32,7 +32,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import MultiSelectInputServer from "../UI/MultiSelectInputServer";
 import MultiSelectInput from "../UI/MultiSelectInput";
-import { doctorProfileTiers, genders } from "../DoctorPanel/DoctorPanelPage";
+import { genders } from "../DoctorPanel/DoctorPanelPage";
 import InlineDateInput from "../UI/InlineDateInput";
 import TimePicker from "../UI/TimePicker";
 import filterClasses from "./DoctorBookingFilters.module.css";
@@ -125,8 +125,6 @@ const DoctorBooking = ({
     if (options.service?.length)
       for (const service of options.service)
         params.append("service", service._id);
-    if (options.education?.length)
-      for (const tier of options.education) params.append("tier", tier);
     if (options.gender) params.append("gender", options.gender);
     if (options.date) {
       if (options.date.start)
@@ -241,20 +239,6 @@ const DoctorBooking = ({
           value: gender,
         }))}
         value={options.gender ? [options.gender] : []}
-      />
-      <MultiSelectInput
-        options={doctorProfileTiers.map((t) => ({
-          title: getContent(t),
-          value: t,
-        }))}
-        placeholder={getContent("selectEducation")}
-        value={options.education || []}
-        onChange={(e) =>
-          setOptions((prev) => ({
-            ...prev,
-            education: doctorProfileTiers.filter((el) => e.includes(el)),
-          }))
-        }
       />
       <AdvancedSearchToggleField
         title={getContent("onlyWithEPresc")}
@@ -546,7 +530,8 @@ const DoctorBooking = ({
           },
           {
             active: !!options.service?.length,
-            title: "service",
+            // it filters by the kind of service (service category)
+            title: "serviceType",
             drawer: (close) => (
               <BookingFilterDrawerField type="select" close={close}>
                 <MultiSelectInputServer
@@ -559,30 +544,6 @@ const DoctorBooking = ({
                   })}
                   onChange={(e) =>
                     setOptions((prev) => ({ ...prev, service: e }))
-                  }
-                />
-              </BookingFilterDrawerField>
-            ),
-          },
-          {
-            active: !!options.education?.length,
-            title: "educationLevel",
-            drawer: (close) => (
-              <BookingFilterDrawerField type="select" close={close}>
-                <MultiSelectInput
-                  options={doctorProfileTiers.map((t) => ({
-                    title: getContent(t),
-                    value: t,
-                  }))}
-                  placeholder={getContent("selectEducation")}
-                  value={options.education || []}
-                  onChange={(e) =>
-                    setOptions((prev) => ({
-                      ...prev,
-                      education: doctorProfileTiers.filter((el) =>
-                        e.includes(el),
-                      ),
-                    }))
                   }
                 />
               </BookingFilterDrawerField>

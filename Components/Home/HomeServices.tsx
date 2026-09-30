@@ -11,7 +11,8 @@ import serviceImage from "./services.png";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
-import ServiceCard from "../UI/ServiceCard";
+// the one service card of the site (the homepage had its own dead copy)
+import ServiceCard from "../Service/ServiceCard";
 import {
   t4xlBold,
   tlgBold,
@@ -51,7 +52,9 @@ const HomeServices = ({
           <SwiperSlider swiperClass={classes.swiper} ltr>
             {nodes.map((node) => (
               <SwiperSlide tag="li" key={node._id} className={classes.slide}>
-                <ServiceCard node={node} />
+                <ServiceCard
+                  node={{ ...node, model: "Service" } as Parameters<typeof ServiceCard>[0]["node"]}
+                />
               </SwiperSlide>
             ))}
           </SwiperSlider>

@@ -1,5 +1,6 @@
 .header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
@@ -57,4 +58,24 @@
   padding: 1rem;
   border-radius: 1rem;
   background-color: var(--white);
+}
+
+.headActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  /* the two actions go under the title, full width */
+  .headActions {
+    flex-basis: 100%;
+  }
+  .headActions > * {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+  .headerContent {
+    min-width: 0;
+  }
 }

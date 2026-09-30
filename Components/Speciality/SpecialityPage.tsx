@@ -79,16 +79,29 @@ const SpecialityPage = ({
             </div>
           </div>
         </div>
-        <Button
-          variant="Primary"
-          mode="Outline"
-          size="L"
-          radius="High"
-          tailIcon={<ArrowCircleDownIcon />}
-          href="#about"
-        >
-          {getContent("aboutThisSpeciality")}
-        </Button>
+        <div className={classes.headActions}>
+          {/* the full search (date, visit type, city...) already narrowed to
+              this speciality - the same doctors, with every filter */}
+          <Button
+            variant="Primary"
+            mode="Fill"
+            size="L"
+            radius="High"
+            href={`/book?speciality=${data._id}&name=${encodeURIComponent(data.name || "")}`}
+          >
+            {getContent("filterTheseDoctors")}
+          </Button>
+          <Button
+            variant="Primary"
+            mode="Outline"
+            size="L"
+            radius="High"
+            tailIcon={<ArrowCircleDownIcon />}
+            href="#about"
+          >
+            {getContent("aboutThisSpeciality")}
+          </Button>
+        </div>
       </div>
       <ListPageList
         itemWidth="14.75rem"

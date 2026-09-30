@@ -2128,5 +2128,6 @@
  "featuredSpecialities": "Избранные специальности",
  "unclaimedProfileTitle": "Онлайн-запись недоступна",
  "unclaimedProfileLegend": "У этого врача пока нет аккаунта в NoyanAI, и онлайн-запись недоступна. Если это ваша страница, активируйте её, подав заявку.",
- "dpfCommission": "Всего ${1} - комиссия NoyanAI ${2}% (${3})"
+ "dpfCommission": "Всего ${1} - комиссия NoyanAI ${2}% (${3})",
+ "filterTheseDoctors": "Поиск и фильтр записей"
 }

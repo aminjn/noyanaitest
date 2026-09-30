@@ -1,7 +1,7 @@
 import NewDoctorProfilePage from "@/Components/Dr/New/NewPublicDoctorProfilePage";
 import { PublicDoctorProfilePageProps } from "@/Components/Dr/publicDoctorTypes";
 import { getPublicData } from "@/Components/helpers/getPublicData";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -71,6 +71,16 @@ const PublicDoctorProfile = async ({
     getScopedTextContent(NS),
   ]);
   if (!data) return notFound();
+  // one URL per doctor: an id link moves to the slug
+  const requested = (() => {
+    try {
+      return decodeURIComponent(slug);
+    } catch {
+      return slug;
+    }
+  })();
+  if (data.doctor.slug && requested !== data.doctor.slug)
+    permanentRedirect(`/dr/${encodeURIComponent(data.doctor.slug)}`);
   return (
     <>
       <JsonLdSchema schema={physicianSchema(data.doctor)} />

@@ -2128,5 +2128,6 @@
  "featuredSpecialities": "Spécialités à la une",
  "unclaimedProfileTitle": "La prise de rendez-vous en ligne n'est pas disponible",
  "unclaimedProfileLegend": "Ce médecin n'a pas encore de compte NoyanAI et ne prend pas de rendez-vous en ligne. Si cette page est la vôtre, activez-la en demandant à nous rejoindre.",
- "dpfCommission": "Total ${1} - frais NoyanAI ${2} % (${3})"
+ "dpfCommission": "Total ${1} - frais NoyanAI ${2} % (${3})",
+ "filterTheseDoctors": "Rechercher et filtrer les rendez-vous"
 }
