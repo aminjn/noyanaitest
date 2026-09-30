@@ -1,9 +1,8 @@
-import Box from "../Admin/UI/Box";
+import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../Admin/UI/CreateForm";
 import { API } from "../config";
 import usePopup from "../Hooks/usePopup";
 import { IBlogMedia } from "./AdminManageBlogMediasPage";
-import classes from "./MutateBlogMediaPopup.module.css";
 
 const MutateBlogMediaPopup = ({
   mutate,
@@ -14,7 +13,7 @@ const MutateBlogMediaPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <Box className={classes.main}>
+    <PopupCard title="رسانه‌ی مقاله">
       <CreateForm
         onCancel={() => closePopup("MutateBlogMedia")}
         hookProps={{
@@ -34,7 +33,7 @@ const MutateBlogMediaPopup = ({
         styleManaged
         defaultValue={defaultValue}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

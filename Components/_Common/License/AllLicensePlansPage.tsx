@@ -10,6 +10,7 @@ import {
   LicenseOrg,
   licenseModuleLabelsByOrg,
   licensePanelRootByOrg,
+  adaptLicenseCatalog,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { useEffect, useState, useMemo } from "react";
@@ -36,7 +37,10 @@ const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   const { data, error } = useSWR<IActiveLicenseCatalog>(
     `${API}/${name}/license/all`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+    (url: string) =>
+      fetcher({ url }).then((res) =>
+        adaptLicenseCatalog<IActiveLicenseCatalog>(res.data),
+      ),
   );
 
   const getContent = useScopedLocale(LOCALE_NS);
@@ -44,8 +48,14 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   const [selectedDuration, setSelectedDuration] =
     useState<ILicenseDuration | null>(null);
 
-  const durations = useMemo(() => (Array.isArray(data?.durations) ? data.durations : []), [data]);
-  const licenses = useMemo(() => (Array.isArray(data?.licenses) ? data.licenses : []), [data]);
+  const durations = useMemo(
+    () => (Array.isArray(data?.durations) ? data.durations : []),
+    [data],
+  );
+  const licenses = useMemo(
+    () => (Array.isArray(data?.licenses) ? data.licenses : []),
+    [data],
+  );
 
   useEffect(() => {
     if (!!selectedDuration || !durations.length) return;
@@ -125,23 +135,27 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                     filter: "Number",
                   },
                   ...Object.fromEntries(
-                    (Array.isArray(data.modules) ? data.modules : []).map((mod) => [
-                      mod,
-                      {
-                        name: licenseModuleLabelsByOrg[name][mod] || mod,
-                        value: (node) =>
-                          booleanToValue[`${Array.isArray(node.modules) && node.modules.includes(mod)}`],
-                        component: (node) => (
-                          <BooleanToIcon
-                            value={
-                              Array.isArray(node.modules) &&
-                              node.modules.includes(mod)
-                            }
-                          />
-                        ),
-                        filter: "Set",
-                      },
-                    ]),
+                    (Array.isArray(data.modules) ? data.modules : []).map(
+                      (mod) => [
+                        mod,
+                        {
+                          name: licenseModuleLabelsByOrg[name][mod] || mod,
+                          value: (node) =>
+                            booleanToValue[
+                              `${Array.isArray(node.modules) && node.modules.includes(mod)}`
+                            ],
+                          component: (node) => (
+                            <BooleanToIcon
+                              value={
+                                Array.isArray(node.modules) &&
+                                node.modules.includes(mod)
+                              }
+                            />
+                          ),
+                          filter: "Set",
+                        },
+                      ],
+                    ),
                   ),
                   actions: {
                     name: getContent("actions"),

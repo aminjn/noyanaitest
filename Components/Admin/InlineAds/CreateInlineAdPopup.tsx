@@ -1,14 +1,13 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import usePopup from "@/Components/Hooks/usePopup";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
-import classes from "./CreateInlineAdPopup.module.css";
 import { API } from "@/Components/config";
 
 const CreateInlineAdPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <Box>
+    <PopupCard title="تبلیغ خطی جدید">
       <CreateForm
         renderer={{ name: { type: "text", title: "نام" } }}
         onCancel={() => closePopup()}
@@ -22,7 +21,7 @@ const CreateInlineAdPopup = ({ mutate }: { mutate: () => unknown }) => {
         }}
         styleManaged
       />
-    </Box>
+    </PopupCard>
   );
 };
 

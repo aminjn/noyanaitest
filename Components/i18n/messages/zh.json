@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "选择地址后显示运费。",
  "addressCityMissing": "此地址未填城市；填写后可使用 Tapsi 同城配送。",
  "pharmacyShipTapsiNote": "同城：请用 Tapsi 快递发货。首件送达后，运费（${1} 托曼）将计入您的钱包。",
- "pharmacyShipTipaxNote": "异地：请用 Tipax 到付发货，运费由买家付给快递员。"
+ "pharmacyShipTipaxNote": "异地：请用 Tipax 到付发货，运费由买家付给快递员。",
+ "licensePeriodDays": "${1} 天",
+ "licensePeriodMonths": "${1} 个月",
+ "licensePeriodYears": "${1} 年",
+ "formSectionMain": "基本信息",
+ "formSectionStatus": "状态与显示",
+ "formSectionContent": "内容",
+ "formSectionMedia": "图片与文件",
+ "clearSelection": "清除",
+ "nSelectedOfTotal": "${1} / ${2}"
 }

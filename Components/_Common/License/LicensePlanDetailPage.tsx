@@ -10,6 +10,7 @@ import {
   ILicenseDuration,
   LicenseOrg,
   licensePanelRootByOrg,
+  adaptLicenseDetail,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Button from "@/Components/UI/Button";
@@ -38,7 +39,8 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
 
   const { data, error } = useSWR<IBaseLicenseDetail>(
     nodeId ? `${API}/${name}/license/${nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+    (url: string) =>
+      fetcher({ url }).then((res) => adaptLicenseDetail(res.data)),
   );
 
   const [selectedDuration, setSelectedDuration] =

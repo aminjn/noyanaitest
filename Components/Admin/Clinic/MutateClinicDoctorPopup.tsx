@@ -1,13 +1,12 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { API } from "@/Components/config";
 import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
 import {
   IClinic,
   IClinicDepartment,
   IClinicDoctor,
 } from "./AdminManageClinicsPage";
-import classes from "./MutateClinicDoctorPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
 import {
   getClinicDepartmentLabel,
@@ -29,7 +28,7 @@ const MutateClinicDoctorPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <Box className={classes.main}>
+    <PopupCard title="پزشک کلینیک">
       <CreateForm
         defaultValue={node}
         hookProps={{
@@ -63,7 +62,7 @@ const MutateClinicDoctorPopup = ({
           },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

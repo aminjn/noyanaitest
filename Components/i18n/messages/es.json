@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "El costo de envío aparece al elegir una dirección.",
  "addressCityMissing": "Esta dirección no tiene ciudad; añádela para el envío Tapsi en la ciudad.",
  "pharmacyShipTapsiNote": "Misma ciudad: envíalo con un mensajero Tapsi. El costo de envío (${1} tomanes) se abona a tu monedero al entregar el primer artículo.",
- "pharmacyShipTipaxNote": "Otra ciudad: envíalo por Tipax contra entrega; el comprador paga al mensajero."
+ "pharmacyShipTipaxNote": "Otra ciudad: envíalo por Tipax contra entrega; el comprador paga al mensajero.",
+ "licensePeriodDays": "${1} días",
+ "licensePeriodMonths": "${1} meses",
+ "licensePeriodYears": "${1} años",
+ "formSectionMain": "Datos principales",
+ "formSectionStatus": "Estado y visibilidad",
+ "formSectionContent": "Contenido",
+ "formSectionMedia": "Imágenes y archivos",
+ "clearSelection": "Borrar",
+ "nSelectedOfTotal": "${1} de ${2}"
 }

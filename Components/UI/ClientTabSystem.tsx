@@ -22,9 +22,13 @@ const ClientTabSystem = ({
   className,
   style,
   viewState,
+  keepMounted,
 }: WithStyleProps<{
   items: ClientTabSystemItems;
   viewState?: [string, (v: string) => unknown];
+  // keep every tab's content rendered (only the current one shown) - for a
+  // form split into tabs, so what was typed in a hidden tab isn't lost
+  keepMounted?: boolean;
 }>) => {
   const innerState = useState<string>(
     items.filter((el) => !el.exclude)[0]?.id || "",
@@ -58,7 +62,20 @@ const ClientTabSystem = ({
             </button>
           ))}
       </nav>
-      {items.find((item) => item.id === current)?.content}
+      {keepMounted
+        ? items
+            .filter((el) => !el.exclude)
+            .map((item) => (
+              <div
+                key={item.id}
+                role="tabpanel"
+                hidden={item.id !== current}
+                className={classes.panel}
+              >
+                {item.content}
+              </div>
+            ))
+        : items.find((item) => item.id === current)?.content}
     </div>
   );
 };

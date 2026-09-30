@@ -10,6 +10,7 @@ import {
   IBaseLicenseDetail,
   LicenseOrg,
   licensePanelRootByOrg,
+  adaptLicenseDetail,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Act from "@/Components/UI/Act";
@@ -22,7 +23,12 @@ import WalletIcon from "@/Components/Icons/WalletIcon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import LicensePriceDetails from "./LicensePriceDetails";
 import WalletShortfallTopUp from "@/Components/Payment/WalletShortfallTopUp";
-import { tbaseDemiBold, tlgDemiBold, tsmDemiBold, tsmRegular } from "@/Components/UI/Typography";
+import {
+  tbaseDemiBold,
+  tlgDemiBold,
+  tsmDemiBold,
+  tsmRegular,
+} from "@/Components/UI/Typography";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
@@ -49,11 +55,13 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
 
   const { data, error } = useSWR<IBaseLicenseDetail>(
     nodeId ? `${API}/${name}/license/${nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+    (url: string) =>
+      fetcher({ url }).then((res) => adaptLicenseDetail(res.data)),
   );
 
-  const { data: wallet } = useSWR<IWallet>(`${API}/user/wallet`, (url: string) =>
-    fetcher({ url }).then((res) => res.data),
+  const { data: wallet } = useSWR<IWallet>(
+    `${API}/user/wallet`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useScopedLocale(LOCALE_NS);

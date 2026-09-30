@@ -1,6 +1,5 @@
-import Box from "../UI/Box";
+import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
-import classes from "./NewSpecialityPopup.module.css";
 import { ISpeciality } from "./AdminManageSpecialitiesPage";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -15,7 +14,7 @@ const NewSpecialityPopup = () => {
   const push = useProgress();
 
   return (
-    <Box className={classes.main}>
+    <PopupCard title="تخصص جدید">
       <CreateForm<{ name: string }, { data: { data: ISpeciality } }>
         hookProps={{
           path: `${API}/auto/speciality`,
@@ -32,7 +31,7 @@ const NewSpecialityPopup = () => {
         onCancel={closePopup}
         style={{ width: "min(28rem, 90dvw)" }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

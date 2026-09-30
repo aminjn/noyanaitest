@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "Les frais de port s'affichent une fois l'adresse choisie.",
  "addressCityMissing": "Cette adresse n'a pas de ville ; ajoutez-la pour la livraison Tapsi en ville.",
  "pharmacyShipTapsiNote": "Même ville : envoyez-le par coursier Tapsi. Les frais (${1} tomans) sont crédités sur votre portefeuille à la livraison du premier article.",
- "pharmacyShipTipaxNote": "Autre ville : envoyez par Tipax, paiement à la livraison ; l'acheteur paie le coursier."
+ "pharmacyShipTipaxNote": "Autre ville : envoyez par Tipax, paiement à la livraison ; l'acheteur paie le coursier.",
+ "licensePeriodDays": "${1} jours",
+ "licensePeriodMonths": "${1} mois",
+ "licensePeriodYears": "${1} ans",
+ "formSectionMain": "Informations principales",
+ "formSectionStatus": "Statut et affichage",
+ "formSectionContent": "Contenu",
+ "formSectionMedia": "Images et fichiers",
+ "clearSelection": "Effacer",
+ "nSelectedOfTotal": "${1} sur ${2}"
 }

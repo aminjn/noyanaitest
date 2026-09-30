@@ -1,34 +1,15 @@
-import usePopup from "@/Components/Hooks/usePopup";
-import { Fragment, useState } from "react";
-import Loading from "../UI/Loading";
-import Act from "@/Components/UI/Act";
-import { API } from "@/Components/config";
-import { IDrug } from "../Disease/AdminManageDiseasesPage";
-import useProgress from "@/Components/Hooks/useProgress";
-import { adminPath } from "@/Components/helpers/adminPath";
+import CreateByNamePopup from "../UI/CreateByNamePopup";
 
-const CreateDrugPopup = ({ mutate }: { mutate: () => unknown }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { closePopup } = usePopup();
-
-  const push = useProgress();
-
-  return (
-    <Fragment>
-      <Loading />
-      <Act<{ data: { data: IDrug } }>
-        path={isLoading ? `${API}/auto/drug` : null}
-        method="POST"
-        onDone={(status, result) => {
-          setIsLoading(false);
-          if (!status) return;
-          mutate();
-          if (result) push(adminPath(`/drug/${result.data.data._id}`));
-          closePopup();
-        }}
-      />
-    </Fragment>
-  );
-};
+// asks for the name first (Components/Admin/UI/CreateByNamePopup.tsx) -
+// opening it no longer creates an empty drug
+const CreateDrugPopup = ({ mutate }: { mutate: () => unknown }) => (
+  <CreateByNamePopup
+    modelName="drug"
+    title="داروی جدید"
+    fieldTitle="نام دارو"
+    editPath={(id) => `/drug/${id}`}
+    mutate={mutate}
+  />
+);
 
 export default CreateDrugPopup;

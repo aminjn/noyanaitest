@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "Стоимость доставки появится после выбора адреса.",
  "addressCityMissing": "В адресе не указан город; добавьте его для доставки Tapsi по городу.",
  "pharmacyShipTapsiNote": "Тот же город: отправьте курьером Tapsi. Плата за доставку (${1} томанов) поступит в ваш кошелёк после выдачи первой позиции.",
- "pharmacyShipTipaxNote": "Другой город: отправьте через Tipax с оплатой при получении; платит покупатель."
+ "pharmacyShipTipaxNote": "Другой город: отправьте через Tipax с оплатой при получении; платит покупатель.",
+ "licensePeriodDays": "${1} дн.",
+ "licensePeriodMonths": "${1} мес.",
+ "licensePeriodYears": "${1} г.",
+ "formSectionMain": "Основное",
+ "formSectionStatus": "Статус и показ",
+ "formSectionContent": "Содержание",
+ "formSectionMedia": "Изображения и файлы",
+ "clearSelection": "Очистить",
+ "nSelectedOfTotal": "${1} из ${2}"
 }

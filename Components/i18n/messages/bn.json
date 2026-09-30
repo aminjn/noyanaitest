@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "ঠিকানা বাছাই করলে শিপিং খরচ দেখা যাবে।",
  "addressCityMissing": "এই ঠিকানায় শহর নেই; একই শহরে Tapsi ডেলিভারির জন্য শহর যোগ করুন।",
  "pharmacyShipTapsiNote": "একই শহর: Tapsi কুরিয়ারে পাঠান। প্রথম পণ্য পৌঁছালে শিপিং খরচ (${1} তোমান) আপনার ওয়ালেটে জমা হবে।",
- "pharmacyShipTipaxNote": "অন্য শহর: Tipax-এ ডেলিভারিতে পরিশোধ হিসেবে পাঠান; ক্রেতা কুরিয়ারকে দেবেন।"
+ "pharmacyShipTipaxNote": "অন্য শহর: Tipax-এ ডেলিভারিতে পরিশোধ হিসেবে পাঠান; ক্রেতা কুরিয়ারকে দেবেন।",
+ "licensePeriodDays": "${1} দিন",
+ "licensePeriodMonths": "${1} মাস",
+ "licensePeriodYears": "${1} বছর",
+ "formSectionMain": "মূল তথ্য",
+ "formSectionStatus": "অবস্থা ও প্রদর্শন",
+ "formSectionContent": "বিষয়বস্তু",
+ "formSectionMedia": "ছবি ও ফাইল",
+ "clearSelection": "মুছুন",
+ "nSelectedOfTotal": "${2}টির মধ্যে ${1}"
 }

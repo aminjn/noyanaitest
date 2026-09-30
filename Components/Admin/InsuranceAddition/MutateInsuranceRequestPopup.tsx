@@ -1,8 +1,7 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { IInsuranceAdditionRequest } from "@/Components/DoctorPanel/Insurance/DoctorInsuranceAdditionRequestsTab";
 import { additionRequestStatusDict } from "@/Components/DoctorPanel/Clinic/DoctorClinicAdditionsTab";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
-import classes from "./MutateInsuranceRequestPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 
@@ -16,7 +15,7 @@ const MutateInsuranceRequestPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <Box className={classes.main}>
+    <PopupCard title="درخواست افزودن بیمه">
       <CreateForm<IInsuranceAdditionRequest>
         defaultValue={node}
         onCancel={() => closePopup()}
@@ -36,7 +35,7 @@ const MutateInsuranceRequestPopup = ({
           },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

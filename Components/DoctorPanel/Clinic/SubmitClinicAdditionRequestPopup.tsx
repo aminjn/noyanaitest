@@ -1,5 +1,4 @@
-import Box from "@/Components/Admin/UI/Box";
-import classes from "./SubmitClinicAdditionRequestPopup.module.css";
+import PopupCard from "@/Components/UI/PopupCard";
 import Form from "@/Components/UI/Form";
 import useForm from "@/Components/Hooks/useForm";
 import { IClinicAdditionRequest } from "./DoctorClinicAdditionsTab";
@@ -43,7 +42,7 @@ const SubmitClinicAdditionRequestPopup = ({
   });
 
   return (
-    <Box className={classes.main}>
+    <PopupCard>
       <CreateForm
         hookProvided={form}
         onCancel={() => closePopup()}
@@ -65,7 +64,7 @@ const SubmitClinicAdditionRequestPopup = ({
           description: { title: getContent("description"), type: "area" },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

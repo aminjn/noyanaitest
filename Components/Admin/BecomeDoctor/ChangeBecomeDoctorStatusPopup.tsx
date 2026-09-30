@@ -1,12 +1,11 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import {
   becomeNodeManualStatusesDict,
   IBecomeDoctorRequest,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
-import classes from "./ChangeBecomeDoctorStatusPopup.module.css";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
-import Box from "../UI/Box";
 
 const ChangeBecomeDoctorStatusPopup = ({
   mutate,
@@ -18,7 +17,7 @@ const ChangeBecomeDoctorStatusPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <Box>
+    <PopupCard title="تغییر وضعیت درخواست">
       <CreateForm
         styleManaged
         defaultValue={node}
@@ -39,7 +38,7 @@ const ChangeBecomeDoctorStatusPopup = ({
         }}
         onCancel={() => closePopup()}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

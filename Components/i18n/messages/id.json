@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "Ongkos kirim muncul setelah alamat dipilih.",
  "addressCityMissing": "Alamat ini belum ada kotanya; tambahkan untuk pengiriman Tapsi satu kota.",
  "pharmacyShipTapsiNote": "Satu kota: kirim dengan kurir Tapsi. Ongkos kirim (${1} toman) masuk ke dompet Anda saat barang pertama diterima.",
- "pharmacyShipTipaxNote": "Kota lain: kirim lewat Tipax bayar di tempat; pembeli membayar kurir."
+ "pharmacyShipTipaxNote": "Kota lain: kirim lewat Tipax bayar di tempat; pembeli membayar kurir.",
+ "licensePeriodDays": "${1} hari",
+ "licensePeriodMonths": "${1} bulan",
+ "licensePeriodYears": "${1} tahun",
+ "formSectionMain": "Info utama",
+ "formSectionStatus": "Status & tampilan",
+ "formSectionContent": "Konten",
+ "formSectionMedia": "Gambar & berkas",
+ "clearSelection": "Hapus",
+ "nSelectedOfTotal": "${1} dari ${2}"
 }

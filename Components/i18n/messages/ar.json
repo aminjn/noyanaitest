@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "تظهر تكلفة الشحن بعد اختيار العنوان.",
  "addressCityMissing": "لم تُحدَّد مدينة لهذا العنوان؛ أضفها للحصول على توصيل تپسي داخل المدينة.",
  "pharmacyShipTapsiNote": "نفس المدينة: أرسلها مع مندوب تپسي. تُضاف تكلفة الشحن (${1} تومان) إلى محفظتك عند تسليم أول صنف.",
- "pharmacyShipTipaxNote": "مدينة أخرى: أرسلها عبر تيباكس بالدفع عند الاستلام؛ يدفع المشتري للمندوب."
+ "pharmacyShipTipaxNote": "مدينة أخرى: أرسلها عبر تيباكس بالدفع عند الاستلام؛ يدفع المشتري للمندوب.",
+ "licensePeriodDays": "${1} يومًا",
+ "licensePeriodMonths": "${1} أشهر",
+ "licensePeriodYears": "${1} سنوات",
+ "formSectionMain": "المعلومات الأساسية",
+ "formSectionStatus": "الحالة والعرض",
+ "formSectionContent": "المحتوى",
+ "formSectionMedia": "الصور والملفات",
+ "clearSelection": "مسح",
+ "nSelectedOfTotal": "${1} من ${2}"
 }

@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "Kargo ücreti adres seçildikten sonra görünür.",
  "addressCityMissing": "Bu adreste şehir yok; şehir içi Tapsi teslimatı için şehir ekleyin.",
  "pharmacyShipTapsiNote": "Aynı şehir: Tapsi kuryeyle gönderin. Kargo ücreti (${1} toman) ilk ürün teslim edilince cüzdanınıza yatar.",
- "pharmacyShipTipaxNote": "Başka şehir: Tipax ile kapıda ödemeli gönderin; ücreti alıcı öder."
+ "pharmacyShipTipaxNote": "Başka şehir: Tipax ile kapıda ödemeli gönderin; ücreti alıcı öder.",
+ "licensePeriodDays": "${1} gün",
+ "licensePeriodMonths": "${1} ay",
+ "licensePeriodYears": "${1} yıl",
+ "formSectionMain": "Temel bilgiler",
+ "formSectionStatus": "Durum ve görünürlük",
+ "formSectionContent": "İçerik",
+ "formSectionMedia": "Görseller ve dosyalar",
+ "clearSelection": "Temizle",
+ "nSelectedOfTotal": "${2} içinden ${1}"
 }

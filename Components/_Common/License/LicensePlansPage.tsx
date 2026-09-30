@@ -9,6 +9,7 @@ import {
   ILicenseDuration,
   LicenseOrg,
   licensePanelRootByOrg,
+  adaptLicenseCatalog,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import Ixon from "@/Components/UI/Ixon";
@@ -33,15 +34,24 @@ const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   const { data, error } = useSWR<ILicenseCatalog>(
     `${API}/${name}/license`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+    (url: string) =>
+      fetcher({ url }).then((res) =>
+        adaptLicenseCatalog<ILicenseCatalog>(res.data),
+      ),
   );
 
   const [selectedDuration, setSelectedDuration] =
     useState<ILicenseDuration | null>(null);
 
   // a non-array field (error payload) must not take the page down
-  const durations = useMemo(() => (Array.isArray(data?.durations) ? data.durations : []), [data]);
-  const licenses = useMemo(() => (Array.isArray(data?.licenses) ? data.licenses : []), [data]);
+  const durations = useMemo(
+    () => (Array.isArray(data?.durations) ? data.durations : []),
+    [data],
+  );
+  const licenses = useMemo(
+    () => (Array.isArray(data?.licenses) ? data.licenses : []),
+    [data],
+  );
 
   useEffect(() => {
     if (!!selectedDuration || !durations.length) return;

@@ -1,13 +1,12 @@
-import Box from "../Admin/UI/Box";
+import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../Admin/UI/CreateForm";
 import { API } from "../config";
 import usePopup from "../Hooks/usePopup";
-import classes from "./CreateBlogMediaPopup.module.css";
 
 const CreateBlogMediaPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <Box>
+    <PopupCard title="رسانه‌ی جدید">
       <CreateForm
         hookProps={{
           method: "POST",
@@ -20,7 +19,7 @@ const CreateBlogMediaPopup = ({ mutate }: { mutate: () => unknown }) => {
         renderer={{ name: { title: "نام", type: "text" } }}
         onCancel={() => closePopup()}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

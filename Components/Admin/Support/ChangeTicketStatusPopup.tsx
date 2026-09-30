@@ -1,3 +1,4 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import {
   ITicket,
   ticketStatusDict,
@@ -5,7 +6,6 @@ import {
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
-import Box from "../UI/Box";
 
 const ChangeTicketStatusPopup = ({
   ticket,
@@ -17,7 +17,7 @@ const ChangeTicketStatusPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <Box>
+    <PopupCard title="تغییر وضعیت تیکت">
       <CreateForm
         styleManaged
         defaultValue={ticket}
@@ -38,7 +38,7 @@ const ChangeTicketStatusPopup = ({
         }}
         onCancel={() => closePopup()}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

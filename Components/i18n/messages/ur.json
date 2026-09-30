@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "پتہ منتخب کرنے کے بعد ترسیل کی قیمت دکھائی جائے گی۔",
  "addressCityMissing": "اس پتے میں شہر درج نہیں؛ اسی شہر میں تپسی ترسیل کے لیے شہر شامل کریں۔",
  "pharmacyShipTapsiNote": "اسی شہر میں: تپسی کورئیر سے بھیجیں۔ ترسیل کی قیمت (${1} تومان) پہلی چیز کی ترسیل پر آپ کے والیٹ میں آ جائے گی۔",
- "pharmacyShipTipaxNote": "دوسرا شہر: ٹیپیکس سے، ادائیگی بوقتِ وصولی بھیجیں؛ خریدار کورئیر کو ادا کرے گا۔"
+ "pharmacyShipTipaxNote": "دوسرا شہر: ٹیپیکس سے، ادائیگی بوقتِ وصولی بھیجیں؛ خریدار کورئیر کو ادا کرے گا۔",
+ "licensePeriodDays": "${1} دن",
+ "licensePeriodMonths": "${1} ماہ",
+ "licensePeriodYears": "${1} سال",
+ "formSectionMain": "بنیادی معلومات",
+ "formSectionStatus": "حیثیت اور نمائش",
+ "formSectionContent": "مواد",
+ "formSectionMedia": "تصاویر اور فائلیں",
+ "clearSelection": "صاف کریں",
+ "nSelectedOfTotal": "${2} میں سے ${1}"
 }

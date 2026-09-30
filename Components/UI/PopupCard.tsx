@@ -11,14 +11,20 @@ const PopupCard = ({
   style,
   icon,
   title,
+  size = "normal",
 }: WithStyleProps<{
   children?: ReactNode;
   title?: string;
   icon?: ReactNode;
+  // "wide" for a long form (tabs, a pricing editor) - room for two columns
+  size?: "normal" | "wide";
 }>) => {
   const { closePopup } = usePopup();
   return (
-    <div className={`${classes.main} ${className}`} style={style}>
+    <div
+      className={`${classes.main} ${size === "wide" ? classes.wide : ""} ${className || ""}`}
+      style={style}
+    >
       <div className={classes.header}>
         {!!title && (
           <div className={classes.titleBox}>

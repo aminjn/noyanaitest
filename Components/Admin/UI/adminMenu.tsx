@@ -173,7 +173,6 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "پلن‌های داروخانه", href: "basePharmacyLicense" },
       { title: "پلن‌های پاراکلینیک", href: "baseParaClinicLicense" },
       { title: "پلن‌های بیمه", href: "baseInsuranceLicense" },
-      { title: "مدت زمان مجوز", href: "licenseDuration" },
     ],
   },
   {

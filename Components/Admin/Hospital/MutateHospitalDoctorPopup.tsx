@@ -1,13 +1,12 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { API } from "@/Components/config";
 import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
 import {
   IHospital,
   IHospitalDepartment,
   IHospitalDoctor,
 } from "./AdminManageHospitalsPage";
-import classes from "./MutateHospitalDoctorPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
 import {
   getHospitalDepartmentLabel,
@@ -29,7 +28,7 @@ const MutateHospitalDoctorPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <Box className={classes.main}>
+    <PopupCard title="پزشک بیمارستان">
       <CreateForm
         defaultValue={node}
         hookProps={{
@@ -63,7 +62,7 @@ const MutateHospitalDoctorPopup = ({
           },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

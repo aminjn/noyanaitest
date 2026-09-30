@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "住所を選ぶと送料が表示されます。",
  "addressCityMissing": "この住所には市が未登録です。Tapsi の市内配送には市を追加してください。",
  "pharmacyShipTapsiNote": "同じ市内：Tapsi の配達員で発送してください。最初の品が届くと送料（${1} トマン）がウォレットに入ります。",
- "pharmacyShipTipaxNote": "別の市：Tipax の着払いで発送してください。送料は購入者が支払います。"
+ "pharmacyShipTipaxNote": "別の市：Tipax の着払いで発送してください。送料は購入者が支払います。",
+ "licensePeriodDays": "${1}日間",
+ "licensePeriodMonths": "${1}か月",
+ "licensePeriodYears": "${1}年",
+ "formSectionMain": "基本情報",
+ "formSectionStatus": "ステータスと表示",
+ "formSectionContent": "内容",
+ "formSectionMedia": "画像とファイル",
+ "clearSelection": "クリア",
+ "nSelectedOfTotal": "${2}件中${1}件"
 }

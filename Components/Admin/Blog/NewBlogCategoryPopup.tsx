@@ -1,14 +1,14 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
 import classes from "./NewBlogCategoryPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
-import Box from "../UI/Box";
 import { blogCategoryFormRenderer } from "./AdminManageBlogCategoryPage";
 
 const NewBlogCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <Box>
+    <PopupCard title="دسته‌بندی جدید مقاله">
       <CreateForm
         className={classes.main}
         renderer={blogCategoryFormRenderer}
@@ -22,7 +22,7 @@ const NewBlogCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
         }}
         onCancel={closePopup}
       />
-    </Box>
+    </PopupCard>
   );
 };
 
