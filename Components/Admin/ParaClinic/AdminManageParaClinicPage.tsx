@@ -346,108 +346,108 @@ const AdminManageParaClinicPage = () => {
                 title: ta("اطلاعات"),
                 content: (
                   <CentreSections>
-                  <CreateForm
-                    defaultValue={data}
-                    layout="sections"
-                    renderer={{
-                      name: { type: "text", title: ta("نام") },
-                      order: { type: "number", title: ta("رتبه") },
-                      active: { type: "bool", title: ta("فعال") },
-                      special: { type: "bool", title: ta("ویژه") },
-                      category: {
-                        type: "nodes",
-                        title: ta("دسته بندی"),
-                        multi: false,
-                        getOptionLabel: (node) =>
-                          (node as IParaClinicCategory).name ||
-                          (node as IParaClinicCategory)._id,
-                        getOptionValue: (node) =>
-                          (node as IParaClinicCategory)._id,
-                        getDefaultValue: (inp) => inp.category,
-                        path: `${API}/auto/paraClinicCategory`,
-                        creatable: { path: `${API}/auto/paraClinicCategory` },
-                      },
-                      tags: {
-                        type: "nodes",
-                        title: ta("تگ ها"),
-                        path: `${API}/auto/paraClinicTag`,
-                        creatable: { path: `${API}/auto/paraClinicTag` },
-                        getOptionLabel: (node) =>
-                          (node as IParaClinicTag).name ||
-                          (node as IParaClinicTag)._id,
-                        getOptionValue: (node) => (node as IParaClinicTag)._id,
-                        getDefaultValue: (inp) => inp.tags,
-                        multi: true,
-                      },
-                      province: {
-                        type: "nodes",
-                        title: ta("استان"),
-                        section: ta("آدرس"),
-                        multi: false,
-                        path: `${API}/auto/province`,
-                        getOptionLabel: (node) =>
-                          (node as IProvince).name || (node as IProvince)._id,
-                        getOptionValue: (node) => (node as IProvince)._id,
-                        getDefaultValue: (inp) => inp.province,
-                      },
-                      city: {
-                        type: "nodes",
-                        title: ta("شهر"),
-                        section: ta("آدرس"),
-                        multi: false,
-                        path: cityPath,
-                        getOptionLabel: (node) =>
-                          (node as ICity).name || (node as ICity)._id,
-                        getOptionValue: (node) => (node as ICity)._id,
-                        getDefaultValue: (inp) => inp.city,
-                      },
-                      district: {
-                        type: "nodes",
-                        title: ta("محله"),
-                        section: ta("آدرس"),
-                        multi: false,
-                        path: districtPath,
-                        getOptionLabel: (node) =>
-                          (node as IDistrict).name || (node as IDistrict)._id,
-                        getOptionValue: (node) => (node as IDistrict)._id,
-                        getDefaultValue: (inp) => inp.district,
-                      },
-                      image: { type: "image", title: ta("تصویر") },
-                      slug: { type: "text", title: ta("اسلاگ") },
-                      establishment: { type: "text", title: ta("تاسیس") },
-                      businessTime: {
-                        type: "text",
-                        title: ta("ساعات کاری"),
-                        section: ta("تماس"),
-                      },
-                      phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
-                      basicInsurance: { type: "bool", title: ta("بیمه پایه") },
-                      onlineResponse: { type: "bool", title: ta("پاسخ آنلاین") },
-                      onPremises: { type: "bool", title: ta("نمونه گیری در محل") },
-                      personelCount: { type: "number", title: ta("کادر تخصصی") },
-                      summary: { type: "area", title: ta("خلاصه") },
-                      insurances: {
-                        type: "nodes",
-                        title: ta("بیمه ها"),
-                        section: ta("بیمه‌ها"),
-                        getOptionLabel: (node) =>
-                          (node as IInsurance).name || (node as IInsurance)._id,
-                        getOptionValue: (node) => (node as IInsurance)._id,
-                        multi: true,
-                        getDefaultValue: (inp) => inp.insurances,
-                        path: `${API}/auto/insurance`,
-                      },
-                      address: { type: "text", title: ta("آدرس"), section: ta("آدرس") },
-                    }}
-                    hookProps={{
-                      path: `${API}/auto/paraClinic/${data._id}`,
-                      method: "POST",
-                      successCb: () => {
-                        mutate();
-                      },
-                    }}
-                  />
-                  <ImagesManager model="ParaClinic" node={data} />
+                    <CreateForm
+                      defaultValue={data}
+                      layout="sections"
+                      renderer={{
+                        name: { type: "text", title: ta("نام") },
+                        order: { type: "number", title: ta("رتبه") },
+                        active: { type: "bool", title: ta("فعال") },
+                        special: { type: "bool", title: ta("ویژه") },
+                        category: {
+                          type: "nodes",
+                          title: ta("دسته بندی"),
+                          multi: false,
+                          getOptionLabel: (node) =>
+                            (node as IParaClinicCategory).name ||
+                            (node as IParaClinicCategory)._id,
+                          getOptionValue: (node) =>
+                            (node as IParaClinicCategory)._id,
+                          getDefaultValue: (inp) => inp.category,
+                          path: `${API}/auto/paraClinicCategory`,
+                          creatable: { path: `${API}/auto/paraClinicCategory` },
+                        },
+                        tags: {
+                          type: "nodes",
+                          title: ta("تگ ها"),
+                          path: `${API}/auto/paraClinicTag`,
+                          creatable: { path: `${API}/auto/paraClinicTag` },
+                          getOptionLabel: (node) =>
+                            (node as IParaClinicTag).name ||
+                            (node as IParaClinicTag)._id,
+                          getOptionValue: (node) => (node as IParaClinicTag)._id,
+                          getDefaultValue: (inp) => inp.tags,
+                          multi: true,
+                        },
+                        province: {
+                          type: "nodes",
+                          title: ta("استان"),
+                          section: ta("آدرس"),
+                          multi: false,
+                          path: `${API}/auto/province`,
+                          getOptionLabel: (node) =>
+                            (node as IProvince).name || (node as IProvince)._id,
+                          getOptionValue: (node) => (node as IProvince)._id,
+                          getDefaultValue: (inp) => inp.province,
+                        },
+                        city: {
+                          type: "nodes",
+                          title: ta("شهر"),
+                          section: ta("آدرس"),
+                          multi: false,
+                          path: cityPath,
+                          getOptionLabel: (node) =>
+                            (node as ICity).name || (node as ICity)._id,
+                          getOptionValue: (node) => (node as ICity)._id,
+                          getDefaultValue: (inp) => inp.city,
+                        },
+                        district: {
+                          type: "nodes",
+                          title: ta("محله"),
+                          section: ta("آدرس"),
+                          multi: false,
+                          path: districtPath,
+                          getOptionLabel: (node) =>
+                            (node as IDistrict).name || (node as IDistrict)._id,
+                          getOptionValue: (node) => (node as IDistrict)._id,
+                          getDefaultValue: (inp) => inp.district,
+                        },
+                        image: { type: "image", title: ta("تصویر") },
+                        slug: { type: "text", title: ta("اسلاگ") },
+                        establishment: { type: "text", title: ta("تاسیس") },
+                        businessTime: {
+                          type: "text",
+                          title: ta("ساعات کاری"),
+                          section: ta("تماس"),
+                        },
+                        phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
+                        basicInsurance: { type: "bool", title: ta("بیمه پایه") },
+                        onlineResponse: { type: "bool", title: ta("پاسخ آنلاین") },
+                        onPremises: { type: "bool", title: ta("نمونه گیری در محل") },
+                        personelCount: { type: "number", title: ta("کادر تخصصی") },
+                        summary: { type: "area", title: ta("خلاصه") },
+                        insurances: {
+                          type: "nodes",
+                          title: ta("بیمه ها"),
+                          section: ta("بیمه‌ها"),
+                          getOptionLabel: (node) =>
+                            (node as IInsurance).name || (node as IInsurance)._id,
+                          getOptionValue: (node) => (node as IInsurance)._id,
+                          multi: true,
+                          getDefaultValue: (inp) => inp.insurances,
+                          path: `${API}/auto/insurance`,
+                        },
+                        address: { type: "text", title: ta("آدرس"), section: ta("آدرس") },
+                      }}
+                      hookProps={{
+                        path: `${API}/auto/paraClinic/${data._id}`,
+                        method: "POST",
+                        successCb: () => {
+                          mutate();
+                        },
+                      }}
+                    />
+                    <ImagesManager model="ParaClinic" node={data} />
                   </CentreSections>
                 ),
               },
