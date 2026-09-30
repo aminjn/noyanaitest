@@ -209,6 +209,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "زبان‌های سایت", href: "languages" },
       { title: "تنظیمات مالی", href: "globalFinanceSettings" },
       { title: "تنظیمات مالیاتی", href: "globalTaxSettings" },
+      { title: "تنظیمات درگاه پیامک (API)", href: "smsSettings" },
       { title: "پترن‌های پیامک", href: "smsPatterns" },
       { title: "تصاویر ثابت", href: "staticImages" },
       { title: "لاگ عملیات", href: "audit" },
