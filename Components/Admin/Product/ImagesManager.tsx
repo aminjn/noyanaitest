@@ -71,13 +71,13 @@ const MutateProductImagePopup = ({
 )) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard title={node ? ta("ویرایش تصویر محصول") : ta("تصویر محصول جدید")}>
+    <PopupCard title={node ? ta("ویرایش تصویر") : ta("تصویر جدید")}>
       <CreateForm
         onCancel={() => closePopup()}
         defaultValue={node}
         renderer={{
-          image: { type: "image", title: ta("نصویر") },
-          alt: { type: "text", title: ta("الت") },
+          image: { type: "image", title: ta("تصویر") },
+          alt: { type: "text", title: ta("متن جایگزین تصویر (alt)") },
           isActive: { type: "bool", title: ta("فعال") },
           order: { type: "number", title: ta("رتبه") },
         }}

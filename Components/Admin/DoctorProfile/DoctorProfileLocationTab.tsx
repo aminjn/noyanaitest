@@ -1,14 +1,14 @@
-import useMap from "@/Components/Hooks/useMap";
-import { Fragment, useRef, useState } from "react";
 import classes from "./DoctorProfileLocationTab.module.css";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
-import MapMarker from "@/Components/UI/MapMarker";
+import PointPicker from "../UI/PointPicker";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
+// The office point, through the shared PointPicker (map click or typed
+// coordinates), same as the centre record pages.
 const DoctorProfileLocationTab = ({
   mutate,
   node,
@@ -16,28 +16,16 @@ const DoctorProfileLocationTab = ({
   node: IDoctorProfile;
   mutate: () => unknown;
 }) => {
-  const mapRef = useRef<HTMLDivElement>(null);
-
   const { input, setInput, isLoading, submit } = useForm<{
-    lat: number;
-    lng: number;
+    point?: [number, number];
   }>({
     path: `${API}/auto/doctorprofile/${node._id}`,
     method: "POST",
     successCb: () => {
       mutate();
     },
-    mutator: (inp) => {
-      if (inp.lat && inp.lng)
-        return { location: { type: "Point", coordinates: [inp.lng, inp.lat] } };
-      return inp;
-    },
-  });
-
-  const { map, ready } = useMap({
-    containerRef: mapRef,
-    onClick: (e) => setInput((prev) => ({ ...prev, lat: e.lat, lng: e.lng })),
-    center: node.location?.coordinates,
+    mutator: (inp) =>
+      inp.point ? { location: { type: "Point", coordinates: inp.point } } : {},
   });
 
   return (
@@ -47,28 +35,15 @@ const DoctorProfileLocationTab = ({
           "روی نقشه، محل مطب را انتخاب کنید؛ جستجوی «نزدیک من» و نقشه‌ی سایت از همین نقطه استفاده می‌کنند.",
         )}
       </p>
-      <div className={classes.map} ref={mapRef}>
-        {ready && (
-          <Fragment>
-            {node.location?.coordinates && (
-              <MapMarker
-                lat={node.location.coordinates[1]}
-                lng={node.location.coordinates[0]}
-                map={map}
-                variant="active"
-              />
-            )}
-            {input.lat && input.lng && (
-              <MapMarker lat={input.lat} lng={input.lng} map={map} />
-            )}
-          </Fragment>
-        )}
-      </div>
+      <PointPicker
+        defaultValue={node.location?.coordinates as [number, number] | undefined}
+        onChange={(point) => setInput((prev) => ({ ...prev, point }))}
+      />
       <FormActions>
         <Button
           isLoading={isLoading}
-          variant={input.lat && input.lng ? "Primary" : "Disable"}
-          onClick={input.lat && input.lng ? submit : undefined}
+          variant={input.point ? "Primary" : "Disable"}
+          onClick={input.point ? submit : undefined}
         >
           {ta("ذخیره موقعیت")}
         </Button>

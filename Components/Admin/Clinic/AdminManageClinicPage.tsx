@@ -17,6 +17,7 @@ import ClinicInfoTab from "./ClinicInfoTab";
 import ClinicDepartmentsTab from "./ClinicDepartmentsTab";
 import ClinicDoctorsTab from "./ClinicDoctorsTab";
 import ClinicUserTab from "./ClinicUserTab";
+import ClinicTaxTab from "./ClinicTaxTab";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteClinicPopup from "./DeleteClinicPopup";
@@ -148,6 +149,14 @@ const AdminManageClinicPage = () => {
                     <ClinicDepartmentsTab clinic={data} />
                   </CentreSections>
                 ),
+              },
+              {
+                // kept by the user's decision for parity with the other
+                // centres; the rate is not applied to any payment yet
+                title: ta("مالی"),
+                id: "Tax",
+                icon: <InfoIcon />,
+                content: <ClinicTaxTab node={data} />,
               },
               {
                 title: ta("مجوز"),
