@@ -194,6 +194,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "سفارش‌ها", href: "finance/orders" },
       { title: "تراکنش‌های کیف پول", href: "finance/transactions" },
       { title: "پرداخت‌های درگاه", href: "finance/payments" },
+      { title: "درخواست‌های برداشت", href: "finance/withdrawals" },
     ],
   },
   {

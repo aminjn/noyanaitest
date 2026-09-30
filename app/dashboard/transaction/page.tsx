@@ -5,10 +5,11 @@ import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent"
 const DashboardManageTransactions = async () => {
   const textContent = await getScopedTextContent([
     "dashboardTransaction",
+    "walletWithdrawal",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["dashboardTransaction"]}
+      namespaces={["dashboardTransaction", "walletWithdrawal"]}
       initialTextContent={textContent}
     >
       <DashboardManageTransactionsPage />

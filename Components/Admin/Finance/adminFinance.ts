@@ -40,6 +40,7 @@ export const paymentPurposeDict: Record<string, string> = {
 };
 
 export const transactionKindDict: Record<string, string> = {
+  withdrawal: "برداشت به حساب بانکی",
   gatewayPayment: "پرداخت درگاه",
   order: "سفارش فروشگاه",
   reservation: "نوبت",
