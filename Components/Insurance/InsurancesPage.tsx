@@ -20,6 +20,7 @@ import InsuranceCard from "./InsuranceCard";
 import { useEffect } from "react";
 import { t2xsRegular, tlgMedium, tsmBold, tsmRegular } from "../UI/Typography";
 import Link from "@/Components/i18n/Link";
+import { SiteStats, useStatFormat } from "../helpers/siteStats";
 
 const NS: ContentNamespace[] = ["common", "insurancesList"];
 
@@ -35,6 +36,7 @@ export type InsurancesPageProps = {
   // the tag / insurer the list was opened with (a card chip, an insurer page)
   filters?: ListPageFilters | null;
   categories: IInsuranceCategory[];
+  stats?: SiteStats;
 };
 
 const Count = ({ title, value }: { title: string; value: string }) => {
@@ -52,7 +54,9 @@ const InsurancesPage = ({
   totalCount,
   categories,
   filters,
+  stats,
 }: InsurancesPageProps) => {
+  const format = useStatFormat();
   const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
 
@@ -93,17 +97,22 @@ const InsurancesPage = ({
         </div>
         <div className={classes.counts}>
           <Count
-            value={totalCount.toString()}
+            value={format.count(totalCount)}
             title={getContent("insureresCount")}
           />
-          <Count
-            value={getContent("totalInsuranceCentersValue")}
-            title={getContent("totalInsuranceCenteresTitle")}
-          />
-          <Count
-            value={getContent("totalInsureesCountValue")}
-            title={getContent("totalInsureesCountTitle")}
-          />
+          {/* counted on the site: who accepts at least one insurer */}
+          {!!stats?.insuranceCenters && (
+            <Count
+              value={format.count(stats.insuranceCenters)}
+              title={getContent("totalInsuranceCenteresTitle")}
+            />
+          )}
+          {!!stats?.insuranceDoctors && (
+            <Count
+              value={format.count(stats.insuranceDoctors)}
+              title={getContent("doctorsAcceptingInsurance")}
+            />
+          )}
         </div>
       </div>
       <div className={classes.filterBox}>

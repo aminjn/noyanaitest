@@ -592,7 +592,7 @@
  "insurances": "Insurances",
  "insurancesLegend": "Compare partner insurers and find the right coverage for you.",
  "insurerees": "Insured members",
- "insureresCount": "Number of insured",
+ "insureresCount": "Insurers",
  "introduction": "Introduction",
  "invalidSessionDurationError": "Invalid session duration.",
  "inventory": "Inventory",
@@ -1514,7 +1514,7 @@
  "tomorrow": "Tomorrow",
  "topUpShortfall": "Top Up Shortfall",
  "total": "Total",
- "totalInsuranceCenteresTitle": "All insurance centers",
+ "totalInsuranceCenteresTitle": "In-network centres",
  "totalInsureesCountTitle": "Total insurees",
  "totalLinearPrice": "Total Line Price",
  "totalPrice": "Total price",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "In-network doctors",
  "clinicsAcceptingInsurance": "In-network clinics",
  "hospitalsAcceptingInsurance": "In-network hospitals",
- "paraClinicsAcceptingInsurance": "In-network labs and imaging"
+ "paraClinicsAcceptingInsurance": "In-network labs and imaging",
+ "homeHeroAiFreeValue": "Free"
 }

@@ -173,7 +173,7 @@ const HomeHero = ({ homeMain }: { homeMain?: string }) => {
                   {getContent("aiDetection")}
                 </span>
                 <span className={`${classes.floatValue} ${txsDemiBold}`}>
-                  {getContent("homeHeroAiAccuracyValue")}
+                  {getContent("homeHeroAiFreeValue")}
                 </span>
               </div>
               <span

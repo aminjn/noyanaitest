@@ -592,7 +592,7 @@
  "insurances": "Asuransi",
  "insurancesLegend": "Bandingkan asuransi mitra dan temukan cakupan yang tepat untuk Anda.",
  "insurerees": "Peserta asuransi",
- "insureresCount": "Jumlah peserta",
+ "insureresCount": "Perusahaan asuransi",
  "introduction": "Perkenalan",
  "invalidSessionDurationError": "Durasi sesi tidak valid.",
  "inventory": "Inventaris",
@@ -1514,7 +1514,7 @@
  "tomorrow": "Besok",
  "topUpShortfall": "Isi ulang kekurangan",
  "total": "Total",
- "totalInsuranceCenteresTitle": "Semua pusat asuransi",
+ "totalInsuranceCenteresTitle": "Pusat mitra",
  "totalInsureesCountTitle": "Total peserta asuransi",
  "totalLinearPrice": "Total harga baris",
  "totalPrice": "Total harga",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "Dokter mitra",
  "clinicsAcceptingInsurance": "Klinik mitra",
  "hospitalsAcceptingInsurance": "Rumah sakit mitra",
- "paraClinicsAcceptingInsurance": "Lab dan radiologi mitra"
+ "paraClinicsAcceptingInsurance": "Lab dan radiologi mitra",
+ "homeHeroAiFreeValue": "Gratis"
 }

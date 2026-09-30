@@ -23,8 +23,10 @@ import HomePopular from "./HomePopular";
 import HomeRegister from "./HomeRegister";
 import HomeServices from "./HomeServices";
 import HomeSpecialities from "./HomeSpecialities";
+import { SiteStats } from "../helpers/siteStats";
 
 export type HomePageProps = Partial<{
+  stats: SiteStats;
   introduction: IHomeIntroduction[];
   specialities: ISpeciality[];
   advertisements: IAdvertisement[];
@@ -55,6 +57,7 @@ const HomePage = ({
   faqs,
   blogs,
   staticImages,
+  stats,
 }: HomePageProps) => {
   return (
     <main className={classes.main}>
@@ -67,7 +70,7 @@ const HomePage = ({
       <HomeAds2 />
       <HomeServices nodes={services} />
       <HomePharmacyProducts />
-      <HomeRegister />
+      <HomeRegister stats={stats} />
       <div className={classes.ads}>
         <SmallAd position="home5" />
         <SmallAd position="home6" />

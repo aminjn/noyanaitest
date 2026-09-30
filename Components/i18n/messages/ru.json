@@ -592,7 +592,7 @@
  "insurances": "Страховки",
  "insurancesLegend": "Сравнивайте страховщиков-партнёров и выбирайте подходящее покрытие.",
  "insurerees": "Застрахованные",
- "insureresCount": "Количество застрахованных",
+ "insureresCount": "Страховщиков",
  "introduction": "О себе",
  "invalidSessionDurationError": "Недопустимая продолжительность приёма.",
  "inventory": "Склад",
@@ -1514,7 +1514,7 @@
  "tomorrow": "Завтра",
  "topUpShortfall": "Пополнить недостающую сумму",
  "total": "Итого",
- "totalInsuranceCenteresTitle": "Все страховые центры",
+ "totalInsuranceCenteresTitle": "Центров-партнёров",
  "totalInsureesCountTitle": "Всего застрахованных",
  "totalLinearPrice": "Итого по позиции",
  "totalPrice": "Общая стоимость",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "Врачи-партнёры",
  "clinicsAcceptingInsurance": "Клиники-партнёры",
  "hospitalsAcceptingInsurance": "Больницы-партнёры",
- "paraClinicsAcceptingInsurance": "Лаборатории и диагностика-партнёры"
+ "paraClinicsAcceptingInsurance": "Лаборатории и диагностика-партнёры",
+ "homeHeroAiFreeValue": "Бесплатно"
 }

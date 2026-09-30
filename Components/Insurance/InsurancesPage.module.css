@@ -42,6 +42,7 @@
 
 .counts {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
   flex: 1;
@@ -50,7 +51,8 @@
 .count {
   display: flex;
   flex-direction: column;
-  width: 9rem;
+  flex: 0 1 9rem;
+  min-width: 6rem;
   align-items: center;
   justify-content: center;
   padding: 0.5rem;

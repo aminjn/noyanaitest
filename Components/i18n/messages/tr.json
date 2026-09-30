@@ -592,7 +592,7 @@
  "insurances": "Sigortalar",
  "insurancesLegend": "Anlaşmalı sigortacıları karşılaştırın ve size uygun kapsamı bulun.",
  "insurerees": "Sigortalılar",
- "insureresCount": "Sigortalı sayısı",
+ "insureresCount": "Sigorta şirketi",
  "introduction": "Tanıtım",
  "invalidSessionDurationError": "Geçersiz seans süresi.",
  "inventory": "Stok",
@@ -1514,7 +1514,7 @@
  "tomorrow": "Yarın",
  "topUpShortfall": "Eksik tutarı yükle",
  "total": "Toplam",
- "totalInsuranceCenteresTitle": "Tüm sigorta merkezleri",
+ "totalInsuranceCenteresTitle": "Anlaşmalı merkez",
  "totalInsureesCountTitle": "Toplam sigortalı",
  "totalLinearPrice": "Kalem toplamı",
  "totalPrice": "Toplam fiyat",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "Anlaşmalı doktorlar",
  "clinicsAcceptingInsurance": "Anlaşmalı klinikler",
  "hospitalsAcceptingInsurance": "Anlaşmalı hastaneler",
- "paraClinicsAcceptingInsurance": "Anlaşmalı laboratuvar ve görüntüleme"
+ "paraClinicsAcceptingInsurance": "Anlaşmalı laboratuvar ve görüntüleme",
+ "homeHeroAiFreeValue": "Ücretsiz"
 }
