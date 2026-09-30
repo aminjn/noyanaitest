@@ -592,7 +592,7 @@
  "insurances": "বীমাসমূহ",
  "insurancesLegend": "অংশীদার বীমাকারীদের তুলনা করুন এবং আপনার জন্য সঠিক কভারেজ খুঁজুন।",
  "insurerees": "বীমাকৃত সদস্য",
- "insureresCount": "বীমাকৃতের সংখ্যা",
+ "insureresCount": "বিমা প্রতিষ্ঠান",
  "introduction": "পরিচিতি",
  "invalidSessionDurationError": "সেশনের সময়কাল সঠিক নয়।",
  "inventory": "মজুদ",
@@ -1514,7 +1514,7 @@
  "tomorrow": "আগামীকাল",
  "topUpShortfall": "ঘাটতি রিচার্জ করুন",
  "total": "মোট",
- "totalInsuranceCenteresTitle": "সব বীমা কেন্দ্র",
+ "totalInsuranceCenteresTitle": "চুক্তিবদ্ধ কেন্দ্র",
  "totalInsureesCountTitle": "মোট বীমাকৃত",
  "totalLinearPrice": "লাইনের মোট মূল্য",
  "totalPrice": "মোট মূল্য",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "চুক্তিবদ্ধ ডাক্তার",
  "clinicsAcceptingInsurance": "চুক্তিবদ্ধ ক্লিনিক",
  "hospitalsAcceptingInsurance": "চুক্তিবদ্ধ হাসপাতাল",
- "paraClinicsAcceptingInsurance": "চুক্তিবদ্ধ ল্যাব ও ইমেজিং"
+ "paraClinicsAcceptingInsurance": "চুক্তিবদ্ধ ল্যাব ও ইমেজিং",
+ "homeHeroAiFreeValue": "বিনামূল্যে"
 }

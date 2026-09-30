@@ -592,7 +592,7 @@
  "insurances": "بیمه‌ها",
  "insurancesLegend": "بیمه‌های طرف قرارداد را مقایسه کنید و پوشش مناسب خود را بیابید.",
  "insurerees": "بیمه‌شدگان",
- "insureresCount": "تعداد بیمه‌شدگان",
+ "insureresCount": "بیمه‌گر",
  "introduction": "معرفی",
  "invalidSessionDurationError": "مدت زمان نوبت نامعتبر است.",
  "inventory": "موجودی",
@@ -1514,7 +1514,7 @@
  "tomorrow": "فردا",
  "topUpShortfall": "شارژ مبلغ کسری",
  "total": "مجموع",
- "totalInsuranceCenteresTitle": "همه مراکز بیمه",
+ "totalInsuranceCenteresTitle": "مرکز طرف قرارداد",
  "totalInsureesCountTitle": "تعداد کل بیمه‌شدگان",
  "totalLinearPrice": "جمع مبلغ اقلام",
  "totalPrice": "مبلغ کل",
@@ -2180,5 +2180,6 @@
  "doctorsAcceptingInsurance": "پزشکان طرف قرارداد",
  "clinicsAcceptingInsurance": "کلینیک‌های طرف قرارداد",
  "hospitalsAcceptingInsurance": "بیمارستان‌های طرف قرارداد",
- "paraClinicsAcceptingInsurance": "آزمایشگاه‌ها و تصویربرداری‌های طرف قرارداد"
+ "paraClinicsAcceptingInsurance": "آزمایشگاه‌ها و تصویربرداری‌های طرف قرارداد",
+ "homeHeroAiFreeValue": "رایگان"
 }

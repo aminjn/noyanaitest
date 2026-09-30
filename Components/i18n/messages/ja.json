@@ -592,7 +592,7 @@
  "insurances": "保険",
  "insurancesLegend": "提携保険会社を比較して、最適な補償を見つけましょう。",
  "insurerees": "被保険者",
- "insureresCount": "被保険者数",
+ "insureresCount": "保険会社",
  "introduction": "紹介",
  "invalidSessionDurationError": "枠の時間が無効です。",
  "inventory": "在庫",
@@ -1514,7 +1514,7 @@
  "tomorrow": "明日",
  "topUpShortfall": "不足分をチャージ",
  "total": "合計",
- "totalInsuranceCenteresTitle": "すべての保険機関",
+ "totalInsuranceCenteresTitle": "提携施設",
  "totalInsureesCountTitle": "被保険者の総数",
  "totalLinearPrice": "行の合計金額",
  "totalPrice": "合計金額",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "提携医師",
  "clinicsAcceptingInsurance": "提携クリニック",
  "hospitalsAcceptingInsurance": "提携病院",
- "paraClinicsAcceptingInsurance": "提携検査・画像診断施設"
+ "paraClinicsAcceptingInsurance": "提携検査・画像診断施設",
+ "homeHeroAiFreeValue": "無料"
 }

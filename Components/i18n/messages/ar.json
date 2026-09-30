@@ -592,7 +592,7 @@
  "insurances": "التأمينات",
  "insurancesLegend": "قارن بين شركات التأمين الشريكة واعثر على التغطية المناسبة لك.",
  "insurerees": "المؤمَّن عليهم",
- "insureresCount": "عدد المؤمَّن عليهم",
+ "insureresCount": "شركات التأمين",
  "introduction": "نبذة تعريفية",
  "invalidSessionDurationError": "مدة الجلسة غير صالحة.",
  "inventory": "المخزون",
@@ -1514,7 +1514,7 @@
  "tomorrow": "غدًا",
  "topUpShortfall": "شحن المبلغ الناقص",
  "total": "الإجمالي",
- "totalInsuranceCenteresTitle": "جميع مراكز التأمين",
+ "totalInsuranceCenteresTitle": "مراكز متعاقدة",
  "totalInsureesCountTitle": "إجمالي المؤمَّن عليهم",
  "totalLinearPrice": "إجمالي سعر البند",
  "totalPrice": "السعر الإجمالي",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "الأطباء المتعاقدون",
  "clinicsAcceptingInsurance": "العيادات المتعاقدة",
  "hospitalsAcceptingInsurance": "المستشفيات المتعاقدة",
- "paraClinicsAcceptingInsurance": "المختبرات ومراكز الأشعة المتعاقدة"
+ "paraClinicsAcceptingInsurance": "المختبرات ومراكز الأشعة المتعاقدة",
+ "homeHeroAiFreeValue": "مجاني"
 }

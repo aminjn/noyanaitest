@@ -592,7 +592,7 @@
  "insurances": "انشورنسز",
  "insurancesLegend": "شراکت دار انشورنس کمپنیوں کا موازنہ کریں اور اپنے لیے مناسب کوریج تلاش کریں۔",
  "insurerees": "بیمہ شدہ اراکین",
- "insureresCount": "بیمہ شدگان کی تعداد",
+ "insureresCount": "بیمہ کمپنیاں",
  "introduction": "تعارف",
  "invalidSessionDurationError": "سیشن کا دورانیہ غلط ہے۔",
  "inventory": "انوینٹری",
@@ -1514,7 +1514,7 @@
  "tomorrow": "کل",
  "topUpShortfall": "کمی پوری کریں",
  "total": "کل",
- "totalInsuranceCenteresTitle": "تمام انشورنس مراکز",
+ "totalInsuranceCenteresTitle": "معاہدہ شدہ مراکز",
  "totalInsureesCountTitle": "کل بیمہ شدگان",
  "totalLinearPrice": "لائن کی کل قیمت",
  "totalPrice": "کل قیمت",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "معاہدہ شدہ ڈاکٹر",
  "clinicsAcceptingInsurance": "معاہدہ شدہ کلینک",
  "hospitalsAcceptingInsurance": "معاہدہ شدہ ہسپتال",
- "paraClinicsAcceptingInsurance": "معاہدہ شدہ لیبز اور امیجنگ"
+ "paraClinicsAcceptingInsurance": "معاہدہ شدہ لیبز اور امیجنگ",
+ "homeHeroAiFreeValue": "مفت"
 }

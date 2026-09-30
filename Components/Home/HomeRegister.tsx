@@ -13,6 +13,7 @@ import {
 } from "../UI/Typography";
 import { ContentKey } from "../Enums/contentKeys";
 import Button from "../UI/Button";
+import { SiteStats, useStatFormat } from "../helpers/siteStats";
 
 const NS: ContentNamespace[] = ["common", "home"];
 
@@ -23,18 +24,22 @@ const NS: ContentNamespace[] = ["common", "home"];
 //   "statPatientCount",
 // ];
 
-const stats: { title: ContentKey; value: ContentKey }[] = [
-  { title: "doctors", value: "doctorCountValue" },
-  { title: "pharmacies", value: "pharmacyCountValue" },
-  { title: "labs", value: "labsCountValue" },
-  { title: "patients", value: "patientsCountValue" },
+// real counts from the site (getHome's stats); a zero is left out rather
+// than shown as a boast
+const statTiles: { title: ContentKey; key: keyof SiteStats }[] = [
+  { title: "doctors", key: "doctors" },
+  { title: "pharmacies", key: "pharmacies" },
+  { title: "labs", key: "labs" },
+  { title: "patients", key: "patients" },
 ];
 
 // Redesigned "join Noyan" CTA (Figma, Aug 2026): a gradient stats banner
 // instead of the previous split content/avatar-stack card. Replaces the
 // former "cunts" avatar row and register.png illustration entirely.
-const HomeRegister = () => {
+const HomeRegister = ({ stats }: { stats?: SiteStats }) => {
   const getContent = useScopedLocale(NS);
+  const format = useStatFormat();
+  const shown = statTiles.filter((el) => Number(stats?.[el.key]) > 0);
 
   return (
     <div className={classes.main}>
@@ -67,18 +72,20 @@ const HomeRegister = () => {
           </Button>
         </div>
       </div>
-      <div className={classes.stats}>
-        {stats.map(({ title, value }) => (
-          <div key={title} className={`${classes.stat} ${tsmMedium}`}>
-            <span className={`${classes.statValue} ${txlBold}`}>
-              {getContent(value)}
-            </span>
-            <span className={`${classes.statTitle} ${tsmRegular}`}>
-              {getContent(title)}
-            </span>
-          </div>
-        ))}
-      </div>
+      {!!shown.length && (
+        <div className={classes.stats}>
+          {shown.map(({ title, key }) => (
+            <div key={title} className={`${classes.stat} ${tsmMedium}`}>
+              <span className={`${classes.statValue} ${txlBold}`}>
+                {format.count(stats?.[key] as number)}
+              </span>
+              <span className={`${classes.statTitle} ${tsmRegular}`}>
+                {getContent(title)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

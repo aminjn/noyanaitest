@@ -592,7 +592,7 @@
  "insurances": "Convênios",
  "insurancesLegend": "Compare as seguradoras parceiras e encontre a cobertura ideal para você.",
  "insurerees": "Segurados",
- "insureresCount": "Número de segurados",
+ "insureresCount": "Seguradoras",
  "introduction": "Apresentação",
  "invalidSessionDurationError": "Duração da sessão inválida.",
  "inventory": "Estoque",
@@ -1514,7 +1514,7 @@
  "tomorrow": "Amanhã",
  "topUpShortfall": "Recarregar valor faltante",
  "total": "Total",
- "totalInsuranceCenteresTitle": "Todos os centros conveniados",
+ "totalInsuranceCenteresTitle": "Centros da rede",
  "totalInsureesCountTitle": "Total de segurados",
  "totalLinearPrice": "Total da linha",
  "totalPrice": "Preço total",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "Médicos da rede",
  "clinicsAcceptingInsurance": "Clínicas da rede",
  "hospitalsAcceptingInsurance": "Hospitais da rede",
- "paraClinicsAcceptingInsurance": "Laboratórios e imagem da rede"
+ "paraClinicsAcceptingInsurance": "Laboratórios e imagem da rede",
+ "homeHeroAiFreeValue": "Grátis"
 }

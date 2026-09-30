@@ -592,7 +592,7 @@
  "insurances": "बीमा",
  "insurancesLegend": "साझेदार बीमा कंपनियों की तुलना करें और अपने लिए सही कवरेज खोजें।",
  "insurerees": "बीमित सदस्य",
- "insureresCount": "बीमित लोगों की संख्या",
+ "insureresCount": "बीमा कंपनियाँ",
  "introduction": "परिचय",
  "invalidSessionDurationError": "अमान्य स्लॉट अवधि।",
  "inventory": "इन्वेंटरी",
@@ -1514,7 +1514,7 @@
  "tomorrow": "कल",
  "topUpShortfall": "कमी की राशि टॉप-अप करें",
  "total": "कुल",
- "totalInsuranceCenteresTitle": "सभी बीमा केंद्र",
+ "totalInsuranceCenteresTitle": "नेटवर्क केंद्र",
  "totalInsureesCountTitle": "कुल बीमित लोग",
  "totalLinearPrice": "कुल लाइन मूल्य",
  "totalPrice": "कुल मूल्य",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "नेटवर्क डॉक्टर",
  "clinicsAcceptingInsurance": "नेटवर्क क्लिनिक",
  "hospitalsAcceptingInsurance": "नेटवर्क अस्पताल",
- "paraClinicsAcceptingInsurance": "नेटवर्क लैब और इमेजिंग"
+ "paraClinicsAcceptingInsurance": "नेटवर्क लैब और इमेजिंग",
+ "homeHeroAiFreeValue": "मुफ़्त"
 }

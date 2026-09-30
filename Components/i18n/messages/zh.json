@@ -592,7 +592,7 @@
  "insurances": "保险",
  "insurancesLegend": "比较合作保险公司，找到适合您的保障。",
  "insurerees": "参保成员",
- "insureresCount": "参保人数",
+ "insureresCount": "保险公司",
  "introduction": "简介",
  "invalidSessionDurationError": "时段时长无效。",
  "inventory": "库存",
@@ -1514,7 +1514,7 @@
  "tomorrow": "明天",
  "topUpShortfall": "充值差额",
  "total": "合计",
- "totalInsuranceCenteresTitle": "全部保险机构",
+ "totalInsuranceCenteresTitle": "签约机构",
  "totalInsureesCountTitle": "参保总人数",
  "totalLinearPrice": "行合计",
  "totalPrice": "总价",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "签约医生",
  "clinicsAcceptingInsurance": "签约诊所",
  "hospitalsAcceptingInsurance": "签约医院",
- "paraClinicsAcceptingInsurance": "签约化验与影像机构"
+ "paraClinicsAcceptingInsurance": "签约化验与影像机构",
+ "homeHeroAiFreeValue": "免费"
 }

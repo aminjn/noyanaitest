@@ -16,15 +16,23 @@ import AboutTeam from "./AboutTeam";
 import AboutWhys from "./AboutWhys";
 import BreadCrump from "../UI/BreadCrump";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import { SiteStats } from "../helpers/siteStats";
 
 export type AboutPageProps = {
   whys: IAboutWhy[];
   partners: IAboutPartner[];
   team: IAboutTeam[];
   staticImages: IStaticImages;
+  stats?: SiteStats;
 };
 
-const AboutPage = ({ partners, team, whys, staticImages }: AboutPageProps) => {
+const AboutPage = ({
+  partners,
+  team,
+  whys,
+  staticImages,
+  stats,
+}: AboutPageProps) => {
   const getContent = useScopedLocale();
   return (
     <div className={classes.main}>
@@ -39,7 +47,7 @@ const AboutPage = ({ partners, team, whys, staticImages }: AboutPageProps) => {
       <AboutStories />
       <AboutMissions />
       <AboutWhys items={whys.filter((el) => el.elem === "Why")} />
-      <AboutStats />
+      <AboutStats stats={stats} />
       <AboutPrinciples items={whys.filter((el) => el.elem === "Principle")} />
       <AboutPrivacy aboutSecurity={staticImages?.aboutSecurity} />
       <AboutTeam team={team} />

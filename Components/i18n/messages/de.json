@@ -592,7 +592,7 @@
  "insurances": "Versicherungen",
  "insurancesLegend": "Vergleichen Sie Partnerversicherer und finden Sie den passenden Schutz für sich.",
  "insurerees": "Versicherte",
- "insureresCount": "Anzahl der Versicherten",
+ "insureresCount": "Versicherer",
  "introduction": "Vorstellung",
  "invalidSessionDurationError": "Ungültige Termindauer.",
  "inventory": "Bestand",
@@ -1514,7 +1514,7 @@
  "tomorrow": "Morgen",
  "topUpShortfall": "Fehlbetrag aufladen",
  "total": "Gesamt",
- "totalInsuranceCenteresTitle": "Alle Versicherungszentren",
+ "totalInsuranceCenteresTitle": "Vertragseinrichtungen",
  "totalInsureesCountTitle": "Versicherte gesamt",
  "totalLinearPrice": "Gesamtpreis der Position",
  "totalPrice": "Gesamtpreis",
@@ -2158,5 +2158,6 @@
  "doctorsAcceptingInsurance": "Vertragsärzte",
  "clinicsAcceptingInsurance": "Vertragskliniken",
  "hospitalsAcceptingInsurance": "Vertragskrankenhäuser",
- "paraClinicsAcceptingInsurance": "Vertragslabore und Bildgebung"
+ "paraClinicsAcceptingInsurance": "Vertragslabore und Bildgebung",
+ "homeHeroAiFreeValue": "Kostenlos"
 }
