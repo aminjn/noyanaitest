@@ -2127,5 +2127,6 @@
  "seePharmacy": "查看药房",
  "featuredSpecialities": "精选专科",
  "unclaimedProfileTitle": "暂不支持在线预约",
- "unclaimedProfileLegend": "该医生尚未在 NoyanAI 注册，暂不接受在线预约。如果这是您的页面，请提交入驻申请以启用。"
+ "unclaimedProfileLegend": "该医生尚未在 NoyanAI 注册，暂不接受在线预约。如果这是您的页面，请提交入驻申请以启用。",
+ "dpfCommission": "总额 ${1} - NoyanAI 服务费 ${2}%（${3}）"
 }

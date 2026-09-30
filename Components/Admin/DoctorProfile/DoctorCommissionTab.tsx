@@ -22,6 +22,7 @@ import classes from "./DoctorCommissionTab.module.css";
 export interface IDoctorFinanceSettings extends MongoDoc {
   doctor: string;
   commissionPercent: number;
+  inPersonCommissionPercent?: number;
 }
 
 const DoctorCommissionTab = ({ node }: { node: IDoctorProfile }) => {
@@ -44,8 +45,12 @@ const DoctorCommissionTab = ({ node }: { node: IDoctorProfile }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="درصد کمیسیون پیش‌فرض سیستم (در صورت تنظیم نشدن)"
+                title="پیش‌فرض سیستم - ویزیت آنلاین و خدمات"
                 value={`${globalSettings.defaultDoctorCommissionPercent}%`}
+              />
+              <DataPair
+                title="پیش‌فرض سیستم - ویزیت حضوری"
+                value={`${globalSettings.defaultDoctorInPersonCommissionPercent ?? 0}%`}
               />
             </List>
           )}
@@ -61,9 +66,13 @@ const DoctorCommissionTab = ({ node }: { node: IDoctorProfile }) => {
             }}
             renderer={{
               commissionPercent: {
-                title: "درصد کمیسیون این پزشک",
+                title: "درصد کمیسیون این پزشک - ویزیت آنلاین و خدمات",
                 type: "number",
                 required: true,
+              },
+              inPersonCommissionPercent: {
+                title: "درصد کمیسیون این پزشک - ویزیت حضوری (خالی = پیش‌فرض)",
+                type: "number",
               },
             }}
           />

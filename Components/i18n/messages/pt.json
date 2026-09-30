@@ -2127,5 +2127,6 @@
  "seePharmacy": "Ver farmácia",
  "featuredSpecialities": "Especialidades em destaque",
  "unclaimedProfileTitle": "O agendamento online não está disponível",
- "unclaimedProfileLegend": "Este médico ainda não tem conta no NoyanAI e não aceita agendamentos online. Se esta página é sua, ative-a solicitando a adesão."
+ "unclaimedProfileLegend": "Este médico ainda não tem conta no NoyanAI e não aceita agendamentos online. Se esta página é sua, ative-a solicitando a adesão.",
+ "dpfCommission": "Total ${1} - taxa NoyanAI ${2}% (${3})"
 }

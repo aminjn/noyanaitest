@@ -21,6 +21,7 @@ export interface IGlobalFinanceSettings extends MongoDoc {
   singleton: "SINGLETON";
   defaultPharmacyCommissionPercent: number;
   defaultDoctorCommissionPercent: number;
+  defaultDoctorInPersonCommissionPercent: number;
   defaultParaClinicCommissionPercent: number;
 }
 
@@ -34,6 +35,11 @@ const AdminManageGlobalFinanceSettingsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle title="تنظیمات مالی">
+          <p style={{ marginBottom: "1rem", lineHeight: 1.9 }}>
+            کمیسیون هنگام تسویه از سهم ارائه‌دهنده کم می‌شود و به قیمتی که
+            بیمار یا خریدار می‌پردازد اضافه نمی‌شود. برای هر پزشک، داروخانه یا
+            پاراکلینیک می‌توانید در صفحه‌ی خودش نرخ جداگانه بگذارید.
+          </p>
           <CreateForm<IGlobalFinanceSettings>
             defaultValue={data}
             hookProps={{
@@ -47,7 +53,11 @@ const AdminManageGlobalFinanceSettingsPage = () => {
                 type: "number",
               },
               defaultDoctorCommissionPercent: {
-                title: "درصد کمیسیون پیش‌فرض پزشکان",
+                title: "درصد کمیسیون پزشکان - ویزیت آنلاین و خدمات فروشگاه",
+                type: "number",
+              },
+              defaultDoctorInPersonCommissionPercent: {
+                title: "درصد کمیسیون پزشکان - ویزیت حضوری (معمولاً ۰؛ هزینه با اشتراک)",
                 type: "number",
               },
               defaultParaClinicCommissionPercent: {

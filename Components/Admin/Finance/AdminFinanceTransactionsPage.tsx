@@ -18,21 +18,32 @@ interface IAdminTransactionRow {
   createdAt?: string;
   kind: string;
   ref: string | null;
+  grossAmount?: number;
+  commission?: number;
+  commissionPercent?: number;
 }
 
 // The wallet ledger of every user: positive rows are credits (gateway
 // top-ups, seller payouts, refunds), negative ones debits (orders, bookings,
 // license purchases).
 const AdminFinanceTransactionsPage = () => {
-  const { data, error } = useSWR<IAdminTransactionRow[]>(
-    `${API}/admin/finance/transactions`,
-    (url: string) =>
-      fetcher({ url }).then((res) => (Array.isArray(res.data) ? res.data : [])),
+  const { data: body, error } = useSWR<{
+    rows: IAdminTransactionRow[];
+    commissionTotal: number;
+  }>(`${API}/admin/finance/transactions`, (url: string) =>
+    fetcher({ url }).then((res) => ({
+      rows: Array.isArray(res.data) ? res.data : [],
+      commissionTotal: Number(res.commissionTotal) || 0,
+    })),
   );
+  const data = body?.rows;
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle title="تراکنش‌های کیف پول">
+          <p style={{ marginBottom: "1rem" }}>
+            {`درآمد پلتفرم از کمیسیون (کل تسویه‌ها): ${currencize(body?.commissionTotal || 0)} تومان`}
+          </p>
           <Table
             name="AdminFinanceTransactions"
             data={data}
@@ -55,6 +66,15 @@ const AdminFinanceTransactionsPage = () => {
                 value: (node) => node.amount,
                 component: (node) =>
                   `${node.amount > 0 ? "+" : node.amount < 0 ? "−" : ""}${currencize(Math.abs(node.amount || 0))}`,
+                filter: "Number",
+              },
+              commission: {
+                name: "کمیسیون نویان (تومان)",
+                value: (node) => node.commission || 0,
+                component: (node) =>
+                  node.commission
+                    ? `${currencize(node.commission)} (${node.commissionPercent ?? 0}٪ از ${currencize(node.grossAmount || 0)})`
+                    : "—",
                 filter: "Number",
               },
               kind: {

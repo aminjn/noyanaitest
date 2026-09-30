@@ -22,6 +22,10 @@ import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 type FinanceTransaction = {
   _id: string;
   amount: number;
+  // a payout shows what the service was worth and the platform fee taken
+  grossAmount?: number;
+  commission?: number;
+  commissionPercent?: number;
   createdAt: string;
   reservation?: {
     date: string;
@@ -242,6 +246,15 @@ const PanelFinancePage = ({
                           <td>
                             <span className={classes.desc}>{d.title}</span>
                             {d.sub && <span className={classes.descSub}>{d.sub}</span>}
+                            {!!t.commission && (
+                              <span className={classes.descSub}>
+                                {getContent("dpfCommission", [
+                                  num.format(t.grossAmount || 0),
+                                  String(t.commissionPercent ?? 0),
+                                  num.format(t.commission),
+                                ])}
+                              </span>
+                            )}
                           </td>
                           <td className={`${classes.amountCol} ${t.amount >= 0 ? classes.credit : classes.debit}`}>
                             {`${t.amount >= 0 ? "+" : "−"}${num.format(Math.abs(t.amount))}`}
