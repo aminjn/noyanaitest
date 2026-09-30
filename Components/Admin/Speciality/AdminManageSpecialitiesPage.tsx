@@ -22,17 +22,15 @@ import InlineLink from "../UI/InlineLink";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { Population } from "../Clinic/AdminManageClinicsPage";
 import {
-  ISpecialityCategory,
-  SpecialityCategoryPopulation,
-} from "../SpecialityCategory/AdminManageSpecialityCategoriesPage";
-import {
   DoctorProfilePopulation,
   IDoctorProfile,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
 import OrderEditor from "../UI/OrderEditor";
 
 export type SpecialityPopulation = Population<{
-  Category: SpecialityCategoryPopulation;
+  // kept only so existing type arguments still compile; specialities have
+  // no category any more (2026-09: no "speciality group" layer)
+  Category: Record<never, never>;
   Doctors: DoctorProfilePopulation;
 }>;
 export interface ISpeciality<
@@ -47,9 +45,6 @@ export interface ISpeciality<
   active: boolean;
   doctorsCountWithMainSpeciality?: number;
   doctorsCountWithSideSpeciality?: number;
-  category: T["Category"] extends SpecialityCategoryPopulation
-    ? ISpecialityCategory<T["Category"]>
-    : string;
   doctors: T["Doctors"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Doctors"]>[]
     : never;

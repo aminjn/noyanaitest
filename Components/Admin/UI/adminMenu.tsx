@@ -118,7 +118,6 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "تخصص‌ها", href: "speciality", access: "Sepciality" },
       // groups only arrange specialities in the menu / list chips; a doctor
       // is always given specialities, never a group
-      { title: "گروه تخصص‌ها (برای منو)", href: "specialityCategory", access: "Sepciality" },
       { title: "خدمات", href: "service" },
       { title: "پکیج‌های خدمات", href: "servicePackage" },
       { title: "تست‌های آزمایشگاهی", href: "test" },
