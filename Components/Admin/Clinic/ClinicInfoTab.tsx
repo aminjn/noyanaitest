@@ -2,10 +2,7 @@ import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import useForm from "@/Components/Hooks/useForm";
 import CreateForm from "../UI/CreateForm";
 import { IClinic } from "./AdminManageClinicsPage";
-import classes from "./ClinicInfoTab.module.css";
 import { API } from "@/Components/config";
-import { provinceOptions } from "@/Components/Enums/Provinces";
-import { cityOptions } from "@/Components/Enums/Cities";
 import { IClinicCategory } from "../ClinicCategory/AdminManageClinicCategoriesPage";
 import {
   ICity,
@@ -33,15 +30,17 @@ const ClinicInfoTab = ({
     <CreateForm
       defaultValue={clinic}
       hookProvided={form}
+      layout="sections"
       renderer={{
         name: { type: "text", title: ta("نام") },
         image: { type: "image", title: ta("تصویر") },
         slug: { title: ta("اسلاگ"), type: "text" },
-        description: { title: ta("توصیحات"), type: "text" },
-        address: { title: ta("آدرس"), type: "text" },
-        phone: { title: ta("شماره تلفن"), type: "text" },
+        description: { title: ta("توضیحات"), type: "area" },
+        address: { title: ta("آدرس"), type: "text", section: ta("آدرس") },
+        phone: { title: ta("شماره تلفن"), type: "text", section: ta("تماس") },
         province: {
           title: ta("استان"),
+          section: ta("آدرس"),
           type: "nodes",
           path: `${API}/auto/province`,
           getOptionLabel: (node) =>
@@ -52,6 +51,7 @@ const ClinicInfoTab = ({
         },
         city: {
           title: ta("شهر"),
+          section: ta("آدرس"),
           type: "nodes",
           getOptionLabel: (node) => (node as ICity).name || (node as ICity)._id,
           getOptionValue: (node) => (node as ICity)._id,
@@ -61,6 +61,7 @@ const ClinicInfoTab = ({
         },
         district: {
           title: ta("محله"),
+          section: ta("آدرس"),
           getOptionLabel: (node) =>
             (node as IDistrict).name || (node as IDistrict)._id,
           type: "nodes",
@@ -83,7 +84,7 @@ const ClinicInfoTab = ({
           path: `${API}/auto/clinicCategory`,
           creatable: { path: `${API}/auto/clinicCategory` },
         },
-        isRoundTheClock: { type: "bool", title: "24X7" },
+        isRoundTheClock: { type: "bool", title: ta("شبانه‌روزی") },
         tags: {
           type: "nodes",
           multi: true,
@@ -99,6 +100,7 @@ const ClinicInfoTab = ({
           type: "nodes",
           multi: true,
           title: ta("بیمه ها"),
+          section: ta("بیمه‌ها"),
           path: `${API}/auto/insurance`,
           getOptionLabel: (node) =>
             (node as IInsurance).name || (node as IInsurance)._id,
@@ -106,14 +108,18 @@ const ClinicInfoTab = ({
           getDefaultValue: (inp) => inp.insurances,
         },
         clinicCode: { type: "text", title: ta("کد کلینیک") },
-        personelCount: { type: "number", title: ta("تغداد پرسنل") },
+        personelCount: { type: "number", title: ta("تعداد پرسنل") },
         establishment: { type: "text", title: ta("تاسیس") },
-        website: { type: "text", title: ta("سایت") },
-        mail: { type: "text", title: ta("ایمیل") },
-        businessTimes: { type: "text", title: ta("ساعات کاری") },
+        website: { type: "text", title: ta("سایت"), section: ta("تماس") },
+        mail: { type: "text", title: ta("ایمیل"), section: ta("تماس") },
+        businessTimes: {
+          type: "text",
+          title: ta("ساعات کاری"),
+          section: ta("تماس"),
+        },
         services: { title: ta("خدمات"), type: "strings" },
         certificates: { title: ta("اعتبار نامه ها"), type: "strings" },
-        summary: { type: "text", title: ta("حلاصه") },
+        summary: { type: "area", title: ta("خلاصه") },
       }}
     />
   );

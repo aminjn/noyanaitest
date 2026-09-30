@@ -4,7 +4,7 @@ import AdminSectionHub from "../UI/AdminSectionHub";
 import useHubTabAccess from "../UI/useHubTabAccess";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminManageAccessLevelsPage from "@/Components/Admin/AccessLevel/AdminManageAccessLevelsPage";
-import AdminManageUserAccessLevelsPage from "@/Components/Admin/AccessLevel/AdminManageUserAccessLevelsPage";
+import AdminTeamMembersPage from "@/Components/Admin/AccessLevel/AdminTeamMembersPage";
 
 // تیم و دسترسی‌ها: one admin page, its parts as tabs (2026-09 admin audit).
 const TeamHub = () => {
@@ -18,7 +18,7 @@ const TeamHub = () => {
           id: "members",
           title: ta("کارکنان"),
           exclude: !canOpen("admin"),
-          content: <AdminManageUserAccessLevelsPage />,
+          content: <AdminTeamMembersPage />,
         },
         {
           id: "roles",

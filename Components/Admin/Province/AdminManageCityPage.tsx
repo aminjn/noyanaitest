@@ -27,6 +27,8 @@ import PopupCard from "@/Components/UI/PopupCard";
 import PolygonPicker from "@/Components/UI/PolygonPicker";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import DeleteShitPopup from "../UI/DeleteShitPopup";
+import useProgress from "@/Components/Hooks/useProgress";
 
 const MutateDistrictPopup = ({
   mutate,
@@ -249,11 +251,42 @@ const AdminManageCityPage = () => {
     `${API}/auto/city/${nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+  const { setPopup } = usePopup();
+  const push = useProgress();
+
+  // after a delete, back to the province the city belongs to
+  const provinceId =
+    typeof data?.province === "string"
+      ? data.province
+      : (data?.province as { _id?: string } | undefined)?._id;
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteCity",
+                  <DeleteShitPopup
+                    modelName="city"
+                    nodeId={data._id}
+                    mutate={() =>
+                      push(
+                        adminPath(
+                          provinceId ? `/province/${provinceId}` : "/province",
+                        ),
+                      )
+                    }
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageCity"
             items={[
@@ -270,7 +303,7 @@ const AdminManageCityPage = () => {
                 icon: <DashboardIcon />,
               },
               {
-                title: ta("جئومتری"),
+                title: ta("محدوده روی نقشه"),
                 id: "Geometry",
                 icon: <DashboardIcon />,
                 content: <CityGeometry node={data} mutate={mutate} />,

@@ -199,7 +199,7 @@ const CreateHospitalPopup = ({ mutate }: { mutate: () => unknown }) => {
   );
 };
 
-const DeleteHospitalPopup = ({
+export const DeleteHospitalPopup = ({
   mutate,
   node,
 }: {
@@ -216,8 +216,8 @@ const DeleteHospitalPopup = ({
         isLoading={isLoading}
       />
       <Act
-        path={`${API}/auto/hospital/${node._id}`}
-        method="POST"
+        path={isLoading ? `${API}/auto/hospital/${node._id}` : null}
+        method="PUT"
         onDone={(status) => {
           setIsLoading(false);
           if (!status) return;

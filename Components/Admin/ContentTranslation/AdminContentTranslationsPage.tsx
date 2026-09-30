@@ -52,7 +52,7 @@ const BulkPanel = ({ machine }: { machine: boolean }) => {
   const [busy, setBusy] = useState(false);
   const { data: job, mutate } = useSWR<BulkJob>(
     `${API}/auto/_translations/bulk`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    (url: string) => fetcher({ url }).then((res) => res.data),
     { refreshInterval: (latest) => (latest?.running ? 3000 : 0) },
   );
 
@@ -142,13 +142,13 @@ const AdminContentTranslationsPage = () => {
 
   const { data: overview, error: overviewError } = useSWR<Overview>(
     `${API}/auto/_translations`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const params = new URLSearchParams({ page: String(page), limit: "30", ...(query && { q: query }) });
   const { data, error, isValidating } = useSWR<RecordsResponse>(
     `${API}/auto/${segment}/_translations?${params}`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    (url: string) => fetcher({ url }).then((res) => res.data),
     { keepPreviousData: true },
   );
 

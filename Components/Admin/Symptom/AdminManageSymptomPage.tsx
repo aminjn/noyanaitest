@@ -15,14 +15,13 @@ import usePopup from "@/Components/Hooks/usePopup";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
-import List from "../UI/List";
-import Button from "@/Components/UI/Button";
 import DeleteSymptomPopup from "./DeleteSymptomPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { ISymptomCategory } from "../SymptomCategory/AdminManageSymptomCategoriesPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 const AdminManageSymptomPage = () => {
   const { nodeId } = useParams();
@@ -39,7 +38,23 @@ const AdminManageSymptomPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteSymptom",
+                  <DeleteSymptomPopup
+                    node={data}
+                    mutate={() => push(adminPath(`/symptom`))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageSymptom"
             items={[
@@ -71,8 +86,7 @@ const AdminManageSymptomPage = () => {
                         type: "nodes",
                         title: ta("دسته بندی"),
                         getOptionLabel: (node) =>
-                          (node as ISymptomCategory).name ||
-                          (node as ISymptomCategory)._id,
+                          (node as ISymptomCategory).name || ta("بدون نام"),
                         getOptionValue: (node) =>
                           (node as ISymptomCategory)._id,
                         getDefaultValue: (inp) => inp.category,
@@ -87,7 +101,7 @@ const AdminManageSymptomPage = () => {
                 ),
               },
               {
-                title: ta("توضیحات"),
+                title: ta("اطلاعات پزشکی"),
                 icon: <InfoIcon />,
                 id: "More",
                 content: (
@@ -99,21 +113,21 @@ const AdminManageSymptomPage = () => {
                       successCb: () => mutate(),
                     }}
                     renderer={{
-                      expectedPrognosis: {
+                      pathophysiology: {
                         type: "area",
-                        title: "Expected Prognosis",
+                        title: ta("پاتوفیزیولوژی"),
                       },
                       naturalProgression: {
                         type: "area",
-                        title: "Natural Progression",
-                      },
-                      pathophysiology: {
-                        title: "Pathophysiology",
-                        type: "area",
+                        title: ta("سیر طبیعی"),
                       },
                       possibleComplication: {
-                        title: "Possible Complications",
                         type: "area",
+                        title: ta("عوارض احتمالی"),
+                      },
+                      expectedPrognosis: {
+                        type: "area",
+                        title: ta("پیش‌آگهی"),
                       },
                     }}
                   />
@@ -132,9 +146,9 @@ const AdminManageSymptomPage = () => {
                         path: `${API}/auto/part`,
                         title: ta("اعضا"),
                         getOptionLabel: (node) =>
-                          (node as IPart).name || (node as IPart)._id,
+                          (node as IPart).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IPart)._id,
-                        getDefaultValue: (val) => val.part.map((el) => el._id),
+                        getDefaultValue: (val) => val.part?.map((el) => el._id),
                         multi: true,
                         clearable: true,
                       },
@@ -144,11 +158,11 @@ const AdminManageSymptomPage = () => {
                         multi: true,
                         path: `${API}/auto/symptom`,
                         getOptionLabel: (node) =>
-                          (node as ISymptom).name || (node as ISymptom)._id,
+                          (node as ISymptom).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as ISymptom)._id,
                         clearable: true,
                         getDefaultValue: (val) =>
-                          val.sameAs.map((el) => el._id),
+                          val.sameAs?.map((el) => el._id),
                       },
                     }}
                     hookProps={{
@@ -160,7 +174,7 @@ const AdminManageSymptomPage = () => {
                 ),
               },
               {
-                title: ta("متادیتا"),
+                title: ta("سئو"),
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
@@ -168,27 +182,9 @@ const AdminManageSymptomPage = () => {
                 ),
               },
               {
-                title: ta("عملیات"),
-                icon: <InfoIcon />,
-                id: "Actions",
-                content: (
-                  <List>
-                    <Button
-                      variant="Error"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteSymptom",
-                          <DeleteSymptomPopup
-                            node={data}
-                            mutate={() => push(adminPath(`/symptom`))}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("حذف")}
-                    </Button>
-                  </List>
-                ),
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="symptom" />,
               },
             ]}
           />

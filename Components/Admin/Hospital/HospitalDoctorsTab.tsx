@@ -34,7 +34,7 @@ const HospitalDoctorsTab = ({ hospital }: { hospital: IHospital }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title={ta("پزشکان ${1}", [hospital.name || hospital._id])}
+          title={ta("پزشکان")}
           actions={[
             {
               title: ta("جدید"),
@@ -57,7 +57,7 @@ const HospitalDoctorsTab = ({ hospital }: { hospital: IHospital }) => {
                 filter: "Text",
                 component: (node) =>
                   node.doctor ? (
-                    <InlineLink href={adminPath(`/doctor/${node.doctor._id}`)}>
+                    <InlineLink href={adminPath(`/doctorprofile/${node.doctor._id}`)}>
                       {getDoctorProfileLabel(node.doctor)}
                     </InlineLink>
                   ) : (

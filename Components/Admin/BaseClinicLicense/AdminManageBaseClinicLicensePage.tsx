@@ -3,6 +3,7 @@
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
 import NodeManager from "../UI/NodeManger";
+import { ta } from "@/Components/Admin/i18n/adminText";
 import {
   baseClinicLicenseFormRenderer,
   IBaseClinicLicense,
@@ -11,8 +12,9 @@ import {
 const AdminManageBaseClinicLicensePage = () => {
   return (
     <NodeManager<IBaseClinicLicense>
-      getTitle={(node) => node.displayName || node._id}
+      getTitle={(node) => node.displayName || ta("بدون نام")}
       modelName="baseClinicLicense"
+      deleteBackTo="/licensePlans?tab=clinic"
       content={({ mutate, node }) => (
         <CreateForm
           defaultValue={node}

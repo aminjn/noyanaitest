@@ -2,6 +2,7 @@
 
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 import NodeManager from "../UI/NodeManger";
 import {
   aboutPartnerFormRenderer,
@@ -11,7 +12,8 @@ import {
 const AdminManageAboutPartnerPage = () => {
   return (
     <NodeManager<IAboutPartner>
-      getTitle={(node) => node.name || node._id}
+      deleteBackTo="/aboutPage?tab=partners"
+      getTitle={(node) => node.name || ta("بدون نام")}
       modelName="aboutPartner"
       content={({ mutate, node }) => (
         <CreateForm

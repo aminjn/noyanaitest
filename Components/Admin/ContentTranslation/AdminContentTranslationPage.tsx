@@ -36,8 +36,16 @@ const hasText = (value: unknown) =>
     ? value.some((v) => typeof v === "string" && v.trim())
     : typeof value === "string" && value.trim() !== "";
 
-const AdminContentTranslationPage = () => {
-  const params = useParams<{ segment: string; nodeId: string }>();
+// `segment` given: shown as the "ترجمه‌ها" tab of that record's own admin
+// page (2026-09 audit - translating used to need a separate page no editor
+// linked to); the record id comes from that page's URL.
+const AdminContentTranslationPage = ({ segment }: { segment?: string } = {}) => {
+  const routeParams = useParams<{ segment: string; nodeId: string }>();
+  const params =
+    segment && routeParams?.nodeId
+      ? { segment, nodeId: routeParams.nodeId }
+      : routeParams;
+  const embedded = !!segment;
   const pushNotification = useNotification();
   const [locale, setLocale] = useState<Locale>("en");
   const [values, setValues] = useState<Record<string, Value>>({});
@@ -50,7 +58,7 @@ const AdminContentTranslationPage = () => {
 
   const url = params ? `${API}/auto/${params.segment}/${params.nodeId}/_translations` : null;
   const { data, error, mutate } = useSWR<RecordData>(url, (u: string) =>
-    fetcher({ url: u }).then((res) => res.data.data),
+    fetcher({ url: u }).then((res) => res.data),
   );
 
   // Fields that have Persian text - the rest have nothing to translate.
@@ -107,12 +115,12 @@ const AdminContentTranslationPage = () => {
     if (!url) return;
     setTranslating(scope);
     try {
-      const res = await fetcher<{ data: { data: { written: number } } }>({
+      const res = await fetcher<{ data: { written: number } }>({
         url: `${url}/auto`,
         method: "POST",
         payload: { locales: scope === "one" ? [locale] : targetLocales, overwrite },
       });
-      const written = res.data.data.written;
+      const written = res.data?.written ?? 0;
       pushNotification(
         written ? ta("${1} فیلد ترجمه شد", [written.toLocaleString(adminIntlTag())]) : ta("فیلد خالی برای ترجمه نبود"),
         "Success",
@@ -133,13 +141,16 @@ const AdminContentTranslationPage = () => {
     <HandleLoading data={!!data} error={error}>
       {data && params && (
         <div className={classes.main}>
-          <Link href={adminPath("/translations")} className={classes.back}>
-            <Ixon width="1rem" style={{ transform: "rotateZ(-90deg)" }}>
-              <ChevronIcon />
-            </Ixon>
-            <span>{ta("ترجمه محتوا")}</span>
-          </Link>
+          {!embedded && (
+            <Link href={adminPath("/translations")} className={classes.back}>
+              <Ixon width="1rem" style={{ transform: "rotateZ(-90deg)" }}>
+                <ChevronIcon />
+              </Ixon>
+              <span>{ta("ترجمه محتوا")}</span>
+            </Link>
+          )}
 
+          {!embedded && (
           <header className={classes.header}>
             <h1 className={classes.title}>
               {(() => {
@@ -150,6 +161,7 @@ const AdminContentTranslationPage = () => {
             </h1>
             <span className={classes.subtitle}>{ta("ترجمه‌های ${1}", [segmentTitle(params.segment)])}</span>
           </header>
+          )}
 
           <section className={classes.card}>
             <div className={classes.langs}>

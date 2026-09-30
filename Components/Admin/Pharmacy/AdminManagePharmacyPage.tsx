@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
@@ -14,11 +15,8 @@ import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
-import classes from "./AdminManagePharmacyPage.module.css";
-import { Fragment, useRef } from "react";
 import useForm from "@/Components/Hooks/useForm";
-import useMap from "@/Components/Hooks/useMap";
-import MapMarker from "@/Components/UI/MapMarker";
+import PointPicker from "../UI/PointPicker";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import {
@@ -31,8 +29,17 @@ import PharmacyCommissionTab from "./PharmacyCommissionTab";
 import PharmacyTaxTab from "./PharmacyTaxTab";
 import PharmacyProfileLicenseTab from "./PharmacyProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import usePopup from "@/Components/Hooks/usePopup";
+import useProgress from "@/Components/Hooks/useProgress";
+import { adminPath } from "@/Components/helpers/adminPath";
+import DeletePharmacyPopup from "./DeletePharmacyPopup";
+import { CentreSection, CentreSections } from "../Clinic/CentreSections";
+import PanelOwnerSection from "../Clinic/PanelOwnerSection";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
+// the shared location picker (Components/Admin/UI/PointPicker), as on the
+// clinic / hospital / insurance pages
 const PharmacyLocationTab = ({
   mutate,
   node,
@@ -40,52 +47,27 @@ const PharmacyLocationTab = ({
   node: IPharmacy;
   mutate: () => unknown;
 }) => {
-  const mapRef = useRef<HTMLDivElement>(null);
-
-  const { input, setInput, isLoading, submit } = useForm<{
-    lat: number;
-    lng: number;
+  const { setInput, isLoading, submit } = useForm<{
+    coords: [number, number];
   }>({
     path: `${API}/auto/pharmacy/${node._id}`,
     method: "POST",
     successCb: () => {
       mutate();
     },
-    mutator: (inp) => {
-      if (inp.lat && inp.lng)
-        return { location: { type: "Point", coordinates: [inp.lng, inp.lat] } };
-      return inp;
-    },
-  });
-
-  const { map, ready } = useMap({
-    containerRef: mapRef,
-    onClick: (e) => setInput((prev) => ({ ...prev, lat: e.lat, lng: e.lng })),
-    center:
-      node.location?.coordinates?.length === 2
-        ? node.location.coordinates
-        : undefined,
+    hasProblem: (inp) =>
+      !inp.coords ? ta("یک موقعیت را انتخاب کنید") : false,
+    mutator: (inp) => ({
+      location: { type: "Point", coordinates: inp.coords },
+    }),
   });
 
   return (
-    <div className={classes.main}>
-      <div className={classes.map} ref={mapRef}>
-        {ready && (
-          <Fragment>
-            {node.location?.coordinates?.length === 2 && (
-              <MapMarker
-                lat={node.location.coordinates[1]}
-                lng={node.location.coordinates[0]}
-                map={map}
-                variant="active"
-              />
-            )}
-            {input.lat && input.lng && (
-              <MapMarker lat={input.lat} lng={input.lng} map={map} />
-            )}
-          </Fragment>
-        )}
-      </div>
+    <div>
+      <PointPicker
+        defaultValue={node.location?.coordinates}
+        onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
+      />
       <FormActions>
         <Button isLoading={isLoading} onClick={submit}>
           {ta("تایید")}
@@ -104,12 +86,33 @@ const AdminManagePharmacyPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
-  console.log(data);
+  const { setPopup } = usePopup();
+  const push = useProgress();
 
+  // overview / details / location / panel owner / money (commission + tax,
+  // both read at checkout) / license / SEO / translations; delete in the
+  // header. The details form now covers every field the public pharmacy
+  // page shows (slug, avatar, banner, summary, address).
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeletePharmacy",
+                  <DeletePharmacyPopup
+                    node={data}
+                    mutate={() => push(adminPath("/pharmacy"))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManagePharmacy"
             items={[
@@ -129,12 +132,13 @@ const AdminManagePharmacyPage = () => {
                   ]
                 : []),
               {
-                title: ta("جزئیات"),
+                title: ta("اطلاعات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
                   <CreateForm
                     defaultValue={data}
+                    layout="sections"
                     hookProps={{
                       path: `${API}/auto/pharmacy/${data._id}`,
                       method: "POST",
@@ -144,10 +148,20 @@ const AdminManagePharmacyPage = () => {
                     }}
                     renderer={{
                       name: { title: ta("نام"), type: "text" },
+                      slug: { title: ta("اسلاگ"), type: "text" },
                       active: { type: "bool", title: ta("فعال") },
                       order: { type: "number", title: ta("رتبه") },
+                      summary: { type: "area", title: ta("خلاصه") },
+                      address: {
+                        type: "text",
+                        title: ta("آدرس"),
+                        section: ta("آدرس"),
+                      },
+                      avatar: { type: "image", title: ta("تصویر") },
+                      banner: { type: "image", title: ta("بنر") },
                       province: {
                         title: ta("استان"),
+                        section: ta("آدرس"),
                         type: "nodes",
                         path: `${API}/auto/province`,
                         getOptionLabel: (node) =>
@@ -158,6 +172,7 @@ const AdminManagePharmacyPage = () => {
                       },
                       city: {
                         title: ta("شهر"),
+                        section: ta("آدرس"),
                         type: "nodes",
                         getOptionLabel: (node) =>
                           (node as ICity).name || (node as ICity)._id,
@@ -168,6 +183,7 @@ const AdminManagePharmacyPage = () => {
                       },
                       district: {
                         title: ta("محله"),
+                        section: ta("آدرس"),
                         getOptionLabel: (node) =>
                           (node as IDistrict).name || (node as IDistrict)._id,
                         type: "nodes",
@@ -181,27 +197,56 @@ const AdminManagePharmacyPage = () => {
                 ),
               },
               {
-                title: ta("لوکیشن"),
+                title: ta("موقعیت"),
                 content: <PharmacyLocationTab node={data} mutate={mutate} />,
                 id: "Location",
               },
               {
-                title: ta("کمیسیون"),
-                id: "Commission",
-                icon: <WalletIcon />,
-                content: <PharmacyCommissionTab node={data} />,
+                title: ta("مالک پنل"),
+                id: "Owner",
+                content: (
+                  <PanelOwnerSection
+                    node={data}
+                    mutate={mutate}
+                    modelName="pharmacy"
+                  />
+                ),
               },
               {
-                title: ta("مالیات"),
-                id: "Tax",
+                title: ta("مالی"),
+                id: "Finance",
                 icon: <WalletIcon />,
-                content: <PharmacyTaxTab node={data} />,
+                content: (
+                  <CentreSections>
+                    <CentreSection title={ta("کمیسیون")}>
+                      <PharmacyCommissionTab node={data} />
+                    </CentreSection>
+                    <CentreSection title={ta("مالیات")}>
+                      <PharmacyTaxTab node={data} />
+                    </CentreSection>
+                  </CentreSections>
+                ),
               },
               {
                 title: ta("مجوز"),
                 id: "License",
                 icon: <CartIcon />,
                 content: <PharmacyProfileLicenseTab node={data} />,
+              },
+              {
+                title: ta("سئو"),
+                id: "Meta",
+                content: (
+                  <PageMetaEditor
+                    resourceType="/pharmacy/[slug]"
+                    slug={data.slug}
+                  />
+                ),
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="pharmacy" />,
               },
             ]}
           />

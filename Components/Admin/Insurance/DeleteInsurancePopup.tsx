@@ -19,7 +19,7 @@ const DeleteInsurancePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={ta("آیا از حذف بیمه ${1} مطمئن هستید؟", [node.name || node._id])}
+        message={ta("آیا از حذف بیمه ${1} مطمئن هستید؟", [node.name || ta("بدون نام")])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

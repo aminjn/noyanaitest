@@ -59,7 +59,7 @@ export const testFormRenderer: FormRenderer<ITest> = {
   return ta("دسته بندی");
 },
     getOptionLabel: (node) =>
-      (node as ITestCategory).name || (node as ITestCategory)._id,
+      (node as ITestCategory).name || ta("بدون نام"),
     getOptionValue: (node) => (node as ITestCategory)._id,
     path: `${API}/auto/testCategory`,
     creatable: { path: `${API}/auto/testCategory` },
@@ -70,7 +70,7 @@ export const testFormRenderer: FormRenderer<ITest> = {
   return ta("اسلاگ");
 } },
   summary: { type: "text", get title() {
-  return ta("حلاصه");
+  return ta("خلاصه");
 } },
 };
 

@@ -30,12 +30,69 @@ export type UseMapProps = {
 
 export type UseMapReturns = ReturnType<typeof useMap>;
 
+// The vector style of the platform's own tile server. It can be overridden
+// per deploy (a mirror inside Iran, a dev server) through the env.
+const MAP_STYLE_URL =
+  process.env.NEXT_PUBLIC_MAP_STYLE_URL ||
+  "https://map.noyanai.com/styles/custom/style.json";
+
+// Used when the style above can't be fetched (tile host down or blocked,
+// offline dev): a plain background plus OSM raster tiles. The map, its
+// markers and clicks keep working even if the tiles never arrive, so a
+// location picker is never an empty box.
+const FALLBACK_STYLE: mlgl.StyleSpecification = {
+  version: 8,
+  sources: {
+    osm: {
+      type: "raster",
+      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tileSize: 256,
+      maxzoom: 19,
+    },
+  },
+  layers: [
+    {
+      id: "background",
+      type: "background",
+      paint: { "background-color": "#eef1f5" },
+    },
+    { id: "osm", type: "raster", source: "osm" },
+  ],
+};
+
+// How long the platform style gets before the fallback replaces it.
+const STYLE_TIMEOUT_MS = 8000;
+
+const DEFAULT_CENTER: [number, number] = [51.389, 35.689];
+
+// A stored point may be missing, `[]`, or garbage: maplibre throws on a
+// NaN LngLat, so anything that isn't a [lng, lat] pair inside Iran's box
+// falls back to Tehran.
+const validCenter = (value?: unknown): [number, number] => {
+  if (
+    Array.isArray(value) &&
+    value.length === 2 &&
+    value.every((n) => typeof n === "number" && Number.isFinite(n)) &&
+    value[0] >= 44 &&
+    value[0] <= 63.5 &&
+    value[1] >= 24 &&
+    value[1] <= 40
+  )
+    return [value[0], value[1]];
+  return DEFAULT_CENTER;
+};
+
 const useMap = ({
   containerRef,
-  center: initialCenter = [51.389, 35.689],
+  center: rawCenter,
   onClick,
 }: UseMapProps) => {
+  const initialCenter = validCenter(rawCenter);
   const mapRef = useRef<mlgl.Map | null>(null);
+  // the latest handler, so a click never calls a stale closure from the
+  // first render
+  const onClickRef = useRef(onClick);
+  onClickRef.current = onClick;
   const [bounds, setBounds] = useState<mlgl.LngLatBounds | null>(null);
   const [center, setCenter] = useState<LngLat>(new LngLat(...initialCenter));
   const [zoom, setZoom] = useState<number>(13);
@@ -50,7 +107,7 @@ const useMap = ({
     //TODO: maybe put url in env
     const map = new mlgl.Map({
       container: containerRef.current,
-      style: "https://map.noyanai.com/styles/custom/style.json",
+      style: MAP_STYLE_URL,
       center: initialCenter,
       maxBounds: [
         [44.0, 24.0],
@@ -71,12 +128,41 @@ const useMap = ({
       setZoom(map.getZoom());
     });
     map.on("click", (e) => {
-      onClick?.(e.lngLat);
+      onClickRef.current?.(e.lngLat);
     });
     map.on("load", () => {
       setReady(true);
     });
-  }, [containerRef, initialCenter, onClick]);
+    map.on("style.load", () => {
+      setReady(true);
+    });
+    // The platform style failed (or hangs): switch to the fallback once.
+    let usingFallback = false;
+    const switchToFallback = () => {
+      if (usingFallback || mapRef.current !== map) return;
+      usingFallback = true;
+      map.setStyle(FALLBACK_STYLE);
+    };
+    const timer = setTimeout(() => {
+      if (!map.isStyleLoaded()) switchToFallback();
+    }, STYLE_TIMEOUT_MS);
+    map.on("error", () => {
+      if (!map.isStyleLoaded()) switchToFallback();
+    });
+    map.once("style.load", () => clearTimeout(timer));
+    // the container may get its size after the map (a tab that just
+    // opened): keep the canvas in step with it
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => map.resize())
+        : null;
+    observer?.observe(containerRef.current);
+    map.once("remove", () => {
+      clearTimeout(timer);
+      observer?.disconnect();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [containerRef]);
 
   useEffect(() => {
     return () => {

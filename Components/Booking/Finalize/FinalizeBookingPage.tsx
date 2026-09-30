@@ -279,8 +279,8 @@ const SessionTypeStage = ({
           );
         case "voiceCall":
           return (
-            !!doctor.phoneConsultSettings?.price &&
-            doctor.phoneConsultSettings.active
+            !!doctor.voiceCallSettings?.price &&
+            doctor.voiceCallSettings.active
           );
         case "videoCall":
           return (
@@ -303,7 +303,7 @@ const SessionTypeStage = ({
         case "sipCall":
           return doctor.sipCallSettings?.price || 0;
         case "voiceCall":
-          return doctor.phoneConsultSettings?.price || 0;
+          return doctor.voiceCallSettings?.price || 0;
         case "videoCall":
           return doctor.videoCallSettings?.price || 0;
         default:
@@ -448,7 +448,7 @@ const CheckoutStage = ({
         case "sipCall":
           return doctor.sipCallSettings?.price || 0;
         case "voiceCall":
-          return doctor.phoneConsultSettings?.price || 0;
+          return doctor.voiceCallSettings?.price || 0;
         case "videoCall":
           return doctor.videoCallSettings?.price || 0;
         default:
@@ -457,7 +457,7 @@ const CheckoutStage = ({
     },
     [
       doctor.inPersonSettings?.price,
-      doctor.phoneConsultSettings?.price,
+      doctor.voiceCallSettings?.price,
       doctor.sipCallSettings?.price,
       doctor.textChatSettings?.price,
       doctor.videoCallSettings?.price,
@@ -610,7 +610,7 @@ type FinalizeBookingDoctor = IDoctorProfile<{
   InPersonSettings: Record<never, never>;
   TextChatSettings: Record<never, never>;
   VideoCallSettings: Record<never, never>;
-  PhoneConsultSettingsPopulated: Record<never, never>;
+  VoiceCallSettings: Record<never, never>;
 }> & {
   // Effective visit tax percent (2026-09) - attached by
   // Controllers/publicController.ts's getDoctorProfileById, not stored on

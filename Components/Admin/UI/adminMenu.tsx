@@ -136,7 +136,7 @@ export const adminMenu: AdminMenuGroup[] = [
     items: [
       { get title() { return ta("مجله"); }, href: "blog", access: "Blog" },
       { get title() { return ta("سوالات متداول"); }, href: "faq", access: "Faq" },
-      { get title() { return ta("تصویر اصلی صفحه‌ی خانه"); }, href: "staticImages" },
+      { get title() { return ta("صفحه‌ی خانه"); }, href: "homePage" },
       { get title() { return ta("صفحه‌ی درباره ما"); }, href: "aboutPage" },
       { get title() { return ta("صفحه‌ی همکاری پزشکان"); }, href: "doctorsPage" },
       { get title() { return ta("تبلیغات"); }, href: "advertisement" },

@@ -1,17 +1,7 @@
-import AdminManageInsuranceCategoryPage from "@/Components/Admin/InsuranceCategory/AdminManageInsuranceCategoryPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "بیمه‌ها" page as a tab (2026-09 admin audit); a record is edited in a popup on that tab
+const LegacyInsuranceCategoryNodeAdmin = () => redirect(`/${adminKey}/insurance?tab=categories`);
 
-const AdminManageInsuranceCategory = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageInsuranceCategoryPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageInsuranceCategory;
+export default LegacyInsuranceCategoryNodeAdmin;

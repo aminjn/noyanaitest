@@ -4,10 +4,6 @@ import { useParams } from "next/navigation";
 import classes from "./AdminManageAccessLevelPage.module.css";
 import useSWR from "swr";
 import {
-  accessLevelModelDict,
-  accessLevelModels,
-  accessLevelOperationsDict,
-  accessOperations,
   IAccessLevel,
 } from "./AdminManageAccessLevelsPage";
 import { API } from "@/Components/config";
@@ -17,10 +13,8 @@ import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
 import WithTitle from "../UI/WithTitle";
-import { title } from "process";
 import AccessLevelAdminsTab from "./AccessLevelAdminsTab";
-import List from "../UI/List";
-import Button from "@/Components/UI/Button";
+import AccessLevelMatrix from "./AccessLevelMatrix";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteAccessLevelPopup from "./DeleteAccessLevelPopup";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -42,7 +36,23 @@ const AdminManageAccessLevelPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={ta("سطح دسترسی ${1}", [data.name || data._id])}>
+        <WithTitle
+          title={ta("سطح دسترسی ${1}", [data.name || ta("بدون نام")])}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteAccessLevel",
+                  <DeleteAccessLevelPopup
+                    node={data as unknown as IAccessLevel}
+                    mutate={() => push(adminPath(`/accesslevel`))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageAccessLevel"
             items={[
@@ -62,68 +72,21 @@ const AdminManageAccessLevelPage = () => {
                 ),
                 id: "Info",
               },
-              ...accessLevelModels.map((model) => ({
-                title: accessLevelModelDict[model],
-                icon: <InfoIcon />,
-                id: model,
+              {
+                title: ta("دسترسی‌ها"),
+                id: "Matrix",
                 content: (
-                  <CreateForm
-                    defaultValue={data[model]}
-                    hookProps={{
-                      path: `${API}/auto/accesslevel/${data._id}`,
-                      method: "POST",
-                      successCb: () => mutate(),
-                      mutator: (inp) => ({
-                        $set: Object.entries(inp).reduce(
-                          (acc, [key, value]) => ({
-                            ...acc,
-                            [`${model}.${key}`]: value,
-                          }),
-                          {},
-                        ),
-                      }),
-                    }}
-                    renderer={accessOperations.reduce(
-                      (acc, op) => ({
-                        ...acc,
-                        [op]: {
-                          type: "bool",
-                          title: accessLevelOperationsDict[op],
-                        },
-                      }),
-                      {},
-                    )}
+                  <AccessLevelMatrix
+                    node={data as unknown as IAccessLevel}
+                    mutate={mutate}
                   />
                 ),
-              })),
+              },
               {
-                title: ta("ادمین های این سطح دسترسی"),
+                title: ta("کارکنان این نقش"),
                 id: "AdminsInThis",
                 content: <AccessLevelAdminsTab mutate={mutate} node={data} />,
                 icon: <InfoIcon />,
-              },
-              {
-                title: ta("عملیات"),
-                id: "Actions",
-                icon: <InfoIcon />,
-                content: (
-                  <List>
-                    <Button
-                      variant="Error"
-                      onClick={() =>
-                        setPopup(
-                          "DeleteAccessLevel",
-                          <DeleteAccessLevelPopup
-                            node={data as unknown as IAccessLevel}
-                            mutate={() => push(adminPath(`/accesslevel`))}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("حذف کامل این سطح دسترسی")}
-                    </Button>
-                  </List>
-                ),
               },
             ]}
           />

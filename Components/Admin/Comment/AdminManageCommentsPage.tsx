@@ -36,6 +36,18 @@ const commentTargetPath: Record<string, string> = {
   DoctorProfile: "doctorprofile",
 };
 
+// the commented page by its name, never its raw id
+const resourceLabel = (resource: unknown) => {
+  const r = resource as { name?: string; title?: string; firstName?: string; lastName?: string } | undefined;
+  if (!r) return "—";
+  return (
+    r.name ||
+    r.title ||
+    [r.firstName, r.lastName].filter(Boolean).join(" ") ||
+    ta("بدون نام")
+  );
+};
+
 const AdminManageCommentsPage = () => {
   const { setPopup } = usePopup();
 
@@ -76,7 +88,7 @@ const AdminManageCommentsPage = () => {
         },
         resource: {
           name: ta("مربوط به"),
-          value: (node) => node.resource?._id,
+          value: (node) => resourceLabel(node.resource),
           component: (node) =>
             node.resource ? (
               <InlineLink
@@ -84,7 +96,7 @@ const AdminManageCommentsPage = () => {
                   `/${commentTargetPath[node.refPath as string] || node.refPath?.toLowerCase()}/${node.resource._id}`,
                 )}
               >
-                {node.resource._id}
+                {resourceLabel(node.resource)}
               </InlineLink>
             ) : (
               "—"

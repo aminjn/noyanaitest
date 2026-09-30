@@ -2,13 +2,15 @@
 
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 import NodeManager from "../UI/NodeManger";
 import { ITestify, testifyFormRenderer } from "./AdminManageTestifiesPage";
 
 const AdminManageTestifyPage = () => {
   return (
     <NodeManager<ITestify>
-      getTitle={(node) => node.name || node._id}
+      deleteBackTo="/doctorsPage?tab=testify"
+      getTitle={(node) => node.name || ta("بدون نام")}
       modelName="testify"
       content={({ mutate, node }) => (
         <CreateForm

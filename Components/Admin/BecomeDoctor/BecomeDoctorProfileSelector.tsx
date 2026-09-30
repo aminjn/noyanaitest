@@ -59,6 +59,8 @@ const BecomeDoctorProfileSelector = ({
             {user?.role === "admin" && (
               <Button
                 variant="Error"
+                mode="Outline"
+                size="M"
                 onClick={() =>
                   setPopup(
                     "RemoveUserFromDoctorProfile",

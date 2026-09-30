@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { useParams } from "next/navigation";
 import useSWR from "swr";
@@ -10,8 +11,6 @@ import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
-import List from "../UI/List";
-import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import DeleteDrugPopup from "./DeleetDrugPopup";
@@ -33,7 +32,23 @@ const AdminManageDrugPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteDrug",
+                  <DeleteDrugPopup
+                    mutate={() => push(adminPath(`/drug`))}
+                    node={data}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageDrug"
             items={[
@@ -62,19 +77,18 @@ const AdminManageDrugPage = () => {
                         multi: false,
                         title: ta("تگ"),
                         getOptionLabel: (node) =>
-                          (node as IDrugTag).name || (node as IDrugTag)._id,
+                          (node as IDrugTag).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IDrugTag)._id,
                         path: `${API}/auto/drugTag`,
                         creatable: { path: `${API}/auto/drugTag` },
                         getDefaultValue: (inp) => inp.tag,
                       },
-                      dosage: { type: "text", title: ta("دوز مصرفی") },
                       sameAs: {
                         type: "nodes",
                         title: ta("مشابهات"),
                         path: `${API}/auto/drug`,
                         getOptionLabel: (node) =>
-                          (node as IDrug).name || (node as IDrug)._id,
+                          (node as IDrug).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IDrug)._id,
                         getDefaultValue: (inp) => inp.sameAs,
                         multi: true,
@@ -86,64 +100,110 @@ const AdminManageDrugPage = () => {
                 ),
               },
               {
-                title: ta("توضیحات"),
+                title: ta("اطلاعات پزشکی"),
                 icon: <InfoIcon />,
                 id: "More",
                 content: (
                   <CreateForm
                     defaultValue={data}
+                    layout="sections"
                     hookProps={{
                       method: "POST",
                       path: `${API}/auto/drug/${data._id}`,
                       successCb: () => mutate(),
                     }}
                     renderer={{
-                      sideEffects: { type: "area", title: "Side Effects" },
+                      alternateName: {
+                        type: "text",
+                        title: ta("نام دیگر"),
+                        section: ta("مشخصات دارو"),
+                      },
                       activeIngridient: {
-                        type: "area",
-                        title: "Active Ingridients",
+                        type: "text",
+                        title: ta("ماده مؤثره"),
+                        section: ta("مشخصات دارو"),
+                      },
+                      dosageForm: {
+                        type: "text",
+                        title: ta("شکل دارویی"),
+                        section: ta("مشخصات دارو"),
+                      },
+                      drugUnit: {
+                        type: "text",
+                        title: ta("واحد"),
+                        section: ta("مشخصات دارو"),
+                      },
+                      identifier: {
+                        type: "text",
+                        title: ta("شناسه"),
+                        section: ta("مشخصات دارو"),
+                      },
+                      prescriptionStatus: {
+                        type: "text",
+                        title: ta("وضعیت نسخه"),
+                        section: ta("مشخصات دارو"),
+                      },
+                      dosage: {
+                        type: "text",
+                        title: ta("دوز مصرفی"),
+                        section: ta("مصرف و تجویز"),
                       },
                       adminstrationRoute: {
-                        type: "area",
-                        title: "Adminstration Route",
-                      },
-                      alcoholWarning: {
-                        type: "area",
-                        title: "Alcohol Warning",
-                      },
-                      alternateName: { type: "area", title: "Alternate Name" },
-                      breastfeedingWarning: {
-                        type: "area",
-                        title: "Breast Feeding Warning",
-                      },
-                      clinicalPharmacology: {
-                        type: "area",
-                        title: "Clinical Pharmacology",
-                      },
-                      dosageForm: { type: "area", title: "Dosage Form" },
-                      drugUnit: { type: "area", title: "Drug Unit" },
-                      foodWarning: { type: "area", title: "Food Warning" },
-                      identifier: { type: "area", title: "Identifier" },
-                      overdosage: { type: "area", title: "Overdosage" },
-                      pregnancyWarning: {
-                        type: "area",
-                        title: "Pregnany Warning",
+                        type: "text",
+                        title: ta("راه مصرف"),
+                        section: ta("مصرف و تجویز"),
                       },
                       prescribingInfo: {
                         type: "area",
-                        title: "Prescribing Info",
+                        title: ta("اطلاعات تجویز"),
+                        section: ta("مصرف و تجویز"),
                       },
-                      prescriptionStatus: {
+                      clinicalPharmacology: {
                         type: "area",
-                        title: "Prescription Status",
+                        title: ta("فارماکولوژی بالینی"),
+                        section: ta("مصرف و تجویز"),
                       },
-                      warning: { type: "area", title: "Warning" },
+                      overdosage: {
+                        type: "area",
+                        title: ta("مصرف بیش از حد"),
+                        section: ta("مصرف و تجویز"),
+                      },
+                      sideEffects: {
+                        type: "area",
+                        title: ta("عوارض جانبی"),
+                        section: ta("هشدار ها"),
+                      },
+                      warning: {
+                        type: "area",
+                        title: ta("هشدار"),
+                        section: ta("هشدار ها"),
+                      },
+                      pregnancyWarning: {
+                        type: "area",
+                        title: ta("هشدار بارداری"),
+                        section: ta("هشدار ها"),
+                      },
+                      breastfeedingWarning: {
+                        type: "area",
+                        title: ta("هشدار شیردهی"),
+                        section: ta("هشدار ها"),
+                      },
+                      alcoholWarning: {
+                        type: "area",
+                        title: ta("هشدار الکل"),
+                        section: ta("هشدار ها"),
+                      },
+                      foodWarning: {
+                        type: "area",
+                        title: ta("هشدار غذایی"),
+                        section: ta("هشدار ها"),
+                      },
                     }}
                   />
                 ),
               },
               {
-                title: ta("متادیتا"),
+                title: ta("سئو"),
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
@@ -151,27 +211,9 @@ const AdminManageDrugPage = () => {
                 ),
               },
               {
-                title: ta("عملیات"),
-                icon: <InfoIcon />,
-                content: (
-                  <List>
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "DeleteDrug",
-                          <DeleteDrugPopup
-                            mutate={() => push(adminPath(`/drug`))}
-                            node={data}
-                          />,
-                        )
-                      }
-                      variant="Error"
-                    >
-                      {ta("حذف")}
-                    </Button>
-                  </List>
-                ),
-                id: "Actions",
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="drug" />,
               },
             ]}
           />

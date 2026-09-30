@@ -13,6 +13,11 @@ import PolygonPicker from "@/Components/UI/PolygonPicker";
 import { Fragment, useState } from "react";
 import Act from "@/Components/UI/Act";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import WithTitle from "../UI/WithTitle";
+import DeleteShitPopup from "../UI/DeleteShitPopup";
+import usePopup from "@/Components/Hooks/usePopup";
+import useProgress from "@/Components/Hooks/useProgress";
+import { adminPath } from "@/Components/helpers/adminPath";
 
 const DistrictDetails = ({
   mutate,
@@ -79,26 +84,56 @@ const AdminManageDistrictPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
+  const { setPopup } = usePopup();
+  const push = useProgress();
+
+  // after a delete, back to the city the district belongs to
+  const cityId =
+    typeof data?.city === "string"
+      ? data.city
+      : (data?.city as { _id?: string } | undefined)?._id;
+
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <TabSystem
-          name="AdminManageDistrict"
-          items={[
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
             {
-              id: "Details",
-              icon: <DashboardIcon />,
-              title: ta("جزئیات"),
-              content: <DistrictDetails node={data} mutate={mutate} />,
-            },
-            {
-              id: "Geometry",
-              icon: <DashboardIcon />,
-              title: ta("جئومتری"),
-              content: <DistrictGeometry mutate={mutate} node={data} />,
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteDistrict",
+                  <DeleteShitPopup
+                    modelName="district"
+                    nodeId={data._id}
+                    mutate={() =>
+                      push(adminPath(cityId ? `/city/${cityId}` : "/province"))
+                    }
+                  />,
+                ),
             },
           ]}
-        />
+        >
+          <TabSystem
+            name="AdminManageDistrict"
+            items={[
+              {
+                id: "Details",
+                icon: <DashboardIcon />,
+                title: ta("جزئیات"),
+                content: <DistrictDetails node={data} mutate={mutate} />,
+              },
+              {
+                id: "Geometry",
+                icon: <DashboardIcon />,
+                title: ta("محدوده روی نقشه"),
+                content: <DistrictGeometry mutate={mutate} node={data} />,
+              },
+            ]}
+          />
+        </WithTitle>
       )}
     </HandleLoading>
   );

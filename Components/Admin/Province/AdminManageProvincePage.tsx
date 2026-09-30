@@ -27,6 +27,8 @@ import Act from "@/Components/UI/Act";
 import PolygonPicker from "@/Components/UI/PolygonPicker";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import DeleteShitPopup from "../UI/DeleteShitPopup";
+import useProgress from "@/Components/Hooks/useProgress";
 
 const MutateCityPopup = ({
   mutate,
@@ -253,11 +255,30 @@ const AdminManageProvincePage = () => {
     `${API}/auto/province/${nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+  const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteProvince",
+                  <DeleteShitPopup
+                    modelName="province"
+                    nodeId={data._id}
+                    mutate={() => push(adminPath("/province"))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageProvince"
             items={[
@@ -274,7 +295,7 @@ const AdminManageProvincePage = () => {
                 icon: <DashboardIcon />,
               },
               {
-                title: ta("جئومتری"),
+                title: ta("محدوده روی نقشه"),
                 content: <ProvinceGeometry node={data} mutate={mutate} />,
                 id: "Geometry",
                 icon: <DashboardIcon />,

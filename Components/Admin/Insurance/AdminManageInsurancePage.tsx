@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -40,6 +41,10 @@ import OrderEditor from "../UI/OrderEditor";
 import InsuranceUserTab from "./InsuranceUserTab";
 import InsuranceProfileLicenseTab from "./InsuranceProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import useProgress from "@/Components/Hooks/useProgress";
+import { adminPath } from "@/Components/helpers/adminPath";
+import DeleteInsurancePopup from "./DeleteInsurancePopup";
+import { CentreSections } from "../Clinic/CentreSections";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type InsurancePlanPopulation = Population<{
@@ -71,7 +76,10 @@ const MutateInsurancePlanPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title={node ? ta("ویرایش طرح بیمه") : ta("طرح بیمه جدید")} style={{ minWidth: "min(90dvw ,  40rem)" }}>
+    <PopupCard
+      title={node ? ta("ویرایش طرح بیمه") : ta("طرح بیمه جدید")}
+      style={{ minWidth: "min(90dvw, 40rem)" }}
+    >
       <CreateForm
         onCancel={() => closePopup()}
         defaultValue={node}
@@ -79,7 +87,7 @@ const MutateInsurancePlanPopup = ({
           name: { type: "text", title: ta("نام") },
           order: { type: "number", title: ta("رتبه") },
           isActive: { type: "bool", title: ta("فعال") },
-          price: { type: "number", title: ta("قیمت") },
+          price: { type: "number", title: ta("قیمت"), price: true },
           features: { type: "strings", title: ta("ویژگی ها") },
           isPopular: { type: "bool", title: ta("محبوب") },
         }}
@@ -246,10 +254,31 @@ const AdminManageInsurancePage = () => {
     fetcher({ url }).then((res) => res.data.data),
   );
 
+  const { setPopup } = usePopup();
+  const push = useProgress();
+
+  // overview / details / location / plans / panel owner / license / SEO /
+  // translations; delete in the header
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteInsurance",
+                  <DeleteInsurancePopup
+                    node={data}
+                    mutate={() => push(adminPath("/insurance"))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageInsurance"
             items={[
@@ -269,12 +298,13 @@ const AdminManageInsurancePage = () => {
                   ]
                 : []),
               {
-                title: ta("جزئیات"),
+                title: ta("اطلاعات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
                   <CreateForm
                     defaultValue={data}
+                    layout="sections"
                     renderer={{
                       name: {
                         title: ta("نام"),
@@ -311,12 +341,12 @@ const AdminManageInsurancePage = () => {
                       membersCount: { type: "text", title: ta("تعداد اعضا") },
                       image: { type: "image", title: ta("تصویر") },
                       slug: { type: "text", title: ta("اسلاگ") },
-                      phone: { type: "text", title: ta("تلفن") },
-                      summary: { type: "text", title: ta("خلاصه") },
+                      phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
+                      summary: { type: "area", title: ta("خلاصه") },
                       coverages: { type: "strings", title: ta("پوشش ها") },
                       advantages: { type: "strings", title: ta("مزایا") },
-                      website: { type: "text", title: ta("سایت") },
-                      address: { type: "text", title: ta("آدرس") },
+                      website: { type: "text", title: ta("سایت"), section: ta("تماس") },
+                      address: { type: "text", title: ta("آدرس"), section: ta("تماس") },
                     }}
                     hookProps={{
                       path: `${API}/auto/insurance/${data._id}`,
@@ -330,7 +360,7 @@ const AdminManageInsurancePage = () => {
               },
               {
                 id: "Location",
-                title: ta("لوکیشن"),
+                title: ta("موقعیت"),
                 content: (
                   <InsuranceLocationManager node={data} mutate={mutate} />
                 ),
@@ -338,10 +368,14 @@ const AdminManageInsurancePage = () => {
               {
                 id: "plans",
                 title: ta("طرح ها"),
-                content: <AdminManageInsurancePlans node={data} />,
+                content: (
+                  <CentreSections>
+                    <AdminManageInsurancePlans node={data} />
+                  </CentreSections>
+                ),
               },
               {
-                title: ta("کاربر"),
+                title: ta("مالک پنل"),
                 id: "User",
                 content: <InsuranceUserTab node={data} mutate={mutate} />,
               },
@@ -353,13 +387,18 @@ const AdminManageInsurancePage = () => {
               },
               {
                 id: "Meta",
-                title: ta("متادیتا"),
+                title: ta("سئو"),
                 content: (
                   <PageMetaEditor
                     resourceType="/insurance/[slug]"
                     slug={data.slug}
                   />
                 ),
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="insurance" />,
               },
             ]}
           />

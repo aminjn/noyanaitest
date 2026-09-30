@@ -1,0 +1,50 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--gray13);
+  text-align: start;
+}
+
+.grid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
+  gap: 0.75rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radiusSm);
+  background: var(--glass);
+  text-align: start;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.value {
+  margin: 0;
+  font-weight: 700;
+  color: var(--gray13);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

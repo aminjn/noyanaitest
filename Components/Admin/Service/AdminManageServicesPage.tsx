@@ -134,7 +134,7 @@ export const mutateServiceFormRenderer: FormRenderer<IService> = {
     path: `${API}/auto/serviceCategory`,
     creatable: { path: `${API}/auto/serviceCategory`, field: "title" },
     getOptionLabel: (node) =>
-      (node as IServiceCategory).title || (node as IServiceCategory)._id,
+      (node as IServiceCategory).title || ta("بدون نام"),
     getOptionValue: (node) => (node as IServiceCategory)._id,
     getDefaultValue: (node) => node.category,
   },
@@ -150,7 +150,7 @@ export const mutateServiceFormRenderer: FormRenderer<IService> = {
   return ta("مشابهات");
 },
     path: `${API}/auto/service`,
-    getOptionLabel: (node) => (node as IService).name || (node as IService)._id,
+    getOptionLabel: (node) => (node as IService).name || ta("بدون نام"),
     getOptionValue: (node) => (node as IService)._id,
     getDefaultValue: (inp) => inp.sameAs,
     multi: true,
@@ -259,14 +259,14 @@ const AdminManageServicesPage = () => {
               category: {
                 name: ta("دسته‌بندی"),
                 value: (node) =>
-                  node.category ? node.category.title || node.category._id : ta("ندارد"),
+                  node.category ? node.category.title || ta("بدون نام") : ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
                     <InlineLink
-                      href={adminPath(`/serviceCategory/${node.category._id}`)}
+                      href={adminPath("/service?tab=categories")}
                     >
-                      {node.category.title || node.category._id}
+                      {node.category.title || ta("بدون نام")}
                     </InlineLink>
                   ) : (
                     ta("ندارد")

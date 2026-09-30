@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
@@ -38,23 +39,23 @@ const InfoManager = ({
         isActive: { type: "bool", title: ta("فعال") },
         category: {
           type: "nodes",
-          title: ta("دسته بنذی"),
+          title: ta("دسته بندی"),
           path: `${API}/auto/productCategory`,
           creatable: { path: `${API}/auto/productCategory` },
           getOptionLabel: (node) =>
-            (node as IProductCategory).name || (node as IProductCategory)._id,
+            (node as IProductCategory).name || ta("بدون نام"),
           getOptionValue: (node) => (node as IProductCategory)._id,
           getDefaultValue: (inp) => inp.category,
           multi: false,
         },
-        price: { type: "number", title: ta("فیمت"), price: true },
+        price: { type: "number", title: ta("قیمت"), price: true },
         discount: { type: "number", title: ta("تخفیف"), price: true },
         image: { type: "image", title: ta("تصویر") },
         products: {
           type: "nodes",
           title: ta("محصولات"),
           getOptionLabel: (node) =>
-            (node as IProduct).name || (node as IProduct)._id,
+            (node as IProduct).name || ta("بدون نام"),
           getOptionValue: (node) => (node as IProduct)._id,
           getDefaultValue: (inp) => inp.products,
           multi: true,
@@ -68,7 +69,7 @@ const InfoManager = ({
           title: ta("مشابهات"),
           path: `${API}/auto/productPackage`,
           getOptionLabel: (node) =>
-            (node as IProductPackage).name || (node as IProductPackage)._id,
+            (node as IProductPackage).name || ta("بدون نام"),
           getOptionValue: (node) => (node as IProductPackage)._id,
           getDefaultValue: (inp) => inp.sameAs,
           multi: true,
@@ -82,7 +83,8 @@ const AdminManageProductPackagePage = () => {
   return (
     <NodeManager<IProductPackage>
       modelName="productPackage"
-      getTitle={(node) => node.name || node._id}
+      deleteBackTo="/product?tab=packages"
+      getTitle={(node) => node.name || ta("بدون نام")}
       content={({ mutate, node }) => (
         <TabSystem
           name="AdminManageProductPackage"
@@ -99,12 +101,12 @@ const AdminManageProductPackagePage = () => {
             },
             {
               id: "Images",
-              title: ta("تصویر"),
+              title: ta("تصاویر"),
               content: <ImagesManager model="ProductPackage" node={node} />,
             },
             {
               id: "Meta",
-              title: ta("متادیتا"),
+              title: ta("سئو"),
               content: (
                 <PageMetaEditor
                   resourceType="/productPackage/[slug]"
@@ -112,7 +114,12 @@ const AdminManageProductPackagePage = () => {
                 />
               ),
             },
-          ]}
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="productPackage" />,
+              },
+            ]}
         />
       )}
     />

@@ -20,7 +20,7 @@ const DeleteClinicDepartmentPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message={ta("آیا از حذف دپارتمان ${1} مطمئنید؟", [node.name || node._id])}
+        message={ta("آیا از حذف دپارتمان ${1} مطمئنید؟", [node.name || ta("بدون نام")])}
         onConfirm={() => setIsLoading(true)}
       />
       <Act

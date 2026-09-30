@@ -25,7 +25,7 @@ import {
 } from "./userShared";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
-type UserDetail = {
+export type UserDetail = {
   _id: string;
   phone: string;
   username?: string;
@@ -49,6 +49,14 @@ type UserDetail = {
 };
 
 type AccessLevelOption = { _id: string; name: string };
+
+// a missing / malformed date must not throw (Intl throws on Invalid Date)
+const isDate = (value?: string | null): value is string =>
+  !!value && !isNaN(new Date(value).getTime());
+const formatDate = (value?: string | null, withTime = false) =>
+  isDate(value)
+    ? (withTime ? faDateTime : faDate).format(new Date(value))
+    : "—";
 
 const Field = ({ title, value }: { title: string; value?: React.ReactNode }) => (
   <div className={classes.field}>
@@ -77,7 +85,7 @@ const roleOptions: { role: UserDetail["role"]; title: string; description: strin
 
 // Role + access level editor and forced logout. Full admins only; the
 // backend enforces the same rules (no self-change, keep one admin).
-const RoleManager = ({
+export const RoleManager = ({
   user,
   onChanged,
 }: {
@@ -127,7 +135,7 @@ const RoleManager = ({
     setPopup(
       "userRole",
       <ConfirmationPopup
-        message={ta("نقش ${1} به «${2}» تغییر کند؟${3}", [displayPhone(user.phone), roleLabels[role], role === "admin" ? " سوپر ادمین به همه بخش‌ها و تنظیمات دسترسی کامل دارد." : ""])}
+        message={ta("نقش ${1} به «${2}» تغییر کند؟${3}", [displayPhone(user.phone), roleLabels[role], role === "admin" ? ` ${ta("سوپر ادمین به همه بخش‌ها و تنظیمات دسترسی کامل دارد.")}` : ""])}
         onConfirm={save}
       />,
     );
@@ -175,13 +183,13 @@ const RoleManager = ({
           <span>{ta("سطح دسترسی")}</span>
           <select value={accessLevel} onChange={(e) => setAccessLevel(e.target.value)}>
             <option value="">{ta("انتخاب کنید...")}</option>
-            {levels?.map((level) => (
+            {(Array.isArray(levels) ? levels : []).map((level) => (
               <option key={level._id} value={level._id}>
-                {level.name}
+                {level.name || ta("بدون نام")}
               </option>
             ))}
           </select>
-          {levels && levels.length === 0 && (
+          {Array.isArray(levels) && levels.length === 0 && (
             <span className={classes.note}>
               {ta("هنوز سطح دسترسی‌ای ساخته نشده.")}{" "}
               <Link href={adminPath("/accesslevel")}>{ta("ساخت سطح دسترسی")}</Link>
@@ -228,9 +236,11 @@ const AdminManageUserPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
-  const displayName = data?.identity
-    ? `${data.identity.givenName} ${data.identity.lastName}`
-    : data?.username;
+  const displayName =
+    [data?.identity?.givenName, data?.identity?.lastName]
+      .filter(Boolean)
+      .join(" ") || data?.username;
+  const profiles = Array.isArray(data?.profiles) ? data.profiles : [];
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -252,22 +262,22 @@ const AdminManageUserPage = () => {
               </div>
               <span className={classes.phone}>{displayPhone(data.phone)}</span>
               <span className={classes.meta}>
-                {ta("عضویت: ${1}", [faDate.format(new Date(data.createdAt))])}
-                {data.lastLogin &&
-                  ta(" · آخرین ورود/خروج: ${1}", [faDateTime.format(new Date(data.lastLogin))])}
+                {ta("عضویت: ${1}", [formatDate(data.createdAt)])}
+                {isDate(data.lastLogin) &&
+                  ta(" · آخرین ورود/خروج: ${1}", [formatDate(data.lastLogin, true)])}
               </span>
             </div>
             <div className={classes.stats}>
               <div>
-                <strong>{num.format(data.counts.reservations)}</strong>
+                <strong>{num.format(data.counts?.reservations ?? 0)}</strong>
                 <span>{ta("رزرو")}</span>
               </div>
               <div>
-                <strong>{num.format(data.counts.orders)}</strong>
+                <strong>{num.format(data.counts?.orders ?? 0)}</strong>
                 <span>{ta("سفارش")}</span>
               </div>
               <div>
-                <strong>{num.format(data.walletBalance)}</strong>
+                <strong>{num.format(data.walletBalance ?? 0)}</strong>
                 <span>{ta("موجودی کیف پول (تومان)")}</span>
               </div>
             </div>
@@ -283,11 +293,21 @@ const AdminManageUserPage = () => {
                   <Field title={ta("کد ملی")} value={data.identity.nationalId} />
                   <Field
                     title={ta("جنسیت")}
-                    value={data.identity.gender === "female" ? ta("زن") : ta("مرد")}
+                    value={
+                      data.identity.gender === "female"
+                        ? ta("زن")
+                        : data.identity.gender === "male"
+                          ? ta("مرد")
+                          : undefined
+                    }
                   />
                   <Field
                     title={ta("تاریخ تولد")}
-                    value={faDate.format(new Date(data.identity.dateOfbirth))}
+                    value={
+                      isDate(data.identity.dateOfbirth)
+                        ? formatDate(data.identity.dateOfbirth)
+                        : undefined
+                    }
                   />
                   <Field title={ta("نام پدر")} value={data.identity.fatherName} />
                   <Field title={ta("محل تولد")} value={data.identity.birthPlace} />
@@ -300,9 +320,9 @@ const AdminManageUserPage = () => {
 
             <section className={classes.card}>
               <h2 className={classes.cardTitle}>{ta("پروفایل‌های مرتبط")}</h2>
-              {data.profiles.length ? (
+              {profiles.length ? (
                 <ul className={classes.profiles}>
-                  {data.profiles.map((profile) => (
+                  {profiles.map((profile) => (
                     <li key={profile.href}>
                       <Link href={adminPath(`/${profile.href}`)} className={classes.profile}>
                         <span className={classes.profileType}>{profile.title}</span>
@@ -345,7 +365,7 @@ const AdminManageUserPage = () => {
               <RoleManager user={data} onChanged={() => mutate()} />
             ) : (
               <p className={classes.note}>
-                {ta("نقش فعلی: ${1}. تغییر نقش فقط توسط سوپر ادمین ممکن است.", [roleLabels[data.role]])}
+                {ta("نقش فعلی: ${1}. تغییر نقش فقط توسط سوپر ادمین ممکن است.", [roleLabels[data.role] || data.role])}
               </p>
             )}
           </section>

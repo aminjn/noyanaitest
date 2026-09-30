@@ -1,17 +1,7 @@
-import AdminManageParaClinicTagPage from "@/Components/Admin/ParaClinicTag/AdminManageParaClinicTagPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "پاراکلینیک‌ها" page as a tab (2026-09 admin audit); a record is edited in a popup on that tab
+const LegacyParaClinicTagNodeAdmin = () => redirect(`/${adminKey}/paraClinic?tab=tags`);
 
-const AdminManageParaClinicTag = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageParaClinicTagPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageParaClinicTag;
+export default LegacyParaClinicTagNodeAdmin;

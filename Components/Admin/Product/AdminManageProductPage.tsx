@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { useParams } from "next/navigation";
 import useSWR, { mutate } from "swr";
@@ -35,6 +36,8 @@ import ImagesManager from "./ImagesManager";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import DeleteShitPopup from "../UI/DeleteShitPopup";
+import useProgress from "@/Components/Hooks/useProgress";
 
 const ProductDetailsManager = ({
   node,
@@ -62,25 +65,25 @@ const ProductDetailsManager = ({
           type: "nodes",
           multi: false,
           getOptionLabel: (node) =>
-            (node as IProductCategory).name || (node as IProductCategory)._id,
+            (node as IProductCategory).name || ta("بدون نام"),
           getOptionValue: (node) => (node as IProductCategory)._id,
           getDefaultValue: (inp) => inp.category,
           path: `${API}/auto/productCategory`,
           creatable: { path: `${API}/auto/productCategory` },
         },
-        image: { title: ta("نصویر"), type: "image" },
+        image: { title: ta("تصویر"), type: "image" },
         original: { title: ta("اصالت"), type: "text" },
         sameAs: {
           title: ta("مشابهات"),
           type: "nodes",
           path: `${API}/auto/product`,
           getOptionLabel: (node) =>
-            (node as IProduct).name || (node as IProduct)._id,
+            (node as IProduct).name || ta("بدون نام"),
           getOptionValue: (node) => (node as IProduct)._id,
           multi: true,
           getDefaultValue: (inp) => inp.sameAs,
         },
-        price: { title: ta("قیمت پایه"), type: "number" },
+        price: { title: ta("قیمت پایه"), type: "number", price: true },
       }}
       hookProps={{
         path: `${API}/auto/product/${node._id}`,
@@ -153,7 +156,7 @@ const MutateProductSellerPopup = ({
             multi: false,
             path: `${API}/auto/pharmacy`,
             getOptionLabel: (node) =>
-              (node as IPharmacy).name || (node as IPharmacy)._id,
+              (node as IPharmacy).name || ta("بدون نام"),
             getOptionValue: (node) => (node as IPharmacy)._id,
             getDefaultValue: (inp) => inp.seller?._id,
           },
@@ -163,7 +166,7 @@ const MutateProductSellerPopup = ({
           discount: { type: "number", title: ta("تخفیف"), price: true },
           special: { type: "bool", title: ta("ویژه") },
           freeDelivery: { type: "bool", title: ta("ارسال رایگان") },
-          fastDelivery: { type: "bool", title: ta("ارسال سریغ") },
+          fastDelivery: { type: "bool", title: ta("تحویل سریع") },
         }}
         hookProps={{
           path: `${API}/auto/productSeller${node ? `/${node._id}` : ""}`,
@@ -213,13 +216,13 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
             renderer={{
               seller: {
                 name: ta("فروشنده"),
-                value: (node) => node.seller?.name || node.seller?._id,
+                value: (node) => node.seller?.name || ta("بدون نام"),
                 component: (node) =>
                   node.seller ? (
                     <InlineLink
                       href={adminPath(`/pharmacy/${node.seller._id}`)}
                     >
-                      {node.seller.name || node.seller._id}
+                      {node.seller.name || ta("بدون نام")}
                     </InlineLink>
                   ) : (
                     ta("حذف شده")
@@ -325,11 +328,30 @@ const AdminManageProductPage = () => {
     `${API}/auto/product/${nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+  const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || data._id}>
+        <WithTitle
+          title={data.name || ta("بدون نام")}
+          actions={[
+            {
+              title: ta("حذف"),
+              danger: true,
+              action: () =>
+                setPopup(
+                  "DeleteProduct",
+                  <DeleteShitPopup
+                    modelName="product"
+                    nodeId={data._id}
+                    mutate={() => push(adminPath("/product"))}
+                  />,
+                ),
+            },
+          ]}
+        >
           <TabSystem
             name="AdminManageProduct"
             items={[
@@ -355,13 +377,18 @@ const AdminManageProductPage = () => {
               },
               {
                 id: "Meta",
-                title: ta("متادیتا"),
+                title: ta("سئو"),
                 content: (
                   <PageMetaEditor
                     resourceType="/product/[slug]"
                     slug={data.slug}
                   />
                 ),
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="Product" />,
               },
             ]}
           />

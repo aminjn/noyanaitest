@@ -2,6 +2,7 @@
 
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 import NodeManager from "../UI/NodeManger";
 import {
   bookingDescriptionFormRenderer,
@@ -11,8 +12,9 @@ import {
 const AdminManageBookingDescriptionPage = () => {
   return (
     <NodeManager<IBookingDescription>
+      deleteBackTo="/bookingDescription"
       modelName="bookingDescription"
-      getTitle={(node) => node.title || node._id}
+      getTitle={(node) => node.title || ta("بدون نام")}
       content={({ mutate, node }) => (
         <CreateForm
           defaultValue={node}
