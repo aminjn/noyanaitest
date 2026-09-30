@@ -13,6 +13,14 @@ import {
   UserAlertEvent,
 } from "../UserAlert/AdminManageUserAlertsPage";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import ClientTabSystem from "@/Components/UI/ClientTabSystem";
+import {
+  isLocale,
+  Locale,
+  localeNames,
+  siteDefaultLocale,
+} from "@/Components/i18n/locales";
+import classes from "./AdminManageSmsPatternsPage.module.css";
 
 // Every entry here is one SMS a reservation's own doctor/patient (not
 // staff) can receive about that specific reservation - mirrors backend
@@ -276,24 +284,115 @@ for (const event of orderSmsEvents) {
   };
 }
 
+type LocalizedPatterns = Partial<
+  Record<SmsPatternName, Partial<Record<Locale, string>>>
+>;
+
+// One language's own pattern codes. A gateway pattern is fixed text, so a
+// language needs its own pattern on the provider's panel; an empty field
+// sends the base pattern (backend Lib/sendSms.ts). Saving replaces the
+// whole map with this language's fields merged in.
+const LocalizedPatternsForm = ({
+  locale,
+  localized,
+  onSaved,
+}: {
+  locale: Locale;
+  localized: LocalizedPatterns;
+  onSaved: () => unknown;
+}) => {
+  const names = Object.keys(patternFormRenderer) as SmsPatternName[];
+  const defaultValue = Object.fromEntries(
+    names.map((name) => [name, localized[name]?.[locale] || ""]),
+  ) as unknown as ISmsPatterns;
+  return (
+    <div className={classes.localized}>
+      <p className={classes.hint}>
+        {ta("برای هر پیامک، یک پترن با متن «${1}» در پنل IPPanel بسازید و کدش را اینجا وارد کنید. فیلد خالی یعنی برای این زبان همان پترن پایه ارسال می‌شود. زبان گیرنده همان زبانی است که آخرین بار در سایت استفاده کرده؛ هشدارهای ادمین به زبان پیش‌فرض سایت هستند.", [localeNames[locale]])}
+      </p>
+      <CreateForm<ISmsPatterns>
+        defaultValue={defaultValue}
+        hookProps={{
+          path: `${API}/admin/sms/localizedPatterns`,
+          method: "POST",
+          parser: "JSON",
+          mutator: (input) => {
+            const next: LocalizedPatterns = JSON.parse(JSON.stringify(localized));
+            for (const [name, code] of Object.entries(input)) {
+              const key = name as SmsPatternName;
+              next[key] = { ...(next[key] || {}), [locale]: String(code ?? "").trim() };
+            }
+            return { localized: next };
+          },
+          successCb: () => onSaved(),
+        }}
+        renderer={patternFormRenderer}
+      />
+    </div>
+  );
+};
+
 const AdminManageSmsPatternsPage = () => {
   const { data, error, mutate } = useSWR<ISmsPatterns>(
     `${API}/auto/smsPatterns`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+  const localizedSWR = useSWR<LocalizedPatterns>(
+    `${API}/admin/sms/localizedPatterns`,
+    (url: string) =>
+      fetcher({ url }).then((res) => res?.data?.localized || {}),
+  );
+  const localesSWR = useSWR<{ enabled?: string[]; default?: string }>(
+    `${API}/public/locales`,
+    (url: string) => fetcher({ url }).then((res) => res?.data),
+  );
+  const siteDefault = isLocale(localesSWR.data?.default)
+    ? localesSWR.data.default
+    : siteDefaultLocale();
+  const otherLocales = (
+    Array.isArray(localesSWR.data?.enabled) ? localesSWR.data.enabled : []
+  )
+    .filter(isLocale)
+    .filter((code) => code !== siteDefault);
+  const localized =
+    localizedSWR.data && typeof localizedSWR.data === "object"
+      ? localizedSWR.data
+      : {};
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle title={ta("پترن‌های پیامک")}>
-          <CreateForm<ISmsPatterns>
-            defaultValue={data}
-            hookProps={{
-              path: `${API}/auto/smsPatterns`,
-              method: "POST",
-              successCb: () => mutate(),
-            }}
-            renderer={patternFormRenderer}
+          <ClientTabSystem
+            keepMounted
+            items={[
+              {
+                id: "base",
+                title: ta("پترن پایه (${1})", [localeNames[siteDefault]]),
+                content: (
+                  <CreateForm<ISmsPatterns>
+                    defaultValue={data}
+                    hookProps={{
+                      path: `${API}/auto/smsPatterns`,
+                      method: "POST",
+                      successCb: () => mutate(),
+                    }}
+                    renderer={patternFormRenderer}
+                  />
+                ),
+              },
+              ...otherLocales.map((code) => ({
+                id: code,
+                title: localeNames[code],
+                content: localizedSWR.data ? (
+                  <LocalizedPatternsForm
+                    locale={code}
+                    localized={localized}
+                    onSaved={() => localizedSWR.mutate()}
+                  />
+                ) : null,
+              })),
+            ]}
           />
         </WithTitle>
       )}
