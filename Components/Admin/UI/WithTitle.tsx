@@ -15,6 +15,7 @@ import MenuIcon from "@/Components/Icons/MenuIcon";
 import IconButton from "./IconButton";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import PlusIcon from "@/Components/Icons/PlusIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { useRouter } from "@/Components/i18n/navigation";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import { useAdminEmbedded } from "./AdminEmbedded";
@@ -22,7 +23,7 @@ import { useAdminEmbedded } from "./AdminEmbedded";
 const WithTitle = ({
   children,
   title,
-  actions,
+  actions: allActions,
   className = "",
   style,
   collapsed,
@@ -33,9 +34,14 @@ const WithTitle = ({
     title: string;
     action?: MouseEventHandler<HTMLButtonElement>;
     icon?: ReactNode;
+    // a destructive action (delete): its own red button in the header,
+    // never hidden in the menu or in a tab of its own
+    danger?: boolean;
   }[];
   collapsed?: ReactNode;
 }>) => {
+  const dangerActions = (allActions || []).filter((a) => a.danger);
+  const actions = (allActions || []).filter((a) => !a.danger);
   const [isContextOpen, setIsContextOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -75,6 +81,19 @@ const WithTitle = ({
           )}
         </div>
         <div className={classes.headerActions}>
+          {dangerActions.map((action) => (
+            <Button
+              key={action.title}
+              type="button"
+              size="M"
+              variant="Error"
+              mode="Outline"
+              leadIcon={action.icon || <GarbageIcon />}
+              onClick={action.action}
+            >
+              {ta(action.title)}
+            </Button>
+          ))}
           {(!!actions?.length || !!collapsed) && (
             <Fragment>
               {!!collapsed && (
