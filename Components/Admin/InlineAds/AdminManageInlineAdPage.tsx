@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { useParams } from "next/navigation";
 import classes from "./AdminManageInlineAdPage.module.css";
@@ -92,6 +93,11 @@ const AdminManageInlineAdPage = () => {
                   </List>
                 ),
                 id: "Actions",
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="inlinead" />,
               },
             ]}
           />

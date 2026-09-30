@@ -1,17 +1,7 @@
-import AdminManageClinicCategoryPage from "@/Components/Admin/ClinicCategory/AdminManageClinicCategoryPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "کلینیک‌ها" page as a tab (2026-09 admin audit); a record is edited in a popup on that tab
+const LegacyClinicCategoryNodeAdmin = () => redirect(`/${adminKey}/clinic?tab=categories`);
 
-const AdminManageClinicCategory = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageClinicCategoryPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageClinicCategory;
+export default LegacyClinicCategoryNodeAdmin;

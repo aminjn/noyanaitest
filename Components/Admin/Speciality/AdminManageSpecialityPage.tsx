@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import useSWR from "swr";
 import classes from "./AdminManageSpecialityPage.module.css";
 import { API } from "@/Components/config";
@@ -104,6 +105,11 @@ const AdminManageSpecialityPage = () => {
                     )}
                   </List>
                 ),
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="speciality" />,
               },
             ]}
           />

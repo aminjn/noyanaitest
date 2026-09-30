@@ -157,7 +157,7 @@ const AdminManageFaqsPage = () => {
                 component: (node) =>
                   node.category ? (
                     <InlineLink
-                      href={adminPath(`/faqCategory/${node.category._id}`)}
+                      href={adminPath("/faq?tab=categories")}
                     >
                       {node.category.name || "—"}
                     </InlineLink>

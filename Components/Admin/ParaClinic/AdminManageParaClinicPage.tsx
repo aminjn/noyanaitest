@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
@@ -455,6 +456,11 @@ const AdminManageParaClinicPage = () => {
                 title: ta("مجوز"),
                 icon: <CartIcon />,
                 content: <ParaClinicProfileLicenseTab node={data} />,
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="paraClinic" />,
               },
             ]}
           />

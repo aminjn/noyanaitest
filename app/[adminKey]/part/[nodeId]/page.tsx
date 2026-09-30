@@ -1,17 +1,7 @@
-import AdminManagePartPage from "@/Components/Admin/Part/AdminManagePartPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "علائم" page as a tab (2026-09 admin audit); a record is edited in a popup on that tab
+const LegacyPartNodeAdmin = () => redirect(`/${adminKey}/symptom?tab=parts`);
 
-const AdminManagePart = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManagePartPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManagePart;
+export default LegacyPartNodeAdmin;

@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { useParams } from "next/navigation";
 import classes from "./AdminManageBlogPage.module.css";
@@ -157,6 +158,11 @@ const AdminManageBlogPage = () => {
                   </List>
                 ),
                 title: ta("عملیات"),
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="blog" />,
               },
             ]}
           />

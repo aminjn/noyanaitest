@@ -25,7 +25,7 @@ import {
 } from "./userShared";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
-type UserDetail = {
+export type UserDetail = {
   _id: string;
   phone: string;
   username?: string;
@@ -77,7 +77,7 @@ const roleOptions: { role: UserDetail["role"]; title: string; description: strin
 
 // Role + access level editor and forced logout. Full admins only; the
 // backend enforces the same rules (no self-change, keep one admin).
-const RoleManager = ({
+export const RoleManager = ({
   user,
   onChanged,
 }: {

@@ -7,11 +7,9 @@ import { IAccessLevel } from "./AdminManageAccessLevelsPage";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import usePopup from "@/Components/Hooks/usePopup";
-import RemoveAccessLevelUserPopup from "./RemoveAccessLevelUserPopup";
+import useProgress from "@/Components/Hooks/useProgress";
 import { IUser, MongoDoc } from "@/Components/Hooks/useUser";
 import WithTitle from "../UI/WithTitle";
-import ConnectAccessLevelToUserPopup from "./ConnectAccessLevelToUserPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type UserAccessLevelPopulation = {
@@ -33,22 +31,17 @@ const AccessLevelAdminsTab = ({
   node: IAccessLevel<{ AdminsPopulated: { UserPopulated: true } }>;
   mutate: () => unknown;
 }) => {
-  const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <WithTitle
       title={ta("ادمین های دارای این دسترسی")}
       actions={[
         {
-          title: ta("جدید"),
-          action: () =>
-            setPopup(
-              "ConnectAccessLevelToUser",
-              <ConnectAccessLevelToUserPopup
-                mutate={mutate}
-                accessLevel={node as unknown as IAccessLevel}
-              />
-            ),
+          // who has this role is changed in one place, the team page, which
+          // keeps one super admin and blocks changing your own role
+          title: ta("مدیریت کارکنان"),
+          action: () => push(adminPath("/team?tab=members")),
         },
       ]}
     >
@@ -73,28 +66,6 @@ const AccessLevelAdminsTab = ({
             name: ta("نام کاربری"),
             value: (node) => node.user?.username,
             filter: "Text",
-          },
-          actions: {
-            name: ta("عملیات"),
-            component: (node) => (
-              <TableActions>
-                <IconButton
-                  variant="Danger"
-                  title={ta("حذف دسترسی")}
-                  onClick={() =>
-                    setPopup(
-                      "RemoveAccessLevelUser",
-                      <RemoveAccessLevelUserPopup
-                        mutate={mutate}
-                        permission={node}
-                      />
-                    )
-                  }
-                >
-                  <GarbageIcon />
-                </IconButton>
-              </TableActions>
-            ),
           },
         }}
       />

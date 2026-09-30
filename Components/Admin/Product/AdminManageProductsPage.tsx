@@ -255,7 +255,7 @@ const AdminManageProductsPage = () => {
                 component: (node) =>
                   node.category ? (
                     <InlineLink
-                      href={adminPath(`/productCategory/${node.category._id}`)}
+                      href={adminPath("/product?tab=categories")}
                     >
                       {node.category.name || node.category._id}
                     </InlineLink>

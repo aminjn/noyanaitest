@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { useParams } from "next/navigation";
 import useSWR from "swr";
@@ -172,6 +173,11 @@ const AdminManageDrugPage = () => {
                   </List>
                 ),
                 id: "Actions",
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="drug" />,
               },
             ]}
           />

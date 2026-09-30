@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
@@ -53,7 +54,12 @@ const AdminManageServicePage = () => {
                 <PageMetaEditor resourceType="/service/[slug]" slug={node.slug} />
               ),
             },
-          ]}
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="service" />,
+              },
+            ]}
         />
       )}
     />

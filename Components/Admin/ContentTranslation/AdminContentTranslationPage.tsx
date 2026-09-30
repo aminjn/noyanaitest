@@ -36,8 +36,16 @@ const hasText = (value: unknown) =>
     ? value.some((v) => typeof v === "string" && v.trim())
     : typeof value === "string" && value.trim() !== "";
 
-const AdminContentTranslationPage = () => {
-  const params = useParams<{ segment: string; nodeId: string }>();
+// `segment` given: shown as the "ترجمه‌ها" tab of that record's own admin
+// page (2026-09 audit - translating used to need a separate page no editor
+// linked to); the record id comes from that page's URL.
+const AdminContentTranslationPage = ({ segment }: { segment?: string } = {}) => {
+  const routeParams = useParams<{ segment: string; nodeId: string }>();
+  const params =
+    segment && routeParams?.nodeId
+      ? { segment, nodeId: routeParams.nodeId }
+      : routeParams;
+  const embedded = !!segment;
   const pushNotification = useNotification();
   const [locale, setLocale] = useState<Locale>("en");
   const [values, setValues] = useState<Record<string, Value>>({});
@@ -133,13 +141,16 @@ const AdminContentTranslationPage = () => {
     <HandleLoading data={!!data} error={error}>
       {data && params && (
         <div className={classes.main}>
-          <Link href={adminPath("/translations")} className={classes.back}>
-            <Ixon width="1rem" style={{ transform: "rotateZ(-90deg)" }}>
-              <ChevronIcon />
-            </Ixon>
-            <span>{ta("ترجمه محتوا")}</span>
-          </Link>
+          {!embedded && (
+            <Link href={adminPath("/translations")} className={classes.back}>
+              <Ixon width="1rem" style={{ transform: "rotateZ(-90deg)" }}>
+                <ChevronIcon />
+              </Ixon>
+              <span>{ta("ترجمه محتوا")}</span>
+            </Link>
+          )}
 
+          {!embedded && (
           <header className={classes.header}>
             <h1 className={classes.title}>
               {(() => {
@@ -150,6 +161,7 @@ const AdminContentTranslationPage = () => {
             </h1>
             <span className={classes.subtitle}>{ta("ترجمه‌های ${1}", [segmentTitle(params.segment)])}</span>
           </header>
+          )}
 
           <section className={classes.card}>
             <div className={classes.langs}>

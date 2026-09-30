@@ -151,7 +151,7 @@ const AdminManageBlogsPage = () => {
                 component: (node) =>
                   node.category ? (
                     <InlineLink
-                      href={adminPath(`/blogcategory/${node.category._id}`)}
+                      href={adminPath("/blog?tab=categories")}
                     >
                       {node.category.title || node.category._id}
                     </InlineLink>

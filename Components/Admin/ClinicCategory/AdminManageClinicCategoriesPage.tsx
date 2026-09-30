@@ -1,27 +1,9 @@
 "use client";
 
-import useSWR, { mutate } from "swr";
-import { Population } from "../Clinic/AdminManageClinicsPage";
 import { MongoDoc } from "@/Components/Hooks/useUser";
-import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
-import HandleLoading from "../UI/HandleLoading";
-import WithTitle from "../UI/WithTitle";
-import usePopup from "@/Components/Hooks/usePopup";
-import { Fragment, useState } from "react";
-import ConfirmationPopup from "../UI/ConfirmationPopup";
-import Act from "@/Components/UI/Act";
-import PopupCard from "@/Components/UI/PopupCard";
-import CreateForm from "../UI/CreateForm";
-import Table from "../UI/Table";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
-import TableActions from "../UI/TableActions";
-import IconButton from "../UI/IconButton";
-import IconLink from "../UI/IconLink";
-import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import { adminPath } from "@/Components/helpers/adminPath";
-import EditIcon from "@/Components/Icons/EditIcon";
-import OrderEditor from "../UI/OrderEditor";
+import { Population } from "../Clinic/AdminManageClinicsPage";
+import AdminCatalogList from "../UI/AdminCatalogList";
+import { FormRenderer } from "../UI/CreateForm";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ClinicCategoryPopulation = Population<Record<never, never>>;
@@ -35,145 +17,40 @@ export interface IClinicCategory<
   slug?: string;
 }
 
-const DeleteClinicCategoryPopup = ({
-  mutate,
-  node,
-}: {
-  node: IClinicCategory;
-  mutate: () => unknown;
-}) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { closePopup } = usePopup();
-  return (
-    <Fragment>
-      <ConfirmationPopup
-        onConfirm={() => setIsLoading(true)}
-        message={ta("آیا از حذف این مورد مطمئنید؟")}
-        isLoading={isLoading}
-      />
-      <Act
-        path={isLoading ? `${API}/auto/clinicCategory/${node._id}` : null}
-        method="PUT"
-        onDone={(status) => {
-          setIsLoading(false);
-          if (!status) return;
-          mutate();
-          closePopup();
-        }}
-      />
-    </Fragment>
-  );
+const clinicCategoryFormRenderer: FormRenderer<IClinicCategory> = {
+  name: {
+    type: "text",
+    get title() {
+      return ta("نام");
+    },
+  },
+  slug: {
+    type: "text",
+    get title() {
+      return ta("اسلاگ");
+    },
+  },
+  isActive: {
+    type: "bool",
+    get title() {
+      return ta("فعال");
+    },
+  },
+  order: {
+    type: "number",
+    get title() {
+      return ta("رتبه");
+    },
+  },
 };
 
-const CreateClinicCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
-  const { closePopup } = usePopup();
-
-  return (
-    <PopupCard title={ta("دسته‌ی کلینیک جدید")}>
-      <CreateForm<IClinicCategory>
-        onCancel={() => {
-          closePopup();
-        }}
-        renderer={{
-          name: { type: "text", title: ta("نام") },
-          isActive: { title: ta("فعال"), type: "bool" },
-          order: { title: ta("رتبه"), type: "number" },
-        }}
-        hookProps={{
-          path: `${API}/auto/clinicCategory`,
-          method: "POST",
-          successCb: () => {
-            mutate();
-            closePopup();
-          },
-        }}
-      />
-    </PopupCard>
-  );
-};
-
-const AdminManageClinicCategoriesPage = () => {
-  const { data, error, mutate } = useSWR<IClinicCategory[]>(
-    `${API}/auto/clinicCategory`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
-  );
-
-  const { setPopup } = usePopup();
-
-  return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <WithTitle
-          title={ta("دسته بندی کلینیک")}
-          actions={[
-            {
-              title: ta("جدید"),
-              action: () =>
-                setPopup(
-                  "CreateClinicCategory",
-                  <CreateClinicCategoryPopup mutate={mutate} />,
-                ),
-            },
-          ]}
-        >
-          <Table
-            data={data}
-            name="AdminManageClinicCategories"
-            renderer={{
-              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
-              isActive: {
-                name: ta("وضعیت"),
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
-              order: {
-                name: ta("رتبه"),
-                value: (node) => node.order,
-                filter: "Number",
-                component: (node) => (
-                  <OrderEditor
-                    modelName="clinicCategory"
-                    mutate={mutate}
-                    value={node.order}
-                    _id={node._id}
-                  />
-                ),
-              },
-              actions: {
-                name: ta("عملیات"),
-                component: (node) => (
-                  <TableActions>
-                    <IconLink
-                      href={adminPath(`/clinicCategory/${node._id}`)}
-                      title={ta("ویرایش")}
-                    >
-                      <EditIcon />
-                    </IconLink>
-                    <IconButton
-                      variant="Danger"
-                      title={ta("حذف")}
-                      onClick={() =>
-                        setPopup(
-                          "DeleteClinicCategory",
-                          <DeleteClinicCategoryPopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      <GarbageIcon />
-                    </IconButton>
-                  </TableActions>
-                ),
-              },
-            }}
-          />
-        </WithTitle>
-      )}
-    </HandleLoading>
-  );
-};
+const AdminManageClinicCategoriesPage = () => (
+  <AdminCatalogList<IClinicCategory>
+    model="clinicCategory"
+    title={ta("دسته بندی کلینیک")}
+    noun={ta("دسته‌بندی کلینیک")}
+    fields={clinicCategoryFormRenderer}
+  />
+);
 
 export default AdminManageClinicCategoriesPage;

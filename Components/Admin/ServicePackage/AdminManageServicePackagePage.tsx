@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
@@ -104,7 +105,12 @@ const AdminManageServicePackagePage = () => {
                 />
               ),
             },
-          ]}
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="servicePackage" />,
+              },
+            ]}
         />
       )}
     />

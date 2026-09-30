@@ -264,7 +264,7 @@ const AdminManageServicesPage = () => {
                 component: (node) =>
                   node.category ? (
                     <InlineLink
-                      href={adminPath(`/serviceCategory/${node.category._id}`)}
+                      href={adminPath("/service?tab=categories")}
                     >
                       {node.category.title || node.category._id}
                     </InlineLink>

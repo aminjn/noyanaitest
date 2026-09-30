@@ -1,17 +1,7 @@
-import AdminManageFaqCategoryPage from "@/Components/Admin/faqCategory/AdminManageFaqCategoryPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "سوالات متداول" page as a tab (2026-09 admin audit); a record is edited in a popup on that tab
+const LegacyFaqCategoryNodeAdmin = () => redirect(`/${adminKey}/faq?tab=categories`);
 
-const AdminManageFaqCategory = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageFaqCategoryPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageFaqCategory;
+export default LegacyFaqCategoryNodeAdmin;

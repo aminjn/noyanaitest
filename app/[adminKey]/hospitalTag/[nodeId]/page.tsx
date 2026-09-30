@@ -1,17 +1,7 @@
-import AdminManageHospitalTagPage from "@/Components/Admin/HospitalTag/AdminManageHospitalTag";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "بیمارستان‌ها" page as a tab (2026-09 admin audit); a record is edited in a popup on that tab
+const LegacyHospitalTagNodeAdmin = () => redirect(`/${adminKey}/hospital?tab=tags`);
 
-const AdminManageHospitalTag = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageHospitalTagPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageHospitalTag;
+export default LegacyHospitalTagNodeAdmin;

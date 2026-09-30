@@ -1,4 +1,5 @@
 "use client";
+import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import { useParams } from "next/navigation";
@@ -158,6 +159,11 @@ const AdminManageDoctorProfilePage = () => {
                 ),
                 icon: <InfoIcon />,
                 title: ta("عملیات"),
+              },
+              {
+                id: "translations",
+                title: ta("ترجمه‌ها"),
+                content: <AdminContentTranslationPage segment="doctorprofile" />,
               },
             ]}
             name="AdminManageDoctorProfile"
