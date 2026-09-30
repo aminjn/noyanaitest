@@ -1,0 +1,17 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  color: var(--black);
+}
+
+.rule {
+  color: var(--gray10);
+  line-height: 1.8;
+  text-align: start;
+}

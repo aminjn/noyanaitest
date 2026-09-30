@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "Clínicas en la red",
  "hospitalsAcceptingInsurance": "Hospitales en la red",
  "paraClinicsAcceptingInsurance": "Laboratorios e imagen en la red",
- "homeHeroAiFreeValue": "Gratis"
+ "homeHeroAiFreeValue": "Gratis",
+ "shippingMethod": "Envío",
+ "shippingTapsi": "Mensajero Tapsi (misma ciudad)",
+ "shippingTipax": "Tipax, pago contra entrega",
+ "shippingTipaxNote": "Pagas el envío al mensajero de Tipax al recibirlo.",
+ "shippingFree": "Gratis",
+ "deliveryFee": "Costo de envío",
+ "shippingNeedsAddress": "El costo de envío aparece al elegir una dirección.",
+ "addressCityMissing": "Esta dirección no tiene ciudad; añádela para el envío Tapsi en la ciudad.",
+ "pharmacyShipTapsiNote": "Misma ciudad: envíalo con un mensajero Tapsi. El costo de envío (${1} tomanes) se abona a tu monedero al entregar el primer artículo.",
+ "pharmacyShipTipaxNote": "Otra ciudad: envíalo por Tipax contra entrega; el comprador paga al mensajero."
 }

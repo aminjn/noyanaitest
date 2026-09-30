@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "معاہدہ شدہ کلینک",
  "hospitalsAcceptingInsurance": "معاہدہ شدہ ہسپتال",
  "paraClinicsAcceptingInsurance": "معاہدہ شدہ لیبز اور امیجنگ",
- "homeHeroAiFreeValue": "مفت"
+ "homeHeroAiFreeValue": "مفت",
+ "shippingMethod": "ترسیل کا طریقہ",
+ "shippingTapsi": "تپسی کورئیر (اسی شہر میں)",
+ "shippingTipax": "ٹیپیکس، ادائیگی بوقتِ وصولی",
+ "shippingTipaxNote": "ترسیل کی قیمت آپ وصولی پر ٹیپیکس کورئیر کو ادا کریں گے۔",
+ "shippingFree": "مفت",
+ "deliveryFee": "ترسیل کی قیمت",
+ "shippingNeedsAddress": "پتہ منتخب کرنے کے بعد ترسیل کی قیمت دکھائی جائے گی۔",
+ "addressCityMissing": "اس پتے میں شہر درج نہیں؛ اسی شہر میں تپسی ترسیل کے لیے شہر شامل کریں۔",
+ "pharmacyShipTapsiNote": "اسی شہر میں: تپسی کورئیر سے بھیجیں۔ ترسیل کی قیمت (${1} تومان) پہلی چیز کی ترسیل پر آپ کے والیٹ میں آ جائے گی۔",
+ "pharmacyShipTipaxNote": "دوسرا شہر: ٹیپیکس سے، ادائیگی بوقتِ وصولی بھیجیں؛ خریدار کورئیر کو ادا کرے گا۔"
 }

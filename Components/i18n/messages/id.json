@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "Klinik mitra",
  "hospitalsAcceptingInsurance": "Rumah sakit mitra",
  "paraClinicsAcceptingInsurance": "Lab dan radiologi mitra",
- "homeHeroAiFreeValue": "Gratis"
+ "homeHeroAiFreeValue": "Gratis",
+ "shippingMethod": "Pengiriman",
+ "shippingTapsi": "Kurir Tapsi (satu kota)",
+ "shippingTipax": "Tipax, bayar di tempat",
+ "shippingTipaxNote": "Ongkos kirim dibayar ke kurir Tipax saat barang diterima.",
+ "shippingFree": "Gratis",
+ "deliveryFee": "Ongkos kirim",
+ "shippingNeedsAddress": "Ongkos kirim muncul setelah alamat dipilih.",
+ "addressCityMissing": "Alamat ini belum ada kotanya; tambahkan untuk pengiriman Tapsi satu kota.",
+ "pharmacyShipTapsiNote": "Satu kota: kirim dengan kurir Tapsi. Ongkos kirim (${1} toman) masuk ke dompet Anda saat barang pertama diterima.",
+ "pharmacyShipTipaxNote": "Kota lain: kirim lewat Tipax bayar di tempat; pembeli membayar kurir."
 }

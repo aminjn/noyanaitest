@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "Vertragskliniken",
  "hospitalsAcceptingInsurance": "Vertragskrankenhäuser",
  "paraClinicsAcceptingInsurance": "Vertragslabore und Bildgebung",
- "homeHeroAiFreeValue": "Kostenlos"
+ "homeHeroAiFreeValue": "Kostenlos",
+ "shippingMethod": "Versand",
+ "shippingTapsi": "Tapsi-Kurier (gleiche Stadt)",
+ "shippingTipax": "Tipax, Zahlung bei Lieferung",
+ "shippingTipaxNote": "Die Versandkosten zahlen Sie bei Lieferung an den Tipax-Kurier.",
+ "shippingFree": "Kostenlos",
+ "deliveryFee": "Versandkosten",
+ "shippingNeedsAddress": "Die Versandkosten erscheinen, sobald Sie eine Adresse wählen.",
+ "addressCityMissing": "Diese Adresse hat keine Stadt; fügen Sie sie für Tapsi-Lieferung in der Stadt hinzu.",
+ "pharmacyShipTapsiNote": "Gleiche Stadt: mit Tapsi-Kurier senden. Die Versandgebühr (${1} Toman) wird bei Lieferung des ersten Artikels Ihrem Wallet gutgeschrieben.",
+ "pharmacyShipTipaxNote": "Andere Stadt: per Tipax mit Zahlung bei Lieferung senden; der Käufer zahlt den Kurier."
 }

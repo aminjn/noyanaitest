@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "Cliniques conventionnées",
  "hospitalsAcceptingInsurance": "Hôpitaux conventionnés",
  "paraClinicsAcceptingInsurance": "Laboratoires et imagerie conventionnés",
- "homeHeroAiFreeValue": "Gratuit"
+ "homeHeroAiFreeValue": "Gratuit",
+ "shippingMethod": "Livraison",
+ "shippingTapsi": "Coursier Tapsi (même ville)",
+ "shippingTipax": "Tipax, paiement à la livraison",
+ "shippingTipaxNote": "Vous payez les frais de port au coursier Tipax à la livraison.",
+ "shippingFree": "Gratuit",
+ "deliveryFee": "Frais de port",
+ "shippingNeedsAddress": "Les frais de port s'affichent une fois l'adresse choisie.",
+ "addressCityMissing": "Cette adresse n'a pas de ville ; ajoutez-la pour la livraison Tapsi en ville.",
+ "pharmacyShipTapsiNote": "Même ville : envoyez-le par coursier Tapsi. Les frais (${1} tomans) sont crédités sur votre portefeuille à la livraison du premier article.",
+ "pharmacyShipTipaxNote": "Autre ville : envoyez par Tipax, paiement à la livraison ; l'acheteur paie le coursier."
 }

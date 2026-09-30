@@ -47,6 +47,12 @@ export interface IIncomingOrder extends MongoDoc {
   status: OrderStatus;
   products: IIncomingOrderProductItem[];
   productPackages: IIncomingOrderPackageItem[];
+  // this pharmacy's shipment (backend Lib/delivery.ts)
+  shipment?: {
+    method: "tapsi" | "tipax";
+    fee: number;
+    payOnDelivery: boolean;
+  };
   subtotal: number;
   // where to deliver (only the delivery fields of the buyer's address)
   address?: {

@@ -20,7 +20,11 @@ import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
 import { usePaymentConfig } from "../Payment/paymentTypes";
 import Act from "../UI/Act";
 import { IWallet } from "../Booking/Finalize/FinalizeBookingPage";
-import { IUserAddress, localPhone } from "../Dashboard/Address/DashboardManageAddressesPage";
+import {
+  addressCityLabel,
+  IUserAddress,
+  localPhone,
+} from "../Dashboard/Address/DashboardManageAddressesPage";
 import DashboardMutateAddressPopup from "../Dashboard/Address/DashboardMutateAddressPopup";
 import {
   t2xsRegular,
@@ -52,7 +56,23 @@ type SubmitCartResponse = { data: { _id: string }; redirectUrl?: string };
 // getCartSummary, 2026-09). Item prices shown elsewhere in the cart never
 // change - this popup is specifically the "checkout view" that adds tax on
 // top, per the user's request.
-type CartSummary = { subtotal: number; tax: number; total: number };
+type CartShipment = {
+  pharmacy: string;
+  pharmacyName?: string;
+  method: "tapsi" | "tipax";
+  fee: number;
+  payOnDelivery: boolean;
+};
+// shipping (2026-09): one shipment per pharmacy - Tapsi's flat fee when it
+// is in the buyer's city, Tipax pay-on-delivery otherwise
+type CartSummary = {
+  subtotal: number;
+  tax: number;
+  deliveryFee?: number;
+  shipments?: CartShipment[];
+  needsAddress?: boolean;
+  total: number;
+};
 
 const CartCheckoutPopup = ({
   total,
@@ -79,8 +99,10 @@ const CartCheckoutPopup = ({
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
+  const [address, setAddress] = useState<string | null>(null);
+  // the chosen address decides the courier, so the summary follows it
   const { data: summary } = useSWR<CartSummary>(
-    `${API}/cart/summary`,
+    `${API}/cart/summary${address ? `?address=${address}` : ""}`,
     // fetcher already returns the response body, so `.data` is the summary
     // itself - this used to read `.data.data` (always undefined), which
     // silently fell back to the pre-tax subtotal as the "total".
@@ -94,7 +116,6 @@ const CartCheckoutPopup = ({
     ? ["wallet", "sep"]
     : ["wallet"];
 
-  const [address, setAddress] = useState<string | null>(null);
   // preselect the newest saved address (usually the only one) so the buyer
   // does not have to tap it every time
   useEffect(() => {
@@ -102,6 +123,9 @@ const CartCheckoutPopup = ({
     if (!address || !addresses.some((a) => a._id === address))
       setAddress(addresses[addresses.length - 1]._id);
   }, [addresses, address]);
+  const selectedAddress = Array.isArray(addresses)
+    ? addresses.find((a) => a._id === address)
+    : undefined;
   const [method, setMethod] = useState<OrderPaymentMethod>("wallet");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -130,7 +154,9 @@ const CartCheckoutPopup = ({
                       {node.displayName}
                     </span>
                     <span className={`${classes.addressValue} ${t2xsRegular}`}>
-                      {node.address}
+                      {[addressCityLabel(node.city), node.address]
+                        .filter(Boolean)
+                        .join(" - ")}
                     </span>
                     {!!node.receiverPhone && (
                       <span className={`${classes.addressValue} ${t2xsRegular}`}>
@@ -197,6 +223,54 @@ const CartCheckoutPopup = ({
             ))}
           </div>
         </div>
+        {!!summary?.shipments?.length && (
+          <div className={classes.section}>
+            <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
+              {getContent("shippingMethod")}
+            </span>
+            {summary.needsAddress ? (
+              <span className={`${classes.empty} ${t2xsRegular}`}>
+                {getContent("shippingNeedsAddress")}
+              </span>
+            ) : (
+              <div className={classes.shipments}>
+                {summary.shipments.map((el) => (
+                  <div key={el.pharmacy} className={classes.shipment}>
+                    <div className={classes.shipmentHead}>
+                      <span className={tsmRegular}>
+                        {getContent(
+                          el.method === "tapsi" ? "shippingTapsi" : "shippingTipax",
+                        )}
+                      </span>
+                      <span className={tsmRegular}>
+                        {el.payOnDelivery
+                          ? ""
+                          : el.fee > 0
+                            ? `${currencize(el.fee)} ${getContent("toman")}`
+                            : getContent("shippingFree")}
+                      </span>
+                    </div>
+                    {!!el.pharmacyName && (
+                      <span className={`${classes.addressValue} ${t2xsRegular}`}>
+                        {el.pharmacyName}
+                      </span>
+                    )}
+                    {el.payOnDelivery && (
+                      <span className={`${classes.addressValue} ${t2xsRegular}`}>
+                        {getContent("shippingTipaxNote")}
+                      </span>
+                    )}
+                  </div>
+                ))}
+                {!!selectedAddress && !selectedAddress.city && (
+                  <span className={`${classes.warn} ${t2xsRegular}`}>
+                    {getContent("addressCityMissing")}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("subtotal")}</span>
           <span className={tsmRegular}>
@@ -210,6 +284,14 @@ const CartCheckoutPopup = ({
             <span className={tsmRegular}>{getContent("tax")}</span>
             <span className={tsmRegular}>
               {`${currencize(summary.tax)} ${getContent("toman")}`}
+            </span>
+          </div>
+        )}
+        {!!summary?.deliveryFee && (
+          <div className={classes.totalRow}>
+            <span className={tsmRegular}>{getContent("deliveryFee")}</span>
+            <span className={tsmRegular}>
+              {`${currencize(summary.deliveryFee)} ${getContent("toman")}`}
             </span>
           </div>
         )}
@@ -257,7 +339,10 @@ const CartCheckoutPopup = ({
           // stale copies (cart page, header badge, balance)
           globalMutate(`${API}/cart`);
           globalMutate(`${API}/cart/size`);
-          globalMutate(`${API}/cart/summary`);
+          globalMutate(
+            (key) =>
+              typeof key === "string" && key.startsWith(`${API}/cart/summary`),
+          );
           globalMutate(`${API}/user/wallet`);
           closePopup();
           if (result?.data?._id) push(`/order/${result.data._id}`);

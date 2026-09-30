@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "Clínicas da rede",
  "hospitalsAcceptingInsurance": "Hospitais da rede",
  "paraClinicsAcceptingInsurance": "Laboratórios e imagem da rede",
- "homeHeroAiFreeValue": "Grátis"
+ "homeHeroAiFreeValue": "Grátis",
+ "shippingMethod": "Envio",
+ "shippingTapsi": "Entregador Tapsi (mesma cidade)",
+ "shippingTipax": "Tipax, pagamento na entrega",
+ "shippingTipaxNote": "Você paga o frete ao entregador da Tipax na entrega.",
+ "shippingFree": "Grátis",
+ "deliveryFee": "Frete",
+ "shippingNeedsAddress": "O frete aparece depois de escolher um endereço.",
+ "addressCityMissing": "Este endereço não tem cidade; adicione-a para entrega Tapsi na cidade.",
+ "pharmacyShipTapsiNote": "Mesma cidade: envie com entregador Tapsi. O frete (${1} tomans) é creditado na sua carteira quando o primeiro item for entregue.",
+ "pharmacyShipTipaxNote": "Outra cidade: envie pela Tipax com pagamento na entrega; o comprador paga o entregador."
 }

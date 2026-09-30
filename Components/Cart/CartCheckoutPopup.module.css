@@ -142,3 +142,29 @@
 .totalPrice {
   color: var(--error);
 }
+
+.shipments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shipment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--gray4);
+}
+
+.shipmentHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.warn {
+  color: var(--warningS2);
+}

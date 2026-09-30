@@ -117,6 +117,15 @@ export interface IOrder<
     status?: OrderItemStatus;
   }[];
   total: number;
+  // one per pharmacy (backend Lib/delivery.ts); Tapsi's fee is in `total`
+  shipments?: {
+    _id: string;
+    pharmacy?: { _id: string; name?: string } | string;
+    method: "tapsi" | "tipax";
+    fee: number;
+    payOnDelivery: boolean;
+  }[];
+  deliveryFee?: number;
   paymentMethod: "wallet" | "sep";
   status: OrderStatus;
   address?: IUserAddress;
@@ -356,6 +365,38 @@ const OrderConfirmationPage = () => {
                 </div>
               </div>
             ))}
+            {!!order.shipments?.length && (
+              <div className={classes.addressRow}>
+                <span className={`${classes.subtitle} ${tsmRegular}`}>
+                  {getContent("shippingMethod")}
+                </span>
+                {order.shipments.map((el) => (
+                  <span key={el._id} className={t2xsRegular}>
+                    {[
+                      getContent(
+                        el.method === "tapsi" ? "shippingTapsi" : "shippingTipax",
+                      ),
+                      typeof el.pharmacy === "object" ? el.pharmacy?.name : "",
+                      el.payOnDelivery
+                        ? getContent("shippingTipaxNote")
+                        : el.fee > 0
+                          ? `${currencize(el.fee)} ${getContent("toman")}`
+                          : getContent("shippingFree"),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                ))}
+              </div>
+            )}
+            {!!order.deliveryFee && (
+              <div className={classes.totalRow}>
+                <span className={tsmRegular}>{getContent("deliveryFee")}</span>
+                <span className={tsmRegular}>
+                  {`${currencize(order.deliveryFee)} ${getContent("toman")}`}
+                </span>
+              </div>
+            )}
             <div className={classes.totalRow}>
               <span className={tsmRegular}>{getContent("totalPrice")}</span>
               <span className={`${classes.totalPrice} ${tlgBold}`}>

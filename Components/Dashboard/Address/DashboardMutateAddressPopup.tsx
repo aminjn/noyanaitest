@@ -1,5 +1,8 @@
 import PopupCard from "@/Components/UI/PopupCard";
-import { IUserAddress } from "./DashboardManageAddressesPage";
+import {
+  addressCityField,
+  IUserAddress,
+} from "./DashboardManageAddressesPage";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -31,6 +34,7 @@ const DashboardMutateAddressPopup = ({
           // left empty, the account's own number is used
           receiverPhone: { type: "text", title: getContent("receiverPhone") },
           postalCode: { type: "text", title: getContent("postalCode") },
+          city: addressCityField(getContent("city")),
         }}
         hookProps={{
           method: "POST",

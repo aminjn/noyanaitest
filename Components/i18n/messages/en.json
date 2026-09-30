@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "In-network clinics",
  "hospitalsAcceptingInsurance": "In-network hospitals",
  "paraClinicsAcceptingInsurance": "In-network labs and imaging",
- "homeHeroAiFreeValue": "Free"
+ "homeHeroAiFreeValue": "Free",
+ "shippingMethod": "Shipping",
+ "shippingTapsi": "Tapsi courier (same city)",
+ "shippingTipax": "Tipax, pay on delivery",
+ "shippingTipaxNote": "You pay the shipping cost to the Tipax courier on delivery.",
+ "shippingFree": "Free",
+ "deliveryFee": "Shipping cost",
+ "shippingNeedsAddress": "The shipping cost is shown once you choose an address.",
+ "addressCityMissing": "This address has no city; add one to get same-city Tapsi delivery.",
+ "pharmacyShipTapsiNote": "Same city: send it with a Tapsi courier. The shipping fee (${1} toman) is credited to your wallet when the first item is delivered.",
+ "pharmacyShipTipaxNote": "Another city: send it with Tipax, pay on delivery; the buyer pays the courier."
 }

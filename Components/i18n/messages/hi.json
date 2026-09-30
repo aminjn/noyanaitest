@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "नेटवर्क क्लिनिक",
  "hospitalsAcceptingInsurance": "नेटवर्क अस्पताल",
  "paraClinicsAcceptingInsurance": "नेटवर्क लैब और इमेजिंग",
- "homeHeroAiFreeValue": "मुफ़्त"
+ "homeHeroAiFreeValue": "मुफ़्त",
+ "shippingMethod": "शिपिंग",
+ "shippingTapsi": "Tapsi कूरियर (उसी शहर में)",
+ "shippingTipax": "Tipax, डिलीवरी पर भुगतान",
+ "shippingTipaxNote": "शिपिंग शुल्क आप डिलीवरी पर Tipax कूरियर को देंगे।",
+ "shippingFree": "मुफ़्त",
+ "deliveryFee": "शिपिंग शुल्क",
+ "shippingNeedsAddress": "पता चुनने के बाद शिपिंग शुल्क दिखेगा।",
+ "addressCityMissing": "इस पते में शहर नहीं है; उसी शहर में Tapsi डिलीवरी के लिए शहर जोड़ें।",
+ "pharmacyShipTapsiNote": "उसी शहर में: Tapsi कूरियर से भेजें। पहली चीज़ डिलीवर होने पर शिपिंग शुल्क (${1} तोमान) आपके वॉलेट में आएगा।",
+ "pharmacyShipTipaxNote": "दूसरा शहर: Tipax से, डिलीवरी पर भुगतान के साथ भेजें; खरीदार कूरियर को भुगतान करेगा।"
 }

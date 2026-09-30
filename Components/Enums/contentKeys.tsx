@@ -2311,6 +2311,16 @@ const contentKeys = [
   "hospitalsAcceptingInsurance",
   "paraClinicsAcceptingInsurance",
   "homeHeroAiFreeValue",
+  "shippingMethod",
+  "shippingTapsi",
+  "shippingTipax",
+  "shippingTipaxNote",
+  "shippingFree",
+  "deliveryFee",
+  "shippingNeedsAddress",
+  "addressCityMissing",
+  "pharmacyShipTapsiNote",
+  "pharmacyShipTipaxNote",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
