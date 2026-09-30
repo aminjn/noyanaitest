@@ -27,7 +27,7 @@ const ConnectAccessLevelToUserPopup = ({
             : {
                 user: {
                   type: "nodes",
-                  title: ta("یوزر"),
+                  title: ta("کاربر"),
                   path: `${API}/auto/user`,
                   getOptionLabel: (node) => getUserLabel(node as IUser),
                   getOptionValue: (node) => (node as IUser)._id,

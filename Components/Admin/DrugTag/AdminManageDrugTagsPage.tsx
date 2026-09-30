@@ -38,7 +38,7 @@ const CreateDrugTagPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("برچسب دارو جدید")}>
       <CreateForm<IDrugTag>
         onCancel={() => {
           closePopup();

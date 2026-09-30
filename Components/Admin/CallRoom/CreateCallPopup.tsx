@@ -17,7 +17,7 @@ const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { user } = useUser();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("تماس جدید")}>
       <CreateForm<CreateCallInput>
         style={{ width: "min(90dvw , 40rem)" }}
         renderer={{

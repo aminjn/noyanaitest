@@ -27,7 +27,7 @@ const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
   const push = useProgress();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("پاراکلینیک جدید")}>
       <CreateForm<IParaClinic>
         onCancel={() => closePopup()}
         hookProps={{

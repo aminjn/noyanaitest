@@ -71,7 +71,7 @@ const MutateInsurancePlanPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard style={{ minWidth: "min(90dvw ,  40rem)" }}>
+    <PopupCard title={node ? ta("ویرایش طرح بیمه") : ta("طرح بیمه جدید")} style={{ minWidth: "min(90dvw ,  40rem)" }}>
       <CreateForm
         onCancel={() => closePopup()}
         defaultValue={node}
@@ -341,7 +341,7 @@ const AdminManageInsurancePage = () => {
                 content: <AdminManageInsurancePlans node={data} />,
               },
               {
-                title: ta("یوزر"),
+                title: ta("کاربر"),
                 id: "User",
                 content: <InsuranceUserTab node={data} mutate={mutate} />,
               },

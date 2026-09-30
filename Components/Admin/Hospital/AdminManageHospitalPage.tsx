@@ -78,7 +78,7 @@ const MutateHospitalClinicPopup = ({
 )) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش بخش بیمارستان") : ta("بخش بیمارستان جدید")}>
       <CreateForm
         defaultValue={node}
         onCancel={() => closePopup()}
@@ -388,7 +388,7 @@ const AdminManageHospitalPage = () => {
                 content: <HospitalClinicsManager node={data} />,
               },
               {
-                title: ta("یوزر"),
+                title: ta("کاربر"),
                 id: "User",
                 content: <HospitalUserTab node={data} mutate={mutate} />,
               },

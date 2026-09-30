@@ -67,7 +67,7 @@ const MutateProductSpecPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش مشخصه‌ی محصول") : ta("مشخصه‌ی محصول جدید")}>
       <CreateForm
         onCancel={() => {
           closePopup();

@@ -83,7 +83,7 @@ const MutateParaClinicTestPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش آزمایش مرکز") : ta("آزمایش مرکز جدید")}>
       <CreateForm
         onCancel={() => closePopup()}
         defaultValue={node}

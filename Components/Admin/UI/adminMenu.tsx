@@ -52,7 +52,7 @@ export const adminPinnedItems: (AdminMenuItem & {
 }, href: "", icon: <DashboardIcon /> },
   {
     get title() {
-  return ta("صندوق درخواست‌ها");
+  return ta("کارهای در انتظار");
 },
     href: "inbox",
     icon: <Bell01Icon />,

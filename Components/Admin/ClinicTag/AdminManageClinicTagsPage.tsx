@@ -37,7 +37,7 @@ const CreateClinicTagPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("تگ کلینیک جدید")}>
       <CreateForm<IClinicTag>
         renderer={{
           name: { type: "text", title: ta("نام") },

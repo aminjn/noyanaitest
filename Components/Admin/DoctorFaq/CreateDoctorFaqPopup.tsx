@@ -9,7 +9,7 @@ const CreateFaqPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("سوال صفحه‌ی پزشکان جدید")}>
       <CreateForm<IDoctorFaq>
         onCancel={() => closePopup()}
         renderer={{

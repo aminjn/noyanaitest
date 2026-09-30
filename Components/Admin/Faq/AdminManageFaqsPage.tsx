@@ -53,7 +53,7 @@ const MutateFaqPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش سوال") : ta("سوال جدید")}>
       <CreateForm
         onCancel={() => {
           closePopup();

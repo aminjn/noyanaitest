@@ -69,7 +69,7 @@ const CreateClinicCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("دسته‌ی کلینیک جدید")}>
       <CreateForm<IClinicCategory>
         onCancel={() => {
           closePopup();

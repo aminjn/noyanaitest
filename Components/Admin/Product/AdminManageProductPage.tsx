@@ -142,7 +142,7 @@ const MutateProductSellerPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش فروشنده‌ی محصول") : ta("فروشنده‌ی محصول جدید")}>
       <CreateForm
         defaultValue={node}
         onCancel={() => closePopup()}

@@ -38,7 +38,7 @@ export interface IDiseaseCategory<
 const CreateDiseaseCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={ta("دسته‌ی بیماری جدید")}>
       <CreateForm<IDiseaseCategory>
         onCancel={() => {
           closePopup();

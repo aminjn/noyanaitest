@@ -151,7 +151,7 @@ export interface IProductSeller<
 const CreateProductPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={ta("محصول جدید")}>
       <CreateForm<IProduct>
         onCancel={() => closePopup()}
         renderer={{

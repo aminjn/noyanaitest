@@ -47,7 +47,7 @@ const AdminManageBecomeClinicPage = () => {
                       value={<FormatDate value={data.createdAt} />}
                     />
                     <DataPair
-                      title={ta("یوزر")}
+                      title={ta("کاربر")}
                       value={
                         <InlineLink href={adminPath(`/user/${data.user?._id}`)}>
                           {data.user?.phone}

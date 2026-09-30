@@ -178,7 +178,7 @@ const MutateServicePopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش خدمت") : ta("خدمت جدید")}>
       <CreateForm
         defaultValue={node}
         onCancel={() => closePopup()}

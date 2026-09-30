@@ -38,7 +38,7 @@ export interface IHospitalCategory<
 const CreateHospitalCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={ta("دسته‌ی بیمارستان جدید")}>
       <CreateForm<IHospitalCategory>
         onCancel={() => closePopup()}
         renderer={{

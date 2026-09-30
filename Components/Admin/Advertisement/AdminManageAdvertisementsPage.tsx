@@ -58,7 +58,7 @@ const MutateAdvertisementPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش تبلیغ") : ta("تبلیغ جدید")}>
       <CreateForm
         defaultValue={node}
         onCancel={() => closePopup()}
@@ -71,7 +71,7 @@ const MutateAdvertisementPopup = ({
           },
         }}
         renderer={{
-          name: { title: "name", type: "text" },
+          name: { title: ta("نام (برای شناسایی در پنل)"), type: "text" },
           order: { title: ta("رتبه"), type: "number" },
           isActive: { title: ta("فعال"), type: "bool" },
           image: { title: ta("تصویر"), type: "image" },

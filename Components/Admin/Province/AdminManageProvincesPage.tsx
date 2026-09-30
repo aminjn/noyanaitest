@@ -85,7 +85,7 @@ const MutateProvincePopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش استان") : ta("استان جدید")}>
       <CreateForm
         defaultValue={node}
         onCancel={() => {

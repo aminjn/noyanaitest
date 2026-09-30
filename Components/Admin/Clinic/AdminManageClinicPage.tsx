@@ -117,7 +117,7 @@ const AdminManageClinicPage = () => {
                 content: <ClinicLocationManager mutate={mutate} node={data} />,
               },
               {
-                title: ta("یوزر"),
+                title: ta("کاربر"),
                 content: <ClinicUserTab node={data} mutate={mutate} />,
 
                 icon: <InfoIcon />,

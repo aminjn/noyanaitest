@@ -48,7 +48,7 @@ const AdminManageBecomeInsurancePage = () => {
                     />
                     <DataPair title={ta("نام")} value={data.name} />
                     <DataPair
-                      title={ta("یوزر")}
+                      title={ta("کاربر")}
                       value={
                         data.user ? (
                           <InlineLink

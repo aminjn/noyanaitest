@@ -73,7 +73,7 @@ const CreateParaClinicCategoryPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("دسته‌ی پاراکلینیک جدید")}>
       <CreateForm<IParaClinicCategory>
         onCancel={() => {
           closePopup();

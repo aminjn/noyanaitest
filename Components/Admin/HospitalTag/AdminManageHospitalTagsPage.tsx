@@ -38,7 +38,7 @@ const CreateHospitalTagPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={ta("تگ بیمارستان جدید")}>
       <CreateForm<IHospitalTag>
         onCancel={() => closePopup()}
         renderer={{
