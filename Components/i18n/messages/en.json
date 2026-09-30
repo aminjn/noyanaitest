@@ -2127,5 +2127,6 @@
  "seePharmacy": "View pharmacy",
  "featuredSpecialities": "Featured specialities",
  "unclaimedProfileTitle": "Online booking is not available",
- "unclaimedProfileLegend": "This doctor has no NoyanAI account yet and does not take online bookings. If this page is yours, activate it by applying to join."
+ "unclaimedProfileLegend": "This doctor has no NoyanAI account yet and does not take online bookings. If this page is yours, activate it by applying to join.",
+ "dpfCommission": "Total ${1} - NoyanAI fee ${2}% (${3})"
 }

@@ -2127,5 +2127,6 @@
  "seePharmacy": "Lihat apotek",
  "featuredSpecialities": "Spesialisasi pilihan",
  "unclaimedProfileTitle": "Pemesanan online tidak tersedia",
- "unclaimedProfileLegend": "Dokter ini belum memiliki akun NoyanAI dan tidak menerima pemesanan online. Jika halaman ini milik Anda, aktifkan dengan mengajukan bergabung."
+ "unclaimedProfileLegend": "Dokter ini belum memiliki akun NoyanAI dan tidak menerima pemesanan online. Jika halaman ini milik Anda, aktifkan dengan mengajukan bergabung.",
+ "dpfCommission": "Total ${1} - biaya NoyanAI ${2}% (${3})"
 }

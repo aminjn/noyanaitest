@@ -2127,5 +2127,6 @@
  "seePharmacy": "Ver farmacia",
  "featuredSpecialities": "Especialidades destacadas",
  "unclaimedProfileTitle": "La reserva en línea no está disponible",
- "unclaimedProfileLegend": "Este médico aún no tiene cuenta en NoyanAI y no acepta reservas en línea. Si esta página es suya, actívela solicitando unirse."
+ "unclaimedProfileLegend": "Este médico aún no tiene cuenta en NoyanAI y no acepta reservas en línea. Si esta página es suya, actívela solicitando unirse.",
+ "dpfCommission": "Total ${1} - comisión de NoyanAI ${2} % (${3})"
 }
