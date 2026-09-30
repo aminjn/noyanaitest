@@ -241,7 +241,7 @@
  "chosenBlogs": "Featured Posts",
  "city": "City",
  "claimProfileLegend": "If you own this profile, claim it:",
- "claimThisProfile": "Is this your profile?",
+ "claimThisProfile": "This page is mine",
  "clickToRequestAddClinic": "Click to request adding a clinic",
  "clickToRequestAddHospital": "Click to request joining a hospital",
  "clickToRequestAddInsurance": "Click to request adding an insurance",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Your previous application was declined",
  "rejectedApplicationLegend": "Correct your details and documents and submit again. Contact support to find out why it was declined.",
  "seePharmacy": "View pharmacy",
- "featuredSpecialities": "Featured specialities"
+ "featuredSpecialities": "Featured specialities",
+ "unclaimedProfileTitle": "Online booking is not available",
+ "unclaimedProfileLegend": "This doctor has no NoyanAI account yet and does not take online bookings. If this page is yours, activate it by applying to join."
 }

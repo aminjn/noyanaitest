@@ -241,7 +241,7 @@
  "chosenBlogs": "Избранные статьи",
  "city": "Город",
  "claimProfileLegend": "Если это ваш профиль, подтвердите права на него:",
- "claimThisProfile": "Это ваш профиль?",
+ "claimThisProfile": "Это моя страница",
  "clickToRequestAddClinic": "Нажмите, чтобы запросить добавление клиники",
  "clickToRequestAddHospital": "Нажмите, чтобы запросить вступление в больницу",
  "clickToRequestAddInsurance": "Нажмите, чтобы запросить добавление страховки",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Ваша предыдущая заявка отклонена",
  "rejectedApplicationLegend": "Исправьте данные и документы и отправьте заявку снова. Причину отказа можно узнать в поддержке.",
  "seePharmacy": "Открыть аптеку",
- "featuredSpecialities": "Избранные специальности"
+ "featuredSpecialities": "Избранные специальности",
+ "unclaimedProfileTitle": "Онлайн-запись недоступна",
+ "unclaimedProfileLegend": "У этого врача пока нет аккаунта в NoyanAI, и онлайн-запись недоступна. Если это ваша страница, активируйте её, подав заявку."
 }

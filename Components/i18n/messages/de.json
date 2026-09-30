@@ -241,7 +241,7 @@
  "chosenBlogs": "Ausgewählte Beiträge",
  "city": "Stadt",
  "claimProfileLegend": "Wenn dies Ihr Profil ist, beanspruchen Sie es:",
- "claimThisProfile": "Ist das Ihr Profil?",
+ "claimThisProfile": "Diese Seite gehört mir",
  "clickToRequestAddClinic": "Klicken, um das Hinzufügen einer Klinik anzufragen",
  "clickToRequestAddHospital": "Klicken, um den Beitritt zu einem Krankenhaus anzufragen",
  "clickToRequestAddInsurance": "Klicken, um das Hinzufügen einer Versicherung anzufragen",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Ihr vorheriger Antrag wurde abgelehnt",
  "rejectedApplicationLegend": "Korrigieren Sie Ihre Angaben und Unterlagen und senden Sie sie erneut. Den Ablehnungsgrund erfahren Sie beim Support.",
  "seePharmacy": "Apotheke ansehen",
- "featuredSpecialities": "Ausgewählte Fachgebiete"
+ "featuredSpecialities": "Ausgewählte Fachgebiete",
+ "unclaimedProfileTitle": "Online-Terminbuchung nicht verfügbar",
+ "unclaimedProfileLegend": "Dieser Arzt hat noch kein NoyanAI-Konto und nimmt keine Online-Termine an. Wenn diese Seite Ihnen gehört, aktivieren Sie sie mit einem Beitrittsantrag."
 }

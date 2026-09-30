@@ -241,7 +241,7 @@
  "chosenBlogs": "注目の記事",
  "city": "市区町村",
  "claimProfileLegend": "このプロフィールの所有者の方は、申請してください：",
- "claimThisProfile": "これはあなたのプロフィールですか？",
+ "claimThisProfile": "これは私のページです",
  "clickToRequestAddClinic": "クリックしてクリニックの追加を申請",
  "clickToRequestAddHospital": "クリックして病院への参加を申請",
  "clickToRequestAddInsurance": "クリックして保険の追加を申請",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "前回の申請は却下されました",
  "rejectedApplicationLegend": "情報と書類を修正して再度送信してください。却下の理由はサポートにお問い合わせください。",
  "seePharmacy": "薬局を見る",
- "featuredSpecialities": "注目の専門分野"
+ "featuredSpecialities": "注目の専門分野",
+ "unclaimedProfileTitle": "オンライン予約はご利用いただけません",
+ "unclaimedProfileLegend": "この医師はまだNoyanAIのアカウントがなく、オンライン予約を受け付けていません。ご自身のページであれば、参加申請で有効にしてください。"
 }

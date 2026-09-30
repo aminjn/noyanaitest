@@ -41,7 +41,7 @@ const DoctorCardAlt = ({
   style,
   variant = "grid",
   href,
-  bookable = true,
+  bookable,
   footer,
 }: WithStyleProps<{
   // page-specific extra under the card body (e.g. the free-slots strip on
@@ -61,6 +61,9 @@ const DoctorCardAlt = ({
     Province: Record<never, never>;
   }>;
 }>) => {
+  // an unclaimed profile (imported from the old directory) is shown with
+  // the same card, without the booking action
+  const canBook = bookable ?? (node as { claimed?: boolean }).claimed !== false;
   const getCompContent = useScopedLocale(LOCALE_NS);
   const getContent = useScopedLocale(LOCALE_NS);
   const profileHref = href || `/dr/${node.slug || node._id}`;
@@ -106,7 +109,7 @@ const DoctorCardAlt = ({
               </span>
             </span>
           </Link>
-          {bookable ? (
+          {canBook ? (
             <Link
               className={`${classes.action} ${classes.secondaryAction} ${txsMedium}`}
               href={`/book/finalize/${node._id}`}
@@ -246,7 +249,7 @@ const DoctorCardAlt = ({
         >
           {getContent("visitProfile")}
         </Link>
-        {bookable ? (
+        {canBook ? (
           <Link
             className={`${classes.action} ${classes.secondaryAction}`}
             href={`/book/finalize/${node._id}`}

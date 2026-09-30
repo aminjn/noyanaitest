@@ -378,3 +378,26 @@
   color: var(--gray8);
   font-size: 0.6875rem;
 }
+
+.unclaimed {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  background: var(--white);
+  border: 1px dashed var(--gray4);
+}
+
+.unclaimedTitle {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gray13);
+}
+
+.unclaimedLegend {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--gray8);
+}

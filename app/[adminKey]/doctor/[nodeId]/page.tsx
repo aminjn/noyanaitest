@@ -1,17 +1,8 @@
-import AdminManageDoctorPage from "@/Components/Admin/Doctor/AdminManageDoctorPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// The old doctors directory was merged into doctor profiles (2026-09): the
+// admin manages every doctor in one list.
+const LegacyAdminDoctors = () => redirect(`/${adminKey}/doctorprofile`);
 
-const AdminManageDoctor = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageDoctorPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageDoctor;
+export default LegacyAdminDoctors;

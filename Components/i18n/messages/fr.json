@@ -241,7 +241,7 @@
  "chosenBlogs": "Articles à la une",
  "city": "Ville",
  "claimProfileLegend": "Si ce profil vous appartient, revendiquez-le :",
- "claimThisProfile": "C'est votre profil ?",
+ "claimThisProfile": "Cette page est la mienne",
  "clickToRequestAddClinic": "Cliquez pour demander l'ajout d'une clinique",
  "clickToRequestAddHospital": "Cliquez pour demander à rejoindre un hôpital",
  "clickToRequestAddInsurance": "Cliquez pour demander l'ajout d'une assurance",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Votre demande précédente a été refusée",
  "rejectedApplicationLegend": "Corrigez vos informations et documents puis renvoyez la demande. Contactez le support pour connaître la raison du refus.",
  "seePharmacy": "Voir la pharmacie",
- "featuredSpecialities": "Spécialités à la une"
+ "featuredSpecialities": "Spécialités à la une",
+ "unclaimedProfileTitle": "La prise de rendez-vous en ligne n'est pas disponible",
+ "unclaimedProfileLegend": "Ce médecin n'a pas encore de compte NoyanAI et ne prend pas de rendez-vous en ligne. Si cette page est la vôtre, activez-la en demandant à nous rejoindre."
 }

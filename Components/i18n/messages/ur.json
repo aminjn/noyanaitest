@@ -241,7 +241,7 @@
  "chosenBlogs": "منتخب تحریریں",
  "city": "شہر",
  "claimProfileLegend": "اگر یہ پروفائل آپ کا ہے تو اس کا دعویٰ کریں:",
- "claimThisProfile": "کیا یہ آپ کا پروفائل ہے؟",
+ "claimThisProfile": "یہ صفحہ میرا ہے",
  "clickToRequestAddClinic": "کلینک شامل کرنے کی درخواست کے لیے کلک کریں",
  "clickToRequestAddHospital": "اسپتال میں شمولیت کی درخواست کے لیے کلک کریں",
  "clickToRequestAddInsurance": "انشورنس شامل کرنے کی درخواست کے لیے کلک کریں",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "آپ کی پچھلی درخواست مسترد کر دی گئی",
  "rejectedApplicationLegend": "اپنی معلومات اور دستاویزات درست کریں اور دوبارہ جمع کرائیں۔ مسترد ہونے کی وجہ جاننے کے لیے سپورٹ سے رابطہ کریں۔",
  "seePharmacy": "فارمیسی دیکھیں",
- "featuredSpecialities": "منتخب تخصصات"
+ "featuredSpecialities": "منتخب تخصصات",
+ "unclaimedProfileTitle": "آن لائن بکنگ دستیاب نہیں",
+ "unclaimedProfileLegend": "اس ڈاکٹر کا ابھی نویان پر اکاؤنٹ نہیں ہے اور آن لائن بکنگ نہیں لیتے۔ اگر یہ صفحہ آپ کا ہے تو شمولیت کی درخواست دے کر اسے فعال کریں۔"
 }

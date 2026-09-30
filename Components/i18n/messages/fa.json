@@ -241,7 +241,7 @@
  "chosenBlogs": "مطالب برگزیده",
  "city": "شهر",
  "claimProfileLegend": "اگر صاحب این پروفایل هستید، مدیریت آن را در دست بگیرید:",
- "claimThisProfile": "این پروفایل متعلق به شماست؟",
+ "claimThisProfile": "این صفحه متعلق به من است",
  "clickToRequestAddClinic": "برای درخواست افزودن کلینیک کلیک کنید",
  "clickToRequestAddHospital": "برای ارسال درخواست عضویت در بیمارستان کلیک کنید",
  "clickToRequestAddInsurance": "برای درخواست افزودن بیمه کلیک کنید",
@@ -2147,5 +2147,7 @@
  "rejectedApplicationTitle": "درخواست قبلی شما رد شد",
  "rejectedApplicationLegend": "اطلاعات و مدارک را اصلاح کنید و دوباره ارسال کنید. برای دانستن دلیل رد، با پشتیبانی در تماس باشید.",
  "seePharmacy": "مشاهده داروخانه",
- "featuredSpecialities": "تخصص‌های منتخب"
+ "featuredSpecialities": "تخصص‌های منتخب",
+ "unclaimedProfileTitle": "نوبت‌دهی اینترنتی فعال نیست",
+ "unclaimedProfileLegend": "این پزشک هنوز در نویان حساب ندارد و نوبت اینترنتی نمی‌دهد. اگر این صفحه متعلق به شماست، با ثبت درخواست همکاری آن را فعال کنید."
 }

@@ -47,6 +47,7 @@ import { tmdMedium } from "@/Components/UI/Typography";
 import Badge from "@/Components/UI/Badge";
 import DoctorReviews from "./DoctorReviews";
 import BookingSidebar from "./BookingSidebar";
+import Button from "@/Components/UI/Button";
 
 const NS: ContentNamespace[] = ["common", "drProfile"];
 
@@ -291,7 +292,23 @@ const NewDoctorProfilePage = ({
           </nav>
         </div>
         <div className={classes.side}>
-          <BookingSidebar doctor={doctor} />
+          {(doctor as { claimed?: boolean }).claimed === false ? (
+            // imported from the old directory, no account yet: no booking
+            // widget (it would show empty slots) - a way to claim instead
+            <div className={classes.unclaimed}>
+              <h3 className={classes.unclaimedTitle}>
+                {getContent("unclaimedProfileTitle")}
+              </h3>
+              <p className={classes.unclaimedLegend}>
+                {getContent("unclaimedProfileLegend")}
+              </p>
+              <Button href="/become/doctor" variant="Primary" mode="Outline" size="M" radius="High">
+                {getContent("claimThisProfile")}
+              </Button>
+            </div>
+          ) : (
+            <BookingSidebar doctor={doctor} />
+          )}
         </div>
         <div className={classes.cardBottom}>
           <SectionCard

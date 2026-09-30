@@ -241,7 +241,7 @@
  "chosenBlogs": "Öne çıkan yazılar",
  "city": "Şehir",
  "claimProfileLegend": "Bu profilin sahibiyseniz sahiplenin:",
- "claimThisProfile": "Bu sizin profiliniz mi?",
+ "claimThisProfile": "Bu sayfa benim",
  "clickToRequestAddClinic": "Klinik eklemek için tıklayın",
  "clickToRequestAddHospital": "Hastaneye katılım isteği için tıklayın",
  "clickToRequestAddInsurance": "Sigorta eklemek için tıklayın",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Önceki başvurunuz reddedildi",
  "rejectedApplicationLegend": "Bilgilerinizi ve belgelerinizi düzeltip yeniden gönderin. Ret nedenini öğrenmek için destekle iletişime geçin.",
  "seePharmacy": "Eczaneyi görüntüle",
- "featuredSpecialities": "Öne çıkan uzmanlıklar"
+ "featuredSpecialities": "Öne çıkan uzmanlıklar",
+ "unclaimedProfileTitle": "Çevrimiçi randevu kullanılamıyor",
+ "unclaimedProfileLegend": "Bu doktorun henüz NoyanAI hesabı yok ve çevrimiçi randevu almıyor. Bu sayfa sizinse katılım başvurusuyla etkinleştirin."
 }

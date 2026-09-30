@@ -241,7 +241,7 @@
  "chosenBlogs": "مقالات مختارة",
  "city": "المدينة",
  "claimProfileLegend": "إذا كنت صاحب هذا الملف، فطالب به:",
- "claimThisProfile": "هل هذا ملفك الشخصي؟",
+ "claimThisProfile": "هذه الصفحة لي",
  "clickToRequestAddClinic": "انقر لطلب إضافة عيادة",
  "clickToRequestAddHospital": "انقر لطلب الانضمام إلى مستشفى",
  "clickToRequestAddInsurance": "انقر لطلب إضافة تأمين",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "تم رفض طلبك السابق",
  "rejectedApplicationLegend": "صحّح بياناتك ومستنداتك وأرسلها مرة أخرى. تواصل مع الدعم لمعرفة سبب الرفض.",
  "seePharmacy": "عرض الصيدلية",
- "featuredSpecialities": "تخصصات مختارة"
+ "featuredSpecialities": "تخصصات مختارة",
+ "unclaimedProfileTitle": "الحجز عبر الإنترنت غير متاح",
+ "unclaimedProfileLegend": "ليس لدى هذا الطبيب حساب في نويان بعد ولا يقبل الحجز عبر الإنترنت. إذا كانت هذه الصفحة لك، فعّلها بتقديم طلب انضمام."
 }

@@ -82,6 +82,14 @@ const AdminManageDoctorProfilesPage = () => {
                   ),
                 filter: "Multi",
               },
+              claimed: {
+                name: "حساب پزشک",
+                value: (node) =>
+                  (node as { claimed?: boolean }).claimed === false
+                    ? "بدون حساب (از فهرست قدیم)"
+                    : "دارد",
+                filter: "Set",
+              },
               medicalSystemCode: {
                 name: "کد نظام پزشکی",
                 value: (node) => node.medicalSystemCode,
