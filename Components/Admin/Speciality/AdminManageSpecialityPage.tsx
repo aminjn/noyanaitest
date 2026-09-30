@@ -17,7 +17,6 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import { useParams } from "next/navigation";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import List from "../UI/List";
-import { ISpecialityCategory } from "../SpecialityCategory/AdminManageSpecialityCategoriesPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
 const AdminManageSpecialityPage = () => {
@@ -55,18 +54,6 @@ const AdminManageSpecialityPage = () => {
                       order: { type: "number", title: "رتبه" },
                       isHome: { type: "bool", title: "نمایش در خانه" },
                       active: { type: "bool", title: "فعال" },
-                      category: {
-                        type: "nodes",
-                        title: "دسته بندی",
-                        path: `${API}/auto/specialityCategory`,
-                        getOptionLabel: (node) =>
-                          (node as ISpecialityCategory).name ||
-                          (node as ISpecialityCategory)._id,
-                        getOptionValue: (node) =>
-                          (node as ISpecialityCategory)._id,
-                        multi: false,
-                        getDefaultValue: (inp) => inp.category,
-                      },
                       description: { type: "rtf", title: "توضیحات" },
                     }}
                     hookProps={{

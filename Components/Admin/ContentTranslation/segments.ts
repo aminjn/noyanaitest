@@ -38,7 +38,6 @@ export const segmentGroups: { title: string; segments: Record<string, string> }[
       drugTag: "برچسب دارو",
       part: "اعضای بدن",
       speciality: "تخصص‌ها",
-      specialityCategory: "دسته‌بندی تخصص",
       test: "آزمایش‌ها",
       testCategory: "دسته‌بندی آزمایش",
     },

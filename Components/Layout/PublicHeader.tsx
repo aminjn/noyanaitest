@@ -70,7 +70,7 @@ const NavLink = ({
 const Categories = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<keyof HeaderCategories>(
-    "specialityCategories",
+    "specialities",
   );
 
   const { data } = useSWR<HeaderCategories>(

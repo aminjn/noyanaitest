@@ -18,7 +18,7 @@ import DoctorCardAlt from "../UI/DoctorCardAlt";
 import BigAd from "../UI/ListPage/BigAd";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
-import { t2xlRegular, tsmRegular } from "../UI/Typography";
+import { t2xlRegular } from "../UI/Typography";
 
 const NS: ContentNamespace[] = ["common", "specialityPage"];
 
@@ -78,11 +78,6 @@ const SpecialityPage = ({
               <span>{getContent("nDoctors", [count.toString()])}</span>
             </div>
           </div>
-          {!!data.category && (
-            <legend className={`${classes.category} ${tsmRegular}`}>
-              {data.category.name}
-            </legend>
-          )}
         </div>
         <Button
           variant="Primary"

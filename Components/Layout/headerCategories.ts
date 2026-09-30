@@ -7,7 +7,6 @@ import { IParaClinicCategory } from "../Admin/ParaClinicCategory/AdminManagePara
 import { IHospitalCategory } from "../Admin/HospitalCategory/AdminManageHospitalCategoriesPage";
 import { ITestCategory } from "../Admin/TestCategory/AdminManageTestCategoriesPage";
 import { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
-import { ISpecialityCategory } from "../Admin/SpecialityCategory/AdminManageSpecialityCategoriesPage";
 import { ISymptomCategory } from "../Admin/SymptomCategory/AdminManageSymptomCategoriesPage";
 import { IInsuranceCategory } from "../Admin/InsuranceCategory/AdminManageInsuranceCategoriesPage";
 
@@ -20,7 +19,8 @@ export interface HeaderCategories {
   hospitalCategories: IHospitalCategory[];
   testCategories: ITestCategory[];
   serviceCategories: IServiceCategory[];
-  specialityCategories: ISpecialityCategory[];
+  // the specialities themselves: each entry opens its doctors
+  specialities: CategoryLike[];
   symptomCategories: ISymptomCategory[];
   insuranceCategories: IInsuranceCategory[];
 }
@@ -39,10 +39,10 @@ export const categoryTabs: {
   hrefFor: (value: string) => string;
 }[] = [
   {
-    key: "specialityCategories",
+    key: "specialities",
     label: "specialities",
     allTarget: "/speciality",
-    hrefFor: (v) => `/speciality?category=${v}`,
+    hrefFor: (v) => `/speciality/${encodeURIComponent(v)}`,
   },
   {
     key: "diseaseCategories",
