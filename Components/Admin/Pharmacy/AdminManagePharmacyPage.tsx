@@ -30,6 +30,7 @@ import PharmacyCommissionTab from "./PharmacyCommissionTab";
 import PharmacyTaxTab from "./PharmacyTaxTab";
 import PharmacyProfileLicenseTab from "./PharmacyProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const PharmacyLocationTab = ({
   mutate,
@@ -86,7 +87,7 @@ const PharmacyLocationTab = ({
       </div>
       <FormActions>
         <Button isLoading={isLoading} onClick={submit}>
-          تایید
+          {ta("تایید")}
         </Button>
       </FormActions>
     </div>
@@ -115,7 +116,7 @@ const AdminManagePharmacyPage = () => {
                 ? [
                     {
                       id: "Overview",
-                      title: "نمای کلی",
+                      title: ta("نمای کلی"),
                       content: (
                         <EntityOverview
                           kind="pharmacy"
@@ -127,7 +128,7 @@ const AdminManagePharmacyPage = () => {
                   ]
                 : []),
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
@@ -141,11 +142,11 @@ const AdminManagePharmacyPage = () => {
                       },
                     }}
                     renderer={{
-                      name: { title: "نام", type: "text" },
-                      active: { type: "bool", title: "فعال" },
-                      order: { type: "number", title: "رتبه" },
+                      name: { title: ta("نام"), type: "text" },
+                      active: { type: "bool", title: ta("فعال") },
+                      order: { type: "number", title: ta("رتبه") },
                       province: {
-                        title: "استان",
+                        title: ta("استان"),
                         type: "nodes",
                         path: `${API}/auto/province`,
                         getOptionLabel: (node) =>
@@ -155,7 +156,7 @@ const AdminManagePharmacyPage = () => {
                         getDefaultValue: (inp) => inp.province,
                       },
                       city: {
-                        title: "شهر",
+                        title: ta("شهر"),
                         type: "nodes",
                         getOptionLabel: (node) =>
                           (node as ICity).name || (node as ICity)._id,
@@ -165,7 +166,7 @@ const AdminManagePharmacyPage = () => {
                         path: `${API}/auto/city`,
                       },
                       district: {
-                        title: "محله",
+                        title: ta("محله"),
                         getOptionLabel: (node) =>
                           (node as IDistrict).name || (node as IDistrict)._id,
                         type: "nodes",
@@ -179,24 +180,24 @@ const AdminManagePharmacyPage = () => {
                 ),
               },
               {
-                title: "لوکیشن",
+                title: ta("لوکیشن"),
                 content: <PharmacyLocationTab node={data} mutate={mutate} />,
                 id: "Location",
               },
               {
-                title: "کمیسیون",
+                title: ta("کمیسیون"),
                 id: "Commission",
                 icon: <WalletIcon />,
                 content: <PharmacyCommissionTab node={data} />,
               },
               {
-                title: "مالیات",
+                title: ta("مالیات"),
                 id: "Tax",
                 icon: <WalletIcon />,
                 content: <PharmacyTaxTab node={data} />,
               },
               {
-                title: "مجوز",
+                title: ta("مجوز"),
                 id: "License",
                 icon: <CartIcon />,
                 content: <PharmacyProfileLicenseTab node={data} />,

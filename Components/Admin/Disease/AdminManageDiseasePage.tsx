@@ -25,6 +25,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import { IDiseaseCategory } from "../DiseaseCategory/AdminManageDiseaseCategoriesPage";
 import { IDiseaseTag } from "../DiseaseTag/AdminManageDiseaseTagsPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDiseasePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -50,7 +51,7 @@ const AdminManageDiseasePage = () => {
             name="AdminManageDisease"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 content: (
                   <CreateForm
                     defaultValue={data}
@@ -60,20 +61,20 @@ const AdminManageDiseasePage = () => {
                       successCb: () => mutate(),
                     }}
                     renderer={{
-                      name: { title: "نام", type: "text" },
-                      description: { title: "توضیحات", type: "area" },
-                      summary: { title: "خلاصه", type: "text" },
+                      name: { title: ta("نام"), type: "text" },
+                      description: { title: ta("توضیحات"), type: "area" },
+                      summary: { title: ta("خلاصه"), type: "text" },
                       genderSpecific: {
-                        title: "مخصوص جنسیت",
+                        title: ta("مخصوص جنسیت"),
                         type: "select",
                         options: genderSpecificOptionsDict,
                       },
-                      image: { type: "image", title: "تصویر" },
-                      slug: { type: "text", title: "اسلاگ" },
-                      order: { type: "number", title: "رتبه" },
+                      image: { type: "image", title: ta("تصویر") },
+                      slug: { type: "text", title: ta("اسلاگ") },
+                      order: { type: "number", title: ta("رتبه") },
                       tag: {
                         type: "nodes",
-                        title: "لگ",
+                        title: ta("لگ"),
                         multi: false,
                         getOptionLabel: (node) =>
                           (node as IDiseaseTag).name ||
@@ -84,7 +85,7 @@ const AdminManageDiseasePage = () => {
                       },
                       category: {
                         type: "nodes",
-                        title: "دسته بندی",
+                        title: ta("دسته بندی"),
                         path: `${API}/auto/diseaseCategory`,
                         getOptionLabel: (node) =>
                           (node as IDiseaseCategory).name ||
@@ -94,8 +95,8 @@ const AdminManageDiseasePage = () => {
                         multi: false,
                         getDefaultValue: (inp) => inp.category,
                       },
-                      aiSummary: { type: "rtf", title: "خلاصه AI" },
-                      content:{type:"rtf" , title:"محتوا" }
+                      aiSummary: { type: "rtf", title: ta("خلاصه AI") },
+                      content:{type:"rtf" , title:ta("محتوا") }
                     }}
                   />
                 ),
@@ -103,7 +104,7 @@ const AdminManageDiseasePage = () => {
                 id: "Details",
               },
               {
-                title: "توضیحات",
+                title: ta("توضیحات"),
                 icon: <InfoIcon />,
                 id: "More",
                 content: (
@@ -136,7 +137,7 @@ const AdminManageDiseasePage = () => {
                 ),
               },
               {
-                title: "اتصالات",
+                title: ta("اتصالات"),
                 icon: <InfoIcon />,
                 id: "Connections",
                 content: (
@@ -151,7 +152,7 @@ const AdminManageDiseasePage = () => {
                       symptoms: {
                         type: "nodes",
                         path: `${API}/auto/symptom`,
-                        title: "علائم",
+                        title: ta("علائم"),
                         multi: true,
                         getDefaultValue: (val) =>
                           val.symptoms?.map((el) => el._id),
@@ -162,7 +163,7 @@ const AdminManageDiseasePage = () => {
                       },
                       specialities: {
                         type: "nodes",
-                        title: "تخصص ها",
+                        title: ta("تخصص ها"),
                         path: `${API}/auto/speciality`,
                         multi: true,
                         getOptionLabel: (node) =>
@@ -173,7 +174,7 @@ const AdminManageDiseasePage = () => {
                           val.specialities.map((el) => el._id),
                       },
                       drugs: {
-                        title: "دارو ها",
+                        title: ta("دارو ها"),
                         type: "nodes",
                         getOptionLabel: (node) =>
                           (node as IDrug).name || (node as IDrug)._id,
@@ -185,7 +186,7 @@ const AdminManageDiseasePage = () => {
                       },
                       sameAs: {
                         type: "nodes",
-                        title: "مشابهات",
+                        title: ta("مشابهات"),
                         path: `${API}/auto/disease`,
                         multi: true,
                         getOptionLabel: (node) =>
@@ -199,7 +200,7 @@ const AdminManageDiseasePage = () => {
                 ),
               },
               {
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
@@ -207,7 +208,7 @@ const AdminManageDiseasePage = () => {
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
@@ -224,7 +225,7 @@ const AdminManageDiseasePage = () => {
                         )
                       }
                     >
-                      حذف
+                      {ta("حذف")}
                     </Button>
                   </List>
                 ),

@@ -14,6 +14,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type TestifyPopulation = Population<Record<never, never>>;
 
@@ -29,12 +30,24 @@ export interface ITestify<
 }
 
 export const testifyFormRenderer: FormRenderer<ITestify> = {
-  name: { type: "text", title: "نام" },
-  order: { type: "number", title: "رتبه" },
-  isActive: { type: "bool", title: "فعال" },
-  title: { type: "text", title: "عنوان" },
-  image: { type: "image", title: "تصویر" },
-  content: { type: "area", title: "نظر" },
+  name: { type: "text", get title() {
+  return ta("نام");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  title: { type: "text", get title() {
+  return ta("عنوان");
+} },
+  image: { type: "image", get title() {
+  return ta("تصویر");
+} },
+  content: { type: "area", get title() {
+  return ta("نظر");
+} },
 };
 
 const AdminManageTestifiesPage = () => {
@@ -44,16 +57,16 @@ const AdminManageTestifiesPage = () => {
       create={testifyFormRenderer}
       modelName="testify"
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
-        title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
+        title: { name: ta("عنوان"), value: (node) => node.title, filter: "Text" },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -66,18 +79,18 @@ const AdminManageTestifiesPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/testify/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",
@@ -95,7 +108,7 @@ const AdminManageTestifiesPage = () => {
           ),
         },
       })}
-      title="تستیفای"
+      title={ta("تستیفای")}
     />
   );
 };

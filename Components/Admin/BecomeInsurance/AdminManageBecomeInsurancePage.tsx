@@ -20,6 +20,7 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import ChangeBecomeInsuranceStatusPopup from "./ChangeBecomeInsuranceStatusPopup";
 import AssignInsuranceToBecomeInsuranceRequestPopup from "./AssignInsuranceToBecomeInsuranceRequestPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeInsurancePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -34,23 +35,23 @@ const AdminManageBecomeInsurancePage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست بیمه شدن">
+        <WithTitle title={ta("درخواست بیمه شدن")}>
           <TabSystem
             name="AdminManageBBecomeInsurance"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
                   <List>
                     <DataPair
-                      title="تاریخ ایجاد"
+                      title={ta("تاریخ ایجاد")}
                       value={<FormatDate value={data.createdAt} />}
                     />
-                    <DataPair title="نام" value={data.name} />
+                    <DataPair title={ta("نام")} value={data.name} />
                     <DataPair
-                      title="یوزر"
+                      title={ta("یوزر")}
                       value={
                         data.user ? (
                           <InlineLink
@@ -64,35 +65,35 @@ const AdminManageBecomeInsurancePage = () => {
                       }
                     />
                     <DataPair
-                      title="وضعیت"
+                      title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
-                    <DataPair title="کد سیام" value={data.siamCode} />
-                    <DataPair title="کد ملی" value={data.nationalId} />
+                    <DataPair title={ta("کد سیام")} value={data.siamCode} />
+                    <DataPair title={ta("کد ملی")} value={data.nationalId} />
                     <DataPair
-                      title="تاریخ گواهی"
+                      title={ta("تاریخ گواهی")}
                       value={<FormatDate value={data.certificateDate} />}
                     />
                     <DataPair
-                      title="فایل گواهی"
+                      title={ta("فایل گواهی")}
                       value={
                         data.certificateFile ? (
                           <InlineLink
                             href={`${FilePath}/${data.certificateFile}`}
                           >
-                            مشاهده فایل
+                            {ta("مشاهده فایل")}
                           </InlineLink>
                         ) : (
-                          "ثبت نشده"
+                          ta("ثبت نشده")
                         )
                       }
                     />
-                    <DataPair title="توضیحات" value={data.description} />
+                    <DataPair title={ta("توضیحات")} value={data.description} />
                   </List>
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
@@ -101,8 +102,8 @@ const AdminManageBecomeInsurancePage = () => {
                       requestPath="becomeinsurance"
                       nodeId={String(nodeId)}
                       status={data.status}
-                      label="تأیید و ساخت بیمه"
-                      done="بیمه ساخته و فعال شد."
+                      label={ta("تأیید و ساخت بیمه")}
+                      done={ta("بیمه ساخته و فعال شد.")}
                       target={(id) => `/insurance/${id}`}
                       mutate={mutate}
                     />
@@ -117,7 +118,7 @@ const AdminManageBecomeInsurancePage = () => {
                         )
                       }
                     >
-                      تغییر وضعیت
+                      {ta("تغییر وضعیت")}
                     </Button>
                     <Button
                       onClick={() =>
@@ -130,7 +131,7 @@ const AdminManageBecomeInsurancePage = () => {
                         )
                       }
                     >
-                      تخصیص بیمه
+                      {ta("تخصیص بیمه")}
                     </Button>
                   </List>
                 ),

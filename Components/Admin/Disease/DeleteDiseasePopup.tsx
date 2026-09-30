@@ -5,6 +5,7 @@ import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import { IDisease } from "./AdminManageDiseasesPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteDiseasePopup = ({
   mutate,
@@ -20,7 +21,7 @@ const DeleteDiseasePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف بیماری ${node.name || node._id} مطمئنید؟`}
+        message={ta("آیا از حذف بیماری ${1} مطمئنید؟", [node.name || node._id])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

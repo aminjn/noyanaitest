@@ -8,6 +8,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageTestCategoryPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -23,10 +24,10 @@ const AdminManageTestCategoryPage = () => {
           <CreateForm
             defaultValue={data}
             renderer={{
-              name: { title: "نام", type: "text" },
-              isActive: { type: "bool", title: "فعال" },
-              order: { type: "number", title: "رتبه" },
-              slug: { type: "text", title: "اسلاگ" },
+              name: { title: ta("نام"), type: "text" },
+              isActive: { type: "bool", title: ta("فعال") },
+              order: { type: "number", title: ta("رتبه") },
+              slug: { type: "text", title: ta("اسلاگ") },
             }}
             hookProps={{
               path: `${API}/auto/testCategory/${data._id}`,

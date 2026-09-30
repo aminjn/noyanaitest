@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteTicketPopup = ({
   ticket,
@@ -19,7 +20,7 @@ const DeleteTicketPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این تیکت مطمئنید؟"
+        message={ta("آیا از حذف این تیکت مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

@@ -14,6 +14,7 @@ import IconButton from "../UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteRedirectionPopup from "./DeleteRedirectionPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const redirectionStatusCodes = [301, 307, 308] as const;
 
@@ -37,10 +38,10 @@ const AdminManageRedirectionsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="انتقالات"
+          title={ta("انتقالات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateRedirection",
@@ -53,23 +54,23 @@ const AdminManageRedirectionsPage = () => {
             data={data}
             name="AdminManageRedirections"
             renderer={{
-              old: { name: "آدرس قدیم", value: (node) => node.old, filter: "Text" },
+              old: { name: ta("آدرس قدیم"), value: (node) => node.old, filter: "Text" },
               current: {
-                name: "آدرس جدید",
+                name: ta("آدرس جدید"),
                 value: (node) => node.current,
                 filter: "Text",
               },
               statusCode: {
-                name: "کد وضعیت",
+                name: ta("کد وضعیت"),
                 value: (node) => node.statusCode,
                 filter: "Set",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateRedirection",
@@ -80,7 +81,7 @@ const AdminManageRedirectionsPage = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton
-                      title="حذف"
+                      title={ta("حذف")}
                       variant="Danger"
                       onClick={() =>
                         setPopup(

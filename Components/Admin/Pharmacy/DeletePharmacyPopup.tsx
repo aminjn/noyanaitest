@@ -5,6 +5,7 @@ import { mutate } from "swr";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeletePharmacyPopup = ({
   mutate,
@@ -19,7 +20,7 @@ const DeletePharmacyPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف داروخانه ${node.name || node._id} مطمئن هستید؟`}
+        message={ta("آیا از حذف داروخانه ${1} مطمئن هستید؟", [node.name || node._id])}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

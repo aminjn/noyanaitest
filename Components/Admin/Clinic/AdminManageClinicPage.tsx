@@ -33,6 +33,7 @@ import ClinicProfileLicenseTab from "./ClinicProfileLicenseTab";
 import ClinicTaxTab from "./ClinicTaxTab";
 import CartIcon from "@/Components/Icons/CartIcon";
 import WalletIcon from "@/Components/Icons/WalletIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ClinicLocationManager = ({
   node,
@@ -45,7 +46,7 @@ const ClinicLocationManager = ({
     {
       path: `${API}/auto/clinic/${node._id}`,
       method: "POST",
-      hasProblem: (inp) => (!inp.coords ? "یک موقعیت را انتخاب کنید" : false),
+      hasProblem: (inp) => (!inp.coords ? ta("یک موقعیت را انتخاب کنید") : false),
       mutator: (inp) => ({
         location: { type: "Point", coordinates: inp.coords },
       }),
@@ -61,7 +62,7 @@ const ClinicLocationManager = ({
       />
       <FormActions>
         <Button type="submit" onClick={submit} isLoading={isLoading}>
-          تایید
+          {ta("تایید")}
         </Button>
       </FormActions>
     </Form>
@@ -92,7 +93,7 @@ const AdminManageClinicPage = () => {
                 ? [
                     {
                       id: "Overview",
-                      title: "نمای کلی",
+                      title: ta("نمای کلی"),
                       content: (
                         <EntityOverview
                           kind="clinic"
@@ -104,38 +105,38 @@ const AdminManageClinicPage = () => {
                   ]
                 : []),
               {
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 icon: <InfoIcon />,
                 id: "Info",
                 content: <ClinicInfoTab clinic={data} mutate={mutate} />,
               },
               {
-                title: "لوکیشن",
+                title: ta("لوکیشن"),
                 id: "GEO",
                 icon: <LocationIcon />,
                 content: <ClinicLocationManager mutate={mutate} node={data} />,
               },
               {
-                title: "یوزر",
+                title: ta("یوزر"),
                 content: <ClinicUserTab node={data} mutate={mutate} />,
 
                 icon: <InfoIcon />,
                 id: "User",
               },
               {
-                title: "دپارتمان ها",
+                title: ta("دپارتمان ها"),
                 icon: <InfoIcon />,
                 id: "Departments",
                 content: <ClinicDepartmentsTab clinic={data} />,
               },
               {
-                title: "پزشکان",
+                title: ta("پزشکان"),
                 icon: <InfoIcon />,
                 content: <ClinicDoctorsTab clinic={data} />,
                 id: "Doctors",
               },
               {
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
@@ -146,19 +147,19 @@ const AdminManageClinicPage = () => {
                 ),
               },
               {
-                title: "مجوز",
+                title: ta("مجوز"),
                 id: "License",
                 icon: <CartIcon />,
                 content: <ClinicProfileLicenseTab node={data} />,
               },
               {
-                title: "مالیات",
+                title: ta("مالیات"),
                 id: "Tax",
                 icon: <WalletIcon />,
                 content: <ClinicTaxTab node={data} />,
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 icon: <InfoIcon />,
                 id: "Actions",
                 content: (
@@ -176,7 +177,7 @@ const AdminManageClinicPage = () => {
                       variant="Error"
                       //TODO:Clean up coroutine to remove departments and doctor department relations server side
                     >
-                      حذف کامل این کلینیک
+                      {ta("حذف کامل این کلینیک")}
                     </Button>
                   </List>
                 ),

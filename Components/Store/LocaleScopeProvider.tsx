@@ -4,7 +4,7 @@ import { ReactNode, useContext } from "react";
 import LocaleContext from "./LocaleContext";
 import { ITextContent } from "../Admin/TextContent/AdminManageTextContentPage";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import { Locale } from "../i18n/locales";
+import { Locale, setSiteDefaultLocale } from "../i18n/locales";
 
 // The root layout renders the only real provider: all texts of the current
 // language (Components/i18n/getMessages) plus the locale. Nested usages from
@@ -15,14 +15,19 @@ const LocaleScopeProvider = ({
   initialTextContent,
   locale,
   enabledLocales,
+  siteDefaultLocale,
 }: {
   children: ReactNode;
   namespaces?: ContentNamespace[];
   initialTextContent?: Partial<ITextContent>;
   locale?: Locale;
   enabledLocales?: readonly Locale[];
+  // the super admin's default language (root layout only): unprefixed URLs
+  // and the links built in the browser follow it
+  siteDefaultLocale?: Locale;
 }) => {
   const parent = useContext(LocaleContext);
+  if (siteDefaultLocale) setSiteDefaultLocale(siteDefaultLocale);
   if (!locale) return <>{children}</>;
   return (
     <LocaleContext.Provider
@@ -30,6 +35,7 @@ const LocaleScopeProvider = ({
         textContent: initialTextContent || parent.textContent,
         locale,
         enabledLocales: enabledLocales || parent.enabledLocales,
+        siteDefaultLocale: siteDefaultLocale || parent.siteDefaultLocale,
       }}
     >
       {children}

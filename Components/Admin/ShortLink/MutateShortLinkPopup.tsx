@@ -3,6 +3,7 @@ import { IShortLink } from "./AdminManageShortLinksPage";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateShortLinkPopup = ({
   mutate,
@@ -19,8 +20,8 @@ const MutateShortLinkPopup = ({
         style={{ width: "min(40rem , 90dvw)" }}
         onCancel={() => closePopup()}
         renderer={{
-          target: { title: "مقصد", type: "text" },
-          token: { title: "توکن", type: "text" },
+          target: { title: ta("مقصد"), type: "text" },
+          token: { title: ta("توکن"), type: "text" },
         }}
         hookProps={{
           path: `${API}/auto/shortlink${node ? `/${node._id}` : ""}`,

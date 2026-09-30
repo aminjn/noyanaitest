@@ -4,6 +4,7 @@ import { WithStyleProps } from "../Layout/Layout";
 import usePopup from "../Hooks/usePopup";
 import Ixon from "./Ixon";
 import CloseIcon from "../Icons/CloseIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const PopupCard = ({
   children,
@@ -33,7 +34,7 @@ const PopupCard = ({
                 {icon}
               </Ixon>
             )}
-            <span className={classes.title}>{title}</span>
+            <span className={classes.title}>{ta(title)}</span>
           </div>
         )}
         <button

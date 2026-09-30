@@ -29,6 +29,7 @@ import ChangeBecomeDoctorStatusPopup from "./ChangeBecomeDoctorStatusPopup";
 import FormActions from "../UI/FormActions";
 import BecomeDoctorProfileSelector from "./BecomeDoctorProfileSelector";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeDoctorPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -48,7 +49,7 @@ const AdminManageBecomeDoctorPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست پزشک شدن">
+        <WithTitle title={ta("درخواست پزشک شدن")}>
           <TabSystem
             items={[
               {
@@ -56,47 +57,47 @@ const AdminManageBecomeDoctorPage = () => {
                 content: (
                   <List>
                     <DataPair
-                      title="تاریخ ثبت"
+                      title={ta("تاریخ ثبت")}
                       value={<FormatDate value={new Date(data.createdAt)} />}
                     />
                     <DataPair
-                      title="کاربر"
+                      title={ta("کاربر")}
                       value={
                         <InlineLink href={adminPath(`/user/${data.user?._id}`)}>
                           {data.user?.phone || "—"}
                         </InlineLink>
                       }
                     />
-                    <DataPair title="نام" value={data.firstName} />
-                    <DataPair title="نام خانوادگی" value={data.lastName} />
-                    <DataPair title="کد ملی" value={data.ssid} />
-                    <DataPair title="جنسیت" value={genderDict[data.gender]} />
+                    <DataPair title={ta("نام")} value={data.firstName} />
+                    <DataPair title={ta("نام خانوادگی")} value={data.lastName} />
+                    <DataPair title={ta("کد ملی")} value={data.ssid} />
+                    <DataPair title={ta("جنسیت")} value={genderDict[data.gender]} />
                     <DataPair
-                      title="عنوان نظام پزشکی"
+                      title={ta("عنوان نظام پزشکی")}
                       value={data.medicalSystemTitle}
                     />
                     <DataPair
-                      title="کد نظام پزشکی"
+                      title={ta("کد نظام پزشکی")}
                       value={data.medicalSystemCode}
                     />
                     <DataPair
-                      title="استان"
+                      title={ta("استان")}
                       value={
                         provinces.find((p) => p.slug === data.province)?.name
                       }
                     />
                     <DataPair
-                      title="شهر"
+                      title={ta("شهر")}
                       value={cities.find((c) => c.slug === data.city)?.name}
                     />
-                    <DataPair title="آدرس" value={data.address} />
-                    <DataPair title="توضیحات" value={data.description} />
+                    <DataPair title={ta("آدرس")} value={data.address} />
+                    <DataPair title={ta("توضیحات")} value={data.description} />
                     <DataPair
-                      title="وضعیت"
+                      title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
                     <div>
-                      <legend>تخصص ها</legend>
+                      <legend>{ta("تخصص ها")}</legend>
                       <List>
                         {(Array.isArray(data.specialities) ? data.specialities : []).map((speciality) => (
                           <InlineLink
@@ -110,13 +111,13 @@ const AdminManageBecomeDoctorPage = () => {
                     </div>
                   </List>
                 ),
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 icon: <InfoIcon />,
               },
               ...(hasAccess("DoctorProfile", "readAll")
                 ? [
                     {
-                      title: "پروفایل",
+                      title: ta("پروفایل"),
                       icon: <InfoIcon />,
                       id: "Profile",
                       content: <BecomeDoctorProfileSelector req={data} />,
@@ -132,8 +133,8 @@ const AdminManageBecomeDoctorPage = () => {
                       requestPath="becomedoctor"
                       nodeId={data._id}
                       status={data.status}
-                      label="تأیید و ساخت پروفایل پزشک"
-                      done="پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد."
+                      label={ta("تأیید و ساخت پروفایل پزشک")}
+                      done={ta("پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد.")}
                       target={(id) => `/doctorprofile/${id}`}
                       mutate={mutate}
                     />
@@ -150,7 +151,7 @@ const AdminManageBecomeDoctorPage = () => {
                           )
                         }
                       >
-                        حذف
+                        {ta("حذف")}
                       </Button>
                     )}
                     {hasAccess("BecomeDoctorRequest", "update") && (
@@ -166,12 +167,12 @@ const AdminManageBecomeDoctorPage = () => {
                           )
                         }
                       >
-                        تغییر وضعیت
+                        {ta("تغییر وضعیت")}
                       </Button>
                     )}
                   </FormActions>
                 ),
-                title: "عملیات",
+                title: ta("عملیات"),
               },
             ]}
             name="AdminManageBecomeDoctor"

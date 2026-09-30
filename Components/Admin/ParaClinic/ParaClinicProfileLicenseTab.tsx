@@ -12,6 +12,7 @@ import {
   ParaClinicDashboardModule,
   IBaseParaClinicLicense,
 } from "../BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/ParaClinicProfileLicense.ts - one doc per
 // paraClinic (unique on `owner`), fetched here by filtering the generic
@@ -58,9 +59,9 @@ const ParaClinicProfileLicenseTab = ({ node }: { node: IParaClinic }) => {
             successCb: () => mutate(),
           }}
           renderer={{
-            displayName: { title: "نام نمایشی", type: "text" },
+            displayName: { title: ta("نام نمایشی"), type: "text" },
             baseLicense: {
-              title: "پلن مرجع",
+              title: ta("پلن مرجع"),
               type: "nodes",
               multi: false,
               path: `${API}/auto/baseParaClinicLicense`,
@@ -70,10 +71,10 @@ const ParaClinicProfileLicenseTab = ({ node }: { node: IParaClinic }) => {
               getOptionValue: (node) => (node as IBaseParaClinicLicense)._id,
               getDefaultValue: (inp) => inp.baseLicense,
             },
-            startedAt: { title: "تاریخ شروع", type: "date" },
-            expiresAt: { title: "تاریخ انقضا", type: "date" },
+            startedAt: { title: ta("تاریخ شروع"), type: "date" },
+            expiresAt: { title: ta("تاریخ انقضا"), type: "date" },
             modules: {
-              title: "منوهای قابل دسترسی",
+              title: ta("منوهای قابل دسترسی"),
               type: "multiselect",
               options: paraClinicDashboardModuleLabels,
             },

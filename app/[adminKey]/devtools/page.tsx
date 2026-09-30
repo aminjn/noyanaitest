@@ -2,6 +2,7 @@ import AdminHubPage from "@/Components/Admin/Hub/AdminHubPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
 
@@ -11,7 +12,7 @@ const AdminDevTools = async () => {
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
       <AdminHubPage
         hub="devtools"
-        intro="تست اتصال سرویس‌های بیرونی و دسترسی به دیتابیس قدیم. فقط برای توسعه و عیب‌یابی."
+        intro={ta("تست اتصال سرویس‌های بیرونی و دسترسی به دیتابیس قدیم. فقط برای توسعه و عیب‌یابی.")}
       />
     </LocaleScopeProvider>
   );

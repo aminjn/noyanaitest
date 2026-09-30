@@ -12,6 +12,7 @@ import DashboardIcon from "@/Components/Icons/DashboardIcon";
 import PolygonPicker from "@/Components/UI/PolygonPicker";
 import { Fragment, useState } from "react";
 import Act from "@/Components/UI/Act";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DistrictDetails = ({
   mutate,
@@ -31,9 +32,9 @@ const DistrictDetails = ({
         },
       }}
       renderer={{
-        name: { title: "نام", type: "text" },
-        order: { type: "number", title: "رتبه" },
-        isActive: { title: "فعال", type: "bool" },
+        name: { title: ta("نام"), type: "text" },
+        order: { type: "number", title: ta("رتبه") },
+        isActive: { title: ta("فعال"), type: "bool" },
       }}
     />
   );
@@ -87,13 +88,13 @@ const AdminManageDistrictPage = () => {
             {
               id: "Details",
               icon: <DashboardIcon />,
-              title: "جزئیات",
+              title: ta("جزئیات"),
               content: <DistrictDetails node={data} mutate={mutate} />,
             },
             {
               id: "Geometry",
               icon: <DashboardIcon />,
-              title: "جئومتری",
+              title: ta("جئومتری"),
               content: <DistrictGeometry mutate={mutate} node={data} />,
             },
           ]}

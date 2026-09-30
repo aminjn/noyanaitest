@@ -16,6 +16,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteClinicDoctorPopup from "./DeleteClinicDoctorPopup";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
   const { data, error, mutate } = useSWR<
@@ -33,10 +34,10 @@ const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title={`پزشکان ${clinic.name || clinic._id}`}
+          title={ta("پزشکان ${1}", [clinic.name || clinic._id])}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateClinicDoctor",
@@ -50,9 +51,9 @@ const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
             name="AdminManageClinicDoctors"
             renderer={{
               doctor: {
-                name: "پزشک",
+                name: ta("پزشک"),
                 value: (node) =>
-                  node.doctor ? getDoctorProfileLabel(node.doctor) : "حذف شده",
+                  node.doctor ? getDoctorProfileLabel(node.doctor) : ta("حذف شده"),
                 filter: "Text",
                 component: (node) =>
                   node.doctor ? (
@@ -60,23 +61,23 @@ const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
                       {getDoctorProfileLabel(node.doctor)}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
               },
               department: {
-                name: "دپارتمان",
+                name: ta("دپارتمان"),
                 value: (node) =>
                   node.department
                     ? node.department.name || node.department._id
-                    : "ندارد",
+                    : ta("ندارد"),
                 filter: "Multi",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateClinicDoctor",
@@ -92,7 +93,7 @@ const ClinicDoctorsTab = ({ clinic }: { clinic: IClinic }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteClinicDoctor",

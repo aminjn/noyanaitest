@@ -22,6 +22,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HospitalTagPopulation = Population<Record<never, never>>;
 
@@ -41,9 +42,9 @@ const CreateHospitalTagPopup = ({ mutate }: { mutate: () => unknown }) => {
       <CreateForm<IHospitalTag>
         onCancel={() => closePopup()}
         renderer={{
-          name: { type: "text", title: "نام" },
-          isActive: { type: "bool", title: "فعال" },
-          order: { type: "number", title: "رتبه" },
+          name: { type: "text", title: ta("نام") },
+          isActive: { type: "bool", title: ta("فعال") },
+          order: { type: "number", title: ta("رتبه") },
         }}
         hookProps={{
           path: `${API}/auto/hospitalTag`,
@@ -70,7 +71,7 @@ const DeleteHospitalTagPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />
@@ -100,10 +101,10 @@ const AdminManageHospitalTagsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تگ بیمارستان"
+          title={ta("تگ بیمارستان")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateHospitalTag",
@@ -116,15 +117,15 @@ const AdminManageHospitalTagsPage = () => {
             data={data}
             name="AdminManageHospitalTags"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -137,18 +138,18 @@ const AdminManageHospitalTagsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/hospitalTag/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalTag",

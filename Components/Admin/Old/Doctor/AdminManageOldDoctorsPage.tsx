@@ -7,6 +7,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IOldSpeciality extends MongoDoc {
   name: string;
@@ -177,25 +178,25 @@ const AdminManageOldDoctorsPage = () => {
           data={data}
           name="AdminManageOldDoctors"
           renderer={{
-            name: { name: "نام", value: (node) => node.name, filter: "Text" },
+            name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
             speciality: {
-              name: "تخصص",
+              name: ta("تخصص"),
               value: (node) => node.speciality?.name,
               filter: "Multi",
             },
-            code: { name: "کد نظام", value: (node) => node.code, filter: "Text" },
+            code: { name: ta("کد نظام"), value: (node) => node.code, filter: "Text" },
             mobile: {
-              name: "موبایل",
+              name: ta("موبایل"),
               value: (node) => node.mobile,
               filter: "Text",
             },
             city: {
-              name: "شهر",
+              name: ta("شهر"),
               value: (node) => node.newCity,
               filter: "Multi",
             },
             user: {
-              name: "کاربر",
+              name: ta("کاربر"),
               value: (node) => node.user?.phone,
               filter: "Text",
             },

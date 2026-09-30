@@ -22,6 +22,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type DiseaseCategoryPopuplation = Population<Record<never, never>>;
 
@@ -43,10 +44,10 @@ const CreateDiseaseCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
           closePopup();
         }}
         renderer={{
-          name: { type: "text", title: "نام" },
-          isActive: { type: "bool", title: "فعال" },
-          order: { type: "number", title: "رتبه" },
-          slug: { title: "اسلاگ", type: "text" },
+          name: { type: "text", title: ta("نام") },
+          isActive: { type: "bool", title: ta("فعال") },
+          order: { type: "number", title: ta("رتبه") },
+          slug: { title: ta("اسلاگ"), type: "text" },
         }}
         hookProps={{
           path: `${API}/auto/diseaseCategory`,
@@ -73,7 +74,7 @@ const DeleteDiseaseCategoryPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />
@@ -103,10 +104,10 @@ const AdminManageDiseaseCategoriesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دسته بندی بیماری ها"
+          title={ta("دسته بندی بیماری ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateDiseaseCategory",
@@ -119,15 +120,15 @@ const AdminManageDiseaseCategoriesPage = () => {
             name="AdminManageDiseaseCategories"
             data={data}
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -140,18 +141,18 @@ const AdminManageDiseaseCategoriesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/diseaseCategory/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDiseaseCategory",

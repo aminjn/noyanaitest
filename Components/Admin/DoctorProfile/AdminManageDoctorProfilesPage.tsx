@@ -20,6 +20,7 @@ import DeleteDoctorProfilePopup from "./DeleteDoctorProfilePopup";
 import WithTitle from "../UI/WithTitle";
 import CreateDoctorProfilePopup from "./CreateDoctorProfilePopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorProfilesPage = () => {
   const { data, error, mutate } = useSWR<
@@ -40,12 +41,12 @@ const AdminManageDoctorProfilesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="پروفایل پزشکان"
+          title={ta("پروفایل پزشکان")}
           actions={
             hasAccess("DoctorProfile", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "CreateDoctorProfile",
@@ -61,13 +62,13 @@ const AdminManageDoctorProfilesPage = () => {
             name="AdminManageDoctorProfiles"
             renderer={{
               fullName: {
-                name: "نام پزشک",
+                name: ta("نام پزشک"),
                 value: (node) =>
                   [node.firstName, node.lastName].filter(Boolean).join(" "),
                 filter: "Text",
               },
               mainSpeciality: {
-                name: "تخصص",
+                name: ta("تخصص"),
                 value: (node) =>
                   node.mainSpeciality?.name || node.mainSpeciality?._id || "",
                 component: (node) =>
@@ -83,20 +84,20 @@ const AdminManageDoctorProfilesPage = () => {
                 filter: "Multi",
               },
               claimed: {
-                name: "حساب پزشک",
+                name: ta("حساب پزشک"),
                 value: (node) =>
                   (node as { claimed?: boolean }).claimed === false
-                    ? "بدون حساب (از فهرست قدیم)"
-                    : "دارد",
+                    ? ta("بدون حساب (از فهرست قدیم)")
+                    : ta("دارد"),
                 filter: "Set",
               },
               medicalSystemCode: {
-                name: "کد نظام پزشکی",
+                name: ta("کد نظام پزشکی"),
                 value: (node) => node.medicalSystemCode,
                 filter: "Text",
               },
               city: {
-                name: "شهر",
+                name: ta("شهر"),
                 // the profile references a Geo City document (populated)
                 value: (node) =>
                   (node.city as unknown as { name?: string } | undefined)
@@ -104,7 +105,7 @@ const AdminManageDoctorProfilesPage = () => {
                 filter: "Multi",
               },
               user: {
-                name: "مالک",
+                name: ta("مالک"),
                 value: (node) => node.user?.phone,
                 filter: "Text",
                 component: (node) =>
@@ -117,7 +118,7 @@ const AdminManageDoctorProfilesPage = () => {
                   ),
               },
               phoneConsult: {
-                name: "مشاوره تلفنی",
+                name: ta("مشاوره تلفنی"),
                 value: (node) =>
                   booleanToValue[`${!!node.phoneConsultSettings?.active}`],
                 component: (node) => (
@@ -126,7 +127,7 @@ const AdminManageDoctorProfilesPage = () => {
                 filter: "Set",
               },
               phoneConsultPrice: {
-                name: "قیمت مشاوره (تومان)",
+                name: ta("قیمت مشاوره (تومان)"),
                 value: (node) => node.phoneConsultSettings?.price,
                 component: (node) =>
                   node.phoneConsultSettings?.price !== undefined
@@ -135,13 +136,13 @@ const AdminManageDoctorProfilesPage = () => {
                 filter: "Number",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("DoctorProfile", "readOne") && (
                       <IconLink
                         href={adminPath(`/doctorprofile/${node._id}`)}
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                       >
                         <EditIcon />
                       </IconLink>
@@ -149,7 +150,7 @@ const AdminManageDoctorProfilesPage = () => {
                     {hasAccess("DoctorProfile", "delete") && (
                       <IconButton
                         variant="Danger"
-                        title="حذف"
+                        title={ta("حذف")}
                         onClick={() =>
                           setPopup(
                             "DeleetDoctorProfile",

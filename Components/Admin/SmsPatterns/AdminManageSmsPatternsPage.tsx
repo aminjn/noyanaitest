@@ -12,6 +12,7 @@ import {
   userAlertEventLabels,
   UserAlertEvent,
 } from "../UserAlert/AdminManageUserAlertsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Every entry here is one SMS a reservation's own doctor/patient (not
 // staff) can receive about that specific reservation - mirrors backend
@@ -36,13 +37,27 @@ export const reservationSmsEvents = [
 export type ReservationSmsEvent = (typeof reservationSmsEvents)[number];
 
 export const reservationSmsEventLabels: Record<ReservationSmsEvent, string> = {
-  newReservationDoctor: "نوبت جدید - پزشک",
-  newReservationPatient: "نوبت جدید - بیمار",
-  newReservationRelativePatient: "نوبت جدید - بیمار (رزرو توسط دیگری)",
-  upcomingReservationDoctor: "یادآوری نوبت - پزشک",
-  upcomingReservationPatient: "یادآوری نوبت - بیمار",
-  reservationInProgressDoctorNoShow: "یادآوری حضور در نوبت - پزشک",
-  reservationInProgressPatientNoShow: "یادآوری حضور در نوبت - بیمار",
+  get newReservationDoctor() {
+  return ta("نوبت جدید - پزشک");
+},
+  get newReservationPatient() {
+  return ta("نوبت جدید - بیمار");
+},
+  get newReservationRelativePatient() {
+  return ta("نوبت جدید - بیمار (رزرو توسط دیگری)");
+},
+  get upcomingReservationDoctor() {
+  return ta("یادآوری نوبت - پزشک");
+},
+  get upcomingReservationPatient() {
+  return ta("یادآوری نوبت - بیمار");
+},
+  get reservationInProgressDoctorNoShow() {
+  return ta("یادآوری حضور در نوبت - پزشک");
+},
+  get reservationInProgressPatientNoShow() {
+  return ta("یادآوری حضور در نوبت - بیمار");
+},
 };
 
 // The exact {placeholder} variable names Services/reservationSmsService.ts
@@ -96,10 +111,18 @@ export const orderSmsEvents = [
 export type OrderSmsEvent = (typeof orderSmsEvents)[number];
 
 export const orderSmsEventLabels: Record<OrderSmsEvent, string> = {
-  newOrderUser: "سفارش جدید - خریدار",
-  newOrderPharmacy: "سفارش جدید - داروخانه",
-  newOrderDoctor: "سفارش جدید - پزشک",
-  newOrderParaClinic: "سفارش جدید - پاراکلینیک",
+  get newOrderUser() {
+  return ta("سفارش جدید - خریدار");
+},
+  get newOrderPharmacy() {
+  return ta("سفارش جدید - داروخانه");
+},
+  get newOrderDoctor() {
+  return ta("سفارش جدید - پزشک");
+},
+  get newOrderParaClinic() {
+  return ta("سفارش جدید - پاراکلینیک");
+},
 };
 
 // The exact {placeholder} variable names Services/orderSmsService.ts sends
@@ -191,18 +214,22 @@ export type ISmsPatterns = MongoDoc & {
 // title below, so whoever configures a pattern on the gateway's side knows
 // exactly which placeholders that pattern's text must contain.
 const withVariables = (title: string, variables: string[]): string =>
-  `${title} (متغیرها: ${variables.join("، ")})`;
+  ta("${1} (متغیرها: ${2})", [title, variables.join("، ")]);
 
 // Built once from userAlertEvents + reservationSmsEvents + orderSmsEvents,
 // so a new event automatically gets its own text field here without
 // hand-listing pattern names.
 const patternFormRenderer = {
   OTP_PATTERN: {
-    title: "پترن کد تایید (OTP) (متغیرها: OTP)",
+    get title() {
+  return ta("پترن کد تایید (OTP) (متغیرها: OTP)");
+},
     type: "text",
   },
   SECRETARY_INVITE_PATTERN: {
-    title: "پترن دعوت منشی (متغیرها: owner) — خالی بماند یعنی پیامک ارسال نمی‌شود",
+    get title() {
+  return ta("پترن دعوت منشی (متغیرها: owner) — خالی بماند یعنی پیامک ارسال نمی‌شود");
+},
     type: "text",
   },
 } as FormRenderer<ISmsPatterns>;
@@ -211,10 +238,12 @@ for (const event of userAlertEvents) {
   (patternFormRenderer as Record<string, unknown>)[
     smsPatternNameForEvent(event)
   ] = {
-    title: withVariables(
-      `پترن پیامک - ${userAlertEventLabels[event]}`,
+    get title() {
+  return withVariables(
+      ta("پترن پیامک - ${1}", [userAlertEventLabels[event]]),
       userAlertEventVariables[event],
-    ),
+    );
+},
     type: "text",
   };
 }
@@ -223,10 +252,12 @@ for (const event of reservationSmsEvents) {
   (patternFormRenderer as Record<string, unknown>)[
     smsPatternNameForEvent(event)
   ] = {
-    title: withVariables(
-      `پترن پیامک - ${reservationSmsEventLabels[event]}`,
+    get title() {
+  return withVariables(
+      ta("پترن پیامک - ${1}", [reservationSmsEventLabels[event]]),
       reservationSmsEventVariables[event],
-    ),
+    );
+},
     type: "text",
   };
 }
@@ -235,10 +266,12 @@ for (const event of orderSmsEvents) {
   (patternFormRenderer as Record<string, unknown>)[
     smsPatternNameForEvent(event)
   ] = {
-    title: withVariables(
-      `پترن پیامک - ${orderSmsEventLabels[event]}`,
+    get title() {
+  return withVariables(
+      ta("پترن پیامک - ${1}", [orderSmsEventLabels[event]]),
       orderSmsEventVariables[event],
-    ),
+    );
+},
     type: "text",
   };
 }
@@ -252,7 +285,7 @@ const AdminManageSmsPatternsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="پترن‌های پیامک">
+        <WithTitle title={ta("پترن‌های پیامک")}>
           <CreateForm<ISmsPatterns>
             defaultValue={data}
             hookProps={{

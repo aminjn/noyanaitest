@@ -4,6 +4,7 @@ import CreateForm from "../UI/CreateForm";
 import { becomeNodeManualStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ChangeBecomeParaClinicRequestStatusPopup = ({
   mutate,
@@ -22,7 +23,7 @@ const ChangeBecomeParaClinicRequestStatusPopup = ({
           status: {
             type: "select",
             options: becomeNodeManualStatusesDict,
-            title: "وضعیت",
+            title: ta("وضعیت"),
           },
         }}
         onCancel={() => closePopup()}

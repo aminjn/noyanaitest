@@ -5,6 +5,7 @@ import { mutate } from "swr";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteSymptomPopup = ({
   mutate,
@@ -18,7 +19,7 @@ const DeleteSymptomPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف علامت ${node.name || node._id} مطمئنید؟`}
+        message={ta("آیا از حذف علامت ${1} مطمئنید؟", [node.name || node._id])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

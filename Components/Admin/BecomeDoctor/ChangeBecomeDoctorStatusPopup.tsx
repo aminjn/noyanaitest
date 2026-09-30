@@ -6,6 +6,7 @@ import {
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ChangeBecomeDoctorStatusPopup = ({
   mutate,
@@ -17,14 +18,14 @@ const ChangeBecomeDoctorStatusPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="تغییر وضعیت درخواست">
+    <PopupCard title={ta("تغییر وضعیت درخواست")}>
       <CreateForm
         styleManaged
         defaultValue={node}
         renderer={{
           status: {
             type: "select",
-            title: "وضعیت",
+            title: ta("وضعیت"),
             options: becomeNodeManualStatusesDict,
           },
         }}

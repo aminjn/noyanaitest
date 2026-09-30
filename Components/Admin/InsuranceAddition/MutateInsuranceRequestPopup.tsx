@@ -4,6 +4,7 @@ import { additionRequestStatusDict } from "@/Components/DoctorPanel/Clinic/Docto
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateInsuranceRequestPopup = ({
   mutate,
@@ -15,7 +16,7 @@ const MutateInsuranceRequestPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="درخواست افزودن بیمه">
+    <PopupCard title={ta("درخواست افزودن بیمه")}>
       <CreateForm<IInsuranceAdditionRequest>
         defaultValue={node}
         onCancel={() => closePopup()}
@@ -30,7 +31,7 @@ const MutateInsuranceRequestPopup = ({
         renderer={{
           status: {
             type: "select",
-            title: "وضعیت",
+            title: ta("وضعیت"),
             options: additionRequestStatusDict,
           },
         }}

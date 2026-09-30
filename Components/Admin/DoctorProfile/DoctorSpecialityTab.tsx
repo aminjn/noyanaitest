@@ -5,6 +5,7 @@ import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DoctorSpecialityTab = ({
   mutate,
@@ -28,7 +29,7 @@ const DoctorSpecialityTab = ({
       }}
       renderer={{
         mainSpeciality: {
-          title: "تخصص اصلی",
+          title: ta("تخصص اصلی"),
           type: "nodes",
           path: `${API}/auto/speciality`,
           getOptionLabel: (node) =>
@@ -37,7 +38,7 @@ const DoctorSpecialityTab = ({
           getDefaultValue: (node) => node.mainSpeciality,
         },
         specialities: {
-          title: "تخصص ها",
+          title: ta("تخصص ها"),
           type: "nodes",
           path: `${API}/auto/speciality`,
           multi: true,

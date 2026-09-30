@@ -13,6 +13,7 @@ import ToggleInput from "@/Components/UI/ToggleInput";
 import { useState } from "react";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const CloneDoctorProfileFromExistingDoctorPopup = ({
   mutate,
@@ -88,9 +89,9 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="ساخت پروفایل از پزشک موجود">
+    <PopupCard title={ta("ساخت پروفایل از پزشک موجود")}>
       <ToggleInput
-        title="رفتن به پروفایل ساخته شده بعد از اتمام عملیات"
+        title={ta("رفتن به پروفایل ساخته شده بعد از اتمام عملیات")}
         value={proceed}
         onChange={() => setProceed((prev) => !prev)}
       />
@@ -104,7 +105,7 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
                 user: {
                   type: "nodes",
                   path: `${API}/auto/user`,
-                  title: "کاربر",
+                  title: ta("کاربر"),
                   getOptionLabel: (node) => getUserLabel(node as IUser),
                   getOptionValue: (node) => (node as IUser)._id,
                 },
@@ -115,7 +116,7 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
                 doctor: {
                   type: "nodes",
                   path: `${API}/auto/doctor`,
-                  title: "پزشک",
+                  title: ta("پزشک"),
                   getOptionLabel: (doc) => getDoctorLabel(doc as IDoctor),
                   getOptionValue: (node) => (node as IDoctor)._id,
                 },

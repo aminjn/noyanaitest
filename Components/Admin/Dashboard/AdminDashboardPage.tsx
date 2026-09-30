@@ -16,6 +16,7 @@ import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
 import RetryIcon from "@/Components/Icons/RetryIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import DailyBarChart from "@/Components/UI/DailyBarChart";
+import { adminDateTimeFormat, adminIntlTag, adminIsRtl, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 
 type DailyPoint = { date: string; count: number };
 
@@ -34,15 +35,15 @@ const AdminDailyChart = ({
   return (
     <DailyBarChart
       title={title}
-      locale="fa-IR"
-      rtl
+      locale={adminIntlTag()}
+      rtl={adminIsRtl()}
       points={list.map((p) => ({ date: p.date, value: p.count }))}
       formatValue={(value) => `${num.format(value)} ${unit}`}
       labels={{
-        summary: `${num.format(total)} ${unit} در ${num.format(list.length)} روز اخیر`,
-        chart: "نمودار",
-        table: "جدول",
-        day: "روز",
+        summary: ta("${1} ${2} در ${3} روز اخیر", [num.format(total), unit, num.format(list.length)]),
+        chart: ta("نمودار"),
+        table: ta("جدول"),
+        day: ta("روز"),
         value: unit,
       }}
     />
@@ -79,25 +80,33 @@ type Dashboard = {
   }[];
 };
 
-const num = new Intl.NumberFormat("fa-IR");
-const dateTime = new Intl.DateTimeFormat("fa-IR", {
+const num = adminNumberFormat();
+const dateTime = adminDateTimeFormat({
   month: "long",
   day: "numeric",
   hour: "2-digit",
   minute: "2-digit",
 });
-const shortDate = new Intl.DateTimeFormat("fa-IR", {
+const shortDate = adminDateTimeFormat({
   year: "numeric",
   month: "short",
   day: "numeric",
 });
 
 const roleLabels: Record<string, string> = {
-  admin: "سوپر ادمین",
-  notadmin: "کارمند",
-  user: "کاربر",
+  get admin() {
+  return ta("سوپر ادمین");
+},
+  get notadmin() {
+  return ta("کارمند");
+},
+  get user() {
+  return ta("کاربر");
+},
 };
 
+// Persian source, translated where shown (a module-level ta() would run
+// before the panel's dictionary is set)
 const reservationStatusLabels: [string, string][] = [
   ["pending", "در انتظار"],
   ["active", "فعال"],
@@ -166,9 +175,9 @@ const AdminDashboard = () => {
         <div className={classes.main}>
           <header className={classes.header}>
             <div>
-              <h1 className={classes.pageTitle}>داشبورد</h1>
+              <h1 className={classes.pageTitle}>{ta("داشبورد")}</h1>
               <span className={classes.updated}>
-                {`به‌روزرسانی: ${dateTime.format(new Date(data.generatedAt))}`}
+                {ta("به‌روزرسانی: ${1}", [dateTime.format(new Date(data.generatedAt))])}
               </span>
             </div>
             <button
@@ -180,45 +189,45 @@ const AdminDashboard = () => {
               <Ixon width="1rem">
                 <RetryIcon />
               </Ixon>
-              <span>{isValidating ? "در حال بارگذاری..." : "به‌روزرسانی"}</span>
+              <span>{isValidating ? ta("در حال بارگذاری...") : ta("به‌روزرسانی")}</span>
             </button>
           </header>
 
           <div className={classes.tiles}>
             <StatTile
               icon={<UserGroupIcon />}
-              label="کاربران"
+              label={ta("کاربران")}
               value={num.format(data.totals.users)}
-              note={`${num.format(data.totals.newUsers)} کاربر جدید در ${num.format(data.periodDays)} روز اخیر`}
+              note={ta("${1} کاربر جدید در ${2} روز اخیر", [num.format(data.totals.newUsers), num.format(data.periodDays)])}
             />
             <StatTile
               icon={<CalendarIcon />}
-              label={`رزروها (${num.format(data.periodDays)} روز)`}
+              label={ta("رزروها (${1} روز)", [num.format(data.periodDays)])}
               value={num.format(data.reservations.total)}
-              note={`${num.format(data.reservations.byStatus.completed || 0)} نوبت انجام‌شده`}
+              note={ta("${1} نوبت انجام‌شده", [num.format(data.reservations.byStatus.completed || 0)])}
             />
             <StatTile
               icon={<ShoppingCartIcon />}
-              label={`فروش سفارش‌ها (${num.format(data.periodDays)} روز)`}
-              value={`${num.format(data.orders.paidTotal)} تومان`}
-              note={`${num.format(data.orders.paidCount)} سفارش پرداخت‌شده`}
+              label={ta("فروش سفارش‌ها (${1} روز)", [num.format(data.periodDays)])}
+              value={ta("${1} تومان", [num.format(data.orders.paidTotal)])}
+              note={ta("${1} سفارش پرداخت‌شده", [num.format(data.orders.paidCount)])}
             />
             <StatTile
               icon={<WalletIcon />}
-              label={`درآمد نوبت‌ها (${num.format(data.periodDays)} روز)`}
-              value={`${num.format(data.reservations.completedTotal)} تومان`}
-              note="مجموع مبلغ نوبت‌های انجام‌شده"
+              label={ta("درآمد نوبت‌ها (${1} روز)", [num.format(data.periodDays)])}
+              value={ta("${1} تومان", [num.format(data.reservations.completedTotal)])}
+              note={ta("مجموع مبلغ نوبت‌های انجام‌شده")}
             />
           </div>
 
           <div className={classes.row}>
             <Card
-              title="کارهای در انتظار"
+              title={ta("کارهای در انتظار")}
               className={classes.pendingCard}
               action={
                 data.pending.length > 0 && (
                   <Link href={adminPath("/inbox")} className={classes.inboxLink}>
-                    <span>صندوق درخواست‌ها</span>
+                    <span>{ta("صندوق درخواست‌ها")}</span>
                     <span className={classes.badge}>
                       {num.format(data.pending.reduce((s, p) => s + p.count, 0))}
                     </span>
@@ -231,7 +240,7 @@ const AdminDashboard = () => {
                   <Ixon width="1.5rem">
                     <CheckCircleIcon />
                   </Ixon>
-                  <span>کار معوقه‌ای وجود ندارد</span>
+                  <span>{ta("کار معوقه‌ای وجود ندارد")}</span>
                 </div>
               ) : (
                 <ul className={classes.pendingList}>
@@ -268,16 +277,16 @@ const AdminDashboard = () => {
               )}
             </Card>
 
-            <Card title="مراکز و ارائه‌دهندگان">
+            <Card title={ta("مراکز و ارائه‌دهندگان")}>
               <div className={classes.entityGrid}>
                 {(
                   [
-                    ["پزشکان", data.totals.doctors, "doctorprofile"],
-                    ["کلینیک‌ها", data.totals.clinics, "clinic"],
-                    ["بیمارستان‌ها", data.totals.hospitals, "hospital"],
-                    ["داروخانه‌ها", data.totals.pharmacies, "pharmacy"],
-                    ["پاراکلینیک‌ها", data.totals.paraClinics, "paraClinic"],
-                    ["بیمه‌ها", data.totals.insurances, "insurance"],
+                    [ta("پزشکان"), data.totals.doctors, "doctorprofile"],
+                    [ta("کلینیک‌ها"), data.totals.clinics, "clinic"],
+                    [ta("بیمارستان‌ها"), data.totals.hospitals, "hospital"],
+                    [ta("داروخانه‌ها"), data.totals.pharmacies, "pharmacy"],
+                    [ta("پاراکلینیک‌ها"), data.totals.paraClinics, "paraClinic"],
+                    [ta("بیمه‌ها"), data.totals.insurances, "insurance"],
                   ] as [string, number, string][]
                 ).map(([label, value, href]) => (
                   <Link key={href} href={adminPath(`/${href}`)} className={classes.entity}>
@@ -288,12 +297,12 @@ const AdminDashboard = () => {
               </div>
               <div className={classes.statusBlock}>
                 <span className={classes.statusTitle}>
-                  {`وضعیت رزروهای ${num.format(data.periodDays)} روز اخیر`}
+                  {ta("وضعیت رزروهای ${1} روز اخیر", [num.format(data.periodDays)])}
                 </span>
                 <div className={classes.statusList}>
                   {reservationStatusLabels.map(([key, label]) => (
                     <span key={key} className={classes.statusChip}>
-                      <span>{label}</span>
+                      <span>{ta(label)}</span>
                       <strong>{num.format(data.reservations.byStatus[key] || 0)}</strong>
                     </span>
                   ))}
@@ -305,25 +314,25 @@ const AdminDashboard = () => {
           <div className={classes.charts}>
             <section className={classes.card}>
               <AdminDailyChart
-                title="ثبت‌نام روزانه"
-                unit="ثبت‌نام"
+                title={ta("ثبت‌نام روزانه")}
+                unit={ta("ثبت‌نام")}
                 points={data.series.signups}
               />
             </section>
             <section className={classes.card}>
               <AdminDailyChart
-                title="رزرو روزانه"
-                unit="رزرو"
+                title={ta("رزرو روزانه")}
+                unit={ta("رزرو")}
                 points={data.series.reservations}
               />
             </section>
           </div>
 
           <Card
-            title="آخرین کاربران"
+            title={ta("آخرین کاربران")}
             action={
               <Link href={adminPath("/user")} className={classes.more}>
-                همه کاربران
+                {ta("همه کاربران")}
               </Link>
             }
           >
@@ -331,10 +340,10 @@ const AdminDashboard = () => {
               <table className={classes.table}>
                 <thead>
                   <tr>
-                    <th>موبایل</th>
-                    <th>نام کاربری</th>
-                    <th>نقش</th>
-                    <th>تاریخ عضویت</th>
+                    <th>{ta("موبایل")}</th>
+                    <th>{ta("نام کاربری")}</th>
+                    <th>{ta("نقش")}</th>
+                    <th>{ta("تاریخ عضویت")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -372,9 +381,9 @@ const AdminDashboardPage = () => {
     return (
       <div className={classes.main}>
         <section className={classes.card}>
-          <h1 className={classes.pageTitle}>به پنل مدیریت خوش آمدید</h1>
+          <h1 className={classes.pageTitle}>{ta("به پنل مدیریت خوش آمدید")}</h1>
           <p className={classes.welcome}>
-            برای شروع، بخش مورد نظر خود را از منوی کناری انتخاب کنید.
+            {ta("برای شروع، بخش مورد نظر خود را از منوی کناری انتخاب کنید.")}
           </p>
         </section>
       </div>

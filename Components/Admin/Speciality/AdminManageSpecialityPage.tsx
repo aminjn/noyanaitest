@@ -18,6 +18,7 @@ import { useParams } from "next/navigation";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import List from "../UI/List";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageSpecialityPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -35,26 +36,26 @@ const AdminManageSpecialityPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={data.name || "تخصص"}>
+        <WithTitle title={data.name || ta("تخصص")}>
           <TabSystem
             name="AdminManageSpeciality"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 content: (
                   <CreateForm
                     readOnly={!hasAccess("Sepciality", "update")}
                     defaultValue={data}
                     renderer={{
-                      name: { type: "text", title: "نام" },
-                      slug: { type: "text", title: "اسلاگ" },
-                      summary: { type: "text", title: "خلاصه" },
-                      image: { type: "image", title: "تصویر" },
-                      order: { type: "number", title: "رتبه" },
-                      isHome: { type: "bool", title: "نمایش در خانه" },
-                      active: { type: "bool", title: "فعال" },
-                      description: { type: "rtf", title: "توضیحات" },
+                      name: { type: "text", title: ta("نام") },
+                      slug: { type: "text", title: ta("اسلاگ") },
+                      summary: { type: "text", title: ta("خلاصه") },
+                      image: { type: "image", title: ta("تصویر") },
+                      order: { type: "number", title: ta("رتبه") },
+                      isHome: { type: "bool", title: ta("نمایش در خانه") },
+                      active: { type: "bool", title: ta("فعال") },
+                      description: { type: "rtf", title: ta("توضیحات") },
                     }}
                     hookProps={{
                       path: `${API}/auto/speciality/${data._id}`,
@@ -69,7 +70,7 @@ const AdminManageSpecialityPage = () => {
                 icon: <InfoIcon />,
               },
               {
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 id: "Meta",
                 icon: <InfoIcon />,
                 content: (
@@ -80,7 +81,7 @@ const AdminManageSpecialityPage = () => {
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
@@ -98,7 +99,7 @@ const AdminManageSpecialityPage = () => {
                           )
                         }
                       >
-                        حذف
+                        {ta("حذف")}
                       </Button>
                     )}
                   </List>

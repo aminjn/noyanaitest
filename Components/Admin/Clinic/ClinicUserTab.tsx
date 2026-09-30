@@ -10,6 +10,7 @@ import RemoveUserFromClinicPopup from "./RemoveUserFromClinicPopup";
 import { getUserLabel } from "../Lib/LabelGetters";
 import { IUser } from "@/Components/Hooks/useUser";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ClinicUserTab = ({
   mutate,
@@ -26,7 +27,7 @@ const ClinicUserTab = ({
         defaultValue={node}
         renderer={{
           user: {
-            title: "یوزر",
+            title: ta("یوزر"),
             type: "nodes",
             getOptionLabel: (node) => getUserLabel(node as IUser),
             path: `${API}/auto/user`,
@@ -51,7 +52,7 @@ const ClinicUserTab = ({
             }
             variant="Error"
           >
-            حذف یوزر از روی این کلینیک
+            {ta("حذف یوزر از روی این کلینیک")}
           </Button>
         )}
       </FormActions>

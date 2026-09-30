@@ -5,6 +5,7 @@ import Act from "@/Components/UI/Act";
 import { IBlogCategory } from "./AdminManageBlogsPage";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteBlogCategoryPopup = ({
   mutate,
@@ -20,7 +21,7 @@ const DeleteBlogCategoryPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف دسته بندی ${node.title} مطمئنید؟`}
+        message={ta("آیا از حذف دسته بندی ${1} مطمئنید؟", [node.title])}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

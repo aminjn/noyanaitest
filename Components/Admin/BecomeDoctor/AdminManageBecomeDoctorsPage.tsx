@@ -21,6 +21,7 @@ import IconLink from "../UI/IconLink";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteBecomeDoctorPopup from "./DeleteBecomeDoctorPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeDoctorsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -36,19 +37,19 @@ const AdminManageBecomeDoctorsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های پزشک شدن">
+        <WithTitle title={ta("درخواست های پزشک شدن")}>
           <Table
             data={data}
             name="AdminManageBecomeDoctors"
             renderer={{
               fullName: {
-                name: "نام و نام خانوادگی",
+                name: ta("نام و نام خانوادگی"),
                 value: (node) =>
                   [node.firstName, node.lastName].filter(Boolean).join(" "),
                 filter: "Text",
               },
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => node.user?.phone,
                 filter: "Text",
                 component: (node) =>
@@ -61,34 +62,34 @@ const AdminManageBecomeDoctorsPage = () => {
                   ),
               },
               medicalSystemTitle: {
-                name: "عنوان نظام پزشکی",
+                name: ta("عنوان نظام پزشکی"),
                 value: (node) => node.medicalSystemTitle,
                 filter: "Set",
               },
               city: {
-                name: "شهر",
+                name: ta("شهر"),
                 value: (node) => cities.find((c) => c.slug === node.city)?.name,
                 filter: "Multi",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
               },
               createdAt: {
-                name: "زمان درخواست",
+                name: ta("زمان درخواست"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("BecomeDoctorRequest", "readOne") && (
                       <IconLink
                         href={adminPath(`/becomedoctor/${node._id}`)}
                         variant="Info"
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                       >
                         <EditIcon />
                       </IconLink>
@@ -96,7 +97,7 @@ const AdminManageBecomeDoctorsPage = () => {
                     {hasAccess("BecomeDoctorRequest", "delete") && (
                       <IconButton
                         variant="Danger"
-                        title="حذف"
+                        title={ta("حذف")}
                         onClick={() =>
                           setPopup(
                             "DeleteBecomeDoctor",

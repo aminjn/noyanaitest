@@ -14,6 +14,7 @@ import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const InstantCreateDoctorProfilePopup = ({
   mutate,
@@ -35,24 +36,24 @@ const InstantCreateDoctorProfilePopup = ({
       <ToggleInput
         value={proceedToProfile}
         onChange={() => setProceedToProfile((prev) => !prev)}
-        title="رفتن به صفحه پروفایل ساخته شده بعد از اتمام عملیات"
+        title={ta("رفتن به صفحه پروفایل ساخته شده بعد از اتمام عملیات")}
       />
       <FormActions>
         <Button
           onClick={() => setPayload({ user: req.user._id })}
           isLoading={!!payload}
         >
-          ساخت پروفایل خام
+          {ta("ساخت پروفایل خام")}
         </Button>
         {/* the approve endpoint builds the profile from the request -
             names, location (slugs -> Geo ids) and the declared specialities;
             copying the fields here sent slugs into ObjectId fields and
             dropped the specialities */}
         <Button isLoading={!!payload || approving} onClick={() => setApproving(true)}>
-          اعمال موارد داخل این درخواست در پروفایلی که ساخته میشود
+          {ta("اعمال موارد داخل این درخواست در پروفایلی که ساخته میشود")}
         </Button>
         <Button onClick={() => closePopup()} variant="Neutral">
-          انصراف
+          {ta("انصراف")}
         </Button>
       </FormActions>
       <Act<{ data: { data: IDoctorProfile } }>

@@ -6,6 +6,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteAccessLevelPopup = ({
   node,
@@ -19,7 +20,7 @@ const DeleteAccessLevelPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف سطح دسترسی ${node.name || node._id} مطمئنید؟`}
+        message={ta("آیا از حذف سطح دسترسی ${1} مطمئنید؟", [node.name || node._id])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

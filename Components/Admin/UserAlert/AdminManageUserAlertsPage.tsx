@@ -19,6 +19,7 @@ import InlineLink from "../UI/InlineLink";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
 import MutateUserAlertPopup from "./MutateUserAlertPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Every entry here is one event a staff account (role !== "user", i.e.
 // "admin"/"notadmin") can be alerted about. Kept in sync with
@@ -47,18 +48,42 @@ export const userAlertEvents = [
 export type UserAlertEvent = (typeof userAlertEvents)[number];
 
 export const userAlertEventLabels: Record<UserAlertEvent, string> = {
-  newTicket: "تیکت جدید",
-  newWithdrawalRequest: "درخواست برداشت جدید",
-  newBecomeDoctorRequest: "درخواست پزشک شدن",
-  newBecomePharmacyRequest: "درخواست داروخانه شدن",
-  newBecomeClinicRequest: "درخواست کلینیک شدن",
-  newBecomeParaClinicRequest: "درخواست پاراکلینیک شدن",
-  newBecomeHospitalRequest: "درخواست بیمارستان شدن",
-  newBecomeInsuranceRequest: "درخواست بیمه شدن",
-  newClinicAdditionRequest: "درخواست افزودن کلینیک",
-  newPharmacyAdditionRequest: "درخواست افزودن داروخانه",
-  newHospitalAdditionRequest: "درخواست افزودن بیمارستان",
-  newInsuranceAdditionRequest: "درخواست افزودن بیمه",
+  get newTicket() {
+  return ta("تیکت جدید");
+},
+  get newWithdrawalRequest() {
+  return ta("درخواست برداشت جدید");
+},
+  get newBecomeDoctorRequest() {
+  return ta("درخواست پزشک شدن");
+},
+  get newBecomePharmacyRequest() {
+  return ta("درخواست داروخانه شدن");
+},
+  get newBecomeClinicRequest() {
+  return ta("درخواست کلینیک شدن");
+},
+  get newBecomeParaClinicRequest() {
+  return ta("درخواست پاراکلینیک شدن");
+},
+  get newBecomeHospitalRequest() {
+  return ta("درخواست بیمارستان شدن");
+},
+  get newBecomeInsuranceRequest() {
+  return ta("درخواست بیمه شدن");
+},
+  get newClinicAdditionRequest() {
+  return ta("درخواست افزودن کلینیک");
+},
+  get newPharmacyAdditionRequest() {
+  return ta("درخواست افزودن داروخانه");
+},
+  get newHospitalAdditionRequest() {
+  return ta("درخواست افزودن بیمارستان");
+},
+  get newInsuranceAdditionRequest() {
+  return ta("درخواست افزودن بیمه");
+},
 };
 
 const capitalize = <T extends string>(value: T) =>
@@ -91,10 +116,14 @@ for (const event of userAlertEvents) {
   const label = userAlertEventLabels[event];
   (userAlertToggleFormRenderer as Record<string, unknown>)[
     `pushNotificationOn${suffix}`
-  ] = { title: `پوش نوتیفیکیشن - ${label}`, type: "bool" };
+  ] = { get title() {
+  return ta("پوش نوتیفیکیشن - ${1}", [label]);
+}, type: "bool" };
   (userAlertToggleFormRenderer as Record<string, unknown>)[
     `sendSMSOn${suffix}`
-  ] = { title: `پیامک - ${label}`, type: "bool" };
+  ] = { get title() {
+  return ta("پیامک - ${1}", [label]);
+}, type: "bool" };
 }
 
 const AdminManageUserAlertsPage = () => {
@@ -109,10 +138,10 @@ const AdminManageUserAlertsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تنظیمات اطلاع‌رسانی کاربران"
+          title={ta("تنظیمات اطلاع‌رسانی کاربران")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateUserAlert",
@@ -126,7 +155,7 @@ const AdminManageUserAlertsPage = () => {
             data={data}
             renderer={{
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => (node.user ? getUserLabel(node.user) : ""),
                 filter: "Text",
                 component: (node) =>
@@ -135,50 +164,46 @@ const AdminManageUserAlertsPage = () => {
                       {getUserLabel(node.user)}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
               },
               push: {
-                name: "پوش نوتیفیکیشن فعال",
+                name: ta("پوش نوتیفیکیشن فعال"),
                 value: (node) =>
                   userAlertEvents.filter(
                     (event) => node[`pushNotificationOn${capitalize(event)}`],
                   ).length,
                 component: (node) =>
-                  `${
-                    userAlertEvents.filter(
+                  ta("${1} از ${2}", [userAlertEvents.filter(
                       (event) => node[`pushNotificationOn${capitalize(event)}`],
-                    ).length
-                  } از ${userAlertEvents.length}`,
+                    ).length, userAlertEvents.length]),
                 filter: "Number",
               },
               sms: {
-                name: "پیامک فعال",
+                name: ta("پیامک فعال"),
                 value: (node) =>
                   userAlertEvents.filter(
                     (event) => node[`sendSMSOn${capitalize(event)}`],
                   ).length,
                 component: (node) =>
-                  `${
-                    userAlertEvents.filter(
+                  ta("${1} از ${2}", [userAlertEvents.filter(
                       (event) => node[`sendSMSOn${capitalize(event)}`],
-                    ).length
-                  } از ${userAlertEvents.length}`,
+                    ).length, userAlertEvents.length]),
                 filter: "Number",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/userAlert/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "Delete",

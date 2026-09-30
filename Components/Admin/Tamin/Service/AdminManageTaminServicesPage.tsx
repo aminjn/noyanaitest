@@ -10,6 +10,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
 import { Population } from "../../Clinic/AdminManageClinicsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type TaminServicePopulation = Population<Record<never, never>>;
 export interface ITaminService<
@@ -56,8 +57,8 @@ const AdminManageTaminServicesPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="سرویس"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("سرویس")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -65,32 +66,32 @@ const AdminManageTaminServicesPage = () => {
               name="AdminManageTaminServices"
               renderer={{
                 srvName: {
-                  name: "نام خدمت",
+                  name: ta("نام خدمت"),
                   value: (node) => node.srvName,
                   filter: "Text",
                 },
                 srvCode: {
-                  name: "کد خدمت",
+                  name: ta("کد خدمت"),
                   value: (node) => node.srvCode,
                   filter: "Text",
                 },
                 srvType: {
-                  name: "نوع",
+                  name: ta("نوع"),
                   value: (node) => node.srvType,
                   filter: "Set",
                 },
                 srvPrice: {
-                  name: "قیمت",
+                  name: ta("قیمت"),
                   value: (node) => node.srvPrice,
                   filter: "Text",
                 },
                 status: {
-                  name: "وضعیت",
+                  name: ta("وضعیت"),
                   value: (node) => node.status,
                   filter: "Set",
                 },
                 srvId: {
-                  name: "شناسه تامین",
+                  name: ta("شناسه تامین"),
                   value: (node) => node.srvId,
                   filter: "Text",
                 },

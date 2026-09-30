@@ -18,6 +18,7 @@ import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import CreateCallPopup from "./CreateCallPopup";
 import DestroyCallPopup from "./DestroyCallPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageCallRoomsPage = () => {
   const { data, error, mutate } = useSWR<ICallRoom<{ participants: true }>[]>(
@@ -31,10 +32,10 @@ const AdminManageCallRoomsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="مکالمات"
+          title={ta("مکالمات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup("CreateCall", <CreateCallPopup mutate={mutate} />),
             },
@@ -45,7 +46,7 @@ const AdminManageCallRoomsPage = () => {
             data={data}
             renderer={{
               partyA: {
-                name: "طرف اول",
+                name: ta("طرف اول"),
                 value: (node) => node.participants?.[0]?.phone,
                 filter: "Text",
                 component: (node) => {
@@ -59,7 +60,7 @@ const AdminManageCallRoomsPage = () => {
                 },
               },
               partyB: {
-                name: "طرف دوم",
+                name: ta("طرف دوم"),
                 value: (node) => node.participants?.[1]?.phone,
                 filter: "Text",
                 component: (node) => {
@@ -73,43 +74,43 @@ const AdminManageCallRoomsPage = () => {
                 },
               },
               callType: {
-                name: "نوع تماس",
+                name: ta("نوع تماس"),
                 value: (node) => callTypeDict[node.callType],
                 filter: "Set",
               },
               startedAt: {
-                name: "شروع تماس",
+                name: ta("شروع تماس"),
                 value: (node) =>
                   node.startedAt ? new Date(node.startedAt) : undefined,
                 filter: "Date",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) =>
                   ({
-                    ringing: "در حال زنگ",
-                    ongoing: "در جریان",
-                    ended: "پایان‌یافته",
-                    cancelled: "لغو شده",
+                    ringing: ta("در حال زنگ"),
+                    ongoing: ta("در جریان"),
+                    ended: ta("پایان‌یافته"),
+                    cancelled: ta("لغو شده"),
                   })[node.status || ""] ||
                   node.status ||
                   "—",
                 filter: "Set",
               },
               endedAt: {
-                name: "پایان تماس",
+                name: ta("پایان تماس"),
                 value: (node) =>
                   node.endedAt ? new Date(node.endedAt) : undefined,
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {(node.status === "ringing" ||
                       node.status === "ongoing") && (
                       <IconButton
-                        title="پایان تماس"
+                        title={ta("پایان تماس")}
                         variant="Danger"
                         onClick={() =>
                           setPopup(

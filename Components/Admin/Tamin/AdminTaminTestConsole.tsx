@@ -10,6 +10,7 @@ import Button from "@/Components/UI/Button";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import useNotification from "@/Components/Hooks/useNotification";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const responseBoxStyle = {
   whiteSpace: "pre-wrap" as const,
@@ -73,7 +74,7 @@ const AdminTaminTestConsole = ({
       try {
         payload = JSON.parse(payloadText);
       } catch {
-        pushNotification("ورودی JSON معتبر نیست", "Error");
+        pushNotification(ta("ورودی JSON معتبر نیست"), "Error");
         return;
       }
     }
@@ -101,7 +102,7 @@ const AdminTaminTestConsole = ({
                 setOauthRequest({ action: "getChallenge", payload: {} });
               }}
             >
-              دریافت challenge
+              {ta("دریافت challenge")}
             </Button>
             {!!challenge && (
               <Button
@@ -115,14 +116,14 @@ const AdminTaminTestConsole = ({
                   );
                 }}
               >
-                باز کردن صفحه احراز هویت تامین
+                {ta("باز کردن صفحه احراز هویت تامین")}
               </Button>
             )}
           </div>
           {!!challenge && (
             <>
               <Input
-                title="code (از آدرس بازگشتی تامین کپی کنید)"
+                title={ta("code (از آدرس بازگشتی تامین کپی کنید)")}
                 onChange={(e) => setCode(e.target.value)}
               />
               <Button
@@ -132,7 +133,7 @@ const AdminTaminTestConsole = ({
                 style={{ marginTop: "1rem" }}
                 onClick={() => {
                   if (!code.trim()) {
-                    pushNotification("ابتدا code را وارد کنید", "Warn");
+                    pushNotification(ta("ابتدا code را وارد کنید"), "Warn");
                     return;
                   }
                   setOauthRequest({
@@ -141,7 +142,7 @@ const AdminTaminTestConsole = ({
                   });
                 }}
               >
-                تبادل کد و دریافت توکن
+                {ta("تبادل کد و دریافت توکن")}
               </Button>
             </>
           )}
@@ -150,13 +151,13 @@ const AdminTaminTestConsole = ({
 
       <Box>
         <SelectInput
-          title="عملیات"
+          title={ta("عملیات")}
           options={actionOptions}
           defaultValue={action}
           onChange={(e) => setAction(e.target.value)}
         />
         <AreaInput
-          title="ورودی (JSON) - هر فیلدی که بفرستید جایگزین مقادیر پیش‌فرض سندباکس می‌شود"
+          title={ta("ورودی (JSON) - هر فیلدی که بفرستید جایگزین مقادیر پیش‌فرض سندباکس می‌شود")}
           defaultValue={payloadText}
           onChange={(e) => setPayloadText(e.target.value)}
         />
@@ -165,7 +166,7 @@ const AdminTaminTestConsole = ({
           isLoading={!!requestBody}
           style={{ marginTop: "1rem" }}
         >
-          اجرا
+          {ta("اجرا")}
         </Button>
         {response !== null && (
           <pre style={responseBoxStyle}>{JSON.stringify(response, null, 2)}</pre>
@@ -178,7 +179,7 @@ const AdminTaminTestConsole = ({
         payload={requestBody || undefined}
         onDone={(status, result) => {
           setRequestBody(null);
-          setResponse(status ? result : { error: "درخواست با خطا مواجه شد" });
+          setResponse(status ? result : { error: ta("درخواست با خطا مواجه شد") });
         }}
       />
 
@@ -191,14 +192,14 @@ const AdminTaminTestConsole = ({
             const ranAction = oauthRequest?.action;
             setOauthRequest(null);
             if (!status || !result) {
-              pushNotification("درخواست با خطا مواجه شد", "Error");
+              pushNotification(ta("درخواست با خطا مواجه شد"), "Error");
               return;
             }
             if (ranAction === "getChallenge" && result.data.challenge) {
               setChallenge(result.data.challenge);
             }
             if (ranAction === "exchangeCode" && result.data.ok) {
-              pushNotification("توکن با موفقیت دریافت شد", "Success");
+              pushNotification(ta("توکن با موفقیت دریافت شد"), "Success");
               setCode("");
             }
           }}

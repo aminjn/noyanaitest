@@ -21,6 +21,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
 import MutateInsuranceRequestPopup from "./MutateInsuranceRequestPopup";
 import DeleteInsuranceAdditionRequestPopup from "./DeleteInsuranceAdditionRequestPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInsuranceAdditionsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -34,27 +35,27 @@ const AdminManageInsuranceAdditionsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های اضافه شدن بیمه">
+        <WithTitle title={ta("درخواست های اضافه شدن بیمه")}>
           <Table
             name="AdminManageInsuranceAdditionRequests"
             data={data}
             renderer={{
               name: {
-                name: "نام بیمه",
+                name: ta("نام بیمه"),
                 value: (node) => node.name,
                 filter: "Text",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => additionRequestStatusDict[node.status],
                 filter: "Set",
               },
               submittedBy: {
-                name: "ثبت کننده",
+                name: ta("ثبت کننده"),
                 value: (node) =>
                   node.submittedBy
                     ? getDoctorProfileLabel(node.submittedBy)
-                    : "حذف شده",
+                    : ta("حذف شده"),
                 filter: "Text",
                 component: (node) =>
                   node.submittedBy ? (
@@ -64,28 +65,28 @@ const AdminManageInsuranceAdditionsPage = () => {
                       {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
               },
               submittedAt: {
-                name: "زمان ثبت",
+                name: ta("زمان ثبت"),
                 value: (node) => new Date(node.submittedAt),
                 filter: "Date",
               },
               description: {
-                name: "توضیحات",
+                name: ta("توضیحات"),
                 value: (node) => node.description,
                 filter: "Text",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 width: 150,
                 component: (node) => (
                   <TableActions>
                     {node.status !== "Done" && node.status !== "Rejected" && (
                       <IconButton
                         variant="Success"
-                        title="ایجاد بیمه از درخواست"
+                        title={ta("ایجاد بیمه از درخواست")}
                         onClick={() =>
                           setPopup(
                             "CreateInsuranceFromRequest",
@@ -102,7 +103,7 @@ const AdminManageInsuranceAdditionsPage = () => {
                     )}
                     <IconButton
                       variant="Info"
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateInsuranceRequest",
@@ -117,7 +118,7 @@ const AdminManageInsuranceAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteInsuranceAdditionRequest",

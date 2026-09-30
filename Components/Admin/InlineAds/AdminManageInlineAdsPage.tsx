@@ -20,6 +20,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteInlineAdPopup from "./DeleteInlineAdPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IInlineAdvertisement extends MongoDoc {
   name?: string;
@@ -46,12 +47,12 @@ const AdminManageInlineAdsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تبلیغات خطی"
+          title={ta("تبلیغات خطی")}
           actions={
             hasAccess("InlineAdvertisement", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "CreateInlineAd",
@@ -67,7 +68,7 @@ const AdminManageInlineAdsPage = () => {
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 filter: "Text",
                 component: (node) => (
                   <InlineLink href={adminPath(`/inlinead/${node._id}`)}>
@@ -77,40 +78,40 @@ const AdminManageInlineAdsPage = () => {
                 value: (node) => node.name,
               },
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 filter: "Text",
                 value: (node) => node.title,
               },
               target: {
-                name: "مقصد",
+                name: ta("مقصد"),
                 value: (node) => node.target,
                 filter: "Text",
               },
               active: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.active}`],
                 component: (node) => <BooleanToIcon value={node.active} />,
                 filter: "Set",
               },
               expiration: {
-                name: "تاریخ انقضا",
+                name: ta("تاریخ انقضا"),
                 value: (node) =>
                   node.expiration ? new Date(node.expiration) : undefined,
                 filter: "Date",
               },
               createdAt: {
-                name: "تاریخ ایجاد",
+                name: ta("تاریخ ایجاد"),
                 value: (node) =>
                   node.createdAt ? new Date(node.createdAt) : undefined,
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("InlineAdvertisement", "readOne") && (
                       <IconLink
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                         variant="Info"
                         href={adminPath(`/inlinead/${node._id}`)}
                       >
@@ -119,7 +120,7 @@ const AdminManageInlineAdsPage = () => {
                     )}
                     {hasAccess("InlineAdvertisement", "delete") && (
                       <IconButton
-                        title="حذف"
+                        title={ta("حذف")}
                         variant="Danger"
                         onClick={() =>
                           setPopup(

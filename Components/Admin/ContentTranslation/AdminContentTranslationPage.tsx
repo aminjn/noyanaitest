@@ -17,6 +17,7 @@ import StringListInput from "@/Components/UI/StringListInput";
 import HandleLoading from "../UI/HandleLoading";
 import { Locale, localeDir, localeNames } from "@/Components/i18n/locales";
 import { FieldKind, fieldTitles, isRtf, segmentTitle } from "./segments";
+import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 
 type Value = string | string[];
 
@@ -92,7 +93,7 @@ const AdminContentTranslationPage = () => {
     setSaving(true);
     try {
       await fetcher({ url, method: "POST", payload: { locale, values } });
-      pushNotification("ترجمه ذخیره شد", "Success");
+      pushNotification(ta("ترجمه ذخیره شد"), "Success");
       await mutate();
       setRevision((r) => r + 1);
     } catch (err) {
@@ -113,7 +114,7 @@ const AdminContentTranslationPage = () => {
       });
       const written = res.data.data.written;
       pushNotification(
-        written ? `${written.toLocaleString("fa-IR")} فیلد ترجمه شد` : "فیلد خالی برای ترجمه نبود",
+        written ? ta("${1} فیلد ترجمه شد", [written.toLocaleString(adminIntlTag())]) : ta("فیلد خالی برای ترجمه نبود"),
         "Success",
       );
       await mutate();
@@ -136,7 +137,7 @@ const AdminContentTranslationPage = () => {
             <Ixon width="1rem" style={{ transform: "rotateZ(-90deg)" }}>
               <ChevronIcon />
             </Ixon>
-            <span>ترجمه محتوا</span>
+            <span>{ta("ترجمه محتوا")}</span>
           </Link>
 
           <header className={classes.header}>
@@ -147,7 +148,7 @@ const AdminContentTranslationPage = () => {
                 return typeof value === "string" ? value : segmentTitle(params.segment);
               })()}
             </h1>
-            <span className={classes.subtitle}>{`ترجمه‌های ${segmentTitle(params.segment)}`}</span>
+            <span className={classes.subtitle}>{ta("ترجمه‌های ${1}", [segmentTitle(params.segment)])}</span>
           </header>
 
           <section className={classes.card}>
@@ -185,7 +186,7 @@ const AdminContentTranslationPage = () => {
                 variant={dirty ? "Primary" : "Disable"}
                 isLoading={saving}
               >
-                ذخیره
+                {ta("ذخیره")}
               </Button>
               {data.machine && (
                 <>
@@ -195,7 +196,7 @@ const AdminContentTranslationPage = () => {
                     onClick={() => machineTranslate("one")}
                     isLoading={translating === "one"}
                   >
-                    {`ترجمه خودکار به ${localeNames[locale]}`}
+                    {ta("ترجمه خودکار به ${1}", [localeNames[locale]])}
                   </Button>
                   <Button
                     size="M"
@@ -203,7 +204,7 @@ const AdminContentTranslationPage = () => {
                     onClick={() => machineTranslate("all")}
                     isLoading={translating === "all"}
                   >
-                    ترجمه خودکار همه زبان‌ها
+                    {ta("ترجمه خودکار همه زبان‌ها")}
                   </Button>
                   <label className={classes.check}>
                     <input
@@ -211,16 +212,16 @@ const AdminContentTranslationPage = () => {
                       checked={overwrite}
                       onChange={(e) => setOverwrite(e.target.checked)}
                     />
-                    جایگزینی ترجمه‌های فعلی
+                    {ta("جایگزینی ترجمه‌های فعلی")}
                   </label>
                 </>
               )}
             </div>
-            {dirty && <p className={classes.note}>تغییرات ذخیره نشده دارید.</p>}
+            {dirty && <p className={classes.note}>{ta("تغییرات ذخیره نشده دارید.")}</p>}
           </section>
 
           {fields.length === 0 && (
-            <p className={classes.note}>این رکورد متن فارسی‌ای برای ترجمه ندارد.</p>
+            <p className={classes.note}>{ta("این رکورد متن فارسی‌ای برای ترجمه ندارد.")}</p>
           )}
 
           {fields.map(([field, kind]) => {
@@ -232,13 +233,13 @@ const AdminContentTranslationPage = () => {
                   <h3>{fieldTitles[field] || field}</h3>
                   {stale.has(field) && (
                     <span className={classes.staleBadge}>
-                      متن فارسی بعد از این ترجمه تغییر کرده
+                      {ta("متن فارسی بعد از این ترجمه تغییر کرده")}
                     </span>
                   )}
                 </div>
                 <div className={classes.fieldGrid}>
                   <div className={classes.source}>
-                    <span className={classes.colTitle}>فارسی</span>
+                    <span className={classes.colTitle}>{ta("فارسی")}</span>
                     {rtf ? (
                       <div className={classes.rtfBox}>
                         <RenderRtf value={source as string} />

@@ -26,6 +26,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type TestPopulation = Population<{ Category: TestCategoryPopulation }>;
 
@@ -43,12 +44,20 @@ export interface ITest<
 }
 
 export const testFormRenderer: FormRenderer<ITest> = {
-  name: { type: "text", title: "نام" },
-  isActive: { type: "bool", title: "فعال" },
-  order: { type: "number", title: "رتبه" },
+  name: { type: "text", get title() {
+  return ta("نام");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
   category: {
     type: "nodes",
-    title: "دسته بندی",
+    get title() {
+  return ta("دسته بندی");
+},
     getOptionLabel: (node) =>
       (node as ITestCategory).name || (node as ITestCategory)._id,
     getOptionValue: (node) => (node as ITestCategory)._id,
@@ -56,8 +65,12 @@ export const testFormRenderer: FormRenderer<ITest> = {
     multi: false,
     getDefaultValue: (inp) => inp.category,
   },
-  slug: { type: "text", title: "اسلاگ" },
-  summary: { type: "text", title: "حلاصه" },
+  slug: { type: "text", get title() {
+  return ta("اسلاگ");
+} },
+  summary: { type: "text", get title() {
+  return ta("حلاصه");
+} },
 };
 
 const AdminManageTestsPage = () => {
@@ -67,17 +80,17 @@ const AdminManageTestsPage = () => {
     <NodesManager<ITest>
       modelName="test"
       create={testFormRenderer}
-      title="تست ها"
+      title={ta("تست ها")}
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "فعال",
+          name: ta("فعال"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -90,15 +103,15 @@ const AdminManageTestsPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/test/${node._id}`)} title="ویرایش">
+              <IconLink href={adminPath(`/test/${node._id}`)} title={ta("ویرایش")}>
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

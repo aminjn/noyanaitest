@@ -25,6 +25,7 @@ import {
   BlogTagPopulation,
   IBlogTag,
 } from "../BlogTag/AdminManageBlogTgasPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type BlogCategoryPopulation = Population<Record<never, never>>;
 
@@ -72,11 +73,21 @@ export interface IBlog<
 }
 
 const authorTypeLabels: Record<string, string> = {
-  doctor: "پزشک",
-  clinic: "کلینیک",
-  pharmacy: "داروخانه",
-  insurance: "بیمه",
-  paraClinic: "پاراکلینیک",
+  get doctor() {
+  return ta("پزشک");
+},
+  get clinic() {
+  return ta("کلینیک");
+},
+  get pharmacy() {
+  return ta("داروخانه");
+},
+  get insurance() {
+  return ta("بیمه");
+},
+  get paraClinic() {
+  return ta("پاراکلینیک");
+},
 };
 
 const AdminManageBlogsPage = () => {
@@ -97,12 +108,12 @@ const AdminManageBlogsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="مقالات"
+          title={ta("مقالات")}
           actions={
             hasAccess("Blog", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "CreateBlog",
@@ -117,7 +128,7 @@ const AdminManageBlogsPage = () => {
             data={data}
             renderer={{
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 value: (node) => node.title,
                 component: (node) => (
                   <InlineLink href={adminPath(`/blog/${node._id}`)}>
@@ -127,15 +138,15 @@ const AdminManageBlogsPage = () => {
                 filter: "Text",
               },
               published: {
-                name: "انتشار",
+                name: ta("انتشار"),
                 value: (node) => booleanToValue[`${node.published}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.published} />,
               },
               category: {
-                name: "دسته‌بندی",
+                name: ta("دسته‌بندی"),
                 value: (node) =>
-                  node.category?.title || node.category?._id || "ندارد",
+                  node.category?.title || node.category?._id || ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
@@ -145,30 +156,30 @@ const AdminManageBlogsPage = () => {
                       {node.category.title || node.category._id}
                     </InlineLink>
                   ) : (
-                    "ندارد"
+                    ta("ندارد")
                   ),
               },
               author: {
-                name: "نویسنده",
+                name: ta("نویسنده"),
                 value: (node) => node.author,
                 filter: "Multi",
               },
               authorType: {
-                name: "منبع",
+                name: ta("منبع"),
                 value: (node) =>
                   node.authorType
                     ? authorTypeLabels[node.authorType] || node.authorType
-                    : "ادمین",
+                    : ta("ادمین"),
                 filter: "Set",
               },
               publishedAt: {
-                name: "تاریخ انتشار",
+                name: ta("تاریخ انتشار"),
                 value: (node) =>
                   node.publishedAt ? new Date(node.publishedAt) : undefined,
                 filter: "Date",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 filter: "Number",
                 value: (node) => node.order,
                 component: (node) => (
@@ -181,13 +192,13 @@ const AdminManageBlogsPage = () => {
                 ),
               },
               home: {
-                name: "نمایش در خانه",
+                name: ta("نمایش در خانه"),
                 filter: "Set",
                 value: (node) => booleanToValue[`${node.home}`],
                 component: (node) => <BooleanToIcon value={node.home} />,
               },
               thisWeekSpecial: {
-                name: "ویژه هفته",
+                name: ta("ویژه هفته"),
                 filter: "Set",
                 value: (node) => booleanToValue[`${node.thisWeekSpecial}`],
                 component: (node) => (
@@ -195,13 +206,13 @@ const AdminManageBlogsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("Blog", "readOne") && (
                       <IconLink
                         href={adminPath(`/blog/${node._id}`)}
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                       >
                         <EditIcon />
                       </IconLink>
@@ -209,7 +220,7 @@ const AdminManageBlogsPage = () => {
                     {hasAccess("Blog", "delete") && (
                       <IconButton
                         variant="Danger"
-                        title="حذف"
+                        title={ta("حذف")}
                         onClick={() =>
                           setPopup(
                             "DeleteBlog",

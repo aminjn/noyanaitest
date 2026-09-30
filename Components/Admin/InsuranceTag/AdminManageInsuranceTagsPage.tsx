@@ -14,6 +14,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type InsuranceTagPopulation = Population<Record<never, never>>;
 
@@ -26,9 +27,15 @@ export interface IInsuranceTag<
 }
 
 export const insuranceTagFormRenderer: FormRenderer<IInsuranceTag> = {
-  name: { type: "text", title: "نام" },
-  isActive: { type: "bool", title: "فعال" },
-  order: { type: "number", title: "رتبه" },
+  name: { type: "text", get title() {
+  return ta("نام");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
 };
 
 const AdminManageInsuranceTagsPage = () => {
@@ -37,18 +44,18 @@ const AdminManageInsuranceTagsPage = () => {
   return (
     <NodesManager<IInsuranceTag>
       modelName="insuranceTag"
-      title="تگ بیمه"
+      title={ta("تگ بیمه")}
       create={insuranceTagFormRenderer}
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -61,18 +68,18 @@ const AdminManageInsuranceTagsPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/insuranceTag/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

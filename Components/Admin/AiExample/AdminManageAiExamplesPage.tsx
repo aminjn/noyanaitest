@@ -20,6 +20,7 @@ import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type AiExamplePopulation = Population<Record<never, never>>;
 
@@ -56,11 +57,11 @@ const MutateAiExamplePopup = ({
           },
         }}
         renderer={{
-          name: { title: "نام", type: "text" },
-          isActive: { title: "وضعیت", type: "bool" },
-          order: { title: "رتبه", type: "number" },
-          prompt: { title: "پرامپت", type: "area" },
-          category: { title: "دسته", type: "text" },
+          name: { title: ta("نام"), type: "text" },
+          isActive: { title: ta("وضعیت"), type: "bool" },
+          order: { title: ta("رتبه"), type: "number" },
+          prompt: { title: ta("پرامپت"), type: "area" },
+          category: { title: ta("دسته"), type: "text" },
         }}
       />
     </PopupCard>
@@ -81,7 +82,7 @@ const DeleteAiExamplePopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="از حذف این مورد مطمئنید؟"
+        message={ta("از حذف این مورد مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -110,10 +111,10 @@ const AdminManageAiExamplesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="مثال های بات"
+          title={ta("مثال های بات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateAiExample",
@@ -126,20 +127,20 @@ const AdminManageAiExamplesPage = () => {
             data={data}
             name="AdminManageAiExamples"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               category: {
-                name: "دسته",
+                name: ta("دسته"),
                 value: (node) => node.category,
                 filter: "Set",
               },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -152,11 +153,11 @@ const AdminManageAiExamplesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateAiExample",
@@ -168,7 +169,7 @@ const AdminManageAiExamplesPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "deleteAiExample",

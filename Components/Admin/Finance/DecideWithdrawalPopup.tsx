@@ -10,6 +10,7 @@ import Box from "../UI/Box";
 import FormActions from "../UI/FormActions";
 import { IAdminWithdrawalRow } from "./AdminFinanceWithdrawalsPage";
 import { userLabel } from "./adminFinance";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Pay (after the bank transfer, with its reference) or reject (the held
 // amount returns to the user's wallet, with the reason shown to them).
@@ -26,15 +27,15 @@ const DecideWithdrawalPopup = ({
   const [decision, setDecision] = useState<"paid" | "rejected" | null>(null);
   return (
     <Box>
-      <p>{`${currencize(node.amount)} تومان برای ${userLabel(node.user)}`}</p>
+      <p>{ta("${1} تومان برای ${2}", [currencize(node.amount), userLabel(node.user)])}</p>
       <p dir="ltr">{node.iban}</p>
-      <p>{`به نام: ${node.holderName}`}</p>
+      <p>{ta("به نام: ${1}", [node.holderName])}</p>
       <Input
-        title="کد پیگیری انتقال بانکی (برای واریز)"
+        title={ta("کد پیگیری انتقال بانکی (برای واریز)")}
         onChange={(e) => setTrackingCode(e.target.value)}
       />
       <AreaInput
-        title="توضیح / دلیل رد (برای رد الزامی است)"
+        title={ta("توضیح / دلیل رد (برای رد الزامی است)")}
         onChange={(e) => setNote(e.target.value)}
       />
       <FormActions>
@@ -43,17 +44,17 @@ const DecideWithdrawalPopup = ({
           isLoading={decision === "paid"}
           onClick={() => trackingCode.trim() && setDecision("paid")}
         >
-          واریز شد
+          {ta("واریز شد")}
         </Button>
         <Button
           variant={note.trim() ? "Error" : "Disable"}
           isLoading={decision === "rejected"}
           onClick={() => note.trim() && setDecision("rejected")}
         >
-          رد و بازگشت به کیف پول
+          {ta("رد و بازگشت به کیف پول")}
         </Button>
         <Button variant="Neutral" onClick={() => closePopup()}>
-          انصراف
+          {ta("انصراف")}
         </Button>
       </FormActions>
       <Act

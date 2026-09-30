@@ -16,14 +16,19 @@ import { Population } from "../Clinic/AdminManageClinicsPage";
 import { getUserLabel } from "../Lib/LabelGetters";
 import MutateNotificationPopup from "./MutateNotificationPopup";
 import DeleteNotificationPopup from "./DeleteNotificationPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const notificationSources = ["System", "Admin"] as const;
 
 export type NotificationSource = (typeof notificationSources)[number];
 
 export const notificationSourceDict: Record<NotificationSource, string> = {
-  System: "سیستم",
-  Admin: "ادمین",
+  get System() {
+  return ta("سیستم");
+},
+  get Admin() {
+  return ta("ادمین");
+},
 };
 
 export type NotificationPopulation = Population<{
@@ -64,10 +69,10 @@ const AdminManageNotificationsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="اعلان‌ها"
+          title={ta("اعلان‌ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateNotification",
@@ -81,36 +86,36 @@ const AdminManageNotificationsPage = () => {
             data={data}
             renderer={{
               title: {
-                name: "عنوان",
+                name: ta("عنوان"),
                 value: (node) => node.title,
                 filter: "Text",
               },
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => (node.user ? getUserLabel(node.user) : ""),
                 filter: "Text",
               },
               source: {
-                name: "منبع",
+                name: ta("منبع"),
                 value: (node) => notificationSourceDict[node.source],
                 filter: "Set",
               },
               isRead: {
-                name: "خوانده شده",
-                value: (node) => (node.isRead ? "بله" : "خیر"),
+                name: ta("خوانده شده"),
+                value: (node) => (node.isRead ? ta("بله") : ta("خیر")),
                 filter: "Set",
               },
               createdAt: {
-                name: "تاریخ ارسال",
+                name: ta("تاریخ ارسال"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateNotification",
@@ -122,7 +127,7 @@ const AdminManageNotificationsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteNotification",

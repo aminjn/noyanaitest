@@ -8,6 +8,7 @@ import {
   pageMetaListResourceTypeLabels,
   pageMetaListResourceTypes,
 } from "./pageMetaConstants";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManagePageMetaListPage = () => {
   const items: TabSystemTab[] = pageMetaListResourceTypes.map(
@@ -20,7 +21,7 @@ const AdminManagePageMetaListPage = () => {
   );
 
   return (
-    <WithTitle title="متادیتای صفحات لیست">
+    <WithTitle title={ta("متادیتای صفحات لیست")}>
       <TabSystem name="AdminManagePageMetaList" items={items} />
     </WithTitle>
   );

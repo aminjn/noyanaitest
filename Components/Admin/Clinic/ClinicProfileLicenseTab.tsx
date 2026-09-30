@@ -12,6 +12,7 @@ import {
   ClinicDashboardModule,
   IBaseClinicLicense,
 } from "../BaseClinicLicense/AdminManageBaseClinicLicensesPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/ClinicProfileLicense.ts - one doc per clinic
 // (unique on `owner`), fetched here by filtering the generic
@@ -57,9 +58,9 @@ const ClinicProfileLicenseTab = ({ node }: { node: IClinic }) => {
             successCb: () => mutate(),
           }}
           renderer={{
-            displayName: { title: "نام نمایشی", type: "text" },
+            displayName: { title: ta("نام نمایشی"), type: "text" },
             baseLicense: {
-              title: "پلن مرجع",
+              title: ta("پلن مرجع"),
               type: "nodes",
               multi: false,
               path: `${API}/auto/baseClinicLicense`,
@@ -69,10 +70,10 @@ const ClinicProfileLicenseTab = ({ node }: { node: IClinic }) => {
               getOptionValue: (node) => (node as IBaseClinicLicense)._id,
               getDefaultValue: (inp) => inp.baseLicense,
             },
-            startedAt: { title: "تاریخ شروع", type: "date" },
-            expiresAt: { title: "تاریخ انقضا", type: "date" },
+            startedAt: { title: ta("تاریخ شروع"), type: "date" },
+            expiresAt: { title: ta("تاریخ انقضا"), type: "date" },
             modules: {
-              title: "منوهای قابل دسترسی",
+              title: ta("منوهای قابل دسترسی"),
               type: "multiselect",
               options: clinicDashboardModuleLabels,
             },

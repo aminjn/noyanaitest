@@ -38,15 +38,22 @@ import {
   SymptomCategoryPopulation,
 } from "../SymptomCategory/AdminManageSymptomCategoriesPage";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const genderSpicificOptions = ["male", "female", "none"] as const;
 
 export type GenderSpecificOption = (typeof genderSpicificOptions)[number];
 
 export const genderSpecificOptionsDict: Record<GenderSpecificOption, string> = {
-  female: "فقط زنان",
-  male: "فقط مردان",
-  none: "همه",
+  get female() {
+  return ta("فقط زنان");
+},
+  get male() {
+  return ta("فقط مردان");
+},
+  get none() {
+  return ta("همه");
+},
 };
 
 export type PartPopulation = Population<Record<never, never>>;
@@ -181,10 +188,10 @@ const AdminManageDiseasePage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="بیماری ها"
+          title={ta("بیماری ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateNewDisease",
@@ -197,9 +204,9 @@ const AdminManageDiseasePage = () => {
             data={data}
             name="AdminManageDiseases"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -212,7 +219,7 @@ const AdminManageDiseasePage = () => {
                 ),
               },
               genderSpecific: {
-                name: "جنسیت",
+                name: ta("جنسیت"),
                 value: (node) =>
                   node.genderSpecific
                     ? genderSpecificOptionsDict[node.genderSpecific]
@@ -220,18 +227,18 @@ const AdminManageDiseasePage = () => {
                 filter: "Set",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/disease/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDiseasePopup",

@@ -22,6 +22,7 @@ import {
   paymentStatusDict,
   userLabel,
 } from "./adminFinance";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IAdminPaymentRow {
   _id: string;
@@ -56,17 +57,17 @@ const AdminFinancePaymentsPage = () => {
         <WithTitle
           title={
             status === "needsReview"
-              ? "پرداخت‌های نیازمند بررسی"
-              : "پرداخت‌های درگاه"
+              ? ta("پرداخت‌های نیازمند بررسی")
+              : ta("پرداخت‌های درگاه")
           }
           actions={[
             status === "needsReview"
               ? {
-                  title: "همه‌ی پرداخت‌ها",
+                  title: ta("همه‌ی پرداخت‌ها"),
                   action: () => router.push(adminPath("/finance/payments")),
                 }
               : {
-                  title: "فقط نیازمند بررسی",
+                  title: ta("فقط نیازمند بررسی"),
                   action: () =>
                     router.push(
                       adminPath("/finance/payments?status=needsReview"),
@@ -79,7 +80,7 @@ const AdminFinancePaymentsPage = () => {
             data={data}
             renderer={{
               user: {
-                name: "پرداخت‌کننده",
+                name: ta("پرداخت‌کننده"),
                 value: (node) => userLabel(node.user),
                 filter: "Text",
                 component: (node) =>
@@ -92,46 +93,46 @@ const AdminFinancePaymentsPage = () => {
                   ),
               },
               amount: {
-                name: "مبلغ (تومان)",
+                name: ta("مبلغ (تومان)"),
                 value: (node) => node.amount,
                 component: (node) => currencize(node.amount || 0),
                 filter: "Number",
               },
               purpose: {
-                name: "بابت",
+                name: ta("بابت"),
                 value: (node) =>
                   paymentPurposeDict[node.purpose] || node.purpose,
                 filter: "Set",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => paymentStatusDict[node.status] || node.status,
                 filter: "Set",
               },
               rrn: {
-                name: "کد پیگیری",
+                name: ta("کد پیگیری"),
                 value: (node) => node.rrn || node.refNum || "—",
                 filter: "Text",
               },
               maskedPan: {
-                name: "کارت",
+                name: ta("کارت"),
                 value: (node) => node.maskedPan || "—",
               },
               resolutionNote: {
-                name: "علت / نتیجه",
+                name: ta("علت / نتیجه"),
                 value: (node) =>
                   node.resolvedAt
                     ? `${node.resolvedBy?.phone || node.resolvedBy?.username || ""}: ${node.resolutionNote || ""}`
                     : failureReasonLabel(node.failureReason),
               },
               createdAt: {
-                name: "تاریخ",
+                name: ta("تاریخ"),
                 value: (node) =>
                   node.createdAt ? new Date(node.createdAt) : undefined,
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) =>
                   node.status === "needsReview" ? (
                     <TableActions>
@@ -144,7 +145,7 @@ const AdminFinancePaymentsPage = () => {
                           )
                         }
                       >
-                        رسیدگی
+                        {ta("رسیدگی")}
                       </Button>
                     </TableActions>
                   ) : null,

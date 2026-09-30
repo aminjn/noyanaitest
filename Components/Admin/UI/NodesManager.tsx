@@ -7,6 +7,7 @@ import WithTitle from "./WithTitle";
 import CreateShitPopup from "./CreateShitPopup";
 import { FormRenderer } from "./CreateForm";
 import Table, { TableRenderer } from "./Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NodesManager = <T,>({
   modelName,
@@ -35,7 +36,7 @@ const NodesManager = <T,>({
             create
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "CreateShit",

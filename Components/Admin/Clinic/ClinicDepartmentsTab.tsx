@@ -17,6 +17,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteClinicDepartmentPopup from "./DeleteClinicDepartmentPopup";
 import { fetcher } from "@/Components/helpers/fetcher";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
   const { data, error, mutate } = useSWR<
@@ -31,10 +32,10 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title={`دپارتمان های کلینیک ${clinic.name || clinic._id}`}
+          title={ta("دپارتمان های کلینیک ${1}", [clinic.name || clinic._id])}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateClinicDepartment",
@@ -50,15 +51,15 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
             data={data}
             name="AdminManageClinicDepartments"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               active: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.active}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.active} />,
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -71,18 +72,18 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                 ),
               },
               doctorsCount: {
-                name: "تعداد پزشکان",
+                name: ta("تعداد پزشکان"),
                 value: (node) => node.doctorsCount,
                 filter: "Number",
               },
               image: {
-                name: "تصویر",
-                value: (node) => (!!node.image ? "دارد" : "ندارد"),
+                name: ta("تصویر"),
+                value: (node) => (!!node.image ? ta("دارد") : ta("ندارد")),
                 component: (node) => (
                   <TableActions>
                     {node.image ? (
                       <IconButton
-                        title="نمایش تصویر"
+                        title={ta("نمایش تصویر")}
                         onClick={() =>
                           setPopup(
                             "FullscreenImagePreview",
@@ -100,12 +101,12 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                 filter: "Set",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
                       variant="Info"
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateClinicDepartment",
@@ -121,7 +122,7 @@ const ClinicDepartmentsTab = ({ clinic }: { clinic: IClinic }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteClinicDepartment",

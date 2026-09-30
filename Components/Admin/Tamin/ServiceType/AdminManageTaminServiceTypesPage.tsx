@@ -9,6 +9,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import Table from "../../UI/Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface ITaminServiceType extends MongoDoc {
   srvType?: number;
@@ -35,8 +36,8 @@ const AdminManageTaminServiceTypesPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="سرویس تایپ"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("سرویس تایپ")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -44,37 +45,37 @@ const AdminManageTaminServiceTypesPage = () => {
               name="AdminManageTaminServiceTypes"
               renderer={{
                 srvTypeDes: {
-                  name: "شرح نوع خدمت",
+                  name: ta("شرح نوع خدمت"),
                   value: (node) => node.srvTypeDes,
                   filter: "Text",
                 },
                 srvType: {
-                  name: "کد نوع خدمت",
+                  name: ta("کد نوع خدمت"),
                   value: (node) => node.srvType,
                   filter: "Multi",
                 },
                 status: {
-                  name: "وضعیت",
+                  name: ta("وضعیت"),
                   value: (node) => node.status,
                   filter: "Set",
                 },
                 custType: {
-                  name: "نوع مشتری",
+                  name: ta("نوع مشتری"),
                   value: (node) => node.custType,
                   filter: "Set",
                 },
                 prescTypeId: {
-                  name: "نوع نسخه",
+                  name: ta("نوع نسخه"),
                   value: (node) => node.prescTypeId,
                   filter: "Set",
                 },
                 statusstDate: {
-                  name: "تاریخ وضعیت",
+                  name: ta("تاریخ وضعیت"),
                   value: (node) => node.statusstDate,
                   filter: "Text",
                 },
                 headExpireDate: {
-                  name: "انقضای سرنسخه",
+                  name: ta("انقضای سرنسخه"),
                   value: (node) => node.headExpireDate,
                   filter: "Number",
                 },

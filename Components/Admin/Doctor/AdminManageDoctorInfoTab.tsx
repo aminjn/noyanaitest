@@ -6,6 +6,7 @@ import useForm from "@/Components/Hooks/useForm";
 import { provinceOptions } from "@/Components/Enums/Provinces";
 import { cityOptions } from "@/Components/Enums/Cities";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorInfoTab = ({
   mutate,
@@ -28,36 +29,36 @@ const AdminManageDoctorInfoTab = ({
       defaultValue={node}
       hookProvided={form}
       renderer={{
-        name: { type: "text", title: "نام" },
-        slug: { type: "text", title: "اسلاگ" },
-        image: { type: "image", title: "تصویر" },
-        code: { type: "text", title: "کد" },
-        hours: { type: "area", title: "ساعات کاری" },
-        awards: { type: "area", title: "جوائز" },
-        birthDate: { type: "date", title: "تاریخ تولد" },
-        description: { type: "area", title: "توضیحات" },
-        summary: { type: "text", title: "خلاصه" },
-        order: { type: "number", title: "رتبه" },
-        active: { type: "bool", title: "فعال" },
-        address: { type: "text", title: "آدرس" },
-        landLine: { type: "text", title: "تلفن ثابت" },
-        mobile: { type: "text", title: "موبایل" },
-        email: { type: "text", title: "ایمیل" },
-        province: { type: "select", options: provinceOptions, title: "استان" },
+        name: { type: "text", title: ta("نام") },
+        slug: { type: "text", title: ta("اسلاگ") },
+        image: { type: "image", title: ta("تصویر") },
+        code: { type: "text", title: ta("کد") },
+        hours: { type: "area", title: ta("ساعات کاری") },
+        awards: { type: "area", title: ta("جوائز") },
+        birthDate: { type: "date", title: ta("تاریخ تولد") },
+        description: { type: "area", title: ta("توضیحات") },
+        summary: { type: "text", title: ta("خلاصه") },
+        order: { type: "number", title: ta("رتبه") },
+        active: { type: "bool", title: ta("فعال") },
+        address: { type: "text", title: ta("آدرس") },
+        landLine: { type: "text", title: ta("تلفن ثابت") },
+        mobile: { type: "text", title: ta("موبایل") },
+        email: { type: "text", title: ta("ایمیل") },
+        province: { type: "select", options: provinceOptions, title: ta("استان") },
         city: {
           type: "select",
           options: cityOptions(form.input.province || node.province),
-          title: "شهر",
+          title: ta("شهر"),
         },
-        lat: { type: "number", title: "عرض" },
-        lng: { type: "number", title: "طول" },
-        site: { type: "text", title: "سایت" },
-        telegram: { type: "text", title: "تلگرام" },
-        twitter: { type: "text", title: "توییتر" },
-        youtube: { type: "text", title: "یوتیوب" },
-        aparat: { type: "text", title: "آپارات" },
-        linkedin: { type: "text", title: "لینکدین" },
-        instagram: { type: "text", title: "اینستاگرام" },
+        lat: { type: "number", title: ta("عرض") },
+        lng: { type: "number", title: ta("طول") },
+        site: { type: "text", title: ta("سایت") },
+        telegram: { type: "text", title: ta("تلگرام") },
+        twitter: { type: "text", title: ta("توییتر") },
+        youtube: { type: "text", title: ta("یوتیوب") },
+        aparat: { type: "text", title: ta("آپارات") },
+        linkedin: { type: "text", title: ta("لینکدین") },
+        instagram: { type: "text", title: ta("اینستاگرام") },
       }}
     />
   );

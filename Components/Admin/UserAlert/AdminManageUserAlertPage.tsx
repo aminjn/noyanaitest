@@ -6,6 +6,7 @@ import NodeManager from "../UI/NodeManger";
 import { IUser } from "@/Components/Hooks/useUser";
 import { getUserLabel } from "../Lib/LabelGetters";
 import { FullUserAlert, userAlertToggleFormRenderer } from "./AdminManageUserAlertsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageUserAlertPage = () => {
   return (
@@ -18,7 +19,7 @@ const AdminManageUserAlertPage = () => {
           renderer={{
             user: {
               type: "nodes",
-              title: "کاربر",
+              title: ta("کاربر"),
               path: `${API}/auto/user`,
               getOptionLabel: (n) => getUserLabel(n as IUser),
               getOptionValue: (n) => (n as IUser)._id,

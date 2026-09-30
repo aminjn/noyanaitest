@@ -19,6 +19,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteBlogPopup from "./DeleteBlogPopup";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { IBlogTag } from "../BlogTag/AdminManageBlogTgasPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBlogPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -43,30 +44,30 @@ const AdminManageBlogPage = () => {
               {
                 icon: <InfoIcon />,
                 id: "details",
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 content: (
                   <CreateForm
                     readOnly={!hasAccess("Blog", "update")}
                     defaultValue={data}
                     renderer={{
-                      title: { title: "عنوان", type: "text" },
-                      image: { title: "تصویر", type: "image" },
-                      summary: { title: "خلاصه", type: "text" },
-                      publishedAt: { title: "تاریخ انتشار", type: "date" },
-                      order: { title: "رتبه", type: "number" },
-                      slug: { title: "اسلاگ", type: "text" },
-                      author: { title: "نویسنده", type: "text" },
-                      readTime: { title: "مدت زمان مطالعه", type: "text" },
+                      title: { title: ta("عنوان"), type: "text" },
+                      image: { title: ta("تصویر"), type: "image" },
+                      summary: { title: ta("خلاصه"), type: "text" },
+                      publishedAt: { title: ta("تاریخ انتشار"), type: "date" },
+                      order: { title: ta("رتبه"), type: "number" },
+                      slug: { title: ta("اسلاگ"), type: "text" },
+                      author: { title: ta("نویسنده"), type: "text" },
+                      readTime: { title: ta("مدت زمان مطالعه"), type: "text" },
                       thisWeekSpecial: {
-                        title: "مطالب ویژه این هفته",
+                        title: ta("مطالب ویژه این هفته"),
                         type: "bool",
                       },
-                      home: { title: "نمایش در خانه", type: "bool" },
-                      recommended: { title: "پیشنهاد شده", type: "bool" },
-                      chosen: { title: "منتخب", type: "bool" },
-                      published: { title: "منتشر شده", type: "bool" },
+                      home: { title: ta("نمایش در خانه"), type: "bool" },
+                      recommended: { title: ta("پیشنهاد شده"), type: "bool" },
+                      chosen: { title: ta("منتخب"), type: "bool" },
+                      published: { title: ta("منتشر شده"), type: "bool" },
                       category: {
-                        title: "دسته بندی",
+                        title: ta("دسته بندی"),
                         type: "nodes",
                         multi: false,
                         getOptionLabel: (node) =>
@@ -77,7 +78,7 @@ const AdminManageBlogPage = () => {
                         path: `${API}/auto/blogcategory`,
                       },
                       related: {
-                        title: "مقالات مرتبط",
+                        title: ta("مقالات مرتبط"),
                         type: "nodes",
                         multi: true,
                         path: `${API}/auto/blog`,
@@ -87,7 +88,7 @@ const AdminManageBlogPage = () => {
                         getDefaultValue: (node) => node.related,
                       },
                       tags: {
-                        title: "تگ ها",
+                        title: ta("تگ ها"),
                         type: "nodes",
                         getOptionLabel: (node) =>
                           (node as IBlogTag).name || (node as IBlogTag)._id,
@@ -117,15 +118,15 @@ const AdminManageBlogPage = () => {
                       method: "POST",
                       successCb: () => mutate(),
                     }}
-                    renderer={{ content: { type: "rtf", title: "محتوا" } }}
+                    renderer={{ content: { type: "rtf", title: ta("محتوا") } }}
                   />
                 ),
-                title: "محتوا",
+                title: ta("محتوا"),
               },
               {
                 icon: <InfoIcon />,
                 id: "Meta",
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 content: (
                   <PageMetaEditor
                     resourceType="/mag/[blogSlug]"
@@ -148,12 +149,12 @@ const AdminManageBlogPage = () => {
                           )
                         }
                       >
-                        حذف این مقاله
+                        {ta("حذف این مقاله")}
                       </Button>
                     )}
                   </List>
                 ),
-                title: "عملیات",
+                title: ta("عملیات"),
               },
             ]}
           />

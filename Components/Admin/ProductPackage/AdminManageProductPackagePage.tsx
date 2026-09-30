@@ -12,6 +12,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import SpecsManager from "../Product/SpecsManager";
 import ImagesManager from "../Product/ImagesManager";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const InfoManager = ({
   mutate,
@@ -31,13 +32,13 @@ const InfoManager = ({
         },
       }}
       renderer={{
-        name: { type: "text", title: "نام" },
-        slug: { type: "text", title: "اسلاگ" },
-        order: { type: "number", title: "رتبه" },
-        isActive: { type: "bool", title: "فعال" },
+        name: { type: "text", title: ta("نام") },
+        slug: { type: "text", title: ta("اسلاگ") },
+        order: { type: "number", title: ta("رتبه") },
+        isActive: { type: "bool", title: ta("فعال") },
         category: {
           type: "nodes",
-          title: "دسته بنذی",
+          title: ta("دسته بنذی"),
           path: `${API}/auto/productCategory`,
           getOptionLabel: (node) =>
             (node as IProductCategory).name || (node as IProductCategory)._id,
@@ -45,12 +46,12 @@ const InfoManager = ({
           getDefaultValue: (inp) => inp.category,
           multi: false,
         },
-        price: { type: "number", title: "فیمت", price: true },
-        discount: { type: "number", title: "تخفیف", price: true },
-        image: { type: "image", title: "تصویر" },
+        price: { type: "number", title: ta("فیمت"), price: true },
+        discount: { type: "number", title: ta("تخفیف"), price: true },
+        image: { type: "image", title: ta("تصویر") },
         products: {
           type: "nodes",
-          title: "محصولات",
+          title: ta("محصولات"),
           getOptionLabel: (node) =>
             (node as IProduct).name || (node as IProduct)._id,
           getOptionValue: (node) => (node as IProduct)._id,
@@ -58,12 +59,12 @@ const InfoManager = ({
           multi: true,
           path: `${API}/auto/product`,
         },
-        description: { type: "rtf", title: "توضیحات" },
-        summary: { type: "text", title: "خلاصه" },
-        whyChoose: { type: "text", title: "چرا این محصول" },
+        description: { type: "rtf", title: ta("توضیحات") },
+        summary: { type: "text", title: ta("خلاصه") },
+        whyChoose: { type: "text", title: ta("چرا این محصول") },
         sameAs: {
           type: "nodes",
-          title: "مشابهات",
+          title: ta("مشابهات"),
           path: `${API}/auto/productPackage`,
           getOptionLabel: (node) =>
             (node as IProductPackage).name || (node as IProductPackage)._id,
@@ -87,22 +88,22 @@ const AdminManageProductPackagePage = () => {
           items={[
             {
               id: "Info",
-              title: "جزئیات",
+              title: ta("جزئیات"),
               content: <InfoManager mutate={mutate} node={node} />,
             },
             {
               id: "Specs",
-              title: "ویژگی ها",
+              title: ta("ویژگی ها"),
               content: <SpecsManager model="ProductPackage" node={node} />,
             },
             {
               id: "Images",
-              title: "تصویر",
+              title: ta("تصویر"),
               content: <ImagesManager model="ProductPackage" node={node} />,
             },
             {
               id: "Meta",
-              title: "متادیتا",
+              title: ta("متادیتا"),
               content: (
                 <PageMetaEditor
                   resourceType="/productPackage/[slug]"

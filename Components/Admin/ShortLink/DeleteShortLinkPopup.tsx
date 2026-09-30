@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeletShortLinkPopup = ({
   mutate,
@@ -17,7 +18,7 @@ const DeletShortLinkPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="ایا از حذف این آیتم مطمئنید؟"
+        message={ta("ایا از حذف این آیتم مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

@@ -8,6 +8,7 @@ import { API } from "@/Components/config";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { mutate } from "swr";
 import MapMarker from "@/Components/UI/MapMarker";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DoctorProfileLocationTab = ({
   mutate,
@@ -61,7 +62,7 @@ const DoctorProfileLocationTab = ({
       </div>
       <FormActions>
         <Button isLoading={isLoading} onClick={submit}>
-          تایید
+          {ta("تایید")}
         </Button>
       </FormActions>
     </div>

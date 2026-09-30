@@ -8,6 +8,7 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
 import Box from "../UI/Box";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/AppConfig.ts - the single source of truth for
 // these settings now lives in the DB (singleton document), not .env.
@@ -62,7 +63,7 @@ const AdminManageAppConfigPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="تنظیمات سیستم">
+        <WithTitle title={ta("تنظیمات سیستم")}>
           <CreateForm<IAppConfig>
             defaultValue={data}
             hookProps={{
@@ -71,104 +72,104 @@ const AdminManageAppConfigPage = () => {
               successCb: () => mutate(),
             }}
             renderer={{
-              sipHost: { title: "آدرس سرور SIP", type: "text" },
-              sipUsername: { title: "نام کاربری SIP", type: "text" },
-              sipPassword: { title: "رمز عبور SIP", type: "secret" },
+              sipHost: { title: ta("آدرس سرور SIP"), type: "text" },
+              sipUsername: { title: ta("نام کاربری SIP"), type: "text" },
+              sipPassword: { title: ta("رمز عبور SIP"), type: "secret" },
 
               getIdentityInfoApiKey: {
-                title: "کلید API استعلام هویت",
+                title: ta("کلید API استعلام هویت"),
                 type: "secret",
               },
               matchNationalIdAndPhoneNumberApiKey: {
-                title: "کلید API تطبیق کدملی و شماره موبایل",
+                title: ta("کلید API تطبیق کدملی و شماره موبایل"),
                 type: "secret",
               },
               getMedicalSystemCodeApiKey: {
-                title: "کلید API کد نظام پزشکی",
+                title: ta("کلید API کد نظام پزشکی"),
                 type: "secret",
               },
-              podiumToken: { title: "توکن پودیوم", type: "secret" },
+              podiumToken: { title: ta("توکن پودیوم"), type: "secret" },
               getMcCertificateApiKey: {
-                title: "کلید API گواهی نظام پزشکی",
+                title: ta("کلید API گواهی نظام پزشکی"),
                 type: "secret",
               },
 
               bookingHorizonDays: {
-                title: "بازه زمانی امکان رزرو نوبت (روز)",
+                title: ta("بازه زمانی امکان رزرو نوبت (روز)"),
                 type: "number",
               },
               recalculateDoctorAvailabilityInterval: {
-                title: "فاصله محاسبه مجدد تقویم پزشکان (میلی‌ثانیه)",
+                title: ta("فاصله محاسبه مجدد تقویم پزشکان (میلی‌ثانیه)"),
                 type: "number",
               },
 
               analyticsVisitWindowSeconds: {
-                title: "بازه ادغام بازدید تکراری صفحه (ثانیه)",
+                title: ta("بازه ادغام بازدید تکراری صفحه (ثانیه)"),
                 type: "number",
               },
               analyticsVisitorCookieDays: {
-                title: "مدت اعتبار کوکی بازدیدکننده (روز)",
+                title: ta("مدت اعتبار کوکی بازدیدکننده (روز)"),
                 type: "number",
               },
 
               slugGenerationInterval: {
-                title: "فاصله تولید خودکار اسلاگ (میلی‌ثانیه)",
+                title: ta("فاصله تولید خودکار اسلاگ (میلی‌ثانیه)"),
                 type: "number",
               },
 
               callRingTimeoutMs: {
-                title: "زمان انتظار زنگ خوردن تماس (میلی‌ثانیه)",
+                title: ta("زمان انتظار زنگ خوردن تماس (میلی‌ثانیه)"),
                 type: "number",
               },
               callMaxParticipants: {
-                title: "حداکثر تعداد شرکت‌کنندگان یک تماس",
+                title: ta("حداکثر تعداد شرکت‌کنندگان یک تماس"),
                 type: "number",
               },
 
               reservationActivationInterval: {
-                title: "فاصله بررسی فعال‌سازی نوبت‌ها (میلی‌ثانیه)",
+                title: ta("فاصله بررسی فعال‌سازی نوبت‌ها (میلی‌ثانیه)"),
                 type: "number",
               },
               reservationReminderMinutesBefore: {
-                title: "یادآوری نوبت چند دقیقه قبل از شروع (دقیقه)",
+                title: ta("یادآوری نوبت چند دقیقه قبل از شروع (دقیقه)"),
                 type: "number",
               },
               reservationReminderInterval: {
-                title: "فاصله بررسی یادآوری نوبت‌ها (میلی‌ثانیه)",
+                title: ta("فاصله بررسی یادآوری نوبت‌ها (میلی‌ثانیه)"),
                 type: "number",
               },
               reservationFinalizationInterval: {
-                title: "فاصله بررسی نهایی‌سازی نوبت‌ها (میلی‌ثانیه)",
+                title: ta("فاصله بررسی نهایی‌سازی نوبت‌ها (میلی‌ثانیه)"),
                 type: "number",
               },
 
               sepEnabled: {
-                title: "فعال بودن پرداخت آنلاین (درگاه سامان / سپ)",
+                title: ta("فعال بودن پرداخت آنلاین (درگاه سامان / سپ)"),
                 type: "bool",
               },
               sepTerminalId: {
-                title: "شماره ترمینال درگاه سپ (TerminalId)",
+                title: ta("شماره ترمینال درگاه سپ (TerminalId)"),
                 type: "text",
               },
               sepCallbackBaseUrl: {
                 title:
-                  "آدرس عمومی بک‌اند برای بازگشت از درگاه (مثال: https://api.example.com)",
+                  ta("آدرس عمومی بک‌اند برای بازگشت از درگاه (مثال: https://api.example.com)"),
                 type: "text",
               },
               siteBaseUrl: {
-                title: "آدرس عمومی سایت (مثال: https://example.com)",
+                title: ta("آدرس عمومی سایت (مثال: https://example.com)"),
                 type: "text",
               },
               sepAmountMultiplier: {
-                title: "ضریب تبدیل مبلغ به ریال برای درگاه (تومان ← ریال = ۱۰)",
+                title: ta("ضریب تبدیل مبلغ به ریال برای درگاه (تومان ← ریال = ۱۰)"),
                 type: "number",
               },
               sepTokenExpiryMinutes: {
-                title: "مدت اعتبار توکن پرداخت (دقیقه، ۲۰ تا ۳۶۰۰)",
+                title: ta("مدت اعتبار توکن پرداخت (دقیقه، ۲۰ تا ۳۶۰۰)"),
                 type: "number",
               },
               onlinePaymentMinAmount: {
-                title: "حداقل مبلغ شارژ کیف پول (تومان)",
+                title: ta("حداقل مبلغ شارژ کیف پول (تومان)"),
                 type: "number",
               },
             }}

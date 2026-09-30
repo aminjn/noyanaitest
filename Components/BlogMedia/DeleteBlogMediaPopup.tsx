@@ -5,6 +5,7 @@ import classes from "./DeleteBlogMediaPopup.module.css";
 import Act from "../UI/Act";
 import { API } from "../config";
 import usePopup from "../Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteBlogMediaPopup = ({
   mutate,
@@ -20,7 +21,7 @@ const DeleteBlogMediaPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف ${node.name} مطمئنید؟`}
+        message={ta("آیا از حذف ${1} مطمئنید؟", [node.name])}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

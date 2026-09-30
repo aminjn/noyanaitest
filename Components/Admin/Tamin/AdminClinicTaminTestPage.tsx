@@ -1,5 +1,6 @@
 import AdminTaminTestConsole from "./AdminTaminTestConsole";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Admin-only Tamin sandbox tester for the clinic (ParaClinic referral) flow
 // (2026-09) - see Controllers/adminTaminController.ts's testClinicTamin.
@@ -8,16 +9,26 @@ import { API } from "@/Components/config";
 // reach any of this (see Controllers/featureGateController.ts /
 // Components/ClinicPanel/ClinicLicenseGate.tsx's lockedSegments).
 const clinicTaminActionOptions: Record<string, string> = {
-  getChallenge: "دریافت challenge (استفاده از دکمه بالا)",
-  exchangeCode: "تبادل کد (استفاده از دکمه بالا)",
-  getTokenDate: "تاریخ آخرین توکن",
-  getPrescriptions: "دریافت نسخه‌ها - RequestList (ورودی: trackingCode)",
-  submitPrescription: "ثبت درخواست - RequestParPresc",
+  get getChallenge() {
+  return ta("دریافت challenge (استفاده از دکمه بالا)");
+},
+  get exchangeCode() {
+  return ta("تبادل کد (استفاده از دکمه بالا)");
+},
+  get getTokenDate() {
+  return ta("تاریخ آخرین توکن");
+},
+  get getPrescriptions() {
+  return ta("دریافت نسخه‌ها - RequestList (ورودی: trackingCode)");
+},
+  get submitPrescription() {
+  return ta("ثبت درخواست - RequestParPresc");
+},
 };
 
 const AdminClinicTaminTestPage = () => (
   <AdminTaminTestConsole
-    title="تست تامین - کلینیک"
+    title={ta("تست تامین - کلینیک")}
     apiPath={`${API}/admin/tamin/clinic/test`}
     actionOptions={clinicTaminActionOptions}
     oauth

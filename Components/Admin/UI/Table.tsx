@@ -32,6 +32,7 @@ import { WithStyleProps } from "./Loading";
 import Ixon from "@/Components/UI/Ixon";
 import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Quiet grid that sits on the glass card and follows the light/dark
 // tokens (every color is a CSS variable, so the theme switch needs no rerender).
@@ -167,7 +168,9 @@ const Table = <T,>({
       const isPrimary = index === 0;
       // The row actions column (edit/view/delete): fixed on the end side.
       const isActions =
-        key === "actions" || /^(عملیات|غملیات)$/.test(column.name.trim());
+        key === "actions" ||
+        // the column title may already be in the panel's language
+        [ta("عملیات"), "عملیات", "غملیات"].includes(column.name.trim());
       if (isActions)
         return {
           colId: key,
@@ -214,7 +217,7 @@ const Table = <T,>({
               : dateFormat.format(value)
             : value;
         },
-        headerValueGetter: () => column.name,
+        headerValueGetter: () => ta(column.name),
         editable: !!column.onEdit,
         valueSetter: column.onEdit,
         cellEditor: !!column.onEdit

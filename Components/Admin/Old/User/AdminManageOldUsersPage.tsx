@@ -6,6 +6,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageOldUsersPage = () => {
   const { data, error } = useSWR<IOldUser[]>(`${API}/old/user`, (url: string) =>
@@ -20,30 +21,30 @@ const AdminManageOldUsersPage = () => {
           name="AdminManageOldUsers"
           renderer={{
             name: {
-              name: "نام",
+              name: ta("نام"),
               value: (node) =>
                 node.name ||
                 [node.firstName, node.lastName].filter(Boolean).join(" "),
               filter: "Text",
             },
             phone: {
-              name: "موبایل",
+              name: ta("موبایل"),
               value: (node) => node.phone,
               filter: "Text",
             },
-            ssid: { name: "کد ملی", value: (node) => node.ssid, filter: "Text" },
+            ssid: { name: ta("کد ملی"), value: (node) => node.ssid, filter: "Text" },
             license: {
-              name: "اشتراک",
+              name: ta("اشتراک"),
               value: (node) => node.license,
               filter: "Set",
             },
             balance: {
-              name: "مانده حساب",
+              name: ta("مانده حساب"),
               value: (node) => node.balance,
               filter: "Number",
             },
             gender: {
-              name: "جنسیت",
+              name: ta("جنسیت"),
               value: (node) => node.gender,
               filter: "Set",
             },

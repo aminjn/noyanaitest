@@ -5,6 +5,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteClinicPopup = ({
   mutate,
@@ -19,7 +20,7 @@ const DeleteClinicPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message={`آیا از حذف کلینیک ${node.name || node._id} مطمئنید؟`}
+        message={ta("آیا از حذف کلینیک ${1} مطمئنید؟", [node.name || node._id])}
         onConfirm={() => setIsLoading(true)}
       />
       <Act

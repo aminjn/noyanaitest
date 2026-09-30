@@ -4,6 +4,7 @@ import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // "New X": asks for the name first, creates the record, then opens its full
 // edit page (2026-09). These popups used to POST an empty record the moment
@@ -34,7 +35,7 @@ const CreateByNamePopup = ({
           path: `${API}/auto/${modelName}`,
           method: "POST",
           hasProblem: (inp) =>
-            !inp.name?.trim() ? `لطفا ${fieldTitle} را وارد کنید` : undefined,
+            !inp.name?.trim() ? ta("لطفا ${1} را وارد کنید", [fieldTitle]) : undefined,
           successCb: (result) => {
             mutate?.();
             closePopup();

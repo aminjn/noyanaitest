@@ -24,6 +24,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
 import MutateClinicRequestPopup from "./MutateClinicRequestPopup";
 import DeleteClinicAdditionRequestPopup from "./DeleteClinicAdditionRequestPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageClinicAdditionsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -37,42 +38,42 @@ const AdminManageClinicAdditionsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های اضافه شدن کلینیک">
+        <WithTitle title={ta("درخواست های اضافه شدن کلینیک")}>
           <Table
             name="AdminManageClinicAdditionRequests"
             data={data}
             renderer={{
               clinicName: {
-                name: "نام کلینیک",
+                name: ta("نام کلینیک"),
                 value: (node) => node.clinicName,
                 filter: "Text",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => additionRequestStatusDict[node.status],
                 filter: "Set",
               },
               city: {
-                name: "شهر",
+                name: ta("شهر"),
                 value: (node) => findCity(node.city),
                 filter: "Multi",
               },
               ownerName: {
-                name: "مالک",
+                name: ta("مالک"),
                 value: (node) => node.ownerName,
                 filter: "Text",
               },
               ownerPhone: {
-                name: "تلفن مالک",
+                name: ta("تلفن مالک"),
                 value: (node) => node.ownerPhone,
                 filter: "Text",
               },
               submittedBy: {
-                name: "ثبت‌کننده",
+                name: ta("ثبت‌کننده"),
                 value: (node) =>
                   node.submittedBy
                     ? getDoctorProfileLabel(node.submittedBy)
-                    : "حذف شده",
+                    : ta("حذف شده"),
                 component: (node) =>
                   node.submittedBy ? (
                     <InlineLink
@@ -81,22 +82,22 @@ const AdminManageClinicAdditionsPage = () => {
                       {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
               },
               submittedAt: {
-                name: "تاریخ ثبت",
+                name: ta("تاریخ ثبت"),
                 value: (node) => new Date(node.submittedAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {node.status !== "Done" && node.status !== "Rejected" && (
                       <IconButton
                         variant="Success"
-                        title="ایجاد کلینیک"
+                        title={ta("ایجاد کلینیک")}
                         onClick={() =>
                           setPopup(
                             "CreateClinicFromRequest",
@@ -113,7 +114,7 @@ const AdminManageClinicAdditionsPage = () => {
                     )}
                     <IconButton
                       variant="Info"
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateClinicRequest",
@@ -128,7 +129,7 @@ const AdminManageClinicAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteClinicAdditionRequest",

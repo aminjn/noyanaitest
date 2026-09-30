@@ -4,6 +4,7 @@ import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
 import { becomeNodeManualStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ChangeBecomeInsuranceStatusPopup = ({
   mutate,
@@ -20,7 +21,7 @@ const ChangeBecomeInsuranceStatusPopup = ({
         renderer={{
           status: {
             type: "select",
-            title: "وضعیت",
+            title: ta("وضعیت"),
             options: becomeNodeManualStatusesDict,
           },
         }}

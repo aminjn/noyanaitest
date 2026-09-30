@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DestroyCallPopup = ({
   mutate,
@@ -19,7 +20,7 @@ const DestroyCallPopup = ({
       <ConfirmationPopup
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
-        message="آیا از اتمام این تماس مطمئنید؟"
+        message={ta("آیا از اتمام این تماس مطمئنید؟")}
       />
       <Act
         path={isLoading ? `${API}/admin/call/${node._id}/end` : null}

@@ -9,6 +9,7 @@ import HandleLoading from "../../UI/HandleLoading";
 import WithTitle from "../../UI/WithTitle";
 import Table from "../../UI/Table";
 import Act from "@/Components/UI/Act";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface ITaminPhIllness extends MongoDoc {
   illnessId?: string;
@@ -26,8 +27,8 @@ const AdminManageTaminPhIllnessesPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="انواع بیماری"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("انواع بیماری")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -35,12 +36,12 @@ const AdminManageTaminPhIllnessesPage = () => {
               name="AdminManageTaminPhIllnesses"
               renderer={{
                 illnessDesc: {
-                  name: "عنوان",
+                  name: ta("عنوان"),
                   value: (node) => node.illnessDesc,
                   filter: "Text",
                 },
                 illnessId: {
-                  name: "کد",
+                  name: ta("کد"),
                   value: (node) => node.illnessId,
                   filter: "Text",
                 },

@@ -17,6 +17,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import WithTitle from "../UI/WithTitle";
 import CreatePartPopup from "./CreatePartPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManagePartsPage = () => {
   const { data, error, mutate } = useSWR<IPart[]>(
@@ -30,10 +31,10 @@ const AdminManagePartsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="اعضای بدن"
+          title={ta("اعضای بدن")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup("CreatePart", <CreatePartPopup mutate={mutate} />),
             },
@@ -43,9 +44,9 @@ const AdminManagePartsPage = () => {
             data={data}
             name="AdminManageParts"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -58,18 +59,18 @@ const AdminManagePartsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/part/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeletePart",

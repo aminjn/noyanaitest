@@ -19,6 +19,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import IconLink from "../UI/IconLink";
 import DeleteDoctorSecretaryAccessLevelPopup from "./DeleteDoctorSecretaryAccessLevelPopup";
 import { Dictionary } from "@/Components/DoctorPanel/Clinic/DoctorJoinClinicsTab";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type IDoctorSecretaryAccessLevel = MongoDoc & {
   name?: string;
@@ -49,7 +50,13 @@ export type DoctorSecretaryActionCategory =
   (typeof doctorSecretaryActionCategories)[number];
 
 export const doctorSecretaryActionCategoriesDict: Dictionary<DoctorSecretaryActionCategory> =
-  { clinic: "کلینیک", calendar: "تقویم نوبت دهی", settings: "تنظیمات" };
+  { get clinic() {
+  return ta("کلینیک");
+}, get calendar() {
+  return ta("تقویم نوبت دهی");
+}, get settings() {
+  return ta("تنظیمات");
+} };
 
 export const categorizedDoctorSecretaryActions: Record<
   DoctorSecretaryActionCategory,
@@ -67,15 +74,33 @@ export const categorizedDoctorSecretaryActions: Record<
 } as const;
 
 export const doctorSecretaryActionDict: Dictionary<DoctorSecretaryAction> = {
-  clinicAddition: "درخواست اضافه کردن کلینیک",
-  joinClinic: "درخواست عضویت در کلینیک",
-  leaveClinics: "خروج از کلینیک",
-  mutateJoinClinic: "آپدیت درخواست عضویت در کلینیک",
-  readClinics: "دریافت کلینیک ها",
-  mutateCalendar: "آپدیت تقویم",
-  readCalendar: "دریافت تقویم",
-  mutateSettings: "آپدیت تنظیمات",
-  readSettings: "دریافت تنظیمات",
+  get clinicAddition() {
+  return ta("درخواست اضافه کردن کلینیک");
+},
+  get joinClinic() {
+  return ta("درخواست عضویت در کلینیک");
+},
+  get leaveClinics() {
+  return ta("خروج از کلینیک");
+},
+  get mutateJoinClinic() {
+  return ta("آپدیت درخواست عضویت در کلینیک");
+},
+  get readClinics() {
+  return ta("دریافت کلینیک ها");
+},
+  get mutateCalendar() {
+  return ta("آپدیت تقویم");
+},
+  get readCalendar() {
+  return ta("دریافت تقویم");
+},
+  get mutateSettings() {
+  return ta("آپدیت تنظیمات");
+},
+  get readSettings() {
+  return ta("دریافت تنظیمات");
+},
 };
 
 const AdminManageDoctorSecretaryAccessLevelsPage = () => {
@@ -91,10 +116,10 @@ const AdminManageDoctorSecretaryAccessLevelsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="دسترسی های پیش فرض منشی دکتر"
+          title={ta("دسترسی های پیش فرض منشی دکتر")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateDoctorSecretaryAccessLevel",
@@ -107,29 +132,29 @@ const AdminManageDoctorSecretaryAccessLevelsPage = () => {
             name="AdminManageDoctorSecretaryAccessLevels"
             data={data}
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               permissions: {
-                name: "تعداد دسترسی ها",
+                name: ta("تعداد دسترسی ها"),
                 value: (node) =>
                   doctorSecretaryActions.filter((action) => node[action])
                     .length,
                 filter: "Number",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(
                         `/doctorsecretaryaccesslevel/${node._id}`
                       )}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDoctorSecretaryAccessLevel",

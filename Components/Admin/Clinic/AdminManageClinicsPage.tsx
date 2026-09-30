@@ -51,6 +51,7 @@ import {
   InsurancePopulation,
 } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // export type Population<T> = { [key in keyof T]?: T[key] | false };
 
@@ -183,10 +184,10 @@ const AdminManageClinicsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="کلینیک ها"
+          title={ta("کلینیک ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup("CreateClinic", <CreateClinicPopup mutate={mutate} />),
             },
@@ -196,7 +197,7 @@ const AdminManageClinicsPage = () => {
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 filter: "Text",
                 value: (node) => node.name || node._id,
                 component: (node) => (
@@ -206,18 +207,18 @@ const AdminManageClinicsPage = () => {
                 ),
               },
               active: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.active}`],
                 component: (node) => <BooleanToIcon value={node.active} />,
                 filter: "Set",
               },
               city: {
-                name: "شهر",
+                name: ta("شهر"),
                 value: (node) => cities.find((c) => c.slug === node.city)?.name,
                 filter: "Multi",
               },
               user: {
-                name: "مالک",
+                name: ta("مالک"),
                 value: (node) => node.user?.phone,
                 component: (node) =>
                   node.user ? (
@@ -230,12 +231,12 @@ const AdminManageClinicsPage = () => {
                 filter: "Text",
               },
               phone: {
-                name: "تلفن",
+                name: ta("تلفن"),
                 filter: "Text",
                 value: (node) => node.phone,
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -248,18 +249,18 @@ const AdminManageClinicsPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/clinic/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteClinic",

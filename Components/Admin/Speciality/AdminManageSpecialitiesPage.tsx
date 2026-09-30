@@ -26,6 +26,7 @@ import {
   IDoctorProfile,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type SpecialityPopulation = Population<{
   // kept only so existing type arguments still compile; specialities have
@@ -65,12 +66,12 @@ const AdminManageSpecialitiesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تخصص ها"
+          title={ta("تخصص ها")}
           actions={
             hasAccess("Sepciality", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup("NewSpeciality", <NewSpecialityPopup />),
                   },
@@ -83,7 +84,7 @@ const AdminManageSpecialitiesPage = () => {
             renderer={{
               name: {
                 value: (node) => node.name,
-                name: "نام",
+                name: ta("نام"),
                 filter: "Text",
                 component: (node) => (
                   <InlineLink href={adminPath(`/speciality/${node._id}`)}>
@@ -92,13 +93,13 @@ const AdminManageSpecialitiesPage = () => {
                 ),
               },
               active: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.active}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.active} />,
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 component: (node) => (
                   <OrderEditor
                     value={node.order}
@@ -111,19 +112,19 @@ const AdminManageSpecialitiesPage = () => {
                 filter: "Number",
               },
               isHome: {
-                name: "نمایش در خانه",
+                name: ta("نمایش در خانه"),
                 value: (node) => booleanToValue[`${node.isHome}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.isHome} />,
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("Sepciality", "readOne") && (
                       <IconLink
                         href={adminPath(`/speciality/${node._id}`)}
-                        title="ویرایش"
+                        title={ta("ویرایش")}
                       >
                         <EditIcon />
                       </IconLink>
@@ -140,7 +141,7 @@ const AdminManageSpecialitiesPage = () => {
                           )
                         }
                         variant="Danger"
-                        title="حذف"
+                        title={ta("حذف")}
                       >
                         <GarbageIcon />
                       </IconButton>

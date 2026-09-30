@@ -23,6 +23,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type DiseaseTagPopulation = Population<Record<never, never>>;
 
@@ -43,11 +44,11 @@ const CreateDiseaseTagPopup = ({ mutate }: { mutate: () => unknown }) => {
       <CreateForm<IDiseaseTag>
         onCancel={() => closePopup()}
         renderer={{
-          name: { type: "text", title: "نام" },
-          isActive: { type: "bool", title: "فعال" },
+          name: { type: "text", title: ta("نام") },
+          isActive: { type: "bool", title: ta("فعال") },
           level: {
             type: "select",
-            title: "لول",
+            title: ta("لول"),
             options: badgeColors.reduce(
               (acc, el) => ({ ...acc, [el]: el }),
               {},
@@ -81,7 +82,7 @@ const DeleteDiseaseTagPopup = ({
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
-        message="آیا از حذف این مورد مطمئنید؟"
+        message={ta("آیا از حذف این مورد مطمئنید؟")}
       />
       <Act
         path={isLoading ? `${API}/auto/diseaseTag/${node._id}` : null}
@@ -109,10 +110,10 @@ const AdminManageDiseaseTagsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="تگ بیماری ها"
+          title={ta("تگ بیماری ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateDiseaseTag",
@@ -125,15 +126,15 @@ const AdminManageDiseaseTagsPage = () => {
             name="AdminManageDiseaseTags"
             data={data}
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -146,23 +147,23 @@ const AdminManageDiseaseTagsPage = () => {
                 ),
               },
               level: {
-                name: "سطح",
+                name: ta("سطح"),
                 value: (node) => node.level,
                 filter: "Set",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/diseaseTag/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteDiseaseTag",

@@ -13,6 +13,7 @@ import IconButton from "@/Components/Admin/UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
 import Button from "../Button";
 import useNotification from "@/Components/Hooks/useNotification";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const SelectAdPopup = ({ onDone }: { onDone: (id: string) => unknown }) => {
   const { data, error, mutate } = useSWR<IInlineAdvertisement[]>(
@@ -30,10 +31,10 @@ const SelectAdPopup = ({ onDone }: { onDone: (id: string) => unknown }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="انتخاب تبلیغ"
+          title={ta("انتخاب تبلیغ")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateInlineAd",
@@ -48,13 +49,13 @@ const SelectAdPopup = ({ onDone }: { onDone: (id: string) => unknown }) => {
             onClick={() => {
               if (!selected)
                 return pushNotification(
-                  "لطفا یک مورد را انتخاب فرمایید",
+                  ta("لطفا یک مورد را انتخاب فرمایید"),
                   "Warn"
                 );
               onDone(selected._id);
             }}
           >
-            اضافه کن
+            {ta("اضافه کن")}
           </Button>
           <div className={classes.list}>
             {data.map((ad) => (

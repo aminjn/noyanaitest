@@ -1,3 +1,4 @@
+import { ta } from "@/Components/Admin/i18n/adminText";
 // Mirrors \\wsl.localhost\ubuntu\root\business\noyanai-back\Models\Advertisement.ts
 // Every slot in the front-end that is allowed to show an ad goes here. A page
 // can have more than one slot (e.g. a top banner and a sidebar banner on the
@@ -101,19 +102,49 @@ export const advertisementResourceModelLabels: Record<
   AdvertisementResourceModel,
   string
 > = {
-  Disease: "بیماری",
-  Doctor: "پزشک",
-  DoctorProfile: "پروفایل پزشک",
-  Drug: "دارو",
-  Speciality: "تخصص",
-  Clinic: "کلینیک",
-  Hospital: "بیمارستان",
-  ParaClinic: "پاراکلینیک",
-  Product: "محصول",
-  ProductPackage: "بسته محصول",
-  Symptom: "علامت",
-  Service: "خدمت",
-  ServicePackage: "بسته خدمت",
-  Insurance: "بیمه",
-  Blog: "مقاله",
+  get Disease() {
+  return ta("بیماری");
+},
+  get Doctor() {
+  return ta("پزشک");
+},
+  get DoctorProfile() {
+  return ta("پروفایل پزشک");
+},
+  get Drug() {
+  return ta("دارو");
+},
+  get Speciality() {
+  return ta("تخصص");
+},
+  get Clinic() {
+  return ta("کلینیک");
+},
+  get Hospital() {
+  return ta("بیمارستان");
+},
+  get ParaClinic() {
+  return ta("پاراکلینیک");
+},
+  get Product() {
+  return ta("محصول");
+},
+  get ProductPackage() {
+  return ta("بسته محصول");
+},
+  get Symptom() {
+  return ta("علامت");
+},
+  get Service() {
+  return ta("خدمت");
+},
+  get ServicePackage() {
+  return ta("بسته خدمت");
+},
+  get Insurance() {
+  return ta("بیمه");
+},
+  get Blog() {
+  return ta("مقاله");
+},
 };

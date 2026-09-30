@@ -8,6 +8,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import CloneDoctorProfileFromExistingDoctorPopup from "../BecomeDoctor/CloneDoctorProfileFromExistingDoctorPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorActionsTab = ({ node }: { node: IDoctor }) => {
   const { setPopup } = usePopup();
@@ -30,7 +31,7 @@ const AdminManageDoctorActionsTab = ({ node }: { node: IDoctor }) => {
             )
           }
         >
-          ساخت پروفایل از روی این پزشک
+          {ta("ساخت پروفایل از روی این پزشک")}
         </Button>
       )}
       {hasAccess("Doctor", "delete") && (
@@ -46,7 +47,7 @@ const AdminManageDoctorActionsTab = ({ node }: { node: IDoctor }) => {
             )
           }
         >
-          حذف این پزشک
+          {ta("حذف این پزشک")}
         </Button>
       )}
     </List>

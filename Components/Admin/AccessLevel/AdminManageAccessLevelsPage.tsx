@@ -22,6 +22,7 @@ import {
   IUserAccessLevel,
   UserAccessLevelPopulation,
 } from "./AccessLevelAdminsTab";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const accessOperations = [
   "readAll",
@@ -34,11 +35,21 @@ export const accessOperations = [
 export type AccessOperation = (typeof accessOperations)[number];
 
 export const accessLevelOperationsDict: { [key in AccessOperation]: string } = {
-  delete: "حذف",
-  readAll: "خواندن همه",
-  readOne: "خواندن یکی",
-  update: "به روز رسانی",
-  write: "نوشتن",
+  get delete() {
+  return ta("حذف");
+},
+  get readAll() {
+  return ta("خواندن همه");
+},
+  get readOne() {
+  return ta("خواندن یکی");
+},
+  get update() {
+  return ta("به روز رسانی");
+},
+  get write() {
+  return ta("نوشتن");
+},
 };
 
 type Access = { [key in AccessOperation]?: boolean };
@@ -90,47 +101,129 @@ export const accessLevelModels = [
 export type AccessLevelModel = (typeof accessLevelModels)[number];
 
 export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
-  BecomeDoctorRequest: "درخواست پزشک شدن",
-  BecomeClinicRequest: "درخواست کلینیک شدن",
-  BecomeInsuranceRequest: "درخواست بیمه شدن",
-  BecomePharmacyRequest: "درخواست داروخانه شدن",
-  Blog: "مقالات",
-  BlogCategory: "دسته بندی مقالات",
-  BlogMedia: "مولتی مدیا وبلاگ",
-  Comment: "نظرات",
-  Doctor: "پزشک",
-  DoctorProfile: "پروفایل پزشک",
-  GalleryItem: "گالری پزشک",
-  InlineAdvertisement: "تبلیغات",
-  Sepciality: "تخصص ها",
-  TextContent: "دیکشنری",
-  User: "کاربر",
-  Clinic: "کلینیک",
-  ClinicDepartment: "دپارتمان کلینیک",
-  ClinicDoctor: "ارتباط بین پزشک و کلینیک",
-  DoctorJoinClinic: "درخواست عضویت پزشکان در کلینیک",
-  ClinicAdditionRequest: "درخواست اضافه شدن کلینیک",
-  DoctorSeretaryAccessLevel: "دسترسی پیش فرض منشی دکتر",
-  Insurance: "بیمه",
-  InsuranceAdditionRequest: "درخواست اضافه شدن بیمه",
-  Pharmacy: "داروخانه و آزمایشگاه",
-  CallRoom: "تماس",
-  ShortLink: "لینک کوتاه",
-  Redirection: "انتقالات",
-  Disease: "بیماری",
-  Drug: "دارو",
-  Symptom: "علائم",
-  Part: "اعضای بدن",
-  DoctorFaq: "سوالات متداول پزشکان",
-  Hospital: "بیمارستان",
-  HospitalDepartment: "دپارتمان بیمارستان",
-  HospitalDoctor: "ارتباط بین پزشک و بیمارستان",
-  DoctorJoinHospital: "درخواست عضویت پزشکان در بیمارستان",
-  HospitalAdditionRequest: "درخواست اضافه شدن بیمارستان",
-  BecomeHospitalRequest: "درخواست بیمارستان شدن",
-  ParaClinic: "پاراکلینیک",
-  BecomeParaClinicRequest: "درخواست پاراکلینیک شدن",
-  PharmacyAdditionRequest: "درخواست اضافه شدن داروخانه",
+  get BecomeDoctorRequest() {
+  return ta("درخواست پزشک شدن");
+},
+  get BecomeClinicRequest() {
+  return ta("درخواست کلینیک شدن");
+},
+  get BecomeInsuranceRequest() {
+  return ta("درخواست بیمه شدن");
+},
+  get BecomePharmacyRequest() {
+  return ta("درخواست داروخانه شدن");
+},
+  get Blog() {
+  return ta("مقالات");
+},
+  get BlogCategory() {
+  return ta("دسته بندی مقالات");
+},
+  get BlogMedia() {
+  return ta("مولتی مدیا وبلاگ");
+},
+  get Comment() {
+  return ta("نظرات");
+},
+  get Doctor() {
+  return ta("پزشک");
+},
+  get DoctorProfile() {
+  return ta("پروفایل پزشک");
+},
+  get GalleryItem() {
+  return ta("گالری پزشک");
+},
+  get InlineAdvertisement() {
+  return ta("تبلیغات");
+},
+  get Sepciality() {
+  return ta("تخصص ها");
+},
+  get TextContent() {
+  return ta("دیکشنری");
+},
+  get User() {
+  return ta("کاربر");
+},
+  get Clinic() {
+  return ta("کلینیک");
+},
+  get ClinicDepartment() {
+  return ta("دپارتمان کلینیک");
+},
+  get ClinicDoctor() {
+  return ta("ارتباط بین پزشک و کلینیک");
+},
+  get DoctorJoinClinic() {
+  return ta("درخواست عضویت پزشکان در کلینیک");
+},
+  get ClinicAdditionRequest() {
+  return ta("درخواست اضافه شدن کلینیک");
+},
+  get DoctorSeretaryAccessLevel() {
+  return ta("دسترسی پیش فرض منشی دکتر");
+},
+  get Insurance() {
+  return ta("بیمه");
+},
+  get InsuranceAdditionRequest() {
+  return ta("درخواست اضافه شدن بیمه");
+},
+  get Pharmacy() {
+  return ta("داروخانه و آزمایشگاه");
+},
+  get CallRoom() {
+  return ta("تماس");
+},
+  get ShortLink() {
+  return ta("لینک کوتاه");
+},
+  get Redirection() {
+  return ta("انتقالات");
+},
+  get Disease() {
+  return ta("بیماری");
+},
+  get Drug() {
+  return ta("دارو");
+},
+  get Symptom() {
+  return ta("علائم");
+},
+  get Part() {
+  return ta("اعضای بدن");
+},
+  get DoctorFaq() {
+  return ta("سوالات متداول پزشکان");
+},
+  get Hospital() {
+  return ta("بیمارستان");
+},
+  get HospitalDepartment() {
+  return ta("دپارتمان بیمارستان");
+},
+  get HospitalDoctor() {
+  return ta("ارتباط بین پزشک و بیمارستان");
+},
+  get DoctorJoinHospital() {
+  return ta("درخواست عضویت پزشکان در بیمارستان");
+},
+  get HospitalAdditionRequest() {
+  return ta("درخواست اضافه شدن بیمارستان");
+},
+  get BecomeHospitalRequest() {
+  return ta("درخواست بیمارستان شدن");
+},
+  get ParaClinic() {
+  return ta("پاراکلینیک");
+},
+  get BecomeParaClinicRequest() {
+  return ta("درخواست پاراکلینیک شدن");
+},
+  get PharmacyAdditionRequest() {
+  return ta("درخواست اضافه شدن داروخانه");
+},
 };
 
 type AccessLevelPopuplation = { AdminsPopulated?: UserAccessLevelPopulation };
@@ -159,10 +252,10 @@ const AdminManageAccessLevelsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="سطوح دسترسی"
+          title={ta("سطوح دسترسی")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "CreateAccessLevel",
@@ -176,7 +269,7 @@ const AdminManageAccessLevelsPage = () => {
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 component: (node) => (
                   <InlineLink href={adminPath(`/accesslevel/${node._id}`)}>
                     {node.name || node._id}
@@ -201,18 +294,18 @@ const AdminManageAccessLevelsPage = () => {
                 {}
               ),
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/accesslevel/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteAccessLevel",

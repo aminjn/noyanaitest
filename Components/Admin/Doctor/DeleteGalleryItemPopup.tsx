@@ -5,6 +5,7 @@ import ConfirmationPopup from "../UI/ConfirmationPopup";
 import usePopup from "@/Components/Hooks/usePopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteGalleryItemPopup = ({
   mutate,
@@ -18,7 +19,7 @@ const DeleteGalleryItemPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این تصویر مطمئنید؟"
+        message={ta("آیا از حذف این تصویر مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

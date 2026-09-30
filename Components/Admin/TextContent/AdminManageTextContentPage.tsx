@@ -17,6 +17,7 @@ import {
   localeDir,
   enabledLocales,
 } from "@/Components/i18n/locales";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ITextContent = MongoDoc & { [key in ContentKey]: string };
 
@@ -83,12 +84,12 @@ const Row = ({
           <div className={classes.rowActions}>
             {dirty && (
               <button type="button" className={classes.save} onClick={() => save(value)} disabled={saving}>
-                ذخیره
+                {ta("ذخیره")}
               </button>
             )}
             {override !== undefined && !dirty && (
               <button type="button" className={classes.reset} onClick={() => save(null)} disabled={saving}>
-                بازگشت به پیش‌فرض
+                {ta("بازگشت به پیش‌فرض")}
               </button>
             )}
           </div>
@@ -157,7 +158,7 @@ const AdminManageTextContentPage = () => {
     try {
       await fetcher({ url: `${API}/admin/texts`, method: "PATCH", payload: { locale, key, value } });
       await mutate();
-      pushNotification(value === null ? "به متن پیش‌فرض برگشت" : "ذخیره شد", "Success");
+      pushNotification(value === null ? ta("به متن پیش‌فرض برگشت") : ta("ذخیره شد"), "Success");
     } catch (err) {
       pushNotification((err as Error).message, "Error");
     }
@@ -166,10 +167,9 @@ const AdminManageTextContentPage = () => {
   return (
     <div className={classes.main}>
       <header className={classes.header}>
-        <h1 className={classes.title}>لغت‌نامه</h1>
+        <h1 className={classes.title}>{ta("لغت‌نامه")}</h1>
         <p className={classes.subtitle}>
-          متن‌های سایت برای هر زبان. متن پیش‌فرض همراه برنامه است؛ هر چیزی این‌جا ذخیره کنید
-          فقط برای همان زبان جایگزین متن پیش‌فرض می‌شود.
+          {ta("متن‌های سایت برای هر زبان. متن پیش‌فرض همراه برنامه است؛ هر چیزی این‌جا ذخیره کنید فقط برای همان زبان جایگزین متن پیش‌فرض می‌شود.")}
         </p>
       </header>
 
@@ -182,7 +182,7 @@ const AdminManageTextContentPage = () => {
             onClick={() => setLocale(code)}
           >
             <span>{localeNames[code]}</span>
-            {!enabledLocales.includes(code) && <span className={classes.off}>غیرفعال</span>}
+            {!enabledLocales.includes(code) && <span className={classes.off}>{ta("غیرفعال")}</span>}
           </button>
         ))}
       </div>
@@ -193,17 +193,17 @@ const AdminManageTextContentPage = () => {
             className={classes.search}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="جستجو در کلید یا متن..."
+            placeholder={ta("جستجو در کلید یا متن...")}
           />
           <label className={classes.check}>
             <input type="checkbox" checked={onlyEdited} onChange={(e) => setOnlyEdited(e.target.checked)} />
-            فقط ویرایش‌شده‌ها ({editedCount})
+            {ta("فقط ویرایش‌شده‌ها (")}{editedCount})
           </label>
           <label className={classes.check}>
             <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} />
-            فقط بدون ترجمه
+            {ta("فقط بدون ترجمه")}
           </label>
-          <span className={classes.count}>{keys.length} متن</span>
+          <span className={classes.count}>{keys.length} {ta("متن")}</span>
         </div>
 
         {error ? (
@@ -216,9 +216,9 @@ const AdminManageTextContentPage = () => {
               <table className={classes.table}>
                 <thead>
                   <tr>
-                    <th>کلید</th>
-                    <th>{`متن پیش‌فرض (${localeNames[locale]})`}</th>
-                    <th>متن جایگزین</th>
+                    <th>{ta("کلید")}</th>
+                    <th>{ta("متن پیش‌فرض (${1})", [localeNames[locale]])}</th>
+                    <th>{ta("متن جایگزین")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -240,11 +240,11 @@ const AdminManageTextContentPage = () => {
             {pages > 1 && (
               <div className={classes.pagination}>
                 <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                  قبلی
+                  {ta("قبلی")}
                 </button>
-                <span>{`صفحه ${page} از ${pages}`}</span>
+                <span>{ta("صفحه ${1} از ${2}", [page, pages])}</span>
                 <button type="button" disabled={page >= pages} onClick={() => setPage((p) => p + 1)}>
-                  بعدی
+                  {ta("بعدی")}
                 </button>
               </div>
             )}

@@ -5,6 +5,7 @@ import { API } from "@/Components/config";
 import { IUser } from "@/Components/Hooks/useUser";
 import { getUserLabel } from "../Lib/LabelGetters";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DoctorProfileUserTab = ({
   mutate,
@@ -30,7 +31,7 @@ const DoctorProfileUserTab = ({
         user: {
           type: "nodes",
           path: `${API}/auto/user`,
-          title: "کاربر",
+          title: ta("کاربر"),
           getOptionLabel: (node) => getUserLabel(node as IUser),
           getOptionValue: (node) => (node as IUser)._id,
           getDefaultValue: (node) => node.user,

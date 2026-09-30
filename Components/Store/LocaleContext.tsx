@@ -14,10 +14,13 @@ const LocaleContext = createContext<{
   locale: Locale;
   // languages the site serves right now (super admin "Site languages")
   enabledLocales: readonly Locale[];
+  // the super admin's default language (unprefixed URLs, the admin panel)
+  siteDefaultLocale: Locale;
 }>({
   textContent: {},
   locale: defaultLocale,
   enabledLocales: locales,
+  siteDefaultLocale: defaultLocale,
 });
 
 export default LocaleContext;

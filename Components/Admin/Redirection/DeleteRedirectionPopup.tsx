@@ -4,6 +4,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteRedirectionPopup = ({
   mutate,
@@ -17,7 +18,7 @@ const DeleteRedirectionPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این آیتم مطمئنید؟"
+        message={ta("آیا از حذف این آیتم مطمئنید؟")}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

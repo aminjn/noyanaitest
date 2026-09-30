@@ -29,6 +29,7 @@ import DoctorCommissionTab from "./DoctorCommissionTab";
 import DoctorTaxTab from "./DoctorTaxTab";
 import DoctorProfileLicenseTab from "./DoctorProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorProfilePage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -55,7 +56,7 @@ const AdminManageDoctorProfilePage = () => {
         <WithTitle
           title={
             `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
-            "پروفایل پزشک"
+            ta("پروفایل پزشک")
           }
         >
           <TabSystem
@@ -64,7 +65,7 @@ const AdminManageDoctorProfilePage = () => {
                 ? [
                     {
                       id: "Overview",
-                      title: "نمای کلی",
+                      title: ta("نمای کلی"),
                       content: (
                         <EntityOverview
                           kind="doctorprofile"
@@ -77,13 +78,13 @@ const AdminManageDoctorProfilePage = () => {
                 : []),
               {
                 id: "Info",
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 content: <DoctorProfileInfoTab node={data} mutate={mutate} />,
                 icon: <InfoIcon />,
               },
               {
                 id: "Laoction",
-                title: "لوکیشن",
+                title: ta("لوکیشن"),
                 content: (
                   <DoctorProfileLocationTab mutate={mutate} node={data} />
                 ),
@@ -93,7 +94,7 @@ const AdminManageDoctorProfilePage = () => {
                 ? [
                     {
                       id: "Speciality",
-                      title: "تخصص",
+                      title: ta("تخصص"),
                       content: (
                         <DoctorSpecialityTab node={data} mutate={mutate} />
                       ),
@@ -105,7 +106,7 @@ const AdminManageDoctorProfilePage = () => {
                 id: "User",
                 content: <DoctorProfileUserTab node={data} mutate={mutate} />,
                 icon: <InfoIcon />,
-                title: "کاربر",
+                title: ta("کاربر"),
               },
               {
                 id: "PhoneConsult",
@@ -113,25 +114,25 @@ const AdminManageDoctorProfilePage = () => {
                   <DoctorProfilePhoneConsultTab node={data} mutate={mutate} />
                 ),
                 icon: <InfoIcon />,
-                title: "مشاور تلفنی",
+                title: ta("مشاور تلفنی"),
               },
               {
                 id: "Commission",
                 content: <DoctorCommissionTab node={data} />,
                 icon: <WalletIcon />,
-                title: "کمیسیون",
+                title: ta("کمیسیون"),
               },
               {
                 id: "Tax",
                 content: <DoctorTaxTab node={data} />,
                 icon: <WalletIcon />,
-                title: "مالیات",
+                title: ta("مالیات"),
               },
               {
                 id: "License",
                 content: <DoctorProfileLicenseTab node={data} />,
                 icon: <CartIcon />,
-                title: "مجوز",
+                title: ta("مجوز"),
               },
               {
                 id: "Actions",
@@ -150,13 +151,13 @@ const AdminManageDoctorProfilePage = () => {
                           )
                         }
                       >
-                        حذف
+                        {ta("حذف")}
                       </Button>
                     )}
                   </List>
                 ),
                 icon: <InfoIcon />,
-                title: "عملیات",
+                title: ta("عملیات"),
               },
             ]}
             name="AdminManageDoctorProfile"

@@ -3,6 +3,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import CreateForm from "../UI/CreateForm";
 import { IClinic, IClinicDepartment } from "./AdminManageClinicsPage";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateClinicDepartmentPopup = ({
   clinic,
@@ -16,17 +17,17 @@ const MutateClinicDepartmentPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="بخش کلینیک">
+    <PopupCard title={ta("بخش کلینیک")}>
       <CreateForm
         defaultValue={department}
         renderer={{
-          name: { title: "نام", type: "text" },
-          description: { title: "توضیحات", type: "text" },
-          image: { title: "تصویر", type: "image" },
-          active: { title: "فعال", type: "bool" },
-          order: { type: "number", title: "رتبه" },
-          summary: { type: "text", title: "خلاصه" },
-          phone: { type: "text", title: "تلفن" },
+          name: { title: ta("نام"), type: "text" },
+          description: { title: ta("توضیحات"), type: "text" },
+          image: { title: ta("تصویر"), type: "image" },
+          active: { title: ta("فعال"), type: "bool" },
+          order: { type: "number", title: ta("رتبه") },
+          summary: { type: "text", title: ta("خلاصه") },
+          phone: { type: "text", title: ta("تلفن") },
         }}
         onCancel={() => closePopup()}
         hookProps={{

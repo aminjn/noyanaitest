@@ -29,6 +29,7 @@ import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import LicensePricingInput, {
   ILicensePricingEntry,
 } from "./LicensePricingInput";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -56,8 +57,8 @@ const SecretInput = ({
           type="button"
           className={classes.secretToggle}
           onClick={() => setVisible((prev) => !prev)}
-          aria-label={visible ? "پنهان کردن" : "نمایش"}
-          title={visible ? "پنهان کردن" : "نمایش"}
+          aria-label={visible ? ta("پنهان کردن") : ta("نمایش")}
+          title={visible ? ta("پنهان کردن") : ta("نمایش")}
         >
           <Ixon width="1.25rem">
             <EyeIcon />
@@ -217,7 +218,8 @@ const CreateForm = <TInput, TResult = unknown>({
         const segment = renderer[key];
         if (!segment) return;
         const commons = {
-          title: segment.title,
+          // a title built at module load is still the Persian source
+          title: ta(segment.title),
           defaultValue: defaultValue?.[key]?.toString(),
           placeholder: true,
           readOnly: isLoading || readOnly || segment.readOnly,

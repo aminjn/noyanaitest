@@ -14,6 +14,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type SymptomCategoryPopulation = Population<Record<never, never>>;
 export interface ISymptomCategory<
@@ -26,10 +27,18 @@ export interface ISymptomCategory<
 }
 
 export const symptomCategoryFormRenderer: FormRenderer<ISymptomCategory> = {
-  name: { type: "text", title: "نام" },
-  slug: { type: "text", title: "اسلاگ" },
-  isActive: { type: "bool", title: "فعال" },
-  order: { type: "number", title: "رتبه" },
+  name: { type: "text", get title() {
+  return ta("نام");
+} },
+  slug: { type: "text", get title() {
+  return ta("اسلاگ");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
 };
 
 const AdminManageSymptomCategoriesPage = () => {
@@ -40,15 +49,15 @@ const AdminManageSymptomCategoriesPage = () => {
       modelName="symptomCategory"
       create={symptomCategoryFormRenderer}
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -61,18 +70,18 @@ const AdminManageSymptomCategoriesPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/symptomCategory/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",
@@ -90,7 +99,7 @@ const AdminManageSymptomCategoriesPage = () => {
           ),
         },
       })}
-      title="دسته بندی علائم"
+      title={ta("دسته بندی علائم")}
     />
   );
 };

@@ -17,6 +17,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import RemoveAccessLevelUserPopup from "./RemoveAccessLevelUserPopup";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import ConnectAccessLevelToUserPopup from "./ConnectAccessLevelToUserPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageUserAccessLevelsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -31,10 +32,10 @@ const AdminManageUserAccessLevelsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="ادمین ها"
+          title={ta("ادمین ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               icon: <InfoIcon />,
               action: () =>
                 setPopup(
@@ -49,7 +50,7 @@ const AdminManageUserAccessLevelsPage = () => {
             data={data}
             renderer={{
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => node.user?.phone || node.user?._id,
                 filter: "Text",
                 component: (node) =>
@@ -58,11 +59,11 @@ const AdminManageUserAccessLevelsPage = () => {
                       {node.user.phone || node.user._id}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
               },
               accessLevel: {
-                name: "سطح دسترسی",
+                name: ta("سطح دسترسی"),
                 value: (node) =>
                   node.accessLevel?.name || node.accessLevel?._id,
                 component: (node) =>
@@ -73,17 +74,17 @@ const AdminManageUserAccessLevelsPage = () => {
                       {node.accessLevel.name || node.accessLevel._id}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
                 filter: "Multi",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "RemoveAccessLevelUserPopup",

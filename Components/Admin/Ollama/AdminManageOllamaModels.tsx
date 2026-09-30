@@ -17,6 +17,7 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import Button from "@/Components/UI/Button";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type OllamaModelPopulation = Population<Record<never, never>>;
 
@@ -256,14 +257,14 @@ const AdminManageOllamaModels = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="مدل ها"
+          title={ta("مدل ها")}
           actions={[
             {
-              title: "رفرش",
+              title: ta("رفرش"),
               action: () => setIsRefreshing(true),
             },
             {
-              title: "تنظیمات",
+              title: ta("تنظیمات"),
               action: () =>
                 setPopup("GlobalOllamaSetting", <GlobalOllamaSettingsPopup />),
             },
@@ -274,28 +275,28 @@ const AdminManageOllamaModels = () => {
             name="AdminManageOllamaModels"
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 value: (node) => node.name,
                 filter: "Text",
               },
               loaded: {
-                name: "بارگذاری شده",
+                name: ta("بارگذاری شده"),
                 value: (node) => booleanToValue[`${!!node.loaded}`],
                 component: (node) => <BooleanToIcon value={!!node.loaded} />,
                 filter: "Set",
               },
               family: {
-                name: "خانواده",
+                name: ta("خانواده"),
                 value: (node) => node.family,
                 filter: "Set",
               },
               parameterSize: {
-                name: "تعداد پارامتر",
+                name: ta("تعداد پارامتر"),
                 value: (node) => node.parameterSize,
                 filter: "Text",
               },
               size: {
-                name: "حجم",
+                name: ta("حجم"),
                 value: (node) => node.size,
                 filter: "Number",
                 component: (node) =>
@@ -304,12 +305,12 @@ const AdminManageOllamaModels = () => {
                     : "—",
               },
               modifiedAt: {
-                name: "آخرین تغییر",
+                name: ta("آخرین تغییر"),
                 value: (node) => new Date(node.modifiedAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 width: 240,
                 component: (node) => (
                   <TableActions>

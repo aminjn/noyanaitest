@@ -6,6 +6,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteBlogPopup = ({
   mutate,
@@ -19,7 +20,7 @@ const DeleteBlogPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف مقاله ${node.title || node._id} مطمئنید؟`}
+        message={ta("آیا از حذف مقاله ${1} مطمئنید؟", [node.title || node._id])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

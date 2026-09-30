@@ -14,14 +14,19 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export const aboutWhyElems = ["Why", "Principle"] as const;
 
 export type AboutWhyElem = (typeof aboutWhyElems)[number];
 
 const aboutWhyElemDict: Record<AboutWhyElem, string> = {
-  Principle: "ارزش",
-  Why: "چرا",
+  get Principle() {
+  return ta("ارزش");
+},
+  get Why() {
+  return ta("چرا");
+},
 };
 
 export type AboutWhyPopulation = Population<Record<never, never>>;
@@ -38,12 +43,24 @@ export interface IAboutWhy<
 }
 
 export const aboutWhyFormRenderer: FormRenderer<IAboutWhy> = {
-  title: { type: "text", title: "عنوان" },
-  order: { type: "number", title: "رتبه" },
-  elem: { type: "select", title: "قسمت", options: aboutWhyElemDict },
-  content: { type: "text", title: "توضیحات" },
-  image: { title: "تصویر", type: "image" },
-  isActive: { type: "bool", title: "فعال" },
+  title: { type: "text", get title() {
+  return ta("عنوان");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
+  elem: { type: "select", get title() {
+  return ta("قسمت");
+}, options: aboutWhyElemDict },
+  content: { type: "text", get title() {
+  return ta("توضیحات");
+} },
+  image: { get title() {
+  return ta("تصویر");
+}, type: "image" },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
 };
 
 const AdminManageAboutWhysPage = () => {
@@ -51,24 +68,24 @@ const AdminManageAboutWhysPage = () => {
 
   return (
     <NodesManager<IAboutWhy>
-      title="درباره چرا"
+      title={ta("درباره چرا")}
       create={aboutWhyFormRenderer}
       modelName="aboutWhy"
       table={({ mutate }) => ({
-        title: { name: "عنوان", value: (node) => node.title, filter: "Text" },
+        title: { name: ta("عنوان"), value: (node) => node.title, filter: "Text" },
         elem: {
-          name: "قسمت",
+          name: ta("قسمت"),
           value: (node) => aboutWhyElemDict[node.elem],
           filter: "Set",
         },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "رتبه",
+          name: ta("رتبه"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -81,15 +98,15 @@ const AdminManageAboutWhysPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
-              <IconLink href={adminPath(`/aboutWhy/${node._id}`)} title="ویرایش">
+              <IconLink href={adminPath(`/aboutWhy/${node._id}`)} title={ta("ویرایش")}>
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

@@ -6,6 +6,7 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { adminPath } from "@/Components/helpers/adminPath";
 import HandleLoading from "./HandleLoading";
+import { adminDateTimeFormat, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 
 export type EntityKind =
   | "doctorprofile"
@@ -44,9 +45,9 @@ type Overview = {
   }[];
 };
 
-const num = new Intl.NumberFormat("fa-IR");
-const date = new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium" });
-const dateTime = new Intl.DateTimeFormat("fa-IR", {
+const num = adminNumberFormat();
+const date = adminDateTimeFormat({ dateStyle: "medium" });
+const dateTime = adminDateTimeFormat({
   month: "short",
   day: "numeric",
   hour: "2-digit",
@@ -54,11 +55,21 @@ const dateTime = new Intl.DateTimeFormat("fa-IR", {
 });
 
 const actionLabels: Record<string, string> = {
-  create: "ایجاد",
-  update: "ویرایش",
-  delete: "حذف",
-  settings: "تغییر تنظیمات",
-  other: "سایر",
+  get create() {
+  return ta("ایجاد");
+},
+  get update() {
+  return ta("ویرایش");
+},
+  get delete() {
+  return ta("حذف");
+},
+  get settings() {
+  return ta("تغییر تنظیمات");
+},
+  get other() {
+  return ta("سایر");
+},
 };
 
 const displayPhone = (phone?: string) =>
@@ -99,7 +110,7 @@ const EntityOverview = ({
           <div className={classes.chips}>
             {typeof data.active === "boolean" && (
               <span className={data.active ? classes.ok : classes.off}>
-                {data.active ? "فعال" : "غیرفعال"}
+                {data.active ? ta("فعال") : ta("غیرفعال")}
               </span>
             )}
             {data.owner ? (
@@ -107,14 +118,14 @@ const EntityOverview = ({
                 href={adminPath(`/user/${data.owner._id}`)}
                 className={classes.chip}
               >
-                {`حساب کاربری: ${displayPhone(data.owner.phone) || data.owner.username || "—"}`}
+                {ta("حساب کاربری: ${1}", [displayPhone(data.owner.phone) || data.owner.username || "—"])}
               </Link>
             ) : (
-              <span className={classes.off}>بدون حساب کاربری</span>
+              <span className={classes.off}>{ta("بدون حساب کاربری")}</span>
             )}
             {data.rating && data.rating.count > 0 && (
               <span className={classes.chip}>
-                {`امتیاز ${num.format(Math.round(data.rating.average * 10) / 10)} از ${num.format(data.rating.count)} نظر`}
+                {ta("امتیاز ${1} از ${2} نظر", [num.format(Math.round(data.rating.average * 10) / 10), num.format(data.rating.count)])}
               </span>
             )}
           </div>
@@ -153,7 +164,7 @@ const EntityOverview = ({
                   <span className={classes.count}>{num.format(rel.total)}</span>
                 </h3>
                 {rel.items.length === 0 ? (
-                  <p className={classes.empty}>موردی ثبت نشده است</p>
+                  <p className={classes.empty}>{ta("موردی ثبت نشده است")}</p>
                 ) : (
                   <div className={classes.links}>
                     {list<Overview["relations"][number]["items"][number]>(
@@ -169,7 +180,7 @@ const EntityOverview = ({
                     ))}
                     {rel.total > rel.items.length && (
                       <span className={classes.more}>
-                        {`و ${num.format(rel.total - rel.items.length)} مورد دیگر`}
+                        {ta("و ${1} مورد دیگر", [num.format(rel.total - rel.items.length)])}
                       </span>
                     )}
                   </div>
@@ -178,28 +189,28 @@ const EntityOverview = ({
             ))}
 
             <section className={classes.card}>
-              <h3 className={classes.cardTitle}>اشتراک</h3>
+              <h3 className={classes.cardTitle}>{ta("اشتراک")}</h3>
               {data.license ? (
                 <dl className={classes.license}>
-                  <dt>پلن</dt>
+                  <dt>{ta("پلن")}</dt>
                   <dd>{data.license.displayName || "—"}</dd>
-                  <dt>شروع</dt>
+                  <dt>{ta("شروع")}</dt>
                   <dd>{formatDate(data.license.startedAt)}</dd>
-                  <dt>پایان</dt>
+                  <dt>{ta("پایان")}</dt>
                   <dd className={data.license.isExpired ? classes.expired : ""}>
                     {formatDate(data.license.expiresAt)}
-                    {data.license.isExpired && " (منقضی شده)"}
+                    {data.license.isExpired && ta(" (منقضی شده)")}
                   </dd>
                 </dl>
               ) : (
-                <p className={classes.empty}>اشتراکی ثبت نشده است</p>
+                <p className={classes.empty}>{ta("اشتراکی ثبت نشده است")}</p>
               )}
             </section>
 
             <section className={`${classes.card} ${classes.wide}`}>
-              <h3 className={classes.cardTitle}>آخرین تغییرات ادمین</h3>
+              <h3 className={classes.cardTitle}>{ta("آخرین تغییرات ادمین")}</h3>
               {audit.length === 0 ? (
-                <p className={classes.empty}>تغییری ثبت نشده است</p>
+                <p className={classes.empty}>{ta("تغییری ثبت نشده است")}</p>
               ) : (
                 <ul className={classes.audit}>
                   {audit.map((row) => (
@@ -208,7 +219,7 @@ const EntityOverview = ({
                         {actionLabels[row.action] || row.action}
                       </span>
                       <span className={classes.fields}>
-                        {list<string>(row.fields).slice(0, 4).join("، ")}
+                        {list<string>(row.fields).slice(0, 4).join(ta("، "))}
                       </span>
                       <span className={classes.actor}>
                         {displayPhone(row.actor)}
@@ -223,7 +234,7 @@ const EntityOverview = ({
                 </ul>
               )}
               <Link href={adminPath("/audit")} className={classes.more}>
-                لاگ کامل عملیات
+                {ta("لاگ کامل عملیات")}
               </Link>
             </section>
           </div>

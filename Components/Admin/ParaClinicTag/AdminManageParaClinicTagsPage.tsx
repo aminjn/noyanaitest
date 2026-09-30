@@ -14,6 +14,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ParaClinicTagPopulation = Population<Record<never, never>>;
 export interface IParaClinicTag<
@@ -25,9 +26,15 @@ export interface IParaClinicTag<
 }
 
 export const paraClinicTagFormRenderer: FormRenderer<IParaClinicTag> = {
-  name: { type: "text", title: "نام" },
-  isActive: { type: "bool", title: "فعال" },
-  order: { type: "number", title: "رتبه" },
+  name: { type: "text", get title() {
+  return ta("نام");
+} },
+  isActive: { type: "bool", get title() {
+  return ta("فعال");
+} },
+  order: { type: "number", get title() {
+  return ta("رتبه");
+} },
 };
 
 const AdminManageParaClinicTagsPage = () => {
@@ -36,18 +43,18 @@ const AdminManageParaClinicTagsPage = () => {
   return (
     <NodesManager<IParaClinicTag>
       create={paraClinicTagFormRenderer}
-      title="تگ پاراکلینیک"
+      title={ta("تگ پاراکلینیک")}
       modelName="paraClinicTag"
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "فعال",
+          name: ta("فعال"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "ترتیب",
+          name: ta("ترتیب"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -60,18 +67,18 @@ const AdminManageParaClinicTagsPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/paraClinicTag/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

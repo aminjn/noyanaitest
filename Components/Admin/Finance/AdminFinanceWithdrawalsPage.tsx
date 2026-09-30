@@ -16,6 +16,7 @@ import TableActions from "../UI/TableActions";
 import Button from "@/Components/UI/Button";
 import DecideWithdrawalPopup from "./DecideWithdrawalPopup";
 import { IFinanceUser, userLabel } from "./adminFinance";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IAdminWithdrawalRow {
   _id: string;
@@ -32,10 +33,18 @@ export interface IAdminWithdrawalRow {
 }
 
 const statusDict: Record<IAdminWithdrawalRow["status"], string> = {
-  pending: "در انتظار واریز",
-  paid: "واریز شد",
-  rejected: "رد شد",
-  cancelled: "لغو توسط کاربر",
+  get pending() {
+  return ta("در انتظار واریز");
+},
+  get paid() {
+  return ta("واریز شد");
+},
+  get rejected() {
+  return ta("رد شد");
+},
+  get cancelled() {
+  return ta("لغو توسط کاربر");
+},
 };
 
 // Every user's wallet -> bank withdrawal requests (2026-09). The amount is
@@ -56,17 +65,17 @@ const AdminFinanceWithdrawalsPage = () => {
         <WithTitle
           title={
             status === "pending"
-              ? "برداشت‌های در انتظار واریز"
-              : "درخواست‌های برداشت"
+              ? ta("برداشت‌های در انتظار واریز")
+              : ta("درخواست‌های برداشت")
           }
           actions={[
             status === "pending"
               ? {
-                  title: "همه‌ی درخواست‌ها",
+                  title: ta("همه‌ی درخواست‌ها"),
                   action: () => router.push(adminPath("/finance/withdrawals")),
                 }
               : {
-                  title: "فقط در انتظار",
+                  title: ta("فقط در انتظار"),
                   action: () =>
                     router.push(
                       adminPath("/finance/withdrawals?status=pending"),
@@ -79,7 +88,7 @@ const AdminFinanceWithdrawalsPage = () => {
             data={data}
             renderer={{
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => userLabel(node.user),
                 filter: "Text",
                 component: (node) =>
@@ -92,34 +101,34 @@ const AdminFinanceWithdrawalsPage = () => {
                   ),
               },
               amount: {
-                name: "مبلغ (تومان)",
+                name: ta("مبلغ (تومان)"),
                 value: (node) => node.amount,
                 component: (node) => currencize(node.amount || 0),
                 filter: "Number",
               },
-              iban: { name: "شبا", value: (node) => node.iban, filter: "Text" },
+              iban: { name: ta("شبا"), value: (node) => node.iban, filter: "Text" },
               holderName: {
-                name: "صاحب حساب",
+                name: ta("صاحب حساب"),
                 value: (node) => node.holderName,
                 filter: "Text",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => statusDict[node.status] || node.status,
                 filter: "Set",
               },
               trackingCode: {
-                name: "کد پیگیری / دلیل",
+                name: ta("کد پیگیری / دلیل"),
                 value: (node) => node.trackingCode || node.adminNote || "—",
               },
               createdAt: {
-                name: "تاریخ درخواست",
+                name: ta("تاریخ درخواست"),
                 value: (node) =>
                   node.createdAt ? new Date(node.createdAt) : undefined,
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) =>
                   node.status === "pending" ? (
                     <TableActions>
@@ -135,7 +144,7 @@ const AdminFinanceWithdrawalsPage = () => {
                           )
                         }
                       >
-                        رسیدگی
+                        {ta("رسیدگی")}
                       </Button>
                     </TableActions>
                   ) : null,

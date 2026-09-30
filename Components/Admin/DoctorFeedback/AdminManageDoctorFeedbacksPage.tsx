@@ -14,6 +14,7 @@ import useNotification from "@/Components/Hooks/useNotification";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 type FeedbackStatus = "Pending" | "Approved" | "Rejected";
 
@@ -30,9 +31,15 @@ type AdminDoctorFeedback = {
 };
 
 const statusDict: Record<FeedbackStatus, string> = {
-  Pending: "در انتظار تایید",
-  Approved: "تایید شده",
-  Rejected: "رد شده",
+  get Pending() {
+  return ta("در انتظار تایید");
+},
+  get Approved() {
+  return ta("تایید شده");
+},
+  get Rejected() {
+  return ta("رد شده");
+},
 };
 
 // Verified visit reviews of doctors (2026-09): nothing is public until an
@@ -56,7 +63,7 @@ const AdminManageDoctorFeedbacksPage = () => {
         payload: { status },
       });
       pushNotification(
-        status === "Approved" ? "نظر تایید و منتشر شد." : "نظر رد شد.",
+        status === "Approved" ? ta("نظر تایید و منتشر شد.") : ta("نظر رد شد."),
         "Success",
       );
       await mutate();
@@ -70,15 +77,15 @@ const AdminManageDoctorFeedbacksPage = () => {
   return (
     <NodesManager<AdminDoctorFeedback>
       modelName="doctorFeedback"
-      title="نظرات بیماران درباره‌ی پزشکان"
+      title={ta("نظرات بیماران درباره‌ی پزشکان")}
       table={({ mutate }) => ({
         status: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => statusDict[node.status || "Pending"],
           filter: "Set",
         },
         doctor: {
-          name: "پزشک",
+          name: ta("پزشک"),
           value: (node) =>
             `${node.doctor?.firstName || ""} ${node.doctor?.lastName || ""}`.trim() || "—",
           component: (node) =>
@@ -93,7 +100,7 @@ const AdminManageDoctorFeedbacksPage = () => {
           filter: "Multi",
         },
         user: {
-          name: "بیمار",
+          name: ta("بیمار"),
           value: (node) => node.user?.phone || "—",
           component: (node) =>
             node.user ? (
@@ -106,38 +113,38 @@ const AdminManageDoctorFeedbacksPage = () => {
           filter: "Multi",
         },
         overalScore: {
-          name: "امتیاز",
+          name: ta("امتیاز"),
           value: (node) => node.overalScore,
           filter: "Number",
         },
         suggest: {
-          name: "پیشنهاد می‌کند",
-          value: (node) => (node.suggest ? "بله" : "خیر"),
+          name: ta("پیشنهاد می‌کند"),
+          value: (node) => (node.suggest ? ta("بله") : ta("خیر")),
           filter: "Set",
         },
         publicMessage: {
-          name: "متن نظر (عمومی)",
+          name: ta("متن نظر (عمومی)"),
           value: (node) => node.publicMessage || "—",
           filter: "Text",
         },
         privateMessage: {
-          name: "پیام خصوصی به نویان",
+          name: ta("پیام خصوصی به نویان"),
           value: (node) => node.privateMessage || "—",
           filter: "Text",
         },
         submittedAt: {
-          name: "تاریخ ثبت",
+          name: ta("تاریخ ثبت"),
           value: (node) => new Date(node.submittedAt),
           filter: "Date",
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               {node.status !== "Approved" && (
                 <IconButton
                   variant="Success"
-                  title="تایید و انتشار"
+                  title={ta("تایید و انتشار")}
                   onClick={() => setStatus(node._id, "Approved", mutate)}
                 >
                   <CheckIcon />
@@ -146,7 +153,7 @@ const AdminManageDoctorFeedbacksPage = () => {
               {node.status !== "Rejected" && (
                 <IconButton
                   variant="Neutral"
-                  title="رد"
+                  title={ta("رد")}
                   onClick={() => setStatus(node._id, "Rejected", mutate)}
                 >
                   <CloseIcon />
@@ -154,7 +161,7 @@ const AdminManageDoctorFeedbacksPage = () => {
               )}
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

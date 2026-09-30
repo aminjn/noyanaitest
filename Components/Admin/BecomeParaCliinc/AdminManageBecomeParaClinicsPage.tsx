@@ -13,6 +13,7 @@ import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import EyeIcon from "@/Components/Icons/EyeIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeParaClinicsPage = () => {
   const { data, error } = useSWR<
@@ -24,19 +25,19 @@ const AdminManageBecomeParaClinicsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های پاراکلینیک شدن">
+        <WithTitle title={ta("درخواست های پاراکلینیک شدن")}>
           <Table
             data={data}
             name="AdminManageBecomeParaClinicRequests"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => becomeNodeStatusesDict[node.status],
                 filter: "Set",
               },
               user: {
-                name: "کاربر",
+                name: ta("کاربر"),
                 value: (node) => node.user?.phone,
                 filter: "Text",
                 component: (node) =>
@@ -49,27 +50,27 @@ const AdminManageBecomeParaClinicsPage = () => {
                   ),
               },
               siamCode: {
-                name: "کد سیام",
+                name: ta("کد سیام"),
                 value: (node) => node.siamCode,
                 filter: "Text",
               },
               nationalId: {
-                name: "کد ملی",
+                name: ta("کد ملی"),
                 value: (node) => node.nationalId,
                 filter: "Text",
               },
               createdAt: {
-                name: "تاریخ ثبت",
+                name: ta("تاریخ ثبت"),
                 value: (node) => new Date(node.createdAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/becomeParaClinic/${node._id}`)}
-                      title="مشاهده"
+                      title={ta("مشاهده")}
                     >
                       <EyeIcon />
                     </IconLink>

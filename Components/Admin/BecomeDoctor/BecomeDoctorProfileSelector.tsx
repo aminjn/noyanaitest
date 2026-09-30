@@ -20,6 +20,7 @@ import RemoveUserFromDoctorProfilePopup from "./RemoveUserFromDoctorProfilePopup
 import { adminPath } from "@/Components/helpers/adminPath";
 import InlineLink from "../UI/InlineLink";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const BecomeDoctorProfileSelector = ({
   req,
@@ -48,7 +49,7 @@ const BecomeDoctorProfileSelector = ({
       {!!profile ? (
         <List>
           <p>
-            <span>پروفایل اختصاص داده شده به این کاربر : </span>
+            <span>{ta("پروفایل اختصاص داده شده به این کاربر :")} </span>
             <InlineLink href={adminPath(`/doctorprofile/${profile._id}`)}>
               {`${profile.firstName || ""} ${profile.lastName || ""}`.trim() ||
                 profile._id}
@@ -68,14 +69,14 @@ const BecomeDoctorProfileSelector = ({
                   )
                 }
               >
-                حذف پروفایل اختصاص داده شده به این کاربر
+                {ta("حذف پروفایل اختصاص داده شده به این کاربر")}
               </Button>
             )}
           </FormActions>
         </List>
       ) : (
         <List>
-          <p>هنوز پروفایلی برای این کاربر ثبت نشده</p>
+          <p>{ta("هنوز پروفایلی برای این کاربر ثبت نشده")}</p>
           <FormActions>
             {hasAccess("DoctorProfile", "update") && (
               <Button
@@ -89,7 +90,7 @@ const BecomeDoctorProfileSelector = ({
                   )
                 }
               >
-                ثبت پروفایل موجود برای این کاربر
+                {ta("ثبت پروفایل موجود برای این کاربر")}
               </Button>
             )}
             {hasAccess("DoctorProfile", "write") && (
@@ -105,7 +106,7 @@ const BecomeDoctorProfileSelector = ({
                     )
                   }
                 >
-                  ساخت پروفایل جدید و ثبت برای این کاربر
+                  {ta("ساخت پروفایل جدید و ثبت برای این کاربر")}
                 </Button>
               </Fragment>
             )}

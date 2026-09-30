@@ -10,6 +10,7 @@ import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { Population } from "../../Clinic/AdminManageClinicsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type TaminPrescriptionTypePopulation = Population<Record<never, never>>;
 export interface ITaminPrescriptionType<
@@ -32,8 +33,8 @@ const AdminManageTaminPrescriptionTypesPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="انواع نسخه"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("انواع نسخه")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -41,17 +42,17 @@ const AdminManageTaminPrescriptionTypesPage = () => {
               name="AdminManageTaminPrescriptionTypes"
               renderer={{
                 prescTypeDesc: {
-                  name: "عنوان",
+                  name: ta("عنوان"),
                   value: (node) => node.prescTypeDesc,
                   filter: "Text",
                 },
                 prescTypeCode: {
-                  name: "کد",
+                  name: ta("کد"),
                   value: (node) => node.prescTypeCode,
                   filter: "Text",
                 },
                 prescTypeId: {
-                  name: "شناسه تامین",
+                  name: ta("شناسه تامین"),
                   value: (node) => node.prescTypeId,
                   filter: "Number",
                 },

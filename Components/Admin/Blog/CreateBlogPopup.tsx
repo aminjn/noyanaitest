@@ -3,12 +3,13 @@ import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
 import classes from "./CreateBlogPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const CreateBlogPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="مقاله‌ی جدید">
+    <PopupCard title={ta("مقاله‌ی جدید")}>
       <CreateForm
         hookProps={{
           path: `${API}/auto/blog`,
@@ -18,7 +19,7 @@ const CreateBlogPopup = ({ mutate }: { mutate: () => unknown }) => {
             closePopup();
           },
         }}
-        renderer={{ title: { type: "text", title: "عنوان" } }}
+        renderer={{ title: { type: "text", title: ta("عنوان") } }}
         onCancel={closePopup}
         className={classes.main}
       />

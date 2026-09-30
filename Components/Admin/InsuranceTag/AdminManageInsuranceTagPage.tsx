@@ -8,6 +8,7 @@ import {
   IInsuranceTag,
   insuranceTagFormRenderer,
 } from "./AdminManageInsuranceTagsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInsuranceTagPage = () => {
   return (
@@ -20,7 +21,7 @@ const AdminManageInsuranceTagPage = () => {
           items={[
             {
               id: "Info",
-              title: "جزئیات",
+              title: ta("جزئیات"),
               content: (
                 <CreateForm
                   defaultValue={node}

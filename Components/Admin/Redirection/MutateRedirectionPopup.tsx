@@ -7,6 +7,7 @@ import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateRedirectionPopup = ({
   mutate,
@@ -30,15 +31,15 @@ const MutateRedirectionPopup = ({
           },
         }}
         renderer={{
-          old: { type: "text", title: "قدیم" },
-          current: { type: "text", title: "جدید" },
+          old: { type: "text", title: ta("قدیم") },
+          current: { type: "text", title: ta("جدید") },
           statusCode: {
             type: "select",
             options: redirectionStatusCodes.reduce(
               (acc, el) => ({ ...acc, [el.toString()]: el }),
               {}
             ),
-            title: "کد",
+            title: ta("کد"),
           },
         }}
         onCancel={() => closePopup()}

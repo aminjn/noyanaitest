@@ -24,6 +24,7 @@ import {
   WalletChargeResponse,
 } from "@/Components/Payment/paymentTypes";
 import classes from "./AdminSepTestPage.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Admin-only tester for the SEP (Saman) online gateway (2026-09) - see
 // Services/paymentService.ts / Controllers/paymentController.ts
@@ -57,12 +58,24 @@ type SepTestPayment = IGatewayPayment & {
 type SepTestData = { config: SepTestConfig; payments: SepTestPayment[] };
 
 const statusLabels: Record<GatewayPaymentStatus, string> = {
-  created: "در انتظار پرداخت",
-  verifying: "در حال تایید",
-  paid: "موفق",
-  failed: "ناموفق",
-  reversed: "برگشت داده شد",
-  needsReview: "نیازمند بررسی دستی",
+  get created() {
+  return ta("در انتظار پرداخت");
+},
+  get verifying() {
+  return ta("در حال تایید");
+},
+  get paid() {
+  return ta("موفق");
+},
+  get failed() {
+  return ta("ناموفق");
+},
+  get reversed() {
+  return ta("برگشت داده شد");
+},
+  get needsReview() {
+  return ta("نیازمند بررسی دستی");
+},
 };
 
 const statusColors: Record<GatewayPaymentStatus, BadgeColor> = {
@@ -113,63 +126,61 @@ const AdminSepTestPage = () => {
   const start = () => {
     if (payload) return;
     if (!amount || amount < 1) {
-      pushNotification("مبلغ را وارد کنید", "Warn");
+      pushNotification(ta("مبلغ را وارد کنید"), "Warn");
       return;
     }
     setPayload({ amount, returnPath: `/${adminKey}/sepTest` });
   };
 
   return (
-    <WithTitle title="تست درگاه پرداخت سامان (سپ)">
+    <WithTitle title={ta("تست درگاه پرداخت سامان (سپ)")}>
       <HandleLoading data={!!data} error={error}>
         {!!config && (
           <Box className={classes.box}>
-            <span className={classes.sectionTitle}>وضعیت پیکربندی</span>
+            <span className={classes.sectionTitle}>{ta("وضعیت پیکربندی")}</span>
             <CheckRow
               ok={!!config.terminalId}
-              title="شماره ترمینال"
-              value={config.terminalId || "تنظیم نشده"}
+              title={ta("شماره ترمینال")}
+              value={config.terminalId || ta("تنظیم نشده")}
             />
             <CheckRow
               ok={!!config.callbackUrl}
-              title="آدرس بازگشت از درگاه (باید از مرورگر در دسترس باشد)"
-              value={config.callbackUrl || "تنظیم نشده"}
+              title={ta("آدرس بازگشت از درگاه (باید از مرورگر در دسترس باشد)")}
+              value={config.callbackUrl || ta("تنظیم نشده")}
             />
             <CheckRow
               ok={!!config.siteBaseUrl}
-              title="آدرس سایت"
-              value={config.siteBaseUrl || "تنظیم نشده"}
+              title={ta("آدرس سایت")}
+              value={config.siteBaseUrl || ta("تنظیم نشده")}
             />
             <CheckRow
               ok={config.enabled}
               title={
                 config.enabled
-                  ? "پرداخت آنلاین برای کاربران فعال است"
-                  : "پرداخت آنلاین برای کاربران غیرفعال است (تست ادمین همچنان ممکن است)"
+                  ? ta("پرداخت آنلاین برای کاربران فعال است")
+                  : ta("پرداخت آنلاین برای کاربران غیرفعال است (تست ادمین همچنان ممکن است)")
               }
             />
             <p className={classes.note}>
-              {`ضریب تبدیل به ریال: ${config.multiplier} - مدت اعتبار توکن: ${config.tokenExpiryMinutes} دقیقه. تنظیمات از صفحه «تنظیمات سیستم» قابل ویرایش است. IP سرور بک‌اند باید نزد سپ ثبت شده باشد.`}
+              {ta("ضریب تبدیل به ریال: ${1} - مدت اعتبار توکن: ${2} دقیقه. تنظیمات از صفحه «تنظیمات سیستم» قابل ویرایش است. IP سرور بک‌اند باید نزد سپ ثبت شده باشد.", [config.multiplier, config.tokenExpiryMinutes])}
             </p>
           </Box>
         )}
 
         {!!config && (
           <Box className={classes.box}>
-            <span className={classes.sectionTitle}>پرداخت آزمایشی</span>
+            <span className={classes.sectionTitle}>{ta("پرداخت آزمایشی")}</span>
             <p className={classes.note}>
-              این یک پرداخت واقعی است: مبلغ از کارت شما کسر و پس از تایید به
-              کیف پول حساب ادمین فعلی اضافه می‌شود، دقیقا مانند شارژ کیف پول
-              کاربران.
+              {ta("این یک پرداخت واقعی است: مبلغ از کارت شما کسر و پس از تایید به کیف پول حساب ادمین فعلی اضافه می‌شود، دقیقا مانند شارژ کیف پول کاربران.")}
             </p>
             <Input
-              title="مبلغ (تومان)"
+              title={ta("مبلغ (تومان)")}
               inputMode="numeric"
               onChange={(e) => setAmount(parseAmountInput(e.target.value))}
             />
             {amount > 0 && (
               <span className={classes.note}>
-                {`${currencize(amount)} تومان = ${currencize(Math.round(amount * config.multiplier))} ریال ارسالی به درگاه`}
+                {ta("${1} تومان = ${2} ریال ارسالی به درگاه", [currencize(amount), currencize(Math.round(amount * config.multiplier))])}
               </span>
             )}
             <Button
@@ -178,8 +189,8 @@ const AdminSepTestPage = () => {
               className={classes.submit}
             >
               {config.configured
-                ? "انتقال به درگاه"
-                : "ابتدا تنظیمات درگاه را کامل کنید"}
+                ? ta("انتقال به درگاه")
+                : ta("ابتدا تنظیمات درگاه را کامل کنید")}
             </Button>
           </Box>
         )}
@@ -187,20 +198,20 @@ const AdminSepTestPage = () => {
         {!!data && (
           <Box className={classes.box}>
             <span className={classes.sectionTitle}>
-              آخرین پرداخت‌های آنلاین شما
+              {ta("آخرین پرداخت‌های آنلاین شما")}
             </span>
             <Table
               name="AdminSepTestPayments"
               data={data.payments}
               renderer={{
                 amount: {
-                  name: "مبلغ (تومان)",
+                  name: ta("مبلغ (تومان)"),
                   value: (node) => node.amount,
                   filter: "Number",
                   component: (node) => currencize(node.amount),
                 },
                 status: {
-                  name: "وضعیت",
+                  name: ta("وضعیت"),
                   value: (node) => statusLabels[node.status],
                   filter: "Set",
                   component: (node) => (
@@ -210,17 +221,17 @@ const AdminSepTestPage = () => {
                   ),
                 },
                 createdAt: {
-                  name: "زمان",
+                  name: ta("زمان"),
                   value: (node) => new Date(node.createdAt),
                   filter: "Date",
                 },
                 traceNo: {
-                  name: "کد رهگیری",
+                  name: ta("کد رهگیری"),
                   value: (node) => node.traceNo,
                   filter: "Text",
                 },
                 verifyResultCode: {
-                  name: "نتیجه درگاه",
+                  name: ta("نتیجه درگاه"),
                   value: (node) =>
                     node.verifyResultCode === undefined
                       ? node.state
@@ -228,22 +239,22 @@ const AdminSepTestPage = () => {
                   filter: "Text",
                 },
                 failureReason: {
-                  name: "علت خطا",
+                  name: ta("علت خطا"),
                   value: (node) => node.failureReason,
                   filter: "Text",
                 },
                 rrn: {
-                  name: "شماره مرجع",
+                  name: ta("شماره مرجع"),
                   value: (node) => node.rrn,
                   filter: "Text",
                 },
                 actions: {
-                  name: "عملیات",
+                  name: ta("عملیات"),
                   component: (node) => (
                     <TableActions>
                       <IconLink
                         href={`/payment/${node._id}`}
-                        title="مشاهده نتیجه"
+                        title={ta("مشاهده نتیجه")}
                       >
                         <EyeIcon />
                       </IconLink>
@@ -265,7 +276,7 @@ const AdminSepTestPage = () => {
             setPayload(null);
             return;
           }
-          pushNotification("در حال انتقال به درگاه پرداخت…");
+          pushNotification(ta("در حال انتقال به درگاه پرداخت…"));
           window.location.assign(url);
         }}
       />

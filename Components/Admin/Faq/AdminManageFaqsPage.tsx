@@ -26,6 +26,7 @@ import {
 import OrderEditor from "../UI/OrderEditor";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type FaqPopulation = Population<{ Category: FaqCategoryPopulation }>;
 
@@ -67,14 +68,14 @@ const MutateFaqPopup = ({
           },
         }}
         renderer={{
-          name: { title: "نام", type: "text" },
-          isActive: { title: "فعال", type: "bool" },
-          order: { title: "رتبه", type: "number" },
-          isHome: { title: "نمایش در خانه", type: "bool" },
-          question: { title: "سوال", type: "text" },
-          answer: { title: "جواب", type: "text" },
+          name: { title: ta("نام"), type: "text" },
+          isActive: { title: ta("فعال"), type: "bool" },
+          order: { title: ta("رتبه"), type: "number" },
+          isHome: { title: ta("نمایش در خانه"), type: "bool" },
+          question: { title: ta("سوال"), type: "text" },
+          answer: { title: ta("جواب"), type: "text" },
           category: {
-            title: "دسته بندی",
+            title: ta("دسته بندی"),
             type: "nodes",
             getOptionLabel: (node) =>
               (node as IFaqCategory).name || (node as IFaqCategory)._id,
@@ -100,7 +101,7 @@ const DeleteFaqPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="آیا از حذف این آیتم مطمئنید؟"
+        message={ta("آیا از حذف این آیتم مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />
@@ -131,10 +132,10 @@ const AdminManageFaqsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="سوالات متداول"
+          title={ta("سوالات متداول")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup("MutateFaq", <MutateFaqPopup mutate={mutate} />),
             },
@@ -145,12 +146,12 @@ const AdminManageFaqsPage = () => {
             name="AdminManageFaqs"
             renderer={{
               question: {
-                name: "سوال",
+                name: ta("سوال"),
                 value: (node) => node.question || node.name,
                 filter: "Text",
               },
               category: {
-                name: "دسته‌بندی",
+                name: ta("دسته‌بندی"),
                 filter: "Multi",
                 value: (node) => node.category?.name,
                 component: (node) =>
@@ -165,19 +166,19 @@ const AdminManageFaqsPage = () => {
                   ),
               },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 filter: "Set",
                 component: (node) => <BooleanToIcon value={node.isActive} />,
               },
               isHome: {
-                name: "نمایش در خانه",
+                name: ta("نمایش در خانه"),
                 filter: "Set",
                 value: (node) => booleanToValue[`${node.isHome}`],
                 component: (node) => <BooleanToIcon value={node.isHome} />,
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 filter: "Number",
                 value: (node) => node.order,
                 component: (node) => (
@@ -189,13 +190,13 @@ const AdminManageFaqsPage = () => {
                   />
                 ),
               },
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateFaq",
@@ -207,7 +208,7 @@ const AdminManageFaqsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteFaq",

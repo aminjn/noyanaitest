@@ -20,6 +20,7 @@ import IconButton from "../Admin/UI/IconButton";
 import GarbageIcon from "../Icons/GarbageIcon";
 import DeleteBlogMediaPopup from "./DeleteBlogMediaPopup";
 import useAccessLevel from "../Hooks/useAccessLevel";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IBlogMedia extends MongoDoc {
   name?: string;
@@ -41,12 +42,12 @@ const AdminManageBlogMediasPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="مولتی مدیا وبلاگ"
+          title={ta("مولتی مدیا وبلاگ")}
           actions={
             hasAccess("BlogMedia", "write")
               ? [
                   {
-                    title: "جدید",
+                    title: ta("جدید"),
                     action: () =>
                       setPopup(
                         "CreateBlogMedia",
@@ -61,7 +62,7 @@ const AdminManageBlogMediasPage = () => {
             data={data}
             renderer={{
               name: {
-                name: "نام",
+                name: ta("نام"),
                 value: (node) => node.name,
                 filter: "Text",
                 component: (node) => (
@@ -71,13 +72,13 @@ const AdminManageBlogMediasPage = () => {
                 ),
               },
               createdAt: {
-                name: "تاریخ ایجاد",
+                name: ta("تاریخ ایجاد"),
                 value: (node) => new Date(node.createdAt),
                 component: (node) => <FormatDate value={node.createdAt} />,
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     {hasAccess("BlogMedia", "readOne") && (

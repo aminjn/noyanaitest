@@ -11,6 +11,7 @@ import CreateForm from "../UI/CreateForm";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./DoctorTaxTab.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/DoctorTaxSettings.ts - one doc per doctor (unique
 // on `doctor`), fetched here by filtering the generic
@@ -47,11 +48,11 @@ const DoctorTaxTab = ({ node }: { node: IDoctorProfile }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="درصد مالیات پیش‌فرض ویزیت (در صورت تنظیم نشدن)"
+                title={ta("درصد مالیات پیش‌فرض ویزیت (در صورت تنظیم نشدن)")}
                 value={`${globalSettings.defaultDoctorVisitTaxPercent}%`}
               />
               <DataPair
-                title="درصد مالیات پیش‌فرض خدمات (در صورت تنظیم نشدن)"
+                title={ta("درصد مالیات پیش‌فرض خدمات (در صورت تنظیم نشدن)")}
                 value={`${globalSettings.defaultDoctorServiceTaxPercent}%`}
               />
             </List>
@@ -68,11 +69,11 @@ const DoctorTaxTab = ({ node }: { node: IDoctorProfile }) => {
             }}
             renderer={{
               visitTaxPercent: {
-                title: "درصد مالیات ویزیت این پزشک",
+                title: ta("درصد مالیات ویزیت این پزشک"),
                 type: "number",
               },
               serviceTaxPercent: {
-                title: "درصد مالیات خدمات این پزشک",
+                title: ta("درصد مالیات خدمات این پزشک"),
                 type: "number",
               },
             }}

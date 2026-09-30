@@ -16,6 +16,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import DeletePartPopup from "./DeletePartPopup";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManagePartPage = () => {
   const { nodeId } = useParams();
@@ -36,7 +37,7 @@ const AdminManagePartPage = () => {
             name="AdminManagePart"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
@@ -50,14 +51,14 @@ const AdminManagePartPage = () => {
                       },
                     }}
                     renderer={{
-                      name: { title: "نام", type: "text" },
-                      order: { title: "رتبه", type: "number" },
+                      name: { title: ta("نام"), type: "text" },
+                      order: { title: ta("رتبه"), type: "number" },
                     }}
                   />
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
@@ -73,7 +74,7 @@ const AdminManagePartPage = () => {
                         )
                       }
                     >
-                      حذف
+                      {ta("حذف")}
                     </Button>
                   </List>
                 ),

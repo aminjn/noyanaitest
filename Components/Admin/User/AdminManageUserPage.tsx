@@ -23,6 +23,7 @@ import {
   num,
   roleLabels,
 } from "./userShared";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 type UserDetail = {
   _id: string;
@@ -57,9 +58,21 @@ const Field = ({ title, value }: { title: string; value?: React.ReactNode }) => 
 );
 
 const roleOptions: { role: UserDetail["role"]; title: string; description: string }[] = [
-  { role: "user", title: "کاربر عادی", description: "بدون دسترسی به پنل مدیریت" },
-  { role: "notadmin", title: "کارمند", description: "دسترسی به پنل طبق سطح دسترسی انتخاب‌شده" },
-  { role: "admin", title: "سوپر ادمین", description: "دسترسی کامل به همه بخش‌ها و تنظیمات سیستم" },
+  { role: "user", get title() {
+  return ta("کاربر عادی");
+}, get description() {
+  return ta("بدون دسترسی به پنل مدیریت");
+} },
+  { role: "notadmin", get title() {
+  return ta("کارمند");
+}, get description() {
+  return ta("دسترسی به پنل طبق سطح دسترسی انتخاب‌شده");
+} },
+  { role: "admin", get title() {
+  return ta("سوپر ادمین");
+}, get description() {
+  return ta("دسترسی کامل به همه بخش‌ها و تنظیمات سیستم");
+} },
 ];
 
 // Role + access level editor and forced logout. Full admins only; the
@@ -100,7 +113,7 @@ const RoleManager = ({
         method: "PATCH",
         payload: role === "notadmin" ? { role, accessLevel } : { role },
       });
-      pushNotification("نقش کاربر به‌روزرسانی شد", "Success");
+      pushNotification(ta("نقش کاربر به‌روزرسانی شد"), "Success");
       closePopup("userRole");
       onChanged();
     } catch (err) {
@@ -114,9 +127,7 @@ const RoleManager = ({
     setPopup(
       "userRole",
       <ConfirmationPopup
-        message={`نقش ${displayPhone(user.phone)} به «${roleLabels[role]}» تغییر کند؟${
-          role === "admin" ? " سوپر ادمین به همه بخش‌ها و تنظیمات دسترسی کامل دارد." : ""
-        }`}
+        message={ta("نقش ${1} به «${2}» تغییر کند؟${3}", [displayPhone(user.phone), roleLabels[role], role === "admin" ? " سوپر ادمین به همه بخش‌ها و تنظیمات دسترسی کامل دارد." : ""])}
         onConfirm={save}
       />,
     );
@@ -124,7 +135,7 @@ const RoleManager = ({
   const logout = async () => {
     try {
       await fetcher({ url: `${API}/admin/users/${user._id}/logout`, method: "POST" });
-      pushNotification("کاربر از همه دستگاه‌ها خارج شد", "Success");
+      pushNotification(ta("کاربر از همه دستگاه‌ها خارج شد"), "Success");
       closePopup("userLogout");
       onChanged();
     } catch (err) {
@@ -135,7 +146,7 @@ const RoleManager = ({
   if (user.isSelf)
     return (
       <p className={classes.note}>
-        نقش حساب خودتان از این‌جا قابل تغییر نیست. برای تغییر، از سوپر ادمین دیگری کمک بگیرید.
+        {ta("نقش حساب خودتان از این‌جا قابل تغییر نیست. برای تغییر، از سوپر ادمین دیگری کمک بگیرید.")}
       </p>
     );
 
@@ -161,9 +172,9 @@ const RoleManager = ({
 
       {role === "notadmin" && (
         <label className={classes.selectField}>
-          <span>سطح دسترسی</span>
+          <span>{ta("سطح دسترسی")}</span>
           <select value={accessLevel} onChange={(e) => setAccessLevel(e.target.value)}>
-            <option value="">انتخاب کنید...</option>
+            <option value="">{ta("انتخاب کنید...")}</option>
             {levels?.map((level) => (
               <option key={level._id} value={level._id}>
                 {level.name}
@@ -172,8 +183,8 @@ const RoleManager = ({
           </select>
           {levels && levels.length === 0 && (
             <span className={classes.note}>
-              هنوز سطح دسترسی‌ای ساخته نشده.{" "}
-              <Link href={adminPath("/accesslevel")}>ساخت سطح دسترسی</Link>
+              {ta("هنوز سطح دسترسی‌ای ساخته نشده.")}{" "}
+              <Link href={adminPath("/accesslevel")}>{ta("ساخت سطح دسترسی")}</Link>
             </span>
           )}
         </label>
@@ -186,7 +197,7 @@ const RoleManager = ({
           variant={canSave ? "Primary" : "Disable"}
           isLoading={saving}
         >
-          ذخیره نقش
+          {ta("ذخیره نقش")}
         </Button>
         <Button
           size="M"
@@ -196,13 +207,13 @@ const RoleManager = ({
             setPopup(
               "userLogout",
               <ConfirmationPopup
-                message="همه نشست‌های این کاربر باطل شود؟ کاربر باید دوباره وارد شود."
+                message={ta("همه نشست‌های این کاربر باطل شود؟ کاربر باید دوباره وارد شود.")}
                 onConfirm={logout}
               />,
             )
           }
         >
-          خروج از همه دستگاه‌ها
+          {ta("خروج از همه دستگاه‌ها")}
         </Button>
       </div>
     </div>
@@ -229,66 +240,66 @@ const AdminManageUserPage = () => {
             <Ixon width="1rem" className={classes.backIcon}>
               <ChevronIcon />
             </Ixon>
-            <span>کاربران</span>
+            <span>{ta("کاربران")}</span>
           </Link>
 
           <section className={`${classes.card} ${classes.hero}`}>
-            <span className={classes.avatar}>{(displayName || "؟").trim().charAt(0)}</span>
+            <span className={classes.avatar}>{(displayName || ta("؟")).trim().charAt(0)}</span>
             <div className={classes.heroText}>
               <div className={classes.heroTitle}>
-                <h1>{displayName || "بدون نام"}</h1>
+                <h1>{displayName || ta("بدون نام")}</h1>
                 <RoleBadge role={data.role} />
               </div>
               <span className={classes.phone}>{displayPhone(data.phone)}</span>
               <span className={classes.meta}>
-                {`عضویت: ${faDate.format(new Date(data.createdAt))}`}
+                {ta("عضویت: ${1}", [faDate.format(new Date(data.createdAt))])}
                 {data.lastLogin &&
-                  ` · آخرین ورود/خروج: ${faDateTime.format(new Date(data.lastLogin))}`}
+                  ta(" · آخرین ورود/خروج: ${1}", [faDateTime.format(new Date(data.lastLogin))])}
               </span>
             </div>
             <div className={classes.stats}>
               <div>
                 <strong>{num.format(data.counts.reservations)}</strong>
-                <span>رزرو</span>
+                <span>{ta("رزرو")}</span>
               </div>
               <div>
                 <strong>{num.format(data.counts.orders)}</strong>
-                <span>سفارش</span>
+                <span>{ta("سفارش")}</span>
               </div>
               <div>
                 <strong>{num.format(data.walletBalance)}</strong>
-                <span>موجودی کیف پول (تومان)</span>
+                <span>{ta("موجودی کیف پول (تومان)")}</span>
               </div>
             </div>
           </section>
 
           <div className={classes.grid}>
             <section className={classes.card}>
-              <h2 className={classes.cardTitle}>اطلاعات هویتی</h2>
+              <h2 className={classes.cardTitle}>{ta("اطلاعات هویتی")}</h2>
               {data.identity ? (
                 <div className={classes.fields}>
-                  <Field title="نام" value={data.identity.givenName} />
-                  <Field title="نام خانوادگی" value={data.identity.lastName} />
-                  <Field title="کد ملی" value={data.identity.nationalId} />
+                  <Field title={ta("نام")} value={data.identity.givenName} />
+                  <Field title={ta("نام خانوادگی")} value={data.identity.lastName} />
+                  <Field title={ta("کد ملی")} value={data.identity.nationalId} />
                   <Field
-                    title="جنسیت"
-                    value={data.identity.gender === "female" ? "زن" : "مرد"}
+                    title={ta("جنسیت")}
+                    value={data.identity.gender === "female" ? ta("زن") : ta("مرد")}
                   />
                   <Field
-                    title="تاریخ تولد"
+                    title={ta("تاریخ تولد")}
                     value={faDate.format(new Date(data.identity.dateOfbirth))}
                   />
-                  <Field title="نام پدر" value={data.identity.fatherName} />
-                  <Field title="محل تولد" value={data.identity.birthPlace} />
-                  <Field title="نام کاربری" value={data.username} />
+                  <Field title={ta("نام پدر")} value={data.identity.fatherName} />
+                  <Field title={ta("محل تولد")} value={data.identity.birthPlace} />
+                  <Field title={ta("نام کاربری")} value={data.username} />
                 </div>
               ) : (
-                <p className={classes.note}>این کاربر هنوز احراز هویت نشده است.</p>
+                <p className={classes.note}>{ta("این کاربر هنوز احراز هویت نشده است.")}</p>
               )}
             </section>
 
             <section className={classes.card}>
-              <h2 className={classes.cardTitle}>پروفایل‌های مرتبط</h2>
+              <h2 className={classes.cardTitle}>{ta("پروفایل‌های مرتبط")}</h2>
               {data.profiles.length ? (
                 <ul className={classes.profiles}>
                   {data.profiles.map((profile) => (
@@ -305,7 +316,7 @@ const AdminManageUserPage = () => {
                 </ul>
               ) : (
                 <p className={classes.note}>
-                  این کاربر پزشک، کلینیک، داروخانه یا مرکز دیگری ندارد.
+                  {ta("این کاربر پزشک، کلینیک، داروخانه یا مرکز دیگری ندارد.")}
                 </p>
               )}
             </section>
@@ -313,19 +324,19 @@ const AdminManageUserPage = () => {
 
           <section className={classes.card}>
             <div className={classes.cardHead}>
-              <h2 className={classes.cardTitle}>نقش و دسترسی</h2>
+              <h2 className={classes.cardTitle}>{ta("نقش و دسترسی")}</h2>
               <div className={classes.headLinks}>
                 {data.role === "notadmin" && data.accessLevel && (
                   <Link
                     href={adminPath(`/accesslevel/${data.accessLevel._id}`)}
                     className={classes.link}
                   >
-                    {`سطح دسترسی: ${data.accessLevel.name}`}
+                    {ta("سطح دسترسی: ${1}", [data.accessLevel.name])}
                   </Link>
                 )}
                 {viewer?.role === "admin" && data.role !== "user" && (
                   <Link href={adminPath(`/audit?actor=${data._id}`)} className={classes.link}>
-                    لاگ عملیات این ادمین
+                    {ta("لاگ عملیات این ادمین")}
                   </Link>
                 )}
               </div>
@@ -334,7 +345,7 @@ const AdminManageUserPage = () => {
               <RoleManager user={data} onChanged={() => mutate()} />
             ) : (
               <p className={classes.note}>
-                {`نقش فعلی: ${roleLabels[data.role]}. تغییر نقش فقط توسط سوپر ادمین ممکن است.`}
+                {ta("نقش فعلی: ${1}. تغییر نقش فقط توسط سوپر ادمین ممکن است.", [roleLabels[data.role]])}
               </p>
             )}
           </section>

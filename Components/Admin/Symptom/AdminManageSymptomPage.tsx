@@ -22,6 +22,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { ISymptomCategory } from "../SymptomCategory/AdminManageSymptomCategoriesPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageSymptomPage = () => {
   const { nodeId } = useParams();
@@ -43,7 +44,7 @@ const AdminManageSymptomPage = () => {
             name="AdminManageSymptom"
             items={[
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 icon: <InfoIcon />,
                 id: "Info",
                 content: (
@@ -55,20 +56,20 @@ const AdminManageSymptomPage = () => {
                       successCb: () => mutate(),
                     }}
                     renderer={{
-                      name: { type: "text", title: "نام" },
-                      summary: { title: "خلاصه", type: "text" },
-                      description: { title: "توضیحات", type: "area" },
-                      image: { title: "تصویر", type: "image" },
-                      order: { title: "رتبه", type: "number" },
-                      slug: { title: "اسلاگ", type: "text" },
+                      name: { type: "text", title: ta("نام") },
+                      summary: { title: ta("خلاصه"), type: "text" },
+                      description: { title: ta("توضیحات"), type: "area" },
+                      image: { title: ta("تصویر"), type: "image" },
+                      order: { title: ta("رتبه"), type: "number" },
+                      slug: { title: ta("اسلاگ"), type: "text" },
                       genderSpecific: {
-                        title: "مخصوص جنسیت",
+                        title: ta("مخصوص جنسیت"),
                         type: "select",
                         options: genderSpecificOptionsDict,
                       },
                       category: {
                         type: "nodes",
-                        title: "دسته بندی",
+                        title: ta("دسته بندی"),
                         getOptionLabel: (node) =>
                           (node as ISymptomCategory).name ||
                           (node as ISymptomCategory)._id,
@@ -78,14 +79,14 @@ const AdminManageSymptomPage = () => {
                         multi: false,
                         path: `${API}/auto/symptomCategory`,
                       },
-                      aiSummary: { type: "rtf", title: "خلاصه AI" },
-                      content: { type: "rtf", title: "محتوا" },
+                      aiSummary: { type: "rtf", title: ta("خلاصه AI") },
+                      content: { type: "rtf", title: ta("محتوا") },
                     }}
                   />
                 ),
               },
               {
-                title: "توضیحات",
+                title: ta("توضیحات"),
                 icon: <InfoIcon />,
                 id: "More",
                 content: (
@@ -118,7 +119,7 @@ const AdminManageSymptomPage = () => {
                 ),
               },
               {
-                title: "ارتباطات",
+                title: ta("ارتباطات"),
                 id: "Connections",
                 icon: <InfoIcon />,
                 content: (
@@ -128,7 +129,7 @@ const AdminManageSymptomPage = () => {
                       part: {
                         type: "nodes",
                         path: `${API}/auto/part`,
-                        title: "اهضا",
+                        title: ta("اهضا"),
                         getOptionLabel: (node) =>
                           (node as IPart).name || (node as IPart)._id,
                         getOptionValue: (node) => (node as IPart)._id,
@@ -138,7 +139,7 @@ const AdminManageSymptomPage = () => {
                       },
                       sameAs: {
                         type: "nodes",
-                        title: "مشابهات",
+                        title: ta("مشابهات"),
                         multi: true,
                         path: `${API}/auto/symptom`,
                         getOptionLabel: (node) =>
@@ -158,7 +159,7 @@ const AdminManageSymptomPage = () => {
                 ),
               },
               {
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 icon: <InfoIcon />,
                 id: "Meta",
                 content: (
@@ -166,7 +167,7 @@ const AdminManageSymptomPage = () => {
                 ),
               },
               {
-                title: "عملیات",
+                title: ta("عملیات"),
                 icon: <InfoIcon />,
                 id: "Actions",
                 content: (
@@ -183,7 +184,7 @@ const AdminManageSymptomPage = () => {
                         )
                       }
                     >
-                      حذف
+                      {ta("حذف")}
                     </Button>
                   </List>
                 ),

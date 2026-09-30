@@ -25,6 +25,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
 import MutateHospitalRequestPopup from "./MutateHospitalRequestPopup";
 import DeleteHospitalAdditionRequestPopup from "./DeleteHospitalAdditionRequestPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageHospitalAdditionsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -38,41 +39,41 @@ const AdminManageHospitalAdditionsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="درخواست های اضافه شدن بیمارستان">
+        <WithTitle title={ta("درخواست های اضافه شدن بیمارستان")}>
           <Table
             name="AdminManageHospitalAdditionRequests"
             data={data}
             renderer={{
               hospitalName: {
-                name: "نام بیمارستان",
+                name: ta("نام بیمارستان"),
                 value: (node) => node.hospitalName,
                 filter: "Text",
               },
               status: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => additionRequestStatusDict[node.status],
                 filter: "Set",
               },
               city: {
-                name: "استان / شهر",
+                name: ta("استان / شهر"),
                 value: (node) =>
                   [findProvince(node.province), findCity(node.city)]
                     .filter(Boolean)
-                    .join("، "),
+                    .join(ta("، ")),
                 filter: "Multi",
               },
               owner: {
-                name: "مالک",
+                name: ta("مالک"),
                 value: (node) =>
                   [node.ownerName, node.ownerPhone].filter(Boolean).join(" - "),
                 filter: "Text",
               },
               submittedBy: {
-                name: "ثبت کننده",
+                name: ta("ثبت کننده"),
                 value: (node) =>
                   node.submittedBy
                     ? getDoctorProfileLabel(node.submittedBy)
-                    : "حذف شده",
+                    : ta("حذف شده"),
                 component: (node) =>
                   node.submittedBy ? (
                     <InlineLink
@@ -81,24 +82,24 @@ const AdminManageHospitalAdditionsPage = () => {
                       {getDoctorProfileLabel(node.submittedBy)}
                     </InlineLink>
                   ) : (
-                    "حذف شده"
+                    ta("حذف شده")
                   ),
                 filter: "Text",
               },
               submittedAt: {
-                name: "تاریخ ثبت",
+                name: ta("تاریخ ثبت"),
                 value: (node) => new Date(node.submittedAt),
                 filter: "Date",
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 width: 150,
                 component: (node) => (
                   <TableActions>
                     {node.status !== "Done" && node.status !== "Rejected" && (
                       <IconButton
                         variant="Success"
-                        title="ایجاد بیمارستان از این درخواست"
+                        title={ta("ایجاد بیمارستان از این درخواست")}
                         onClick={() =>
                           setPopup(
                             "CreateHospitalFromRequest",
@@ -115,7 +116,7 @@ const AdminManageHospitalAdditionsPage = () => {
                     )}
                     <IconButton
                       variant="Info"
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "MutateHospitalRequest",
@@ -130,7 +131,7 @@ const AdminManageHospitalAdditionsPage = () => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteHospitalAdditionRequest",

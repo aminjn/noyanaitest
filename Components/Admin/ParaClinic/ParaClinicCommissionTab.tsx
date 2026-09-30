@@ -11,6 +11,7 @@ import CreateForm from "../UI/CreateForm";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./ParaClinicCommissionTab.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/ParaClinicFinanceSettings.ts - one doc per
 // paraClinic (unique on `paraClinic`), fetched here by filtering the
@@ -45,7 +46,7 @@ const ParaClinicCommissionTab = ({ node }: { node: IParaClinic }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="درصد کمیسیون پیش‌فرض سیستم (در صورت تنظیم نشدن)"
+                title={ta("درصد کمیسیون پیش‌فرض سیستم (در صورت تنظیم نشدن)")}
                 value={`${globalSettings.defaultParaClinicCommissionPercent}%`}
               />
             </List>
@@ -62,7 +63,7 @@ const ParaClinicCommissionTab = ({ node }: { node: IParaClinic }) => {
             }}
             renderer={{
               commissionPercent: {
-                title: "درصد کمیسیون این پاراکلینیک",
+                title: ta("درصد کمیسیون این پاراکلینیک"),
                 type: "number",
                 required: true,
               },

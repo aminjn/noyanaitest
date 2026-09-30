@@ -9,6 +9,7 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
 import { badgeColors } from "@/Components/UI/Badge";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDiseaseTagPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -25,12 +26,12 @@ const AdminManageDiseaseTagPage = () => {
           <CreateForm
             defaultValue={data}
             renderer={{
-              name: { type: "text", title: "نام" },
-              isActive: { type: "bool", title: "فعال" },
-              order: { type: "number", title: "رتبه" },
+              name: { type: "text", title: ta("نام") },
+              isActive: { type: "bool", title: ta("فعال") },
+              order: { type: "number", title: ta("رتبه") },
               level: {
                 type: "select",
-                title: "لول",
+                title: ta("لول"),
                 options: badgeColors.reduce(
                   (acc, el) => ({ ...acc, [el]: el }),
                   {},

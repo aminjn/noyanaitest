@@ -8,6 +8,7 @@ import NodeManager from "../UI/NodeManger";
 import TabSystem from "../UI/TabSystem";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageCommentPage = () => {
   return (
@@ -19,13 +20,13 @@ const AdminManageCommentPage = () => {
       }>
     >
       modelName="comment"
-      getTitle={() => "نظر"}
+      getTitle={() => ta("نظر")}
       content={({ mutate, node }) => (
         <TabSystem
           name="AdminManageComment"
           items={[
             {
-              title: "اطلاعات",
+              title: ta("اطلاعات"),
               content: (
                 <>
                   <p style={{ whiteSpace: "pre-wrap", marginBottom: "1rem" }}>
@@ -35,7 +36,7 @@ const AdminManageCommentPage = () => {
                     defaultValue={node}
                     renderer={{
                       status: {
-                        title: "وضعیت",
+                        title: ta("وضعیت"),
                         type: "select",
                         options: commentStatusDict,
                       },

@@ -7,15 +7,30 @@ import useNotification from "@/Components/Hooks/useNotification";
 import { API } from "@/Components/config";
 import { fetcher, FetchMethod } from "@/Components/helpers/fetcher";
 import Button from "@/Components/UI/Button";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const nodes: { key: string; title: string }[] = [
-  { key: "doctor", title: "پزشکان" },
-  { key: "blog", title: "مقالات" },
-  { key: "disease", title: "بیماری‌ها" },
-  { key: "drug", title: "داروها" },
-  { key: "speciality", title: "تخصص‌ها" },
-  { key: "symptom", title: "علائم" },
-  { key: "part", title: "اعضای بدن" },
+  { key: "doctor", get title() {
+  return ta("پزشکان");
+} },
+  { key: "blog", get title() {
+  return ta("مقالات");
+} },
+  { key: "disease", get title() {
+  return ta("بیماری‌ها");
+} },
+  { key: "drug", get title() {
+  return ta("داروها");
+} },
+  { key: "speciality", get title() {
+  return ta("تخصص‌ها");
+} },
+  { key: "symptom", get title() {
+  return ta("علائم");
+} },
+  { key: "part", get title() {
+  return ta("اعضای بدن");
+} },
 ];
 
 type MigrationAction = {
@@ -30,31 +45,45 @@ const actions: MigrationAction[] = [
   {
     key: "import",
     method: "POST",
-    title: "انتقال از دیتابیس قدیم",
-    description: "رکوردهای دیتابیس قدیم را به دیتابیس جدید منتقل می‌کند.",
+    get title() {
+  return ta("انتقال از دیتابیس قدیم");
+},
+    get description() {
+  return ta("رکوردهای دیتابیس قدیم را به دیتابیس جدید منتقل می‌کند.");
+},
     danger: false,
   },
   {
     key: "drop",
     method: "PUT",
-    title: "حذف رکوردهای منتقل‌شده",
-    description:
-      "فقط رکوردهایی که از دیتابیس قدیم منتقل شده‌اند (و هنوز به آن متصل‌اند) حذف می‌شوند.",
+    get title() {
+  return ta("حذف رکوردهای منتقل‌شده");
+},
+    get description() {
+  return ta("فقط رکوردهایی که از دیتابیس قدیم منتقل شده‌اند (و هنوز به آن متصل‌اند) حذف می‌شوند.");
+},
     danger: true,
   },
   {
     key: "purge",
     method: "PATCH",
-    title: "قطع اتصال از دیتابیس قدیم",
-    description:
-      "اتصال رکوردهای منتقل‌شده به دیتابیس قدیم حذف می‌شود؛ بعد از آن دیگر با «حذف رکوردهای منتقل‌شده» پاک نمی‌شوند.",
+    get title() {
+  return ta("قطع اتصال از دیتابیس قدیم");
+},
+    get description() {
+  return ta("اتصال رکوردهای منتقل‌شده به دیتابیس قدیم حذف می‌شود؛ بعد از آن دیگر با «حذف رکوردهای منتقل‌شده» پاک نمی‌شوند.");
+},
     danger: true,
   },
   {
     key: "dropAll",
     method: "DELETE",
-    title: "حذف همه رکوردها",
-    description: "همه رکوردهای این بخش در دیتابیس جدید حذف می‌شوند، چه منتقل‌شده چه ساخته‌شده در پنل.",
+    get title() {
+  return ta("حذف همه رکوردها");
+},
+    get description() {
+  return ta("همه رکوردهای این بخش در دیتابیس جدید حذف می‌شوند، چه منتقل‌شده چه ساخته‌شده در پنل.");
+},
     danger: true,
   },
 ];
@@ -79,7 +108,7 @@ const MigrationPopup = ({
     setLoading(true);
     try {
       await fetcher({ url: `${API}/migrate/${node.key}`, method: action.method });
-      pushNotification(`${action.title} (${node.title}) انجام شد`, "Success");
+      pushNotification(ta("${1} (${2}) انجام شد", [action.title, node.title]), "Success");
       closePopup();
     } catch (err) {
       pushNotification((err as Error).message, "Error");
@@ -94,7 +123,7 @@ const MigrationPopup = ({
       {action.danger && (
         <label className={classes.confirmField}>
           <span>
-            برای تایید، عبارت <strong>{node.title}</strong> را وارد کنید. این عملیات قابل بازگشت نیست.
+            {ta("برای تایید، عبارت")} <strong>{node.title}</strong> {ta("را وارد کنید. این عملیات قابل بازگشت نیست.")}
           </span>
           <input value={typed} onChange={(e) => setTyped(e.target.value)} autoFocus />
         </label>
@@ -108,7 +137,7 @@ const MigrationPopup = ({
           {action.title}
         </Button>
         <Button variant="Neutral" onClick={() => closePopup()}>
-          انصراف
+          {ta("انصراف")}
         </Button>
       </div>
     </div>
@@ -121,9 +150,9 @@ const AdminManageMigrationPage = () => {
   return (
     <div className={classes.main}>
       <header className={classes.header}>
-        <h1 className={classes.title}>مهاجرت داده‌ها</h1>
+        <h1 className={classes.title}>{ta("مهاجرت داده‌ها")}</h1>
         <p className={classes.subtitle}>
-          انتقال داده از دیتابیس قدیم. عملیات قرمز داده حذف می‌کنند و قابل بازگشت نیستند.
+          {ta("انتقال داده از دیتابیس قدیم. عملیات قرمز داده حذف می‌کنند و قابل بازگشت نیستند.")}
         </p>
       </header>
       <div className={classes.grid}>

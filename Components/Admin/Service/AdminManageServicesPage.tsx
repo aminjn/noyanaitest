@@ -39,6 +39,7 @@ import {
 } from "../Product/AdminManageProductsPage";
 import IconLink from "../UI/IconLink";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ServicePopulation = Population<{
   Owner: DoctorProfilePopulation;
@@ -85,23 +86,43 @@ export interface IService<
 }
 
 export const mutateServiceFormRenderer: FormRenderer<IService> = {
-  name: { title: "نام", type: "text" },
-  order: { title: "رتبه", type: "number" },
-  isActive: { title: "فعال", type: "bool" },
+  name: { get title() {
+  return ta("نام");
+}, type: "text" },
+  order: { get title() {
+  return ta("رتبه");
+}, type: "number" },
+  isActive: { get title() {
+  return ta("فعال");
+}, type: "bool" },
   owner: {
-    title: "صاحب",
+    get title() {
+  return ta("صاحب");
+},
     type: "nodes",
     path: `${API}/auto/doctorProfile`,
     getOptionLabel: (node) => getDoctorProfileLabel(node as IDoctorProfile),
     getOptionValue: (node) => (node as IDoctorProfile)._id,
   },
-  price: { title: "قیمت", type: "number" },
-  discount: { title: "تخفیف", type: "number" },
-  image: { title: "تصویر", type: "image" },
-  inventory: { title: "موجودی", type: "number" },
-  isHome: { title: "نمایش در خانه", type: "bool" },
+  price: { get title() {
+  return ta("قیمت");
+}, type: "number" },
+  discount: { get title() {
+  return ta("تخفیف");
+}, type: "number" },
+  image: { get title() {
+  return ta("تصویر");
+}, type: "image" },
+  inventory: { get title() {
+  return ta("موجودی");
+}, type: "number" },
+  isHome: { get title() {
+  return ta("نمایش در خانه");
+}, type: "bool" },
   category: {
-    title: "دسته بندی",
+    get title() {
+  return ta("دسته بندی");
+},
     type: "nodes",
     path: `${API}/auto/serviceCategory`,
     getOptionLabel: (node) =>
@@ -109,21 +130,35 @@ export const mutateServiceFormRenderer: FormRenderer<IService> = {
     getOptionValue: (node) => (node as IServiceCategory)._id,
     getDefaultValue: (node) => node.category,
   },
-  special: { type: "bool", title: "ویژه" },
-  slug: { type: "text", title: "اسلاگ" },
+  special: { type: "bool", get title() {
+  return ta("ویژه");
+} },
+  slug: { type: "text", get title() {
+  return ta("اسلاگ");
+} },
   sameAs: {
     type: "nodes",
-    title: "مشابهات",
+    get title() {
+  return ta("مشابهات");
+},
     path: `${API}/auto/service`,
     getOptionLabel: (node) => (node as IService).name || (node as IService)._id,
     getOptionValue: (node) => (node as IService)._id,
     getDefaultValue: (inp) => inp.sameAs,
     multi: true,
   },
-  description: { type: "rtf", title: "توضیحات" },
-  whyChoose: { type: "text", title: "چرا این" },
-  stages: { type: "rtf", title: "مراحل ا نجام" },
-  results: { type: "rtf", title: "نتایج" },
+  description: { type: "rtf", get title() {
+  return ta("توضیحات");
+} },
+  whyChoose: { type: "text", get title() {
+  return ta("چرا این");
+} },
+  stages: { type: "rtf", get title() {
+  return ta("مراحل ا نجام");
+} },
+  results: { type: "rtf", get title() {
+  return ta("نتایج");
+} },
 };
 
 const MutateServicePopup = ({
@@ -166,7 +201,7 @@ const DeleteServicePopup = ({
     <Fragment>
       <ConfirmationPopup
         onConfirm={() => setIsLoading(true)}
-        message="آیا از حذف این آیتم مطمئنید؟"
+        message={ta("آیا از حذف این آیتم مطمئنید؟")}
         isLoading={isLoading}
       />
       <Act
@@ -196,10 +231,10 @@ const AdminManageServicesPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="خدمات"
+          title={ta("خدمات")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "MutateService",
@@ -212,11 +247,11 @@ const AdminManageServicesPage = () => {
             data={data}
             name="AdminManageService"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               category: {
-                name: "دسته‌بندی",
+                name: ta("دسته‌بندی"),
                 value: (node) =>
-                  node.category ? node.category.title || node.category._id : "ندارد",
+                  node.category ? node.category.title || node.category._id : ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
@@ -226,13 +261,13 @@ const AdminManageServicesPage = () => {
                       {node.category.title || node.category._id}
                     </InlineLink>
                   ) : (
-                    "ندارد"
+                    ta("ندارد")
                   ),
               },
               owner: {
-                name: "ارائه‌دهنده",
+                name: ta("ارائه‌دهنده"),
                 value: (node) =>
-                  !!node.owner ? getDoctorProfileLabel(node.owner) : "ندارد",
+                  !!node.owner ? getDoctorProfileLabel(node.owner) : ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
                   !!node.owner ? (
@@ -242,30 +277,30 @@ const AdminManageServicesPage = () => {
                       {getDoctorProfileLabel(node.owner)}
                     </InlineLink>
                   ) : (
-                    "ندارد"
+                    ta("ندارد")
                   ),
               },
               price: {
-                name: "قیمت (تومان)",
+                name: ta("قیمت (تومان)"),
                 value: (node) => node.price,
                 filter: "Number",
                 component: (node) =>
                   typeof node.price === "number" ? currencize(node.price) : "—",
               },
               isActive: {
-                name: "فعال",
+                name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               isHome: {
-                name: "نمایش در خانه",
+                name: ta("نمایش در خانه"),
                 value: (node) => booleanToValue[`${node.isHome}`],
                 component: (node) => <BooleanToIcon value={node.isHome} />,
                 filter: "Set",
               },
               order: {
-                name: "ترتیب",
+                name: ta("ترتیب"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -278,18 +313,18 @@ const AdminManageServicesPage = () => {
                 ),
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconLink
                       href={adminPath(`/service/${node._id}`)}
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                     >
                       <EditIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "DeleteService",

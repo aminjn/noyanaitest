@@ -5,6 +5,7 @@ import { IClinicAdditionRequest } from "@/Components/DoctorPanel/Clinic/DoctorCl
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteClinicAdditionRequestPopup = ({
   mutate,
@@ -20,7 +21,7 @@ const DeleteClinicAdditionRequestPopup = ({
       <ConfirmationPopup
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
-        message="آیا از حذف این درخواست به طور کامل اطمینان دارید؟"
+        message={ta("آیا از حذف این درخواست به طور کامل اطمینان دارید؟")}
       />
       <Act
         path={isLoading ? `${API}/auto/clinicaddition/${node._id}` : null}

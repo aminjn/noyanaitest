@@ -4,6 +4,7 @@ import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import { FullNotification } from "./AdminManageNotificationsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteNotificationPopup = ({
   mutate,
@@ -17,7 +18,7 @@ const DeleteNotificationPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message="ایا از حذف این اعلان مطمئنید؟"
+        message={ta("ایا از حذف این اعلان مطمئنید؟")}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

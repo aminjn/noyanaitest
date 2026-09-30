@@ -1,14 +1,14 @@
 import { headers } from "next/headers";
 import { BACKEND } from "../config";
-import { defaultLocale, LOCALE_HEADER } from "../i18n/locales";
+import { siteDefaultLocale, LOCALE_HEADER } from "../i18n/locales";
 
 // The page's language (set by middleware); the backend returns DB content
 // in it. Outside a request (build-time) there is none, so Persian.
 const requestLocale = () => {
   try {
-    return headers().get(LOCALE_HEADER) || defaultLocale;
+    return headers().get(LOCALE_HEADER) || siteDefaultLocale();
   } catch {
-    return defaultLocale;
+    return siteDefaultLocale();
   }
 };
 

@@ -5,6 +5,7 @@ import classes from "./DeleteInlineAdPopup.module.css";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteInlineAdPopup = ({
   node,
@@ -18,7 +19,7 @@ const DeleteInlineAdPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`آیا از حذف تبلیغات ${node.name} مطمئنید؟`}
+        message={ta("آیا از حذف تبلیغات ${1} مطمئنید؟", [node.name])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

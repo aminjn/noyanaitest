@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { getPublicData } from "./Components/helpers/getPublicData";
 import { IShortLink } from "./Components/Admin/ShortLink/AdminManageShortLinksPage";
 import { IRedirection } from "./Components/Admin/Redirection/AdminManageRedirectionsPage";
-import { getEnabledLocales } from "./Components/i18n/getEnabledLocales";
+import { getSiteLocales } from "./Components/i18n/getEnabledLocales";
 import {
   LOCALE_HEADER,
   PATH_HEADER,
@@ -11,18 +11,24 @@ import {
 } from "./Components/i18n/locales";
 
 const middleware = async (req: NextRequest) => {
-  // "/en/doctors" -> serve "/doctors" in English; "/fa/x" and "/x" are
-  // Persian. The page tree itself has no locale segment.
-  const { locale, path: pathname } = splitLocale(req.nextUrl.pathname);
+  // "/en/doctors" -> serve "/doctors" in English; "/x" and "/<default>/x"
+  // are the site default (set by the super admin). The page tree itself has
+  // no locale segment.
+  const site = await getSiteLocales();
+  const { locale, path: pathname } = splitLocale(
+    req.nextUrl.pathname,
+    site.default,
+  );
 
-  // A language the super admin switched off -> the Persian page (no
-  // prefix). The super admin panel is Persian-only as well.
+  // A language the super admin switched off -> the same page in the
+  // default language (no prefix). The super admin panel always shows the
+  // default language, whatever the visitor picked.
   const adminKey = process.env.ADMIN_KEY;
   const isAdmin =
     !!adminKey && (pathname === `/${adminKey}` || pathname.startsWith(`/${adminKey}/`));
   if (
-    locale !== "fa" &&
-    (isAdmin || !(await getEnabledLocales()).includes(locale))
+    locale !== site.default &&
+    (isAdmin || !site.enabled.includes(locale))
   ) {
     const url = req.nextUrl.clone();
     url.pathname = pathname;
@@ -45,7 +51,7 @@ const middleware = async (req: NextRequest) => {
   });
   if (data)
     return NextResponse.redirect(
-      new URL(localizePath(data.current, locale), req.url),
+      new URL(localizePath(data.current, locale, site.default), req.url),
       data.statusCode,
     );
 

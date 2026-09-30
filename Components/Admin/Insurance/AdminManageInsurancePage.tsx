@@ -40,6 +40,7 @@ import OrderEditor from "../UI/OrderEditor";
 import InsuranceUserTab from "./InsuranceUserTab";
 import InsuranceProfileLicenseTab from "./InsuranceProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type InsurancePlanPopulation = Population<{
   Insurance: InsurancePopulation;
@@ -75,12 +76,12 @@ const MutateInsurancePlanPopup = ({
         onCancel={() => closePopup()}
         defaultValue={node}
         renderer={{
-          name: { type: "text", title: "نام" },
-          order: { type: "number", title: "رتبه" },
-          isActive: { type: "bool", title: "فعال" },
-          price: { type: "number", title: "قیمت" },
-          features: { type: "strings", title: "ویژگی ها" },
-          isPopular: { type: "bool", title: "محبوب" },
+          name: { type: "text", title: ta("نام") },
+          order: { type: "number", title: ta("رتبه") },
+          isActive: { type: "bool", title: ta("فعال") },
+          price: { type: "number", title: ta("قیمت") },
+          features: { type: "strings", title: ta("ویژگی ها") },
+          isPopular: { type: "bool", title: ta("محبوب") },
         }}
         hookProps={{
           path: `${API}/auto/insurancePlan${node ? `/${node._id}` : ""}`,
@@ -108,10 +109,10 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
-          title="طرح ها"
+          title={ta("طرح ها")}
           actions={[
             {
-              title: "جدید",
+              title: ta("جدید"),
               action: () =>
                 setPopup(
                   "Create",
@@ -124,21 +125,21 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
             data={data}
             name="AdminManageInsurancePlans"
             renderer={{
-              name: { name: "نام", value: (node) => node.name, filter: "Text" },
+              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               price: {
-                name: "قیمت",
+                name: ta("قیمت"),
                 value: (node) => node.price,
                 component: (node) => currencize(node.price),
                 filter: "Number",
               },
               isActive: {
-                name: "وضعیت",
+                name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               order: {
-                name: "رتبه",
+                name: ta("رتبه"),
                 value: (node) => node.order,
                 filter: "Number",
                 component: (node) => (
@@ -151,17 +152,17 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
                 ),
               },
               isPopular: {
-                name: "محبوب",
+                name: ta("محبوب"),
                 filter: "Set",
                 value: (node) => booleanToValue[`${node.isPopular}`],
                 component: (node) => <BooleanToIcon value={node.isPopular} />,
               },
               actions: {
-                name: "عملیات",
+                name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title="ویرایش"
+                      title={ta("ویرایش")}
                       onClick={() =>
                         setPopup(
                           "Mutate",
@@ -176,7 +177,7 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
                     </IconButton>
                     <IconButton
                       variant="Danger"
-                      title="حذف"
+                      title={ta("حذف")}
                       onClick={() =>
                         setPopup(
                           "Delete",
@@ -212,7 +213,7 @@ const InsuranceLocationManager = ({
     {
       path: `${API}/auto/insurance/${node._id}`,
       method: "POST",
-      hasProblem: (inp) => (!inp.coords ? "یک موقعیت را انتخاب کنید" : false),
+      hasProblem: (inp) => (!inp.coords ? ta("یک موقعیت را انتخاب کنید") : false),
       mutator: (inp) => ({
         location: { type: "Point", coordinates: inp.coords },
       }),
@@ -228,7 +229,7 @@ const InsuranceLocationManager = ({
       />
       <FormActions>
         <Button type="submit" onClick={submit} isLoading={isLoading}>
-          تایید
+          {ta("تایید")}
         </Button>
       </FormActions>
     </Form>
@@ -256,7 +257,7 @@ const AdminManageInsurancePage = () => {
                 ? [
                     {
                       id: "Overview",
-                      title: "نمای کلی",
+                      title: ta("نمای کلی"),
                       content: (
                         <EntityOverview
                           kind="insurance"
@@ -268,7 +269,7 @@ const AdminManageInsurancePage = () => {
                   ]
                 : []),
               {
-                title: "جزئیات",
+                title: ta("جزئیات"),
                 id: "Info",
                 icon: <InfoIcon />,
                 content: (
@@ -276,13 +277,13 @@ const AdminManageInsurancePage = () => {
                     defaultValue={data}
                     renderer={{
                       name: {
-                        title: "نام",
+                        title: ta("نام"),
                         type: "text",
                       },
-                      order: { title: "رتبه", type: "number" },
-                      active: { title: "فعال", type: "bool" },
+                      order: { title: ta("رتبه"), type: "number" },
+                      active: { title: ta("فعال"), type: "bool" },
                       category: {
-                        title: "دسته بندی",
+                        title: ta("دسته بندی"),
                         type: "nodes",
                         multi: false,
                         path: `${API}/auto/insuranceCategory`,
@@ -295,7 +296,7 @@ const AdminManageInsurancePage = () => {
                       },
                       tags: {
                         type: "nodes",
-                        title: "تگ ها",
+                        title: ta("تگ ها"),
                         getOptionLabel: (node) =>
                           (node as IInsuranceTag).name ||
                           (node as IInsuranceTag)._id,
@@ -304,16 +305,16 @@ const AdminManageInsurancePage = () => {
                         multi: true,
                         getDefaultValue: (inp) => inp.tags,
                       },
-                      establishment: { type: "text", title: "تاسیس" },
-                      membersCount: { type: "text", title: "تعداد اعضا" },
-                      image: { type: "image", title: "تصویر" },
-                      slug: { type: "text", title: "اسلاگ" },
-                      phone: { type: "text", title: "تلفن" },
-                      summary: { type: "text", title: "خلاصه" },
-                      coverages: { type: "strings", title: "پوشش ها" },
-                      advantages: { type: "strings", title: "مزایا" },
-                      website: { type: "text", title: "سایت" },
-                      address: { type: "text", title: "آدرس" },
+                      establishment: { type: "text", title: ta("تاسیس") },
+                      membersCount: { type: "text", title: ta("تعداد اعضا") },
+                      image: { type: "image", title: ta("تصویر") },
+                      slug: { type: "text", title: ta("اسلاگ") },
+                      phone: { type: "text", title: ta("تلفن") },
+                      summary: { type: "text", title: ta("خلاصه") },
+                      coverages: { type: "strings", title: ta("پوشش ها") },
+                      advantages: { type: "strings", title: ta("مزایا") },
+                      website: { type: "text", title: ta("سایت") },
+                      address: { type: "text", title: ta("آدرس") },
                     }}
                     hookProps={{
                       path: `${API}/auto/insurance/${data._id}`,
@@ -327,30 +328,30 @@ const AdminManageInsurancePage = () => {
               },
               {
                 id: "Location",
-                title: "لوکیشن",
+                title: ta("لوکیشن"),
                 content: (
                   <InsuranceLocationManager node={data} mutate={mutate} />
                 ),
               },
               {
                 id: "plans",
-                title: "طرح ها",
+                title: ta("طرح ها"),
                 content: <AdminManageInsurancePlans node={data} />,
               },
               {
-                title: "یوزر",
+                title: ta("یوزر"),
                 id: "User",
                 content: <InsuranceUserTab node={data} mutate={mutate} />,
               },
               {
-                title: "مجوز",
+                title: ta("مجوز"),
                 id: "License",
                 icon: <CartIcon />,
                 content: <InsuranceProfileLicenseTab node={data} />,
               },
               {
                 id: "Meta",
-                title: "متادیتا",
+                title: ta("متادیتا"),
                 content: (
                   <PageMetaEditor
                     resourceType="/insurance/[slug]"

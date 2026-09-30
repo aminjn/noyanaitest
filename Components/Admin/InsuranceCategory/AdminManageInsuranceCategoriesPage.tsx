@@ -14,6 +14,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type InsuranceCategoryPopulation = Population<Record<never, never>>;
 
@@ -27,10 +28,18 @@ export interface IInsuranceCategory<
 }
 
 export const insuranceCategoryFormRenderer: FormRenderer<IInsuranceCategory> = {
-  name: { title: "نام", type: "text" },
-  isActive: { title: "فعال", type: "bool" },
-  order: { title: "رتبه", type: "number" },
-  slug: { title: "اسلاگ", type: "text" },
+  name: { get title() {
+  return ta("نام");
+}, type: "text" },
+  isActive: { get title() {
+  return ta("فعال");
+}, type: "bool" },
+  order: { get title() {
+  return ta("رتبه");
+}, type: "number" },
+  slug: { get title() {
+  return ta("اسلاگ");
+}, type: "text" },
 };
 
 const AdminManageInsuranceCategoriesPage = () => {
@@ -40,17 +49,17 @@ const AdminManageInsuranceCategoriesPage = () => {
     <NodesManager<IInsuranceCategory>
       create={insuranceCategoryFormRenderer}
       modelName="insuranceCategory"
-      title="دسته بندی بیمه ها"
+      title={ta("دسته بندی بیمه ها")}
       table={({ mutate }) => ({
-        name: { name: "نام", value: (node) => node.name, filter: "Text" },
+        name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
         isActive: {
-          name: "وضعیت",
+          name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         order: {
-          name: "ترتیب",
+          name: ta("ترتیب"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -63,18 +72,18 @@ const AdminManageInsuranceCategoriesPage = () => {
           ),
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/insuranceCategory/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

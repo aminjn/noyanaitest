@@ -10,6 +10,7 @@ import WithTitle from "../../UI/WithTitle";
 import Table from "../../UI/Table";
 import Act from "@/Components/UI/Act";
 import { Population } from "../../Clinic/AdminManageClinicsPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type TaminDrugAmountPopulation = Population<Record<never, never>>;
 export interface ITaminDrugAmount<
@@ -34,8 +35,8 @@ const AdminManageTaminDrugAmountsPage = () => {
     <Fragment>
       <HandleLoading data={!!data} error={error}>
         <WithTitle
-          title="مقادیر مصرف"
-          actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+          title={ta("مقادیر مصرف")}
+          actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
         >
           {!!data && (
             <Table
@@ -43,32 +44,32 @@ const AdminManageTaminDrugAmountsPage = () => {
               data={data}
               renderer={{
                 drugAmntSumry: {
-                  name: "عنوان",
+                  name: ta("عنوان"),
                   value: (node) => node.drugAmntSumry,
                   filter: "Text",
                 },
                 drugAmntLatin: {
-                  name: "نام لاتین",
+                  name: ta("نام لاتین"),
                   value: (node) => node.drugAmntLatin,
                   filter: "Text",
                 },
                 drugAmntCode: {
-                  name: "کد",
+                  name: ta("کد"),
                   value: (node) => node.drugAmntCode,
                   filter: "Text",
                 },
                 drugAmntConcept: {
-                  name: "مفهوم",
+                  name: ta("مفهوم"),
                   value: (node) => node.drugAmntConcept,
                   filter: "Text",
                 },
                 visibled: {
-                  name: "نمایش",
+                  name: ta("نمایش"),
                   value: (node) => node.visibled,
                   filter: "Set",
                 },
                 drugAmntId: {
-                  name: "شناسه",
+                  name: ta("شناسه"),
                   value: (node) => node.drugAmntId,
                   filter: "Text",
                 },

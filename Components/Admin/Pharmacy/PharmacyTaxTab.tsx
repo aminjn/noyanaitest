@@ -11,6 +11,7 @@ import CreateForm from "../UI/CreateForm";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./PharmacyTaxTab.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/PharmacyTaxSettings.ts - one doc per pharmacy
 // (unique on `pharmacy`), fetched here by filtering the generic
@@ -43,7 +44,7 @@ const PharmacyTaxTab = ({ node }: { node: IPharmacy }) => {
           {!!globalSettings && (
             <List>
               <DataPair
-                title="درصد مالیات پیش‌فرض سیستم (در صورت تنظیم نشدن)"
+                title={ta("درصد مالیات پیش‌فرض سیستم (در صورت تنظیم نشدن)")}
                 value={`${globalSettings.defaultPharmacyTaxPercent}%`}
               />
             </List>
@@ -60,7 +61,7 @@ const PharmacyTaxTab = ({ node }: { node: IPharmacy }) => {
             }}
             renderer={{
               taxPercent: {
-                title: "درصد مالیات این داروخانه",
+                title: ta("درصد مالیات این داروخانه"),
                 type: "number",
                 required: true,
               },

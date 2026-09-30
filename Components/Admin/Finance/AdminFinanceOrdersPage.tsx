@@ -15,6 +15,7 @@ import {
   paymentMethodDict,
   userLabel,
 } from "./adminFinance";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 interface IAdminOrderRow {
   _id: string;
@@ -43,18 +44,18 @@ const AdminFinanceOrdersPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="سفارش‌ها">
+        <WithTitle title={ta("سفارش‌ها")}>
           <Table
             name="AdminFinanceOrders"
             data={data}
             renderer={{
               _id: {
-                name: "شماره سفارش",
+                name: ta("شماره سفارش"),
                 value: (node) => node._id.slice(-8),
                 filter: "Text",
               },
               user: {
-                name: "خریدار",
+                name: ta("خریدار"),
                 value: (node) => userLabel(node.user),
                 filter: "Text",
                 component: (node) =>
@@ -67,35 +68,35 @@ const AdminFinanceOrdersPage = () => {
                   ),
               },
               total: {
-                name: "مبلغ کل (تومان)",
+                name: ta("مبلغ کل (تومان)"),
                 value: (node) => node.total,
                 component: (node) => currencize(node.total || 0),
                 filter: "Number",
               },
               tax: {
-                name: "مالیات (تومان)",
+                name: ta("مالیات (تومان)"),
                 value: (node) => node.tax,
                 component: (node) => currencize(node.tax || 0),
                 filter: "Number",
               },
               paymentMethod: {
-                name: "روش پرداخت",
+                name: ta("روش پرداخت"),
                 value: (node) =>
                   paymentMethodDict[node.paymentMethod] || node.paymentMethod,
                 filter: "Set",
               },
               status: {
-                name: "وضعیت پرداخت",
+                name: ta("وضعیت پرداخت"),
                 value: (node) => orderStatusDict[node.status] || node.status,
                 filter: "Set",
               },
               lines: {
-                name: "اقلام",
+                name: ta("اقلام"),
                 value: (node) =>
-                  `${node.lines} قلم، ${node.fulfilled} تحویل، ${node.cancelled} لغو`,
+                  ta("${1} قلم، ${2} تحویل، ${3} لغو", [node.lines, node.fulfilled, node.cancelled]),
               },
               submittedAt: {
-                name: "تاریخ ثبت",
+                name: ta("تاریخ ثبت"),
                 value: (node) =>
                   node.submittedAt ? new Date(node.submittedAt) : undefined,
                 filter: "Date",

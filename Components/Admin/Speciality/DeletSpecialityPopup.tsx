@@ -6,6 +6,7 @@ import { Fragment, useState } from "react";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeleteSpecialityPopup = ({
   node,
@@ -21,7 +22,7 @@ const DeleteSpecialityPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={`ایا از حذف از تخصص ${node.name || "بی نام"} مطمئنید؟`}
+        message={ta("ایا از حذف از تخصص ${1} مطمئنید؟", [node.name || "بی نام"])}
         onConfirm={() => setIsLoading(true)}
         isLoading={isLoading}
       />

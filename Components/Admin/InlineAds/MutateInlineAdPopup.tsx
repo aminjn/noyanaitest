@@ -3,6 +3,7 @@ import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
 import { IInlineAdvertisement } from "./AdminManageInlineAdsPage";
 import usePopup from "@/Components/Hooks/usePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const MutateInlineAdPopup = ({
   mutate,
@@ -14,7 +15,7 @@ const MutateInlineAdPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title="تبلیغ خطی">
+    <PopupCard title={ta("تبلیغ خطی")}>
       <CreateForm
         styleManaged
         defaultValue={node}
@@ -27,13 +28,13 @@ const MutateInlineAdPopup = ({
           },
         }}
         renderer={{
-          name: { type: "text", title: "نام" },
-          title: { type: "text", title: "عنوان" },
-          subTitle: { type: "text", title: "توضیحات" },
-          image: { type: "image", title: "تصویر" },
-          target: { type: "text", title: "مقصد" },
-          active: { type: "bool", title: "فعال" },
-          expiration: { type: "date", title: "تاریخ انقضا" },
+          name: { type: "text", title: ta("نام") },
+          title: { type: "text", title: ta("عنوان") },
+          subTitle: { type: "text", title: ta("توضیحات") },
+          image: { type: "image", title: ta("تصویر") },
+          target: { type: "text", title: ta("مقصد") },
+          active: { type: "bool", title: ta("فعال") },
+          expiration: { type: "date", title: ta("تاریخ انقضا") },
         }}
         onCancel={() => closePopup("MutateInlineAd")}
       />

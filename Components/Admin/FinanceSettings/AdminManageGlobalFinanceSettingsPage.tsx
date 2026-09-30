@@ -7,6 +7,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/GlobalFinanceSettings.ts - the platform-wide
 // default commission rates used as a fallback when a specific
@@ -34,11 +35,9 @@ const AdminManageGlobalFinanceSettingsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="تنظیمات مالی">
+        <WithTitle title={ta("تنظیمات مالی")}>
           <p style={{ marginBottom: "1rem", lineHeight: 1.9 }}>
-            کمیسیون هنگام تسویه از سهم ارائه‌دهنده کم می‌شود و به قیمتی که
-            بیمار یا خریدار می‌پردازد اضافه نمی‌شود. برای هر پزشک، داروخانه یا
-            پاراکلینیک می‌توانید در صفحه‌ی خودش نرخ جداگانه بگذارید.
+            {ta("کمیسیون هنگام تسویه از سهم ارائه‌دهنده کم می‌شود و به قیمتی که بیمار یا خریدار می‌پردازد اضافه نمی‌شود. برای هر پزشک، داروخانه یا پاراکلینیک می‌توانید در صفحه‌ی خودش نرخ جداگانه بگذارید.")}
           </p>
           <CreateForm<IGlobalFinanceSettings>
             defaultValue={data}
@@ -49,19 +48,19 @@ const AdminManageGlobalFinanceSettingsPage = () => {
             }}
             renderer={{
               defaultPharmacyCommissionPercent: {
-                title: "درصد کمیسیون پیش‌فرض داروخانه‌ها",
+                title: ta("درصد کمیسیون پیش‌فرض داروخانه‌ها"),
                 type: "number",
               },
               defaultDoctorCommissionPercent: {
-                title: "درصد کمیسیون پزشکان - ویزیت آنلاین و خدمات فروشگاه",
+                title: ta("درصد کمیسیون پزشکان - ویزیت آنلاین و خدمات فروشگاه"),
                 type: "number",
               },
               defaultDoctorInPersonCommissionPercent: {
-                title: "درصد کمیسیون پزشکان - ویزیت حضوری (معمولاً ۰؛ هزینه با اشتراک)",
+                title: ta("درصد کمیسیون پزشکان - ویزیت حضوری (معمولاً ۰؛ هزینه با اشتراک)"),
                 type: "number",
               },
               defaultParaClinicCommissionPercent: {
-                title: "درصد کمیسیون پیش‌فرض پاراکلینیک‌ها",
+                title: ta("درصد کمیسیون پیش‌فرض پاراکلینیک‌ها"),
                 type: "number",
               },
             }}

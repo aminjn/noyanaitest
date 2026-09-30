@@ -19,6 +19,7 @@ import { getDoctorSecretaryAccessLavelLabel } from "../Lib/LabelGetters";
 import TabSystem, { TabSystemTab } from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorSecretaryAccessLevelPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -35,7 +36,7 @@ const AdminManageDoctorSecretaryAccessLevelPage = () => {
             name="AdminManageDoctorSecretaryAccessLevel"
             items={[
               {
-                title: "اطلاعات",
+                title: ta("اطلاعات"),
                 icon: <InfoIcon />,
                 content: (
                   <CreateForm
@@ -47,7 +48,7 @@ const AdminManageDoctorSecretaryAccessLevelPage = () => {
                         mutate();
                       },
                     }}
-                    renderer={{ name: { type: "text", title: "نام" } }}
+                    renderer={{ name: { type: "text", title: ta("نام") } }}
                   />
                 ),
                 id: "Info",

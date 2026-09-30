@@ -15,6 +15,7 @@ import { FormRenderer } from "../UI/CreateForm";
 import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { ILicensePricingEntry } from "../UI/LicensePricingInput";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Menu items available in the paraClinic dashboard (ParaClinicSidebar). Kept
 // in sync with Models/BaseParaClinicLicense.ts on noyanai-back and with the
@@ -38,13 +39,27 @@ export const paraClinicDashboardModuleLabels: Record<
   ParaClinicDashboardModule,
   string
 > = {
-  profile: "پروفایل",
-  secrataries: "منشی ها",
-  tests: "آزمایشات",
-  incomingOrders: "سفارش های ورودی",
-  tamin: "تامین",
-  articles: "مقالات",
-  licenses: "مجوزها",
+  get profile() {
+  return ta("پروفایل");
+},
+  get secrataries() {
+  return ta("منشی ها");
+},
+  get tests() {
+  return ta("آزمایشات");
+},
+  get incomingOrders() {
+  return ta("سفارش های ورودی");
+},
+  get tamin() {
+  return ta("تامین");
+},
+  get articles() {
+  return ta("مقالات");
+},
+  get licenses() {
+  return ta("مجوزها");
+},
 };
 
 export type BaseParaClinicLicensePopulation = Population<Record<never, never>>;
@@ -77,20 +92,46 @@ export interface IBaseParaClinicLicense<
 
 export const baseParaClinicLicenseFormRenderer: FormRenderer<IBaseParaClinicLicense> =
   {
-    displayName: { title: "نام نمایشی", type: "text" },
-    order: { title: "رتبه", type: "number" },
-    isDefault: { title: "پیش فرض", type: "bool" },
-    isRecommended: { title: "پیشنهادی", type: "bool" },
-    isDiscounted: { title: "تخفیف دار", type: "bool" },
-    isActive: { title: "فعال", type: "bool" },
-    isPrimary: { title: "پلن اصلی", type: "bool" },
-    isGolden: { title: "طلایی", type: "bool" },
-    pricing: { title: "قیمت‌گذاری", type: "licensePricing" },
-    descriptions: { title: "توضیحات", type: "strings" },
-    summary: { title: "خلاصه", type: "text" },
-    details: { title: "جزئیات", type: "rtf" },
+    displayName: { get title() {
+  return ta("نام نمایشی");
+}, type: "text" },
+    order: { get title() {
+  return ta("رتبه");
+}, type: "number" },
+    isDefault: { get title() {
+  return ta("پیش فرض");
+}, type: "bool" },
+    isRecommended: { get title() {
+  return ta("پیشنهادی");
+}, type: "bool" },
+    isDiscounted: { get title() {
+  return ta("تخفیف دار");
+}, type: "bool" },
+    isActive: { get title() {
+  return ta("فعال");
+}, type: "bool" },
+    isPrimary: { get title() {
+  return ta("پلن اصلی");
+}, type: "bool" },
+    isGolden: { get title() {
+  return ta("طلایی");
+}, type: "bool" },
+    pricing: { get title() {
+  return ta("قیمت‌گذاری");
+}, type: "licensePricing" },
+    descriptions: { get title() {
+  return ta("توضیحات");
+}, type: "strings" },
+    summary: { get title() {
+  return ta("خلاصه");
+}, type: "text" },
+    details: { get title() {
+  return ta("جزئیات");
+}, type: "rtf" },
     modules: {
-      title: "منوهای قابل دسترسی",
+      get title() {
+  return ta("منوهای قابل دسترسی");
+},
       type: "multiselect",
       options: paraClinicDashboardModuleLabels,
     },
@@ -103,15 +144,15 @@ const AdminManageBaseParaClinicLicensesPage = () => {
     <NodesManager<IBaseParaClinicLicense>
       create={baseParaClinicLicenseFormRenderer}
       modelName="baseParaClinicLicense"
-      title="پلن های مجوز پاراکلینیک"
+      title={ta("پلن های مجوز پاراکلینیک")}
       table={({ mutate }) => ({
         displayName: {
-          name: "نام نمایشی",
+          name: ta("نام نمایشی"),
           value: (node) => node.displayName,
           filter: "Text",
         },
         order: {
-          name: "ترتیب",
+          name: ta("ترتیب"),
           value: (node) => node.order,
           filter: "Number",
           component: (node) => (
@@ -124,36 +165,36 @@ const AdminManageBaseParaClinicLicensesPage = () => {
           ),
         },
         isActive: {
-          name: "فعال",
+          name: ta("فعال"),
           value: (node) => booleanToValue[`${node.isActive}`],
           component: (node) => <BooleanToIcon value={node.isActive} />,
           filter: "Set",
         },
         isPrimary: {
-          name: "پلن اصلی",
+          name: ta("پلن اصلی"),
           value: (node) => booleanToValue[`${node.isPrimary}`],
           component: (node) => <BooleanToIcon value={node.isPrimary} />,
           filter: "Set",
         },
         isDefault: {
-          name: "پیش‌فرض",
+          name: ta("پیش‌فرض"),
           value: (node) => booleanToValue[`${node.isDefault}`],
           component: (node) => <BooleanToIcon value={node.isDefault} />,
           filter: "Set",
         },
         actions: {
-          name: "عملیات",
+          name: ta("عملیات"),
           component: (node) => (
             <TableActions>
               <IconLink
                 href={adminPath(`/baseParaClinicLicense/${node._id}`)}
-                title="ویرایش"
+                title={ta("ویرایش")}
               >
                 <EditIcon />
               </IconLink>
               <IconButton
                 variant="Danger"
-                title="حذف"
+                title={ta("حذف")}
                 onClick={() =>
                   setPopup(
                     "Delete",

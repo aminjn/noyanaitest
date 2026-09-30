@@ -4,6 +4,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const DeletePartPopup = ({
   mutate,
@@ -18,7 +19,7 @@ const DeletePartPopup = ({
     <Fragment>
       <ConfirmationPopup
         isLoading={isLoading}
-        message={`آیا از حذف عضو ${node.name || node._id} مطمئیند؟`}
+        message={ta("آیا از حذف عضو ${1} مطمئیند؟", [node.name || node._id])}
         onConfirm={() => setIsLoading(true)}
       />
       <Act

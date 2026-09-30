@@ -15,6 +15,7 @@ import Loading from "../UI/Loading";
 import ErrorMessage from "../UI/ErrorMessage";
 import { Locale, localeNames } from "@/Components/i18n/locales";
 import { LocaleStatus, segmentGroups, segmentTitle } from "./segments";
+import { adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 
 type Overview = {
   machine: boolean;
@@ -44,7 +45,7 @@ type BulkJob = {
   errors: { segment: string; id: string; error: string }[];
 } | null;
 
-const num = new Intl.NumberFormat("fa-IR");
+const num = adminNumberFormat();
 
 const BulkPanel = ({ machine }: { machine: boolean }) => {
   const pushNotification = useNotification();
@@ -77,21 +78,21 @@ const BulkPanel = ({ machine }: { machine: boolean }) => {
     <section className={classes.card}>
       <div className={classes.bulkHead}>
         <div>
-          <h2 className={classes.cardTitle}>ترجمه خودکار همه محتوا</h2>
+          <h2 className={classes.cardTitle}>{ta("ترجمه خودکار همه محتوا")}</h2>
           <p className={classes.note}>
             {machine
-              ? "همه رکوردها به ۱۴ زبان ترجمه می‌شوند؛ ترجمه‌های دستی دست نمی‌خورند و ترجمه‌های خودکارِ قدیمی (بعد از تغییر متن فارسی) دوباره ساخته می‌شوند."
-              : "ترجمه خودکار روی سرور تنظیم نشده است (ANTHROPIC_API_KEY یا TRANSLATION_OLLAMA_MODEL). تا آن زمان ترجمه‌ها را دستی وارد کنید."}
+              ? ta("همه رکوردها به ۱۴ زبان ترجمه می‌شوند؛ ترجمه‌های دستی دست نمی‌خورند و ترجمه‌های خودکارِ قدیمی (بعد از تغییر متن فارسی) دوباره ساخته می‌شوند.")
+              : ta("ترجمه خودکار روی سرور تنظیم نشده است (ANTHROPIC_API_KEY یا TRANSLATION_OLLAMA_MODEL). تا آن زمان ترجمه‌ها را دستی وارد کنید.")}
           </p>
         </div>
         {machine &&
           (job?.running ? (
             <Button size="M" mode="Outline" variant="Error" onClick={stop}>
-              توقف
+              {ta("توقف")}
             </Button>
           ) : (
             <Button size="M" onClick={start} isLoading={busy}>
-              شروع ترجمه خودکار
+              {ta("شروع ترجمه خودکار")}
             </Button>
           ))}
       </div>
@@ -102,13 +103,13 @@ const BulkPanel = ({ machine }: { machine: boolean }) => {
           </div>
           <span className={classes.note}>
             {job.running
-              ? `در حال ترجمه «${segmentTitle(job.segment || "")}» — ${num.format(job.processed)} از ${num.format(job.total)} رکورد`
-              : `آخرین اجرا: ${num.format(job.processed)} رکورد، ${num.format(job.written)} فیلد ترجمه شد`}
-            {job.errors.length > 0 && ` · ${num.format(job.errors.length)} خطا`}
+              ? ta("در حال ترجمه «${1}» — ${2} از ${3} رکورد", [segmentTitle(job.segment || ""), num.format(job.processed), num.format(job.total)])
+              : ta("آخرین اجرا: ${1} رکورد، ${2} فیلد ترجمه شد", [num.format(job.processed), num.format(job.written)])}
+            {job.errors.length > 0 && ta(" · ${1} خطا", [num.format(job.errors.length)])}
           </span>
           {!job.running && job.errors.length > 0 && (
             <details className={classes.errors}>
-              <summary>خطاها</summary>
+              <summary>{ta("خطاها")}</summary>
               <ul>
                 {job.errors.map((e, i) => (
                   <li key={i}>
@@ -161,10 +162,9 @@ const AdminContentTranslationsPage = () => {
   return (
     <div className={classes.main}>
       <header className={classes.header}>
-        <h1 className={classes.title}>ترجمه محتوا</h1>
+        <h1 className={classes.title}>{ta("ترجمه محتوا")}</h1>
         <span className={classes.subtitle}>
-          متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به ۱۴ زبان سایت. هر
-          فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.
+          {ta("متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به ۱۴ زبان سایت. هر فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.")}
         </span>
       </header>
 
@@ -199,13 +199,13 @@ const AdminContentTranslationsPage = () => {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="جستجو..."
+              placeholder={ta("جستجو...")}
             />
           </div>
           <div className={classes.legend}>
-            <span className={`${classes.dot} ${classes.done}`} /> کامل
-            <span className={`${classes.dot} ${classes.partial}`} /> ناقص یا قدیمی
-            <span className={classes.dot} /> ترجمه نشده
+            <span className={`${classes.dot} ${classes.done}`} /> {ta("کامل")}
+            <span className={`${classes.dot} ${classes.partial}`} /> {ta("ناقص یا قدیمی")}
+            <span className={classes.dot} /> {ta("ترجمه نشده")}
           </div>
         </div>
 
@@ -225,7 +225,7 @@ const AdminContentTranslationsPage = () => {
                         {l.toUpperCase()}
                       </th>
                     ))}
-                    <th aria-label="ویرایش" />
+                    <th aria-label={ta("ویرایش")} />
                   </tr>
                 </thead>
                 <tbody>
@@ -245,27 +245,27 @@ const AdminContentTranslationsPage = () => {
                           href={adminPath(`/translations/${segment}/${item._id}`)}
                           className={classes.link}
                         >
-                          ترجمه‌ها
+                          {ta("ترجمه‌ها")}
                         </Link>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              {data.items.length === 0 && <p className={classes.empty}>موردی پیدا نشد</p>}
+              {data.items.length === 0 && <p className={classes.empty}>{ta("موردی پیدا نشد")}</p>}
             </div>
             {data.total > data.limit && (
               <div className={classes.pagination}>
                 <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                  قبلی
+                  {ta("قبلی")}
                 </button>
-                <span>{`صفحه ${num.format(page)} از ${num.format(pages)}`}</span>
+                <span>{ta("صفحه ${1} از ${2}", [num.format(page), num.format(pages)])}</span>
                 <button
                   type="button"
                   disabled={page >= pages}
                   onClick={() => setPage((p) => p + 1)}
                 >
-                  بعدی
+                  {ta("بعدی")}
                 </button>
               </div>
             )}

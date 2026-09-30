@@ -2,6 +2,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm, { FormRenderer } from "./CreateForm";
 import { API } from "@/Components/config";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const CreateShitPopup = <T,>({
   renderer,
@@ -18,7 +19,7 @@ const CreateShitPopup = <T,>({
   const { closePopup } = usePopup();
   return (
     <PopupCard
-      title={title ? `افزودن به ${title}` : "افزودن مورد جدید"}
+      title={title ? ta("افزودن به ${1}", [title]) : ta("افزودن مورد جدید")}
       // a long form gets the wide popup (CreateForm splits it into tabs)
       size={Object.keys(renderer).length >= 9 ? "wide" : "normal"}
     >

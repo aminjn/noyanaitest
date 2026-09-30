@@ -9,6 +9,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface ITaminComplaint extends MongoDoc {
   taminId: number;
@@ -31,39 +32,39 @@ const AdminManageTaminComplaintsPage = () => {
         <Fragment>
           <WithTitle
             title="complaints"
-            actions={[{ title: "رفرش", action: () => setIsRefreshing(true) }]}
+            actions={[{ title: ta("رفرش"), action: () => setIsRefreshing(true) }]}
           >
             <Table
               data={data}
               name="AdminManageTaminComplaints"
               renderer={{
                 displayName: {
-                  name: "نام",
+                  name: ta("نام"),
                   value: (node) => node.displayName,
                   filter: "Text",
                 },
                 englishName: {
-                  name: "نام انگلیسی",
+                  name: ta("نام انگلیسی"),
                   value: (node) => node.englishName,
                   filter: "Text",
                 },
                 code: {
-                  name: "کد",
+                  name: ta("کد"),
                   value: (node) => node.code,
                   filter: "Text",
                 },
                 terminology: {
-                  name: "ترمینولوژی",
+                  name: ta("ترمینولوژی"),
                   value: (node) => node.terminology,
                   filter: "Set",
                 },
                 status: {
-                  name: "وضعیت",
+                  name: ta("وضعیت"),
                   value: (node) => node.status,
                   filter: "Set",
                 },
                 taminId: {
-                  name: "شناسه تامین",
+                  name: ta("شناسه تامین"),
                   value: (node) => node.taminId,
                   filter: "Text",
                 },

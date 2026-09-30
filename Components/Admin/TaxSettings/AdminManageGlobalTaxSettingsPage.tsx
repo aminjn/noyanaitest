@@ -7,6 +7,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/GlobalTaxSettings.ts - the platform-wide default
 // tax rates used as a fallback when a specific pharmacy/doctor/clinic/
@@ -34,7 +35,7 @@ const AdminManageGlobalTaxSettingsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="تنظیمات مالیاتی">
+        <WithTitle title={ta("تنظیمات مالیاتی")}>
           <CreateForm<IGlobalTaxSettings>
             defaultValue={data}
             hookProps={{
@@ -44,23 +45,23 @@ const AdminManageGlobalTaxSettingsPage = () => {
             }}
             renderer={{
               defaultPharmacyTaxPercent: {
-                title: "درصد مالیات پیش‌فرض داروخانه‌ها",
+                title: ta("درصد مالیات پیش‌فرض داروخانه‌ها"),
                 type: "number",
               },
               defaultDoctorVisitTaxPercent: {
-                title: "درصد مالیات پیش‌فرض ویزیت پزشکان",
+                title: ta("درصد مالیات پیش‌فرض ویزیت پزشکان"),
                 type: "number",
               },
               defaultDoctorServiceTaxPercent: {
-                title: "درصد مالیات پیش‌فرض خدمات پزشکان",
+                title: ta("درصد مالیات پیش‌فرض خدمات پزشکان"),
                 type: "number",
               },
               defaultClinicTaxPercent: {
-                title: "درصد مالیات پیش‌فرض کلینیک‌ها",
+                title: ta("درصد مالیات پیش‌فرض کلینیک‌ها"),
                 type: "number",
               },
               defaultParaClinicTaxPercent: {
-                title: "درصد مالیات پیش‌فرض پاراکلینیک‌ها",
+                title: ta("درصد مالیات پیش‌فرض پاراکلینیک‌ها"),
                 type: "number",
               },
             }}

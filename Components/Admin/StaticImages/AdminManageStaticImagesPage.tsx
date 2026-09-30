@@ -7,6 +7,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Mirrors backend Models/StaticImages.ts - a singleton bucket of static
 // image slots used around the app. Field names live in that file's
@@ -36,7 +37,7 @@ const AdminManageStaticImagesPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title="تصاویر ثابت">
+        <WithTitle title={ta("تصاویر ثابت")}>
           <CreateForm<IStaticImages>
             defaultValue={data}
             hookProps={{
@@ -45,26 +46,26 @@ const AdminManageStaticImagesPage = () => {
               successCb: () => mutate(),
             }}
             renderer={{
-              homeMain: { title: "تصویر اصلی خانه", type: "image" },
-              aboutMain: { title: "تصویر اصلی درباره ما", type: "image" },
+              homeMain: { title: ta("تصویر اصلی خانه"), type: "image" },
+              aboutMain: { title: ta("تصویر اصلی درباره ما"), type: "image" },
               aboutSecurity: {
-                title: "تصویر امنیت درباره ما",
+                title: ta("تصویر امنیت درباره ما"),
                 type: "image",
               },
               aboutCta: {
-                title: "تصویر دعوت به اقدام درباره ما",
+                title: ta("تصویر دعوت به اقدام درباره ما"),
                 type: "image",
               },
               onboadingProfile: {
-                title: "تصویر پروفایل آنبوردینگ",
+                title: ta("تصویر پروفایل آنبوردینگ"),
                 type: "image",
               },
               onboadingClinic: {
-                title: "تصویر کلینیک آنبوردینگ",
+                title: ta("تصویر کلینیک آنبوردینگ"),
                 type: "image",
               },
               onboadrdinConsult: {
-                title: "تصویر مشاوره آنبوردینگ",
+                title: ta("تصویر مشاوره آنبوردینگ"),
                 type: "image",
               },
             }}
