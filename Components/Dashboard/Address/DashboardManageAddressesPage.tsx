@@ -29,8 +29,44 @@ export interface IUserAddress extends MongoDoc {
   address: string;
   receiverPhone?: string;
   postalCode?: string;
+  // picks the courier: same city as the pharmacy -> Tapsi, else Tipax
+  city?: IAddressCity | string;
   location?: { type: "Point"; coordinates?: [number, number] };
 }
+
+export type IAddressCity = {
+  _id: string;
+  name?: string;
+  province?: { _id: string; name?: string } | string;
+};
+
+export const addressCityLabel = (city?: IAddressCity | string) => {
+  if (!city || typeof city === "string") return "";
+  const province =
+    city.province && typeof city.province !== "string" ? city.province.name : "";
+  return [city.name, province && province !== city.name ? province : ""]
+    .filter(Boolean)
+    .join("، ");
+};
+
+// the address form's city picker (shared by the add popup and the edit page)
+export const addressCityField = (title: string) => ({
+  type: "nodes" as const,
+  title,
+  path: `${API}/public/search/city`,
+  getOptionLabel: (node: unknown) =>
+    addressCityLabel(node as IAddressCity) || (node as IAddressCity)._id,
+  getOptionValue: (node: unknown) => (node as IAddressCity)._id,
+  // the selector matches the default by id
+  getDefaultValue: (node: IUserAddress) =>
+    typeof node.city === "string" ? node.city : node.city?._id,
+  clearable: true,
+  // /public/search/city returns the list itself in `data`
+  dataParser: (res: unknown) => {
+    const list = (res as { data?: unknown })?.data;
+    return Array.isArray(list) ? list : [];
+  },
+});
 
 // 989121234567 -> 09121234567 (how an Iranian number is read aloud)
 export const localPhone = (phone?: string) =>
@@ -69,9 +105,10 @@ const AddressCard = ({ node, mutate }: { node: IUserAddress; mutate: () => unkno
         <strong className={classes.name}>{node.displayName || "—"}</strong>
       </div>
       <p className={classes.address}>{node.address}</p>
-      {(!!node.receiverPhone || !!node.postalCode) && (
+      {(!!node.receiverPhone || !!node.postalCode || !!addressCityLabel(node.city)) && (
         <p className={classes.meta}>
           {[
+            addressCityLabel(node.city),
             node.receiverPhone ? `${getContent("receiverPhone")}: ${localPhone(node.receiverPhone)}` : "",
             node.postalCode ? `${getContent("postalCode")}: ${node.postalCode}` : "",
           ]

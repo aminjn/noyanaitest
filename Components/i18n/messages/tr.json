@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "Anlaşmalı klinikler",
  "hospitalsAcceptingInsurance": "Anlaşmalı hastaneler",
  "paraClinicsAcceptingInsurance": "Anlaşmalı laboratuvar ve görüntüleme",
- "homeHeroAiFreeValue": "Ücretsiz"
+ "homeHeroAiFreeValue": "Ücretsiz",
+ "shippingMethod": "Gönderim",
+ "shippingTapsi": "Tapsi kurye (şehir içi)",
+ "shippingTipax": "Tipax, kapıda ödeme",
+ "shippingTipaxNote": "Kargo ücretini teslimatta Tipax kuryesine ödersiniz.",
+ "shippingFree": "Ücretsiz",
+ "deliveryFee": "Kargo ücreti",
+ "shippingNeedsAddress": "Kargo ücreti adres seçildikten sonra görünür.",
+ "addressCityMissing": "Bu adreste şehir yok; şehir içi Tapsi teslimatı için şehir ekleyin.",
+ "pharmacyShipTapsiNote": "Aynı şehir: Tapsi kuryeyle gönderin. Kargo ücreti (${1} toman) ilk ürün teslim edilince cüzdanınıza yatar.",
+ "pharmacyShipTipaxNote": "Başka şehir: Tipax ile kapıda ödemeli gönderin; ücreti alıcı öder."
 }

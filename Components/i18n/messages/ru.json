@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "Клиники-партнёры",
  "hospitalsAcceptingInsurance": "Больницы-партнёры",
  "paraClinicsAcceptingInsurance": "Лаборатории и диагностика-партнёры",
- "homeHeroAiFreeValue": "Бесплатно"
+ "homeHeroAiFreeValue": "Бесплатно",
+ "shippingMethod": "Доставка",
+ "shippingTapsi": "Курьер Tapsi (по городу)",
+ "shippingTipax": "Tipax, оплата при получении",
+ "shippingTipaxNote": "Стоимость доставки вы оплачиваете курьеру Tipax при получении.",
+ "shippingFree": "Бесплатно",
+ "deliveryFee": "Стоимость доставки",
+ "shippingNeedsAddress": "Стоимость доставки появится после выбора адреса.",
+ "addressCityMissing": "В адресе не указан город; добавьте его для доставки Tapsi по городу.",
+ "pharmacyShipTapsiNote": "Тот же город: отправьте курьером Tapsi. Плата за доставку (${1} томанов) поступит в ваш кошелёк после выдачи первой позиции.",
+ "pharmacyShipTipaxNote": "Другой город: отправьте через Tipax с оплатой при получении; платит покупатель."
 }

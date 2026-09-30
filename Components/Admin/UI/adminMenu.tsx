@@ -211,6 +211,7 @@ export const adminMenu: AdminMenuGroup[] = [
       { title: "تنظیمات مالیاتی", href: "globalTaxSettings" },
       { title: "تنظیمات درگاه پیامک (API)", href: "smsSettings" },
       { title: "پترن‌های پیامک", href: "smsPatterns" },
+      { title: "تنظیمات ارسال (تپسی / تیپاکس)", href: "deliverySettings" },
       { title: "تصاویر ثابت", href: "staticImages" },
       { title: "لاگ عملیات", href: "audit" },
       { title: "ابزار توسعه و دیتابیس قدیم", href: "devtools" },

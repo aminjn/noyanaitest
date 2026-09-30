@@ -4,7 +4,10 @@ import useSWR from "swr";
 import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import classes from "./DashboardManageAddressPage.module.css";
-import { IUserAddress } from "./DashboardManageAddressesPage";
+import {
+  addressCityField,
+  IUserAddress,
+} from "./DashboardManageAddressesPage";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
@@ -58,6 +61,7 @@ const DashboardManageAddressPage = () => {
                         title: getContent("postalCode"),
                         type: "text",
                       },
+                      city: addressCityField(getContent("city")),
                     }}
                     hookProps={{
                       path: `${API}/user/address/${data._id}`,

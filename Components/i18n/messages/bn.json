@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "চুক্তিবদ্ধ ক্লিনিক",
  "hospitalsAcceptingInsurance": "চুক্তিবদ্ধ হাসপাতাল",
  "paraClinicsAcceptingInsurance": "চুক্তিবদ্ধ ল্যাব ও ইমেজিং",
- "homeHeroAiFreeValue": "বিনামূল্যে"
+ "homeHeroAiFreeValue": "বিনামূল্যে",
+ "shippingMethod": "ডেলিভারি",
+ "shippingTapsi": "Tapsi কুরিয়ার (একই শহর)",
+ "shippingTipax": "Tipax, ডেলিভারিতে পরিশোধ",
+ "shippingTipaxNote": "ডেলিভারির সময় Tipax কুরিয়ারকে শিপিং খরচ দেবেন।",
+ "shippingFree": "বিনামূল্যে",
+ "deliveryFee": "শিপিং খরচ",
+ "shippingNeedsAddress": "ঠিকানা বাছাই করলে শিপিং খরচ দেখা যাবে।",
+ "addressCityMissing": "এই ঠিকানায় শহর নেই; একই শহরে Tapsi ডেলিভারির জন্য শহর যোগ করুন।",
+ "pharmacyShipTapsiNote": "একই শহর: Tapsi কুরিয়ারে পাঠান। প্রথম পণ্য পৌঁছালে শিপিং খরচ (${1} তোমান) আপনার ওয়ালেটে জমা হবে।",
+ "pharmacyShipTipaxNote": "অন্য শহর: Tipax-এ ডেলিভারিতে পরিশোধ হিসেবে পাঠান; ক্রেতা কুরিয়ারকে দেবেন।"
 }

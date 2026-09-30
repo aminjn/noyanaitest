@@ -147,6 +147,28 @@ const PharmacyIncomingOrderPage = () => {
               title={getContent("mySubtotal")}
               value={`${currencize(data.subtotal)} ${getContent("toman")}`}
             />
+            {!!data.shipment && (
+              <DataPair
+                title={getContent("shippingMethod")}
+                value={
+                  <span>
+                    {getContent(
+                      data.shipment.method === "tapsi"
+                        ? "shippingTapsi"
+                        : "shippingTipax",
+                    )}
+                    <br />
+                    <small>
+                      {data.shipment.method === "tapsi"
+                        ? getContent("pharmacyShipTapsiNote", [
+                            currencize(data.shipment.fee || 0),
+                          ])
+                        : getContent("pharmacyShipTipaxNote")}
+                    </small>
+                  </span>
+                }
+              />
+            )}
           </List>
           {!!data.address?.address && (
             <List>

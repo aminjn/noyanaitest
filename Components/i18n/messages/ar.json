@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "العيادات المتعاقدة",
  "hospitalsAcceptingInsurance": "المستشفيات المتعاقدة",
  "paraClinicsAcceptingInsurance": "المختبرات ومراكز الأشعة المتعاقدة",
- "homeHeroAiFreeValue": "مجاني"
+ "homeHeroAiFreeValue": "مجاني",
+ "shippingMethod": "طريقة الشحن",
+ "shippingTapsi": "مندوب تپسي (داخل المدينة)",
+ "shippingTipax": "تيباكس، الدفع عند الاستلام",
+ "shippingTipaxNote": "تدفع تكلفة الشحن لمندوب تيباكس عند الاستلام.",
+ "shippingFree": "مجاني",
+ "deliveryFee": "تكلفة الشحن",
+ "shippingNeedsAddress": "تظهر تكلفة الشحن بعد اختيار العنوان.",
+ "addressCityMissing": "لم تُحدَّد مدينة لهذا العنوان؛ أضفها للحصول على توصيل تپسي داخل المدينة.",
+ "pharmacyShipTapsiNote": "نفس المدينة: أرسلها مع مندوب تپسي. تُضاف تكلفة الشحن (${1} تومان) إلى محفظتك عند تسليم أول صنف.",
+ "pharmacyShipTipaxNote": "مدينة أخرى: أرسلها عبر تيباكس بالدفع عند الاستلام؛ يدفع المشتري للمندوب."
 }

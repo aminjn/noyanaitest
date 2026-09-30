@@ -624,6 +624,7 @@ export const contentNamespaces = {
     "delete",
     "receiverPhone",
     "postalCode",
+    "city",
   ],
 
   // app/dashboard/vital/page.tsx (DashboardManageVitalsPage + VitalList).
@@ -2777,6 +2778,12 @@ export const contentNamespaces = {
     "locationOnMap",
     "navigate",
     "ioMarkCancel",
+    "shippingMethod",
+    "shippingTapsi",
+    "shippingTipax",
+    "shippingFree",
+    "pharmacyShipTapsiNote",
+    "pharmacyShipTipaxNote",
   ],
 
   // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,
@@ -3434,6 +3441,7 @@ export const contentNamespaces = {
     "address",
     "receiverPhone",
     "postalCode",
+    "city",
   ],
   // Components/Dashboard/Booking/ReservationStatusBadge.tsx (via
   // reservationStatusContentKeyDict).
@@ -3920,6 +3928,15 @@ export const contentNamespaces = {
     "receiverPhone",
     "postalCode",
     "selectAddressFirst",
+    "shippingMethod",
+    "shippingTapsi",
+    "shippingTipax",
+    "shippingTipaxNote",
+    "shippingFree",
+    "deliveryFee",
+    "shippingNeedsAddress",
+    "addressCityMissing",
+    "city",
   ],
   // app/payment/[nodeId]/page.tsx (Components/Payment/SuccessPayment.tsx + FailPayment.tsx).
   paymentResult: [
@@ -3953,6 +3970,12 @@ export const contentNamespaces = {
     "cancelOrder",
     "cancelOrderConfirm",
     "orderCancelledRefunded",
+    "shippingMethod",
+    "shippingTapsi",
+    "shippingTipax",
+    "shippingTipaxNote",
+    "shippingFree",
+    "deliveryFee",
   ],
   // Shared cartable node-page pieces (Components/Product/Cartable/*, CartActions, PlusBox, ProductCartInfos, UpgradeProBox) used by /product/[slug], /productPackage/[slug], /service/[slug], /servicePackage/[slug]. Includes the cartTitle keys passed in (seller/provider) and the ProductCartInfos ternary keys.
   productCartable: [

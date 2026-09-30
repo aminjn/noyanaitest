@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "提携クリニック",
  "hospitalsAcceptingInsurance": "提携病院",
  "paraClinicsAcceptingInsurance": "提携検査・画像診断施設",
- "homeHeroAiFreeValue": "無料"
+ "homeHeroAiFreeValue": "無料",
+ "shippingMethod": "配送方法",
+ "shippingTapsi": "Tapsi 市内配送",
+ "shippingTipax": "Tipax（着払い）",
+ "shippingTipaxNote": "送料は受け取り時に Tipax の配達員へお支払いください。",
+ "shippingFree": "無料",
+ "deliveryFee": "送料",
+ "shippingNeedsAddress": "住所を選ぶと送料が表示されます。",
+ "addressCityMissing": "この住所には市が未登録です。Tapsi の市内配送には市を追加してください。",
+ "pharmacyShipTapsiNote": "同じ市内：Tapsi の配達員で発送してください。最初の品が届くと送料（${1} トマン）がウォレットに入ります。",
+ "pharmacyShipTipaxNote": "別の市：Tipax の着払いで発送してください。送料は購入者が支払います。"
 }

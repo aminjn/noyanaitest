@@ -2159,5 +2159,15 @@
  "clinicsAcceptingInsurance": "签约诊所",
  "hospitalsAcceptingInsurance": "签约医院",
  "paraClinicsAcceptingInsurance": "签约化验与影像机构",
- "homeHeroAiFreeValue": "免费"
+ "homeHeroAiFreeValue": "免费",
+ "shippingMethod": "配送方式",
+ "shippingTapsi": "Tapsi 同城快递",
+ "shippingTipax": "Tipax，货到付运费",
+ "shippingTipaxNote": "运费在收货时付给 Tipax 快递员。",
+ "shippingFree": "免费",
+ "deliveryFee": "运费",
+ "shippingNeedsAddress": "选择地址后显示运费。",
+ "addressCityMissing": "此地址未填城市；填写后可使用 Tapsi 同城配送。",
+ "pharmacyShipTapsiNote": "同城：请用 Tapsi 快递发货。首件送达后，运费（${1} 托曼）将计入您的钱包。",
+ "pharmacyShipTipaxNote": "异地：请用 Tipax 到付发货，运费由买家付给快递员。"
 }
