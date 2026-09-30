@@ -20,7 +20,8 @@ import BigAd from "../UI/ListPage/BigAd";
 import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
 import ListPageSideSection from "../UI/ListPage/ListPageSideSection";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
-import ClinicCardAlt from "./ClinicCardAlt";
+// the one clinic card of the site
+import ClinicCard from "../Clinic/ClinicCard";
 import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
@@ -95,7 +96,10 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
             <ListPageSideSection
               title={getContent("relatedClinics")}
               cards={clinics.map((clinic) => (
-                <ClinicCardAlt key={clinic._id} node={clinic} />
+                <ClinicCard
+                  key={clinic._id}
+                  node={clinic as Parameters<typeof ClinicCard>[0]["node"]}
+                />
               ))}
               cardWidth={236}
             />

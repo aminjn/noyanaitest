@@ -92,6 +92,16 @@ const NewDoctorProfilePage = ({
   faqs,
 }: PublicDoctorProfilePageProps) => {
   const getContent = useScopedLocale(NS);
+  const specialityChips = (() => {
+    const list = [
+      doctor.mainSpeciality,
+      ...(((doctor as { specialities?: unknown[] }).specialities || []) as unknown[]),
+    ].filter(
+      (el): el is { _id: string; name?: string; slug?: string } =>
+        !!el && typeof el === "object" && !!(el as { name?: string }).name,
+    );
+    return list.filter((el, i) => list.findIndex((o) => o._id === el._id) === i);
+  })();
 
   const fullName = getDoctorProfileLabel(doctor);
 
@@ -236,7 +246,12 @@ const NewDoctorProfilePage = ({
                   </Ixon>
                 )}
                 {!!doctor.mainSpeciality?.name && (
-                  <Badge>{doctor.mainSpeciality.name}</Badge>
+                  // the main speciality opens its doctors
+                  <Link
+                    href={`/speciality/${doctor.mainSpeciality.slug || doctor.mainSpeciality._id}`}
+                  >
+                    <Badge>{doctor.mainSpeciality.name}</Badge>
+                  </Link>
                 )}
               </div>
               <div className={classes.identityMeta}>
@@ -347,8 +362,23 @@ const NewDoctorProfilePage = ({
             icon={<StetoscopeIcon />}
             title={getContent("specialityAndServices")}
           >
-            {!doctor.services.length ? (
-              <EmptyState>{getContent("nothingFound")}</EmptyState>
+            {/* every speciality of the doctor (main first), each a link to
+                that speciality's doctors - they used to be loaded, not shown */}
+            {!!specialityChips.length && (
+              <div className={classes.chips}>
+                {specialityChips.map((sp) => (
+                  <Link key={sp._id} href={`/speciality/${sp.slug || sp._id}`}>
+                    <Badge color="Primarylight" mode="Fill" radius="High">
+                      {sp.name}
+                    </Badge>
+                  </Link>
+                ))}
+              </div>
+            )}
+            {!doctor.services?.length ? (
+              !specialityChips.length && (
+                <EmptyState>{getContent("nothingFound")}</EmptyState>
+              )
             ) : (
               <ul className={classes.list}>
                 {doctor.services.map((service, i) => (

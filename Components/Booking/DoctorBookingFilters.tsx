@@ -13,7 +13,7 @@ import ToggleInput from "../UI/ToggleInput";
 import { t2xsRegular } from "../UI/Typography";
 import MultiSelectInputServer from "../UI/MultiSelectInputServer";
 import { API } from "../config";
-import { doctorProfileTiers, genders } from "../DoctorPanel/DoctorPanelPage";
+import { genders } from "../DoctorPanel/DoctorPanelPage";
 import InlineDateInput from "../UI/InlineDateInput";
 import TimePicker from "../UI/TimePicker";
 import usePopup from "../Hooks/usePopup";
@@ -199,29 +199,6 @@ export const useDoctorBookingFilterProps = ({
                 }
               >
                 {service.title}
-              </BookingSelectedFilter>
-            ))}
-          {!!options.education?.length &&
-            options.education.map((tier) => (
-              <BookingSelectedFilter
-                key={tier}
-                onClick={() =>
-                  setOptions((prev) => {
-                    const clone = { ...prev };
-                    if (!clone.education) return { ...clone, education: [] };
-                    const index = clone.education.findIndex(
-                      (el) => el === tier,
-                    );
-                    if (index === -1) {
-                      clone.education.push(tier);
-                    } else {
-                      clone.education.splice(index, 1);
-                    }
-                    return clone;
-                  })
-                }
-              >
-                {getContent(tier)}
               </BookingSelectedFilter>
             ))}
           {!!options.gender && (
@@ -455,7 +432,7 @@ export const useDoctorBookingFilterProps = ({
               />
             </BookingFilterButton>
             <BookingFilterButton
-              title={getContent("service")}
+              title={getContent("serviceType")}
               active={!!options.service?.length}
             >
               <MultiSelectInputServer
@@ -473,27 +450,6 @@ export const useDoctorBookingFilterProps = ({
             </BookingFilterButton>
           </BookingFilterSegment>
           <BookingFilterSegment title={getContent("details")}>
-            <BookingFilterButton
-              title={getContent("educationLevel")}
-              active={!!options.education?.length}
-            >
-              <MultiSelectInput
-                options={doctorProfileTiers.map((t) => ({
-                  title: getContent(t),
-                  value: t,
-                }))}
-                placeholder={getContent("selectEducation")}
-                value={options.education || []}
-                onChange={(e) =>
-                  setOptions((prev) => ({
-                    ...prev,
-                    education: doctorProfileTiers.filter((el) =>
-                      e.includes(el),
-                    ),
-                  }))
-                }
-              />
-            </BookingFilterButton>
             <BookingFilterButton
               title={getContent("gender")}
               active={!!options.gender}

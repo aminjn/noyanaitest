@@ -2128,5 +2128,6 @@
  "featuredSpecialities": "注目の専門分野",
  "unclaimedProfileTitle": "オンライン予約はご利用いただけません",
  "unclaimedProfileLegend": "この医師はまだNoyanAIのアカウントがなく、オンライン予約を受け付けていません。ご自身のページであれば、参加申請で有効にしてください。",
- "dpfCommission": "合計 ${1} - NoyanAI手数料 ${2}%（${3}）"
+ "dpfCommission": "合計 ${1} - NoyanAI手数料 ${2}%（${3}）",
+ "filterTheseDoctors": "予約を検索・絞り込み"
 }

@@ -2128,5 +2128,6 @@
  "featuredSpecialities": "Öne çıkan uzmanlıklar",
  "unclaimedProfileTitle": "Çevrimiçi randevu kullanılamıyor",
  "unclaimedProfileLegend": "Bu doktorun henüz NoyanAI hesabı yok ve çevrimiçi randevu almıyor. Bu sayfa sizinse katılım başvurusuyla etkinleştirin.",
- "dpfCommission": "Toplam ${1} - NoyanAI komisyonu %${2} (${3})"
+ "dpfCommission": "Toplam ${1} - NoyanAI komisyonu %${2} (${3})",
+ "filterTheseDoctors": "Randevu ara ve filtrele"
 }

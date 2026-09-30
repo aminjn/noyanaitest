@@ -2128,5 +2128,6 @@
  "featuredSpecialities": "चुनिंदा विशेषज्ञताएँ",
  "unclaimedProfileTitle": "ऑनलाइन बुकिंग उपलब्ध नहीं है",
  "unclaimedProfileLegend": "इस डॉक्टर का अभी NoyanAI पर खाता नहीं है और ऑनलाइन बुकिंग नहीं होती। यदि यह पेज आपका है, तो जुड़ने का आवेदन देकर इसे सक्रिय करें।",
- "dpfCommission": "कुल ${1} - NoyanAI शुल्क ${2}% (${3})"
+ "dpfCommission": "कुल ${1} - NoyanAI शुल्क ${2}% (${3})",
+ "filterTheseDoctors": "अपॉइंटमेंट खोजें और फ़िल्टर करें"
 }

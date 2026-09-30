@@ -2280,6 +2280,7 @@ const contentKeys = [
   "unclaimedProfileTitle",
   "unclaimedProfileLegend",
   "dpfCommission",
+  "filterTheseDoctors",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

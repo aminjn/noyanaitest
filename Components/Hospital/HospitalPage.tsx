@@ -72,7 +72,12 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
           (acc, el) => [...acc, ...el.map((c) => c.doctor?.mainSpeciality)],
           [] as (ISpeciality | undefined)[],
         )
-        .filter(Boolean) as ISpeciality[],
+        .filter(Boolean)
+        // one chip per speciality (several doctors share one)
+        .filter(
+          (sp, i, all) =>
+            all.findIndex((o) => o?._id === sp?._id) === i,
+        ) as ISpeciality[],
     [clinics],
   );
 
