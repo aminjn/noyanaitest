@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "The shipping cost is shown once you choose an address.",
  "addressCityMissing": "This address has no city; add one to get same-city Tapsi delivery.",
  "pharmacyShipTapsiNote": "Same city: send it with a Tapsi courier. The shipping fee (${1} toman) is credited to your wallet when the first item is delivered.",
- "pharmacyShipTipaxNote": "Another city: send it with Tipax, pay on delivery; the buyer pays the courier."
+ "pharmacyShipTipaxNote": "Another city: send it with Tipax, pay on delivery; the buyer pays the courier.",
+ "licensePeriodDays": "${1}-day",
+ "licensePeriodMonths": "${1}-month",
+ "licensePeriodYears": "${1}-year",
+ "formSectionMain": "Main details",
+ "formSectionStatus": "Status & visibility",
+ "formSectionContent": "Content",
+ "formSectionMedia": "Images & files",
+ "clearSelection": "Clear",
+ "nSelectedOfTotal": "${1} of ${2}"
 }

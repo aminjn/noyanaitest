@@ -1,12 +1,11 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { IUser } from "@/Components/Hooks/useUser";
 import { IAccessLevel } from "./AdminManageAccessLevelsPage";
-import classes from "./ConnectAccessLevelToUserPopup.module.css";
 import CreateForm from "../UI/CreateForm";
 import { IUserAccessLevel } from "./AccessLevelAdminsTab";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import { getAccessLevelLabel, getUserLabel } from "../Lib/LabelGetters";
-import Box from "../UI/Box";
 
 const ConnectAccessLevelToUserPopup = ({
   accessLevel,
@@ -19,7 +18,7 @@ const ConnectAccessLevelToUserPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <Box>
+    <PopupCard title="اتصال سطح دسترسی به کاربر">
       <CreateForm<IUserAccessLevel>
         renderer={{
           ...(user
@@ -65,7 +64,7 @@ const ConnectAccessLevelToUserPopup = ({
         }}
         onCancel={() => closePopup()}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

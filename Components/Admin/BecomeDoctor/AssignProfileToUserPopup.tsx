@@ -1,7 +1,6 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { IUser } from "@/Components/Hooks/useUser";
-import classes from "./AssignProfileToUserPopup.module.css";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
@@ -18,7 +17,7 @@ const AssignDoctorProfileToUserPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <Box>
+    <PopupCard title="اتصال پروفایل به کاربر">
       <CreateForm<{ user: string; profile: string }>
         onCancel={() => closePopup()}
         renderer={{
@@ -63,7 +62,7 @@ const AssignDoctorProfileToUserPopup = ({
           },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

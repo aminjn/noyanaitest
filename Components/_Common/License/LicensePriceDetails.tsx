@@ -10,6 +10,7 @@ import {
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { useIntlLocale } from "@/Components/i18n/navigation";
+import useLicensePeriodLabel from "./useLicensePeriodLabel";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -27,6 +28,7 @@ const LicensePriceDetails = ({
 }) => {
   const getContent = useScopedLocale(LOCALE_NS);
   const intlTag = useIntlLocale();
+  const periodLabel = useLicensePeriodLabel();
 
   if (!pricing) return null;
 
@@ -40,17 +42,27 @@ const LicensePriceDetails = ({
   return (
     <div className={classes.details}>
       <div className={classes.duraBox}>
-        <span className={`${classes.duraName} ${txsRegular}`}>{duration?.displayName}</span>
+        <span className={`${classes.duraName} ${txsRegular}`}>
+          {periodLabel(duration?.duration)}
+        </span>
         {off > 0 && percent > 0 && (
           <span className={`${classes.percent} ${t2xsRegular}`}>
-            {getContent("percentSymbol", [new Intl.NumberFormat(intlTag).format(percent)])}
+            {getContent("percentSymbol", [
+              new Intl.NumberFormat(intlTag).format(percent),
+            ])}
           </span>
         )}
       </div>
       <div className={classes.priceBox}>
-        <span className={`${classes.price} ${txlBold}`}>{currencize(final)}</span>
+        <span className={`${classes.price} ${txlBold}`}>
+          {currencize(final)}
+        </span>
         <span className={classes.toman}>{getContent("toman")}</span>
-        {off > 0 && <s className={`${classes.discount} ${tbaseRegular}`}>{currencize(price)}</s>}
+        {off > 0 && (
+          <s className={`${classes.discount} ${tbaseRegular}`}>
+            {currencize(price)}
+          </s>
+        )}
       </div>
     </div>
   );

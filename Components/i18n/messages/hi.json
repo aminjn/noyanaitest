@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "पता चुनने के बाद शिपिंग शुल्क दिखेगा।",
  "addressCityMissing": "इस पते में शहर नहीं है; उसी शहर में Tapsi डिलीवरी के लिए शहर जोड़ें।",
  "pharmacyShipTapsiNote": "उसी शहर में: Tapsi कूरियर से भेजें। पहली चीज़ डिलीवर होने पर शिपिंग शुल्क (${1} तोमान) आपके वॉलेट में आएगा।",
- "pharmacyShipTipaxNote": "दूसरा शहर: Tipax से, डिलीवरी पर भुगतान के साथ भेजें; खरीदार कूरियर को भुगतान करेगा।"
+ "pharmacyShipTipaxNote": "दूसरा शहर: Tipax से, डिलीवरी पर भुगतान के साथ भेजें; खरीदार कूरियर को भुगतान करेगा।",
+ "licensePeriodDays": "${1} दिन",
+ "licensePeriodMonths": "${1} महीने",
+ "licensePeriodYears": "${1} वर्ष",
+ "formSectionMain": "मुख्य जानकारी",
+ "formSectionStatus": "स्थिति और प्रदर्शन",
+ "formSectionContent": "सामग्री",
+ "formSectionMedia": "चित्र और फ़ाइलें",
+ "clearSelection": "साफ़ करें",
+ "nSelectedOfTotal": "${2} में से ${1}"
 }

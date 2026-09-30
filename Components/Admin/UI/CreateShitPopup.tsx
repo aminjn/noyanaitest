@@ -17,7 +17,11 @@ const CreateShitPopup = <T,>({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard title={title ? `افزودن به ${title}` : "افزودن مورد جدید"}>
+    <PopupCard
+      title={title ? `افزودن به ${title}` : "افزودن مورد جدید"}
+      // a long form gets the wide popup (CreateForm splits it into tabs)
+      size={Object.keys(renderer).length >= 9 ? "wide" : "normal"}
+    >
       <CreateForm<T>
         renderer={renderer}
         onCancel={() => closePopup()}

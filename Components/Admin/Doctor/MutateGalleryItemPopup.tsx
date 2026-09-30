@@ -1,8 +1,7 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { IGalleryItem } from "./AdminManageDoctorGalleryTab";
-import classes from "./MutateGalleryItemPopup.module.css";
 import { IDoctor } from "./AdminManageDoctorsPage";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -17,7 +16,7 @@ const MutateGalleryItemPopup = ({
 )) => {
   const { closePopup } = usePopup();
   return (
-    <Box className={classes.main}>
+    <PopupCard title="تصویر گالری">
       <CreateForm
         styleManaged
         defaultValue={node}
@@ -45,7 +44,7 @@ const MutateGalleryItemPopup = ({
           order: { type: "number", title: "رتبه" },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

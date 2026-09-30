@@ -53,19 +53,20 @@ export const licenseModuleLabelsByOrg: Record<
   insurance: insuranceDashboardModuleLabels,
 };
 
-// Mirrors backend Models/LicenseDuration.ts.
-export interface ILicenseDuration extends MongoDoc {
+// A plan's sale period (2026-09, second pass): the backend keeps the period
+// on each price option as `days` (Models/BaseLicensePricing.ts) - there is
+// no separate duration catalog any more. The pages still pick "a duration"
+// and match options by it, so the adapters below turn each period into
+// { _id: "<days>", duration: <days> }; the label comes from
+// useLicensePeriodLabel.
+export interface ILicenseDuration {
+  _id: string;
   duration: number;
-  displayName?: string;
-  order: number;
 }
 
-// Mirrors backend Models/BaseLicensePricing.ts. `duration` is a raw id
-// string on the list endpoints (getMyLicenseOverview/getActiveLicenses,
-// which return every referenced ILicenseDuration separately instead of
-// populating it onto each pricing entry - see ILicenseCatalog below) and
-// the populated ILicenseDuration itself on the single-plan endpoint
-// (getLicenseById).
+// Mirrors backend Models/BaseLicensePricing.ts once adapted: `duration` is
+// the period's id ("<days>") on the list endpoints and the ILicenseDuration
+// itself on the single-plan endpoint.
 export interface IBaseLicensePricing<TDuration = string> {
   duration: TDuration;
   isActive: boolean;
@@ -151,3 +152,63 @@ export interface ICurrentLicense {
   current: IProfileLicense | null;
   isExpired: boolean;
 }
+
+type ApiPricing = {
+  days: number;
+  isActive: boolean;
+  price: number;
+  discount: number;
+};
+
+const toDuration = (days: number): ILicenseDuration => ({
+  _id: String(days),
+  duration: days,
+});
+
+const apiPricing = (license: unknown): ApiPricing[] => {
+  const list = (license as { pricing?: unknown })?.pricing;
+  return Array.isArray(list)
+    ? (list as ApiPricing[])
+        .filter((p) => Number(p?.days) > 0)
+        .sort((a, b) => a.days - b.days)
+    : [];
+};
+
+// GET <org>/license and <org>/license/all
+export const adaptLicenseCatalog = <T extends ILicenseCatalog>(
+  raw: unknown,
+): T => {
+  const data = (raw || {}) as Record<string, unknown>;
+  const licenses = Array.isArray(data.licenses) ? data.licenses : [];
+  const durations = Array.isArray(data.durations) ? data.durations : [];
+  return {
+    ...data,
+    licenses: licenses.map((license) => ({
+      ...(license as object),
+      pricing: apiPricing(license).map((p) => ({
+        ...p,
+        duration: String(p.days),
+      })),
+    })),
+    durations: durations
+      .map(Number)
+      .filter((d) => d > 0)
+      .map(toDuration),
+  } as unknown as T;
+};
+
+// GET <org>/license/:nodeId
+export const adaptLicenseDetail = (
+  raw: unknown,
+): IBaseLicenseDetail => {
+  // a missing plan stays "no data" for the page
+  if (!raw || typeof raw !== "object")
+    return undefined as unknown as IBaseLicenseDetail;
+  return {
+    ...(raw as object),
+    pricing: apiPricing(raw).map((p) => ({
+      ...p,
+      duration: toDuration(p.days),
+    })),
+  } as unknown as IBaseLicenseDetail;
+};

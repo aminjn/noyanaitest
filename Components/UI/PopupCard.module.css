@@ -80,3 +80,16 @@
     padding: 1rem 1rem 0.5rem;
   }
 }
+
+.wide {
+  width: min(60rem, 96dvw);
+}
+
+.wide .content {
+  padding-bottom: 0;
+}
+
+/* any popup whose form split itself into tabs (CreateForm) gets the room */
+.main:has(form [data-tabs]) {
+  width: min(60rem, 96dvw);
+}

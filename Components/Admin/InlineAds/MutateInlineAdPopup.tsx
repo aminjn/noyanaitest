@@ -1,8 +1,7 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { API } from "@/Components/config";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
 import { IInlineAdvertisement } from "./AdminManageInlineAdsPage";
-import classes from "./MutateInlineAdPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
 
 const MutateInlineAdPopup = ({
@@ -15,7 +14,7 @@ const MutateInlineAdPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <Box>
+    <PopupCard title="تبلیغ خطی">
       <CreateForm
         styleManaged
         defaultValue={node}
@@ -38,7 +37,7 @@ const MutateInlineAdPopup = ({
         }}
         onCancel={() => closePopup("MutateInlineAd")}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

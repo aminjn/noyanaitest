@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "O frete aparece depois de escolher um endereço.",
  "addressCityMissing": "Este endereço não tem cidade; adicione-a para entrega Tapsi na cidade.",
  "pharmacyShipTapsiNote": "Mesma cidade: envie com entregador Tapsi. O frete (${1} tomans) é creditado na sua carteira quando o primeiro item for entregue.",
- "pharmacyShipTipaxNote": "Outra cidade: envie pela Tipax com pagamento na entrega; o comprador paga o entregador."
+ "pharmacyShipTipaxNote": "Outra cidade: envie pela Tipax com pagamento na entrega; o comprador paga o entregador.",
+ "licensePeriodDays": "${1} dias",
+ "licensePeriodMonths": "${1} meses",
+ "licensePeriodYears": "${1} anos",
+ "formSectionMain": "Dados principais",
+ "formSectionStatus": "Status e visibilidade",
+ "formSectionContent": "Conteúdo",
+ "formSectionMedia": "Imagens e arquivos",
+ "clearSelection": "Limpar",
+ "nSelectedOfTotal": "${1} de ${2}"
 }

@@ -1,5 +1,5 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import { IUser } from "@/Components/Hooks/useUser";
-import classes from "./CloneDoctorProfileFromExistingDoctorPopup.module.css";
 import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -9,7 +9,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import useSWR from "swr";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import useForm from "@/Components/Hooks/useForm";
-import Box from "../UI/Box";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import { useState } from "react";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -89,7 +88,7 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <Box>
+    <PopupCard title="ساخت پروفایل از پزشک موجود">
       <ToggleInput
         title="رفتن به پروفایل ساخته شده بعد از اتمام عملیات"
         value={proceed}
@@ -123,7 +122,7 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
               }),
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

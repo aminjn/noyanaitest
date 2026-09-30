@@ -1,5 +1,6 @@
 import classes from "./LicenseDurationSelector.module.css";
 import { ILicenseDuration } from "./licenseTypes";
+import useLicensePeriodLabel from "./useLicensePeriodLabel";
 
 // Shared duration picker used by both LicensePlansPage ("/<panel>/license")
 // and AllLicensePlansPage ("/<panel>/license/all") - a row of pill buttons,
@@ -18,6 +19,7 @@ const LicenseDurationSelector = ({
   onSelect: (duration: ILicenseDuration) => void;
   className?: string;
 }) => {
+  const periodLabel = useLicensePeriodLabel();
   if (!Array.isArray(durations) || !durations.length) return null;
 
   return (
@@ -31,7 +33,7 @@ const LicenseDurationSelector = ({
           className={`${classes.option} ${selectedDuration?._id === dur._id ? classes.on : ""}`}
           onClick={() => onSelect(dur)}
         >
-          {dur.displayName}
+          {periodLabel(dur.duration)}
         </button>
       ))}
     </div>

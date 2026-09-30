@@ -25,6 +25,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IDoctorSecretaryAccessLevel } from "../DoctorSecretaryAccessLevel/AdminManageDoctorSecretaryAccessLevelsPage";
 import RangeInput from "@/Components/UI/RangeInput";
 import FilesInput from "./FilesInput";
+import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import LicensePricingInput, {
   ILicensePricingEntry,
 } from "./LicensePricingInput";
@@ -108,8 +109,47 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
     title: string;
     readOnly?: boolean;
     required?: boolean;
+    // groups the field under its own heading / tab instead of the automatic
+    // one (see sectionOf)
+    section?: string;
   };
 };
+
+type FormSection = { id: string; title: string; fields: ReactNode[] };
+
+// Automatic grouping (2026-09 redesign): a long form reads as a few titled
+// parts - the basics, the on/off switches, each big editor (pricing,
+// menus...) on its own, then content and media - instead of one wall of
+// fields. `section` on an entry overrides it.
+const sectionOf = (
+  key: string,
+  segment: { type: string; title: string; section?: string },
+): { id: string; title?: string } => {
+  if (segment.section) return { id: `custom:${segment.section}`, title: segment.section };
+  switch (segment.type) {
+    case "bool":
+      return { id: "status" };
+    case "licensePricing":
+    case "multiselect":
+      return { id: `field:${key}`, title: segment.title };
+    case "area":
+    case "rtf":
+    case "strings":
+      return { id: "content" };
+    case "image":
+    case "files":
+      return { id: "media" };
+    default:
+      return { id: "main" };
+  }
+};
+
+// main first, then the switches, the big editors in their order, content,
+// media
+const sectionRank = (id: string) =>
+  id === "main" ? 0 : id === "status" ? 1 : id === "content" ? 3 : id === "media" ? 4 : 2;
+
+export type FormLayout = "auto" | "flat" | "sections" | "tabs";
 
 // Field types that need the full form width; the rest sit two per row.
 const wideFieldTypes: string[] = [
@@ -134,9 +174,13 @@ const CreateForm = <TInput, TResult = unknown>({
   style,
   styleManaged = true,
   readOnly,
+  layout = "auto",
 }: WithStyleProps<
   {
     readOnly?: boolean;
+    // "auto": a short form stays one grid, a longer one gets section
+    // headings, a long one with several parts becomes tabs
+    layout?: FormLayout;
     styleManaged?: boolean;
     renderer: FormRenderer<TInput>;
     defaultValue?: TInput;
@@ -165,20 +209,13 @@ const CreateForm = <TInput, TResult = unknown>({
   const { setInput, isLoading, submit, input } = hookProvided || hookResult;
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const [tab, setTab] = useState("");
 
-  return (
-    <Form
-      onSubmit={() => {
-        if (readOnly) return;
-        submit();
-      }}
-      className={`${styleManaged ? classes.main : ""} ${className}`}
-      style={style}
-    >
-      {Object.keys(renderer).map((_key) => {
+  const collected: { key: string; segment: FormRenderer<TInput>[keyof TInput]; node: ReactNode }[] = [];
+  Object.keys(renderer).forEach((_key) => {
         const key = _key as keyof typeof renderer;
         const segment = renderer[key];
-        if (!segment) return null;
+        if (!segment) return;
         const commons = {
           title: segment.title,
           defaultValue: defaultValue?.[key]?.toString(),
@@ -412,18 +449,89 @@ const CreateForm = <TInput, TResult = unknown>({
               />
             );
         }
-        if (!content) return null;
-        return (
-          <div
-            key={key.toString()}
-            className={
-              wideFieldTypes.includes(segment.type) ? classes.wide : classes.field
-            }
-          >
-            {content}
-          </div>
-        );
-      })}
+        if (!content) return;
+        collected.push({
+          key: key.toString(),
+          segment,
+          node: (
+            <div
+              key={key.toString()}
+              className={
+                segment.type === "bool"
+                  ? classes.switchCard
+                  : wideFieldTypes.includes(segment.type)
+                    ? classes.wide
+                    : classes.field
+              }
+            >
+              {content}
+            </div>
+          ),
+        });
+      });
+
+  const sectionTitles: Record<string, string> = {
+    main: getContent("formSectionMain"),
+    status: getContent("formSectionStatus"),
+    content: getContent("formSectionContent"),
+    media: getContent("formSectionMedia"),
+  };
+  const sections: FormSection[] = [];
+  for (const field of collected) {
+    const { id, title } = sectionOf(field.key, field.segment as never);
+    let section = sections.find((el) => el.id === id);
+    if (!section) {
+      section = { id, title: title || sectionTitles[id] || id, fields: [] };
+      sections.push(section);
+    }
+    section.fields.push(field.node);
+  }
+  sections.sort((x, y) => sectionRank(x.id) - sectionRank(y.id));
+  const mode: Exclude<FormLayout, "auto"> =
+    layout !== "auto"
+      ? layout
+      : collected.length >= 9 && sections.length >= 3
+        ? "tabs"
+        : collected.length >= 5 && sections.length >= 2
+          ? "sections"
+          : "flat";
+  const sectionGrid = (section: FormSection) => (
+    <div
+      className={`${classes.grid} ${section.id === "status" ? classes.switchGrid : ""}`}
+    >
+      {section.fields}
+    </div>
+  );
+
+  return (
+    <Form
+      onSubmit={() => {
+        if (readOnly) return;
+        submit();
+      }}
+      className={`${styleManaged ? classes.main : ""} ${className}`}
+      style={style}
+    >
+      {mode === "flat" && <div className={classes.grid}>{collected.map((el) => el.node)}</div>}
+      {mode === "sections" &&
+        sections.map((section) => (
+          <section key={section.id} className={classes.section}>
+            <h3 className={classes.sectionTitle}>{section.title}</h3>
+            {sectionGrid(section)}
+          </section>
+        ))}
+      {mode === "tabs" && (
+        <ClientTabSystem
+          keepMounted
+          className={classes.tabs}
+          viewState={[tab || sections[0]?.id || "", setTab]}
+          items={sections.map((section) => ({
+            id: section.id,
+            title: section.title,
+            content: <div className={classes.tabPanel}>{sectionGrid(section)}</div>,
+          }))}
+        />
+      )}
       <FormActions className={classes.actions}>
         {!!onCancel ? (
           <Button type="button" variant="Neutral" onClick={onCancel}>

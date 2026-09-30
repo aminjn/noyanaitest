@@ -1,9 +1,8 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import usePopup from "@/Components/Hooks/usePopup";
 import CreateForm from "../UI/CreateForm";
 import { IClinic, IClinicDepartment } from "./AdminManageClinicsPage";
-import classes from "./MutateClinicDepartmentPopup.module.css";
 import { API } from "@/Components/config";
-import Box from "../UI/Box";
 
 const MutateClinicDepartmentPopup = ({
   clinic,
@@ -17,7 +16,7 @@ const MutateClinicDepartmentPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <Box className={classes.main}>
+    <PopupCard title="بخش کلینیک">
       <CreateForm
         defaultValue={department}
         renderer={{
@@ -44,7 +43,7 @@ const MutateClinicDepartmentPopup = ({
           },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

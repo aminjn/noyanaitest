@@ -1,10 +1,9 @@
+import PopupCard from "@/Components/UI/PopupCard";
 import {
   additionRequestStatusDict,
   IHospitalAdditionRequest,
 } from "@/Components/DoctorPanel/Hospital/DoctorHospitalAdditionsTab";
-import Box from "../UI/Box";
 import CreateForm from "../UI/CreateForm";
-import classes from "./MutateHospitalRequestPopup.module.css";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 
@@ -18,7 +17,7 @@ const MutateHospitalRequestPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <Box className={classes.main}>
+    <PopupCard title="درخواست افزودن بیمارستان">
       <CreateForm<IHospitalAdditionRequest>
         defaultValue={node}
         onCancel={() => closePopup()}
@@ -38,7 +37,7 @@ const MutateHospitalRequestPopup = ({
           },
         }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

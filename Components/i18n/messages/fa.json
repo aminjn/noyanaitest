@@ -2191,5 +2191,14 @@
  "shippingNeedsAddress": "هزینه‌ی ارسال پس از انتخاب آدرس مشخص می‌شود.",
  "addressCityMissing": "شهر این آدرس ثبت نشده؛ برای ارسال درون‌شهری با تپسی، شهر را به آدرس اضافه کنید.",
  "pharmacyShipTapsiNote": "هم‌شهری: با پیک تپسی بفرستید. هزینه‌ی ارسال (${1} تومان) با تحویل اولین قلم به کیف پول شما واریز می‌شود.",
- "pharmacyShipTipaxNote": "شهر دیگر: با تیپاکس و به‌صورت پس‌کرایه بفرستید؛ هزینه را خریدار هنگام تحویل می‌پردازد."
+ "pharmacyShipTipaxNote": "شهر دیگر: با تیپاکس و به‌صورت پس‌کرایه بفرستید؛ هزینه را خریدار هنگام تحویل می‌پردازد.",
+ "licensePeriodDays": "${1} روزه",
+ "licensePeriodMonths": "${1} ماهه",
+ "licensePeriodYears": "${1} ساله",
+ "formSectionMain": "اطلاعات اصلی",
+ "formSectionStatus": "وضعیت و نمایش",
+ "formSectionContent": "محتوا و توضیحات",
+ "formSectionMedia": "تصاویر و فایل‌ها",
+ "clearSelection": "پاک کردن",
+ "nSelectedOfTotal": "${1} از ${2}"
 }

@@ -2169,5 +2169,14 @@
  "shippingNeedsAddress": "Die Versandkosten erscheinen, sobald Sie eine Adresse wählen.",
  "addressCityMissing": "Diese Adresse hat keine Stadt; fügen Sie sie für Tapsi-Lieferung in der Stadt hinzu.",
  "pharmacyShipTapsiNote": "Gleiche Stadt: mit Tapsi-Kurier senden. Die Versandgebühr (${1} Toman) wird bei Lieferung des ersten Artikels Ihrem Wallet gutgeschrieben.",
- "pharmacyShipTipaxNote": "Andere Stadt: per Tipax mit Zahlung bei Lieferung senden; der Käufer zahlt den Kurier."
+ "pharmacyShipTipaxNote": "Andere Stadt: per Tipax mit Zahlung bei Lieferung senden; der Käufer zahlt den Kurier.",
+ "licensePeriodDays": "${1} Tage",
+ "licensePeriodMonths": "${1} Monate",
+ "licensePeriodYears": "${1} Jahre",
+ "formSectionMain": "Grunddaten",
+ "formSectionStatus": "Status & Sichtbarkeit",
+ "formSectionContent": "Inhalt",
+ "formSectionMedia": "Bilder & Dateien",
+ "clearSelection": "Leeren",
+ "nSelectedOfTotal": "${1} von ${2}"
 }

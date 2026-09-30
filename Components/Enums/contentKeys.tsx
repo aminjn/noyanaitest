@@ -2321,6 +2321,15 @@ const contentKeys = [
   "addressCityMissing",
   "pharmacyShipTapsiNote",
   "pharmacyShipTipaxNote",
+  "licensePeriodDays",
+  "licensePeriodMonths",
+  "licensePeriodYears",
+  "formSectionMain",
+  "formSectionStatus",
+  "formSectionContent",
+  "formSectionMedia",
+  "clearSelection",
+  "nSelectedOfTotal",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

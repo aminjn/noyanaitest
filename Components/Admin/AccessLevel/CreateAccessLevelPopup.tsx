@@ -1,4 +1,4 @@
-import Box from "../UI/Box";
+import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { IAccessLevel } from "./AdminManageAccessLevelsPage";
@@ -13,7 +13,7 @@ const CreateAccessLevelPopup = ({ mutate }: { mutate: () => unknown }) => {
   const push = useProgress();
 
   return (
-    <Box>
+    <PopupCard title="سطح دسترسی جدید">
       <CreateForm<{ name: string }, { data: { data: IAccessLevel } }>
         hookProps={{
           path: `${API}/auto/accesslevel`,
@@ -31,7 +31,7 @@ const CreateAccessLevelPopup = ({ mutate }: { mutate: () => unknown }) => {
         onCancel={closePopup}
         style={{ width: "min(28rem, 90dvw)" }}
       />
-    </Box>
+    </PopupCard>
   );
 };
 

@@ -1,48 +1,70 @@
 "use client";
 
 import { useState } from "react";
-import useSWR from "swr";
-import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
 import ToggleInput from "@/Components/UI/ToggleInput";
+import Ixon from "@/Components/UI/Ixon";
+import PlusIcon from "@/Components/Icons/PlusIcon";
+import TrashIcon from "@/Components/Icons/TrashIcon";
+import { currencize } from "@/Components/helpers/currencize";
+import { periodParts } from "@/Components/_Common/License/useLicensePeriodLabel";
 import classes from "./LicensePricingInput.module.css";
 
-// One LicenseDuration a Base<Org>License catalog entry can be priced at
-// (2026-09) - replaces the old flat monthlyPrice/monthlyDiscount/
-// annualPrice/annualDiscount fields on BaseDoctorLicense/
-// BasePharmacyLicense/BaseClinicLicense/BaseParaClinicLicense. `duration`
-// here is always the raw LicenseDuration id (not populated) - the admin
-// form fetches the full duration catalog itself (below) to build one row
-// per duration, keyed by id.
+// One way to buy a plan (backend Models/BaseLicensePricing.ts): the period
+// lives on the option itself - no separate "license durations" list to fill
+// in first (2026-09, owner request).
 export interface ILicensePricingEntry {
-  duration: string;
+  days: number;
   isActive: boolean;
   price: number;
   discount: number;
 }
 
-interface ILicenseDurationOption {
-  _id: string;
-  duration: number;
-  displayName?: string;
-  order: number;
-}
+// the periods leaders sell (Doctolib Pro / Paziresh24: monthly, quarterly,
+// half-year, yearly); anything else is a custom number of days
+const presets = [
+  { days: 30, label: "۱ ماهه" },
+  { days: 90, label: "۳ ماهه" },
+  { days: 180, label: "۶ ماهه" },
+  { days: 365, label: "۱ ساله" },
+];
+const CUSTOM = "custom";
 
-type Row = { isActive: boolean; price: number; discount: number };
+const faNum = new Intl.NumberFormat("fa-IR");
+const periodText = (days: number) => {
+  const { unit, count } = periodParts(days);
+  const n = faNum.format(count);
+  return unit === "years"
+    ? `${n} ساله`
+    : unit === "months"
+      ? `${n} ماهه`
+      : `${n} روزه`;
+};
 
-const emptyRow: Row = { isActive: false, price: 0, discount: 0 };
+type Row = ILicensePricingEntry & { key: number; custom: boolean };
 
-const getDurationId = (
-  duration: ILicensePricingEntry["duration"] | ILicenseDurationOption,
-): string => (typeof duration === "string" ? duration : duration._id);
+let rowKey = 0;
+const toRow = (entry: Partial<ILicensePricingEntry>): Row => {
+  const days = Number(entry.days) > 0 ? Number(entry.days) : 30;
+  return {
+    key: rowKey++,
+    days,
+    isActive: entry.isActive ?? true,
+    price: Number(entry.price) || 0,
+    discount: Number(entry.discount) || 0,
+    custom: !presets.some((p) => p.days === days),
+  };
+};
 
-// Shared editor for the `pricing` field on every Base<Org>License model -
-// fetches the admin-managed LicenseDuration catalog (Models/
-// LicenseDuration.ts) and renders one row per duration so an admin can
-// mark it active and set a price/discount for this specific plan. Wired
-// into Components/Admin/UI/CreateForm.tsx as the "licensePricing" field
-// type, alongside "multiselect"/"strings" as the other array-shaped field
-// editors.
+const digitsOnly = (value: string) =>
+  Number(
+    value
+      .replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
+      .replace(/\D/g, "") || 0,
+  );
+
+// Price options of a Base<Org>License plan: one card per period with its
+// price, discount and the final amount, add / remove in place. Wired into
+// CreateForm as the "licensePricing" field (admin-only, Persian).
 const LicensePricingInput = ({
   title,
   defaultValue,
@@ -54,93 +76,184 @@ const LicensePricingInput = ({
   onChange?: (value: ILicensePricingEntry[]) => unknown;
   readOnly?: boolean;
 }) => {
-  const { data: durations } = useSWR<ILicenseDurationOption[]>(
-    `${API}/auto/licenseDuration`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  const [rows, setRows] = useState<Row[]>(() =>
+    Array.isArray(defaultValue) && defaultValue.length
+      ? defaultValue.map(toRow)
+      : [],
   );
 
-  const [rows, setRows] = useState<Record<string, Row>>(() => {
-    const init: Record<string, Row> = {};
-    for (const entry of defaultValue || []) {
-      init[getDurationId(entry.duration)] = {
-        isActive: entry.isActive,
-        price: entry.price || 0,
-        discount: entry.discount || 0,
-      };
-    }
-    return init;
-  });
-
-  const emit = (next: Record<string, Row>, list: ILicenseDurationOption[]) => {
+  const commit = (next: Row[]) => {
+    setRows(next);
+    // saved shortest period first (the rows stay where the admin put them)
     onChange?.(
-      list.map((d) => ({
-        duration: d._id,
-        isActive: next[d._id]?.isActive || false,
-        price: next[d._id]?.price || 0,
-        discount: next[d._id]?.discount || 0,
-      })),
+      [...next]
+        .sort((a, b) => a.days - b.days)
+        .map(({ days, isActive, price, discount }) => ({
+          days,
+          isActive,
+          price,
+          // a discount larger than the price would sell for less than zero
+          discount: Math.min(discount, price),
+        })),
     );
   };
+  const update = (key: number, patch: Partial<Row>) =>
+    commit(rows.map((r) => (r.key === key ? { ...r, ...patch } : r)));
 
-  if (!durations) return null;
-
-  const sorted = [...durations].sort((a, b) => a.order - b.order);
+  const used = rows.map((r) => r.days);
+  const duplicates = used.filter((d, i) => used.indexOf(d) !== i);
+  const nextPreset = presets.find((p) => !used.includes(p.days));
 
   return (
     <div className={classes.main}>
-      {!!title && <legend className={classes.title}>{title}</legend>}
-      <div className={classes.rows}>
-        <div className={`${classes.row} ${classes.header}`}>
-          <span className={classes.name}>مدت زمان</span>
-          <span className={classes.cell}>فعال</span>
-          <span className={classes.cell}>قیمت</span>
-          <span className={classes.cell}>تخفیف</span>
+      <div className={classes.head}>
+        <div className={classes.headText}>
+          {!!title && <legend className={classes.title}>{title}</legend>}
+          <span className={classes.hint}>
+            هر ردیف یک گزینه‌ی خرید همین پلن است؛ مدت، قیمت و تخفیف همین‌جا
+            تعریف می‌شود.
+          </span>
         </div>
-        {sorted.map((d) => {
-          const row = rows[d._id] || emptyRow;
-          const update = (patch: Partial<Row>) => {
-            const next = { ...rows, [d._id]: { ...row, ...patch } };
-            setRows(next);
-            emit(next, sorted);
-          };
+        {!readOnly && (
+          <button
+            type="button"
+            className={classes.add}
+            onClick={() =>
+              commit([
+                ...rows,
+                toRow({ days: nextPreset?.days || 30, isActive: true }),
+              ])
+            }
+          >
+            <Ixon width="1rem">
+              <PlusIcon />
+            </Ixon>
+            افزودن مدت
+          </button>
+        )}
+      </div>
+      {!rows.length && (
+        <p className={classes.empty}>
+          هنوز گزینه‌ای برای خرید این پلن تعریف نشده است.
+        </p>
+      )}
+      <div className={classes.rows}>
+        {rows.map((row) => {
+          const off = Math.min(row.discount, row.price);
+          const final = row.price - off;
+          const percent =
+            row.price > 0 ? Math.round((off / row.price) * 100) : 0;
+          const isDuplicate = duplicates.includes(row.days);
           return (
-            <div className={classes.row} key={d._id}>
-              <span className={classes.name}>
-                {d.displayName || `${d.duration} روز`}
-              </span>
-              <span className={classes.cell}>
-                <ToggleInput
-                  readOnly={readOnly}
-                  value={row.isActive}
-                  onChange={() => update({ isActive: !row.isActive })}
-                />
-              </span>
-              <span className={classes.cell}>
+            <div
+              key={row.key}
+              className={`${classes.row} ${row.isActive ? "" : classes.inactive} ${isDuplicate ? classes.error : ""}`}
+            >
+              <label className={classes.cell}>
+                <span className={classes.label}>مدت</span>
+                <select
+                  className={classes.input}
+                  disabled={readOnly}
+                  value={row.custom ? CUSTOM : String(row.days)}
+                  onChange={(e) =>
+                    e.target.value === CUSTOM
+                      ? update(row.key, { custom: true })
+                      : update(row.key, {
+                          custom: false,
+                          days: Number(e.target.value),
+                        })
+                  }
+                >
+                  {presets.map((p) => (
+                    <option key={p.days} value={p.days}>
+                      {p.label}
+                    </option>
+                  ))}
+                  <option value={CUSTOM}>تعداد روز دلخواه</option>
+                </select>
+              </label>
+              {row.custom && (
+                <label className={classes.cell}>
+                  <span className={classes.label}>تعداد روز</span>
+                  <input
+                    className={classes.input}
+                    inputMode="numeric"
+                    disabled={readOnly}
+                    value={row.days || ""}
+                    onChange={(e) =>
+                      update(row.key, {
+                        days: Math.min(3650, digitsOnly(e.target.value)),
+                      })
+                    }
+                  />
+                </label>
+              )}
+              <label className={classes.cell}>
+                <span className={classes.label}>قیمت (تومان)</span>
                 <input
                   className={classes.input}
-                  type="number"
                   inputMode="numeric"
-                  disabled={readOnly || !row.isActive}
-                  defaultValue={row.price}
-                  onChange={(e) => {
-                    const val = Number(e.target.value);
-                    if (!isNaN(val)) update({ price: val });
-                  }}
+                  disabled={readOnly}
+                  value={row.price ? currencize(row.price) : ""}
+                  placeholder="۰"
+                  onChange={(e) =>
+                    update(row.key, { price: digitsOnly(e.target.value) })
+                  }
                 />
-              </span>
-              <span className={classes.cell}>
+              </label>
+              <label className={classes.cell}>
+                <span className={classes.label}>تخفیف (تومان)</span>
                 <input
                   className={classes.input}
-                  type="number"
                   inputMode="numeric"
-                  disabled={readOnly || !row.isActive}
-                  defaultValue={row.discount}
-                  onChange={(e) => {
-                    const val = Number(e.target.value);
-                    if (!isNaN(val)) update({ discount: val });
-                  }}
+                  disabled={readOnly}
+                  value={row.discount ? currencize(row.discount) : ""}
+                  placeholder="۰"
+                  onChange={(e) =>
+                    update(row.key, { discount: digitsOnly(e.target.value) })
+                  }
                 />
-              </span>
+              </label>
+              <div className={classes.summary}>
+                <span className={classes.period}>{periodText(row.days)}</span>
+                <span className={classes.final}>
+                  {`${currencize(final)} تومان`}
+                  {percent > 0 && (
+                    <span
+                      className={classes.percent}
+                    >{`${faNum.format(percent)}٪ تخفیف`}</span>
+                  )}
+                </span>
+                {isDuplicate && (
+                  <span className={classes.errorText}>این مدت تکراری است</span>
+                )}
+              </div>
+              <div className={classes.actions}>
+                <span className={classes.toggle}>
+                  <span className={classes.label}>فروش</span>
+                  <ToggleInput
+                    readOnly={readOnly}
+                    value={row.isActive}
+                    onChange={() =>
+                      update(row.key, { isActive: !row.isActive })
+                    }
+                  />
+                </span>
+                {!readOnly && (
+                  <button
+                    type="button"
+                    className={classes.remove}
+                    aria-label="حذف این مدت"
+                    onClick={() =>
+                      commit(rows.filter((r) => r.key !== row.key))
+                    }
+                  >
+                    <Ixon width="1.125rem">
+                      <TrashIcon />
+                    </Ixon>
+                  </button>
+                )}
+              </div>
             </div>
           );
         })}

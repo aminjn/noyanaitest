@@ -38,7 +38,9 @@ const LicenseCard = ({
       ) || null,
     [license, duration],
   );
-  const features = Array.isArray(license.descriptions) ? license.descriptions.filter(Boolean) : [];
+  const features = Array.isArray(license.descriptions)
+    ? license.descriptions.filter(Boolean)
+    : [];
 
   return (
     <div
@@ -67,7 +69,9 @@ const LicenseCard = ({
         </span>
       </div>
       <LicensePriceDetails duration={duration} pricing={pricing} />
-      {!!license.summary && <p className={classes.summary}>{license.summary}</p>}
+      {!!license.summary && (
+        <p className={classes.summary}>{license.summary}</p>
+      )}
       <ul className={classes.features}>
         {features.map((el, i) => (
           <li key={`${i}-${el}`} className={classes.feature}>
