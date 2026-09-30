@@ -340,7 +340,7 @@ const AdminManageSmsPatternsPage = () => {
   const localizedSWR = useSWR<LocalizedPatterns>(
     `${API}/admin/sms/localizedPatterns`,
     (url: string) =>
-      fetcher({ url }).then((res) => res?.data?.data?.localized || {}),
+      fetcher({ url }).then((res) => res?.data?.localized || {}),
   );
   const localesSWR = useSWR<{ enabled?: string[]; default?: string }>(
     `${API}/public/locales`,
