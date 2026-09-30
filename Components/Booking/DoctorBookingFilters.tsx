@@ -201,6 +201,21 @@ export const useDoctorBookingFilterProps = ({
                 {service.title}
               </BookingSelectedFilter>
             ))}
+          {options.insurance?.map((insurance) => (
+            <BookingSelectedFilter
+              key={insurance._id}
+              onClick={() =>
+                setOptions((prev) => ({
+                  ...prev,
+                  insurance: (prev.insurance || []).filter(
+                    (el) => el._id !== insurance._id,
+                  ),
+                }))
+              }
+            >
+              {insurance.name || getContent("acceptedInsurance")}
+            </BookingSelectedFilter>
+          ))}
           {!!options.gender && (
             <BookingSelectedFilter
               onClick={() => setOptions((prev) => ({ ...prev, gender: null }))}
@@ -398,7 +413,7 @@ export const useDoctorBookingFilterProps = ({
           </BookingFilterSegment>
           <BookingFilterSegment title={getContent("category")}>
             <BookingFilterButton
-              title={getContent("specialityGroup")}
+              title={getContent("specialities")}
               active={!!options.speciality?.length}
             >
               <MultiSelectInputServer
@@ -450,6 +465,23 @@ export const useDoctorBookingFilterProps = ({
             </BookingFilterButton>
           </BookingFilterSegment>
           <BookingFilterSegment title={getContent("details")}>
+            <BookingFilterButton
+              title={getContent("acceptedInsurance")}
+              active={!!options.insurance?.length}
+            >
+              <MultiSelectInputServer
+                value={options.insurance || []}
+                path={`${API}/public/search/insurance`}
+                placeholder={getContent("selectInsurances")}
+                getOption={(node) => ({
+                  title: node.name || "",
+                  value: node._id,
+                })}
+                onChange={(e) =>
+                  setOptions((prev) => ({ ...prev, insurance: e }))
+                }
+              />
+            </BookingFilterButton>
             <BookingFilterButton
               title={getContent("gender")}
               active={!!options.gender}

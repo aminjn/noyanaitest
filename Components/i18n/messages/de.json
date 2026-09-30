@@ -2147,5 +2147,16 @@
  "wdReason": "Grund: ${1}",
  "wdEmpty": "Noch keine Anträge",
  "wdSuccess": "Auszahlung beantragt",
- "wdCheckInput": "Betrag, IBAN und Kontoinhaber angeben"
+ "wdCheckInput": "Betrag, IBAN und Kontoinhaber angeben",
+ "listFilterTag": "Schlagwort: ${1}",
+ "listFilterInsurance": "Akzeptiert ${1}",
+ "removeFilter": "Filter entfernen",
+ "acceptedInsurance": "Akzeptierte Versicherung",
+ "selectInsurances": "Versicherung wählen",
+ "insuranceNetworkTitle": "Vertragspartner auf NoyanAI",
+ "insuranceNetworkLegend": "Ärzte und Einrichtungen, die diese Versicherung auf NoyanAI akzeptieren.",
+ "doctorsAcceptingInsurance": "Vertragsärzte",
+ "clinicsAcceptingInsurance": "Vertragskliniken",
+ "hospitalsAcceptingInsurance": "Vertragskrankenhäuser",
+ "paraClinicsAcceptingInsurance": "Vertragslabore und Bildgebung"
 }

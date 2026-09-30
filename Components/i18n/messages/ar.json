@@ -2147,5 +2147,16 @@
  "wdReason": "السبب: ${1}",
  "wdEmpty": "لا توجد طلبات بعد",
  "wdSuccess": "تم تسجيل طلب السحب",
- "wdCheckInput": "أكمل المبلغ والآيبان واسم صاحب الحساب"
+ "wdCheckInput": "أكمل المبلغ والآيبان واسم صاحب الحساب",
+ "listFilterTag": "الوسم: ${1}",
+ "listFilterInsurance": "يقبل ${1}",
+ "removeFilter": "إزالة الفلتر",
+ "acceptedInsurance": "التأمين المقبول",
+ "selectInsurances": "اختر تأمينك",
+ "insuranceNetworkTitle": "المتعاقدون في نويان",
+ "insuranceNetworkLegend": "الأطباء والمراكز الذين يقبلون هذا التأمين على نويان الآن.",
+ "doctorsAcceptingInsurance": "الأطباء المتعاقدون",
+ "clinicsAcceptingInsurance": "العيادات المتعاقدة",
+ "hospitalsAcceptingInsurance": "المستشفيات المتعاقدة",
+ "paraClinicsAcceptingInsurance": "المختبرات ومراكز الأشعة المتعاقدة"
 }

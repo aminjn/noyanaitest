@@ -2147,5 +2147,16 @@
  "wdReason": "कारण: ${1}",
  "wdEmpty": "अभी कोई अनुरोध नहीं",
  "wdSuccess": "निकासी अनुरोध दर्ज हुआ",
- "wdCheckInput": "राशि, IBAN और खाताधारक भरें"
+ "wdCheckInput": "राशि, IBAN और खाताधारक भरें",
+ "listFilterTag": "टैग: ${1}",
+ "listFilterInsurance": "${1} स्वीकार",
+ "removeFilter": "फ़िल्टर हटाएँ",
+ "acceptedInsurance": "स्वीकृत बीमा",
+ "selectInsurances": "अपना बीमा चुनें",
+ "insuranceNetworkTitle": "NoyanAI पर नेटवर्क में",
+ "insuranceNetworkLegend": "डॉक्टर और केंद्र जो अभी NoyanAI पर यह बीमा स्वीकार करते हैं।",
+ "doctorsAcceptingInsurance": "नेटवर्क डॉक्टर",
+ "clinicsAcceptingInsurance": "नेटवर्क क्लिनिक",
+ "hospitalsAcceptingInsurance": "नेटवर्क अस्पताल",
+ "paraClinicsAcceptingInsurance": "नेटवर्क लैब और इमेजिंग"
 }

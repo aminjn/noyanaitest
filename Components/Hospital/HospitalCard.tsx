@@ -50,7 +50,9 @@ const HospitalCard = ({
               <Ixon width=".75rem">
                 <StarIcon />
               </Ixon>
-              <span className={txsRegular}>{node.averageScore?.toFixed(1)}</span>
+              <span className={txsRegular}>
+                {node.averageScore?.toFixed(1)}
+              </span>
             </div>
           </div>
         </div>
@@ -76,15 +78,12 @@ const HospitalCard = ({
         {!!node.tags?.length && (
           <div className={classes.tags}>
             {node.tags.map((tag) => (
-              <Badge
-                key={tag._id}
-                color="Primarylight"
-                size="S"
-                radius="High"
-                mode="Fill"
-              >
-                {tag.name}
-              </Badge>
+              // a tag is a filter: it opens the list narrowed to it
+              <Link key={tag._id} href={`/hospital?tag=${tag._id}`}>
+                <Badge color="Primarylight" size="S" radius="High" mode="Fill">
+                  {tag.name}
+                </Badge>
+              </Link>
             ))}
           </div>
         )}

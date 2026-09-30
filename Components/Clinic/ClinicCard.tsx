@@ -5,6 +5,7 @@ import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import LocationIcon from "../Icons/LocationIcon";
+import Link from "@/Components/i18n/Link";
 import Badge from "../UI/Badge";
 import Button from "../UI/Button";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -80,15 +81,12 @@ const ClinicCard = ({
         {!!node.tags?.length && (
           <div className={classes.tags}>
             {node.tags.map((tag) => (
-              <Badge
-                key={tag._id}
-                color="Primarylight"
-                size="S"
-                mode="Fill"
-                radius="High"
-              >
-                {tag.name}
-              </Badge>
+              // a tag is a filter: it opens the list narrowed to it
+              <Link key={tag._id} href={`/clinic?tag=${tag._id}`}>
+                <Badge color="Primarylight" size="S" mode="Fill" radius="High">
+                  {tag.name}
+                </Badge>
+              </Link>
             ))}
           </div>
         )}

@@ -67,6 +67,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  flex-direction: column;
+  gap: 0.125rem;
 }
 
 .countTitle {
@@ -75,4 +77,43 @@
 
 .countValue {
   color: var(--black);
+}
+
+.countLink {
+  border: 1px solid transparent;
+  transition:
+    border-color var(--transTime),
+    background-color var(--transTime);
+}
+
+.countLink:hover {
+  border-color: var(--primary);
+  background-color: var(--primary1);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.network {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--gray3);
+}
+
+.networkHead {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+@media (max-width: 40rem) {
+  .count {
+    flex-basis: 100%;
+  }
 }

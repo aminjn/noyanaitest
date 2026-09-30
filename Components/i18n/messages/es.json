@@ -2147,5 +2147,16 @@
  "wdReason": "Motivo: ${1}",
  "wdEmpty": "Aún no hay solicitudes",
  "wdSuccess": "Retiro solicitado",
- "wdCheckInput": "Complete el importe, el IBAN y el titular"
+ "wdCheckInput": "Complete el importe, el IBAN y el titular",
+ "listFilterTag": "Etiqueta: ${1}",
+ "listFilterInsurance": "Acepta ${1}",
+ "removeFilter": "Quitar filtro",
+ "acceptedInsurance": "Seguro aceptado",
+ "selectInsurances": "Elige tu seguro",
+ "insuranceNetworkTitle": "En la red de NoyanAI",
+ "insuranceNetworkLegend": "Médicos y centros que aceptan este seguro en NoyanAI ahora mismo.",
+ "doctorsAcceptingInsurance": "Médicos en la red",
+ "clinicsAcceptingInsurance": "Clínicas en la red",
+ "hospitalsAcceptingInsurance": "Hospitales en la red",
+ "paraClinicsAcceptingInsurance": "Laboratorios e imagen en la red"
 }

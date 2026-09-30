@@ -63,6 +63,8 @@ type ClinicBookingOptions = Partial<{
   speciality: ISpeciality[];
   disease: IDisease[];
   service: IServiceCategory[];
+  // centres that list this insurer
+  insurance: { _id: string; name?: string }[];
 }>;
 
 // Builds the {filtered, onClear, top, actives, segments} props BookingFilter
@@ -261,6 +263,21 @@ const useClinicBookingFilterProps = ({
               {disease.name}
             </BookingSelectedFilter>
           ))}
+        {options.insurance?.map((insurance) => (
+          <BookingSelectedFilter
+            key={insurance._id}
+            onClick={() =>
+              setOptions((prev) => ({
+                ...prev,
+                insurance: (prev.insurance || []).filter(
+                  (el) => el._id !== insurance._id,
+                ),
+              }))
+            }
+          >
+            {insurance.name || getContent("acceptedInsurance")}
+          </BookingSelectedFilter>
+        ))}
         {!!options.service?.length &&
           options.service.map((service) => (
             <BookingSelectedFilter
@@ -441,6 +458,23 @@ const useClinicBookingFilterProps = ({
             />
           </BookingFilterButton>
           <BookingFilterButton
+            title={getContent("acceptedInsurance")}
+            active={!!options.insurance?.length}
+          >
+            <MultiSelectInputServer
+              value={options.insurance || []}
+              path={`${API}/public/search/insurance`}
+              placeholder={getContent("selectInsurances")}
+              getOption={(node) => ({
+                title: node.name || "",
+                value: node._id,
+              })}
+              onChange={(e) =>
+                setOptions((prev) => ({ ...prev, insurance: e }))
+              }
+            />
+          </BookingFilterButton>
+          <BookingFilterButton
             title={getContent("service")}
             active={!!options.service?.length}
           >
@@ -535,6 +569,9 @@ const ClinicBooking = ({
     if (options.service?.length)
       for (const service of options.service)
         params.append("service", service._id);
+    if (options.insurance?.length)
+      for (const insurance of options.insurance)
+        params.append("insurance", insurance._id);
     return params;
   }, [common.sort, debouncedOptions]);
 
@@ -604,6 +641,13 @@ const ClinicBooking = ({
         placeholder={getContent("selectDiseases")}
         getOption={(node) => ({ title: node.name || "", value: node._id })}
         onChange={(e) => setOptions((prev) => ({ ...prev, disease: e }))}
+      />
+      <MultiSelectInputServer
+        value={options.insurance || []}
+        path={`${API}/public/search/insurance`}
+        placeholder={getContent("selectInsurances")}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        onChange={(e) => setOptions((prev) => ({ ...prev, insurance: e }))}
       />
       <MultiSelectInputServer
         value={options.service || []}

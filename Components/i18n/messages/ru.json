@@ -2147,5 +2147,16 @@
  "wdReason": "Причина: ${1}",
  "wdEmpty": "Заявок пока нет",
  "wdSuccess": "Заявка на вывод создана",
- "wdCheckInput": "Укажите сумму, IBAN и владельца счёта"
+ "wdCheckInput": "Укажите сумму, IBAN и владельца счёта",
+ "listFilterTag": "Метка: ${1}",
+ "listFilterInsurance": "Принимает ${1}",
+ "removeFilter": "Убрать фильтр",
+ "acceptedInsurance": "Принимаемая страховка",
+ "selectInsurances": "Выберите страховку",
+ "insuranceNetworkTitle": "Партнёры на NoyanAI",
+ "insuranceNetworkLegend": "Врачи и центры, которые сейчас принимают эту страховку на NoyanAI.",
+ "doctorsAcceptingInsurance": "Врачи-партнёры",
+ "clinicsAcceptingInsurance": "Клиники-партнёры",
+ "hospitalsAcceptingInsurance": "Больницы-партнёры",
+ "paraClinicsAcceptingInsurance": "Лаборатории и диагностика-партнёры"
 }

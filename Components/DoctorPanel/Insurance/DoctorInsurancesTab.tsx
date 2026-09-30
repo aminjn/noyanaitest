@@ -52,15 +52,12 @@ export interface IInsurance<
     : string[];
   establishment?: string;
   membersCount?: string;
-  centersCount?: string;
-  doctorsCount?: string;
+  // who accepts it on the site, counted live by the public endpoints
+  network?: InsuranceNetwork;
   image?: string;
   slug?: string;
   phone?: string;
   summary?: string;
-  pharmacyCount?: string;
-  doctorCount?: string;
-  hospitalCount?: string;
   coverages: string[];
   advantages: string[];
   website?: string;
@@ -75,6 +72,13 @@ export interface IInsurance<
   // login/panel (insuranceController/insuranceRouter).
   user?: T["User"] extends UserPopulation ? IUser : string;
 }
+
+export type InsuranceNetwork = {
+  doctors: number;
+  clinics: number;
+  hospitals: number;
+  paraClinics: number;
+};
 
 export type DoctorInsurancePopulation = Population<{
   Doctor: DoctorProfilePopulation;

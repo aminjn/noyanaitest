@@ -39,11 +39,18 @@
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform var(--transTime) ease-in-out;
+  /* closed = out of the layout, the tab order and full-page captures;
+     visibility flips only after the slide-out finishes */
+  visibility: hidden;
+  transition:
+    transform var(--transTime) ease-in-out,
+    visibility 0s linear var(--transTime);
 }
 
 .root.open .panel {
   transform: translateX(0);
+  visibility: visible;
+  transition: transform var(--transTime) ease-in-out;
 }
 
 .top {

@@ -2147,5 +2147,16 @@
  "wdReason": "原因：${1}",
  "wdEmpty": "暂无申请",
  "wdSuccess": "提现申请已提交",
- "wdCheckInput": "请填写金额、IBAN和账户持有人"
+ "wdCheckInput": "请填写金额、IBAN和账户持有人",
+ "listFilterTag": "标签：${1}",
+ "listFilterInsurance": "接受 ${1}",
+ "removeFilter": "移除筛选",
+ "acceptedInsurance": "接受的保险",
+ "selectInsurances": "选择您的保险",
+ "insuranceNetworkTitle": "NoyanAI 上的签约机构",
+ "insuranceNetworkLegend": "目前在 NoyanAI 上接受此保险的医生和机构。",
+ "doctorsAcceptingInsurance": "签约医生",
+ "clinicsAcceptingInsurance": "签约诊所",
+ "hospitalsAcceptingInsurance": "签约医院",
+ "paraClinicsAcceptingInsurance": "签约化验与影像机构"
 }

@@ -20,6 +20,7 @@ const NS: ContentNamespace[] = ["common", "insurancePage"];
 export type InsurancePageNode = IInsurance<{
   Category: Record<never, never>;
   Plans: Record<never, never>;
+  Tags: Record<never, never>;
 }>;
 
 export type InsurancePageProps = { data: InsurancePageNode };
