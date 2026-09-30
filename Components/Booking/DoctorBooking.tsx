@@ -69,7 +69,10 @@ const DoctorBooking = ({
     const name = searchParams?.get("name") || "";
     const disease = searchParams?.get("disease");
     const speciality = searchParams?.get("speciality");
+    // an insurer page's "in-network doctors" link
+    const insurance = searchParams?.get("insurance");
     return {
+      ...(insurance ? { insurance: [{ _id: insurance, name }] } : {}),
       ...(disease ? { disease: [{ _id: disease, name } as unknown as IDisease] } : {}),
       ...(speciality ? { speciality: [{ _id: speciality, name } as unknown as ISpeciality] } : {}),
     };
@@ -125,6 +128,9 @@ const DoctorBooking = ({
     if (options.service?.length)
       for (const service of options.service)
         params.append("service", service._id);
+    if (options.insurance?.length)
+      for (const insurance of options.insurance)
+        params.append("insurance", insurance._id);
     if (options.gender) params.append("gender", options.gender);
     if (options.date) {
       if (options.date.start)
@@ -214,6 +220,13 @@ const DoctorBooking = ({
         getOption={(node) => ({ title: node.name || "", value: node._id })}
         value={options.speciality || []}
         onChange={(e) => setOptions((prev) => ({ ...prev, speciality: e }))}
+      />
+      <MultiSelectInputServer
+        value={options.insurance || []}
+        path={`${API}/public/search/insurance`}
+        placeholder={getContent("selectInsurances")}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        onChange={(e) => setOptions((prev) => ({ ...prev, insurance: e }))}
       />
       <AdvancedSearchToggleField
         title={getContent("onlyAvailable")}
@@ -544,6 +557,26 @@ const DoctorBooking = ({
                   })}
                   onChange={(e) =>
                     setOptions((prev) => ({ ...prev, service: e }))
+                  }
+                />
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.insurance?.length,
+            title: "acceptedInsurance",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <MultiSelectInputServer
+                  value={options.insurance || []}
+                  path={`${API}/public/search/insurance`}
+                  placeholder={getContent("selectInsurances")}
+                  getOption={(node) => ({
+                    title: node.name || "",
+                    value: node._id,
+                  })}
+                  onChange={(e) =>
+                    setOptions((prev) => ({ ...prev, insurance: e }))
                   }
                 />
               </BookingFilterDrawerField>

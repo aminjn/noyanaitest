@@ -2147,5 +2147,16 @@
  "wdReason": "Neden: ${1}",
  "wdEmpty": "Henüz talep yok",
  "wdSuccess": "Çekim talebi alındı",
- "wdCheckInput": "Tutarı, IBAN'ı ve hesap sahibini doldurun"
+ "wdCheckInput": "Tutarı, IBAN'ı ve hesap sahibini doldurun",
+ "listFilterTag": "Etiket: ${1}",
+ "listFilterInsurance": "${1} kabul ediliyor",
+ "removeFilter": "Filtreyi kaldır",
+ "acceptedInsurance": "Anlaşmalı sigorta",
+ "selectInsurances": "Sigortanızı seçin",
+ "insuranceNetworkTitle": "NoyanAI'de anlaşmalı",
+ "insuranceNetworkLegend": "Bu sigortayı şu anda NoyanAI'de kabul eden doktorlar ve merkezler.",
+ "doctorsAcceptingInsurance": "Anlaşmalı doktorlar",
+ "clinicsAcceptingInsurance": "Anlaşmalı klinikler",
+ "hospitalsAcceptingInsurance": "Anlaşmalı hastaneler",
+ "paraClinicsAcceptingInsurance": "Anlaşmalı laboratuvar ve görüntüleme"
 }

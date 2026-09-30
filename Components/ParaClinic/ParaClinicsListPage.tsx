@@ -9,6 +9,8 @@ import { IParaClinicCategory } from "../Admin/ParaClinicCategory/AdminManagePara
 import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageList from "../UI/ListPage/ListPageList";
+import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ProPromotion from "../UI/ProPromotion";
 import classes from "./ParaClinicsListPage.module.css";
@@ -29,6 +31,8 @@ export type ParaClinicsListPageProps = {
     Province: Record<never, never>;
   }>[];
   pagesCount: number;
+  // the tag / insurer the list was opened with (a card chip, an insurer page)
+  filters?: ListPageFilters | null;
   categories: IParaClinicCategory[];
   specials: IParaClinic<{ Province: Record<never, never> }>[];
 };
@@ -48,6 +52,7 @@ const ParaClinicsListPage = ({
   pagesCount,
   categories,
   specials,
+  filters,
 }: ParaClinicsListPageProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -64,7 +69,7 @@ const ParaClinicsListPage = ({
     if (query) params.append("search", query);
     const categories = searchParams.getAll("category");
     for (const cat of categories) params.append("category", cat);
-    push(`/paraClinic?${params.toString()}`);
+    push(`/paraClinic?${keepListFilters(searchParams, params).toString()}`);
   }, [searchParams, query, push]);
 
   return (
@@ -112,6 +117,7 @@ const ParaClinicsListPage = ({
         categories={categories}
         title={getContent("paraClinicKind")}
       />
+      <ListPageActiveFilters basePath="/paraClinic" filters={filters} />
       <ListPageList
         itemWidth="24.0625rem"
         pagination={{
@@ -123,7 +129,7 @@ const ParaClinicsListPage = ({
             if (query) params.append("search", query);
             const categories = searchParams.getAll("category");
             for (const cat of categories) params.append("category", cat);
-            return `/paraClinic?${params.toString()}`;
+            return `/paraClinic?${keepListFilters(searchParams, params).toString()}`;
           },
           pagesCount: pagesCount,
         }}

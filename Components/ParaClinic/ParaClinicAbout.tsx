@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import Link from "@/Components/i18n/Link";
 import Badge from "../UI/Badge";
 import classes from "./ParaClinicAbout.module.css";
 import { ParaClinicPageProps } from "./ParaClinicPage";
@@ -66,15 +67,17 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
             </legend>
             <div className={classes.list}>
               {data.tags.map((tag) => (
-                <Badge
-                  key={tag._id}
-                  color="Primarylight"
-                  size="L"
-                  radius="High"
-                  mode="Fill"
-                >
-                  {tag.name}
-                </Badge>
+                // a tag is a filter: it opens the list narrowed to it
+                <Link key={tag._id} href={`/paraClinic?tag=${tag._id}`}>
+                  <Badge
+                    color="Primarylight"
+                    size="L"
+                    radius="High"
+                    mode="Fill"
+                  >
+                    {tag.name}
+                  </Badge>
+                </Link>
               ))}
             </div>
           </div>

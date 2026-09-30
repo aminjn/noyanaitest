@@ -7,7 +7,8 @@ import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
@@ -47,6 +48,12 @@ const Count = ({
 
 const InsuranceCard = ({ node }: { node: InsurancesPageNode }) => {
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const centers =
+    (node.network?.clinics || 0) +
+    (node.network?.hospitals || 0) +
+    (node.network?.paraClinics || 0);
 
   return (
     <li className={classes.main}>
@@ -95,15 +102,12 @@ const InsuranceCard = ({ node }: { node: InsurancesPageNode }) => {
         {!!node.tags.length && (
           <div className={classes.tags}>
             {node.tags.map((tag) => (
-              <Badge
-                key={tag._id}
-                color="Primarylight"
-                size="L"
-                mode="Fill"
-                radius="High"
-              >
-                {tag.name}
-              </Badge>
+              // a tag is a filter: it opens the list narrowed to it
+              <Link key={tag._id} href={`/insurance?tag=${tag._id}`}>
+                <Badge color="Primarylight" size="L" mode="Fill" radius="High">
+                  {tag.name}
+                </Badge>
+              </Link>
             ))}
           </div>
         )}
@@ -113,15 +117,16 @@ const InsuranceCard = ({ node }: { node: InsurancesPageNode }) => {
             title={getContent("member")}
             value={node.membersCount}
           />
+          {/* the network on the site, counted from who actually accepts it */}
           <Count
             icon={<HospitalIcon />}
             title={getContent("center")}
-            value={node.centersCount}
+            value={centers ? num.format(centers) : undefined}
           />
           <Count
             icon={<StetoscopeIcon />}
             title={getContent("doctor")}
-            value={node.doctorsCount}
+            value={node.network?.doctors ? num.format(node.network.doctors) : undefined}
           />
         </div>
       </div>

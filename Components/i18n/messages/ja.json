@@ -2147,5 +2147,16 @@
  "wdReason": "理由: ${1}",
  "wdEmpty": "申請はまだありません",
  "wdSuccess": "出金を申請しました",
- "wdCheckInput": "金額・IBAN・口座名義を入力してください"
+ "wdCheckInput": "金額・IBAN・口座名義を入力してください",
+ "listFilterTag": "タグ：${1}",
+ "listFilterInsurance": "${1} 対応",
+ "removeFilter": "フィルターを解除",
+ "acceptedInsurance": "対応保険",
+ "selectInsurances": "保険を選択",
+ "insuranceNetworkTitle": "NoyanAI の提携先",
+ "insuranceNetworkLegend": "現在 NoyanAI でこの保険が使える医師と施設です。",
+ "doctorsAcceptingInsurance": "提携医師",
+ "clinicsAcceptingInsurance": "提携クリニック",
+ "hospitalsAcceptingInsurance": "提携病院",
+ "paraClinicsAcceptingInsurance": "提携検査・画像診断施設"
 }

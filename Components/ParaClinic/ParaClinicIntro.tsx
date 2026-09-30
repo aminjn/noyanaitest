@@ -11,6 +11,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import LocationIcon from "../Icons/LocationIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import CallingIcon from "../Icons/CallingIcon";
+import Link from "@/Components/i18n/Link";
 import Badge from "../UI/Badge";
 import TruckIcon from "../Icons/TruckIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
@@ -147,15 +148,17 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
             {!!data.tags.length && (
               <div className={classes.tags}>
                 {data.tags.map((tag) => (
-                  <Badge
-                    key={tag._id}
-                    color="Primarylight"
-                    radius="High"
-                    mode="Fill"
-                    size="XXL"
-                  >
-                    {tag.name}
-                  </Badge>
+                  // a tag is a filter: it opens the list narrowed to it
+                  <Link key={tag._id} href={`/paraClinic?tag=${tag._id}`}>
+                    <Badge
+                      color="Primarylight"
+                      radius="High"
+                      mode="Fill"
+                      size="XXL"
+                    >
+                      {tag.name}
+                    </Badge>
+                  </Link>
                 ))}
               </div>
             )}

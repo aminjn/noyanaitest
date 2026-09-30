@@ -53,15 +53,12 @@ const ParaClinicCard = ({
       {!!node.tags?.length && (
         <div className={classes.tags}>
           {node.tags.map((tag) => (
-            <Badge
-              size="S"
-              color="Primarylight"
-              mode="Fill"
-              radius="High"
-              key={tag._id}
-            >
-              {tag.name}
-            </Badge>
+            // a tag is a filter: it opens the list narrowed to it
+            <Link key={tag._id} href={`/paraClinic?tag=${tag._id}`}>
+              <Badge size="S" color="Primarylight" mode="Fill" radius="High">
+                {tag.name}
+              </Badge>
+            </Link>
           ))}
         </div>
       )}

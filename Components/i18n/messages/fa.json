@@ -2169,5 +2169,16 @@
  "wdReason": "دلیل: ${1}",
  "wdEmpty": "هنوز درخواستی ثبت نکرده‌اید",
  "wdSuccess": "درخواست برداشت ثبت شد",
- "wdCheckInput": "مبلغ، شماره شبا و نام صاحب حساب را کامل کنید"
+ "wdCheckInput": "مبلغ، شماره شبا و نام صاحب حساب را کامل کنید",
+ "listFilterTag": "برچسب: ${1}",
+ "listFilterInsurance": "طرف قرارداد با ${1}",
+ "removeFilter": "حذف فیلتر",
+ "acceptedInsurance": "بیمه‌ی طرف قرارداد",
+ "selectInsurances": "بیمه‌ی خود را انتخاب کنید",
+ "insuranceNetworkTitle": "طرف قرارداد در نویان",
+ "insuranceNetworkLegend": "پزشکان و مراکزی که همین حالا این بیمه را در نویان می‌پذیرند.",
+ "doctorsAcceptingInsurance": "پزشکان طرف قرارداد",
+ "clinicsAcceptingInsurance": "کلینیک‌های طرف قرارداد",
+ "hospitalsAcceptingInsurance": "بیمارستان‌های طرف قرارداد",
+ "paraClinicsAcceptingInsurance": "آزمایشگاه‌ها و تصویربرداری‌های طرف قرارداد"
 }

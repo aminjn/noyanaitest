@@ -14,6 +14,8 @@ import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import classes from "./InsurancesPage.module.css";
 import useProgress from "../Hooks/useProgress";
 import ListPageList from "../UI/ListPage/ListPageList";
+import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
 import InsuranceCard from "./InsuranceCard";
 import { useEffect } from "react";
 import { t2xsRegular, tlgMedium, tsmBold, tsmRegular } from "../UI/Typography";
@@ -30,6 +32,8 @@ export type InsurancesPageProps = {
   data: InsurancesPageNode[];
   totalCount: number;
   pagesCount: number;
+  // the tag / insurer the list was opened with (a card chip, an insurer page)
+  filters?: ListPageFilters | null;
   categories: IInsuranceCategory[];
 };
 
@@ -47,6 +51,7 @@ const InsurancesPage = ({
   pagesCount,
   totalCount,
   categories,
+  filters,
 }: InsurancesPageProps) => {
   const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
@@ -62,7 +67,7 @@ const InsurancesPage = ({
     if (query) params.append("search", query);
     const categories = searchParams.getAll("category");
     for (const cat of categories) params.append("category", cat);
-    push(`/insurance?${params.toString()}`);
+    push(`/insurance?${keepListFilters(searchParams, params).toString()}`);
   }, [searchParams, query, push]);
 
   return (
@@ -114,6 +119,7 @@ const InsurancesPage = ({
           noIcon
         />
       </div>
+      <ListPageActiveFilters basePath="/insurance" filters={filters} />
       <ListPageList
         itemWidth="22.8125rem"
         pagination={{
@@ -125,7 +131,7 @@ const InsurancesPage = ({
             if (query) params.append("search", query);
             const categories = searchParams.getAll("category");
             for (const cat of categories) params.append("category", cat);
-            return `/insurance?${params.toString()}`;
+            return `/insurance?${keepListFilters(searchParams, params).toString()}`;
           },
           pagesCount: pagesCount,
         }}

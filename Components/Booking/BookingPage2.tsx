@@ -66,6 +66,8 @@ export type DoctorBookingOptions = Partial<{
   speciality: ISpeciality[] | null; //✅
   disease: IDisease[] | null; //✅
   service: IServiceCategory[] | null; //✅
+  // "who takes my insurance" (DoctorInsurance)
+  insurance: { _id: string; name?: string }[] | null;
   education: DoctorProfileTier[] | null; //✅
   gender: Gender | null; //✅
   date: { start?: Date; end?: Date } | null; //✅

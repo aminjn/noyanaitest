@@ -2147,5 +2147,16 @@
  "wdReason": "কারণ: ${1}",
  "wdEmpty": "এখনও কোনো অনুরোধ নেই",
  "wdSuccess": "উত্তোলনের অনুরোধ জমা হয়েছে",
- "wdCheckInput": "পরিমাণ, IBAN ও অ্যাকাউন্টধারীর নাম পূরণ করুন"
+ "wdCheckInput": "পরিমাণ, IBAN ও অ্যাকাউন্টধারীর নাম পূরণ করুন",
+ "listFilterTag": "ট্যাগ: ${1}",
+ "listFilterInsurance": "${1} গ্রহণ করে",
+ "removeFilter": "ফিল্টার সরান",
+ "acceptedInsurance": "গৃহীত বিমা",
+ "selectInsurances": "আপনার বিমা বেছে নিন",
+ "insuranceNetworkTitle": "NoyanAI-তে চুক্তিবদ্ধ",
+ "insuranceNetworkLegend": "যে ডাক্তার ও কেন্দ্রগুলো এখন NoyanAI-তে এই বিমা গ্রহণ করে।",
+ "doctorsAcceptingInsurance": "চুক্তিবদ্ধ ডাক্তার",
+ "clinicsAcceptingInsurance": "চুক্তিবদ্ধ ক্লিনিক",
+ "hospitalsAcceptingInsurance": "চুক্তিবদ্ধ হাসপাতাল",
+ "paraClinicsAcceptingInsurance": "চুক্তিবদ্ধ ল্যাব ও ইমেজিং"
 }

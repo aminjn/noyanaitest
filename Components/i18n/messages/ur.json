@@ -2147,5 +2147,16 @@
  "wdReason": "وجہ: ${1}",
  "wdEmpty": "ابھی کوئی درخواست نہیں",
  "wdSuccess": "درخواست درج ہو گئی",
- "wdCheckInput": "رقم، آئی بین اور اکاؤنٹ ہولڈر کا نام مکمل کریں"
+ "wdCheckInput": "رقم، آئی بین اور اکاؤنٹ ہولڈر کا نام مکمل کریں",
+ "listFilterTag": "ٹیگ: ${1}",
+ "listFilterInsurance": "${1} قبول ہے",
+ "removeFilter": "فلٹر ہٹائیں",
+ "acceptedInsurance": "قبول شدہ بیمہ",
+ "selectInsurances": "اپنا بیمہ منتخب کریں",
+ "insuranceNetworkTitle": "نویان پر معاہدہ شدہ",
+ "insuranceNetworkLegend": "وہ ڈاکٹر اور مراکز جو اس وقت نویان پر یہ بیمہ قبول کرتے ہیں۔",
+ "doctorsAcceptingInsurance": "معاہدہ شدہ ڈاکٹر",
+ "clinicsAcceptingInsurance": "معاہدہ شدہ کلینک",
+ "hospitalsAcceptingInsurance": "معاہدہ شدہ ہسپتال",
+ "paraClinicsAcceptingInsurance": "معاہدہ شدہ لیبز اور امیجنگ"
 }

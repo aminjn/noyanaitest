@@ -22,6 +22,8 @@ import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import useDebounce from "../Hooks/useDebounce";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ListPageList from "../UI/ListPage/ListPageList";
+import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
 import ClinicCard from "./ClinicCard";
 import { useSearchParams } from "next/navigation";
 import SmallAd from "../UI/ListPage/SmallAd";
@@ -40,6 +42,8 @@ export type ClinicsListProps = {
     Tags: Record<never, never>;
   }>[];
   pagesCount: number;
+  // the tag / insurer the list was opened with (a card chip, an insurer page)
+  filters?: ListPageFilters | null;
   categories: IClinicCategory[];
   specials: IClinic<{ Province: Record<never, never> }>[];
 };
@@ -86,6 +90,7 @@ const ClinicsListPage = ({
   data,
   pagesCount,
   specials,
+  filters,
 }: ClinicsListProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -101,7 +106,7 @@ const ClinicsListPage = ({
     if (query) params.append("search", query);
     const categories = searchParams.getAll("category");
     for (const cat of categories) params.append("category", cat);
-    push(`/clinic?${params.toString()}`);
+    push(`/clinic?${keepListFilters(searchParams, params).toString()}`);
   }, [searchParams, query, push]);
 
   return (
@@ -142,6 +147,7 @@ const ClinicsListPage = ({
         categories={categories}
         title={getContent("clinicKind")}
       />
+      <ListPageActiveFilters basePath="/clinic" filters={filters} />
       <ListPageList
         itemWidth="24.0625rem"
         pagination={{
@@ -153,7 +159,7 @@ const ClinicsListPage = ({
             if (query) params.append("search", query);
             const categories = searchParams.getAll("category");
             for (const cat of categories) params.append("category", cat);
-            return `/clinic?${params.toString()}`;
+            return `/clinic?${keepListFilters(searchParams, params).toString()}`;
           },
           pagesCount: pagesCount,
         }}

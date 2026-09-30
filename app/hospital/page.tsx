@@ -22,14 +22,25 @@ const HospitalsList = async (ctx: {
     category?: string;
     province?: string;
     page?: string;
+    tag?: string;
+    insurance?: string;
   }>;
 }) => {
-  const { page: _page, search, category, province } = await ctx.searchParams;
+  const {
+    page: _page,
+    search,
+    category,
+    province,
+    tag,
+    insurance,
+  } = await ctx.searchParams;
   const page = Number(_page || 1);
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
   const params = new URLSearchParams();
   params.append("page", page.toString());
   if (search) params.append("query", search);
+  if (tag) params.append("tag", tag);
+  if (insurance) params.append("insurance", insurance);
   if (category) params.append("category", category);
   if (province) params.append("province", province);
   const [data, textContent] = await Promise.all([

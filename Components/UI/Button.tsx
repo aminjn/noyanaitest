@@ -59,6 +59,7 @@ const Button = ({
   iconWidth,
   isLoading,
   href,
+  ariaLabel,
 }: WithStyleProps<{
   children?: ReactNode;
   leadIcon?: ReactNode;
@@ -72,6 +73,8 @@ const Button = ({
   isLoading?: boolean;
   iconWidth?: string;
   href?: string;
+  // for a button whose text alone doesn't say what it does (e.g. an x chip)
+  ariaLabel?: string;
 }>) => {
   const content = useMemo(
     () => (
@@ -119,6 +122,7 @@ const Button = ({
         className={classNames}
         style={styles}
         href={href}
+        aria-label={ariaLabel}
         onClick={(e) => {
           if (isLoading) {
             e.preventDefault();
@@ -133,6 +137,7 @@ const Button = ({
     );
   return (
     <button
+      aria-label={ariaLabel}
       className={classNames}
       style={styles}
       onClick={(e) => {

@@ -22,6 +22,8 @@ import { useSearchParams } from "next/navigation";
 import useProgress from "../Hooks/useProgress";
 import SearchIcon from "../Icons/SearchIcon";
 import ListPageList from "../UI/ListPage/ListPageList";
+import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
 import HospitalCard from "./HospitalCard";
 import SmallAd from "../UI/ListPage/SmallAd";
 import HostedImage from "../UI/HostedImage";
@@ -37,6 +39,8 @@ export type HospitalsPageProps = {
   categories: IHospitalCategory[];
   provinces: IProvince[];
   pagesCount: number;
+  // the tag / insurer the list was opened with (a card chip, an insurer page)
+  filters?: ListPageFilters | null;
   specials: IHospital<{ Province: Record<never, never> }>[];
 };
 
@@ -83,6 +87,7 @@ const HospitalsPage = ({
   provinces,
   specials,
   pagesCount,
+  filters,
 }: HospitalsPageProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -100,7 +105,7 @@ const HospitalsPage = ({
     if (category) params.append("category", category);
     const province = searchParams.get("province");
     if (province) params.append("province", province);
-    push(`/hospital?${params.toString()}`);
+    push(`/hospital?${keepListFilters(searchParams, params).toString()}`);
   }, [push, query, searchParams]);
 
   return (
@@ -150,7 +155,9 @@ const HospitalsPage = ({
             if (query) params.append("search", query);
             const category = searchParams.get("category");
             if (category) params.append("category", category);
-            push(`/hospital?${params.toString()}`);
+            push(
+              `/hospital?${keepListFilters(searchParams, params).toString()}`,
+            );
           }}
         >
           <option value={"__all__"}>{getContent("province")}</option>
@@ -171,7 +178,9 @@ const HospitalsPage = ({
             const province = searchParams.get("province");
             if (province) params.append("province", province);
             if (query) params.append("search", query);
-            push(`/hospital?${params.toString()}`);
+            push(
+              `/hospital?${keepListFilters(searchParams, params).toString()}`,
+            );
           }}
         >
           <option value="__all__">{getContent("category")}</option>
@@ -182,6 +191,7 @@ const HospitalsPage = ({
           ))}
         </select>
       </div>
+      <ListPageActiveFilters basePath="/hospital" filters={filters} />
       <ListPageList
         itemWidth="22.8125rem"
         pagination={{
@@ -195,7 +205,7 @@ const HospitalsPage = ({
             if (category) params.append("category", category);
             const province = searchParams.get("province");
             if (province) params.append("province", province);
-            return `/hospital?${params.toString()}`;
+            return `/hospital?${keepListFilters(searchParams, params).toString()}`;
           },
           pagesCount: pagesCount,
         }}

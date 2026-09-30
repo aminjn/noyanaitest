@@ -152,7 +152,7 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
           personelCount={data.personelCount}
           summary={data.summary}
         />
-        <MedicalCenterTagList tags={data.tags} />
+        <MedicalCenterTagList tags={data.tags} basePath="/hospital" />
         <MedicalCenterContactInfo
           address={data.address}
           businessTimes={data.businessTimes}

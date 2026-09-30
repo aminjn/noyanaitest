@@ -2147,5 +2147,16 @@
  "wdReason": "Alasan: ${1}",
  "wdEmpty": "Belum ada permintaan",
  "wdSuccess": "Penarikan diajukan",
- "wdCheckInput": "Isi jumlah, IBAN, dan nama pemilik rekening"
+ "wdCheckInput": "Isi jumlah, IBAN, dan nama pemilik rekening",
+ "listFilterTag": "Tag: ${1}",
+ "listFilterInsurance": "Menerima ${1}",
+ "removeFilter": "Hapus filter",
+ "acceptedInsurance": "Asuransi yang diterima",
+ "selectInsurances": "Pilih asuransi Anda",
+ "insuranceNetworkTitle": "Mitra di NoyanAI",
+ "insuranceNetworkLegend": "Dokter dan pusat layanan yang saat ini menerima asuransi ini di NoyanAI.",
+ "doctorsAcceptingInsurance": "Dokter mitra",
+ "clinicsAcceptingInsurance": "Klinik mitra",
+ "hospitalsAcceptingInsurance": "Rumah sakit mitra",
+ "paraClinicsAcceptingInsurance": "Lab dan radiologi mitra"
 }
