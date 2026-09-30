@@ -1,4 +1,5 @@
 import classes from "./LicenseNotCoveredNotice.module.css";
+import { licenseModuleKey } from "@/Components/_Common/License/licenseModuleKey";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import IconTitle from "@/Components/UI/IconTitle";
@@ -6,7 +7,6 @@ import Button from "@/Components/UI/Button";
 import LockIcon from "@/Components/Icons/LockIcon";
 import {
   ParaClinicDashboardModule,
-  paraClinicDashboardModuleLabels,
 } from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
 
 const NS: ContentNamespace[] = ["common"];
@@ -29,7 +29,7 @@ const LicenseNotCoveredNotice = ({
       <IconTitle>{getContent("licenseNotCoveredTitle")}</IconTitle>
       <span className={classes.legend}>
         {getContent("licenseNotCoveredLegend", [
-          paraClinicDashboardModuleLabels[mod],
+          getContent(licenseModuleKey(mod)),
         ])}
       </span>
       <Button href="/paraClinicPanel/license" variant="Primary" mode="Fill">

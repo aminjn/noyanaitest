@@ -13,7 +13,7 @@ import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
 import DoctorMutateOfficePopup from "./DoctorMutateOfficePopup";
 import Table from "@/Components/Admin/UI/Table";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EyeIcon from "@/Components/Icons/EyeIcon";
@@ -101,7 +101,7 @@ const DoctorManageOfficesPage = () => {
               },
               active: {
                 name: getContent("isActive"),
-                value: (node) => booleanToValue[`${node.active}`],
+                value: (node) => getContent(node.active ? "active" : "inactive"),
                 component: (node) => <BooleanToIcon value={node.active} />,
                 filter: "Set",
               },

@@ -24,6 +24,7 @@ import PlusIcon from "@/Components/Icons/PlusIcon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import SubmitTicketPopup from "./SubmitTicketPopup";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NS: ContentNamespace[] = ["common", "dashboardSupport"];
 
@@ -47,12 +48,24 @@ export const ticketSubjectContentKeyDict: Record<TicketSubject, ContentKey> = {
 };
 
 export const ticketSubjectDict: Record<TicketSubject, string> = {
-  AccountIssue: "حساب",
-  BillingIssue: "فاکتور",
-  BugReport: "باگ",
-  FeatureRequest: "فیچر",
-  GeneralInquiry: "عمومی",
-  TechnicalIssue: "فنی",
+  get AccountIssue() {
+  return ta("حساب");
+},
+  get BillingIssue() {
+  return ta("فاکتور");
+},
+  get BugReport() {
+  return ta("باگ");
+},
+  get FeatureRequest() {
+  return ta("فیچر");
+},
+  get GeneralInquiry() {
+  return ta("عمومی");
+},
+  get TechnicalIssue() {
+  return ta("فنی");
+},
 };
 
 export const ticketStatuses = [
@@ -72,10 +85,18 @@ export const ticketStatusesContentKeyDict: Record<TicketStatus, ContentKey> = {
 };
 
 export const ticketStatusDict: Record<TicketStatus, string> = {
-  Closed: "بسته",
-  InProgress: "در دست بررسی",
-  Open: "باز",
-  Resolved: "حل شده",
+  get Closed() {
+  return ta("بسته");
+},
+  get InProgress() {
+  return ta("در دست بررسی");
+},
+  get Open() {
+  return ta("باز");
+},
+  get Resolved() {
+  return ta("حل شده");
+},
 };
 
 export type TicketPopulation = Population<{

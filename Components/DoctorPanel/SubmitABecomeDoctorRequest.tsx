@@ -8,6 +8,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import {
   genders,
   IBecomeDoctorRequest,
+  medicalSystemTitleKeys,
   medicalSystemTitles,
 } from "./DoctorPanelPage";
 import classes from "./SubmitABecomeDoctorRequest.module.css";
@@ -50,7 +51,10 @@ const SubmitABecomeDoctorRequest = ({
           type: "select",
           title: getContent("medicalSystemTitle"),
           options: medicalSystemTitles.reduce(
-            (acc, el) => ({ ...acc, [el]: el }),
+            (acc, el) => ({
+              ...acc,
+              [el]: getContent(medicalSystemTitleKeys[el]),
+            }),
             {},
           ),
         },

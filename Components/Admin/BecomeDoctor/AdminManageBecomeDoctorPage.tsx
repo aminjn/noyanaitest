@@ -74,7 +74,7 @@ const AdminManageBecomeDoctorPage = () => {
                     <DataPair title={ta("جنسیت")} value={genderDict[data.gender]} />
                     <DataPair
                       title={ta("عنوان نظام پزشکی")}
-                      value={data.medicalSystemTitle}
+                      value={data.medicalSystemTitle && ta(data.medicalSystemTitle)}
                     />
                     <DataPair
                       title={ta("کد نظام پزشکی")}

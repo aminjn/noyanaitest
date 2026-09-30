@@ -2,8 +2,18 @@
 import { WithStyleProps } from "../Layout/Layout";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import classes from "./BooleanToIcon.module.css";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
-export const booleanToValue = { true: "فعال", false: "غیرفعال" } as const;
+// admin panel labels (ta: the panel's language); panels and pages use
+// getContent(booleanToContentKey[`${value}`])
+export const booleanToValue = {
+  get true() {
+    return ta("فعال");
+  },
+  get false() {
+    return ta("غیرفعال");
+  },
+};
 
 // Translation keys for booleanToValue: consumers outside the admin panel should
 // render getContent(booleanToContentKey[`${value}`]) instead.

@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import {
   GalleryItemPopulation,
@@ -35,6 +36,7 @@ import {
 } from "./Shift/DoctorManageShiftsPage";
 import DoctorDashboard from "./Dashboard/DoctorDashboard";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelHome"];
 
@@ -42,7 +44,15 @@ export const genders = ["male", "female"] as const;
 
 export type Gender = (typeof genders)[number];
 
-export const genderDict: Record<Gender, string> = { female: "زن", male: "مرد" };
+// admin-only labels (ta: the panel's language)
+export const genderDict: Record<Gender, string> = {
+  get female() {
+    return ta("زن");
+  },
+  get male() {
+    return ta("مرد");
+  },
+};
 
 export const medicalSystemTitles = [
   "دندانپزشکی",
@@ -65,14 +75,39 @@ export const medicalSystemTitles = [
 
 export type MedicalSystemTitle = (typeof medicalSystemTitles)[number];
 
+export const medicalSystemTitleKeys: Record<MedicalSystemTitle, ContentKey> = {
+  دندانپزشکی: "mstDentistry",
+  پزشکی: "mstMedicine",
+  مامایی: "mstMidwifery",
+  داروسازی: "mstPharmacy",
+  تغذیه: "mstNutrition",
+  فیزیوتراپی: "mstPhysiotherapy",
+  "آزمایشگاهی (بالینی)": "mstClinicalLab",
+  "گفتار درمانی": "mstSpeechTherapy",
+  کاردرمانی: "mstOccupationalTherapy",
+  "بینایی سنجی": "mstOptometry",
+  "شنوایی سنجی": "mstAudiology",
+  "علوم آزمایشگاهی": "mstLabSciences",
+  "ارتز و پروتز": "mstOrthotics",
+  "اتباع خارجی": "mstForeignNationals",
+  کایروپراکتیک: "mstChiropractic",
+  ناتروپاتی: "mstNaturopathy",
+};
+
 export const becomeNodeStatuses = ["Pending", "Rejected", "Approved"] as const;
 
 export type BecomeANodeStatus = (typeof becomeNodeStatuses)[number];
 
 export const becomeNodeStatusesDict: Record<BecomeANodeStatus, string> = {
-  Approved: "تایید شده",
-  Pending: "منتظر تایید",
-  Rejected: "رد شده",
+  get Approved() {
+    return ta("تایید شده");
+  },
+  get Pending() {
+    return ta("منتظر تایید");
+  },
+  get Rejected() {
+    return ta("رد شده");
+  },
 };
 
 // what the admin status popup may set by hand - approval goes through the
@@ -81,7 +116,9 @@ export const becomeNodeManualStatusesDict: Record<
   Exclude<BecomeANodeStatus, "Approved">,
   string
 > = {
-  Pending: "منتظر تایید (بازگشایی)",
+  get Pending() {
+    return ta("منتظر تایید (بازگشایی)");
+  },
   Rejected: "رد شده",
 };
 

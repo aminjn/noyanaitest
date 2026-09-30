@@ -1,4 +1,5 @@
 "use client";
+import { licenseModuleKey } from "@/Components/_Common/License/licenseModuleKey";
 
 import useSWR from "swr";
 import classes from "./PharmacyManageLicencePage.module.css";
@@ -22,7 +23,6 @@ import WalletIcon from "@/Components/Icons/WalletIcon";
 import { tsmRegular, txlBold } from "@/Components/UI/Typography";
 import {
   PharmacyDashboardModule,
-  pharmacyDashboardModuleLabels,
 } from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
 import PurchaseLicensePopup from "./PurchaseLicensePopup";
 
@@ -199,7 +199,7 @@ const PharmacyManageLicencePage = () => {
                   <div className={classes.currentModules}>
                     {data.current.modules.map((m) => (
                       <Badge key={m} color="Primarylight" size="S">
-                        {pharmacyDashboardModuleLabels[m]}
+                        {getContent(licenseModuleKey(m))}
                       </Badge>
                     ))}
                   </div>

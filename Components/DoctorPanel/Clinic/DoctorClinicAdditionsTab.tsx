@@ -18,6 +18,7 @@ import { Dictionary } from "./DoctorJoinClinicsTab";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import FormatDate from "@/Components/UI/FormatDate";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelClinic"];
 
@@ -31,10 +32,18 @@ export const additionRequsetStatuses = [
 export type AdditionRequestStatus = (typeof additionRequsetStatuses)[number];
 
 export const additionRequestStatusDict: Dictionary<AdditionRequestStatus> = {
-  Done: "تمام شده",
-  Pending: "منتظر تایید",
-  Proccessing: "در دست بررسی",
-  Rejected: "رد شده",
+  get Done() {
+  return ta("تمام شده");
+},
+  get Pending() {
+  return ta("منتظر تایید");
+},
+  get Proccessing() {
+  return ta("در دست بررسی");
+},
+  get Rejected() {
+  return ta("رد شده");
+},
 };
 
 export type ClinicAdditionRequestPopulation = Population<{

@@ -15,7 +15,6 @@ import usePopup from "@/Components/Hooks/usePopup";
 import CogIcon from "@/Components/Icons/CogIcon";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import Act from "@/Components/UI/Act";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import Input from "@/Components/UI/Input";
 import PopupCard from "@/Components/UI/PopupCard";
 import ToggleInput from "@/Components/UI/ToggleInput";
@@ -381,9 +380,7 @@ const SinglePresc = ({
             selected: {
               name: getContent("selection"),
               value: (node) =>
-                booleanToValue[
-                  `${input.some((el) => el.electronicPrescDetail === node.detailId)}`
-                ],
+                getContent(input.some((el) => el.electronicPrescDetail === node.detailId) ? "yes" : "no"),
               component: (node) => (
                 <ToggleInput
                   value={input.some(

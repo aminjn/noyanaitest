@@ -1,3 +1,4 @@
+import { useListSeparator } from "@/Components/i18n/navigation";
 import Image from "next/image";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import classes from "./ServiceCard.module.css";
@@ -22,6 +23,7 @@ const ServiceCard = ({
         Services: Record<never, never>;
       }> & { model: "ServicePackage" });
 }) => {
+  const listSep = useListSeparator();
   return (
     <ServiceOrProductCard
       commentCount={node.commentCount}
@@ -65,7 +67,7 @@ const ServiceCard = ({
       pack={node.model === "ServicePackage" ? node.services.length : undefined}
       packageInfo={
         node.model === "ServicePackage"
-          ? node.services.map((service) => service.name || "").join("، ")
+          ? node.services.map((service) => service.name || "").join(listSep)
           : undefined
       }
     />

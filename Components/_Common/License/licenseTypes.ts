@@ -1,10 +1,4 @@
 import { MongoDoc } from "@/Components/Hooks/useUser";
-import { doctorDashboardModuleLabels } from "@/Components/Admin/BaseDoctorLicense/AdminManageBaseDoctorLicensesPage";
-import { pharmacyDashboardModuleLabels } from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
-import { clinicDashboardModuleLabels } from "@/Components/Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
-import { paraClinicDashboardModuleLabels } from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
-import { hospitalDashboardModuleLabels } from "@/Components/Admin/BaseHospitalLicense/AdminManageBaseHospitalLicensesPage";
-import { insuranceDashboardModuleLabels } from "@/Components/Admin/BaseInsuranceLicense/AdminManageBaseInsuranceLicensesPage";
 
 // The org types that have a license catalog + purchase flow (2026-09).
 // Mirrors the subset of Components/_Common/SecretaryManager's NodeWithAcl
@@ -34,23 +28,6 @@ export const licensePanelRootByOrg: Record<LicenseOrg, string> = {
   paraClinic: "/paraClinicPanel",
   hospital: "/hospitalpanel",
   insurance: "/insurancepanel",
-};
-
-// Per-org dashboard-module label map, keyed the same way as licenseOrgs -
-// reuses each org's own Admin/Base<Org>License Persian label Record
-// instead of redeclaring the labels here. Used by the shared license pages
-// (e.g. AllLicensePlansPage) to render a module's display name without
-// every call site having to import the right org-specific map itself.
-export const licenseModuleLabelsByOrg: Record<
-  LicenseOrg,
-  Record<string, string>
-> = {
-  doctor: doctorDashboardModuleLabels,
-  pharmacy: pharmacyDashboardModuleLabels,
-  clinic: clinicDashboardModuleLabels,
-  paraClinic: paraClinicDashboardModuleLabels,
-  hospital: hospitalDashboardModuleLabels,
-  insurance: insuranceDashboardModuleLabels,
 };
 
 // A plan's sale period (2026-09, second pass): the backend keeps the period

@@ -1,11 +1,11 @@
 import classes from "./LicenseNotCoveredNotice.module.css";
+import { licenseModuleKey } from "@/Components/_Common/License/licenseModuleKey";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import IconTitle from "../UI/IconTitle";
 import Button from "../UI/Button";
 import LockIcon from "../Icons/LockIcon";
 import {
   ClinicDashboardModule,
-  clinicDashboardModuleLabels,
 } from "../Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
@@ -26,7 +26,7 @@ const LicenseNotCoveredNotice = ({ mod }: { mod: ClinicDashboardModule }) => {
       <IconTitle>{getContent("licenseNotCoveredTitle")}</IconTitle>
       <span className={classes.legend}>
         {getContent("licenseNotCoveredLegend", [
-          clinicDashboardModuleLabels[mod],
+          getContent(licenseModuleKey(mod)),
         ])}
       </span>
       <Button href="/clinicpanel/license" variant="Primary" mode="Fill">

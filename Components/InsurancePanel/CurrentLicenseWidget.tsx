@@ -1,4 +1,5 @@
 "use client";
+import { licenseModuleKey } from "@/Components/_Common/License/licenseModuleKey";
 
 import useSWR from "swr";
 import classes from "./CurrentLicenseWidget.module.css";
@@ -12,7 +13,6 @@ import IconTitle from "@/Components/UI/IconTitle";
 import Badge from "@/Components/UI/Badge";
 import Button from "@/Components/UI/Button";
 import CartIcon from "@/Components/Icons/CartIcon";
-import { insuranceDashboardModuleLabels } from "@/Components/Admin/BaseInsuranceLicense/AdminManageBaseInsuranceLicensesPage";
 import { ICurrentLicense } from "@/Components/_Common/License/licenseTypes";
 
 const NS: ContentNamespace[] = ["common", "insurancePanelHome"];
@@ -53,11 +53,7 @@ const CurrentLicenseWidget = () => {
                 <div className={classes.modules}>
                   {data.current.modules.map((m) => (
                     <Badge key={m} color="Primarylight" size="S">
-                      {
-                        insuranceDashboardModuleLabels[
-                          m as keyof typeof insuranceDashboardModuleLabels
-                        ]
-                      }
+                      {getContent(licenseModuleKey(m))}
                     </Badge>
                   ))}
                 </div>

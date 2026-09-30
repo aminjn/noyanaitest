@@ -1,4 +1,5 @@
 "use client";
+import { useListSeparator } from "@/Components/i18n/navigation";
 
 import useSWR from "swr";
 import { useState } from "react";
@@ -40,13 +41,16 @@ export type IAddressCity = {
   province?: { _id: string; name?: string } | string;
 };
 
-export const addressCityLabel = (city?: IAddressCity | string) => {
+export const addressCityLabel = (
+  city?: IAddressCity | string,
+  sep = "، ",
+) => {
   if (!city || typeof city === "string") return "";
   const province =
     city.province && typeof city.province !== "string" ? city.province.name : "";
   return [city.name, province && province !== city.name ? province : ""]
     .filter(Boolean)
-    .join("، ");
+    .join(sep);
 };
 
 // the address form's city picker (shared by the add popup and the edit page)
@@ -76,6 +80,7 @@ const POPUP = "DashboardMutateAddress";
 
 const AddressCard = ({ node, mutate }: { node: IUserAddress; mutate: () => unknown }) => {
   const getContent = useScopedLocale(NS);
+  const listSep = useListSeparator();
   const pushNotification = useNotification();
   const [asking, setAsking] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -108,7 +113,7 @@ const AddressCard = ({ node, mutate }: { node: IUserAddress; mutate: () => unkno
       {(!!node.receiverPhone || !!node.postalCode || !!addressCityLabel(node.city)) && (
         <p className={classes.meta}>
           {[
-            addressCityLabel(node.city),
+            addressCityLabel(node.city, listSep),
             node.receiverPhone ? `${getContent("receiverPhone")}: ${localPhone(node.receiverPhone)}` : "",
             node.postalCode ? `${getContent("postalCode")}: ${node.postalCode}` : "",
           ]

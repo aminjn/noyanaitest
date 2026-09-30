@@ -26,6 +26,7 @@ import ResubmitJoinHospitalRequestPopup from "./ResubmitJoinHospitalRequestPopup
 import ToggleJoinHospitalRequestStatusPopup from "./ToggleJoinHospitalRequestStatusPopup";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelHospital"];
 
@@ -40,7 +41,13 @@ export const doctorJoinHospitalStatuses = [
 export type DoctorJoinHospitalStatus = (typeof doctorJoinHospitalStatuses)[number];
 
 export const doctorJoinHospitalStatusesDict: Dictionary<DoctorJoinHospitalStatus> =
-  { Approved: "تایید شده", Pending: "منتظر تایید", Rejected: "رد شده" };
+  { get Approved() {
+  return ta("تایید شده");
+}, get Pending() {
+  return ta("منتظر تایید");
+}, get Rejected() {
+  return ta("رد شده");
+} };
 
 export const joinHospitalSubmissionParties = ["DoctorProfile", "Hospital"] as const;
 
@@ -48,7 +55,11 @@ export type JoinHospitalSubmissionParty =
   (typeof joinHospitalSubmissionParties)[number];
 
 export const joinHospitalSubmissionPartyDict: Dictionary<JoinHospitalSubmissionParty> =
-  { Hospital: "بیمارستان", DoctorProfile: "دکتر" };
+  { get Hospital() {
+  return ta("بیمارستان");
+}, get DoctorProfile() {
+  return ta("دکتر");
+} };
 
 export type DoctorJoinHospitalPopulation = Population<{
   Doctor: DoctorProfilePopulation;

@@ -15,7 +15,6 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import { currencize } from "@/Components/helpers/currencize";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import Input from "@/Components/UI/Input";
 import FormActions from "@/Components/Admin/UI/FormActions";
@@ -235,11 +234,9 @@ const ClinicPrescriptionDetailsPopup = ({ node }: { node: TaminParaPresc }) => {
             selected: {
               name: getContent("selection"),
               value: (node) =>
-                booleanToValue[
-                  `${!!details.find(
+                getContent(!!details.find(
                     (detail) => detail.parTarefCode === node.paR_TAREF_CODE,
-                  )?.selected}`
-                ],
+                  )?.selected ? "yes" : "no"),
               component: (node) => (
                 <ToggleInput
                   value={
@@ -268,11 +265,9 @@ const ClinicPrescriptionDetailsPopup = ({ node }: { node: TaminParaPresc }) => {
             is2K: {
               name: getContent("is2k"),
               value: (node) =>
-                booleanToValue[
-                  `${!!details.find(
+                getContent(!!details.find(
                     (detail) => detail.parTarefCode === node.paR_TAREF_CODE,
-                  )?.is2K}`
-                ],
+                  )?.is2K ? "yes" : "no"),
               component: (node) => (
                 <ToggleInput
                   value={

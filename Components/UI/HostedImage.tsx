@@ -13,14 +13,21 @@ export type HostedImageProps = Omit<ImageProps, "src" | "alt"> & {
 
 const getFallbackLetter = (alt: string) => {
   const trimmed = alt.trim();
-  return trimmed ? trimmed.charAt(0).toUpperCase() : "ت";
+  if (trimmed) return trimmed.charAt(0).toUpperCase();
+  // no name to take a letter from: a neutral silhouette, the same in every language
+  return (
+    <svg viewBox="0 0 24 24" width="55%" height="55%" fill="currentColor" aria-hidden>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5z" />
+    </svg>
+  );
 };
 
 /**
  * Wrapper around next/image for server-hosted images whose file name comes
  * from a document field that might be undefined (e.g. `node.image`,
  * `user.avatar`). Instead of falling back to a generic placeholder image,
- * it renders the first letter of `alt` (or "ت" when `alt` is empty) when
+ * it renders the first letter of `alt` (or a silhouette when `alt` is empty) when
  * `src` is missing, or when the hosted image fails to load.
  */
 const HostedImage = ({
