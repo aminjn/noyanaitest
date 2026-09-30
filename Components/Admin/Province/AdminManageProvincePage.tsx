@@ -38,7 +38,7 @@ const MutateCityPopup = ({
 ) & { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش شهر") : ta("شهر جدید")}>
       <CreateForm
         hookProps={{
           path: `${API}/auto/city${!!node ? `/${node._id}` : ""}`,

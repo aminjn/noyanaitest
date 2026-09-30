@@ -1,17 +1,20 @@
-import AdminManageHospitalsPage from "@/Components/Admin/Hospital/AdminManageHospitalsPage";
+import HospitalHub from "@/Components/Admin/Hub/HospitalHub";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { Suspense } from "react";
 
 const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
 
-const AdminManageHospitals = async () => {
+const AdminHospitalHubPage = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageHospitalsPage />
+      <Suspense>
+        <HospitalHub />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };
 
-export default AdminManageHospitals;
+export default AdminHospitalHubPage;

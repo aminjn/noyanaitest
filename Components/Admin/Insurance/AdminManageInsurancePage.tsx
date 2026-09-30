@@ -71,7 +71,7 @@ const MutateInsurancePlanPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard style={{ minWidth: "min(90dvw ,  40rem)" }}>
+    <PopupCard title={node ? ta("ویرایش طرح بیمه") : ta("طرح بیمه جدید")} style={{ minWidth: "min(90dvw ,  40rem)" }}>
       <CreateForm
         onCancel={() => closePopup()}
         defaultValue={node}
@@ -287,6 +287,7 @@ const AdminManageInsurancePage = () => {
                         type: "nodes",
                         multi: false,
                         path: `${API}/auto/insuranceCategory`,
+                        creatable: { path: `${API}/auto/insuranceCategory` },
                         getOptionLabel: (node) =>
                           (node as IInsuranceCategory).name ||
                           (node as IInsuranceCategory)._id,
@@ -302,6 +303,7 @@ const AdminManageInsurancePage = () => {
                           (node as IInsuranceTag)._id,
                         getOptionValue: (node) => (node as IInsuranceTag)._id,
                         path: `${API}/auto/insuranceTag`,
+                        creatable: { path: `${API}/auto/insuranceTag` },
                         multi: true,
                         getDefaultValue: (inp) => inp.tags,
                       },
@@ -339,7 +341,7 @@ const AdminManageInsurancePage = () => {
                 content: <AdminManageInsurancePlans node={data} />,
               },
               {
-                title: ta("یوزر"),
+                title: ta("کاربر"),
                 id: "User",
                 content: <InsuranceUserTab node={data} mutate={mutate} />,
               },

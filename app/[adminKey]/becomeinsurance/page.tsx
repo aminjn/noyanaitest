@@ -1,17 +1,9 @@
-import AdminManageBecomeInsurancesPage from "@/Components/Admin/BecomeInsurance/AdminManageBecomeInsurancesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// The "become a provider" lists were merged into one verification queue
+// (2026-09); a request's own page ([nodeId]) stays.
+const LegacyAdminBecomeInsurances = () =>
+  redirect(`/${adminKey}/requests?group=become&kind=insurance`);
 
-const AdminManageBecomeInsurances = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageBecomeInsurancesPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageBecomeInsurances;
+export default LegacyAdminBecomeInsurances;

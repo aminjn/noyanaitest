@@ -37,7 +37,7 @@ const MutateDistrictPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش محله") : ta("محله جدید")}>
       <CreateForm
         defaultValue={node}
         onCancel={() => {

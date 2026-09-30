@@ -74,7 +74,7 @@ const AdminManageDiseasePage = () => {
                       order: { type: "number", title: ta("رتبه") },
                       tag: {
                         type: "nodes",
-                        title: ta("لگ"),
+                        title: ta("تگ"),
                         multi: false,
                         getOptionLabel: (node) =>
                           (node as IDiseaseTag).name ||
@@ -82,11 +82,13 @@ const AdminManageDiseasePage = () => {
                         getOptionValue: (node) => (node as IDiseaseTag)._id,
                         getDefaultValue: (inp) => inp.tag,
                         path: `${API}/auto/diseasetag`,
+                        creatable: { path: `${API}/auto/diseasetag` },
                       },
                       category: {
                         type: "nodes",
                         title: ta("دسته بندی"),
                         path: `${API}/auto/diseaseCategory`,
+                        creatable: { path: `${API}/auto/diseaseCategory` },
                         getOptionLabel: (node) =>
                           (node as IDiseaseCategory).name ||
                           (node as IDiseaseCategory)._id,

@@ -30,7 +30,7 @@ const AssignDoctorProfileToUserPopup = ({
                   path: `${API}/auto/user`,
                   getOptionLabel: (node) => getUserLabel(node as IUser),
                   getOptionValue: (node) => (node as IUser)._id,
-                  title: ta("یوزر"),
+                  title: ta("کاربر"),
                 },
               }),
           ...(profile

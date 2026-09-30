@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AdminManageHospitalAdditionsPage from "@/Components/Admin/HospitalAddition/AdminManageHospitalAdditionsPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
@@ -9,7 +10,9 @@ const AdminManageHospitalAdditions = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageHospitalAdditionsPage />
+      <Suspense>
+        <AdminManageHospitalAdditionsPage />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };

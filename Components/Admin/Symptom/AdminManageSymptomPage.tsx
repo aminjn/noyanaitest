@@ -78,6 +78,7 @@ const AdminManageSymptomPage = () => {
                         getDefaultValue: (inp) => inp.category,
                         multi: false,
                         path: `${API}/auto/symptomCategory`,
+                        creatable: { path: `${API}/auto/symptomCategory` },
                       },
                       aiSummary: { type: "rtf", title: ta("خلاصه AI") },
                       content: { type: "rtf", title: ta("محتوا") },
@@ -129,7 +130,7 @@ const AdminManageSymptomPage = () => {
                       part: {
                         type: "nodes",
                         path: `${API}/auto/part`,
-                        title: ta("اهضا"),
+                        title: ta("اعضا"),
                         getOptionLabel: (node) =>
                           (node as IPart).name || (node as IPart)._id,
                         getOptionValue: (node) => (node as IPart)._id,

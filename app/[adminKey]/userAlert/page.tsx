@@ -1,17 +1,7 @@
-import AdminManageUserAlertsPage from "@/Components/Admin/UserAlert/AdminManageUserAlertsPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "پیامک و اعلان‌ها" page as a tab (2026-09 admin audit)
+const LegacyUserAlertAdmin = () => redirect(`/${adminKey}/messaging?tab=alerts`);
 
-const AdminManageUserAlerts = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageUserAlertsPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageUserAlerts;
+export default LegacyUserAlertAdmin;

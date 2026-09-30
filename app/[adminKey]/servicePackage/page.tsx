@@ -1,17 +1,7 @@
-import AdminManageServicePackagesPage from "@/Components/Admin/ServicePackage/AdminManageServicePackagesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "خدمات" page as a tab (2026-09 admin audit)
+const LegacyServicePackageAdmin = () => redirect(`/${adminKey}/service?tab=packages`);
 
-const AdminManageServicePackages = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageServicePackagesPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageServicePackages;
+export default LegacyServicePackageAdmin;

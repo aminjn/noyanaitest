@@ -96,6 +96,7 @@ export const accessLevelModels = [
   "ParaClinic",
   "BecomeParaClinicRequest",
   "PharmacyAdditionRequest",
+  "Faq",
 ] as const;
 
 export type AccessLevelModel = (typeof accessLevelModels)[number];
@@ -224,6 +225,9 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   get PharmacyAdditionRequest() {
   return ta("درخواست اضافه شدن داروخانه");
 },
+  get Faq() {
+    return ta("سوالات متداول");
+  },
 };
 
 type AccessLevelPopuplation = { AdminsPopulated?: UserAccessLevelPopulation };

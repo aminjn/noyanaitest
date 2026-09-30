@@ -46,7 +46,7 @@ const CreateFromAdditionPopup = ({
   const push = useProgress();
   const label = labels[kind];
   return (
-    <PopupCard>
+    <PopupCard title={ta("مرکز از روی درخواست جدید")}>
       <p>
         {ta("${1} با نام، نشانی، تلفن و موقعیت این درخواست ساخته می‌شود (غیرفعال، تا پس از تکمیل پروفایل فعالش کنید)، پزشک درخواست‌دهنده عضو آن می‌شود و درخواست «انجام شده» می‌شود.", [label])}
       </p>

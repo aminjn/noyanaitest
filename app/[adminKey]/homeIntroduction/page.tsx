@@ -1,17 +1,8 @@
-import AdminManageHomeIntroductionsPage from "@/Components/Admin/HomeIntroduction/AdminManageHomeIntroductionsPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// Nothing on the public site shows this any more (the home page dropped the
+// section), so it left the admin menu (2026-09 audit).
+const LegacyAdminHomeIntroduction = () => redirect(`/${adminKey}`);
 
-const AdminManageHomeIntroductions = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageHomeIntroductionsPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageHomeIntroductions;
+export default LegacyAdminHomeIntroduction;

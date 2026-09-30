@@ -1,13 +1,12 @@
-import Image from "next/image";
+import HostedImage from "../UI/HostedImage";
 import { IAboutTeam } from "../Admin/AboutTeam/AdminManageAboutTeamsPage";
 import classes from "./AboutTeam.module.css";
 import TitleLegend from "./TitleLegend";
-import { FilePath } from "../config";
 import LinkedinIcon from "../Icons/LinkedinIcon";
 import Ixon from "../UI/Ixon";
 import { tmdBold, tsmBold, tsmRegular } from "../UI/Typography";
 const AboutTeam = ({ team }: { team: IAboutTeam[] }) => {
-  if (!team.length) return null;
+  if (!Array.isArray(team) || !team.length) return null;
   return (
     <div className={classes.main}>
       <TitleLegend title="noyanTeamTitle" legend="noyanTeamLegend" />
@@ -15,8 +14,8 @@ const AboutTeam = ({ team }: { team: IAboutTeam[] }) => {
         {team.map((member) => (
           <li key={member._id} className={classes.item}>
             <div className={classes.image}>
-              <Image
-                src={`${FilePath}/${member.avatar}`}
+              <HostedImage
+                src={member.avatar}
                 alt={member.name || ""}
                 sizes="5rem"
                 fill
@@ -30,15 +29,19 @@ const AboutTeam = ({ team }: { team: IAboutTeam[] }) => {
             <p className={`${classes.description} ${tsmRegular}`}>
               {member.description}
             </p>
-            <a
-              target="_blank"
-              className={classes.linkedin}
-              href={member.linkedin}
-            >
-              <Ixon width="1.25rem">
-                <LinkedinIcon />
-              </Ixon>
-            </a>
+            {!!member.linkedin && (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className={classes.linkedin}
+                href={member.linkedin}
+                aria-label="LinkedIn"
+              >
+                <Ixon width="1.25rem">
+                  <LinkedinIcon />
+                </Ixon>
+              </a>
+            )}
           </li>
         ))}
       </ul>

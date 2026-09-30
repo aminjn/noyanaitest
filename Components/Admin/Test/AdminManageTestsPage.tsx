@@ -62,6 +62,7 @@ export const testFormRenderer: FormRenderer<ITest> = {
       (node as ITestCategory).name || (node as ITestCategory)._id,
     getOptionValue: (node) => (node as ITestCategory)._id,
     path: `${API}/auto/testCategory`,
+    creatable: { path: `${API}/auto/testCategory` },
     multi: false,
     getDefaultValue: (inp) => inp.category,
   },

@@ -42,7 +42,7 @@ const MutateServiceCategoryPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش دسته‌ی خدمات") : ta("دسته‌ی خدمات جدید")}>
       <CreateForm
         defaultValue={node}
         renderer={{

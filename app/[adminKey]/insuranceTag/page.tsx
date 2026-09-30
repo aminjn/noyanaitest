@@ -1,17 +1,7 @@
-import AdminManageInsuranceTagsPage from "@/Components/Admin/InsuranceTag/AdminManageInsuranceTagsPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "بیمه‌ها" page as a tab (2026-09 admin audit)
+const LegacyInsuranceTagAdmin = () => redirect(`/${adminKey}/insurance?tab=tags`);
 
-const AdminManageInsuranceTags = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageInsuranceTagsPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageInsuranceTags;
+export default LegacyInsuranceTagAdmin;

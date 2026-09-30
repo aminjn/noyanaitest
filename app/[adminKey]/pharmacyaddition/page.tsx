@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AdminManagePharmacyAdditionsPage from "@/Components/Admin/PharmacyAddition/AdminManagePharmacyAdditionsPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
@@ -9,7 +10,9 @@ const AdminManagePharmacyAdditions = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManagePharmacyAdditionsPage />
+      <Suspense>
+        <AdminManagePharmacyAdditionsPage />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };

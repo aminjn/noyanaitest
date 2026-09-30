@@ -53,7 +53,7 @@ const MutateFaqPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش سوال") : ta("سوال جدید")}>
       <CreateForm
         onCancel={() => {
           closePopup();
@@ -68,12 +68,11 @@ const MutateFaqPopup = ({
           },
         }}
         renderer={{
-          name: { title: ta("نام"), type: "text" },
           isActive: { title: ta("فعال"), type: "bool" },
           order: { title: ta("رتبه"), type: "number" },
           isHome: { title: ta("نمایش در خانه"), type: "bool" },
           question: { title: ta("سوال"), type: "text" },
-          answer: { title: ta("جواب"), type: "text" },
+          answer: { title: ta("جواب"), type: "area" },
           category: {
             title: ta("دسته بندی"),
             type: "nodes",
@@ -81,6 +80,7 @@ const MutateFaqPopup = ({
               (node as IFaqCategory).name || (node as IFaqCategory)._id,
             getOptionValue: (node) => (node as IFaqCategory)._id,
             path: `${API}/auto/faqCategory`,
+            creatable: { path: `${API}/auto/faqCategory` },
             getDefaultValue: (inp) => inp.category?._id,
           },
         }}
@@ -190,7 +190,6 @@ const AdminManageFaqsPage = () => {
                   />
                 ),
               },
-              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
               actions: {
                 name: ta("عملیات"),
                 component: (node) => (

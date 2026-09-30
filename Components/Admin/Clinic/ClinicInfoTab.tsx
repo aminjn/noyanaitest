@@ -1,3 +1,4 @@
+import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import useForm from "@/Components/Hooks/useForm";
 import CreateForm from "../UI/CreateForm";
 import { IClinic } from "./AdminManageClinicsPage";
@@ -56,7 +57,7 @@ const ClinicInfoTab = ({
           getOptionValue: (node) => (node as ICity)._id,
           getDefaultValue: (inp) => inp.city,
           multi: false,
-          path: `${API}/auto/city`,
+          path: cityPath,
         },
         district: {
           title: ta("محله"),
@@ -66,7 +67,7 @@ const ClinicInfoTab = ({
           getOptionValue: (node) => (node as IDistrict)._id,
           getDefaultValue: (inp) => inp.district,
           multi: false,
-          path: `${API}/auto/district`,
+          path: districtPath,
         },
         order: { type: "number", title: ta("رتبه") },
         active: { type: "bool", title: ta("فعال") },
@@ -80,6 +81,7 @@ const ClinicInfoTab = ({
           getOptionValue: (node) => (node as IClinicCategory)._id,
           getDefaultValue: (inp) => inp.category,
           path: `${API}/auto/clinicCategory`,
+          creatable: { path: `${API}/auto/clinicCategory` },
         },
         isRoundTheClock: { type: "bool", title: "24X7" },
         tags: {
@@ -90,6 +92,7 @@ const ClinicInfoTab = ({
             (node as IClinicTag).name || (node as IClinicTag)._id,
           getOptionValue: (node) => (node as IClinicTag)._id,
           path: `${API}/auto/clinicTag`,
+          creatable: { path: `${API}/auto/clinicTag` },
           getDefaultValue: (inp) => inp.tags,
         },
         insurances: {

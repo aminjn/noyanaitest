@@ -18,6 +18,7 @@ export interface IBecomePharmacyRequest<
   createdAt: Date;
   updatedAt: Date;
   status: BecomeANodeStatus;
+  rejectReason?: string;
   name: string;
   siamCode: string;
   nationalId: string;

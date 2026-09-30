@@ -1,17 +1,7 @@
-import AdminManageServiceCategoriesPage from "@/Components/Admin/ServiceCategory/AdminManageServiceCategoriesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "خدمات" page as a tab (2026-09 admin audit)
+const LegacyServiceCategoryAdmin = () => redirect(`/${adminKey}/service?tab=categories`);
 
-const AdminManageServiceCategories = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageServiceCategoriesPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageServiceCategories;
+export default LegacyServiceCategoryAdmin;

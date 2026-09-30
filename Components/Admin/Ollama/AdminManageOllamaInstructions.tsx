@@ -41,7 +41,7 @@ const MutateBotInstructionPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش دستورالعمل") : ta("دستورالعمل جدید")}>
       <CreateForm
         onCancel={() => {
           closePopup();

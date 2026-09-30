@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import useSWR from "swr";
 import { additionRequestStatusDict } from "@/Components/DoctorPanel/Hospital/DoctorHospitalAdditionsTab";
 import { IPharmacyAdditionRequest } from "@/Components/DoctorPanel/Pharmacy/DoctorPharmacyRequestsTab";
@@ -18,7 +19,9 @@ import InlineLink from "../UI/InlineLink";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
-import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
+import RequestActionsPopup from "../Requests/RequestActionsPopup";
+import { AdditionApproveButton } from "../Requests/RequestApproveButtons";
+import useOpenFromQuery from "../Requests/useOpenFromQuery";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -32,7 +35,35 @@ const AdminManagePharmacyAdditionsPage = () => {
       Array.isArray(res.data?.data) ? res.data.data : [],
     ),
   );
+
   const { setPopup } = usePopup();
+
+  const openActions = useCallback(
+    (node: IPharmacyAdditionRequest<{ Doctor: Record<never, never> }>) =>
+      setPopup(
+        "AdditionRequestActions",
+        <RequestActionsPopup
+          title={ta("درخواست افزودن داروخانه")}
+          group="addition"
+          kind="pharmacy"
+          node={node}
+          mutate={mutate}
+          approve={
+            <AdditionApproveButton
+              kind="pharmacy"
+              requestId={node._id}
+              label={ta("ایجاد داروخانه از این درخواست")}
+              mutate={mutate}
+            />
+          }
+        >
+          <p>{node.name || "—"}</p>
+        </RequestActionsPopup>,
+      ),
+    [setPopup, mutate],
+  );
+
+  useOpenFromQuery(data, openActions);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -65,6 +96,11 @@ const AdminManagePharmacyAdditionsPage = () => {
                 value: (node) => node.address,
                 filter: "Text",
               },
+              rejectReason: {
+                name: ta("دلیل رد"),
+                value: (node) => node.rejectReason || "",
+                filter: "Text",
+              },
               submittedBy: {
                 name: ta("ثبت کننده"),
                 value: (node) =>
@@ -94,24 +130,13 @@ const AdminManagePharmacyAdditionsPage = () => {
                 width: 120,
                 component: (node) => (
                   <TableActions>
-                    {node.status !== "Done" && node.status !== "Rejected" && (
-                      <IconButton
-                        variant="Success"
-                        title={ta("ایجاد داروخانه از این درخواست")}
-                        onClick={() =>
-                          setPopup(
-                            "CreatePharmacyFromRequest",
-                            <CreateFromAdditionPopup
-                              kind="pharmacy"
-                              requestId={node._id}
-                              mutate={mutate}
-                            />,
-                          )
-                        }
-                      >
-                        <CheckIcon />
-                      </IconButton>
-                    )}
+                    <IconButton
+                      variant="Success"
+                      title={ta("بررسی")}
+                      onClick={() => openActions(node)}
+                    >
+                      <CheckIcon />
+                    </IconButton>
                     <IconButton
                       variant="Danger"
                       title={ta("حذف")}

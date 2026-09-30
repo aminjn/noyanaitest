@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import useSWR from "swr";
 import classes from "./AdminManageInsuranceAdditionsPage.module.css";
 import { IInsuranceAdditionRequest } from "@/Components/DoctorPanel/Insurance/DoctorInsuranceAdditionRequestsTab";
@@ -15,11 +16,11 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import CheckIcon from "@/Components/Icons/CheckIcon";
-import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
-import MutateInsuranceRequestPopup from "./MutateInsuranceRequestPopup";
+import RequestActionsPopup from "../Requests/RequestActionsPopup";
+import { AdditionApproveButton } from "../Requests/RequestApproveButtons";
+import useOpenFromQuery from "../Requests/useOpenFromQuery";
 import DeleteInsuranceAdditionRequestPopup from "./DeleteInsuranceAdditionRequestPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -27,10 +28,39 @@ const AdminManageInsuranceAdditionsPage = () => {
   const { data, error, mutate } = useSWR<
     IInsuranceAdditionRequest<{ Doctor: Record<never, never> }>[]
   >(`${API}/auto/insuranceaddition`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data),
+    fetcher({ url }).then((res) =>
+      Array.isArray(res?.data?.data) ? res.data.data : [],
+    ),
   );
 
   const { setPopup } = usePopup();
+
+  const openActions = useCallback(
+    (node: IInsuranceAdditionRequest<{ Doctor: Record<never, never> }>) =>
+      setPopup(
+        "AdditionRequestActions",
+        <RequestActionsPopup
+          title={ta("درخواست افزودن بیمه")}
+          group="addition"
+          kind="insurance"
+          node={node}
+          mutate={mutate}
+          approve={
+            <AdditionApproveButton
+              kind="insurance"
+              requestId={node._id}
+              label={ta("ایجاد بیمه از درخواست")}
+              mutate={mutate}
+            />
+          }
+        >
+          <p>{node.name || "—"}</p>
+        </RequestActionsPopup>,
+      ),
+    [setPopup, mutate],
+  );
+
+  useOpenFromQuery(data, openActions);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -49,6 +79,11 @@ const AdminManageInsuranceAdditionsPage = () => {
                 name: ta("وضعیت"),
                 value: (node) => additionRequestStatusDict[node.status],
                 filter: "Set",
+              },
+              rejectReason: {
+                name: ta("دلیل رد"),
+                value: (node) => node.rejectReason || "",
+                filter: "Text",
               },
               submittedBy: {
                 name: ta("ثبت کننده"),
@@ -83,38 +118,12 @@ const AdminManageInsuranceAdditionsPage = () => {
                 width: 150,
                 component: (node) => (
                   <TableActions>
-                    {node.status !== "Done" && node.status !== "Rejected" && (
-                      <IconButton
-                        variant="Success"
-                        title={ta("ایجاد بیمه از درخواست")}
-                        onClick={() =>
-                          setPopup(
-                            "CreateInsuranceFromRequest",
-                            <CreateFromAdditionPopup
-                              kind="insurance"
-                              requestId={node._id}
-                              mutate={mutate}
-                            />,
-                          )
-                        }
-                      >
-                        <CheckIcon />
-                      </IconButton>
-                    )}
                     <IconButton
-                      variant="Info"
-                      title={ta("ویرایش")}
-                      onClick={() =>
-                        setPopup(
-                          "MutateInsuranceRequest",
-                          <MutateInsuranceRequestPopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
+                      variant="Success"
+                      title={ta("بررسی")}
+                      onClick={() => openActions(node)}
                     >
-                      <EditIcon />
+                      <CheckIcon />
                     </IconButton>
                     <IconButton
                       variant="Danger"

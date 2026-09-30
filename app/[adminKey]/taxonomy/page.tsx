@@ -1,21 +1,9 @@
-import AdminHubPage from "@/Components/Admin/Hub/AdminHubPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
-import { ta } from "@/Components/Admin/i18n/adminText";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// The taxonomy hub (2026-09 audit): every category and tag is now a tab of
+// the page that uses it (blog, clinics, diseases, ...), and places have
+// their own page.
+const LegacyAdminTaxonomy = () => redirect(`/${adminKey}/province`);
 
-const AdminTaxonomy = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminHubPage
-        hub="taxonomy"
-        intro={ta("همه‌ی دسته‌بندی‌ها، تگ‌ها و داده‌های مرجع سایت در یک جا.")}
-      />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminTaxonomy;
+export default LegacyAdminTaxonomy;

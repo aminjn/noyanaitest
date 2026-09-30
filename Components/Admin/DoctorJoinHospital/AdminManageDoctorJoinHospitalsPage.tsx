@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import useSWR from "swr";
 import classes from "./AdminManageDoctorJoinHospitalsPage.module.css";
 import {
@@ -14,13 +15,18 @@ import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import { getDoctorLabel, getDoctorProfileLabel } from "../Lib/LabelGetters";
+import {
+  getDoctorProfileLabel,
+  getHospitalLabel,
+} from "../Lib/LabelGetters";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import EditIcon from "@/Components/Icons/EditIcon";
+import CheckIcon from "@/Components/Icons/CheckIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
-import EditDoctorJoinHospitalStatusPopup from "./EditDoctorJoinHospitalStatusPopup";
+import RequestActionsPopup from "../Requests/RequestActionsPopup";
+import { JoinApproveButton } from "../Requests/RequestApproveButtons";
+import useOpenFromQuery from "../Requests/useOpenFromQuery";
 import DeleteDoctorJoinHospitalPopup from "./DeleteDoctorJoinHospitalPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -31,10 +37,43 @@ const AdminManageDoctorJoinHospitalsPage = () => {
       Doctor: Record<never, never>;
     }>[]
   >(`${API}/auto/doctorjoinhospital`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data),
+    fetcher({ url }).then((res) =>
+      Array.isArray(res?.data?.data) ? res.data.data : [],
+    ),
   );
 
   const { setPopup } = usePopup();
+
+  const openActions = useCallback(
+    (node: IDoctorJoinHospitalRequest<{ Hospital: Record<never, never>; Doctor: Record<never, never> }>) =>
+      setPopup(
+        "DoctorJoinRequestActions",
+        <RequestActionsPopup
+          title={ta("درخواست عضویت پزشک در بیمارستان")}
+          group="join"
+          kind="hospital"
+          node={node}
+          mutate={mutate}
+          approve={
+            <JoinApproveButton
+              kind="hospital"
+              requestId={node._id}
+              mutate={mutate}
+            />
+          }
+        >
+          <p>
+            {ta("درخواست عضویت دکتر ${1} در ${2}", [
+              node.doctor ? getDoctorProfileLabel(node.doctor) : "",
+              node.hospital ? getHospitalLabel(node.hospital) : "",
+            ])}
+          </p>
+        </RequestActionsPopup>,
+      ),
+    [setPopup, mutate],
+  );
+
+  useOpenFromQuery(data, openActions);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -77,6 +116,11 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                 value: (node) => doctorJoinHospitalStatusesDict[node.status],
                 filter: "Set",
               },
+              rejectReason: {
+                name: ta("دلیل رد"),
+                value: (node) => node.rejectReason || "",
+                filter: "Text",
+              },
               submissionParty: {
                 name: ta("ارسال‌کننده"),
                 value: (node) =>
@@ -98,18 +142,11 @@ const AdminManageDoctorJoinHospitalsPage = () => {
                 component: (node) => (
                   <TableActions>
                     <IconButton
-                      title={ta("تغییر وضعیت")}
-                      onClick={() =>
-                        setPopup(
-                          "EditDoctorJoinHospital",
-                          <EditDoctorJoinHospitalStatusPopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
+                      variant="Success"
+                      title={ta("بررسی")}
+                      onClick={() => openActions(node)}
                     >
-                      <EditIcon />
+                      <CheckIcon />
                     </IconButton>
                     <IconButton
                       variant="Danger"

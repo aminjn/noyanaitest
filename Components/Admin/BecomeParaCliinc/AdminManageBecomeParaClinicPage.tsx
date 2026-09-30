@@ -5,6 +5,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { IBecomeParaClinicRequest } from "@/Components/Layout/BecomeParaClinicPage";
 import { useParams } from "next/navigation";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
+import RequestDecisionActions from "../Requests/RequestDecisionActions";
+import { requestUserId } from "../Requests/requestMeta";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -16,10 +18,6 @@ import FormatDate from "@/Components/UI/FormatDate";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
-import Button from "@/Components/UI/Button";
-import usePopup from "@/Components/Hooks/usePopup";
-import ChangeBecomeParaClinicRequestStatusPopup from "./ChangeBecomeParaClinicRequestStatusPopup";
-import AssignParaClinicToBecomeParaClinicRequestPopup from "./AssignParaClinicToBecomeParaClinicRequestPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeParaClinicPage = () => {
@@ -30,7 +28,6 @@ const AdminManageBecomeParaClinicPage = () => {
     fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { setPopup } = usePopup();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -51,7 +48,7 @@ const AdminManageBecomeParaClinicPage = () => {
                       value={<FormatDate value={data.createdAt} />}
                     />
                     <DataPair
-                      title={ta("یوزر")}
+                      title={ta("کاربر")}
                       value={
                         data.user ? (
                           <InlineLink href={adminPath(`/user/${data.user._id}`)}>
@@ -66,6 +63,9 @@ const AdminManageBecomeParaClinicPage = () => {
                       title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
+                    {!!data.rejectReason && (
+                      <DataPair title={ta("دلیل رد")} value={data.rejectReason} />
+                    )}
                     <DataPair title={ta("کد سیام")} value={data.siamCode} />
                     <DataPair title={ta("کد ملی")} value={data.nationalId} />
                     <DataPair
@@ -96,41 +96,32 @@ const AdminManageBecomeParaClinicPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
-                    <ApproveBecomeRequestButton
-                      requestPath="becomeParaClinic"
+                    <RequestDecisionActions
+                      group="become"
+                      kind="paraClinic"
                       nodeId={String(nodeId)}
                       status={data.status}
-                      label={ta("تأیید و ساخت مرکز پاراکلینیک")}
-                      done={ta("مرکز پاراکلینیک ساخته و فعال شد.")}
-                      target={(id) => `/paraClinic/${id}`}
+                      rejectReason={data.rejectReason}
                       mutate={mutate}
+                      approve={
+                        <ApproveBecomeRequestButton
+                          requestPath="becomeParaClinic"
+                          nodeId={String(nodeId)}
+                          status={data.status}
+                          label={ta("تأیید و ساخت مرکز پاراکلینیک")}
+                          done={ta("مرکز پاراکلینیک ساخته و فعال شد.")}
+                          target={(id) => `/paraClinic/${id}`}
+                          mutate={mutate}
+                        />
+                      }
+                      linkExisting={{
+                        requestPath: "becomeParaClinic",
+                        orgPath: `${API}/auto/paraClinic`,
+                        label: ta("انتخاب پاراکلینیک"),
+                        target: (id) => `/paraClinic/${id}`,
+                        applicantUser: requestUserId(data.user),
+                      }}
                     />
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "ChangeBecomeParaClinicRequestStatus",
-                          <ChangeBecomeParaClinicRequestStatusPopup
-                            node={data}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تغییر وضعیت")}
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "AssignParaClinicToBecomeParaClinicRequest",
-                          <AssignParaClinicToBecomeParaClinicRequestPopup
-                            node={data}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تخصیص پاراکلینیک")}
-                    </Button>
                   </List>
                 ),
               },

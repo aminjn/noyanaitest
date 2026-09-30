@@ -1,17 +1,7 @@
-import AdminManageSymptomCategoriesPage from "@/Components/Admin/SymptomCategory/AdminManageSymptomCategoriesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "علائم" page as a tab (2026-09 admin audit)
+const LegacySymptomCategoryAdmin = () => redirect(`/${adminKey}/symptom?tab=categories`);
 
-const AdminManageSymptomCategories = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageSymptomCategoriesPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageSymptomCategories;
+export default LegacySymptomCategoryAdmin;

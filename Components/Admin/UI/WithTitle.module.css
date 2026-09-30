@@ -120,3 +120,19 @@
     transform: scale(1);
   }
 }
+
+/* shown inside an AdminSectionHub tab */
+.embedded {
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.embeddedTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray12);
+}

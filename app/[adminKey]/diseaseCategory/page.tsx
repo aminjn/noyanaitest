@@ -1,17 +1,7 @@
-import AdminManageDiseaseCategoriesPage from "@/Components/Admin/DiseaseCategory/AdminManageDiseaseCategoriesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "بیماری‌ها" page as a tab (2026-09 admin audit)
+const LegacyDiseaseCategoryAdmin = () => redirect(`/${adminKey}/disease?tab=categories`);
 
-const AdminManageDiseaseCategories = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageDiseaseCategoriesPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageDiseaseCategories;
+export default LegacyDiseaseCategoryAdmin;

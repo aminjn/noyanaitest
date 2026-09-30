@@ -1,17 +1,20 @@
-import AdminManageSymptomsPage from "@/Components/Admin/Symptom/AdminManageSymptomsPage";
+import SymptomHub from "@/Components/Admin/Hub/SymptomHub";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { Suspense } from "react";
 
 const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
 
-const AdminManageSymptoms = async () => {
+const AdminSymptomHubPage = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageSymptomsPage />
+      <Suspense>
+        <SymptomHub />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };
 
-export default AdminManageSymptoms;
+export default AdminSymptomHubPage;

@@ -115,7 +115,7 @@ const ModelOptionsPopup = ({ model }: { model: IOllamaModel }) => {
   return (
     <HandleLoading data={data !== undefined} error={error}>
       {data !== undefined && (
-        <PopupCard>
+        <PopupCard title={ta("مدل جدید")}>
           <Button
             onClick={() => setIsDefaulting(true)}
             isLoading={isDefaulting}
@@ -213,7 +213,7 @@ const GlobalOllamaSettingsPopup = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <PopupCard>
+        <PopupCard title={ta("مدل جدید")}>
           <CreateForm
             defaultValue={data}
             renderer={{

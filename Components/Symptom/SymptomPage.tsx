@@ -150,7 +150,7 @@ const SymptomPage = ({
         </div>
       </ListPageWithSide>
       <SmallAd
-        position="symptom1"
+        position="symptom2"
         resourceModel="Symptom"
         resource={data._id}
       />

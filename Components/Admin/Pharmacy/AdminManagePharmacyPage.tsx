@@ -1,4 +1,5 @@
 "use client";
+import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -163,7 +164,7 @@ const AdminManagePharmacyPage = () => {
                         getOptionValue: (node) => (node as ICity)._id,
                         getDefaultValue: (inp) => inp.city,
                         multi: false,
-                        path: `${API}/auto/city`,
+                        path: cityPath,
                       },
                       district: {
                         title: ta("محله"),
@@ -173,7 +174,7 @@ const AdminManagePharmacyPage = () => {
                         getOptionValue: (node) => (node as IDistrict)._id,
                         getDefaultValue: (inp) => inp.district,
                         multi: false,
-                        path: `${API}/auto/district`,
+                        path: districtPath,
                       },
                     }}
                   />

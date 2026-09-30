@@ -38,7 +38,7 @@ export interface IProductCategory<
 const CreateProductCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={ta("دسته‌ی محصولات جدید")}>
       <CreateForm<IProductCategory>
         renderer={{
           name: { title: ta("نام"), type: "text" },

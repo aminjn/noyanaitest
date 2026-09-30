@@ -38,7 +38,7 @@ export interface ITestCategory<
 const CreateTestCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={ta("دسته‌ی آزمایش جدید")}>
       <CreateForm<ITestCategory>
         onCancel={() => {
           closePopup();

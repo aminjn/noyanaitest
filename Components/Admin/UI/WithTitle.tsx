@@ -17,6 +17,7 @@ import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import { useRouter } from "@/Components/i18n/navigation";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { useAdminEmbedded } from "./AdminEmbedded";
 
 const WithTitle = ({
   children,
@@ -46,19 +47,32 @@ const WithTitle = ({
   }, [isContextOpen]);
 
   const { back } = useRouter();
+  // inside an AdminSectionHub tab: the hub has the back button and heading
+  const embedded = useAdminEmbedded();
   return (
-    <Box className={`${classes.main} ${className}`} style={style}>
+    <Box
+      className={`${classes.main} ${embedded ? classes.embedded : ""} ${className}`}
+      style={style}
+    >
       <div className={classes.header}>
         <div className={classes.titleBox}>
-          <IconButton
-            onClick={() => back()}
-            variant="Neutral"
-            title={ta("بازگشت")}
-            style={{ transform: "rotateZ(180deg)" }}
-          >
-            <ArrowLeftIcon />
-          </IconButton>
-          <Title>{typeof title === "string" ? ta(title) : title}</Title>
+          {!embedded && (
+            <IconButton
+              onClick={() => back()}
+              variant="Neutral"
+              title={ta("بازگشت")}
+              style={{ transform: "rotateZ(180deg)" }}
+            >
+              <ArrowLeftIcon />
+            </IconButton>
+          )}
+          {embedded ? (
+            <h2 className={classes.embeddedTitle}>
+              {typeof title === "string" ? ta(title) : title}
+            </h2>
+          ) : (
+            <Title>{typeof title === "string" ? ta(title) : title}</Title>
+          )}
         </div>
         <div className={classes.headerActions}>
           {(!!actions?.length || !!collapsed) && (

@@ -18,7 +18,7 @@ const MutateRedirectionPopup = ({
 }) => {
   const { closePopup } = usePopup();
   return (
-    <PopupCard>
+    <PopupCard title={node ? ta("ویرایش ریدایرکت") : ta("ریدایرکت جدید")}>
       <CreateForm
         style={{ width: "min(40rem , 90dvw)" }}
         defaultValue={node}

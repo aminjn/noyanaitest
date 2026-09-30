@@ -27,7 +27,7 @@ const ClinicUserTab = ({
         defaultValue={node}
         renderer={{
           user: {
-            title: ta("یوزر"),
+            title: ta("کاربر"),
             type: "nodes",
             getOptionLabel: (node) => getUserLabel(node as IUser),
             path: `${API}/auto/user`,

@@ -5,6 +5,8 @@ import { API, FilePath } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { useParams } from "next/navigation";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
+import RequestDecisionActions from "../Requests/RequestDecisionActions";
+import { requestUserId } from "../Requests/requestMeta";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -16,10 +18,6 @@ import FormatDate from "@/Components/UI/FormatDate";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
-import Button from "@/Components/UI/Button";
-import usePopup from "@/Components/Hooks/usePopup";
-import ChangeBecomeHospitalRequestPopup from "./ChangeBecomeHospitalRequestStatusPopup";
-import AssignHospitalToHospitalRequestPopup from "./AssignHospitalToHospitalRequestPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeHospitalPage = () => {
@@ -29,7 +27,6 @@ const AdminManageBecomeHospitalPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { setPopup } = usePopup();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -50,7 +47,7 @@ const AdminManageBecomeHospitalPage = () => {
                       value={<FormatDate value={data.createdAt} />}
                     />
                     <DataPair
-                      title={ta("یوزر")}
+                      title={ta("کاربر")}
                       value={
                         <InlineLink href={adminPath(`/user/${data.user?._id}`)}>
                           {data.user?.phone}
@@ -61,6 +58,9 @@ const AdminManageBecomeHospitalPage = () => {
                       title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
+                    {!!data.rejectReason && (
+                      <DataPair title={ta("دلیل رد")} value={data.rejectReason} />
+                    )}
                     <DataPair title={ta("کد سیام")} value={data.siamCode} />
                     <DataPair title={ta("کد ملی")} value={data.nationalId} />
                     <DataPair
@@ -91,41 +91,32 @@ const AdminManageBecomeHospitalPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
-                    <ApproveBecomeRequestButton
-                      requestPath="becomehospital"
+                    <RequestDecisionActions
+                      group="become"
+                      kind="hospital"
                       nodeId={String(nodeId)}
                       status={data.status}
-                      label={ta("تأیید و ساخت بیمارستان")}
-                      done={ta("بیمارستان ساخته و فعال شد.")}
-                      target={(id) => `/hospital/${id}`}
+                      rejectReason={data.rejectReason}
                       mutate={mutate}
+                      approve={
+                        <ApproveBecomeRequestButton
+                          requestPath="becomehospital"
+                          nodeId={String(nodeId)}
+                          status={data.status}
+                          label={ta("تأیید و ساخت بیمارستان")}
+                          done={ta("بیمارستان ساخته و فعال شد.")}
+                          target={(id) => `/hospital/${id}`}
+                          mutate={mutate}
+                        />
+                      }
+                      linkExisting={{
+                        requestPath: "becomehospital",
+                        orgPath: `${API}/auto/hospital`,
+                        label: ta("انتخاب بیمارستان"),
+                        target: (id) => `/hospital/${id}`,
+                        applicantUser: requestUserId(data.user),
+                      }}
                     />
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "ChangeBecomeHospitalRequest",
-                          <ChangeBecomeHospitalRequestPopup
-                            node={data}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تغییر وضعیت")}
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "AssignHospitalToHospitalRequest",
-                          <AssignHospitalToHospitalRequestPopup
-                            node={data}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تخصیص بیمارستان")}
-                    </Button>
                   </List>
                 ),
               },

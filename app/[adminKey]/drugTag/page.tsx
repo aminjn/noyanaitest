@@ -1,17 +1,7 @@
-import AdminManageDrugtagsPage from "@/Components/Admin/DrugTag/AdminManageDrugTagsPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "داروها" page as a tab (2026-09 admin audit)
+const LegacyDrugTagAdmin = () => redirect(`/${adminKey}/drug?tab=tags`);
 
-const AdminManageDrugTags = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageDrugtagsPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageDrugTags;
+export default LegacyDrugTagAdmin;

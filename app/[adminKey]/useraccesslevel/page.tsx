@@ -1,17 +1,7 @@
-import AdminManageUserAccessLevelsPage from "@/Components/Admin/AccessLevel/AdminManageUserAccessLevelsPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "تیم و دسترسی‌ها" page as a tab (2026-09 admin audit)
+const LegacyUseraccesslevelAdmin = () => redirect(`/${adminKey}/team?tab=members`);
 
-const AdminManageUserAccessLevels = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageUserAccessLevelsPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageUserAccessLevels;
+export default LegacyUseraccesslevelAdmin;
