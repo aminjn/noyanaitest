@@ -98,7 +98,7 @@ const AdminManageServicePackagesPage = () => {
         },
         name: { type: "text", title: ta("نام") },
       }}
-      title={ta("پکیج سرویس")}
+      title={ta("پکیج‌های خدمات")}
       modelName="servicePackage"
       table={({ mutate }) => ({
         name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
