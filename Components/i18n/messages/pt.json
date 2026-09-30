@@ -241,7 +241,7 @@
  "chosenBlogs": "Posts em destaque",
  "city": "Cidade",
  "claimProfileLegend": "Se este perfil é seu, reivindique-o:",
- "claimThisProfile": "Este perfil é seu?",
+ "claimThisProfile": "Esta página é minha",
  "clickToRequestAddClinic": "Clique para solicitar a inclusão de uma clínica",
  "clickToRequestAddHospital": "Clique para solicitar a entrada em um hospital",
  "clickToRequestAddInsurance": "Clique para solicitar a inclusão de um convênio",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Sua solicitação anterior foi recusada",
  "rejectedApplicationLegend": "Corrija seus dados e documentos e envie novamente. Fale com o suporte para saber o motivo da recusa.",
  "seePharmacy": "Ver farmácia",
- "featuredSpecialities": "Especialidades em destaque"
+ "featuredSpecialities": "Especialidades em destaque",
+ "unclaimedProfileTitle": "O agendamento online não está disponível",
+ "unclaimedProfileLegend": "Este médico ainda não tem conta no NoyanAI e não aceita agendamentos online. Se esta página é sua, ative-a solicitando a adesão."
 }

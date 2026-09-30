@@ -241,7 +241,7 @@
  "chosenBlogs": "Artikel pilihan",
  "city": "Kota",
  "claimProfileLegend": "Jika Anda pemilik profil ini, klaim sekarang:",
- "claimThisProfile": "Apakah ini profil Anda?",
+ "claimThisProfile": "Halaman ini milik saya",
  "clickToRequestAddClinic": "Klik untuk meminta penambahan klinik",
  "clickToRequestAddHospital": "Klik untuk meminta bergabung dengan rumah sakit",
  "clickToRequestAddInsurance": "Klik untuk meminta penambahan asuransi",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Pengajuan Anda sebelumnya ditolak",
  "rejectedApplicationLegend": "Perbaiki data dan dokumen Anda lalu kirim ulang. Hubungi dukungan untuk mengetahui alasan penolakan.",
  "seePharmacy": "Lihat apotek",
- "featuredSpecialities": "Spesialisasi pilihan"
+ "featuredSpecialities": "Spesialisasi pilihan",
+ "unclaimedProfileTitle": "Pemesanan online tidak tersedia",
+ "unclaimedProfileLegend": "Dokter ini belum memiliki akun NoyanAI dan tidak menerima pemesanan online. Jika halaman ini milik Anda, aktifkan dengan mengajukan bergabung."
 }

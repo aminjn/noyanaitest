@@ -13,7 +13,6 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import AssignDoctorProfileToUserPopup from "./AssignProfileToUserPopup";
 import InstantCreateDoctorProfilePopup from "./InstantCreateDoctorProfilePopup";
-import CloneDoctorProfileFromExistingDoctorPopup from "./CloneDoctorProfileFromExistingDoctorPopup";
 import FormActions from "../UI/FormActions";
 import List from "../UI/List";
 import Link from "@/Components/i18n/Link";
@@ -107,19 +106,6 @@ const BecomeDoctorProfileSelector = ({
                   }
                 >
                   ساخت پروفایل جدید و ثبت برای این کاربر
-                </Button>
-                <Button
-                  onClick={() =>
-                    setPopup(
-                      "CloneDoctorProfileFromExistingDoctor",
-                      <CloneDoctorProfileFromExistingDoctorPopup
-                        user={req.user}
-                        mutate={mutate}
-                      />,
-                    )
-                  }
-                >
-                  ساخت پروفایل از پزشکان موجود در سایت
                 </Button>
               </Fragment>
             )}

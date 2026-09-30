@@ -241,7 +241,7 @@
  "chosenBlogs": "Publicaciones destacadas",
  "city": "Ciudad",
  "claimProfileLegend": "Si este perfil es tuyo, reclámalo:",
- "claimThisProfile": "¿Es este tu perfil?",
+ "claimThisProfile": "Esta página es mía",
  "clickToRequestAddClinic": "Haz clic para solicitar añadir una clínica",
  "clickToRequestAddHospital": "Haz clic para solicitar unirte a un hospital",
  "clickToRequestAddInsurance": "Haz clic para solicitar añadir un seguro",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "Su solicitud anterior fue rechazada",
  "rejectedApplicationLegend": "Corrija sus datos y documentos y vuelva a enviarlos. Contacte con soporte para saber el motivo del rechazo.",
  "seePharmacy": "Ver farmacia",
- "featuredSpecialities": "Especialidades destacadas"
+ "featuredSpecialities": "Especialidades destacadas",
+ "unclaimedProfileTitle": "La reserva en línea no está disponible",
+ "unclaimedProfileLegend": "Este médico aún no tiene cuenta en NoyanAI y no acepta reservas en línea. Si esta página es suya, actívela solicitando unirse."
 }

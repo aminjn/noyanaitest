@@ -1,46 +1,7 @@
-import { IDoctor } from "@/Components/Admin/Doctor/AdminManageDoctorsPage";
-import DoctorsListPage from "@/Components/Doctor/DoctorsListPage";
-import { getPublicData } from "@/Components/helpers/getPublicData";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { notFound } from "next/navigation";
-import {
-  getListPageMetadata,
-  getListPageWebSchema,
-} from "@/Components/helpers/getPageMetadata";
-import JsonLdSchema from "@/Components/UI/JsonLdSchema";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { permanentRedirect } from "next/navigation";
 
-export type DoctorPageProps = {
-  data: IDoctor<{ SpecialityPopulated: Record<never, never> }>[];
-  pagesCount: number;
-};
-
-export const generateMetadata = () => getListPageMetadata("/doctors");
-
-const DoctorsList = async (ctx: {
-  searchParams: Promise<{ page?: string }>;
-}) => {
-  const { page: _page } = await ctx.searchParams;
-
-  const page = Number(_page || 1);
-  if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
-  const [data, textContent] = await Promise.all([
-    getPublicData<DoctorPageProps>(`doctor?page=${page}`),
-    getScopedTextContent(["doctorsList"]),
-  ]);
-  if (!data) return notFound();
-  const webSchema = await getListPageWebSchema("/doctors");
-  return (
-    <>
-      <JsonLdSchema schema={webSchema} />
-      <LocaleScopeProvider
-        namespaces={["doctorsList"]}
-        initialTextContent={textContent}
-      >
-        <DoctorsListPage {...data} />
-      </LocaleScopeProvider>
-    </>
-  );
-};
+// The old doctors directory was merged into the bookable doctor profiles
+// (2026-09): every doctor is listed, filtered and booked on /book.
+const DoctorsList = () => permanentRedirect("/book");
 
 export default DoctorsList;

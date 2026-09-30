@@ -241,7 +241,7 @@
  "chosenBlogs": "精选文章",
  "city": "城市",
  "claimProfileLegend": "如果您是此资料的所有者，请认领：",
- "claimThisProfile": "这是您的资料吗？",
+ "claimThisProfile": "这是我的页面",
  "clickToRequestAddClinic": "点击申请添加诊所",
  "clickToRequestAddHospital": "点击申请加入医院",
  "clickToRequestAddInsurance": "点击申请添加保险",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "您之前的申请未通过",
  "rejectedApplicationLegend": "请更正资料和文件后重新提交。如需了解未通过的原因，请联系客服。",
  "seePharmacy": "查看药房",
- "featuredSpecialities": "精选专科"
+ "featuredSpecialities": "精选专科",
+ "unclaimedProfileTitle": "暂不支持在线预约",
+ "unclaimedProfileLegend": "该医生尚未在 NoyanAI 注册，暂不接受在线预约。如果这是您的页面，请提交入驻申请以启用。"
 }

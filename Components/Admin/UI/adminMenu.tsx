@@ -66,8 +66,8 @@ export const adminMenu: AdminMenuGroup[] = [
     title: "ارائه‌دهندگان",
     icon: <StetoscopeIcon />,
     items: [
-      { title: "پزشکان", href: "doctor", access: "Doctor" },
-      { title: "پروفایل پزشکان", href: "doctorprofile", access: "DoctorProfile" },
+      // one doctor entity: the old directory ("doctor") was merged into these
+      { title: "پزشکان", href: "doctorprofile", access: "DoctorProfile" },
       { title: "کلینیک‌ها", href: "clinic", access: "Clinic" },
       { title: "بیمارستان‌ها", href: "hospital", access: "Hospital" },
       { title: "پاراکلینیک‌ها", href: "paraClinic", access: "ParaClinic" },

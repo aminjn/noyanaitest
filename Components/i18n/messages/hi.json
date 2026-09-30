@@ -241,7 +241,7 @@
  "chosenBlogs": "चुनिंदा लेख",
  "city": "शहर",
  "claimProfileLegend": "यदि यह प्रोफ़ाइल आपकी है, तो इस पर दावा करें:",
- "claimThisProfile": "क्या यह आपकी प्रोफ़ाइल है?",
+ "claimThisProfile": "यह पेज मेरा है",
  "clickToRequestAddClinic": "क्लिनिक जोड़ने का अनुरोध करने के लिए क्लिक करें",
  "clickToRequestAddHospital": "अस्पताल से जुड़ने का अनुरोध करने के लिए क्लिक करें",
  "clickToRequestAddInsurance": "बीमा जोड़ने का अनुरोध करने के लिए क्लिक करें",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "आपका पिछला आवेदन अस्वीकार कर दिया गया",
  "rejectedApplicationLegend": "अपनी जानकारी और दस्तावेज़ सुधारकर फिर से जमा करें। अस्वीकृति का कारण जानने के लिए सहायता से संपर्क करें।",
  "seePharmacy": "फ़ार्मेसी देखें",
- "featuredSpecialities": "चुनिंदा विशेषज्ञताएँ"
+ "featuredSpecialities": "चुनिंदा विशेषज्ञताएँ",
+ "unclaimedProfileTitle": "ऑनलाइन बुकिंग उपलब्ध नहीं है",
+ "unclaimedProfileLegend": "इस डॉक्टर का अभी NoyanAI पर खाता नहीं है और ऑनलाइन बुकिंग नहीं होती। यदि यह पेज आपका है, तो जुड़ने का आवेदन देकर इसे सक्रिय करें।"
 }

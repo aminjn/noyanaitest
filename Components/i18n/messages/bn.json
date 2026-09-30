@@ -241,7 +241,7 @@
  "chosenBlogs": "নির্বাচিত পোস্ট",
  "city": "শহর",
  "claimProfileLegend": "আপনি এই প্রোফাইলের মালিক হলে দাবি করুন:",
- "claimThisProfile": "এটি কি আপনার প্রোফাইল?",
+ "claimThisProfile": "এই পৃষ্ঠাটি আমার",
  "clickToRequestAddClinic": "ক্লিনিক যোগের অনুরোধ করতে ক্লিক করুন",
  "clickToRequestAddHospital": "হাসপাতালে যোগদানের অনুরোধ করতে ক্লিক করুন",
  "clickToRequestAddInsurance": "বীমা যোগের অনুরোধ করতে ক্লিক করুন",
@@ -2125,5 +2125,7 @@
  "rejectedApplicationTitle": "আপনার আগের আবেদনটি প্রত্যাখ্যাত হয়েছে",
  "rejectedApplicationLegend": "আপনার তথ্য ও নথি সংশোধন করে আবার জমা দিন। প্রত্যাখ্যানের কারণ জানতে সহায়তায় যোগাযোগ করুন।",
  "seePharmacy": "ফার্মেসি দেখুন",
- "featuredSpecialities": "নির্বাচিত বিশেষত্ব"
+ "featuredSpecialities": "নির্বাচিত বিশেষত্ব",
+ "unclaimedProfileTitle": "অনলাইন বুকিং উপলব্ধ নয়",
+ "unclaimedProfileLegend": "এই ডাক্তারের এখনও NoyanAI অ্যাকাউন্ট নেই এবং অনলাইন বুকিং নেন না। পৃষ্ঠাটি আপনার হলে যোগদানের আবেদন করে এটি সক্রিয় করুন।"
 }

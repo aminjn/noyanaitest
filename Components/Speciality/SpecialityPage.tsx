@@ -5,7 +5,7 @@ import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { DoctorSessionType } from "../DoctorPanel/Calendar/DoctorCalendarDay";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import Ixon from "../UI/Ixon";
@@ -15,12 +15,10 @@ import Button from "../UI/Button";
 import ArrowCircleDownIcon from "../Icons/ArrowCircleDownIcon";
 import ListPageList from "../UI/ListPage/ListPageList";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
-import DoctorCard from "../Doctor/DoctorCard";
-import { IDoctor } from "../Admin/Doctor/AdminManageDoctorsPage";
 import BigAd from "../UI/ListPage/BigAd";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
-import { t2xlRegular, tsmRegular, txlRegular } from "../UI/Typography";
+import { t2xlRegular, tsmRegular } from "../UI/Typography";
 
 const NS: ContentNamespace[] = ["common", "specialityPage"];
 
@@ -36,13 +34,9 @@ export type SpecialityDoctorProfileRow = IDoctorProfile<{
   Province: Record<never, never>;
 }> & { sessionTypes: DoctorSessionType[]; model: "DoctorProfile" };
 
-export type SpecialityDoctorRow = IDoctor<{
-  SpecialityPopulated: Record<never, never>;
-}> & { model: "Doctor" };
-
 export type SpecialityPageProps = {
   data: ISpeciality<{ Category: Record<never, never> }>;
-  doctors: (SpecialityDoctorProfileRow | SpecialityDoctorRow)[];
+  doctors: SpecialityDoctorProfileRow[];
   pagesCount: number;
   count: number;
 };
@@ -110,13 +104,9 @@ const SpecialityPage = ({
             `/speciality/${data.slug || data._id}?page=${page}`,
         }}
       >
-        {doctors.map((node) =>
-          node.model === "Doctor" ? (
-            <DoctorCard key={`Doctor-${node._id}`} node={node} />
-          ) : (
-            <DoctorCardAlt key={`DoctorProfile-${node._id}`} node={node} />
-          ),
-        )}
+        {doctors.map((node) => (
+          <DoctorCardAlt key={node._id} node={node} />
+        ))}
       </ListPageList>
       <div className={classes.box} id="about">
         <BigAd

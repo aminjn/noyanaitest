@@ -1,41 +1,15 @@
-import DoctorPage, { DoctorPageProps } from "@/Components/Doctor/DoctorPage";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getPublicData } from "@/Components/helpers/getPublicData";
-import { notFound } from "next/navigation";
-import {
-  getNodePageMetadata,
-  getNodePageWebSchema,
-} from "@/Components/helpers/getPageMetadata";
-import JsonLdSchema from "@/Components/UI/JsonLdSchema";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["doctorPage"];
-
-export const generateMetadata = ({
-  params: { slug },
-}: {
-  params: { slug: string };
-}) => getNodePageMetadata("/doctor/[slug]", slug);
-
-const Doctor = async ({ params: { slug } }: { params: { slug: string } }) => {
-  const [data, textContent] = await Promise.all([
-    getPublicData<DoctorPageProps>(
-      `doctor/${slug}`
-      // (res: any) => res.data.data
-    ),
-    getScopedTextContent(NS),
-  ]);
-  if (!data) return notFound();
-  const webSchema = await getNodePageWebSchema("/doctor/[slug]", slug);
-  return (
-    <>
-      <JsonLdSchema schema={webSchema} />
-      <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
-        <DoctorPage data={data.data} faqs={data.faqs} />
-      </LocaleScopeProvider>
-    </>
+// A doctor of the old public directory now has a regular doctor profile
+// (2026-09 merge): the old URL answers with a 301 to /dr/<slug> (the
+// middleware's Redirection usually catches it first; this covers the rest).
+const LegacyDoctor = async ({ params: { slug } }: { params: { slug: string } }) => {
+  const data = await getPublicData<{ redirect?: string }>(
+    `doctor/${encodeURIComponent(decodeURIComponent(slug))}`,
   );
+  if (!data?.redirect) return notFound();
+  permanentRedirect(data.redirect);
 };
 
-export default Doctor;
+export default LegacyDoctor;

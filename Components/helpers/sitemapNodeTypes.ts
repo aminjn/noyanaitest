@@ -5,7 +5,6 @@ export const sitemapNodeTypes = [
   "disease",
   "symptom",
   "speciality",
-  "doctor",
   "dr",
   "clinic",
   "hospital",
@@ -24,9 +23,8 @@ export type SitemapNodeType = (typeof sitemapNodeTypes)[number];
 export const isSitemapNodeType = (value: string): value is SitemapNodeType =>
   (sitemapNodeTypes as readonly string[]).includes(value);
 
-// slug -> public page path for each node type. "doctor" (legacy Doctor
-// model) and "dr" (DoctorProfile model) are both live routes backed by
-// different models, so they get separate entries and separate sitemaps.
+// slug -> public page path for each node type. Every doctor is a "dr"
+// profile since the old /doctor directory was merged (it only redirects).
 export const sitemapNodePath: Record<
   SitemapNodeType,
   (slug: string) => string
@@ -35,7 +33,6 @@ export const sitemapNodePath: Record<
   disease: (slug) => `/disease/${slug}`,
   symptom: (slug) => `/symptom/${slug}`,
   speciality: (slug) => `/speciality/${slug}`,
-  doctor: (slug) => `/doctor/${slug}`,
   dr: (slug) => `/dr/${slug}`,
   clinic: (slug) => `/clinic/${slug}`,
   hospital: (slug) => `/hospital/${slug}`,
@@ -54,7 +51,7 @@ export const sitemapNodePath: Record<
 // each list is the canonical entry point search engines should crawl from.
 export const sitemapStaticPages: string[] = [
   "/",
-  "/doctors",
+  "/book",
   "/drug",
   "/disease",
   "/symptom",
