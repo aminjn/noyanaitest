@@ -17,6 +17,7 @@ import CalendarIcon from "@/Components/Icons/CalendarIcon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import MedalIcon from "@/Components/Icons/MedalIcon";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
+import WalletWithdrawal from "./WalletWithdrawal";
 
 
 type FinanceTransaction = {
@@ -40,6 +41,8 @@ type FinanceTransaction = {
 
 type PanelFinance = {
   balance: number;
+  // the owner can move the money to the bank (not a secretary)
+  canWithdraw?: boolean;
   income: { thisMonth: number; lastMonth: number; allTime: number };
   upcoming: { total: number; count: number };
   licenseSpend: number;
@@ -197,6 +200,8 @@ const PanelFinancePage = ({
               note={getContent("dpfLicenseSpend", [`${num.format(data.licenseSpend)} ${toman}`])}
             />
           </div>
+
+          {data.canWithdraw && <WalletWithdrawal />}
 
           <section className={classes.card}>
             <h2 className={classes.cardTitle}>{getContent("dpfMonthlyIncome")}</h2>

@@ -1,5 +1,6 @@
 "use client";
 
+import WalletWithdrawal from "@/Components/_Common/Finance/WalletWithdrawal";
 import useSWR from "swr";
 import { ReactNode, useMemo, useState } from "react";
 import classes from "./DashboardManageTransactionsPage.module.css";
@@ -26,7 +27,7 @@ import ArrowCircleDownIcon from "@/Components/Icons/ArrowCircleDownIcon";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
-const NS: ContentNamespace[] = ["common", "dashboardTransaction", "onlinePayment"];
+const NS: ContentNamespace[] = ["common", "dashboardTransaction", "onlinePayment", "walletWithdrawal"];
 
 type Row = ITransaction<{ Reservation: { Doctor: Record<never, never> } }>;
 
@@ -135,6 +136,7 @@ const DashboardManageTransactionsPage = () => {
     if (kind === "order")
       return { title: getContent(t.amount >= 0 ? "trOrderRefund" : "trOrderPay"), href: `/order/${t.order}` };
     if (kind === "topUp") return { title: getContent("walletTopUp"), href: `/payment/${t.gatewayPayment}` };
+    if ((t as { withdrawal?: string }).withdrawal) return { title: getContent("wdTitle") };
     return { title: getContent("trOther"), href: undefined };
   };
 
@@ -186,6 +188,9 @@ const DashboardManageTransactionsPage = () => {
           </div>
         </div>
       </div>
+
+      {/* move wallet money to a bank account (refunds, payouts) */}
+      <WalletWithdrawal />
 
       <HandleLoading data={!!data} error={error}>
         {!!data && (
