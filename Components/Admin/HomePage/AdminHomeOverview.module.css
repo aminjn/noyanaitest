@@ -1,0 +1,67 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--glass);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.head h3 {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.count,
+.empty {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.count {
+  background: var(--primary1, rgba(99, 102, 241, 0.1));
+  color: var(--primary7);
+}
+
+.empty {
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--gray12);
+}
+
+.how {
+  margin: 0;
+  color: var(--gray9);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+.items {
+  margin: 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.link {
+  margin-top: auto;
+  align-self: flex-start;
+  color: var(--primary7);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}

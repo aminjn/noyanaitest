@@ -1,17 +1,8 @@
-import AdminHomeImagePage from "@/Components/Admin/StaticImages/AdminHomeImagePage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// the hero image is a tab of the home page hub (2026-09 admin audit); the
+// about / for-doctors images are tabs of those pages
+const LegacyAdminStaticImages = () => redirect(`/${adminKey}/homePage?tab=image`);
 
-const AdminManageStaticImages = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminHomeImagePage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageStaticImages;
+export default LegacyAdminStaticImages;

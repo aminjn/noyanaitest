@@ -34,6 +34,20 @@ const TabSystem = ({
   );
   const [currentTab, setCurrenTab] = viewState || innerState;
 
+  // An icon only helps when it tells the tabs apart: most record pages gave
+  // several tabs the same generic info icon, so when any icon repeats the
+  // bar shows plain titles instead.
+  const showIcons = useMemo(() => {
+    const types = items
+      .map((tab) =>
+        tab.icon && typeof tab.icon === "object" && "type" in tab.icon
+          ? (tab.icon as { type: unknown }).type
+          : null,
+      )
+      .filter(Boolean);
+    return types.length === items.length && new Set(types).size === types.length;
+  }, [items]);
+
   const currentContent = useMemo<ReactNode>(
     () => items.find((tab) => tab.id === currentTab)?.content || null,
     [currentTab, items],
@@ -62,7 +76,9 @@ const TabSystem = ({
               currentTab === tab.id ? classes.active : ""
             }`}
           >
-            {!!tab.icon && <Ixon width="1.125rem">{tab.icon}</Ixon>}
+            {showIcons && !!tab.icon && (
+              <Ixon width="1.125rem">{tab.icon}</Ixon>
+            )}
             <span>{tab.title}</span>
           </button>
         ))}
