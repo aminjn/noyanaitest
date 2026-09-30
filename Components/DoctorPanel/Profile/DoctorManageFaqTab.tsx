@@ -10,7 +10,7 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import usePopup from "@/Components/Hooks/usePopup";
 import MutateDoctorFaqPopup from "./MutateDoctorFaqPopup";
 import Table from "@/Components/Admin/UI/Table";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -76,7 +76,7 @@ const DoctorManageFaqTab = () => {
               },
               active: {
                 name: getContent("isActive"),
-                value: (node) => booleanToValue[`${node.active}`],
+                value: (node) => getContent(node.active ? "active" : "inactive"),
                 component: (node) => <BooleanToIcon value={node.active} />,
               },
               order: {

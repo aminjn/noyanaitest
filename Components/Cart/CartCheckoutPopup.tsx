@@ -1,4 +1,5 @@
 "use client";
+import { useListSeparator } from "@/Components/i18n/navigation";
 
 import { ReactNode, useEffect, useState } from "react";
 import useSWR, { mutate as globalMutate } from "swr";
@@ -82,6 +83,7 @@ const CartCheckoutPopup = ({
   requiresAddress: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
+  const listSep = useListSeparator();
 
   const { closePopup, setPopup } = usePopup();
 
@@ -154,7 +156,7 @@ const CartCheckoutPopup = ({
                       {node.displayName}
                     </span>
                     <span className={`${classes.addressValue} ${t2xsRegular}`}>
-                      {[addressCityLabel(node.city), node.address]
+                      {[addressCityLabel(node.city, listSep), node.address]
                         .filter(Boolean)
                         .join(" - ")}
                     </span>

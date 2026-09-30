@@ -1,4 +1,5 @@
 "use client";
+import { licenseModuleKey } from "./licenseModuleKey";
 
 import classes from "./AllLicensePlansPage.module.css";
 import useSWR from "swr";
@@ -8,14 +9,13 @@ import {
   IActiveLicenseCatalog,
   ILicenseDuration,
   LicenseOrg,
-  licenseModuleLabelsByOrg,
   licensePanelRootByOrg,
   adaptLicenseCatalog,
 } from "./licenseTypes";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { useEffect, useState, useMemo } from "react";
 import Table, { TableRenderer } from "@/Components/Admin/UI/Table";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import { currencize } from "@/Components/helpers/currencize";
 import { IBaseLicense } from "./licenseTypes";
 import LicenseDurationSelector from "./LicenseDurationSelector";
@@ -139,11 +139,9 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                       (mod) => [
                         mod,
                         {
-                          name: licenseModuleLabelsByOrg[name][mod] || mod,
+                          name: getContent(licenseModuleKey(mod)),
                           value: (node) =>
-                            booleanToValue[
-                              `${Array.isArray(node.modules) && node.modules.includes(mod)}`
-                            ],
+                            getContent(Array.isArray(node.modules) && node.modules.includes(mod) ? "yes" : "no"),
                           component: (node) => (
                             <BooleanToIcon
                               value={

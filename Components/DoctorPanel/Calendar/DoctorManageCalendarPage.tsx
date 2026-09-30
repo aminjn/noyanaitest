@@ -6,7 +6,7 @@ import Calendxr2, {
   getJDate,
   jDaysInMonth,
   jWeekday,
-  PERSIAN_WEEK_DAYS,
+  useJalaliWeekDayNames,
 } from "@/Components/UI/Calendar/Calendxr2";
 import FormatDate from "@/Components/UI/FormatDate";
 import classes from "./DoctorManageCalendarPage.module.css";
@@ -37,6 +37,7 @@ const WeekDay = ({
   selected: Date[];
   setSelected: Dispatch<SetStateAction<Date[]>>;
 }) => {
+  const weekDayNames = useJalaliWeekDayNames();
   const status = useMemo<WeekDayStatus>(() => {
     const weekDay = jWeekday(view.year, view.month + 1, 1);
     let currentDayMatchingThisWeekDay = 1 + ((index + 7 - weekDay) % 7);
@@ -110,7 +111,7 @@ const WeekDay = ({
           <Ixon>{status === "Full" ? <CheckIcon /> : <MinusIcon />}</Ixon>
         )}
       </span>
-      <span>{PERSIAN_WEEK_DAYS[index]}</span>
+      <span>{weekDayNames[index]}</span>
     </button>
   );
 };

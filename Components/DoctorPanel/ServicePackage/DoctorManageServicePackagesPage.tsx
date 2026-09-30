@@ -22,7 +22,7 @@ import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
 import DoctorMutateServicePackagePopup from "./DoctorMutateServicePackagePopup";
 import Table from "@/Components/Admin/UI/Table";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EyeIcon from "@/Components/Icons/EyeIcon";
@@ -147,7 +147,7 @@ const DoctorManageServicePackagesPage = () => {
               },
               isActive: {
                 name: getContent("isActive"),
-                value: (node) => booleanToValue[`${node.isActive}`],
+                value: (node) => getContent(node.isActive ? "active" : "inactive"),
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },

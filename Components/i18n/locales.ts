@@ -122,3 +122,7 @@ export const PATH_HEADER = "x-path";
 export const enabledLocales: readonly Locale[] = locales;
 
 export const isEnabledLocale = (locale: Locale) => enabledLocales.includes(locale);
+
+// Separator for joining short lists in running text ("Tehran, Iran").
+export const listSeparator = (locale: Locale) =>
+  rtlLocales.includes(locale) ? "، " : locale === "zh" || locale === "ja" ? "、" : ", ";

@@ -12,7 +12,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import FullScreenImagePopup from "@/Components/Popups/FullScreenImagePopup";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import useSWR from "swr";
 import MutateGalleryItemPopup from "./MutateGalleryItemPopup";
 import DeleteGalleryItemPopup from "./DeleteGalleryItemPopup";
@@ -70,7 +70,7 @@ const DoctorManageGalleryTab = () => {
               active: {
                 name: getContent("isActive"),
                 filter: "Set",
-                value: (node) => booleanToValue[`${node.active}`],
+                value: (node) => getContent(node.active ? "active" : "inactive"),
                 component: (node) => <BooleanToIcon value={node.active} />,
               },
               image: {

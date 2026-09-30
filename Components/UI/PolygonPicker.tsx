@@ -12,14 +12,19 @@ import { TerraDrawPolygonMode } from "terra-draw";
 import Button from "./Button";
 import { IPolygon } from "../Admin/Province/AdminManageProvincesPage";
 import useNotification from "../Hooks/useNotification";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const drawModes = ["select", "polygon"] as const;
 
 type DrawMode = (typeof drawModes)[number];
 
 const drawModeDict: Record<DrawMode, string> = {
-  polygon: "پلیگان",
-  select: "سلکت",
+  get polygon() {
+  return ta("پلیگان");
+},
+  get select() {
+  return ta("سلکت");
+},
 };
 
 const PolygonPicker = ({
@@ -120,7 +125,7 @@ const PolygonPicker = ({
                 draw.clear();
               }}
             >
-              از اول
+              {ta("از اول")}
             </Button>
           </div>
           {!!onSubmit && (
@@ -134,14 +139,14 @@ const PolygonPicker = ({
                   (el) => el.geometry.type === "Polygon",
                 );
                 if (polys.length > 1)
-                  return pushNotification("فقط یک پلیگان مجاز است", "Warn");
+                  return pushNotification(ta("فقط یک پلیگان مجاز است"), "Warn");
                 const poly = polys[0];
                 if (!poly)
-                  return pushNotification("حداقل یک پلیگان بکشید", "Warn");
+                  return pushNotification(ta("حداقل یک پلیگان بکشید"), "Warn");
                 onSubmit(poly.geometry.coordinates as IPolygon["coordinates"]);
               }}
             >
-              ذخیره
+              {ta("ذخیره")}
             </Button>
           )}
         </div>

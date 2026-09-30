@@ -7,7 +7,6 @@ import Button from "@/Components/UI/Button";
 import Table from "@/Components/Admin/UI/Table";
 import { useCallback, useState } from "react";
 import { currencize } from "@/Components/helpers/currencize";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -214,9 +213,7 @@ const PrescriptionFiller = ({
           confirm: {
             name: getContent("confirmation"),
             value: (node) =>
-              booleanToValue[
-                `${!!input.find((el) => el.electronicPrescDetail === node.detailId)?.selected}`
-              ],
+              getContent(!!input.find((el) => el.electronicPrescDetail === node.detailId)?.selected ? "yes" : "no"),
             component: (node) => (
               <TableActions>
                 <ToggleInput

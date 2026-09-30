@@ -16,6 +16,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import FormatDate from "@/Components/UI/FormatDate";
 import useSWR from "swr";
 import JoinCallPopup from "./JoinCallPopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NS: ContentNamespace[] = ["common", "dashboardCall"];
 
@@ -24,8 +25,12 @@ export const callTypes = ["voice", "video"] as const;
 export type CallType = (typeof callTypes)[number];
 
 export const callTypeDict: Record<CallType, string> = {
-  voice: "صوتی",
-  video: "تصویری",
+  get voice() {
+  return ta("صوتی");
+},
+  get video() {
+  return ta("تصویری");
+},
 };
 
 export type CallRoomPopulation = Population<{

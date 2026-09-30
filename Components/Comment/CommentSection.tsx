@@ -35,6 +35,7 @@ import { usePathname } from "@/Components/i18n/navigation";
 import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "commentSection"];
 
@@ -58,20 +59,48 @@ export const commentableDocumentPaths = [
 export type CommentableDocumentPath = (typeof commentableDocumentPaths)[number];
 
 export const commentDocumentsDict: Record<CommentableDocumentPath, string> = {
-  Blog: "وبلاگ",
-  Comment: "کامنت",
-  Disease: "بیماری",
-  Drug: "دارو",
-  Product: "محصول",
-  Symptom: "علامت",
-  Clinic: "کلینیک",
-  ProductPackage: "پکیج  محصول",
-  Service: "سرویس",
-  ServicePackage: "پکیج سرویس",
-  ParaClinic: "پاراکلینیک",
-  Hospital: "بیماستان",
-  Insurance: "بیمه",
-  DoctorProfile: "پزشک",
+  get Blog() {
+  return ta("وبلاگ");
+},
+  get Comment() {
+  return ta("کامنت");
+},
+  get Disease() {
+  return ta("بیماری");
+},
+  get Drug() {
+  return ta("دارو");
+},
+  get Product() {
+  return ta("محصول");
+},
+  get Symptom() {
+  return ta("علامت");
+},
+  get Clinic() {
+  return ta("کلینیک");
+},
+  get ProductPackage() {
+  return ta("پکیج  محصول");
+},
+  get Service() {
+  return ta("سرویس");
+},
+  get ServicePackage() {
+  return ta("پکیج سرویس");
+},
+  get ParaClinic() {
+  return ta("پاراکلینیک");
+},
+  get Hospital() {
+  return ta("بیمارستان");
+},
+  get Insurance() {
+  return ta("بیمه");
+},
+  get DoctorProfile() {
+  return ta("پزشک");
+},
 };
 
 const commentStatuses = ["Pending", "Approved", "Rejected"] as const;
@@ -79,9 +108,15 @@ const commentStatuses = ["Pending", "Approved", "Rejected"] as const;
 type CommentStatus = (typeof commentStatuses)[number];
 
 export const commentStatusDict: Record<CommentStatus, string> = {
-  Approved: "تایید شده",
-  Pending: "منتظر",
-  Rejected: "رد شده",
+  get Approved() {
+  return ta("تایید شده");
+},
+  get Pending() {
+  return ta("منتظر");
+},
+  get Rejected() {
+  return ta("رد شده");
+},
 };
 
 export type CommentPopulation = Population<{

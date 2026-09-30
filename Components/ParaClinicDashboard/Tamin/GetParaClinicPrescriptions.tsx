@@ -14,7 +14,6 @@ import CogIcon from "@/Components/Icons/CogIcon";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import { TaminResponse } from "@/Components/PharmacyPanel/Tamin/GetPhamacyPrescription";
 import Act from "@/Components/UI/Act";
-import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import { useState } from "react";
 
@@ -393,9 +392,7 @@ const SinglePresc = ({
           selection: {
             name: getContent("selection"),
             value: (node) =>
-              booleanToValue[
-                `${input.some((el) => el.paR_TAREF_CODE === node.paR_TAREF_CODE)}`
-              ],
+              getContent(input.some((el) => el.paR_TAREF_CODE === node.paR_TAREF_CODE) ? "yes" : "no"),
             component: (node) => (
               <ToggleInput
                 value={input.some(

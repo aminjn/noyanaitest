@@ -1,5 +1,6 @@
 "use client";
 
+import { useListSeparator } from "@/Components/i18n/navigation";
 import classes from "./PharmacyPage.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -46,11 +47,12 @@ export type PharmacyPageProps = {
 // pharmacy's own offer, not the cheapest one on the product page.
 const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) => {
   const getContent = useScopedLocale(NS);
+  const listSep = useListSeparator();
   const offers = (Array.isArray(products) ? products : []).filter((o) => !!o?.product);
   const packages = Array.isArray(productPackages) ? productPackages : [];
   const place = [data.province?.name, data.city?.name, data.district?.name]
     .filter(Boolean)
-    .join("، ");
+    .join(listSep);
   const inStock = {
     icon: (
       <Ixon className={classes.checkIcon} width=".75rem">

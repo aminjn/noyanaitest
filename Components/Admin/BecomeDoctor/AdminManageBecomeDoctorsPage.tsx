@@ -63,7 +63,8 @@ const AdminManageBecomeDoctorsPage = () => {
               },
               medicalSystemTitle: {
                 name: ta("عنوان نظام پزشکی"),
-                value: (node) => node.medicalSystemTitle,
+                value: (node) =>
+                  node.medicalSystemTitle ? ta(node.medicalSystemTitle) : "—",
                 filter: "Set",
               },
               city: {

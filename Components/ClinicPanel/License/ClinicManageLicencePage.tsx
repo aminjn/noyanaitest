@@ -1,4 +1,5 @@
 "use client";
+import { licenseModuleKey } from "@/Components/_Common/License/licenseModuleKey";
 
 import useSWR from "swr";
 import classes from "./ClinicManageLicencePage.module.css";
@@ -21,7 +22,6 @@ import WalletIcon from "@/Components/Icons/WalletIcon";
 import { tsmRegular, txlBold } from "@/Components/UI/Typography";
 import {
   ClinicDashboardModule,
-  clinicDashboardModuleLabels,
 } from "@/Components/Admin/BaseClinicLicense/AdminManageBaseClinicLicensesPage";
 import PurchaseLicensePopup from "./PurchaseLicensePopup";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -204,7 +204,7 @@ const ClinicManageLicencePage = () => {
                   <div className={classes.currentModules}>
                     {data.current.modules.map((m) => (
                       <Badge key={m} color="Primarylight" size="S">
-                        {clinicDashboardModuleLabels[m]}
+                        {getContent(licenseModuleKey(m))}
                       </Badge>
                     ))}
                   </div>

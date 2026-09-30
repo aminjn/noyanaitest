@@ -13,6 +13,7 @@ import Ixon from "../Ixon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "uiCalendar"];
 
@@ -44,6 +45,23 @@ export const PERSIAN_WEEK_DAYS = [
   "پنج‌شنبه",
   "جمعه",
 ];
+
+// Saturday-first weekday names in the viewer's language (the Jalali week
+// starts on Saturday). 2024-03-23 is a Saturday.
+export const useJalaliWeekDayNames = (
+  style: "long" | "short" | "narrow" = "long",
+) => {
+  const intlLocale = useIntlLocale();
+  return useMemo(() => {
+    const fmt = new Intl.DateTimeFormat(intlLocale, {
+      weekday: style,
+      timeZone: "UTC",
+    });
+    return PERSIAN_WEEK_DAYS.map((_, i) =>
+      fmt.format(new Date(Date.UTC(2024, 2, 23 + i))),
+    );
+  }, [intlLocale, style]);
+};
 
 const MIN_YEAR = 1400;
 const MAX_YEAR = 1500;

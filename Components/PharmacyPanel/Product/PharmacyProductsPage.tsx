@@ -19,7 +19,7 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import Act from "@/Components/UI/Act";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
@@ -259,19 +259,19 @@ const PharmacyMyProductsTab = () => {
               },
               isActive: {
                 name: getContent("isActive"),
-                value: (node) => booleanToValue[`${node.isActive}`],
+                value: (node) => getContent(node.isActive ? "active" : "inactive"),
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },
               special: {
                 name: getContent("special"),
-                value: (node) => booleanToValue[`${node.special}`],
+                value: (node) => getContent(node.special ? "yes" : "no"),
                 component: (node) => <BooleanToIcon value={node.special} />,
                 filter: "Set",
               },
               freeDelivery: {
                 name: getContent("freeDelivery"),
-                value: (node) => booleanToValue[`${node.freeDelivery}`],
+                value: (node) => getContent(node.freeDelivery ? "yes" : "no"),
                 component: (node) => (
                   <BooleanToIcon value={node.freeDelivery} />
                 ),
@@ -279,7 +279,7 @@ const PharmacyMyProductsTab = () => {
               },
               fastDelivery: {
                 name: getContent("fastDelivery"),
-                value: (node) => booleanToValue[`${node.fastDelivery}`],
+                value: (node) => getContent(node.fastDelivery ? "yes" : "no"),
                 component: (node) => (
                   <BooleanToIcon value={node.fastDelivery} />
                 ),

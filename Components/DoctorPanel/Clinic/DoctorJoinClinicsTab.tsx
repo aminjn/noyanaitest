@@ -26,6 +26,7 @@ import ResubmitJoinClinicRequestPopup from "./ResubmitJoinClinicRequestPopup";
 import ToggleJoinClinicRequestStatusPopup from "./ToggleJoinClinicRequestStatusPopup";
 import InlineLink from "@/Components/Admin/UI/InlineLink";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelClinic"];
 
@@ -40,7 +41,13 @@ export const doctorJoinClinicStatuses = [
 export type DoctorJoinClinicStatus = (typeof doctorJoinClinicStatuses)[number];
 
 export const doctorJoinClinicStatusesDict: Dictionary<DoctorJoinClinicStatus> =
-  { Approved: "تایید شده", Pending: "منتظر تایید", Rejected: "رد شده" };
+  { get Approved() {
+  return ta("تایید شده");
+}, get Pending() {
+  return ta("منتظر تایید");
+}, get Rejected() {
+  return ta("رد شده");
+} };
 
 export const joinClinicSubmissionParties = ["DoctorProfile", "Clinic"] as const;
 
@@ -48,7 +55,11 @@ export type JoinClinicSubmissionParty =
   (typeof joinClinicSubmissionParties)[number];
 
 export const joinClinicSubmissionPartyDict: Dictionary<JoinClinicSubmissionParty> =
-  { Clinic: "کلینیک", DoctorProfile: "دکتر" };
+  { get Clinic() {
+  return ta("کلینیک");
+}, get DoctorProfile() {
+  return ta("دکتر");
+} };
 
 export type DoctorJoinClinicPopulation = Population<{
   Doctor: DoctorProfilePopulation;

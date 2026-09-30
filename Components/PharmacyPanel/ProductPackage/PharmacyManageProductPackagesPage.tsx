@@ -19,7 +19,7 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import Act from "@/Components/UI/Act";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
+import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import {
@@ -259,7 +259,7 @@ const PharmacyManageProductPackagesPage = () => {
               },
               isActive: {
                 name: getContent("isActive"),
-                value: (node) => booleanToValue[`${node.isActive}`],
+                value: (node) => getContent(node.isActive ? "active" : "inactive"),
                 component: (node) => <BooleanToIcon value={node.isActive} />,
                 filter: "Set",
               },

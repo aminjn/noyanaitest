@@ -1,3 +1,4 @@
+import { useListSeparator } from "@/Components/i18n/navigation";
 import { ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -50,6 +51,7 @@ const Detail = ({ icon, value }: { icon: ReactNode; value?: string }) => {
 
 const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
   const getContent = useScopedLocale(NS);
+  const listSep = useListSeparator();
 
   return (
     <div className={classes.main} id="About">
@@ -133,7 +135,7 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
           icon={<LocationIcon />}
           value={[data.province?.name, data.city?.name, data.district?.name]
             .filter(Boolean)
-            .join("،")}
+            .join(listSep)}
         />
         <Detail icon={<CallingIcon />} value={data.phone} />
         <Detail icon={<ClockIcon />} value={data.businessTime} />
