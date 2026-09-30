@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import classes from "./TabSystem.module.css";
 import Ixon from "@/Components/UI/Ixon";
+import { AdminEmbeddedProvider } from "./AdminEmbedded";
 
 export type TabSystemTab = {
   title: ReactNode;
@@ -84,7 +85,9 @@ const TabSystem = ({
         ))}
       </div>
       <div className={classes.content} key={currentTab}>
-        {currentContent}
+        {/* a list inside a record's tab (its departments, doctors...) is part
+            of that page: no second back button or card */}
+        <AdminEmbeddedProvider value={true}>{currentContent}</AdminEmbeddedProvider>
       </div>
     </div>
   );

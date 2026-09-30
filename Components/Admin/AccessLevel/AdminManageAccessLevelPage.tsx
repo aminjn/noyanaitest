@@ -4,10 +4,6 @@ import { useParams } from "next/navigation";
 import classes from "./AdminManageAccessLevelPage.module.css";
 import useSWR from "swr";
 import {
-  accessLevelModelDict,
-  accessLevelModels,
-  accessLevelOperationsDict,
-  accessOperations,
   IAccessLevel,
 } from "./AdminManageAccessLevelsPage";
 import { API } from "@/Components/config";
@@ -17,8 +13,8 @@ import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
 import WithTitle from "../UI/WithTitle";
-import { title } from "process";
 import AccessLevelAdminsTab from "./AccessLevelAdminsTab";
+import AccessLevelMatrix from "./AccessLevelMatrix";
 import List from "../UI/List";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -62,42 +58,18 @@ const AdminManageAccessLevelPage = () => {
                 ),
                 id: "Info",
               },
-              ...accessLevelModels.map((model) => ({
-                title: accessLevelModelDict[model],
-                icon: <InfoIcon />,
-                id: model,
+              {
+                title: ta("دسترسی‌ها"),
+                id: "Matrix",
                 content: (
-                  <CreateForm
-                    defaultValue={data[model]}
-                    hookProps={{
-                      path: `${API}/auto/accesslevel/${data._id}`,
-                      method: "POST",
-                      successCb: () => mutate(),
-                      mutator: (inp) => ({
-                        $set: Object.entries(inp).reduce(
-                          (acc, [key, value]) => ({
-                            ...acc,
-                            [`${model}.${key}`]: value,
-                          }),
-                          {},
-                        ),
-                      }),
-                    }}
-                    renderer={accessOperations.reduce(
-                      (acc, op) => ({
-                        ...acc,
-                        [op]: {
-                          type: "bool",
-                          title: accessLevelOperationsDict[op],
-                        },
-                      }),
-                      {},
-                    )}
+                  <AccessLevelMatrix
+                    node={data as unknown as IAccessLevel}
+                    mutate={mutate}
                   />
                 ),
-              })),
+              },
               {
-                title: ta("ادمین های این سطح دسترسی"),
+                title: ta("کارکنان این نقش"),
                 id: "AdminsInThis",
                 content: <AccessLevelAdminsTab mutate={mutate} node={data} />,
                 icon: <InfoIcon />,

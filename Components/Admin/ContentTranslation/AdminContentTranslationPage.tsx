@@ -58,7 +58,7 @@ const AdminContentTranslationPage = ({ segment }: { segment?: string } = {}) => 
 
   const url = params ? `${API}/auto/${params.segment}/${params.nodeId}/_translations` : null;
   const { data, error, mutate } = useSWR<RecordData>(url, (u: string) =>
-    fetcher({ url: u }).then((res) => res.data.data),
+    fetcher({ url: u }).then((res) => res.data),
   );
 
   // Fields that have Persian text - the rest have nothing to translate.
@@ -115,12 +115,12 @@ const AdminContentTranslationPage = ({ segment }: { segment?: string } = {}) => 
     if (!url) return;
     setTranslating(scope);
     try {
-      const res = await fetcher<{ data: { data: { written: number } } }>({
+      const res = await fetcher<{ data: { written: number } }>({
         url: `${url}/auto`,
         method: "POST",
         payload: { locales: scope === "one" ? [locale] : targetLocales, overwrite },
       });
-      const written = res.data.data.written;
+      const written = res.data?.written ?? 0;
       pushNotification(
         written ? ta("${1} فیلد ترجمه شد", [written.toLocaleString(adminIntlTag())]) : ta("فیلد خالی برای ترجمه نبود"),
         "Success",
