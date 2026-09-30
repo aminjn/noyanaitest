@@ -1,6 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
+import RequestDecisionActions from "../Requests/RequestDecisionActions";
 import classes from "./AdminManageBecomeDoctorPage.module.css";
 import useSWR from "swr";
 import {
@@ -25,7 +26,6 @@ import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import DeleteBecomeDoctorPopup from "./DeleteBecomeDoctorPopup";
-import ChangeBecomeDoctorStatusPopup from "./ChangeBecomeDoctorStatusPopup";
 import FormActions from "../UI/FormActions";
 import BecomeDoctorProfileSelector from "./BecomeDoctorProfileSelector";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
@@ -96,6 +96,9 @@ const AdminManageBecomeDoctorPage = () => {
                       title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
+                    {!!data.rejectReason && (
+                      <DataPair title={ta("دلیل رد")} value={data.rejectReason} />
+                    )}
                     <div>
                       <legend>{ta("تخصص ها")}</legend>
                       <List>
@@ -128,49 +131,46 @@ const AdminManageBecomeDoctorPage = () => {
                 id: "Actions",
                 icon: <InfoIcon />,
                 content: (
-                  <FormActions>
-                    <ApproveBecomeRequestButton
-                      requestPath="becomedoctor"
+                  <List>
+                    <RequestDecisionActions
+                      group="become"
+                      kind="doctor"
                       nodeId={data._id}
                       status={data.status}
-                      label={ta("تأیید و ساخت پروفایل پزشک")}
-                      done={ta("پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد.")}
-                      target={(id) => `/doctorprofile/${id}`}
+                      rejectReason={data.rejectReason}
                       mutate={mutate}
+                      approve={
+                        <ApproveBecomeRequestButton
+                          requestPath="becomedoctor"
+                          nodeId={data._id}
+                          status={data.status}
+                          label={ta("تأیید و ساخت پروفایل پزشک")}
+                          done={ta("پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد.")}
+                          target={(id) => `/doctorprofile/${id}`}
+                          mutate={mutate}
+                        />
+                      }
                     />
                     {hasAccess("BecomeDoctorRequest", "delete") && (
-                      <Button
-                        variant="Error"
-                        onClick={() =>
-                          setPopup(
-                            "DeleteBecomeDoctor",
-                            <DeleteBecomeDoctorPopup
-                              node={data}
-                              mutate={() => push(adminPath("/becomedoctor"))}
-                            />,
-                          )
-                        }
-                      >
-                        {ta("حذف")}
-                      </Button>
+                      <FormActions>
+                        <Button
+                          variant="Error"
+                          mode="Outline"
+                          onClick={() =>
+                            setPopup(
+                              "DeleteBecomeDoctor",
+                              <DeleteBecomeDoctorPopup
+                                node={data}
+                                mutate={() => push(adminPath("/requests?group=become&kind=doctor"))}
+                              />,
+                            )
+                          }
+                        >
+                          {ta("حذف")}
+                        </Button>
+                      </FormActions>
                     )}
-                    {hasAccess("BecomeDoctorRequest", "update") && (
-                      <Button
-                        variant="Primary"
-                        onClick={() =>
-                          setPopup(
-                            "ChangeBecomeDoctorStatus",
-                            <ChangeBecomeDoctorStatusPopup
-                              mutate={mutate}
-                              node={data}
-                            />,
-                          )
-                        }
-                      >
-                        {ta("تغییر وضعیت")}
-                      </Button>
-                    )}
-                  </FormActions>
+                  </List>
                 ),
                 title: ta("عملیات"),
               },

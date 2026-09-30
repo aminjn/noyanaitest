@@ -37,6 +37,7 @@ const AdminManageServicePackagePage = () => {
                       type: "nodes",
                       title: ta("دسته بندی"),
                       path: `${API}/auto/serviceCategory`,
+                      creatable: { path: `${API}/auto/serviceCategory`, field: "title" },
                       multi: false,
                       getOptionLabel: (node) =>
                         (node as IServiceCategory).title ||

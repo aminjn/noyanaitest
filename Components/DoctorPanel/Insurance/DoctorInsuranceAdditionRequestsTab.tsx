@@ -29,6 +29,7 @@ export interface IInsuranceAdditionRequest<
     ? IDoctorProfile<T["Doctor"]>
     : string;
   status: AdditionRequestStatus;
+  rejectReason?: string;
   name: string;
   description?: string;
 }

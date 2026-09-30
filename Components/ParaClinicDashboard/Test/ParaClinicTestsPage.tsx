@@ -209,13 +209,13 @@ const ParaClinicMyTestsTab = () => {
             renderer={{
               name: {
                 name: getContent("name"),
-                value: (node) => node.test.name || node.test._id,
+                value: (node) => node.test?.name || node.test?._id || "",
                 filter: "Text",
               },
               category: {
                 name: getContent("category"),
                 value: (node) =>
-                  node.test.category
+                  node.test?.category
                     ? node.test.category.name || node.test.category._id
                     : getContent("unset"),
                 filter: "Multi",

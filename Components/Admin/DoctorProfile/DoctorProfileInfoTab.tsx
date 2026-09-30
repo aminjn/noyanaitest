@@ -1,3 +1,4 @@
+import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import {
   doctorProfileTiers,
   IDoctorProfile,
@@ -11,6 +12,12 @@ import { cityOptions } from "@/Components/Enums/Cities";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { ICity, IDistrict, IProvince } from "../Province/AdminManageProvincesPage";
 import { ta } from "@/Components/Admin/i18n/adminText";
+
+const tierTitles = (): Record<string, string> => ({
+  expert: ta("کارشناس"),
+  specialist: ta("متخصص"),
+  superSpecialist: ta("فوق تخصص"),
+});
 
 const DoctorProfileInfoTab = ({
   mutate,
@@ -55,9 +62,11 @@ const DoctorProfileInfoTab = ({
         tier: {
           type: "select",
           title: ta("رده"),
+          // the names the public site shows (content keys expert /
+          // specialist / superSpecialist)
           options: doctorProfileTiers.reduce(
-            (acc, el) => ({ ...acc, [el]: el }),
-            {},
+            (acc, el) => ({ ...acc, [el]: tierTitles()[el] || el }),
+            {} as Record<string, string>,
           ),
         },
         province: {
@@ -77,7 +86,7 @@ const DoctorProfileInfoTab = ({
           getOptionValue: (node) => (node as ICity)._id,
           getDefaultValue: (inp) => inp.city,
           multi: false,
-          path: `${API}/auto/city`,
+          path: cityPath,
         },
         district: {
           title: ta("محله"),
@@ -87,7 +96,7 @@ const DoctorProfileInfoTab = ({
           getOptionValue: (node) => (node as IDistrict)._id,
           getDefaultValue: (inp) => inp.district,
           multi: false,
-          path: `${API}/auto/district`,
+          path: districtPath,
         },
       }}
       hookProvided={form}

@@ -1,33 +1,20 @@
-import { Fragment } from "react";
-import Loading from "../UI/Loading";
-import classes from "./CreateDoctorProfilePopup.module.css";
-import Act from "@/Components/UI/Act";
-import { API } from "@/Components/config";
-import useProgress from "@/Components/Hooks/useProgress";
-import { adminPath } from "@/Components/helpers/adminPath";
-import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
-import usePopup from "@/Components/Hooks/usePopup";
+import CreateByNamePopup from "../UI/CreateByNamePopup";
+import { ta } from "@/Components/Admin/i18n/adminText";
 
-const CreateDoctorProfilePopup = ({ mutate }: { mutate: () => unknown }) => {
-  const push = useProgress();
-
-  const { closePopup } = usePopup();
-
-  return (
-    <Fragment>
-      <Loading />
-      <Act<{ data: { data: IDoctorProfile } }>
-        path={`${API}/auto/doctorprofile`}
-        method="POST"
-        onDone={(status, data) => {
-          if (!status || !data) return;
-          mutate();
-          push(adminPath(`/doctorprofile/${data.data.data._id}`));
-          closePopup();
-        }}
-      />
-    </Fragment>
-  );
-};
+// asks for the doctor's first and last name first
+// (Components/Admin/UI/CreateByNamePopup.tsx) - opening it no longer creates
+// an empty doctor profile
+const CreateDoctorProfilePopup = ({ mutate }: { mutate: () => unknown }) => (
+  <CreateByNamePopup
+    modelName="doctorprofile"
+    title={ta("پزشک جدید")}
+    fields={[
+      { key: "firstName", title: ta("نام") },
+      { key: "lastName", title: ta("نام خانوادگی") },
+    ]}
+    editPath={(id) => `/doctorprofile/${id}`}
+    mutate={mutate}
+  />
+);
 
 export default CreateDoctorProfilePopup;

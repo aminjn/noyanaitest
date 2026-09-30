@@ -110,18 +110,6 @@ export const becomeNodeStatusesDict: Record<BecomeANodeStatus, string> = {
   },
 };
 
-// what the admin status popup may set by hand - approval goes through the
-// "approve" button, which also creates the profile / centre
-export const becomeNodeManualStatusesDict: Record<
-  Exclude<BecomeANodeStatus, "Approved">,
-  string
-> = {
-  get Pending() {
-    return ta("منتظر تایید (بازگشایی)");
-  },
-  Rejected: "رد شده",
-};
-
 type BecomeDoctorPopulation = {
   UserPopulated?: boolean;
   SpecialitiesPopulated?: boolean;
@@ -146,6 +134,7 @@ export interface IBecomeDoctorRequest<
   address: string;
   description?: string;
   status: BecomeANodeStatus;
+  rejectReason?: string;
 }
 
 export type SipCallSettingsPopulation = Population<{

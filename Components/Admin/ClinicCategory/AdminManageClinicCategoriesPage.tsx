@@ -76,7 +76,7 @@ const CreateClinicCategoryPopup = ({ mutate }: { mutate: () => unknown }) => {
         }}
         renderer={{
           name: { type: "text", title: ta("نام") },
-          isActive: { title: "text", type: "bool" },
+          isActive: { title: ta("فعال"), type: "bool" },
           order: { title: ta("رتبه"), type: "number" },
         }}
         hookProps={{

@@ -28,7 +28,26 @@ export interface IStaticImages extends MongoDoc {
   onboadrdinConsult?: string;
 }
 
-const AdminManageStaticImagesPage = () => {
+type StaticImageSlot = Exclude<keyof IStaticImages, "_id" | "singleton">;
+
+// `only`: the slots one site page uses, when the form is shown as a tab of
+// that page's hub (home, about, for-doctors) instead of all slots at once
+const pickSlots = <T extends Record<string, unknown>>(
+  only: StaticImageSlot[] | undefined,
+  renderer: T,
+): T =>
+  only
+    ? (Object.fromEntries(
+        Object.entries(renderer).filter(([key]) =>
+          only.includes(key as StaticImageSlot),
+        ),
+      ) as T)
+    : renderer;
+
+const AdminManageStaticImagesPage = ({
+  only,
+  title,
+}: { only?: StaticImageSlot[]; title?: string } = {}) => {
   const { data, error, mutate } = useSWR<IStaticImages>(
     `${API}/auto/staticImages`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
@@ -37,7 +56,7 @@ const AdminManageStaticImagesPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={ta("تصاویر ثابت")}>
+        <WithTitle title={title || ta("تصاویر ثابت")}>
           <CreateForm<IStaticImages>
             defaultValue={data}
             hookProps={{
@@ -45,7 +64,7 @@ const AdminManageStaticImagesPage = () => {
               method: "POST",
               successCb: () => mutate(),
             }}
-            renderer={{
+            renderer={pickSlots(only, {
               homeMain: { title: ta("تصویر اصلی خانه"), type: "image" },
               aboutMain: { title: ta("تصویر اصلی درباره ما"), type: "image" },
               aboutSecurity: {
@@ -68,7 +87,7 @@ const AdminManageStaticImagesPage = () => {
                 title: ta("تصویر مشاوره آنبوردینگ"),
                 type: "image",
               },
-            }}
+            })}
           />
         </WithTitle>
       )}

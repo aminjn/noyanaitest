@@ -70,6 +70,7 @@ export interface IDoctorJoinHospitalRequest<
   T extends DoctorJoinHospitalPopulation = DoctorJoinHospitalPopulation
 > extends MongoDoc {
   status: DoctorJoinHospitalStatus;
+  rejectReason?: string;
   submittedAt: Date;
   submissionParty: JoinHospitalSubmissionParty;
   doctor: T["Doctor"] extends DoctorProfilePopulation

@@ -103,6 +103,13 @@ export const mutateServiceFormRenderer: FormRenderer<IService> = {
     path: `${API}/auto/doctorProfile`,
     getOptionLabel: (node) => getDoctorProfileLabel(node as IDoctorProfile),
     getOptionValue: (node) => (node as IDoctorProfile)._id,
+    // populated in lists, a bare id elsewhere
+    getDefaultValue: (node) => {
+      const owner = node.owner as unknown;
+      return typeof owner === "string"
+        ? owner
+        : (owner as { _id?: string } | undefined)?._id;
+    },
   },
   price: { get title() {
   return ta("قیمت");
@@ -125,6 +132,7 @@ export const mutateServiceFormRenderer: FormRenderer<IService> = {
 },
     type: "nodes",
     path: `${API}/auto/serviceCategory`,
+    creatable: { path: `${API}/auto/serviceCategory`, field: "title" },
     getOptionLabel: (node) =>
       (node as IServiceCategory).title || (node as IServiceCategory)._id,
     getOptionValue: (node) => (node as IServiceCategory)._id,

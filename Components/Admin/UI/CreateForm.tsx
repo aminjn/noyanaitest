@@ -15,7 +15,9 @@ import AreaInput from "@/Components/UI/AreaInput";
 import { WithStyleProps } from "./Loading";
 import classes from "./CreateForm.module.css";
 import DateInput from "@/Components/UI/DateInput";
-import NodesSelector from "@/Components/UI/NodesSelector";
+import NodesSelector, {
+  NodesSelectorCreatable,
+} from "@/Components/UI/NodesSelector";
 import ImageInput from "@/Components/UI/ImageInput";
 import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
 import StringListInput from "@/Components/UI/StringListInput";
@@ -88,13 +90,18 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
     | { type: "multiselect"; options: Record<string, string> }
     | {
         type: "nodes";
-        path: string;
+        // a function gets the form's current values (the saved record with
+        // the unsaved edits on top): a list that depends on another field,
+        // e.g. cities of the chosen province (./geoPaths.ts)
+        path: string | ((values: Partial<TInput>) => string);
         getOptionLabel: (node: unknown) => string;
         getOptionValue: (node: unknown) => string;
         multi?: boolean;
         getDefaultValue?: (node: TInput) => unknown;
         clearable?: boolean;
         dataParser?: (res: unknown) => unknown[];
+        // lets the admin create a missing option inline (POST to its path)
+        creatable?: NodesSelectorCreatable;
       }
     | {
         type: "range";
@@ -371,13 +378,22 @@ const CreateForm = <TInput, TResult = unknown>({
               />
             );
             break;
-          case "nodes":
+          case "nodes": {
+            const nodesPath =
+              typeof segment.path === "function"
+                ? segment.path({
+                    ...(defaultValue || {}),
+                    ...input,
+                  } as Partial<TInput>)
+                : segment.path;
             content = (
               <NodesSelector
+                // a new list (another province...) starts from a fresh pick
+                key={nodesPath}
                 {...commons}
                 getOptionLabel={segment.getOptionLabel}
                 getOptionValue={segment.getOptionValue}
-                path={segment.path}
+                path={nodesPath}
                 defaultValue={
                   defaultValue
                     ? segment.getDefaultValue?.(defaultValue)
@@ -387,9 +403,11 @@ const CreateForm = <TInput, TResult = unknown>({
                 multi={segment.multi}
                 dataParser={segment.dataParser}
                 clearable={segment.clearable}
+                creatable={segment.creatable}
               />
             );
             break;
+          }
           case "image":
             content = (
               <ImageInput

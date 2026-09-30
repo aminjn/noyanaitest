@@ -55,6 +55,7 @@ export interface IClinicAdditionRequest<
 > extends MongoDoc {
   submittedAt: Date;
   status: AdditionRequestStatus;
+  rejectReason?: string;
   submittedBy: T["user"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["user"]> | null
     : string;

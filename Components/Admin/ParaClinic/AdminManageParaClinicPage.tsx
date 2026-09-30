@@ -1,4 +1,5 @@
 "use client";
+import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -45,7 +46,6 @@ import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import ImagesManager from "../Product/ImagesManager";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
-import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import ParaClinicCommissionTab from "./ParaClinicCommissionTab";
 import ParaClinicTaxTab from "./ParaClinicTaxTab";
@@ -104,7 +104,7 @@ const MutateParaClinicTestPopup = ({
             getOptionLabel: (node) =>
               (node as ITest).name || (node as ITest)._id,
             getOptionValue: (node) => (node as ITest)._id,
-            getDefaultValue: (inp) => inp.test._id,
+            getDefaultValue: (inp) => inp.test?._id,
             multi: false,
           },
           price: { type: "number", title: ta("قیمت") },
@@ -342,22 +342,13 @@ const AdminManageParaClinicPage = () => {
                           (node as IParaClinicCategory)._id,
                         getDefaultValue: (inp) => inp.category,
                         path: `${API}/auto/paraClinicCategory`,
-                      },
-                      specialities: {
-                        type: "nodes",
-                        title: ta("تخصص ها"),
-                        path: `${API}/auto/speciality`,
-                        getOptionLabel: (node) =>
-                          (node as ISpeciality).name ||
-                          (node as ISpeciality)._id,
-                        getOptionValue: (node) => (node as ISpeciality)._id,
-                        getDefaultValue: (inp) => inp.specialities,
-                        multi: true,
+                        creatable: { path: `${API}/auto/paraClinicCategory` },
                       },
                       tags: {
                         type: "nodes",
                         title: ta("تگ ها"),
                         path: `${API}/auto/paraClinicTag`,
+                        creatable: { path: `${API}/auto/paraClinicTag` },
                         getOptionLabel: (node) =>
                           (node as IParaClinicTag).name ||
                           (node as IParaClinicTag)._id,
@@ -377,7 +368,7 @@ const AdminManageParaClinicPage = () => {
                       city: {
                         type: "nodes",
                         title: ta("شهر"),
-                        path: `${API}/auto/city`,
+                        path: cityPath,
                         getOptionLabel: (node) =>
                           (node as ICity).name || (node as ICity)._id,
                         getOptionValue: (node) => (node as ICity)._id,
@@ -386,7 +377,7 @@ const AdminManageParaClinicPage = () => {
                       district: {
                         type: "nodes",
                         title: ta("مخله"),
-                        path: `${API}/auto/district`,
+                        path: districtPath,
                         getOptionLabel: (node) =>
                           (node as IDistrict).name || (node as IDistrict)._id,
                         getOptionValue: (node) => (node as IDistrict)._id,

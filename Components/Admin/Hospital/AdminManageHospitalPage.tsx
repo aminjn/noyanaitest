@@ -1,4 +1,5 @@
 "use client";
+import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -276,6 +277,7 @@ const AdminManageHospitalPage = () => {
                         type: "nodes",
                         multi: false,
                         path: `${API}/auto/hospitalCategory`,
+                        creatable: { path: `${API}/auto/hospitalCategory` },
                         getOptionLabel: (node) =>
                           (node as IHospitalCategory).name ||
                           (node as IHospitalCategory)._id,
@@ -297,7 +299,7 @@ const AdminManageHospitalPage = () => {
                       city: {
                         title: ta("شهر"),
                         type: "nodes",
-                        path: `${API}/auto/city`,
+                        path: cityPath,
                         getOptionLabel: (node) =>
                           (node as ICity).name || (node as ICity)._id,
                         getOptionValue: (node) => (node as ICity)._id,
@@ -311,7 +313,7 @@ const AdminManageHospitalPage = () => {
                         getOptionLabel: (node) =>
                           (node as IDistrict).name || (node as IDistrict)._id,
                         getOptionValue: (node) => (node as IDistrict)._id,
-                        path: `${API}/auto/district`,
+                        path: districtPath,
                         getDefaultValue: (inp) => inp.district,
                       },
                       image: { type: "image", title: ta("تصویر") },
@@ -325,6 +327,7 @@ const AdminManageHospitalPage = () => {
                         multi: true,
                         getDefaultValue: (inp) => inp.tags,
                         path: `${API}/auto/hospitalTag`,
+                        creatable: { path: `${API}/auto/hospitalTag` },
                       },
                       code: { type: "text", title: ta("کد") },
                       establishment: { type: "text", title: ta("تاسیس") },

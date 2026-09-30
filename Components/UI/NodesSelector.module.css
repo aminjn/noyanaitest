@@ -107,3 +107,9 @@
 .main :global(.nsel__menu-notice) {
   color: var(--gray9);
 }
+
+.error {
+  color: var(--error);
+  font-size: 0.8125rem;
+  text-align: start;
+}

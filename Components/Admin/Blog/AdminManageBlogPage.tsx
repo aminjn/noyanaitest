@@ -76,6 +76,7 @@ const AdminManageBlogPage = () => {
                         getOptionValue: (node) => (node as IBlogCategory)._id,
                         getDefaultValue: (node) => node.category,
                         path: `${API}/auto/blogcategory`,
+                        creatable: { path: `${API}/auto/blogcategory`, field: "title" },
                       },
                       related: {
                         title: ta("مقالات مرتبط"),
@@ -95,6 +96,7 @@ const AdminManageBlogPage = () => {
                         getOptionValue: (node) => (node as IBlogTag)._id,
                         getDefaultValue: (inp) => inp.tags,
                         path: `${API}/auto/blogtag`,
+                        creatable: { path: `${API}/auto/blogtag` },
                         multi: true,
                       },
                     }}

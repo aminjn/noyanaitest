@@ -1,17 +1,20 @@
-import AdminManageProductsPage from "@/Components/Admin/Product/AdminManageProductsPage";
+import ProductHub from "@/Components/Admin/Hub/ProductHub";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { Suspense } from "react";
 
 const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
 
-const AdminManageProducts = async () => {
+const AdminProductHubPage = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageProductsPage />
+      <Suspense>
+        <ProductHub />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };
 
-export default AdminManageProducts;
+export default AdminProductHubPage;

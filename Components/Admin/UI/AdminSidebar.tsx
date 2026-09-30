@@ -132,20 +132,28 @@ const AdminSidebar = () => {
   const [search, setSearch] = useState<string>("");
   const [openGroups, setOpenGroups] = useState<string[]>([]);
 
+  // the developer-tools hub only where the backend allows those tools
+  // (dev machine, or ALLOW_DEVTOOLS on the server)
+  const { data: devToolsAllowed } = useSWR<boolean>(
+    user?.role === "admin" ? `${API}/admin/devtools/allowed` : null,
+    (url: string) => fetcher({ url }).then((res) => !!res?.data?.allowed),
+  );
+
   // Groups visible to this user, with items they may open.
   const visibleGroups = useMemo<AdminMenuGroup[]>(() => {
     if (!user) return [];
     const isAdmin = user.role === "admin";
     const canSee = (item: AdminMenuItem) =>
-      isAdmin ||
+      (item.href !== "devtools" || !!devToolsAllowed) &&
+      (isAdmin ||
       (item.access !== undefined && hasAccess(item.access, "readAll")) ||
       (adminHubs.some((hub) => hub.hub === item.href) &&
-        canNotAdminOpen(item.href, hasAccess));
+        canNotAdminOpen(item.href, hasAccess)));
     return adminMenu
       .filter((group) => !group.super || isAdmin)
       .map((group) => ({ ...group, items: group.items.filter(canSee) }))
       .filter((group) => group.items.length > 0);
-  }, [hasAccess, user]);
+  }, [hasAccess, user, devToolsAllowed]);
 
   const isAdmin = user?.role === "admin";
 

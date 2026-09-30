@@ -5,6 +5,8 @@ import { API, FilePath } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { useParams } from "next/navigation";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
+import RequestDecisionActions from "../Requests/RequestDecisionActions";
+import { requestUserId } from "../Requests/requestMeta";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -16,10 +18,6 @@ import FormatDate from "@/Components/UI/FormatDate";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
-import Button from "@/Components/UI/Button";
-import usePopup from "@/Components/Hooks/usePopup";
-import ChangeBecomeClinicRequestPopup from "./ChangeBecomeClinicRequestStatusPopup";
-import AssignClinicToClinicRequestPopup from "./AssignClinicToClinicRequestPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeClinicPage = () => {
@@ -29,7 +27,6 @@ const AdminManageBecomeClinicPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { setPopup } = usePopup();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -61,6 +58,9 @@ const AdminManageBecomeClinicPage = () => {
                       title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
+                    {!!data.rejectReason && (
+                      <DataPair title={ta("دلیل رد")} value={data.rejectReason} />
+                    )}
                     <DataPair title={ta("کد سیام")} value={data.siamCode} />
                     <DataPair title={ta("کد ملی")} value={data.nationalId} />
                     <DataPair
@@ -91,41 +91,32 @@ const AdminManageBecomeClinicPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
-                    <ApproveBecomeRequestButton
-                      requestPath="becomeclinic"
+                    <RequestDecisionActions
+                      group="become"
+                      kind="clinic"
                       nodeId={String(nodeId)}
                       status={data.status}
-                      label={ta("تأیید و ساخت کلینیک")}
-                      done={ta("کلینیک ساخته و فعال شد.")}
-                      target={(id) => `/clinic/${id}`}
+                      rejectReason={data.rejectReason}
                       mutate={mutate}
+                      approve={
+                        <ApproveBecomeRequestButton
+                          requestPath="becomeclinic"
+                          nodeId={String(nodeId)}
+                          status={data.status}
+                          label={ta("تأیید و ساخت کلینیک")}
+                          done={ta("کلینیک ساخته و فعال شد.")}
+                          target={(id) => `/clinic/${id}`}
+                          mutate={mutate}
+                        />
+                      }
+                      linkExisting={{
+                        requestPath: "becomeclinic",
+                        orgPath: `${API}/auto/clinic`,
+                        label: ta("انتخاب کلینیک"),
+                        target: (id) => `/clinic/${id}`,
+                        applicantUser: requestUserId(data.user),
+                      }}
                     />
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "ChangeBecomeClinicRequest",
-                          <ChangeBecomeClinicRequestPopup
-                            node={data}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تغییر وضعیت")}
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "AssignClinicToClinicRequest",
-                          <AssignClinicToClinicRequestPopup
-                            node={data}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تخصیص کلینیک")}
-                    </Button>
                   </List>
                 ),
               },

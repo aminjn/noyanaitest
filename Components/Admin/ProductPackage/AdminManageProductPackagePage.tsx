@@ -40,6 +40,7 @@ const InfoManager = ({
           type: "nodes",
           title: ta("دسته بنذی"),
           path: `${API}/auto/productCategory`,
+          creatable: { path: `${API}/auto/productCategory` },
           getOptionLabel: (node) =>
             (node as IProductCategory).name || (node as IProductCategory)._id,
           getOptionValue: (node) => (node as IProductCategory)._id,

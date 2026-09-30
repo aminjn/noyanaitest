@@ -15,11 +15,9 @@ import FormatDate from "@/Components/UI/FormatDate";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
-import Button from "@/Components/UI/Button";
-import usePopup from "@/Components/Hooks/usePopup";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
-import ChangeBecomePharmacyRequestStatusPopup from "./ChangeBecomePharmacyRequestStatusPopup";
-import AssignPharmacyToBecomePharmacyRequestPopup from "./AssignPharmayToBecomePharmacyRequestPopup";
+import RequestDecisionActions from "../Requests/RequestDecisionActions";
+import { requestUserId } from "../Requests/requestMeta";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomePharmacyPage = () => {
@@ -30,7 +28,6 @@ const AdminManageBecomePharmacyPage = () => {
     fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { setPopup } = usePopup();
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
@@ -66,6 +63,9 @@ const AdminManageBecomePharmacyPage = () => {
                       value={becomeNodeStatusesDict[data.status]}
                       title={ta("وضعیت")}
                     />
+                    {!!data.rejectReason && (
+                      <DataPair title={ta("دلیل رد")} value={data.rejectReason} />
+                    )}
                     <DataPair value={data.name} title={ta("نام")} />
                     <DataPair title={ta("کد سیام")} value={data.siamCode} />
                     <DataPair title={ta("کد ملی")} value={data.nationalId} />
@@ -97,41 +97,32 @@ const AdminManageBecomePharmacyPage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
-                    <ApproveBecomeRequestButton
-                      requestPath="becomepharmacy"
+                    <RequestDecisionActions
+                      group="become"
+                      kind="pharmacy"
                       nodeId={nodeId}
                       status={data.status}
-                      label={ta("تأیید و ساخت داروخانه")}
-                      done={ta("داروخانه ساخته و فعال شد.")}
-                      target={(id) => `/pharmacy/${id}`}
+                      rejectReason={data.rejectReason}
                       mutate={mutate}
+                      approve={
+                        <ApproveBecomeRequestButton
+                          requestPath="becomepharmacy"
+                          nodeId={nodeId}
+                          status={data.status}
+                          label={ta("تأیید و ساخت داروخانه")}
+                          done={ta("داروخانه ساخته و فعال شد.")}
+                          target={(id) => `/pharmacy/${id}`}
+                          mutate={mutate}
+                        />
+                      }
+                      linkExisting={{
+                        requestPath: "becomepharmacy",
+                        orgPath: `${API}/auto/pharmacy`,
+                        label: ta("انتخاب داروخانه"),
+                        target: (id) => `/pharmacy/${id}`,
+                        applicantUser: requestUserId(data.user),
+                      }}
                     />
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "ChangeBecomePharmacyRequestStatus",
-                          <ChangeBecomePharmacyRequestStatusPopup
-                            mutate={mutate}
-                            node={data}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تغییر وضعیت")}
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "AssignPharmacyToBecomePharmacyRequest",
-                          <AssignPharmacyToBecomePharmacyRequestPopup
-                            mutate={mutate}
-                            node={data}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تخصیص داروخانه")}
-                    </Button>
                   </List>
                 ),
               },

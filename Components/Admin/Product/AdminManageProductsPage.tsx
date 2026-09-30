@@ -163,6 +163,7 @@ const CreateProductPopup = ({ mutate }: { mutate: () => unknown }) => {
             title: ta("دسته بندی"),
             type: "nodes",
             path: `${API}/auto/productCategory`,
+            creatable: { path: `${API}/auto/productCategory` },
             multi: false,
             getOptionLabel: (node) =>
               (node as IProductCategory).name || (node as IProductCategory)._id,

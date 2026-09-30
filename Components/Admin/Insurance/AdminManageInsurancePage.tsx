@@ -287,6 +287,7 @@ const AdminManageInsurancePage = () => {
                         type: "nodes",
                         multi: false,
                         path: `${API}/auto/insuranceCategory`,
+                        creatable: { path: `${API}/auto/insuranceCategory` },
                         getOptionLabel: (node) =>
                           (node as IInsuranceCategory).name ||
                           (node as IInsuranceCategory)._id,
@@ -302,6 +303,7 @@ const AdminManageInsurancePage = () => {
                           (node as IInsuranceTag)._id,
                         getOptionValue: (node) => (node as IInsuranceTag)._id,
                         path: `${API}/auto/insuranceTag`,
+                        creatable: { path: `${API}/auto/insuranceTag` },
                         multi: true,
                         getDefaultValue: (inp) => inp.tags,
                       },

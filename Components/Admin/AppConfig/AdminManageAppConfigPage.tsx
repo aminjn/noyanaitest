@@ -52,6 +52,10 @@ export interface IAppConfig extends MongoDoc {
   sepAmountMultiplier: number;
   sepTokenExpiryMinutes: number;
   onlinePaymentMinAmount: number;
+  withdrawalMinAmount: number;
+
+  reservationNoShowNudgeMinutesAfterStart: number;
+  reservationNoShowNudgeInterval: number;
 }
 
 const AdminManageAppConfigPage = () => {
@@ -65,6 +69,7 @@ const AdminManageAppConfigPage = () => {
       {!!data && (
         <WithTitle title={ta("تنظیمات سیستم")}>
           <CreateForm<IAppConfig>
+            layout="tabs"
             defaultValue={data}
             hookProps={{
               path: `${API}/auto/appConfig`,
@@ -72,105 +77,100 @@ const AdminManageAppConfigPage = () => {
               successCb: () => mutate(),
             }}
             renderer={{
-              sipHost: { title: ta("آدرس سرور SIP"), type: "text" },
-              sipUsername: { title: ta("نام کاربری SIP"), type: "text" },
-              sipPassword: { title: ta("رمز عبور SIP"), type: "secret" },
+              sipHost: { title: ta("آدرس سرور SIP"), type: "text", section: ta("تماس تلفنی (SIP)") },
+              sipUsername: { title: ta("نام کاربری SIP"), type: "text", section: ta("تماس تلفنی (SIP)") },
+              sipPassword: { title: ta("رمز عبور SIP"), type: "secret", section: ta("تماس تلفنی (SIP)") },
 
               getIdentityInfoApiKey: {
                 title: ta("کلید API استعلام هویت"),
                 type: "secret",
+                section: ta("استعلام هویت و نظام پزشکی"),
               },
               matchNationalIdAndPhoneNumberApiKey: {
                 title: ta("کلید API تطبیق کدملی و شماره موبایل"),
                 type: "secret",
+                section: ta("استعلام هویت و نظام پزشکی"),
               },
               getMedicalSystemCodeApiKey: {
                 title: ta("کلید API کد نظام پزشکی"),
                 type: "secret",
+                section: ta("استعلام هویت و نظام پزشکی"),
               },
-              podiumToken: { title: ta("توکن پودیوم"), type: "secret" },
+              podiumToken: { title: ta("توکن پودیوم"), type: "secret", section: ta("استعلام هویت و نظام پزشکی") },
               getMcCertificateApiKey: {
                 title: ta("کلید API گواهی نظام پزشکی"),
                 type: "secret",
+                section: ta("استعلام هویت و نظام پزشکی"),
               },
 
               bookingHorizonDays: {
                 title: ta("بازه زمانی امکان رزرو نوبت (روز)"),
                 type: "number",
+                section: ta("نوبت‌دهی و یادآوری"),
               },
               recalculateDoctorAvailabilityInterval: {
                 title: ta("فاصله محاسبه مجدد تقویم پزشکان (میلی‌ثانیه)"),
                 type: "number",
+                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
               },
 
               analyticsVisitWindowSeconds: {
                 title: ta("بازه ادغام بازدید تکراری صفحه (ثانیه)"),
                 type: "number",
+                section: ta("آمار بازدید"),
               },
               analyticsVisitorCookieDays: {
                 title: ta("مدت اعتبار کوکی بازدیدکننده (روز)"),
                 type: "number",
+                section: ta("آمار بازدید"),
               },
 
               slugGenerationInterval: {
                 title: ta("فاصله تولید خودکار اسلاگ (میلی‌ثانیه)"),
                 type: "number",
+                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
               },
 
               callRingTimeoutMs: {
                 title: ta("زمان انتظار زنگ خوردن تماس (میلی‌ثانیه)"),
                 type: "number",
+                section: ta("تماس تصویری و صوتی"),
               },
               callMaxParticipants: {
                 title: ta("حداکثر تعداد شرکت‌کنندگان یک تماس"),
                 type: "number",
+                section: ta("تماس تصویری و صوتی"),
               },
 
               reservationActivationInterval: {
                 title: ta("فاصله بررسی فعال‌سازی نوبت‌ها (میلی‌ثانیه)"),
                 type: "number",
+                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
               },
               reservationReminderMinutesBefore: {
                 title: ta("یادآوری نوبت چند دقیقه قبل از شروع (دقیقه)"),
                 type: "number",
+                section: ta("نوبت‌دهی و یادآوری"),
               },
               reservationReminderInterval: {
                 title: ta("فاصله بررسی یادآوری نوبت‌ها (میلی‌ثانیه)"),
                 type: "number",
+                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
               },
               reservationFinalizationInterval: {
                 title: ta("فاصله بررسی نهایی‌سازی نوبت‌ها (میلی‌ثانیه)"),
                 type: "number",
+                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
               },
-
-              sepEnabled: {
-                title: ta("فعال بودن پرداخت آنلاین (درگاه سامان / سپ)"),
-                type: "bool",
-              },
-              sepTerminalId: {
-                title: ta("شماره ترمینال درگاه سپ (TerminalId)"),
-                type: "text",
-              },
-              sepCallbackBaseUrl: {
-                title:
-                  ta("آدرس عمومی بک‌اند برای بازگشت از درگاه (مثال: https://api.example.com)"),
-                type: "text",
-              },
-              siteBaseUrl: {
-                title: ta("آدرس عمومی سایت (مثال: https://example.com)"),
-                type: "text",
-              },
-              sepAmountMultiplier: {
-                title: ta("ضریب تبدیل مبلغ به ریال برای درگاه (تومان ← ریال = ۱۰)"),
+              reservationNoShowNudgeMinutesAfterStart: {
+                title: ta("یادآوری حضور چند دقیقه بعد از شروع نوبت (دقیقه)"),
                 type: "number",
+                section: ta("نوبت‌دهی و یادآوری"),
               },
-              sepTokenExpiryMinutes: {
-                title: ta("مدت اعتبار توکن پرداخت (دقیقه، ۲۰ تا ۳۶۰۰)"),
+              reservationNoShowNudgeInterval: {
+                title: ta("فاصله بررسی یادآوری حضور (میلی‌ثانیه)"),
                 type: "number",
-              },
-              onlinePaymentMinAmount: {
-                title: ta("حداقل مبلغ شارژ کیف پول (تومان)"),
-                type: "number",
+                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
               },
             }}
           />

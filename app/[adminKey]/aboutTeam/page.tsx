@@ -1,17 +1,7 @@
-import AdminManageAboutTeamsPage from "@/Components/Admin/AboutTeam/AdminManageAboutTeamsPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "صفحه‌ی درباره ما" page as a tab (2026-09 admin audit)
+const LegacyAboutTeamAdmin = () => redirect(`/${adminKey}/aboutPage?tab=team`);
 
-const AdminManageAboutTeams = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageAboutTeamsPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageAboutTeams;
+export default LegacyAboutTeamAdmin;

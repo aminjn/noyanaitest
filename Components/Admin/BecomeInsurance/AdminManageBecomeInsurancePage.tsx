@@ -5,6 +5,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { IBecomeInsuranceRequest } from "@/Components/Layout/InsurancePanelLayout";
 import { useParams } from "next/navigation";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
+import RequestDecisionActions from "../Requests/RequestDecisionActions";
+import { requestUserId } from "../Requests/requestMeta";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -16,10 +18,6 @@ import FormatDate from "@/Components/UI/FormatDate";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { becomeNodeStatusesDict } from "@/Components/DoctorPanel/DoctorPanelPage";
-import Button from "@/Components/UI/Button";
-import usePopup from "@/Components/Hooks/usePopup";
-import ChangeBecomeInsuranceStatusPopup from "./ChangeBecomeInsuranceStatusPopup";
-import AssignInsuranceToBecomeInsuranceRequestPopup from "./AssignInsuranceToBecomeInsuranceRequestPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageBecomeInsurancePage = () => {
@@ -30,7 +28,6 @@ const AdminManageBecomeInsurancePage = () => {
     fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { setPopup } = usePopup();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -68,6 +65,9 @@ const AdminManageBecomeInsurancePage = () => {
                       title={ta("وضعیت")}
                       value={becomeNodeStatusesDict[data.status]}
                     />
+                    {!!data.rejectReason && (
+                      <DataPair title={ta("دلیل رد")} value={data.rejectReason} />
+                    )}
                     <DataPair title={ta("کد سیام")} value={data.siamCode} />
                     <DataPair title={ta("کد ملی")} value={data.nationalId} />
                     <DataPair
@@ -98,41 +98,32 @@ const AdminManageBecomeInsurancePage = () => {
                 icon: <InfoIcon />,
                 content: (
                   <List>
-                    <ApproveBecomeRequestButton
-                      requestPath="becomeinsurance"
+                    <RequestDecisionActions
+                      group="become"
+                      kind="insurance"
                       nodeId={String(nodeId)}
                       status={data.status}
-                      label={ta("تأیید و ساخت بیمه")}
-                      done={ta("بیمه ساخته و فعال شد.")}
-                      target={(id) => `/insurance/${id}`}
+                      rejectReason={data.rejectReason}
                       mutate={mutate}
+                      approve={
+                        <ApproveBecomeRequestButton
+                          requestPath="becomeinsurance"
+                          nodeId={String(nodeId)}
+                          status={data.status}
+                          label={ta("تأیید و ساخت بیمه")}
+                          done={ta("بیمه ساخته و فعال شد.")}
+                          target={(id) => `/insurance/${id}`}
+                          mutate={mutate}
+                        />
+                      }
+                      linkExisting={{
+                        requestPath: "becomeinsurance",
+                        orgPath: `${API}/auto/insurance`,
+                        label: ta("انتخاب بیمه"),
+                        target: (id) => `/insurance/${id}`,
+                        applicantUser: requestUserId(data.user),
+                      }}
                     />
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "ChangeBecomeInsuranceStatus",
-                          <ChangeBecomeInsuranceStatusPopup
-                            mutate={mutate}
-                            node={data}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تغییر وضعیت")}
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        setPopup(
-                          "AssignInsuranceToBecomeInsuranceRequest",
-                          <AssignInsuranceToBecomeInsuranceRequestPopup
-                            mutate={mutate}
-                            node={data}
-                          />,
-                        )
-                      }
-                    >
-                      {ta("تخصیص بیمه")}
-                    </Button>
                   </List>
                 ),
               },

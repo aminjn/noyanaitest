@@ -36,6 +36,7 @@ export interface IPharmacyAdditionRequest<
   city: City;
   description?: string;
   status: AdditionRequestStatus;
+  rejectReason?: string;
 }
 
 const DoctorPharmacyRequestsTab = () => {

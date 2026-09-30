@@ -65,6 +65,7 @@ const AdminManageDrugPage = () => {
                           (node as IDrugTag).name || (node as IDrugTag)._id,
                         getOptionValue: (node) => (node as IDrugTag)._id,
                         path: `${API}/auto/drugTag`,
+                        creatable: { path: `${API}/auto/drugTag` },
                         getDefaultValue: (inp) => inp.tag,
                       },
                       dosage: { type: "text", title: ta("دوز مصرفی") },

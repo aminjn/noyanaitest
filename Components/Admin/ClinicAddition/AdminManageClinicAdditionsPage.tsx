@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import useSWR from "swr";
 import classes from "./AdminManageClinicAdditionsPage.module.css";
 import {
@@ -18,11 +19,11 @@ import { findCity } from "@/Components/Enums/Cities";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import CheckIcon from "@/Components/Icons/CheckIcon";
-import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateFromAdditionPopup from "../UI/CreateFromAdditionPopup";
-import MutateClinicRequestPopup from "./MutateClinicRequestPopup";
+import RequestActionsPopup from "../Requests/RequestActionsPopup";
+import { AdditionApproveButton } from "../Requests/RequestApproveButtons";
+import useOpenFromQuery from "../Requests/useOpenFromQuery";
 import DeleteClinicAdditionRequestPopup from "./DeleteClinicAdditionRequestPopup";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -30,10 +31,39 @@ const AdminManageClinicAdditionsPage = () => {
   const { data, error, mutate } = useSWR<
     IClinicAdditionRequest<{ user: Record<never, never> }>[]
   >(`${API}/auto/clinicaddition`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data),
+    fetcher({ url }).then((res) =>
+      Array.isArray(res?.data?.data) ? res.data.data : [],
+    ),
   );
 
   const { setPopup } = usePopup();
+
+  const openActions = useCallback(
+    (node: IClinicAdditionRequest<{ user: Record<never, never> }>) =>
+      setPopup(
+        "AdditionRequestActions",
+        <RequestActionsPopup
+          title={ta("درخواست افزودن کلینیک")}
+          group="addition"
+          kind="clinic"
+          node={node}
+          mutate={mutate}
+          approve={
+            <AdditionApproveButton
+              kind="clinic"
+              requestId={node._id}
+              label={ta("ایجاد کلینیک")}
+              mutate={mutate}
+            />
+          }
+        >
+          <p>{node.clinicName || "—"}</p>
+        </RequestActionsPopup>,
+      ),
+    [setPopup, mutate],
+  );
+
+  useOpenFromQuery(data, openActions);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -68,6 +98,11 @@ const AdminManageClinicAdditionsPage = () => {
                 value: (node) => node.ownerPhone,
                 filter: "Text",
               },
+              rejectReason: {
+                name: ta("دلیل رد"),
+                value: (node) => node.rejectReason || "",
+                filter: "Text",
+              },
               submittedBy: {
                 name: ta("ثبت‌کننده"),
                 value: (node) =>
@@ -94,38 +129,12 @@ const AdminManageClinicAdditionsPage = () => {
                 name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
-                    {node.status !== "Done" && node.status !== "Rejected" && (
-                      <IconButton
-                        variant="Success"
-                        title={ta("ایجاد کلینیک")}
-                        onClick={() =>
-                          setPopup(
-                            "CreateClinicFromRequest",
-                            <CreateFromAdditionPopup
-                              kind="clinic"
-                              requestId={node._id}
-                              mutate={mutate}
-                            />,
-                          )
-                        }
-                      >
-                        <CheckIcon />
-                      </IconButton>
-                    )}
                     <IconButton
-                      variant="Info"
-                      title={ta("ویرایش")}
-                      onClick={() =>
-                        setPopup(
-                          "MutateClinicRequest",
-                          <MutateClinicRequestPopup
-                            node={node}
-                            mutate={mutate}
-                          />,
-                        )
-                      }
+                      variant="Success"
+                      title={ta("بررسی")}
+                      onClick={() => openActions(node)}
                     >
-                      <EditIcon />
+                      <CheckIcon />
                     </IconButton>
                     <IconButton
                       variant="Danger"

@@ -1,17 +1,7 @@
-import AdminManageGlobalFinanceSettingsPage from "@/Components/Admin/FinanceSettings/AdminManageGlobalFinanceSettingsPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "تنظیمات مالی" page as a tab (2026-09 admin audit)
+const LegacyGlobalFinanceSettingsAdmin = () => redirect(`/${adminKey}/financeSettings?tab=commission`);
 
-const AdminManageGlobalFinanceSettings = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageGlobalFinanceSettingsPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageGlobalFinanceSettings;
+export default LegacyGlobalFinanceSettingsAdmin;

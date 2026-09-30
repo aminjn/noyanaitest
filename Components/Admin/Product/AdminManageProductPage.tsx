@@ -66,6 +66,7 @@ const ProductDetailsManager = ({
           getOptionValue: (node) => (node as IProductCategory)._id,
           getDefaultValue: (inp) => inp.category,
           path: `${API}/auto/productCategory`,
+          creatable: { path: `${API}/auto/productCategory` },
         },
         image: { title: ta("نصویر"), type: "image" },
         original: { title: ta("اصالت"), type: "text" },
@@ -154,7 +155,7 @@ const MutateProductSellerPopup = ({
             getOptionLabel: (node) =>
               (node as IPharmacy).name || (node as IPharmacy)._id,
             getOptionValue: (node) => (node as IPharmacy)._id,
-            getDefaultValue: (inp) => inp.seller._id,
+            getDefaultValue: (inp) => inp.seller?._id,
           },
           order: { type: "number", title: ta("رتبه") },
           isActive: { type: "bool", title: ta("فعال") },
