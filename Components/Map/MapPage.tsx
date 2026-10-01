@@ -122,9 +122,9 @@ const MapPage = () => {
             district (our zones) */}
         <PlaceSearch
           near={me.point || { lat: mapHook.center.lat, lng: mapHook.center.lng }}
-          placeholder={getContent("mapSearchPlace")}
+          placeholder={getContent("mapSearchPlaceholder")}
           noResults={getContent("nothingWasFound")}
-          errorText={getContent("mapLayerUnavailable")}
+          errorText={getContent("mapSearchUnavailable")}
           locale={intlTag}
           onPick={(pick) =>
             mapHook.map?.flyTo({ center: [pick.location.lng, pick.location.lat], zoom: 15 })

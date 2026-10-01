@@ -257,26 +257,28 @@ const ParaClinicGeoManager = ({
   node: IParaClinic;
   mutate: () => unknown;
 }) => {
-  const { setInput, submit, isLoading } = useForm<{
-    location: [number, number];
-  }>({
+  const { setInput, submit, isLoading, input } = useForm<{ location: [number, number]; address: string }>({
     path: `${API}/auto/paraClinic/${node._id}`,
     method: "POST",
     successCb: () => {
       mutate();
     },
     hasProblem: (inp) => {
-      if (!inp.location) return ta("لطفا موقعیت را انتخاب کنید");
+      if (!inp.location && !inp.address) return ta("لطفا موقعیت را انتخاب کنید");
       return false;
     },
     mutator: (inp) => ({
-      location: { type: "Point", coordinates: inp.location },
+      ...(inp.location ? { location: { type: "Point", coordinates: inp.location } } : {}),
+      // the point's address, when the admin took it (or it was empty)
+      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
     }),
   });
 
   return (
     <div>
       <PointPicker
+        currentAddress={input.address ?? node.address ?? ""}
+        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
         defaultValue={node.location?.coordinates}
         onChange={(e) => setInput((prev) => ({ ...prev, location: e }))}
       />

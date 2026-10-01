@@ -145,7 +145,8 @@ const DashboardManageBookingPage = () => {
             </div>
 
             {/* an upcoming in-person visit: when to leave, traffic zone */}
-            {data.sessionType === "inPerson" && data.status === "active" && (
+            {data.sessionType === "inPerson" &&
+              (data.status === "active" || data.status === "pending") && (
               <LeaveByHint
                 className={classes.leaveBy}
                 coords={data.office?.location?.coordinates}

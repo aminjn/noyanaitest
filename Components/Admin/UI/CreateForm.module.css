@@ -130,3 +130,18 @@
 .secretInput {
   padding-inline-end: 3rem;
 }
+
+/* a map point field: its title, then the picker */
+.point {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.pointTitle {
+  color: var(--gray9);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: start;
+}

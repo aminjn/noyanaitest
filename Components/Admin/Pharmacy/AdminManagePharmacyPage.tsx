@@ -47,24 +47,26 @@ const PharmacyLocationTab = ({
   node: IPharmacy;
   mutate: () => unknown;
 }) => {
-  const { setInput, isLoading, submit } = useForm<{
-    coords: [number, number];
-  }>({
+  const { setInput, isLoading, submit, input } = useForm<{ coords: [number, number]; address: string }>({
     path: `${API}/auto/pharmacy/${node._id}`,
     method: "POST",
     successCb: () => {
       mutate();
     },
     hasProblem: (inp) =>
-      !inp.coords ? ta("یک موقعیت را انتخاب کنید") : false,
+      !inp.coords && !inp.address ? ta("یک موقعیت را انتخاب کنید") : false,
     mutator: (inp) => ({
-      location: { type: "Point", coordinates: inp.coords },
+      ...(inp.coords ? { location: { type: "Point", coordinates: inp.coords } } : {}),
+      // the point's address, when the admin took it (or it was empty)
+      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
     }),
   });
 
   return (
     <div>
       <PointPicker
+        currentAddress={input.address ?? node.address ?? ""}
+        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
         defaultValue={node.location?.coordinates}
         onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
       />

@@ -30,6 +30,15 @@ const DashboardMutateAddressPopup = ({
       <CreateForm<IUserAddress>
         renderer={{
           displayName: { type: "text", title: getContent("displayName") },
+          // pin first (search, map, "my location"): its address fills the
+          // address field below when it is still empty, like Snapp / Digikala
+          location: {
+            type: "point",
+            title: getContent("location"),
+            addressField: "address",
+            // /user/address takes the bare [lng, lat] pair
+            store: "pair",
+          },
           address: { type: "text", title: getContent("address") },
           // left empty, the account's own number is used
           receiverPhone: { type: "text", title: getContent("receiverPhone") },
