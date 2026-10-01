@@ -1,3 +1,4 @@
+import ClockIcon from "../Icons/ClockIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import useSWR from "swr";
 import { API } from "../config";
@@ -31,6 +32,13 @@ const HospitalPanelSidebar = () => {
         badge: joinRequests,
         show: hasAccess(),
         target: "doctor",
+      },
+      {
+        title: "schedule",
+        group: "groupDaily",
+        icon: <ClockIcon />,
+        show: hasAccess("readReservations"),
+        target: "booking",
       },
       {
         title: "profile",

@@ -2475,6 +2475,20 @@ const contentKeys = [
   "timeOffEmpty",
   "timeOffBooked",
   "timeOffRemove",
+  "cdInvite",
+  "cdInviteHint",
+  "cdInviteSearch",
+  "cdInviteSend",
+  "cdInviteSent",
+  "cdInviteNone",
+  "cdRejectReason",
+  "cdRejectHint",
+  "caAllDoctors",
+  "caFrom",
+  "caTo",
+  "caNoOffices",
+  "caEmpty",
+  "readReservations",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

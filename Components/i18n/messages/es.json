@@ -2323,5 +2323,19 @@
  "timeOffAdd": "Añadir días libres",
  "timeOffEmpty": "Aún no hay días libres",
  "timeOffBooked": "Hay ${1} citas en esos días; muévelas o cancélalas desde la agenda.",
- "timeOffRemove": "Quitar"
+ "timeOffRemove": "Quitar",
+ "cdInvite": "Invitar a un médico",
+ "cdInviteHint": "Busca al médico por nombre o número de colegiado. Al aceptar, se une a los médicos del centro.",
+ "cdInviteSearch": "Nombre o número de colegiado",
+ "cdInviteSend": "Invitar",
+ "cdInviteSent": "Invitación enviada",
+ "cdInviteNone": "No se encontró ningún médico",
+ "cdRejectReason": "Motivo del rechazo",
+ "cdRejectHint": "Este motivo se envía al médico.",
+ "caAllDoctors": "Todos los médicos",
+ "caFrom": "Desde",
+ "caTo": "Hasta",
+ "caNoOffices": "Ningún médico ha vinculado aún un consultorio a este centro. Aquí aparecen las citas de los consultorios vinculados.",
+ "caEmpty": "No hay citas en este periodo",
+ "readReservations": "Ver las citas del centro"
 }

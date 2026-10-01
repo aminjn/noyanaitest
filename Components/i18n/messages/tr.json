@@ -2323,5 +2323,19 @@
  "timeOffAdd": "İzin ekle",
  "timeOffEmpty": "Henüz izin günü yok",
  "timeOffBooked": "Bu günlerde ${1} randevu var; bunları takvimden taşıyın veya iptal edin.",
- "timeOffRemove": "Kaldır"
+ "timeOffRemove": "Kaldır",
+ "cdInvite": "Doktor davet et",
+ "cdInviteHint": "Doktoru adı veya tabip odası numarasıyla bulun. Kabul ettiğinde merkezin doktorlarına katılır.",
+ "cdInviteSearch": "Ad veya oda numarası",
+ "cdInviteSend": "Davet et",
+ "cdInviteSent": "Davet gönderildi",
+ "cdInviteNone": "Doktor bulunamadı",
+ "cdRejectReason": "Reddetme nedeni",
+ "cdRejectHint": "Bu neden doktora gönderilir.",
+ "caAllDoctors": "Tüm doktorlar",
+ "caFrom": "Başlangıç",
+ "caTo": "Bitiş",
+ "caNoOffices": "Henüz hiçbir doktor bu merkeze muayenehane bağlamadı. Bağlı muayenehanelerin randevuları burada görünür.",
+ "caEmpty": "Bu aralıkta randevu yok",
+ "readReservations": "Merkezin randevularını görme"
 }

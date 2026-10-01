@@ -2323,5 +2323,19 @@
  "timeOffAdd": "Tambah hari libur",
  "timeOffEmpty": "Belum ada hari libur",
  "timeOffBooked": "Ada ${1} janji temu pada hari-hari ini; pindahkan atau batalkan dari jadwal.",
- "timeOffRemove": "Hapus"
+ "timeOffRemove": "Hapus",
+ "cdInvite": "Undang dokter",
+ "cdInviteHint": "Cari dokter berdasarkan nama atau nomor konsil kedokteran. Setelah menerima, ia bergabung dengan dokter pusat ini.",
+ "cdInviteSearch": "Nama atau nomor konsil",
+ "cdInviteSend": "Undang",
+ "cdInviteSent": "Undangan terkirim",
+ "cdInviteNone": "Dokter tidak ditemukan",
+ "cdRejectReason": "Alasan penolakan",
+ "cdRejectHint": "Alasan ini dikirim ke dokter.",
+ "caAllDoctors": "Semua dokter",
+ "caFrom": "Dari",
+ "caTo": "Sampai",
+ "caNoOffices": "Belum ada dokter yang menautkan tempat praktik ke pusat ini. Janji temu di tempat praktik yang tertaut akan muncul di sini.",
+ "caEmpty": "Tidak ada janji temu pada rentang ini",
+ "readReservations": "Melihat janji temu pusat"
 }

@@ -2323,5 +2323,19 @@
  "timeOffAdd": "添加休息日",
  "timeOffEmpty": "暂无休息日",
  "timeOffBooked": "这些日子已有 ${1} 个预约，请在日程中改期或取消。",
- "timeOffRemove": "删除"
+ "timeOffRemove": "删除",
+ "cdInvite": "邀请医生",
+ "cdInviteHint": "按姓名或医师执业编号查找医生。对方接受后即加入本中心医生名单。",
+ "cdInviteSearch": "姓名或执业编号",
+ "cdInviteSend": "邀请",
+ "cdInviteSent": "邀请已发送",
+ "cdInviteNone": "未找到医生",
+ "cdRejectReason": "拒绝原因",
+ "cdRejectHint": "该原因会发送给医生。",
+ "caAllDoctors": "全部医生",
+ "caFrom": "从",
+ "caTo": "至",
+ "caNoOffices": "还没有医生将诊室关联到本中心。已关联诊室的预约会显示在这里。",
+ "caEmpty": "此时段内没有预约",
+ "readReservations": "查看中心的预约"
 }

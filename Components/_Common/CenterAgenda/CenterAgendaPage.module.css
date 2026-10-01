@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filters {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.select select {
+  min-height: 2.75rem;
+  min-width: 12rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  color: var(--gray13);
+  font-size: 0.875rem;
+}
+
+.date {
+  width: 11rem;
+}
+
+.row {
+  cursor: default;
+}
+
+@media (max-width: 40rem) {
+  .filters {
+    margin-inline-start: 0;
+    width: 100%;
+  }
+
+  .select,
+  .select select,
+  .date {
+    width: 100%;
+  }
+}

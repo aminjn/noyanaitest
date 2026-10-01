@@ -2323,5 +2323,19 @@
  "timeOffAdd": "Ajouter des jours de repos",
  "timeOffEmpty": "Aucun jour de repos",
  "timeOffBooked": "${1} rendez-vous sont déjà pris ces jours-là ; déplacez-les ou annulez-les depuis l'agenda.",
- "timeOffRemove": "Supprimer"
+ "timeOffRemove": "Supprimer",
+ "cdInvite": "Inviter un médecin",
+ "cdInviteHint": "Trouvez le médecin par son nom ou son numéro d'ordre. Une fois accepté, il rejoint les médecins du centre.",
+ "cdInviteSearch": "Nom ou numéro d'ordre",
+ "cdInviteSend": "Inviter",
+ "cdInviteSent": "Invitation envoyée",
+ "cdInviteNone": "Aucun médecin trouvé",
+ "cdRejectReason": "Motif du refus",
+ "cdRejectHint": "Ce motif est envoyé au médecin.",
+ "caAllDoctors": "Tous les médecins",
+ "caFrom": "Du",
+ "caTo": "Au",
+ "caNoOffices": "Aucun médecin n'a encore lié de cabinet à ce centre. Les rendez-vous des cabinets liés s'affichent ici.",
+ "caEmpty": "Aucun rendez-vous sur cette période",
+ "readReservations": "Voir les rendez-vous du centre"
 }

@@ -2323,5 +2323,19 @@
  "timeOffAdd": "休診日を追加",
  "timeOffEmpty": "休診日はまだありません",
  "timeOffBooked": "この期間に${1}件の予約があります。スケジュールから変更またはキャンセルしてください。",
- "timeOffRemove": "削除"
+ "timeOffRemove": "削除",
+ "cdInvite": "医師を招待",
+ "cdInviteHint": "名前または医師会番号で医師を探してください。承諾されるとセンターの医師に加わります。",
+ "cdInviteSearch": "名前または医師会番号",
+ "cdInviteSend": "招待",
+ "cdInviteSent": "招待を送信しました",
+ "cdInviteNone": "医師が見つかりません",
+ "cdRejectReason": "お断りの理由",
+ "cdRejectHint": "この理由は医師に送られます。",
+ "caAllDoctors": "すべての医師",
+ "caFrom": "開始",
+ "caTo": "終了",
+ "caNoOffices": "まだどの医師もこのセンターに診療所を紐づけていません。紐づいた診療所の予約がここに表示されます。",
+ "caEmpty": "この期間に予約はありません",
+ "readReservations": "センターの予約を見る"
 }

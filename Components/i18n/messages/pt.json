@@ -2323,5 +2323,19 @@
  "timeOffAdd": "Adicionar folga",
  "timeOffEmpty": "Nenhuma folga ainda",
  "timeOffBooked": "Há ${1} consultas nesses dias; remarque ou cancele pela agenda.",
- "timeOffRemove": "Remover"
+ "timeOffRemove": "Remover",
+ "cdInvite": "Convidar um médico",
+ "cdInviteHint": "Encontre o médico pelo nome ou número do conselho. Ao aceitar, ele passa a fazer parte dos médicos do centro.",
+ "cdInviteSearch": "Nome ou número do conselho",
+ "cdInviteSend": "Convidar",
+ "cdInviteSent": "Convite enviado",
+ "cdInviteNone": "Nenhum médico encontrado",
+ "cdRejectReason": "Motivo da recusa",
+ "cdRejectHint": "Este motivo é enviado ao médico.",
+ "caAllDoctors": "Todos os médicos",
+ "caFrom": "De",
+ "caTo": "Até",
+ "caNoOffices": "Nenhum médico vinculou ainda um consultório a este centro. As consultas dos consultórios vinculados aparecem aqui.",
+ "caEmpty": "Nenhuma consulta neste período",
+ "readReservations": "Ver as consultas do centro"
 }
