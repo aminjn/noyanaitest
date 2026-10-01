@@ -78,65 +78,6 @@ type RequestedPresc = {
   }[];
 };
 
-const t = {
-  patienT_NATCODE: "1234567891",
-  patienT_MOBILE: "0",
-  patienT_NAME: "بيان اله",
-  patienT_LNAME: "كريمي اورق",
-  patienT_BIRTHDATE: "1313/09/11",
-  patienT_GENDER: "مرد",
-  doC_FNAME: "تستي",
-  doC_LNAME: "تامين اجتماعي",
-  medicaL_OFFICE_NAME: "تهران",
-  montH_DESC: "مرداد",
-  patienT_INSURANCETYPE: "مستمري",
-  patienT_INSURANCENO: "0017054906",
-  patienT_INSURANCEDATE: "14991229",
-  regStatus_Desc: "ارسال نشده",
-  registeR_ID: 232018956,
-  eprsC_ID: 140033895,
-  doC_MDID: "2000200092",
-  doC_FULL_NAME: null,
-  doC_SPEC_CODE: "00118",
-  doC_SPEC_DESC:
-    "فوق تخصص بيماري هاي خون و سرطان کودکان (هماتولوژي انکولوژي کودکان)",
-  paR_CODE: "0000007303",
-  patienT_AMOUNT: 3074850,
-  paR_NAME: "LDL- پاتوبيولوژي همت",
-  paR_USER: "par",
-  partypecode: "06",
-  partypedesc: "ام آر آي",
-  prescdate: "1405/04/30",
-  regdate: "1405/05/05",
-  requesT_PRICE: 10249500,
-  iS_PRICE: 7174650,
-  tecH_PRICE: 0,
-  month: "05",
-  servicE_TYPE_CODE: "4020",
-  servicE_TYPE_DESC: "وب_عادی",
-  year: "1405",
-  tecH_MDID: null,
-  subsidyprice: 0,
-  supportamount: 0,
-  familydocprice: 0,
-  details: [
-    {
-      tareF_CODE: "0070406502",
-      tareF_NAME: "MRI هيپوفيز با ماده حاجب",
-      qty: 1,
-      iteM_PRICE: 10249500,
-      requesT_PRICE: 10249500,
-      iteM_IS_PRICE: 7174650,
-      supporT_AMOUNT: 0,
-      patienT_AMOUNT: 3074850,
-      iS2K: "0",
-      tecH_PRICE: 0,
-      subsidyprice: 0,
-      familydocprice: 0,
-    },
-  ],
-};
-
 const RegisterDiagnosisPopup = ({ node }: { node: RequestedPresc }) => {
   const { closePopup } = usePopup();
   const getContent = useScopedLocale(NS);
@@ -169,7 +110,6 @@ const RegisterDiagnosisPopup = ({ node }: { node: RequestedPresc }) => {
                   .map((p) => p.complemantary_Msg)
                   .join("،"),
               );
-            console.log(result);
           },
           parser: "JSON",
           decorators: { REGISTER_ID: node.registeR_ID },
@@ -285,7 +225,6 @@ const RegisterSessionPopup = ({ data }: { data: RequestedPresc }) => {
             details: isSubmitting,
           }}
           onDone={(status, result) => {
-            console.log(result);
             setIsSubmitting(null);
             if (result?.data?.data?.problems?.length) {
               pushNotification(
@@ -319,7 +258,6 @@ const Result = ({
 
   const { setPopup } = usePopup();
 
-  console.log(data.partypecode === "13");
 
   return (
     <WithTitle
@@ -546,7 +484,6 @@ const Result = ({
                 .join("،"),
             );
           clear();
-          console.log(result);
         }}
         successMessage={getContent("prescriptionDeleted")}
         payload={{ registeR_ID: data.registeR_ID }}
@@ -583,7 +520,6 @@ const RequestByRegisterId = () => {
                   .join("،"),
               );
             setPresc(result?.data?.data?.data || null);
-            console.log(result);
           },
         }}
       />

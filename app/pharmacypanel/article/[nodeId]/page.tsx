@@ -1,4 +1,4 @@
-import PharmacyManageArticlePage from "@/Components/PharmacyPanel/Article/PharmacyManageArticlePage";
+import OrgManageArticlePage from "@/Components/_Common/OrgArticle/OrgManageArticlePage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
@@ -9,7 +9,7 @@ const PharmacyManageArticleById = async () => {
       namespaces={["pharmacyPanelArticle"]}
       initialTextContent={textContent}
     >
-      <PharmacyManageArticlePage />
+      <OrgManageArticlePage kind="pharmacy" />
     </LocaleScopeProvider>
   );
 };

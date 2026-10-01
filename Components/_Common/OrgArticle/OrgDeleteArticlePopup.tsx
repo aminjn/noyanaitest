@@ -1,25 +1,24 @@
 import { Fragment, useState } from "react";
-import { IArticle } from "./HospitalManageArticlesPage";
+import { IArticle, OrgArticleKind, orgArticleConfig } from "./orgArticle";
 import usePopup from "@/Components/Hooks/usePopup";
 import ConfirmationPopup from "@/Components/Admin/UI/ConfirmationPopup";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 
-const NS: ContentNamespace[] = ["common", "hospitalPanelArticle"];
-
-const DeleteArticlePopup = ({
+const OrgDeleteArticlePopup = ({
+  kind,
   mutate,
   node,
 }: {
+  kind: OrgArticleKind;
   node: IArticle;
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { closePopup } = usePopup();
 
-  const getContent = useScopedLocale(NS);
+  const getContent = useScopedLocale(orgArticleConfig[kind].ns);
 
   return (
     <Fragment>
@@ -29,7 +28,7 @@ const DeleteArticlePopup = ({
         onConfirm={() => setIsLoading(true)}
       />
       <Act
-        path={isLoading ? `${API}/blog/hospital/${node._id}` : null}
+        path={isLoading ? `${API}/blog/${kind}/${node._id}` : null}
         method="PUT"
         onDone={(status) => {
           setIsLoading(false);
@@ -42,4 +41,4 @@ const DeleteArticlePopup = ({
   );
 };
 
-export default DeleteArticlePopup;
+export default OrgDeleteArticlePopup;

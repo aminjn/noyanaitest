@@ -116,7 +116,8 @@ const ProviderHome = ({
   );
   const articles = useSWR(
     hasAccess("readArticles") ? `${API}/blog/${kind}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+    (url: string) =>
+      fetcher({ url }).then((res) => (Array.isArray(res.data) ? res.data : [])),
   );
 
   // Pharmacy setup checklist (2026-09, like the doctor panel's): what a new

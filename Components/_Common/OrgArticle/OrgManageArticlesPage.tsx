@@ -1,54 +1,36 @@
 "use client";
 import useSWR from "swr";
-import { MongoDoc } from "@/Components/Hooks/useUser";
+import { IArticle, OrgArticleKind, orgArticleConfig } from "./orgArticle";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import usePopup from "@/Components/Hooks/usePopup";
-import HospitalMutateArticlePopup from "./HospitalMutateArticlePopup";
+import OrgMutateArticlePopup from "./OrgMutateArticlePopup";
 import Table from "@/Components/Admin/UI/Table";
 import TableActions from "@/Components/Admin/UI/TableActions";
 import IconButton from "@/Components/Admin/UI/IconButton";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import DeleteArticlePopup from "./DeleteArticlePopup";
+import OrgDeleteArticlePopup from "./OrgDeleteArticlePopup";
 
-const NS: ContentNamespace[] = ["common", "hospitalPanelArticle"];
-
-export interface IArticleCategory extends MongoDoc {
-  title?: string;
-}
-
-export interface IArticle extends MongoDoc {
-  title?: string;
-  summary?: string;
-  image?: string;
-  content?: string;
-  readTime?: string;
-  slug?: string;
-  published: boolean;
-  category?: IArticleCategory | string;
-  createdAt?: string;
-}
-
-const HospitalManageArticlesPage = () => {
+const OrgManageArticlesPage = ({ kind }: { kind: OrgArticleKind }) => {
   const { data, error, mutate } = useSWR<IArticle[]>(
-    `${API}/blog/hospital`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+    `${API}/blog/${kind}`,
+    (url: string) =>
+      fetcher({ url }).then((res) => (Array.isArray(res.data) ? res.data : [])),
   );
 
-  const getContent = useScopedLocale(NS);
+  const getContent = useScopedLocale(orgArticleConfig[kind].ns);
 
   const { setPopup } = usePopup();
 
   useBreadCrump([
-    { title: getContent("dashboard"), target: "/hospitalpanel" },
-    { title: getContent("articles"), target: "/hospitalpanel/article" },
+    { title: getContent("dashboard"), target: orgArticleConfig[kind].panel },
+    { title: getContent("articles"), target: `${orgArticleConfig[kind].panel}/article` },
   ]);
 
   return (
@@ -61,8 +43,8 @@ const HospitalManageArticlesPage = () => {
               title: getContent("newItem"),
               action: () =>
                 setPopup(
-                  "HospitalMutateArticle",
-                  <HospitalMutateArticlePopup mutate={mutate} />,
+                  "OrgMutateArticle",
+                  <OrgMutateArticlePopup kind={kind} mutate={mutate} />,
                 ),
             },
           ]}
@@ -70,7 +52,7 @@ const HospitalManageArticlesPage = () => {
           <p>{getContent("articleModerationNotice")}</p>
           <Table
             data={data}
-            name="HospitalManageArticles"
+            name="OrgManageArticles"
             renderer={{
               title: {
                 name: getContent("title"),
@@ -114,15 +96,15 @@ const HospitalManageArticlesPage = () => {
                 name: getContent("actions"),
                 component: (node) => (
                   <TableActions>
-                    <IconLink href={`/hospitalpanel/article/${node._id}`}>
+                    <IconLink href={`${orgArticleConfig[kind].panel}/article/${node._id}`}>
                       <EyeIcon />
                     </IconLink>
                     <IconButton
                       variant="Danger"
                       onClick={() =>
                         setPopup(
-                          "HospitalDeleteArticle",
-                          <DeleteArticlePopup node={node} mutate={mutate} />,
+                          "OrgDeleteArticle",
+                          <OrgDeleteArticlePopup kind={kind} node={node} mutate={mutate} />,
                         )
                       }
                     >
@@ -139,4 +121,4 @@ const HospitalManageArticlesPage = () => {
   );
 };
 
-export default HospitalManageArticlesPage;
+export default OrgManageArticlesPage;

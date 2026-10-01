@@ -128,7 +128,32 @@ const PanelFinancePage = ({
 
   const { data, error, isValidating } = useSWR<PanelFinance>(
     `${API}${api}?page=${page}`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
+    (url: string) =>
+      fetcher({ url }).then((res) => {
+        // a partial or odd response must not crash the page
+        const d = (res.data || {}) as Partial<PanelFinance>;
+        const tx = (d.transactions || {}) as Partial<PanelFinance["transactions"]>;
+        return {
+          ...d,
+          balance: Number(d.balance) || 0,
+          income: {
+            thisMonth: Number(d.income?.thisMonth) || 0,
+            lastMonth: Number(d.income?.lastMonth) || 0,
+            allTime: Number(d.income?.allTime) || 0,
+          },
+          upcoming: {
+            total: Number(d.upcoming?.total) || 0,
+            count: Number(d.upcoming?.count) || 0,
+          },
+          months: Array.isArray(d.months) ? d.months : [],
+          transactions: {
+            ...tx,
+            items: Array.isArray(tx.items) ? tx.items : [],
+            total: Number(tx.total) || 0,
+            limit: Number(tx.limit) || 20,
+          },
+        } as PanelFinance;
+      }),
     { keepPreviousData: true },
   );
 

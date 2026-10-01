@@ -1,30 +1,27 @@
 "use client";
 
 import useSWR from "swr";
-import { IArticle, IArticleCategory } from "./InsuranceManageArticlesPage";
+import { IArticle, IArticleCategory, OrgArticleKind, orgArticleConfig } from "./orgArticle";
 import { API } from "@/Components/config";
 import { useParams } from "next/navigation";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 
-const NS: ContentNamespace[] = ["common", "insurancePanelArticle"];
-
-const InsuranceManageArticlePage = () => {
+const OrgManageArticlePage = ({ kind }: { kind: OrgArticleKind }) => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IArticle>(
-    nodeId ? `${API}/blog/insurance/${nodeId}` : null,
+    nodeId ? `${API}/blog/${kind}/${nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const getContent = useScopedLocale(NS);
+  const getContent = useScopedLocale(orgArticleConfig[kind].ns);
 
   useBreadCrump([
-    { title: getContent("dashboard"), target: "/insurancepanel" },
-    { title: getContent("articles"), target: "/insurancepanel/article" },
+    { title: getContent("dashboard"), target: orgArticleConfig[kind].panel },
+    { title: getContent("articles"), target: `${orgArticleConfig[kind].panel}/article` },
   ]);
 
   return (
@@ -41,7 +38,7 @@ const InsuranceManageArticlePage = () => {
             category: {
               type: "nodes",
               title: getContent("category"),
-              path: `${API}/blog/insurance/category`,
+              path: `${API}/blog/${kind}/category`,
               multi: false,
               clearable: true,
               getOptionLabel: (node) =>
@@ -60,7 +57,7 @@ const InsuranceManageArticlePage = () => {
             },
           }}
           hookProps={{
-            path: `${API}/blog/insurance/${data._id}`,
+            path: `${API}/blog/${kind}/${data._id}`,
             method: "POST",
             successCb: () => mutate(),
           }}
@@ -70,4 +67,4 @@ const InsuranceManageArticlePage = () => {
   );
 };
 
-export default InsuranceManageArticlePage;
+export default OrgManageArticlePage;

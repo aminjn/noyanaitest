@@ -17,7 +17,7 @@ const InsurancePanelSidebar = () => {
         icon: <UserCircleIcon />,
         title: "profile",
         group: "groupCenter",
-        show: true,
+        show: hasAccess("mutateProfile"),
         target: "profile",
       },
       {

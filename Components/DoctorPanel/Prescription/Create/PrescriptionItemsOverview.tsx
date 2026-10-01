@@ -180,7 +180,6 @@ const PrescriptionItemsOverview = () => {
 
   const push = useProgress();
 
-  console.log(action);
 
   const onSubmit = useCallback(
     (_action: Action) => {
@@ -212,7 +211,6 @@ const PrescriptionItemsOverview = () => {
           description: item.description,
         })),
       };
-      console.log(payload);
       setAction({ action: _action, payload });
     },
     [action, getContent, items, patient, pushNotification, labItems],

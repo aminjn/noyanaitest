@@ -27,7 +27,6 @@ const PrescriptionList = ({
     null | IncomingTaminPharmacyResponse["list"][number]
   >(null);
 
-  console.log(data);
 
   if (!selected)
     return (

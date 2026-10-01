@@ -64,9 +64,7 @@ const PharmacyPanelSidebar = () => {
         title: "profile",
         icon: <UserCircleIcon />,
         group: "groupCenter",
-        // Baseline page, same as every other panel's profile nav item —
-        // always visible, not gated behind an ACL action.
-        show: true,
+        show: hasAccess("mutateProfile"),
         target: "profile",
       },
       {

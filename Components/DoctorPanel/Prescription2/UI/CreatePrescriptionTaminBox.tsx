@@ -24,7 +24,6 @@ const CreatePrescriptionTaminBox = () => {
 
   const getContent = useScopedLocale(LOCALE_NS);
 
-  console.log(defaultValue);
 
   if (!defaultValue?.taminPrescriptions.length) return null;
   return (

@@ -59,7 +59,6 @@ const Submitter = () => {
         onDone={(status, result) => {
           setIsDrafting(null);
           if (!status || !result) return;
-          console.log(result.data);
           setIsCommiting(result.data);
         }}
         payload={isDrafting || undefined}
@@ -148,7 +147,6 @@ const Editor = () => {
     null,
   );
 
-  console.log(defaultValue);
 
   const getContent = useScopedLocale(LOCALE_NS);
 

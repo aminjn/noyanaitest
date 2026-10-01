@@ -48,52 +48,6 @@ type ParaPresc = {
   }[];
 };
 
-const t = {
-  registeR_ID: 232018953,
-  eprsC_ID: 140033889,
-  doC_MDID: "2000200092",
-  doC_FULL_NAME: "تستي-تامين اجتماعي",
-  doC_SPEC_CODE: "00118",
-  doC_SPEC_DESC:
-    "فوق تخصص بيماري هاي خون و سرطان کودکان (هماتولوژي انکولوژي کودکان)",
-  paR_CODE: "0000007303",
-  patienT_AMOUNT: 897421,
-  paR_NAME: "",
-  paR_USER: "par",
-  partypecode: "04",
-  partypedesc: "سونوگرافي",
-  prescdate: "14050430",
-  regdate: "14050505",
-  requesT_PRICE: 2991405,
-  iS_PRICE: 2093984,
-  tecH_PRICE: 0,
-  month: "05",
-  montH_DESC: null,
-  servicE_TYPE_CODE: "4020",
-  servicE_TYPE_DESC: "وب_عادی",
-  year: "1405",
-  tecH_MDID: "",
-  subsidyprice: 0,
-  supportamount: null,
-  familydocprice: null,
-  details: [
-    {
-      tareF_CODE: "024558-900",
-      tareF_NAME: "سونوگرافي شکم",
-      qty: 1,
-      iteM_PRICE: 2991405,
-      requesT_PRICE: 2991405,
-      iteM_IS_PRICE: 2093984,
-      supporT_AMOUNT: 0,
-      patienT_AMOUNT: 897421,
-      iS2K: "0",
-      tecH_PRICE: 0,
-      subsidyprice: 0,
-      familydocprice: 0,
-    },
-  ],
-};
-
 type ParraPrescSubResult = {
   registeR_ID: number;
   eprsC_ID: number;
@@ -500,7 +454,6 @@ const SinglePresc = ({
                 .map((p) => p.complemantary_Msg)
                 .join("،"),
             );
-          console.log(result);
         }}
         successMessage={getContent("precheckSuccessMessage")}
         // payload={{
@@ -529,7 +482,6 @@ const SinglePresc = ({
                 .join("،"),
             );
           setResult(result?.data?.data?.data || null);
-          console.log(result);
         }}
         payload={{
           eprsC_ID: node.eprsC_ID,

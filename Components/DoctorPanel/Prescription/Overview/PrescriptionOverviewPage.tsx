@@ -142,7 +142,6 @@ const PrescriptionOverviewPage = () => {
             onDone={(status, result) => {
               setIsCommitting(false);
               if (!status) return;
-              console.log(result);
             }}
           />
         </WithTitle>

@@ -1,4 +1,4 @@
-import ClinicManageArticlePage from "@/Components/ClinicPanel/Article/ClinicManageArticlePage";
+import OrgManageArticlePage from "@/Components/_Common/OrgArticle/OrgManageArticlePage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
@@ -9,7 +9,7 @@ const ClinicManageArticleById = async () => {
       namespaces={["clinicPanelArticle"]}
       initialTextContent={textContent}
     >
-      <ClinicManageArticlePage />
+      <OrgManageArticlePage kind="clinic" />
     </LocaleScopeProvider>
   );
 };
