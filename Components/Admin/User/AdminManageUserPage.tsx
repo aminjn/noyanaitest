@@ -24,12 +24,19 @@ import {
   roleLabels,
 } from "./userShared";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import useProgress from "@/Components/Hooks/useProgress";
+import { StatusBadge, UserStatus, useUserActions } from "./userActions";
 
 export type UserDetail = {
   _id: string;
   phone: string;
   username?: string;
   role: "admin" | "notadmin" | "user";
+  status?: UserStatus;
+  statusReason?: string;
+  statusChangedAt?: string;
+  suspendedUntil?: string;
   createdAt: string;
   lastLogin: string | null;
   identity: {
@@ -241,6 +248,16 @@ const AdminManageUserPage = () => {
       .filter(Boolean)
       .join(" ") || data?.username;
   const profiles = Array.isArray(data?.profiles) ? data.profiles : [];
+  const hasAccess = useAccessLevel();
+  const push = useProgress();
+  const status = data?.status || "active";
+  const actions = useUserActions(() => {
+    // a closed account has nothing left to show
+    mutate().catch(() => push(adminPath("/user")));
+  });
+  const canEdit = hasAccess("User", "update") && status !== "deleted" && !data?.isSelf;
+  const canDelete =
+    hasAccess("User", "delete") && status !== "deleted" && data?.role === "user" && !data?.isSelf;
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -259,6 +276,7 @@ const AdminManageUserPage = () => {
               <div className={classes.heroTitle}>
                 <h1>{displayName || ta("بدون نام")}</h1>
                 <RoleBadge role={data.role} />
+                <StatusBadge status={status} until={data.suspendedUntil} />
               </div>
               <span className={classes.phone}>{displayPhone(data.phone)}</span>
               <span className={classes.meta}>
@@ -282,6 +300,53 @@ const AdminManageUserPage = () => {
               </div>
             </div>
           </section>
+
+          {(canEdit || canDelete) && (
+            <div className={classes.actionBar}>
+              {canEdit && (
+                <Button size="M" variant="Neutral" onClick={() => actions.edit(data)}>
+                  {ta("ویرایش موبایل و نام")}
+                </Button>
+              )}
+              {canEdit && data.role !== "admin" && status === "active" && (
+                <Button size="M" variant="Warning" mode="Outline" onClick={() => actions.suspend(data)}>
+                  {ta("تعلیق حساب")}
+                </Button>
+              )}
+              {canEdit && status === "suspended" && (
+                <Button size="M" variant="Success" onClick={() => actions.activate(data)}>
+                  {ta("رفع تعلیق")}
+                </Button>
+              )}
+              {viewer?.role === "admin" && data.identity && (
+                <Button size="M" variant="Neutral" mode="Outline" onClick={() => actions.resetIdentity(data)}>
+                  {ta("بازنشانی احراز هویت")}
+                </Button>
+              )}
+              {canDelete && (
+                <Button
+                  size="M"
+                  variant="Error"
+                  mode="Outline"
+                  onClick={() => actions.remove(data)}
+                >
+                  {ta("حذف حساب")}
+                </Button>
+              )}
+            </div>
+          )}
+
+          {status !== "active" && (
+            <div className={`${classes.card} ${classes.statusNote}`} role="status">
+              <strong>
+                {status === "deleted" ? ta("این حساب حذف شده است.") : ta("این حساب معلق است.")}
+              </strong>
+              {data.statusReason && <span>{ta("دلیل: ${1}", [data.statusReason])}</span>}
+              {isDate(data.statusChangedAt) && (
+                <span className={classes.meta}>{formatDate(data.statusChangedAt, true)}</span>
+              )}
+            </div>
+          )}
 
           <div className={classes.grid}>
             <section className={classes.card}>
