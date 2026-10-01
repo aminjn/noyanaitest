@@ -2644,6 +2644,10 @@ export const contentNamespaces = {
   // for the fuller doctor equivalent).
   pharmacyPanelProfile: [
     "dashboard",
+    "phone",
+    "businessTime",
+    "roundTheClock",
+    "insurances",
     "profile",
     "details",
     "location",
@@ -2902,6 +2906,13 @@ export const contentNamespaces = {
     "shippingFree",
     "pharmacyShipTapsiNote",
     "pharmacyShipTipaxNote",
+    "shipMark",
+    "shipTrackingCode",
+    "shipTrackingHint",
+    "shipSent",
+    "ordersNeedAction",
+    "ordersAllDone",
+    "ordersProgress",
   ],
 
   // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,
@@ -3768,6 +3779,9 @@ export const contentNamespaces = {
     "orderItemStatusFulfilled",
     "orderItemStatusCancelled",
     "ioMarkCancel",
+    "ordersNeedAction",
+    "ordersAllDone",
+    "ordersProgress",
   ],
 
   // app/paraClinicPanel/profile/page.tsx (ParaClinicManageProfilePage,
@@ -4025,6 +4039,9 @@ export const contentNamespaces = {
   ],
   // app/pharmacy/[slug]/page.tsx (Components/Pharmacy/PharmacyPage).
   pharmacyPage: [
+    "roundTheClock",
+    "businessTime",
+    "phone",
     "homePage",
     "products",
     "productPackages",
@@ -4172,6 +4189,8 @@ export const contentNamespaces = {
     "shippingTipaxNote",
     "shippingFree",
     "deliveryFee",
+    "shipTrackingCode",
+    "shipSent",
   ],
   // Shared cartable node-page pieces (Components/Product/Cartable/*, CartActions, PlusBox, ProductCartInfos, UpgradeProBox) used by /product/[slug], /productPackage/[slug], /service/[slug], /servicePackage/[slug]. Includes the cartTitle keys passed in (seller/provider) and the ProductCartInfos ternary keys.
   productCartable: [

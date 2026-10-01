@@ -2490,6 +2490,13 @@ const contentKeys = [
   "caEmpty",
   "readReservations",
   "ofCenterNote",
+  "shipMark",
+  "shipTrackingCode",
+  "shipTrackingHint",
+  "shipSent",
+  "ordersNeedAction",
+  "ordersAllDone",
+  "ordersProgress",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

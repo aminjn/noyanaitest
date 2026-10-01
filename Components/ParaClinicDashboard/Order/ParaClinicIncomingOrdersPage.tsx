@@ -39,6 +39,7 @@ export interface IIncomingOrder extends MongoDoc {
   status: OrderStatus;
   tests: IIncomingOrderItem[];
   subtotal: number;
+  pendingLines?: number;
 }
 
 const buyerLabel = (order: IIncomingOrder) =>
@@ -91,10 +92,12 @@ const ParaClinicIncomingOrdersPage = () => {
                 filter: "Number",
               },
               status: {
-                name: getContent("status"),
-                value: (node) => node.status,
+                name: getContent("ordersProgress"),
+                value: (node) =>
+                  node.pendingLines
+                    ? getContent("ordersNeedAction", [String(node.pendingLines)])
+                    : getContent("ordersAllDone"),
                 filter: "Set",
-                component: (node) => <OrderStatusBadge status={node.status} />,
               },
               actions: {
                 name: getContent("actions"),

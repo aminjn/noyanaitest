@@ -124,6 +124,8 @@ export interface IOrder<
     method: "tapsi" | "tipax";
     fee: number;
     payOnDelivery: boolean;
+    trackingCode?: string;
+    shippedAt?: string;
   }[];
   deliveryFee?: number;
   paymentMethod: "wallet" | "sep";
@@ -382,6 +384,10 @@ const OrderConfirmationPage = () => {
                         : el.fee > 0
                           ? `${currencize(el.fee)} ${getContent("toman")}`
                           : getContent("shippingFree"),
+                      // sent by the pharmacy, with its tracking code
+                      el.shippedAt
+                        ? `${getContent("shipSent")}${el.trackingCode ? ` · ${getContent("shipTrackingCode")}: ${el.trackingCode}` : ""}`
+                        : "",
                     ]
                       .filter(Boolean)
                       .join(" · ")}

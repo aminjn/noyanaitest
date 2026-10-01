@@ -141,3 +141,25 @@
     gap: 0.75rem;
   }
 }
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  color: var(--gray10);
+}
+
+.facts a {
+  color: var(--primary7);
+  font-weight: 700;
+}
+
+.chip {
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: var(--primary1);
+  color: var(--primary8);
+  font-weight: 800;
+}
