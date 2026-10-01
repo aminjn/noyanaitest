@@ -5,6 +5,8 @@ import useNotification from "./useNotification";
 import { IPolygon } from "../Admin/Province/AdminManageProvincesPage";
 import useScopedLocale from "./useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { getMapConfig, NEXAMAP_ATTRIBUTION } from "../Map/nexamap";
+import { readTheme, Theme } from "../UI/Theme/theme";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "mapPage"];
 
@@ -30,11 +32,11 @@ export type UseMapProps = {
 
 export type UseMapReturns = ReturnType<typeof useMap>;
 
-// The vector style of the platform's own tile server. It can be overridden
-// per deploy (a mirror inside Iran, a dev server) through the env.
-const MAP_STYLE_URL =
-  process.env.NEXT_PUBLIC_MAP_STYLE_URL ||
-  "https://map.noyanai.com/styles/custom/style.json";
+// The base map is NexaMap (Components/Map/nexamap.ts): its MapLibre style,
+// light or dark with the site theme, served through our API so the key
+// stays on the server. A deploy may still point at another style through
+// the env (a mirror, a dev server).
+const ENV_STYLE_URL = process.env.NEXT_PUBLIC_MAP_STYLE_URL || "";
 
 // Used when the style above can't be fetched (tile host down or blocked,
 // offline dev): a plain background plus OSM raster tiles. The map, its
@@ -48,6 +50,7 @@ const FALLBACK_STYLE: mlgl.StyleSpecification = {
       tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
       tileSize: 256,
       maxzoom: 19,
+      attribution: "© OpenStreetMap contributors",
     },
   },
   layers: [
@@ -104,10 +107,10 @@ const useMap = ({
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
-    //TODO: maybe put url in env
     const map = new mlgl.Map({
       container: containerRef.current,
-      style: MAP_STYLE_URL,
+      // the real style is set below once the map config is known
+      style: FALLBACK_STYLE,
       center: initialCenter,
       maxBounds: [
         [44.0, 24.0],
@@ -116,6 +119,14 @@ const useMap = ({
       zoom: 13,
       attributionControl: false,
     });
+    // NexaMap's terms: its attribution shows on every map
+    map.addControl(
+      new mlgl.AttributionControl({
+        compact: true,
+        customAttribution: NEXAMAP_ATTRIBUTION,
+      }),
+      document.documentElement.dir === "rtl" ? "bottom-left" : "bottom-right",
+    );
     mapRef.current = map;
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
@@ -136,20 +147,41 @@ const useMap = ({
     map.on("style.load", () => {
       setReady(true);
     });
-    // The platform style failed (or hangs): switch to the fallback once.
+    // NexaMap's style for the current theme; the plain base layer stays if
+    // it can't load (key not set yet, provider down) - never an empty box.
     let usingFallback = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     const switchToFallback = () => {
       if (usingFallback || mapRef.current !== map) return;
       usingFallback = true;
       map.setStyle(FALLBACK_STYLE);
     };
-    const timer = setTimeout(() => {
-      if (!map.isStyleLoaded()) switchToFallback();
-    }, STYLE_TIMEOUT_MS);
+    const styleFor = async (theme: Theme) => {
+      if (ENV_STYLE_URL) return ENV_STYLE_URL;
+      const config = await getMapConfig();
+      return config?.enabled && config.styles ? config.styles[theme] : null;
+    };
+    const applyStyle = async (theme: Theme) => {
+      const url = await styleFor(theme);
+      if (!url || mapRef.current !== map) return;
+      usingFallback = false;
+      clearTimeout(timer);
+      map.setStyle(url);
+      timer = setTimeout(() => {
+        if (!map.isStyleLoaded()) switchToFallback();
+      }, STYLE_TIMEOUT_MS);
+      map.once("style.load", () => clearTimeout(timer));
+    };
+    applyStyle(readTheme());
     map.on("error", () => {
-      if (!map.isStyleLoaded()) switchToFallback();
+      if (!usingFallback && !map.isStyleLoaded()) switchToFallback();
     });
-    map.once("style.load", () => clearTimeout(timer));
+    // the site theme switched: the map follows (day / night style)
+    const onTheme = (e: Event) => {
+      const theme = (e as CustomEvent<Theme>).detail;
+      if (theme === "light" || theme === "dark") applyStyle(theme);
+    };
+    window.addEventListener("noyan-theme", onTheme);
     // the container may get its size after the map (a tab that just
     // opened): keep the canvas in step with it
     const observer =
@@ -160,6 +192,7 @@ const useMap = ({
     map.once("remove", () => {
       clearTimeout(timer);
       observer?.disconnect();
+      window.removeEventListener("noyan-theme", onTheme);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [containerRef]);
