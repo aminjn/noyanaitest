@@ -51,12 +51,9 @@ export const doctorActions = [
   "readSchedule",
   "readPatients",
   "readLicenses",
-  "readOffers",
-  "readDiscounts",
   "readArticles",
   "readChat",
   "readDrugs",
-  "readDocuments",
   // Incoming-orders page (2026-08) — doctorpanel/order. Kept in sync with
   // Models/DoctorAcl.ts on noyanai-back.
   "readOrders",
@@ -87,12 +84,9 @@ export const doctorActionCategories = [
   "licenses",
   "phrmaciesAndLabs",
   "insurances",
-  "offers",
-  "discounts",
   "articles",
   "chatWithPatients",
   "drugsAndPrescriptions",
-  "patientDocuments",
   "incomingOrders",
 ] as const satisfies readonly ContentKey[];
 
@@ -134,12 +128,9 @@ export const categorizedDoctorActions: Readonly<
   licenses: ["readLicenses"],
   phrmaciesAndLabs: ["readPharmacy", "mutatePharmacy", "pharmacyAddition"],
   insurances: ["readInsurance", "mutateInsurance", "insuranceAddition"],
-  offers: ["readOffers"],
-  discounts: ["readDiscounts"],
   articles: ["readArticles"],
   chatWithPatients: ["readChat"],
   drugsAndPrescriptions: ["readDrugs"],
-  patientDocuments: ["readDocuments"],
   incomingOrders: ["readOrders", "mutateOrders"],
 } as const;
 

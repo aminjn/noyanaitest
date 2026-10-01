@@ -33,13 +33,15 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
 const DoctorSidebar = () => {
-  const { data: balance } = useSWR<number>(`${API}/finance`, (url: string) =>
-    fetcher({ url }).then((res) => res.data),
-  );
-
   const getContent = useScopedLocale(LOCALE_NS);
 
   const hasAccess = useDoctorAcl();
+
+  // the doctor's wallet, also for a secretary allowed to see finance
+  const { data: balance } = useSWR<number>(
+    hasAccess("readFinance") ? `${API}/doctor/balance` : null,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
 
   // paid orders with lines still to fulfil (same SWR key as the orders page)
   const { data: orders } = useSWR<

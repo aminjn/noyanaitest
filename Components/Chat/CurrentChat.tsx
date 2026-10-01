@@ -1,4 +1,5 @@
 import { useParams } from "next/navigation";
+import useChatScope from "./useChatScope";
 import classes from "./CurrentChat.module.css";
 import useSWR from "swr";
 import {
@@ -50,11 +51,13 @@ const MessageSender = ({
 
   const textRef = useRef<HTMLInputElement>(null);
 
+  const { api } = useChatScope();
+
   const { input, setInput, submit, reset } = useForm<{
     message: string;
     file: File;
   }>({
-    path: `${API}/chat/${chat._id}`,
+    path: `${api}/${chat._id}`,
     method: "POST",
     hasProblem: (inp) => {
       if (!inp.message && !inp.file)
@@ -137,18 +140,17 @@ const MessageSender = ({
 
 const ChatMessage = ({ _id }: { _id: string }) => {
   const [messageRef, isVisible] = useAnimateOnScroll<HTMLDivElement>({});
+  const { api, selfId } = useChatScope();
 
   const { data } = useSWR<IMessage & { uploads: IUserFile[] }>(
-    isVisible ? `${API}/chat/message/${_id}` : null,
+    isVisible ? `${api}/message/${_id}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
     { refreshInterval: 1000 },
   );
 
-  const { user } = useUser();
-
   const isSelf = useMemo<boolean>(
-    () => data?.sender === user?._id,
-    [data?.sender, user?._id],
+    () => data?.sender === selfId,
+    [data?.sender, selfId],
   );
 
   return (
@@ -193,11 +195,11 @@ const InnerChat = ({
   mutate: () => unknown;
   onOpenSidebar?: () => void;
 }) => {
-  const { user } = useUser();
+  const { selfId } = useChatScope();
   const isDoctorSide = usePathname().startsWith("/doctorpanel");
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
-    () => chat.participants.find((p) => p._id !== user?._id),
-    [chat, user],
+    () => chat.participants.find((p) => p._id !== selfId),
+    [chat, selfId],
   );
 
   const title = useMemo(() => getChatParticipantName(other), [other]);
@@ -249,13 +251,14 @@ const InnerChat = ({
 
 const CurrentChat = ({ onOpenSidebar }: { onOpenSidebar?: () => void }) => {
   const params = useParams<{ nodeId?: string }>();
+  const { api } = useChatScope();
   const { data, mutate } = useSWR<
     IChat<{
       Participants: { Identity: Record<never, never> };
       Messages: Record<string, never>;
     }>
   >(
-    params.nodeId ? `${API}/chat/${params.nodeId}` : null,
+    params.nodeId ? `${api}/${params.nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
     { refreshInterval: 1000 },
   );
