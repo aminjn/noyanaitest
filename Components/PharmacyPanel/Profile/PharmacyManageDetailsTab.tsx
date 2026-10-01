@@ -30,6 +30,19 @@ const PharmacyManageDetailsTab = () => {
             avatar: { type: "image", title: getContent("avatar") },
             banner: { type: "image", title: getContent("banner") },
             summary: { type: "area", title: getContent("summary") },
+            // what a buyer asks before ordering (2026-10), like the lab's
+            phone: { type: "text", title: getContent("phone") },
+            businessTime: { type: "text", title: getContent("businessTime") },
+            isRoundTheClock: { type: "bool", title: getContent("roundTheClock") },
+            insurances: {
+              type: "nodes",
+              title: getContent("insurances"),
+              path: `${API}/public/insurance`,
+              getOptionLabel: (node) => (node as { name?: string; _id: string }).name || (node as { _id: string })._id,
+              getOptionValue: (node) => (node as { _id: string })._id,
+              getDefaultValue: (inp) => inp.insurances,
+              multi: true,
+            },
           }}
         />
       )}

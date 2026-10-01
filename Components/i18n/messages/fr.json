@@ -2338,5 +2338,12 @@
  "caNoOffices": "Aucun médecin n'a encore lié de cabinet à ce centre. Les rendez-vous des cabinets liés s'affichent ici.",
  "caEmpty": "Aucun rendez-vous sur cette période",
  "readReservations": "Voir les rendez-vous du centre",
- "ofCenterNote": "Le portefeuille du centre : les frais de licence y sont prélevés et vous pouvez retirer le solde sur votre compte bancaire. Montants en tomans."
+ "ofCenterNote": "Le portefeuille du centre : les frais de licence y sont prélevés et vous pouvez retirer le solde sur votre compte bancaire. Montants en tomans.",
+ "shipMark": "Marquer comme expédié",
+ "shipTrackingCode": "Numéro de suivi",
+ "shipTrackingHint": "Saisissez le numéro de lettre de transport Tipax ou le code / lien du coursier. L'acheteur est prévenu et le voit sur la page de commande.",
+ "shipSent": "Expédié",
+ "ordersNeedAction": "En attente de vous : ${1} articles",
+ "ordersAllDone": "Terminé",
+ "ordersProgress": "Mon statut"
 }

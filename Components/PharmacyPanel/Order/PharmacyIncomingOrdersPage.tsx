@@ -16,7 +16,6 @@ import TableActions from "@/Components/Admin/UI/TableActions";
 import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import FormatDate from "@/Components/UI/FormatDate";
-import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import { OrderStatus } from "@/Components/Dashboard/Order/orderStatus";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
 
@@ -52,7 +51,11 @@ export interface IIncomingOrder extends MongoDoc {
     method: "tapsi" | "tipax";
     fee: number;
     payOnDelivery: boolean;
+    trackingCode?: string;
+    shippedAt?: string;
   };
+  // this pharmacy's lines still waiting on it
+  pendingLines?: number;
   subtotal: number;
   // where to deliver (only the delivery fields of the buyer's address)
   address?: {
@@ -119,12 +122,12 @@ const PharmacyIncomingOrdersPage = () => {
                   filter: "Number",
                 },
                 status: {
-                  name: getContent("status"),
-                  value: (node) => node.status,
+                  name: getContent("ordersProgress"),
+                  value: (node) =>
+                    node.pendingLines
+                      ? getContent("ordersNeedAction", [String(node.pendingLines)])
+                      : getContent("ordersAllDone"),
                   filter: "Set",
-                  component: (node) => (
-                    <OrderStatusBadge status={node.status} />
-                  ),
                 },
                 actions: {
                   name: getContent("actions"),

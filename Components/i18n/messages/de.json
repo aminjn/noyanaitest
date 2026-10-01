@@ -2338,5 +2338,12 @@
  "caNoOffices": "Noch hat kein Arzt eine Praxis mit diesem Zentrum verknüpft. Termine verknüpfter Praxen erscheinen hier.",
  "caEmpty": "Keine Termine in diesem Zeitraum",
  "readReservations": "Termine des Zentrums sehen",
- "ofCenterNote": "Das Wallet des Zentrums: Lizenzgebühren werden daraus bezahlt, das Guthaben können Sie auf Ihr Bankkonto auszahlen. Beträge in Toman."
+ "ofCenterNote": "Das Wallet des Zentrums: Lizenzgebühren werden daraus bezahlt, das Guthaben können Sie auf Ihr Bankkonto auszahlen. Beträge in Toman.",
+ "shipMark": "Als versendet markieren",
+ "shipTrackingCode": "Sendungsnummer",
+ "shipTrackingHint": "Geben Sie die Tipax-Frachtbriefnummer oder den Code bzw. Link des Kuriers ein. Der Käufer wird informiert und sieht ihn auf der Bestellseite.",
+ "shipSent": "Versendet",
+ "ordersNeedAction": "Wartet auf Sie: ${1} Positionen",
+ "ordersAllDone": "Erledigt",
+ "ordersProgress": "Mein Stand"
 }

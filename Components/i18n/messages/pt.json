@@ -2338,5 +2338,12 @@
  "caNoOffices": "Nenhum médico vinculou ainda um consultório a este centro. As consultas dos consultórios vinculados aparecem aqui.",
  "caEmpty": "Nenhuma consulta neste período",
  "readReservations": "Ver as consultas do centro",
- "ofCenterNote": "A carteira do centro: as licenças são pagas por ela e você pode sacar o saldo para sua conta bancária. Valores em tomans."
+ "ofCenterNote": "A carteira do centro: as licenças são pagas por ela e você pode sacar o saldo para sua conta bancária. Valores em tomans.",
+ "shipMark": "Marcar como enviado",
+ "shipTrackingCode": "Código de rastreio",
+ "shipTrackingHint": "Informe o número do conhecimento Tipax ou o código / link do entregador. O comprador é avisado e vê na página do pedido.",
+ "shipSent": "Enviado",
+ "ordersNeedAction": "Aguardando você: ${1} itens",
+ "ordersAllDone": "Concluído",
+ "ordersProgress": "Meu status"
 }

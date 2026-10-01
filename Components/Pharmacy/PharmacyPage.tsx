@@ -53,6 +53,8 @@ const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) =>
   const place = [data.province?.name, data.city?.name, data.district?.name]
     .filter(Boolean)
     .join(listSep);
+  // contact and hours (2026-10)
+  const facts = data;
   const inStock = {
     icon: (
       <Ixon className={classes.checkIcon} width=".75rem">
@@ -96,6 +98,21 @@ const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) =>
                   <LocationIcon />
                 </Ixon>
                 {[place, data.address].filter(Boolean).join(" - ")}
+              </span>
+            )}
+            {(!!facts.isRoundTheClock || !!facts.businessTime || !!facts.phone) && (
+              <span className={classes.facts}>
+                {!!facts.isRoundTheClock && <span className={classes.chip}>{getContent("roundTheClock")}</span>}
+                {!!facts.businessTime && (
+                  <span>
+                    {getContent("businessTime")}: {facts.businessTime}
+                  </span>
+                )}
+                {!!facts.phone && (
+                  <a href={`tel:${facts.phone}`} dir="ltr">
+                    {facts.phone}
+                  </a>
+                )}
               </span>
             )}
           </div>

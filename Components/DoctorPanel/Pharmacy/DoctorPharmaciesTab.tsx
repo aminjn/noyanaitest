@@ -55,6 +55,10 @@ export interface IPharmacy<
   slug?: string;
   address?: string;
   banner?: string;
+  phone?: string;
+  businessTime?: string;
+  isRoundTheClock?: boolean;
+  insurances?: string[];
 }
 
 export type DoctorPharmacyPopulation = Population<{

@@ -29,6 +29,7 @@ import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
 import { IIncomingOrder } from "./PharmacyIncomingOrdersPage";
 import { localPhone } from "@/Components/Dashboard/Address/DashboardManageAddressesPage";
 import { navigationUrl } from "@/Components/helpers/navigationUrl";
+import ShipmentSender from "./ShipmentSender";
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
@@ -174,6 +175,9 @@ const PharmacyIncomingOrderPage = () => {
               />
             )}
           </List>
+          {!!data.shipment && (
+            <ShipmentSender orderId={data._id} shipment={data.shipment} onDone={() => mutate()} />
+          )}
           {!!data.address?.address && (
             <List>
               <DataPair

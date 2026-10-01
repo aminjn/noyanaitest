@@ -2338,5 +2338,12 @@
  "caNoOffices": "Henüz hiçbir doktor bu merkeze muayenehane bağlamadı. Bağlı muayenehanelerin randevuları burada görünür.",
  "caEmpty": "Bu aralıkta randevu yok",
  "readReservations": "Merkezin randevularını görme",
- "ofCenterNote": "Merkezin cüzdanı: lisans ücretleri buradan ödenir ve bakiyeyi banka hesabınıza çekebilirsiniz. Tutarlar tomandır."
+ "ofCenterNote": "Merkezin cüzdanı: lisans ücretleri buradan ödenir ve bakiyeyi banka hesabınıza çekebilirsiniz. Tutarlar tomandır.",
+ "shipMark": "Gönderildi olarak işaretle",
+ "shipTrackingCode": "Takip kodu",
+ "shipTrackingHint": "Tipax irsaliye numarasını veya kuryenin sürüş kodunu / bağlantısını yazın. Alıcı bilgilendirilir ve sipariş sayfasında görür.",
+ "shipSent": "Gönderildi",
+ "ordersNeedAction": "Sizi bekleyen: ${1} kalem",
+ "ordersAllDone": "Tamamlandı",
+ "ordersProgress": "Durumum"
 }

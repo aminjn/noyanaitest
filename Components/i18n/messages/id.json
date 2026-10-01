@@ -2338,5 +2338,12 @@
  "caNoOffices": "Belum ada dokter yang menautkan tempat praktik ke pusat ini. Janji temu di tempat praktik yang tertaut akan muncul di sini.",
  "caEmpty": "Tidak ada janji temu pada rentang ini",
  "readReservations": "Melihat janji temu pusat",
- "ofCenterNote": "Dompet pusat: biaya lisensi dibayar dari sini dan saldo bisa ditarik ke rekening bank Anda. Jumlah dalam toman."
+ "ofCenterNote": "Dompet pusat: biaya lisensi dibayar dari sini dan saldo bisa ditarik ke rekening bank Anda. Jumlah dalam toman.",
+ "shipMark": "Tandai terkirim",
+ "shipTrackingCode": "Kode pelacakan",
+ "shipTrackingHint": "Masukkan nomor resi Tipax atau kode / tautan perjalanan kurir. Pembeli diberi tahu dan melihatnya di halaman pesanan.",
+ "shipSent": "Terkirim",
+ "ordersNeedAction": "Menunggu Anda: ${1} item",
+ "ordersAllDone": "Selesai",
+ "ordersProgress": "Status saya"
 }

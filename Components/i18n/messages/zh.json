@@ -2338,5 +2338,12 @@
  "caNoOffices": "还没有医生将诊室关联到本中心。已关联诊室的预约会显示在这里。",
  "caEmpty": "此时段内没有预约",
  "readReservations": "查看中心的预约",
- "ofCenterNote": "中心钱包：许可证费用从中支付，余额可提现到您的银行账户。金额单位为托曼。"
+ "ofCenterNote": "中心钱包：许可证费用从中支付，余额可提现到您的银行账户。金额单位为托曼。",
+ "shipMark": "标记为已发出",
+ "shipTrackingCode": "运单号",
+ "shipTrackingHint": "填写 Tipax 运单号或骑手的行程编号 / 链接。系统会通知买家，并在订单页显示。",
+ "shipSent": "已发出",
+ "ordersNeedAction": "待处理：${1} 项",
+ "ordersAllDone": "已完成",
+ "ordersProgress": "我的状态"
 }
