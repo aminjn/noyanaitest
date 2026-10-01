@@ -1,15 +1,18 @@
 import PopupCard from "@/Components/UI/PopupCard";
-import { IArticle, IArticleCategory } from "./HospitalManageArticlesPage";
+import { IArticle, IArticleCategory, OrgArticleKind, orgArticleConfig } from "./orgArticle";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
 
-const NS: ContentNamespace[] = ["common", "hospitalPanelArticle"];
-
-const HospitalMutateArticlePopup = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useScopedLocale(NS);
+const OrgMutateArticlePopup = ({
+  kind,
+  mutate,
+}: {
+  kind: OrgArticleKind;
+  mutate: () => unknown;
+}) => {
+  const getContent = useScopedLocale(orgArticleConfig[kind].ns);
 
   const { closePopup } = usePopup();
 
@@ -24,7 +27,7 @@ const HospitalMutateArticlePopup = ({ mutate }: { mutate: () => unknown }) => {
           category: {
             type: "nodes",
             title: getContent("category"),
-            path: `${API}/blog/hospital/category`,
+            path: `${API}/blog/${kind}/category`,
             multi: false,
             clearable: true,
             getOptionLabel: (node) =>
@@ -34,7 +37,7 @@ const HospitalMutateArticlePopup = ({ mutate }: { mutate: () => unknown }) => {
         }}
         hookProps={{
           method: "POST",
-          path: `${API}/blog/hospital`,
+          path: `${API}/blog/${kind}`,
           successCb: () => {
             mutate();
             closePopup();
@@ -46,4 +49,4 @@ const HospitalMutateArticlePopup = ({ mutate }: { mutate: () => unknown }) => {
   );
 };
 
-export default HospitalMutateArticlePopup;
+export default OrgMutateArticlePopup;

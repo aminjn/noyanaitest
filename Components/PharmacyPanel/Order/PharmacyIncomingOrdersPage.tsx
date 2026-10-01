@@ -68,7 +68,8 @@ const buyerLabel = (order: IIncomingOrder) =>
   order.user?.username || order.user?.phone || "";
 
 const itemCount = (order: IIncomingOrder) =>
-  order.products.length + order.productPackages.length;
+  (Array.isArray(order.products) ? order.products.length : 0) +
+  (Array.isArray(order.productPackages) ? order.productPackages.length : 0);
 
 const PharmacyIncomingOrdersPage = () => {
   const getContent = useScopedLocale(NS);

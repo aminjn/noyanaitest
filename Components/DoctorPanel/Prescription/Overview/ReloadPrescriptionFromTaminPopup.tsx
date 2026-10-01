@@ -17,7 +17,6 @@ const ReloadPrescriptionFromTaminPopup = ({
         onDone={(status, result) => {
           setIsLoading(false);
           if (!status) return;
-          console.log(result);
         }}
       />
     </Fragment>

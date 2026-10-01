@@ -1,4 +1,4 @@
-import ParaClinicManageArticlesPage from "@/Components/ParaClinicDashboard/Article/ParaClinicManageArticlesPage";
+import OrgManageArticlesPage from "@/Components/_Common/OrgArticle/OrgManageArticlesPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
@@ -9,7 +9,7 @@ const ParaClinicArticle = async () => {
       namespaces={["paraClinicPanelArticle"]}
       initialTextContent={textContent}
     >
-      <ParaClinicManageArticlesPage />
+      <OrgManageArticlesPage kind="paraClinic" />
     </LocaleScopeProvider>
   );
 };

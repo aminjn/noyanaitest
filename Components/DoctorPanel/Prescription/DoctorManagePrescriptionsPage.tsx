@@ -97,7 +97,6 @@ const NormalPrescriptions = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  console.log(data);
 
   const push = useProgress();
 

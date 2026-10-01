@@ -7,7 +7,6 @@ const GetAdditiveDrugs = () => {
     fetcher({ url }).then((res) => res.data),
   );
 
-  console.log(data);
 
   return <p>GetAdditiveDrugs</p>;
 };

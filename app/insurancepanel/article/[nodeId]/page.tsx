@@ -1,4 +1,4 @@
-import InsuranceManageArticlePage from "@/Components/InsurancePanel/Article/InsuranceManageArticlePage";
+import OrgManageArticlePage from "@/Components/_Common/OrgArticle/OrgManageArticlePage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 
@@ -9,7 +9,7 @@ const InsuranceManageArticleById = async () => {
       namespaces={["insurancePanelArticle"]}
       initialTextContent={textContent}
     >
-      <InsuranceManageArticlePage />
+      <OrgManageArticlePage kind="insurance" />
     </LocaleScopeProvider>
   );
 };

@@ -80,7 +80,7 @@ const ParaClinicIncomingOrdersPage = () => {
               },
               items: {
                 name: getContent("orderItems"),
-                value: (node) => node.tests.length,
+                value: (node) => (Array.isArray(node.tests) ? node.tests.length : 0),
                 filter: "Number",
               },
               subtotal: {

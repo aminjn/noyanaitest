@@ -33,19 +33,11 @@ const ParaClinicSidebar = () => {
         show: hasAccess("readTests"),
         target: "test",
       },
-      // Tamin end-user lockout (2026-09) - "prescriptions" (already an
-      // orphan route with no page.tsx) and "tamin" are hard-hidden
+      // Tamin end-user lockout (2026-09) - "tamin" is hard-hidden
       // regardless of ACL while Tamin only talks to its sandbox API; see
       // Components/ParaClinicDashboard/ParaClinicLicenseGate.tsx's
       // lockedSegments and Controllers/featureGateController.ts on
-      // noyanai-back. Restore hasAccess(...) on both once Tamin goes live.
-      {
-        title: "prescriptions",
-        icon: <UserEditIcon />,
-        group: "groupDaily",
-        show: false,
-        target: "prescription",
-      },
+      // noyanai-back. Restore hasAccess(...) once Tamin goes live.
       {
         title: "tamin",
         icon: <UserEditIcon />,
@@ -57,7 +49,7 @@ const ParaClinicSidebar = () => {
         title: "profile",
         icon: <UserCircleIcon />,
         group: "groupCenter",
-        show: true,
+        show: hasAccess("mutateProfile"),
         target: "profile",
       },
       {

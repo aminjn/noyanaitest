@@ -15,11 +15,6 @@ const Prescription2Agent = () => {
 
   const { working } = usePrescription();
 
-  console.log(
-    JSON.parse(
-      '{"patient":"0018243460","prescType":{"prescTypeId":7},"prescDate":"14050201","docId":"0000000012","docMobileNo":"09198697377","docNationalCode":"0451253541","comments":"","expireDate":"14030719","clientId":"1234567891","noteDetailEprscs":[],"noteDetailsReferralList":[{"docSpecReferred":{"specCode":"00181"},"icd10s":[{"icdId":"X46.43"}],"complaints":[{"id":"163588007"}],"message":"تست","referralHijriDate":"14050216","quantity":2}]}',
-    ),
-  );
 
   return (
     <WithTitle

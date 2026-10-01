@@ -37,7 +37,6 @@ const DoctorTaminTokenManager = () => {
         onDone={(status, result) => {
           setIsGettingToken(false);
           if (!status || !result) return;
-          console.log(result);
           window.location.href = `${process.env.TAMIN_DOMAIN}/auth/server/authorize?redirect_uri=${process.env.DOMAIN}/doctorpanel/tamin&code_challenge=${result.data.challenge}&client_id=portal-js&response_type=code&code_challenge_method=S256`;
         }}
       />

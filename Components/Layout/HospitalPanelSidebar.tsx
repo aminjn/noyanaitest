@@ -36,7 +36,7 @@ const HospitalPanelSidebar = () => {
         title: "profile",
         group: "groupCenter",
         icon: <UserCircleIcon />,
-        show: true,
+        show: hasAccess("mutateProfile"),
         target: "profile",
       },
       {

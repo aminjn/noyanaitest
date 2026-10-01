@@ -39,7 +39,9 @@ interface OrderItemRow {
 }
 
 const buildItemRows = (order: IIncomingOrder): OrderItemRow[] =>
-  (Array.isArray(order.tests) ? order.tests : []).map((t) => ({
+  (Array.isArray(order.tests) ? order.tests : [])
+    .filter((t) => t?.item?._id)
+    .map((t) => ({
     key: t.item._id,
     itemId: t.item._id,
     name: t.item.test?.name || t.item._id,

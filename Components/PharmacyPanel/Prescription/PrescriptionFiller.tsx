@@ -267,7 +267,6 @@ const PrescriptionFiller = ({
         method="PUT"
         onDone={(status, result) => {
           setIsLoading(null);
-          console.log(result);
         }}
         payload={{
           userInformation: {
