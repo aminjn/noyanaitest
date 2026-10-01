@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useMemo, useRef, useState } from "react";
 import useMap from "../Hooks/useMap";
 import classes from "./MapPage.module.css";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
@@ -18,6 +18,11 @@ import SearchZones from "./SearchZones";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import MapTools from "./MapTools";
+import PlaceSearch from "./PlaceSearch";
+import { useIntlLocale } from "../i18n/navigation";
+import { IsochroneGeoJson } from "./nexamap";
+import { isInsideAny, useTravelText, useTravelTimes, useUserLocation } from "./mapHooks";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "mapPage"];
 
@@ -52,6 +57,9 @@ const MapPage = () => {
 
   const { bounds, fitBounds } = mapHook;
 
+  // "reachable within N minutes": the area the visitor can drive to
+  const [reachable, setReachable] = useState<IsochroneGeoJson | null>(null);
+
   const { data } = useSWR<{
     doctors: IDoctorProfile<{
       MainSpecialityPopulated: Record<never, never>;
@@ -73,6 +81,31 @@ const MapPage = () => {
   const [filters, setFilters] = useState<MapFilter[]>(["doctors"]);
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const text = useTravelText();
+  const me = useUserLocation();
+  const intlTag = useIntlLocale();
+
+  // the doctors in view, limited to the reachable area when one is set
+  const doctors = useMemo(() => {
+    const list = Array.isArray(data?.doctors) ? data.doctors : [];
+    if (!reachable) return list;
+    return list.filter((d) => {
+      const c = d?.location?.coordinates;
+      return Array.isArray(c) && c.length === 2 && isInsideAny(c as [number, number], reachable as GeoJSON.FeatureCollection);
+    });
+  }, [data, reachable]);
+
+  // drive time from the visitor to each visible doctor (at most 50)
+  const travelPlaces = useMemo(
+    () => doctors.map((d) => ({ id: d._id, coordinates: d.location?.coordinates })),
+    [doctors],
+  );
+  const travelTimes = useTravelTimes(me.point, travelPlaces);
+  const sortedDoctors = useMemo(() => {
+    if (!travelTimes) return doctors;
+    const t = (id: string) => (typeof travelTimes[id] === "number" ? travelTimes[id] : Infinity);
+    return [...doctors].sort((a, b) => t(a._id) - t(b._id));
+  }, [doctors, travelTimes]);
 
   return (
     <div className={classes.main}>
@@ -85,6 +118,18 @@ const MapPage = () => {
         </span>
       </div>
       <div className={classes.header}>
+        {/* an address / place (NexaMap autocomplete) or a province / city /
+            district (our zones) */}
+        <PlaceSearch
+          near={me.point || { lat: mapHook.center.lat, lng: mapHook.center.lng }}
+          placeholder={getContent("mapSearchPlace")}
+          noResults={getContent("nothingWasFound")}
+          errorText={getContent("mapLayerUnavailable")}
+          locale={intlTag}
+          onPick={(pick) =>
+            mapHook.map?.flyTo({ center: [pick.location.lng, pick.location.lat], zoom: 15 })
+          }
+        />
         <SearchZones onSelect={fitBounds} />
         <div className={classes.filters}>
           {mapFilters.map((filter) => (
@@ -110,32 +155,56 @@ const MapPage = () => {
             >
               <div className={classes.filterContent}>
                 {getContent(filterContentKeys[filter])}
-                {filter === "doctors" && !!data?.doctors?.length && (
-                  <span className={classes.glass}>{data.doctors.length}</span>
+                {filter === "doctors" && !!doctors.length && (
+                  <span className={classes.glass}>{doctors.length}</span>
                 )}
               </div>
             </Button>
           ))}
         </div>
+        <MapTools
+          map={mapHook.map}
+          ready={mapHook.ready}
+          bounds={bounds}
+          zoom={mapHook.zoom}
+          onReachableChange={setReachable}
+        />
       </div>
       <div className={classes.content}>
         <div className={classes.map} ref={containerRef}>
-          <MapMarkers {...mapHook} data={data} />
+          <MapMarkers
+            {...mapHook}
+            data={{ doctors: filters.includes("doctors") ? doctors : [] }}
+            travelTimes={travelTimes}
+          />
         </div>
         <div className={classes.resultsBox}>
           {/* only doctors are on the map for now; the count is the real
               number of results in view (it was a fixed "20") */}
           <span className={`${classes.resultsTitle} ${tsmMedium}`}>
-            {`${getContent("results")} (${filters.includes("doctors") ? data?.doctors?.length || 0 : 0})`}
+            {`${getContent("results")} (${filters.includes("doctors") ? doctors.length : 0})`}
           </span>
+          {filters.includes("doctors") && !!doctors.length && (
+            <span className={`${classes.toolsHint} ${tsmRegular}`}>
+              {travelTimes
+                ? getContent("mapSortedByTravelTime")
+                : getContent("mapShareLocationForTimes")}
+            </span>
+          )}
           <div className={classes.results}>
             {filters.includes("doctors") &&
-              (Array.isArray(data?.doctors) ? data.doctors : []).map((doctor) => (
-                <DoctorCardAlt
-                  key={doctor._id}
-                  variant="row"
-                  node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]}
-                />
+              sortedDoctors.map((doctor) => (
+                <div key={doctor._id} className={classes.resultItem}>
+                  {typeof travelTimes?.[doctor._id] === "number" && (
+                    <span className={`${classes.travelChip} ${tsmMedium}`}>
+                      {getContent("mapTravelTimeByCar", [text.duration(travelTimes?.[doctor._id])])}
+                    </span>
+                  )}
+                  <DoctorCardAlt
+                    variant="row"
+                    node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]}
+                  />
+                </div>
               ))}
           </div>
         </div>

@@ -15,12 +15,12 @@ import classes from "./NewPublicDoctorProfilePage.module.css";
 import BreadCrump from "@/Components/UI/BreadCrump";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
-import useMap from "@/Components/Hooks/useMap";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 import HostedImage from "@/Components/UI/HostedImage";
 import Ixon from "@/Components/UI/Ixon";
 import FaqList from "@/Components/UI/FaqList";
-import MapMarker from "@/Components/UI/MapMarker";
+import PlaceLocationCard from "@/Components/Map/PlaceLocationCard";
+import { toLatLng } from "@/Components/Map/nexamap";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
@@ -162,16 +162,27 @@ const NewDoctorProfilePage = ({
     return () => observer.disconnect();
   }, [tabs]);
 
-  const addressMapRef = useRef<HTMLDivElement>(null);
-  const primaryOffice = doctor.offices[0];
+  const primaryOffice = doctor.offices?.[0];
   const mapCoords: [number, number] | undefined =
     doctor.lat && doctor.lng
       ? [doctor.lng, doctor.lat]
       : primaryOffice?.location?.coordinates;
-  const { map: addressMap, ready: addressMapReady } = useMap({
-    containerRef: addressMapRef,
-    center: mapCoords,
-  });
+  // one "how to get there" card per office on the map; a doctor without
+  // offices on the map but with a point of their own gets one card for it
+  const locationCards = useMemo(() => {
+    const offices = (Array.isArray(doctor.offices) ? doctor.offices : [])
+      .filter((o) => !!o && toLatLng(o.location?.coordinates))
+      .map((o) => ({
+        key: o._id,
+        coords: o.location?.coordinates as number[],
+        name: o.name,
+        address: o.address,
+      }));
+    if (offices.length) return offices;
+    return toLatLng(mapCoords)
+      ? [{ key: "doctor", coords: mapCoords as number[], name: undefined, address: doctor.address || primaryOffice?.address }]
+      : [];
+  }, [doctor.offices, doctor.address, mapCoords, primaryOffice?.address]);
   const displayAddress = doctor.address || primaryOffice?.address;
 
   const galleryItems = useMemo(
@@ -461,31 +472,26 @@ const NewDoctorProfilePage = ({
             icon={<LocationIcon />}
             title={getContent("address")}
           >
-            {!displayAddress && !mapCoords ? (
+            {!displayAddress && !locationCards.length ? (
               <EmptyState>{getContent("nothingFound")}</EmptyState>
+            ) : locationCards.length ? (
+              <div className={classes.locations}>
+                {locationCards.map((card) => (
+                  <PlaceLocationCard
+                    key={card.key}
+                    coords={card.coords}
+                    name={card.name}
+                    address={card.address}
+                  />
+                ))}
+              </div>
             ) : (
-              <Fragment>
-                {!!mapCoords && (
-                  <div className={classes.map} ref={addressMapRef}>
-                    {addressMapReady && (
-                      <MapMarker
-                        lng={mapCoords[0]}
-                        lat={mapCoords[1]}
-                        map={addressMap}
-                        variant="active"
-                      />
-                    )}
-                  </div>
-                )}
-                {!!displayAddress && (
-                  <p className={classes.paragraph}>
-                    <Ixon width="1rem">
-                      <LocationIcon />
-                    </Ixon>
-                    <span>{displayAddress}</span>
-                  </p>
-                )}
-              </Fragment>
+              <p className={classes.paragraph}>
+                <Ixon width="1rem">
+                  <LocationIcon />
+                </Ixon>
+                <span>{displayAddress}</span>
+              </p>
             )}
           </SectionCard>
 

@@ -1,107 +1,64 @@
-import { Fragment, useRef, useState } from "react";
-import classes from "./PointPicker.module.css";
-import useMap from "@/Components/Hooks/useMap";
-import MapMarker from "@/Components/UI/MapMarker";
-import Input from "@/Components/UI/Input";
-import { ta } from "@/Components/Admin/i18n/adminText";
+import PointPickerCore, {
+  AddressComponents,
+  asPoint,
+  PointPickerTexts,
+} from "@/Components/Map/PointPickerCore";
+import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 
-// A stored point may be missing, `[]` or garbage (an old record): only a
-// real [lng, lat] pair counts as a value.
-const asPoint = (value?: unknown): [number, number] | null =>
-  Array.isArray(value) &&
-  value.length === 2 &&
-  value.every((n) => typeof n === "number" && Number.isFinite(n))
-    ? [value[0], value[1]]
-    : null;
-
-// The one location picker of the admin panel (clinic, hospital, para
-// clinic, pharmacy, insurance...): a click on the map or typed
-// coordinates. The map container always has a height, and the inputs work
-// even when the map tiles can't be loaded.
+// The location picker of the admin panel (clinic, hospital, para clinic,
+// pharmacy, insurance, doctor profile...): place search, a click on the
+// map, "my location" or typed coordinates, and the chosen point's address
+// (NexaMap) under the map. The map container always has a height, and the
+// inputs work even when the map tiles can't be loaded. The panels use its
+// public counterpart, Components/Map/LocationPicker.
 const PointPicker = ({
   defaultValue,
   onChange,
+  onAddress,
+  currentAddress,
+  onUseAddress,
 }: {
   // [lng, lat], GeoJSON order
   defaultValue?: [number, number];
   onChange?: (e: [number, number]) => unknown;
+  // the reverse-geocoded address of a point the admin just chose, so a
+  // form can fill its address field
+  onAddress?: (address: string, components: AddressComponents) => unknown;
+  // with onUseAddress: fills an empty address, else offers "use this address"
+  currentAddress?: string;
+  onUseAddress?: (address: string, components: AddressComponents) => unknown;
 }) => {
-  const saved = asPoint(defaultValue);
-  const [value, setValue] = useState<[number, number] | null>(saved);
-  // bumped on a map click so the (uncontrolled) inputs show the new point;
-  // typing doesn't bump it, so the field keeps its focus
-  const [clickVersion, setClickVersion] = useState<number>(0);
-
-  const mapRef = useRef<HTMLDivElement>(null);
-
-  const { map, ready } = useMap({
-    containerRef: mapRef,
-    onClick: (e) => {
-      const next: [number, number] = [e.lng, e.lat];
-      onChange?.(next);
-      setValue(next);
-      setClickVersion((v) => v + 1);
-    },
-    center: saved || undefined,
-  });
-
-  const setPart = (index: 0 | 1, raw: string) => {
-    const n = Number(raw);
-    if (!raw.trim() || !Number.isFinite(n)) return;
-    const base: [number, number] = value ? [...value] : [NaN, NaN];
-    base[index] = n;
-    setValue(base);
-    if (Number.isFinite(base[0]) && Number.isFinite(base[1])) {
-      onChange?.(base);
-      map?.easeTo({ center: base });
-    }
+  const texts: PointPickerTexts = {
+    searchPlaceholder: ta("جستجوی آدرس یا مکان"),
+    noResults: ta("نتیجه‌ای پیدا نشد"),
+    searchError: ta("جستجوی نقشه در دسترس نیست"),
+    myLocation: ta("موقعیت من"),
+    locationError: ta("موقعیت شما پیدا نشد؛ دسترسی موقعیت مکانی مرورگر را بررسی کنید."),
+    locationUnsupported: ta("مرورگر شما موقعیت مکانی را پشتیبانی نمی‌کند"),
+    addressTitle: ta("آدرس این نقطه"),
+    addressLoading: ta("در حال یافتن آدرس…"),
+    addressUnavailable: ta("آدرسی برای این نقطه پیدا نشد"),
+    trafficZone: ta("محدوده ترافیکی"),
+    useThisAddress: ta("استفاده از این آدرس"),
+    latitude: ta("عرض جغرافیایی"),
+    longitude: ta("طول جغرافیایی"),
   };
-
-  const complete = !!value && value.every((n) => Number.isFinite(n));
-
+  const saved = !!asPoint(defaultValue);
   return (
-    <div className={classes.main}>
-      <p className={classes.hint}>
-        {saved
+    <PointPickerCore
+      defaultValue={defaultValue}
+      onChange={onChange}
+      onAddress={onAddress}
+      currentAddress={currentAddress}
+      onUseAddress={onUseAddress}
+      texts={texts}
+      locale={adminIntlTag()}
+      hint={
+        saved
           ? ta("روی نقشه کلیک کنید یا مختصات را وارد کنید، سپس تایید را بزنید.")
-          : ta("هنوز موقعیتی ثبت نشده است. روی نقشه کلیک کنید یا مختصات را وارد کنید.")}
-      </p>
-      <div className={classes.coords} key={clickVersion}>
-        <Input
-          title={ta("عرض جغرافیایی")}
-          type="number"
-          step={0.000001}
-          inputMode="decimal"
-          defaultValue={value && Number.isFinite(value[1]) ? `${value[1]}` : ""}
-          onChange={(e) => setPart(1, e.target.value)}
-        />
-        <Input
-          title={ta("طول جغرافیایی")}
-          type="number"
-          step={0.000001}
-          inputMode="decimal"
-          defaultValue={value && Number.isFinite(value[0]) ? `${value[0]}` : ""}
-          onChange={(e) => setPart(0, e.target.value)}
-        />
-      </div>
-      <div className={classes.map} ref={mapRef}>
-        {ready && (
-          <Fragment>
-            {saved && (
-              <MapMarker
-                lat={saved[1]}
-                lng={saved[0]}
-                map={map}
-                variant="active"
-              />
-            )}
-            {complete && value && (value[0] !== saved?.[0] || value[1] !== saved?.[1]) && (
-              <MapMarker lat={value[1]} lng={value[0]} map={map} />
-            )}
-          </Fragment>
-        )}
-      </div>
-    </div>
+          : ta("هنوز موقعیتی ثبت نشده است. روی نقشه کلیک کنید یا مختصات را وارد کنید.")
+      }
+    />
   );
 };
 
