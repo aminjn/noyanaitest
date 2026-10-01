@@ -2337,5 +2337,6 @@
  "caTo": "Sampai",
  "caNoOffices": "Belum ada dokter yang menautkan tempat praktik ke pusat ini. Janji temu di tempat praktik yang tertaut akan muncul di sini.",
  "caEmpty": "Tidak ada janji temu pada rentang ini",
- "readReservations": "Melihat janji temu pusat"
+ "readReservations": "Melihat janji temu pusat",
+ "ofCenterNote": "Dompet pusat: biaya lisensi dibayar dari sini dan saldo bisa ditarik ke rekening bank Anda. Jumlah dalam toman."
 }

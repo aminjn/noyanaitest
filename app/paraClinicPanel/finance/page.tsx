@@ -1,0 +1,20 @@
+import OrgFinancePage from "@/Components/_Common/Finance/OrgFinancePage";
+import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+
+const Finance = async () => {
+  const textContent = await getScopedTextContent(["pharmacyPanelFinance", "walletWithdrawal"]);
+  return (
+    <LocaleScopeProvider namespaces={["pharmacyPanelFinance", "walletWithdrawal"]} initialTextContent={textContent}>
+      <OrgFinancePage
+        panel="/paraClinicPanel"
+        api="/paraClinic/finance"
+        noteKey="pfNote"
+      upcomingKey="pfUpcoming"
+      upcomingNoteKey="pfUpcomingNote"
+      />
+    </LocaleScopeProvider>
+  );
+};
+
+export default Finance;

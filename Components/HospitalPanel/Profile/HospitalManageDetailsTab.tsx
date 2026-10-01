@@ -74,7 +74,6 @@ const HospitalManageDetailsTab = () => {
               getDefaultValue: (inp) => inp.insurances,
               multi: true,
             },
-            address: { type: "text", title: getContent("address") },
           }}
         />
       )}

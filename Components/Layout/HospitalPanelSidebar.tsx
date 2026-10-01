@@ -1,3 +1,4 @@
+import WalletIcon from "../Icons/WalletIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import useSWR from "swr";
@@ -46,6 +47,13 @@ const HospitalPanelSidebar = () => {
         icon: <UserCircleIcon />,
         show: hasAccess("mutateProfile"),
         target: "profile",
+      },
+      {
+        title: "financialMangement",
+        icon: <WalletIcon />,
+        group: "groupCenter",
+        show: hasAccess("readFinance"),
+        target: "finance",
       },
       {
         title: "teamTitle",

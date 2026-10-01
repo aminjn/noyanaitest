@@ -2337,5 +2337,6 @@
  "caTo": "至",
  "caNoOffices": "还没有医生将诊室关联到本中心。已关联诊室的预约会显示在这里。",
  "caEmpty": "此时段内没有预约",
- "readReservations": "查看中心的预约"
+ "readReservations": "查看中心的预约",
+ "ofCenterNote": "中心钱包：许可证费用从中支付，余额可提现到您的银行账户。金额单位为托曼。"
 }

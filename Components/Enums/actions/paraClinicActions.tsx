@@ -5,6 +5,7 @@ import { ContentKey } from "../contentKeys";
 // itself (owner-only by design). Kept in sync with Models/ParaClinicAcl.ts
 // on noyanai-back.
 export const paraClinicActions = [
+  "readFinance",
   "mutateProfile",
   "readTests",
   "readPrescriptions",
@@ -25,6 +26,7 @@ export const paraClinicActions = [
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
 // nav item's own title key, reused as the tab label.
 export const paraClinicActionCategories = [
+  "financialMangement",
   "profile",
   "tests",
   "prescriptions",
@@ -37,6 +39,7 @@ export const paraClinicActionCategories = [
 export const categorizedParaClinicActions: Readonly<
   Record<(typeof paraClinicActionCategories)[number], readonly ContentKey[]>
 > = {
+  financialMangement: ["readFinance"],
   profile: ["mutateProfile"],
   tests: ["readTests"],
   prescriptions: ["readPrescriptions"],

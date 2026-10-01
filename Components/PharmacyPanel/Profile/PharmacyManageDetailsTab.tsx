@@ -30,7 +30,6 @@ const PharmacyManageDetailsTab = () => {
             avatar: { type: "image", title: getContent("avatar") },
             banner: { type: "image", title: getContent("banner") },
             summary: { type: "area", title: getContent("summary") },
-            address: { type: "text", title: getContent("address") },
           }}
         />
       )}

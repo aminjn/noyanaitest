@@ -1,0 +1,29 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.note {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  color: var(--gray12);
+  line-height: 1.8;
+}
+
+.rejected {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radiusLg);
+  background: var(--errorT1, rgba(220, 38, 38, 0.08));
+  color: var(--gray13);
+  line-height: 1.8;
+}
+
+.rejected strong {
+  color: var(--error);
+}
