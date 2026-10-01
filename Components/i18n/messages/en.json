@@ -2369,5 +2369,10 @@
  "insNetHospitals": "Hospitals",
  "insNetLabs": "Labs and imaging centres",
  "insNetPharmacies": "Pharmacies",
- "insNetEmpty": "No one yet"
+ "insNetEmpty": "No one yet",
+ "orgReviewsTitle": "Patient reviews",
+ "orgReviewsAverage": "${1} out of 5 · ${2} reviews",
+ "orgReviewsEmpty": "No published reviews yet",
+ "orgReviewsHint": "Reviews published on your public page after support's review.",
+ "readReviews": "See patient reviews"
 }

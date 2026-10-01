@@ -2369,5 +2369,10 @@
  "insNetHospitals": "Hospitais",
  "insNetLabs": "Laboratórios e centros de imagem",
  "insNetPharmacies": "Farmácias",
- "insNetEmpty": "Ninguém ainda"
+ "insNetEmpty": "Ninguém ainda",
+ "orgReviewsTitle": "Avaliações de pacientes",
+ "orgReviewsAverage": "${1} de 5 · ${2} avaliações",
+ "orgReviewsEmpty": "Ainda não há avaliações publicadas",
+ "orgReviewsHint": "Avaliações publicadas na sua página pública após análise do suporte.",
+ "readReviews": "Ver avaliações de pacientes"
 }

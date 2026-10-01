@@ -1,3 +1,4 @@
+import StarIcon from "../Icons/StarIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import WalletIcon from "../Icons/WalletIcon";
@@ -29,6 +30,13 @@ const InsurancePanelSidebar = () => {
         group: "groupDaily",
         show: hasAccess("readNetwork"),
         target: "network",
+      },
+      {
+        title: "orgReviewsTitle",
+        group: "groupCenter",
+        icon: <StarIcon />,
+        show: hasAccess("readReviews"),
+        target: "review",
       },
       {
         icon: <UserCircleIcon />,

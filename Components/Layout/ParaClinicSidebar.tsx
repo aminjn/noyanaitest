@@ -1,3 +1,4 @@
+import StarIcon from "../Icons/StarIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
@@ -45,6 +46,13 @@ const ParaClinicSidebar = () => {
         group: "groupDaily",
         show: false,
         target: "tamin",
+      },
+      {
+        title: "orgReviewsTitle",
+        group: "groupCenter",
+        icon: <StarIcon />,
+        show: hasAccess("readReviews"),
+        target: "review",
       },
       {
         title: "profile",

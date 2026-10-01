@@ -2369,5 +2369,10 @@
  "insNetHospitals": "المستشفيات",
  "insNetLabs": "المختبرات ومراكز الأشعة",
  "insNetPharmacies": "الصيدليات",
- "insNetEmpty": "لا أحد بعد"
+ "insNetEmpty": "لا أحد بعد",
+ "orgReviewsTitle": "آراء المرضى",
+ "orgReviewsAverage": "${1} من 5 · ${2} تقييم",
+ "orgReviewsEmpty": "لا توجد آراء منشورة بعد",
+ "orgReviewsHint": "الآراء المنشورة في صفحتك العامة بعد مراجعة الدعم.",
+ "readReviews": "عرض آراء المرضى"
 }

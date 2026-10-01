@@ -2369,5 +2369,10 @@
  "insNetHospitals": "Hôpitaux",
  "insNetLabs": "Laboratoires et centres d'imagerie",
  "insNetPharmacies": "Pharmacies",
- "insNetEmpty": "Personne pour l'instant"
+ "insNetEmpty": "Personne pour l'instant",
+ "orgReviewsTitle": "Avis des patients",
+ "orgReviewsAverage": "${1} sur 5 · ${2} avis",
+ "orgReviewsEmpty": "Aucun avis publié pour l'instant",
+ "orgReviewsHint": "Avis publiés sur votre page publique après vérification par le support.",
+ "readReviews": "Voir les avis des patients"
 }
