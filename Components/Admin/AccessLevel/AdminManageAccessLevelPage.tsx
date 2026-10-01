@@ -47,7 +47,7 @@ const AdminManageAccessLevelPage = () => {
                   "DeleteAccessLevel",
                   <DeleteAccessLevelPopup
                     node={data as unknown as IAccessLevel}
-                    mutate={() => push(adminPath(`/accesslevel`))}
+                    mutate={() => push(adminPath("/team?tab=roles"))}
                   />,
                 ),
             },

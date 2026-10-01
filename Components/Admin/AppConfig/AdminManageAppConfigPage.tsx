@@ -59,7 +59,9 @@ export interface IAppConfig extends MongoDoc {
   reservationNoShowNudgeInterval: number;
 }
 
-// the general settings: one form, its parts as its own tabs
+// the general settings: one form, its parts as its own tabs. Booking,
+// reminder, no-show and call timings live on the appointments page
+// (/reservation?tab=settings, AdminBookingSettingsTab) since the 2026-10 audit.
 const AdminGeneralSettingsTab = () => {
   const { data, error, mutate } = useSWR<IAppConfig>(
     `${API}/auto/appConfig`,
@@ -105,16 +107,6 @@ const AdminGeneralSettingsTab = () => {
                 section: ta("استعلام هویت و نظام پزشکی"),
               },
 
-              bookingHorizonDays: {
-                title: ta("بازه زمانی امکان رزرو نوبت (روز)"),
-                type: "number",
-                section: ta("نوبت‌دهی و یادآوری"),
-              },
-              recalculateDoctorAvailabilityInterval: {
-                title: ta("فاصله محاسبه مجدد تقویم پزشکان (میلی‌ثانیه)"),
-                type: "number",
-                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
-              },
 
               analyticsVisitWindowSeconds: {
                 title: ta("بازه ادغام بازدید تکراری صفحه (ثانیه)"),
@@ -133,47 +125,7 @@ const AdminGeneralSettingsTab = () => {
                 section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
               },
 
-              callRingTimeoutMs: {
-                title: ta("زمان انتظار زنگ خوردن تماس (میلی‌ثانیه)"),
-                type: "number",
-                section: ta("تماس تصویری و صوتی"),
-              },
-              callMaxParticipants: {
-                title: ta("حداکثر تعداد شرکت‌کنندگان یک تماس"),
-                type: "number",
-                section: ta("تماس تصویری و صوتی"),
-              },
 
-              reservationActivationInterval: {
-                title: ta("فاصله بررسی فعال‌سازی نوبت‌ها (میلی‌ثانیه)"),
-                type: "number",
-                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
-              },
-              reservationReminderMinutesBefore: {
-                title: ta("یادآوری نوبت چند دقیقه قبل از شروع (دقیقه)"),
-                type: "number",
-                section: ta("نوبت‌دهی و یادآوری"),
-              },
-              reservationReminderInterval: {
-                title: ta("فاصله بررسی یادآوری نوبت‌ها (میلی‌ثانیه)"),
-                type: "number",
-                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
-              },
-              reservationFinalizationInterval: {
-                title: ta("فاصله بررسی نهایی‌سازی نوبت‌ها (میلی‌ثانیه)"),
-                type: "number",
-                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
-              },
-              reservationNoShowNudgeMinutesAfterStart: {
-                title: ta("یادآوری حضور چند دقیقه بعد از شروع نوبت (دقیقه)"),
-                type: "number",
-                section: ta("نوبت‌دهی و یادآوری"),
-              },
-              reservationNoShowNudgeInterval: {
-                title: ta("فاصله بررسی یادآوری حضور (میلی‌ثانیه)"),
-                type: "number",
-                section: ta("کارهای زمان‌بندی‌شده (با راه‌اندازی دوباره‌ی سرور اعمال می‌شود)"),
-              },
             }}
           />
         </WithTitle>

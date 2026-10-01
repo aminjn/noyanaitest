@@ -2,8 +2,6 @@ import PopupCard from "@/Components/UI/PopupCard";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
-import { IUser } from "@/Components/Hooks/useUser";
-import { getUserLabel } from "../Lib/LabelGetters";
 import {
   FullUserAlert,
   userAlertToggleFormRenderer,
@@ -33,12 +31,9 @@ const MutateUserAlertPopup = ({
         onCancel={() => closePopup()}
         renderer={{
           user: {
-            type: "nodes",
+            type: "users",
             title: ta("کاربر"),
-            path: `${API}/auto/user`,
-            getOptionLabel: (n) => getUserLabel(n as IUser),
-            getOptionValue: (n) => (n as IUser)._id,
-            getDefaultValue: (inp) => inp.user?._id,
+            getDefaultValue: (inp) => inp.user,
             readOnly: isEdit,
             required: true,
           },

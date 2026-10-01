@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "Sal antes de las ${1}",
  "mapLeaveNow": "Sal ahora",
  "mapLeaveByHint": "Para llegar unos 15 minutos antes, en coche desde donde estás ahora (unos ${1} con el tráfico de esa hora)",
- "mapVisitInTrafficZone": "La consulta está dentro de la zona de restricción de tráfico, vigente a la hora de tu cita. Considera el metro, el autobús o un taxi."
+ "mapVisitInTrafficZone": "La consulta está dentro de la zona de restricción de tráfico, vigente a la hora de tu cita. Considera el metro, el autobús o un taxi.",
+ "tbExport": "Exportar CSV",
+ "panelSuspendedTitle": "Tu página ha sido suspendida",
+ "panelSuspendedSince": "Tu página está suspendida desde el ${1}",
+ "panelSuspendedText": "Tu página no está en el sitio por ahora y no recibe nuevas citas ni pedidos. Las citas y los pedidos ya registrados se mantienen y puedes completarlos.",
+ "panelSuspendedReason": "Motivo: ${1}",
+ "panelSuspendedContact": "Contacta con soporte para levantar la suspensión"
 }

@@ -220,6 +220,20 @@ export type AdminHub = {
 
 export const adminHubs: AdminHub[] = [
   {
+    hub: "reservation",
+    sections: [
+      {
+        id: "reservationParts",
+        get title() { return ta("نوبت‌ها"); },
+        icon: <FolderIcon />,
+        items: [
+      { get title() { return ta("فهرست نوبت‌ها"); }, href: "reservation?tab=list", access: "Reservation" },
+      { get title() { return ta("تنظیمات نوبت‌دهی"); }, href: "reservation?tab=settings" },
+        ],
+      },
+    ],
+  },
+  {
     hub: "reviews",
     sections: [
       {

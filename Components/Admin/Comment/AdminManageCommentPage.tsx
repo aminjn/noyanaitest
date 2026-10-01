@@ -112,7 +112,7 @@ const AdminManageCommentPage = () => {
                         <DeleteShitPopup
                           modelName="comment"
                           nodeId={data._id}
-                          mutate={() => push(adminPath("/comment"))}
+                          mutate={() => push(adminPath("/reviews?tab=pages"))}
                         />,
                       ),
                   },

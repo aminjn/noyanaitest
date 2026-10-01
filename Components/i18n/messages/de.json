@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "Losfahren bis ${1}",
  "mapLeaveNow": "Jetzt losfahren",
  "mapLeaveByHint": "Um etwa 15 Minuten früher da zu sein, mit dem Auto ab Ihrem jetzigen Standort (etwa ${1} im Verkehr zu dieser Zeit)",
- "mapVisitInTrafficZone": "Die Praxis liegt in der Verkehrsbeschränkungszone, die zu Ihrem Termin gilt. Nehmen Sie lieber U-Bahn, Bus oder Taxi."
+ "mapVisitInTrafficZone": "Die Praxis liegt in der Verkehrsbeschränkungszone, die zu Ihrem Termin gilt. Nehmen Sie lieber U-Bahn, Bus oder Taxi.",
+ "tbExport": "CSV exportieren",
+ "panelSuspendedTitle": "Ihre Seite wurde gesperrt",
+ "panelSuspendedSince": "Ihre Seite ist seit ${1} gesperrt",
+ "panelSuspendedText": "Ihre Seite ist derzeit nicht auf der Website und nimmt keine neuen Termine oder Bestellungen an. Bestehende Termine und Bestellungen bleiben bestehen und können weiter abgeschlossen werden.",
+ "panelSuspendedReason": "Grund: ${1}",
+ "panelSuspendedContact": "Wenden Sie sich an den Support, um die Sperre aufheben zu lassen"
 }

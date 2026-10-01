@@ -67,6 +67,9 @@ export const paymentPurposeDict: Record<string, string> = {
 };
 
 export const transactionKindDict: Record<string, string> = {
+  get adminAdjustment() {
+  return ta("اصلاح دستی کیف پول");
+},
   get withdrawal() {
   return ta("برداشت به حساب بانکی");
 },

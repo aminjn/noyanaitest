@@ -71,10 +71,8 @@ const NewCallPage = () => {
         },
         participantIds: {
           title: "partys",
-          type: "nodes",
-          getOptionLabel: (node) => (node as IUser).phone,
-          getOptionValue: (node) => (node as IUser)._id,
-          path: `${API}/auto/user`,
+          // server search (GET /admin/users?q=), not every account
+          type: "users",
           multi: true,
         },
       }}

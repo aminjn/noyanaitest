@@ -4,7 +4,7 @@ import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
-import { getDoctorProfileLabel, getUserLabel } from "../Lib/LabelGetters";
+import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AssignDoctorProfileToUserPopup = ({
@@ -26,10 +26,7 @@ const AssignDoctorProfileToUserPopup = ({
             ? {}
             : {
                 user: {
-                  type: "nodes",
-                  path: `${API}/auto/user`,
-                  getOptionLabel: (node) => getUserLabel(node as IUser),
-                  getOptionValue: (node) => (node as IUser)._id,
+                  type: "users",
                   title: ta("کاربر"),
                 },
               }),

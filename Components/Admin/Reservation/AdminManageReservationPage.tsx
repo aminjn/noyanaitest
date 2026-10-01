@@ -10,7 +10,6 @@ import { currencize } from "@/Components/helpers/currencize";
 import usePopup from "@/Components/Hooks/usePopup";
 import useUser from "@/Components/Hooks/useUser";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
-import { AccessLevelModel } from "../AccessLevel/AdminManageAccessLevelsPage";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
@@ -194,9 +193,8 @@ const AdminManageReservationPage = () => {
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
-  // the access model may not be listed yet: full admins always may act
   const canAct =
-    viewer?.role === "admin" || hasAccess("Reservation" as AccessLevelModel, "update");
+    viewer?.role === "admin" || hasAccess("Reservation", "update");
   const money = data?.money || {};
   const refundable = Number(money.refundable) || 0;
   const doctorPaid = Number(money.doctorPaid) || 0;
@@ -406,7 +404,7 @@ const AdminManageReservationPage = () => {
                   <Pair
                     title={ta("نظر بیمار")}
                     value={
-                      <InlineLink href={adminPath("/doctorFeedback")}>
+                      <InlineLink href={adminPath("/reviews?tab=visits")}>
                         {ta("${1} از ۵", [data.feedback.overalScore ?? "—"])}
                         {data.feedback.publicMessage ? ` · ${data.feedback.publicMessage}` : ""}
                       </InlineLink>

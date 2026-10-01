@@ -19,6 +19,7 @@ import NodesSelector, {
   NodesSelectorCreatable,
 } from "@/Components/UI/NodesSelector";
 import ImageInput from "@/Components/UI/ImageInput";
+import { UserSearchField } from "./UserSearchSelect";
 import RTFEditor from "@/Components/UI/RTFEditor/RTFEditor";
 import StringListInput from "@/Components/UI/StringListInput";
 import CheckboxGroupInput from "@/Components/UI/CheckboxGroupInput";
@@ -91,6 +92,14 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
       }
     | { type: "select" | "options"; options: Record<string, string> }
     | { type: "multiselect"; options: Record<string, string> }
+    | {
+        // user accounts, found by server search (GET /admin/users?q=)
+        // instead of loading every user into a "nodes" list; the value is
+        // the id (or ids when multi)
+        type: "users";
+        multi?: boolean;
+        getDefaultValue?: (node: TInput) => unknown;
+      }
     | {
         type: "nodes";
         // a function gets the form's current values (the saved record with
@@ -410,6 +419,23 @@ const CreateForm = <TInput, TResult = unknown>({
             content = (
               <DateInput
                 {...commons}
+                onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
+              />
+            );
+            break;
+          case "users":
+            content = (
+              <UserSearchField
+                title={commons.title}
+                readOnly={commons.readOnly}
+                multi={segment.multi}
+                defaultValue={
+                  defaultValue
+                    ? segment.getDefaultValue
+                      ? segment.getDefaultValue(defaultValue)
+                      : defaultValue[key]
+                    : undefined
+                }
                 onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
               />
             );

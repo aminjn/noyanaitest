@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "En geç ${1}'de çıkın",
  "mapLeaveNow": "Hemen çıkın",
  "mapLeaveByHint": "Yaklaşık 15 dakika erken varmak için, şu anki konumunuzdan arabayla (o saatteki trafikte yaklaşık ${1})",
- "mapVisitInTrafficZone": "Muayenehane, randevu saatinizde geçerli olan trafik kısıtlama bölgesinin içinde. Metro, otobüs veya taksiyi düşünün."
+ "mapVisitInTrafficZone": "Muayenehane, randevu saatinizde geçerli olan trafik kısıtlama bölgesinin içinde. Metro, otobüs veya taksiyi düşünün.",
+ "tbExport": "CSV olarak dışa aktar",
+ "panelSuspendedTitle": "Sayfanız askıya alındı",
+ "panelSuspendedSince": "Sayfanız ${1} tarihinden beri askıda",
+ "panelSuspendedText": "Sayfanız şu anda sitede değil ve yeni randevu ya da sipariş almıyor. Mevcut randevu ve siparişler yerinde duruyor ve bunları tamamlayabilirsiniz.",
+ "panelSuspendedReason": "Neden: ${1}",
+ "panelSuspendedContact": "Askıyı kaldırmak için destekle iletişime geçin"
 }

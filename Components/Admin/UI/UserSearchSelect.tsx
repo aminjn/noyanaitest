@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { ta } from "@/Components/Admin/i18n/adminText";
@@ -104,3 +104,95 @@ const UserSearchSelect = <TMulti extends boolean = false>({
 };
 
 export default UserSearchSelect;
+
+// ---- form field: ids in, ids out ----------------------------------------
+
+const asOption = (value: unknown): UserOption | null => {
+  if (!value) return null;
+  if (typeof value === "string") return { _id: value };
+  const v = value as UserOption & { identity?: { givenName?: string; lastName?: string } };
+  if (!v._id) return null;
+  return {
+    _id: String(v._id),
+    phone: v.phone,
+    username: v.username,
+    status: v.status,
+    name:
+      v.name ||
+      [v.identity?.givenName, v.identity?.lastName].filter(Boolean).join(" ") ||
+      undefined,
+  };
+};
+
+// a saved bare id gets its phone / name from GET /admin/users/:id
+const resolveOption = async (option: UserOption): Promise<UserOption> => {
+  if (option.phone || option.username || option.name) return option;
+  try {
+    const res = await fetcher({ url: `${API}/admin/users/${option._id}` });
+    return asOption(res?.data?.data) || option;
+  } catch {
+    return option;
+  }
+};
+
+// CreateForm's "users" field (and any form keeping user ids): the default
+// may be an id, a populated user, or a list of either; onChange gets the
+// id (or ids, when multi).
+export const UserSearchField = ({
+  title,
+  multi,
+  defaultValue,
+  onChange,
+  readOnly,
+}: {
+  title?: string;
+  multi?: boolean;
+  defaultValue?: unknown;
+  onChange: (value: string | string[] | null) => unknown;
+  readOnly?: boolean;
+}) => {
+  const initial = (Array.isArray(defaultValue) ? defaultValue : defaultValue ? [defaultValue] : [])
+    .map(asOption)
+    .filter((o): o is UserOption => !!o);
+  const [value, setValue] = useState<UserOption[]>(initial);
+  const initialKey = initial.map((o) => o._id).join(",");
+
+  // fill in labels of bare ids once
+  useEffect(() => {
+    let alive = true;
+    if (!initial.some((o) => !o.phone && !o.username && !o.name)) return;
+    Promise.all(initial.map(resolveOption)).then((resolved) => {
+      if (alive) setValue((prev) => (prev.map((o) => o._id).join(",") === initialKey ? resolved : prev));
+    });
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialKey]);
+
+  if (multi)
+    return (
+      <UserSearchSelect
+        multi
+        title={title}
+        readOnly={readOnly}
+        value={value}
+        onChange={(next) => {
+          setValue(next);
+          onChange(next.map((o) => o._id));
+        }}
+      />
+    );
+  return (
+    <UserSearchSelect
+      title={title}
+      readOnly={readOnly}
+      clearable
+      value={value[0] || null}
+      onChange={(next) => {
+        setValue(next ? [next] : []);
+        onChange(next ? next._id : null);
+      }}
+    />
+  );
+};

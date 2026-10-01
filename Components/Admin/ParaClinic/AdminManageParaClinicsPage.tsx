@@ -7,8 +7,6 @@ import useSWR from "swr";
 import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
 import CreateForm from "../UI/CreateForm";
-import { getUserLabel } from "../Lib/LabelGetters";
-import { IUser } from "@/Components/Hooks/useUser";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -50,11 +48,8 @@ const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
           order: { title: ta("رتبه"), type: "number" },
           user: {
             title: ta("کاربر"),
-            type: "nodes",
+            type: "users",
             multi: false,
-            getOptionLabel: (node) => getUserLabel(node as IUser),
-            getOptionValue: (node) => (node as IUser)._id,
-            path: `${API}/auto/user`,
           },
         }}
       />

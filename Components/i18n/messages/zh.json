@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "请在 ${1} 前出发",
  "mapLeaveNow": "现在出发",
  "mapLeaveByHint": "为提前约 15 分钟到达，从您当前位置驾车出发（按该时段路况约需 ${1}）",
- "mapVisitInTrafficZone": "诊所位于交通限行区内，您就诊时限行生效。可考虑乘坐地铁、公交或出租车。"
+ "mapVisitInTrafficZone": "诊所位于交通限行区内，您就诊时限行生效。可考虑乘坐地铁、公交或出租车。",
+ "tbExport": "导出 CSV",
+ "panelSuspendedTitle": "您的页面已被暂停",
+ "panelSuspendedSince": "您的页面自 ${1} 起已被暂停",
+ "panelSuspendedText": "您的页面目前不在网站上显示，也不接受新的预约或订单。已有的预约和订单保持不变，您仍可完成它们。",
+ "panelSuspendedReason": "原因：${1}",
+ "panelSuspendedContact": "联系客服以解除暂停"
 }

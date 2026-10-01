@@ -28,7 +28,7 @@ import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import useProgress from "@/Components/Hooks/useProgress";
 import { StatusBadge, UserStatus, useUserActions } from "./userActions";
 import UserActivity from "./UserActivity";
-import { AccessLevelModel } from "../AccessLevel/AdminManageAccessLevelsPage";
+import OpenTicketPopup from "../Support/OpenTicketPopup";
 
 export type UserDetail = {
   _id: string;
@@ -201,7 +201,7 @@ export const RoleManager = ({
           {Array.isArray(levels) && levels.length === 0 && (
             <span className={classes.note}>
               {ta("هنوز سطح دسترسی‌ای ساخته نشده.")}{" "}
-              <Link href={adminPath("/accesslevel")}>{ta("ساخت سطح دسترسی")}</Link>
+              <Link href={adminPath("/team?tab=roles")}>{ta("ساخت سطح دسترسی")}</Link>
             </span>
           )}
         </label>
@@ -260,6 +260,9 @@ const AdminManageUserPage = () => {
   const canEdit = hasAccess("User", "update") && status !== "deleted" && !data?.isSelf;
   const canDelete =
     hasAccess("User", "delete") && status !== "deleted" && data?.role === "user" && !data?.isSelf;
+  const { setPopup } = usePopup();
+  const canTicket = viewer?.role === "admin" || hasAccess("Ticket", "write");
+  const canReadTickets = viewer?.role === "admin" || hasAccess("Ticket", "readAll");
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -303,8 +306,30 @@ const AdminManageUserPage = () => {
             </div>
           </section>
 
-          {(canEdit || canDelete) && (
+          {(canEdit || canDelete || canTicket || canReadTickets) && (
             <div className={classes.actionBar}>
+              {canTicket && status !== "deleted" && (
+                <Button
+                  size="M"
+                  variant="Neutral"
+                  onClick={() =>
+                    setPopup(
+                      "AdminOpenTicket",
+                      <OpenTicketPopup
+                        user={{ _id: data._id, phone: data.phone, username: data.username }}
+                        onCreated={(id) => push(adminPath(`/ticket/${id}`))}
+                      />,
+                    )
+                  }
+                >
+                  {ta("تیکت برای این کاربر")}
+                </Button>
+              )}
+              {canReadTickets && (
+                <Link href={adminPath(`/ticket?user=${data._id}`)} className={classes.link}>
+                  {ta("تیکت‌های کاربر")}
+                </Link>
+              )}
               {canEdit && (
                 <Button size="M" variant="Neutral" onClick={() => actions.edit(data)}>
                   {ta("ویرایش موبایل و نام")}
@@ -413,7 +438,7 @@ const AdminManageUserPage = () => {
             userId={data._id}
             canSeeReservations={
               viewer?.role === "admin" ||
-              hasAccess("Reservation" as AccessLevelModel, "readAll")
+              hasAccess("Reservation", "readAll")
             }
             canSeeMoney={viewer?.role === "admin"}
             onChanged={() => mutate()}
