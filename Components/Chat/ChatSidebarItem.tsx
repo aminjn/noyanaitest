@@ -1,6 +1,7 @@
 import { useIntlLocale, usePathname } from "@/Components/i18n/navigation";
+import useChatScope from "./useChatScope";
 import { useMemo } from "react";
-import useUser, { IUser } from "../Hooks/useUser";
+import { IUser } from "../Hooks/useUser";
 import { IChat, getChatParticipantName } from "./ChatSidebar";
 import classes from "./ChatSidebarItem.module.css";
 import Link from "@/Components/i18n/Link";
@@ -17,7 +18,7 @@ const ChatSidebarItem = ({
   chat: IChat<{ Participants: { Identity: Record<never, never> } }>;
 }) => {
   const intlTag = useIntlLocale();
-  const { user } = useUser();
+  const { selfId } = useChatScope();
 
   const getContent = useScopedLocale(LOCALE_NS);
   const params = useParams<{ nodeId?: string }>();
@@ -26,8 +27,8 @@ const ChatSidebarItem = ({
   const base = usePathname().startsWith("/doctorpanel") ? "/doctorpanel/chat" : "/dashboard/chat";
 
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
-    () => chat.participants.find((p) => p._id !== user?._id),
-    [chat.participants, user?._id],
+    () => chat.participants.find((p) => p._id !== selfId),
+    [chat.participants, selfId],
   );
 
   const title = useMemo(

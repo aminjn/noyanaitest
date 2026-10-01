@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import useChatScope from "./useChatScope";
 import classes from "./ChatSidebar.module.css";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
@@ -81,9 +82,10 @@ export interface IUserFile<
 }
 
 const ChatSidebar = ({ onClose }: { onClose?: () => void }) => {
+  const { api } = useChatScope();
   const { data } = useSWR<
     IChat<{ Participants: { Identity: Record<never, never> } }>[]
-  >(`${API}/chat`, (url: string) => fetcher({ url }).then((res) => res.data), {
+  >(api, (url: string) => fetcher({ url }).then((res) => res.data), {
     refreshInterval: 1000,
   });
 
