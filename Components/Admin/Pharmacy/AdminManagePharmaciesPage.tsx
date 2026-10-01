@@ -8,7 +8,6 @@ import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import IconLink from "../UI/IconLink";
@@ -19,6 +18,7 @@ import DeletePharmacyPopup from "./DeletePharmacyPopup";
 import WithTitle from "../UI/WithTitle";
 import CreatePharmacyPopup from "./CreatePharmacyPopup";
 import OrderEditor from "../UI/OrderEditor";
+import { providerStateColumn } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManagePharmaciesPage = () => {
@@ -59,12 +59,8 @@ const AdminManagePharmaciesPage = () => {
                 ),
                 filter: "Text",
               },
-              active: {
-                name: ta("وضعیت"),
-                value: (node) => booleanToValue[`${node.active}`],
-                component: (node) => <BooleanToIcon value={node.active} />,
-                filter: "Set",
-              },
+              // published / draft / suspended (Components/Admin/UI/ProviderStatus)
+              active: providerStateColumn(),
               order: {
                 name: ta("ترتیب"),
                 value: (node) => node.order,

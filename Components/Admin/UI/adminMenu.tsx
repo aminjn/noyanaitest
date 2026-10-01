@@ -21,6 +21,7 @@ import FolderIcon from "@/Components/Icons/FolderIcon";
 import Bell01Icon from "@/Components/Icons/Bell01Icon";
 import TagIcon from "@/Components/Icons/TagIcon";
 import WalletIcon from "@/Components/Icons/WalletIcon";
+import CalendarIcon from "@/Components/Icons/CalendarIcon";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type AdminMenuItem = {
@@ -78,6 +79,14 @@ export const adminPinnedItems: (AdminMenuItem & {
 // (/requests, pinned above); pages whose content was dead (home intro, bot
 // examples) are gone. The tab pages stay reachable for links, the page
 // guard and Ctrl+K through adminHubs below.
+//
+// Second pass (2026-10 audit, "duplicates / misplaced"): one reviews page,
+// one ads page, one languages page, one SEO page; doctor FAQs are a tab of
+// the FAQ page; booking texts sit with content, places with the system,
+// staff alerts with the team. Day-to-day operations (appointments, visit
+// calls, orders) get their own group, as in the Doctolib Pro / Practo Ray
+// back offices, where the schedule is what support opens first and money
+// (transactions, payouts, invoices) is a separate concern.
 export const adminMenu: AdminMenuGroup[] = [
   {
     id: "providers",
@@ -90,7 +99,16 @@ export const adminMenu: AdminMenuGroup[] = [
       { get title() { return ta("پاراکلینیک‌ها"); }, href: "paraClinic", access: "ParaClinic" },
       { get title() { return ta("داروخانه‌ها"); }, href: "pharmacy", access: "Pharmacy" },
       { get title() { return ta("بیمه‌ها"); }, href: "insurance", access: "Insurance" },
-      { get title() { return ta("سوالات مشترک صفحه‌ی پزشکان"); }, href: "doctorfaq", access: "DoctorFaq" },
+    ],
+  },
+  {
+    id: "operations",
+    get title() { return ta("نوبت‌ها و سفارش‌ها"); },
+    icon: <CalendarIcon />,
+    items: [
+      { get title() { return ta("نوبت‌ها"); }, href: "reservation", access: "Reservation" },
+      { get title() { return ta("تماس‌ها"); }, href: "callroom", access: "CallRoom" },
+      { get title() { return ta("سفارش‌ها"); }, href: "finance/orders", access: "Order" },
     ],
   },
   {
@@ -99,11 +117,10 @@ export const adminMenu: AdminMenuGroup[] = [
     icon: <UserGroupIcon />,
     items: [
       { get title() { return ta("کاربران"); }, href: "user", access: "User" },
-      { get title() { return ta("تیکت‌های پشتیبانی"); }, href: "ticket" },
-      { get title() { return ta("درخواست‌های تماس"); }, href: "contactRequest" },
-      { get title() { return ta("نظرات کاربران"); }, href: "comment", access: "Comment" },
-      { get title() { return ta("نظرات بیماران درباره‌ی پزشکان"); }, href: "doctorFeedback" },
-      { get title() { return ta("تماس‌ها"); }, href: "callroom", access: "CallRoom" },
+      { get title() { return ta("تیکت‌های پشتیبانی"); }, href: "ticket", access: "Ticket" },
+      { get title() { return ta("درخواست‌های تماس"); }, href: "contactRequest", access: "ContactRequest" },
+      { get title() { return ta("نظرات و امتیازها"); }, href: "reviews" },
+      { get title() { return ta("پیامک و اعلان‌ها"); }, href: "messaging" },
     ],
   },
   {
@@ -112,11 +129,9 @@ export const adminMenu: AdminMenuGroup[] = [
     icon: <PackageIcon />,
     items: [
       { get title() { return ta("تخصص‌ها"); }, href: "speciality", access: "Sepciality" },
-      { get title() { return ta("خدمات"); }, href: "service" },
-      { get title() { return ta("محصولات"); }, href: "product" },
-      { get title() { return ta("آزمایش‌ها"); }, href: "test" },
-      { get title() { return ta("توضیحات رزرو"); }, href: "bookingDescription" },
-      { get title() { return ta("استان، شهر و محله"); }, href: "province" },
+      { get title() { return ta("خدمات"); }, href: "service", access: "Service" },
+      { get title() { return ta("محصولات"); }, href: "product", access: "Product" },
+      { get title() { return ta("آزمایش‌ها"); }, href: "test", access: "Test" },
     ],
   },
   {
@@ -139,14 +154,11 @@ export const adminMenu: AdminMenuGroup[] = [
       { get title() { return ta("صفحه‌ی خانه"); }, href: "homePage" },
       { get title() { return ta("صفحه‌ی درباره ما"); }, href: "aboutPage" },
       { get title() { return ta("صفحه‌ی همکاری پزشکان"); }, href: "doctorsPage" },
-      { get title() { return ta("تبلیغات"); }, href: "advertisement" },
-      { get title() { return ta("تبلیغات خطی"); }, href: "inlinead", access: "InlineAdvertisement" },
+      { get title() { return ta("توضیحات رزرو"); }, href: "bookingDescription", access: "BookingDescription" },
       { get title() { return ta("قوانین و مقررات"); }, href: "privacy" },
-      { get title() { return ta("متن‌های رابط کاربری"); }, href: "textcontent", access: "TextContent" },
-      { get title() { return ta("ترجمه محتوا"); }, href: "translations" },
-      { get title() { return ta("متادیتای صفحات"); }, href: "pageMeta" },
-      { get title() { return ta("لینک‌های کوتاه"); }, href: "shortlink", access: "ShortLink" },
-      { get title() { return ta("ریدایرکت‌ها"); }, href: "redirection", access: "Redirection" },
+      { get title() { return ta("تبلیغات"); }, href: "ads" },
+      { get title() { return ta("زبان و ترجمه"); }, href: "localization" },
+      { get title() { return ta("سئو و لینک‌ها"); }, href: "seo" },
     ],
   },
   {
@@ -154,10 +166,10 @@ export const adminMenu: AdminMenuGroup[] = [
     get title() { return ta("مالی"); },
     icon: <WalletIcon />,
     items: [
-      { get title() { return ta("سفارش‌ها"); }, href: "finance/orders" },
-      { get title() { return ta("تراکنش‌های کیف پول"); }, href: "finance/transactions" },
-      { get title() { return ta("پرداخت‌های درگاه"); }, href: "finance/payments" },
-      { get title() { return ta("درخواست‌های برداشت"); }, href: "finance/withdrawals" },
+      { get title() { return ta("تراکنش‌های کیف پول"); }, href: "finance/transactions", access: "Finance" },
+      { get title() { return ta("پرداخت‌های درگاه"); }, href: "finance/payments", access: "Finance" },
+      { get title() { return ta("درخواست‌های برداشت"); }, href: "finance/withdrawals", access: "Finance" },
+      { get title() { return ta("فاکتورها"); }, href: "finance/invoices", access: "Finance" },
       { get title() { return ta("پلن‌ها و مجوزها"); }, href: "licensePlans" },
       { get title() { return ta("تنظیمات مالی"); }, href: "financeSettings" },
     ],
@@ -170,8 +182,7 @@ export const adminMenu: AdminMenuGroup[] = [
     items: [
       { get title() { return ta("تیم و دسترسی‌ها"); }, href: "team" },
       { get title() { return ta("تنظیمات سیستم"); }, href: "appConfig" },
-      { get title() { return ta("زبان‌های سایت"); }, href: "languages" },
-      { get title() { return ta("پیامک و اعلان‌ها"); }, href: "messaging" },
+      { get title() { return ta("استان، شهر و محله"); }, href: "province" },
       { get title() { return ta("مدل‌های هوش مصنوعی"); }, href: "ollama" },
       { get title() { return ta("لاگ عملیات"); }, href: "audit" },
       { get title() { return ta("ابزار توسعه و دیتابیس قدیم"); }, href: "devtools" },
@@ -208,6 +219,64 @@ export type AdminHub = {
 };
 
 export const adminHubs: AdminHub[] = [
+  {
+    hub: "reviews",
+    sections: [
+      {
+        id: "reviewsParts",
+        get title() { return ta("نظرات و امتیازها"); },
+        icon: <FolderIcon />,
+        items: [
+      { get title() { return ta("نظرات تاییدشده‌ی ویزیت"); }, href: "doctorFeedback", access: "DoctorFeedback" },
+      { get title() { return ta("نظرات صفحات و مراکز"); }, href: "comment", access: "Comment" },
+        ],
+      },
+    ],
+  },
+  {
+    hub: "ads",
+    sections: [
+      {
+        id: "adsParts",
+        get title() { return ta("تبلیغات"); },
+        icon: <FolderIcon />,
+        items: [
+      { get title() { return ta("بنرهای تبلیغاتی"); }, href: "advertisement", access: "Advertisement" },
+      { get title() { return ta("تبلیغات خطی"); }, href: "inlinead", access: "InlineAdvertisement" },
+        ],
+      },
+    ],
+  },
+  {
+    hub: "localization",
+    sections: [
+      {
+        id: "localizationParts",
+        get title() { return ta("زبان و ترجمه"); },
+        icon: <FolderIcon />,
+        items: [
+      { get title() { return ta("متن‌های رابط کاربری"); }, href: "textcontent", access: "TextContent" },
+      { get title() { return ta("ترجمه محتوا"); }, href: "translations" },
+      { get title() { return ta("زبان‌های سایت"); }, href: "languages" },
+        ],
+      },
+    ],
+  },
+  {
+    hub: "seo",
+    sections: [
+      {
+        id: "seoParts",
+        get title() { return ta("سئو و لینک‌ها"); },
+        icon: <FolderIcon />,
+        items: [
+      { get title() { return ta("متادیتای صفحات"); }, href: "pageMeta", access: "PageMeta" },
+      { get title() { return ta("لینک‌های کوتاه"); }, href: "shortlink", access: "ShortLink" },
+      { get title() { return ta("ریدایرکت‌ها"); }, href: "redirection", access: "Redirection" },
+        ],
+      },
+    ],
+  },
   {
     hub: "requests",
     sections: [
@@ -256,7 +325,9 @@ export const adminHubs: AdminHub[] = [
         get title() { return ta("سوالات متداول"); },
         icon: <FolderIcon />,
         items: [
+      { get title() { return ta("سوال‌ها"); }, href: "faq?tab=questions", access: "Faq" },
       { get title() { return ta("دسته‌بندی سوالات متداول"); }, href: "faqCategory", access: "Faq" },
+      { get title() { return ta("سوالات مشترک صفحه‌ی پزشکان"); }, href: "doctorfaq", access: "DoctorFaq" },
         ],
       },
     ],
@@ -366,8 +437,8 @@ export const adminHubs: AdminHub[] = [
         get title() { return ta("خدمات"); },
         icon: <FolderIcon />,
         items: [
-      { get title() { return ta("پکیج‌های خدمات"); }, href: "servicePackage" },
-      { get title() { return ta("دسته‌بندی خدمات"); }, href: "serviceCategory" },
+      { get title() { return ta("پکیج‌های خدمات"); }, href: "servicePackage", access: "Service" },
+      { get title() { return ta("دسته‌بندی خدمات"); }, href: "serviceCategory", access: "Service" },
         ],
       },
     ],
@@ -380,8 +451,8 @@ export const adminHubs: AdminHub[] = [
         get title() { return ta("محصولات"); },
         icon: <FolderIcon />,
         items: [
-      { get title() { return ta("بسته‌های محصول"); }, href: "productPackage" },
-      { get title() { return ta("دسته‌بندی محصولات"); }, href: "productCategory" },
+      { get title() { return ta("بسته‌های محصول"); }, href: "productPackage", access: "Product" },
+      { get title() { return ta("دسته‌بندی محصولات"); }, href: "productCategory", access: "Product" },
         ],
       },
     ],
@@ -394,7 +465,7 @@ export const adminHubs: AdminHub[] = [
         get title() { return ta("آزمایش‌ها"); },
         icon: <FolderIcon />,
         items: [
-      { get title() { return ta("دسته‌بندی تست‌ها"); }, href: "testCategory" },
+      { get title() { return ta("دسته‌بندی تست‌ها"); }, href: "testCategory", access: "Test" },
         ],
       },
     ],
@@ -427,6 +498,7 @@ export const adminHubs: AdminHub[] = [
       { get title() { return ta("پلن‌های داروخانه"); }, href: "basePharmacyLicense" },
       { get title() { return ta("پلن‌های پاراکلینیک"); }, href: "baseParaClinicLicense" },
       { get title() { return ta("پلن‌های بیمه"); }, href: "baseInsuranceLicense" },
+      { get title() { return ta("اشتراک‌ها"); }, href: "licensePlans?tab=subscriptions", access: "Finance" },
         ],
       },
     ],
@@ -456,8 +528,8 @@ export const adminHubs: AdminHub[] = [
         items: [
       { get title() { return ta("درگاه پیامک"); }, href: "smsSettings" },
       { get title() { return ta("پترن‌های پیامک"); }, href: "smsPatterns" },
-      { get title() { return ta("اعلان همگانی"); }, href: "notification" },
-      { get title() { return ta("هشدارهای کارکنان"); }, href: "userAlert" },
+      { get title() { return ta("اعلان همگانی"); }, href: "notification", access: "Notification" },
+      { get title() { return ta("گزارش پیامک‌ها"); }, href: "messaging?tab=smsLog" },
         ],
       },
     ],
@@ -472,6 +544,7 @@ export const adminHubs: AdminHub[] = [
         items: [
       { get title() { return ta("کارکنان"); }, href: "useraccesslevel" },
       { get title() { return ta("نقش‌ها (سطح دسترسی)"); }, href: "accesslevel" },
+      { get title() { return ta("هشدارهای کارکنان"); }, href: "userAlert" },
         ],
       },
     ],
@@ -499,7 +572,7 @@ export const adminHubs: AdminHub[] = [
         get title() { return ta("صفحه‌ی همکاری پزشکان"); },
         icon: <FolderIcon />,
         items: [
-      { get title() { return ta("نظرات پزشکان"); }, href: "testify" },
+      { get title() { return ta("توصیه‌نامه‌ی پزشکان"); }, href: "testify" },
         ],
       },
     ],
@@ -597,39 +670,80 @@ export const adminAllGroups: AdminMenuGroup[] = [
   ),
 ];
 
-// Hub item href a (hub-listed) page belongs to, e.g. "clinicTag" -> "taxonomy".
+// A menu href without its query ("faq?tab=questions" -> "faq").
+const pathOf = (href: string) => href.split("?")[0];
+
+// Hub item href a (hub-listed) page belongs to, e.g. "clinicTag" -> "clinic".
 export const hubOfPage = (href: string) =>
   adminHubs.find((hub) =>
     hub.sections.some((section) =>
-      section.items.some((item) => item.href === href),
+      section.items.some((item) => pathOf(item.href) === pathOf(href)),
     ),
   )?.hub;
 
-// First URL segment -> what guards it, for AdminLayout's page guard.
-const segmentInfo = new Map<string, { super: boolean; access?: AccessLevelModel }>();
+// Hub sections under a super-only menu item (see adminAllGroups).
+const superSectionIds = new Set(
+  adminAllGroups.filter((group) => group.super).map((group) => group.id),
+);
+
+// Page path (e.g. "finance/orders") -> what guards it, for AdminLayout's
+// page guard. A tab entry of a hub ("licensePlans?tab=subscriptions") is
+// not a page of its own; the hub check in canNotAdminOpen covers it.
+const pageInfo = new Map<string, { super: boolean; access?: AccessLevelModel }>();
 for (const group of adminAllGroups)
   for (const item of group.items) {
-    const segment = item.href.split("/")[0];
-    if (!segmentInfo.has(segment))
-      segmentInfo.set(segment, { super: !!group.super, access: item.access });
+    const path = pathOf(item.href);
+    if (path !== item.href) continue;
+    if (!pageInfo.has(path))
+      pageInfo.set(path, { super: !!group.super, access: item.access });
   }
 
+// The longest listed page a path is under: "finance/orders/123" ->
+// "finance/orders", "doctorprofile/123" -> "doctorprofile".
+const infoOf = (path: string) => {
+  const parts = path.split("/").filter(Boolean);
+  for (let i = parts.length; i > 0; i--) {
+    const info = pageInfo.get(parts.slice(0, i).join("/"));
+    if (info) return info;
+  }
+  return undefined;
+};
+
+type HasAccess = (
+  model: AccessLevelModel,
+  op: "readAll" | "readOne",
+) => boolean;
+
+const accessOpens = (hasAccess: HasAccess, access?: AccessLevelModel) =>
+  !!access && (hasAccess(access, "readAll") || hasAccess(access, "readOne"));
+
+// Whether restricted staff (role notadmin) may open an admin path: the part
+// after /<adminKey>/, e.g. "finance/orders/123" (a query is ignored).
 export const canNotAdminOpen = (
-  segment: string,
-  hasAccess: (model: AccessLevelModel, op: "readAll" | "readOne") => boolean,
+  rawPath: string,
+  hasAccess: HasAccess,
 ): boolean => {
-  if (segment === "") return true;
+  const path = pathOf(rawPath).replace(/^\/+|\/+$/g, "");
+  if (path === "") return true;
   // A hub page opens for staff who can open at least one page on it.
-  const hub = adminHubs.find((el) => el.hub === segment);
+  const hub = adminHubs.find((el) => el.hub === path);
+  // its own list (e.g. "clinic" is the clinics list and the hub of their
+  // categories and tags)
+  const own = pageInfo.get(path);
+  if (hub && own && !own.super && accessOpens(hasAccess, own.access))
+    return true;
   if (hub)
     return hub.sections.some(
       (section) =>
         !section.super &&
+        !superSectionIds.has(section.id) &&
         section.items.some((item) =>
-          canNotAdminOpen(item.href.split("/")[0], hasAccess),
+          pathOf(item.href) === path
+            ? accessOpens(hasAccess, item.access)
+            : canNotAdminOpen(item.href, hasAccess),
         ),
     );
-  const info = segmentInfo.get(segment);
-  if (!info || info.super || !info.access) return false;
-  return hasAccess(info.access, "readAll") || hasAccess(info.access, "readOne");
+  const info = infoOf(path);
+  if (!info || info.super) return false;
+  return accessOpens(hasAccess, info.access);
 };

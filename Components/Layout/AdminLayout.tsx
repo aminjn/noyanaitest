@@ -50,8 +50,10 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   // this just stops them from getting an empty/broken admin page by URL.
   if (user.role === "notadmin") {
     if (isLoading) return <Loading />;
-    const segment = pathname.split("/")[2] || "";
-    if (!canNotAdminOpen(segment, hasAccess)) return <NotFoundPage />;
+    // the whole path after /<adminKey>/, so "finance/orders/1" is guarded
+    // by the orders page, not by whichever finance page is listed first
+    const subPath = pathname.split("/").slice(2).join("/");
+    if (!canNotAdminOpen(subPath, hasAccess)) return <NotFoundPage />;
   }
   return (
     <div className={classes.main}>

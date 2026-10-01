@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AdminInboxPage from "@/Components/Admin/Inbox/AdminInboxPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
@@ -9,7 +10,9 @@ const AdminInbox = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminInboxPage />
+      <Suspense>
+        <AdminInboxPage />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };

@@ -27,6 +27,8 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import useProgress from "@/Components/Hooks/useProgress";
 import { StatusBadge, UserStatus, useUserActions } from "./userActions";
+import UserActivity from "./UserActivity";
+import { AccessLevelModel } from "../AccessLevel/AdminManageAccessLevelsPage";
 
 export type UserDetail = {
   _id: string;
@@ -406,6 +408,16 @@ const AdminManageUserPage = () => {
               )}
             </section>
           </div>
+
+          <UserActivity
+            userId={data._id}
+            canSeeReservations={
+              viewer?.role === "admin" ||
+              hasAccess("Reservation" as AccessLevelModel, "readAll")
+            }
+            canSeeMoney={viewer?.role === "admin"}
+            onChanged={() => mutate()}
+          />
 
           <section className={classes.card}>
             <div className={classes.cardHead}>

@@ -26,7 +26,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -52,6 +51,7 @@ import {
 import OrderEditor from "../UI/OrderEditor";
 import { getUserLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
+import { providerStateColumn } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HospitalPopulation = Population<{
@@ -263,12 +263,8 @@ const AdminManageHospitalsPage = () => {
                 value: (node) => node.name,
                 filter: "Text",
               },
-              isActive: {
-                name: ta("وضعیت"),
-                value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
-                filter: "Set",
-              },
+              // published / draft / suspended (Components/Admin/UI/ProviderStatus)
+              isActive: providerStateColumn(),
               phone: {
                 name: ta("تلفن"),
                 value: (node) => node.phone,

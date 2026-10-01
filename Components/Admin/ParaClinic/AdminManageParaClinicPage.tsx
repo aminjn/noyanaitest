@@ -56,6 +56,11 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { CentreSection, CentreSections } from "../Clinic/CentreSections";
 import PanelOwnerSection from "../Clinic/PanelOwnerSection";
+import {
+  ProviderStatusBanner,
+  ProviderStatusFields,
+  useProviderStatusActions,
+} from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ParaClinicTestPopulation = Population<{
@@ -303,6 +308,11 @@ const AdminManageParaClinicPage = () => {
 
   const { setPopup } = usePopup();
   const push = useProgress();
+  const statusActions = useProviderStatusActions({
+    kind: "paraClinic",
+    node: data as unknown as ProviderStatusFields | undefined,
+    mutate,
+  });
 
   // overview / details (+ gallery) / location / tests / panel owner /
   // money (commission + tax, both read at checkout) / license / SEO /
@@ -313,6 +323,7 @@ const AdminManageParaClinicPage = () => {
         <WithTitle
           title={data.name || ta("بدون نام")}
           actions={[
+            ...statusActions,
             {
               title: ta("حذف"),
               danger: true,
@@ -328,6 +339,7 @@ const AdminManageParaClinicPage = () => {
             },
           ]}
         >
+          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
           <TabSystem
             name="AdminManageParaClinic"
             items={[

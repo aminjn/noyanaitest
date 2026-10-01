@@ -63,9 +63,7 @@ export const accessLevelModels = [
   "BlogCategory",
   "BlogMedia",
   "Comment",
-  "Doctor",
   "DoctorProfile",
-  "GalleryItem",
   "InlineAdvertisement",
   "Sepciality",
   "TextContent",
@@ -75,7 +73,6 @@ export const accessLevelModels = [
   "ClinicDoctor",
   "DoctorJoinClinic",
   "ClinicAdditionRequest",
-  "DoctorSeretaryAccessLevel",
   "Insurance",
   "InsuranceAdditionRequest",
   "Pharmacy",
@@ -97,6 +94,21 @@ export const accessLevelModels = [
   "BecomeParaClinicRequest",
   "PharmacyAdditionRequest",
   "Faq",
+  // support and operations (2026-10 audit), same list as the backend's
+  // Models/AccessLevel.ts
+  "Ticket",
+  "ContactRequest",
+  "DoctorFeedback",
+  "Service",
+  "Product",
+  "Test",
+  "BookingDescription",
+  "Notification",
+  "Advertisement",
+  "PageMeta",
+  "Reservation",
+  "Order",
+  "Finance",
 ] as const;
 
 export type AccessLevelModel = (typeof accessLevelModels)[number];
@@ -126,17 +138,11 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
   get Comment() {
   return ta("نظرات");
 },
-  get Doctor() {
-  return ta("پزشک");
-},
   get DoctorProfile() {
   return ta("پروفایل پزشک");
 },
-  get GalleryItem() {
-  return ta("گالری پزشک");
-},
   get InlineAdvertisement() {
-  return ta("تبلیغات");
+  return ta("تبلیغات خطی");
 },
   get Sepciality() {
   return ta("تخصص ها");
@@ -161,9 +167,6 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
 },
   get ClinicAdditionRequest() {
   return ta("درخواست اضافه شدن کلینیک");
-},
-  get DoctorSeretaryAccessLevel() {
-  return ta("دسترسی پیش فرض منشی دکتر");
 },
   get Insurance() {
   return ta("بیمه");
@@ -227,6 +230,45 @@ export const accessLevelModelDict: { [key in AccessLevelModel]: string } = {
 },
   get Faq() {
     return ta("سوالات متداول");
+  },
+  get Ticket() {
+    return ta("تیکت‌های پشتیبانی");
+  },
+  get ContactRequest() {
+    return ta("پیام‌های تماس با ما");
+  },
+  get DoctorFeedback() {
+    return ta("نظرات تاییدشده‌ی ویزیت");
+  },
+  get Service() {
+    return ta("خدمات");
+  },
+  get Product() {
+    return ta("محصولات");
+  },
+  get Test() {
+    return ta("آزمایش‌ها");
+  },
+  get BookingDescription() {
+    return ta("توضیحات رزرو");
+  },
+  get Notification() {
+    return ta("اعلان‌ها");
+  },
+  get Advertisement() {
+    return ta("بنرهای تبلیغاتی");
+  },
+  get PageMeta() {
+    return ta("متادیتای صفحات");
+  },
+  get Reservation() {
+    return ta("نوبت‌ها");
+  },
+  get Order() {
+    return ta("سفارش‌ها");
+  },
+  get Finance() {
+    return ta("مالی");
   },
 };
 

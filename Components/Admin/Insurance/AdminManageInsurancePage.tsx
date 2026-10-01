@@ -45,6 +45,11 @@ import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import DeleteInsurancePopup from "./DeleteInsurancePopup";
 import { CentreSections } from "../Clinic/CentreSections";
+import {
+  ProviderStatusBanner,
+  ProviderStatusFields,
+  useProviderStatusActions,
+} from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type InsurancePlanPopulation = Population<{
@@ -260,6 +265,11 @@ const AdminManageInsurancePage = () => {
 
   const { setPopup } = usePopup();
   const push = useProgress();
+  const statusActions = useProviderStatusActions({
+    kind: "insurance",
+    node: data as unknown as ProviderStatusFields | undefined,
+    mutate,
+  });
 
   // overview / details / location / plans / panel owner / license / SEO /
   // translations; delete in the header
@@ -269,6 +279,7 @@ const AdminManageInsurancePage = () => {
         <WithTitle
           title={data.name || ta("بدون نام")}
           actions={[
+            ...statusActions,
             {
               title: ta("حذف"),
               danger: true,
@@ -283,6 +294,7 @@ const AdminManageInsurancePage = () => {
             },
           ]}
         >
+          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
           <TabSystem
             name="AdminManageInsurance"
             items={[

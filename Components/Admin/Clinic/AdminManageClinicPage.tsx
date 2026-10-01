@@ -32,6 +32,11 @@ import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import ClinicProfileLicenseTab from "./ClinicProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
 import { CentreSections } from "./CentreSections";
+import {
+  ProviderStatusBanner,
+  ProviderStatusFields,
+  useProviderStatusActions,
+} from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const ClinicLocationManager = ({
@@ -86,6 +91,11 @@ const AdminManageClinicPage = () => {
   const { setPopup } = usePopup();
 
   const push = useProgress();
+  const statusActions = useProviderStatusActions({
+    kind: "clinic",
+    node: data as unknown as ProviderStatusFields | undefined,
+    mutate,
+  });
 
   // Few tabs, as in the Doctolib Pro / Practo Ray back-offices: overview,
   // details, location, team (panel owner + doctors + departments),
@@ -98,6 +108,7 @@ const AdminManageClinicPage = () => {
         <WithTitle
           title={data.name || ta("بدون نام")}
           actions={[
+            ...statusActions,
             {
               title: ta("حذف"),
               danger: true,
@@ -113,6 +124,7 @@ const AdminManageClinicPage = () => {
             },
           ]}
         >
+          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
           <TabSystem
             items={[
               ...(isAdmin

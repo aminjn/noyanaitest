@@ -1,7 +1,7 @@
-import AdminManageInlineAdsPage from "@/Components/Admin/InlineAds/AdminManageInlineAdsPage";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const AdminManageInlineAds = () => {
-  return <AdminManageInlineAdsPage />;
-};
+// merged into the "تبلیغات" page as a tab (2026-09 admin audit)
+const LegacyInlineAdAdmin = () => redirect(`/${adminKey}/ads?tab=inline`);
 
-export default AdminManageInlineAds;
+export default LegacyInlineAdAdmin;

@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import Link from "@/Components/i18n/Link";
 import classes from "./AdminInboxPage.module.css";
@@ -13,7 +14,9 @@ import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import RetryIcon from "@/Components/Icons/RetryIcon";
 import { adminIntlTag, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 
-type InboxKind = { key: string; title: string; count: number };
+// listHref: where every item of the kind is listed (provider requests: the
+// requests queue on that kind)
+type InboxKind = { key: string; title: string; count: number; listHref?: string };
 type InboxItem = {
   _id: string;
   kind: string;
@@ -23,25 +26,6 @@ type InboxItem = {
   href: string;
 };
 type Inbox = { kinds: InboxKind[]; items: InboxItem[] };
-
-// List page of each kind, for "see all" when there are more than the inbox
-// shows.
-const kindListPage: Record<string, string> = {
-  becomeDoctor: "becomedoctor",
-  becomeClinic: "becomeclinic",
-  becomeHospital: "becomehospital",
-  becomePharmacy: "becomepharmacy",
-  becomeParaClinic: "becomeParaClinic",
-  becomeInsurance: "becomeinsurance",
-  clinicAddition: "clinicaddition",
-  hospitalAddition: "hospitaladdition",
-  insuranceAddition: "insuranceaddition",
-  doctorJoinClinic: "doctorjoinclinic",
-  doctorJoinHospital: "doctorjoinhospital",
-  tickets: "ticket",
-  contactRequests: "contactRequest",
-  comments: "comment",
-};
 
 // Waiting longer than this is flagged.
 const STALE_DAYS = 3;
@@ -74,7 +58,9 @@ const AdminInboxPage = () => {
     `${API}/admin/inbox`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
-  const [kind, setKind] = useState<string>("all");
+  // ?kind= (the dashboard's pending counts link here on one kind)
+  const initialKind = useSearchParams()?.get("kind") || "all";
+  const [requestedKind, setKind] = useState<string>(initialKind);
 
   const kinds = useMemo(
     () =>
@@ -87,8 +73,12 @@ const AdminInboxPage = () => {
     () => (Array.isArray(data?.items) ? data.items : []),
     [data],
   );
+  // a kind with nothing pending (or unknown) falls back to "all"
+  const kind = kinds.some((el) => el.key === requestedKind)
+    ? requestedKind
+    : "all";
   const titleOf = useMemo(
-    () => new Map(kinds.map((el) => [el.key, el.title])),
+    () => new Map(kinds.map((el) => [el.key, ta(el.title)])),
     [kinds],
   );
   const total = kinds.reduce((sum, el) => sum + el.count, 0);
@@ -154,7 +144,7 @@ const AdminInboxPage = () => {
                     className={`${classes.chip} ${kind === el.key ? classes.chipActive : ""}`}
                     onClick={() => setKind(el.key)}
                   >
-                    {el.title}
+                    {ta(el.title)}
                     <span className={classes.chipCount}>
                       {num.format(el.count)}
                     </span>
@@ -200,12 +190,12 @@ const AdminInboxPage = () => {
                 })}
               </ul>
 
-              {selected && hiddenCount > 0 && kindListPage[selected.key] && (
+              {selected && hiddenCount > 0 && selected.listHref && (
                 <Link
-                  href={adminPath(`/${kindListPage[selected.key]}`)}
+                  href={adminPath(`/${selected.listHref}`)}
                   className={classes.more}
                 >
-                  {ta("مشاهده‌ی همه‌ی ${1} مورد «${2}»", [num.format(selected.count), selected.title])}
+                  {ta("مشاهده‌ی همه‌ی ${1} مورد «${2}»", [num.format(selected.count), ta(selected.title)])}
                 </Link>
               )}
             </>

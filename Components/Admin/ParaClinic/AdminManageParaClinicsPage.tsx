@@ -10,7 +10,6 @@ import CreateForm from "../UI/CreateForm";
 import { getUserLabel } from "../Lib/LabelGetters";
 import { IUser } from "@/Components/Hooks/useUser";
 import Table from "../UI/Table";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
@@ -19,6 +18,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 import PopupCard from "@/Components/UI/PopupCard";
 import OrderEditor from "../UI/OrderEditor";
+import { providerStateColumn } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
@@ -104,12 +104,8 @@ const AdminManageParaClinicsPage = () => {
                   "—"
                 ),
             },
-            active: {
-              name: ta("وضعیت"),
-              value: (node) => booleanToValue[`${node.active}`],
-              component: (node) => <BooleanToIcon value={node.active} />,
-              filter: "Set",
-            },
+            // published / draft / suspended (Components/Admin/UI/ProviderStatus)
+            active: providerStateColumn(),
             order: {
               name: ta("رتبه"),
               value: (node) => node.order,

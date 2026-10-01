@@ -1,17 +1,7 @@
-import AdminManagePageMetaListPage from "@/Components/Admin/PageMeta/AdminManagePageMetaListPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "سئو و لینک‌ها" page as a tab (2026-09 admin audit)
+const LegacyPageMetaAdmin = () => redirect(`/${adminKey}/seo?tab=meta`);
 
-const AdminManagePageMeta = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManagePageMetaListPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManagePageMeta;
+export default LegacyPageMetaAdmin;

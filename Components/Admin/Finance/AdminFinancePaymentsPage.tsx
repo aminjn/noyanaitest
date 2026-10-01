@@ -1,10 +1,8 @@
 "use client";
 
-import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/Components/i18n/navigation";
 import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import { adminPath } from "@/Components/helpers/adminPath";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -22,6 +20,12 @@ import {
   paymentStatusDict,
   userLabel,
 } from "./adminFinance";
+import {
+  FinanceFilterBar,
+  FinancePager,
+  useFinanceFilters,
+  useFinanceList,
+} from "./FinanceListControls";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IAdminPaymentRow {
@@ -42,17 +46,18 @@ export interface IAdminPaymentRow {
 
 // Online gateway (SEP) payments. `?status=needsReview` is the dashboard's
 // "payments needing review" queue - the only rows an admin acts on.
+const PAYMENTS_PATH = `${API}/admin/finance/payments`;
+
 const AdminFinancePaymentsPage = () => {
   const status = useSearchParams().get("status") || "";
   const router = useRouter();
   const { setPopup } = usePopup();
-  const { data, error, mutate } = useSWR<IAdminPaymentRow[]>(
-    `${API}/admin/finance/payments${status ? `?status=${encodeURIComponent(status)}` : ""}`,
-    (url: string) =>
-      fetcher({ url }).then((res) => (Array.isArray(res.data) ? res.data : [])),
-  );
+  const state = useFinanceFilters({ status }, "purpose");
+  const { data: list, error, mutate, isValidating } =
+    useFinanceList<IAdminPaymentRow>(PAYMENTS_PATH, state.query, state.page);
+  const data = list?.rows;
   return (
-    <HandleLoading data={!!data} error={error}>
+    <HandleLoading data={!!list} error={error}>
       {!!data && (
         <WithTitle
           title={
@@ -75,9 +80,18 @@ const AdminFinancePaymentsPage = () => {
                 },
           ]}
         >
+          <FinanceFilterBar
+            state={state}
+            searchPlaceholder={ta("موبایل، نام یا کد پیگیری بانک...")}
+            status={{ title: ta("وضعیت"), options: paymentStatusDict }}
+            extra={{ title: ta("بابت"), options: paymentPurposeDict }}
+            exportPath={PAYMENTS_PATH}
+            exportName="payments"
+          />
           <Table
             name="AdminFinancePayments"
             data={data}
+            exportable={false}
             renderer={{
               user: {
                 name: ta("پرداخت‌کننده"),
@@ -151,6 +165,13 @@ const AdminFinancePaymentsPage = () => {
                   ) : null,
               },
             }}
+          />
+          <FinancePager
+            total={list.total}
+            page={state.page}
+            limit={list.limit}
+            setPage={state.setPage}
+            stale={isValidating}
           />
         </WithTitle>
       )}

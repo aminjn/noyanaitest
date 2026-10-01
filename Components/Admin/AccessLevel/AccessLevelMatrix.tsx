@@ -25,9 +25,9 @@ const groups: { title: () => string; models: AccessLevelModel[] }[] = [
   {
     title: () => ta("ارائه‌دهندگان"),
     models: [
-      "DoctorProfile", "Doctor", "Clinic", "ClinicDepartment", "ClinicDoctor",
+      "DoctorProfile", "Clinic", "ClinicDepartment", "ClinicDoctor",
       "Hospital", "HospitalDepartment", "HospitalDoctor", "ParaClinic", "Pharmacy",
-      "Insurance", "DoctorFaq", "GalleryItem",
+      "Insurance", "DoctorFaq",
     ],
   },
   {
@@ -41,7 +41,18 @@ const groups: { title: () => string; models: AccessLevelModel[] }[] = [
   },
   {
     title: () => ta("کاربران و پشتیبانی"),
-    models: ["User", "Comment", "CallRoom"],
+    models: [
+      "User", "Ticket", "ContactRequest", "Comment", "DoctorFeedback",
+      "CallRoom", "Notification",
+    ],
+  },
+  {
+    title: () => ta("نوبت‌ها، سفارش‌ها و مالی"),
+    models: ["Reservation", "Order", "Finance", "BookingDescription"],
+  },
+  {
+    title: () => ta("خدمات و فروشگاه"),
+    models: ["Service", "Product", "Test"],
   },
   {
     title: () => ta("کاتالوگ و دانشنامه"),
@@ -50,8 +61,8 @@ const groups: { title: () => string; models: AccessLevelModel[] }[] = [
   {
     title: () => ta("محتوا و سایت"),
     models: [
-      "Blog", "BlogCategory", "BlogMedia", "Faq", "InlineAdvertisement",
-      "TextContent", "Redirection", "ShortLink",
+      "Blog", "BlogCategory", "BlogMedia", "Faq", "Advertisement",
+      "InlineAdvertisement", "PageMeta", "TextContent", "Redirection", "ShortLink",
     ],
   },
 ];

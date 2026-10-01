@@ -22,7 +22,7 @@ const DoctorsPageHub = () => {
         },
         {
           id: "testify",
-          title: ta("نظرات پزشکان"),
+          title: ta("توصیه‌نامه‌ی پزشکان"),
           exclude: !canOpen("admin"),
           content: <AdminManageTestifiesPage />,
         },

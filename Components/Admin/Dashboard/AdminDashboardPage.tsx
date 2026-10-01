@@ -247,7 +247,7 @@ const AdminDashboard = () => {
                   {data.pending.map((item) => {
                     const content = (
                       <>
-                        <span className={classes.pendingTitle}>{item.title}</span>
+                        <span className={classes.pendingTitle}>{ta(item.title)}</span>
                         <span className={classes.pendingCount}>
                           {num.format(item.count)}
                         </span>

@@ -24,7 +24,7 @@ const AdminHubPage = ({ hub, intro }: { hub: string; intro: string }) => {
       ...section,
       items: section.items.filter(
         (item) =>
-          isAdmin || canNotAdminOpen(item.href.split("/")[0], hasAccess),
+          isAdmin || canNotAdminOpen(item.href, hasAccess),
       ),
     }))
     .filter((section) => section.items.length > 0);

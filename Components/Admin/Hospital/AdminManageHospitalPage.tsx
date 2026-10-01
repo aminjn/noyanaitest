@@ -53,9 +53,15 @@ import HospitalUserTab from "./HospitalUserTab";
 import HospitalDepartmentsTab from "./HospitalDepartmentsTab";
 import HospitalDoctorsTab from "./HospitalDoctorsTab";
 import HospitalProfileLicenseTab from "./HospitalProfileLicenseTab";
+import HospitalTaxTab from "./HospitalTaxTab";
 import CartIcon from "@/Components/Icons/CartIcon";
 import { CentreSections } from "../Clinic/CentreSections";
 import useProgress from "@/Components/Hooks/useProgress";
+import {
+  ProviderStatusBanner,
+  ProviderStatusFields,
+  useProviderStatusActions,
+} from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HospitalClinicPopulation = Population<{
@@ -260,6 +266,11 @@ const AdminManageHospitalPage = () => {
 
   const { setPopup } = usePopup();
   const push = useProgress();
+  const statusActions = useProviderStatusActions({
+    kind: "hospital",
+    node: data as unknown as ProviderStatusFields | undefined,
+    mutate,
+  });
 
   // Same short set of tabs as the clinic page: overview, details,
   // location, team (panel owner, doctors, departments, clinics inside the
@@ -270,6 +281,7 @@ const AdminManageHospitalPage = () => {
         <WithTitle
           title={data.name || ta("بدون نام")}
           actions={[
+            ...statusActions,
             {
               title: ta("حذف"),
               danger: true,
@@ -284,6 +296,7 @@ const AdminManageHospitalPage = () => {
             },
           ]}
         >
+          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
           <TabSystem
             name="AdminManageHospital"
             items={[
@@ -447,6 +460,17 @@ const AdminManageHospitalPage = () => {
                   </CentreSections>
                 ),
               },
+              ...(isAdmin
+                ? [
+                    {
+                      // the hospital's visit tax for in-person visits in
+                      // its offices (tax settings are admin-only)
+                      title: ta("مالی"),
+                      id: "Tax",
+                      content: <HospitalTaxTab node={data} />,
+                    },
+                  ]
+                : []),
               {
                 title: ta("مجوز"),
                 id: "License",

@@ -11,7 +11,6 @@ import CreateInsurancePopup from "./CreateInsurancePopup";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -19,6 +18,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteInsurancePopup from "./DeleteInsurancePopup";
 import OrderEditor from "../UI/OrderEditor";
+import { providerStateColumn } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInsurancesPage = () => {
@@ -59,12 +59,8 @@ const AdminManageInsurancesPage = () => {
                 ),
                 filter: "Text",
               },
-              active: {
-                name: ta("فعال"),
-                component: (node) => <BooleanToIcon value={node.active} />,
-                value: (node) => booleanToValue[`${node.active}`],
-                filter: "Set",
-              },
+              // published / draft / suspended (Components/Admin/UI/ProviderStatus)
+              active: providerStateColumn(),
               order: {
                 name: ta("ترتیب"),
                 value: (node) => node.order,

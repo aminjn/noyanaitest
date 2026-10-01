@@ -17,19 +17,19 @@ const ProductHub = () => {
         {
           id: "products",
           title: ta("محصولات"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Product"),
           content: <AdminManageProductsPage />,
         },
         {
           id: "packages",
           title: ta("پکیج‌های محصول"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Product"),
           content: <AdminManageProductPackagesPage />,
         },
         {
           id: "categories",
           title: ta("دسته‌ها"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Product"),
           content: <AdminManageProductCategoriesPage />,
         },
       ]}

@@ -36,6 +36,11 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import DeletePharmacyPopup from "./DeletePharmacyPopup";
 import { CentreSection, CentreSections } from "../Clinic/CentreSections";
 import PanelOwnerSection from "../Clinic/PanelOwnerSection";
+import {
+  ProviderStatusBanner,
+  ProviderStatusFields,
+  useProviderStatusActions,
+} from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 // the shared location picker (Components/Admin/UI/PointPicker), as on the
@@ -90,6 +95,11 @@ const AdminManagePharmacyPage = () => {
 
   const { setPopup } = usePopup();
   const push = useProgress();
+  const statusActions = useProviderStatusActions({
+    kind: "pharmacy",
+    node: data as unknown as ProviderStatusFields | undefined,
+    mutate,
+  });
 
   // overview / details / location / panel owner / money (commission + tax,
   // both read at checkout) / license / SEO / translations; delete in the
@@ -101,6 +111,7 @@ const AdminManagePharmacyPage = () => {
         <WithTitle
           title={data.name || ta("بدون نام")}
           actions={[
+            ...statusActions,
             {
               title: ta("حذف"),
               danger: true,
@@ -115,6 +126,7 @@ const AdminManagePharmacyPage = () => {
             },
           ]}
         >
+          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
           <TabSystem
             name="AdminManagePharmacy"
             items={[
