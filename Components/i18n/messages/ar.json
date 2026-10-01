@@ -2345,5 +2345,12 @@
  "shipSent": "تم الإرسال",
  "ordersNeedAction": "بانتظارك: ${1} عناصر",
  "ordersAllDone": "مكتمل",
- "ordersProgress": "حالتي"
+ "ordersProgress": "حالتي",
+ "labResult": "نتيجة التحليل",
+ "labResultFile": "ملف ${1}",
+ "labUpload": "رفع النتيجة",
+ "labResultNote": "ملاحظة للمريض (اختياري)",
+ "labResultHint": "أرسل النتيجة بصيغة PDF أو صورة. لا يراها إلا المريض والمختبر، ويُبلَّغ المريض.",
+ "labResultSent": "تم حفظ النتيجة",
+ "labChooseFiles": "اختيار الملفات"
 }

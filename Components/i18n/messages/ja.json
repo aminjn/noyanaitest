@@ -2345,5 +2345,12 @@
  "shipSent": "発送済み",
  "ordersNeedAction": "対応待ち：${1}点",
  "ordersAllDone": "完了",
- "ordersProgress": "自分の状況"
+ "ordersProgress": "自分の状況",
+ "labResult": "検査結果",
+ "labResultFile": "ファイル ${1}",
+ "labUpload": "結果をアップロード",
+ "labResultNote": "患者へのメモ（任意）",
+ "labResultHint": "結果をPDFまたは画像で送ってください。患者と検査機関だけが閲覧でき、患者に通知されます。",
+ "labResultSent": "結果を保存しました",
+ "labChooseFiles": "ファイルを選択"
 }

@@ -2345,5 +2345,12 @@
  "shipSent": "भेज दिया गया",
  "ordersNeedAction": "आपकी प्रतीक्षा: ${1} आइटम",
  "ordersAllDone": "पूर्ण",
- "ordersProgress": "मेरी स्थिति"
+ "ordersProgress": "मेरी स्थिति",
+ "labResult": "जाँच परिणाम",
+ "labResultFile": "फ़ाइल ${1}",
+ "labUpload": "परिणाम अपलोड करें",
+ "labResultNote": "मरीज़ के लिए नोट (वैकल्पिक)",
+ "labResultHint": "परिणाम PDF या छवि के रूप में भेजें। इसे केवल मरीज़ और लैब देख सकते हैं और मरीज़ को सूचना मिलती है।",
+ "labResultSent": "परिणाम सहेजा गया",
+ "labChooseFiles": "फ़ाइलें चुनें"
 }

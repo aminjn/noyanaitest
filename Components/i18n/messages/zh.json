@@ -2345,5 +2345,12 @@
  "shipSent": "已发出",
  "ordersNeedAction": "待处理：${1} 项",
  "ordersAllDone": "已完成",
- "ordersProgress": "我的状态"
+ "ordersProgress": "我的状态",
+ "labResult": "检测结果",
+ "labResultFile": "文件 ${1}",
+ "labUpload": "上传结果",
+ "labResultNote": "给患者的说明（可选）",
+ "labResultHint": "以 PDF 或图片发送结果。仅患者和实验室可见，并会通知患者。",
+ "labResultSent": "结果已保存",
+ "labChooseFiles": "选择文件"
 }

@@ -3782,6 +3782,13 @@ export const contentNamespaces = {
     "ordersNeedAction",
     "ordersAllDone",
     "ordersProgress",
+    "labResult",
+    "labResultFile",
+    "labUpload",
+    "labResultNote",
+    "labResultHint",
+    "labResultSent",
+    "labChooseFiles",
   ],
 
   // app/paraClinicPanel/profile/page.tsx (ParaClinicManageProfilePage,
@@ -4191,6 +4198,8 @@ export const contentNamespaces = {
     "deliveryFee",
     "shipTrackingCode",
     "shipSent",
+    "labResult",
+    "labResultFile",
   ],
   // Shared cartable node-page pieces (Components/Product/Cartable/*, CartActions, PlusBox, ProductCartInfos, UpgradeProBox) used by /product/[slug], /productPackage/[slug], /service/[slug], /servicePackage/[slug]. Includes the cartTitle keys passed in (seller/provider) and the ProductCartInfos ternary keys.
   productCartable: [

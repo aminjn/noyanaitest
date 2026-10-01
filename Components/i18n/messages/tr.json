@@ -2345,5 +2345,12 @@
  "shipSent": "Gönderildi",
  "ordersNeedAction": "Sizi bekleyen: ${1} kalem",
  "ordersAllDone": "Tamamlandı",
- "ordersProgress": "Durumum"
+ "ordersProgress": "Durumum",
+ "labResult": "Tahlil sonucu",
+ "labResultFile": "Dosya ${1}",
+ "labUpload": "Sonucu yükle",
+ "labResultNote": "Hasta için not (isteğe bağlı)",
+ "labResultHint": "Sonucu PDF veya görsel olarak gönderin. Yalnızca hasta ve laboratuvar görür; hastaya bildirilir.",
+ "labResultSent": "Sonuç kaydedildi",
+ "labChooseFiles": "Dosya seç"
 }

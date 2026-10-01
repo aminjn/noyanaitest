@@ -2345,5 +2345,12 @@
  "shipSent": "Enviado",
  "ordersNeedAction": "Esperando tu acción: ${1} artículos",
  "ordersAllDone": "Hecho",
- "ordersProgress": "Mi estado"
+ "ordersProgress": "Mi estado",
+ "labResult": "Resultado del análisis",
+ "labResultFile": "Archivo ${1}",
+ "labUpload": "Subir resultado",
+ "labResultNote": "Nota para el paciente (opcional)",
+ "labResultHint": "Envía el resultado en PDF o imagen. Solo lo ven el paciente y el laboratorio, y se avisa al paciente.",
+ "labResultSent": "Resultado guardado",
+ "labChooseFiles": "Elegir archivos"
 }
