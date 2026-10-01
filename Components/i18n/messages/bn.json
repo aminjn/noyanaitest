@@ -2369,5 +2369,10 @@
  "insNetHospitals": "হাসপাতাল",
  "insNetLabs": "ল্যাব ও ইমেজিং কেন্দ্র",
  "insNetPharmacies": "ফার্মেসি",
- "insNetEmpty": "এখনো কেউ নেই"
+ "insNetEmpty": "এখনো কেউ নেই",
+ "orgReviewsTitle": "রোগীদের মতামত",
+ "orgReviewsAverage": "৫-এর মধ্যে ${1} · ${2}টি মতামত",
+ "orgReviewsEmpty": "এখনো কোনো মতামত প্রকাশিত হয়নি",
+ "orgReviewsHint": "সাপোর্টের পর্যালোচনার পর আপনার পাবলিক পাতায় প্রকাশিত মতামত।",
+ "readReviews": "রোগীদের মতামত দেখুন"
 }

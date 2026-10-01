@@ -2369,5 +2369,10 @@
  "insNetHospitals": "Hastaneler",
  "insNetLabs": "Laboratuvarlar ve görüntüleme merkezleri",
  "insNetPharmacies": "Eczaneler",
- "insNetEmpty": "Henüz kimse yok"
+ "insNetEmpty": "Henüz kimse yok",
+ "orgReviewsTitle": "Hasta yorumları",
+ "orgReviewsAverage": "5 üzerinden ${1} · ${2} yorum",
+ "orgReviewsEmpty": "Henüz yayınlanmış yorum yok",
+ "orgReviewsHint": "Destek incelemesinden sonra herkese açık sayfanızda yayınlanan yorumlar.",
+ "readReviews": "Hasta yorumlarını görme"
 }

@@ -1,3 +1,4 @@
+import StarIcon from "../Icons/StarIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
@@ -40,6 +41,13 @@ const HospitalPanelSidebar = () => {
         icon: <ClockIcon />,
         show: hasAccess("readReservations"),
         target: "booking",
+      },
+      {
+        title: "orgReviewsTitle",
+        group: "groupCenter",
+        icon: <StarIcon />,
+        show: hasAccess("readReviews"),
+        target: "review",
       },
       {
         title: "profile",

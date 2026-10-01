@@ -1,0 +1,78 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 900;
+  color: var(--gray13);
+}
+
+.average {
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  background: var(--warningT1);
+  color: var(--warningS3);
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.hint,
+.empty {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--gray10);
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 0.75rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1rem;
+  border-radius: 1.25rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--gray13);
+}
+
+.score {
+  color: var(--warningS3);
+  letter-spacing: 0.05em;
+}
+
+.date {
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.content {
+  font-size: 0.875rem;
+  line-height: 1.9;
+  color: var(--gray12);
+  white-space: pre-line;
+}

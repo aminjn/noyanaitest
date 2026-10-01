@@ -2391,5 +2391,10 @@
  "insNetHospitals": "بیمارستان‌ها",
  "insNetLabs": "آزمایشگاه‌ها و مراکز تصویربرداری",
  "insNetPharmacies": "داروخانه‌ها",
- "insNetEmpty": "هنوز کسی ثبت نشده است"
+ "insNetEmpty": "هنوز کسی ثبت نشده است",
+ "orgReviewsTitle": "نظرات بیماران",
+ "orgReviewsAverage": "میانگین ${1} از ۵ · ${2} نظر",
+ "orgReviewsEmpty": "هنوز نظری منتشر نشده است",
+ "orgReviewsHint": "نظرهایی که پس از بررسی پشتیبانی در صفحه‌ی عمومی شما منتشر شده‌اند.",
+ "readReviews": "دیدن نظرات بیماران"
 }

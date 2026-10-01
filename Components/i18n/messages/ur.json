@@ -2369,5 +2369,10 @@
  "insNetHospitals": "ہسپتال",
  "insNetLabs": "لیبز اور امیجنگ مراکز",
  "insNetPharmacies": "فارمیسیاں",
- "insNetEmpty": "ابھی کوئی نہیں"
+ "insNetEmpty": "ابھی کوئی نہیں",
+ "orgReviewsTitle": "مریضوں کے تبصرے",
+ "orgReviewsAverage": "5 میں سے ${1} · ${2} تبصرے",
+ "orgReviewsEmpty": "ابھی کوئی تبصرہ شائع نہیں ہوا",
+ "orgReviewsHint": "وہ تبصرے جو سپورٹ کے جائزے کے بعد آپ کے عوامی صفحے پر شائع ہوئے۔",
+ "readReviews": "مریضوں کے تبصرے دیکھیں"
 }

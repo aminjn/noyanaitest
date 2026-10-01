@@ -1,3 +1,4 @@
+import StarIcon from "../Icons/StarIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
@@ -52,6 +53,13 @@ const ClinicPanelSidebar = () => {
         icon: <UserEditIcon />,
         show: false,
         target: "prescription",
+      },
+      {
+        title: "orgReviewsTitle",
+        group: "groupCenter",
+        icon: <StarIcon />,
+        show: hasAccess("readReviews"),
+        target: "review",
       },
       {
         title: "profile",
