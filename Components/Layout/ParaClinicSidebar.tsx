@@ -1,3 +1,4 @@
+import WalletIcon from "../Icons/WalletIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
@@ -51,6 +52,13 @@ const ParaClinicSidebar = () => {
         group: "groupCenter",
         show: hasAccess("mutateProfile"),
         target: "profile",
+      },
+      {
+        title: "financialMangement",
+        icon: <WalletIcon />,
+        group: "groupCenter",
+        show: hasAccess("readFinance"),
+        target: "finance",
       },
       {
         title: "teamTitle",

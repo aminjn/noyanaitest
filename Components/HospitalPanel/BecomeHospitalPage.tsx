@@ -4,10 +4,9 @@ import { BecomeANodeStatus } from "../DoctorPanel/DoctorPanelPage";
 import { IUser, MongoDoc } from "../Hooks/useUser";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
+import BecomeRequestStatus from "@/Components/_Common/BecomeStatus/BecomeRequestStatus";
 import HandleLoading from "../Admin/UI/HandleLoading";
 import SubmitBecomeHospitalRequest from "./SubmitBecomeHospitalRequest";
-import { Fragment } from "react";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 export type BecomeHospitalPopulation = Population<{ user: true }>;
 export interface IBecomeHospitalRequest<
@@ -27,7 +26,6 @@ export interface IBecomeHospitalRequest<
 }
 
 const BecomeHospitalPage = () => {
-  const getContent = useScopedLocale();
   const { data, error, isLoading, mutate } =
     useSWR<IBecomeHospitalRequest | null>(
       `${API}/hospital/request`,
@@ -36,23 +34,12 @@ const BecomeHospitalPage = () => {
 
   return (
     <HandleLoading data={!isLoading} error={error}>
-      {data ? (
-        <Fragment>
-          {data.status === "Pending" ? (
-            <p>{getContent("requestProcessingByAdmin")}</p>
-          ) : (
-            <Fragment>
-              {data.status === "Approved" ? (
-                <p>{getContent("requestApprovedCreatingProfile")}</p>
-              ) : (
-                <p>{getContent("yourRequestRejected")}</p>
-              )}
-            </Fragment>
-          )}
-        </Fragment>
-      ) : (
-        <SubmitBecomeHospitalRequest mutate={mutate} />
-      )}
+      <BecomeRequestStatus
+        request={data}
+        form={
+            <SubmitBecomeHospitalRequest mutate={mutate} />
+        }
+      />
     </HandleLoading>
   );
 };

@@ -4,10 +4,9 @@ import { BecomeANodeStatus } from "../DoctorPanel/DoctorPanelPage";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
+import BecomeRequestStatus from "@/Components/_Common/BecomeStatus/BecomeRequestStatus";
 import HandleLoading from "../Admin/UI/HandleLoading";
-import { Fragment } from "react";
 import SubmitBecomePharmacyRequest from "./SubmitBecomePharmacyRequest";
-import useScopedLocale from "../Hooks/useScopedLocale";
 
 export type BecomePharmacyPopulation = Population<{ user: true }>;
 
@@ -34,27 +33,15 @@ const BecomePharmacyPage = () => {
       (url: string) => fetcher({ url }).then((res) => res.data),
     );
 
-  const getContent = useScopedLocale();
 
   return (
     <HandleLoading data={!isLoading} error={error}>
-      {data ? (
-        <Fragment>
-          {data.status === "Pending" ? (
-            <p>{getContent("requestBeingProcessedByAdmin")}</p>
-          ) : (
-            <Fragment>
-              {data.status === "Approved" ? (
-                <p>{getContent("requestApprovedCreatingProfile")}</p>
-              ) : (
-                <p>{getContent("yourRequestWasRejected")}</p>
-              )}
-            </Fragment>
-          )}
-        </Fragment>
-      ) : (
-        <SubmitBecomePharmacyRequest mutate={mutate} />
-      )}
+      <BecomeRequestStatus
+        request={data}
+        form={
+            <SubmitBecomePharmacyRequest mutate={mutate} />
+        }
+      />
     </HandleLoading>
   );
 };

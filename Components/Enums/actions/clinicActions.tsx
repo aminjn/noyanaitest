@@ -5,6 +5,7 @@ import { ContentKey } from "../contentKeys";
 // itself (owner-only by design). Kept in sync with Models/clinicAcl.ts on
 // noyanai-back.
 export const clinicActions = [
+  "readFinance",
   "readReservations",
   "mutateProfile",
   "readPrescriptions",
@@ -17,6 +18,7 @@ export const clinicActions = [
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
 // nav item's own title key, reused as the tab label.
 export const clinicActionCategories = [
+  "financialMangement",
   "schedule",
   "profile",
   "prescriptions",
@@ -27,6 +29,7 @@ export const clinicActionCategories = [
 export const categorizedClinicActions: Readonly<
   Record<(typeof clinicActionCategories)[number], readonly ContentKey[]>
 > = {
+  financialMangement: ["readFinance"],
   schedule: ["readReservations"],
   profile: ["mutateProfile"],
   prescriptions: ["readPrescriptions"],

@@ -2337,5 +2337,6 @@
  "caTo": "Bitiş",
  "caNoOffices": "Henüz hiçbir doktor bu merkeze muayenehane bağlamadı. Bağlı muayenehanelerin randevuları burada görünür.",
  "caEmpty": "Bu aralıkta randevu yok",
- "readReservations": "Merkezin randevularını görme"
+ "readReservations": "Merkezin randevularını görme",
+ "ofCenterNote": "Merkezin cüzdanı: lisans ücretleri buradan ödenir ve bakiyeyi banka hesabınıza çekebilirsiniz. Tutarlar tomandır."
 }

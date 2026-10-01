@@ -58,7 +58,6 @@ const InsuranceManageDetailsTab = () => {
             membersCount: { type: "text", title: getContent("membersCount") },
             coverages: { type: "strings", title: getContent("coverages") },
             advantages: { type: "strings", title: getContent("advantages") },
-            address: { type: "text", title: getContent("address") },
           }}
         />
       )}

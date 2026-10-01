@@ -103,8 +103,10 @@ export type PanelFinanceConfig = {
   // "/doctor/finance", "/pharmacy/finance"
   api: string;
   noteKey: ContentKey;
-  upcomingKey: ContentKey;
-  upcomingNoteKey: ContentKey;
+  // a centre with no order lines (clinic, hospital, insurer) has nothing
+  // "upcoming": the tile is left out
+  upcomingKey?: ContentKey;
+  upcomingNoteKey?: ContentKey;
 };
 
 const PanelFinancePage = ({
@@ -210,13 +212,15 @@ const PanelFinancePage = ({
               unit={toman}
               note={getContent("dpfLastMonth", [`${num.format(data.income.lastMonth)} ${toman}`])}
             />
-            <Tile
-              icon={<ClockIcon />}
-              label={getContent(upcomingKey)}
-              value={num.format(data.upcoming.total)}
-              unit={toman}
-              note={getContent(upcomingNoteKey, [num.format(data.upcoming.count)])}
-            />
+            {!!upcomingKey && !!upcomingNoteKey && (
+              <Tile
+                icon={<ClockIcon />}
+                label={getContent(upcomingKey)}
+                value={num.format(data.upcoming.total)}
+                unit={toman}
+                note={getContent(upcomingNoteKey, [num.format(data.upcoming.count)])}
+              />
+            )}
             <Tile
               icon={<MedalIcon />}
               label={getContent("dpfAllTime")}

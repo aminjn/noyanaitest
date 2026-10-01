@@ -2337,5 +2337,6 @@
  "caTo": "To",
  "caNoOffices": "No doctor has linked an office to this centre yet. Visits at linked offices show up here.",
  "caEmpty": "No visits in this range",
- "readReservations": "See the centre's appointments"
+ "readReservations": "See the centre's appointments",
+ "ofCenterNote": "The centre's wallet: licence fees are paid from it and you can withdraw the balance to your bank account. Amounts are in toman."
 }

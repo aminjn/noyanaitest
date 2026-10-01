@@ -4,8 +4,8 @@ import { BecomeANodeStatus } from "../DoctorPanel/DoctorPanelPage";
 import { IUser, MongoDoc, UserPopulation } from "../Hooks/useUser";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
+import BecomeRequestStatus from "@/Components/_Common/BecomeStatus/BecomeRequestStatus";
 import HandleLoading from "../Admin/UI/HandleLoading";
-import { Fragment } from "react";
 import CreateForm from "../Admin/UI/CreateForm";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -44,45 +44,34 @@ const BecomeParaClinicPage = () => {
 
   return (
     <HandleLoading data={!isLoading} error={error}>
-      {data ? (
-        <Fragment>
-          {data.status === "Pending" ? (
-            <p>{getContent("requestBeingProcessedByAdmin")}</p>
-          ) : (
-            <Fragment>
-              {data.status === "Approved" ? (
-                <p>{getContent("requestApprovedCreatingProfile")}</p>
-              ) : (
-                <p>{getContent("yourRequestRejected")}</p>
-              )}
-            </Fragment>
-          )}
-        </Fragment>
-      ) : (
-        <CreateForm<IBecomeParaClinicRequest>
-          renderer={{
-            name: { type: "text", title: getContent("name") },
-            siamCode: { type: "text", title: getContent("siamCode") },
-            nationalId: { type: "text", title: getContent("nationalId") },
-            certificateDate: {
-              type: "date",
-              title: getContent("certificateDate"),
-            },
-            certificateFile: {
-              type: "image",
-              title: getContent("certificateFile"),
-            },
-            description: { type: "text", title: getContent("description") },
-          }}
-          hookProps={{
-            path: `${API}/paraClinic`,
-            method: "POST",
-            successCb: () => {
-              mutate();
-            },
-          }}
-        />
-      )}
+      <BecomeRequestStatus
+        request={data}
+        form={
+            <CreateForm<IBecomeParaClinicRequest>
+              renderer={{
+                name: { type: "text", title: getContent("name") },
+                siamCode: { type: "text", title: getContent("siamCode") },
+                nationalId: { type: "text", title: getContent("nationalId") },
+                certificateDate: {
+                  type: "date",
+                  title: getContent("certificateDate"),
+                },
+                certificateFile: {
+                  type: "image",
+                  title: getContent("certificateFile"),
+                },
+                description: { type: "text", title: getContent("description") },
+              }}
+              hookProps={{
+                path: `${API}/paraClinic`,
+                method: "POST",
+                successCb: () => {
+                  mutate();
+                },
+              }}
+            />
+        }
+      />
     </HandleLoading>
   );
 };

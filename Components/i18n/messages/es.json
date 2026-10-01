@@ -2337,5 +2337,6 @@
  "caTo": "Hasta",
  "caNoOffices": "Ningún médico ha vinculado aún un consultorio a este centro. Aquí aparecen las citas de los consultorios vinculados.",
  "caEmpty": "No hay citas en este periodo",
- "readReservations": "Ver las citas del centro"
+ "readReservations": "Ver las citas del centro",
+ "ofCenterNote": "La billetera del centro: de ella se pagan las licencias y puedes retirar el saldo a tu cuenta bancaria. Importes en tomanes."
 }
