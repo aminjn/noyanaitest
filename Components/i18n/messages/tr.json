@@ -2352,5 +2352,22 @@
  "labResultNote": "Hasta için not (isteğe bağlı)",
  "labResultHint": "Sonucu PDF veya görsel olarak gönderin. Yalnızca hasta ve laboratuvar görür; hastaya bildirilir.",
  "labResultSent": "Sonuç kaydedildi",
- "labChooseFiles": "Dosya seç"
+ "labChooseFiles": "Dosya seç",
+ "insPlans": "Sigorta planları",
+ "insNetwork": "Sağlık ağı",
+ "managePlans": "Sigorta planlarını yönetme",
+ "readNetwork": "Sağlık ağını görme",
+ "insNewPlan": "Yeni plan",
+ "insPlanName": "Plan adı",
+ "insPlanPrice": "Prim (toman)",
+ "insPlanFeatures": "Teminatlar",
+ "insPlanPopular": "Popüler",
+ "insPlanActive": "Sitede gösterilir",
+ "insNetworkHint": "Sigortanızı kabul eden doktorlar ve merkezler. Doktor, destek onaylı bir sigorta talebiyle katılır; merkezler bunu profillerinde belirtir.",
+ "insNetDoctors": "Doktorlar",
+ "insNetClinics": "Klinikler",
+ "insNetHospitals": "Hastaneler",
+ "insNetLabs": "Laboratuvarlar ve görüntüleme merkezleri",
+ "insNetPharmacies": "Eczaneler",
+ "insNetEmpty": "Henüz kimse yok"
 }

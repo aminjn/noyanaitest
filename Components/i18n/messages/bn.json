@@ -2352,5 +2352,22 @@
  "labResultNote": "রোগীর জন্য নোট (ঐচ্ছিক)",
  "labResultHint": "ফলাফল PDF বা ছবি হিসেবে পাঠান। শুধু রোগী ও ল্যাব এটি দেখতে পারে এবং রোগীকে জানানো হয়।",
  "labResultSent": "ফলাফল সংরক্ষিত হয়েছে",
- "labChooseFiles": "ফাইল বেছে নিন"
+ "labChooseFiles": "ফাইল বেছে নিন",
+ "insPlans": "বিমা পরিকল্পনা",
+ "insNetwork": "চিকিৎসা নেটওয়ার্ক",
+ "managePlans": "বিমা পরিকল্পনা পরিচালনা",
+ "readNetwork": "চিকিৎসা নেটওয়ার্ক দেখুন",
+ "insNewPlan": "নতুন পরিকল্পনা",
+ "insPlanName": "পরিকল্পনার নাম",
+ "insPlanPrice": "প্রিমিয়াম (তোমান)",
+ "insPlanFeatures": "কভারেজ",
+ "insPlanPopular": "জনপ্রিয়",
+ "insPlanActive": "সাইটে দেখান",
+ "insNetworkHint": "যে ডাক্তার ও কেন্দ্রগুলো আপনার বিমা গ্রহণ করে। ডাক্তার সাপোর্ট-অনুমোদিত অনুরোধে যুক্ত হন; কেন্দ্রগুলো প্রোফাইলে এটি উল্লেখ করে।",
+ "insNetDoctors": "ডাক্তার",
+ "insNetClinics": "ক্লিনিক",
+ "insNetHospitals": "হাসপাতাল",
+ "insNetLabs": "ল্যাব ও ইমেজিং কেন্দ্র",
+ "insNetPharmacies": "ফার্মেসি",
+ "insNetEmpty": "এখনো কেউ নেই"
 }

@@ -2352,5 +2352,22 @@
  "labResultNote": "Catatan untuk pasien (opsional)",
  "labResultHint": "Kirim hasil dalam PDF atau gambar. Hanya pasien dan lab yang dapat melihatnya, dan pasien diberi tahu.",
  "labResultSent": "Hasil disimpan",
- "labChooseFiles": "Pilih file"
+ "labChooseFiles": "Pilih file",
+ "insPlans": "Paket asuransi",
+ "insNetwork": "Jaringan layanan",
+ "managePlans": "Kelola paket asuransi",
+ "readNetwork": "Lihat jaringan layanan",
+ "insNewPlan": "Paket baru",
+ "insPlanName": "Nama paket",
+ "insPlanPrice": "Premi (toman)",
+ "insPlanFeatures": "Cakupan",
+ "insPlanPopular": "Populer",
+ "insPlanActive": "Ditampilkan di situs",
+ "insNetworkHint": "Dokter dan pusat yang menerima asuransi Anda. Dokter bergabung lewat permintaan yang disetujui tim dukungan; pusat mencantumkannya di profil.",
+ "insNetDoctors": "Dokter",
+ "insNetClinics": "Klinik",
+ "insNetHospitals": "Rumah sakit",
+ "insNetLabs": "Lab dan pusat pencitraan",
+ "insNetPharmacies": "Apotek",
+ "insNetEmpty": "Belum ada"
 }

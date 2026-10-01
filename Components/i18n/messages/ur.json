@@ -2352,5 +2352,22 @@
  "labResultNote": "مریض کے لیے نوٹ (اختیاری)",
  "labResultHint": "نتیجہ PDF یا تصویر کی صورت میں بھیجیں۔ اسے صرف مریض اور لیب دیکھ سکتے ہیں اور مریض کو اطلاع ملتی ہے۔",
  "labResultSent": "نتیجہ محفوظ ہو گیا",
- "labChooseFiles": "فائلیں منتخب کریں"
+ "labChooseFiles": "فائلیں منتخب کریں",
+ "insPlans": "انشورنس پلان",
+ "insNetwork": "طبی نیٹ ورک",
+ "managePlans": "انشورنس پلان کا انتظام",
+ "readNetwork": "طبی نیٹ ورک دیکھیں",
+ "insNewPlan": "نیا پلان",
+ "insPlanName": "پلان کا نام",
+ "insPlanPrice": "پریمیم (تومان)",
+ "insPlanFeatures": "کوریج",
+ "insPlanPopular": "مقبول",
+ "insPlanActive": "سائٹ پر دکھائیں",
+ "insNetworkHint": "وہ ڈاکٹر اور مراکز جو آپ کی انشورنس قبول کرتے ہیں۔ ڈاکٹر انشورنس کی درخواست اور سپورٹ کی منظوری سے شامل ہوتا ہے؛ مراکز اسے اپنی پروفائل میں درج کرتے ہیں۔",
+ "insNetDoctors": "ڈاکٹر",
+ "insNetClinics": "کلینکس",
+ "insNetHospitals": "ہسپتال",
+ "insNetLabs": "لیبز اور امیجنگ مراکز",
+ "insNetPharmacies": "فارمیسیاں",
+ "insNetEmpty": "ابھی کوئی نہیں"
 }

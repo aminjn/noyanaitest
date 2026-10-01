@@ -2352,5 +2352,22 @@
  "labResultNote": "Hinweis für den Patienten (optional)",
  "labResultHint": "Senden Sie das Ergebnis als PDF oder Bild. Nur Patient und Labor sehen es; der Patient wird benachrichtigt.",
  "labResultSent": "Ergebnis gespeichert",
- "labChooseFiles": "Dateien wählen"
+ "labChooseFiles": "Dateien wählen",
+ "insPlans": "Versicherungstarife",
+ "insNetwork": "Leistungsnetz",
+ "managePlans": "Versicherungstarife verwalten",
+ "readNetwork": "Leistungsnetz ansehen",
+ "insNewPlan": "Neuer Tarif",
+ "insPlanName": "Tarifname",
+ "insPlanPrice": "Beitrag (Toman)",
+ "insPlanFeatures": "Leistungen",
+ "insPlanPopular": "Beliebt",
+ "insPlanActive": "Auf der Website sichtbar",
+ "insNetworkHint": "Ärzte und Zentren, die Ihre Versicherung akzeptieren. Ein Arzt kommt über einen vom Support bestätigten Antrag hinzu; Zentren tragen sie im Profil ein.",
+ "insNetDoctors": "Ärzte",
+ "insNetClinics": "Kliniken",
+ "insNetHospitals": "Krankenhäuser",
+ "insNetLabs": "Labore und Bildgebungszentren",
+ "insNetPharmacies": "Apotheken",
+ "insNetEmpty": "Noch niemand"
 }
