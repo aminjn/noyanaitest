@@ -22,6 +22,10 @@ import Ixon from "@/Components/UI/Ixon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
+import Button from "@/Components/UI/Button";
+import usePopup from "@/Components/Hooks/usePopup";
+import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
+import DeskBookingPopup from "../Desk/DeskBookingPopup";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelSchedule"];
 
@@ -59,6 +63,7 @@ type Row = {
   open: boolean;
   missed: number;
   intake: "filled" | "missing" | null;
+  desk: boolean;
 };
 
 const TABS = ["today", "upcoming", "past", "cancelled", "all"] as const;
@@ -74,11 +79,13 @@ const tabKeys: Record<Tab, ContentKey> = {
 const DoctorManageSchedulePage = () => {
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const { data, error } = useSWR<{
+  const { data, error, mutate } = useSWR<{
     bookings: IScheduleBooking[];
     reservations: IScheduleReservation[];
     insights?: ScheduleInsights;
   }>(`${API}/doctor/schedule`, (url: string) => fetcher({ url }).then((res) => res.data));
+  const { setPopup } = usePopup();
+  const hasAccess = useDoctorAcl();
 
   const getContent = useScopedLocale(NS);
   const [tab, setTab] = useState<Tab>("upcoming");
@@ -118,6 +125,7 @@ const DoctorManageSchedulePage = () => {
         open: b.session.date >= todayKey,
         missed: 0,
         intake: null,
+        desk: false,
       });
     }
     for (const r of Array.isArray(data.reservations) ? data.reservations : []) {
@@ -140,6 +148,7 @@ const DoctorManageSchedulePage = () => {
         open,
         missed: open ? history[userId]?.missed || 0 : 0,
         intake: open && intakes ? (intakes[r._id] ? "filled" : "missing") : null,
+        desk: (r as { source?: string }).source === "desk",
       });
     }
     return out.sort((a, b) => (a.dateKey === b.dateKey ? a.start - b.start : a.dateKey < b.dateKey ? -1 : 1));
@@ -196,6 +205,14 @@ const DoctorManageSchedulePage = () => {
         <div className={classes.main}>
           <header className={classes.header}>
             <h1 className={classes.title}>{getContent("schedule")}</h1>
+            {hasAccess("mutateCalendar") && (
+              <Button
+                className={classes.newButton}
+                onClick={() => setPopup("DeskBooking", <DeskBookingPopup onDone={() => mutate()} />)}
+              >
+                {getContent("deskNewBooking")}
+              </Button>
+            )}
             <div className={classes.tabs} role="tablist">
               {TABS.map((t) => (
                 <button
@@ -282,7 +299,7 @@ const DoctorManageSchedulePage = () => {
                         {!!r.phone && <span className={classes.phone}>{r.phone}</span>}
                       </span>
                       <span className={classes.kind}>
-                        {[r.type, r.place].filter(Boolean).join(" · ")}
+                        {[r.type, r.place, r.desk ? getContent("deskPayAtDesk") : ""].filter(Boolean).join(" · ")}
                       </span>
                       <span className={classes.insight}>
                         {r.missed > 0 ? (

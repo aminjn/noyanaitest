@@ -30,7 +30,7 @@ const pathModuleMap: Record<string, DoctorDashboardModule> = {
   order: "incomingOrders",
   shift: "shifts",
   calendar: "shifts",
-  booking: "shifts",
+  booking: "schedule",
   schedule: "schedule",
   patient: "patients",
   clinic: "clinics",
