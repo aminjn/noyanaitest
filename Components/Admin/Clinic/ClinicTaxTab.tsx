@@ -20,10 +20,8 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 // has no doc yet, the platform falls back to
 // GlobalTaxSettings.defaultClinicTaxPercent, shown here for context.
 //
-// Note: unlike the pharmacy/doctor/paraClinic tabs, this rate isn't applied
-// anywhere yet - Clinic owns no sellable/payable item or flow in this
-// codebase today (see Models/ClinicTaxSettings.ts's comment). This tab
-// exists for admin-UI parity (2026-09 user decision).
+// Applied to in-person visits in an office inside this clinic, in place
+// of the doctor's visit tax (backend Lib/taxSettings.ts getVisitTaxPercent).
 export interface IClinicTaxSettings extends MongoDoc {
   clinic: string;
   taxPercent: number;
@@ -46,6 +44,11 @@ const ClinicTaxTab = ({ node }: { node: IClinic }) => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <div className={classes.main}>
+          <p className={classes.hint}>
+            {ta(
+              "روی ویزیت‌های حضوری در مطب‌های داخل این کلینیک، به‌جای مالیات ویزیت پزشک، این درصد به صورتحساب بیمار اضافه می‌شود.",
+            )}
+          </p>
           {!!globalSettings && (
             <List>
               <DataPair

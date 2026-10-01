@@ -5,7 +5,11 @@ import { notFound, permanentRedirect } from "next/navigation";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
-import { nodeFallbackMetadata } from "@/Components/helpers/getPageMetadata";
+import {
+  getNodePageWebSchema,
+  nodeFallbackMetadata,
+  withNodePageMeta,
+} from "@/Components/helpers/getPageMetadata";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
 import { DOMAIN, FilePath } from "@/Components/config";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
@@ -29,15 +33,20 @@ export const generateMetadata = async ({
   const data = await getPublicData<PublicDoctorProfilePageProps>(`dr/${slug}`);
   const doctor = data?.doctor;
   if (!doctor) return {};
-  return nodeFallbackMetadata(
-    {
-      name: [getDoctorProfileLabel(doctor), doctor.mainSpeciality?.name]
-        .filter(Boolean)
-        .join(" - "),
-      summary: doctor.introduction,
-      avatar: doctor.avatar,
-    },
-    `/dr/${doctor.slug || doctor._id}`,
+  // the admin's SEO entry (doctor record > «سئو») wins field by field
+  return withNodePageMeta(
+    "/dr/[slug]",
+    doctor.slug || slug,
+    nodeFallbackMetadata(
+      {
+        name: [getDoctorProfileLabel(doctor), doctor.mainSpeciality?.name]
+          .filter(Boolean)
+          .join(" - "),
+        summary: doctor.introduction,
+        avatar: doctor.avatar,
+      },
+      `/dr/${doctor.slug || doctor._id}`,
+    ),
   );
 };
 
@@ -81,9 +90,13 @@ const PublicDoctorProfile = async ({
   })();
   if (data.doctor.slug && requested !== data.doctor.slug)
     permanentRedirect(`/dr/${encodeURIComponent(data.doctor.slug)}`);
+  // a structured-data block set in the admin replaces the generated one
+  const adminSchema = data.doctor.slug
+    ? await getNodePageWebSchema("/dr/[slug]", data.doctor.slug)
+    : undefined;
   return (
     <>
-      <JsonLdSchema schema={physicianSchema(data.doctor)} />
+      <JsonLdSchema schema={adminSchema || physicianSchema(data.doctor)} />
       <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
         <NewDoctorProfilePage {...data} />
       </LocaleScopeProvider>

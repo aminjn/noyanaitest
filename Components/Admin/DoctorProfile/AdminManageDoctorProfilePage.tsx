@@ -24,6 +24,7 @@ import WalletIcon from "@/Components/Icons/WalletIcon";
 import DoctorFinanceTab from "./DoctorFinanceTab";
 import DoctorProfileLicenseTab from "./DoctorProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 // One record page per doctor, a short set of tabs as in the Doctolib Pro /
@@ -130,6 +131,17 @@ const AdminManageDoctorProfilePage = () => {
                 content: <DoctorProfileUserTab node={data} mutate={mutate} />,
                 icon: <InfoIcon />,
                 title: ta("مالک پنل"),
+              },
+              {
+                // read by app/dr/[slug] (title, description, OG, schema)
+                id: "Meta",
+                icon: <InfoIcon />,
+                title: ta("سئو"),
+                content: data.slug ? (
+                  <PageMetaEditor resourceType="/dr/[slug]" slug={data.slug} />
+                ) : (
+                  <p>{ta("برای تنظیم سئو، اول در تب «اطلاعات» اسلاگ این پزشک را ثبت کنید.")}</p>
+                ),
               },
               {
                 id: "translations",

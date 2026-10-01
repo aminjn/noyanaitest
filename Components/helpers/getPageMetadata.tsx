@@ -68,7 +68,7 @@ export const getListPageMetadata = async (
 // summary, its image and its own URL as canonical.
 const nodeApi: Record<PageMetaNodeResourceType, string> = {
   "/mag/[blogSlug]": "blog",
-  "/doctor/[slug]": "doctor",
+  "/dr/[slug]": "dr",
   "/disease/[slug]": "disease",
   "/drug/[slug]": "drug",
   "/speciality/[slug]": "speciality",
@@ -169,6 +169,23 @@ export const getNodePageMetadata = async (
     path.replace(/\[[a-zA-Z]+\]/, slug),
   );
   // an entry with only some fields set (e.g. noIndex) still applies
+  return { ...fallback, ...stripUndefined(toMetadata(meta)) };
+};
+
+// A node page that builds its own fallback (e.g. /dr/[slug], whose public
+// response wraps the doctor) - the admin's SEO entry wins field by field.
+export const withNodePageMeta = async (
+  path: PageMetaNodeResourceType,
+  nodeSlug: string,
+  fallback: Metadata,
+): Promise<Metadata> => {
+  let slug = nodeSlug;
+  try {
+    slug = decodeURIComponent(nodeSlug);
+  } catch {
+    // a malformed escape: use it as is
+  }
+  const meta = await fetchNodePageMeta(path, slug);
   return { ...fallback, ...stripUndefined(toMetadata(meta)) };
 };
 

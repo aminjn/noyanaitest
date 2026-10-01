@@ -420,6 +420,7 @@ export interface IWallet<
 const CheckoutStage = ({
   context,
   doctor,
+  officeId,
   setContext,
   onFinalize,
   busy,
@@ -428,6 +429,9 @@ const CheckoutStage = ({
   setContext: Dispatch<SetStateAction<FinalizeBookingContext>>;
   busy?: boolean;
   doctor: FinalizeBookingDoctor;
+  // the shift's office: an in-person visit in a clinic office is taxed at
+  // the clinic's rate (backend Lib/taxSettings.ts getVisitTaxPercent)
+  officeId?: string;
   setStage: Dispatch<SetStateAction<BookingStage>>;
   onFinalize: () => unknown;
 }) => {
@@ -471,9 +475,15 @@ const CheckoutStage = ({
   const getSessionTypeTax = useCallback(
     (st: DoctorSessionType): number =>
       Math.round(
-        (getSessionTypePrice(st) * (doctor.visitTaxPercent || 0)) / 100,
+        (getSessionTypePrice(st) *
+          ((st === "inPerson" && officeId
+            ? doctor.officeTaxPercents?.[officeId]
+            : undefined) ??
+            doctor.visitTaxPercent ??
+            0)) /
+          100,
       ),
-    [getSessionTypePrice, doctor.visitTaxPercent],
+    [getSessionTypePrice, doctor.visitTaxPercent, doctor.officeTaxPercents, officeId],
   );
 
   if (!context.sessionType || !wallet) return <Loading />;
@@ -618,6 +628,8 @@ type FinalizeBookingDoctor = IDoctorProfile<{
   // Models/DoctorTaxSettings.ts doc if set, else the platform default), so
   // this page just applies it - see Lib/taxSettings.ts.
   visitTaxPercent?: number;
+  // office id -> the clinic's tax percent, for offices inside a clinic
+  officeTaxPercents?: Record<string, number>;
 };
 
 const BookingFlowSidebar = ({
@@ -830,6 +842,7 @@ const InnerBookingFlow = ({
                 context={context}
                 setContext={setContext}
                 doctor={data}
+                officeId={shift?.office?._id}
                 setStage={setStage}
                 onFinalize={onFinalize}
                 busy={!!isLoading || reserved}

@@ -151,8 +151,7 @@ const AdminManageClinicPage = () => {
                 ),
               },
               {
-                // kept by the user's decision for parity with the other
-                // centres; the rate is not applied to any payment yet
+                // the clinic's rate for in-person visits in its offices
                 title: ta("مالی"),
                 id: "Tax",
                 icon: <InfoIcon />,
