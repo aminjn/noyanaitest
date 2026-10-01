@@ -27,10 +27,12 @@ const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 // order is already filtered down to just this paraClinic's own tests line
 // items, plus a "subtotal" computed over only those items.
 export interface IIncomingOrderItem {
+  _id?: string;
   item: { _id: string; test?: { _id: string; name?: string } };
   qty: number;
   price: number;
   status: OrderItemStatus;
+  result?: { files?: string[]; note?: string; uploadedAt?: string };
 }
 
 export interface IIncomingOrder extends MongoDoc {

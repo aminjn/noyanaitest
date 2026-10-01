@@ -2345,5 +2345,12 @@
  "shipSent": "Sent",
  "ordersNeedAction": "Waiting on you: ${1} items",
  "ordersAllDone": "Done",
- "ordersProgress": "My status"
+ "ordersProgress": "My status",
+ "labResult": "Test result",
+ "labResultFile": "File ${1}",
+ "labUpload": "Upload result",
+ "labResultNote": "Note for the patient (optional)",
+ "labResultHint": "Send the result as a PDF or image. Only the patient and the lab can see it, and the patient is told.",
+ "labResultSent": "Result saved",
+ "labChooseFiles": "Choose files"
 }

@@ -2345,5 +2345,12 @@
  "shipSent": "بھیج دیا گیا",
  "ordersNeedAction": "آپ کے منتظر: ${1} آئٹم",
  "ordersAllDone": "مکمل",
- "ordersProgress": "میری صورتحال"
+ "ordersProgress": "میری صورتحال",
+ "labResult": "ٹیسٹ کا نتیجہ",
+ "labResultFile": "فائل ${1}",
+ "labUpload": "نتیجہ اپ لوڈ کریں",
+ "labResultNote": "مریض کے لیے نوٹ (اختیاری)",
+ "labResultHint": "نتیجہ PDF یا تصویر کی صورت میں بھیجیں۔ اسے صرف مریض اور لیب دیکھ سکتے ہیں اور مریض کو اطلاع ملتی ہے۔",
+ "labResultSent": "نتیجہ محفوظ ہو گیا",
+ "labChooseFiles": "فائلیں منتخب کریں"
 }

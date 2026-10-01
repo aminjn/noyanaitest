@@ -2345,5 +2345,12 @@
  "shipSent": "Terkirim",
  "ordersNeedAction": "Menunggu Anda: ${1} item",
  "ordersAllDone": "Selesai",
- "ordersProgress": "Status saya"
+ "ordersProgress": "Status saya",
+ "labResult": "Hasil tes",
+ "labResultFile": "File ${1}",
+ "labUpload": "Unggah hasil",
+ "labResultNote": "Catatan untuk pasien (opsional)",
+ "labResultHint": "Kirim hasil dalam PDF atau gambar. Hanya pasien dan lab yang dapat melihatnya, dan pasien diberi tahu.",
+ "labResultSent": "Hasil disimpan",
+ "labChooseFiles": "Pilih file"
 }

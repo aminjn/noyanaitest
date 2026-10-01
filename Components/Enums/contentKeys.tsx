@@ -2497,6 +2497,13 @@ const contentKeys = [
   "ordersNeedAction",
   "ordersAllDone",
   "ordersProgress",
+  "labResult",
+  "labResultFile",
+  "labUpload",
+  "labResultNote",
+  "labResultHint",
+  "labResultSent",
+  "labChooseFiles",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

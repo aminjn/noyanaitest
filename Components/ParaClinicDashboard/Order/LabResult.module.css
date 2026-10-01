@@ -1,0 +1,78 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-width: min(28rem, 100%);
+}
+
+.hint {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--gray10);
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  border: 1px dashed var(--glassLine);
+  background: var(--glass);
+  color: var(--gray12);
+  font-size: 0.8125rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.files a {
+  color: var(--primary7);
+  font-weight: 700;
+}
+
+.upload {
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--primary5);
+  color: var(--primary7);
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fileButton {
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  background: var(--primary1);
+  color: var(--primary8);
+  font-weight: 800;
+}
+
+.fileNames {
+  min-width: 0;
+  color: var(--gray10);
+  word-break: break-all;
+}

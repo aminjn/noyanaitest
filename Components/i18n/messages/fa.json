@@ -2367,5 +2367,12 @@
  "shipSent": "ارسال شد",
  "ordersNeedAction": "در انتظار اقدام: ${1} قلم",
  "ordersAllDone": "انجام‌شده",
- "ordersProgress": "وضعیت من"
+ "ordersProgress": "وضعیت من",
+ "labResult": "جواب آزمایش",
+ "labResultFile": "فایل ${1}",
+ "labUpload": "بارگذاری جواب",
+ "labResultNote": "توضیح برای بیمار (اختیاری)",
+ "labResultHint": "فایل PDF یا تصویر جواب را بفرستید. فقط بیمار و آزمایشگاه آن را می‌بینند و بیمار باخبر می‌شود.",
+ "labResultSent": "جواب ثبت شد",
+ "labChooseFiles": "انتخاب فایل"
 }

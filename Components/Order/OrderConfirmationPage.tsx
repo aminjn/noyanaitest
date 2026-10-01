@@ -115,6 +115,8 @@ export interface IOrder<
     price: number;
     // per-line fulfillment, set by the seller (Models/Order.ts)
     status?: OrderItemStatus;
+    // the lab's answer: private result files and a note (2026-10)
+    result?: { files?: string[]; note?: string };
   }[];
   total: number;
   // one per pharmacy (backend Lib/delivery.ts); Tapsi's fee is in `total`
@@ -152,6 +154,7 @@ type OrderRow = {
   price: number;
   qty: number;
   status?: OrderItemStatus;
+  result?: { files?: string[]; note?: string };
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -224,7 +227,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  (Array.isArray(order.tests) ? order.tests : []).forEach(({ item, qty, price, status }) => {
+  (Array.isArray(order.tests) ? order.tests : []).forEach(({ item, qty, price, status, result }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -235,6 +238,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       price,
       qty,
       status,
+      result,
     });
   });
 
@@ -353,6 +357,17 @@ const OrderConfirmationPage = () => {
                         {!!row.status && (
                           <span className={classes.itemStatus}>
                             <OrderItemStatusBadge status={row.status} />
+                          </span>
+                        )}
+                        {(!!row.result?.files?.length || !!row.result?.note) && (
+                          <span className={`${classes.itemSubtitle} ${t2xsRegular}`}>
+                            {getContent("labResult")}:{" "}
+                            {(row.result?.files || []).map((id, i) => (
+                              <a key={id} href={`/api/v1/notpublic/${id}`} target="_blank" rel="noreferrer">
+                                {getContent("labResultFile", [String(i + 1)])}{" "}
+                              </a>
+                            ))}
+                            {row.result?.note}
                           </span>
                         )}
                       </div>

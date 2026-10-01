@@ -25,7 +25,10 @@ import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import OrderItemStatusBadge from "@/Components/Dashboard/Order/OrderItemStatusBadge";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
-import { IIncomingOrder } from "./ParaClinicIncomingOrdersPage";
+import { IIncomingOrder, IIncomingOrderItem } from "./ParaClinicIncomingOrdersPage";
+import LabResultPopup from "./LabResultPopup";
+import AttachmentIcon from "@/Components/Icons/AttachmentIcon";
+import labClasses from "./LabResult.module.css";
 
 const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
@@ -36,6 +39,8 @@ interface OrderItemRow {
   qty: number;
   price: number;
   status: OrderItemStatus;
+  lineId?: string;
+  result?: IIncomingOrderItem["result"];
 }
 
 const buildItemRows = (order: IIncomingOrder): OrderItemRow[] =>
@@ -48,6 +53,8 @@ const buildItemRows = (order: IIncomingOrder): OrderItemRow[] =>
     qty: t.qty,
     price: t.price,
     status: t.status,
+    lineId: t._id,
+    result: t.result,
   }));
 
 const buyerLabel = (order: IIncomingOrder) =>
@@ -167,11 +174,36 @@ const ParaClinicIncomingOrderPage = () => {
                 filter: "Set",
                 component: (node) => <OrderItemStatusBadge status={node.status} />,
               },
+              result: {
+                name: getContent("labResult"),
+                component: (node) => (
+                  <span className={labClasses.files}>
+                    {(Array.isArray(node.result?.files) ? node.result.files : []).map((id, i) => (
+                      <a key={id} href={`/api/v1/notpublic/${id}`} target="_blank" rel="noreferrer">
+                        {getContent("labResultFile", [String(i + 1)])}
+                      </a>
+                    ))}
+                  </span>
+                ),
+              },
               actions: {
                 name: getContent("actions"),
                 component: (node) =>
                   node.status === "pending" ? (
                     <TableActions>
+                      {!!node.lineId && (
+                        <IconButton
+                          title={getContent("labUpload")}
+                          onClick={() =>
+                            setPopup(
+                              "LabResult",
+                              <LabResultPopup orderId={nodeId} lineId={node.lineId || ""} onDone={() => mutate()} />,
+                            )
+                          }
+                        >
+                          <AttachmentIcon />
+                        </IconButton>
+                      )}
                       <IconButton
                         variant="Success"
                         title={getContent("fulfill")}
@@ -205,6 +237,20 @@ const ParaClinicIncomingOrderPage = () => {
                         }
                       >
                         <XMarkIcon />
+                      </IconButton>
+                    </TableActions>
+                  ) : node.status === "fulfilled" && !!node.lineId ? (
+                    <TableActions>
+                      <IconButton
+                        title={getContent("labUpload")}
+                        onClick={() =>
+                          setPopup(
+                            "LabResult",
+                            <LabResultPopup orderId={nodeId} lineId={node.lineId || ""} onDone={() => mutate()} />,
+                          )
+                        }
+                      >
+                        <AttachmentIcon />
                       </IconButton>
                     </TableActions>
                   ) : null,
