@@ -21,6 +21,7 @@ const LocationPicker = ({
   onUseAddress,
   showCoordinates = false,
   hint,
+  compact,
 }: {
   // [lng, lat], GeoJSON order
   defaultValue?: [number, number];
@@ -31,6 +32,7 @@ const LocationPicker = ({
   onUseAddress?: (address: string, components: AddressComponents) => unknown;
   showCoordinates?: boolean;
   hint?: ReactNode;
+  compact?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   const locale = useIntlLocale();
@@ -42,6 +44,7 @@ const LocationPicker = ({
       currentAddress={currentAddress}
       onUseAddress={onUseAddress}
       showCoordinates={showCoordinates}
+      compact={compact}
       hint={hint ?? getContent("mapPickerHint")}
       locale={locale}
       texts={{

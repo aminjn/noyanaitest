@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "আপনার পেজ ${1} থেকে স্থগিত",
  "panelSuspendedText": "আপনার পেজ আপাতত সাইটে নেই এবং নতুন বুকিং বা অর্ডার নেয় না। আগের বুকিং ও অর্ডার যেমন আছে তেমনই থাকবে এবং আপনি সেগুলো সম্পন্ন করতে পারবেন।",
  "panelSuspendedReason": "কারণ: ${1}",
- "panelSuspendedContact": "স্থগিতাদেশ তুলতে সহায়তায় যোগাযোগ করুন"
+ "panelSuspendedContact": "স্থগিতাদেশ তুলতে সহায়তায় যোগাযোগ করুন",
+ "addressPinFirst": "প্রথমে মানচিত্রে সঠিক জায়গা চিহ্নিত করুন; ঠিকানা, প্রদেশ, শহর ও এলাকা নিজে থেকেই পূরণ হবে।",
+ "addressCityNotFound": "এই বিন্দুর প্রদেশ ও শহর পাওয়া যায়নি; পিনটি আরও সঠিক জায়গায় রাখুন।",
+ "addressWriteIt": "ঠিকানা লিখুন",
+ "addressPostalCode10": "পোস্টাল কোড ১০ অঙ্কের হতে হবে",
+ "addressSaved": "ঠিকানা সংরক্ষিত হয়েছে",
+ "addressProvince": "প্রদেশ",
+ "addressCity": "শহর",
+ "addressDistrict": "এলাকা / অঞ্চল",
+ "addressPlaque": "বাড়ি নম্বর",
+ "addressUnit": "ইউনিট"
 }

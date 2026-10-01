@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "Ihre Seite ist seit ${1} gesperrt",
  "panelSuspendedText": "Ihre Seite ist derzeit nicht auf der Website und nimmt keine neuen Termine oder Bestellungen an. Bestehende Termine und Bestellungen bleiben bestehen und können weiter abgeschlossen werden.",
  "panelSuspendedReason": "Grund: ${1}",
- "panelSuspendedContact": "Wenden Sie sich an den Support, um die Sperre aufheben zu lassen"
+ "panelSuspendedContact": "Wenden Sie sich an den Support, um die Sperre aufheben zu lassen",
+ "addressPinFirst": "Markieren Sie zuerst den genauen Ort auf der Karte; Adresse, Provinz, Stadt und Viertel werden automatisch ausgefüllt.",
+ "addressCityNotFound": "Provinz und Stadt dieses Punkts wurden nicht gefunden; setzen Sie die Markierung genauer.",
+ "addressWriteIt": "Adresse eingeben",
+ "addressPostalCode10": "Die Postleitzahl muss 10 Ziffern haben",
+ "addressSaved": "Adresse gespeichert",
+ "addressProvince": "Provinz",
+ "addressCity": "Stadt",
+ "addressDistrict": "Viertel / Bezirk",
+ "addressPlaque": "Hausnummer",
+ "addressUnit": "Wohnung"
 }

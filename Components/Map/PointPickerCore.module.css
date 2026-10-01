@@ -55,6 +55,14 @@
   position: relative;
   width: 100%;
   height: clamp(18rem, 60vh, 36rem);
+}
+
+/* inside a popup form (an address): room for the fields under the map */
+.compact .map {
+  height: clamp(14rem, 34vh, 20rem);
+}
+
+.map {
   border-radius: var(--radiusLg, 1rem);
   overflow: hidden;
   border: 1px solid var(--line);

@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "Halaman Anda ditangguhkan sejak ${1}",
  "panelSuspendedText": "Halaman Anda untuk sementara tidak tampil di situs dan tidak menerima janji temu atau pesanan baru. Janji temu dan pesanan yang sudah ada tetap berlaku dan masih dapat Anda selesaikan.",
  "panelSuspendedReason": "Alasan: ${1}",
- "panelSuspendedContact": "Hubungi dukungan untuk mencabut penangguhan"
+ "panelSuspendedContact": "Hubungi dukungan untuk mencabut penangguhan",
+ "addressPinFirst": "Tandai dulu lokasi tepatnya di peta; alamat, provinsi, kota, dan lingkungan terisi otomatis.",
+ "addressCityNotFound": "Provinsi dan kota titik ini tidak ditemukan; letakkan penanda dengan lebih tepat.",
+ "addressWriteIt": "Tulis alamatnya",
+ "addressPostalCode10": "Kode pos harus 10 digit",
+ "addressSaved": "Alamat disimpan",
+ "addressProvince": "Provinsi",
+ "addressCity": "Kota",
+ "addressDistrict": "Lingkungan / distrik",
+ "addressPlaque": "Nomor bangunan",
+ "addressUnit": "Unit"
 }

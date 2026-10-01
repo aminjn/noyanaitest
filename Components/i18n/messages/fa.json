@@ -2309,5 +2309,15 @@
  "panelSuspendedSince": "صفحه‌ی شما از ${1} تعلیق شده است",
  "panelSuspendedText": "صفحه‌ی شما فعلاً روی سایت نیست و نوبت یا سفارش تازه نمی‌گیرد. نوبت‌ها و سفارش‌های ثبت‌شده سر جایشان هستند و می‌توانید آن‌ها را انجام دهید.",
  "panelSuspendedReason": "دلیل: ${1}",
- "panelSuspendedContact": "برای رفع تعلیق با پشتیبانی تماس بگیرید"
+ "panelSuspendedContact": "برای رفع تعلیق با پشتیبانی تماس بگیرید",
+ "addressPinFirst": "اول محل دقیق را روی نقشه مشخص کنید؛ آدرس، استان، شهر و محله خودکار پر می‌شوند.",
+ "addressCityNotFound": "استان و شهر این نقطه پیدا نشد؛ نقطه را دقیق‌تر روی نقشه بگذارید.",
+ "addressWriteIt": "آدرس را بنویسید",
+ "addressPostalCode10": "کد پستی باید ۱۰ رقم باشد",
+ "addressSaved": "آدرس ذخیره شد",
+ "addressProvince": "استان",
+ "addressCity": "شهر",
+ "addressDistrict": "محله / منطقه",
+ "addressPlaque": "پلاک",
+ "addressUnit": "واحد"
 }

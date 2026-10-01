@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "آپ کا صفحہ ${1} سے معطل ہے",
  "panelSuspendedText": "آپ کا صفحہ فی الحال سائٹ پر نہیں ہے اور نئی بکنگ یا آرڈر نہیں لیتا۔ پہلے سے درج بکنگ اور آرڈر برقرار ہیں اور آپ انہیں مکمل کر سکتے ہیں۔",
  "panelSuspendedReason": "وجہ: ${1}",
- "panelSuspendedContact": "معطلی ختم کرانے کے لیے سپورٹ سے رابطہ کریں"
+ "panelSuspendedContact": "معطلی ختم کرانے کے لیے سپورٹ سے رابطہ کریں",
+ "addressPinFirst": "پہلے نقشے پر درست جگہ نشان زد کریں؛ پتہ، صوبہ، شہر اور محلہ خود بخود بھر جائیں گے۔",
+ "addressCityNotFound": "اس نقطے کا صوبہ اور شہر نہیں ملا؛ پن کو زیادہ درست جگہ پر رکھیں۔",
+ "addressWriteIt": "پتہ لکھیں",
+ "addressPostalCode10": "پوسٹل کوڈ 10 ہندسوں کا ہونا چاہیے",
+ "addressSaved": "پتہ محفوظ ہو گیا",
+ "addressProvince": "صوبہ",
+ "addressCity": "شہر",
+ "addressDistrict": "محلہ / علاقہ",
+ "addressPlaque": "عمارت نمبر",
+ "addressUnit": "یونٹ"
 }

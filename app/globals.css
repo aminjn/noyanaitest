@@ -410,6 +410,13 @@ h6 {
 /* NexaMap attribution (Components/Hooks/useMap.tsx) in the site theme */
 .maplibregl-ctrl-attrib {
   font-family: inherit;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-inner {
+    max-width: 60vw;
+  }
 }
 :root[data-theme="dark"] .maplibregl-ctrl.maplibregl-ctrl-attrib,
 :root[data-theme="dark"] .maplibregl-ctrl-attrib-button {

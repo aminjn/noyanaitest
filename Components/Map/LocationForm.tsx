@@ -13,6 +13,7 @@ import useForm from "@/Components/Hooks/useForm";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
+import { locate } from "./nexamap";
 import {
   ICity,
   IDistrict,
@@ -108,32 +109,39 @@ const LocationForm = ({
     }));
   }, [entity, withDivisions, setInput]);
 
-  // a new point: province / city / district follow it
+  // the address box is uncontrolled: bumped when the map fills it
+  const [addressVersion, setAddressVersion] = useState<number>(0);
+
+  // a new point: province / city / district follow it (NexaMap through
+  // /map/locate, our own boundaries when it's off), and an empty address
+  // box gets the written address
   const coords = input.coords;
   useEffect(() => {
-    if (!withDivisions || !coords) return;
+    if (!coords) return;
     let alive = true;
-    fetcher({ url: `${API}/public/resolveLocation?lat=${coords[1]}&lng=${coords[0]}` })
-      .then((res) => {
-        const data = (res as { data?: Record<string, unknown> })?.data;
-        if (!alive || !data) return;
-        const province = asDivision<IProvince>(data.province);
-        if (!province) return;
-        setInput((prev) => ({
-          ...prev,
-          province,
-          city: asDivision<ICity>(data.city),
-          district: asDivision<IDistrict>(data.district),
-        }));
+    locate({ lng: coords[0], lat: coords[1] })
+      .then((found) => {
+        if (!alive) return;
+        if (withDivisions && found.province)
+          setInput((prev) => ({
+            ...prev,
+            province: asDivision<IProvince>(found.province),
+            city: asDivision<ICity>(found.city),
+            district: asDivision<IDistrict>(found.district),
+          }));
+        if (withAddress && found.address)
+          setInput((prev) => {
+            if ((prev.address ?? savedAddress ?? "").trim()) return prev;
+            setAddressVersion((v) => v + 1);
+            return { ...prev, address: found.address || undefined };
+          });
       })
       .catch(() => {});
     return () => {
       alive = false;
     };
-  }, [coords, withDivisions, setInput]);
+  }, [coords, withDivisions, withAddress, savedAddress, setInput]);
 
-  // the address box is uncontrolled: bumped when the map fills it
-  const [addressVersion, setAddressVersion] = useState<number>(0);
   const currentAddress = input.address ?? savedAddress;
 
   return (

@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "Sayfanız ${1} tarihinden beri askıda",
  "panelSuspendedText": "Sayfanız şu anda sitede değil ve yeni randevu ya da sipariş almıyor. Mevcut randevu ve siparişler yerinde duruyor ve bunları tamamlayabilirsiniz.",
  "panelSuspendedReason": "Neden: ${1}",
- "panelSuspendedContact": "Askıyı kaldırmak için destekle iletişime geçin"
+ "panelSuspendedContact": "Askıyı kaldırmak için destekle iletişime geçin",
+ "addressPinFirst": "Önce haritada tam konumu işaretleyin; adres, il, şehir ve mahalle otomatik doldurulur.",
+ "addressCityNotFound": "Bu noktanın ili ve şehri bulunamadı; işareti daha doğru yere koyun.",
+ "addressWriteIt": "Adresi yazın",
+ "addressPostalCode10": "Posta kodu 10 haneli olmalıdır",
+ "addressSaved": "Adres kaydedildi",
+ "addressProvince": "İl",
+ "addressCity": "Şehir",
+ "addressDistrict": "Mahalle / bölge",
+ "addressPlaque": "Bina no",
+ "addressUnit": "Daire"
 }
