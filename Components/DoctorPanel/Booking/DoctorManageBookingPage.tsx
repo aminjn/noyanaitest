@@ -20,6 +20,9 @@ import ReservationJoinButton from "@/Components/Dashboard/Booking/ReservationJoi
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import DoctorVisitPanel from "@/Components/Visit/DoctorVisitPanel";
 import ReservationCancel from "@/Components/Dashboard/Booking/ReservationCancel";
+import usePopup from "@/Components/Hooks/usePopup";
+import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
+import MoveReservationPopup from "../Desk/MoveReservationPopup";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
@@ -67,6 +70,8 @@ const DoctorManageBookingPage = () => {
   );
 
   const getContent = useScopedLocale(NS);
+  const { setPopup } = usePopup();
+  const hasAccess = useDoctorAcl();
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },
@@ -174,6 +179,23 @@ const DoctorManageBookingPage = () => {
                 <span className={classes.hint}>
                   {getContent("checkInOpensHint")}
                 </span>
+              )}
+              {data.status === "pending" && hasAccess("mutateCalendar") && (
+                <Button
+                  variant="Neutral"
+                  onClick={() =>
+                    setPopup(
+                      "MoveReservation",
+                      <MoveReservationPopup
+                        reservationId={data._id}
+                        sessionType={data.sessionType}
+                        onDone={() => mutate()}
+                      />,
+                    )
+                  }
+                >
+                  {getContent("deskMove")}
+                </Button>
               )}
               <ReservationCancel
                 side="doctor"

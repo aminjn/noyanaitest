@@ -17,6 +17,10 @@
   color: var(--gray13);
 }
 
+.newButton {
+  order: 3;
+}
+
 .tabs {
   display: flex;
   gap: 0.25rem;

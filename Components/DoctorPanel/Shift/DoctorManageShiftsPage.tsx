@@ -32,6 +32,7 @@ import useShiftUtils from "./useShiftUtils";
 import Button from "@/Components/UI/Button";
 import useNotification from "@/Components/Hooks/useNotification";
 import Act from "@/Components/UI/Act";
+import TimeOffSection from "../Desk/TimeOffSection";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
@@ -199,6 +200,7 @@ const Inner = ({
         }}
         payload={{ shifts: isLoading }}
       />
+      <TimeOffSection />
     </div>
   );
 };
