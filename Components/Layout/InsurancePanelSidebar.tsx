@@ -1,3 +1,5 @@
+import PackageIcon from "../Icons/PackageIcon";
+import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
@@ -14,6 +16,20 @@ const InsurancePanelSidebar = () => {
   const links = useMemo<LinkMap>(
     () => [
       { title: "dashboard", icon: <DashboardIcon />, target: "", show: true },
+      {
+        icon: <PackageIcon />,
+        title: "insPlans",
+        group: "groupDaily",
+        show: hasAccess("managePlans"),
+        target: "plan",
+      },
+      {
+        icon: <StetoscopeIcon />,
+        title: "insNetwork",
+        group: "groupDaily",
+        show: hasAccess("readNetwork"),
+        target: "network",
+      },
       {
         icon: <UserCircleIcon />,
         title: "profile",

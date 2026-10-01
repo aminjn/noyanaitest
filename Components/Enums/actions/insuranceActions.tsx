@@ -5,6 +5,8 @@ import { ContentKey } from "../contentKeys";
 // item itself (owner-only by design). Kept in sync with
 // Models/InsuranceAcl.ts on noyanai-back.
 export const insuranceActions = [
+  "managePlans",
+  "readNetwork",
   "readFinance",
   "mutateProfile",
   "readArticles",
@@ -16,6 +18,8 @@ export const insuranceActions = [
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
 // nav item's own title key, reused as the tab label.
 export const insuranceActionCategories = [
+  "insPlans",
+  "insNetwork",
   "financialMangement",
   "profile",
   "articles",
@@ -25,6 +29,8 @@ export const insuranceActionCategories = [
 export const categorizedInsuranceActions: Readonly<
   Record<(typeof insuranceActionCategories)[number], readonly ContentKey[]>
 > = {
+  insPlans: ["managePlans"],
+  insNetwork: ["readNetwork"],
   financialMangement: ["readFinance"],
   profile: ["mutateProfile"],
   articles: ["readArticles"],

@@ -2352,5 +2352,22 @@
  "labResultNote": "给患者的说明（可选）",
  "labResultHint": "以 PDF 或图片发送结果。仅患者和实验室可见，并会通知患者。",
  "labResultSent": "结果已保存",
- "labChooseFiles": "选择文件"
+ "labChooseFiles": "选择文件",
+ "insPlans": "保险方案",
+ "insNetwork": "医疗网络",
+ "managePlans": "管理保险方案",
+ "readNetwork": "查看医疗网络",
+ "insNewPlan": "新方案",
+ "insPlanName": "方案名称",
+ "insPlanPrice": "保费（托曼）",
+ "insPlanFeatures": "保障内容",
+ "insPlanPopular": "热门",
+ "insPlanActive": "在网站显示",
+ "insNetworkHint": "接受您保险的医生和机构。医生通过客服审核的保险申请加入；机构在资料中标注。",
+ "insNetDoctors": "医生",
+ "insNetClinics": "诊所",
+ "insNetHospitals": "医院",
+ "insNetLabs": "实验室和影像中心",
+ "insNetPharmacies": "药房",
+ "insNetEmpty": "暂无"
 }

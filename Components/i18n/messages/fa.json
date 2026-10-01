@@ -2374,5 +2374,22 @@
  "labResultNote": "توضیح برای بیمار (اختیاری)",
  "labResultHint": "فایل PDF یا تصویر جواب را بفرستید. فقط بیمار و آزمایشگاه آن را می‌بینند و بیمار باخبر می‌شود.",
  "labResultSent": "جواب ثبت شد",
- "labChooseFiles": "انتخاب فایل"
+ "labChooseFiles": "انتخاب فایل",
+ "insPlans": "طرح‌های بیمه",
+ "insNetwork": "شبکه‌ی درمانی",
+ "managePlans": "مدیریت طرح‌های بیمه",
+ "readNetwork": "دیدن شبکه‌ی درمانی",
+ "insNewPlan": "طرح جدید",
+ "insPlanName": "نام طرح",
+ "insPlanPrice": "حق بیمه (تومان)",
+ "insPlanFeatures": "پوشش‌ها",
+ "insPlanPopular": "پرطرفدار",
+ "insPlanActive": "نمایش در سایت",
+ "insNetworkHint": "پزشکان و مراکزی که بیمه‌ی شما را می‌پذیرند. پزشک با درخواست افزودن بیمه و تأیید پشتیبانی وارد می‌شود و مراکز آن را در پروفایل خود ثبت می‌کنند.",
+ "insNetDoctors": "پزشکان",
+ "insNetClinics": "کلینیک‌ها",
+ "insNetHospitals": "بیمارستان‌ها",
+ "insNetLabs": "آزمایشگاه‌ها و مراکز تصویربرداری",
+ "insNetPharmacies": "داروخانه‌ها",
+ "insNetEmpty": "هنوز کسی ثبت نشده است"
 }

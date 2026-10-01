@@ -2352,5 +2352,22 @@
  "labResultNote": "患者へのメモ（任意）",
  "labResultHint": "結果をPDFまたは画像で送ってください。患者と検査機関だけが閲覧でき、患者に通知されます。",
  "labResultSent": "結果を保存しました",
- "labChooseFiles": "ファイルを選択"
+ "labChooseFiles": "ファイルを選択",
+ "insPlans": "保険プラン",
+ "insNetwork": "医療ネットワーク",
+ "managePlans": "保険プランの管理",
+ "readNetwork": "医療ネットワークを見る",
+ "insNewPlan": "新しいプラン",
+ "insPlanName": "プラン名",
+ "insPlanPrice": "保険料（トマン）",
+ "insPlanFeatures": "補償内容",
+ "insPlanPopular": "人気",
+ "insPlanActive": "サイトに表示",
+ "insNetworkHint": "あなたの保険を受け付ける医師と施設です。医師はサポート承認の申請で追加され、施設はプロフィールに記載します。",
+ "insNetDoctors": "医師",
+ "insNetClinics": "クリニック",
+ "insNetHospitals": "病院",
+ "insNetLabs": "検査・画像診断センター",
+ "insNetPharmacies": "薬局",
+ "insNetEmpty": "まだいません"
 }

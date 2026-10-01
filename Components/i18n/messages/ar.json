@@ -2352,5 +2352,22 @@
  "labResultNote": "ملاحظة للمريض (اختياري)",
  "labResultHint": "أرسل النتيجة بصيغة PDF أو صورة. لا يراها إلا المريض والمختبر، ويُبلَّغ المريض.",
  "labResultSent": "تم حفظ النتيجة",
- "labChooseFiles": "اختيار الملفات"
+ "labChooseFiles": "اختيار الملفات",
+ "insPlans": "خطط التأمين",
+ "insNetwork": "الشبكة الطبية",
+ "managePlans": "إدارة خطط التأمين",
+ "readNetwork": "عرض الشبكة الطبية",
+ "insNewPlan": "خطة جديدة",
+ "insPlanName": "اسم الخطة",
+ "insPlanPrice": "القسط (تومان)",
+ "insPlanFeatures": "التغطيات",
+ "insPlanPopular": "الأكثر طلباً",
+ "insPlanActive": "معروض في الموقع",
+ "insNetworkHint": "الأطباء والمراكز التي تقبل تأمينك. ينضم الطبيب عبر طلب إضافة تأمين يوافق عليه الدعم، وتضيفه المراكز في ملفها.",
+ "insNetDoctors": "الأطباء",
+ "insNetClinics": "العيادات",
+ "insNetHospitals": "المستشفيات",
+ "insNetLabs": "المختبرات ومراكز الأشعة",
+ "insNetPharmacies": "الصيدليات",
+ "insNetEmpty": "لا أحد بعد"
 }

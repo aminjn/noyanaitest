@@ -2352,5 +2352,22 @@
  "labResultNote": "Nota para el paciente (opcional)",
  "labResultHint": "Envía el resultado en PDF o imagen. Solo lo ven el paciente y el laboratorio, y se avisa al paciente.",
  "labResultSent": "Resultado guardado",
- "labChooseFiles": "Elegir archivos"
+ "labChooseFiles": "Elegir archivos",
+ "insPlans": "Planes de seguro",
+ "insNetwork": "Red de proveedores",
+ "managePlans": "Gestionar planes de seguro",
+ "readNetwork": "Ver la red de proveedores",
+ "insNewPlan": "Nuevo plan",
+ "insPlanName": "Nombre del plan",
+ "insPlanPrice": "Prima (tomanes)",
+ "insPlanFeatures": "Coberturas",
+ "insPlanPopular": "Popular",
+ "insPlanActive": "Visible en el sitio",
+ "insNetworkHint": "Médicos y centros que aceptan tu seguro. Un médico se suma con una solicitud aprobada por soporte; los centros lo indican en su perfil.",
+ "insNetDoctors": "Médicos",
+ "insNetClinics": "Clínicas",
+ "insNetHospitals": "Hospitales",
+ "insNetLabs": "Laboratorios y centros de imagen",
+ "insNetPharmacies": "Farmacias",
+ "insNetEmpty": "Nadie todavía"
 }

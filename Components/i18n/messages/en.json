@@ -2352,5 +2352,22 @@
  "labResultNote": "Note for the patient (optional)",
  "labResultHint": "Send the result as a PDF or image. Only the patient and the lab can see it, and the patient is told.",
  "labResultSent": "Result saved",
- "labChooseFiles": "Choose files"
+ "labChooseFiles": "Choose files",
+ "insPlans": "Insurance plans",
+ "insNetwork": "Provider network",
+ "managePlans": "Manage insurance plans",
+ "readNetwork": "See the provider network",
+ "insNewPlan": "New plan",
+ "insPlanName": "Plan name",
+ "insPlanPrice": "Premium (toman)",
+ "insPlanFeatures": "What it covers",
+ "insPlanPopular": "Popular",
+ "insPlanActive": "Shown on the site",
+ "insNetworkHint": "Doctors and centres that accept your insurance. A doctor joins through an insurance request approved by support; centres list it on their profile.",
+ "insNetDoctors": "Doctors",
+ "insNetClinics": "Clinics",
+ "insNetHospitals": "Hospitals",
+ "insNetLabs": "Labs and imaging centres",
+ "insNetPharmacies": "Pharmacies",
+ "insNetEmpty": "No one yet"
 }

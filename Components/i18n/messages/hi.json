@@ -2352,5 +2352,22 @@
  "labResultNote": "मरीज़ के लिए नोट (वैकल्पिक)",
  "labResultHint": "परिणाम PDF या छवि के रूप में भेजें। इसे केवल मरीज़ और लैब देख सकते हैं और मरीज़ को सूचना मिलती है।",
  "labResultSent": "परिणाम सहेजा गया",
- "labChooseFiles": "फ़ाइलें चुनें"
+ "labChooseFiles": "फ़ाइलें चुनें",
+ "insPlans": "बीमा योजनाएँ",
+ "insNetwork": "चिकित्सा नेटवर्क",
+ "managePlans": "बीमा योजनाएँ प्रबंधित करें",
+ "readNetwork": "चिकित्सा नेटवर्क देखें",
+ "insNewPlan": "नई योजना",
+ "insPlanName": "योजना का नाम",
+ "insPlanPrice": "प्रीमियम (तोमान)",
+ "insPlanFeatures": "कवरेज",
+ "insPlanPopular": "लोकप्रिय",
+ "insPlanActive": "साइट पर दिखाएँ",
+ "insNetworkHint": "आपका बीमा स्वीकार करने वाले डॉक्टर और केंद्र। डॉक्टर सहायता द्वारा स्वीकृत अनुरोध से जुड़ते हैं; केंद्र इसे अपनी प्रोफ़ाइल में दर्ज करते हैं।",
+ "insNetDoctors": "डॉक्टर",
+ "insNetClinics": "क्लिनिक",
+ "insNetHospitals": "अस्पताल",
+ "insNetLabs": "लैब और इमेजिंग केंद्र",
+ "insNetPharmacies": "फ़ार्मेसी",
+ "insNetEmpty": "अभी कोई नहीं"
 }
