@@ -217,13 +217,15 @@ const InsuranceLocationManager = ({
   node: IInsurance;
   mutate: () => unknown;
 }) => {
-  const { setInput, submit, isLoading } = useForm<{ coords: [number, number] }>(
+  const { setInput, submit, isLoading, input } = useForm<{ coords: [number, number]; address: string }>(
     {
       path: `${API}/auto/insurance/${node._id}`,
       method: "POST",
-      hasProblem: (inp) => (!inp.coords ? ta("یک موقعیت را انتخاب کنید") : false),
+      hasProblem: (inp) => (!inp.coords && !inp.address ? ta("یک موقعیت را انتخاب کنید") : false),
       mutator: (inp) => ({
-        location: { type: "Point", coordinates: inp.coords },
+        ...(inp.coords ? { location: { type: "Point", coordinates: inp.coords } } : {}),
+      // the point's address, when the admin took it (or it was empty)
+      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
       }),
       successCb: () => mutate(),
     },
@@ -232,6 +234,8 @@ const InsuranceLocationManager = ({
   return (
     <Form>
       <PointPicker
+        currentAddress={input.address ?? node.address ?? ""}
+        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
         onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
         defaultValue={node.location?.coordinates}
       />

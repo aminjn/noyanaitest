@@ -22,6 +22,7 @@ import ReservationJoinButton from "./ReservationJoinButton";
 import PatientIntakeCard from "@/Components/Visit/PatientIntakeCard";
 import ReservationCancel from "./ReservationCancel";
 import VisitFeedbackCard from "@/Components/Visit/VisitFeedbackCard";
+import LeaveByHint from "@/Components/Map/LeaveByHint";
 
 const NS: ContentNamespace[] = ["common", "dashboardBooking"];
 
@@ -142,6 +143,17 @@ const DashboardManageBookingPage = () => {
                 />
               </div>
             </div>
+
+            {/* an upcoming in-person visit: when to leave, traffic zone */}
+            {data.sessionType === "inPerson" &&
+              (data.status === "active" || data.status === "pending") && (
+              <LeaveByHint
+                className={classes.leaveBy}
+                coords={data.office?.location?.coordinates}
+                date={data.date}
+                start={data.start}
+              />
+            )}
 
             {(!!data.chat || !!data.callRoom) && data.status === "active" && (
               <div className={classes.joinRow}>

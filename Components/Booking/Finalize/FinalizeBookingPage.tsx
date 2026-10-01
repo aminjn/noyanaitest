@@ -3,6 +3,7 @@ import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useParams, useSearchParams } from "next/navigation";
 import classes from "./FinalizeBookingPage.module.css";
 import useSWR from "swr";
+import LeaveByHint from "@/Components/Map/LeaveByHint";
 import { currencize } from "@/Components/helpers/currencize";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { API } from "@/Components/config";
@@ -691,6 +692,14 @@ const BookingFlowSidebar = ({
             title={getContent("sessionTime")}
             value={`${date.toLocaleDateString(intlTag, { month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
           />
+          {/* in person: when to leave, and the traffic zone at that time */}
+          {sessionType === "inPerson" && (
+            <LeaveByHint
+              coords={shift.office?.location?.coordinates}
+              date={date}
+              start={start}
+            />
+          )}
         </div>
       )}
     </div>

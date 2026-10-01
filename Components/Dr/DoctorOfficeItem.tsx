@@ -1,8 +1,7 @@
-import { Fragment, ReactNode, useRef } from "react";
+import { Fragment, ReactNode } from "react";
 import { IOffice } from "../DoctorPanel/Office/DoctorManageOfficesPage";
-import useMap from "../Hooks/useMap";
 import classes from "./DoctorOfficeItem.module.css";
-import MapMarker from "../UI/MapMarker";
+import PlaceLocationCard from "../Map/PlaceLocationCard";
 import InfoPair from "./InfoPair";
 import LinkIcon2 from "../Icons/LinkIcon2";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -15,15 +14,16 @@ const NS: ContentNamespace[] = ["common", "drProfile"];
 export const OfficeItemInner = ({
   items,
   coords,
+  name,
+  address,
 }: {
   coords?: [number, number];
+  // passed to the "how to get there" card (the address there is the
+  // reverse-geocoded one only when the office has none)
+  name?: string;
+  address?: string;
   items: { title: string; value?: string; icon: ReactNode; target?: string }[];
 }) => {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const { map, ready } = useMap({
-    containerRef: mapRef,
-    center: coords,
-  });
 
   return (
     <li className={classes.main}>
@@ -41,17 +41,13 @@ export const OfficeItemInner = ({
           </Fragment>
         ))}
       </div>
-      {coords && (
-        <div className={classes.map} ref={mapRef}>
-          {ready && (
-            <MapMarker
-              lng={coords[0]}
-              lat={coords[1]}
-              map={map}
-              variant="active"
-            />
-          )}
-        </div>
+      {!!coords?.length && (
+        <PlaceLocationCard
+          className={classes.location}
+          coords={coords}
+          name={name}
+          address={address}
+        />
       )}
     </li>
   );
@@ -63,6 +59,8 @@ const DoctorOfficeItem = ({ office }: { office: IOffice }) => {
   return (
     <OfficeItemInner
       coords={office.location?.coordinates}
+      name={office.name}
+      address={office.address}
       items={[
         {
           icon: <LinkIcon2 />,

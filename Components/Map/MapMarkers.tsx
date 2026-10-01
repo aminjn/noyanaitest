@@ -8,6 +8,7 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import { UseMapReturns } from "../Hooks/useMap";
 import LoadingIcon from "../Icons/LoadingIcon";
 import LocationMarkIcon from "../Icons/LocationMarkIcon";
+import { setUserLocation, useTravelText, useUserLocation } from "./mapHooks";
 
 const SelfMarker = ({
   lat,
@@ -41,12 +42,15 @@ const SelfMarker = ({
 const MapMarker = ({
   mode,
   title,
+  badge,
   map,
   lat,
   lng,
 }: {
   mode: MapFilter;
   title: string;
+  // short text under the pin (travel time from the visitor)
+  badge?: string;
   map: mlgl.Map;
   lat: number;
   lng: number;
@@ -61,13 +65,18 @@ const MapMarker = ({
     return () => {
       marker.remove();
     };
-  }, [lat, lng, map]);
+  }, [lat, lng, map, badge, title]);
 
   return (
     <Fragment>
       <div style={{ display: "none" }}>
-        <div className={classes.marker} ref={markerRef}>
+        <div
+          className={classes.marker}
+          ref={markerRef}
+          title={badge ? `${title} · ${badge}` : title}
+        >
           <Ixon width="1.125rem">{filterIcon[mode]}</Ixon>
+          {!!badge && <span className={classes.markerBadge}>{badge}</span>}
         </div>
       </div>
     </Fragment>
@@ -79,12 +88,20 @@ const MapMarkers = ({
   ready,
   map,
   flyToMe,
+  travelTimes,
 }: {
   data?: { doctors?: IDoctorProfile[] };
+  // doctor id -> seconds from the visitor (NexaMap matrix), when known
+  travelTimes?: Record<string, number> | null;
 } & UseMapReturns) => {
   const [isMeLoading, setIsMeLoading] = useState<boolean>(false);
 
-  const [me, setMe] = useState<[number, number] | null>();
+  // shared with the rest of the page (travel times, reachable area)
+  const location = useUserLocation();
+  const me: [number, number] | null = location.point
+    ? [location.point.lng, location.point.lat]
+    : null;
+  const text = useTravelText();
 
   return (
     <Fragment>
@@ -92,12 +109,13 @@ const MapMarkers = ({
         <Fragment>
           {!!map && (
             <Fragment>
-              {data?.doctors?.map((doctor) => (
+              {(Array.isArray(data?.doctors) ? data.doctors : []).map((doctor) => (
                 <Fragment key={doctor._id}>
-                  {doctor.location?.coordinates && (
+                  {doctor.location?.coordinates?.length === 2 && (
                     <MapMarker
                       mode="doctors"
                       title={getDoctorProfileLabel(doctor)}
+                      badge={text.duration(travelTimes?.[doctor._id]) || undefined}
                       lat={doctor.location.coordinates[1]}
                       lng={doctor.location.coordinates[0]}
                       map={map}
@@ -113,9 +131,18 @@ const MapMarkers = ({
             type="button"
             onClick={async () => {
               setIsMeLoading(true);
-              const mine = await flyToMe();
-              setIsMeLoading(false);
-              setMe([mine.coords.longitude, mine.coords.latitude]);
+              try {
+                const mine = await flyToMe();
+                if (mine)
+                  setUserLocation({
+                    lat: mine.coords.latitude,
+                    lng: mine.coords.longitude,
+                  });
+              } catch {
+                // denied / unavailable: useMap already told the visitor
+              } finally {
+                setIsMeLoading(false);
+              }
             }}
           >
             <Ixon width="1.5rem">

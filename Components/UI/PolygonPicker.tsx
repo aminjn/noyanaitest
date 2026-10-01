@@ -12,7 +12,8 @@ import { TerraDrawPolygonMode } from "terra-draw";
 import Button from "./Button";
 import { IPolygon } from "../Admin/Province/AdminManageProvincesPage";
 import useNotification from "../Hooks/useNotification";
-import { ta } from "@/Components/Admin/i18n/adminText";
+import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
+import PlaceSearch from "@/Components/Map/PlaceSearch";
 
 const drawModes = ["select", "polygon"] as const;
 
@@ -38,7 +39,7 @@ const PolygonPicker = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<DrawMode | null>(null);
-  const { map, ready } = useMap({ containerRef });
+  const { map, ready, center } = useMap({ containerRef });
   const [draw, setDraw] = useState<TerraDraw | null>(null);
 
   const pushNotification = useNotification();
@@ -102,6 +103,17 @@ const PolygonPicker = ({
 
   return (
     <div className={classes.container}>
+      {/* find the area to draw (a city, a district, a street) */}
+      <PlaceSearch
+        placeholder={ta("جستجوی شهر، محله یا خیابان")}
+        noResults={ta("نتیجه‌ای پیدا نشد")}
+        errorText={ta("جستجوی نقشه در دسترس نیست")}
+        locale={adminIntlTag()}
+        near={center ? { lat: center.lat, lng: center.lng } : null}
+        onPick={({ location }) =>
+          map?.flyTo({ center: [location.lng, location.lat], zoom: 13 })
+        }
+      />
       {ready && (
         <div className={classes.toolbar}>
           <div className={classes.controls}>

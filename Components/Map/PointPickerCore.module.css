@@ -1,0 +1,124 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.hint {
+  margin: 0;
+  color: var(--gray9);
+  font-size: 0.875rem;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.search {
+  flex: 1;
+  min-width: 0;
+}
+
+.locate {
+  flex-shrink: 0;
+  height: 2.875rem;
+}
+
+/* a phone keeps the icon only (the button still has its aria-label) */
+@media (max-width: 480px) {
+  .locateText {
+    display: none;
+  }
+}
+
+.error {
+  margin: 0;
+  color: var(--error);
+  font-size: 0.8125rem;
+}
+
+.coords {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 1rem;
+}
+
+/* Always a visible box: a fixed height (never 0 in a freshly opened tab),
+   a border and a neutral background while the tiles load or if they
+   can't. */
+.map {
+  position: relative;
+  width: 100%;
+  height: clamp(18rem, 60vh, 36rem);
+  border-radius: var(--radiusLg, 1rem);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--gray2, #eef1f5);
+}
+
+.address {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background-color: var(--gray2);
+}
+
+.addressIcon {
+  display: flex;
+  color: var(--primary);
+  padding-block-start: 0.125rem;
+}
+
+.addressBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  text-align: start;
+}
+
+.addressTitle {
+  color: var(--gray9);
+  font-size: 0.75rem;
+}
+
+.addressText {
+  color: var(--gray13);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.zone {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: 100dvw;
+  background-color: var(--warningT1);
+  color: var(--warningS3);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.use {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .address {
+    flex-wrap: wrap;
+  }
+  .use {
+    width: 100%;
+  }
+}

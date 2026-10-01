@@ -1,19 +1,13 @@
-.container {
+.main {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  min-width: 0;
 }
 
-.resolved {
-  font-weight: 500;
-}
-
-.geoSelects {
+.divisions {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
-
-
-
-

@@ -7,8 +7,9 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import CreateForm from "../UI/CreateForm";
-import Box from "../UI/Box";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminSectionHub from "../UI/AdminSectionHub";
+import AdminMapSettingsTab from "./AdminMapSettingsTab";
 
 // Mirrors backend Models/AppConfig.ts - the single source of truth for
 // these settings now lives in the DB (singleton document), not .env.
@@ -58,7 +59,8 @@ export interface IAppConfig extends MongoDoc {
   reservationNoShowNudgeInterval: number;
 }
 
-const AdminManageAppConfigPage = () => {
+// the general settings: one form, its parts as its own tabs
+const AdminGeneralSettingsTab = () => {
   const { data, error, mutate } = useSWR<IAppConfig>(
     `${API}/auto/appConfig`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
@@ -67,7 +69,7 @@ const AdminManageAppConfigPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={ta("تنظیمات سیستم")}>
+        <WithTitle title={ta("تنظیمات عمومی")}>
           <CreateForm<IAppConfig>
             layout="tabs"
             defaultValue={data}
@@ -179,5 +181,17 @@ const AdminManageAppConfigPage = () => {
     </HandleLoading>
   );
 };
+
+// تنظیمات سیستم (super admin): the general settings and the map provider
+// (NexaMap, 2026-10) as tabs of one page.
+const AdminManageAppConfigPage = () => (
+  <AdminSectionHub
+    title={ta("تنظیمات سیستم")}
+    tabs={[
+      { id: "general", title: ta("عمومی"), content: <AdminGeneralSettingsTab /> },
+      { id: "map", title: ta("نقشه (نکسا مپ)"), content: <AdminMapSettingsTab /> },
+    ]}
+  />
+);
 
 export default AdminManageAppConfigPage;

@@ -85,3 +85,7 @@
 .joinRow:empty {
   display: none;
 }
+
+.leaveBy {
+  margin-block-start: 1rem;
+}

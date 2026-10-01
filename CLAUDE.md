@@ -37,6 +37,7 @@ Before you design or build a feature, a page, or a UX flow, check how the leader
   - `Components/Admin/UI/AdminSectionHub`: one admin page per concern, its parts (categories, tags, packages, related settings) as tabs. Don't add a separate menu item for a part of an existing page.
   - `Components/UI/NodesSelector` with `creatable`: a category or tag is created inline from the form that uses it, never "go define it on another page first".
   - Provider requests (become X, suggested centres, doctor memberships) live in one queue, `/requests` (`Components/Admin/Requests`). A status changes only through its one-way actions (approve, reject with a reason, reopen).
+  - Maps: everything goes through NexaMap via the backend gateway (`/api/v1/map`); never call a map provider from the browser or put a key in the frontend. Use `Components/Map/nexamap.ts` (client), `useMap` (themed NexaMap style + attribution), `PlaceSearch` (autocomplete), `PointPicker` (admin) / `LocationPicker` + `LocationForm` (panels) and the CreateForm `"point"` field to pick a location, and `PlaceLocationCard` to show one on a public page.
 - Guard against bad data: a record missing a field, or a response that isn't an array, must not crash the page.
 
 ## 4. Fixed points

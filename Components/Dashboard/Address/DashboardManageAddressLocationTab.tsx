@@ -1,16 +1,11 @@
 import { IUserAddress } from "./DashboardManageAddressesPage";
 import classes from "./DashboardManageAddressLocationTab.module.css";
-import PointPicker from "@/Components/Admin/UI/PointPicker";
-import FormActions from "@/Components/Admin/UI/FormActions";
-import Button from "@/Components/UI/Button";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
-import useNotification from "@/Components/Hooks/useNotification";
+import LocationForm from "@/Components/Map/LocationForm";
 import { API } from "@/Components/config";
-import useForm from "@/Components/Hooks/useForm";
 
-const NS: ContentNamespace[] = ["common", "dashboardAddress"];
-
+// The address's map pin (the courier's destination) and, from it, the
+// address text: the shared panel location form. The address is required on
+// the model, so it is only sent when it has text.
 const DashboardManageAddressLocationTab = ({
   mutate,
   address,
@@ -18,38 +13,13 @@ const DashboardManageAddressLocationTab = ({
   address: IUserAddress;
   mutate: () => unknown;
 }) => {
-  const { setInput, isLoading, submit, input } = useForm<{
-    coords: [number, number];
-  }>({
-    path: `${API}/user/address/${address._id}`,
-    method: "POST",
-    successCb: () => {
-      mutate();
-    },
-    mutator: (inp) => ({ location: inp.coords }),
-  });
-
-  const getContent = useScopedLocale(NS);
-
-  const pushNotification = useNotification();
-
   return (
     <div className={classes.main}>
-      <PointPicker
-        defaultValue={address.location?.coordinates}
-        onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
+      <LocationForm
+        path={`${API}/user/address/${address._id}`}
+        entity={address}
+        mutate={mutate}
       />
-      <FormActions>
-        <Button
-          onClick={() => {
-            if (!input.coords) return pushNotification("checkInput", "Warn");
-            submit();
-          }}
-          isLoading={!!isLoading}
-        >
-          {getContent("submit")}
-        </Button>
-      </FormActions>
     </div>
   );
 };

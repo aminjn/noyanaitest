@@ -32,6 +32,9 @@ import LicensePricingInput, {
   ILicensePricingEntry,
 } from "./LicensePricingInput";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PointPicker from "./PointPicker";
+import LocationPicker from "@/Components/Map/LocationPicker";
+import { asPoint } from "@/Components/Map/PointPickerCore";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -113,6 +116,19 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
     | { type: "files"; getDefaultValue?: (node: TInput) => string[] }
     | { type: "number"; price?: boolean }
     | { type: "licensePricing" }
+    | {
+        // a map point: search, map click, "my location", and the point's
+        // address under the map
+        type: "point";
+        // the admin panel's picker (ta texts); otherwise the panels' one
+        admin?: boolean;
+        // a text field of this form the point's address fills when it is
+        // empty (or on "use this address")
+        addressField?: string;
+        // what is sent: GeoJSON {type:"Point",coordinates:[lng,lat]}
+        // (default) or the bare [lng, lat] pair some endpoints take
+        store?: "geojson" | "pair";
+      }
   ) & {
     title: string;
     readOnly?: boolean;
@@ -170,7 +186,16 @@ const wideFieldTypes: string[] = [
   "licensePricing",
   "range",
   "options",
+  "point",
 ];
+
+// a saved point is GeoJSON or a bare [lng, lat] pair (or garbage)
+const pointOf = (value: unknown): [number, number] | undefined =>
+  asPoint(
+    value && typeof value === "object" && !Array.isArray(value)
+      ? (value as { coordinates?: unknown }).coordinates
+      : value,
+  ) || undefined;
 
 const CreateForm = <TInput, TResult = unknown>({
   defaultValue,
@@ -218,6 +243,14 @@ const CreateForm = <TInput, TResult = unknown>({
 
   const getContent = useScopedLocale(LOCALE_NS);
   const [tab, setTab] = useState("");
+  // text fields a map point fills: bumped to remount the (uncontrolled)
+  // input with the new value
+  const [refill, setRefill] = useState<Record<string, number>>({});
+  const filledByPoint = new Set<string>();
+  Object.values(renderer).forEach((segment) => {
+    const seg = segment as { type?: string; addressField?: string } | undefined;
+    if (seg?.type === "point" && seg.addressField) filledByPoint.add(seg.addressField);
+  });
 
   const collected: { key: string; segment: FormRenderer<TInput>[keyof TInput]; node: ReactNode }[] = [];
   Object.keys(renderer).forEach((_key) => {
@@ -227,7 +260,10 @@ const CreateForm = <TInput, TResult = unknown>({
         const commons = {
           // a title built at module load is still the Persian source
           title: ta(segment.title),
-          defaultValue: defaultValue?.[key]?.toString(),
+          defaultValue:
+            filledByPoint.has(key.toString()) && input[key] !== undefined
+              ? String(input[key])
+              : defaultValue?.[key]?.toString(),
           placeholder: true,
           readOnly: isLoading || readOnly || segment.readOnly,
           required: segment.required,
@@ -468,6 +504,44 @@ const CreateForm = <TInput, TResult = unknown>({
                 onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
               />
             );
+            break;
+          case "point": {
+            const addressKey = segment.addressField as keyof TInput | undefined;
+            const store = segment.store || "geojson";
+            const pointProps = {
+              defaultValue: pointOf(defaultValue?.[key]),
+              onChange: (e: [number, number]) =>
+                setInput((prev) => ({
+                  ...prev,
+                  [key]: store === "pair" ? e : { type: "Point", coordinates: e },
+                })),
+              ...(addressKey
+                ? {
+                    currentAddress: String(
+                      input[addressKey] ?? defaultValue?.[addressKey] ?? "",
+                    ),
+                    onUseAddress: (address: string) => {
+                      setInput((prev) => ({ ...prev, [addressKey]: address }));
+                      setRefill((prev) => ({
+                        ...prev,
+                        [addressKey]: (prev[addressKey as string] || 0) + 1,
+                      }));
+                    },
+                  }
+                : {}),
+            };
+            content = (
+              <div className={classes.point}>
+                <span className={classes.pointTitle}>{commons.title}</span>
+                {segment.admin ? (
+                  <PointPicker {...pointProps} />
+                ) : (
+                  <LocationPicker {...pointProps} />
+                )}
+              </div>
+            );
+            break;
+          }
         }
         if (!content) return;
         collected.push({
@@ -475,7 +549,7 @@ const CreateForm = <TInput, TResult = unknown>({
           segment,
           node: (
             <div
-              key={key.toString()}
+              key={`${key.toString()}-${refill[key.toString()] || 0}`}
               className={
                 segment.type === "bool"
                   ? classes.switchCard

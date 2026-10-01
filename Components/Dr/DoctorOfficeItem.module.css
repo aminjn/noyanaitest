@@ -1,7 +1,8 @@
 .main {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 3.25rem;
+  flex-wrap: wrap;
 }
 
 .details {
@@ -9,10 +10,10 @@
   flex-direction: column;
   gap: 1.5rem;
   max-width: 27.5rem;
-  width: 27.5rem;
+  width: min(27.5rem, 100%);
 }
 
-.map {
+.location {
   flex: 1;
-  height: 19rem;
+  min-width: min(100%, 20rem);
 }

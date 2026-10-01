@@ -406,3 +406,16 @@ h6 {
 .maplibregl-map.maplibregl-map {
   font: unset;
 }
+
+/* NexaMap attribution (Components/Hooks/useMap.tsx) in the site theme */
+.maplibregl-ctrl-attrib {
+  font-family: inherit;
+}
+:root[data-theme="dark"] .maplibregl-ctrl.maplibregl-ctrl-attrib,
+:root[data-theme="dark"] .maplibregl-ctrl-attrib-button {
+  background-color: rgba(20, 24, 38, 0.85);
+  color: #c9cfdd;
+}
+:root[data-theme="dark"] .maplibregl-ctrl-attrib a {
+  color: #c9cfdd;
+}

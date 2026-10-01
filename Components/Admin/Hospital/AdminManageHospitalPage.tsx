@@ -217,23 +217,25 @@ const HospitalLocationManager = ({
   node: IHospital;
   mutate: () => unknown;
 }) => {
-  const { setInput, isLoading, submit } = useForm<{
-    coordinates: [number, number];
-  }>({
+  const { setInput, isLoading, submit, input } = useForm<{ coordinates: [number, number]; address: string }>({
     path: `${API}/auto/hospital/${node._id}`,
     method: "POST",
     successCb: () => {
       mutate();
     },
     mutator: (inp) => ({
-      location: { type: "Point", coordinates: inp.coordinates },
+      ...(inp.coordinates ? { location: { type: "Point", coordinates: inp.coordinates } } : {}),
+      // the point's address, when the admin took it (or it was empty)
+      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
     }),
-    hasProblem: (inp) => (!inp.coordinates ? ta("مختصات را انتخاب کنید") : false),
+    hasProblem: (inp) => (!inp.coordinates && !inp.address ? ta("مختصات را انتخاب کنید") : false),
   });
 
   return (
     <div>
       <PointPicker
+        currentAddress={input.address ?? node.address ?? ""}
+        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
         defaultValue={node.location?.coordinates}
         onChange={(e) => setInput((prev) => ({ ...prev, coordinates: e }))}
       />

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import classes from "./BookingMap2.module.css";
 import useMap from "../Hooks/useMap";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -19,6 +19,7 @@ import { TerraDraw, TerraDrawCircleMode, TerraDrawPointMode } from "terra-draw";
 import { TerraDrawMapLibreGLAdapter } from "terra-draw-maplibre-gl-adapter";
 import { bbox, circle } from "@turf/turf";
 import usePopup from "../Hooks/usePopup";
+import { useTravelTimes, useUserLocation } from "../Map/mapHooks";
 
 const NS: ContentNamespace[] = ["common", "booking"];
 
@@ -97,6 +98,18 @@ const BookingMap2 = ({
     { keepPreviousData: true },
   );
 
+  // drive time from the visitor to the doctors in view (marker badges)
+  const me = useUserLocation();
+  const travelPlaces = useMemo(
+    () =>
+      (Array.isArray(data?.doctors) ? data.doctors : []).map((d) => ({
+        id: d._id,
+        coordinates: d.location?.coordinates,
+      })),
+    [data],
+  );
+  const travelTimes = useTravelTimes(me.point, travelPlaces);
+
   useEffect(() => {
     if (!map || !ready || !!terra) return;
     const td = new TerraDraw({
@@ -160,7 +173,7 @@ const BookingMap2 = ({
           ))}
         </div>
         <div className={classes.map} ref={containerRef}>
-          <MapMarkers {...mapHook} data={data} />
+          <MapMarkers {...mapHook} data={data} travelTimes={travelTimes} />
         </div>
         <Button
           variant={selected ? "Primary" : "Disable"}

@@ -24,6 +24,7 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import { adminPath } from "@/Components/helpers/adminPath";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import NexaMapDivisionsSyncPopup from "./NexaMapDivisionsSyncPopup";
 
 export type IPosition = [longitude: number, latitude: number];
 export type ILinearRing = IPosition[];
@@ -161,6 +162,14 @@ const AdminManageProvincesPage = () => {
                 setPopup(
                   "MutateProvince",
                   <MutateProvincePopup mutate={mutate} />,
+                ),
+            },
+            {
+              title: ta("همگام‌سازی با نکسا مپ"),
+              action: () =>
+                setPopup(
+                  "NexaMapDivisionsSync",
+                  <NexaMapDivisionsSyncPopup onDone={() => mutate()} />,
                 ),
             },
           ]}
