@@ -11,6 +11,7 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import usePopup from "@/Components/Hooks/usePopup";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
+import Ixon from "@/Components/UI/Ixon";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
@@ -179,9 +180,9 @@ const AdminManageCallRoomsPage = () => {
                         </IconButton>
                       )}
                       <InlineLink href={adminPath(`/callroom/${node._id}`)}>
-                        <span aria-label={ta("مشاهده")} style={{ display: "inline-flex", transform: "rotateZ(90deg)" }}>
+                        <Ixon width="1rem" style={{ transform: "rotateZ(90deg)" }}>
                           <ChevronIcon />
-                        </span>
+                        </Ixon>
                       </InlineLink>
                     </TableActions>
                   ),
