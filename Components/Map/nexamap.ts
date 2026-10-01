@@ -162,8 +162,9 @@ export type Route = {
   };
   geometry: string;
   legs?: { steps?: { instruction?: string }[] }[];
-  restrictions_violated?: { type?: string }[];
+  restrictions_violated?: { type?: string; from?: number; to?: number }[];
   primary?: boolean;
+  confidence?: "high" | "low" | string;
 };
 
 export const route = (body: {
@@ -202,7 +203,10 @@ export const trafficFlow = (b: BBox) =>
   get<{ geojson: GeoJSON.FeatureCollection; count: number; source?: string }>("traffic/flow", b);
 
 export const trafficZones = () =>
-  get<{ geojson: GeoJSON.FeatureCollection; status?: Record<string, unknown> }>("traffic-zones");
+  get<{
+    geojson: GeoJSON.FeatureCollection;
+    status?: Record<string, { active_today?: boolean; hours?: string }>;
+  }>("traffic-zones");
 
 export const parking = (p: LatLng, radius?: number) =>
   get<{

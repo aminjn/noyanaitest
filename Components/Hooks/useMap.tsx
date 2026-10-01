@@ -211,13 +211,15 @@ const useMap = ({
     async (_zoom: number = 17) => {
       return new Promise<GeolocationPosition>((resolve, reject) => {
         const current = mapRef.current;
-        if (!current)
-          return pushNotification(getContent("mapIsNotReady"), "Warn");
-        if (!navigator.geolocation)
-          return pushNotification(
-            getContent("yourDeviceNotSupportingGPS"),
-            "Error",
-          );
+        // always settle, so a caller's spinner stops
+        if (!current) {
+          pushNotification(getContent("mapIsNotReady"), "Warn");
+          return reject();
+        }
+        if (!navigator.geolocation) {
+          pushNotification(getContent("yourDeviceNotSupportingGPS"), "Error");
+          return reject();
+        }
         navigator.geolocation.getCurrentPosition(
           (pos) => {
             current.flyTo({
