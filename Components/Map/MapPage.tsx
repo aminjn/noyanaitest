@@ -14,7 +14,6 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { tlgMedium, tsmMedium, tsmRegular } from "../UI/Typography";
 import MapMarkers from "./MapMarkers";
-import SearchZones from "./SearchZones";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -55,7 +54,7 @@ const MapPage = () => {
     containerRef,
   });
 
-  const { bounds, fitBounds } = mapHook;
+  const { bounds } = mapHook;
 
   // "reachable within N minutes": the area the visitor can drive to
   const [reachable, setReachable] = useState<IsochroneGeoJson | null>(null);
@@ -130,7 +129,6 @@ const MapPage = () => {
             mapHook.map?.flyTo({ center: [pick.location.lng, pick.location.lat], zoom: 15 })
           }
         />
-        <SearchZones onSelect={fitBounds} />
         <div className={classes.filters}>
           {mapFilters.map((filter) => (
             <Button
