@@ -16,13 +16,13 @@ const TestHub = () => {
         {
           id: "tests",
           title: ta("آزمایش‌ها"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Test"),
           content: <AdminManageTestsPage />,
         },
         {
           id: "categories",
           title: ta("دسته‌ها"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Test"),
           content: <AdminManageTestCategoriesPage />,
         },
       ]}

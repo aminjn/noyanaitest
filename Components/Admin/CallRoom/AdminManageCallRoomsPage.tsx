@@ -1,135 +1,206 @@
 "use client";
 
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { API } from "@/Components/config";
 import {
   callTypeDict,
   ICallRoom,
 } from "@/Components/Dashboard/Call/DashboardManageCallsPage";
-import { fetcher } from "@/Components/helpers/fetcher";
-import useSWR from "swr";
+import { adminPath } from "@/Components/helpers/adminPath";
+import usePopup from "@/Components/Hooks/usePopup";
+import XMarkIcon from "@/Components/Icons/XMarkIcon";
+import ChevronIcon from "@/Components/Icons/ChevronIcon";
+import Ixon from "@/Components/UI/Ixon";
+import { ta } from "@/Components/Admin/i18n/adminText";
 import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
 import WithTitle from "../UI/WithTitle";
 import InlineLink from "../UI/InlineLink";
-import { adminPath } from "@/Components/helpers/adminPath";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
-import XMarkIcon from "@/Components/Icons/XMarkIcon";
-import usePopup from "@/Components/Hooks/usePopup";
+import {
+  FinanceFilterBar,
+  FinancePager,
+  useFinanceFilters,
+  useFinanceList,
+} from "../Finance/FinanceListControls";
+import {
+  AdminPerson,
+  doctorLabel,
+  formatDay,
+  hhmm,
+  identityLabel,
+  personLabel,
+} from "../Reservation/reservationAdmin";
 import CreateCallPopup from "./CreateCallPopup";
 import DestroyCallPopup from "./DestroyCallPopup";
-import { ta } from "@/Components/Admin/i18n/adminText";
+import { callStatusDict, formatDuration } from "./callAdmin";
+
+// Calls (2026-10, audit P3-18): server-paged, searchable by participant,
+// filterable by status / type / day and - through ?doctor= ?user=
+// ?reservation= links from other admin pages - by doctor or patient. Each
+// row shows the reservation it belongs to, how long it ran, who joined and
+// whether it was recorded; the row opens the call's record.
+
+export type AdminCallRow = {
+  _id: string;
+  callType: "voice" | "video";
+  source?: string;
+  status?: string;
+  startedAt?: string;
+  connectedAt?: string;
+  endedAt?: string;
+  duration?: number | null;
+  participants: AdminPerson[];
+  joined?: number;
+  recordings?: number;
+  reservation?: {
+    _id: string;
+    date?: string;
+    start?: number;
+    doctor?: { _id: string; firstName?: string; lastName?: string } | null;
+    patient?: { _id: string; givenName?: string; lastName?: string } | null;
+  } | null;
+};
+
+const SCOPES = ["doctor", "user", "reservation"] as const;
 
 const AdminManageCallRoomsPage = () => {
-  const { data, error, mutate } = useSWR<ICallRoom<{ participants: true }>[]>(
-    `${API}/auto/callroom`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  const searchParams = useSearchParams();
+  const state = useFinanceFilters({}, "callType");
+  const query = useMemo(() => {
+    const params = new URLSearchParams(state.query);
+    for (const key of SCOPES) {
+      const value = searchParams?.get(key);
+      if (value) params.set(key, value);
+    }
+    return params;
+  }, [state.query, searchParams]);
+  const scoped = SCOPES.some((key) => searchParams?.get(key));
+  const { data, error, mutate, isValidating } = useFinanceList<AdminCallRow>(
+    `${API}/admin/calls`,
+    query,
+    state.page,
   );
-
   const { setPopup } = usePopup();
 
   return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <WithTitle
-          title={ta("مکالمات")}
-          actions={[
-            {
-              title: ta("جدید"),
-              action: () =>
-                setPopup("CreateCall", <CreateCallPopup mutate={mutate} />),
-            },
-          ]}
-        >
-          <Table
-            name="AdminManageCallRooms"
-            data={data}
-            renderer={{
-              partyA: {
-                name: ta("طرف اول"),
-                value: (node) => node.participants?.[0]?.phone,
-                filter: "Text",
-                component: (node) => {
-                  const party = node.participants?.[0];
-                  if (!party) return "—";
-                  return (
-                    <InlineLink href={adminPath(`/user/${party._id}`)}>
-                      {party.phone || party._id}
-                    </InlineLink>
-                  );
-                },
-              },
-              partyB: {
-                name: ta("طرف دوم"),
-                value: (node) => node.participants?.[1]?.phone,
-                filter: "Text",
-                component: (node) => {
-                  const party = node.participants?.[1];
-                  if (!party) return "—";
-                  return (
-                    <InlineLink href={adminPath(`/user/${party._id}`)}>
-                      {party.phone || party._id}
-                    </InlineLink>
-                  );
-                },
-              },
-              callType: {
-                name: ta("نوع تماس"),
-                value: (node) => callTypeDict[node.callType],
-                filter: "Set",
-              },
-              startedAt: {
-                name: ta("شروع تماس"),
-                value: (node) =>
-                  node.startedAt ? new Date(node.startedAt) : undefined,
-                filter: "Date",
-              },
-              status: {
-                name: ta("وضعیت"),
-                value: (node) =>
-                  ({
-                    ringing: ta("در حال زنگ"),
-                    ongoing: ta("در جریان"),
-                    ended: ta("پایان‌یافته"),
-                    cancelled: ta("لغو شده"),
-                  })[node.status || ""] ||
-                  node.status ||
-                  "—",
-                filter: "Set",
-              },
-              endedAt: {
-                name: ta("پایان تماس"),
-                value: (node) =>
-                  node.endedAt ? new Date(node.endedAt) : undefined,
-                filter: "Date",
-              },
-              actions: {
-                name: ta("عملیات"),
-                component: (node) => (
-                  <TableActions>
-                    {(node.status === "ringing" ||
-                      node.status === "ongoing") && (
-                      <IconButton
-                        title={ta("پایان تماس")}
-                        variant="Danger"
-                        onClick={() =>
-                          setPopup(
-                            "DestroyCall",
-                            <DestroyCallPopup node={node} mutate={mutate} />,
-                          )
-                        }
-                      >
-                        <XMarkIcon />
-                      </IconButton>
-                    )}
-                  </TableActions>
-                ),
-              },
-            }}
-          />
-        </WithTitle>
+    <WithTitle
+      title={ta("مکالمات")}
+      actions={[
+        {
+          title: ta("جدید"),
+          action: () => setPopup("CreateCall", <CreateCallPopup mutate={mutate} />),
+        },
+      ]}
+    >
+      <FinanceFilterBar
+        state={state}
+        searchPlaceholder={ta("جستجوی شرکت‌کننده با موبایل، نام یا کد ملی…")}
+        status={{ title: ta("وضعیت"), options: callStatusDict }}
+        extra={{ title: ta("نوع تماس"), options: callTypeDict }}
+      />
+      {scoped && (
+        <p>
+          <InlineLink href={adminPath("/callroom")}>{ta("حذف فیلترهای پیوند")}</InlineLink>
+        </p>
       )}
-    </HandleLoading>
+      <HandleLoading data={!!data} error={error}>
+        {!!data && (
+          <>
+            <Table
+toolbar={false}
+              name="AdminManageCallRooms"
+              data={data.rows}
+              renderer={{
+                startedAt: {
+                  name: ta("شروع تماس"),
+                  value: (node) => (node.startedAt ? new Date(node.startedAt) : undefined),
+                },
+                participants: {
+                  name: ta("شرکت‌کنندگان"),
+                  value: (node) =>
+                    (Array.isArray(node.participants) ? node.participants : [])
+                      .map((p) => personLabel(p))
+                      .join("، ") || "—",
+                },
+                reservation: {
+                  name: ta("نوبت"),
+                  value: (node) =>
+                    node.reservation
+                      ? `${doctorLabel(node.reservation.doctor)} / ${identityLabel(node.reservation.patient)}`
+                      : "—",
+                  component: (node) =>
+                    node.reservation ? (
+                      <InlineLink href={adminPath(`/reservation/${node.reservation._id}`)}>
+                        {doctorLabel(node.reservation.doctor)} / {identityLabel(node.reservation.patient)}
+                        {" · "}
+                        {formatDay(node.reservation.date)} {hhmm(node.reservation.start)}
+                      </InlineLink>
+                    ) : (
+                      ta("تماس دستی")
+                    ),
+                },
+                callType: {
+                  name: ta("نوع تماس"),
+                  value: (node) => callTypeDict[node.callType] || node.callType,
+                },
+                status: {
+                  name: ta("وضعیت"),
+                  value: (node) => callStatusDict[node.status || ""] || node.status || "—",
+                },
+                duration: {
+                  name: ta("مدت"),
+                  value: (node) => formatDuration(node.duration),
+                },
+                joined: {
+                  name: ta("حاضران / ضبط"),
+                  value: (node) =>
+                    `${node.joined ?? 0} / ${node.recordings ?? 0}`,
+                },
+                actions: {
+                  name: ta("عملیات"),
+                  component: (node) => (
+                    <TableActions>
+                      {(node.status === "ringing" || node.status === "active") && (
+                        <IconButton
+                          title={ta("پایان تماس")}
+                          variant="Danger"
+                          onClick={() =>
+                            setPopup(
+                              "DestroyCall",
+                              <DestroyCallPopup
+                                node={{ _id: node._id } as unknown as ICallRoom}
+                                mutate={mutate}
+                              />,
+                            )
+                          }
+                        >
+                          <XMarkIcon />
+                        </IconButton>
+                      )}
+                      <InlineLink href={adminPath(`/callroom/${node._id}`)}>
+                        <Ixon width="1rem" style={{ transform: "rotateZ(90deg)" }}>
+                          <ChevronIcon />
+                        </Ixon>
+                      </InlineLink>
+                    </TableActions>
+                  ),
+                },
+              }}
+            />
+            <FinancePager
+              total={data.total}
+              page={state.page}
+              limit={data.limit}
+              setPage={state.setPage}
+              stale={isValidating}
+            />
+          </>
+        )}
+      </HandleLoading>
+    </WithTitle>
   );
 };
 

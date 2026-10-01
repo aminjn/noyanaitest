@@ -44,7 +44,7 @@ const AdminManageDoctorFaqPage = () => {
                         "DeleteDoctorFaq",
                         <DeleteDoctorFaqPopup
                           node={data}
-                          mutate={() => push(adminPath("/doctorfaq"))}
+                          mutate={() => push(adminPath("/faq?tab=doctors"))}
                         />,
                       ),
                   },

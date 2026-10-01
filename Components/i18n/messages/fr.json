@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "Partez avant ${1}",
  "mapLeaveNow": "Partez maintenant",
  "mapLeaveByHint": "Pour arriver environ 15 minutes en avance, en voiture depuis votre position actuelle (environ ${1} avec le trafic de cette heure)",
- "mapVisitInTrafficZone": "Le cabinet est dans la zone de circulation restreinte, en vigueur à l'heure de votre rendez-vous. Pensez au métro, au bus ou au taxi."
+ "mapVisitInTrafficZone": "Le cabinet est dans la zone de circulation restreinte, en vigueur à l'heure de votre rendez-vous. Pensez au métro, au bus ou au taxi.",
+ "tbExport": "Exporter en CSV",
+ "panelSuspendedTitle": "Votre page a été suspendue",
+ "panelSuspendedSince": "Votre page est suspendue depuis le ${1}",
+ "panelSuspendedText": "Votre page n'est plus visible sur le site pour le moment et ne reçoit aucun nouveau rendez-vous ni commande. Les rendez-vous et commandes déjà passés restent en place et vous pouvez les mener à terme.",
+ "panelSuspendedReason": "Motif : ${1}",
+ "panelSuspendedContact": "Contactez le support pour lever la suspension"
 }

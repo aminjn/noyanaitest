@@ -4,7 +4,7 @@ import { IDoctor } from "../Doctor/AdminManageDoctorsPage";
 import CreateForm from "../UI/CreateForm";
 import usePopup from "@/Components/Hooks/usePopup";
 import { API } from "@/Components/config";
-import { getDoctorLabel, getUserLabel } from "../Lib/LabelGetters";
+import { getDoctorLabel } from "../Lib/LabelGetters";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useSWR from "swr";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -103,11 +103,8 @@ const CloneDoctorProfileFromExistingDoctorPopup = ({
             ? {}
             : {
                 user: {
-                  type: "nodes",
-                  path: `${API}/auto/user`,
+                  type: "users",
                   title: ta("کاربر"),
-                  getOptionLabel: (node) => getUserLabel(node as IUser),
-                  getOptionValue: (node) => (node as IUser)._id,
                 },
               }),
           ...(doctor

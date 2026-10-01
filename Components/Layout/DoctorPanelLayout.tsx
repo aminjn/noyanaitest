@@ -1,3 +1,4 @@
+import SuspendedProviderBanner, { SuspendableProvider } from "./SuspendedProviderBanner";
 import ActingAsBanner from "./ActingAsBanner";
 import { ReactNode } from "react";
 import HandleLoading from "../Admin/UI/HandleLoading";
@@ -25,6 +26,7 @@ const DoctorPanelLayout = ({ children }: { children: ReactNode }) => {
       ) : doctor ? (
         <PanelLayout sidebar={<DoctorSidebar />}>
           <ActingAsBanner kind="doctor" ownerName={[doctor.firstName, doctor.lastName].filter(Boolean).join(" ")} />
+          <SuspendedProviderBanner node={doctor as SuspendableProvider} />
           <DoctorLicenseGate>{children}</DoctorLicenseGate>
         </PanelLayout>
       ) : notADoctor ? (

@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "Leave by ${1}",
  "mapLeaveNow": "Leave now",
  "mapLeaveByHint": "To arrive about 15 minutes early, by car from where you are now (about ${1} in the traffic at that hour)",
- "mapVisitInTrafficZone": "The office is inside the traffic restriction zone, which is in force at your visit time. Consider the metro, a bus or a taxi."
+ "mapVisitInTrafficZone": "The office is inside the traffic restriction zone, which is in force at your visit time. Consider the metro, a bus or a taxi.",
+ "tbExport": "Export CSV",
+ "panelSuspendedTitle": "Your page has been suspended",
+ "panelSuspendedSince": "Your page has been suspended since ${1}",
+ "panelSuspendedText": "Your page is not on the site for now and takes no new bookings or orders. Bookings and orders already placed stay as they are, and you can still complete them.",
+ "panelSuspendedReason": "Reason: ${1}",
+ "panelSuspendedContact": "Contact support to lift the suspension"
 }

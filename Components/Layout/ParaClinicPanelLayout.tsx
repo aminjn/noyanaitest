@@ -1,4 +1,5 @@
 "use client";
+import SuspendedProviderBanner, { SuspendableProvider } from "./SuspendedProviderBanner";
 import ActingAsBanner from "./ActingAsBanner";
 
 import useSWR from "swr";
@@ -121,6 +122,7 @@ const ParaClinicPanelLayout = ({ children }: { children: ReactNode }) => {
       ) : !!data ? (
         <PanelLayout sidebar={<ParaClinicSidebar />}>
           <ActingAsBanner kind="paraClinic" ownerName={data?.name} />
+          <SuspendedProviderBanner node={data as SuspendableProvider} />
           <ParaClinicLicenseGate>{children}</ParaClinicLicenseGate>
         </PanelLayout>
       ) : (

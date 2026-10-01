@@ -306,3 +306,25 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
+
+.actionBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.statusNote {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-inline-start: 4px solid var(--warningS1, var(--gray8));
+  font-size: 0.875rem;
+}
+
+/* the user's reservations / orders / wallet tabs (UserActivity.tsx) */
+.activity {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}

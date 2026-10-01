@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "Berangkat paling lambat ${1}",
  "mapLeaveNow": "Berangkat sekarang",
  "mapLeaveByHint": "Agar tiba sekitar 15 menit lebih awal, dengan mobil dari lokasi Anda sekarang (sekitar ${1} dalam lalu lintas jam itu)",
- "mapVisitInTrafficZone": "Tempat praktik berada di zona pembatasan lalu lintas yang berlaku pada jam kunjungan Anda. Pertimbangkan metro, bus, atau taksi."
+ "mapVisitInTrafficZone": "Tempat praktik berada di zona pembatasan lalu lintas yang berlaku pada jam kunjungan Anda. Pertimbangkan metro, bus, atau taksi.",
+ "tbExport": "Ekspor CSV",
+ "panelSuspendedTitle": "Halaman Anda telah ditangguhkan",
+ "panelSuspendedSince": "Halaman Anda ditangguhkan sejak ${1}",
+ "panelSuspendedText": "Halaman Anda untuk sementara tidak tampil di situs dan tidak menerima janji temu atau pesanan baru. Janji temu dan pesanan yang sudah ada tetap berlaku dan masih dapat Anda selesaikan.",
+ "panelSuspendedReason": "Alasan: ${1}",
+ "panelSuspendedContact": "Hubungi dukungan untuk mencabut penangguhan"
 }

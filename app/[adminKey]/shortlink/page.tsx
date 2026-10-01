@@ -1,17 +1,7 @@
-import AdminManageShortLinksPage from "@/Components/Admin/ShortLink/AdminManageShortLinksPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "سئو و لینک‌ها" page as a tab (2026-09 admin audit)
+const LegacyShortLinkAdmin = () => redirect(`/${adminKey}/seo?tab=shortlinks`);
 
-const AdminManageShortLinks = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageShortLinksPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageShortLinks;
+export default LegacyShortLinkAdmin;

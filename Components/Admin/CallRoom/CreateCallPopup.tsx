@@ -1,13 +1,14 @@
 import { callTypeDict } from "@/Components/Dashboard/Call/DashboardManageCallsPage";
+import { useState } from "react";
 import CreateForm from "../UI/CreateForm";
-import useUser, { IUser } from "@/Components/Hooks/useUser";
+import useUser from "@/Components/Hooks/useUser";
+import UserSearchSelect, { UserOption } from "../UI/UserSearchSelect";
 import { API } from "@/Components/config";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 type CreateCallInput = {
-  participantIds: string[];
   callType: string;
   joinMyself: boolean;
 };
@@ -15,21 +16,22 @@ type CreateCallInput = {
 const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
   const { user } = useUser();
+  // participants are found by server search (GET /admin/users?q=), not by
+  // loading every account
+  const [participants, setParticipants] = useState<UserOption[]>([]);
+  const participantIds = participants.map((p) => p._id);
 
   return (
     <PopupCard title={ta("تماس جدید")}>
+      <UserSearchSelect
+        multi
+        title={ta("شرکت کنندگان")}
+        value={participants}
+        onChange={setParticipants}
+      />
       <CreateForm<CreateCallInput>
         style={{ width: "min(90dvw , 40rem)" }}
         renderer={{
-          participantIds: {
-            type: "nodes",
-            title: ta("شرکت کنندگان"),
-            getOptionLabel: (node) =>
-              (node as IUser).phone || (node as IUser)._id,
-            getOptionValue: (node) => (node as IUser)._id,
-            path: `${API}/auto/user`,
-            multi: true,
-          },
           callType: {
             type: "select",
             title: ta("نوع تماس"),
@@ -45,14 +47,14 @@ const CreateCallPopup = ({ mutate }: { mutate: () => unknown }) => {
           method: "POST",
           hasProblem: (inp) => {
             const count =
-              (inp.participantIds?.length || 0) + (inp.joinMyself ? 1 : 0);
+              participantIds.length + (inp.joinMyself ? 1 : 0);
             if (count < 2) return ta("حداقل باید دو شرکت کننده انتخاب شود");
           },
           mutator: (inp) => ({
             participantIds:
               inp.joinMyself && user
-                ? [...(inp.participantIds || []), user._id]
-                : inp.participantIds || [],
+                ? [...participantIds.filter((id) => id !== user._id), user._id]
+                : participantIds,
             callType: inp.callType,
           }),
           successCb: () => {

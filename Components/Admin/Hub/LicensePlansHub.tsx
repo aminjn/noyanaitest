@@ -9,6 +9,7 @@ import AdminManageBaseHospitalLicensesPage from "@/Components/Admin/BaseHospital
 import AdminManageBaseInsuranceLicensesPage from "@/Components/Admin/BaseInsuranceLicense/AdminManageBaseInsuranceLicensesPage";
 import AdminManageBaseParaClinicLicensesPage from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
 import AdminManageBasePharmacyLicensesPage from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
+import AdminSubscriptionsTab from "@/Components/Admin/LicensePlans/AdminSubscriptionsTab";
 
 // پلن‌ها و مجوزها: one admin page, its parts as tabs (2026-09 admin audit).
 const LicensePlansHub = () => {
@@ -53,6 +54,13 @@ const LicensePlansHub = () => {
           title: ta("بیمه"),
           exclude: !canOpen("admin"),
           content: <AdminManageBaseInsuranceLicensesPage />,
+        },
+        {
+          // every provider's current plan, expiry and owner in one list
+          id: "subscriptions",
+          title: ta("اشتراک‌ها"),
+          exclude: !canOpen("Finance"),
+          content: <AdminSubscriptionsTab />,
         },
       ]}
     />

@@ -5,8 +5,8 @@ import useHubTabAccess from "../UI/useHubTabAccess";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminManageNotificationsPage from "@/Components/Admin/Notification/AdminManageNotificationsPage";
 import AdminManageSmsPatternsPage from "@/Components/Admin/SmsPatterns/AdminManageSmsPatternsPage";
-import AdminManageUserAlertsPage from "@/Components/Admin/UserAlert/AdminManageUserAlertsPage";
 import AdminSmsSettingsPage from "@/Components/Admin/Sms/AdminSmsSettingsPage";
+import AdminSmsLogTab from "@/Components/Admin/Messaging/AdminSmsLogTab";
 
 // پیامک و اعلان‌ها: one admin page, its parts as tabs (2026-09 admin audit).
 const MessagingHub = () => {
@@ -14,7 +14,7 @@ const MessagingHub = () => {
   return (
     <AdminSectionHub
       title={ta("پیامک و اعلان‌ها")}
-      intro={ta("درگاه پیامک، پترن‌ها، اعلان همگانی و هشدارهای کارکنان در یک صفحه.")}
+      intro={ta("درگاه پیامک، پترن‌ها، اعلان همگانی و گزارش ارسال پیامک‌ها در یک صفحه.")}
       tabs={[
         {
           id: "gateway",
@@ -31,14 +31,15 @@ const MessagingHub = () => {
         {
           id: "broadcast",
           title: ta("اعلان همگانی"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Notification"),
           content: <AdminManageNotificationsPage />,
         },
         {
-          id: "alerts",
-          title: ta("هشدارهای کارکنان"),
+          // sent messages and OTP failures ("why didn't my code arrive?")
+          id: "smsLog",
+          title: ta("گزارش پیامک‌ها"),
           exclude: !canOpen("admin"),
-          content: <AdminManageUserAlertsPage />,
+          content: <AdminSmsLogTab />,
         },
       ]}
     />

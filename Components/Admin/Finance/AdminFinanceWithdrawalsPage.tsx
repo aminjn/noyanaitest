@@ -1,10 +1,8 @@
 "use client";
 
-import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/Components/i18n/navigation";
 import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import { adminPath } from "@/Components/helpers/adminPath";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -16,6 +14,12 @@ import TableActions from "../UI/TableActions";
 import Button from "@/Components/UI/Button";
 import DecideWithdrawalPopup from "./DecideWithdrawalPopup";
 import { IFinanceUser, userLabel } from "./adminFinance";
+import {
+  FinanceFilterBar,
+  FinancePager,
+  useFinanceFilters,
+  useFinanceList,
+} from "./FinanceListControls";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IAdminWithdrawalRow {
@@ -50,17 +54,19 @@ const statusDict: Record<IAdminWithdrawalRow["status"], string> = {
 // Every user's wallet -> bank withdrawal requests (2026-09). The amount is
 // already held; the admin transfers it (Paya / Satna) and records the
 // reference, or rejects it and it returns to the wallet.
+const WITHDRAWALS_PATH = `${API}/admin/finance/withdrawals`;
+
 const AdminFinanceWithdrawalsPage = () => {
   const status = useSearchParams().get("status") || "";
   const router = useRouter();
   const { setPopup } = usePopup();
-  const { data, error, mutate } = useSWR<IAdminWithdrawalRow[]>(
-    `${API}/admin/finance/withdrawals${status ? `?status=${encodeURIComponent(status)}` : ""}`,
-    (url: string) =>
-      fetcher({ url }).then((res) => (Array.isArray(res.data) ? res.data : [])),
-  );
+  const state = useFinanceFilters({ status });
+  const { data: list, error, mutate, isValidating } =
+    useFinanceList<IAdminWithdrawalRow>(WITHDRAWALS_PATH, state.query, state.page);
+  const data = list?.rows;
+  const pending = list?.body.pending as { count?: number; sum?: number } | undefined;
   return (
-    <HandleLoading data={!!data} error={error}>
+    <HandleLoading data={!!list} error={error}>
       {!!data && (
         <WithTitle
           title={
@@ -83,9 +89,23 @@ const AdminFinanceWithdrawalsPage = () => {
                 },
           ]}
         >
+          {!!pending?.count && (
+            <p style={{ marginBottom: "1rem" }}>
+              {ta("${1} درخواست به مبلغ ${2} تومان در انتظار واریز است.", [String(pending.count), currencize(pending.sum || 0)])}
+            </p>
+          )}
+          <FinanceFilterBar
+            state={state}
+            searchPlaceholder={ta("موبایل، نام، شبا یا کد پیگیری...")}
+            status={{ title: ta("وضعیت"), options: statusDict }}
+            exportPath={WITHDRAWALS_PATH}
+            exportName="withdrawals"
+          />
           <Table
+toolbar={false}
             name="AdminFinanceWithdrawals"
             data={data}
+            exportable={false}
             renderer={{
               user: {
                 name: ta("کاربر"),
@@ -150,6 +170,13 @@ const AdminFinanceWithdrawalsPage = () => {
                   ) : null,
               },
             }}
+          />
+          <FinancePager
+            total={list.total}
+            page={state.page}
+            limit={list.limit}
+            setPage={state.setPage}
+            stale={isValidating}
           />
         </WithTitle>
       )}

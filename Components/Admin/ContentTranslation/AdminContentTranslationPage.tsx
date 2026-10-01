@@ -142,7 +142,7 @@ const AdminContentTranslationPage = ({ segment }: { segment?: string } = {}) => 
       {data && params && (
         <div className={classes.main}>
           {!embedded && (
-            <Link href={adminPath("/translations")} className={classes.back}>
+            <Link href={adminPath("/localization?tab=content")} className={classes.back}>
               <Ixon width="1rem" style={{ transform: "rotateZ(-90deg)" }}>
                 <ChevronIcon />
               </Ixon>

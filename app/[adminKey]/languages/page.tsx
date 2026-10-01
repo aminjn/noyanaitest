@@ -1,17 +1,7 @@
-import AdminSiteLanguagesPage from "@/Components/Admin/Languages/AdminSiteLanguagesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "زبان و ترجمه" page as a tab (2026-09 admin audit)
+const LegacyLanguagesAdmin = () => redirect(`/${adminKey}/localization?tab=languages`);
 
-const AdminSiteLanguages = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminSiteLanguagesPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminSiteLanguages;
+export default LegacyLanguagesAdmin;

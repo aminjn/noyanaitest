@@ -59,7 +59,7 @@ const AdminHomeOverview = () => {
       key: "advertisements",
       title: ta("تبلیغات"),
       how: ta("تبلیغ‌های جایگاه‌های خانه ۱ تا ۶"),
-      href: "/advertisement",
+      href: "/ads?tab=banners",
     },
     {
       key: "faqs",

@@ -48,7 +48,7 @@ const AdminManageInlineAdPage = () => {
                         "DeleteInlineAd",
                         <DeleteInlineAdPopup
                           node={data}
-                          mutate={() => push(adminPath("/inlinead"))}
+                          mutate={() => push(adminPath("/ads?tab=inline"))}
                         />,
                       ),
                   },

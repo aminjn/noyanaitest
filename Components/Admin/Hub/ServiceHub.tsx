@@ -17,19 +17,19 @@ const ServiceHub = () => {
         {
           id: "services",
           title: ta("خدمات"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Service"),
           content: <AdminManageServicesPage />,
         },
         {
           id: "packages",
           title: ta("پکیج‌های خدمات"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Service"),
           content: <AdminManageServicePackagesPage />,
         },
         {
           id: "categories",
           title: ta("دسته‌ها"),
-          exclude: !canOpen("admin"),
+          exclude: !canOpen("Service"),
           content: <AdminManageServiceCategoriesPage />,
         },
       ]}

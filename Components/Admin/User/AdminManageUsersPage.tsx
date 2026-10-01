@@ -13,6 +13,16 @@ import Loading from "../UI/Loading";
 import ErrorMessage from "../UI/ErrorMessage";
 import { RoleBadge, displayPhone, faDate, num } from "./userShared";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import Button from "@/Components/UI/Button";
+import PlusIcon from "@/Components/Icons/PlusIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import LockIcon from "@/Components/Icons/LockIcon";
+import LockCloseIcon from "@/Components/Icons/LockCloseIcon";
+import IconButton from "../UI/IconButton";
+import TableActions from "../UI/TableActions";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { StatusBadge, UserStatus, useUserActions } from "./userActions";
 
 type UserRow = {
   _id: string;
@@ -20,6 +30,9 @@ type UserRow = {
   username?: string;
   name?: string;
   role: string;
+  status?: UserStatus;
+  statusReason?: string;
+  suspendedUntil?: string;
   createdAt: string;
 };
 
@@ -29,6 +42,7 @@ type UsersResponse = {
   page: number;
   limit: number;
   roleCounts: Record<string, number>;
+  statusCounts?: Record<string, number>;
 };
 
 const PAGE_SIZE = 25;
@@ -48,10 +62,28 @@ const roleTabs: { role: string; title: string }[] = [
 } },
 ];
 
+// account state, next to the role tabs
+const statusTabs: { status: "" | UserStatus; title: string }[] = [
+  { status: "", get title() {
+  return ta("همه‌ی وضعیت‌ها");
+} },
+  { status: "active", get title() {
+  return ta("فعال");
+} },
+  { status: "suspended", get title() {
+  return ta("معلق");
+} },
+  { status: "deleted", get title() {
+  return ta("حذف‌شده");
+} },
+];
+
 const AdminManageUsersPage = () => {
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
   const [role, setRole] = useState("");
+  const [status, setStatus] = useState<"" | UserStatus>("");
+  const hasAccess = useAccessLevel();
   const [page, setPage] = useState(1);
 
   // Debounce typing so every keystroke doesn't hit the backend.
@@ -68,13 +100,18 @@ const AdminManageUsersPage = () => {
     limit: String(PAGE_SIZE),
     ...(query && { q: query }),
     ...(role && { role }),
+    ...(status && { status }),
   });
-  const { data, error, isValidating } = useSWR<UsersResponse>(
+  const { data, error, isValidating, mutate } = useSWR<UsersResponse>(
     `${API}/admin/users?${params}`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
     { keepPreviousData: true },
   );
 
+  const actions = useUserActions(() => mutate());
+  const canCreate = hasAccess("User", "write");
+  const canEdit = hasAccess("User", "update");
+  const canDelete = hasAccess("User", "delete");
   const allCount = data
     ? Object.values(data.roleCounts).reduce((sum, n) => sum + n, 0)
     : 0;
@@ -83,7 +120,7 @@ const AdminManageUsersPage = () => {
   return (
     <div className={classes.main}>
       <header className={classes.header}>
-        <div>
+        <div className={classes.headerText}>
           <h1 className={classes.title}>{ta("کاربران")}</h1>
           {data && (
             <span className={classes.subtitle}>
@@ -91,6 +128,11 @@ const AdminManageUsersPage = () => {
             </span>
           )}
         </div>
+        {canCreate && (
+          <Button size="M" leadIcon={<PlusIcon />} onClick={actions.create}>
+            {ta("کاربر جدید")}
+          </Button>
+        )}
       </header>
 
       <section className={classes.card}>
@@ -127,6 +169,28 @@ const AdminManageUsersPage = () => {
               </button>
             ))}
           </div>
+          <div className={classes.tabs} role="tablist" aria-label={ta("وضعیت حساب")}>
+            {statusTabs.map((tab) => (
+              <button
+                key={tab.status || "all"}
+                type="button"
+                role="tab"
+                aria-selected={status === tab.status}
+                className={`${classes.tab} ${status === tab.status ? classes.tabActive : ""}`}
+                onClick={() => {
+                  setStatus(tab.status);
+                  setPage(1);
+                }}
+              >
+                <span>{tab.title}</span>
+                {data?.statusCounts && tab.status && (
+                  <span className={classes.tabCount}>
+                    {num.format(data.statusCounts[tab.status] || 0)}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
         {error && !data ? (
@@ -142,8 +206,9 @@ const AdminManageUsersPage = () => {
                     <th>{ta("کاربر")}</th>
                     <th>{ta("موبایل")}</th>
                     <th>{ta("نقش")}</th>
+                    <th>{ta("وضعیت")}</th>
                     <th>{ta("تاریخ عضویت")}</th>
-                    <th aria-label={ta("جزئیات")} />
+                    <th>{ta("عملیات")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -166,17 +231,46 @@ const AdminManageUsersPage = () => {
                       <td>
                         <RoleBadge role={user.role} />
                       </td>
-                      <td className={classes.muted}>{faDate.format(new Date(user.createdAt))}</td>
+                      <td title={user.statusReason || undefined}>
+                        <StatusBadge status={user.status} until={user.suspendedUntil} />
+                      </td>
+                      <td className={classes.muted}>
+                        {isNaN(new Date(user.createdAt).getTime())
+                          ? "—"
+                          : faDate.format(new Date(user.createdAt))}
+                      </td>
                       <td>
-                        <Link
-                          href={adminPath(`/user/${user._id}`)}
-                          className={classes.rowLink}
-                          aria-label={ta("مشاهده کاربر")}
-                        >
-                          <Ixon width="1rem">
-                            <ChevronIcon />
-                          </Ixon>
-                        </Link>
+                        <TableActions>
+                          {canEdit && user.status !== "deleted" && (
+                            <IconButton title={ta("ویرایش")} onClick={() => actions.edit(user)}>
+                              <EditIcon />
+                            </IconButton>
+                          )}
+                          {canEdit && user.role !== "admin" && user.status === "suspended" && (
+                            <IconButton title={ta("رفع تعلیق")} onClick={() => actions.activate(user)}>
+                              <LockIcon />
+                            </IconButton>
+                          )}
+                          {canEdit && user.role !== "admin" && (user.status || "active") === "active" && (
+                            <IconButton title={ta("تعلیق")} onClick={() => actions.suspend(user)}>
+                              <LockCloseIcon />
+                            </IconButton>
+                          )}
+                          {canDelete && user.role === "user" && user.status !== "deleted" && (
+                            <IconButton title={ta("حذف")} variant="Danger" onClick={() => actions.remove(user)}>
+                              <GarbageIcon />
+                            </IconButton>
+                          )}
+                          <Link
+                            href={adminPath(`/user/${user._id}`)}
+                            className={classes.rowLink}
+                            aria-label={ta("مشاهده کاربر")}
+                          >
+                            <Ixon width="1rem">
+                              <ChevronIcon />
+                            </Ixon>
+                          </Link>
+                        </TableActions>
                       </td>
                     </tr>
                   ))}

@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "${1}までに出発",
  "mapLeaveNow": "今すぐ出発",
  "mapLeaveByHint": "約15分前に着くための目安です（現在地から車で、その時間帯の交通で約${1}）",
- "mapVisitInTrafficZone": "診療所は交通規制区域内にあり、受診時間帯は規制が実施されています。地下鉄、バス、タクシーの利用をご検討ください。"
+ "mapVisitInTrafficZone": "診療所は交通規制区域内にあり、受診時間帯は規制が実施されています。地下鉄、バス、タクシーの利用をご検討ください。",
+ "tbExport": "CSVをエクスポート",
+ "panelSuspendedTitle": "あなたのページは一時停止されています",
+ "panelSuspendedSince": "あなたのページは${1}から一時停止されています",
+ "panelSuspendedText": "あなたのページは現在サイトに表示されておらず、新しい予約や注文を受け付けません。すでに入っている予約や注文はそのまま残り、引き続き対応できます。",
+ "panelSuspendedReason": "理由：${1}",
+ "panelSuspendedContact": "一時停止の解除はサポートにお問い合わせください"
 }

@@ -25,13 +25,21 @@ import DoctorFinanceTab from "./DoctorFinanceTab";
 import DoctorProfileLicenseTab from "./DoctorProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
+import CalendarIcon from "@/Components/Icons/CalendarIcon";
+import DoctorScheduleTab from "./DoctorScheduleTab";
+import {
+  ProviderStatusBanner,
+  ProviderStatusFields,
+  useProviderStatusActions,
+} from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 // One record page per doctor, a short set of tabs as in the Doctolib Pro /
 // Docplanner back-offices: overview, the record itself (identity,
 // speciality, contact, introduction, visibility as sections), location,
-// money (commission + tax), license, panel owner, translations. Delete is
-// a header action behind a confirmation. Removed (2026-09): the «مشاور
+// money (commission + tax), license, schedule and access (read-only, for
+// support: "why can't I book?"), panel owner, translations. Delete and
+// suspend are header actions behind a confirmation. Removed (2026-09): the «مشاور
 // تلفنی» tab (a stub printing its own component name - PhoneConsultSettings
 // has no admin endpoint and the doctor panel does not offer the "phone"
 // kind), the separate «تخصص», «کمیسیون», «مالیات» and «عملیات» tabs.
@@ -51,6 +59,11 @@ const AdminManageDoctorProfilePage = () => {
   const push = useProgress();
 
   const hasAccess = useAccessLevel();
+  const statusActions = useProviderStatusActions({
+    kind: "doctorprofile",
+    node: data as unknown as ProviderStatusFields | undefined,
+    mutate,
+  });
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -60,8 +73,9 @@ const AdminManageDoctorProfilePage = () => {
             `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
             ta("بدون نام")
           }
-          actions={
-            hasAccess("DoctorProfile", "delete")
+          actions={[
+            ...statusActions,
+            ...(hasAccess("DoctorProfile", "delete")
               ? [
                   {
                     title: ta("حذف"),
@@ -76,9 +90,10 @@ const AdminManageDoctorProfilePage = () => {
                       ),
                   },
                 ]
-              : undefined
-          }
+              : []),
+          ]}
         >
+          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
           <TabSystem
             items={[
               ...(isAdmin
@@ -126,6 +141,14 @@ const AdminManageDoctorProfilePage = () => {
                     },
                   ]
                 : []),
+              {
+                // read-only: shifts, offices, the next 14 days, secretaries
+                // and why a patient can't book («چرا نوبت نمی‌گیرد؟»)
+                id: "Schedule",
+                title: ta("برنامه و دسترسی"),
+                content: <DoctorScheduleTab nodeId={data._id} />,
+                icon: <CalendarIcon />,
+              },
               {
                 id: "User",
                 content: <DoctorProfileUserTab node={data} mutate={mutate} />,

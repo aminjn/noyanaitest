@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AdminManageCallRoomsPage from "@/Components/Admin/CallRoom/AdminManageCallRoomsPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
@@ -9,7 +10,9 @@ const AdminManageCallRooms = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageCallRoomsPage />
+      <Suspense>
+        <AdminManageCallRoomsPage />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };

@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import NodesManager from "../UI/NodesManager";
+import useSWR from "swr";
+import HandleLoading from "../UI/HandleLoading";
+import WithTitle from "../UI/WithTitle";
+import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
@@ -10,11 +12,13 @@ import { adminPath } from "@/Components/helpers/adminPath";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import usePopup from "@/Components/Hooks/usePopup";
-import useNotification from "@/Components/Hooks/useNotification";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { useModeration } from "../Support/moderation";
+import supportClasses from "../Support/support.module.css";
 
 type FeedbackStatus = "Pending" | "Approved" | "Rejected";
 
@@ -25,161 +29,187 @@ type AdminDoctorFeedback = {
   publicMessage?: string;
   privateMessage?: string;
   status?: FeedbackStatus;
+  rejectReason?: string;
   submittedAt: string;
   doctor?: { _id: string; firstName?: string; lastName?: string; slug?: string } | null;
   user?: { _id: string; phone?: string } | null;
+  reservation?: { _id: string; date?: string } | string | null;
 };
 
 const statusDict: Record<FeedbackStatus, string> = {
   get Pending() {
-  return ta("در انتظار تایید");
-},
+    return ta("در انتظار تایید");
+  },
   get Approved() {
-  return ta("تایید شده");
-},
+    return ta("تایید شده");
+  },
   get Rejected() {
-  return ta("رد شده");
-},
+    return ta("رد شده");
+  },
 };
 
-// Verified visit reviews of doctors (2026-09): nothing is public until an
-// admin approves it here. Only the status is editable (API editSchema).
+const doctorName = (node: AdminDoctorFeedback) =>
+  `${node.doctor?.firstName || ""} ${node.doctor?.lastName || ""}`.trim();
+
+const reservationId = (node: AdminDoctorFeedback) =>
+  typeof node.reservation === "string" ? node.reservation : node.reservation?._id;
+
+// Verified visit reviews of doctors: nothing is public until an admin
+// approves it here. One by one or in bulk; a rejection keeps its reason.
 const AdminManageDoctorFeedbacksPage = () => {
   const { setPopup } = usePopup();
-  const pushNotification = useNotification();
-  const [busyId, setBusyId] = useState<string | null>(null);
-
-  const setStatus = async (
-    id: string,
-    status: FeedbackStatus,
-    mutate: () => unknown,
-  ) => {
-    if (busyId) return;
-    setBusyId(id);
-    try {
-      await fetcher({
-        url: `${API}/auto/doctorFeedback/${id}`,
-        method: "POST",
-        payload: { status },
-      });
-      pushNotification(
-        status === "Approved" ? ta("نظر تایید و منتشر شد.") : ta("نظر رد شد."),
-        "Success",
-      );
-      await mutate();
-    } catch (e) {
-      pushNotification(e instanceof Error ? e.message : String(e), "Error");
-    } finally {
-      setBusyId(null);
-    }
-  };
+  const hasAccess = useAccessLevel();
+  const { data, error, mutate } = useSWR<AdminDoctorFeedback[]>(
+    `${API}/auto/doctorFeedback`,
+    (url: string) =>
+      fetcher({ url }).then((res) => (Array.isArray(res?.data?.data) ? res.data.data : [])),
+  );
+  const canModerate = hasAccess("DoctorFeedback", "update");
+  const { bar, checkboxColumn, tableRows, approve, reject } = useModeration({
+    kind: "doctorfeedback",
+    rows: data || [],
+    mutate,
+  });
 
   return (
-    <NodesManager<AdminDoctorFeedback>
-      modelName="doctorFeedback"
-      title={ta("نظرات بیماران درباره‌ی پزشکان")}
-      table={({ mutate }) => ({
-        status: {
-          name: ta("وضعیت"),
-          value: (node) => statusDict[node.status || "Pending"],
-          filter: "Set",
-        },
-        doctor: {
-          name: ta("پزشک"),
-          value: (node) =>
-            `${node.doctor?.firstName || ""} ${node.doctor?.lastName || ""}`.trim() || "—",
-          component: (node) =>
-            node.doctor ? (
-              <InlineLink href={`/dr/${node.doctor.slug || node.doctor._id}`}>
-                {`${node.doctor.firstName || ""} ${node.doctor.lastName || ""}`.trim() ||
-                  node.doctor._id}
-              </InlineLink>
-            ) : (
-              "—"
-            ),
-          filter: "Multi",
-        },
-        user: {
-          name: ta("بیمار"),
-          value: (node) => node.user?.phone || "—",
-          component: (node) =>
-            node.user ? (
-              <InlineLink href={adminPath(`/user/${node.user._id}`)}>
-                {node.user.phone || node.user._id}
-              </InlineLink>
-            ) : (
-              "—"
-            ),
-          filter: "Multi",
-        },
-        overalScore: {
-          name: ta("امتیاز"),
-          value: (node) => node.overalScore,
-          filter: "Number",
-        },
-        suggest: {
-          name: ta("پیشنهاد می‌کند"),
-          value: (node) => (node.suggest ? ta("بله") : ta("خیر")),
-          filter: "Set",
-        },
-        publicMessage: {
-          name: ta("متن نظر (عمومی)"),
-          value: (node) => node.publicMessage || "—",
-          filter: "Text",
-        },
-        privateMessage: {
-          name: ta("پیام خصوصی به نویان"),
-          value: (node) => node.privateMessage || "—",
-          filter: "Text",
-        },
-        submittedAt: {
-          name: ta("تاریخ ثبت"),
-          value: (node) => new Date(node.submittedAt),
-          filter: "Date",
-        },
-        actions: {
-          name: ta("عملیات"),
-          component: (node) => (
-            <TableActions>
-              {node.status !== "Approved" && (
-                <IconButton
-                  variant="Success"
-                  title={ta("تایید و انتشار")}
-                  onClick={() => setStatus(node._id, "Approved", mutate)}
-                >
-                  <CheckIcon />
-                </IconButton>
-              )}
-              {node.status !== "Rejected" && (
-                <IconButton
-                  variant="Neutral"
-                  title={ta("رد")}
-                  onClick={() => setStatus(node._id, "Rejected", mutate)}
-                >
-                  <CloseIcon />
-                </IconButton>
-              )}
-              <IconButton
-                variant="Danger"
-                title={ta("حذف")}
-                onClick={() =>
-                  setPopup(
-                    "Delete",
-                    <DeleteShitPopup
-                      modelName="doctorFeedback"
-                      nodeId={node._id}
-                      mutate={mutate}
-                    />,
-                  )
-                }
-              >
-                <GarbageIcon />
-              </IconButton>
-            </TableActions>
-          ),
-        },
-      })}
-    />
+    <HandleLoading data={!!data} error={error}>
+      {!!data && (
+        <WithTitle title={ta("نظرات بیماران درباره‌ی پزشکان")}>
+          <div className={supportClasses.stack}>
+            {canModerate && bar}
+            <Table
+              name="AdminManagedoctorFeedbacks"
+              data={tableRows}
+              renderer={{
+                ...(canModerate ? { select: checkboxColumn } : {}),
+                status: {
+                  name: ta("وضعیت"),
+                  value: (node) => statusDict[node.status || "Pending"],
+                  component: (node) => (
+                    <span title={node.rejectReason || undefined}>
+                      {statusDict[node.status || "Pending"]}
+                      {node.status === "Rejected" && node.rejectReason && (
+                        <span className={supportClasses.reason}>{` (${node.rejectReason})`}</span>
+                      )}
+                    </span>
+                  ),
+                  filter: "Set",
+                },
+                doctor: {
+                  name: ta("پزشک"),
+                  value: (node) => doctorName(node) || "—",
+                  component: (node) =>
+                    node.doctor?._id ? (
+                      <InlineLink href={adminPath(`/doctorprofile/${node.doctor._id}`)}>
+                        {doctorName(node) || node.doctor._id}
+                      </InlineLink>
+                    ) : (
+                      "—"
+                    ),
+                  filter: "Multi",
+                },
+                user: {
+                  name: ta("بیمار"),
+                  value: (node) => node.user?.phone || "—",
+                  component: (node) =>
+                    node.user ? (
+                      <InlineLink href={adminPath(`/user/${node.user._id}`)}>
+                        {node.user.phone || node.user._id}
+                      </InlineLink>
+                    ) : (
+                      "—"
+                    ),
+                  filter: "Multi",
+                },
+                reservation: {
+                  name: ta("نوبت"),
+                  value: (node) => (reservationId(node) ? ta("مشاهده‌ی نوبت") : "—"),
+                  component: (node) => {
+                    const id = reservationId(node);
+                    return id ? (
+                      <InlineLink href={adminPath(`/reservation/${id}`)}>
+                        {ta("مشاهده‌ی نوبت")}
+                      </InlineLink>
+                    ) : (
+                      "—"
+                    );
+                  },
+                },
+                overalScore: {
+                  name: ta("امتیاز"),
+                  value: (node) => node.overalScore,
+                  filter: "Number",
+                },
+                suggest: {
+                  name: ta("پیشنهاد می‌کند"),
+                  value: (node) => (node.suggest ? ta("بله") : ta("خیر")),
+                  filter: "Set",
+                },
+                publicMessage: {
+                  name: ta("متن نظر (عمومی)"),
+                  value: (node) => node.publicMessage || "—",
+                  filter: "Text",
+                },
+                privateMessage: {
+                  name: ta("پیام خصوصی به نویان"),
+                  value: (node) => node.privateMessage || "—",
+                  filter: "Text",
+                },
+                submittedAt: {
+                  name: ta("تاریخ ثبت"),
+                  value: (node) => new Date(node.submittedAt),
+                  filter: "Date",
+                },
+                actions: {
+                  name: ta("عملیات"),
+                  width: 168,
+                  component: (node) => (
+                    <TableActions>
+                      {canModerate && node.status !== "Approved" && (
+                        <IconButton
+                          variant="Success"
+                          title={ta("تایید و انتشار")}
+                          onClick={() => approve([node._id])}
+                        >
+                          <CheckIcon />
+                        </IconButton>
+                      )}
+                      {canModerate && node.status !== "Rejected" && (
+                        <IconButton
+                          variant="Neutral"
+                          title={ta("رد با ذکر دلیل")}
+                          onClick={() => reject([node._id])}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      )}
+                      {hasAccess("DoctorFeedback", "delete") && (
+                        <IconButton
+                          variant="Danger"
+                          title={ta("حذف")}
+                          onClick={() =>
+                            setPopup(
+                              "Delete",
+                              <DeleteShitPopup
+                                modelName="doctorFeedback"
+                                nodeId={node._id}
+                                mutate={mutate}
+                              />,
+                            )
+                          }
+                        >
+                          <GarbageIcon />
+                        </IconButton>
+                      )}
+                    </TableActions>
+                  ),
+                },
+              }}
+            />
+          </div>
+        </WithTitle>
+      )}
+    </HandleLoading>
   );
 };
 

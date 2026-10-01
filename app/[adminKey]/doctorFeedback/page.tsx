@@ -1,17 +1,7 @@
-import AdminManageDoctorFeedbacksPage from "@/Components/Admin/DoctorFeedback/AdminManageDoctorFeedbacksPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// merged into the "نظرات و امتیازها" page as a tab (2026-09 admin audit)
+const LegacyDoctorFeedbackAdmin = () => redirect(`/${adminKey}/reviews?tab=visits`);
 
-const AdminManageDoctorFeedbacks = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageDoctorFeedbacksPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageDoctorFeedbacks;
+export default LegacyDoctorFeedbackAdmin;

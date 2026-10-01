@@ -1,4 +1,5 @@
 "use client";
+import SuspendedProviderBanner, { SuspendableProvider } from "./SuspendedProviderBanner";
 import ActingAsBanner from "./ActingAsBanner";
 import { ReactNode } from "react";
 import PanelLayout from "./PanelLayout";
@@ -27,6 +28,7 @@ const PharmacyPanelLayout = ({ children }: { children: ReactNode }) => {
       ) : data ? (
         <PanelLayout sidebar={<PharmacyPanelSidebar />}>
           <ActingAsBanner kind="pharmacy" ownerName={data?.name} />
+          <SuspendedProviderBanner node={data as SuspendableProvider} />
           <PharmacyLicenseGate>{children}</PharmacyLicenseGate>
         </PanelLayout>
       ) : (

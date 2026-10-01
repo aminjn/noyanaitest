@@ -182,7 +182,7 @@ const AdminSidebar = () => {
             .filter(
               (item) =>
                 isAdmin ||
-                canNotAdminOpen(item.href.split("/")[0], hasAccess),
+                canNotAdminOpen(item.href, hasAccess),
             )
             .map((item) => ({
               id: `${section.id}:${item.href}`,

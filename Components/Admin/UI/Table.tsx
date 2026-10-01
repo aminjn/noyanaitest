@@ -1,8 +1,16 @@
 import { AgGridReact } from "ag-grid-react";
 import classes from "./Table.module.css";
-import { ReactNode, useCallback, useMemo, useState } from "react";
+import {
+  isValidElement,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ColDef,
+  GridApi,
   GridPreDestroyedEvent,
   GridState,
   INumberCellEditorParams,
@@ -32,6 +40,7 @@ import { WithStyleProps } from "./Loading";
 import Ixon from "@/Components/UI/Ixon";
 import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
+import DownloadIcon from "@/Components/Icons/DownloadIcon";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Quiet grid that sits on the glass card and follows the light/dark
@@ -117,16 +126,36 @@ const emptyIcon =
 
 const COMPACT_ROWS = 12;
 
+// One CSV cell: quoted when needed, and text that Excel would run as a
+// formula (= + - @) is kept as text.
+const csvCell = (text: string) => {
+  const safe =
+    /^[=+\-@]/.test(text) && !/^-?\d+(\.\d+)?$/.test(text) ? `'${text}` : text;
+  return /[",\r\n]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
+};
+
+// a file name from the table's name: "AdminFinanceOrders" -> "AdminFinanceOrders-2026-10-01.csv"
+const csvFileName = (name?: string) =>
+  `${(name || "table").replace(/[^\w-]+/g, "-")}-${new Date().toISOString().slice(0, 10)}.csv`;
+
 const Table = <T,>({
   data,
   renderer,
   name,
   className = "",
   style,
+  exportable = true,
+  toolbar = true,
 }: WithStyleProps<{
   data: T[];
   renderer: TableRenderer<T>;
   name?: string;
+  // the toolbar's "export CSV" button (the rows the filters show, every
+  // column's `value`); false for tables that export on the server
+  exportable?: boolean;
+  // false on a server-paged list that has its own search and export
+  // (FinanceFilterBar): the grid's search would only see the current page
+  toolbar?: boolean;
 }>) => {
   const locale = useLocale();
   const intlTag = useIntlLocale();
@@ -274,13 +303,73 @@ const Table = <T,>({
     [emptyText],
   );
 
+  // Export what the admin sees: the rows left after the column filters and
+  // the search, in the grid's sort order, one column per renderer entry that
+  // has a `value` (the actions column has none). UTF-8 with a BOM so Excel
+  // opens Persian text correctly.
+  const gridApi = useRef<GridApi<T> | null>(null);
+  const exportCsv = useCallback(() => {
+    const api = gridApi.current;
+    if (!api) return;
+    const dateFormat = new Intl.DateTimeFormat(intlTag, {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+    const columns = Object.keys(renderer).filter(
+      (key) => key !== "actions" && !!renderer[key]?.value,
+    );
+    const text = (value: unknown): string => {
+      if (value === null || value === undefined) return "";
+      if (value instanceof Date)
+        return isNaN(value.getTime()) ? "" : dateFormat.format(value);
+      if (typeof value === "boolean") return value ? "1" : "0";
+      if (typeof value === "string" || typeof value === "number")
+        return String(value);
+      if (Array.isArray(value)) return value.map(text).filter(Boolean).join(" ");
+      // a value that is JSX: keep its plain text children
+      if (isValidElement(value))
+        return text((value.props as { children?: unknown })?.children);
+      return "";
+    };
+    const lines: string[] = [
+      columns.map((key) => csvCell(ta(renderer[key].name))).join(","),
+    ];
+    api.forEachNodeAfterFilterAndSort((node) => {
+      if (!node.data) return;
+      lines.push(
+        columns
+          .map((key) => {
+            try {
+              return csvCell(text(renderer[key].value?.(node.data as T)));
+            } catch {
+              return "";
+            }
+          })
+          .join(","),
+      );
+    });
+    try {
+      const blob = new Blob([`\uFEFF${lines.join("\r\n")}`], {
+        type: "text/csv;charset=utf-8",
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = csvFileName(name);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch {}
+  }, [intlTag, name, renderer]);
+
   const components = useMemo<{ [key: string]: unknown }>(() => {
     return { agDateInput: TableDateInput };
   }, []);
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
-      {dataRows > 5 && (
+      {toolbar && dataRows > 5 && (
       <div className={classes.toolbar}>
         <div className={classes.search}>
           <Ixon width="1.05rem" className={classes.searchIcon}>
@@ -293,11 +382,26 @@ const Table = <T,>({
             aria-label={getContent("tbSearch")}
           />
         </div>
-        <span className={classes.count}>
-          {shown !== null && shown !== rows
-            ? getContent("tbCountOf", [num.format(shown), num.format(rows)])
-            : getContent("tbCount", [num.format(rows)])}
-        </span>
+        <div className={classes.toolbarEnd}>
+          <span className={classes.count}>
+            {shown !== null && shown !== rows
+              ? getContent("tbCountOf", [num.format(shown), num.format(rows)])
+              : getContent("tbCount", [num.format(rows)])}
+          </span>
+          {exportable && (
+            <button
+              type="button"
+              className={classes.exportBtn}
+              onClick={exportCsv}
+              disabled={shown === 0}
+            >
+              <Ixon width="1rem">
+                <DownloadIcon />
+              </Ixon>
+              <span>{getContent("tbExport")}</span>
+            </button>
+          )}
+        </div>
       </div>
       )}
       <div
@@ -305,6 +409,9 @@ const Table = <T,>({
       >
       <AgGridReact
         quickFilterText={quickFilter}
+        onGridReady={(e) => {
+          gridApi.current = e.api;
+        }}
         onModelUpdated={(e) => setShown(e.api.getDisplayedRowCount())}
         overlayNoRowsTemplate={noRowsTemplate}
         paginationPageSize={50}

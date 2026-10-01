@@ -83,11 +83,8 @@ const AdminTestPushPage = () => {
               }}
               renderer={{
                 user: {
-                  type: "nodes",
+                  type: "users",
                   title: getContent("users"),
-                  path: `${API}/auto/user`,
-                  getOptionLabel: (n) => getUserLabel(n as IUser),
-                  getOptionValue: (n) => (n as IUser)._id,
                   multi: true,
                 },
                 title: { title: getContent("title"), type: "text" },

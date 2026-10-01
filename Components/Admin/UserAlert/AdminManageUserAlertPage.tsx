@@ -3,8 +3,6 @@
 import { API } from "@/Components/config";
 import CreateForm from "../UI/CreateForm";
 import NodeManager from "../UI/NodeManger";
-import { IUser } from "@/Components/Hooks/useUser";
-import { getUserLabel } from "../Lib/LabelGetters";
 import {
   FullUserAlert,
   userAlertEventLabels,
@@ -54,12 +52,9 @@ const AdminManageUserAlertPage = () => {
           defaultValue={node}
           renderer={{
             user: {
-              type: "nodes",
+              type: "users",
               title: ta("کاربر"),
-              path: `${API}/auto/user`,
-              getOptionLabel: (n) => getUserLabel(n as IUser),
-              getOptionValue: (n) => (n as IUser)._id,
-              getDefaultValue: (inp) => inp.user?._id,
+              getDefaultValue: (inp) => inp.user,
               readOnly: true,
               required: true,
             },

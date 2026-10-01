@@ -18,3 +18,43 @@
   background: var(--primary1);
   color: var(--primary8);
 }
+
+.status {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  background: var(--successT1, var(--gray3));
+  color: var(--successS1, var(--gray10));
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status_suspended {
+  background: var(--warningT1, var(--gray3));
+  color: var(--warningS1, var(--gray10));
+}
+
+.status_deleted {
+  background: var(--gray3);
+  color: var(--gray8);
+}
+
+.popupHint {
+  margin: 0 0 0.75rem;
+  color: var(--gray9);
+  font-size: 0.875rem;
+  line-height: 1.9;
+}
+
+.popupBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.popupActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

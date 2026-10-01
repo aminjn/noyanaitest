@@ -16,7 +16,6 @@ import usePopup from "@/Components/Hooks/usePopup";
 import CreateClinicPopup from "./CreateClinicPopup";
 import Table from "../UI/Table";
 import { DoctorPopulation, IDoctor } from "../Doctor/AdminManageDoctorsPage";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import IconLink from "../UI/IconLink";
@@ -51,6 +50,7 @@ import {
   InsurancePopulation,
 } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import OrderEditor from "../UI/OrderEditor";
+import { providerStateColumn } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 // export type Population<T> = { [key in keyof T]?: T[key] | false };
@@ -206,12 +206,8 @@ const AdminManageClinicsPage = () => {
                   </InlineLink>
                 ),
               },
-              active: {
-                name: ta("وضعیت"),
-                value: (node) => booleanToValue[`${node.active}`],
-                component: (node) => <BooleanToIcon value={node.active} />,
-                filter: "Set",
-              },
+              // published / draft / suspended (Components/Admin/UI/ProviderStatus)
+              active: providerStateColumn(),
               city: {
                 name: ta("شهر"),
                 value: (node) => cities.find((c) => c.slug === node.city)?.name,

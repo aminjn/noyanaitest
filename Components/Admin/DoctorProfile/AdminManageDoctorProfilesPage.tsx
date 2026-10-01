@@ -7,7 +7,6 @@ import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
-import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
@@ -18,6 +17,7 @@ import DeleteDoctorProfilePopup from "./DeleteDoctorProfilePopup";
 import WithTitle from "../UI/WithTitle";
 import CreateDoctorProfilePopup from "./CreateDoctorProfilePopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import { providerStateColumn } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorProfilesPage = () => {
@@ -117,12 +117,8 @@ const AdminManageDoctorProfilesPage = () => {
               // replaces the «مشاوره تلفنی» / price columns: nothing can
               // set PhoneConsultSettings (no admin endpoint, the doctor panel
               // does not offer the "phone" kind), so they were always empty
-              active: {
-                name: ta("فعال"),
-                value: (node) => booleanToValue[`${!!node.active}`],
-                component: (node) => <BooleanToIcon value={!!node.active} />,
-                filter: "Set",
-              },
+              // published / draft / suspended (Components/Admin/UI/ProviderStatus)
+              active: providerStateColumn(),
               actions: {
                 name: ta("عملیات"),
                 component: (node) => (

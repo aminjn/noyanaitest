@@ -16,7 +16,9 @@ import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import FormatDate from "@/Components/UI/FormatDate";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
-import CreateForm from "../UI/CreateForm";
+import Button from "@/Components/UI/Button";
+import { useModeration } from "../Support/moderation";
+import supportClasses from "../Support/support.module.css";
 import InlineLink from "../UI/InlineLink";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import RequestInfoGrid from "../BecomeRequest/RequestInfoGrid";
@@ -45,7 +47,7 @@ type AdminComment = IComment<{
   Author: Record<never, never>;
   Votes: Record<never, never>;
   resource: Record<never, never>;
-}>;
+}> & { rejectReason?: string; moderatedAt?: string };
 
 // a populated resource's display name (blogs / diseases have a title, centres
 // a name, a doctor profile first and last names)
@@ -86,6 +88,12 @@ const AdminManageCommentPage = () => {
   const resource =
     data?.resource && typeof data.resource === "object" ? data.resource : null;
   const route = data ? commentTargetPath[data.refPath as string] : undefined;
+  const { approve, reject, busy } = useModeration({
+    kind: "comments",
+    rows: data ? [data] : [],
+    mutate,
+  });
+  const canModerate = hasAccess("Comment", "update");
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -104,7 +112,7 @@ const AdminManageCommentPage = () => {
                         <DeleteShitPopup
                           modelName="comment"
                           nodeId={data._id}
-                          mutate={() => push(adminPath("/comment"))}
+                          mutate={() => push(adminPath("/reviews?tab=pages"))}
                         />,
                       ),
                   },
@@ -151,24 +159,30 @@ const AdminManageCommentPage = () => {
                     ? data.upvotes.length
                     : undefined,
                 },
+                {
+                  label: ta("وضعیت"),
+                  value: commentStatusDict[data.status] || data.status,
+                },
+                ...(data.status === "Rejected" && data.rejectReason
+                  ? [{ label: ta("دلیل رد"), value: data.rejectReason, wide: true }]
+                  : []),
                 { label: ta("متن نظر"), value: data.content, wide: true },
               ]}
             />
-            <CreateForm
-              defaultValue={data}
-              renderer={{
-                status: {
-                  title: ta("وضعیت"),
-                  type: "select",
-                  options: commentStatusDict,
-                },
-              }}
-              hookProps={{
-                path: `${API}/auto/comment/${data._id}`,
-                method: "POST",
-                successCb: () => mutate(),
-              }}
-            />
+            {canModerate && (
+              <div className={supportClasses.actions}>
+                {data.status !== "Approved" && (
+                  <Button variant="Success" onClick={() => approve([data._id])} isLoading={busy}>
+                    {ta("تایید و انتشار")}
+                  </Button>
+                )}
+                {data.status !== "Rejected" && (
+                  <Button variant="Error" onClick={() => reject([data._id])}>
+                    {ta("رد با ذکر دلیل")}
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
         </WithTitle>
       )}

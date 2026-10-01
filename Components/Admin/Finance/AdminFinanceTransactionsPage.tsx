@@ -1,8 +1,6 @@
 "use client";
 
-import useSWR from "swr";
 import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
 import { currencize } from "@/Components/helpers/currencize";
 import { adminPath } from "@/Components/helpers/adminPath";
 import HandleLoading from "../UI/HandleLoading";
@@ -10,6 +8,12 @@ import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { IFinanceUser, transactionKindDict, userLabel } from "./adminFinance";
+import {
+  FinanceFilterBar,
+  FinancePager,
+  useFinanceFilters,
+  useFinanceList,
+} from "./FinanceListControls";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 interface IAdminTransactionRow {
@@ -27,27 +31,43 @@ interface IAdminTransactionRow {
 // The wallet ledger of every user: positive rows are credits (gateway
 // top-ups, seller payouts, refunds), negative ones debits (orders, bookings,
 // license purchases).
+const TRANSACTIONS_PATH = `${API}/admin/finance/transactions`;
+
+const directionDict: Record<string, string> = {
+  get credit() {
+    return ta("واریز (+)");
+  },
+  get debit() {
+    return ta("برداشت (−)");
+  },
+};
+
 const AdminFinanceTransactionsPage = () => {
-  const { data: body, error } = useSWR<{
-    rows: IAdminTransactionRow[];
-    commissionTotal: number;
-  }>(`${API}/admin/finance/transactions`, (url: string) =>
-    fetcher({ url }).then((res) => ({
-      rows: Array.isArray(res.data) ? res.data : [],
-      commissionTotal: Number(res.commissionTotal) || 0,
-    })),
-  );
-  const data = body?.rows;
+  const state = useFinanceFilters({}, "kind");
+  const { data: list, error, isValidating } =
+    useFinanceList<IAdminTransactionRow>(TRANSACTIONS_PATH, state.query, state.page);
+  const data = list?.rows;
+  const commissionTotal = Number(list?.body.commissionTotal) || 0;
   return (
-    <HandleLoading data={!!data} error={error}>
+    <HandleLoading data={!!list} error={error}>
       {!!data && (
         <WithTitle title={ta("تراکنش‌های کیف پول")}>
           <p style={{ marginBottom: "1rem" }}>
-            {ta("درآمد پلتفرم از کمیسیون (کل تسویه‌ها): ${1} تومان", [currencize(body?.commissionTotal || 0)])}
+            {ta("درآمد پلتفرم از کمیسیون (تسویه‌های این فیلتر): ${1} تومان", [currencize(commissionTotal)])}
           </p>
+          <FinanceFilterBar
+            state={state}
+            searchPlaceholder={ta("موبایل، نام یا نام کاربری...")}
+            status={{ title: ta("جهت"), options: directionDict }}
+            extra={{ title: ta("بابت"), options: transactionKindDict }}
+            exportPath={TRANSACTIONS_PATH}
+            exportName="transactions"
+          />
           <Table
+toolbar={false}
             name="AdminFinanceTransactions"
             data={data}
+            exportable={false}
             renderer={{
               user: {
                 name: ta("کاربر"),
@@ -90,6 +110,13 @@ const AdminFinanceTransactionsPage = () => {
                 filter: "Date",
               },
             }}
+          />
+          <FinancePager
+            total={list.total}
+            page={state.page}
+            limit={list.limit}
+            setPage={state.setPage}
+            stale={isValidating}
           />
         </WithTitle>
       )}

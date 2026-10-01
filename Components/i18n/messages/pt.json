@@ -2281,5 +2281,11 @@
  "mapLeaveBy": "Saia até ${1}",
  "mapLeaveNow": "Saia agora",
  "mapLeaveByHint": "Para chegar cerca de 15 minutos antes, de carro de onde você está agora (cerca de ${1} no trânsito desse horário)",
- "mapVisitInTrafficZone": "O consultório fica na zona de restrição de tráfego, em vigor no horário da sua consulta. Considere o metrô, o ônibus ou um táxi."
+ "mapVisitInTrafficZone": "O consultório fica na zona de restrição de tráfego, em vigor no horário da sua consulta. Considere o metrô, o ônibus ou um táxi.",
+ "tbExport": "Exportar CSV",
+ "panelSuspendedTitle": "Sua página foi suspensa",
+ "panelSuspendedSince": "Sua página está suspensa desde ${1}",
+ "panelSuspendedText": "Sua página não está no site no momento e não recebe novos agendamentos ou pedidos. Os agendamentos e pedidos já feitos continuam e você ainda pode concluí-los.",
+ "panelSuspendedReason": "Motivo: ${1}",
+ "panelSuspendedContact": "Fale com o suporte para remover a suspensão"
 }

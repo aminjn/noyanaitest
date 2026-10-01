@@ -13,6 +13,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import InlineLink from "../UI/InlineLink";
 
 export const contactRequestSubjects = [
   "support",
@@ -74,6 +75,11 @@ export interface IContactRequest<
   subject: ContactRequestSubject;
   content: string;
   status: ContactRequestStatus;
+  // support desk (2026-10): staff note, who handled it, the ticket it became
+  internalNote?: string;
+  handledBy?: { _id: string; phone?: string; username?: string } | null;
+  handledAt?: string;
+  ticket?: { _id: string; title?: string; status?: string } | string | null;
 }
 
 const AdminManageContactRequestsPage = () => {
@@ -95,6 +101,26 @@ const AdminManageContactRequestsPage = () => {
           name: ta("وضعیت"),
           value: (node) => contactRequestStatusDict[node.status],
           filter: "Set",
+        },
+        handledBy: {
+          name: ta("رسیدگی‌کننده"),
+          value: (node) =>
+            node.handledBy && typeof node.handledBy === "object"
+              ? node.handledBy.username || node.handledBy.phone || "—"
+              : "—",
+          filter: "Set",
+        },
+        ticket: {
+          name: ta("تیکت"),
+          value: (node) => (node.ticket ? ta("تیکت شده") : "—"),
+          component: (node) => {
+            const id = typeof node.ticket === "string" ? node.ticket : node.ticket?._id;
+            return id ? (
+              <InlineLink href={adminPath(`/ticket/${id}`)}>{ta("مشاهده‌ی تیکت")}</InlineLink>
+            ) : (
+              "—"
+            );
+          },
         },
         email: { name: ta("ایمیل"), value: (node) => node.email, filter: "Text" },
         submittedAt: {
