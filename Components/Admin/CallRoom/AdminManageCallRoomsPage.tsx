@@ -110,6 +110,7 @@ const AdminManageCallRoomsPage = () => {
         {!!data && (
           <>
             <Table
+toolbar={false}
               name="AdminManageCallRooms"
               data={data.rows}
               renderer={{

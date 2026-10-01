@@ -73,6 +73,23 @@
 
 .date {
   width: 10rem;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .select {
+    flex: 1 1 8rem;
+    min-width: 0;
+  }
+
+  .dates {
+    flex: 1 1 100%;
+  }
+
+  .date {
+    flex: 1 1 0;
+    width: auto;
+  }
 }
 
 .linkBtn {

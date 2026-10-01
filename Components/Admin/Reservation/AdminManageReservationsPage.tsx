@@ -103,6 +103,7 @@ const AdminManageReservationsPage = ({
         {!!data && (
           <div className={isValidating ? classes.stale : ""}>
             <Table
+toolbar={false}
               name={embedded ? "AdminUserReservations" : "AdminManageReservations"}
               data={data.rows}
               renderer={{

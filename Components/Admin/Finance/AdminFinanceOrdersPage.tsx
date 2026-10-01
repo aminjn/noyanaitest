@@ -77,6 +77,7 @@ const AdminFinanceOrdersPage = () => {
             exportName="orders"
           />
           <Table
+toolbar={false}
             name="AdminFinanceOrders"
             data={data}
             exportable={false}

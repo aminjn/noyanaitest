@@ -102,6 +102,7 @@ const AdminFinanceWithdrawalsPage = () => {
             exportName="withdrawals"
           />
           <Table
+toolbar={false}
             name="AdminFinanceWithdrawals"
             data={data}
             exportable={false}

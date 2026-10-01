@@ -145,6 +145,7 @@ const Table = <T,>({
   className = "",
   style,
   exportable = true,
+  toolbar = true,
 }: WithStyleProps<{
   data: T[];
   renderer: TableRenderer<T>;
@@ -152,6 +153,9 @@ const Table = <T,>({
   // the toolbar's "export CSV" button (the rows the filters show, every
   // column's `value`); false for tables that export on the server
   exportable?: boolean;
+  // false on a server-paged list that has its own search and export
+  // (FinanceFilterBar): the grid's search would only see the current page
+  toolbar?: boolean;
 }>) => {
   const locale = useLocale();
   const intlTag = useIntlLocale();
@@ -365,7 +369,7 @@ const Table = <T,>({
 
   return (
     <div className={`${classes.main} ${className}`} style={style}>
-      {dataRows > 5 && (
+      {toolbar && dataRows > 5 && (
       <div className={classes.toolbar}>
         <div className={classes.search}>
           <Ixon width="1.05rem" className={classes.searchIcon}>

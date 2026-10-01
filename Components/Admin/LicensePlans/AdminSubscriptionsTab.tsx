@@ -128,6 +128,7 @@ const AdminSubscriptionsTab = () => {
             exportName="subscriptions"
           />
           <Table
+toolbar={false}
             name="AdminSubscriptions"
             data={data}
             exportable={false}
