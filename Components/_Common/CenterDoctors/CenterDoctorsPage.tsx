@@ -10,6 +10,8 @@ import InitialAvatar from "@/Components/UI/InitialAvatar";
 import Link from "@/Components/i18n/Link";
 import useCenterDoctors, { CenterKind, doctorName, doctorSpec } from "./useCenterDoctors";
 import CenterJoinInbox from "./CenterJoinInbox";
+import InviteDoctorPopup from "./InviteDoctorPopup";
+import usePopup from "@/Components/Hooks/usePopup";
 
 const NS: ContentNamespace[] = ["common", "centerDoctors"];
 
@@ -17,7 +19,8 @@ const NS: ContentNamespace[] = ["common", "centerDoctors"];
 // who's been invited, and the current members.
 const CenterDoctorsPage = ({ kind, panel }: { kind: CenterKind; panel: string }) => {
   const getContent = useScopedLocale(NS);
-  const { data, error, busy, members, incoming, outgoing, answer, remove } = useCenterDoctors(kind);
+  const { data, error, busy, members, incoming, outgoing, answer, remove, refresh } = useCenterDoctors(kind);
+  const { setPopup } = usePopup();
   const [asking, setAsking] = useState<string | null>(null);
   useBreadCrump([
     { title: getContent("dashboard"), target: `/${panel}` },
@@ -28,7 +31,18 @@ const CenterDoctorsPage = ({ kind, panel }: { kind: CenterKind; panel: string })
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <div className={classes.main}>
-          <h1 className={classes.title}>{getContent("doctors")}</h1>
+          <div className={classes.headRow}>
+            <h1 className={classes.title}>{getContent("doctors")}</h1>
+            <button
+              type="button"
+              className={classes.primary}
+              onClick={() =>
+                setPopup("CenterInviteDoctor", <InviteDoctorPopup kind={kind} onDone={() => refresh()} />)
+              }
+            >
+              {getContent("cdInvite")}
+            </button>
+          </div>
 
           {!!incoming.length && (
             <section className={classes.section}>

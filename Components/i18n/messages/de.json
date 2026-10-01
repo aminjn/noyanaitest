@@ -2323,5 +2323,19 @@
  "timeOffAdd": "Freie Tage hinzufügen",
  "timeOffEmpty": "Noch keine freien Tage",
  "timeOffBooked": "An diesen Tagen sind ${1} Termine gebucht; verschieben oder stornieren Sie sie im Terminplan.",
- "timeOffRemove": "Entfernen"
+ "timeOffRemove": "Entfernen",
+ "cdInvite": "Arzt einladen",
+ "cdInviteHint": "Suchen Sie den Arzt nach Name oder Ärztekammernummer. Nach seiner Zusage gehört er zu den Ärzten des Zentrums.",
+ "cdInviteSearch": "Name oder Kammernummer",
+ "cdInviteSend": "Einladen",
+ "cdInviteSent": "Einladung gesendet",
+ "cdInviteNone": "Kein Arzt gefunden",
+ "cdRejectReason": "Grund der Ablehnung",
+ "cdRejectHint": "Der Arzt erhält diesen Grund.",
+ "caAllDoctors": "Alle Ärzte",
+ "caFrom": "Von",
+ "caTo": "Bis",
+ "caNoOffices": "Noch hat kein Arzt eine Praxis mit diesem Zentrum verknüpft. Termine verknüpfter Praxen erscheinen hier.",
+ "caEmpty": "Keine Termine in diesem Zeitraum",
+ "readReservations": "Termine des Zentrums sehen"
 }

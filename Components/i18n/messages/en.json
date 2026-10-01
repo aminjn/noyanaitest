@@ -2323,5 +2323,19 @@
  "timeOffAdd": "Add days off",
  "timeOffEmpty": "No days off yet",
  "timeOffBooked": "${1} appointments are already booked on these days; move or cancel them from the schedule.",
- "timeOffRemove": "Remove"
+ "timeOffRemove": "Remove",
+ "cdInvite": "Invite a doctor",
+ "cdInviteHint": "Find the doctor by name or medical council number. Once they accept, they join the centre's doctors.",
+ "cdInviteSearch": "Name or council number",
+ "cdInviteSend": "Invite",
+ "cdInviteSent": "Invitation sent",
+ "cdInviteNone": "No doctor found",
+ "cdRejectReason": "Reason for declining",
+ "cdRejectHint": "The doctor is sent this reason.",
+ "caAllDoctors": "All doctors",
+ "caFrom": "From",
+ "caTo": "To",
+ "caNoOffices": "No doctor has linked an office to this centre yet. Visits at linked offices show up here.",
+ "caEmpty": "No visits in this range",
+ "readReservations": "See the centre's appointments"
 }

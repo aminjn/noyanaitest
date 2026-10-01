@@ -5,6 +5,7 @@ import { ContentKey } from "../contentKeys";
 // itself (owner-only by design). Kept in sync with Models/hospitalAcl.ts on
 // noyanai-back.
 export const hospitalActions = [
+  "readReservations",
   "mutateProfile",
   "readArticles",
   // Licenses page (2026-09) — hospitalpanel/license. Kept in sync with
@@ -15,6 +16,7 @@ export const hospitalActions = [
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
 // nav item's own title key, reused as the tab label.
 export const hospitalActionCategories = [
+  "schedule",
   "profile",
   "articles",
   "licenses",
@@ -23,6 +25,7 @@ export const hospitalActionCategories = [
 export const categorizedHospitalActions: Readonly<
   Record<(typeof hospitalActionCategories)[number], readonly ContentKey[]>
 > = {
+  schedule: ["readReservations"],
   profile: ["mutateProfile"],
   articles: ["readArticles"],
   licenses: ["readLicenses"],

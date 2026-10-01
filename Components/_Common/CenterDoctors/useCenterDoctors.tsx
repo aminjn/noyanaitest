@@ -51,8 +51,14 @@ const useCenterDoctors = (kind: CenterKind) => {
     members: Array.isArray(data?.members) ? data.members : [],
     incoming: Array.isArray(data?.incoming) ? data.incoming : [],
     outgoing: Array.isArray(data?.outgoing) ? data.outgoing : [],
-    answer: (id: string, status: "Approved" | "Rejected") =>
-      run(id, { url: `${API}/${kind}/doctor/request/${id}`, method: "POST", payload: { status } }),
+    answer: (id: string, status: "Approved" | "Rejected", reason?: string) =>
+      run(id, {
+        url: `${API}/${kind}/doctor/request/${id}`,
+        method: "POST",
+        bodyParser: "JSON",
+        payload: { status, ...(reason ? { reason } : {}) },
+      }),
+    refresh: () => mutate(),
     remove: (id: string) => run(id, { url: `${API}/${kind}/doctor/${id}`, method: "DELETE" }),
   };
 };

@@ -5,6 +5,8 @@ import InitialAvatar from "@/Components/UI/InitialAvatar";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { CenterRequest, doctorName, doctorSpec } from "./useCenterDoctors";
+import usePopup from "@/Components/Hooks/usePopup";
+import RejectJoinPopup from "./RejectJoinPopup";
 
 const NS: ContentNamespace[] = ["common", "centerDoctors"];
 
@@ -16,9 +18,10 @@ const CenterJoinInbox = ({
 }: {
   requests: CenterRequest[];
   busy: string | null;
-  answer: (id: string, status: "Approved" | "Rejected") => unknown;
+  answer: (id: string, status: "Approved" | "Rejected", reason?: string) => unknown;
 }) => {
   const getContent = useScopedLocale(NS);
+  const { setPopup } = usePopup();
   return (
     <ActionInbox
       highlight
@@ -30,7 +33,11 @@ const CenterJoinInbox = ({
         body: r.message,
         actions: [
           { label: getContent("cdApprove"), kind: "primary", onClick: () => answer(r._id, "Approved"), disabled: busy === r._id },
-          { label: getContent("reject"), kind: "ghost", onClick: () => answer(r._id, "Rejected"), disabled: busy === r._id },
+          { label: getContent("reject"), kind: "ghost", onClick: () =>
+              setPopup(
+                "CenterRejectJoin",
+                <RejectJoinPopup onReject={(reason) => answer(r._id, "Rejected", reason)} />,
+              ), disabled: busy === r._id },
         ],
       }))}
     />
