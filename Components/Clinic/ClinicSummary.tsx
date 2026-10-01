@@ -10,6 +10,7 @@ const ClinicSummary = ({ node }: { node: ClinicPageNode }) => {
       establishment={node.establishment}
       personelCount={node.personelCount}
       summary={node.summary}
+      description={node.description}
     />
   );
 };

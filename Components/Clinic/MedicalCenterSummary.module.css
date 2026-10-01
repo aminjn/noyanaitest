@@ -10,6 +10,14 @@
   color: var(--gray10);
 }
 
+.description {
+  margin: 0;
+  color: var(--gray10);
+  line-height: 2;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
 .infos {
   display: flex;
   align-items: center;

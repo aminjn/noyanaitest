@@ -51,12 +51,15 @@ const Info = ({
 
 const MedicalCenterSummary = ({
   summary,
+  description,
   code,
   doctorCount,
   personelCount,
   establishment,
 }: {
   summary?: string;
+  // the full introduction, shown whole under the summary
+  description?: string;
   code?: string;
   doctorCount?: number;
   personelCount?: number;
@@ -68,6 +71,9 @@ const MedicalCenterSummary = ({
     <div className={classes.main} id="introduction">
       {!!summary && (
         <p className={`${classes.summary} ${tsmRegular}`}>{summary}</p>
+      )}
+      {!!description?.trim() && description.trim() !== summary?.trim() && (
+        <p className={`${classes.description} ${tsmRegular}`}>{description}</p>
       )}
       <div className={classes.infos}>
         {!!code && (
