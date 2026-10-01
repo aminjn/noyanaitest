@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "您的页面自 ${1} 起已被暂停",
  "panelSuspendedText": "您的页面目前不在网站上显示，也不接受新的预约或订单。已有的预约和订单保持不变，您仍可完成它们。",
  "panelSuspendedReason": "原因：${1}",
- "panelSuspendedContact": "联系客服以解除暂停"
+ "panelSuspendedContact": "联系客服以解除暂停",
+ "addressPinFirst": "请先在地图上标出准确位置；地址、省份、城市和街区会自动填写。",
+ "addressCityNotFound": "未找到该点所在的省份和城市，请更精确地放置标记。",
+ "addressWriteIt": "请填写地址",
+ "addressPostalCode10": "邮政编码必须是10位数字",
+ "addressSaved": "地址已保存",
+ "addressProvince": "省份",
+ "addressCity": "城市",
+ "addressDistrict": "街区 / 区",
+ "addressPlaque": "门牌号",
+ "addressUnit": "单元"
 }

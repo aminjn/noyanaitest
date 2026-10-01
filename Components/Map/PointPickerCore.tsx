@@ -55,6 +55,7 @@ const PointPickerCore = ({
   currentAddress,
   onUseAddress,
   showCoordinates = true,
+  compact = false,
   hint,
   texts,
   locale,
@@ -69,6 +70,8 @@ const PointPickerCore = ({
   currentAddress?: string;
   onUseAddress?: (address: string, components: AddressComponents) => unknown;
   showCoordinates?: boolean;
+  // a shorter map, inside a popup form
+  compact?: boolean;
   hint?: ReactNode;
   texts: PointPickerTexts;
   locale?: string;
@@ -217,7 +220,7 @@ const PointPickerCore = ({
     addressText !== (currentAddress || "").trim();
 
   return (
-    <div className={classes.main}>
+    <div className={`${classes.main} ${compact ? classes.compact : ""}`}>
       {!!hint && <p className={classes.hint}>{hint}</p>}
       <div className={classes.searchRow}>
         <div className={classes.search}>

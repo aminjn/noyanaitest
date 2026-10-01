@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "आपका पेज ${1} से निलंबित है",
  "panelSuspendedText": "आपका पेज फ़िलहाल साइट पर नहीं है और नई बुकिंग या ऑर्डर नहीं लेता। पहले से दर्ज बुकिंग और ऑर्डर बने रहेंगे और आप उन्हें पूरा कर सकते हैं।",
  "panelSuspendedReason": "कारण: ${1}",
- "panelSuspendedContact": "निलंबन हटवाने के लिए सहायता से संपर्क करें"
+ "panelSuspendedContact": "निलंबन हटवाने के लिए सहायता से संपर्क करें",
+ "addressPinFirst": "पहले नक्शे पर सटीक जगह चुनें; पता, प्रांत, शहर और मोहल्ला अपने-आप भर जाएंगे।",
+ "addressCityNotFound": "इस बिंदु का प्रांत और शहर नहीं मिला; पिन को और सटीक जगह रखें।",
+ "addressWriteIt": "पता लिखें",
+ "addressPostalCode10": "पिन कोड 10 अंकों का होना चाहिए",
+ "addressSaved": "पता सहेजा गया",
+ "addressProvince": "प्रांत",
+ "addressCity": "शहर",
+ "addressDistrict": "मोहल्ला / क्षेत्र",
+ "addressPlaque": "मकान नंबर",
+ "addressUnit": "यूनिट"
 }

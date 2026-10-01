@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "Your page has been suspended since ${1}",
  "panelSuspendedText": "Your page is not on the site for now and takes no new bookings or orders. Bookings and orders already placed stay as they are, and you can still complete them.",
  "panelSuspendedReason": "Reason: ${1}",
- "panelSuspendedContact": "Contact support to lift the suspension"
+ "panelSuspendedContact": "Contact support to lift the suspension",
+ "addressPinFirst": "First mark the exact spot on the map; the address, province, city and neighbourhood fill in automatically.",
+ "addressCityNotFound": "The province and city of this point weren't found; place the pin more precisely.",
+ "addressWriteIt": "Write the address",
+ "addressPostalCode10": "The postal code must be 10 digits",
+ "addressSaved": "Address saved",
+ "addressProvince": "Province",
+ "addressCity": "City",
+ "addressDistrict": "Neighbourhood / district",
+ "addressPlaque": "Building number",
+ "addressUnit": "Unit"
 }

@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "Sua página está suspensa desde ${1}",
  "panelSuspendedText": "Sua página não está no site no momento e não recebe novos agendamentos ou pedidos. Os agendamentos e pedidos já feitos continuam e você ainda pode concluí-los.",
  "panelSuspendedReason": "Motivo: ${1}",
- "panelSuspendedContact": "Fale com o suporte para remover a suspensão"
+ "panelSuspendedContact": "Fale com o suporte para remover a suspensão",
+ "addressPinFirst": "Primeiro marque o local exato no mapa; endereço, província, cidade e bairro são preenchidos automaticamente.",
+ "addressCityNotFound": "Não foram encontradas a província e a cidade deste ponto; posicione o marcador com mais precisão.",
+ "addressWriteIt": "Escreva o endereço",
+ "addressPostalCode10": "O código postal deve ter 10 dígitos",
+ "addressSaved": "Endereço salvo",
+ "addressProvince": "Província",
+ "addressCity": "Cidade",
+ "addressDistrict": "Bairro / distrito",
+ "addressPlaque": "Número",
+ "addressUnit": "Unidade"
 }

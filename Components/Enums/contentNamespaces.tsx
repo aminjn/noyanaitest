@@ -673,6 +673,16 @@ export const contentNamespaces = {
     "receiverPhone",
     "postalCode",
     "city",
+    "addressPinFirst",
+    "addressCityNotFound",
+    "addressWriteIt",
+    "addressPostalCode10",
+    "addressSaved",
+    "addressProvince",
+    "addressCity",
+    "addressDistrict",
+    "addressPlaque",
+    "addressUnit",
   ],
 
   // app/dashboard/vital/page.tsx (DashboardManageVitalsPage + VitalList).

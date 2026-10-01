@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "صفحتك معلّقة منذ ${1}",
  "panelSuspendedText": "صفحتك غير معروضة على الموقع حاليًا ولا تستقبل حجوزات أو طلبات جديدة. الحجوزات والطلبات المسجلة باقية ويمكنك إتمامها.",
  "panelSuspendedReason": "السبب: ${1}",
- "panelSuspendedContact": "تواصل مع الدعم لرفع التعليق"
+ "panelSuspendedContact": "تواصل مع الدعم لرفع التعليق",
+ "addressPinFirst": "حدّد أولًا الموقع الدقيق على الخريطة؛ سيُملأ العنوان والمحافظة والمدينة والحي تلقائيًا.",
+ "addressCityNotFound": "لم يتم العثور على المحافظة والمدينة لهذه النقطة؛ ضع الدبوس بدقة أكبر.",
+ "addressWriteIt": "اكتب العنوان",
+ "addressPostalCode10": "يجب أن يتكون الرمز البريدي من 10 أرقام",
+ "addressSaved": "تم حفظ العنوان",
+ "addressProvince": "المحافظة",
+ "addressCity": "المدينة",
+ "addressDistrict": "الحي / المنطقة",
+ "addressPlaque": "رقم المبنى",
+ "addressUnit": "الوحدة"
 }

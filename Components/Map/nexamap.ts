@@ -284,3 +284,20 @@ export const decodePolyline = (encoded: string, precision = 6): [number, number]
 
 export const newSessionToken = () =>
   `s_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
+
+export type LocatedPoint = {
+  address: string | null;
+  components: Record<string, string>;
+  postalCode: string | null;
+  plusCode: string | null;
+  trafficZone: string | null;
+  province: { _id: string; name: string } | null;
+  city: { _id: string; name: string } | null;
+  district: { _id: string; name: string } | null;
+  source: "nexamap" | "local";
+};
+
+// Everything a form needs from a pin: written address, province / city /
+// district as our records, postal code when known, traffic zone. Works
+// without NexaMap too (backend falls back to our own boundaries).
+export const locate = (p: LatLng) => get<LocatedPoint>("locate", p);

@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "Votre page est suspendue depuis le ${1}",
  "panelSuspendedText": "Votre page n'est plus visible sur le site pour le moment et ne reçoit aucun nouveau rendez-vous ni commande. Les rendez-vous et commandes déjà passés restent en place et vous pouvez les mener à terme.",
  "panelSuspendedReason": "Motif : ${1}",
- "panelSuspendedContact": "Contactez le support pour lever la suspension"
+ "panelSuspendedContact": "Contactez le support pour lever la suspension",
+ "addressPinFirst": "Indiquez d'abord l'emplacement exact sur la carte ; l'adresse, la province, la ville et le quartier se remplissent automatiquement.",
+ "addressCityNotFound": "La province et la ville de ce point sont introuvables ; placez le repère plus précisément.",
+ "addressWriteIt": "Saisissez l'adresse",
+ "addressPostalCode10": "Le code postal doit comporter 10 chiffres",
+ "addressSaved": "Adresse enregistrée",
+ "addressProvince": "Province",
+ "addressCity": "Ville",
+ "addressDistrict": "Quartier / arrondissement",
+ "addressPlaque": "Numéro",
+ "addressUnit": "Appartement"
 }

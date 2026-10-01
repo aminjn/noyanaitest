@@ -2287,5 +2287,15 @@
  "panelSuspendedSince": "あなたのページは${1}から一時停止されています",
  "panelSuspendedText": "あなたのページは現在サイトに表示されておらず、新しい予約や注文を受け付けません。すでに入っている予約や注文はそのまま残り、引き続き対応できます。",
  "panelSuspendedReason": "理由：${1}",
- "panelSuspendedContact": "一時停止の解除はサポートにお問い合わせください"
+ "panelSuspendedContact": "一時停止の解除はサポートにお問い合わせください",
+ "addressPinFirst": "まず地図で正確な場所を指定してください。住所・州・市・地区は自動で入力されます。",
+ "addressCityNotFound": "この地点の州と市が見つかりません。ピンをもっと正確に置いてください。",
+ "addressWriteIt": "住所を入力してください",
+ "addressPostalCode10": "郵便番号は10桁で入力してください",
+ "addressSaved": "住所を保存しました",
+ "addressProvince": "州",
+ "addressCity": "市",
+ "addressDistrict": "地区",
+ "addressPlaque": "番地",
+ "addressUnit": "部屋番号"
 }
