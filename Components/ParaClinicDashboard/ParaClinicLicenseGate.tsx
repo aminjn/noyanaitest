@@ -25,6 +25,8 @@ const lockedSegments = new Set(["tamin", "prescription"]);
 const pathModuleMap: Record<string, ParaClinicDashboardModule> = {
   // Noyan Business (2026-10): /<panel>/accounting
   accounting: "accounting",
+  // phase 2: /<panel>/inventory (stock, batches, suppliers, purchases)
+  inventory: "inventory",
   profile: "profile",
   tamin: "tamin",
   test: "tests",

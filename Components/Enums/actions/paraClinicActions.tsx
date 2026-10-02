@@ -9,6 +9,9 @@ export const paraClinicActions = [
   "readFinance",
   // «حسابداری» (2026-10): vouchers, accounts and quick entries
   "manageAccounting",
+  // «انبار و خرید» (2026-10): stock, suppliers and purchases
+  "readInventory",
+  "manageInventory",
   "mutateProfile",
   "readTests",
   "readPrescriptions",
@@ -38,6 +41,7 @@ export const paraClinicActionCategories = [
   "tamin",
   "incomingOrders",
   "licenses",
+  "invMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedParaClinicActions: Readonly<
@@ -45,6 +49,7 @@ export const categorizedParaClinicActions: Readonly<
 > = {
   orgReviewsTitle: ["readReviews"],
   financialMangement: ["readFinance", "manageAccounting"],
+  invMenu: ["readInventory", "manageInventory"],
   profile: ["mutateProfile"],
   tests: ["readTests"],
   prescriptions: ["readPrescriptions"],

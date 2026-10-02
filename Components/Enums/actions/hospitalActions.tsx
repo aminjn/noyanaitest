@@ -9,6 +9,9 @@ export const hospitalActions = [
   "readFinance",
   // «حسابداری» (2026-10): vouchers, accounts and quick entries
   "manageAccounting",
+  // «انبار و خرید» (2026-10): stock, suppliers and purchases
+  "readInventory",
+  "manageInventory",
   "readReservations",
   "mutateProfile",
   "readArticles",
@@ -26,6 +29,7 @@ export const hospitalActionCategories = [
   "profile",
   "articles",
   "licenses",
+  "invMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedHospitalActions: Readonly<
@@ -33,6 +37,7 @@ export const categorizedHospitalActions: Readonly<
 > = {
   orgReviewsTitle: ["readReviews"],
   financialMangement: ["readFinance", "manageAccounting"],
+  invMenu: ["readInventory", "manageInventory"],
   schedule: ["readReservations"],
   profile: ["mutateProfile"],
   articles: ["readArticles"],
