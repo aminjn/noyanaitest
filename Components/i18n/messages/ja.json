@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "5点中${1} · ${2}件",
  "orgReviewsEmpty": "公開された口コミはまだありません",
  "orgReviewsHint": "サポートの確認後、公開ページに掲載された口コミです。",
- "readReviews": "患者の口コミを見る"
+ "readReviews": "患者の口コミを見る",
+ "pfPending": "精算待ち",
+ "pfPendingNext": "次回分は${1}から出金可能",
+ "pfPendingRule": "各収益は${1}日後に出金可能になります",
+ "pfHeldUntil": "精算中・${1}から出金可能",
+ "wdPendingNote": "さらに${1}トマンが精算中で、サービス完了の${2}日後に出金可能残高に加算されます。",
+ "visitDisputeHint": "この対面診療はチェックインなしで完了として記録されました。診察を受けていない場合は異議を申し立ててください。",
+ "visitDisputeButton": "診察を受けていません",
+ "visitDisputeTitle": "診療への異議",
+ "visitDisputeText": "サポートが異議を確認します。認められた場合、料金はウォレットに返金されます。",
+ "visitDisputeReason": "何がありましたか？",
+ "visitDisputeSubmit": "異議を送信",
+ "visitDisputeSent": "異議を受け付けました",
+ "visitDisputeOpen": "異議を確認中です。"
 }

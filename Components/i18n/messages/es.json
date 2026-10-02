@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "${1} de 5 · ${2} opiniones",
  "orgReviewsEmpty": "Aún no hay opiniones publicadas",
  "orgReviewsHint": "Opiniones publicadas en tu página pública tras la revisión de soporte.",
- "readReviews": "Ver opiniones de pacientes"
+ "readReviews": "Ver opiniones de pacientes",
+ "pfPending": "Pendiente de liquidación",
+ "pfPendingNext": "La siguiente parte se podrá retirar desde el ${1}",
+ "pfPendingRule": "Cada ingreso se podrá retirar ${1} días después",
+ "pfHeldUntil": "En liquidación; disponible desde el ${1}",
+ "wdPendingNote": "Otros ${1} tomanes están en liquidación y se suman a tu saldo disponible ${2} días después de realizado el trabajo.",
+ "visitDisputeHint": "Esta visita presencial se registró como realizada sin registro de llegada. Si no te atendieron, presenta una objeción.",
+ "visitDisputeButton": "No me atendieron",
+ "visitDisputeTitle": "Objetar la visita",
+ "visitDisputeText": "Soporte revisará tu objeción. Si se acepta, el importe vuelve a tu monedero.",
+ "visitDisputeReason": "¿Qué pasó?",
+ "visitDisputeSubmit": "Enviar objeción",
+ "visitDisputeSent": "Tu objeción fue enviada",
+ "visitDisputeOpen": "Tu objeción está en revisión."
 }

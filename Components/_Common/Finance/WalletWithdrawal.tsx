@@ -31,6 +31,9 @@ type Withdrawal = {
 
 type WithdrawalData = {
   balance: number;
+  // earnings in their settlement hold, not withdrawable yet
+  pending?: number;
+  holdDays?: number;
   minAmount: number;
   requests: Withdrawal[];
   last: { iban: string; holderName: string } | null;
@@ -104,6 +107,14 @@ const WalletWithdrawal = () => {
       <p className={classes.hint}>
         {getContent("wdHint", [num.format(data.minAmount || 0)])}
       </p>
+      {(Number(data.pending) || 0) > 0 && (
+        <p className={classes.hint}>
+          {getContent("wdPendingNote", [
+            num.format(Number(data.pending) || 0),
+            num.format(Number(data.holdDays) || 0),
+          ])}
+        </p>
+      )}
       {!hasPending && (
         <div className={classes.form}>
           <Input

@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "${1} out of 5 · ${2} reviews",
  "orgReviewsEmpty": "No published reviews yet",
  "orgReviewsHint": "Reviews published on your public page after support's review.",
- "readReviews": "See patient reviews"
+ "readReviews": "See patient reviews",
+ "pfPending": "Pending settlement",
+ "pfPendingNext": "Next part withdrawable from ${1}",
+ "pfPendingRule": "Each earning becomes withdrawable ${1} days later",
+ "pfHeldUntil": "In settlement; withdrawable from ${1}",
+ "wdPendingNote": "Another ${1} toman is in settlement and is added to your withdrawable balance ${2} days after the work is done.",
+ "visitDisputeHint": "This in-person visit was recorded as done without a check-in. If you were not seen, file an objection.",
+ "visitDisputeButton": "I wasn't seen",
+ "visitDisputeTitle": "Object to the visit",
+ "visitDisputeText": "Support will review your objection. If it is upheld, the visit fee goes back to your wallet.",
+ "visitDisputeReason": "What happened?",
+ "visitDisputeSubmit": "Submit objection",
+ "visitDisputeSent": "Your objection was submitted",
+ "visitDisputeOpen": "Your objection is being reviewed."
 }

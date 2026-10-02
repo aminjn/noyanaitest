@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "${1} de 5 · ${2} avaliações",
  "orgReviewsEmpty": "Ainda não há avaliações publicadas",
  "orgReviewsHint": "Avaliações publicadas na sua página pública após análise do suporte.",
- "readReviews": "Ver avaliações de pacientes"
+ "readReviews": "Ver avaliações de pacientes",
+ "pfPending": "Aguardando liquidação",
+ "pfPendingNext": "Próxima parte disponível para saque a partir de ${1}",
+ "pfPendingRule": "Cada ganho fica disponível para saque após ${1} dias",
+ "pfHeldUntil": "Em liquidação; disponível a partir de ${1}",
+ "wdPendingNote": "Mais ${1} tomans estão em liquidação e entram no saldo disponível ${2} dias após o serviço.",
+ "visitDisputeHint": "Esta consulta presencial foi registrada como realizada sem check-in. Se você não foi atendido, conteste.",
+ "visitDisputeButton": "Não fui atendido",
+ "visitDisputeTitle": "Contestar a consulta",
+ "visitDisputeText": "O suporte vai analisar sua contestação. Se aceita, o valor volta para sua carteira.",
+ "visitDisputeReason": "O que aconteceu?",
+ "visitDisputeSubmit": "Enviar contestação",
+ "visitDisputeSent": "Sua contestação foi enviada",
+ "visitDisputeOpen": "Sua contestação está em análise."
 }

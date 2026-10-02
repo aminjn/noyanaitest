@@ -117,6 +117,11 @@ export interface IReservation<
   doctorPresentAt?: Date;
   noShowParty?: ReservationParty;
   finalizedAt?: Date;
+  // in-person visit counted as done with no check-in: the patient may
+  // object until disputeDeadline (2026-10)
+  autoCompleted?: boolean;
+  disputeDeadline?: string;
+  dispute?: { at: string; reason: string } | null;
   subtotal?: number;
   tax?: number;
   total?: number;

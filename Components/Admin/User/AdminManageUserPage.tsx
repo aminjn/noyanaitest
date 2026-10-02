@@ -52,6 +52,7 @@ export type UserDetail = {
   } | null;
   accessLevel: { _id: string; name: string } | null;
   walletBalance: number;
+  walletPending?: number;
   counts: { reservations: number; orders: number };
   profiles: { key: string; title: string; href: string; name: string }[];
   isSelf: boolean;
@@ -303,6 +304,12 @@ const AdminManageUserPage = () => {
                 <strong>{num.format(data.walletBalance ?? 0)}</strong>
                 <span>{ta("موجودی کیف پول (تومان)")}</span>
               </div>
+              {(data.walletPending ?? 0) > 0 && (
+                <div>
+                  <strong>{num.format(data.walletPending ?? 0)}</strong>
+                  <span>{ta("در دوره‌ی تسویه (تومان)")}</span>
+                </div>
+              )}
             </div>
           </section>
 

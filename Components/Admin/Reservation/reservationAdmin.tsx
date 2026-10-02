@@ -342,11 +342,14 @@ export const ResolveReservationPopup = ({
   noShowParty,
   refundable,
   doctorPaid,
+  dispute,
   onDone,
 }: {
   id: string;
   status: ReservationStatus;
   noShowParty?: string;
+  // the patient's objection to an auto-completed in-person visit
+  dispute?: { at?: string; reason?: string } | null;
   refundable: number;
   doctorPaid: number;
   onDone: () => unknown;
@@ -357,7 +360,9 @@ export const ResolveReservationPopup = ({
     <PopupCard title={ta("حل وضعیت نوبت")}>
       <div className={classes.hint}>
         <p>
-          {status === "noShow"
+          {dispute
+            ? ta("این ویزیت حضوری بدون ثبت حضور انجام‌شده ثبت شد و بیمار اعتراض کرده که ویزیت نشده است. مبلغ پزشک هنوز در دوره‌ی تسویه است. دلیل بیمار: ${1}", [dispute.reason || "—"])
+            : status === "noShow"
             ? noShowParty === "patient"
               ? ta("سیستم ثبت کرده که بیمار حاضر نشده و مبلغ نوبت به پزشک تسویه شده است.")
               : ta("سیستم ثبت کرده که پزشک حاضر نشده و مبلغ به بیمار برگشت داده شده است.")
@@ -366,7 +371,9 @@ export const ResolveReservationPopup = ({
         <ul className={classes.list}>
           <li>{ta("بازگشت وجه: باقی‌مانده‌ی مبلغ (${1} تومان) به بیمار برمی‌گردد و اگر به پزشک تسویه شده (${2} تومان) از کیف پول او برگشت می‌خورد.", [currencize(refundable), currencize(doctorPaid)])}</li>
           <li>{ta("انجام‌شده: ویزیت برگزار شده؛ وضعیت «انجام‌شده» می‌شود و مبلغ به پزشک تسویه می‌شود (فقط اگر چیزی به بیمار برنگشته باشد).")}</li>
-          <li>{ta("تأیید نتیجه: نتیجه‌ی خودکار درست است؛ فقط بررسی‌شده علامت می‌خورد.")}</li>
+          {!dispute && (
+            <li>{ta("تأیید نتیجه: نتیجه‌ی خودکار درست است؛ فقط بررسی‌شده علامت می‌خورد.")}</li>
+          )}
         </ul>
       </div>
       <CreateForm<{ action: string; reason: string }>
@@ -395,7 +402,8 @@ export const ResolveReservationPopup = ({
             options: {
               refund: ta("بازگشت وجه به بیمار"),
               complete: ta("انجام‌شده (تسویه با پزشک)"),
-              accept: ta("تأیید نتیجه‌ی خودکار"),
+              // an objection is upheld or rejected, never just "accepted"
+              ...(dispute ? {} : { accept: ta("تأیید نتیجه‌ی خودکار") }),
             },
           },
           reason: { type: "area", title: ta("توضیح بررسی"), required: true },

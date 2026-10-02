@@ -40,6 +40,7 @@ export const reservationSmsEvents = [
   "upcomingReservationPatient",
   "reservationInProgressDoctorNoShow",
   "reservationInProgressPatientNoShow",
+  "visitConfirmPatient",
 ] as const;
 
 export type ReservationSmsEvent = (typeof reservationSmsEvents)[number];
@@ -65,6 +66,9 @@ export const reservationSmsEventLabels: Record<ReservationSmsEvent, string> = {
 },
   get reservationInProgressPatientNoShow() {
   return ta("یادآوری حضور در نوبت - بیمار");
+},
+  get visitConfirmPatient() {
+  return ta("تأیید ویزیت حضوری بدون ثبت حضور - بیمار");
 },
 };
 
@@ -102,6 +106,7 @@ export const reservationSmsEventVariables: Record<
   ],
   reservationInProgressDoctorNoShow: ["reservationId"],
   reservationInProgressPatientNoShow: ["reservationId"],
+  visitConfirmPatient: ["reservationId", "doctorName", "date"],
 };
 
 // Every entry here is one SMS an order's own buyer or an involved seller
@@ -163,6 +168,7 @@ export const userAlertEventVariables: Record<UserAlertEvent, string[]> = {
   newPharmacyAdditionRequest: ["requestId", "name"],
   newHospitalAdditionRequest: ["requestId", "name"],
   newInsuranceAdditionRequest: ["requestId", "name"],
+  newVisitDispute: ["reservationId", "userPhone"],
 };
 
 // Type-level camelCase -> snake_case (lowercase), e.g.

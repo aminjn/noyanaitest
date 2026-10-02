@@ -45,9 +45,12 @@ type LedgerRow = {
   adminAction?: string;
   adminBy?: { _id: string; phone?: string; username?: string } | null;
   note?: string;
+  // a provider earning still in its settlement hold
+  held?: boolean;
+  availableAt?: string;
 };
 
-type Ledger = { balance: number; items: LedgerRow[]; total: number; page: number; limit: number };
+type Ledger = { balance: number; pending: number; items: LedgerRow[]; total: number; page: number; limit: number };
 
 const LEDGER_SIZE = 20;
 
@@ -194,6 +197,7 @@ const UserWallet = ({ userId, onChanged }: { userId: string; onChanged: () => un
         const body = res?.data?.data || {};
         return {
           balance: Number(body.balance) || 0,
+          pending: Number(body.pending) || 0,
           items: Array.isArray(body.items) ? body.items : [],
           total: Number(body.total) || 0,
           page: Number(body.page) || page,
@@ -207,7 +211,11 @@ const UserWallet = ({ userId, onChanged }: { userId: string; onChanged: () => un
       {!!data && (
         <div className={classes.activity}>
           <div className={classes.cardHead}>
-            <strong>{ta("موجودی: ${1} تومان", [currencize(data.balance)])}</strong>
+            <strong>
+              {ta("موجودی: ${1} تومان", [currencize(data.balance)])}
+              {data.pending > 0 &&
+                ` · ${ta("در دوره‌ی تسویه: ${1} تومان", [currencize(data.pending)])}`}
+            </strong>
             <Button
               size="M"
               mode="Outline"
@@ -252,9 +260,11 @@ const UserWallet = ({ userId, onChanged }: { userId: string; onChanged: () => un
               note: {
                 name: ta("توضیح"),
                 value: (node) =>
-                  node.note
-                    ? `${node.note}${node.adminBy ? ` (${personLabel(node.adminBy)})` : ""}`
-                    : "—",
+                  node.held && node.availableAt
+                    ? ta("در دوره‌ی تسویه تا ${1}", [formatDateTime(node.availableAt) || "—"])
+                    : node.note
+                      ? `${node.note}${node.adminBy ? ` (${personLabel(node.adminBy)})` : ""}`
+                      : "—",
               },
               createdAt: {
                 name: ta("تاریخ"),

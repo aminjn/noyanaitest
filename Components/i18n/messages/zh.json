@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "5 分中 ${1} · ${2} 条评价",
  "orgReviewsEmpty": "暂无已发布的评价",
  "orgReviewsHint": "经客服审核后在您的公开页面发布的评价。",
- "readReviews": "查看患者评价"
+ "readReviews": "查看患者评价",
+ "pfPending": "待结算",
+ "pfPendingNext": "下一笔自 ${1} 起可提现",
+ "pfPendingRule": "每笔收入在 ${1} 天后可提现",
+ "pfHeldUntil": "结算中；自 ${1} 起可提现",
+ "wdPendingNote": "另有 ${1} 托曼正在结算中，将在服务完成 ${2} 天后计入可提现余额。",
+ "visitDisputeHint": "此次到诊未签到即被记为已完成。如果您未就诊，请提出异议。",
+ "visitDisputeButton": "我未就诊",
+ "visitDisputeTitle": "对就诊提出异议",
+ "visitDisputeText": "客服将审核您的异议。若成立，预约费用将退回您的钱包。",
+ "visitDisputeReason": "发生了什么？",
+ "visitDisputeSubmit": "提交异议",
+ "visitDisputeSent": "您的异议已提交",
+ "visitDisputeOpen": "您的异议正在审核中。"
 }

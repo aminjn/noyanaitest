@@ -43,6 +43,7 @@ export const userAlertEvents = [
   "newPharmacyAdditionRequest",
   "newHospitalAdditionRequest",
   "newInsuranceAdditionRequest",
+  "newVisitDispute",
 ] as const;
 
 export type UserAlertEvent = (typeof userAlertEvents)[number];
@@ -83,6 +84,9 @@ export const userAlertEventLabels: Record<UserAlertEvent, string> = {
 },
   get newInsuranceAdditionRequest() {
   return ta("درخواست افزودن بیمه");
+},
+  get newVisitDispute() {
+  return ta("اعتراض بیمار به ویزیت حضوری");
 },
 };
 
