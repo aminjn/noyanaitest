@@ -1,5 +1,9 @@
 import CheckAdminKey from "@/Components/Admin/UI/CheckAdminKey";
+import type { Metadata } from "next";
 import { ReactNode } from "react";
+
+// the admin shell is never a search result (2026-10).
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 // F-05 fix: this was previously only enforced by 2 of 165 pages under
 // app/[adminKey]/** (the index page and the blog page), which meant the
