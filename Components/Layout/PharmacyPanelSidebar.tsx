@@ -1,3 +1,4 @@
+import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
@@ -83,6 +84,13 @@ const PharmacyPanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readFinance"),
         target: "finance",
+      },
+      {
+        title: "accounting",
+        icon: <BookOpenIcon />,
+        group: "groupCenter",
+        show: hasAccess("readFinance"),
+        target: "accounting",
       },
       {
         title: "licenses",

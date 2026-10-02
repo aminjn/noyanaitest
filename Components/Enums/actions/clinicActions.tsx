@@ -7,6 +7,8 @@ import { ContentKey } from "../contentKeys";
 export const clinicActions = [
   "readReviews",
   "readFinance",
+  // «حسابداری» (2026-10): vouchers, accounts and quick entries
+  "manageAccounting",
   "readReservations",
   "mutateProfile",
   "readPrescriptions",
@@ -32,7 +34,7 @@ export const categorizedClinicActions: Readonly<
   Record<(typeof clinicActionCategories)[number], readonly ContentKey[]>
 > = {
   orgReviewsTitle: ["readReviews"],
-  financialMangement: ["readFinance"],
+  financialMangement: ["readFinance", "manageAccounting"],
   schedule: ["readReservations"],
   profile: ["mutateProfile"],
   prescriptions: ["readPrescriptions"],

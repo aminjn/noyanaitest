@@ -1,3 +1,4 @@
+import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import StarIcon from "../Icons/StarIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
@@ -51,6 +52,13 @@ const InsurancePanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readFinance"),
         target: "finance",
+      },
+      {
+        title: "accounting",
+        icon: <BookOpenIcon />,
+        group: "groupCenter",
+        show: hasAccess("readFinance"),
+        target: "accounting",
       },
       {
         icon: <UserEditIcon />,

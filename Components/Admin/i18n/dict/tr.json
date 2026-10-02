@@ -799,6 +799,8 @@
  "حساب کاربری: ${1}": "Kullanıcı hesabı: ${1}",
  "حساب کاربری‌ای که وارد پنل این مرکز می‌شود و آن را مدیریت می‌کند.": "Bu merkezin paneline giriş yapan ve onu yöneten kullanıcı hesabı.",
  "حساب کاربری‌ای که وارد پنل این پزشک می‌شود و نوبت‌ها، پیام‌ها و درآمد را مدیریت می‌کند.": "Bu doktorun paneline giriş yapan ve randevuları, mesajları ve geliri yöneten kullanıcı hesabı.",
+ "حسابداری": "Muhasebe",
+ "حسابداری پلتفرم": "Platform muhasebesi",
  "حضور بیمار": "Hasta katılımı",
  "حضور پزشک": "Doktor katılımı",
  "حضوری": "Yüz yüze",

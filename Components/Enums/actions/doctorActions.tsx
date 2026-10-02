@@ -47,6 +47,8 @@ export const doctorActions = [
   // itself (owner-only by design). Kept in sync with
   // Models/DoctorAcl.ts on noyanai-back.
   "readFinance",
+  // «حسابداری» (2026-10): vouchers, accounts and quick entries
+  "manageAccounting",
   "readShifts",
   "readSchedule",
   "readPatients",
@@ -121,7 +123,7 @@ export const categorizedDoctorActions: Readonly<
   ],
   calendar: ["readCalendar", "mutateCalendar"],
   settings: ["readSettings", "mutateSettings"],
-  financialMangement: ["readFinance"],
+  financialMangement: ["readFinance", "manageAccounting"],
   shifts: ["readShifts"],
   schedule: ["readSchedule"],
   patients: ["readPatients", "readPatient", "mutatePatient"],

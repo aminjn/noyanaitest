@@ -20,6 +20,8 @@ const lockedSegments = new Set(["prescription", "tamin"]);
 // Components/PharmacyPanel/PharmacyLicenseGate.tsx /
 // Components/DoctorPanel/DoctorLicenseGate.tsx's own pathModuleMap.
 const pathModuleMap: Record<string, ClinicDashboardModule> = {
+  // Noyan Business (2026-10): /<panel>/accounting
+  accounting: "accounting",
   profile: "profile",
   prescription: "prescriptions",
   tamin: "prescriptions",

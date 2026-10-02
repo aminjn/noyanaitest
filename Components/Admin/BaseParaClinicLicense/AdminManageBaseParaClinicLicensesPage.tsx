@@ -30,6 +30,8 @@ export const paraClinicDashboardModules = [
   "tamin",
   "articles",
   "licenses",
+  // Noyan Business (2026-10): the books
+  "accounting",
 ] as const;
 
 export type ParaClinicDashboardModule =
@@ -59,6 +61,9 @@ export const paraClinicDashboardModuleLabels: Record<
 },
   get licenses() {
   return ta("مجوزها");
+},
+  get accounting() {
+  return ta("حسابداری");
 },
 };
 

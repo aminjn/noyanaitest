@@ -9,6 +9,8 @@ export const insuranceActions = [
   "managePlans",
   "readNetwork",
   "readFinance",
+  // «حسابداری» (2026-10): vouchers, accounts and quick entries
+  "manageAccounting",
   "mutateProfile",
   "readArticles",
   // Licenses page (2026-09) — insurancepanel/license. Kept in sync with
@@ -34,7 +36,7 @@ export const categorizedInsuranceActions: Readonly<
   orgReviewsTitle: ["readReviews"],
   insPlans: ["managePlans"],
   insNetwork: ["readNetwork"],
-  financialMangement: ["readFinance"],
+  financialMangement: ["readFinance", "manageAccounting"],
   profile: ["mutateProfile"],
   articles: ["readArticles"],
   licenses: ["readLicenses"],

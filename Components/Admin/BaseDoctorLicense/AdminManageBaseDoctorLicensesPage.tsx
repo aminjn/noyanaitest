@@ -45,6 +45,8 @@ export const doctorDashboardModules = [
   "drugsAndPrescriptions",
   "patientDocuments",
   "settings",
+  // Noyan Business (2026-10): the books
+  "accounting",
 ] as const;
 
 export type DoctorDashboardModule = (typeof doctorDashboardModules)[number];
@@ -121,6 +123,9 @@ export const doctorDashboardModuleLabels: Record<
 },
   get settings() {
   return ta("تنظیمات");
+},
+  get accounting() {
+  return ta("حسابداری");
 },
 };
 

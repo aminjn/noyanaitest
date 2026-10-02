@@ -799,6 +799,8 @@
  "حساب کاربری: ${1}": "Conta de usuário: ${1}",
  "حساب کاربری‌ای که وارد پنل این مرکز می‌شود و آن را مدیریت می‌کند.": "A conta de usuário que acessa o painel deste centro e o gerencia.",
  "حساب کاربری‌ای که وارد پنل این پزشک می‌شود و نوبت‌ها، پیام‌ها و درآمد را مدیریت می‌کند.": "A conta de usuário que acessa o painel deste médico e gerencia consultas, mensagens e receita.",
+ "حسابداری": "Contabilidade",
+ "حسابداری پلتفرم": "Contabilidade da plataforma",
  "حضور بیمار": "Presença do paciente",
  "حضور پزشک": "Presença do médico",
  "حضوری": "Presencial",
