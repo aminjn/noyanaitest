@@ -218,7 +218,8 @@
   min-height: 2.75rem;
   padding: 0 0.875rem;
   border-radius: 0.75rem;
-  border: 1px solid var(--glassLine);
+  /* glassLine vanishes on a white popup: a solid border reads on both */
+  border: 1px solid var(--gray4);
   background: var(--glassStrong);
   color: var(--gray13);
   font: inherit;
@@ -454,7 +455,8 @@
   min-height: 2.5rem;
   padding: 0 0.625rem;
   border-radius: 0.625rem;
-  border: 1px solid var(--glassLine);
+  /* glassLine vanishes on a white popup: a solid border reads on both */
+  border: 1px solid var(--gray4);
   background: var(--glassStrong);
   color: var(--gray13);
   font: inherit;
