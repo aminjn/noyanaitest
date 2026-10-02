@@ -34,6 +34,98 @@ const fetchNodePageMeta = cache(
   },
 );
 
+// Automatic SEO (2026-10): the backend builds every page's title,
+// description, keywords, canonical, image, robots and structured data from
+// a per-type template and the record itself (backend Lib/seo/seoResolver.ts);
+// a page's own SEO entry wins there, field by field.
+type ResolvedSeo = {
+  title?: string;
+  description?: string;
+  keywords?: string[];
+  ogTitle?: string;
+  ogDescription?: string;
+  image?: string;
+  canonical?: string;
+  noIndex?: boolean;
+  noFollow?: boolean;
+  schema?: Record<string, unknown>[];
+};
+
+const origin = () => DOMAIN.replace(/\/$/, "");
+// the backend writes {{ORIGIN}} / {{FILES}}, which only the frontend knows
+const resolveTokens = <T,>(value: T): T =>
+  JSON.parse(
+    JSON.stringify(value)
+      .split("{{ORIGIN}}")
+      .join(origin())
+      .split("{{FILES}}")
+      .join(String(FilePath).replace(/\/$/, "")),
+  ) as T;
+
+const fetchSeo = cache(async (path: string, slug?: string): Promise<ResolvedSeo | null> => {
+  const qs = new URLSearchParams({ path, ...(slug ? { slug } : {}) });
+  const res = await getPublicData<ResolvedSeo | null>(`seo?${qs.toString()}`);
+  return res ? resolveTokens(res) : null;
+});
+
+const seoToMetadata = (seo: ResolvedSeo | null): Metadata => {
+  if (!seo) return {};
+  const canonical = seo.canonical
+    ? /^https?:\/\//.test(seo.canonical)
+      ? seo.canonical
+      : `${origin()}${seo.canonical}`
+    : undefined;
+  const image = seo.image
+    ? /^https?:\/\//.test(seo.image)
+      ? seo.image
+      : `${String(FilePath).replace(/\/$/, "")}/${seo.image}`
+    : undefined;
+  return stripUndefined({
+    title: seo.title || undefined,
+    description: seo.description || undefined,
+    keywords: seo.keywords?.length ? seo.keywords : undefined,
+    alternates: canonical
+      ? { canonical: localizeCanonical(canonical), ...localeAlternates() }
+      : undefined,
+    robots:
+      seo.noIndex || seo.noFollow
+        ? { index: !seo.noIndex, follow: !seo.noFollow }
+        : undefined,
+    openGraph: {
+      title: seo.ogTitle || seo.title,
+      description: seo.ogDescription || seo.description,
+      ...(canonical && { url: localizeCanonical(canonical) }),
+      ...(image && { images: [image] }),
+    },
+    twitter: {
+      card: image ? "summary_large_image" : "summary",
+      title: seo.ogTitle || seo.title,
+      description: seo.ogDescription || seo.description,
+      ...(image && { images: [image] }),
+    },
+  });
+};
+
+const seoGraph = (seo: ResolvedSeo | null): Record<string, unknown> | undefined => {
+  const list = Array.isArray(seo?.schema) ? seo.schema.filter((x) => x && typeof x === "object") : [];
+  if (!list.length) return undefined;
+  return {
+    "@context": "https://schema.org",
+    "@graph": list.map((item) => {
+      const { ["@context"]: _ctx, ...rest } = item as Record<string, unknown>;
+      return rest;
+    }),
+  };
+};
+
+const decodeSlug = (slug: string) => {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+};
+
 const toMetadata = (data?: IPageMeta | null): Metadata => {
   if (!data) return {};
   const hasOg = !!(data.ogTitle || data.ogDescription || data.ogImage);
@@ -61,7 +153,10 @@ const toMetadata = (data?: IPageMeta | null): Metadata => {
 
 export const getListPageMetadata = async (
   path: PageMetaListResourceType,
-): Promise<Metadata> => toMetadata(await fetchListPageMeta(path));
+): Promise<Metadata> => {
+  const seo = await fetchSeo(path);
+  return seo ? seoToMetadata(seo) : toMetadata(await fetchListPageMeta(path));
+};
 
 // A node page with no SEO entry in the admin used to get only the site
 // title. It now falls back to the record itself: its name, a plain-text
@@ -156,35 +251,29 @@ export const getNodePageMetadata = async (
   nodeSlug?: string,
 ): Promise<Metadata> => {
   if (!nodeSlug) return {};
-  let slug = nodeSlug;
-  try {
-    slug = decodeURIComponent(nodeSlug);
-  } catch {
-    // a malformed escape: use it as is
-  }
+  const slug = decodeSlug(nodeSlug);
+  const seo = await fetchSeo(path, slug);
+  if (seo) return seoToMetadata(seo);
+  // no such record (or the service is down): the old path
   const meta = await fetchNodePageMeta(path, slug);
   if (meta?.title) return toMetadata(meta);
   const fallback = nodeFallbackMetadata(
     await fetchNodeForMeta(nodeApi[path], slug),
     path.replace(/\[[a-zA-Z]+\]/, slug),
   );
-  // an entry with only some fields set (e.g. noIndex) still applies
   return { ...fallback, ...stripUndefined(toMetadata(meta)) };
 };
 
 // A node page that builds its own fallback (e.g. /dr/[slug], whose public
-// response wraps the doctor) - the admin's SEO entry wins field by field.
+// response wraps the doctor): the automatic SEO wins field by field.
 export const withNodePageMeta = async (
   path: PageMetaNodeResourceType,
   nodeSlug: string,
   fallback: Metadata,
 ): Promise<Metadata> => {
-  let slug = nodeSlug;
-  try {
-    slug = decodeURIComponent(nodeSlug);
-  } catch {
-    // a malformed escape: use it as is
-  }
+  const slug = decodeSlug(nodeSlug);
+  const seo = await fetchSeo(path, slug);
+  if (seo) return { ...fallback, ...seoToMetadata(seo) };
   const meta = await fetchNodePageMeta(path, slug);
   return { ...fallback, ...stripUndefined(toMetadata(meta)) };
 };
@@ -194,13 +283,18 @@ const stripUndefined = (value: Metadata): Metadata =>
     Object.entries(value).filter(([, v]) => v !== undefined),
   ) as Metadata;
 
+// structured data: the page's generated graph (its main entity, the
+// breadcrumb; the admin's own block replaces the main entity)
 export const getListPageWebSchema = async (
   path: PageMetaListResourceType,
 ): Promise<Record<string, unknown> | undefined> =>
-  (await fetchListPageMeta(path))?.webSchema;
+  seoGraph(await fetchSeo(path)) ?? (await fetchListPageMeta(path))?.webSchema;
 
 export const getNodePageWebSchema = async (
   path: PageMetaNodeResourceType,
   nodeSlug?: string,
-): Promise<Record<string, unknown> | undefined> =>
-  nodeSlug ? (await fetchNodePageMeta(path, nodeSlug))?.webSchema : undefined;
+): Promise<Record<string, unknown> | undefined> => {
+  if (!nodeSlug) return undefined;
+  const slug = decodeSlug(nodeSlug);
+  return seoGraph(await fetchSeo(path, slug)) ?? (await fetchNodePageMeta(path, slug))?.webSchema;
+};
