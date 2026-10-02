@@ -26,6 +26,9 @@ export const pharmacyActions = [
   "readFinance",
   // «حسابداری» (2026-10): vouchers, accounts and quick entries
   "manageAccounting",
+  // «انبار و خرید» (2026-10): stock, suppliers and purchases
+  "readInventory",
+  "manageInventory",
 ] as const;
 
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
@@ -40,6 +43,7 @@ export const pharmacyActionCategories = [
   "incomingOrders",
   "licenses",
   "financialMangement",
+  "invMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedPharmacyActions: Readonly<
@@ -54,4 +58,5 @@ export const categorizedPharmacyActions: Readonly<
   incomingOrders: ["readOrders", "mutateOrders"],
   licenses: ["readLicenses"],
   financialMangement: ["readFinance", "manageAccounting"],
+  invMenu: ["readInventory", "manageInventory"],
 } as const;

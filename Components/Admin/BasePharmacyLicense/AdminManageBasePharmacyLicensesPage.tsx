@@ -34,6 +34,8 @@ export const pharmacyDashboardModules = [
   "articles",
   // Noyan Business (2026-10): the books
   "accounting",
+  // Noyan Business phase 2 (2026-10): stock, batches, suppliers, purchases
+  "inventory",
 ] as const;
 
 export type PharmacyDashboardModule = (typeof pharmacyDashboardModules)[number];
@@ -71,6 +73,9 @@ export const pharmacyDashboardModuleLabels: Record<
 },
   get accounting() {
   return ta("حسابداری");
+},
+  get inventory() {
+  return ta("انبار و خرید");
 },
 };
 

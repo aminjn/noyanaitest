@@ -17,6 +17,8 @@ import { HospitalDashboardModule } from "../Admin/BaseHospitalLicense/AdminManag
 const pathModuleMap: Record<string, HospitalDashboardModule> = {
   // Noyan Business (2026-10): /<panel>/accounting
   accounting: "accounting",
+  // phase 2: /<panel>/inventory (stock, batches, suppliers, purchases)
+  inventory: "inventory",
   profile: "profile",
 };
 

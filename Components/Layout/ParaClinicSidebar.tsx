@@ -77,6 +77,13 @@ const ParaClinicSidebar = () => {
         target: "accounting",
       },
       {
+        title: "invMenu",
+        icon: <PackageIcon />,
+        group: "groupCenter",
+        show: hasAccess("readInventory"),
+        target: "inventory",
+      },
+      {
         title: "teamTitle",
         icon: <UserEditIcon />,
         group: "groupCenter",

@@ -93,6 +93,13 @@ const PharmacyPanelSidebar = () => {
         target: "accounting",
       },
       {
+        title: "invMenu",
+        icon: <PackageIcon />,
+        group: "groupCenter",
+        show: hasAccess("readInventory"),
+        target: "inventory",
+      },
+      {
         title: "licenses",
         icon: <CartIcon />,
         group: "groupCenter",
