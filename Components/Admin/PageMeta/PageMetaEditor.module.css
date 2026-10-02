@@ -1,0 +1,116 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auto,
+.manual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--gray13);
+}
+
+.badge,
+.badgeManual {
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.badge {
+  background: var(--aiSoft);
+  color: var(--aiText);
+}
+
+.badgeManual {
+  background: var(--warningT1);
+  color: var(--warningS3);
+}
+
+.hint {
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--gray10);
+  text-align: start;
+}
+
+.serp {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.875rem;
+  border-radius: 1rem;
+  background: var(--glassStrong);
+}
+
+.serpUrl {
+  /* the site font draws Latin digits as Persian ones; a URL must not */
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: var(--gray9);
+  word-break: break-all;
+  text-align: start;
+}
+
+.serpTitle {
+  font-size: 1.0625rem;
+  color: #1a0dab;
+  line-height: 1.5;
+}
+
+:global(html[data-theme="dark"]) .serpTitle {
+  color: #8ab4f8;
+}
+
+.serpDesc {
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--gray11);
+}
+
+.meta {
+  font-size: 0.75rem;
+  color: var(--gray9);
+  text-align: start;
+}
+
+.warn {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--error);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ghost {
+  min-height: 2.5rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--gray11);
+  font-weight: 800;
+  font-size: 0.875rem;
+}
+
+.ghost:disabled {
+  opacity: 0.6;
+}

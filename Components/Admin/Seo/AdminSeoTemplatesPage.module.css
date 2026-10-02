@@ -190,6 +190,8 @@
 }
 
 .serpUrl {
+  /* the site font draws Latin digits as Persian ones; a URL must not */
+  font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 0.75rem;
   color: var(--gray9);
   word-break: break-all;

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
-import { API } from "@/Components/config";
+import { API, DOMAIN } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
 import { ta } from "@/Components/Admin/i18n/adminText";
@@ -313,7 +313,7 @@ const AdminSeoTemplatesPage = () => {
               {preview ? (
                 <div className={classes.serp} dir={localeDir(locale)}>
                   <span className={classes.serpUrl} dir="ltr">
-                    {preview.canonical}
+                    {preview.canonical?.startsWith("/") ? `${DOMAIN}${preview.canonical}` : preview.canonical}
                   </span>
                   <span className={classes.serpTitle}>{preview.title || "—"}</span>
                   <span className={classes.serpDesc}>{preview.description || "—"}</span>
