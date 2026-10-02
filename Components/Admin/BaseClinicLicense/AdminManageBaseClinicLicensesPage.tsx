@@ -28,6 +28,8 @@ export const clinicDashboardModules = [
   "prescriptions",
   "licenses",
   "articles",
+  // Noyan Business (2026-10): the books
+  "accounting",
 ] as const;
 
 export type ClinicDashboardModule = (typeof clinicDashboardModules)[number];
@@ -50,6 +52,9 @@ export const clinicDashboardModuleLabels: Record<
 },
   get articles() {
   return ta("مقالات");
+},
+  get accounting() {
+  return ta("حسابداری");
 },
 };
 

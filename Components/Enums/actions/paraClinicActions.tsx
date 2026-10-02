@@ -7,6 +7,8 @@ import { ContentKey } from "../contentKeys";
 export const paraClinicActions = [
   "readReviews",
   "readFinance",
+  // «حسابداری» (2026-10): vouchers, accounts and quick entries
+  "manageAccounting",
   "mutateProfile",
   "readTests",
   "readPrescriptions",
@@ -42,7 +44,7 @@ export const categorizedParaClinicActions: Readonly<
   Record<(typeof paraClinicActionCategories)[number], readonly ContentKey[]>
 > = {
   orgReviewsTitle: ["readReviews"],
-  financialMangement: ["readFinance"],
+  financialMangement: ["readFinance", "manageAccounting"],
   profile: ["mutateProfile"],
   tests: ["readTests"],
   prescriptions: ["readPrescriptions"],

@@ -15,6 +15,8 @@ import { HospitalDashboardModule } from "../Admin/BaseHospitalLicense/AdminManag
 // Components/PharmacyPanel/PharmacyLicenseGate.tsx /
 // Components/DoctorPanel/DoctorLicenseGate.tsx's own pathModuleMap.
 const pathModuleMap: Record<string, HospitalDashboardModule> = {
+  // Noyan Business (2026-10): /<panel>/accounting
+  accounting: "accounting",
   profile: "profile",
 };
 

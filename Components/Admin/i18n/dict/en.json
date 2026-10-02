@@ -799,6 +799,8 @@
  "حساب کاربری: ${1}": "User account: ${1}",
  "حساب کاربری‌ای که وارد پنل این مرکز می‌شود و آن را مدیریت می‌کند.": "The user account that signs in to this centre’s panel and manages it.",
  "حساب کاربری‌ای که وارد پنل این پزشک می‌شود و نوبت‌ها، پیام‌ها و درآمد را مدیریت می‌کند.": "The user account that signs in to this doctor’s panel and manages appointments, messages and income.",
+ "حسابداری": "Accounting",
+ "حسابداری پلتفرم": "Platform accounting",
  "حضور بیمار": "Patient attendance",
  "حضور پزشک": "Doctor attendance",
  "حضوری": "In-person",

@@ -1,3 +1,4 @@
+import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import Link from "@/Components/i18n/Link";
 import classes from "./PanelSidebar.module.css";
 import { imagePath } from "../helpers/imagepath";
@@ -144,6 +145,13 @@ const DoctorSidebar = () => {
             <span className={classes.toman}>{getContent("toman")}</span>
           </span>
         ),
+        show: hasAccess("readFinance"),
+      },
+      {
+        title: "accounting",
+        icon: <BookOpenIcon />,
+        target: "accounting",
+        group: "groupPractice",
         show: hasAccess("readFinance"),
       },
       {

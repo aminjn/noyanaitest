@@ -19,6 +19,8 @@ const lockedSegments = new Set(["prescription", "filledPrescription", "tamin"]);
 // blocks a page the backend would still allow. Mirrors
 // Components/DoctorPanel/DoctorLicenseGate.tsx's own pathModuleMap.
 const pathModuleMap: Record<string, PharmacyDashboardModule> = {
+  // Noyan Business (2026-10): /<panel>/accounting
+  accounting: "accounting",
   profile: "profile",
   prescription: "prescriptions",
   filledPrescription: "prescriptions",

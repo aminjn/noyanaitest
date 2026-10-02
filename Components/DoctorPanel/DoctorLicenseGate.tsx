@@ -23,6 +23,8 @@ const lockedSegments = new Set(["drug", "prescription", "tamin"]);
 // dashboard/license themselves) is intentionally left out so this frontend
 // notice never blocks a page the backend would still allow.
 const pathModuleMap: Record<string, DoctorDashboardModule> = {
+  // Noyan Business (2026-10): /<panel>/accounting
+  accounting: "accounting",
   profile: "profile",
   office: "office",
   service: "services",

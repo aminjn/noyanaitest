@@ -1,3 +1,4 @@
+import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import StarIcon from "../Icons/StarIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import ClockIcon from "../Icons/ClockIcon";
@@ -62,6 +63,13 @@ const HospitalPanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readFinance"),
         target: "finance",
+      },
+      {
+        title: "accounting",
+        icon: <BookOpenIcon />,
+        group: "groupCenter",
+        show: hasAccess("readFinance"),
+        target: "accounting",
       },
       {
         title: "teamTitle",

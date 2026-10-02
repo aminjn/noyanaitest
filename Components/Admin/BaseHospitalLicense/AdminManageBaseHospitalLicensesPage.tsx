@@ -27,6 +27,8 @@ export const hospitalDashboardModules = [
   "secrataries",
   "licenses",
   "articles",
+  // Noyan Business (2026-10): the books
+  "accounting",
 ] as const;
 
 export type HospitalDashboardModule = (typeof hospitalDashboardModules)[number];
@@ -46,6 +48,9 @@ export const hospitalDashboardModuleLabels: Record<
 },
   get articles() {
   return ta("مقالات");
+},
+  get accounting() {
+  return ta("حسابداری");
 },
 };
 

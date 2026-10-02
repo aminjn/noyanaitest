@@ -24,6 +24,8 @@ export const pharmacyActions = [
   // Finance page (2026-09) — pharmacypanel/finance. Kept in sync with
   // Models/pharmacyAcl.ts on noyanai-back.
   "readFinance",
+  // «حسابداری» (2026-10): vouchers, accounts and quick entries
+  "manageAccounting",
 ] as const;
 
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
@@ -51,5 +53,5 @@ export const categorizedPharmacyActions: Readonly<
   tamin: ["readTamin"],
   incomingOrders: ["readOrders", "mutateOrders"],
   licenses: ["readLicenses"],
-  financialMangement: ["readFinance"],
+  financialMangement: ["readFinance", "manageAccounting"],
 } as const;

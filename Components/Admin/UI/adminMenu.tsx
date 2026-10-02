@@ -170,6 +170,8 @@ export const adminMenu: AdminMenuGroup[] = [
       { get title() { return ta("پرداخت‌های درگاه"); }, href: "finance/payments", access: "Finance" },
       { get title() { return ta("درخواست‌های برداشت"); }, href: "finance/withdrawals", access: "Finance" },
       { get title() { return ta("فاکتورها"); }, href: "finance/invoices", access: "Finance" },
+      // the platform's own books (2026-10, Noyan Business)
+      { get title() { return ta("حسابداری پلتفرم"); }, href: "finance/accounting", access: "Finance" },
       { get title() { return ta("پلن‌ها و مجوزها"); }, href: "licensePlans" },
       { get title() { return ta("تنظیمات مالی"); }, href: "financeSettings" },
     ],
