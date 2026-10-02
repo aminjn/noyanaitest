@@ -88,6 +88,9 @@ export interface IAdminReservation {
   sessionType: SessionType;
   status: ReservationStatus;
   noShowParty?: "patient" | "doctor";
+  autoCompleted?: boolean;
+  disputeDeadline?: string;
+  dispute?: { at: string; reason: string } | null;
   doctor: (AdminDoctor & { user?: AdminPerson | null }) | null;
   patient: (AdminIdentity & { phones?: string[] }) | null;
   user: AdminPerson | null;
@@ -238,6 +241,7 @@ const AdminManageReservationPage = () => {
               noShowParty={data.noShowParty}
               refundable={refundable}
               doctorPaid={doctorPaid}
+              dispute={data.dispute}
               onDone={refresh}
             />,
           ),
@@ -282,6 +286,24 @@ const AdminManageReservationPage = () => {
                 <span className={classes.muted}>{ta("وضعیت توسط پشتیبانی حل شده")}</span>
               )}
             </div>
+
+            {!!data.dispute && (
+              <div className={classes.alert} role="status">
+                <p>
+                  {ta("اعتراض بیمار (${1}): ${2}", [
+                    formatDateTime(data.dispute.at) || "—",
+                    data.dispute.reason || "—",
+                  ])}
+                </p>
+              </div>
+            )}
+            {!data.dispute && data.autoCompleted && (
+              <p className={classes.muted}>
+                {ta("ویزیت حضوری بدون ثبت حضور انجام‌شده ثبت شد؛ مهلت اعتراض بیمار تا ${1}", [
+                  formatDateTime(data.disputeDeadline) || "—",
+                ])}
+              </p>
+            )}
 
             {(data.dispatchError || data.reminderError) && (
               <div className={classes.alert} role="status">

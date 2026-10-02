@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "${1} sur 5 · ${2} avis",
  "orgReviewsEmpty": "Aucun avis publié pour l'instant",
  "orgReviewsHint": "Avis publiés sur votre page publique après vérification par le support.",
- "readReviews": "Voir les avis des patients"
+ "readReviews": "Voir les avis des patients",
+ "pfPending": "En attente de règlement",
+ "pfPendingNext": "Prochaine partie retirable à partir du ${1}",
+ "pfPendingRule": "Chaque revenu devient retirable ${1} jours plus tard",
+ "pfHeldUntil": "En cours de règlement ; retirable à partir du ${1}",
+ "wdPendingNote": "${1} tomans supplémentaires sont en cours de règlement et s'ajoutent à votre solde retirable ${2} jours après la prestation.",
+ "visitDisputeHint": "Cette consultation sur place a été enregistrée comme effectuée sans pointage. Si vous n'avez pas été reçu, contestez-la.",
+ "visitDisputeButton": "Je n'ai pas été reçu",
+ "visitDisputeTitle": "Contester la consultation",
+ "visitDisputeText": "Le support examinera votre contestation. Si elle est retenue, le montant revient dans votre portefeuille.",
+ "visitDisputeReason": "Que s'est-il passé ?",
+ "visitDisputeSubmit": "Envoyer la contestation",
+ "visitDisputeSent": "Votre contestation a été envoyée",
+ "visitDisputeOpen": "Votre contestation est en cours d'examen."
 }

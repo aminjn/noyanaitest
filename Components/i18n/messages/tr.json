@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "5 üzerinden ${1} · ${2} yorum",
  "orgReviewsEmpty": "Henüz yayınlanmış yorum yok",
  "orgReviewsHint": "Destek incelemesinden sonra herkese açık sayfanızda yayınlanan yorumlar.",
- "readReviews": "Hasta yorumlarını görme"
+ "readReviews": "Hasta yorumlarını görme",
+ "pfPending": "Ödeme bekleniyor",
+ "pfPendingNext": "Sonraki kısım ${1} tarihinden itibaren çekilebilir",
+ "pfPendingRule": "Her kazanç ${1} gün sonra çekilebilir olur",
+ "pfHeldUntil": "Ödeme sürecinde; ${1} tarihinden itibaren çekilebilir",
+ "wdPendingNote": "${1} toman daha ödeme sürecinde; iş tamamlandıktan ${2} gün sonra çekilebilir bakiyenize eklenir.",
+ "visitDisputeHint": "Bu yüz yüze muayene giriş kaydı olmadan tamamlandı olarak işlendi. Muayene olmadıysanız itiraz edin.",
+ "visitDisputeButton": "Muayene olmadım",
+ "visitDisputeTitle": "Muayeneye itiraz",
+ "visitDisputeText": "Destek itirazınızı inceleyecek. Kabul edilirse ücret cüzdanınıza iade edilir.",
+ "visitDisputeReason": "Ne oldu?",
+ "visitDisputeSubmit": "İtirazı gönder",
+ "visitDisputeSent": "İtirazınız alındı",
+ "visitDisputeOpen": "İtirazınız inceleniyor."
 }

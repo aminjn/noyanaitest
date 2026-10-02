@@ -21,6 +21,7 @@ import ReservationTimeline from "./ReservationTimeline";
 import ReservationJoinButton from "./ReservationJoinButton";
 import PatientIntakeCard from "@/Components/Visit/PatientIntakeCard";
 import ReservationCancel from "./ReservationCancel";
+import ReservationDispute from "./ReservationDispute";
 import VisitFeedbackCard from "@/Components/Visit/VisitFeedbackCard";
 import LeaveByHint from "@/Components/Map/LeaveByHint";
 
@@ -176,6 +177,11 @@ const DashboardManageBookingPage = () => {
                       ? Math.abs(data.transaction.amount)
                       : undefined),
                 }}
+                ns={NS}
+                onDone={() => mutate()}
+              />
+              <ReservationDispute
+                reservation={data}
                 ns={NS}
                 onDone={() => mutate()}
               />

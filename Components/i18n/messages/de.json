@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "${1} von 5 · ${2} Bewertungen",
  "orgReviewsEmpty": "Noch keine veröffentlichten Bewertungen",
  "orgReviewsHint": "Bewertungen, die nach Prüfung durch den Support auf Ihrer öffentlichen Seite erscheinen.",
- "readReviews": "Patientenbewertungen ansehen"
+ "readReviews": "Patientenbewertungen ansehen",
+ "pfPending": "Ausstehende Abrechnung",
+ "pfPendingNext": "Nächster Teil auszahlbar ab ${1}",
+ "pfPendingRule": "Jede Einnahme ist nach ${1} Tagen auszahlbar",
+ "pfHeldUntil": "In Abrechnung; auszahlbar ab ${1}",
+ "wdPendingNote": "Weitere ${1} Toman sind in Abrechnung und werden ${2} Tage nach der Leistung auszahlbar.",
+ "visitDisputeHint": "Dieser Präsenztermin wurde ohne Check-in als erledigt erfasst. Wurden Sie nicht behandelt, legen Sie Einspruch ein.",
+ "visitDisputeButton": "Ich wurde nicht behandelt",
+ "visitDisputeTitle": "Einspruch gegen den Termin",
+ "visitDisputeText": "Der Support prüft Ihren Einspruch. Wird er bestätigt, geht der Betrag zurück in Ihre Wallet.",
+ "visitDisputeReason": "Was ist passiert?",
+ "visitDisputeSubmit": "Einspruch senden",
+ "visitDisputeSent": "Ihr Einspruch wurde gesendet",
+ "visitDisputeOpen": "Ihr Einspruch wird geprüft."
 }

@@ -24,6 +24,7 @@ export interface IGlobalFinanceSettings extends MongoDoc {
   defaultDoctorCommissionPercent: number;
   defaultDoctorInPersonCommissionPercent: number;
   defaultParaClinicCommissionPercent: number;
+  payoutHoldDays: number;
 }
 
 const AdminManageGlobalFinanceSettingsPage = () => {
@@ -61,6 +62,10 @@ const AdminManageGlobalFinanceSettingsPage = () => {
               },
               defaultParaClinicCommissionPercent: {
                 title: ta("درصد کمیسیون پیش‌فرض پاراکلینیک‌ها"),
+                type: "number",
+              },
+              payoutHoldDays: {
+                title: ta("دوره‌ی تسویه (روز) - درآمد ارائه‌دهنده پس از این مدت قابل برداشت می‌شود"),
                 type: "number",
               },
             }}

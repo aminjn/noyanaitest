@@ -2374,5 +2374,18 @@
  "orgReviewsAverage": "${1} dari 5 · ${2} ulasan",
  "orgReviewsEmpty": "Belum ada ulasan yang diterbitkan",
  "orgReviewsHint": "Ulasan yang diterbitkan di halaman publik Anda setelah ditinjau tim dukungan.",
- "readReviews": "Lihat ulasan pasien"
+ "readReviews": "Lihat ulasan pasien",
+ "pfPending": "Menunggu penyelesaian",
+ "pfPendingNext": "Bagian berikutnya dapat ditarik mulai ${1}",
+ "pfPendingRule": "Setiap pendapatan dapat ditarik ${1} hari kemudian",
+ "pfHeldUntil": "Dalam penyelesaian; dapat ditarik mulai ${1}",
+ "wdPendingNote": "${1} toman lainnya masih dalam penyelesaian dan masuk ke saldo yang dapat ditarik ${2} hari setelah layanan selesai.",
+ "visitDisputeHint": "Kunjungan tatap muka ini dicatat selesai tanpa check-in. Jika Anda tidak diperiksa, ajukan keberatan.",
+ "visitDisputeButton": "Saya tidak diperiksa",
+ "visitDisputeTitle": "Keberatan atas kunjungan",
+ "visitDisputeText": "Tim dukungan akan meninjau keberatan Anda. Jika diterima, biaya kembali ke dompet Anda.",
+ "visitDisputeReason": "Apa yang terjadi?",
+ "visitDisputeSubmit": "Kirim keberatan",
+ "visitDisputeSent": "Keberatan Anda telah dikirim",
+ "visitDisputeOpen": "Keberatan Anda sedang ditinjau."
 }

@@ -582,6 +582,14 @@ export const contentNamespaces = {
     "mapLeaveNow",
     "mapLeaveByHint",
     "mapVisitInTrafficZone",
+    "visitDisputeHint",
+    "visitDisputeButton",
+    "visitDisputeTitle",
+    "visitDisputeText",
+    "visitDisputeReason",
+    "visitDisputeSubmit",
+    "visitDisputeSent",
+    "visitDisputeOpen",
   ],
 
   // app/dashboard/transaction/page.tsx (DashboardManageTransactionsPage) —
@@ -1829,6 +1837,10 @@ export const contentNamespaces = {
     "dpfNote",
     "pfOrderPayout",
     "dpfCommission",
+    "pfPending",
+    "pfPendingNext",
+    "pfPendingRule",
+    "pfHeldUntil",
   ],
   // app/pharmacypanel/finance (Components/_Common/Finance/PanelFinancePage).
   pharmacyPanelFinance: [
@@ -1859,6 +1871,10 @@ export const contentNamespaces = {
     "pfOrderPayout",
     "dpfCommission",
     "ofCenterNote",
+    "pfPending",
+    "pfPendingNext",
+    "pfPendingRule",
+    "pfHeldUntil",
   ],
 
   // app/doctorpanel/calendar/page.tsx + [stamp] (DoctorManageCalendarPage,
@@ -4701,7 +4717,7 @@ export const contentNamespaces = {
   specialityCard: ["bestDoctors", "nDoctors", "seeAll"],
   // app/speciality/[slug] (SpecialityPage).
   // Components/_Common/Finance/WalletWithdrawal (every wallet page)
-  walletWithdrawal: ["wdTitle", "wdBalance", "wdAmount", "wdIban", "wdHolder", "wdSubmit", "wdHint", "wdHistory", "wdStatusPending", "wdStatusPaid", "wdStatusRejected", "wdStatusCancelled", "wdCancel", "wdTracking", "wdReason", "wdEmpty", "wdSuccess", "wdCheckInput"],
+  walletWithdrawal: ["wdTitle", "wdBalance", "wdAmount", "wdIban", "wdHolder", "wdSubmit", "wdHint", "wdHistory", "wdStatusPending", "wdStatusPaid", "wdStatusRejected", "wdStatusCancelled", "wdCancel", "wdTracking", "wdReason", "wdEmpty", "wdSuccess", "wdCheckInput", "wdPendingNote"],
   specialityPage: ["aboutThisSpeciality", "nDoctors", "filterTheseDoctors"],
   // Components/Symptom/SymptomCard — reusable (symptom list, DiseasePage, SearchModal).
   symptomCard: ["seeDetails"],

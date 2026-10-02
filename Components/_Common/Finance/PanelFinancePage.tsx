@@ -37,10 +37,17 @@ type FinanceTransaction = {
   license?: { displayName?: string } | null;
   // a sold order line (pharmacy / doctor service / paraclinic payout)
   order?: { submittedAt?: string } | null;
+  // still in its settlement hold until availableAt
+  held?: boolean;
+  availableAt?: string;
 };
 
 type PanelFinance = {
   balance: number;
+  // earnings still in their settlement hold (backend Lib/payoutHold.ts)
+  pending: number;
+  nextReleaseAt?: string | null;
+  holdDays: number;
   // the owner can move the money to the bank (not a secretary)
   canWithdraw?: boolean;
   income: { thisMonth: number; lastMonth: number; allTime: number };
@@ -138,6 +145,8 @@ const PanelFinancePage = ({
         return {
           ...d,
           balance: Number(d.balance) || 0,
+          pending: Number(d.pending) || 0,
+          holdDays: Number(d.holdDays) || 0,
           income: {
             thisMonth: Number(d.income?.thisMonth) || 0,
             lastMonth: Number(d.income?.lastMonth) || 0,
@@ -205,6 +214,19 @@ const PanelFinancePage = ({
               unit={toman}
               highlight
             />
+            {(data.pending > 0 || data.holdDays > 0) && (
+              <Tile
+                icon={<ClockIcon />}
+                label={getContent("pfPending")}
+                value={num.format(data.pending)}
+                unit={toman}
+                note={
+                  data.pending > 0 && data.nextReleaseAt
+                    ? getContent("pfPendingNext", [safeFormatDate(shortDate, data.nextReleaseAt)])
+                    : getContent("pfPendingRule", [num.format(data.holdDays)])
+                }
+              />
+            )}
             <Tile
               icon={<CalendarIcon />}
               label={getContent("dpfThisMonth")}
@@ -280,6 +302,11 @@ const PanelFinancePage = ({
                           <td>
                             <span className={classes.desc}>{d.title}</span>
                             {d.sub && <span className={classes.descSub}>{d.sub}</span>}
+                            {t.held && t.availableAt && (
+                              <span className={classes.descSub}>
+                                {getContent("pfHeldUntil", [safeFormatDate(shortDate, t.availableAt)])}
+                              </span>
+                            )}
                             {!!t.commission && (
                               <span className={classes.descSub}>
                                 {getContent("dpfCommission", [
