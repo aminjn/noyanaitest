@@ -7,6 +7,7 @@ import AdminDeliverySettingsPage from "@/Components/Admin/Delivery/AdminDelivery
 import AdminManageGlobalFinanceSettingsPage from "@/Components/Admin/FinanceSettings/AdminManageGlobalFinanceSettingsPage";
 import AdminManageGlobalTaxSettingsPage from "@/Components/Admin/TaxSettings/AdminManageGlobalTaxSettingsPage";
 import AdminPaymentSettingsTab from "@/Components/Admin/FinanceSettings/AdminPaymentSettingsTab";
+import AdminPayrollYearsTab from "@/Components/Admin/FinanceSettings/AdminPayrollYearsTab";
 
 // تنظیمات مالی: one admin page, its parts as tabs (2026-09 admin audit).
 const FinanceSettingsHub = () => {
@@ -14,7 +15,7 @@ const FinanceSettingsHub = () => {
   return (
     <AdminSectionHub
       title={ta("تنظیمات مالی")}
-      intro={ta("همه‌ی تنظیمات پول در یک جا: کمیسیون، مالیات، درگاه و کیف پول، و ارسال.")}
+      intro={ta("همه‌ی تنظیمات پول در یک جا: کمیسیون، مالیات، درگاه و کیف پول، ارقام قانونی حقوق و دستمزد، و ارسال.")}
       tabs={[
         {
           id: "commission",
@@ -33,6 +34,12 @@ const FinanceSettingsHub = () => {
           title: ta("درگاه و کیف پول"),
           exclude: !canOpen("admin"),
           content: <AdminPaymentSettingsTab />,
+        },
+        {
+          id: "payroll",
+          title: ta("حقوق و دستمزد"),
+          exclude: !canOpen("admin"),
+          content: <AdminPayrollYearsTab />,
         },
         {
           id: "delivery",

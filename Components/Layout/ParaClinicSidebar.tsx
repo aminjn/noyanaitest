@@ -1,3 +1,4 @@
+import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import StarIcon from "../Icons/StarIcon";
 import WalletIcon from "../Icons/WalletIcon";
@@ -75,6 +76,13 @@ const ParaClinicSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readFinance"),
         target: "accounting",
+      },
+      {
+        title: "payMenu",
+        icon: <UserGroupIcon />,
+        group: "groupCenter",
+        show: hasAccess("readPayroll"),
+        target: "payroll",
       },
       {
         title: "invMenu",

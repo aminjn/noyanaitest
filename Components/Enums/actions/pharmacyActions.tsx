@@ -26,6 +26,9 @@ export const pharmacyActions = [
   "readFinance",
   // «حسابداری» (2026-10): vouchers, accounts and quick entries
   "manageAccounting",
+  // «حقوق و دستمزد» (2026-10): employees, payslips and their payments
+  "readPayroll",
+  "managePayroll",
   // «انبار و خرید» (2026-10): stock, suppliers and purchases
   "readInventory",
   "manageInventory",
@@ -44,6 +47,7 @@ export const pharmacyActionCategories = [
   "licenses",
   "financialMangement",
   "invMenu",
+  "payMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedPharmacyActions: Readonly<
@@ -58,5 +62,6 @@ export const categorizedPharmacyActions: Readonly<
   incomingOrders: ["readOrders", "mutateOrders"],
   licenses: ["readLicenses"],
   financialMangement: ["readFinance", "manageAccounting"],
+  payMenu: ["readPayroll", "managePayroll"],
   invMenu: ["readInventory", "manageInventory"],
 } as const;

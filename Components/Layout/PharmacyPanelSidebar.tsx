@@ -1,3 +1,4 @@
+import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
@@ -91,6 +92,13 @@ const PharmacyPanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readFinance"),
         target: "accounting",
+      },
+      {
+        title: "payMenu",
+        icon: <UserGroupIcon />,
+        group: "groupCenter",
+        show: hasAccess("readPayroll"),
+        target: "payroll",
       },
       {
         title: "invMenu",

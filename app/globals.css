@@ -426,3 +426,24 @@ h6 {
 :root[data-theme="dark"] .maplibregl-ctrl-attrib a {
   color: #c9cfdd;
 }
+
+/* Noyan Business payslip (Components/_Common/Business/Payroll): while it
+   prints, only the slip sheet is on paper */
+@media print {
+  body.printingSlip * {
+    visibility: hidden;
+  }
+
+  body.printingSlip .printSlip,
+  body.printingSlip .printSlip * {
+    visibility: visible;
+  }
+
+  body.printingSlip .printSlip {
+    position: fixed;
+    inset: 0;
+    padding: 1.5rem;
+    background: #fff;
+    color: #000;
+  }
+}
