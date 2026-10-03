@@ -22,6 +22,8 @@ const lockedSegments = new Set(["prescription", "tamin"]);
 const pathModuleMap: Record<string, ClinicDashboardModule> = {
   // Noyan Business (2026-10): /<panel>/accounting
   accounting: "accounting",
+  // phase 3: /<panel>/payroll (employees, payslips, insurance and tax)
+  payroll: "payroll",
   // phase 2: /<panel>/inventory (stock, batches, suppliers, purchases)
   inventory: "inventory",
   profile: "profile",

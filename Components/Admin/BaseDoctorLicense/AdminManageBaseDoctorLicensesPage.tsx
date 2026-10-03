@@ -47,6 +47,8 @@ export const doctorDashboardModules = [
   "settings",
   // Noyan Business (2026-10): the books
   "accounting",
+  // Noyan Business phase 3 (2026-10): employees, payslips, insurance and tax
+  "payroll",
 ] as const;
 
 export type DoctorDashboardModule = (typeof doctorDashboardModules)[number];
@@ -126,6 +128,9 @@ export const doctorDashboardModuleLabels: Record<
 },
   get accounting() {
   return ta("حسابداری");
+},
+  get payroll() {
+  return ta("حقوق و دستمزد");
 },
 };
 

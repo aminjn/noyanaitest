@@ -11,6 +11,9 @@ export const insuranceActions = [
   "readFinance",
   // «حسابداری» (2026-10): vouchers, accounts and quick entries
   "manageAccounting",
+  // «حقوق و دستمزد» (2026-10): employees, payslips and their payments
+  "readPayroll",
+  "managePayroll",
   "mutateProfile",
   "readArticles",
   // Licenses page (2026-09) — insurancepanel/license. Kept in sync with
@@ -28,6 +31,7 @@ export const insuranceActionCategories = [
   "profile",
   "articles",
   "licenses",
+  "payMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedInsuranceActions: Readonly<
@@ -37,6 +41,7 @@ export const categorizedInsuranceActions: Readonly<
   insPlans: ["managePlans"],
   insNetwork: ["readNetwork"],
   financialMangement: ["readFinance", "manageAccounting"],
+  payMenu: ["readPayroll", "managePayroll"],
   profile: ["mutateProfile"],
   articles: ["readArticles"],
   licenses: ["readLicenses"],

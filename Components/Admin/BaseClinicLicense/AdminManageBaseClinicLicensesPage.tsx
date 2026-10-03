@@ -32,6 +32,8 @@ export const clinicDashboardModules = [
   "accounting",
   // Noyan Business phase 2 (2026-10): stock, batches, suppliers, purchases
   "inventory",
+  // Noyan Business phase 3 (2026-10): employees, payslips, insurance and tax
+  "payroll",
 ] as const;
 
 export type ClinicDashboardModule = (typeof clinicDashboardModules)[number];
@@ -57,6 +59,9 @@ export const clinicDashboardModuleLabels: Record<
 },
   get accounting() {
   return ta("حسابداری");
+},
+  get payroll() {
+  return ta("حقوق و دستمزد");
 },
   get inventory() {
   return ta("انبار و خرید");

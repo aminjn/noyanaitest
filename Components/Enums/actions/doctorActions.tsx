@@ -49,6 +49,9 @@ export const doctorActions = [
   "readFinance",
   // «حسابداری» (2026-10): vouchers, accounts and quick entries
   "manageAccounting",
+  // «حقوق و دستمزد» (2026-10): employees, payslips and their payments
+  "readPayroll",
+  "managePayroll",
   "readShifts",
   "readSchedule",
   "readPatients",
@@ -90,6 +93,7 @@ export const doctorActionCategories = [
   "chatWithPatients",
   "drugsAndPrescriptions",
   "incomingOrders",
+  "payMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedDoctorActions: Readonly<
@@ -124,6 +128,7 @@ export const categorizedDoctorActions: Readonly<
   calendar: ["readCalendar", "mutateCalendar"],
   settings: ["readSettings", "mutateSettings"],
   financialMangement: ["readFinance", "manageAccounting"],
+  payMenu: ["readPayroll", "managePayroll"],
   shifts: ["readShifts"],
   schedule: ["readSchedule"],
   patients: ["readPatients", "readPatient", "mutatePatient"],

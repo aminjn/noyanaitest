@@ -1,3 +1,4 @@
+import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import StarIcon from "../Icons/StarIcon";
 import PackageIcon from "../Icons/PackageIcon";
@@ -59,6 +60,13 @@ const InsurancePanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readFinance"),
         target: "accounting",
+      },
+      {
+        title: "payMenu",
+        icon: <UserGroupIcon />,
+        group: "groupCenter",
+        show: hasAccess("readPayroll"),
+        target: "payroll",
       },
       {
         icon: <UserEditIcon />,

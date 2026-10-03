@@ -1,3 +1,4 @@
+import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import PackageIcon from "@/Components/Icons/PackageIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import StarIcon from "../Icons/StarIcon";
@@ -83,6 +84,13 @@ const ClinicPanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readFinance"),
         target: "accounting",
+      },
+      {
+        title: "payMenu",
+        icon: <UserGroupIcon />,
+        group: "groupCenter",
+        show: hasAccess("readPayroll"),
+        target: "payroll",
       },
       {
         title: "invMenu",

@@ -1,3 +1,4 @@
+import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import Link from "@/Components/i18n/Link";
 import classes from "./PanelSidebar.module.css";
@@ -153,6 +154,13 @@ const DoctorSidebar = () => {
         target: "accounting",
         group: "groupPractice",
         show: hasAccess("readFinance"),
+      },
+      {
+        title: "payMenu",
+        icon: <UserGroupIcon />,
+        group: "groupPractice",
+        show: hasAccess("readPayroll"),
+        target: "payroll",
       },
       {
         title: "teamTitle",
