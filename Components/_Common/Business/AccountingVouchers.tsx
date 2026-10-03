@@ -29,6 +29,9 @@ const toNum = (s: string) => Number(String(s).replace(/[^\d.]/g, "")) || 0;
 const kindBadge = (kind: BizVoucher["kind"]) =>
   kind === "manual" ? "badgeManual" : kind === "auto" ? "badgeAuto" : "";
 
+const kindLabel = (kind: BizVoucher["kind"]) =>
+  kind === "manual" ? "bizKindManual" : kind === "opening" ? "bizKindOpening" : kind === "closing" ? "bizKindClosing" : "bizKindAuto";
+
 // The full voucher form: any number of lines, each on a detail account,
 // saved only when debits equal credits (the API checks again).
 const VoucherFormPopup = ({
@@ -278,8 +281,9 @@ const VoucherDetail = ({
                   </tbody>
                 </table>
               </div>
+              {!!data.actualDate && <p className={classes.muted}>{t("bizActualDateNote", [f.date(data.actualDate)])}</p>}
               {data.kind !== "manual" ? (
-                <p className={classes.muted}>{t("bizAutoNote")}</p>
+                <p className={classes.muted}>{t(data.phase ? "bizClosingNote" : "bizAutoNote")}</p>
               ) : (
                 ctx.canWrite && (
                   <div className={classes.actions}>
@@ -372,6 +376,8 @@ const AccountingVouchers = ({ refreshKey, onChanged }: { refreshKey: number; onC
             <option value="">{t("bizAllKinds")}</option>
             <option value="auto">{t("bizKindAuto")}</option>
             <option value="manual">{t("bizKindManual")}</option>
+            <option value="opening">{t("bizKindOpening")}</option>
+            <option value="closing">{t("bizKindClosing")}</option>
           </select>
         </div>
         {ctx.canWrite && !!accounts && (
@@ -424,10 +430,14 @@ const AccountingVouchers = ({ refreshKey, onChanged }: { refreshKey: number; onC
                     >
                       <td>{f.money(v.number)}</td>
                       <td>{f.date(v.date)}</td>
-                      <td className={classes.wrap}>{v.description}</td>
+                      <td className={classes.wrap}>
+                        {v.description}
+                        {v.fiscalYear ? <span className={classes.muted}> · {t("bizFiscalYear", [f.year(v.fiscalYear)])}</span> : null}
+                        {v.actualDate ? <span className={classes.muted}> · {t("bizActualDate", [f.date(v.actualDate)])}</span> : null}
+                      </td>
                       <td>
                         <span className={`${classes.badge} ${classes[kindBadge(v.kind)] || ""}`}>
-                          {t(v.kind === "manual" ? "bizKindManual" : v.kind === "opening" ? "bizKindOpening" : "bizKindAuto")}
+                          {t(kindLabel(v.kind))}
                         </span>
                       </td>
                       <td className={classes.num}>{f.money(v.total)}</td>

@@ -8,6 +8,7 @@ import AccountingSummary from "./AccountingSummary";
 import AccountingVouchers from "./AccountingVouchers";
 import AccountingAccounts from "./AccountingAccounts";
 import AccountingReports from "./AccountingReports";
+import AccountingYears from "./AccountingYears";
 
 // Noyan Business accounting (2026-10, docs/business-suite.md): one page for
 // every provider panel and for the platform's own books in the super admin.
@@ -43,6 +44,7 @@ const AccountingPage = ({
             { id: "vouchers", title: t("bizTabVouchers"), content: <AccountingVouchers refreshKey={refreshKey} onChanged={bump} /> },
             { id: "accounts", title: t("bizTabAccounts"), content: <AccountingAccounts refreshKey={refreshKey} /> },
             { id: "reports", title: t("bizTabReports"), content: <AccountingReports refreshKey={refreshKey} /> },
+            { id: "years", title: t("bizTabYears"), content: <AccountingYears refreshKey={refreshKey} onChanged={bump} /> },
           ]}
         />
       </div>
