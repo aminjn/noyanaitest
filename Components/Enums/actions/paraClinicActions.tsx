@@ -16,6 +16,8 @@ export const paraClinicActions = [
   "readCrm",
   "manageCrm",
   "sendCampaigns",
+  "readMoadian",
+  "manageMoadian",
   // «انبار و خرید» (2026-10): stock, suppliers and purchases
   "readInventory",
   "manageInventory",
@@ -51,6 +53,7 @@ export const paraClinicActionCategories = [
   "invMenu",
   "payMenu",
   "crmMenu",
+  "moadianMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedParaClinicActions: Readonly<
@@ -60,6 +63,7 @@ export const categorizedParaClinicActions: Readonly<
   financialMangement: ["readFinance", "manageAccounting"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
+  moadianMenu: ["readMoadian", "manageMoadian"],
   invMenu: ["readInventory", "manageInventory"],
   profile: ["mutateProfile"],
   tests: ["readTests"],

@@ -35,6 +35,8 @@ export const hospitalDashboardModules = [
   "payroll",
   // Noyan Business phase 4 (2026-10): patients and customers, follow-ups, SMS campaigns
   "crm",
+  // Noyan Business phase 5 (2026-10): electronic invoices (Moadian)
+  "moadian",
 ] as const;
 
 export type HospitalDashboardModule = (typeof hospitalDashboardModules)[number];
@@ -63,6 +65,9 @@ export const hospitalDashboardModuleLabels: Record<
 },
   get crm() {
   return ta("ارتباط با بیماران و کمپین پیامکی");
+},
+  get moadian() {
+  return ta("صورتحساب الکترونیکی (سامانه‌ی مودیان)");
 },
   get inventory() {
   return ta("انبار و خرید");

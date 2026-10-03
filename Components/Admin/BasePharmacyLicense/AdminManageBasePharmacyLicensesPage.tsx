@@ -40,6 +40,8 @@ export const pharmacyDashboardModules = [
   "payroll",
   // Noyan Business phase 4 (2026-10): patients and customers, follow-ups, SMS campaigns
   "crm",
+  // Noyan Business phase 5 (2026-10): electronic invoices (Moadian)
+  "moadian",
 ] as const;
 
 export type PharmacyDashboardModule = (typeof pharmacyDashboardModules)[number];
@@ -83,6 +85,9 @@ export const pharmacyDashboardModuleLabels: Record<
 },
   get crm() {
   return ta("ارتباط با بیماران و کمپین پیامکی");
+},
+  get moadian() {
+  return ta("صورتحساب الکترونیکی (سامانه‌ی مودیان)");
 },
   get inventory() {
   return ta("انبار و خرید");

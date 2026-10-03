@@ -1,3 +1,4 @@
+import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
 import PeopleIcon from "@/Components/Icons/PeopleIcon";
 import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
@@ -107,6 +108,13 @@ const PharmacyPanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readCrm"),
         target: "crm",
+      },
+      {
+        title: "moadianMenu",
+        icon: <ReceiptIcon />,
+        group: "groupCenter",
+        show: hasAccess("readMoadian"),
+        target: "moadian",
       },
       {
         title: "invMenu",
