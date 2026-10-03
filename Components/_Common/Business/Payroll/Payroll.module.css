@@ -73,3 +73,37 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+/* the Tamin list fields, folded under the contract (employee form) */
+.tamin summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--primary7);
+}
+
+.tamin[open] summary {
+  margin-block-end: 0.5rem;
+}
+
+.tamin > p {
+  margin-block: 0 0.75rem;
+}
+
+.missing {
+  margin: 0;
+  padding: 0.625rem 1rem;
+  padding-inline-start: 2rem;
+  border-radius: 0.75rem;
+  background: var(--warningT1);
+  color: var(--warningS3);
+  font-size: 0.8125rem;
+  line-height: 1.9;
+}
+
+.ready {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--success);
+}

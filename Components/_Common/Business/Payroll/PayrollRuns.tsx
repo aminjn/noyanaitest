@@ -8,6 +8,7 @@ import useNotification from "@/Components/Hooks/useNotification";
 import usePopup from "@/Components/Hooks/usePopup";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import PopupCard from "@/Components/UI/PopupCard";
+import PayrollDisk from "./PayrollDisk";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import DateInput from "@/Components/UI/DateInput";
 import classes from "../Accounting.module.css";
@@ -386,6 +387,11 @@ const RunDetail = ({ ctx, id, onChanged }: { ctx: Ctx; id: string; onChanged: ()
                 </div>
               </div>
               {ctx.canWrite && data.status === "posted" && <PayForm run={data} onDone={changed} />}
+              <div className={classes.actions}>
+                <button type="button" className={classes.ghost} disabled={dirty} onClick={() => setPopup("PayDisk", <PayrollDisk ctx={ctx} runId={id} />)}>
+                  {t("payDiskButton")}
+                </button>
+              </div>
               {ctx.canWrite && (
                 <>
                   {confirm && <p className={classes.muted}>{t(confirm === "post" ? "payPostConfirm" : draft ? "payDeleteConfirm" : "payReopenConfirm")}</p>}

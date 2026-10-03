@@ -14,6 +14,7 @@ import { PayContext, usePayText } from "./payShared";
 import PayrollRuns from "./PayrollRuns";
 import PayrollEmployees from "./PayrollEmployees";
 import PayrollRules from "./PayrollRules";
+import PayrollBonus from "./PayrollBonus";
 
 // Noyan Business payroll (2026-10, docs/business-suite.md phase 3) for every
 // provider panel: the month's payroll (payslips with insurance and tax, the
@@ -51,6 +52,7 @@ const PayrollPage = ({
         <ClientTabSystem
           items={[
             { id: "runs", title: t("payTabRuns"), content: <PayrollRuns refreshKey={refreshKey} onChanged={bump} /> },
+            { id: "bonus", title: t("payTabBonus"), content: <PayrollBonus refreshKey={refreshKey} onChanged={bump} /> },
             { id: "employees", title: t("payTabEmployees"), content: <PayrollEmployees refreshKey={refreshKey} onChanged={bump} /> },
             {
               id: "rules",
