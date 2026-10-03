@@ -15,6 +15,8 @@ import { PayContext, PayEmployee, toNum, usePay, usePayAccounts, usePayEmployees
 
 const POPUP = "PayEmployeeForm";
 
+const latin = (s: string) => s.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))).replace(/\D/g, "");
+
 // An advance (مساعده) paid now and taken back from a later payslip as a
 // deduction.
 const AdvanceForm = ({ employee }: { employee: PayEmployee }) => {
@@ -106,6 +108,9 @@ const EmployeeForm = ({ employee, onDone }: { employee?: PayEmployee; onDone: ()
   const [gender, setGender] = useState<string>(employee?.gender || "");
   const [nationality, setNationality] = useState(employee?.nationality || "");
   const [jobCode, setJobCode] = useState(employee?.jobCode || "");
+  const [education, setEducation] = useState<string>(employee?.education || "");
+  const [postalCode, setPostalCode] = useState(employee?.postalCode || "");
+  const [contractType, setContractType] = useState<string>(employee?.contractType || "");
   const [busy, setBusy] = useState(false);
 
   const save = async () => {
@@ -139,7 +144,10 @@ const EmployeeForm = ({ employee, onDone }: { employee?: PayEmployee; onDone: ()
           birthDate: birthDate ? isoDay(birthDate) : null,
           gender: gender || null,
           nationality: nationality.trim(),
-          jobCode: jobCode.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))).replace(/\D/g, ""),
+          jobCode: latin(jobCode),
+          education: education || null,
+          postalCode: latin(postalCode),
+          contractType: contractType || null,
         },
       });
       pushNotification(t("bizSaved"), "Success");
@@ -251,6 +259,37 @@ const EmployeeForm = ({ employee, onDone }: { employee?: PayEmployee; onDone: ()
             <label className={classes.field}>
               {t("payJobCode")}
               <input value={jobCode} onChange={(e) => setJobCode(e.target.value)} maxLength={6} dir="ltr" inputMode="numeric" />
+            </label>
+          </div>
+        </details>
+        <details className={pay.tamin} open={!!employee && !employee.education}>
+          <summary>{t("payTaxDetails")}</summary>
+          <p className={classes.muted}>{t("payTaxDetailsHint")}</p>
+          <div className={classes.form}>
+            <label className={classes.field}>
+              {t("payEducation")}
+              <select value={education} onChange={(e) => setEducation(e.target.value)}>
+                <option value="">—</option>
+                <option value="belowDiploma">{t("payEduBelowDiploma")}</option>
+                <option value="diploma">{t("payEduDiploma")}</option>
+                <option value="associate">{t("payEduAssociate")}</option>
+                <option value="bachelor">{t("payEduBachelor")}</option>
+                <option value="master">{t("payEduMaster")}</option>
+                <option value="doctorate">{t("payEduDoctorate")}</option>
+              </select>
+            </label>
+            <label className={classes.field}>
+              {t("payContractType")}
+              <select value={contractType} onChange={(e) => setContractType(e.target.value)}>
+                <option value="">—</option>
+                <option value="permanent">{t("payContractPermanent")}</option>
+                <option value="temporary">{t("payContractTemporary")}</option>
+                <option value="partTime">{t("payContractPartTime")}</option>
+              </select>
+            </label>
+            <label className={classes.field}>
+              {t("payPostalCode")}
+              <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} maxLength={10} dir="ltr" inputMode="numeric" />
             </label>
           </div>
         </details>

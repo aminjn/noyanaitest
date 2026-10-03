@@ -9,6 +9,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import PopupCard from "@/Components/UI/PopupCard";
 import PayrollDisk from "./PayrollDisk";
+import PayrollTaxDisk from "./PayrollTaxDisk";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import DateInput from "@/Components/UI/DateInput";
 import classes from "../Accounting.module.css";
@@ -390,6 +391,9 @@ const RunDetail = ({ ctx, id, onChanged }: { ctx: Ctx; id: string; onChanged: ()
               <div className={classes.actions}>
                 <button type="button" className={classes.ghost} disabled={dirty} onClick={() => setPopup("PayDisk", <PayrollDisk ctx={ctx} runId={id} />)}>
                   {t("payDiskButton")}
+                </button>
+                <button type="button" className={classes.ghost} disabled={dirty} onClick={() => setPopup("PayTaxDisk", <PayrollTaxDisk ctx={ctx} runId={id} />)}>
+                  {t("payTaxDiskButton")}
                 </button>
               </div>
               {ctx.canWrite && (
