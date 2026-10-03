@@ -1,14 +1,8 @@
-import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import useForm from "@/Components/Hooks/useForm";
 import CreateForm from "../UI/CreateForm";
 import { IClinic } from "./AdminManageClinicsPage";
 import { API } from "@/Components/config";
 import { IClinicCategory } from "../ClinicCategory/AdminManageClinicCategoriesPage";
-import {
-  ICity,
-  IDistrict,
-  IProvince,
-} from "../Province/AdminManageProvincesPage";
 import { IClinicTag } from "../ClinicTag/AdminManageClinicTagsPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import { ta } from "@/Components/Admin/i18n/adminText";
@@ -36,40 +30,7 @@ const ClinicInfoTab = ({
         image: { type: "image", title: ta("تصویر") },
         slug: { title: ta("اسلاگ"), type: "text" },
         description: { title: ta("توضیحات"), type: "area" },
-        address: { title: ta("آدرس"), type: "text", section: ta("آدرس") },
         phone: { title: ta("شماره تلفن"), type: "text", section: ta("تماس") },
-        province: {
-          title: ta("استان"),
-          section: ta("آدرس"),
-          type: "nodes",
-          path: `${API}/auto/province`,
-          getOptionLabel: (node) =>
-            (node as IProvince).name || (node as IProvince)._id,
-          getOptionValue: (node) => (node as IProvince)._id,
-          multi: false,
-          getDefaultValue: (inp) => inp.province,
-        },
-        city: {
-          title: ta("شهر"),
-          section: ta("آدرس"),
-          type: "nodes",
-          getOptionLabel: (node) => (node as ICity).name || (node as ICity)._id,
-          getOptionValue: (node) => (node as ICity)._id,
-          getDefaultValue: (inp) => inp.city,
-          multi: false,
-          path: cityPath,
-        },
-        district: {
-          title: ta("محله"),
-          section: ta("آدرس"),
-          getOptionLabel: (node) =>
-            (node as IDistrict).name || (node as IDistrict)._id,
-          type: "nodes",
-          getOptionValue: (node) => (node as IDistrict)._id,
-          getDefaultValue: (inp) => inp.district,
-          multi: false,
-          path: districtPath,
-        },
         order: { type: "number", title: ta("رتبه") },
         active: { type: "bool", title: ta("فعال") },
         special: { type: "bool", title: ta("ویژه") },

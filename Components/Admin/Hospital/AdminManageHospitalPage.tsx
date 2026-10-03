@@ -1,6 +1,5 @@
 "use client";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
-import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -19,14 +18,9 @@ import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import CreateForm from "../UI/CreateForm";
 import { IHospitalCategory } from "../HospitalCategory/AdminManageHospitalCategoriesPage";
-import {
-  ICity,
-  IDistrict,
-  IProvince,
-} from "../Province/AdminManageProvincesPage";
 import { IHospitalTag } from "../HospitalTag/AdminManageHospitalTagsPage";
 import useForm from "@/Components/Hooks/useForm";
-import PointPicker from "../UI/PointPicker";
+import AdminLocationTab from "../UI/AdminLocationTab";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import {
@@ -216,43 +210,9 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
   );
 };
 
-const HospitalLocationManager = ({
-  mutate,
-  node,
-}: {
-  node: IHospital;
-  mutate: () => unknown;
-}) => {
-  const { setInput, isLoading, submit, input } = useForm<{ coordinates: [number, number]; address: string }>({
-    path: `${API}/auto/hospital/${node._id}`,
-    method: "POST",
-    successCb: () => {
-      mutate();
-    },
-    mutator: (inp) => ({
-      ...(inp.coordinates ? { location: { type: "Point", coordinates: inp.coordinates } } : {}),
-      // the point's address, when the admin took it (or it was empty)
-      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
-    }),
-    hasProblem: (inp) => (!inp.coordinates && !inp.address ? ta("مختصات را انتخاب کنید") : false),
-  });
-
-  return (
-    <div>
-      <PointPicker
-        currentAddress={input.address ?? node.address ?? ""}
-        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
-        defaultValue={node.location?.coordinates}
-        onChange={(e) => setInput((prev) => ({ ...prev, coordinates: e }))}
-      />
-      <FormActions>
-        <Button onClick={() => submit()} isLoading={isLoading}>
-          {ta("تایید")}
-        </Button>
-      </FormActions>
-    </div>
-  );
-};
+const HospitalLocationManager = ({ mutate, node }: { node: IHospital; mutate: () => unknown }) => (
+  <AdminLocationTab path={`${API}/auto/hospital/${node._id}`} node={node as never} mutate={mutate} />
+);
 
 const AdminManageHospitalPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -339,39 +299,6 @@ const AdminManageHospitalPage = () => {
                         getDefaultValue: (inp) => inp.category,
                         title: ta("دسته بندی"),
                       },
-                      province: {
-                        type: "nodes",
-                        path: `${API}/auto/province`,
-                        multi: false,
-                        getOptionLabel: (node) =>
-                          (node as IProvince).name || (node as IProvince)._id,
-                        getOptionValue: (node) => (node as IProvince)._id,
-                        title: ta("استان"),
-                        section: ta("آدرس"),
-                        getDefaultValue: (inp) => inp.province,
-                      },
-                      city: {
-                        title: ta("شهر"),
-                        section: ta("آدرس"),
-                        type: "nodes",
-                        path: cityPath,
-                        getOptionLabel: (node) =>
-                          (node as ICity).name || (node as ICity)._id,
-                        getOptionValue: (node) => (node as ICity)._id,
-                        multi: false,
-                        getDefaultValue: (inp) => inp.city,
-                      },
-                      district: {
-                        title: ta("محله"),
-                        section: ta("آدرس"),
-                        type: "nodes",
-                        multi: false,
-                        getOptionLabel: (node) =>
-                          (node as IDistrict).name || (node as IDistrict)._id,
-                        getOptionValue: (node) => (node as IDistrict)._id,
-                        path: districtPath,
-                        getDefaultValue: (inp) => inp.district,
-                      },
                       image: { type: "image", title: ta("تصویر") },
                       tags: {
                         type: "nodes",
@@ -389,7 +316,6 @@ const AdminManageHospitalPage = () => {
                       establishment: { type: "text", title: ta("تاسیس") },
                       personelCount: { type: "number", title: ta("تعداد پرسنل") },
                       summary: { type: "area", title: ta("خلاصه") },
-                      address: { type: "text", title: ta("آدرس"), section: ta("آدرس") },
                       businessTimes: {
                         type: "text",
                         title: ta("ساعات کاری"),
@@ -442,7 +368,7 @@ const AdminManageHospitalPage = () => {
                 id: "Details",
               },
               {
-                title: ta("موقعیت"),
+                title: ta("آدرس و موقعیت"),
                 id: "Geo",
                 content: (
                   <HospitalLocationManager node={data} mutate={mutate} />

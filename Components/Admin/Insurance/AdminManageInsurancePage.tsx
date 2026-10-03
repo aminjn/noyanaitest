@@ -33,7 +33,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
-import PointPicker from "../UI/PointPicker";
+import AdminLocationTab from "../UI/AdminLocationTab";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
@@ -215,43 +215,9 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
   );
 };
 
-const InsuranceLocationManager = ({
-  node,
-  mutate,
-}: {
-  node: IInsurance;
-  mutate: () => unknown;
-}) => {
-  const { setInput, submit, isLoading, input } = useForm<{ coords: [number, number]; address: string }>(
-    {
-      path: `${API}/auto/insurance/${node._id}`,
-      method: "POST",
-      hasProblem: (inp) => (!inp.coords && !inp.address ? ta("یک موقعیت را انتخاب کنید") : false),
-      mutator: (inp) => ({
-        ...(inp.coords ? { location: { type: "Point", coordinates: inp.coords } } : {}),
-      // the point's address, when the admin took it (or it was empty)
-      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
-      }),
-      successCb: () => mutate(),
-    },
-  );
-
-  return (
-    <Form>
-      <PointPicker
-        currentAddress={input.address ?? node.address ?? ""}
-        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
-        onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
-        defaultValue={node.location?.coordinates}
-      />
-      <FormActions>
-        <Button type="submit" onClick={submit} isLoading={isLoading}>
-          {ta("تایید")}
-        </Button>
-      </FormActions>
-    </Form>
-  );
-};
+const InsuranceLocationManager = ({ mutate, node }: { node: IInsurance; mutate: () => unknown }) => (
+  <AdminLocationTab path={`${API}/auto/insurance/${node._id}`} node={node as never} mutate={mutate} withDivisions={false} />
+);
 
 const AdminManageInsurancePage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -376,7 +342,7 @@ const AdminManageInsurancePage = () => {
               },
               {
                 id: "Location",
-                title: ta("موقعیت"),
+                title: ta("آدرس و موقعیت"),
                 content: (
                   <InsuranceLocationManager node={data} mutate={mutate} />
                 ),

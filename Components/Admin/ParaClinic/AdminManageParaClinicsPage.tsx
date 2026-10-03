@@ -46,11 +46,6 @@ const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
           name: { title: ta("نام"), type: "text" },
           active: { title: ta("فعال"), type: "bool" },
           order: { title: ta("رتبه"), type: "number" },
-          user: {
-            title: ta("کاربر"),
-            type: "users",
-            multi: false,
-          },
         }}
       />
     </PopupCard>

@@ -24,7 +24,6 @@ const InstantCreateDoctorProfilePopup = ({
   req: IBecomeDoctorRequest<{ UserPopulated: true }>;
 }) => {
   const [proceedToProfile, setProceedToProfile] = useState<boolean>(false);
-  const [payload, setPayload] = useState<Partial<IDoctorProfile> | null>(null);
   const [approving, setApproving] = useState<boolean>(false);
 
   const { closePopup } = usePopup();
@@ -39,36 +38,17 @@ const InstantCreateDoctorProfilePopup = ({
         title={ta("رفتن به صفحه پروفایل ساخته شده بعد از اتمام عملیات")}
       />
       <FormActions>
-        <Button
-          onClick={() => setPayload({ user: req.user._id })}
-          isLoading={!!payload}
-        >
-          {ta("ساخت پروفایل خام")}
-        </Button>
         {/* the approve endpoint builds the profile from the request -
             names, location (slugs -> Geo ids) and the declared specialities;
             copying the fields here sent slugs into ObjectId fields and
             dropped the specialities */}
-        <Button isLoading={!!payload || approving} onClick={() => setApproving(true)}>
+        <Button isLoading={approving} onClick={() => setApproving(true)}>
           {ta("اعمال موارد داخل این درخواست در پروفایلی که ساخته میشود")}
         </Button>
         <Button onClick={() => closePopup()} variant="Neutral">
           {ta("انصراف")}
         </Button>
       </FormActions>
-      <Act<{ data: { data: IDoctorProfile } }>
-        path={!!payload ? `${API}/auto/doctorprofile` : null}
-        method="POST"
-        payload={payload || undefined}
-        onDone={(status, data) => {
-          setPayload(null);
-          if (!status || !data) return;
-          mutate();
-          if (proceedToProfile)
-            push(adminPath(`/doctorprofile/${data.data.data._id}`));
-          closePopup();
-        }}
-      />
       <Act<{ data: { node: IDoctorProfile } }>
         path={approving ? `${API}/admin/becomedoctor/${req._id}/approve` : null}
         method="POST"

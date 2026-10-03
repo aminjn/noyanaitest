@@ -24,7 +24,7 @@ import DeleteClinicPopup from "./DeleteClinicPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import LocationIcon from "@/Components/Icons/LocationIcon";
-import PointPicker from "../UI/PointPicker";
+import AdminLocationTab from "../UI/AdminLocationTab";
 import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
@@ -39,44 +39,9 @@ import {
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
-const ClinicLocationManager = ({
-  node,
-  mutate,
-}: {
-  node: IClinic;
-  mutate: () => unknown;
-}) => {
-  const { setInput, submit, isLoading, input } = useForm<{ coords: [number, number]; address: string }>(
-    {
-      path: `${API}/auto/clinic/${node._id}`,
-      method: "POST",
-      hasProblem: (inp) =>
-        !inp.coords && !inp.address ? ta("یک موقعیت را انتخاب کنید") : false,
-      mutator: (inp) => ({
-        ...(inp.coords ? { location: { type: "Point", coordinates: inp.coords } } : {}),
-      // the point's address, when the admin took it (or it was empty)
-      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
-      }),
-      successCb: () => mutate(),
-    },
-  );
-
-  return (
-    <Form>
-      <PointPicker
-        currentAddress={input.address ?? node.address ?? ""}
-        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
-        onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
-        defaultValue={node.location?.coordinates}
-      />
-      <FormActions>
-        <Button type="submit" onClick={submit} isLoading={isLoading}>
-          {ta("تایید")}
-        </Button>
-      </FormActions>
-    </Form>
-  );
-};
+const ClinicLocationManager = ({ mutate, node }: { node: IClinic; mutate: () => unknown }) => (
+  <AdminLocationTab path={`${API}/auto/clinic/${node._id}`} node={node as never} mutate={mutate} />
+);
 
 const AdminManageClinicPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -149,7 +114,7 @@ const AdminManageClinicPage = () => {
                 content: <ClinicInfoTab clinic={data} mutate={mutate} />,
               },
               {
-                title: ta("موقعیت"),
+                title: ta("آدرس و موقعیت"),
                 id: "GEO",
                 icon: <LocationIcon />,
                 content: <ClinicLocationManager mutate={mutate} node={data} />,
