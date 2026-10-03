@@ -48,6 +48,8 @@ export type BizVoucher = {
   fiscalYear?: number;
   // the real date of an automatic voucher that came after its year closed
   actualDate?: string;
+  // the cost centre a hand-typed voucher was booked to
+  center?: string;
 };
 
 type Ctx = { api: string; canWrite: boolean };

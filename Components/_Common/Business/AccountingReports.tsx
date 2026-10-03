@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -187,9 +187,117 @@ const BalanceSheet = ({ to, refreshKey }: { to: Date | null; refreshKey: number 
   );
 };
 
+
+type CashSection = { key: "operating" | "investing" | "financing"; rows: { code: string; name: string; amount: number }[]; inflow: number; outflow: number; net: number };
+type Cash = { opening: number; closing: number; net: number; sections: CashSection[]; balanced: boolean };
+type Centers = { rows: { _id: string; name: string; isActive: boolean; income: number; expense: number; net: number }[] };
+
+const flowTitle = { operating: "bizCashOperating", investing: "bizCashInvesting", financing: "bizCashFinancing" } as const;
+
+// where cash (till, banks, the Noyan wallet) came from and went, direct
+// method: each movement under the account on its other side
+const CashFlow = ({ from, to, refreshKey }: { from: Date | null; to: Date | null; refreshKey: number }) => {
+  const t = useBizText();
+  const f = useBizFormat();
+  const { data, error } = useReport<Cash>("cash-flow", from, to, refreshKey);
+  return (
+    <HandleLoading data={!!data} error={error}>
+      {!!data && (
+        <div className={classes.tableWrap}>
+          <table className={classes.table}>
+            <tbody>
+              <tr className={classes.groupRow}>
+                <td>{t("bizCashOpening")}</td>
+                <td className={classes.num}>{f.signed(data.opening)}</td>
+              </tr>
+              {asArray<CashSection>(data.sections).map((sec) => (
+                <Fragment key={sec.key}>
+                  <tr className={classes.groupRow}>
+                    <td>{t(flowTitle[sec.key])}</td>
+                    <td className={classes.num} />
+                  </tr>
+                  {sec.rows.length === 0 ? (
+                    <tr>
+                      <td className={classes.muted}>{t("bizNoMovement")}</td>
+                      <td />
+                    </tr>
+                  ) : (
+                    sec.rows.map((r) => (
+                      <tr key={r.code}>
+                        <td className={`${classes.wrap} ${classes.indent}`}>
+                          {r.amount >= 0 ? t("bizCashFrom", [r.name]) : t("bizCashFor", [r.name])}
+                        </td>
+                        <td className={`${classes.num} ${r.amount < 0 ? classes.negative : ""}`}>{f.signed(r.amount)}</td>
+                      </tr>
+                    ))
+                  )}
+                  <tr className={classes.totalRow}>
+                    <td>{t("bizCashNetOf", [t(flowTitle[sec.key])])}</td>
+                    <td className={`${classes.num} ${sec.net < 0 ? classes.negative : ""}`}>{f.signed(sec.net)}</td>
+                  </tr>
+                </Fragment>
+              ))}
+              <tr className={classes.totalRow}>
+                <td>{t("bizCashNet")}</td>
+                <td className={`${classes.num} ${data.net < 0 ? classes.negative : ""}`}>{f.signed(data.net)}</td>
+              </tr>
+              <tr className={classes.groupRow}>
+                <td>{t("bizCashClosing")}</td>
+                <td className={classes.num}>{f.signed(data.closing)}</td>
+              </tr>
+            </tbody>
+          </table>
+          {!data.balanced && <p className={classes.statusBad}>{t("bizCashMismatch")}</p>}
+        </div>
+      )}
+    </HandleLoading>
+  );
+};
+
+// income and expense of each cost centre, and of what was booked to none
+const CostCenters = ({ from, to, refreshKey }: { from: Date | null; to: Date | null; refreshKey: number }) => {
+  const t = useBizText();
+  const f = useBizFormat();
+  const { data, error } = useReport<Centers>("cost-centers", from, to, refreshKey);
+  const rows = asArray<Centers["rows"][number]>(data?.rows).filter((r) => r._id || r.income || r.expense);
+  return (
+    <HandleLoading data={!!data} error={error}>
+      {!!data && (
+        <>
+          <p className={classes.muted}>{t("bizCentersHint")}</p>
+          <div className={classes.tableWrap}>
+            <table className={classes.table}>
+              <thead>
+                <tr>
+                  <th>{t("bizCostCenter")}</th>
+                  <th className={classes.num}>{t("bizIncome")}</th>
+                  <th className={classes.num}>{t("bizExpense")}</th>
+                  <th className={classes.num}>{t("bizNetProfit")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r._id || "none"}>
+                    <td className={classes.wrap}>
+                      {r._id ? r.name : <span className={classes.muted}>{t("bizNoCostCenter")}</span>}
+                    </td>
+                    <td className={classes.num}>{f.money(r.income)}</td>
+                    <td className={classes.num}>{f.money(r.expense)}</td>
+                    <td className={`${classes.num} ${r.net < 0 ? classes.negative : ""}`}>{f.signed(r.net)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </HandleLoading>
+  );
+};
+
 const AccountingReports = ({ refreshKey }: { refreshKey: number }) => {
   const t = useBizText();
-  const [report, setReport] = useState<"trial" | "income" | "sheet">("income");
+  const [report, setReport] = useState<"trial" | "income" | "sheet" | "cash" | "centers">("income");
   const [from, setFrom] = useState<Date | null>(() => {
     const d = new Date();
     return new Date(d.getFullYear(), d.getMonth(), 1);
@@ -203,6 +311,8 @@ const AccountingReports = ({ refreshKey }: { refreshKey: number }) => {
             [
               ["income", "bizIncomeStatement"],
               ["sheet", "bizBalanceSheet"],
+              ["cash", "bizCashFlow"],
+              ["centers", "bizCostCenters"],
               ["trial", "bizTrialBalance"],
             ] as const
           ).map(([k, label]) => (
@@ -225,6 +335,8 @@ const AccountingReports = ({ refreshKey }: { refreshKey: number }) => {
       {report === "trial" && <TrialBalance from={from} to={to} refreshKey={refreshKey} />}
       {report === "income" && <IncomeStatement from={from} to={to} refreshKey={refreshKey} />}
       {report === "sheet" && <BalanceSheet to={to} refreshKey={refreshKey} />}
+      {report === "cash" && <CashFlow from={from} to={to} refreshKey={refreshKey} />}
+      {report === "centers" && <CostCenters from={from} to={to} refreshKey={refreshKey} />}
     </section>
   );
 };

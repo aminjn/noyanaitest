@@ -8,6 +8,7 @@ import useNotification from "@/Components/Hooks/useNotification";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import DateInput from "@/Components/UI/DateInput";
 import classes from "./Accounting.module.css";
+import CostCenterSelect from "./CostCenterSelect";
 import { asArray, BizAccount, isoDay, useBiz, useBizFormat, useBizText } from "./bizShared";
 
 type Summary = {
@@ -42,6 +43,7 @@ const QuickEntry = ({ accounts, onDone }: { accounts: BizAccount[]; onDone: () =
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState<Date>(new Date());
   const [description, setDescription] = useState("");
+  const [center, setCenter] = useState("");
   const [busy, setBusy] = useState(false);
 
   const details = accounts.filter((a) => a.level === "detail");
@@ -67,6 +69,7 @@ const QuickEntry = ({ accounts, onDone }: { accounts: BizAccount[]; onDone: () =
           amount: Number(amount.replace(/[^\d.]/g, "")),
           date: isoDay(date),
           description: description.trim(),
+          center: kind === "transfer" ? undefined : center || undefined,
         },
       });
       pushNotification(t("bizSaved"), "Success");
@@ -130,6 +133,7 @@ const QuickEntry = ({ accounts, onDone }: { accounts: BizAccount[]; onDone: () =
         <div className={classes.field}>
           <DateInput title={t("bizDate")} defaultValue={date} onChange={(d) => setDate(d)} />
         </div>
+        {kind !== "transfer" && <CostCenterSelect value={center} onChange={setCenter} />}
         <label className={`${classes.field} ${classes.wide}`}>
           <span>{t("bizDescription")}</span>
           <input value={description} maxLength={500} onChange={(e) => setDescription(e.target.value)} />
