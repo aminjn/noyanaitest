@@ -14,6 +14,10 @@ export const insuranceActions = [
   // «حقوق و دستمزد» (2026-10): employees, payslips and their payments
   "readPayroll",
   "managePayroll",
+  // «ارتباط با بیماران» (2026-10): contacts, follow-ups; submitting a paid SMS campaign
+  "readCrm",
+  "manageCrm",
+  "sendCampaigns",
   "mutateProfile",
   "readArticles",
   // Licenses page (2026-09) — insurancepanel/license. Kept in sync with
@@ -32,6 +36,7 @@ export const insuranceActionCategories = [
   "articles",
   "licenses",
   "payMenu",
+  "crmMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedInsuranceActions: Readonly<
@@ -42,6 +47,7 @@ export const categorizedInsuranceActions: Readonly<
   insNetwork: ["readNetwork"],
   financialMangement: ["readFinance", "manageAccounting"],
   payMenu: ["readPayroll", "managePayroll"],
+  crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   profile: ["mutateProfile"],
   articles: ["readArticles"],
   licenses: ["readLicenses"],

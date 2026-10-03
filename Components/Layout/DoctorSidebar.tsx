@@ -1,3 +1,4 @@
+import PeopleIcon from "@/Components/Icons/PeopleIcon";
 import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import Link from "@/Components/i18n/Link";
@@ -161,6 +162,13 @@ const DoctorSidebar = () => {
         group: "groupPractice",
         show: hasAccess("readPayroll"),
         target: "payroll",
+      },
+      {
+        title: "crmMenu",
+        icon: <PeopleIcon />,
+        group: "groupPractice",
+        show: hasAccess("readCrm"),
+        target: "crm",
       },
       {
         title: "teamTitle",

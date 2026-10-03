@@ -38,6 +38,8 @@ export const pharmacyDashboardModules = [
   "inventory",
   // Noyan Business phase 3 (2026-10): employees, payslips, insurance and tax
   "payroll",
+  // Noyan Business phase 4 (2026-10): patients and customers, follow-ups, SMS campaigns
+  "crm",
 ] as const;
 
 export type PharmacyDashboardModule = (typeof pharmacyDashboardModules)[number];
@@ -79,6 +81,9 @@ export const pharmacyDashboardModuleLabels: Record<
   get payroll() {
   return ta("حقوق و دستمزد");
 },
+  get crm() {
+  return ta("ارتباط با بیماران و کمپین پیامکی");
+},
   get inventory() {
   return ta("انبار و خرید");
 },
@@ -92,6 +97,8 @@ export interface IBasePharmacyLicense<
   displayName?: string;
   order: number;
   isDefault: boolean;
+  // campaign SMS parts included each month (2026-10); beyond it the wallet pays
+  monthlySmsQuota: number;
   // Replaces the old flat monthlyPrice/monthlyDiscount/annualPrice/
   // annualDiscount fields (2026-09) - one pricing option per
   // Models/LicenseDuration.ts catalog entry, edited via the
@@ -141,6 +148,9 @@ export const basePharmacyLicenseFormRenderer: FormRenderer<IBasePharmacyLicense>
     pricing: { get title() {
   return ta("قیمت‌گذاری");
 }, type: "licensePricing" },
+    monthlySmsQuota: { get title() {
+  return ta("سهمیه‌ی پیامک کمپین در ماه (بیشتر از آن از کیف پول)");
+}, type: "number" },
     descriptions: { get title() {
   return ta("توضیحات");
 }, type: "strings" },

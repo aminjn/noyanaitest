@@ -169,6 +169,7 @@ export const userAlertEventVariables: Record<UserAlertEvent, string[]> = {
   newHospitalAdditionRequest: ["requestId", "name"],
   newInsuranceAdditionRequest: ["requestId", "name"],
   newVisitDispute: ["reservationId", "userPhone"],
+  newSmsCampaign: ["requestId", "name"],
 };
 
 // Type-level camelCase -> snake_case (lowercase), e.g.

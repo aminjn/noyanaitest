@@ -23,6 +23,8 @@ import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 
 type SmsSettings = {
   fromNumber: string;
+  // the advertising line campaign SMS leave from (2026-10)
+  marketingFromNumber: string;
   requestUrl: string;
   tokenSet: boolean;
   tokenHint: string;
@@ -57,6 +59,7 @@ const AdminSmsSettingsPage = () => {
   const [token, setToken] = useState("");
   const [fromNumber, setFromNumber] = useState<string | undefined>();
   const [requestUrl, setRequestUrl] = useState<string | undefined>();
+  const [marketingFromNumber, setMarketingFromNumber] = useState<string | undefined>();
   const [save, setSave] = useState<Record<string, unknown> | null>(null);
   const [testPhone, setTestPhone] = useState("");
   const [test, setTest] = useState<Record<string, unknown> | null>(null);
@@ -129,6 +132,11 @@ const AdminSmsSettingsPage = () => {
                   onChange={(e) => setFromNumber(e.target.value)}
                 />
                 <Input
+                  title={ta("شماره‌ی خط تبلیغاتی برای کمپین‌های پیامکی")}
+                  defaultValue={data.marketingFromNumber}
+                  onChange={(e) => setMarketingFromNumber(e.target.value)}
+                />
+                <Input
                   title={ta("آدرس ارسال (خالی = پیش‌فرض آی‌پی‌پنل)")}
                   defaultValue={data.requestUrl}
                   onChange={(e) => setRequestUrl(e.target.value)}
@@ -149,6 +157,7 @@ const AdminSmsSettingsPage = () => {
                       ...(token.trim() && { apiToken: token.trim() }),
                       fromNumber: fromNumber ?? data.fromNumber,
                       requestUrl: requestUrl ?? data.requestUrl,
+                      marketingFromNumber: marketingFromNumber ?? data.marketingFromNumber,
                     })
                   }
                 >
