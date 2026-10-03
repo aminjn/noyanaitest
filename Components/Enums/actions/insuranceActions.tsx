@@ -18,6 +18,8 @@ export const insuranceActions = [
   "readCrm",
   "manageCrm",
   "sendCampaigns",
+  "readMoadian",
+  "manageMoadian",
   "mutateProfile",
   "readArticles",
   // Licenses page (2026-09) — insurancepanel/license. Kept in sync with
@@ -37,6 +39,7 @@ export const insuranceActionCategories = [
   "licenses",
   "payMenu",
   "crmMenu",
+  "moadianMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedInsuranceActions: Readonly<
@@ -48,6 +51,7 @@ export const categorizedInsuranceActions: Readonly<
   financialMangement: ["readFinance", "manageAccounting"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
+  moadianMenu: ["readMoadian", "manageMoadian"],
   profile: ["mutateProfile"],
   articles: ["readArticles"],
   licenses: ["readLicenses"],

@@ -16,6 +16,8 @@ export const clinicActions = [
   "readCrm",
   "manageCrm",
   "sendCampaigns",
+  "readMoadian",
+  "manageMoadian",
   // «انبار و خرید» (2026-10): stock, suppliers and purchases
   "readInventory",
   "manageInventory",
@@ -41,6 +43,7 @@ export const clinicActionCategories = [
   "invMenu",
   "payMenu",
   "crmMenu",
+  "moadianMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedClinicActions: Readonly<
@@ -50,6 +53,7 @@ export const categorizedClinicActions: Readonly<
   financialMangement: ["readFinance", "manageAccounting"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
+  moadianMenu: ["readMoadian", "manageMoadian"],
   invMenu: ["readInventory", "manageInventory"],
   schedule: ["readReservations"],
   profile: ["mutateProfile"],

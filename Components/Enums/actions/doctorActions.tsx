@@ -56,6 +56,8 @@ export const doctorActions = [
   "readCrm",
   "manageCrm",
   "sendCampaigns",
+  "readMoadian",
+  "manageMoadian",
   "readShifts",
   "readSchedule",
   "readPatients",
@@ -99,6 +101,7 @@ export const doctorActionCategories = [
   "incomingOrders",
   "payMenu",
   "crmMenu",
+  "moadianMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedDoctorActions: Readonly<
@@ -135,6 +138,7 @@ export const categorizedDoctorActions: Readonly<
   financialMangement: ["readFinance", "manageAccounting"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
+  moadianMenu: ["readMoadian", "manageMoadian"],
   shifts: ["readShifts"],
   schedule: ["readSchedule"],
   patients: ["readPatients", "readPatient", "mutatePatient"],

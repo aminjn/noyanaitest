@@ -1,3 +1,4 @@
+import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
 import PeopleIcon from "@/Components/Icons/PeopleIcon";
 import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import PackageIcon from "@/Components/Icons/PackageIcon";
@@ -99,6 +100,13 @@ const ClinicPanelSidebar = () => {
         group: "groupCenter",
         show: hasAccess("readCrm"),
         target: "crm",
+      },
+      {
+        title: "moadianMenu",
+        icon: <ReceiptIcon />,
+        group: "groupCenter",
+        show: hasAccess("readMoadian"),
+        target: "moadian",
       },
       {
         title: "invMenu",

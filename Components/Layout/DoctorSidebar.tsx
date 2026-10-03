@@ -1,3 +1,4 @@
+import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
 import PeopleIcon from "@/Components/Icons/PeopleIcon";
 import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
 import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
@@ -169,6 +170,13 @@ const DoctorSidebar = () => {
         group: "groupPractice",
         show: hasAccess("readCrm"),
         target: "crm",
+      },
+      {
+        title: "moadianMenu",
+        icon: <ReceiptIcon />,
+        group: "groupPractice",
+        show: hasAccess("readMoadian"),
+        target: "moadian",
       },
       {
         title: "teamTitle",

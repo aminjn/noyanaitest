@@ -21,6 +21,8 @@ const pathModuleMap: Record<string, HospitalDashboardModule> = {
   payroll: "payroll",
   // phase 4: /<panel>/crm (patients and customers, follow-ups, SMS campaigns)
   crm: "crm",
+  // phase 5: /<panel>/moadian (electronic invoices to the Moadian system)
+  moadian: "moadian",
   // phase 2: /<panel>/inventory (stock, batches, suppliers, purchases)
   inventory: "inventory",
   profile: "profile",
