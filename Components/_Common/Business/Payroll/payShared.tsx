@@ -45,6 +45,9 @@ export type PayEmployee = {
   gender?: "male" | "female";
   nationality?: string;
   jobCode?: string;
+  education?: "belowDiploma" | "diploma" | "associate" | "bachelor" | "master" | "doctorate";
+  postalCode?: string;
+  contractType?: "permanent" | "temporary" | "partTime";
 };
 
 export type PayBonusSlip = {
