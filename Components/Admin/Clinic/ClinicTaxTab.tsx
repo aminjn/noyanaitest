@@ -5,12 +5,9 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { IClinic } from "./AdminManageClinicsPage";
 import { MongoDoc } from "@/Components/Hooks/useUser";
-import { IGlobalTaxSettings } from "../TaxSettings/AdminManageGlobalTaxSettingsPage";
 import HandleLoading from "../UI/HandleLoading";
 import CreateForm from "../UI/CreateForm";
 import ResetToDefaultButton from "../UI/ResetToDefaultButton";
-import List from "../UI/List";
-import DataPair from "../UI/DataPair";
 import classes from "./ClinicTaxTab.module.css";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -34,10 +31,6 @@ const ClinicTaxTab = ({ node }: { node: IClinic }) => {
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { data: globalSettings } = useSWR<IGlobalTaxSettings>(
-    `${API}/auto/globalTaxSettings`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
-  );
 
   const existing = data?.[0];
 
@@ -47,17 +40,9 @@ const ClinicTaxTab = ({ node }: { node: IClinic }) => {
         <div className={classes.main}>
           <p className={classes.hint}>
             {ta(
-              "روی ویزیت‌های حضوری در مطب‌های داخل این کلینیک، به‌جای مالیات ویزیت پزشک، این درصد به صورتحساب بیمار اضافه می‌شود.",
+              "روی ویزیت‌های حضوری در مطب‌های داخل این کلینیک، به‌جای مالیات ویزیت پزشک، این درصد به صورتحساب بیمار اضافه می‌شود (فقط اگر پزشک در سامانه‌ی مودیان فعال باشد). اگر خالی بماند، مالیات ویزیت خود پزشک اعمال می‌شود.",
             )}
           </p>
-          {!!globalSettings && (
-            <List>
-              <DataPair
-                title={ta("درصد مالیات پیش‌فرض سیستم (در صورت تنظیم نشدن)")}
-                value={`${globalSettings.defaultClinicTaxPercent}%`}
-              />
-            </List>
-          )}
           <CreateForm<IClinicTaxSettings>
             defaultValue={existing}
             hookProps={{

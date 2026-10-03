@@ -36,6 +36,9 @@ const AdminManageGlobalTaxSettingsPage = () => {
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle title={ta("تنظیمات مالیاتی")}>
+          <p style={{ marginBottom: "1rem", lineHeight: 1.9 }}>
+            {ta("پزشک یا مرکز فروشنده است: مالیات فقط برای ارائه‌دهنده‌ای که در سامانه‌ی مودیان فعال است به صورتحساب اضافه می‌شود و همراه درآمدش به خودش پرداخت می‌شود تا در صورتحساب الکترونیک خودش اعلام کند. نرخ ویزیت به این ترتیب است: نرخ مرکز محل ویزیت (کلینیک یا بیمارستان)، بعد نرخ خود پزشک، بعد پیش‌فرض این صفحه.")}
+          </p>
           <CreateForm<IGlobalTaxSettings>
             defaultValue={data}
             hookProps={{
@@ -54,10 +57,6 @@ const AdminManageGlobalTaxSettingsPage = () => {
               },
               defaultDoctorServiceTaxPercent: {
                 title: ta("درصد مالیات پیش‌فرض خدمات پزشکان"),
-                type: "number",
-              },
-              defaultClinicTaxPercent: {
-                title: ta("درصد مالیات پیش‌فرض کلینیک‌ها"),
                 type: "number",
               },
               defaultParaClinicTaxPercent: {
