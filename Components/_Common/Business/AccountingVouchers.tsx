@@ -21,6 +21,7 @@ import {
   useBizText,
 } from "./bizShared";
 import { useBizAccounts } from "./AccountingSummary";
+import CostCenterSelect from "./CostCenterSelect";
 
 type Line = { account: string; label: string; debit: string; credit: string };
 const emptyLine = (): Line => ({ account: "", label: "", debit: "", credit: "" });
@@ -68,6 +69,7 @@ const VoucherForm = ({
   const details = accounts.filter((a) => a.level === "detail");
   const [date, setDate] = useState<Date>(voucher ? new Date(voucher.date) : new Date());
   const [description, setDescription] = useState(voucher?.description || "");
+  const [center, setCenter] = useState(voucher?.center || "");
   const [lines, setLines] = useState<Line[]>(
     voucher
       ? voucher.lines.map((l) => ({
@@ -96,6 +98,7 @@ const VoucherForm = ({
         payload: {
           date: isoDay(date),
           description: description.trim(),
+          center,
           lines: lines
             .filter((l) => l.account && (toNum(l.debit) || toNum(l.credit)))
             .map((l) => ({ account: l.account, label: l.label.trim() || undefined, debit: toNum(l.debit), credit: toNum(l.credit) })),
@@ -117,6 +120,7 @@ const VoucherForm = ({
           <div className={classes.field}>
             <DateInput title={t("bizDate")} defaultValue={date} onChange={(d) => setDate(d)} />
           </div>
+          <CostCenterSelect value={center} onChange={setCenter} />
           <label className={`${classes.field} ${classes.wide}`}>
             <span>{t("bizDescription")}</span>
             <input value={description} maxLength={500} onChange={(e) => setDescription(e.target.value)} />
