@@ -8,6 +8,7 @@ import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import classes from "../Accounting.module.css";
 import { useBizFormat } from "../bizShared";
 import { MoadianContext, MoadianSettings, useMoadianText } from "./moadianShared";
+import MoadianPurchases from "./MoadianPurchases";
 import MoadianInvoices from "./MoadianInvoices";
 import MoadianSettingsTab from "./MoadianSettings";
 
@@ -77,6 +78,8 @@ const MoadianPage = ({
           viewState={[tab || "invoices", setTab]}
           items={[
             { id: "invoices", title: t("moaTabInvoices"), content: <MoadianInvoices refreshKey={refreshKey} onChanged={bump} /> },
+            // Noyan itself books no purchases
+            ...(platform ? [] : [{ id: "purchases", title: t("moaTabPurchases"), content: <MoadianPurchases refreshKey={refreshKey} onChanged={bump} /> }]),
             {
               id: "settings",
               title: t("moaTabSettings"),

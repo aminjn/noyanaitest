@@ -22,7 +22,12 @@ type Vat = {
   due: string;
   ended: boolean;
   sales: { byRate: { rate: number; base: number; vat: number }[]; taxable: number; exempt: number; vat: number; registered: number; pending: number; rejected: number };
-  purchases: { withCode: Bucket; withoutCode: Bucket };
+  purchases: {
+    basis?: "moadian" | "economicCode";
+    withCode: Bucket;
+    withoutCode: Bucket;
+    moadian?: { count: number; open: number; rejected: number; vat: number } | null;
+  };
   books: { output: number; input: number; creditable: number; nonCreditable: number };
   unpaidBefore: number;
   figures: { output: number; creditable: number; nonCreditable: number; carried: number; offset: number; payable: number; credit: number };
@@ -145,12 +150,13 @@ const AccountingVat = ({ refreshKey, onChanged }: { refreshKey: number; onChange
               <p className={classes.muted}>
                 {f.tehranDate(data.start)} – {f.tehranDate(data.end)} · {t("bizVatDue", [f.tehranDate(data.due)])}
               </p>
-              {(data.sales.pending > 0 || data.sales.rejected > 0 || Math.abs(data.gap) >= 1 || data.unpaidBefore > 0) && (
+              {(data.sales.pending > 0 || data.sales.rejected > 0 || Math.abs(data.gap) >= 1 || data.unpaidBefore > 0 || (data.purchases.moadian?.open || 0) > 0) && (
                 <ul className={classes.warnings}>
                   {data.sales.pending > 0 && <li>{t("bizVatPendingInv", [f.money(data.sales.pending)])}</li>}
                   {data.sales.rejected > 0 && <li>{t("bizVatRejectedInv", [f.money(data.sales.rejected)])}</li>}
                   {Math.abs(data.gap) >= 1 && <li>{t("bizVatGap", [f.money(Math.abs(data.gap))])}</li>}
                   {data.unpaidBefore > 0 && <li>{t("bizVatUnpaid", [f.money(data.unpaidBefore)])}</li>}
+                  {(data.purchases.moadian?.open || 0) > 0 && <li>{t("bizVatPinvOpen", [f.money(data.purchases.moadian?.open)])}</li>}
                 </ul>
               )}
             </section>
@@ -190,6 +196,7 @@ const AccountingVat = ({ refreshKey, onChanged }: { refreshKey: number; onChange
 
             <section className={classes.card}>
               <span className={classes.cardTitle}>{t("bizVatPurchases")}</span>
+              <p className={classes.muted}>{t(data.purchases.basis === "moadian" ? "bizVatBasisMoadian" : "bizVatBasisCode")}</p>
               <div className={classes.tableWrap}>
                 <table className={classes.table}>
                   <thead>
@@ -203,7 +210,17 @@ const AccountingVat = ({ refreshKey, onChanged }: { refreshKey: number; onChange
                   <tbody>
                     {(["withCode", "withoutCode"] as const).map((k) => (
                       <tr key={k}>
-                        <td>{t(k === "withCode" ? "bizVatWithCode" : "bizVatWithoutCode")}</td>
+                        <td>
+                          {t(
+                            data.purchases.basis === "moadian"
+                              ? k === "withCode"
+                                ? "bizVatInMoadian"
+                                : "bizVatNotInMoadian"
+                              : k === "withCode"
+                                ? "bizVatWithCode"
+                                : "bizVatWithoutCode",
+                          )}
+                        </td>
                         <td className={classes.num}>{f.money(data.purchases[k].count)}</td>
                         <td className={classes.num}>{f.money(data.purchases[k].base)}</td>
                         <td className={classes.num}>{f.money(data.purchases[k].vat)}</td>
