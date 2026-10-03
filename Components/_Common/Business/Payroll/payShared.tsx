@@ -35,6 +35,42 @@ export type PayEmployee = {
   iban?: string;
   isActive: boolean;
   note?: string;
+  // for the Tamin list disk
+  firstName?: string;
+  lastName?: string;
+  fatherName?: string;
+  idNumber?: string;
+  idPlace?: string;
+  birthDate?: string;
+  gender?: "male" | "female";
+  nationality?: string;
+  jobCode?: string;
+};
+
+export type PayBonusSlip = {
+  employee: string;
+  name: string;
+  days: number;
+  baseSalary: number;
+  eid: number;
+  severance: number;
+  tax: number;
+  deductions: number;
+  net: number;
+};
+
+export type PayBonusRun = {
+  _id: string;
+  year: number;
+  yearDays: number;
+  status: "draft" | "posted";
+  slips: PayBonusSlip[];
+  totals: { eid: number; severance: number; tax: number; deductions: number; net: number };
+  date?: string;
+  postedAt?: string;
+  salariesPaidAt?: string;
+  liabilitiesPaidAt?: string;
+  createdAt?: string;
 };
 
 export type PaySlip = {

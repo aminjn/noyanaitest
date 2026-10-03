@@ -97,6 +97,15 @@ const EmployeeForm = ({ employee, onDone }: { employee?: PayEmployee; onDone: ()
   const [taxable, setTaxable] = useState(employee?.taxable ?? true);
   const [iban, setIban] = useState(employee?.iban || "");
   const [isActive, setIsActive] = useState(employee?.isActive ?? true);
+  const [firstName, setFirstName] = useState(employee?.firstName || "");
+  const [lastName, setLastName] = useState(employee?.lastName || "");
+  const [fatherName, setFatherName] = useState(employee?.fatherName || "");
+  const [idNumber, setIdNumber] = useState(employee?.idNumber || "");
+  const [idPlace, setIdPlace] = useState(employee?.idPlace || "");
+  const [birthDate, setBirthDate] = useState<Date | null>(employee?.birthDate ? new Date(employee.birthDate) : null);
+  const [gender, setGender] = useState<string>(employee?.gender || "");
+  const [nationality, setNationality] = useState(employee?.nationality || "");
+  const [jobCode, setJobCode] = useState(employee?.jobCode || "");
   const [busy, setBusy] = useState(false);
 
   const save = async () => {
@@ -122,6 +131,15 @@ const EmployeeForm = ({ employee, onDone }: { employee?: PayEmployee; onDone: ()
           taxable,
           iban: iban.replace(/\s/g, ""),
           ...(employee ? { isActive } : {}),
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          fatherName: fatherName.trim(),
+          idNumber: idNumber.trim(),
+          idPlace: idPlace.trim(),
+          birthDate: birthDate ? isoDay(birthDate) : null,
+          gender: gender || null,
+          nationality: nationality.trim(),
+          jobCode: jobCode.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))).replace(/\D/g, ""),
         },
       });
       pushNotification(t("bizSaved"), "Success");
@@ -191,6 +209,51 @@ const EmployeeForm = ({ employee, onDone }: { employee?: PayEmployee; onDone: ()
           </div>
           <p className={`${classes.muted} ${classes.wide}`}>{t("payEmployeeHint")}</p>
         </div>
+        <details className={pay.tamin} open={!!employee && insured && !employee.jobCode}>
+          <summary>{t("payTaminDetails")}</summary>
+          <p className={classes.muted}>{t("payTaminDetailsHint")}</p>
+          <div className={classes.form}>
+            <label className={classes.field}>
+              {t("payFirstName")}
+              <input value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={100} />
+            </label>
+            <label className={classes.field}>
+              {t("payLastName")}
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength={100} />
+            </label>
+            <label className={classes.field}>
+              {t("payFatherName")}
+              <input value={fatherName} onChange={(e) => setFatherName(e.target.value)} maxLength={100} />
+            </label>
+            <label className={classes.field}>
+              {t("payIdNumber")}
+              <input value={idNumber} onChange={(e) => setIdNumber(e.target.value)} maxLength={15} dir="ltr" inputMode="numeric" />
+            </label>
+            <label className={classes.field}>
+              {t("payIdPlace")}
+              <input value={idPlace} onChange={(e) => setIdPlace(e.target.value)} maxLength={100} />
+            </label>
+            <div className={classes.field}>
+              <DateInput title={t("payBirthDate")} defaultValue={birthDate || undefined} onChange={(d) => setBirthDate(d)} />
+            </div>
+            <label className={classes.field}>
+              {t("payGender")}
+              <select value={gender} onChange={(e) => setGender(e.target.value)}>
+                <option value="">—</option>
+                <option value="female">{t("payFemale")}</option>
+                <option value="male">{t("payMale")}</option>
+              </select>
+            </label>
+            <label className={classes.field}>
+              {t("payNationality")}
+              <input value={nationality} onChange={(e) => setNationality(e.target.value)} maxLength={20} placeholder={t("payNationalityHint")} />
+            </label>
+            <label className={classes.field}>
+              {t("payJobCode")}
+              <input value={jobCode} onChange={(e) => setJobCode(e.target.value)} maxLength={6} dir="ltr" inputMode="numeric" />
+            </label>
+          </div>
+        </details>
         <div className={classes.actions}>
           <button type="button" className={classes.ghost} onClick={close}>
             {t("bizCancel")}
