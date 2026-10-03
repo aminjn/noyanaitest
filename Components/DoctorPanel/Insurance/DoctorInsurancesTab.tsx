@@ -51,6 +51,8 @@ export interface IInsurance<
     ? IInsuranceTag<T["Tags"]>[]
     : string[];
   establishment?: string;
+  // a basic (public) insurer; a centre's «بیمه پایه» follows it
+  isBasic?: boolean;
   membersCount?: string;
   // who accepts it on the site, counted live by the public endpoints
   network?: InsuranceNetwork;

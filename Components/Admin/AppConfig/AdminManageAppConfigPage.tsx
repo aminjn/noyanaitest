@@ -50,7 +50,6 @@ export interface IAppConfig extends MongoDoc {
   sepTerminalId: string;
   sepCallbackBaseUrl: string;
   siteBaseUrl: string;
-  sepAmountMultiplier: number;
   sepTokenExpiryMinutes: number;
   onlinePaymentMinAmount: number;
   withdrawalMinAmount: number;
@@ -81,6 +80,12 @@ const AdminGeneralSettingsTab = () => {
               successCb: () => mutate(),
             }}
             renderer={{
+              // read by payment returns, CRM links and campaign SMS alike
+              siteBaseUrl: {
+                title: ta("آدرس عمومی سایت (مثال: https://example.com)"),
+                type: "text",
+                section: ta("سایت"),
+              },
               sipHost: { title: ta("آدرس سرور SIP"), type: "text", section: ta("تماس تلفنی (SIP)") },
               sipUsername: { title: ta("نام کاربری SIP"), type: "text", section: ta("تماس تلفنی (SIP)") },
               sipPassword: { title: ta("رمز عبور SIP"), type: "secret", section: ta("تماس تلفنی (SIP)") },

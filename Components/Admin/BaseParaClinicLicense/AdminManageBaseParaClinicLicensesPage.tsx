@@ -131,9 +131,6 @@ export const baseParaClinicLicenseFormRenderer: FormRenderer<IBaseParaClinicLice
     isRecommended: { get title() {
   return ta("پیشنهادی");
 }, type: "bool" },
-    isDiscounted: { get title() {
-  return ta("تخفیف دار");
-}, type: "bool" },
     isActive: { get title() {
   return ta("فعال");
 }, type: "bool" },

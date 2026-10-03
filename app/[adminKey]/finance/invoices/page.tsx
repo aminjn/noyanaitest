@@ -1,20 +1,7 @@
-import { Suspense } from "react";
-import AdminFinanceInvoicesPage from "@/Components/Admin/Finance/AdminFinanceInvoicesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
-
-const AdminFinanceInvoices = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <Suspense>
-        <AdminFinanceInvoicesPage />
-      </Suspense>
-    </LocaleScopeProvider>
-  );
-};
+// the legacy invoices are an archive tab of the transactions page (2026-10)
+const AdminFinanceInvoices = ({ params }: { params: { adminKey: string } }) =>
+  redirect(`/${params.adminKey}/finance/transactions?tab=archive`);
 
 export default AdminFinanceInvoices;

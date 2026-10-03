@@ -1,6 +1,7 @@
 "use client";
 
 import useSWR from "swr";
+import useReadTime from "./useReadTime";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import classes from "./BlogPage.module.css";
 import { API } from "../config";
@@ -81,6 +82,7 @@ const BlogPage = (props: BlogPageProps) => {
   console.log(blog);
 
   const getContent = useScopedLocale(NS);
+  const readTime = useReadTime();
 
   const copyTextToClipboard = useClipboard();
 
@@ -118,15 +120,15 @@ const BlogPage = (props: BlogPageProps) => {
                 <Ixon width="3rem">
                   <UserIcon />
                 </Ixon>
-                <span>{getContent("noyan")}</span>
+                <span>{blog.author || getContent("noyan")}</span>
               </div>
               <div className={`${classes.more} ${txsRegular}`}>
-                {!!blog.readTime && (
+                {!!readTime(blog) && (
                   <div className={classes.withIcon}>
                     <Ixon width=".875rem">
                       <ClockIcon />
                     </Ixon>
-                    <span>{blog.readTime}</span>
+                    <span>{readTime(blog)}</span>
                   </div>
                 )}
                 <div className={classes.withIcon}>

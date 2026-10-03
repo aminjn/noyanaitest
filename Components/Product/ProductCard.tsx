@@ -27,18 +27,24 @@ const ProductCard = ({
 }) => {
   const getContent = useScopedLocale(NS);
 
+  // the cheapest live offer is the "from" price (the list endpoints already
+  // drop inactive offers); never a hand-set catalog price
+  type Offer = { price?: number; discount?: number };
+  const offers: Offer[] =
+    node.model === "Product" && Array.isArray(node.sellers) ? node.sellers : [];
+  const best = offers.reduce<Offer | undefined>((acc, el) => {
+    if (!el) return acc;
+    const net = (el.price || 0) - (el.discount || 0);
+    const accNet = acc ? (acc.price || 0) - (acc.discount || 0) : Infinity;
+    return net > 0 && net < accNet ? el : acc;
+  }, undefined);
+
   return (
     <ServiceOrProductCard
       name={node.name || ""}
       commentCount={node.commentCount}
-      discount={
-        node.model === "Product"
-          ? node.sellers?.[0]?.discount || 0
-          : node.discount || 0
-      }
-      price={
-        node.model === "Product" ? node.sellers?.[0]?.price || 0 : node.price || 0
-      }
+      discount={node.model === "Product" ? best?.discount || 0 : node.discount || 0}
+      price={node.model === "Product" ? best?.price || 0 : node.price || 0}
       rating={node.averageScore}
       category={node.category?.name}
       detail={{

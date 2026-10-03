@@ -9,10 +9,11 @@ import CreateForm from "../UI/CreateForm";
 import { IAppConfig } from "../AppConfig/AdminManageAppConfigPage";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
-// The payment gateway (SEP) and wallet limits (2026-09 admin audit): they
-// were fields in the middle of "system settings", away from every other
-// money setting. They still live on AppConfig; this is their place in the
-// finance settings hub. The withdrawal minimum used to be hardcoded.
+// The payment gateway (SEP) and the wallet top-up limit (2026-09 admin
+// audit). They live on AppConfig; this is their place in the finance
+// settings hub. The site address is a general setting (CRM and campaign
+// links read it too), the withdrawal minimum sits with the settlement
+// period, and toman -> rial is a constant, not a setting (2026-10).
 const AdminPaymentSettingsTab = () => {
   const { data, error, mutate } = useSWR<IAppConfig>(
     `${API}/auto/appConfig`,
@@ -22,7 +23,7 @@ const AdminPaymentSettingsTab = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle title={ta("درگاه پرداخت و کیف پول")}>
+        <WithTitle title={ta("درگاه پرداخت و شارژ کیف پول")}>
           <CreateForm<IAppConfig>
             layout="sections"
             defaultValue={data}
@@ -49,16 +50,6 @@ const AdminPaymentSettingsTab = () => {
                 type: "text",
                 section: ta("درگاه پرداخت"),
               },
-              siteBaseUrl: {
-                title: ta("آدرس عمومی سایت (مثال: https://example.com)"),
-                type: "text",
-                section: ta("درگاه پرداخت"),
-              },
-              sepAmountMultiplier: {
-                title: ta("ضریب تبدیل مبلغ به ریال برای درگاه (تومان ← ریال = ۱۰)"),
-                type: "number",
-                section: ta("درگاه پرداخت"),
-              },
               sepTokenExpiryMinutes: {
                 title: ta("مدت اعتبار توکن پرداخت (دقیقه، ۲۰ تا ۳۶۰۰)"),
                 type: "number",
@@ -66,12 +57,6 @@ const AdminPaymentSettingsTab = () => {
               },
               onlinePaymentMinAmount: {
                 title: ta("حداقل مبلغ شارژ کیف پول (تومان)"),
-                type: "number",
-                price: true,
-                section: ta("کیف پول"),
-              },
-              withdrawalMinAmount: {
-                title: ta("حداقل مبلغ برداشت از کیف پول (تومان)"),
                 type: "number",
                 price: true,
                 section: ta("کیف پول"),

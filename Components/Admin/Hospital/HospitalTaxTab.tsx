@@ -6,6 +6,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import HandleLoading from "../UI/HandleLoading";
 import CreateForm from "../UI/CreateForm";
+import ResetToDefaultButton from "../UI/ResetToDefaultButton";
 import classes from "../Clinic/ClinicTaxTab.module.css";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -59,6 +60,11 @@ const HospitalTaxTab = ({ node }: { node: { _id: string } }) => {
                 required: true,
               },
             }}
+          />
+          <ResetToDefaultButton
+            segment="hospitalTaxSettings"
+            id={existing?._id}
+            mutate={mutate}
           />
         </div>
       )}

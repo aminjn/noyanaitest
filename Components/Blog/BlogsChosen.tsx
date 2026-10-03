@@ -1,4 +1,5 @@
 import Link from "@/Components/i18n/Link";
+import useReadTime from "./useReadTime";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -25,6 +26,7 @@ const ChosenBlogCard = ({
   node: IBlog<{ CategoryPopulated: Record<never, never> }>;
 }) => {
   const getContent = useScopedLocale(NS);
+  const readTime = useReadTime();
 
   return (
     <div className={classes.card}>
@@ -55,12 +57,12 @@ const ChosenBlogCard = ({
             </h3>
           </Link>
           <div className={classes.topFooter}>
-            {!!node.readTime && (
+            {!!readTime(node) && (
               <div className={classes.readTime}>
                 <Ixon width=".75rem">
                   <ClockIcon />
                 </Ixon>
-                <span className={txsRegular}>{node.readTime}</span>
+                <span className={txsRegular}>{readTime(node)}</span>
               </div>
             )}
           </div>
@@ -70,7 +72,7 @@ const ChosenBlogCard = ({
         <div className={`${classes.author} ${txsDemiBold}`}>
           <Ixon width="2rem">
             <UserIcon />
-            <span>{getContent("noyan")}</span>
+            <span>{node.author || getContent("noyan")}</span>
           </Ixon>
         </div>
         <span className={`${classes.publish} ${t2xsRegular}`}>

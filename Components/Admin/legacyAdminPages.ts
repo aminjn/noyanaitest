@@ -1,0 +1,121 @@
+// Admin pages that moved into another page's tab (2026-09 / 2026-10 admin
+// audits). The old page files still redirect, but a redirect() inside a
+// page under the admin layout crashes the production build (React #310), so
+// the middleware sends these paths on before anything renders. Generated
+// from the app/[adminKey]/**/page.tsx files that only redirect; keep the
+// two in step when a page moves.
+export const LEGACY_ADMIN_PAGES: Record<string, string> = {
+  "aboutPartner": "aboutPage?tab=partners",
+  "aboutTeam": "aboutPage?tab=team",
+  "aboutWhy": "aboutPage?tab=why",
+  "accesslevel": "team?tab=roles",
+  "advertisement": "ads?tab=banners",
+  "baseClinicLicense": "licensePlans?tab=clinic",
+  "baseDoctorLicense": "licensePlans?tab=doctor",
+  "baseHospitalLicense": "licensePlans?tab=hospital",
+  "baseInsuranceLicense": "licensePlans?tab=insurance",
+  "baseParaClinicLicense": "licensePlans?tab=paraClinic",
+  "basePharmacyLicense": "licensePlans?tab=pharmacy",
+  "becomeParaClinic": "requests?group=become&kind=paraClinic",
+  "becomeclinic": "requests?group=become&kind=clinic",
+  "becomedoctor": "requests?group=become&kind=doctor",
+  "becomehospital": "requests?group=become&kind=hospital",
+  "becomeinsurance": "requests?group=become&kind=insurance",
+  "becomepharmacy": "requests?group=become&kind=pharmacy",
+  "blogRrs": "blog?tab=newsletter",
+  "blogTag": "blog?tab=tags",
+  "blogcategory": "blog?tab=categories",
+  "blogmedia": "blog?tab=media",
+  "city": "province",
+  "clinicCategory": "clinic?tab=categories",
+  "clinicTag": "clinic?tab=tags",
+  "comment": "reviews?tab=pages",
+  "deliverySettings": "financeSettings?tab=delivery",
+  "diseaseCategory": "disease?tab=categories",
+  "diseaseTag": "disease?tab=tags",
+  "district": "province",
+  "doctor": "doctorprofile",
+  "doctorFeedback": "reviews?tab=visits",
+  "doctorfaq": "faq?tab=doctors",
+  "drugTag": "drug?tab=tags",
+  "faqCategory": "faq?tab=categories",
+  "tamin/prescriptionType": "tamin?tab=prescriptionType",
+  "tamin/serviceType": "tamin?tab=serviceType",
+  "tamin/service": "tamin?tab=service",
+  "tamin/parTaref": "tamin?tab=parTaref",
+  "tamin/drugUsage": "tamin?tab=drugUsage",
+  "tamin/drugAmount": "tamin?tab=drugAmount",
+  "tamin/drugInstruction": "tamin?tab=drugInstruction",
+  "tamin/phPlan": "tamin?tab=phPlan",
+  "tamin/phIllness": "tamin?tab=phIllness",
+  "tamin/Icids": "tamin?tab=Icids",
+  "tamin/complaint": "tamin?tab=complaint",
+  "tamin/spec": "tamin?tab=spec",
+  "tamin/doctorTest": "tamin/test?tab=doctorTest",
+  "tamin/pharmacyTest": "tamin/test?tab=pharmacyTest",
+  "tamin/clinicTest": "tamin/test?tab=clinicTest",
+  "tamin/paraClinicTest": "tamin/test?tab=paraClinicTest",
+  "finance/invoices": "finance/transactions?tab=archive",
+  "globalFinanceSettings": "financeSettings?tab=commission",
+  "globalTaxSettings": "financeSettings?tab=tax",
+  "hospitalCategory": "hospital?tab=categories",
+  "hospitalTag": "hospital?tab=tags",
+  "inlinead": "ads?tab=inline",
+  "insuranceCategory": "insurance?tab=categories",
+  "insuranceTag": "insurance?tab=tags",
+  "languages": "localization?tab=languages",
+  "notification": "messaging?tab=broadcast",
+  "pageMeta": "seo?tab=meta",
+  "paraClinicCategory": "paraClinic?tab=categories",
+  "paraClinicTag": "paraClinic?tab=tags",
+  "part": "symptom?tab=parts",
+  "productCategory": "product?tab=categories",
+  "productPackage": "product?tab=packages",
+  "redirection": "seo?tab=redirects",
+  "serviceCategory": "service?tab=categories",
+  "servicePackage": "service?tab=packages",
+  "shortlink": "seo?tab=shortlinks",
+  "smsPatterns": "messaging?tab=patterns",
+  "smsSettings": "messaging?tab=gateway",
+  "staticImages": "homePage?tab=image",
+  "symptomCategory": "symptom?tab=categories",
+  "taxonomy": "province",
+  "testCategory": "test?tab=categories",
+  "testify": "doctorsPage?tab=testify",
+  "textcontent": "localization?tab=texts",
+  "translations": "localization?tab=content",
+  "userAlert": "team?tab=alerts",
+  "useraccesslevel": "team?tab=members"
+};
+
+// "<path>/<id>" of a moved page -> the same tab (the record opens there)
+export const LEGACY_ADMIN_DETAIL_PAGES: Record<string, string> = {
+  "blogTag": "blog?tab=tags",
+  "blogcategory": "blog?tab=categories",
+  "clinicCategory": "clinic?tab=categories",
+  "clinicTag": "clinic?tab=tags",
+  "diseaseCategory": "disease?tab=categories",
+  "diseaseTag": "disease?tab=tags",
+  "doctor": "doctorprofile",
+  "drugTag": "drug?tab=tags",
+  "faqCategory": "faq?tab=categories",
+  "hospitalCategory": "hospital?tab=categories",
+  "hospitalTag": "hospital?tab=tags",
+  "insuranceCategory": "insurance?tab=categories",
+  "insuranceTag": "insurance?tab=tags",
+  "paraClinicCategory": "paraClinic?tab=categories",
+  "paraClinicTag": "paraClinic?tab=tags",
+  "part": "symptom?tab=parts",
+  "productCategory": "product?tab=categories",
+  "symptomCategory": "symptom?tab=categories",
+  "testCategory": "test?tab=categories"
+};
+
+// the new place of a moved admin path ("blogTag" -> "blog?tab=tags"), or null
+export const legacyAdminTarget = (sub: string): string | null => {
+  const path = sub.replace(/^\/+|\/+$/g, "");
+  if (LEGACY_ADMIN_PAGES[path] !== undefined) return LEGACY_ADMIN_PAGES[path];
+  const parts = path.split("/");
+  if (parts.length === 2 && LEGACY_ADMIN_DETAIL_PAGES[parts[0]] !== undefined) return LEGACY_ADMIN_DETAIL_PAGES[parts[0]];
+  return null;
+};

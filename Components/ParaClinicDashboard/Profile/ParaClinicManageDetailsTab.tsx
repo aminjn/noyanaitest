@@ -57,7 +57,6 @@ const ParaClinicManageDetailsTab = () => {
             phone: { type: "text", title: getContent("phone") },
             onPremises: { type: "bool", title: getContent("onPremises") },
             onlineResponse: { type: "bool", title: getContent("onlineResponse") },
-            basicInsurance: { type: "bool", title: getContent("basicInsurance") },
             personelCount: { type: "number", title: getContent("personelCount") },
             summary: { type: "area", title: getContent("summary") },
             insurances: {

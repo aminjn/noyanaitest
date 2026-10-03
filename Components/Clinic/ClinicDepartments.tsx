@@ -12,8 +12,10 @@ const ClinicDepartments = ({ node }: { node: ClinicPageNode }) => {
         name: el.name,
         phone: el.phone,
         summary: el.summary,
-        doctors: node.doctors
-          .map((el) => el.doctor)
+        // the department's own doctors (the backend lists them per
+        // department), not every member of the clinic
+        doctors: (Array.isArray(el.doctors) ? el.doctors : [])
+          .map((d) => d?.doctor)
           .filter(Boolean) as IDoctorProfile<{
           MainSpecialityPopulated: Record<never, never>;
         }>[],

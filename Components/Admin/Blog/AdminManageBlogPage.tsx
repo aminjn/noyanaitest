@@ -77,7 +77,6 @@ const AdminManageBlogPage = () => {
                       order: { title: ta("رتبه"), type: "number" },
                       slug: { title: ta("اسلاگ"), type: "text" },
                       author: { title: ta("نویسنده"), type: "text" },
-                      readTime: { title: ta("مدت زمان مطالعه"), type: "text" },
                       thisWeekSpecial: {
                         title: ta("مطالب ویژه این هفته"),
                         type: "bool",

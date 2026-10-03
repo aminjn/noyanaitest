@@ -59,12 +59,12 @@ const ParaClinicProfileLicenseTab = ({ node }: { node: IParaClinic }) => {
             successCb: () => mutate(),
           }}
           renderer={{
-            displayName: { title: ta("نام نمایشی"), type: "text" },
+            displayName: { title: ta("نام نمایشی (خالی = نام پلن)"), type: "text" },
             baseLicense: {
               title: ta("پلن مرجع"),
               type: "nodes",
               multi: false,
-              path: `${API}/auto/baseParaClinicLicense`,
+              path: `${API}/auto/baseParaClinicLicense?isActive=true`,
               getOptionLabel: (node) =>
                 (node as IBaseParaClinicLicense).displayName ||
                 (node as IBaseParaClinicLicense)._id,
@@ -74,7 +74,7 @@ const ParaClinicProfileLicenseTab = ({ node }: { node: IParaClinic }) => {
             startedAt: { title: ta("تاریخ شروع"), type: "date" },
             expiresAt: { title: ta("تاریخ انقضا"), type: "date" },
             modules: {
-              title: ta("منوهای قابل دسترسی"),
+              title: ta("منوها (فقط پلن سفارشی، بدون پلن مرجع)"),
               type: "multiselect",
               options: paraClinicDashboardModuleLabels,
             },

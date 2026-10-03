@@ -3,6 +3,7 @@ import { getPublicData } from "./Components/helpers/getPublicData";
 import { IShortLink } from "./Components/Admin/ShortLink/AdminManageShortLinksPage";
 import { IRedirection } from "./Components/Admin/Redirection/AdminManageRedirectionsPage";
 import { getSiteLocales } from "./Components/i18n/getEnabledLocales";
+import { legacyAdminTarget } from "./Components/Admin/legacyAdminPages";
 import {
   LOCALE_HEADER,
   PATH_HEADER,
@@ -33,6 +34,18 @@ const middleware = async (req: NextRequest) => {
     const url = req.nextUrl.clone();
     url.pathname = pathname;
     return NextResponse.redirect(url, 307);
+  }
+
+  // an admin page that moved into a tab of another one
+  if (isAdmin) {
+    const target = legacyAdminTarget(pathname.slice(adminKey!.length + 1));
+    if (target !== null) {
+      const url = new URL(`/${adminKey}/${target}`, req.url);
+      req.nextUrl.searchParams.forEach((v, k) => {
+        if (!url.searchParams.has(k)) url.searchParams.set(k, v);
+      });
+      return NextResponse.redirect(url, 307);
+    }
   }
 
   if (pathname.startsWith("/l/")) {

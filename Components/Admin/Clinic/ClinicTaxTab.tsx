@@ -8,6 +8,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import { IGlobalTaxSettings } from "../TaxSettings/AdminManageGlobalTaxSettingsPage";
 import HandleLoading from "../UI/HandleLoading";
 import CreateForm from "../UI/CreateForm";
+import ResetToDefaultButton from "../UI/ResetToDefaultButton";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./ClinicTaxTab.module.css";
@@ -74,6 +75,11 @@ const ClinicTaxTab = ({ node }: { node: IClinic }) => {
                 required: true,
               },
             }}
+          />
+          <ResetToDefaultButton
+            segment="clinicTaxSettings"
+            id={existing?._id}
+            mutate={mutate}
           />
         </div>
       )}

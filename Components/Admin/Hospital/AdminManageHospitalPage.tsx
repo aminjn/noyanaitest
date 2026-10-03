@@ -325,13 +325,22 @@ const AdminManageHospitalPage = () => {
                       owner: {
                         type: "nodes",
                         // shown on the public page as «مدیریت»; not the panel owner
-                        title: ta("پزشک مدیر"),
-                        path: `${API}/auto/doctorProfile`,
-                        getOptionLabel: (node) =>
-                          getDoctorProfileLabel(node as IDoctorProfile),
-                        getOptionValue: (node) => (node as IDoctorProfile)._id,
+                        title: ta("پزشک مدیر (از پزشکان همین بیمارستان)"),
+                        // only the hospital's own doctors (2026-10)
+                        path: `${API}/auto/hospitaldoctor?hospital=${data._id}`,
+                        getOptionLabel: (node) => {
+                          const doctor = (node as { doctor?: IDoctorProfile }).doctor;
+                          return doctor ? getDoctorProfileLabel(doctor) : "";
+                        },
+                        getOptionValue: (node) =>
+                          (node as { doctor?: IDoctorProfile }).doctor?._id || "",
                         multi: false,
-                        getDefaultValue: (inp) => inp.owner,
+                        getDefaultValue: (inp) => {
+                          const owner = inp.owner as unknown;
+                          return owner && typeof owner === "object"
+                            ? (owner as { _id?: string })._id
+                            : owner;
+                        },
                       },
                       phone: {
                         type: "text",

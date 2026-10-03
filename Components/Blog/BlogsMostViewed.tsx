@@ -1,4 +1,5 @@
 import Link from "@/Components/i18n/Link";
+import useReadTime from "./useReadTime";
 import { IBlog } from "../Admin/Blog/AdminManageBlogsPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -9,6 +10,7 @@ const NS: ContentNamespace[] = ["common", "mag"];
 
 const BlogsMostViewed = ({ nodes }: { nodes: IBlog[] }) => {
   const getContent = useScopedLocale(NS);
+  const readTime = useReadTime();
 
   if (!nodes.length) return null;
   return (
@@ -27,7 +29,7 @@ const BlogsMostViewed = ({ nodes }: { nodes: IBlog[] }) => {
                 </h5>
               </Link>
               <div className={`${classes.itemFooter} ${t2xsRegular}`}>
-                {!!node.readTime && <span>{node.readTime}</span>}
+                {!!readTime(node) && <span>{readTime(node)}</span>}
               </div>
             </div>
           </div>
