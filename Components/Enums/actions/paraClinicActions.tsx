@@ -12,6 +12,10 @@ export const paraClinicActions = [
   // «حقوق و دستمزد» (2026-10): employees, payslips and their payments
   "readPayroll",
   "managePayroll",
+  // «ارتباط با بیماران» (2026-10): contacts, follow-ups; submitting a paid SMS campaign
+  "readCrm",
+  "manageCrm",
+  "sendCampaigns",
   // «انبار و خرید» (2026-10): stock, suppliers and purchases
   "readInventory",
   "manageInventory",
@@ -46,6 +50,7 @@ export const paraClinicActionCategories = [
   "licenses",
   "invMenu",
   "payMenu",
+  "crmMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedParaClinicActions: Readonly<
@@ -54,6 +59,7 @@ export const categorizedParaClinicActions: Readonly<
   orgReviewsTitle: ["readReviews"],
   financialMangement: ["readFinance", "manageAccounting"],
   payMenu: ["readPayroll", "managePayroll"],
+  crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   invMenu: ["readInventory", "manageInventory"],
   profile: ["mutateProfile"],
   tests: ["readTests"],

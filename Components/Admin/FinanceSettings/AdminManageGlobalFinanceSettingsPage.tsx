@@ -25,6 +25,8 @@ export interface IGlobalFinanceSettings extends MongoDoc {
   defaultDoctorInPersonCommissionPercent: number;
   defaultParaClinicCommissionPercent: number;
   payoutHoldDays: number;
+  // what one campaign SMS part costs beyond a plan's monthly quota (2026-10)
+  campaignSmsPrice: number;
 }
 
 const AdminManageGlobalFinanceSettingsPage = () => {
@@ -66,6 +68,10 @@ const AdminManageGlobalFinanceSettingsPage = () => {
               },
               payoutHoldDays: {
                 title: ta("دوره‌ی تسویه (روز) - درآمد ارائه‌دهنده پس از این مدت قابل برداشت می‌شود"),
+                type: "number",
+              },
+              campaignSmsPrice: {
+                title: ta("قیمت هر بخش پیامک کمپین (تومان) - بیشتر از سهمیه‌ی پلن، از کیف پول ارائه‌دهنده"),
                 type: "number",
               },
             }}

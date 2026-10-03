@@ -27,6 +27,8 @@ const pathModuleMap: Record<string, DoctorDashboardModule> = {
   accounting: "accounting",
   // phase 3: /<panel>/payroll (employees, payslips, insurance and tax)
   payroll: "payroll",
+  // phase 4: /<panel>/crm (patients and customers, follow-ups, SMS campaigns)
+  crm: "crm",
   profile: "profile",
   office: "office",
   service: "services",

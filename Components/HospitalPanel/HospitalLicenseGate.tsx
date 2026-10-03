@@ -19,6 +19,8 @@ const pathModuleMap: Record<string, HospitalDashboardModule> = {
   accounting: "accounting",
   // phase 3: /<panel>/payroll (employees, payslips, insurance and tax)
   payroll: "payroll",
+  // phase 4: /<panel>/crm (patients and customers, follow-ups, SMS campaigns)
+  crm: "crm",
   // phase 2: /<panel>/inventory (stock, batches, suppliers, purchases)
   inventory: "inventory",
   profile: "profile",

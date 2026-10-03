@@ -31,6 +31,8 @@ export const insuranceDashboardModules = [
   "accounting",
   // Noyan Business phase 3 (2026-10): employees, payslips, insurance and tax
   "payroll",
+  // Noyan Business phase 4 (2026-10): patients and customers, follow-ups, SMS campaigns
+  "crm",
 ] as const;
 
 export type InsuranceDashboardModule =
@@ -58,6 +60,9 @@ export const insuranceDashboardModuleLabels: Record<
   get payroll() {
   return ta("حقوق و دستمزد");
 },
+  get crm() {
+  return ta("ارتباط با بیماران و کمپین پیامکی");
+},
 };
 
 export type BaseInsuranceLicensePopulation = Population<Record<never, never>>;
@@ -68,6 +73,8 @@ export interface IBaseInsuranceLicense<
   displayName?: string;
   order: number;
   isDefault: boolean;
+  // campaign SMS parts included each month (2026-10); beyond it the wallet pays
+  monthlySmsQuota: number;
   // One pricing option per Models/LicenseDuration.ts catalog entry, edited
   // via the "licensePricing" CreateForm field type below.
   pricing: ILicensePricingEntry[];
@@ -115,6 +122,9 @@ export const baseInsuranceLicenseFormRenderer: FormRenderer<IBaseInsuranceLicens
     pricing: { get title() {
   return ta("قیمت‌گذاری");
 }, type: "licensePricing" },
+    monthlySmsQuota: { get title() {
+  return ta("سهمیه‌ی پیامک کمپین در ماه (بیشتر از آن از کیف پول)");
+}, type: "number" },
     descriptions: { get title() {
   return ta("توضیحات");
 }, type: "strings" },

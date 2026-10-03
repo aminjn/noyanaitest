@@ -5,13 +5,15 @@ import { BadgeColor } from "@/Components/UI/Badge";
 // queue page (/requests) and each kind's own detail page. Mirrors the
 // backend's Controllers/adminRequestsController.ts.
 
-export const requestGroups = ["become", "addition", "join"] as const;
+// "campaign" (2026-10): a provider's SMS campaign whose text waits to be cleared
+export const requestGroups = ["become", "addition", "join", "campaign"] as const;
 export type RequestGroup = (typeof requestGroups)[number];
 
 export const requestKinds: Record<RequestGroup, readonly string[]> = {
   become: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
   addition: ["clinic", "hospital", "pharmacy", "insurance"],
   join: ["clinic", "hospital"],
+  campaign: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
 };
 
 export const isRequestGroup = (v: unknown): v is RequestGroup =>
@@ -29,6 +31,9 @@ export const requestGroupLabels: Record<RequestGroup, string> = {
   },
   get join() {
     return ta("عضویت پزشک در مراکز");
+  },
+  get campaign() {
+    return ta("کمپین‌های پیامکی");
   },
 };
 
@@ -65,6 +70,10 @@ const statusLabels: Record<string, () => string> = {
   Rejected: () => ta("ردشده"),
   Approved: () => ta("تأییدشده"),
   Done: () => ta("انجام‌شده"),
+  // an SMS campaign after approval
+  Sending: () => ta("در حال ارسال"),
+  Sent: () => ta("ارسال‌شده"),
+  Cancelled: () => ta("لغوشده"),
 };
 
 export const requestStatusLabel = (status?: string) =>
@@ -73,7 +82,7 @@ export const requestStatusLabel = (status?: string) =>
 export const requestStatusColor = (status?: string): BadgeColor =>
   status === "Rejected"
     ? "Error"
-    : status === "Approved" || status === "Done"
+    : status === "Approved" || status === "Done" || status === "Sent"
       ? "Success"
       : status === "Proccessing"
         ? "Info"

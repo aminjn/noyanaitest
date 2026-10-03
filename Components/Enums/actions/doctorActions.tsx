@@ -52,6 +52,10 @@ export const doctorActions = [
   // «حقوق و دستمزد» (2026-10): employees, payslips and their payments
   "readPayroll",
   "managePayroll",
+  // «ارتباط با بیماران» (2026-10): contacts, follow-ups; submitting a paid SMS campaign
+  "readCrm",
+  "manageCrm",
+  "sendCampaigns",
   "readShifts",
   "readSchedule",
   "readPatients",
@@ -94,6 +98,7 @@ export const doctorActionCategories = [
   "drugsAndPrescriptions",
   "incomingOrders",
   "payMenu",
+  "crmMenu",
 ] as const satisfies readonly ContentKey[];
 
 export const categorizedDoctorActions: Readonly<
@@ -129,6 +134,7 @@ export const categorizedDoctorActions: Readonly<
   settings: ["readSettings", "mutateSettings"],
   financialMangement: ["readFinance", "manageAccounting"],
   payMenu: ["readPayroll", "managePayroll"],
+  crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   shifts: ["readShifts"],
   schedule: ["readSchedule"],
   patients: ["readPatients", "readPatient", "mutatePatient"],
