@@ -10,6 +10,7 @@ import AccountingAccounts from "./AccountingAccounts";
 import AccountingReports from "./AccountingReports";
 import AccountingYears from "./AccountingYears";
 import AccountingBudget from "./AccountingBudget";
+import AccountingVat from "./AccountingVat";
 
 // Noyan Business accounting (2026-10, docs/business-suite.md): one page for
 // every provider panel and for the platform's own books in the super admin.
@@ -46,6 +47,7 @@ const AccountingPage = ({
             { id: "accounts", title: t("bizTabAccounts"), content: <AccountingAccounts refreshKey={refreshKey} /> },
             { id: "reports", title: t("bizTabReports"), content: <AccountingReports refreshKey={refreshKey} /> },
             { id: "budget", title: t("bizTabBudget"), content: <AccountingBudget refreshKey={refreshKey} /> },
+            { id: "vat", title: t("bizTabVat"), content: <AccountingVat refreshKey={refreshKey} onChanged={bump} /> },
             { id: "years", title: t("bizTabYears"), content: <AccountingYears refreshKey={refreshKey} onChanged={bump} /> },
           ]}
         />
