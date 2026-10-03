@@ -1,6 +1,5 @@
 "use client";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
-import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -35,12 +34,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { IParaClinicTag } from "../ParaClinicTag/AdminManageParaClinicTagsPage";
 import { IParaClinicCategory } from "../ParaClinicCategory/AdminManageParaClinicCategoriesPage";
-import {
-  ICity,
-  IDistrict,
-  IProvince,
-} from "../Province/AdminManageProvincesPage";
-import PointPicker from "../UI/PointPicker";
+import AdminLocationTab from "../UI/AdminLocationTab";
 import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
@@ -255,46 +249,9 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
   );
 };
 
-const ParaClinicGeoManager = ({
-  mutate,
-  node,
-}: {
-  node: IParaClinic;
-  mutate: () => unknown;
-}) => {
-  const { setInput, submit, isLoading, input } = useForm<{ location: [number, number]; address: string }>({
-    path: `${API}/auto/paraClinic/${node._id}`,
-    method: "POST",
-    successCb: () => {
-      mutate();
-    },
-    hasProblem: (inp) => {
-      if (!inp.location && !inp.address) return ta("لطفا موقعیت را انتخاب کنید");
-      return false;
-    },
-    mutator: (inp) => ({
-      ...(inp.location ? { location: { type: "Point", coordinates: inp.location } } : {}),
-      // the point's address, when the admin took it (or it was empty)
-      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
-    }),
-  });
-
-  return (
-    <div>
-      <PointPicker
-        currentAddress={input.address ?? node.address ?? ""}
-        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
-        defaultValue={node.location?.coordinates}
-        onChange={(e) => setInput((prev) => ({ ...prev, location: e }))}
-      />
-      <FormActions>
-        <Button onClick={submit} isLoading={isLoading}>
-          {ta("تایید")}
-        </Button>
-      </FormActions>
-    </div>
-  );
-};
+const ParaClinicGeoManager = ({ mutate, node }: { node: IParaClinic; mutate: () => unknown }) => (
+  <AdminLocationTab path={`${API}/auto/paraClinic/${node._id}`} node={node as never} mutate={mutate} />
+);
 
 const AdminManageParaClinicPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -393,39 +350,6 @@ const AdminManageParaClinicPage = () => {
                           getDefaultValue: (inp) => inp.tags,
                           multi: true,
                         },
-                        province: {
-                          type: "nodes",
-                          title: ta("استان"),
-                          section: ta("آدرس"),
-                          multi: false,
-                          path: `${API}/auto/province`,
-                          getOptionLabel: (node) =>
-                            (node as IProvince).name || (node as IProvince)._id,
-                          getOptionValue: (node) => (node as IProvince)._id,
-                          getDefaultValue: (inp) => inp.province,
-                        },
-                        city: {
-                          type: "nodes",
-                          title: ta("شهر"),
-                          section: ta("آدرس"),
-                          multi: false,
-                          path: cityPath,
-                          getOptionLabel: (node) =>
-                            (node as ICity).name || (node as ICity)._id,
-                          getOptionValue: (node) => (node as ICity)._id,
-                          getDefaultValue: (inp) => inp.city,
-                        },
-                        district: {
-                          type: "nodes",
-                          title: ta("محله"),
-                          section: ta("آدرس"),
-                          multi: false,
-                          path: districtPath,
-                          getOptionLabel: (node) =>
-                            (node as IDistrict).name || (node as IDistrict)._id,
-                          getOptionValue: (node) => (node as IDistrict)._id,
-                          getDefaultValue: (inp) => inp.district,
-                        },
                         image: { type: "image", title: ta("تصویر") },
                         slug: { type: "text", title: ta("اسلاگ") },
                         establishment: { type: "text", title: ta("تاسیس") },
@@ -451,7 +375,6 @@ const AdminManageParaClinicPage = () => {
                           getDefaultValue: (inp) => inp.insurances,
                           path: `${API}/auto/insurance`,
                         },
-                        address: { type: "text", title: ta("آدرس"), section: ta("آدرس") },
                       }}
                       hookProps={{
                         path: `${API}/auto/paraClinic/${data._id}`,
@@ -467,7 +390,7 @@ const AdminManageParaClinicPage = () => {
               },
               {
                 id: "Geo",
-                title: ta("موقعیت"),
+                title: ta("آدرس و موقعیت"),
                 content: <ParaClinicGeoManager mutate={mutate} node={data} />,
               },
               {

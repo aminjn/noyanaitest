@@ -85,10 +85,7 @@ const BecomeDoctorProfileSelector = ({
                 onClick={() =>
                   setPopup(
                     "AssignDoctorProfileToUserPopup",
-                    <AssignDoctorProfileToUserPopup
-                      mutate={mutate}
-                      user={req.user}
-                    />,
+                    <AssignDoctorProfileToUserPopup mutate={mutate} req={req} />,
                   )
                 }
               >

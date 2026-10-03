@@ -119,7 +119,7 @@ const AdminManageDoctorProfilePage = () => {
               },
               {
                 id: "Location",
-                title: ta("موقعیت"),
+                title: ta("آدرس و موقعیت"),
                 content: (
                   <DoctorProfileLocationTab mutate={mutate} node={data} />
                 ),

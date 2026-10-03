@@ -1,4 +1,3 @@
-import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import {
   doctorProfileTiers,
   IDoctorProfile,
@@ -7,7 +6,6 @@ import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
-import { ICity, IDistrict, IProvince } from "../Province/AdminManageProvincesPage";
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
 import { FormRenderer } from "../UI/CreateForm";
 import { ta } from "@/Components/Admin/i18n/adminText";
@@ -119,39 +117,6 @@ const DoctorProfileInfoTab = ({
         slug: { type: "text", title: ta("اسلاگ"), section: identity },
         avatar: { type: "image", title: ta("تصویر اصلی"), section: identity },
         ...specialityFields,
-        province: {
-          title: ta("استان"),
-          type: "nodes",
-          path: `${API}/auto/province`,
-          getOptionLabel: (node) =>
-            (node as IProvince).name || ta("بدون نام"),
-          getOptionValue: (node) => (node as IProvince)._id,
-          multi: false,
-          getDefaultValue: (inp) => inp.province,
-          section: contact,
-        },
-        city: {
-          title: ta("شهر"),
-          type: "nodes",
-          getOptionLabel: (node) => (node as ICity).name || ta("بدون نام"),
-          getOptionValue: (node) => (node as ICity)._id,
-          getDefaultValue: (inp) => inp.city,
-          multi: false,
-          path: cityPath,
-          section: contact,
-        },
-        district: {
-          title: ta("محله"),
-          getOptionLabel: (node) =>
-            (node as IDistrict).name || ta("بدون نام"),
-          type: "nodes",
-          getOptionValue: (node) => (node as IDistrict)._id,
-          getDefaultValue: (inp) => inp.district,
-          multi: false,
-          path: districtPath,
-          section: contact,
-        },
-        address: { type: "text", title: ta("آدرس"), section: contact },
         landLine: { type: "text", title: ta("تلفن ثابت"), section: contact },
         website: { type: "text", title: ta("سایت"), section: contact },
         introduction: { type: "area", title: ta("معرفی"), section: about },

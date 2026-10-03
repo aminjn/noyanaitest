@@ -1,6 +1,5 @@
 "use client";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
-import { cityPath, districtPath } from "@/Components/Admin/UI/geoPaths";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -16,14 +15,9 @@ import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import CreateForm from "../UI/CreateForm";
 import useForm from "@/Components/Hooks/useForm";
-import PointPicker from "../UI/PointPicker";
+import AdminLocationTab from "../UI/AdminLocationTab";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
-import {
-  ICity,
-  IDistrict,
-  IProvince,
-} from "../Province/AdminManageProvincesPage";
 import WalletIcon from "@/Components/Icons/WalletIcon";
 import PharmacyCommissionTab from "./PharmacyCommissionTab";
 import PharmacyTaxTab from "./PharmacyTaxTab";
@@ -43,46 +37,10 @@ import {
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
-// the shared location picker (Components/Admin/UI/PointPicker), as on the
-// clinic / hospital / insurance pages
-const PharmacyLocationTab = ({
-  mutate,
-  node,
-}: {
-  node: IPharmacy;
-  mutate: () => unknown;
-}) => {
-  const { setInput, isLoading, submit, input } = useForm<{ coords: [number, number]; address: string }>({
-    path: `${API}/auto/pharmacy/${node._id}`,
-    method: "POST",
-    successCb: () => {
-      mutate();
-    },
-    hasProblem: (inp) =>
-      !inp.coords && !inp.address ? ta("یک موقعیت را انتخاب کنید") : false,
-    mutator: (inp) => ({
-      ...(inp.coords ? { location: { type: "Point", coordinates: inp.coords } } : {}),
-      // the point's address, when the admin took it (or it was empty)
-      ...(inp.address?.trim() ? { address: inp.address.trim() } : {}),
-    }),
-  });
-
-  return (
-    <div>
-      <PointPicker
-        currentAddress={input.address ?? node.address ?? ""}
-        onUseAddress={(address) => setInput((prev) => ({ ...prev, address }))}
-        defaultValue={node.location?.coordinates}
-        onChange={(e) => setInput((prev) => ({ ...prev, coords: e }))}
-      />
-      <FormActions>
-        <Button isLoading={isLoading} onClick={submit}>
-          {ta("تایید")}
-        </Button>
-      </FormActions>
-    </div>
-  );
-};
+// the shared location tab (Components/Admin/UI/AdminLocationTab)
+const PharmacyLocationTab = ({ mutate, node }: { node: IPharmacy; mutate: () => unknown }) => (
+  <AdminLocationTab path={`${API}/auto/pharmacy/${node._id}`} node={node as never} mutate={mutate} />
+);
 
 const AdminManagePharmacyPage = () => {
   const params = useParams<{ nodeId: string }>();
@@ -166,52 +124,14 @@ const AdminManagePharmacyPage = () => {
                       active: { type: "bool", title: ta("فعال") },
                       order: { type: "number", title: ta("رتبه") },
                       summary: { type: "area", title: ta("خلاصه") },
-                      address: {
-                        type: "text",
-                        title: ta("آدرس"),
-                        section: ta("آدرس"),
-                      },
                       avatar: { type: "image", title: ta("تصویر") },
                       banner: { type: "image", title: ta("بنر") },
-                      province: {
-                        title: ta("استان"),
-                        section: ta("آدرس"),
-                        type: "nodes",
-                        path: `${API}/auto/province`,
-                        getOptionLabel: (node) =>
-                          (node as IProvince).name || (node as IProvince)._id,
-                        getOptionValue: (node) => (node as IProvince)._id,
-                        multi: false,
-                        getDefaultValue: (inp) => inp.province,
-                      },
-                      city: {
-                        title: ta("شهر"),
-                        section: ta("آدرس"),
-                        type: "nodes",
-                        getOptionLabel: (node) =>
-                          (node as ICity).name || (node as ICity)._id,
-                        getOptionValue: (node) => (node as ICity)._id,
-                        getDefaultValue: (inp) => inp.city,
-                        multi: false,
-                        path: cityPath,
-                      },
-                      district: {
-                        title: ta("محله"),
-                        section: ta("آدرس"),
-                        getOptionLabel: (node) =>
-                          (node as IDistrict).name || (node as IDistrict)._id,
-                        type: "nodes",
-                        getOptionValue: (node) => (node as IDistrict)._id,
-                        getDefaultValue: (inp) => inp.district,
-                        multi: false,
-                        path: districtPath,
-                      },
                     }}
                   />
                 ),
               },
               {
-                title: ta("موقعیت"),
+                title: ta("آدرس و موقعیت"),
                 content: <PharmacyLocationTab node={data} mutate={mutate} />,
                 id: "Location",
               },

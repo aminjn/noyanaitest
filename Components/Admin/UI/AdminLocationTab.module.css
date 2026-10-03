@@ -1,0 +1,48 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--gray11);
+  text-align: start;
+}
+
+/* the divisions the pin falls in, shown, never typed next to it */
+.divisions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--line);
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--gray11);
+}
+
+.value {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--gray13);
+}
+
+.muted {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--gray10);
+  text-align: start;
+}
+
+.manual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
