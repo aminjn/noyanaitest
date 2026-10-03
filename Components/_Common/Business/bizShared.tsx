@@ -43,6 +43,11 @@ export type BizVoucher = {
   total: number;
   lines: BizVoucherLine[];
   source?: { type: string; id: string };
+  // a year-end close's own voucher (pl, final = اختتامیه, open = افتتاحیه)
+  phase?: "pl" | "final" | "open";
+  fiscalYear?: number;
+  // the real date of an automatic voucher that came after its year closed
+  actualDate?: string;
 };
 
 type Ctx = { api: string; canWrite: boolean };
@@ -55,6 +60,10 @@ export const useBizFormat = () => {
   const tag = useIntlLocale();
   return useMemo(() => {
     const num = new Intl.NumberFormat(tag, { maximumFractionDigits: 0 });
+    // a Jalali fiscal year (1404), in the reader's digits, never grouped
+    const yearNum = new Intl.NumberFormat(tag, { useGrouping: false });
+    // fiscal year bounds are Tehran midnights; shown as Tehran sees them
+    const tehran = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric", timeZone: "Asia/Tehran" });
     const date = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric" });
     const month = new Intl.DateTimeFormat(tag, { month: "short" });
     const safe = (f: Intl.DateTimeFormat, v?: string | Date | null) => {
@@ -63,6 +72,8 @@ export const useBizFormat = () => {
     };
     return {
       money: (n?: number) => num.format(Math.round(Number(n) || 0)),
+      year: (y?: number) => (y ? yearNum.format(y) : "—"),
+      tehranDate: (v?: string | Date | null) => safe(tehran, v),
       // a negative balance in parentheses, the way statements show it
       signed: (n?: number) => {
         const v = Math.round(Number(n) || 0);
