@@ -83,7 +83,13 @@ const ProductDetailsManager = ({
           multi: true,
           getDefaultValue: (inp) => inp.sameAs,
         },
-        price: { title: ta("قیمت پایه"), type: "number", price: true },
+        // the sale price is each pharmacy's offer; this is the consumer price
+        // printed on the pack, for reference only (2026-10)
+        price: {
+          title: ta("قیمت مصرف‌کننده (درج‌شده روی بسته؛ فقط برای مرجع)"),
+          type: "number",
+          price: true,
+        },
       }}
       hookProps={{
         path: `${API}/auto/product/${node._id}`,

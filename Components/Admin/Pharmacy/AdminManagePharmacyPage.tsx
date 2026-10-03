@@ -36,6 +36,7 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 // the shared location tab (Components/Admin/UI/AdminLocationTab)
 const PharmacyLocationTab = ({ mutate, node }: { node: IPharmacy; mutate: () => unknown }) => (
@@ -126,6 +127,30 @@ const AdminManagePharmacyPage = () => {
                       summary: { type: "area", title: ta("خلاصه") },
                       avatar: { type: "image", title: ta("تصویر") },
                       banner: { type: "image", title: ta("بنر") },
+                      // what the pharmacy panel and the public page show
+                      // (2026-10): the admin form now edits the same fields
+                      phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
+                      businessTime: {
+                        type: "text",
+                        title: ta("ساعات کاری"),
+                        section: ta("تماس"),
+                      },
+                      isRoundTheClock: {
+                        type: "bool",
+                        title: ta("شبانه‌روزی"),
+                        section: ta("تماس"),
+                      },
+                      insurances: {
+                        type: "nodes",
+                        title: ta("بیمه ها"),
+                        section: ta("بیمه‌ها"),
+                        getOptionLabel: (node) =>
+                          (node as IInsurance).name || (node as IInsurance)._id,
+                        getOptionValue: (node) => (node as IInsurance)._id,
+                        multi: true,
+                        getDefaultValue: (inp) => inp.insurances,
+                        path: `${API}/auto/insurance`,
+                      },
                     }}
                   />
                 ),

@@ -294,6 +294,10 @@ const AdminManageInsurancePage = () => {
                       },
                       order: { title: ta("رتبه"), type: "number" },
                       active: { title: ta("فعال"), type: "bool" },
+                      isBasic: {
+                        type: "bool",
+                        title: ta("بیمه‌ی پایه (تأمین اجتماعی، سلامت، نیروهای مسلح)"),
+                      },
                       category: {
                         title: ta("دسته بندی"),
                         type: "nodes",

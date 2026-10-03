@@ -66,9 +66,6 @@ export const testFormRenderer: FormRenderer<ITest> = {
     multi: false,
     getDefaultValue: (inp) => inp.category,
   },
-  slug: { type: "text", get title() {
-  return ta("اسلاگ");
-} },
   summary: { type: "text", get title() {
   return ta("خلاصه");
 } },

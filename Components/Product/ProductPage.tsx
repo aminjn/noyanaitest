@@ -129,7 +129,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
         )
       }
       discount={currentSeller?.discount}
-      price={currentSeller?.price || data.price}
+      price={currentSeller?.price || 0}
       fastDelivery={!!currentSeller?.fastDelivery}
       freeDelivery={!!currentSeller?.freeDelivery}
       owner={

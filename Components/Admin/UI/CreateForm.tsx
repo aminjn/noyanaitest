@@ -244,8 +244,30 @@ const CreateForm = <TInput, TResult = unknown>({
       }
   )
 >) => {
+  // a field marked required blocks the save here, in the admin's language,
+  // instead of the server answering with the database's own message
+  const missingRequired = (inp: Partial<TInput>) => {
+    for (const key of Object.keys(renderer) as (keyof TInput)[]) {
+      const segment = renderer[key];
+      if (!segment?.required || segment.readOnly || segment.type === "secret")
+        continue;
+      const value = inp[key] !== undefined ? inp[key] : defaultValue?.[key];
+      const empty =
+        value === undefined ||
+        value === null ||
+        (typeof value === "string" && !value.trim()) ||
+        (Array.isArray(value) && !value.length);
+      if (empty) return ta("«${1}» را پر کنید", [ta(segment.title)]);
+    }
+    return false;
+  };
   const hookResult = useForm<TInput, TResult>(
-    hookProps || { path: "", method: "GET" },
+    hookProps
+      ? {
+          ...hookProps,
+          hasProblem: (inp) => missingRequired(inp) || hookProps.hasProblem?.(inp),
+        }
+      : { path: "", method: "GET" },
   );
 
   const { setInput, isLoading, submit, input } = hookProvided || hookResult;
@@ -341,9 +363,14 @@ const CreateForm = <TInput, TResult = unknown>({
                         : e.target.getAttribute("prev") || "";
                   } else {
                     e.target.setAttribute("prev", e.target.value);
+                    // a cleared box clears the value (back to the default),
+                    // it doesn't save 0
                     setInput((prev) => ({
                       ...prev,
-                      [key]: Number(e.target.value),
+                      [key]:
+                        e.target.value.trim() === ""
+                          ? null
+                          : Number(e.target.value),
                     }));
                   }
                 }}
@@ -636,7 +663,10 @@ const CreateForm = <TInput, TResult = unknown>({
       {mode === "sections" &&
         sections.map((section) => (
           <section key={section.id} className={classes.section}>
-            <h3 className={classes.sectionTitle}>{section.title}</h3>
+            {/* a big field in a section of its own already shows its title */}
+            {!section.id.startsWith("field:") && (
+              <h3 className={classes.sectionTitle}>{section.title}</h3>
+            )}
             {sectionGrid(section)}
           </section>
         ))}

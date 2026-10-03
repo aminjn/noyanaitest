@@ -72,6 +72,11 @@ const AdminManageDrugPage = () => {
                       slug: { type: "text", title: ta("اسلاگ") },
                       image: { type: "image", title: ta("تصویر") },
                       brand: { type: "text", title: ta("برند") },
+                      // what the drug page, its card and its SEO show
+                      alternateName: { type: "text", title: ta("نام دیگر") },
+                      activeIngridient: { type: "text", title: ta("ماده‌ی مؤثر") },
+                      dosageForm: { type: "text", title: ta("شکل دارویی") },
+                      dosage: { type: "text", title: ta("مقدار مصرف") },
                       tag: {
                         type: "nodes",
                         multi: false,

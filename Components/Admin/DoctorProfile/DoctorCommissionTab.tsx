@@ -8,6 +8,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import { IGlobalFinanceSettings } from "../FinanceSettings/AdminManageGlobalFinanceSettingsPage";
 import HandleLoading from "../UI/HandleLoading";
 import CreateForm from "../UI/CreateForm";
+import ResetToDefaultButton from "../UI/ResetToDefaultButton";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./DoctorCommissionTab.module.css";
@@ -22,7 +23,7 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 // context.
 export interface IDoctorFinanceSettings extends MongoDoc {
   doctor: string;
-  commissionPercent: number;
+  commissionPercent?: number | null;
   inPersonCommissionPercent?: number;
 }
 
@@ -67,15 +68,21 @@ const DoctorCommissionTab = ({ node }: { node: IDoctorProfile }) => {
             }}
             renderer={{
               commissionPercent: {
-                title: ta("درصد کمیسیون این پزشک - ویزیت آنلاین و خدمات"),
+                title: ta(
+                  "درصد کمیسیون این پزشک - ویزیت آنلاین و خدمات (خالی = پیش‌فرض)",
+                ),
                 type: "number",
-                required: true,
               },
               inPersonCommissionPercent: {
                 title: ta("درصد کمیسیون این پزشک - ویزیت حضوری (خالی = پیش‌فرض)"),
                 type: "number",
               },
             }}
+          />
+          <ResetToDefaultButton
+            segment="doctorFinanceSettings"
+            id={existing?._id}
+            mutate={mutate}
           />
         </div>
       )}

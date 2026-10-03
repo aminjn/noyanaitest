@@ -1,17 +1,7 @@
-import AdminClinicTaminTestPage from "@/Components/Admin/Tamin/AdminClinicTaminTestPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// one tab of the Tamin test page since 2026-10
+const Page = ({ params }: { params: { adminKey: string } }) =>
+  redirect(`/${params.adminKey}/tamin/test?tab=clinicTest`);
 
-const AdminClinicTaminTest = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminClinicTaminTestPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminClinicTaminTest;
+export default Page;

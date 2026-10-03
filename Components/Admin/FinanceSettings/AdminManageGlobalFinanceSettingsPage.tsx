@@ -25,6 +25,7 @@ export interface IGlobalFinanceSettings extends MongoDoc {
   defaultDoctorInPersonCommissionPercent: number;
   defaultParaClinicCommissionPercent: number;
   payoutHoldDays: number;
+  withdrawalMinAmount?: number;
   // what one campaign SMS part costs beyond a plan's monthly quota (2026-10)
   campaignSmsPrice: number;
 }
@@ -43,6 +44,7 @@ const AdminManageGlobalFinanceSettingsPage = () => {
             {ta("کمیسیون هنگام تسویه از سهم ارائه‌دهنده کم می‌شود و به قیمتی که بیمار یا خریدار می‌پردازد اضافه نمی‌شود. برای هر پزشک، داروخانه یا پاراکلینیک می‌توانید در صفحه‌ی خودش نرخ جداگانه بگذارید.")}
           </p>
           <CreateForm<IGlobalFinanceSettings>
+            layout="sections"
             defaultValue={data}
             hookProps={{
               path: `${API}/auto/globalFinanceSettings`,
@@ -53,26 +55,38 @@ const AdminManageGlobalFinanceSettingsPage = () => {
               defaultPharmacyCommissionPercent: {
                 title: ta("درصد کمیسیون پیش‌فرض داروخانه‌ها"),
                 type: "number",
+                section: ta("کمیسیون"),
               },
               defaultDoctorCommissionPercent: {
                 title: ta("درصد کمیسیون پزشکان - ویزیت آنلاین و خدمات فروشگاه"),
                 type: "number",
+                section: ta("کمیسیون"),
               },
               defaultDoctorInPersonCommissionPercent: {
                 title: ta("درصد کمیسیون پزشکان - ویزیت حضوری (معمولاً ۰؛ هزینه با اشتراک)"),
                 type: "number",
+                section: ta("کمیسیون"),
               },
               defaultParaClinicCommissionPercent: {
                 title: ta("درصد کمیسیون پیش‌فرض پاراکلینیک‌ها"),
                 type: "number",
+                section: ta("کمیسیون"),
               },
               payoutHoldDays: {
                 title: ta("دوره‌ی تسویه (روز) - درآمد ارائه‌دهنده پس از این مدت قابل برداشت می‌شود"),
                 type: "number",
+                section: ta("تسویه و برداشت"),
+              },
+              withdrawalMinAmount: {
+                title: ta("حداقل مبلغ برداشت از کیف پول (تومان)"),
+                type: "number",
+                price: true,
+                section: ta("تسویه و برداشت"),
               },
               campaignSmsPrice: {
                 title: ta("قیمت هر بخش پیامک کمپین (تومان) - بیشتر از سهمیه‌ی پلن، از کیف پول ارائه‌دهنده"),
                 type: "number",
+                section: ta("پیامک کمپین"),
               },
             }}
           />

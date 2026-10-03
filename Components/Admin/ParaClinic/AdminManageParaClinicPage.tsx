@@ -110,8 +110,10 @@ const MutateParaClinicTestPopup = ({
             getOptionValue: (node) => (node as ITest)._id,
             getDefaultValue: (inp) => inp.test?._id,
             multi: false,
+            // a test missing from the catalog is added from here
+            creatable: { path: `${API}/auto/test` },
           },
-          price: { type: "number", title: ta("قیمت") },
+          price: { type: "number", title: ta("قیمت"), price: true, required: true },
           readyTime: { type: "text", title: ta("زمان آماده سازی") },
         }}
       />
@@ -359,7 +361,6 @@ const AdminManageParaClinicPage = () => {
                           section: ta("تماس"),
                         },
                         phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
-                        basicInsurance: { type: "bool", title: ta("بیمه پایه") },
                         onlineResponse: { type: "bool", title: ta("پاسخ آنلاین") },
                         onPremises: { type: "bool", title: ta("نمونه گیری در محل") },
                         personelCount: { type: "number", title: ta("کادر تخصصی") },

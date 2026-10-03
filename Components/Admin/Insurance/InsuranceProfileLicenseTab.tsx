@@ -58,12 +58,12 @@ const InsuranceProfileLicenseTab = ({ node }: { node: IInsurance }) => {
             successCb: () => mutate(),
           }}
           renderer={{
-            displayName: { title: ta("نام نمایشی"), type: "text" },
+            displayName: { title: ta("نام نمایشی (خالی = نام پلن)"), type: "text" },
             baseLicense: {
               title: ta("پلن مرجع"),
               type: "nodes",
               multi: false,
-              path: `${API}/auto/baseInsuranceLicense`,
+              path: `${API}/auto/baseInsuranceLicense?isActive=true`,
               getOptionLabel: (node) =>
                 (node as IBaseInsuranceLicense).displayName ||
                 (node as IBaseInsuranceLicense)._id,
@@ -73,7 +73,7 @@ const InsuranceProfileLicenseTab = ({ node }: { node: IInsurance }) => {
             startedAt: { title: ta("تاریخ شروع"), type: "date" },
             expiresAt: { title: ta("تاریخ انقضا"), type: "date" },
             modules: {
-              title: ta("منوهای قابل دسترسی"),
+              title: ta("منوها (فقط پلن سفارشی، بدون پلن مرجع)"),
               type: "multiselect",
               options: insuranceDashboardModuleLabels,
             },

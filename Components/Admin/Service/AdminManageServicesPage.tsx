@@ -113,16 +113,13 @@ export const mutateServiceFormRenderer: FormRenderer<IService> = {
   },
   price: { get title() {
   return ta("قیمت");
-}, type: "number" },
+}, type: "number", price: true },
   discount: { get title() {
   return ta("تخفیف");
-}, type: "number" },
+}, type: "number", price: true },
   image: { get title() {
   return ta("تصویر");
 }, type: "image" },
-  inventory: { get title() {
-  return ta("موجودی");
-}, type: "number" },
   isHome: { get title() {
   return ta("نمایش در خانه");
 }, type: "bool" },

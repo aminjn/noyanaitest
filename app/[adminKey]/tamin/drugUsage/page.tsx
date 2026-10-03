@@ -1,17 +1,7 @@
-import AdminManageTaminDrugUsagesPage from "@/Components/Admin/Tamin/DrugUsage/AdminManageTaminDrugUsagesPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// one tab of the Tamin catalogs page since 2026-10
+const Page = ({ params }: { params: { adminKey: string } }) =>
+  redirect(`/${params.adminKey}/tamin?tab=drugUsage`);
 
-const AdminManageTaminDrugUsages = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageTaminDrugUsagesPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageTaminDrugUsages;
+export default Page;

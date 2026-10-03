@@ -8,6 +8,7 @@ import { MongoDoc } from "@/Components/Hooks/useUser";
 import { IGlobalFinanceSettings } from "../FinanceSettings/AdminManageGlobalFinanceSettingsPage";
 import HandleLoading from "../UI/HandleLoading";
 import CreateForm from "../UI/CreateForm";
+import ResetToDefaultButton from "../UI/ResetToDefaultButton";
 import List from "../UI/List";
 import DataPair from "../UI/DataPair";
 import classes from "./ParaClinicCommissionTab.module.css";
@@ -68,6 +69,11 @@ const ParaClinicCommissionTab = ({ node }: { node: IParaClinic }) => {
                 required: true,
               },
             }}
+          />
+          <ResetToDefaultButton
+            segment="paraClinicFinanceSettings"
+            id={existing?._id}
+            mutate={mutate}
           />
         </div>
       )}

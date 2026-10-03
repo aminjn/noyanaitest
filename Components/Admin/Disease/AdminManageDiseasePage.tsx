@@ -180,6 +180,7 @@ const AdminManageDiseasePage = () => {
                         type: "nodes",
                         title: ta("تخصص ها"),
                         path: `${API}/auto/speciality`,
+                        creatable: { path: `${API}/auto/speciality`, extra: { active: true } },
                         multi: true,
                         getOptionLabel: (node) =>
                           (node as ISpeciality).name || ta("بدون نام"),

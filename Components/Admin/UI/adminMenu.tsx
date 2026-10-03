@@ -169,7 +169,6 @@ export const adminMenu: AdminMenuGroup[] = [
       { get title() { return ta("تراکنش‌های کیف پول"); }, href: "finance/transactions", access: "Finance" },
       { get title() { return ta("پرداخت‌های درگاه"); }, href: "finance/payments", access: "Finance" },
       { get title() { return ta("درخواست‌های برداشت"); }, href: "finance/withdrawals", access: "Finance" },
-      { get title() { return ta("فاکتورها"); }, href: "finance/invoices", access: "Finance" },
       // the platform's own books (2026-10, Noyan Business)
       { get title() { return ta("حسابداری پلتفرم"); }, href: "finance/accounting", access: "Finance" },
       // Noyan's own electronic invoices to providers (2026-10, Moadian)
@@ -198,18 +197,7 @@ export const adminMenu: AdminMenuGroup[] = [
     icon: <MedicalReportIcon />,
     super: true,
     items: [
-      { get title() { return ta("انواع نسخه"); }, href: "tamin/prescriptionType" },
-      { get title() { return ta("انواع سرویس"); }, href: "tamin/serviceType" },
-      { get title() { return ta("سرویس‌ها"); }, href: "tamin/service" },
-      { get title() { return ta("زیرگروه نسخ آزمایش"); }, href: "tamin/parTaref" },
-      { get title() { return ta("مقادیر مصرف"); }, href: "tamin/drugUsage" },
-      { get title() { return ta("طریقه مصرف"); }, href: "tamin/drugAmount" },
-      { get title() { return ta("زمان مصرف"); }, href: "tamin/drugInstruction" },
-      { get title() { return ta("طرح درمان"); }, href: "tamin/phPlan" },
-      { get title() { return ta("انواع بیماری"); }, href: "tamin/phIllness" },
-      { get title() { return ta("کدهای ICD"); }, href: "tamin/Icids" },
-      { get title() { return ta("شکایات"); }, href: "tamin/complaint" },
-      { get title() { return ta("تخصص‌های تامین"); }, href: "tamin/spec" },
+      { get title() { return ta("کاتالوگ‌های تامین اجتماعی"); }, href: "tamin" },
     ],
   },
 ];
@@ -616,17 +604,8 @@ export const adminHubs: AdminHub[] = [
   return ta("تست درگاه پرداخت سپ");
 }, href: "sepTest" },
           { get title() {
-  return ta("تست تامین: پزشک");
-}, href: "tamin/doctorTest" },
-          { get title() {
-  return ta("تست تامین: داروخانه");
-}, href: "tamin/pharmacyTest" },
-          { get title() {
-  return ta("تست تامین: کلینیک");
-}, href: "tamin/clinicTest" },
-          { get title() {
-  return ta("تست تامین: پاراکلینیک");
-}, href: "tamin/paraClinicTest" },
+  return ta("تست اتصال تامین");
+}, href: "tamin/test" },
         ],
       },
       {

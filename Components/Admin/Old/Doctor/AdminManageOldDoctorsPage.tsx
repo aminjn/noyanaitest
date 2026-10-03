@@ -8,6 +8,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../../UI/HandleLoading";
 import Table from "../../UI/Table";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import InlineLink from "../../UI/InlineLink";
+import { adminPath } from "@/Components/helpers/adminPath";
 
 export interface IOldSpeciality extends MongoDoc {
   name: string;
@@ -170,6 +172,11 @@ const AdminManageOldDoctorsPage = () => {
     `${API}/old/doctor`,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
+  // the bookable profile each old doctor was merged into
+  const { data: merged } = useSWR<Record<string, { _id: string; name: string }>>(
+    `${API}/old/doctor/profiles`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data || {}),
+  );
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -179,6 +186,19 @@ const AdminManageOldDoctorsPage = () => {
           name="AdminManageOldDoctors"
           renderer={{
             name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
+            profile: {
+              name: ta("پروفایل فعلی"),
+              value: (node) => {
+                const profile = merged?.[node._id];
+                return profile ? (
+                  <InlineLink href={adminPath(`/doctorprofile/${profile._id}`)}>
+                    {profile.name || ta("پروفایل")}
+                  </InlineLink>
+                ) : (
+                  ta("ادغام نشده")
+                );
+              },
+            },
             speciality: {
               name: ta("تخصص"),
               value: (node) => node.speciality?.name,

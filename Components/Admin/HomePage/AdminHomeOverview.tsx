@@ -46,7 +46,7 @@ const AdminHomeOverview = () => {
     {
       key: "popularDoctors",
       title: ta("پزشکان محبوب"),
-      how: ta("خودکار: پزشکان فعال با بیشترین امتیاز و نوبت"),
+      how: ta("پزشکانی که در پروفایلشان گزینه‌ی «محبوب» روشن است، به ترتیب رتبه"),
       href: "/doctorprofile",
     },
     {

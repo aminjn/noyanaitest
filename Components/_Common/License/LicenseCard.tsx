@@ -38,6 +38,14 @@ const LicenseCard = ({
       ) || null,
     [license, duration],
   );
+  // the badge follows the real discount (the shown period's, else any
+  // period on sale), never a hand-set flag
+  const discounted =
+    (pricing?.discount || 0) > 0 ||
+    (!pricing &&
+      (Array.isArray(license.pricing) ? license.pricing : []).some(
+        (el) => el.isActive !== false && (el.discount || 0) > 0,
+      ));
   const features = Array.isArray(license.descriptions)
     ? license.descriptions.filter(Boolean)
     : [];
@@ -49,7 +57,7 @@ const LicenseCard = ({
       }`}
     >
       <div className={classes.badges}>
-        {license.isDiscounted && (
+        {discounted && (
           <Badge color="Error" radius="High" mode="Fill" size="L">
             {getContent("specialDiscount")}
           </Badge>

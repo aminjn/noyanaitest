@@ -1,7 +1,4 @@
-import {
-  doctorProfileTiers,
-  IDoctorProfile,
-} from "@/Components/DoctorPanel/DoctorPanelPage";
+import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
@@ -9,12 +6,6 @@ import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
 import { FormRenderer } from "../UI/CreateForm";
 import { ta } from "@/Components/Admin/i18n/adminText";
-
-const tierTitles = (): Record<string, string> => ({
-  expert: ta("کارشناس"),
-  specialist: ta("متخصص"),
-  superSpecialist: ta("فوق تخصص"),
-});
 
 const genderTitles = (): Record<string, string> => ({
   male: ta("مرد"),
@@ -59,6 +50,9 @@ const DoctorProfileInfoTab = ({
           type: "nodes",
           multi: false,
           path: `${API}/auto/speciality`,
+          // a missing speciality is added from here, live (Speciality uses
+          // `active`, not `isActive`)
+          creatable: { path: `${API}/auto/speciality`, extra: { active: true } },
           getOptionLabel: (node) =>
             (node as ISpeciality).name || ta("بدون نام"),
           getOptionValue: (node) => (node as ISpeciality)._id,
@@ -69,6 +63,9 @@ const DoctorProfileInfoTab = ({
           title: ta("تخصص‌ها"),
           type: "nodes",
           path: `${API}/auto/speciality`,
+          // a missing speciality is added from here, live (Speciality uses
+          // `active`, not `isActive`)
+          creatable: { path: `${API}/auto/speciality`, extra: { active: true } },
           multi: true,
           getOptionLabel: (node) =>
             (node as ISpeciality).name || ta("بدون نام"),
@@ -96,17 +93,6 @@ const DoctorProfileInfoTab = ({
           type: "select",
           title: ta("جنسیت"),
           options: genderTitles(),
-          section: identity,
-        },
-        tier: {
-          type: "select",
-          title: ta("رده"),
-          // the names the public site shows (content keys expert /
-          // specialist / superSpecialist)
-          options: doctorProfileTiers.reduce(
-            (acc, el) => ({ ...acc, [el]: tierTitles()[el] || el }),
-            {} as Record<string, string>,
-          ),
           section: identity,
         },
         medicalSystemCode: {
