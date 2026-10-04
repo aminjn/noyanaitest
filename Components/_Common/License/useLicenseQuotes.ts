@@ -16,7 +16,13 @@ export interface ILicenseQuote {
   planDiscount: number;
   price: number;
   promotionDiscount: number;
+  // promotions in, before an upgrade credit
+  quoted: number;
+  // the unused value of the running plan (mid-term upgrade)
+  upgradeCredit: number;
   final: number;
+  // false: not higher than the running plan - no downgrade mid-term
+  upgradable: boolean;
   percentOff: number;
   promotion: null | {
     _id: string;
@@ -45,6 +51,13 @@ export interface ILicensePricing extends IActiveLicenseCatalog {
   code: string;
   codeValid: boolean | null;
   now: string;
+  // the signed-in provider's running plan (panel endpoint only)
+  current: null | {
+    planId: string | null;
+    expiresAt: string | null;
+    remainingDays: number;
+    credit: number;
+  };
 }
 
 const num = (v: unknown) => (Number.isFinite(Number(v)) ? Number(v) : 0);
@@ -68,7 +81,10 @@ const adaptPricing = (raw: unknown): ILicensePricing => {
           planDiscount: num(r.planDiscount),
           price: num(r.price),
           promotionDiscount: num(r.promotionDiscount),
+          quoted: r.quoted === undefined ? num(r.final) : num(r.quoted),
+          upgradeCredit: num(r.upgradeCredit),
           final: num(r.final),
+          upgradable: r.upgradable !== false,
           percentOff: num(r.percentOff),
           promotion: promo
             ? {
@@ -91,15 +107,33 @@ const adaptPricing = (raw: unknown): ILicensePricing => {
     code: typeof data.code === "string" ? data.code : "",
     codeValid: typeof data.codeValid === "boolean" ? data.codeValid : null,
     now: typeof data.now === "string" ? data.now : new Date().toISOString(),
+    current:
+      data.current && typeof data.current === "object"
+        ? (() => {
+            const c = data.current as Record<string, unknown>;
+            return {
+              planId: c.planId ? String(c.planId) : null,
+              expiresAt: c.expiresAt ? String(c.expiresAt) : null,
+              remainingDays: num(c.remainingDays),
+              credit: num(c.credit),
+            };
+          })()
+        : null,
   };
 };
 
-export const licensePricingUrl = (org: LicenseOrg, code?: string) =>
-  `${API}/licensePlans/pricing/${org}${code ? `?code=${encodeURIComponent(code)}` : ""}`;
+// `panel`: the signed-in provider's prices - with a running plan, higher
+// plans are priced as a prorated upgrade and lower ones are not for sale
+export const licensePricingUrl = (org: LicenseOrg, code?: string, panel?: boolean) =>
+  `${API}/licensePlans/${panel ? "panel" : "pricing"}/${org}${code ? `?code=${encodeURIComponent(code)}` : ""}`;
 
-const useLicenseQuotes = (org: LicenseOrg | null | undefined, code?: string) => {
+const useLicenseQuotes = (
+  org: LicenseOrg | null | undefined,
+  code?: string,
+  panel?: boolean,
+) => {
   const { data, error, isLoading } = useSWR<ILicensePricing>(
-    org ? licensePricingUrl(org, code) : null,
+    org ? licensePricingUrl(org, code, panel) : null,
     (url: string) => fetcher({ url }).then((res) => adaptPricing(res.data)),
     { revalidateOnFocus: false },
   );
@@ -116,7 +150,8 @@ const useLicenseQuotes = (org: LicenseOrg | null | undefined, code?: string) => 
     },
     [data, promotions],
   );
-  return { data, error, isLoading, quoteOf, promotions };
+  const current = data?.current || null;
+  return { data, error, isLoading, quoteOf, promotions, current };
 };
 
 export default useLicenseQuotes;

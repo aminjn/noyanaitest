@@ -52,3 +52,10 @@
   justify-content: flex-end;
   gap: 1rem;
 }
+
+/* a lower plan while a higher one runs (2026-10) */
+.blocked {
+  color: var(--error);
+  font-size: 0.8125rem;
+  text-align: start;
+}

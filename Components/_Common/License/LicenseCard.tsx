@@ -29,7 +29,11 @@ const LicenseCard = ({
   quote,
   href,
   actionLabel,
+  current,
 }: {
+  // the provider's running plan (panel pricing): its card says so, a
+  // higher plan reads «ارتقا», a lower one waits until it ends
+  current?: { planId: string | null; remainingDays: number } | null;
   org: LicenseOrg;
   license: IBaseLicense;
   duration: ILicenseDuration | null;
@@ -64,6 +68,9 @@ const LicenseCard = ({
     (el) => el.isActive !== false,
   );
   const free = !hasPrice && !!license.isDefault;
+  const isCurrent = !!current && current.planId === license._id;
+  const blocked = !!current && !isCurrent && !!quote && !quote.upgradable;
+  const upgrade = !!current && !isCurrent && !!quote?.upgradable;
   const features = Array.isArray(license.descriptions)
     ? license.descriptions.filter(Boolean)
     : [];
@@ -78,6 +85,11 @@ const LicenseCard = ({
         {discounted && (
           <Badge color="Error" radius="High" mode="Fill" size="L">
             {getContent("specialDiscount")}
+          </Badge>
+        )}
+        {isCurrent && (
+          <Badge size="L" mode="Fill" radius="High" color="Primarylight">
+            {getContent("licenseCurrentPlan" as ContentKey)}
           </Badge>
         )}
         {/* the middle tier: "best seller" (2026-10 plan lineup) */}
@@ -100,6 +112,7 @@ const LicenseCard = ({
         pricing={pricing}
         quote={quote}
         free={free}
+        remainingDays={current?.remainingDays}
       />
       {!!license.summary && (
         <p className={classes.summary}>{license.summary}</p>
@@ -116,7 +129,12 @@ const LicenseCard = ({
       </ul>
       {/* in a panel the free tier is what the provider already runs on:
           nothing to choose */}
-      {(!free || !!href) && (
+      {blocked && (
+        <p className={classes.summary}>
+          {getContent("licenseUpgradeBlocked" as ContentKey)}
+        </p>
+      )}
+      {(!free || !!href) && !isCurrent && !blocked && (
       <Button
         className={classes.action}
         href={href || `${licensePanelRootByOrg[org]}/license/${license._id}`}
@@ -130,7 +148,8 @@ const LicenseCard = ({
         radius="Medium"
         variant="Primary"
       >
-        {actionLabel || getContent("chooseLicense")}
+        {actionLabel ||
+          (upgrade ? getContent("licenseUpgrade" as ContentKey) : getContent("chooseLicense"))}
       </Button>
       )}
     </div>

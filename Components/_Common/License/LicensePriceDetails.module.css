@@ -70,3 +70,33 @@
   color: var(--gray9);
   font-size: 0.6875rem;
 }
+
+/* mid-term upgrade (2026-10): new price, credit for the remaining days,
+   payable */
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--primary6) 8%, transparent);
+  font-size: 0.75rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--gray10);
+}
+
+.row dt,
+.row dd {
+  margin: 0;
+}
+
+.payable {
+  color: var(--gray13);
+  font-weight: 800;
+}

@@ -47,7 +47,7 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
 
   const getContent = useScopedLocale(LOCALE_NS);
   // the server's price for each option, promotion included
-  const { quoteOf, promotions } = useLicenseQuotes(name);
+  const { quoteOf, promotions } = useLicenseQuotes(name, undefined, true);
 
   const [selectedDuration, setSelectedDuration] =
     useState<ILicenseDuration | null>(null);

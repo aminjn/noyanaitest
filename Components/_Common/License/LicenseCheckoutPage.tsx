@@ -86,8 +86,10 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
   // by the server instead of charging the full price)
   const [codeInput, setCodeInput] = useState("");
   const [code, setCode] = useState("");
-  const { data: pricingData, quoteOf } = useLicenseQuotes(name, code || undefined);
+  const { data: pricingData, quoteOf, current } = useLicenseQuotes(name, code || undefined, true);
   const quote = quoteOf(data?._id, pricing?.duration?.duration);
+  // a running plan: only a higher plan is sold (prorated upgrade)
+  const blocked = !!current && (current.planId === data?._id || (!!quote && !quote.upgradable));
   const codeRejected = !!code && pricingData?.code === code.toUpperCase() && !quote?.promotion?.withCode;
   const price = quote
     ? quote.final
@@ -96,7 +98,7 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
       : 0;
 
   const submit = () => {
-    if (isSubmitting || !durationId) return;
+    if (isSubmitting || !durationId || blocked) return;
     setIsSubmitting(true);
   };
 
@@ -112,6 +114,7 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
               duration={pricing?.duration || null}
               pricing={pricing}
               quote={quote}
+              remainingDays={current?.remainingDays}
             />
           </div>
           <div className={classes.section}>
@@ -192,16 +195,23 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
               {`${currencize(price)} ${getContent("toman")}`}
             </span>
           </div>
+          {blocked && (
+            <span className={classes.codeError}>
+              {getContent("licenseUpgradeBlocked" as ContentKey)}
+            </span>
+          )}
           <Button
             className={classes.submit}
-            variant="Primary"
             mode="Fill"
             size="M"
             radius="Medium"
             isLoading={isSubmitting}
             onClick={submit}
+            variant={blocked ? "Disable" : "Primary"}
           >
-            {getContent("buyLicense")}
+            {current && !blocked
+              ? getContent("licenseUpgrade" as ContentKey)
+              : getContent("buyLicense")}
           </Button>
           <Act
             path={

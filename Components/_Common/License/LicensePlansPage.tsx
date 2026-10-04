@@ -62,7 +62,7 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
 
   const getContent = useScopedLocale(LOCALE_NS);
   // the server's price of each option, a running promotion included
-  const { quoteOf, promotions } = useLicenseQuotes(name);
+  const { quoteOf, promotions, current } = useLicenseQuotes(name, undefined, true);
 
   // TODO: render `licenses`/`durations` (plan cards + duration picker +
   // purchase action, calling `mutate` on a successful purchase) once the
@@ -110,6 +110,7 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                     license={license}
                     org={name}
                     quote={quoteOf(license._id, selectedDuration?.duration)}
+                    current={current}
                   />
                 ))}
               </div>

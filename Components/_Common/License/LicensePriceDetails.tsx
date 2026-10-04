@@ -30,7 +30,10 @@ const LicensePriceDetails = ({
   pricing,
   quote,
   free,
+  remainingDays,
 }: {
+  // days left on the running plan (the upgrade credit's label)
+  remainingDays?: number;
   duration: ILicenseDuration | null;
   pricing: IBaseLicensePricing<unknown> | null;
   quote?: ILicenseQuote | null;
@@ -62,8 +65,9 @@ const LicensePriceDetails = ({
   // what is actually charged - the server's quote when there is one, else
   // the option itself (price - discount); the list price is struck through
   const price = quote ? quote.listPrice : Math.max(0, pricing.price || 0);
+  // the plan's price (promotions in); an upgrade credit is shown apart
   const final = quote
-    ? Math.min(price, Math.max(0, quote.final))
+    ? Math.min(price, Math.max(0, quote.quoted))
     : price - Math.min(Math.max(0, pricing.discount || 0), price);
   const off = price - final;
   const percent = quote ? quote.percentOff : price > 0 ? Math.round((off / price) * 100) : 0;
@@ -94,6 +98,26 @@ const LicensePriceDetails = ({
           </s>
         )}
       </div>
+      {!!quote && quote.upgradeCredit > 0 && (
+        <dl className={classes.breakdown}>
+          <div className={classes.row}>
+            <dt>{getContent("licenseUpgradeNewPrice" as ContentKey)}</dt>
+            <dd>{`${currencize(quote.quoted)} ${getContent("toman")}`}</dd>
+          </div>
+          <div className={classes.row}>
+            <dt>
+              {getContent("licenseUpgradeCredit" as ContentKey, [
+                new Intl.NumberFormat(intlTag).format(remainingDays || 0),
+              ])}
+            </dt>
+            <dd>{`−${currencize(quote.upgradeCredit)} ${getContent("toman")}`}</dd>
+          </div>
+          <div className={`${classes.row} ${classes.payable}`}>
+            <dt>{getContent("licenseUpgradePayable" as ContentKey)}</dt>
+            <dd>{`${currencize(quote.final)} ${getContent("toman")}`}</dd>
+          </div>
+        </dl>
+      )}
       {!!promotion && (
         <div className={classes.promo}>
           {!!promotion.title && (
