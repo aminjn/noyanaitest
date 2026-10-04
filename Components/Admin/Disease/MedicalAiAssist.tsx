@@ -138,7 +138,7 @@ const MedicalAiAssist = <
         setIssues(list.filter((el) => el && typeof el.message === "string"));
       }
     } catch (err) {
-      setError(err instanceof FetchError ? err.message : ta("خطایی رخ داد؛ دوباره امتحان کنید"));
+      setError(err instanceof FetchError ? err.message : ta("خطایی رخ داد"));
     } finally {
       setBusy("");
     }
