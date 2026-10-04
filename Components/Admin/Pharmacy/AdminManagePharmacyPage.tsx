@@ -13,9 +13,11 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import CreateForm from "../UI/CreateForm";
+import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import useForm from "@/Components/Hooks/useForm";
-import AdminLocationTab from "../UI/AdminLocationTab";
+import AdminLocationTab, {
+  newRecordLocationFields,
+} from "../UI/AdminLocationTab";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import WalletIcon from "@/Components/Icons/WalletIcon";
@@ -36,14 +38,60 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
+// The pharmacy's record fields: its info tab and the one form of a new pharmacy (`/pharmacy/new`)
+export const pharmacyInfoRenderer = (): FormRenderer<IPharmacy> => ({
+  name: { title: ta("نام"), type: "text", required: true },
+  slug: { title: ta("اسلاگ"), type: "text" },
+  active: { type: "bool", title: ta("فعال") },
+  order: { type: "number", title: ta("رتبه") },
+  summary: { type: "area", title: ta("خلاصه") },
+  avatar: { type: "image", title: ta("تصویر") },
+  banner: { type: "image", title: ta("بنر") },
+  // what the pharmacy panel and the public page show
+  // (2026-10): the admin form now edits the same fields
+  phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
+  businessTime: {
+    type: "text",
+    title: ta("ساعات کاری"),
+    section: ta("تماس"),
+  },
+  isRoundTheClock: {
+    type: "bool",
+    title: ta("شبانه‌روزی"),
+    section: ta("تماس"),
+  },
+  insurances: {
+    type: "nodes",
+    title: ta("بیمه ها"),
+    section: ta("بیمه‌ها"),
+    getOptionLabel: (node) =>
+      (node as IInsurance).name || (node as IInsurance)._id,
+    getOptionValue: (node) => (node as IInsurance)._id,
+    multi: true,
+    getDefaultValue: (inp) => inp.insurances,
+    path: `${API}/auto/insurance`,
+  },
+});
+
 // the shared location tab (Components/Admin/UI/AdminLocationTab)
-const PharmacyLocationTab = ({ mutate, node }: { node: IPharmacy; mutate: () => unknown }) => (
-  <AdminLocationTab path={`${API}/auto/pharmacy/${node._id}`} node={node as never} mutate={mutate} />
+const PharmacyLocationTab = ({
+  mutate,
+  node,
+}: {
+  node: IPharmacy;
+  mutate: () => unknown;
+}) => (
+  <AdminLocationTab
+    path={`${API}/auto/pharmacy/${node._id}`}
+    node={node as never}
+    mutate={mutate}
+  />
 );
 
-const AdminManagePharmacyPage = () => {
+const PharmacyRecordPage = () => {
   const params = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
@@ -85,25 +133,13 @@ const AdminManagePharmacyPage = () => {
             },
           ]}
         >
-          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
+          <ProviderStatusBanner
+            node={data as unknown as ProviderStatusFields}
+          />
           <TabSystem
             name="AdminManagePharmacy"
             items={[
-              ...(isAdmin
-                ? [
-                    {
-                      id: "Overview",
-                      title: ta("نمای کلی"),
-                      content: (
-                        <EntityOverview
-                          kind="pharmacy"
-                          nodeId={params?.nodeId || ""}
-                        />
-                      ),
-                      icon: <DashboardIcon />,
-                    },
-                  ]
-                : []),
+              // the record itself first: the same fields as the "new" form
               {
                 title: ta("اطلاعات"),
                 id: "Info",
@@ -119,42 +155,25 @@ const AdminManagePharmacyPage = () => {
                         mutate();
                       },
                     }}
-                    renderer={{
-                      name: { title: ta("نام"), type: "text" },
-                      slug: { title: ta("اسلاگ"), type: "text" },
-                      active: { type: "bool", title: ta("فعال") },
-                      order: { type: "number", title: ta("رتبه") },
-                      summary: { type: "area", title: ta("خلاصه") },
-                      avatar: { type: "image", title: ta("تصویر") },
-                      banner: { type: "image", title: ta("بنر") },
-                      // what the pharmacy panel and the public page show
-                      // (2026-10): the admin form now edits the same fields
-                      phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
-                      businessTime: {
-                        type: "text",
-                        title: ta("ساعات کاری"),
-                        section: ta("تماس"),
-                      },
-                      isRoundTheClock: {
-                        type: "bool",
-                        title: ta("شبانه‌روزی"),
-                        section: ta("تماس"),
-                      },
-                      insurances: {
-                        type: "nodes",
-                        title: ta("بیمه ها"),
-                        section: ta("بیمه‌ها"),
-                        getOptionLabel: (node) =>
-                          (node as IInsurance).name || (node as IInsurance)._id,
-                        getOptionValue: (node) => (node as IInsurance)._id,
-                        multi: true,
-                        getDefaultValue: (inp) => inp.insurances,
-                        path: `${API}/auto/insurance`,
-                      },
-                    }}
+                    renderer={pharmacyInfoRenderer()}
                   />
                 ),
               },
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: ta("نمای کلی"),
+                      content: (
+                        <EntityOverview
+                          kind="pharmacy"
+                          nodeId={params?.nodeId || ""}
+                        />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 title: ta("آدرس و موقعیت"),
                 content: <PharmacyLocationTab node={data} mutate={mutate} />,
@@ -213,6 +232,25 @@ const AdminManagePharmacyPage = () => {
       )}
     </HandleLoading>
   );
+};
+
+// "New" is this route with `new`: every field of the record in one form,
+// saved once (Components/Admin/UI/AdminRecordEditor), then this page with
+// its other tabs
+const AdminManagePharmacyPage = () => {
+  const { nodeId } = useParams<{ nodeId: string }>();
+  if (nodeId === "new")
+    return (
+      <AdminRecordEditor<IPharmacy>
+        segment="pharmacy"
+        path="/pharmacy"
+        nodeId="new"
+        newTitle={ta("داروخانه‌ی جدید")}
+        titleOf={(node) => node.name || ""}
+        renderer={{ ...pharmacyInfoRenderer(), ...newRecordLocationFields() }}
+      />
+    );
+  return <PharmacyRecordPage />;
 };
 
 export default AdminManagePharmacyPage;

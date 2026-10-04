@@ -14,7 +14,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
-import CreateForm from "../UI/CreateForm";
+import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import Table from "../UI/Table";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { IProductCategory } from "../ProductCategory/AdminManageProductCategoriesPage";
@@ -36,8 +36,51 @@ import ImagesManager from "./ImagesManager";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import useProgress from "@/Components/Hooks/useProgress";
+
+// The product's record fields: its details tab and the one form of a new product (`/product/new`)
+export const productInfoRenderer = (): FormRenderer<IProduct> => ({
+  name: { type: "text", title: ta("نام"), required: true },
+  slug: { type: "text", title: ta("اسلاگ") },
+  order: { type: "number", title: ta("رتبه") },
+  isActive: { type: "bool", title: ta("فعال") },
+  summary: { type: "text", title: ta("خلاصه") },
+  whyChoose: { type: "text", title: ta("چرا این محصول") },
+  description: { type: "rtf", title: ta("توضیحات") },
+  details: { title: ta("مشخصات"), type: "rtf" },
+  usage: { title: ta("نحوه مصرف"), type: "rtf" },
+  warning: { title: ta("هشدار ها"), type: "rtf" },
+  category: {
+    title: ta("دسته بندی"),
+    type: "nodes",
+    multi: false,
+    getOptionLabel: (node) => (node as IProductCategory).name || ta("بدون نام"),
+    getOptionValue: (node) => (node as IProductCategory)._id,
+    getDefaultValue: (inp) => inp.category,
+    path: `${API}/auto/productCategory`,
+    creatable: { path: `${API}/auto/productCategory` },
+  },
+  image: { title: ta("تصویر"), type: "image" },
+  original: { title: ta("اصالت"), type: "text" },
+  sameAs: {
+    title: ta("مشابهات"),
+    type: "nodes",
+    path: `${API}/auto/product`,
+    getOptionLabel: (node) => (node as IProduct).name || ta("بدون نام"),
+    getOptionValue: (node) => (node as IProduct)._id,
+    multi: true,
+    getDefaultValue: (inp) => inp.sameAs,
+  },
+  // the sale price is each pharmacy's offer; this is the consumer price
+  // printed on the pack, for reference only (2026-10)
+  price: {
+    title: ta("قیمت مصرف‌کننده (درج‌شده روی بسته؛ فقط برای مرجع)"),
+    type: "number",
+    price: true,
+  },
+});
 
 const ProductDetailsManager = ({
   node,
@@ -49,48 +92,7 @@ const ProductDetailsManager = ({
   return (
     <CreateForm
       defaultValue={node}
-      renderer={{
-        name: { type: "text", title: ta("نام") },
-        slug: { type: "text", title: ta("اسلاگ") },
-        order: { type: "number", title: ta("رتبه") },
-        isActive: { type: "bool", title: ta("فعال") },
-        summary: { type: "text", title: ta("خلاصه") },
-        whyChoose: { type: "text", title: ta("چرا این محصول") },
-        description: { type: "rtf", title: ta("توضیحات") },
-        details: { title: ta("مشخصات"), type: "rtf" },
-        usage: { title: ta("نحوه مصرف"), type: "rtf" },
-        warning: { title: ta("هشدار ها"), type: "rtf" },
-        category: {
-          title: ta("دسته بندی"),
-          type: "nodes",
-          multi: false,
-          getOptionLabel: (node) =>
-            (node as IProductCategory).name || ta("بدون نام"),
-          getOptionValue: (node) => (node as IProductCategory)._id,
-          getDefaultValue: (inp) => inp.category,
-          path: `${API}/auto/productCategory`,
-          creatable: { path: `${API}/auto/productCategory` },
-        },
-        image: { title: ta("تصویر"), type: "image" },
-        original: { title: ta("اصالت"), type: "text" },
-        sameAs: {
-          title: ta("مشابهات"),
-          type: "nodes",
-          path: `${API}/auto/product`,
-          getOptionLabel: (node) =>
-            (node as IProduct).name || ta("بدون نام"),
-          getOptionValue: (node) => (node as IProduct)._id,
-          multi: true,
-          getDefaultValue: (inp) => inp.sameAs,
-        },
-        // the sale price is each pharmacy's offer; this is the consumer price
-        // printed on the pack, for reference only (2026-10)
-        price: {
-          title: ta("قیمت مصرف‌کننده (درج‌شده روی بسته؛ فقط برای مرجع)"),
-          type: "number",
-          price: true,
-        },
-      }}
+      renderer={productInfoRenderer()}
       hookProps={{
         path: `${API}/auto/product/${node._id}`,
         method: "POST",
@@ -151,7 +153,9 @@ const MutateProductSellerPopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard title={node ? ta("ویرایش فروشنده‌ی محصول") : ta("فروشنده‌ی محصول جدید")}>
+    <PopupCard
+      title={node ? ta("ویرایش فروشنده‌ی محصول") : ta("فروشنده‌ی محصول جدید")}
+    >
       <CreateForm
         defaultValue={node}
         onCancel={() => closePopup()}
@@ -328,7 +332,7 @@ const ProductSellersManager = ({ product }: { product: IProduct }) => {
   );
 };
 
-const AdminManageProductPage = () => {
+const ProductRecordPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   const { data, error, mutate } = useSWR<IProduct>(
     `${API}/auto/product/${nodeId}`,
@@ -402,6 +406,25 @@ const AdminManageProductPage = () => {
       )}
     </HandleLoading>
   );
+};
+
+// "New" is this route with `new`: every field of the record in one form,
+// saved once (Components/Admin/UI/AdminRecordEditor), then this page with
+// its other tabs
+const AdminManageProductPage = () => {
+  const { nodeId } = useParams<{ nodeId: string }>();
+  if (nodeId === "new")
+    return (
+      <AdminRecordEditor<IProduct>
+        segment="product"
+        path="/product"
+        nodeId="new"
+        newTitle={ta("محصول جدید")}
+        titleOf={(node) => node.name || ""}
+        renderer={productInfoRenderer()}
+      />
+    );
+  return <ProductRecordPage />;
 };
 
 export default AdminManageProductPage;

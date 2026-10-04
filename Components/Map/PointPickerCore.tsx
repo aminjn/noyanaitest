@@ -10,6 +10,9 @@ import Ixon from "@/Components/UI/Ixon";
 import LocationIcon from "@/Components/Icons/LocationIcon";
 import PlaceSearch, { PlacePick } from "./PlaceSearch";
 import { getMapConfig, LatLng, reverseGeocode, ReverseResult } from "./nexamap";
+import { asPoint } from "./point";
+
+export { asPoint };
 
 // Every text of the picker, already translated: the admin PointPicker hands
 // ta() texts, the panels' LocationPicker hands getContent() texts.
@@ -30,15 +33,6 @@ export type PointPickerTexts = {
 };
 
 export type AddressComponents = Record<string, string>;
-
-// A stored point may be missing, `[]` or garbage (an old record): only a
-// real [lng, lat] pair counts as a value.
-export const asPoint = (value?: unknown): [number, number] | null =>
-  Array.isArray(value) &&
-  value.length === 2 &&
-  value.every((n) => typeof n === "number" && Number.isFinite(n))
-    ? [value[0], value[1]]
-    : null;
 
 const REVERSE_DEBOUNCE_MS = 350;
 

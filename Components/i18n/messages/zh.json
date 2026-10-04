@@ -3117,5 +3117,6 @@
  "bizVatNotInMoadian": "无 Moadian 发票（不可抵扣）",
  "bizVatBasisMoadian": "本季度的采购发票已从门户导入；采购与未被拒绝的 Moadian 发票配对后，其税额可抵扣。",
  "bizVatBasisCode": "本季度尚未从门户导入采购发票；在此之前，有经济代码的供应商的税额视为可抵扣。",
- "bizVatPinvOpen": "${1} 张 Moadian 采购发票尚未与采购或费用配对；在此之前其税额不可抵扣"
+ "bizVatPinvOpen": "${1} 张 Moadian 采购发票尚未与采购或费用配对；在此之前其税额不可抵扣",
+ "formUnsavedChanges": "更改尚未保存；请点击“保存”以应用。"
 }

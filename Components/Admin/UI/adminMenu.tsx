@@ -186,7 +186,6 @@ export const adminMenu: AdminMenuGroup[] = [
       { get title() { return ta("تیم و دسترسی‌ها"); }, href: "team" },
       { get title() { return ta("تنظیمات سیستم"); }, href: "appConfig" },
       { get title() { return ta("استان، شهر و محله"); }, href: "province" },
-      { get title() { return ta("مدل‌های هوش مصنوعی"); }, href: "ollama" },
       { get title() { return ta("لاگ عملیات"); }, href: "audit" },
       { get title() { return ta("ابزار توسعه و دیتابیس قدیم"); }, href: "devtools" },
     ],
@@ -532,8 +531,6 @@ export const adminHubs: AdminHub[] = [
         get title() { return ta("پیامک و اعلان‌ها"); },
         icon: <FolderIcon />,
         items: [
-      { get title() { return ta("درگاه پیامک"); }, href: "smsSettings" },
-      { get title() { return ta("پترن‌های پیامک"); }, href: "smsPatterns" },
       { get title() { return ta("اعلان همگانی"); }, href: "notification", access: "Notification" },
       { get title() { return ta("گزارش پیامک‌ها"); }, href: "messaging?tab=smsLog" },
         ],

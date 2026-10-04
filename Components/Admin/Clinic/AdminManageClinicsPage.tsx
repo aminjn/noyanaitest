@@ -2,10 +2,7 @@
 
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import classes from "./AdminManageClinicsPage.module.css";
-import {
-  Province,
-  provinceSlugs,
-} from "@/Components/Enums/Provinces";
+import { Province, provinceSlugs } from "@/Components/Enums/Provinces";
 import { cities, City } from "@/Components/Enums/Cities";
 import useSWR from "swr";
 import { API } from "@/Components/config";
@@ -13,7 +10,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateClinicPopup from "./CreateClinicPopup";
 import Table from "../UI/Table";
 import { DoctorPopulation, IDoctor } from "../Doctor/AdminManageDoctorsPage";
 import TableActions from "../UI/TableActions";
@@ -51,6 +47,7 @@ import {
 } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import OrderEditor from "../UI/OrderEditor";
 import { providerStateColumn } from "../UI/ProviderStatus";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 // export type Population<T> = { [key in keyof T]?: T[key] | false };
@@ -179,6 +176,7 @@ const AdminManageClinicsPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -188,8 +186,8 @@ const AdminManageClinicsPage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup("CreateClinic", <CreateClinicPopup mutate={mutate} />),
+              // the full form, saved once (AdminRecordEditor)
+              action: () => push(adminPath("/clinic/new")),
             },
           ]}
         >

@@ -15,8 +15,6 @@ import {
   IHospitalCategory,
 } from "../HospitalCategory/AdminManageHospitalCategoriesPage";
 import usePopup from "@/Components/Hooks/usePopup";
-import PopupCard from "@/Components/UI/PopupCard";
-import CreateForm from "../UI/CreateForm";
 import { API } from "@/Components/config";
 import { Fragment, useState } from "react";
 import ConfirmationPopup from "../UI/ConfirmationPopup";
@@ -52,6 +50,7 @@ import OrderEditor from "../UI/OrderEditor";
 import { getUserLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 import { providerStateColumn } from "../UI/ProviderStatus";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type HospitalPopulation = Population<{
@@ -173,32 +172,6 @@ export interface IHospitalDoctor<
     : string;
 }
 
-const CreateHospitalPopup = ({ mutate }: { mutate: () => unknown }) => {
-  const { closePopup } = usePopup();
-
-  return (
-    <PopupCard title={ta("بیمارستان جدید")}>
-      <CreateForm<IHospital>
-        onCancel={() => closePopup()}
-        renderer={{
-          name: { type: "text", title: ta("نام") },
-          isActive: { type: "bool", title: ta("فعال") },
-          slug: { title: ta("اسلاگ"), type: "text" },
-          order: { type: "number", title: ta("رتبه") },
-        }}
-        hookProps={{
-          path: `${API}/auto/hospital`,
-          method: "POST",
-          successCb: () => {
-            mutate();
-            closePopup();
-          },
-        }}
-      />
-    </PopupCard>
-  );
-};
-
 export const DeleteHospitalPopup = ({
   mutate,
   node,
@@ -237,6 +210,7 @@ const AdminManageHospitalsPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -246,11 +220,8 @@ const AdminManageHospitalsPage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup(
-                  "CreateHospital",
-                  <CreateHospitalPopup mutate={mutate} />,
-                ),
+              // the full form, saved once (AdminRecordEditor)
+              action: () => push(adminPath("/hospital/new")),
             },
           ]}
         >

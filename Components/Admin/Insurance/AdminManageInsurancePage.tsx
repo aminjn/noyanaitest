@@ -16,7 +16,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import CreateForm from "../UI/CreateForm";
+import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import { IInsuranceCategory } from "../InsuranceCategory/AdminManageInsuranceCategoriesPage";
 import { IInsuranceTag } from "../InsuranceTag/AdminManageInsuranceTagsPage";
 import { MongoDoc } from "@/Components/Hooks/useUser";
@@ -33,7 +33,9 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
-import AdminLocationTab from "../UI/AdminLocationTab";
+import AdminLocationTab, {
+  newRecordLocationFields,
+} from "../UI/AdminLocationTab";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
@@ -51,6 +53,7 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 
 export type InsurancePlanPopulation = Population<{
   Insurance: InsurancePopulation;
@@ -138,7 +141,11 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
             data={data}
             name="AdminManageInsurancePlans"
             renderer={{
-              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
+              name: {
+                name: ta("نام"),
+                value: (node) => node.name,
+                filter: "Text",
+              },
               price: {
                 name: ta("قیمت"),
                 value: (node) => node.price,
@@ -215,11 +222,65 @@ const AdminManageInsurancePlans = ({ node }: { node: IInsurance }) => {
   );
 };
 
-const InsuranceLocationManager = ({ mutate, node }: { node: IInsurance; mutate: () => unknown }) => (
-  <AdminLocationTab path={`${API}/auto/insurance/${node._id}`} node={node as never} mutate={mutate} withDivisions={false} />
+// The insurer's record fields: its info tab and the one form of a new insurer (`/insurance/new`)
+export const insuranceInfoRenderer = (): FormRenderer<IInsurance> => ({
+  name: { title: ta("نام"), type: "text", required: true },
+  order: { title: ta("رتبه"), type: "number" },
+  active: { title: ta("فعال"), type: "bool" },
+  isBasic: {
+    type: "bool",
+    title: ta("بیمه‌ی پایه (تأمین اجتماعی، سلامت، نیروهای مسلح)"),
+  },
+  category: {
+    title: ta("دسته بندی"),
+    type: "nodes",
+    multi: false,
+    path: `${API}/auto/insuranceCategory`,
+    creatable: { path: `${API}/auto/insuranceCategory` },
+    getOptionLabel: (node) =>
+      (node as IInsuranceCategory).name || (node as IInsuranceCategory)._id,
+    getOptionValue: (node) => (node as IInsuranceCategory)._id,
+    getDefaultValue: (inp) => inp.category,
+  },
+  tags: {
+    type: "nodes",
+    title: ta("تگ ها"),
+    getOptionLabel: (node) =>
+      (node as IInsuranceTag).name || (node as IInsuranceTag)._id,
+    getOptionValue: (node) => (node as IInsuranceTag)._id,
+    path: `${API}/auto/insuranceTag`,
+    creatable: { path: `${API}/auto/insuranceTag` },
+    multi: true,
+    getDefaultValue: (inp) => inp.tags,
+  },
+  establishment: { type: "text", title: ta("تاسیس") },
+  membersCount: { type: "text", title: ta("تعداد اعضا") },
+  image: { type: "image", title: ta("تصویر") },
+  slug: { type: "text", title: ta("اسلاگ") },
+  phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
+  summary: { type: "area", title: ta("خلاصه") },
+  coverages: { type: "strings", title: ta("پوشش ها") },
+  advantages: { type: "strings", title: ta("مزایا") },
+  website: { type: "text", title: ta("سایت"), section: ta("تماس") },
+  address: { type: "text", title: ta("آدرس"), section: ta("تماس") },
+});
+
+const InsuranceLocationManager = ({
+  mutate,
+  node,
+}: {
+  node: IInsurance;
+  mutate: () => unknown;
+}) => (
+  <AdminLocationTab
+    path={`${API}/auto/insurance/${node._id}`}
+    node={node as never}
+    mutate={mutate}
+    withDivisions={false}
+  />
 );
 
-const AdminManageInsurancePage = () => {
+const InsuranceRecordPage = () => {
   const params = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
@@ -260,10 +321,32 @@ const AdminManageInsurancePage = () => {
             },
           ]}
         >
-          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
+          <ProviderStatusBanner
+            node={data as unknown as ProviderStatusFields}
+          />
           <TabSystem
             name="AdminManageInsurance"
             items={[
+              // the record itself first: the same fields as the "new" form
+              {
+                title: ta("اطلاعات"),
+                id: "Info",
+                icon: <InfoIcon />,
+                content: (
+                  <CreateForm
+                    defaultValue={data}
+                    layout="sections"
+                    renderer={insuranceInfoRenderer()}
+                    hookProps={{
+                      path: `${API}/auto/insurance/${data._id}`,
+                      method: "POST",
+                      successCb: () => {
+                        mutate();
+                      },
+                    }}
+                  />
+                ),
+              },
               ...(isAdmin
                 ? [
                     {
@@ -279,71 +362,6 @@ const AdminManageInsurancePage = () => {
                     },
                   ]
                 : []),
-              {
-                title: ta("اطلاعات"),
-                id: "Info",
-                icon: <InfoIcon />,
-                content: (
-                  <CreateForm
-                    defaultValue={data}
-                    layout="sections"
-                    renderer={{
-                      name: {
-                        title: ta("نام"),
-                        type: "text",
-                      },
-                      order: { title: ta("رتبه"), type: "number" },
-                      active: { title: ta("فعال"), type: "bool" },
-                      isBasic: {
-                        type: "bool",
-                        title: ta("بیمه‌ی پایه (تأمین اجتماعی، سلامت، نیروهای مسلح)"),
-                      },
-                      category: {
-                        title: ta("دسته بندی"),
-                        type: "nodes",
-                        multi: false,
-                        path: `${API}/auto/insuranceCategory`,
-                        creatable: { path: `${API}/auto/insuranceCategory` },
-                        getOptionLabel: (node) =>
-                          (node as IInsuranceCategory).name ||
-                          (node as IInsuranceCategory)._id,
-                        getOptionValue: (node) =>
-                          (node as IInsuranceCategory)._id,
-                        getDefaultValue: (inp) => inp.category,
-                      },
-                      tags: {
-                        type: "nodes",
-                        title: ta("تگ ها"),
-                        getOptionLabel: (node) =>
-                          (node as IInsuranceTag).name ||
-                          (node as IInsuranceTag)._id,
-                        getOptionValue: (node) => (node as IInsuranceTag)._id,
-                        path: `${API}/auto/insuranceTag`,
-                        creatable: { path: `${API}/auto/insuranceTag` },
-                        multi: true,
-                        getDefaultValue: (inp) => inp.tags,
-                      },
-                      establishment: { type: "text", title: ta("تاسیس") },
-                      membersCount: { type: "text", title: ta("تعداد اعضا") },
-                      image: { type: "image", title: ta("تصویر") },
-                      slug: { type: "text", title: ta("اسلاگ") },
-                      phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
-                      summary: { type: "area", title: ta("خلاصه") },
-                      coverages: { type: "strings", title: ta("پوشش ها") },
-                      advantages: { type: "strings", title: ta("مزایا") },
-                      website: { type: "text", title: ta("سایت"), section: ta("تماس") },
-                      address: { type: "text", title: ta("آدرس"), section: ta("تماس") },
-                    }}
-                    hookProps={{
-                      path: `${API}/auto/insurance/${data._id}`,
-                      method: "POST",
-                      successCb: () => {
-                        mutate();
-                      },
-                    }}
-                  />
-                ),
-              },
               {
                 id: "Location",
                 title: ta("آدرس و موقعیت"),
@@ -392,6 +410,25 @@ const AdminManageInsurancePage = () => {
       )}
     </HandleLoading>
   );
+};
+
+// "New" is this route with `new`: every field of the record in one form,
+// saved once (Components/Admin/UI/AdminRecordEditor), then this page with
+// its other tabs
+const AdminManageInsurancePage = () => {
+  const { nodeId } = useParams<{ nodeId: string }>();
+  if (nodeId === "new")
+    return (
+      <AdminRecordEditor<IInsurance>
+        segment="insurance"
+        path="/insurance"
+        nodeId="new"
+        newTitle={ta("بیمه‌ی جدید")}
+        titleOf={(node) => node.name || ""}
+        renderer={{ ...insuranceInfoRenderer(), ...newRecordLocationFields() }}
+      />
+    );
+  return <InsuranceRecordPage />;
 };
 
 export default AdminManageInsurancePage;

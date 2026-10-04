@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import PointPicker from "./PointPicker";
+import dynamic from "next/dynamic";
+
+// the map library (~1 MB) loads only when a form actually shows a map
+const PointPicker = dynamic(() => import("./PointPicker"), { ssr: false });
 import FormActions from "./FormActions";
 import Button from "@/Components/UI/Button";
 import AreaInput from "@/Components/UI/AreaInput";
@@ -11,7 +14,7 @@ import useForm from "@/Components/Hooks/useForm";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { locate } from "@/Components/Map/nexamap";
-import { asPoint } from "@/Components/Map/PointPickerCore";
+import { asPoint } from "@/Components/Map/point";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import classes from "./AdminLocationTab.module.css";
 
@@ -286,3 +289,22 @@ const AdminLocationTab = ({
 };
 
 export default AdminLocationTab;
+
+// The location part of a NEW record's single form (AdminRecordEditor,
+// 2026-10): the pin and the written address, saved with everything else
+// (it replaces an `address` field the record's own fields may have). The
+// backend fills province / city / district from the pin
+// (Lib/geoFromPoint.ts). A saved record edits them in the tab above.
+export const newRecordLocationFields = () => {
+  const section = ta("آدرس و موقعیت");
+  return {
+    location: {
+      type: "point" as const,
+      admin: true,
+      title: ta("موقعیت روی نقشه"),
+      addressField: "address",
+      section,
+    },
+    address: { type: "area" as const, title: ta("آدرس"), section },
+  };
+};

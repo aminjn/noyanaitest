@@ -7,7 +7,6 @@ import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateInsurancePopup from "./CreateInsurancePopup";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -19,6 +18,7 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteInsurancePopup from "./DeleteInsurancePopup";
 import OrderEditor from "../UI/OrderEditor";
 import { providerStateColumn } from "../UI/ProviderStatus";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageInsurancesPage = () => {
@@ -28,6 +28,7 @@ const AdminManageInsurancesPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -37,11 +38,8 @@ const AdminManageInsurancesPage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup(
-                  "CreateInsurance",
-                  <CreateInsurancePopup mutate={mutate} />,
-                ),
+              // the full form, saved once (AdminRecordEditor)
+              action: () => push(adminPath("/insurance/new")),
             },
           ]}
         >

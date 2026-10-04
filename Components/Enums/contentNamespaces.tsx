@@ -226,6 +226,7 @@ export const contentNamespaces = {
     "licenseModuleProducts",
     "licenseModuleProductPackages",
     "tbExport",
+    "formUnsavedChanges",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,

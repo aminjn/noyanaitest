@@ -15,9 +15,9 @@ import IconLink from "../UI/IconLink";
 import usePopup from "@/Components/Hooks/usePopup";
 import DeleteDoctorProfilePopup from "./DeleteDoctorProfilePopup";
 import WithTitle from "../UI/WithTitle";
-import CreateDoctorProfilePopup from "./CreateDoctorProfilePopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { providerStateColumn } from "../UI/ProviderStatus";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManageDoctorProfilesPage = () => {
@@ -31,6 +31,7 @@ const AdminManageDoctorProfilesPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   const hasAccess = useAccessLevel();
 
@@ -44,11 +45,8 @@ const AdminManageDoctorProfilesPage = () => {
               ? [
                   {
                     title: ta("جدید"),
-                    action: () =>
-                      setPopup(
-                        "CreateDoctorProfile",
-                        <CreateDoctorProfilePopup mutate={mutate} />,
-                      ),
+                    // the full form, saved once (AdminRecordEditor)
+                    action: () => push(adminPath("/doctorprofile/new")),
                   },
                 ]
               : undefined
@@ -66,8 +64,7 @@ const AdminManageDoctorProfilesPage = () => {
               },
               mainSpeciality: {
                 name: ta("تخصص"),
-                value: (node) =>
-                  node.mainSpeciality?.name || "",
+                value: (node) => node.mainSpeciality?.name || "",
                 component: (node) =>
                   node.mainSpeciality ? (
                     <InlineLink
@@ -97,8 +94,7 @@ const AdminManageDoctorProfilesPage = () => {
                 name: ta("شهر"),
                 // the profile references a Geo City document (populated)
                 value: (node) =>
-                  (node.city as unknown as { name?: string } | undefined)
-                    ?.name,
+                  (node.city as unknown as { name?: string } | undefined)?.name,
                 filter: "Multi",
               },
               user: {

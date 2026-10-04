@@ -6,7 +6,6 @@ import AdminSidebar, { canNotAdminOpen } from "../Admin/UI/AdminSidebar";
 import { usePathname } from "@/Components/i18n/navigation";
 import { useAccessLevelState } from "../Hooks/useAccessLevel";
 import Loading from "../Admin/UI/Loading";
-import { LicenseManager } from "ag-grid-enterprise";
 import Ixon from "../UI/Ixon";
 import BarsIcon from "../Icons/BarsIcon";
 import CloseIcon from "../Icons/CloseIcon";
@@ -20,7 +19,6 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const { hasAccess, isLoading } = useAccessLevelState();
 
-  const [keySat, setKeySat] = useState<boolean>(false);
   // Phones/tablets: the menu is a drawer opened from the top bar.
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
@@ -37,14 +35,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     };
   }, [menuOpen]);
 
-  useEffect(() => {
-    LicenseManager.setLicenseKey(
-      "[v3][0102]_MTc2NzEzOTIwMDAwMA==e688a08fb8acde46d9bb3b15eaac16ff"
-    );
-    setKeySat(true);
-  }, []);
 
-  if (!keySat) return null;
   if (!user || !hasAccessToAdmin.includes(user.role)) return <NotFoundPage />;
   // Page-level guard for restricted staff: the backend already returns 403,
   // this just stops them from getting an empty/broken admin page by URL.

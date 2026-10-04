@@ -3117,5 +3117,6 @@
  "bizVatNotInMoadian": "Sans facture Moadian (non déductible)",
  "bizVatBasisMoadian": "Les factures d’achat du trimestre viennent du portail ; la TVA d’un achat est déductible s’il est rapproché d’une facture Moadian non rejetée.",
  "bizVatBasisCode": "Aucune facture d’achat du trimestre n’a encore été importée du portail ; d’ici là, la TVA des fournisseurs ayant un code économique est déductible.",
- "bizVatPinvOpen": "${1} factures d’achat Moadian ne sont pas encore rapprochées ; leur TVA n’est pas déductible d’ici là"
+ "bizVatPinvOpen": "${1} factures d’achat Moadian ne sont pas encore rapprochées ; leur TVA n’est pas déductible d’ici là",
+ "formUnsavedChanges": "Les modifications ne sont pas encore enregistrées ; appuyez sur Enregistrer pour les appliquer."
 }

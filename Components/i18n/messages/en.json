@@ -3117,5 +3117,6 @@
  "bizVatNotInMoadian": "No Moadian invoice (not deductible)",
  "bizVatBasisMoadian": "This quarter's purchase invoices were brought in from the portal; purchase VAT is deductible when it is paired with an unrejected Moadian invoice.",
  "bizVatBasisCode": "No purchase invoices were brought in from the portal for this quarter yet; until then, VAT from suppliers with an economic code counts as deductible.",
- "bizVatPinvOpen": "${1} Moadian purchase invoices are not paired with a purchase or expense yet; their VAT is not deductible until then"
+ "bizVatPinvOpen": "${1} Moadian purchase invoices are not paired with a purchase or expense yet; their VAT is not deductible until then",
+ "formUnsavedChanges": "Changes aren't saved yet; press Save to apply them."
 }

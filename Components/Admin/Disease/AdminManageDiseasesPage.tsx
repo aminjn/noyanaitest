@@ -12,7 +12,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateNewDiseasePopup from "./CreateNewDiseasePopup";
 import Table from "../UI/Table";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
@@ -20,6 +19,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import IconLink from "../UI/IconLink";
 import { adminPath } from "@/Components/helpers/adminPath";
+import useProgress from "@/Components/Hooks/useProgress";
 import DeleteDiseasePopup from "./DeleteDiseasePopup";
 import {
   DiseaseCategoryPopuplation,
@@ -183,6 +183,7 @@ const AdminManageDiseasePage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -192,11 +193,8 @@ const AdminManageDiseasePage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup(
-                  "CreateNewDisease",
-                  <CreateNewDiseasePopup mutate={mutate} />,
-                ),
+              // the full form, saved once (AdminRecordEditor)
+              action: () => push(adminPath("/disease/new")),
             },
           ]}
         >

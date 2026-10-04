@@ -145,3 +145,12 @@
   font-weight: 500;
   text-align: start;
 }
+
+/* a change not saved yet (a switch flipped, a field typed): said next to
+   the save button, so nothing looks applied before it is */
+.unsaved {
+  color: var(--warning9, #b45309);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  align-self: center;
+}

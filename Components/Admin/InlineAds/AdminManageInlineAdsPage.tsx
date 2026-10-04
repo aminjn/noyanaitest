@@ -9,7 +9,6 @@ import HandleLoading from "../UI/HandleLoading";
 import Table from "../UI/Table";
 import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateInlineAdPopup from "./CreateInlineAdPopup";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
@@ -20,6 +19,7 @@ import IconButton from "../UI/IconButton";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteInlineAdPopup from "./DeleteInlineAdPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export interface IInlineAdvertisement extends MongoDoc {
@@ -36,10 +36,11 @@ export interface IInlineAdvertisement extends MongoDoc {
 const AdminManageInlineAdsPage = () => {
   const { data, error, mutate } = useSWR<IInlineAdvertisement[]>(
     `${API}/auto/inlinead`,
-    (url: string) => fetcher({ url }).then((res) => res.data.data)
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   const hasAccess = useAccessLevel();
 
@@ -53,11 +54,8 @@ const AdminManageInlineAdsPage = () => {
               ? [
                   {
                     title: ta("جدید"),
-                    action: () =>
-                      setPopup(
-                        "CreateInlineAd",
-                        <CreateInlineAdPopup mutate={mutate} />
-                      ),
+                    // the full form, saved once (AdminRecordEditor)
+                    action: () => push(adminPath("/inlinead/new")),
                   },
                 ]
               : undefined
@@ -125,7 +123,7 @@ const AdminManageInlineAdsPage = () => {
                         onClick={() =>
                           setPopup(
                             "DeleteInlineAd",
-                            <DeleteInlineAdPopup node={node} mutate={mutate} />
+                            <DeleteInlineAdPopup node={node} mutate={mutate} />,
                           )
                         }
                       >

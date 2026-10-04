@@ -3117,5 +3117,6 @@
  "bizVatNotInMoadian": "Moadian faturasız (indirilemez)",
  "bizVatBasisMoadian": "Bu çeyreğin alış faturaları portaldan alındı; alış KDV'si reddedilmemiş bir Moadian faturasıyla eşleştiğinde indirilebilir.",
  "bizVatBasisCode": "Bu çeyreğin alış faturaları henüz portaldan alınmadı; o zamana kadar ekonomik kodlu satıcıların KDV'si indirilebilir sayılır.",
- "bizVatPinvOpen": "${1} Moadian alış faturası henüz bir alış veya giderle eşleşmedi; o zamana kadar KDV'leri indirilemez"
+ "bizVatPinvOpen": "${1} Moadian alış faturası henüz bir alış veya giderle eşleşmedi; o zamana kadar KDV'leri indirilemez",
+ "formUnsavedChanges": "Değişiklikler henüz kaydedilmedi; uygulamak için Kaydet'e basın."
 }

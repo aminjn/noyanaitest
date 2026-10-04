@@ -1,6 +1,5 @@
 import { ReactNode, useContext, useEffect, useState } from "react";
 import classes from "./PanelLayout.module.css";
-import { LicenseManager } from "ag-grid-enterprise";
 import Loading from "../Admin/UI/Loading";
 import useUser from "../Hooks/useUser";
 import LoginRequired from "../UI/LoginRequired";
@@ -71,16 +70,9 @@ const PanelLayout = ({
   const pathname = usePathname();
   const panel = pathname.split("/").filter(Boolean)[0] || "";
 
-  const [keySat, setKeySat] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    LicenseManager.setLicenseKey(
-      "[v3][0102]_MTc2NzEzOTIwMDAwMA==e688a08fb8acde46d9bb3b15eaac16ff",
-    );
-    setKeySat(true);
-  }, []);
 
   useEffect(() => setIsSidebarOpen(false), [pathname]);
 
@@ -97,7 +89,6 @@ const PanelLayout = ({
     };
   }, [isSidebarOpen]);
 
-  if (!keySat) return <Loading />;
   if (isUserLoading) return <Loading />;
   if (!user) return <LoginRequired />;
   return (

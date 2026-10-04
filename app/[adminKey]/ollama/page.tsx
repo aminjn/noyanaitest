@@ -1,17 +1,7 @@
-import AdminManageOllamaPage from "@/Components/Admin/Ollama/AdminManageOllamaPage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { redirect } from "next/navigation";
+import { adminKey } from "@/Components/config";
 
-const LOCALE_NS: ContentNamespace[] = ["adminCommon"];
+// the Ollama models are part of «تنظیمات سیستم ← هوش مصنوعی» (2026-10)
+const LegacyOllamaAdmin = () => redirect(`/${adminKey}/appConfig?tab=ai`);
 
-const AdminManageOllama = async () => {
-  const textContent = await getScopedTextContent(LOCALE_NS);
-  return (
-    <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageOllamaPage />
-    </LocaleScopeProvider>
-  );
-};
-
-export default AdminManageOllama;
+export default LegacyOllamaAdmin;

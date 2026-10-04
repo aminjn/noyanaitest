@@ -11,7 +11,9 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import DoctorProfileInfoTab from "./DoctorProfileInfoTab";
+import DoctorProfileInfoTab, {
+  useDoctorProfileInfoRenderer,
+} from "./DoctorProfileInfoTab";
 import DoctorProfileUserTab from "./DoctorProfileUserTab";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -33,6 +35,7 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 
 // One record page per doctor, a short set of tabs as in the Doctolib Pro /
 // Docplanner back-offices: overview, the record itself (identity,
@@ -43,7 +46,7 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 // تلفنی» tab (a stub printing its own component name - PhoneConsultSettings
 // has no admin endpoint and the doctor panel does not offer the "phone"
 // kind), the separate «تخصص», «کمیسیون», «مالیات» and «عملیات» tabs.
-const AdminManageDoctorProfilePage = () => {
+const DoctorProfileRecordPage = () => {
   const params = useParams<{ nodeId: string }>();
   // Overview, finance and license read admin-only endpoints (their
   // autoRouter entries have no accessLevel) - a "notadmin" role would only
@@ -93,9 +96,18 @@ const AdminManageDoctorProfilePage = () => {
               : []),
           ]}
         >
-          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
+          <ProviderStatusBanner
+            node={data as unknown as ProviderStatusFields}
+          />
           <TabSystem
             items={[
+              // the record itself first: the same fields as the "new" form
+              {
+                id: "Info",
+                title: ta("اطلاعات"),
+                content: <DoctorProfileInfoTab node={data} mutate={mutate} />,
+                icon: <InfoIcon />,
+              },
               ...(isAdmin
                 ? [
                     {
@@ -111,12 +123,6 @@ const AdminManageDoctorProfilePage = () => {
                     },
                   ]
                 : []),
-              {
-                id: "Info",
-                title: ta("اطلاعات"),
-                content: <DoctorProfileInfoTab node={data} mutate={mutate} />,
-                icon: <InfoIcon />,
-              },
               {
                 id: "Location",
                 title: ta("آدرس و موقعیت"),
@@ -163,13 +169,19 @@ const AdminManageDoctorProfilePage = () => {
                 content: data.slug ? (
                   <PageMetaEditor resourceType="/dr/[slug]" slug={data.slug} />
                 ) : (
-                  <p>{ta("برای تنظیم سئو، اول در تب «اطلاعات» اسلاگ این پزشک را ثبت کنید.")}</p>
+                  <p>
+                    {ta(
+                      "برای تنظیم سئو، اول در تب «اطلاعات» اسلاگ این پزشک را ثبت کنید.",
+                    )}
+                  </p>
                 ),
               },
               {
                 id: "translations",
                 title: ta("ترجمه‌ها"),
-                content: <AdminContentTranslationPage segment="doctorprofile" />,
+                content: (
+                  <AdminContentTranslationPage segment="doctorprofile" />
+                ),
               },
             ]}
             name="AdminManageDoctorProfile"
@@ -178,6 +190,28 @@ const AdminManageDoctorProfilePage = () => {
       )}
     </HandleLoading>
   );
+};
+
+// "New" is this route with `new`: every field of the record in one form,
+// saved once (Components/Admin/UI/AdminRecordEditor), then this page with
+// its other tabs
+const AdminManageDoctorProfilePage = () => {
+  const { nodeId } = useParams<{ nodeId: string }>();
+  const renderer = useDoctorProfileInfoRenderer();
+  if (nodeId === "new")
+    return (
+      <AdminRecordEditor<IDoctorProfile>
+        segment="doctorprofile"
+        path="/doctorprofile"
+        nodeId="new"
+        newTitle={ta("پزشک جدید")}
+        titleOf={(node) =>
+          `${node.firstName || ""} ${node.lastName || ""}`.trim()
+        }
+        renderer={renderer}
+      />
+    );
+  return <DoctorProfileRecordPage />;
 };
 
 export default AdminManageDoctorProfilePage;

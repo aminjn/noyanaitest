@@ -7,7 +7,11 @@ import Ixon from "../UI/Ixon";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { Dispatch, SetStateAction, useState } from "react";
-import CartModal from "./CartModal";
+import dynamic from "next/dynamic";
+
+// the cart (with checkout and its map) loads when it is opened, not with
+// every page's header
+const CartModal = dynamic(() => import("./CartModal"), { ssr: false });
 import classes from "./CartButton.module.css";
 
 const CartButton = ({

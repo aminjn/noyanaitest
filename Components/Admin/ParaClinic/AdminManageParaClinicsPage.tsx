@@ -5,8 +5,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
 import useSWR from "swr";
 import WithTitle from "../UI/WithTitle";
-import usePopup from "@/Components/Hooks/usePopup";
-import CreateForm from "../UI/CreateForm";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -14,43 +12,9 @@ import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
 import useProgress from "@/Components/Hooks/useProgress";
-import PopupCard from "@/Components/UI/PopupCard";
 import OrderEditor from "../UI/OrderEditor";
 import { providerStateColumn } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
-
-const CreateParaClinicPopup = ({ mutate }: { mutate: () => unknown }) => {
-  const { closePopup } = usePopup();
-
-  const push = useProgress();
-
-  return (
-    <PopupCard title={ta("پاراکلینیک جدید")}>
-      <CreateForm<IParaClinic>
-        onCancel={() => closePopup()}
-        hookProps={{
-          path: `${API}/auto/paraClinic`,
-          method: "POST",
-          successCb: (data) => {
-            mutate();
-            if (!data) return;
-            push(
-              adminPath(
-                `/paraClinic/${(data as { data: { data: IParaClinic } }).data.data._id}`,
-              ),
-            );
-            closePopup();
-          },
-        }}
-        renderer={{
-          name: { title: ta("نام"), type: "text" },
-          active: { title: ta("فعال"), type: "bool" },
-          order: { title: ta("رتبه"), type: "number" },
-        }}
-      />
-    </PopupCard>
-  );
-};
 
 const AdminManageParaClinicsPage = () => {
   const { data, error, mutate } = useSWR<
@@ -59,7 +23,7 @@ const AdminManageParaClinicsPage = () => {
     fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <WithTitle
@@ -67,11 +31,8 @@ const AdminManageParaClinicsPage = () => {
       actions={[
         {
           title: ta("جدید"),
-          action: () =>
-            setPopup(
-              "CreateParaClinic",
-              <CreateParaClinicPopup mutate={mutate} />,
-            ),
+          // the full form, saved once (AdminRecordEditor)
+          action: () => push(adminPath("/paraClinic/new")),
         },
       ]}
     >
@@ -80,7 +41,11 @@ const AdminManageParaClinicsPage = () => {
           data={data}
           name="AdminManageParaClinics"
           renderer={{
-            name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
+            name: {
+              name: ta("نام"),
+              value: (node) => node.name,
+              filter: "Text",
+            },
             user: {
               name: ta("کاربر"),
               filter: "Text",

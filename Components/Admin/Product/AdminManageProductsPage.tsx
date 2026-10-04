@@ -14,8 +14,6 @@ import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import usePopup from "@/Components/Hooks/usePopup";
-import PopupCard from "@/Components/UI/PopupCard";
-import CreateForm from "../UI/CreateForm";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
@@ -36,6 +34,7 @@ import { IServicePackage } from "../ServicePackage/AdminManageServicePackagesPag
 import { IService } from "../Service/AdminManageServicesPage";
 import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
 import OrderEditor from "../UI/OrderEditor";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type ProductPopulation = Population<{
@@ -148,41 +147,6 @@ export interface IProductSeller<
   fastDelivery: boolean;
 }
 
-const CreateProductPopup = ({ mutate }: { mutate: () => unknown }) => {
-  const { closePopup } = usePopup();
-  return (
-    <PopupCard title={ta("محصول جدید")}>
-      <CreateForm<IProduct>
-        onCancel={() => closePopup()}
-        renderer={{
-          name: { type: "text", title: ta("نام") },
-          slug: { type: "text", title: ta("اسلاگ") },
-          order: { type: "number", title: ta("رتبه") },
-          isActive: { type: "bool", title: ta("فعال") },
-          category: {
-            title: ta("دسته بندی"),
-            type: "nodes",
-            path: `${API}/auto/productCategory`,
-            creatable: { path: `${API}/auto/productCategory` },
-            multi: false,
-            getOptionLabel: (node) =>
-              (node as IProductCategory).name || ta("بدون نام"),
-            getOptionValue: (node) => (node as IProductCategory)._id,
-          },
-        }}
-        hookProps={{
-          path: `${API}/auto/product`,
-          method: "POST",
-          successCb: () => {
-            mutate();
-            closePopup();
-          },
-        }}
-      />
-    </PopupCard>
-  );
-};
-
 const DeleteProductPopup = ({
   mutate,
   node,
@@ -223,6 +187,7 @@ const AdminManageProductsPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -232,11 +197,8 @@ const AdminManageProductsPage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup(
-                  "CreateProduct",
-                  <CreateProductPopup mutate={mutate} />,
-                ),
+              // the full form, saved once (AdminRecordEditor)
+              action: () => push(adminPath("/product/new")),
             },
           ]}
         >
@@ -244,7 +206,11 @@ const AdminManageProductsPage = () => {
             name="AdminManageProducts"
             data={data}
             renderer={{
-              name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },
+              name: {
+                name: ta("نام"),
+                value: (node) => node.name,
+                filter: "Text",
+              },
               category: {
                 name: ta("دسته‌بندی"),
                 value: (node) =>
@@ -254,9 +220,7 @@ const AdminManageProductsPage = () => {
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
-                    <InlineLink
-                      href={adminPath("/product?tab=categories")}
-                    >
+                    <InlineLink href={adminPath("/product?tab=categories")}>
                       {node.category.name || ta("بدون نام")}
                     </InlineLink>
                   ) : (

@@ -7,7 +7,6 @@ import HandleLoading from "../UI/HandleLoading";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import WithTitle from "../UI/WithTitle";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateBlogPopup from "./CreateBlogPopup";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -25,6 +24,7 @@ import {
   BlogTagPopulation,
   IBlogTag,
 } from "../BlogTag/AdminManageBlogTgasPage";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type BlogCategoryPopulation = Population<Record<never, never>>;
@@ -74,20 +74,20 @@ export interface IBlog<
 
 const authorTypeLabels: Record<string, string> = {
   get doctor() {
-  return ta("پزشک");
-},
+    return ta("پزشک");
+  },
   get clinic() {
-  return ta("کلینیک");
-},
+    return ta("کلینیک");
+  },
   get pharmacy() {
-  return ta("داروخانه");
-},
+    return ta("داروخانه");
+  },
   get insurance() {
-  return ta("بیمه");
-},
+    return ta("بیمه");
+  },
   get paraClinic() {
-  return ta("پاراکلینیک");
-},
+    return ta("پاراکلینیک");
+  },
 };
 
 const AdminManageBlogsPage = () => {
@@ -103,6 +103,7 @@ const AdminManageBlogsPage = () => {
   const hasAccess = useAccessLevel();
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -114,11 +115,8 @@ const AdminManageBlogsPage = () => {
               ? [
                   {
                     title: ta("جدید"),
-                    action: () =>
-                      setPopup(
-                        "CreateBlog",
-                        <CreateBlogPopup mutate={mutate} />,
-                      ),
+                    // the full form, saved once (AdminRecordEditor)
+                    action: () => push(adminPath("/blog/new")),
                   },
                 ]
               : undefined
@@ -150,9 +148,7 @@ const AdminManageBlogsPage = () => {
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
-                    <InlineLink
-                      href={adminPath("/blog?tab=categories")}
-                    >
+                    <InlineLink href={adminPath("/blog?tab=categories")}>
                       {node.category.title || ta("بدون نام")}
                     </InlineLink>
                   ) : (
