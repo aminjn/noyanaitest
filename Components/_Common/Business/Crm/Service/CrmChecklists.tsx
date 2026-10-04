@@ -11,6 +11,7 @@ import crm from "../Crm.module.css";
 import s from "./Service.module.css";
 import { isoDay, useBizFormat } from "../../bizShared";
 import { CrmContext } from "../crmShared";
+import { StarterBanner } from "./starters";
 import { Badge, ConfirmButton, ContactField, listOf, Ref, useCall, useCrm, useCrmText, useGet } from "./svc";
 
 // «چک‌لیست‌ها» (2026-10), nexxacrm's checklist: lists of to-dos with
@@ -197,6 +198,7 @@ const CrmChecklists = () => {
   };
   return (
     <HandleLoading data={!!data} error={error}>
+      <StarterBanner onSeeded={() => mutate()} />
       <div className={s.lists}>
         <section className={classes.card}>
           <nav className={s.listNav} aria-label={t("crmeLists")}>

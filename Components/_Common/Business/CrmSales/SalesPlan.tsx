@@ -13,8 +13,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { useBizFormat } from "../bizShared";
-import { CrmContext, useCrm, useCrmText } from "../Crm/crmShared";
-import { approvalStatusKey, contactName, dayOf, groupOf, Line, partKey, Plan, planStatusKey, useAction } from "./salesShared";
+import { CrmContext, useCrm } from "../Crm/crmShared";
+import { approvalStatusKey, contactName, dayOf, Line, Plan, planStatusKey, useAction, useSalesText } from "./salesShared";
 import { ContactChoice, ContactPicker, contactPayload, CopyLink, LineEditor, Totals } from "./SalesWidgets";
 
 const DISCOUNT_POPUP = "CrmsPlanDiscount";
@@ -22,7 +22,7 @@ const DISCOUNT_POPUP = "CrmsPlanDiscount";
 // a discount for the manager to approve (Nexxa discount-requests): a
 // percent or an amount, applied to this plan once approved
 export const DiscountRequest = ({ plan, invoice, onDone }: { plan?: string; invoice?: string; onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [mode, setMode] = useState<"percent" | "amount">("percent");
@@ -78,11 +78,11 @@ export const DiscountRequest = ({ plan, invoice, onDone }: { plan?: string; invo
 // patient (link and SMS), the patient's answer (online with a signature,
 // or at the desk), and the invoice it becomes - once.
 const SalesPlan = ({ id }: { id: string }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const router = useRouter();
   const ctx = useCrm();
-  const { api, panel, canWrite, node } = ctx;
+  const { api, panel, canWrite } = ctx;
   const { setPopup } = usePopup();
   const { run, busy } = useAction();
   const { data, error, mutate } = useSWR<Plan>(`${API}${api}/plans/${id}`, (url: string) => fetcher({ url }).then((res) => res.data as Plan));
@@ -101,7 +101,6 @@ const SalesPlan = ({ id }: { id: string }) => {
   const lines = edit.lines ?? p.items;
   const disc = edit.discountPercent ?? p.discountPercent;
   const dirty = Object.keys(edit).length > 0;
-  const g = groupOf(node);
   const save = async () => {
     const payload: Record<string, unknown> = {};
     if (edit.subject !== undefined) payload.subject = edit.subject;
@@ -138,7 +137,7 @@ const SalesPlan = ({ id }: { id: string }) => {
         <section className={classes.card}>
           <div className={classes.cardHead}>
             <h2 className={classes.cardTitle}>
-              {t(partKey(g, "crmsPlanN"), [f.money(p.number)])} · {p.subject}
+              {t("crmsPlanN", [f.money(p.number)])} · {p.subject}
             </h2>
             <span className={classes.badge}>{t(planStatusKey[p.status])}</span>
           </div>

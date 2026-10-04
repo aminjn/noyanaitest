@@ -8,8 +8,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { asArray, useBizFormat } from "../bizShared";
-import { CrmContact, phoneText, useCrm, useCrmText } from "../Crm/crmShared";
-import { CustomField, Line, LineRef, MiniContact } from "./salesShared";
+import { CrmContact, phoneText, useCrm } from "../Crm/crmShared";
+import { CustomField, Line, LineRef, MiniContact, SalesMeta, useProfile, useSalesText } from "./salesShared";
 
 // The pieces the sales pages share: finding a patient (or typing a new
 // one), the line editor of a lead or a plan (lines picked from the
@@ -19,7 +19,7 @@ import { CustomField, Line, LineRef, MiniContact } from "./salesShared";
 export type ContactChoice = { contact?: MiniContact | null; name?: string; phone?: string };
 
 export const ContactPicker = ({ value, onChange, allowNew = true }: { value: ContactChoice; onChange: (v: ContactChoice) => void; allowNew?: boolean }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { api } = useCrm();
   const [q, setQ] = useState("");
   const [rows, setRows] = useState<CrmContact[]>([]);
@@ -96,7 +96,7 @@ const useCatalog = () => {
 };
 
 const LineTitle = ({ line, onChange, catalog }: { line: Line; onChange: (l: Line) => void; catalog: CatalogRow[] }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const [open, setOpen] = useState(false);
   const term = line.title.trim().toLowerCase();
@@ -141,7 +141,7 @@ export const emptyLine = (): Line => ({ title: "", qty: 1, unitPrice: 0, discoun
 
 // the lines of a lead (no tax) or a plan (tax and sessions too)
 export const LineEditor = ({ lines, onChange, withTax, readOnly }: { lines: Line[]; onChange: (l: Line[]) => void; withTax?: boolean; readOnly?: boolean }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const { data } = useCatalog();
   const catalog = asArray<CatalogRow>(data);
@@ -231,7 +231,7 @@ export const lineTotals = (lines: Line[], discountPercent = 0) => {
 };
 
 export const Totals = ({ lines, discountPercent }: { lines: Line[]; discountPercent?: number }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const x = lineTotals(lines, discountPercent);
   return (
@@ -258,7 +258,7 @@ export const Totals = ({ lines, discountPercent }: { lines: Line[]; discountPerc
 
 // the centre's own fields of a patient or a lead
 export const CustomFieldInputs = ({ defs, values, onChange }: { defs: CustomField[]; values: Record<string, string>; onChange: (v: Record<string, string>) => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const active = defs.filter((d) => d.active);
   if (!active.length) return <p className={classes.muted}>{t("crmsNoCustomFields")}</p>;
   const set = (k: string, v: string) => onChange({ ...values, [k]: v });
@@ -296,7 +296,7 @@ export const CustomFieldInputs = ({ defs, values, onChange }: { defs: CustomFiel
 
 // a link to copy (a plan's or a contract's public page, the form's code)
 export const CopyLink = ({ text }: { text: string }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const [done, setDone] = useState(false);
   return (
     <div className={s.copyRow}>
@@ -312,5 +312,72 @@ export const CopyLink = ({ text }: { text: string }) => {
         {t(done ? "crmsCopied" : "crmsCopy")}
       </button>
     </div>
+  );
+};
+
+// a clinic's / hospital's treating doctor (the pipeline's department
+// first) and a lab's referring doctor (picked or typed: a new name joins
+// the list)
+export const DoctorReferrerFields = ({
+  meta,
+  department,
+  doctor,
+  onDoctor,
+  referrer,
+  onReferrer,
+  disabled,
+}: {
+  meta?: SalesMeta;
+  department?: string;
+  doctor?: { id?: string; name: string } | null;
+  onDoctor: (d: { id?: string; name: string } | null) => void;
+  referrer?: { id?: string; name?: string };
+  onReferrer: (r: { id?: string; name?: string }) => void;
+  disabled?: boolean;
+}) => {
+  const t = useSalesText();
+  const pf = useProfile();
+  const docs = (meta?.doctors || []).filter((d) => !department || !d.department || d.department === department);
+  return (
+    <>
+      {pf.doctors && (
+        <label className={classes.field}>
+          {t("crmsTreatingDoctor")}
+          <select
+            value={doctor?.name || ""}
+            disabled={disabled}
+            onChange={(e) => {
+              const d = docs.find((x) => x.name === e.target.value);
+              onDoctor(e.target.value ? { id: d?._id, name: e.target.value } : null);
+            }}
+          >
+            <option value="">—</option>
+            {docs.map((d) => (
+              <option key={d._id} value={d.name}>
+                {d.name}
+              </option>
+            ))}
+            {doctor?.name && !docs.some((d) => d.name === doctor.name) && <option value={doctor.name}>{doctor.name}</option>}
+          </select>
+        </label>
+      )}
+      {pf.referrers && (
+        <label className={classes.field}>
+          {t("crmsReferrer")}
+          <input
+            list="crms-referrers"
+            value={referrer?.name || ""}
+            disabled={disabled}
+            onChange={(e) => {
+              const r = meta?.referrers.find((x) => x.name === e.target.value);
+              onReferrer(r ? { id: r._id, name: r.name } : { name: e.target.value });
+            }}
+          />
+          <datalist id="crms-referrers">
+            {meta?.referrers.filter((x) => x.active).map((x) => <option key={x._id} value={x.name} />)}
+          </datalist>
+        </label>
+      )}
+    </>
   );
 };

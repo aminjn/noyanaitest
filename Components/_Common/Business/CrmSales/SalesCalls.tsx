@@ -9,15 +9,15 @@ import Link from "@/Components/i18n/Link";
 import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import { useBizFormat } from "../bizShared";
-import { CrmContext, phoneText, useCrm, useCrmText } from "../Crm/crmShared";
-import { contactName, useAction, useList, useNames, useSalesMeta } from "./salesShared";
+import { CrmContext, phoneText, useCrm } from "../Crm/crmShared";
+import { contactName, useAction, useList, useNames, useSalesMeta, useSalesText } from "./salesShared";
 import { Call, CALL_POPUP, CallForm, callStatuses } from "./SalesCallForm";
 
 // The call log (Nexxa crm/calls): every call on the patients' files, in
 // or out, its outcome and what was said; each one also stands on the
 // patient's timeline and is removed from it with the call.
 const SalesCalls = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const names = useNames();
   const ctx = useCrm();
@@ -58,7 +58,7 @@ const SalesCalls = () => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNoCalls")}</p>
         ) : (
-          <Table
+          <Table<Call>
             data={data || []}
             name="CrmSalesCalls"
             renderer={{

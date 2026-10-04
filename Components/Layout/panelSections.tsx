@@ -17,6 +17,18 @@ import SendIcon from "@/Components/Icons/SendIcon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import EditSquareIcon from "@/Components/Icons/EditSquareIcon";
+import MedalStarIcon from "@/Components/Icons/MedalStarIcon";
+import SendLineIcon from "@/Components/Icons/SendLineIcon";
+import PuzzleIcon from "@/Components/Icons/PuzzleIcon";
+import DoubleCheckIcon from "@/Components/Icons/DoubleCheckIcon";
+import CommentIcon from "@/Components/Icons/CommentIcon";
+import CheckSquareIcon from "@/Components/Icons/CheckSquareIcon";
+import Calendar01Icon from "@/Components/Icons/Calendar01Icon";
+import Tick02Icon from "@/Components/Icons/Tick02Icon";
+import BookAltIcon from "@/Components/Icons/BookAltIcon";
+import RetryIcon from "@/Components/Icons/RetryIcon";
+import { CrmProfile, partOn, partTitle, ServicePart } from "@/Components/_Common/Business/Crm/Service/profiles";
+import { salesMenu } from "@/Components/_Common/Business/CrmSales/salesMenu";
 import { ContentKey } from "../Enums/contentKeys";
 import { LinkMapItem } from "./PanelSidebar";
 
@@ -32,12 +44,29 @@ import { LinkMapItem } from "./PanelSidebar";
 
 const k = (key: string) => key as ContentKey;
 
+export type FinanceProfile = "doctor" | "clinic" | "hospital" | "pharmacy" | "paraClinic" | "insurance";
+
+// (2026-10, the per-profile work) each profile gets the finance menu its
+// work needs, in its own order: a doctor's is a simple book (no fixed-asset
+// desk or approval desk), a pharmacy puts payments and cheques, the
+// treasury and the stock with expiry first, an insurer puts its claims and
+// provider settlements first. The plan's modules still gate each page.
+const FINANCE_ORDER: Record<FinanceProfile, string[]> = {
+  doctor: ["overview", "wallet", "invoices", "payments", "expenses", "insurance", "accounting", "treasury", "moadian", "payroll", "reports"],
+  clinic: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports"],
+  hospital: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports"],
+  pharmacy: ["overview", "wallet", "payments", "treasury", "inventory", "insurance", "invoices", "expenses", "accounting", "assets", "requests", "moadian", "payroll", "reports"],
+  paraClinic: ["overview", "wallet", "invoices", "insurance", "payments", "inventory", "expenses", "accounting", "treasury", "assets", "requests", "payroll", "moadian", "reports"],
+  insurance: ["overview", "settlements", "payments", "accounting", "treasury", "requests", "expenses", "invoices", "wallet", "payroll", "moadian", "reports"],
+};
+
 export const financeSection = <A extends string>({
   hasAccess,
   group,
   inventory,
   insurance,
   walletSide,
+  profile = "doctor",
 }: {
   // the panel's useAcl checker
   hasAccess: (action?: A) => boolean;
@@ -48,34 +77,56 @@ export const financeSection = <A extends string>({
   insurance: boolean;
   // the wallet balance shown beside its item
   walletSide?: ReactNode;
+  profile?: FinanceProfile;
 }): LinkMapItem => {
   const can = (a: string) => hasAccess(a as A);
   const finance = can("readFinance");
+  const items: Record<string, LinkMapItem> = {
+    overview: { title: k("finNavOverview"), icon: <DashboardIcon />, target: "finance", show: finance },
+    wallet: { title: k("finNavWallet"), icon: <WalletIcon />, target: "finance/wallet", side: walletSide, show: finance },
+    invoices: { title: k("finNavInvoices"), icon: <FileIcon />, target: "finance/invoices", show: finance },
+    payments: { title: k("finNavPayments"), icon: <ArrowCircleDownIcon />, target: "finance/payments", show: finance },
+    expenses: { title: k("finNavExpenses"), icon: <TagIcon />, target: "finance/expenses", show: finance },
+    insurance: { title: k("finNavInsurance"), icon: <ShieldCheckIcon />, target: "finance/insurance", show: finance && insurance },
+    accounting: { title: "accounting", icon: <BookOpenIcon />, target: "finance/accounting", show: finance },
+    treasury: { title: k("finNavTreasury"), icon: <WalletIcon />, target: "finance/treasury", show: finance },
+    // the insurer's provider settlements: the treasury's settlements tab
+    settlements: { title: k("finNavProviderSettlements"), icon: <ShieldCheckIcon />, target: "finance/treasury?tab=settlements", show: finance },
+    assets: { title: k("finNavAssets"), icon: <PackageIcon />, target: "finance/assets", show: finance },
+    requests: { title: k("finNavRequests"), icon: <EditSquareIcon />, target: "finance/requests", show: finance },
+    moadian: { title: "moadianMenu", icon: <ReceiptIcon />, target: "finance/moadian", show: can("readMoadian") },
+    payroll: { title: "payMenu", icon: <UserGroupIcon />, target: "finance/payroll", show: can("readPayroll") },
+    inventory: { title: "invMenu", icon: <PackageIcon />, target: "finance/inventory", show: inventory && can("readInventory") },
+    reports: { title: k("finNavReports"), icon: <MedicalReportIcon />, target: "finance/reports", show: finance },
+  };
   return {
     title: k("financeSectionMenu"),
     icon: <WalletIcon />,
     group,
     show: true,
-    children: [
-      { title: k("finNavOverview"), icon: <DashboardIcon />, target: "finance", show: finance },
-      { title: k("finNavWallet"), icon: <WalletIcon />, target: "finance/wallet", side: walletSide, show: finance },
-      { title: k("finNavInvoices"), icon: <FileIcon />, target: "finance/invoices", show: finance },
-      { title: k("finNavPayments"), icon: <ArrowCircleDownIcon />, target: "finance/payments", show: finance },
-      { title: k("finNavExpenses"), icon: <TagIcon />, target: "finance/expenses", show: finance },
-      { title: k("finNavInsurance"), icon: <ShieldCheckIcon />, target: "finance/insurance", show: finance && insurance },
-      { title: "accounting", icon: <BookOpenIcon />, target: "finance/accounting", show: finance },
-      { title: "moadianMenu", icon: <ReceiptIcon />, target: "finance/moadian", show: can("readMoadian") },
-      { title: "payMenu", icon: <UserGroupIcon />, target: "finance/payroll", show: can("readPayroll") },
-      { title: "invMenu", icon: <PackageIcon />, target: "finance/inventory", show: inventory && can("readInventory") },
-      { title: k("finNavReports"), icon: <MedicalReportIcon />, target: "finance/reports", show: finance },
-      // the finance assistant (Nexxa's AI pages as tabs)
-      { title: k("finNavAi"), icon: <SparkIcon />, target: "finance/ai", show: finance },
-    ],
+    children: FINANCE_ORDER[profile].map((key) => items[key]).filter(Boolean),
   };
 };
 
-export const crmSection = <A extends string>({ hasAccess, group }: { hasAccess: (action?: A) => boolean; group?: ContentKey }): LinkMapItem => {
+export const crmSection = <A extends string>({
+  hasAccess,
+  group,
+  profile,
+}: {
+  hasAccess: (action?: A) => boolean;
+  group?: ContentKey;
+  // the panel's profile: which engagement and service parts it gets
+  // (Crm/Service/profiles.ts; a doctor's team parts show in the section
+  // itself once there is staff)
+  profile?: CrmProfile;
+}): LinkMapItem => {
   const crm = hasAccess("readCrm" as A);
+  const part = (p: ServicePart, title: string, icon: ReactNode, target: string) => ({
+    title: k(partTitle(profile, title, p)),
+    icon,
+    target,
+    show: crm && partOn(profile, p, profile !== "doctor"),
+  });
   return {
     title: k("crmSectionMenu"),
     icon: <PeopleIcon />,
@@ -89,6 +140,19 @@ export const crmSection = <A extends string>({ hasAccess, group }: { hasAccess: 
       { title: k("crmNavAutomations"), icon: <SparkIcon />, target: "crm/automations", show: crm },
       { title: k("crmNavFollowups"), icon: <ClockIcon />, target: "crm/followups", show: crm },
       { title: k("crmNavTemplates"), icon: <EditSquareIcon />, target: "crm/templates", show: crm },
+      // the sales side, per profile (docs/nexxa-crm-parity.md)
+      ...salesMenu(profile, crm),
+      // engagement and service (docs/nexxa-crm-engagement-parity.md)
+      part("club", "crmeNavClub", <MedalStarIcon />, "crm/club"),
+      part("sequences", "crmeNavSequences", <SendLineIcon />, "crm/sequences"),
+      part("flows", "crmeNavFlows", <PuzzleIcon />, "crm/flows"),
+      part("inbox", "crmeNavInbox", <DoubleCheckIcon />, "crm/inbox"),
+      part("tickets", "crmeNavTickets", <CommentIcon />, "crm/tickets"),
+      part("tasks", "crmeNavTasks", <CheckSquareIcon />, "crm/tasks"),
+      part("calendar", "crmeNavCalendar", <Calendar01Icon />, "crm/calendar"),
+      part("checklists", "crmeNavChecklists", <Tick02Icon />, "crm/checklists"),
+      part("knowledge", "crmeNavKnowledge", <BookAltIcon />, "crm/knowledge"),
+      part("returns", "crmeNavReturns", <RetryIcon />, "crm/returns"),
     ],
   };
 };

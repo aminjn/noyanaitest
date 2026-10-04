@@ -16,6 +16,7 @@ import { useBizAccounts } from "../AccountingSummary";
 import { useCostCenters } from "../CostCenterSelect";
 import CostCenterSelect from "../CostCenterSelect";
 import { parseAmount } from "../Finance/finShared";
+import JournalAiBar from "../Finance/Ai/JournalAiBar";
 import {
   AccParty,
   ConfirmButton,
@@ -52,7 +53,7 @@ const kindKey = (v: Pick<JVoucher, "kind" | "phase">) =>
 export const VoucherEditor = ({ voucher, onDone }: { voucher?: JVoucher; onDone: () => unknown }) => {
   const t = useAccText();
   const f = useBizFormat();
-  const { canApprove } = useBiz();
+  const { canApprove, api } = useBiz();
   const call = useAccCall();
   const { closePopup } = usePopup();
   const { data: accounts } = useBizAccounts();
@@ -134,6 +135,17 @@ export const VoucherEditor = ({ voucher, onDone }: { voucher?: JVoucher; onDone:
 
   return (
     <SimplePopup title={voucher ? t("accEditVoucher", [f.money(voucher.number)]) : t("accNewVoucher")} wide>
+      {/* Nexxa's "build the voucher with AI" bar (a new voucher only): the
+          lines come from the panel's own chart, the user checks and saves */}
+      {!voucher && /^\/(doctor|clinic|hospital|pharmacy|paraClinic|insurance)\/biz$/.test(api) && (
+        <JournalAiBar
+          api={`${api}/finance`}
+          onDraft={(d) => {
+            setLines(d.lines.map((l) => ({ ...emptyLine(), account: l.account, label: l.label, debit: l.debit ? String(l.debit) : "", credit: l.credit ? String(l.credit) : "" })));
+            if (d.description) setDescription(d.description);
+          }}
+        />
+      )}
       <div className={classes.form}>
         <div className={classes.field}>
           <DateInput title={t("bizDate")} defaultValue={date} onChange={(d) => setDate(d)} />

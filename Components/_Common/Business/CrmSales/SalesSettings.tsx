@@ -16,8 +16,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { asArray, useBizFormat } from "../bizShared";
-import { CrmContext, insurerKey, phoneText, useCrm, useCrmText } from "../Crm/crmShared";
-import { CustomField, groupOf, LeadSource, leadKindKey, leadKinds, Pipeline, SalesMeta, Stage, useAction, useList, useNames, useSalesMeta } from "./salesShared";
+import { CrmContext, insurerKey, phoneText, useCrm } from "../Crm/crmShared";
+import { CustomField, LeadSource, leadKindKey, Pipeline, SalesMeta, Stage, useAction, useList, useNames, useProfile, useSalesMeta, useSalesText } from "./salesShared";
 import { CopyLink } from "./SalesWidgets";
 
 const RULE_POPUP = "CrmsRule";
@@ -25,7 +25,7 @@ const TEAM_POPUP = "CrmsTeam";
 const FIELD_POPUP = "CrmsField";
 
 const stageFieldKeys = ["title", "value", "expectedClose", "contact", "probability", "assignee", "items"] as const;
-const condFields = ["kind", "title", "status", "sourceName", "priority", "value", "probability", "contactVisits", "contactSpent", "contactInsurer", "contactCity", "contactGender", "contactAge"] as const;
+const condFields = ["kind", "title", "status", "sourceName", "doctorName", "referrerName", "priority", "value", "probability", "contactVisits", "contactSpent", "contactInsurer", "contactCity", "contactGender", "contactAge"] as const;
 const condOps = ["eq", "neq", "contains", "in", "gt", "lt", "empty", "notempty"] as const;
 type Cond = { field: string; op: string; value: string };
 type Rule = { _id: string; kind: "assign" | "score"; name: string; order: number; active: boolean; conditions: Cond[]; assignType: "user" | "team"; user?: string; team?: string; stopOnMatch: boolean; points: number };
@@ -41,7 +41,7 @@ type Settings = {
 // ---------------------------------------------------------------- pipelines
 
 const StageRow = ({ pipe, stage, first, last, onChanged }: { pipe: Pipeline; stage: Stage; first: boolean; last: boolean; onChanged: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const names = useNames();
   const { canWrite } = useCrm();
   const { run, busy } = useAction();
@@ -106,10 +106,13 @@ const StageRow = ({ pipe, stage, first, last, onChanged }: { pipe: Pipeline; sta
 };
 
 const Pipelines = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { canWrite } = useCrm();
   const { run, busy } = useAction();
+  const pf = useProfile();
   const [newPipe, setNewPipe] = useState("");
+  const [tpl, setTpl] = useState(meta.templates[0]?.key || "");
+  const [dept, setDept] = useState("");
   const [newStage, setNewStage] = useState<Record<string, string>>({});
   return (
     <div className={s.stack}>
@@ -126,6 +129,7 @@ const Pipelines = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) 
                   onBlur={async (e) => e.target.value.trim() && e.target.value !== p.name && (await run("PATCH", `/pipelines/${p._id}`, { name: e.target.value.trim() })) && refresh()}
                 />
                 {p.isDefault ? <span className={classes.badge}>{t("crmsDefault")}</span> : null}
+                {p.department?.name ? <span className={classes.badge}>{p.department.name}</span> : null}
               </div>
               {canWrite && (
                 <div className={classes.actions}>
@@ -172,12 +176,31 @@ const Pipelines = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) 
         <section className={classes.card}>
           <div className={s.toolbar}>
             <input className={s.grow} value={newPipe} placeholder={t("crmsNewPipeline")} aria-label={t("crmsNewPipeline")} onChange={(e) => setNewPipe(e.target.value)} />
+            {meta.templates.length > 1 && (
+              <select value={tpl} onChange={(e) => setTpl(e.target.value)} aria-label={t("crmsPipelineTemplate")}>
+                {meta.templates.map((x) => (
+                  <option key={x.key} value={x.key}>
+                    {t(`crmsTpl_${x.key}`)}
+                  </option>
+                ))}
+              </select>
+            )}
+            {pf.doctors && meta.departments.length > 0 && (
+              <select value={dept} onChange={(e) => setDept(e.target.value)} aria-label={t("crmsDepartment")}>
+                <option value="">{t("crmsAllDepartments")}</option>
+                {meta.departments.map((x) => (
+                  <option key={x._id} value={x._id}>
+                    {x.name}
+                  </option>
+                ))}
+              </select>
+            )}
             <button
               type="button"
               className={classes.primary}
-              disabled={!!busy || !newPipe.trim()}
+              disabled={!!busy || (!newPipe.trim() && !tpl)}
               onClick={async () => {
-                if (await run("POST", "/pipelines", { name: newPipe.trim() })) {
+                if (await run("POST", "/pipelines", { name: newPipe.trim() || undefined, template: tpl || undefined, department: dept || null })) {
                   setNewPipe("");
                   refresh();
                 }
@@ -195,14 +218,15 @@ const Pipelines = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) 
 // ---------------------------------------------------------------- sources
 
 const SourceList = ({ kind, rows, refresh }: { kind: LeadSource["kind"]; rows: LeadSource[]; refresh: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const names = useNames();
   const { canWrite } = useCrm();
   const { run, busy } = useAction();
   const [name, setName] = useState("");
   return (
     <section className={classes.card}>
-      <h3 className={classes.cardTitle}>{t(kind === "source" ? "crmsSources" : "crmsLossReasons")}</h3>
+      <h3 className={classes.cardTitle}>{t(kind === "source" ? "crmsSources" : kind === "referrer" ? "crmsReferrers" : "crmsLossReasons")}</h3>
+      {kind === "referrer" && <p className={classes.muted}>{t("crmsReferrersHint")}</p>}
       <ul className={crm.followUps}>
         {rows.map((x) => (
           <li key={x._id} className={crm.followUp}>
@@ -232,7 +256,7 @@ const SourceList = ({ kind, rows, refresh }: { kind: LeadSource["kind"]; rows: L
       </ul>
       {canWrite && (
         <div className={s.toolbar}>
-          <input className={s.grow} value={name} placeholder={t(kind === "source" ? "crmsNewSource" : "crmsNewLossReason")} aria-label={t("crmsName")} onChange={(e) => setName(e.target.value)} />
+          <input className={s.grow} value={name} placeholder={t(kind === "source" ? "crmsNewSource" : kind === "referrer" ? "crmsNewReferrer" : "crmsNewLossReason")} aria-label={t("crmsName")} onChange={(e) => setName(e.target.value)} />
           <button
             type="button"
             className={classes.ghost}
@@ -255,7 +279,9 @@ const SourceList = ({ kind, rows, refresh }: { kind: LeadSource["kind"]; rows: L
 // ---------------------------------------------------------------- rules
 
 const CondEditor = ({ conds, onChange, single }: { conds: Cond[]; onChange: (c: Cond[]) => void; single?: boolean }) => {
-  const t = useCrmText();
+  const t = useSalesText();
+  const pf = useProfile();
+  const fieldsHere = condFields.filter((f) => (f !== "doctorName" || pf.doctors) && (f !== "referrerName" || pf.referrers));
   const valueInput = (c: Cond, i: number) => {
     const set = (value: string) => onChange(conds.map((x, k) => (k === i ? { ...x, value } : x)));
     if (c.op === "empty" || c.op === "notempty") return <span />;
@@ -263,7 +289,7 @@ const CondEditor = ({ conds, onChange, single }: { conds: Cond[]; onChange: (c: 
       return (
         <select value={c.value} onChange={(e) => set(e.target.value)} aria-label={t("crmsCondValue")}>
           <option value="">—</option>
-          {leadKinds.map((k) => (
+          {pf.kinds.map((k) => (
             <option key={k} value={k}>
               {t(leadKindKey(k))}
             </option>
@@ -307,7 +333,7 @@ const CondEditor = ({ conds, onChange, single }: { conds: Cond[]; onChange: (c: 
       {conds.map((c, i) => (
         <div key={i} className={s.condRow}>
           <select value={c.field} aria-label={t("crmsCondField")} onChange={(e) => onChange(conds.map((x, k) => (k === i ? { ...x, field: e.target.value, value: "" } : x)))}>
-            {condFields.map((f) => (
+            {fieldsHere.map((f) => (
               <option key={f} value={f}>
                 {t(`crmsCf_${f}`)}
               </option>
@@ -338,7 +364,7 @@ const CondEditor = ({ conds, onChange, single }: { conds: Cond[]; onChange: (c: 
 };
 
 const RuleForm = ({ kind, rule, meta, teams, onDone }: { kind: Rule["kind"]; rule?: Rule; meta: SalesMeta; teams: Team[]; onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [r, setR] = useState<Omit<Rule, "_id" | "order">>(
@@ -420,7 +446,7 @@ const RuleForm = ({ kind, rule, meta, teams, onDone }: { kind: Rule["kind"]; rul
 };
 
 const RuleList = ({ kind, meta }: { kind: Rule["kind"]; meta: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const names = useNames();
   const ctx = useCrm();
   const { canWrite } = ctx;
@@ -513,7 +539,7 @@ const useSettings = () => {
 };
 
 const Assignment = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { canWrite } = useCrm();
   const { run, busy } = useAction();
   const { data, mutate } = useSettings();
@@ -554,7 +580,7 @@ const Assignment = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void })
 // ---------------------------------------------------------------- teams
 
 const TeamForm = ({ meta, team, onDone }: { meta: SalesMeta; team?: Team; onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [name, setName] = useState(team?.name || "");
@@ -601,7 +627,7 @@ const TeamForm = ({ meta, team, onDone }: { meta: SalesMeta; team?: Team; onDone
 };
 
 const Teams = ({ meta }: { meta: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const names = useNames();
   const ctx = useCrm();
   const { panel, canWrite } = ctx;
@@ -628,7 +654,7 @@ const Teams = ({ meta }: { meta: SalesMeta }) => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNothingYet")}</p>
         ) : (
-          <Table
+          <Table<Team>
             data={data || []}
             name="CrmSalesTeams"
             renderer={{
@@ -663,7 +689,7 @@ const Teams = ({ meta }: { meta: SalesMeta }) => {
 // ---------------------------------------------------------------- custom fields
 
 const Fields = ({ refresh }: { refresh: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { api, canWrite } = useCrm();
   const { setPopup, closePopup } = usePopup();
   const { run } = useAction();
@@ -719,7 +745,7 @@ const Fields = ({ refresh }: { refresh: () => void }) => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNothingYet")}</p>
         ) : (
-          <Table
+          <Table<CustomField>
             data={data || []}
             name={`CrmSalesFields_${entity}`}
             renderer={{
@@ -760,7 +786,8 @@ const Fields = ({ refresh }: { refresh: () => void }) => {
 // ---------------------------------------------------------------- approvals
 
 const Approvals = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
+  const pf = useProfile();
   const f = useBizFormat();
   const { canWrite } = useCrm();
   const { run, busy } = useAction();
@@ -773,7 +800,7 @@ const Approvals = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) 
   return (
     <section className={classes.card}>
       <p className={classes.muted}>{t("crmsApprovalSettingsHint")}</p>
-      {(["plan", "discount", "credit"] as const).map((k) => (
+      {(["plan", "discount", "credit"] as const).filter((k) => pf.approvals.includes(k)).map((k) => (
         <div key={k} className={s.stack}>
           <h3 className={classes.cardTitle}>{t(`crmsApKind_${k}`)}</h3>
           {k !== "discount" && (
@@ -842,7 +869,7 @@ const Approvals = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) 
 // ---------------------------------------------------------------- web form
 
 const WebForm = ({ meta }: { meta: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { canWrite } = useCrm();
   const { run, busy } = useAction();
   const { data, mutate } = useSettings();
@@ -936,7 +963,7 @@ type DupContact = { _id: string; name?: string; phone: string; user?: string; vi
 type DupGroup = { reason: "nationalId" | "user" | "name"; key: string; ids: string[]; contacts: DupContact[] };
 
 const DupCard = ({ g, onDone }: { g: DupGroup; onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const { panel, canWrite } = useCrm();
   const { run, busy } = useAction();
@@ -1017,7 +1044,7 @@ const DupCard = ({ g, onDone }: { g: DupGroup; onDone: () => void }) => {
 };
 
 const Duplicates = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { data, error, mutate } = useList<DupGroup>("/duplicates");
   return (
     <div className={s.stack}>
@@ -1033,10 +1060,10 @@ const Duplicates = () => {
 // teams, custom-fields, webform, duplicates and the approval chains): one
 // page, each concern a tab.
 const SalesSettings = () => {
-  const t = useCrmText();
-  const { node } = useCrm();
+  const t = useSalesText();
   const { data: meta, error, mutate } = useSalesMeta();
-  const funnel = groupOf(node) !== "pharmacy";
+  const pf = useProfile();
+  const funnel = pf.funnel;
   return (
     <HandleLoading data={!!meta} error={error}>
       {meta && (
@@ -1050,16 +1077,19 @@ const SalesSettings = () => {
               content: (
                 <div className={s.twoCol}>
                   <SourceList kind="source" rows={meta.sources} refresh={() => mutate()} />
-                  <SourceList kind="lossReason" rows={meta.lossReasons} refresh={() => mutate()} />
+                  <div className={s.stack}>
+                    {pf.referrers && <SourceList kind="referrer" rows={meta.referrers} refresh={() => mutate()} />}
+                    <SourceList kind="lossReason" rows={meta.lossReasons} refresh={() => mutate()} />
+                  </div>
                 </div>
               ),
             },
-            { id: "scoring", title: t("crmsTabScoring"), content: <RuleList kind="score" meta={meta} />, exclude: !funnel },
-            { id: "assignment", title: t("crmsTabAssignment"), content: <Assignment meta={meta} refresh={() => mutate()} />, exclude: !funnel },
-            { id: "teams", title: t("crmsTabTeams"), content: <Teams meta={meta} /> },
+            { id: "scoring", title: t("crmsTabScoring"), content: <RuleList kind="score" meta={meta} />, exclude: !pf.scoring },
+            { id: "assignment", title: t("crmsTabAssignment"), content: <Assignment meta={meta} refresh={() => mutate()} />, exclude: !pf.assignment },
+            { id: "teams", title: t("crmsTabTeams"), content: <Teams meta={meta} />, exclude: !pf.teams },
             { id: "fields", title: t("crmsTabFields"), content: <Fields refresh={() => mutate()} /> },
-            { id: "approvals", title: t("crmsTabApprovals"), content: <Approvals meta={meta} refresh={() => mutate()} /> },
-            { id: "webform", title: t("crmsTabWebform"), content: <WebForm meta={meta} />, exclude: !funnel },
+            { id: "approvals", title: t("crmsTabApprovals"), content: <Approvals meta={meta} refresh={() => mutate()} />, exclude: !pf.approvals.length },
+            { id: "webform", title: t("crmsTabWebform"), content: <WebForm meta={meta} />, exclude: !pf.webform },
             { id: "duplicates", title: t("crmsTabDuplicates"), content: <Duplicates /> },
           ]}
         />

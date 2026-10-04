@@ -24,7 +24,7 @@ type Year = {
 type Next = {
   year: number;
   blockers: string[];
-  warnings: { code: "payrollDraft" | "purchaseDraft"; count: number }[];
+  warnings: { code: "payrollDraft" | "purchaseDraft" | "voucherDraft"; count: number }[];
   manual: number;
   balanced: boolean;
 };
@@ -92,7 +92,7 @@ const AccountingYears = ({ refreshKey, onChanged }: { refreshKey: number; onChan
               {next.warnings.length > 0 && (
                 <ul className={classes.warnings}>
                   {next.warnings.map((w) => (
-                    <li key={w.code}>{t(w.code === "payrollDraft" ? "bizWarnPayroll" : "bizWarnPurchase", [f.money(w.count)])}</li>
+                    <li key={w.code}>{t((w.code === "payrollDraft" ? "bizWarnPayroll" : w.code === "voucherDraft" ? "accWarnVoucherDraft" : "bizWarnPurchase") as "bizWarnPayroll", [f.money(w.count)])}</li>
                   ))}
                 </ul>
               )}

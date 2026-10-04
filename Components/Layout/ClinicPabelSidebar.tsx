@@ -68,8 +68,8 @@ const ClinicPanelSidebar = () => {
         show: hasAccess("mutateProfile"),
         target: "profile",
       },
-      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter" }),
-      crmSection({ hasAccess, group: "groupCenter" }),
+      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "clinic" }),
+      crmSection({ hasAccess, group: "groupCenter", profile: "clinic" }),
       {
         title: "teamTitle",
         group: "groupCenter",

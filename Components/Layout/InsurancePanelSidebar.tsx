@@ -45,8 +45,8 @@ const InsurancePanelSidebar = () => {
         show: hasAccess("mutateProfile"),
         target: "profile",
       },
-      financeSection({ hasAccess, inventory: false, insurance: false, group: "groupCenter" }),
-      crmSection({ hasAccess, group: "groupCenter" }),
+      financeSection({ hasAccess, inventory: false, insurance: false, group: "groupCenter", profile: "insurance" }),
+      crmSection({ hasAccess, group: "groupCenter", profile: "insurance" }),
       {
         icon: <UserEditIcon />,
         title: "teamTitle",

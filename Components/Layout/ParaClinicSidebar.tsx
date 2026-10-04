@@ -61,8 +61,8 @@ const ParaClinicSidebar = () => {
         show: hasAccess("mutateProfile"),
         target: "profile",
       },
-      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter" }),
-      crmSection({ hasAccess, group: "groupCenter" }),
+      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "paraClinic" }),
+      crmSection({ hasAccess, group: "groupCenter", profile: "paraClinic" }),
       {
         title: "teamTitle",
         icon: <UserEditIcon />,

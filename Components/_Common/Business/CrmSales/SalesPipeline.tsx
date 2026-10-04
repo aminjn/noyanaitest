@@ -13,9 +13,9 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { asArray, isoDay, useBizFormat } from "../bizShared";
-import { CrmContext, useCrm, useCrmText, usePercent } from "../Crm/crmShared";
-import { contactName, Lead, leadKindKey, leadKinds, Pipeline, SalesMeta, useAction, useNames, useSalesMeta } from "./salesShared";
-import { ContactChoice, ContactPicker, contactPayload, emptyLine, LineEditor, Totals } from "./SalesWidgets";
+import { CrmContext, useCrm, usePercent } from "../Crm/crmShared";
+import { contactName, Lead, leadKindKey, Pipeline, useProfile, SalesMeta, useAction, useNames, useSalesMeta, useSalesText } from "./salesShared";
+import { ContactChoice, ContactPicker, contactPayload, DoctorReferrerFields, emptyLine, LineEditor, Totals } from "./SalesWidgets";
 import { Line } from "./salesShared";
 
 const NEW_LEAD = "CrmsNewLead";
@@ -33,7 +33,7 @@ type View = { _id: string; name: string; shared: boolean; createdBy?: string; co
 // a new treatment inquiry: who, what, which stage; the assignee is the
 // rules' (or the round-robin's) unless picked
 export const NewLead = ({ meta, pipeline, onDone }: { meta: SalesMeta; pipeline?: Pipeline | null; onDone: (id: string) => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const names = useNames();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
@@ -46,6 +46,9 @@ export const NewLead = ({ meta, pipeline, onDone }: { meta: SalesMeta; pipeline?
   const [assignee, setAssignee] = useState("");
   const [expectedClose, setExpectedClose] = useState("");
   const [lines, setLines] = useState<Line[]>([emptyLine()]);
+  const pf = useProfile();
+  const [doctor, setDoctor] = useState<{ id?: string; name: string } | null>(null);
+  const [referrer, setReferrer] = useState<{ id?: string; name?: string }>({});
   const save = async () => {
     const r = await run<{ _id: string }>("POST", "/leads", {
       title,
@@ -56,6 +59,8 @@ export const NewLead = ({ meta, pipeline, onDone }: { meta: SalesMeta; pipeline?
       assignee: assignee || null,
       expectedClose: expectedClose || null,
       items: lines.filter((l) => l.title.trim()),
+      ...(doctor ? { doctor } : {}),
+      ...(referrer.id ? { referrer: referrer.id } : referrer.name?.trim() ? { referrerName: referrer.name.trim() } : {}),
       ...contactPayload(who),
     });
     if (r?._id) {
@@ -74,13 +79,14 @@ export const NewLead = ({ meta, pipeline, onDone }: { meta: SalesMeta; pipeline?
           <label className={classes.field}>
             {t("crmsKind")}
             <select value={kind} onChange={(e) => setKind(e.target.value)}>
-              {leadKinds.map((k) => (
+              {pf.kinds.map((k) => (
                 <option key={k} value={k}>
                   {t(leadKindKey(k))}
                 </option>
               ))}
             </select>
           </label>
+          <DoctorReferrerFields meta={meta} department={pipe?.department?.id} doctor={doctor} onDoctor={setDoctor} referrer={referrer} onReferrer={setReferrer} />
           <label className={classes.field}>
             {t("crmsStage")}
             <select value={stage} onChange={(e) => setStage(e.target.value)}>
@@ -136,7 +142,7 @@ export const NewLead = ({ meta, pipeline, onDone }: { meta: SalesMeta; pipeline?
 };
 
 const SaveView = ({ config, onDone }: { config: Record<string, string>; onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [name, setName] = useState("");
@@ -176,7 +182,7 @@ const SaveView = ({ config, onDone }: { config: Record<string, string>; onDone: 
 // per inquiry; dragged (or moved from its menu) to the next stage, which
 // checks the stage's blueprint. Above it, the funnel's figures.
 const SalesPipeline = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const pct = usePercent();
   const names = useNames();
@@ -190,9 +196,11 @@ const SalesPipeline = () => {
   const [q, setQ] = useState("");
   const [assignee, setAssignee] = useState("");
   const [kind, setKind] = useState("");
+  const [doctor, setDoctor] = useState("");
+  const pf = useProfile();
   const [status, setStatus] = useState("open");
   const [over, setOver] = useState("");
-  const params = new URLSearchParams({ ...(pipe ? { pipeline: pipe } : {}), ...(q.trim() ? { q: q.trim() } : {}), ...(assignee ? { assignee } : {}), ...(kind ? { kind } : {}), ...(status ? { status } : {}) });
+  const params = new URLSearchParams({ ...(pipe ? { pipeline: pipe } : {}), ...(q.trim() ? { q: q.trim() } : {}), ...(assignee ? { assignee } : {}), ...(kind ? { kind } : {}), ...(doctor ? { doctor } : {}), ...(status ? { status } : {}) });
   const { data, error, mutate } = useSWR<Board>(`${API}${api}/leads?${params}`, (url: string) =>
     fetcher({ url }).then((res) => ({
       pipeline: res.data?.pipeline || null,
@@ -275,12 +283,22 @@ const SalesPipeline = () => {
           </select>
           <select value={kind} onChange={(e) => setKind(e.target.value)} aria-label={t("crmsKind")}>
             <option value="">{t("crmsAllKinds")}</option>
-            {leadKinds.map((k) => (
+            {pf.kinds.map((k) => (
               <option key={k} value={k}>
                 {t(leadKindKey(k))}
               </option>
             ))}
           </select>
+          {pf.doctors && !!meta?.doctors.length && (
+            <select value={doctor} onChange={(e) => setDoctor(e.target.value)} aria-label={t("crmsTreatingDoctor")}>
+              <option value="">{t("crmsAllDoctors")}</option>
+              {meta.doctors.map((d) => (
+                <option key={d._id} value={d.name}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          )}
           <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label={t("crmsStatus")}>
             <option value="open">{t("crmsLeadOpen")}</option>
             <option value="won">{t("crmsLeadWon")}</option>
@@ -365,6 +383,8 @@ const SalesPipeline = () => {
                           <span>{pct(l.probability, 100)}</span>
                           {l.ruleScore ? <span className={crm.badgeOk}>{t("crmsScoreN", [f.money(l.ruleScore)])}</span> : null}
                           {l.assignee && <span>{names.staff(meta, l.assignee)}</span>}
+                          {l.doctor?.name && <span>{l.doctor.name}</span>}
+                          {l.referrerName && <span>{t("crmsReferredBy", [l.referrerName])}</span>}
                         </span>
                         {(late || (l.status === "open" && idle > ROT_DAYS)) && (
                           <span className={`${s.leadMeta} ${s.late}`}>{late ? t("crmsCloseOverdue", [f.date(l.expectedClose)]) : t("crmsRotting", [f.money(Math.floor(idle))])}</span>

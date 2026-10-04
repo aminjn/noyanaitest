@@ -13,10 +13,10 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { asArray, useBizFormat } from "../bizShared";
-import { CrmContext, phoneText, useCrm, useCrmText, usePercent } from "../Crm/crmShared";
+import { CrmContext, phoneText, useCrm, usePercent } from "../Crm/crmShared";
 import { NewFollowUp } from "../Crm/CrmContactProfile";
-import { dayOf, Lead, leadKindKey, leadKinds, leadStatusKey, Line, MiniContact, Pipeline, planStatusKey, PlanStatus, useAction, useNames, useSalesMeta } from "./salesShared";
-import { ContactChoice, ContactPicker, contactPayload, CustomFieldInputs, LineEditor, Totals } from "./SalesWidgets";
+import { CustomField, dayOf, Lead, LeadSource, leadKindKey, useProfile, leadStatusKey, Line, MiniContact, Pipeline, planStatusKey, PlanStatus, useAction, useNames, useSalesMeta, useSalesText } from "./salesShared";
+import { ContactChoice, ContactPicker, contactPayload, CustomFieldInputs, DoctorReferrerFields, LineEditor, Totals } from "./SalesWidgets";
 import { Call, CALL_POPUP, CallForm } from "./SalesCallForm";
 
 const LOST_POPUP = "CrmsLost";
@@ -34,7 +34,7 @@ type LeadFile = {
 
 // lost needs a reason (Nexxa markLost); the owner's standard reasons first
 const LostForm = ({ reasons, onPick }: { reasons: string[]; onPick: (r: string) => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const [r, setR] = useState(reasons[0] || "");
   const [other, setOther] = useState("");
@@ -80,7 +80,7 @@ const LostForm = ({ reasons, onPick }: { reasons: string[]; onPick: (r: string) 
 // from its items, owner, custom fields, calls and the patient's notes,
 // and the way out: accepted (won), lost with a reason, or a treatment plan.
 const SalesLead = ({ id }: { id: string }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const pct = usePercent();
   const names = useNames();
@@ -90,9 +90,10 @@ const SalesLead = ({ id }: { id: string }) => {
   const { setPopup } = usePopup();
   const { data: meta } = useSalesMeta();
   const { run, busy } = useAction();
+  const pf = useProfile();
   const { data, error, mutate } = useSWR<LeadFile>(`${API}${api}/leads/${id}`, (url: string) => fetcher({ url }).then((res) => res.data as LeadFile));
   const lead = data?.lead;
-  const [edit, setEdit] = useState<Partial<Lead> & { lines?: Line[]; who?: ContactChoice; cf?: Record<string, string> }>({});
+  const [edit, setEdit] = useState<Partial<Lead> & { lines?: Line[]; who?: ContactChoice; cf?: Record<string, string>; ref?: { id?: string; name?: string } }>({});
   useEffect(() => setEdit({}), [lead?._id, lead?.updatedAt]);
   const withCtx = (n: React.ReactNode) => <CrmContext.Provider value={ctx}>{n}</CrmContext.Provider>;
   if (!data || !lead)
@@ -106,7 +107,7 @@ const SalesLead = ({ id }: { id: string }) => {
   const v = <K extends keyof Lead>(k: K) => (edit[k] !== undefined ? edit[k] : lead[k]) as Lead[K];
   const lines = edit.lines ?? lead.items;
   const dirty = Object.keys(edit).length > 0;
-  const leadFields = asArray(meta?.customFields).filter((x) => x.entity === "lead");
+  const leadFields = asArray<CustomField>(meta?.customFields).filter((x) => x.entity === "lead");
   const save = async () => {
     const payload: Record<string, unknown> = {};
     for (const k of ["title", "kind", "probability", "priority", "note", "source", "assignee", "stage"] as const) if (edit[k] !== undefined) payload[k] = edit[k] === "" ? null : edit[k];
@@ -114,6 +115,8 @@ const SalesLead = ({ id }: { id: string }) => {
     if (edit.lines) payload.items = edit.lines.filter((l) => l.title.trim());
     if (edit.who) Object.assign(payload, contactPayload(edit.who));
     if (edit.cf) payload.customFields = edit.cf;
+    if (edit.doctor !== undefined) payload.doctor = edit.doctor;
+    if (edit.ref) Object.assign(payload, edit.ref.id ? { referrer: edit.ref.id } : { referrer: null, referrerName: edit.ref.name || "" });
     if (await run("PATCH", `/leads/${id}`, payload)) mutate();
   };
   const setStatus = async (status: Lead["status"], reason?: string) => {
@@ -144,7 +147,7 @@ const SalesLead = ({ id }: { id: string }) => {
             <label className={classes.field}>
               {t("crmsKind")}
               <select value={v("kind")} disabled={!canWrite} onChange={(e) => setEdit({ ...edit, kind: e.target.value as Lead["kind"] })}>
-                {leadKinds.map((k) => (
+                {pf.kinds.map((k) => (
                   <option key={k} value={k}>
                     {t(leadKindKey(k))}
                   </option>
@@ -161,6 +164,15 @@ const SalesLead = ({ id }: { id: string }) => {
                 ))}
               </select>
             </label>
+            <DoctorReferrerFields
+              meta={meta}
+              department={pipe?.department?.id}
+              doctor={edit.doctor !== undefined ? edit.doctor : lead.doctor}
+              onDoctor={(d) => setEdit({ ...edit, doctor: d })}
+              referrer={edit.ref ?? { id: lead.referrer, name: lead.referrerName }}
+              onReferrer={(ref) => setEdit({ ...edit, ref })}
+              disabled={!canWrite}
+            />
             <label className={classes.field}>
               {t("crmsProbability")}
               <input inputMode="numeric" value={v("probability")} disabled={!canWrite} onChange={(e) => setEdit({ ...edit, probability: Math.min(100, Number(e.target.value.replace(/\D/g, "")) || 0) })} />
@@ -314,7 +326,7 @@ const SalesLead = ({ id }: { id: string }) => {
                     type="button"
                     className={classes.danger}
                     disabled={!!busy}
-                    onClick={() => setPopup(LOST_POPUP, <LostForm reasons={asArray(meta?.lossReasons).filter((x) => x.active).map((x) => names.source(x))} onPick={(r) => setStatus("lost", r)} />)}
+                    onClick={() => setPopup(LOST_POPUP, <LostForm reasons={asArray<LeadSource>(meta?.lossReasons).filter((x) => x.active).map((x) => names.source(x))} onPick={(r) => setStatus("lost", r)} />)}
                   >
                     {t("crmsMarkLost")}
                   </button>

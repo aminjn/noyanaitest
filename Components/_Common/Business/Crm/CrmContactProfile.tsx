@@ -29,6 +29,7 @@ import {
   useCrmText,
 } from "./crmShared";
 import { TagPicker } from "./CrmRulesForm";
+import ContactSalesCard from "../CrmSales/ContactSalesCard";
 
 type Ctx = React.ContextType<typeof CrmContext>;
 const SMS_POPUP = "CrmContactSms";
@@ -456,6 +457,8 @@ const CrmContactProfile = ({ id }: { id: string }) => {
               )}
             </section>
           </div>
+          {/* the sales side: inquiries, plans, contracts, credit (CrmSales) */}
+          <ContactSalesCard contactId={c._id} />
         </>
       )}
     </HandleLoading>

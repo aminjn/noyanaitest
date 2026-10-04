@@ -97,6 +97,7 @@
 }
 
 .aiButton {
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;

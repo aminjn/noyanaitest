@@ -11,8 +11,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
-import { CrmContext, useCrm, useCrmText } from "../Crm/crmShared";
-import { contactName, groupOf, partKey, Plan, planStatusKey, PlanStatus, useAction, useList } from "./salesShared";
+import { CrmContext, useCrm } from "../Crm/crmShared";
+import { contactName, Plan, planStatusKey, PlanStatus, useAction, useList, useSalesText } from "./salesShared";
 import { ContactChoice, ContactPicker, contactPayload, emptyLine, LineEditor, Totals } from "./SalesWidgets";
 import { Line } from "./salesShared";
 
@@ -20,8 +20,7 @@ const NEW_PLAN = "CrmsNewPlan";
 const STATUSES: ("" | PlanStatus)[] = ["", "draft", "sent", "revised", "accepted", "declined"];
 
 const NewPlan = ({ onDone }: { onDone: (id: string) => void }) => {
-  const t = useCrmText();
-  const { node } = useCrm();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [who, setWho] = useState<ContactChoice>({});
@@ -43,7 +42,7 @@ const NewPlan = ({ onDone }: { onDone: (id: string) => void }) => {
     }
   };
   return (
-    <PopupCard title={t(partKey(groupOf(node), "crmsNewPlan"))} size="wide">
+    <PopupCard title={t("crmsNewPlan")} size="wide">
       <div className={classes.popup}>
         <div className={s.formGrid}>
           <label className={classes.field}>
@@ -78,11 +77,11 @@ const NewPlan = ({ onDone }: { onDone: (id: string) => void }) => {
 // with its status, total and invoice; a new one starts empty or from an
 // inquiry (its lines copied).
 const SalesPlans = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const router = useRouter();
   const ctx = useCrm();
-  const { panel, canWrite, node } = ctx;
+  const { panel, canWrite } = ctx;
   const { setPopup } = usePopup();
   const [status, setStatus] = useState<"" | PlanStatus>("");
   const [q, setQ] = useState("");
@@ -106,7 +105,7 @@ const SalesPlans = () => {
             className={classes.primary}
             onClick={() => setPopup(NEW_PLAN, <CrmContext.Provider value={ctx}><NewPlan onDone={(id) => router.push(`${panel}/crm/plans/${id}`)} /></CrmContext.Provider>)}
           >
-            {t(partKey(groupOf(node), "crmsNewPlan"))}
+            {t("crmsNewPlan")}
           </button>
         )}
       </div>
@@ -114,7 +113,7 @@ const SalesPlans = () => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNoPlans")}</p>
         ) : (
-          <Table
+          <Table<Plan>
             data={data || []}
             name="CrmSalesPlans"
             renderer={{

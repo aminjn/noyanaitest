@@ -5,8 +5,8 @@ import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import classes from "../Accounting.module.css";
 import s from "./CrmSales.module.css";
-import { useCrmText } from "../Crm/crmShared";
-import { MiniContact, SalesMeta, useAction } from "./salesShared";
+
+import { MiniContact, SalesMeta, useAction, useSalesText } from "./salesShared";
 import { ContactChoice, ContactPicker, contactPayload } from "./SalesWidgets";
 
 export const CALL_POPUP = "CrmsCall";
@@ -47,7 +47,7 @@ export const CallForm = ({
   lead?: string;
   onDone: () => void;
 }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const initial = call?.contact && typeof call.contact === "object" ? call.contact : contact || null;

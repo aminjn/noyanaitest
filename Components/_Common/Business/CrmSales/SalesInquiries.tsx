@@ -13,8 +13,8 @@ import { API } from "@/Components/config";
 import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import { useBizFormat } from "../bizShared";
-import { phoneText, useCrm, useCrmText } from "../Crm/crmShared";
-import { leadKindKey, leadKinds, useAction, useList } from "./salesShared";
+import { phoneText, useCrm } from "../Crm/crmShared";
+import { leadKindKey, useAction, useList, useProfile, useSalesText } from "./salesShared";
 
 const Q_POPUP = "CrmsInquiry";
 
@@ -28,6 +28,9 @@ type Inquiry = {
   description?: string;
   kind?: string;
   budget: number;
+  address?: string;
+  preferredAt?: string;
+  referrerName?: string;
   status: "new" | "reviewed" | "converted" | "closed";
   source: "web" | "manual";
   lead?: string;
@@ -38,12 +41,13 @@ type Inquiry = {
 // form (/r/<slug>) or typed in at the desk; reviewed, closed, or turned
 // once into a treatment inquiry on the board.
 const SalesInquiries = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const router = useRouter();
   const { api, panel, canWrite } = useCrm();
   const { setPopup, closePopup } = usePopup();
   const { run, busy } = useAction();
+  const pf = useProfile();
   const [status, setStatus] = useState<"" | Inquiry["status"]>("new");
   const { data, error, mutate } = useList<Inquiry>(`/inquiries${status ? `?status=${status}` : ""}`);
   const add = () =>
@@ -55,7 +59,14 @@ const SalesInquiries = () => {
             name: { type: "text", title: t("crmsPatientName"), required: true },
             phone: { type: "text", title: t("crmsMobile"), ltr: true },
             subject: { type: "text", title: t("crmsSubject"), required: true },
-            kind: { type: "select", title: t("crmsKind"), options: Object.fromEntries(leadKinds.map((k) => [k, t(leadKindKey(k))])) },
+            kind: { type: "select", title: t("crmsKind"), options: Object.fromEntries(pf.kinds.map((k) => [k, t(leadKindKey(k))])) },
+            ...(pf.homeSampling
+              ? {
+                  address: { type: "area", title: t("crmsSamplingAddress") },
+                  preferredAt: { type: "text", title: t("crmsPreferredTime") },
+                }
+              : {}),
+            ...(pf.referrers ? { referrerName: { type: "text", title: t("crmsReferrer") } } : {}),
             budget: { type: "number", title: t("crmsBudget"), price: true },
             company: { type: "text", title: t("crmsCompany") },
             email: { type: "text", title: t("crmsEmail"), ltr: true },
@@ -103,7 +114,7 @@ const SalesInquiries = () => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNoInquiries")}</p>
         ) : (
-          <Table
+          <Table<Inquiry>
             data={data || []}
             name="CrmSalesInquiries"
             renderer={{
@@ -111,6 +122,13 @@ const SalesInquiries = () => {
               name: { name: t("crmsPatientName"), filter: "Text", value: (q) => q.name },
               phone: { name: t("crmsMobile"), filter: "Text", value: (q) => q.phone || "", component: (q) => <bdi dir="ltr">{phoneText(q.phone || "")}</bdi> },
               kind: { name: t("crmsKind"), filter: "Set", value: (q) => t(leadKindKey(q.kind)) },
+              ...(pf.homeSampling
+                ? {
+                    address: { name: t("crmsSamplingAddress"), filter: "Text" as const, value: (q: Inquiry) => q.address || "" },
+                    preferredAt: { name: t("crmsPreferredTime"), value: (q: Inquiry) => q.preferredAt || "" },
+                  }
+                : {}),
+              ...(pf.referrers ? { referrerName: { name: t("crmsReferrer"), filter: "Set" as const, value: (q: Inquiry) => q.referrerName || "—" } } : {}),
               budget: { name: t("crmsBudget"), filter: "Number", value: (q) => q.budget, component: (q) => <>{f.money(q.budget)}</> },
               source: { name: t("crmsSource"), filter: "Set", value: (q) => t(q.source === "web" ? "crmsFromWeb" : "crmsFromDesk") },
               createdAt: { name: t("crmsDate"), filter: "Date", value: (q) => new Date(q.createdAt) },

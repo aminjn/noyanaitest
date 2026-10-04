@@ -8,7 +8,7 @@ import Link from "@/Components/i18n/Link";
 import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import { CrmContext, useCrmText } from "../Crm/crmShared";
-import { groupOf, partKey, SalesPage, salesParts } from "./salesShared";
+import { partKey, PROFILES, profileOf, SalesPage, salesParts } from "./salesShared";
 import SalesPipeline from "./SalesPipeline";
 import SalesLead from "./SalesLead";
 import SalesInquiries from "./SalesInquiries";
@@ -32,9 +32,10 @@ const parentOf: Partial<Record<SalesPage, SalesPage>> = { lead: "pipeline", plan
 const SalesSection = ({ node, panel, page, id }: { node: NodeWithAcl; panel: string; page: SalesPage; id?: string }) => {
   const t = useCrmText();
   const hasAccess = useAcl(node);
-  const group = groupOf(node);
+  // the profile's own parts and words (salesShared PROFILES)
+  const group = profileOf(node);
   const base = `${panel}/crm`;
-  const parts = salesParts.filter((p) => p.groups.includes(group));
+  const parts = salesParts.filter((p) => PROFILES[group].parts.includes(p.page));
   const own = parts.find((p) => p.page === (parentOf[page] || page)) || parts[0];
   useBreadCrump([
     { title: t("dashboard"), target: panel },

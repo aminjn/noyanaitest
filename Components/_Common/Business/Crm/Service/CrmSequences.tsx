@@ -10,6 +10,7 @@ import s from "./Service.module.css";
 import { useBizFormat } from "../../bizShared";
 import { CrmSegment, CrmTemplate, presetKey, useCrmTemplates } from "../crmShared";
 import { useRouter } from "@/Components/i18n/navigation";
+import { StarterBanner } from "./starters";
 import { Badge, ConfirmButton, ContactField, listOf, phoneText, Ref, TeamOptions, useCall, useCrm, useCrmText, useGet, useWhen } from "./svc";
 
 // «پیام‌های زنجیره‌ای» (2026-10), nexxacrm's crm/sequences: a few steps a
@@ -54,6 +55,8 @@ const SequenceList = () => {
     if (r?._id) router.push(`${panel}/crm/sequences/${r._id}`);
   };
   return (
+    <div className={s.stack}>
+    <StarterBanner onSeeded={() => mutate()} />
     <section className={classes.card}>
       <div className={classes.cardHead}>
         <p className={s.hint}>{t("crmeSeqHint")}</p>
@@ -97,6 +100,7 @@ const SequenceList = () => {
           ))}
       </HandleLoading>
     </section>
+    </div>
   );
 };
 

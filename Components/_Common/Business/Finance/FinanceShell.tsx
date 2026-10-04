@@ -54,7 +54,7 @@ const FinanceShell = ({
   const canWrite = hasAccess("manageAccounting");
   const api = `/${node}/biz`;
   return (
-    <BizContext.Provider value={{ api, canWrite }}>
+    <BizContext.Provider value={{ api, canWrite, canApprove: hasAccess("approveVouchers") }}>
       <FinContext.Provider value={{ node, panel, api: `${api}/finance`, canWrite }}>
         <div className={classes.main}>
           <div className={fin.headRow}>

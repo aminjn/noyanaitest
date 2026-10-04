@@ -22,6 +22,9 @@ export type FinAiStatus = {
   limit: number;
   used: number;
   settingsUrl: string | null;
+  // the panel's profile and its copilot example questions (content keys)
+  profile?: string;
+  questions?: string[];
 };
 
 export type FinAiWarning = { key: string; vars?: string[] };

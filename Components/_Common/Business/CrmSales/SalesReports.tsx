@@ -10,8 +10,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
-import { insurerKey, sourceKey, useCrm, useCrmText, usePercent } from "../Crm/crmShared";
-import { leadKindKey, leadStatusKey, planStatusKey, SalesMeta, useAction, useList, useNames, useSalesMeta } from "./salesShared";
+import { insurerKey, sourceKey, useCrm, usePercent } from "../Crm/crmShared";
+import { leadKindKey, leadStatusKey, planStatusKey, SalesMeta, useAction, useList, useNames, useSalesMeta, useSalesText } from "./salesShared";
 
 type Group = { key: string; count: number; won: number; lost: number; value: number; wonValue: number };
 type Report = {
@@ -26,6 +26,8 @@ type Report = {
   byKind: Group[];
   bySource: Group[];
   lossReasons: Group[];
+  byDoctor?: Group[];
+  byReferrer?: Group[];
   topServices: { title: string; qty: number; value: number }[];
 };
 type Row = { key: string; count: number; sum: number };
@@ -56,7 +58,7 @@ const Bars = ({ rows, label, value }: { rows: Group[]; label: (k: string) => str
 };
 
 const Standard = ({ meta }: { meta?: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const pct = usePercent();
   const names = useNames();
@@ -149,6 +151,18 @@ const Standard = ({ meta }: { meta?: SalesMeta }) => {
                 <h3 className={classes.cardTitle}>{t("crmsBySource")}</h3>
                 <Bars rows={data.bySource} label={(k) => k || "—"} value={(g) => g.count} />
               </section>
+              {!!data.byDoctor?.length && (
+                <section className={classes.card}>
+                  <h3 className={classes.cardTitle}>{t("crmsByDoctor")}</h3>
+                  <Bars rows={data.byDoctor} label={(k) => k || "—"} value={(g) => g.wonValue} />
+                </section>
+              )}
+              {!!data.byReferrer?.length && (
+                <section className={classes.card}>
+                  <h3 className={classes.cardTitle}>{t("crmsByReferrer")}</h3>
+                  <Bars rows={data.byReferrer} label={(k) => k || "—"} value={(g) => g.count} />
+                </section>
+              )}
             </div>
             <section className={classes.card}>
               <h3 className={classes.cardTitle}>{t("crmsTopServices")}</h3>
@@ -187,7 +201,7 @@ const Standard = ({ meta }: { meta?: SalesMeta }) => {
 // the report builder (Nexxa crm/reports/builder): an entity, a grouping, a
 // measure and a status filter, run now or saved for later
 const Builder = ({ meta }: { meta?: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const names = useNames();
   const { canWrite } = useCrm();
@@ -356,7 +370,7 @@ const Builder = ({ meta }: { meta?: SalesMeta }) => {
 
 // Sales reports (Nexxa crm/reports and reports/builder)
 const SalesReports = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { data: meta } = useSalesMeta();
   return (
     <ClientTabSystem

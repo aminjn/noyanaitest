@@ -146,7 +146,7 @@ const DoctorSidebar = () => {
           </span>
         ),
       }),
-      crmSection({ hasAccess, group: "groupPractice" }),
+      crmSection({ hasAccess, group: "groupPractice", profile: "doctor" }),
       {
         // verified visit reviews and the doctor's public replies (2026-10)
         title: "orgReviewsTitle",

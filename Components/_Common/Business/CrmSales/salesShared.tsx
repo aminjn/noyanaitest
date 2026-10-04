@@ -15,8 +15,22 @@ import { errText, useCrm, useCrmText } from "../Crm/crmShared";
 // The API is the panel's /<panel>/crm (backend Controllers/
 // crmSalesController.ts); texts are bizCrm keys starting with "crms".
 
-// what each kind of panel sells: a treatment (doctor, clinic, hospital,
-// lab), medicines and goods (pharmacy), corporate cover (insurer)
+// Each provider profile gets only the parts of Nexxa's CRM that fit it,
+// in its own words (docs/nexxa-crm-parity.md, a column per profile):
+//   doctor      a light funnel, treatment plans, simple targets
+//   clinic /    the full funnel per department, staff assignment,
+//   hospital    per-doctor targets and commission, corporate contracts,
+//               discount and credit approvals
+//   pharmacy    customers (not leads), credit, refill plans, supply
+//               contracts - no funnel
+//   paraClinic  referring doctors (tracked), home sampling, check-up
+//               contracts
+//   insurance   corporate deals, contracts and their members
+// The plan's "crm" module and the secretary's access still gate it all.
+export type Profile = "doctor" | "clinic" | "hospital" | "pharmacy" | "paraClinic" | "insurance";
+export const profileOf = (node: NodeWithAcl): Profile =>
+  (["doctor", "clinic", "hospital", "pharmacy", "paraClinic", "insurance"].includes(node) ? node : "clinic") as Profile;
+// kept for the few places that only ask "is there a funnel"
 export type SalesGroup = "care" | "pharmacy" | "insurance";
 export const groupOf = (node: NodeWithAcl): SalesGroup => (node === "pharmacy" ? "pharmacy" : node === "insurance" ? "insurance" : "care");
 
@@ -35,51 +49,183 @@ export type SalesPage =
   | "reports"
   | "settings";
 
-// the parts of the sales side, in menu order, and who has each (the
-// pharmacy has no treatment funnel; see the parity doc)
-export const salesParts: { page: SalesPage; path: string; title: string; hint: string; groups: SalesGroup[] }[] = [
-  { page: "pipeline", path: "/pipeline", title: "crmsNavPipeline", hint: "crmsNavPipelineHint", groups: ["care", "insurance"] },
-  { page: "inquiries", path: "/inquiries", title: "crmsNavInquiries", hint: "crmsNavInquiriesHint", groups: ["care", "insurance"] },
-  { page: "plans", path: "/plans", title: "crmsNavPlans", hint: "crmsNavPlansHint", groups: ["care", "pharmacy", "insurance"] },
-  { page: "contracts", path: "/contracts", title: "crmsNavContracts", hint: "crmsNavContractsHint", groups: ["care", "pharmacy", "insurance"] },
-  { page: "carePlans", path: "/care-plans", title: "crmsNavCarePlans", hint: "crmsNavCarePlansHint", groups: ["care", "pharmacy", "insurance"] },
-  { page: "approvals", path: "/approvals", title: "crmsNavApprovals", hint: "crmsNavApprovalsHint", groups: ["care", "pharmacy", "insurance"] },
-  { page: "calls", path: "/calls", title: "crmsNavCalls", hint: "crmsNavCallsHint", groups: ["care", "pharmacy", "insurance"] },
-  { page: "targets", path: "/targets", title: "crmsNavTargets", hint: "crmsNavTargetsHint", groups: ["care", "pharmacy", "insurance"] },
-  { page: "reports", path: "/reports", title: "crmsNavReports", hint: "crmsNavReportsHint", groups: ["care", "pharmacy", "insurance"] },
-  { page: "settings", path: "/sales-settings", title: "crmsNavSettings", hint: "crmsNavSettingsHint", groups: ["care", "pharmacy", "insurance"] },
-];
+type ApprovalKindP = "plan" | "discount" | "credit";
+export type ProfileFeatures = {
+  parts: SalesPage[];
+  // a funnel of leads (the pharmacy works with customers instead)
+  funnel: boolean;
+  teams: boolean;
+  assignment: boolean;
+  scoring: boolean;
+  commission: boolean;
+  webform: boolean;
+  approvals: ApprovalKindP[];
+  // a clinic's / hospital's own doctors and departments
+  doctors: boolean;
+  // a lab's referring doctors, a channel tracked (never paid: the medical
+  // council's code forbids paying for a referral)
+  referrers: boolean;
+  // a lab's home-sampling requests (address, preferred time)
+  homeSampling: boolean;
+  kinds: string[];
+};
 
-// a profile's own name for a part (a plan is a quote for a pharmacy or an
-// insurer; a care plan is a membership / an instalment plan)
-const renamed: Partial<Record<SalesGroup, Record<string, string>>> = {
+const CARE_KINDS = ["cosmetic", "dental", "ivf", "surgery", "checkup", "corporate", "other"];
+const CENTRE: ProfileFeatures = {
+  parts: ["pipeline", "inquiries", "plans", "contracts", "carePlans", "approvals", "calls", "targets", "reports", "settings"],
+  funnel: true,
+  teams: true,
+  assignment: true,
+  scoring: true,
+  commission: true,
+  webform: true,
+  approvals: ["plan", "discount", "credit"],
+  doctors: true,
+  referrers: false,
+  homeSampling: false,
+  kinds: CARE_KINDS,
+};
+export const PROFILES: Record<Profile, ProfileFeatures> = {
+  doctor: {
+    ...CENTRE,
+    parts: ["pipeline", "inquiries", "plans", "carePlans", "calls", "targets", "reports", "settings"],
+    teams: false,
+    assignment: false,
+    commission: false,
+    approvals: [],
+    doctors: false,
+  },
+  clinic: CENTRE,
+  hospital: CENTRE,
   pharmacy: {
-    crmsNavPlans: "crmsNavQuotes",
-    crmsNavPlansHint: "crmsNavQuotesHint",
-    crmsNewPlan: "crmsNewQuote",
-    crmsPlanN: "crmsQuoteN",
-    crmsNavCarePlans: "crmsNavMemberships",
-    crmsNavCarePlansHint: "crmsNavMembershipsHint",
-    crmsNewCarePlan: "crmsNewMembership",
+    ...CENTRE,
+    parts: ["carePlans", "contracts", "approvals", "calls", "targets", "reports", "settings"],
+    funnel: false,
+    teams: false,
+    assignment: false,
+    scoring: false,
+    commission: false,
+    webform: false,
+    approvals: ["discount", "credit"],
+    doctors: false,
+    kinds: ["medication", "other"],
+  },
+  paraClinic: {
+    ...CENTRE,
+    parts: ["pipeline", "inquiries", "plans", "contracts", "approvals", "calls", "targets", "reports", "settings"],
+    commission: false,
+    approvals: ["plan", "discount"],
+    doctors: false,
+    referrers: true,
+    homeSampling: true,
+    kinds: ["lab", "imaging", "homeSampling", "checkup", "corporate", "other"],
   },
   insurance: {
-    crmsNavPipeline: "crmsNavPipelineCorp",
-    crmsNavPipelineHint: "crmsNavPipelineCorpHint",
-    crmsNavPlans: "crmsNavQuotes",
-    crmsNavPlansHint: "crmsNavQuotesHint",
-    crmsNewPlan: "crmsNewQuote",
-    crmsPlanN: "crmsQuoteN",
-    crmsNewCarePlan: "crmsNewInstalment",
-    crmsNavCarePlans: "crmsNavInstalments",
-    crmsNavCarePlansHint: "crmsNavInstalmentsHint",
+    ...CENTRE,
+    approvals: ["plan", "discount"],
+    doctors: false,
+    kinds: ["corporate", "group", "supplementary", "other"],
   },
 };
-export const partKey = (group: SalesGroup, key: string) => renamed[group]?.[key] || key;
+
+export const salesParts: { page: SalesPage; path: string; title: string; hint: string }[] = [
+  { page: "pipeline", path: "/pipeline", title: "crmsNavPipeline", hint: "crmsNavPipelineHint" },
+  { page: "inquiries", path: "/inquiries", title: "crmsNavInquiries", hint: "crmsNavInquiriesHint" },
+  { page: "plans", path: "/plans", title: "crmsNavPlans", hint: "crmsNavPlansHint" },
+  { page: "contracts", path: "/contracts", title: "crmsNavContracts", hint: "crmsNavContractsHint" },
+  { page: "carePlans", path: "/care-plans", title: "crmsNavCarePlans", hint: "crmsNavCarePlansHint" },
+  { page: "approvals", path: "/approvals", title: "crmsNavApprovals", hint: "crmsNavApprovalsHint" },
+  { page: "calls", path: "/calls", title: "crmsNavCalls", hint: "crmsNavCallsHint" },
+  { page: "targets", path: "/targets", title: "crmsNavTargets", hint: "crmsNavTargetsHint" },
+  { page: "reports", path: "/reports", title: "crmsNavReports", hint: "crmsNavReportsHint" },
+  { page: "settings", path: "/sales-settings", title: "crmsNavSettings", hint: "crmsNavSettingsHint" },
+];
+
+// each profile's own words: a key read as another key
+const QUOTES = {
+  crmsNavPlans: "crmsNavQuotes",
+  crmsNavPlansHint: "crmsNavQuotesHint",
+  crmsNewPlan: "crmsNewQuote",
+  crmsPlanN: "crmsQuoteN",
+  crmsNoPlans: "crmsNoQuotes",
+  crmsMakePlan: "crmsMakeQuote",
+  crmsPlan: "crmsQuote",
+  crmsDeletePlan: "crmsDeleteQuote",
+};
+const CORP_CONTRACTS = { crmsNavContracts: "crmsNavCorpContracts", crmsNavContractsHint: "crmsNavCorpContractsHint" };
+const WORDS: Record<Profile, Record<string, string>> = {
+  doctor: {},
+  clinic: CORP_CONTRACTS,
+  hospital: CORP_CONTRACTS,
+  pharmacy: {
+    ...QUOTES,
+    crmsPatient: "crmsCustomer",
+    crmsPatientName: "crmsCustomerName",
+    crmsFindPatient: "crmsFindCustomer",
+    crmsNewPatient: "crmsNewCustomer",
+    crmsNavCarePlans: "crmsNavRefills",
+    crmsNavCarePlansHint: "crmsNavRefillsHint",
+    crmsNewCarePlan: "crmsNewRefill",
+    crmsNoCarePlans: "crmsNoRefills",
+    crmsNavContracts: "crmsNavSupplyContracts",
+    crmsNavContractsHint: "crmsNavSupplyContractsHint",
+  },
+  paraClinic: {
+    crmsNavPipeline: "crmsNavPipelineLab",
+    crmsNavPipelineHint: "crmsNavPipelineLabHint",
+    crmsNavInquiries: "crmsNavHomeSampling",
+    crmsNavInquiriesHint: "crmsNavHomeSamplingHint",
+    crmsNewInquiry: "crmsNewHomeSampling",
+    crmsNoInquiries: "crmsNoHomeSampling",
+    crmsNavPlans: "crmsNavEstimates",
+    crmsNavPlansHint: "crmsNavEstimatesHint",
+    crmsNewPlan: "crmsNewEstimate",
+    crmsPlanN: "crmsEstimateN",
+    crmsNoPlans: "crmsNoEstimates",
+    crmsMakePlan: "crmsMakeEstimate",
+    crmsPlan: "crmsEstimate",
+    crmsDeletePlan: "crmsDeleteEstimate",
+    crmsNavContracts: "crmsNavCheckupContracts",
+    crmsNavContractsHint: "crmsNavCheckupContractsHint",
+  },
+  insurance: {
+    ...QUOTES,
+    ...CORP_CONTRACTS,
+    crmsPatient: "crmsClient",
+    crmsPatientName: "crmsClientName",
+    crmsFindPatient: "crmsFindClient",
+    crmsNewPatient: "crmsNewClient",
+    crmsNavPipeline: "crmsNavPipelineCorp",
+    crmsNavPipelineHint: "crmsNavPipelineCorpHint",
+    crmsNavInquiries: "crmsNavCorpInquiries",
+    crmsNavInquiriesHint: "crmsNavCorpInquiriesHint",
+    crmsNewLead: "crmsNewDeal",
+    crmsLeadTitle: "crmsDealTitle",
+    crmsNavCarePlans: "crmsNavInstalments",
+    crmsNavCarePlansHint: "crmsNavInstalmentsHint",
+    crmsNewCarePlan: "crmsNewInstalment",
+    crmsNoCarePlans: "crmsNoInstalments",
+  },
+};
+export const partKey = (profile: Profile | SalesGroup, key: string) => WORDS[(profile as Profile) in WORDS ? (profile as Profile) : "clinic"]?.[key] || key;
+
+// the section's texts in the panel's own words
+export const useSalesText = () => {
+  const t = useCrmText();
+  const { node } = useCrm();
+  const words = WORDS[profileOf(node)];
+  return useCallback((key: string, vars?: string[]) => t(words[key] || key, vars), [t, words]);
+};
+export const useProfile = () => {
+  const { node } = useCrm();
+  const profile = profileOf(node);
+  return { profile, ...PROFILES[profile] };
+};
 
 export type Staff = { _id: string; name: string; role: "owner" | "secretary" };
 export type Stage = { _id: string; name: string; key?: string; sequence: number; probability: number; requiredFields: string[]; requireActivity: boolean };
-export type Pipeline = { _id: string; name: string; isDefault: boolean; sequence: number; stages: Stage[] };
-export type LeadSource = { _id: string; kind: "source" | "lossReason"; name: string; system?: string; active: boolean; sequence: number };
+export type Pipeline = { _id: string; name: string; isDefault: boolean; sequence: number; template?: string; department?: { id?: string; name: string }; stages: Stage[] };
+export type LeadSource = { _id: string; kind: "source" | "lossReason" | "referrer"; name: string; phone?: string; system?: string; active: boolean; sequence: number };
 export type CustomField = {
   _id: string;
   entity: "contact" | "lead";
@@ -92,6 +238,11 @@ export type CustomField = {
   active: boolean;
 };
 export type SalesMeta = {
+  profile?: Profile;
+  templates: { key: string; name: string }[];
+  departments: { _id: string; name: string }[];
+  doctors: { _id: string; name: string; department?: string }[];
+  referrers: LeadSource[];
   staff: Staff[];
   me?: string;
   ownerUser?: string;
@@ -107,7 +258,7 @@ export type LineRef = { kind: "service" | "package" | "item"; id: string };
 export type Line = { _id?: string; title: string; ref?: LineRef | null; qty: number; unitPrice: number; discount: number; taxRate?: number; sessions?: number | null };
 export type MiniContact = { _id: string; name?: string; phone?: string };
 
-export const leadKinds = ["cosmetic", "dental", "ivf", "surgery", "checkup", "corporate", "medication", "other"] as const;
+export const leadKinds = ["cosmetic", "dental", "ivf", "surgery", "checkup", "corporate", "medication", "lab", "imaging", "homeSampling", "supplementary", "group", "other"] as const;
 export type LeadKind = (typeof leadKinds)[number];
 export const leadKindKey = (k?: string) => `crmsKind_${k || "other"}`;
 
@@ -126,6 +277,9 @@ export type Lead = {
   source?: string;
   sourceName?: string;
   assignee?: string;
+  doctor?: { id?: string; name: string } | null;
+  referrer?: string;
+  referrerName?: string;
   note?: string;
   lostReason?: string;
   winReason?: string;
@@ -147,6 +301,8 @@ export type Plan = {
   subject: string;
   contact?: MiniContact | null;
   lead?: string;
+  doctorName?: string;
+  referrerName?: string;
   date: string;
   openTill?: string;
   status: PlanStatus;
@@ -216,6 +372,11 @@ export const useSalesMeta = () => {
     fetcher({ url }).then((res) => {
       const d = res.data || {};
       return {
+        profile: d.profile,
+        templates: asArray<{ key: string; name: string }>(d.templates),
+        departments: asArray<{ _id: string; name: string }>(d.departments),
+        doctors: asArray<{ _id: string; name: string; department?: string }>(d.doctors),
+        referrers: asArray<LeadSource>(d.referrers),
         staff: asArray<Staff>(d.staff),
         me: d.me,
         ownerUser: d.ownerUser,

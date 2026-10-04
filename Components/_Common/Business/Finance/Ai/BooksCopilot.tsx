@@ -9,6 +9,8 @@ import { AiOff, Cited, errorText, isAiOff, useFinAiPost, useFinAiStatus } from "
 
 type Msg = { role: "user" | "assistant"; content: string; sources?: { ref: string; tool: string; link: string }[] };
 
+// the general questions; the server sends the profile's own (a pharmacy
+// asks about expiry and distributors, a doctor about no-shows)
 const SUGGESTIONS = ["faiQ1", "faiQ2", "faiQ3", "faiQ4", "faiQ5"];
 
 // Nexxa's BooksCopilot («از حساب‌هایت بپرس»): a multi-turn chat over the
@@ -62,7 +64,7 @@ const BooksCopilot = () => {
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "0.75rem", paddingBlock: "1rem" }}>
             <p className={classes.muted}>{t("faiCopilotHint")}</p>
             <div className={ai.examples} style={{ justifyContent: "center" }}>
-              {SUGGESTIONS.map((k) => (
+              {(Array.isArray(status?.questions) && status?.questions?.length ? status.questions : SUGGESTIONS).map((k) => (
                 <button key={k} type="button" onClick={() => ask(t(k))}>
                   {t(k)}
                 </button>

@@ -11,8 +11,8 @@ import Link from "@/Components/i18n/Link";
 import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import { useBizFormat } from "../bizShared";
-import { CrmContext, useCrm, useCrmText } from "../Crm/crmShared";
-import { Approval, ApprovalKind, approvalStatusKey, ApprovalStatus, contactName, Plan, SalesMeta, useAction, useList, useNames, useSalesMeta } from "./salesShared";
+import { CrmContext, useCrm } from "../Crm/crmShared";
+import { Approval, ApprovalKind, approvalStatusKey, ApprovalStatus, contactName, Plan, SalesMeta, useAction, useList, useNames, useProfile, useSalesMeta, useSalesText } from "./salesShared";
 import { ContactChoice, ContactPicker } from "./SalesWidgets";
 import { DiscountRequest } from "./SalesPlan";
 
@@ -20,7 +20,7 @@ const DECIDE = "CrmsDecide";
 const NEW_REQ = "CrmsNewRequest";
 
 const RejectForm = ({ onDone }: { onDone: (note: string) => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const [note, setNote] = useState("");
   return (
@@ -49,7 +49,7 @@ const RejectForm = ({ onDone }: { onDone: (note: string) => void }) => {
 };
 
 const CreditRequest = ({ onDone }: { onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [who, setWho] = useState<ContactChoice>({});
@@ -89,7 +89,7 @@ const CreditRequest = ({ onDone }: { onDone: () => void }) => {
 
 // a discount starts from a plan or a draft invoice
 const PickDiscountTarget = ({ onPick }: { onPick: (target: { plan?: string; invoice?: string }) => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const { closePopup } = usePopup();
   const { data: plans } = useList<Plan>("/plans");
@@ -143,7 +143,7 @@ const PickDiscountTarget = ({ onPick }: { onPick: (target: { plan?: string; invo
 };
 
 const ApprovalList = ({ kind, meta }: { kind: ApprovalKind; meta?: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const names = useNames();
   const ctx = useCrm();
@@ -197,7 +197,7 @@ const ApprovalList = ({ kind, meta }: { kind: ApprovalKind; meta?: SalesMeta }) 
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNoRequests")}</p>
         ) : (
-          <Table
+          <Table<Approval>
             data={data || []}
             name={`CrmSalesApprovals_${kind}`}
             renderer={{
@@ -279,15 +279,14 @@ const ApprovalList = ({ kind, meta }: { kind: ApprovalKind; meta?: SalesMeta }) 
 // discount-requests, credit-limit-requests): each walks its approval chain
 // one person at a time, and the last approval applies it.
 const SalesApprovals = () => {
-  const t = useCrmText();
+  const t = useSalesText();
+  const pf = useProfile();
   const { data: meta } = useSalesMeta();
   return (
     <ClientTabSystem
-      items={[
-        { id: "plan", title: t("crmsApKind_plan"), content: <ApprovalList kind="plan" meta={meta} /> },
-        { id: "discount", title: t("crmsApKind_discount"), content: <ApprovalList kind="discount" meta={meta} /> },
-        { id: "credit", title: t("crmsApKind_credit"), content: <ApprovalList kind="credit" meta={meta} /> },
-      ]}
+      items={(["plan", "discount", "credit"] as const)
+        .filter((k) => pf.approvals.includes(k))
+        .map((k) => ({ id: k, title: t(`crmsApKind_${k}`), content: <ApprovalList kind={k} meta={meta} /> }))}
     />
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -221,7 +221,8 @@ const Entries = () => {
 
 // ---------------------------------------------------------------- cheques
 
-const MOVES: Record<string, string[]> = { pending: ["cleared", "bounced", "returned"], bounced: ["cleared", "returned"] };
+// deposited (2026-10, the treasury's cheque moves) moves on like pending
+const MOVES: Record<string, string[]> = { pending: ["cleared", "bounced", "returned"], deposited: ["cleared", "bounced", "returned"], bounced: ["cleared", "returned"] };
 
 const ChequeStatusForm = ({ p, to, onDone }: { p: FinPayment; to: string; onDone: () => unknown }) => {
   const t = useFinText();
@@ -292,7 +293,9 @@ const ChequeStatusForm = ({ p, to, onDone }: { p: FinPayment; to: string; onDone
 
 type ChequeList = { items: FinPayment[]; pendingIn: number; pendingOut: number; overdueIn: number; bouncedIn: number };
 
-const Cheques = () => {
+// the cheque register; the treasury page adds its own moves (deposit,
+// endorse, undo the last move) through extra (2026-10)
+export const Cheques = ({ extra }: { extra?: (p: FinPayment, refresh: () => unknown) => ReactNode } = {}) => {
   const t = useFinText();
   const f = useBizFormat();
   const { api, canWrite } = useFin();
@@ -347,7 +350,7 @@ const Cheques = () => {
           </div>
           <select className={classes.ghost} value={status} onChange={(e) => setStatus(e.target.value)} aria-label={t("status")}>
             <option value="">{t("finAll")}</option>
-            {["pending", "cleared", "bounced", "returned"].map((s) => (
+            {["pending", "deposited", "cleared", "bounced", "returned", "endorsed"].map((s) => (
               <option key={s} value={s}>
                 {t(statusKey(s))}
               </option>
@@ -402,6 +405,7 @@ const Cheques = () => {
                                     {t(`finChqTo${cap(to)}`)}
                                   </button>
                                 ))}
+                                {extra?.(p, () => mutate())}
                               </div>
                             )}
                           </td>

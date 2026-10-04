@@ -518,7 +518,7 @@ export const CrmTimesheet = () => {
         </label>
       </div>
       <div className={classes.tiles}>
-        {[...totals.entries()].map(([u, h]) => (
+        {Array.from(totals.entries()).map(([u, h]) => (
           <div key={u} className={classes.tile}>
             <span className={classes.tileLabel}>{nameOf(u) || "—"}</span>
             <span className={classes.tileValue}>{t("crmeHoursValue", [w.num(h)])}</span>

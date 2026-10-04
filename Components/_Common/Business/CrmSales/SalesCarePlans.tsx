@@ -11,8 +11,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
-import { CrmContext, useCrm, useCrmText } from "../Crm/crmShared";
-import { contactName, dayOf, groupOf, MiniContact, partKey, useAction, useList } from "./salesShared";
+import { CrmContext, useCrm } from "../Crm/crmShared";
+import { contactName, dayOf, MiniContact, useAction, useList, useSalesText } from "./salesShared";
 import { ContactChoice, ContactPicker } from "./SalesWidgets";
 
 const CP_POPUP = "CrmsCarePlan";
@@ -38,8 +38,7 @@ type CarePlan = {
 };
 
 const CarePlanForm = ({ plan, onDone }: { plan?: CarePlan; onDone: () => void }) => {
-  const t = useCrmText();
-  const { node } = useCrm();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [who, setWho] = useState<ContactChoice>(plan?.contact ? { contact: plan.contact } : {});
@@ -63,7 +62,7 @@ const CarePlanForm = ({ plan, onDone }: { plan?: CarePlan; onDone: () => void })
     }
   };
   return (
-    <PopupCard title={t(plan ? "crmsEdit" : partKey(groupOf(node), "crmsNewCarePlan"))} size="wide">
+    <PopupCard title={t(plan ? "crmsEdit" : "crmsNewCarePlan")} size="wide">
       <div className={classes.popup}>
         {!plan && <ContactPicker value={who} onChange={setWho} allowNew={false} />}
         <div className={s.formGrid}>
@@ -126,10 +125,10 @@ const CarePlanForm = ({ plan, onDone }: { plan?: CarePlan; onDone: () => void })
 // every period into the finance invoices; "bill now" is out of turn on
 // purpose and only moves the due date once it has come.
 const SalesCarePlans = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const ctx = useCrm();
-  const { panel, canWrite, node } = ctx;
+  const { panel, canWrite } = ctx;
   const { setPopup } = usePopup();
   const { run, busy } = useAction();
   const [status, setStatus] = useState<"" | CarePlan["status"]>("active");
@@ -159,7 +158,7 @@ const SalesCarePlans = () => {
               {t("crmsRunDue", [f.money(due)])}
             </button>
             <button type="button" className={classes.primary} onClick={() => open()}>
-              {t(partKey(groupOf(node), "crmsNewCarePlan"))}
+              {t("crmsNewCarePlan")}
             </button>
           </div>
         )}
@@ -168,7 +167,7 @@ const SalesCarePlans = () => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNoCarePlans")}</p>
         ) : (
-          <Table
+          <Table<CarePlan>
             data={data || []}
             name="CrmSalesCarePlans"
             renderer={{

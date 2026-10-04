@@ -50,7 +50,7 @@ export const useGet = <T,>(path: string | null, parse: (d: unknown) => T) => {
 };
 export const listOf = <T,>(d: unknown) => asArray<T>(d);
 
-export type Mine = { user: string; isOwner: boolean; inbox: number; quizzesDue: number; goods: boolean };
+export type Mine = { user: string; profile: string; teamSize: number; seeded: boolean; isOwner: boolean; inbox: number; quizzesDue: number; goods: boolean };
 export const useMine = () => useGet<Mine | null>("/service/mine", (d) => (d && typeof d === "object" ? (d as Mine) : null));
 
 // the team as <option>s

@@ -341,3 +341,36 @@
   font-size: 0.6875rem;
   color: var(--gray10);
 }
+
+/* the assistant's mark keeps its size wherever it sits */
+.off svg,
+.draftHead svg,
+.insightHead svg,
+.aiButton svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.entryRow input,
+.entryRow textarea,
+.textarea,
+.draft select,
+.ocrGrid select {
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--gray4);
+  background: var(--glassStrong);
+  color: var(--gray13);
+  font: inherit;
+  font-size: 0.875rem;
+}
+.textarea {
+  padding: 0.625rem 0.75rem;
+}
+.entryRow input:focus,
+.textarea:focus {
+  outline: none;
+  box-shadow: var(--focusRing);
+}

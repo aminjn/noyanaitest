@@ -77,8 +77,8 @@ const PharmacyPanelSidebar = () => {
         show: hasAccess(),
         target: "secretary",
       },
-      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter" }),
-      crmSection({ hasAccess, group: "groupCenter" }),
+      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "pharmacy" }),
+      crmSection({ hasAccess, group: "groupCenter", profile: "pharmacy" }),
       {
         title: "licenses",
         icon: <CartIcon />,

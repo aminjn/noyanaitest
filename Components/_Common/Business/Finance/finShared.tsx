@@ -42,7 +42,7 @@ export const insurerKey = (k?: string) =>
 
 export type FinMoney = {
   _id: string;
-  kind: "cash" | "bank" | "pos" | "wallet";
+  kind: "cash" | "bank" | "pos" | "wallet" | "petty";
   name: string;
   code: string;
   role?: string;
@@ -100,7 +100,8 @@ export type FinCheque = {
   branch?: string;
   sayad?: string;
   dueDate: string;
-  status: "pending" | "cleared" | "bounced" | "returned";
+  status: "pending" | "deposited" | "cleared" | "bounced" | "returned" | "endorsed";
+  endorsedToName?: string;
   statusAt?: string;
   history?: { status: string; at: string; note?: string }[];
 };
@@ -270,9 +271,11 @@ export const statusKey = (s: string) =>
     cleared: "finChqCleared",
     bounced: "finChqBounced",
     returned: "finChqReturned",
+    deposited: "accChqDeposited",
+    endorsed: "accChqEndorsed",
   })[s] || s;
 
 export const methodKey = (m: string) =>
   ({ cash: "finMethodCash", card: "finMethodCard", transfer: "finMethodTransfer", cheque: "finMethodCheque", wallet: "finMethodWallet" })[m] || m;
 
-export const moneyKindKey = (k: string) => ({ cash: "finKindCash", bank: "finKindBank", pos: "finKindPos", wallet: "finKindWallet" })[k] || k;
+export const moneyKindKey = (k: string) => ({ cash: "finKindCash", bank: "finKindBank", pos: "finKindPos", wallet: "finKindWallet", petty: "accKindPetty" })[k] || k;

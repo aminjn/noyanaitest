@@ -12,8 +12,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
-import { CrmContext, phoneText, useCrm, useCrmText, usePercent } from "../Crm/crmShared";
-import { dayOf, SalesMeta, useAction, useList, useNames, useSalesMeta } from "./salesShared";
+import { CrmContext, phoneText, useCrm, usePercent } from "../Crm/crmShared";
+import { dayOf, SalesMeta, useAction, useList, useNames, useProfile, useSalesMeta, useSalesText } from "./salesShared";
 
 const GOAL_POPUP = "CrmsGoal";
 const COMM_POPUP = "CrmsCommission";
@@ -25,6 +25,7 @@ type Goal = {
   _id: string;
   title: string;
   assignee?: string;
+  doctorName?: string;
   metric: (typeof metrics)[number];
   target: number;
   period: (typeof periods)[number];
@@ -39,7 +40,8 @@ type Goal = {
 type Tier = { from: number; pct: number };
 type Rule = {
   _id: string;
-  user: string;
+  user?: string;
+  doctorName?: string;
   title: string;
   scope: "self" | "team";
   mode: "flat" | "tiered";
@@ -60,13 +62,15 @@ type ServiceRow = { kind: string; id: string; title: string; price: number };
 const num = (v: string) => Math.max(0, Number(v.replace(/[^\d.]/g, "")) || 0);
 
 const GoalForm = ({ meta, goal, onDone }: { meta?: SalesMeta; goal?: Goal; onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const { data: catalog } = useList<ServiceRow>("/sales/catalog");
   const services = (catalog || []).filter((c) => c.kind === "service" || c.kind === "package");
   const [title, setTitle] = useState(goal?.title || "");
-  const [assignee, setAssignee] = useState(goal?.assignee || "");
+  const pf = useProfile();
+  // a staff member ("u:<id>") or one of the centre's doctors ("d:<name>")
+  const [assignee, setAssignee] = useState(goal?.assignee ? `u:${goal.assignee}` : goal?.doctorName ? `d:${goal.doctorName}` : "");
   const [metric, setMetric] = useState<Goal["metric"]>(goal?.metric || "wonValue");
   const [target, setTarget] = useState(goal ? String(goal.target) : "");
   const [period, setPeriod] = useState<Goal["period"]>(goal?.period || "month");
@@ -74,7 +78,7 @@ const GoalForm = ({ meta, goal, onDone }: { meta?: SalesMeta; goal?: Goal; onDon
   const [endDate, setEnd] = useState(goal ? dayOf(goal.endDate) : "");
   const [lines, setLines] = useState(goal?.lines || []);
   const save = async () => {
-    const payload = { title, assignee: assignee || null, metric, target: num(target), period, startDate, endDate: endDate || null, lines };
+    const payload = { title, assignee: assignee.startsWith("u:") ? assignee.slice(2) : null, doctorName: assignee.startsWith("d:") ? assignee.slice(2) : "", metric, target: num(target), period, startDate, endDate: endDate || null, lines };
     if (await run(goal ? "PATCH" : "POST", goal ? `/goals/${goal._id}` : "/goals", payload)) {
       closePopup(GOAL_POPUP);
       onDone();
@@ -92,11 +96,24 @@ const GoalForm = ({ meta, goal, onDone }: { meta?: SalesMeta; goal?: Goal; onDon
             {t("crmsGoalFor")}
             <select value={assignee} onChange={(e) => setAssignee(e.target.value)}>
               <option value="">{t("crmsWholeCentre")}</option>
-              {meta?.staff.map((m) => (
-                <option key={m._id} value={m._id}>
-                  {m.name}
-                </option>
-              ))}
+              {(pf.teams || pf.assignment) && (
+                <optgroup label={t("crmsStaff")}>
+                  {meta?.staff.map((m) => (
+                    <option key={m._id} value={`u:${m._id}`}>
+                      {m.name}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+              {pf.doctors && !!meta?.doctors.length && (
+                <optgroup label={t("crmsDoctors")}>
+                  {meta.doctors.map((d) => (
+                    <option key={d._id} value={`d:${d.name}`}>
+                      {d.name}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </label>
           <label className={classes.field}>
@@ -179,7 +196,7 @@ const GoalForm = ({ meta, goal, onDone }: { meta?: SalesMeta; goal?: Goal; onDon
 };
 
 const Goals = ({ meta }: { meta?: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const pct = usePercent();
   const names = useNames();
@@ -213,7 +230,7 @@ const Goals = ({ meta }: { meta?: SalesMeta }) => {
                     <span className={`${classes.badge} ${g.behind ? crm.badgeWarn : crm.badgeOk}`}>{t(g.behind ? "crmsBehind" : "crmsOnTrack")}</span>
                   </div>
                   <span className={classes.muted}>
-                    {t(`crmsMetric_${g.metric}`)} · {g.assignee ? names.staff(meta, g.assignee) : t("crmsWholeCentre")} · {f.date(g.startDate)} – {f.date(g.endDate)}
+                    {t(`crmsMetric_${g.metric}`)} · {g.assignee ? names.staff(meta, g.assignee) : g.doctorName || t("crmsWholeCentre")} · {f.date(g.startDate)} – {f.date(g.endDate)}
                   </span>
                   <div className={s.progress} role="progressbar" aria-valuenow={g.pct} aria-valuemin={0} aria-valuemax={100}>
                     <div className={`${s.progressBar} ${g.behind ? s.progressBehind : ""}`} style={{ width: `${Math.min(100, g.pct)}%` }} />
@@ -250,7 +267,7 @@ const Goals = ({ meta }: { meta?: SalesMeta }) => {
 };
 
 const TierEditor = ({ tiers, onChange }: { tiers: Tier[]; onChange: (t: Tier[]) => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   return (
     <div className={s.lines}>
       {tiers.map((x, i) => (
@@ -271,7 +288,7 @@ const TierEditor = ({ tiers, onChange }: { tiers: Tier[]; onChange: (t: Tier[]) 
 };
 
 const CommissionForm = ({ meta, rule, onDone }: { meta?: SalesMeta; rule?: Rule; onDone: () => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [r, setR] = useState<Omit<Rule, "_id" | "result">>(
@@ -292,8 +309,9 @@ const CommissionForm = ({ meta, rule, onDone }: { meta?: SalesMeta; rule?: Rule;
     },
   );
   const set = (p: Partial<Rule>) => setR({ ...r, ...p });
+  const pf = useProfile();
   const save = async () => {
-    const payload = { ...r, periodStart: dayOf(r.periodStart), periodEnd: dayOf(r.periodEnd) || null };
+    const payload = { ...r, user: r.user || null, doctorName: r.user ? "" : r.doctorName || "", periodStart: dayOf(r.periodStart), periodEnd: dayOf(r.periodEnd) || null };
     if (await run(rule ? "PATCH" : "POST", rule ? `/commissions/${rule._id}` : "/commissions", payload)) {
       closePopup(COMM_POPUP);
       onDone();
@@ -309,12 +327,26 @@ const CommissionForm = ({ meta, rule, onDone }: { meta?: SalesMeta; rule?: Rule;
           </label>
           <label className={classes.field}>
             {t("crmsStaffMember")}
-            <select value={r.user} onChange={(e) => set({ user: e.target.value })}>
-              {meta?.staff.map((m) => (
-                <option key={m._id} value={m._id}>
-                  {m.name}
-                </option>
-              ))}
+            <select
+              value={r.user ? `u:${r.user}` : r.doctorName ? `d:${r.doctorName}` : ""}
+              onChange={(e) => (e.target.value.startsWith("d:") ? set({ user: undefined, doctorName: e.target.value.slice(2), scope: "self" }) : set({ user: e.target.value.slice(2), doctorName: undefined }))}
+            >
+              <optgroup label={t("crmsStaff")}>
+                {meta?.staff.map((m) => (
+                  <option key={m._id} value={`u:${m._id}`}>
+                    {m.name}
+                  </option>
+                ))}
+              </optgroup>
+              {pf.doctors && !!meta?.doctors.length && (
+                <optgroup label={t("crmsDoctors")}>
+                  {meta.doctors.map((d) => (
+                    <option key={d._id} value={`d:${d.name}`}>
+                      {d.name}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </label>
           <label className={classes.field}>
@@ -389,7 +421,7 @@ const CommissionForm = ({ meta, rule, onDone }: { meta?: SalesMeta; rule?: Rule;
           {t("crmsActive")}
         </label>
         <div className={classes.actions}>
-          <button type="button" className={classes.primary} disabled={!!busy || !r.title.trim() || !r.user} onClick={save}>
+          <button type="button" className={classes.primary} disabled={!!busy || !r.title.trim() || (!r.user && !r.doctorName)} onClick={save}>
             {t("crmsSave")}
           </button>
         </div>
@@ -399,7 +431,7 @@ const CommissionForm = ({ meta, rule, onDone }: { meta?: SalesMeta; rule?: Rule;
 };
 
 const Commissions = ({ meta }: { meta?: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const names = useNames();
   const ctx = useCrm();
@@ -422,12 +454,12 @@ const Commissions = ({ meta }: { meta?: SalesMeta }) => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNoCommissions")}</p>
         ) : (
-          <Table
+          <Table<Rule>
             data={data || []}
             name="CrmSalesCommissions"
             renderer={{
               title: { name: t("crmsName"), filter: "Text", value: (r) => r.title },
-              user: { name: t("crmsStaffMember"), filter: "Set", value: (r) => names.staff(meta, r.user) },
+              user: { name: t("crmsStaffMember"), filter: "Set", value: (r) => (r.user ? names.staff(meta, r.user) : r.doctorName || "—") },
               scope: { name: t("crmsScope"), filter: "Set", value: (r) => t(`crmsScope_${r.scope}`) },
               period: { name: t("crmsPeriod"), value: (r) => `${f.date(r.periodStart)} – ${f.date(r.periodEnd)}` },
               salesBase: { name: t("crmsSalesBase"), filter: "Number", value: (r) => r.result?.salesBase || 0, component: (r) => <>{f.money(r.result?.salesBase)}</> },
@@ -466,7 +498,7 @@ const Commissions = ({ meta }: { meta?: SalesMeta }) => {
 };
 
 const DayPlan = ({ meta }: { meta?: SalesMeta }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const { panel, canWrite } = useCrm();
   const { run, busy } = useAction();
@@ -547,14 +579,15 @@ const DayPlan = ({ meta }: { meta?: SalesMeta }) => {
 // plan): progress from the real records against the time already gone,
 // commission from the invoices and receipts each person brought in.
 const SalesTargets = () => {
-  const t = useCrmText();
+  const t = useSalesText();
+  const pf = useProfile();
   const { data: meta } = useSalesMeta();
   return (
     <ClientTabSystem
       items={[
         { id: "plan", title: t("crmsTabDayPlan"), content: <DayPlan meta={meta} /> },
         { id: "goals", title: t("crmsTabGoals"), content: <Goals meta={meta} /> },
-        { id: "commission", title: t("crmsTabCommission"), content: <Commissions meta={meta} /> },
+        { id: "commission", title: t("crmsTabCommission"), content: <Commissions meta={meta} />, exclude: !pf.commission },
       ]}
     />
   );

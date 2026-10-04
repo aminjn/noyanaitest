@@ -11,16 +11,102 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { useBizFormat } from "../bizShared";
-import { useCrm, useCrmText } from "../Crm/crmShared";
-import { contactName, dayOf, useAction, useList } from "./salesShared";
+import { useCrm } from "../Crm/crmShared";
+import { contactName, dayOf, useAction, useList, useSalesText } from "./salesShared";
 import { CopyLink } from "./SalesWidgets";
 import { Block, Contract, contractStateKey } from "./SalesContracts";
+
+// the people a corporate contract covers: added one by one or pasted
+// ("name, mobile, national id, relation" a line); each becomes a contact
+const Members = ({ c, onChanged }: { c: Contract; onChanged: () => void }) => {
+  const t = useSalesText();
+  const f = useBizFormat();
+  const { canWrite } = useCrm();
+  const { run, busy } = useAction();
+  const [paste, setPaste] = useState("");
+  const rows = c.members || [];
+  const add = async () => {
+    const members = paste
+      .split(/\r?\n/)
+      .map((line) => line.split(/[,،\t]/).map((x) => x.trim()))
+      .filter((x) => x[0])
+      .map(([name, phone, nationalId, relation]) => ({ name, phone, nationalId, relation }));
+    if (!members.length) return;
+    if (await run("POST", `/contracts/${c._id}/members`, { members })) {
+      setPaste("");
+      onChanged();
+    }
+  };
+  return (
+    <section className={classes.card}>
+      <h3 className={classes.cardTitle}>
+        {t("crmsMembers")} · {f.money(rows.length)}
+      </h3>
+      {rows.length > 0 && (
+        <div className={classes.tableWrap}>
+          <table className={classes.table}>
+            <thead>
+              <tr>
+                <th>{t("crmsName")}</th>
+                <th>{t("crmsMobile")}</th>
+                <th>{t("crmsNationalId")}</th>
+                <th>{t("crmsRelation")}</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {rows.slice(0, 500).map((m) => (
+                <tr key={m._id}>
+                  <td>{m.name}</td>
+                  <td>
+                    <bdi dir="ltr">{m.phone || ""}</bdi>
+                  </td>
+                  <td>
+                    <bdi dir="ltr">{m.nationalId || ""}</bdi>
+                  </td>
+                  <td>{m.relation || ""}</td>
+                  <td>
+                    {canWrite && (
+                      <button
+                        type="button"
+                        className={crm.linkDanger}
+                        disabled={!!busy}
+                        onClick={async () => {
+                          if (await run("DELETE", `/contracts/${c._id}/members/${m._id}`, undefined, { quiet: true })) onChanged();
+                        }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {canWrite && (
+        <>
+          <label className={classes.field}>
+            {t("crmsPasteMembers")}
+            <textarea value={paste} onChange={(e) => setPaste(e.target.value)} rows={4} placeholder={t("crmsPasteMembersHint")} />
+          </label>
+          <div className={classes.actions}>
+            <button type="button" className={classes.ghost} disabled={!!busy || !paste.trim()} onClick={add}>
+              {t("crmsAddMembers")}
+            </button>
+          </div>
+        </>
+      )}
+    </section>
+  );
+};
 
 // One contract (Nexxa crm/contracts/[id]): its terms and text (fixed once
 // signed), the signing link for the other side, in-person signing, state
 // changes, the invoice it becomes - once - and "keep as a template".
 const SalesContract = ({ id }: { id: string }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const router = useRouter();
   const { api, panel, canWrite } = useCrm();
@@ -168,6 +254,7 @@ const SalesContract = ({ id }: { id: string }) => {
             </div>
           )}
         </section>
+        {!c.contact && <Members c={c} onChanged={() => mutate()} />}
       </div>
       <div className={s.stack}>
         <section className={classes.card}>

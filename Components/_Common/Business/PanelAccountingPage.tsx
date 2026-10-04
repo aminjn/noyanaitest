@@ -35,6 +35,7 @@ const PanelAccountingPage = ({
       <AccountingPage
         api={`/${node}/biz`}
         canWrite={hasAccess("manageAccounting")}
+      canApprove={hasAccess("approveVouchers")}
       />
     </>
   );

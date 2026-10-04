@@ -15,8 +15,8 @@ import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
-import { CrmContext, useCrm, useCrmText } from "../Crm/crmShared";
-import { contactName, MiniContact, useAction, useList } from "./salesShared";
+import { CrmContext, useCrm } from "../Crm/crmShared";
+import { contactName, MiniContact, useAction, useList, useSalesText } from "./salesShared";
 import { ContactChoice, ContactPicker, contactPayload } from "./SalesWidgets";
 
 const NEW_CONTRACT = "CrmsNewContract";
@@ -41,6 +41,7 @@ export type Contract = {
   content?: string;
   note?: string;
   invoice?: string;
+  members?: { _id: string; name: string; phone?: string; nationalId?: string; relation?: string; contact?: string }[];
   link?: string;
   invoiceInfo?: { number: number; status: string; total: number; paid: number } | null;
 };
@@ -49,7 +50,7 @@ export const contractStateKey: Record<ContractState, string> = { draft: "crmsCtD
 export const partyKinds = ["company", "insurer", "person"] as const;
 
 const NewContract = ({ types, templates, onDone }: { types: Block[]; templates: Block[]; onDone: (id: string) => void }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const [subject, setSubject] = useState("");
@@ -165,7 +166,7 @@ const NewContract = ({ types, templates, onDone }: { types: Block[]; templates: 
 
 // the contract library: types (names only), reusable clauses, whole texts
 const Blocks = ({ kind }: { kind: Block["kind"] }) => {
-  const t = useCrmText();
+  const t = useSalesText();
   const ctx = useCrm();
   const { api, canWrite } = ctx;
   const { setPopup, closePopup } = usePopup();
@@ -209,7 +210,7 @@ const Blocks = ({ kind }: { kind: Block["kind"] }) => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNothingYet")}</p>
         ) : (
-          <Table
+          <Table<Block>
             data={data || []}
             name={`CrmSalesBlocks_${kind}`}
             renderer={{
@@ -247,7 +248,7 @@ const Blocks = ({ kind }: { kind: Block["kind"] }) => {
 };
 
 const ContractList = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   const f = useBizFormat();
   const router = useRouter();
   const ctx = useCrm();
@@ -284,7 +285,7 @@ const ContractList = () => {
         {data && !data.length ? (
           <p className={classes.empty}>{t("crmsNoContracts")}</p>
         ) : (
-          <Table
+          <Table<Contract>
             data={data || []}
             name="CrmSalesContracts"
             renderer={{
@@ -318,7 +319,7 @@ const ContractList = () => {
 // library): the contracts, their types, reusable clauses and templates -
 // one page, its parts as tabs.
 const SalesContracts = () => {
-  const t = useCrmText();
+  const t = useSalesText();
   return (
     <ClientTabSystem
       items={[
