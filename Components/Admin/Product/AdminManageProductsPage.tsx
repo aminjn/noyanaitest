@@ -36,6 +36,7 @@ import { IParaClinic } from "@/Components/Layout/ParaClinicPanelLayout";
 import OrderEditor from "../UI/OrderEditor";
 import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
 
 export type ProductPopulation = Population<{
   Category: ProductCategoryPopulation;
@@ -237,7 +238,16 @@ const AdminManageProductsPage = () => {
               isActive: {
                 name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
+                component: (node) => (
+                  // one click switches it on or off
+                  <PublishToggle
+                    modelName="product"
+                    field="isActive"
+                    _id={node._id}
+                    value={!!node.isActive}
+                    mutate={mutate}
+                  />
+                ),
                 filter: "Set",
               },
               order: {

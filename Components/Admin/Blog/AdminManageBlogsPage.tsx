@@ -26,6 +26,13 @@ import {
 } from "../BlogTag/AdminManageBlogTgasPage";
 import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import PublishToggle from "../UI/PublishToggle";
+import CheckIcon from "@/Components/Icons/CheckIcon";
+import CloseIcon from "@/Components/Icons/CloseIcon";
+import useNotification from "@/Components/Hooks/useNotification";
+import { moderate, RejectReasonPopup } from "../Support/moderation";
 
 export type BlogCategoryPopulation = Population<Record<never, never>>;
 
@@ -59,6 +66,9 @@ export interface IBlog<
   // Those posts always come in unpublished and stay that way until an admin
   // reviews and publishes them here.
   authorType?: "doctor" | "clinic" | "pharmacy" | "insurance" | "paraClinic";
+  // the review of a submitted post (none on the admin's own posts)
+  reviewStatus?: "pending" | "approved" | "rejected";
+  rejectReason?: string;
   readTime?: string;
   related: T["RelatedPopulated"] extends BlogPopulation ? IBlog[] : string[];
   thisWeekSpecial: boolean;
@@ -90,6 +100,21 @@ const authorTypeLabels: Record<string, string> = {
   },
 };
 
+// a provider's post the admin hasn't decided yet (the same rule as the
+// backend's blogAwaitingReviewFilter, which feeds the inbox)
+const awaitsReview = (node: IBlog) =>
+  !!node.authorType &&
+  !node.published &&
+  node.reviewStatus !== "approved" &&
+  node.reviewStatus !== "rejected";
+
+const reviewLabel = (node: IBlog) => {
+  if (!node.authorType) return ta("ادمین");
+  if (awaitsReview(node)) return ta("در انتظار بررسی");
+  if (node.reviewStatus === "rejected") return ta("رد شده");
+  return ta("تایید شده");
+};
+
 const AdminManageBlogsPage = () => {
   const { data, error, mutate } = useSWR<
     IBlog<{
@@ -104,14 +129,41 @@ const AdminManageBlogsPage = () => {
 
   const { setPopup } = usePopup();
   const push = useProgress();
+  const pushNotification = useNotification();
+  // the inbox's "see all" for submitted articles opens ?review=pending
+  const reviewOnly = useSearchParams()?.get("review") === "pending";
+  const rows = useMemo(
+    () =>
+      (Array.isArray(data) ? data : []).filter(
+        (node) => !reviewOnly || awaitsReview(node),
+      ),
+    [data, reviewOnly],
+  );
+  const canModerate = hasAccess("Blog", "update");
+  const approve = async (ids: string[]) => {
+    try {
+      await moderate("blogs", ids, "Approved");
+      await mutate();
+    } catch (err) {
+      pushNotification((err as Error).message, "Error");
+    }
+  };
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
           title={ta("مقالات")}
-          actions={
-            hasAccess("Blog", "write")
+          actions={[
+            ...(reviewOnly
+              ? [
+                  {
+                    title: ta("همه‌ی مقاله‌ها"),
+                    action: () => push(adminPath("/blog")),
+                  },
+                ]
+              : []),
+            ...(hasAccess("Blog", "write")
               ? [
                   {
                     title: ta("جدید"),
@@ -119,11 +171,11 @@ const AdminManageBlogsPage = () => {
                     action: () => push(adminPath("/blog/new")),
                   },
                 ]
-              : undefined
-          }
+              : []),
+          ]}
         >
           <Table
-            data={data}
+            data={rows}
             renderer={{
               title: {
                 name: ta("عنوان"),
@@ -137,14 +189,38 @@ const AdminManageBlogsPage = () => {
               },
               published: {
                 name: ta("انتشار"),
-                value: (node) => booleanToValue[`${node.published}`],
+                value: (node) => booleanToValue[`${!!node.published}`],
                 filter: "Set",
-                component: (node) => <BooleanToIcon value={node.published} />,
+                // publishing a submitted post approves it (backend hook)
+                component: (node) => (
+                  <PublishToggle
+                    modelName="blog"
+                    _id={node._id}
+                    value={!!node.published}
+                    mutate={mutate}
+                    disabled={!canModerate}
+                  />
+                ),
+              },
+              review: {
+                name: ta("بررسی"),
+                value: (node) => reviewLabel(node),
+                filter: "Set",
+                component: (node) => (
+                  <span title={node.rejectReason || undefined}>
+                    {reviewLabel(node)}
+                    {node.reviewStatus === "rejected" && node.rejectReason
+                      ? ` (${node.rejectReason})`
+                      : ""}
+                  </span>
+                ),
               },
               category: {
                 name: ta("دسته‌بندی"),
                 value: (node) =>
-                  node.category?.title || ta("بدون نام") || ta("ندارد"),
+                  node.category
+                    ? node.category.title || ta("بدون نام")
+                    : ta("ندارد"),
                 filter: "Multi",
                 component: (node) =>
                   node.category ? (
@@ -205,6 +281,35 @@ const AdminManageBlogsPage = () => {
                 name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
+                    {canModerate && awaitsReview(node) && (
+                      <IconButton
+                        variant="Success"
+                        title={ta("تایید و انتشار")}
+                        onClick={() => approve([node._id])}
+                      >
+                        <CheckIcon />
+                      </IconButton>
+                    )}
+                    {canModerate &&
+                      !!node.authorType &&
+                      node.reviewStatus !== "rejected" && (
+                        <IconButton
+                          variant="Neutral"
+                          title={ta("رد با ذکر دلیل")}
+                          onClick={() =>
+                            setPopup(
+                              "RejectReason",
+                              <RejectReasonPopup
+                                kind="blogs"
+                                ids={[node._id]}
+                                onDone={mutate}
+                              />,
+                            )
+                          }
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      )}
                     {hasAccess("Blog", "readOne") && (
                       <IconLink
                         href={adminPath(`/blog/${node._id}`)}

@@ -27,6 +27,7 @@ import OrderEditor from "../UI/OrderEditor";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
 
 export type FaqPopulation = Population<{ Category: FaqCategoryPopulation }>;
 
@@ -169,7 +170,16 @@ const AdminManageFaqsPage = () => {
                 name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.isActive}`],
                 filter: "Set",
-                component: (node) => <BooleanToIcon value={node.isActive} />,
+                component: (node) => (
+                  // one click switches it on or off
+                  <PublishToggle
+                    modelName="faq"
+                    field="isActive"
+                    _id={node._id}
+                    value={!!node.isActive}
+                    mutate={mutate}
+                  />
+                ),
               },
               isHome: {
                 name: ta("نمایش در خانه"),

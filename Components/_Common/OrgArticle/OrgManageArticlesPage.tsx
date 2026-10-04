@@ -1,6 +1,11 @@
 "use client";
 import useSWR from "swr";
-import { IArticle, OrgArticleKind, orgArticleConfig } from "./orgArticle";
+import {
+  articleStatusOf,
+  IArticle,
+  OrgArticleKind,
+  orgArticleConfig,
+} from "./orgArticle";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
@@ -79,16 +84,15 @@ const OrgManageArticlesPage = ({ kind }: { kind: OrgArticleKind }) => {
               },
               published: {
                 name: getContent("publishStatus"),
-                value: (node) =>
-                  node.published
-                    ? getContent("articlePublished")
-                    : getContent("articlePendingReview"),
+                value: (node) => articleStatusOf(node, getContent),
                 filter: "Set",
+                // a rejected post says why (and goes back to review once edited)
                 component: (node) => (
                   <span>
-                    {node.published
-                      ? getContent("articlePublished")
-                      : getContent("articlePendingReview")}
+                    {articleStatusOf(node, getContent)}
+                    {node.reviewStatus === "rejected" && !!node.rejectReason
+                      ? ` - ${getContent("reason")}: ${node.rejectReason}`
+                      : ""}
                   </span>
                 ),
               },

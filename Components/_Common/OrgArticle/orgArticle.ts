@@ -1,5 +1,6 @@
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { MongoDoc } from "@/Components/Hooks/useUser";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 
 // One article manager for every organisation panel (clinic, hospital,
 // pharmacy, paraclinic, insurance): same backend (/blog/<kind>), same
@@ -27,6 +28,21 @@ export interface IArticle extends MongoDoc {
   readTime?: string;
   slug?: string;
   published: boolean;
+  // the admin's review: a rejected post carries the reason
+  reviewStatus?: "pending" | "approved" | "rejected";
+  rejectReason?: string;
   category?: IArticleCategory | string;
   createdAt?: string;
 }
+
+// published / rejected / waiting for the admin's review (every panel's
+// article list, the doctor's too)
+export const articleStatusOf = (
+  node: { published?: boolean; reviewStatus?: string },
+  getContent: (key: ContentKey, vars?: string[]) => string,
+) =>
+  node.published
+    ? getContent("articlePublished")
+    : node.reviewStatus === "rejected"
+      ? getContent("articleRejected" as ContentKey)
+      : getContent("articlePendingReview");

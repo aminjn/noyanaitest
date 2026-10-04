@@ -32,6 +32,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
 
 export type ProductPackagePopulation = Population<{
   Owner: PharmacyPopulation;
@@ -113,7 +114,16 @@ const AdminManageProductPackagesPage = () => {
         isActive: {
           name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
-          component: (node) => <BooleanToIcon value={node.isActive} />,
+          component: (node) => (
+                  // one click switches it on or off
+                  <PublishToggle
+                    modelName="productPackage"
+                    field="isActive"
+                    _id={node._id}
+                    value={!!node.isActive}
+                    mutate={mutate}
+                  />
+                ),
           filter: "Set",
         },
         order: {

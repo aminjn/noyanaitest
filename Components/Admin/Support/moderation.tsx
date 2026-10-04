@@ -15,7 +15,8 @@ import classes from "./support.module.css";
 // once; a rejection always carries its reason, stored on the record.
 // Backend: POST /admin/support/<kind>/moderate.
 
-export type ModerationKind = "comments" | "doctorfeedback";
+// blogs: a provider's submitted article (approve = publish)
+export type ModerationKind = "comments" | "doctorfeedback" | "blogs";
 export type ModerationStatus = "Pending" | "Approved" | "Rejected";
 
 const num = adminNumberFormat();
