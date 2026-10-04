@@ -1,14 +1,6 @@
 "use client";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
-import useSWR from "swr";
-import classes from "./AdminManageSpecialityPage.module.css";
-import { API } from "@/Components/config";
 import { ISpeciality } from "./AdminManageSpecialitiesPage";
-import { fetcher } from "@/Components/helpers/fetcher";
-import HandleLoading from "../UI/HandleLoading";
-import WithTitle from "../UI/WithTitle";
-import TabSystem from "../UI/TabSystem";
-import CreateForm from "../UI/CreateForm";
 import InfoIcon from "@/Components/Icons/InfoIcon";
 import usePopup from "@/Components/Hooks/usePopup";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -18,97 +10,72 @@ import { useParams } from "next/navigation";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 
+// one form for a speciality, new (`/speciality/new`) or existing
+// (Components/Admin/UI/AdminRecordEditor). The slug is generated from the
+// name by the backend job when left empty.
 const AdminManageSpecialityPage = () => {
-  const params = useParams<{ nodeId: string }>();
-  const { data, error, mutate } = useSWR<ISpeciality>(
-    params ? `${API}/auto/speciality/${params.nodeId}` : null,
-    (url: string) => fetcher({ url }).then((res) => res.data.data),
-  );
-
+  const { nodeId } = useParams<{ nodeId: string }>();
   const { setPopup } = usePopup();
-
   const push = useProgress();
-
   const hasAccess = useAccessLevel();
 
   return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <WithTitle
-          title={data.name || ta("بدون نام")}
-          actions={
-            hasAccess("Sepciality", "delete")
-              ? [
-                  {
-                    title: ta("حذف"),
-                    danger: true,
-                    action: () =>
-                      setPopup(
-                        "DeleteSpeciality",
-                        <DeleteSpecialityPopup
-                          node={data}
-                          mutate={() => push(adminPath("/speciality"))}
-                        />,
-                      ),
-                  },
-                ]
-              : undefined
-          }
-        >
-          <TabSystem
-            name="AdminManageSpeciality"
-            items={[
+    <AdminRecordEditor<ISpeciality>
+      segment="speciality"
+      path="/speciality"
+      nodeId={nodeId}
+      newTitle={ta("تخصص جدید")}
+      titleOf={(node) => node.name || ""}
+      readOnly={nodeId !== "new" && !hasAccess("Sepciality", "update")}
+      actions={(node) =>
+        hasAccess("Sepciality", "delete")
+          ? [
               {
-                title: ta("جزئیات"),
-                id: "Info",
-                content: (
-                  <CreateForm
-                    readOnly={!hasAccess("Sepciality", "update")}
-                    defaultValue={data}
-                    renderer={{
-                      name: { type: "text", title: ta("نام") },
-                      slug: { type: "text", title: ta("اسلاگ") },
-                      summary: { type: "text", title: ta("خلاصه") },
-                      image: { type: "image", title: ta("تصویر") },
-                      order: { type: "number", title: ta("رتبه") },
-                      isHome: { type: "bool", title: ta("نمایش در خانه") },
-                      active: { type: "bool", title: ta("فعال") },
-                      description: { type: "rtf", title: ta("توضیحات") },
-                    }}
-                    hookProps={{
-                      path: `${API}/auto/speciality/${data._id}`,
-                      method: "POST",
-                      successCb: () => {
-                        mutate();
-                      },
-                    }}
-                    styleManaged
-                  />
-                ),
-                icon: <InfoIcon />,
+                title: ta("حذف"),
+                danger: true,
+                action: () =>
+                  setPopup(
+                    "DeleteSpeciality",
+                    <DeleteSpecialityPopup
+                      node={node}
+                      mutate={() => push(adminPath("/speciality"))}
+                    />,
+                  ),
               },
-              {
-                title: ta("سئو"),
-                id: "Meta",
-                icon: <InfoIcon />,
-                content: (
-                  <PageMetaEditor
-                    resourceType="/speciality/[slug]"
-                    slug={data.slug}
-                  />
-                ),
-              },
-              {
-                id: "translations",
-                title: ta("ترجمه‌ها"),
-                content: <AdminContentTranslationPage segment="speciality" />,
-              },
-            ]}
-          />
-        </WithTitle>
-      )}
-    </HandleLoading>
+            ]
+          : []
+      }
+      renderer={{
+        name: { type: "text", title: ta("نام"), required: true },
+        slug: { type: "text", title: ta("اسلاگ") },
+        summary: { type: "text", title: ta("خلاصه") },
+        order: { type: "number", title: ta("رتبه") },
+        active: { type: "bool", title: ta("فعال") },
+        isHome: { type: "bool", title: ta("نمایش در خانه") },
+        image: { type: "image", title: ta("تصویر") },
+        description: { type: "rtf", title: ta("توضیحات") },
+      }}
+      extraTabs={(node) => [
+        {
+          title: ta("سئو"),
+          id: "Meta",
+          icon: <InfoIcon />,
+          content: (
+            <PageMetaEditor
+              resourceType="/speciality/[slug]"
+              slug={node.slug}
+            />
+          ),
+        },
+        {
+          id: "translations",
+          title: ta("ترجمه‌ها"),
+          content: <AdminContentTranslationPage segment="speciality" />,
+        },
+      ]}
+    />
   );
 };
 

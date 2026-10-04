@@ -13,7 +13,7 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import ClinicInfoTab from "./ClinicInfoTab";
+import ClinicInfoTab, { clinicInfoRenderer } from "./ClinicInfoTab";
 import ClinicDepartmentsTab from "./ClinicDepartmentsTab";
 import ClinicDoctorsTab from "./ClinicDoctorsTab";
 import ClinicUserTab from "./ClinicUserTab";
@@ -24,7 +24,10 @@ import DeleteClinicPopup from "./DeleteClinicPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import LocationIcon from "@/Components/Icons/LocationIcon";
-import AdminLocationTab from "../UI/AdminLocationTab";
+import AdminLocationTab, {
+  newRecordLocationFields,
+} from "../UI/AdminLocationTab";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
@@ -39,11 +42,21 @@ import {
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
-const ClinicLocationManager = ({ mutate, node }: { node: IClinic; mutate: () => unknown }) => (
-  <AdminLocationTab path={`${API}/auto/clinic/${node._id}`} node={node as never} mutate={mutate} />
+const ClinicLocationManager = ({
+  mutate,
+  node,
+}: {
+  node: IClinic;
+  mutate: () => unknown;
+}) => (
+  <AdminLocationTab
+    path={`${API}/auto/clinic/${node._id}`}
+    node={node as never}
+    mutate={mutate}
+  />
 );
 
-const AdminManageClinicPage = () => {
+const ClinicRecordPage = () => {
   const params = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
@@ -89,9 +102,18 @@ const AdminManageClinicPage = () => {
             },
           ]}
         >
-          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
+          <ProviderStatusBanner
+            node={data as unknown as ProviderStatusFields}
+          />
           <TabSystem
             items={[
+              // the record itself first: the same fields as the new-clinic form
+              {
+                title: ta("اطلاعات"),
+                icon: <InfoIcon />,
+                id: "Info",
+                content: <ClinicInfoTab clinic={data} mutate={mutate} />,
+              },
               ...(isAdmin
                 ? [
                     {
@@ -107,12 +129,6 @@ const AdminManageClinicPage = () => {
                     },
                   ]
                 : []),
-              {
-                title: ta("اطلاعات"),
-                icon: <InfoIcon />,
-                id: "Info",
-                content: <ClinicInfoTab clinic={data} mutate={mutate} />,
-              },
               {
                 title: ta("آدرس و موقعیت"),
                 id: "GEO",
@@ -167,6 +183,25 @@ const AdminManageClinicPage = () => {
       )}
     </HandleLoading>
   );
+};
+
+// "New clinic" is this route with `new`: every field of the record in one
+// form, saved once (Components/Admin/UI/AdminRecordEditor), then the
+// clinic's page with its team, license and finance tabs
+const AdminManageClinicPage = () => {
+  const { nodeId } = useParams<{ nodeId: string }>();
+  if (nodeId === "new")
+    return (
+      <AdminRecordEditor<IClinic>
+        segment="clinic"
+        path="/clinic"
+        nodeId="new"
+        newTitle={ta("کلینیک جدید")}
+        titleOf={(node) => node.name || ""}
+        renderer={{ ...clinicInfoRenderer(), ...newRecordLocationFields() }}
+      />
+    );
+  return <ClinicRecordPage />;
 };
 
 export default AdminManageClinicPage;

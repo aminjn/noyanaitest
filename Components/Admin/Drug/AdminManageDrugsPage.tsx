@@ -7,7 +7,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import usePopup from "@/Components/Hooks/usePopup";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
-import CreateDrugPopup from "./CreateDrugPopup";
 import Table from "../UI/Table";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
@@ -18,6 +17,7 @@ import DeleteDrugPopup from "./DeleetDrugPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import useProgress from "@/Components/Hooks/useProgress";
 
 const AdminManageDrugsPage = () => {
   const { data, error, mutate } = useSWR<IDrug[]>(
@@ -26,6 +26,7 @@ const AdminManageDrugsPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -35,8 +36,7 @@ const AdminManageDrugsPage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup("CreateDrug", <CreateDrugPopup mutate={mutate} />),
+              action: () => push(adminPath("/drug/new")),
             },
           ]}
         >

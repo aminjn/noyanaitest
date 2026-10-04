@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import classes from "./LocationForm.module.css";
-import LocationPicker from "./LocationPicker";
-import { asPoint } from "./PointPickerCore";
+import dynamic from "next/dynamic";
+
+// the map library (~1 MB) loads with the picker, not with the page
+const LocationPicker = dynamic(() => import("./LocationPicker"), { ssr: false });
+import { asPoint } from "./point";
 import FormActions from "@/Components/Admin/UI/FormActions";
 import Button from "@/Components/UI/Button";
 import AreaInput from "@/Components/UI/AreaInput";

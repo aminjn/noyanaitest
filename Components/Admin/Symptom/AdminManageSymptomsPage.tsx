@@ -10,7 +10,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import usePopup from "@/Components/Hooks/usePopup";
 import WithTitle from "../UI/WithTitle";
-import CreateSymptomPopup from "./CreateSymptomPopup";
 import Table from "../UI/Table";
 import TableActions from "../UI/TableActions";
 import IconLink from "../UI/IconLink";
@@ -21,6 +20,7 @@ import DeleteSymptomPopup from "./DeleteSymptomPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import useProgress from "@/Components/Hooks/useProgress";
 
 const AdminManageSymptomsPage = () => {
   const { data, error, mutate } = useSWR<ISymptom[]>(
@@ -29,6 +29,7 @@ const AdminManageSymptomsPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -38,11 +39,7 @@ const AdminManageSymptomsPage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup(
-                  "CreateSymptom",
-                  <CreateSymptomPopup mutate={mutate} />,
-                ),
+              action: () => push(adminPath("/symptom/new")),
             },
           ]}
         >

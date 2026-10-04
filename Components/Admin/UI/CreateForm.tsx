@@ -33,9 +33,12 @@ import LicensePricingInput, {
   ILicensePricingEntry,
 } from "./LicensePricingInput";
 import { ta } from "@/Components/Admin/i18n/adminText";
-import PointPicker from "./PointPicker";
-import LocationPicker from "@/Components/Map/LocationPicker";
-import { asPoint } from "@/Components/Map/PointPickerCore";
+import dynamic from "next/dynamic";
+
+// the map library (~1 MB) loads only when a form actually shows a map
+const PointPicker = dynamic(() => import("./PointPicker"), { ssr: false });
+const LocationPicker = dynamic(() => import("@/Components/Map/LocationPicker"), { ssr: false });
+import { asPoint } from "@/Components/Map/point";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -270,7 +273,7 @@ const CreateForm = <TInput, TResult = unknown>({
       : { path: "", method: "GET" },
   );
 
-  const { setInput, isLoading, submit, input } = hookProvided || hookResult;
+  const { setInput, isLoading, submit, input, dirty } = hookProvided || hookResult;
 
   const getContent = useScopedLocale(LOCALE_NS);
   const [tab, setTab] = useState("");
@@ -692,6 +695,11 @@ const CreateForm = <TInput, TResult = unknown>({
           <Button type="submit" isLoading={isLoading}>
             {getContent("submit")}
           </Button>
+        )}
+        {!readOnly && dirty && !isLoading && (
+          <span className={classes.unsaved} role="status">
+            {getContent("formUnsavedChanges")}
+          </span>
         )}
       </FormActions>
     </Form>

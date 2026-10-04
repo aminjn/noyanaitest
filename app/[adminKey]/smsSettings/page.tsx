@@ -2,6 +2,6 @@ import { redirect } from "next/navigation";
 import { adminKey } from "@/Components/config";
 
 // merged into the "پیامک و اعلان‌ها" page as a tab (2026-09 admin audit)
-const LegacySmsSettingsAdmin = () => redirect(`/${adminKey}/messaging?tab=gateway`);
+const LegacySmsSettingsAdmin = () => redirect(`/${adminKey}/appConfig?tab=sms`);
 
 export default LegacySmsSettingsAdmin;

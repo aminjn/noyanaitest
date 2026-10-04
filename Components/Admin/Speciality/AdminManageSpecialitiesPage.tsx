@@ -11,7 +11,6 @@ import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import TableActions from "../UI/TableActions";
 import IconButton from "../UI/IconButton";
 import usePopup from "@/Components/Hooks/usePopup";
-import NewSpecialityPopup from "./NewSpecialityPopup";
 import WithTitle from "../UI/WithTitle";
 import IconLink from "../UI/IconLink";
 import EditIcon from "@/Components/Icons/EditIcon";
@@ -26,6 +25,7 @@ import {
   IDoctorProfile,
 } from "@/Components/DoctorPanel/DoctorPanelPage";
 import OrderEditor from "../UI/OrderEditor";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 export type SpecialityPopulation = Population<{
@@ -59,6 +59,7 @@ const AdminManageSpecialitiesPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   const hasAccess = useAccessLevel();
 
@@ -72,8 +73,8 @@ const AdminManageSpecialitiesPage = () => {
               ? [
                   {
                     title: ta("جدید"),
-                    action: () =>
-                      setPopup("NewSpeciality", <NewSpecialityPopup />),
+                    // the full form, saved once (AdminRecordEditor)
+                    action: () => push(adminPath("/speciality/new")),
                   },
                 ]
               : []

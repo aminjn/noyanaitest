@@ -1,7 +1,10 @@
 import { Fragment, ReactNode } from "react";
 import { IOffice } from "../DoctorPanel/Office/DoctorManageOfficesPage";
 import classes from "./DoctorOfficeItem.module.css";
-import PlaceLocationCard from "../Map/PlaceLocationCard";
+import dynamic from "next/dynamic";
+
+// the map library loads after the page, not before it
+const PlaceLocationCard = dynamic(() => import("../Map/PlaceLocationCard"), { ssr: false });
 import InfoPair from "./InfoPair";
 import LinkIcon2 from "../Icons/LinkIcon2";
 import useScopedLocale from "../Hooks/useScopedLocale";

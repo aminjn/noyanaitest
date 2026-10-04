@@ -115,7 +115,7 @@ const AdminSmsSettingsPage = () => {
               <span className={classes.sectionTitle}>{ta("اطلاعات API پیامک")}</span>
               <p className={classes.note}>
                 {ta("توکن را از پنل آی‌پی‌پنل (بخش توسعه‌دهندگان / کلید دسترسی) بردارید. کد هر پیامک (پترن) جداگانه در صفحه‌ی")}{" "}
-                <InlineLink href={adminPath("/messaging?tab=patterns")}>
+                <InlineLink href={adminPath("/appConfig?tab=sms")}>
                   {ta("پترن‌های پیامک")}
                 </InlineLink>{" "}
                 {ta("وارد می‌شود.")}

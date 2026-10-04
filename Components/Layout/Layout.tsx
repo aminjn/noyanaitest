@@ -5,20 +5,25 @@ import "swiper/css";
 import { CSSProperties, Fragment, ReactNode, useMemo } from "react";
 import classes from "./Layout.module.css";
 import { usePathname } from "@/Components/i18n/navigation";
-import AdminLayout from "./AdminLayout";
+import dynamic from "next/dynamic";
 import PublicLayout from "./PublicLayout";
 import Popup from "../Popup/Popup";
 import Notifications from "../Notification/Notifications";
 import { adminKey } from "../config";
-import DoctorPanelLayout from "./DoctorPanelLayout";
-import SecretaryPanelLayout from "./SecretaryPanelLayout";
-import DashboardLayout from "./DashboardLayout";
-import ClinicPanelLayout from "./ClinicPanelLayout";
-import PharmacyPanelLayout from "./PharmacyPanelLayout";
-import InsurancePanelLayout from "./InsurancePanelLayout";
 import CallManager from "../Call/CallManager";
-import ParaClinicPanelLayout from "./ParaClinicPanelLayout";
-import HospitalPanelLayout from "./HospitalPanelLayout";
+
+// Each panel's layout is its own chunk (2026-10): they used to be bundled
+// into every page of the site, the public ones included, with the admin
+// menu and everything the panels import.
+const AdminLayout = dynamic(() => import("./AdminLayout"));
+const DoctorPanelLayout = dynamic(() => import("./DoctorPanelLayout"));
+const SecretaryPanelLayout = dynamic(() => import("./SecretaryPanelLayout"));
+const DashboardLayout = dynamic(() => import("./DashboardLayout"));
+const ClinicPanelLayout = dynamic(() => import("./ClinicPanelLayout"));
+const PharmacyPanelLayout = dynamic(() => import("./PharmacyPanelLayout"));
+const InsurancePanelLayout = dynamic(() => import("./InsurancePanelLayout"));
+const ParaClinicPanelLayout = dynamic(() => import("./ParaClinicPanelLayout"));
+const HospitalPanelLayout = dynamic(() => import("./HospitalPanelLayout"));
 
 export type WithStyleProps<T = Record<never, never>> = T & {
   className?: string;

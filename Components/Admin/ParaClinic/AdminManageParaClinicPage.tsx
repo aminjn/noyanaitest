@@ -14,7 +14,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
-import CreateForm from "../UI/CreateForm";
+import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import { getUserLabel } from "../Lib/LabelGetters";
 import { IUser, MongoDoc } from "@/Components/Hooks/useUser";
 import TabSystem from "../UI/TabSystem";
@@ -34,7 +34,9 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { IParaClinicTag } from "../ParaClinicTag/AdminManageParaClinicTagsPage";
 import { IParaClinicCategory } from "../ParaClinicCategory/AdminManageParaClinicCategoriesPage";
-import AdminLocationTab from "../UI/AdminLocationTab";
+import AdminLocationTab, {
+  newRecordLocationFields,
+} from "../UI/AdminLocationTab";
 import useForm from "@/Components/Hooks/useForm";
 import Form from "@/Components/UI/Form";
 import FormActions from "../UI/FormActions";
@@ -56,6 +58,7 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 
 export type ParaClinicTestPopulation = Population<{
   Test: TestPopulation;
@@ -113,7 +116,12 @@ const MutateParaClinicTestPopup = ({
             // a test missing from the catalog is added from here
             creatable: { path: `${API}/auto/test` },
           },
-          price: { type: "number", title: ta("قیمت"), price: true, required: true },
+          price: {
+            type: "number",
+            title: ta("قیمت"),
+            price: true,
+            required: true,
+          },
           readyTime: { type: "text", title: ta("زمان آماده سازی") },
         }}
       />
@@ -251,11 +259,75 @@ const ParaClinicTestManager = ({ paraClinic }: { paraClinic: IParaClinic }) => {
   );
 };
 
-const ParaClinicGeoManager = ({ mutate, node }: { node: IParaClinic; mutate: () => unknown }) => (
-  <AdminLocationTab path={`${API}/auto/paraClinic/${node._id}`} node={node as never} mutate={mutate} />
+// The paraclinic's record fields: its info tab and the one form of a new paraclinic (`/paraClinic/new`)
+export const paraClinicInfoRenderer = (): FormRenderer<IParaClinic> => ({
+  name: { type: "text", title: ta("نام"), required: true },
+  order: { type: "number", title: ta("رتبه") },
+  active: { type: "bool", title: ta("فعال") },
+  special: { type: "bool", title: ta("ویژه") },
+  category: {
+    type: "nodes",
+    title: ta("دسته بندی"),
+    multi: false,
+    getOptionLabel: (node) =>
+      (node as IParaClinicCategory).name || (node as IParaClinicCategory)._id,
+    getOptionValue: (node) => (node as IParaClinicCategory)._id,
+    getDefaultValue: (inp) => inp.category,
+    path: `${API}/auto/paraClinicCategory`,
+    creatable: { path: `${API}/auto/paraClinicCategory` },
+  },
+  tags: {
+    type: "nodes",
+    title: ta("تگ ها"),
+    path: `${API}/auto/paraClinicTag`,
+    creatable: { path: `${API}/auto/paraClinicTag` },
+    getOptionLabel: (node) =>
+      (node as IParaClinicTag).name || (node as IParaClinicTag)._id,
+    getOptionValue: (node) => (node as IParaClinicTag)._id,
+    getDefaultValue: (inp) => inp.tags,
+    multi: true,
+  },
+  image: { type: "image", title: ta("تصویر") },
+  slug: { type: "text", title: ta("اسلاگ") },
+  establishment: { type: "text", title: ta("تاسیس") },
+  businessTime: {
+    type: "text",
+    title: ta("ساعات کاری"),
+    section: ta("تماس"),
+  },
+  phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
+  onlineResponse: { type: "bool", title: ta("پاسخ آنلاین") },
+  onPremises: { type: "bool", title: ta("نمونه گیری در محل") },
+  personelCount: { type: "number", title: ta("کادر تخصصی") },
+  summary: { type: "area", title: ta("خلاصه") },
+  insurances: {
+    type: "nodes",
+    title: ta("بیمه ها"),
+    section: ta("بیمه‌ها"),
+    getOptionLabel: (node) =>
+      (node as IInsurance).name || (node as IInsurance)._id,
+    getOptionValue: (node) => (node as IInsurance)._id,
+    multi: true,
+    getDefaultValue: (inp) => inp.insurances,
+    path: `${API}/auto/insurance`,
+  },
+});
+
+const ParaClinicGeoManager = ({
+  mutate,
+  node,
+}: {
+  node: IParaClinic;
+  mutate: () => unknown;
+}) => (
+  <AdminLocationTab
+    path={`${API}/auto/paraClinic/${node._id}`}
+    node={node as never}
+    mutate={mutate}
+  />
 );
 
-const AdminManageParaClinicPage = () => {
+const ParaClinicRecordPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
@@ -298,22 +370,13 @@ const AdminManageParaClinicPage = () => {
             },
           ]}
         >
-          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
+          <ProviderStatusBanner
+            node={data as unknown as ProviderStatusFields}
+          />
           <TabSystem
             name="AdminManageParaClinic"
             items={[
-              ...(isAdmin
-                ? [
-                    {
-                      id: "Overview",
-                      title: ta("نمای کلی"),
-                      content: (
-                        <EntityOverview kind="paraClinic" nodeId={nodeId} />
-                      ),
-                      icon: <DashboardIcon />,
-                    },
-                  ]
-                : []),
+              // the record itself first: the same fields as the "new" form
               {
                 id: "Info",
                 title: ta("اطلاعات"),
@@ -322,61 +385,7 @@ const AdminManageParaClinicPage = () => {
                     <CreateForm
                       defaultValue={data}
                       layout="sections"
-                      renderer={{
-                        name: { type: "text", title: ta("نام") },
-                        order: { type: "number", title: ta("رتبه") },
-                        active: { type: "bool", title: ta("فعال") },
-                        special: { type: "bool", title: ta("ویژه") },
-                        category: {
-                          type: "nodes",
-                          title: ta("دسته بندی"),
-                          multi: false,
-                          getOptionLabel: (node) =>
-                            (node as IParaClinicCategory).name ||
-                            (node as IParaClinicCategory)._id,
-                          getOptionValue: (node) =>
-                            (node as IParaClinicCategory)._id,
-                          getDefaultValue: (inp) => inp.category,
-                          path: `${API}/auto/paraClinicCategory`,
-                          creatable: { path: `${API}/auto/paraClinicCategory` },
-                        },
-                        tags: {
-                          type: "nodes",
-                          title: ta("تگ ها"),
-                          path: `${API}/auto/paraClinicTag`,
-                          creatable: { path: `${API}/auto/paraClinicTag` },
-                          getOptionLabel: (node) =>
-                            (node as IParaClinicTag).name ||
-                            (node as IParaClinicTag)._id,
-                          getOptionValue: (node) => (node as IParaClinicTag)._id,
-                          getDefaultValue: (inp) => inp.tags,
-                          multi: true,
-                        },
-                        image: { type: "image", title: ta("تصویر") },
-                        slug: { type: "text", title: ta("اسلاگ") },
-                        establishment: { type: "text", title: ta("تاسیس") },
-                        businessTime: {
-                          type: "text",
-                          title: ta("ساعات کاری"),
-                          section: ta("تماس"),
-                        },
-                        phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
-                        onlineResponse: { type: "bool", title: ta("پاسخ آنلاین") },
-                        onPremises: { type: "bool", title: ta("نمونه گیری در محل") },
-                        personelCount: { type: "number", title: ta("کادر تخصصی") },
-                        summary: { type: "area", title: ta("خلاصه") },
-                        insurances: {
-                          type: "nodes",
-                          title: ta("بیمه ها"),
-                          section: ta("بیمه‌ها"),
-                          getOptionLabel: (node) =>
-                            (node as IInsurance).name || (node as IInsurance)._id,
-                          getOptionValue: (node) => (node as IInsurance)._id,
-                          multi: true,
-                          getDefaultValue: (inp) => inp.insurances,
-                          path: `${API}/auto/insurance`,
-                        },
-                      }}
+                      renderer={paraClinicInfoRenderer()}
                       hookProps={{
                         path: `${API}/auto/paraClinic/${data._id}`,
                         method: "POST",
@@ -389,6 +398,18 @@ const AdminManageParaClinicPage = () => {
                   </CentreSections>
                 ),
               },
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Overview",
+                      title: ta("نمای کلی"),
+                      content: (
+                        <EntityOverview kind="paraClinic" nodeId={nodeId} />
+                      ),
+                      icon: <DashboardIcon />,
+                    },
+                  ]
+                : []),
               {
                 id: "Geo",
                 title: ta("آدرس و موقعیت"),
@@ -455,6 +476,25 @@ const AdminManageParaClinicPage = () => {
       )}
     </HandleLoading>
   );
+};
+
+// "New" is this route with `new`: every field of the record in one form,
+// saved once (Components/Admin/UI/AdminRecordEditor), then this page with
+// its other tabs
+const AdminManageParaClinicPage = () => {
+  const { nodeId } = useParams<{ nodeId: string }>();
+  if (nodeId === "new")
+    return (
+      <AdminRecordEditor<IParaClinic>
+        segment="paraClinic"
+        path="/paraClinic"
+        nodeId="new"
+        newTitle={ta("پاراکلینیک جدید")}
+        titleOf={(node) => node.name || ""}
+        renderer={{ ...paraClinicInfoRenderer(), ...newRecordLocationFields() }}
+      />
+    );
+  return <ParaClinicRecordPage />;
 };
 
 export default AdminManageParaClinicPage;

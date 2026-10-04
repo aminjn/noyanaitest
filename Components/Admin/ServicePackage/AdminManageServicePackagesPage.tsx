@@ -14,7 +14,6 @@ import {
   ServiceCategoryPopulation,
 } from "../ServiceCategory/AdminManageServiceCategoriesPage";
 import NodesManager from "../UI/NodesManager";
-import { API } from "@/Components/config";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -86,18 +85,8 @@ const AdminManageServicePackagesPage = () => {
   const { setPopup } = usePopup();
   return (
     <NodesManager<IServicePackage<{ Owner: Record<never, never> }>>
-      create={{
-        owner: {
-          type: "nodes",
-          title: ta("صاحب"),
-          path: `${API}/auto/doctorProfile`,
-          getOptionLabel: (node) =>
-            getDoctorProfileLabel(node as IDoctorProfile),
-          getOptionValue: (node) => (node as IDoctorProfile)._id,
-          multi: false,
-        },
-        name: { type: "text", title: ta("نام") },
-      }}
+      // the full form, saved once (AdminRecordEditor)
+      newPath="/servicePackage/new"
       title={ta("پکیج‌های خدمات")}
       modelName="servicePackage"
       table={({ mutate }) => ({

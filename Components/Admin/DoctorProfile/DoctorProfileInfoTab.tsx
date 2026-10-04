@@ -17,21 +17,11 @@ const genderTitles = (): Record<string, string> => ({
 // page of Doctolib Pro / Docplanner back-offices. Speciality used to be a
 // tab of its own with two fields; gender was missing although the public
 // search filters doctors by it (publicController, `gender`).
-const DoctorProfileInfoTab = ({
-  mutate,
-  node,
-}: {
-  node: IDoctorProfile;
-  mutate: () => unknown;
-}) => {
-  const form = useForm<IDoctorProfile>({
-    path: `${API}/auto/doctorprofile/${node._id}`,
-    method: "POST",
-    successCb: () => {
-      mutate();
-    },
-  });
-
+// Shared by the info tab of a saved doctor and the one form of a new one
+// (`/doctorprofile/new`).
+export const useDoctorProfileInfoRenderer = (
+  node?: IDoctorProfile,
+): FormRenderer<IDoctorProfile> => {
   const hasAccess = useAccessLevel();
 
   const identity = ta("هویت");
@@ -52,7 +42,10 @@ const DoctorProfileInfoTab = ({
           path: `${API}/auto/speciality`,
           // a missing speciality is added from here, live (Speciality uses
           // `active`, not `isActive`)
-          creatable: { path: `${API}/auto/speciality`, extra: { active: true } },
+          creatable: {
+            path: `${API}/auto/speciality`,
+            extra: { active: true },
+          },
           getOptionLabel: (node) =>
             (node as ISpeciality).name || ta("بدون نام"),
           getOptionValue: (node) => (node as ISpeciality)._id,
@@ -65,7 +58,10 @@ const DoctorProfileInfoTab = ({
           path: `${API}/auto/speciality`,
           // a missing speciality is added from here, live (Speciality uses
           // `active`, not `isActive`)
-          creatable: { path: `${API}/auto/speciality`, extra: { active: true } },
+          creatable: {
+            path: `${API}/auto/speciality`,
+            extra: { active: true },
+          },
           multi: true,
           getOptionLabel: (node) =>
             (node as ISpeciality).name || ta("بدون نام"),
@@ -76,51 +72,77 @@ const DoctorProfileInfoTab = ({
       }
     : {};
 
+  return {
+    firstName: {
+      type: "text",
+      title: ta("نام"),
+      section: identity,
+      required: true,
+    },
+    lastName: {
+      type: "text",
+      title: ta("نام خانوادگی"),
+      section: identity,
+      required: true,
+    },
+    gender: {
+      type: "select",
+      title: ta("جنسیت"),
+      options: genderTitles(),
+      section: identity,
+    },
+    // verified by the council inquiry once the doctor signed up with
+    // it (node?.mcCode): then it is read-only, never retyped
+    medicalSystemCode: {
+      type: "text",
+      title: node?.mcCode
+        ? ta("کد نظام پزشکی (تأییدشده با استعلام)")
+        : ta("کد نظام پزشکی"),
+      readOnly: !!node?.mcCode,
+      section: identity,
+    },
+    slug: { type: "text", title: ta("اسلاگ"), section: identity },
+    avatar: { type: "image", title: ta("تصویر اصلی"), section: identity },
+    ...specialityFields,
+    landLine: { type: "text", title: ta("تلفن ثابت"), section: contact },
+    website: { type: "text", title: ta("سایت"), section: contact },
+    introduction: { type: "area", title: ta("معرفی"), section: about },
+    services: { type: "strings", title: ta("خدمات"), section: about },
+    achivements: {
+      type: "strings",
+      title: ta("دستاوردها"),
+      section: about,
+    },
+    active: { type: "bool", title: ta("فعال"), section: visibility },
+    popular: { type: "bool", title: ta("محبوب"), section: visibility },
+    order: { type: "number", title: ta("رتبه"), section: visibility },
+  };
+};
+
+const DoctorProfileInfoTab = ({
+  mutate,
+  node,
+}: {
+  node: IDoctorProfile;
+  mutate: () => unknown;
+}) => {
+  const form = useForm<IDoctorProfile>({
+    path: `${API}/auto/doctorprofile/${node._id}`,
+    method: "POST",
+    successCb: () => {
+      mutate();
+    },
+  });
+  const hasAccess = useAccessLevel();
+  const renderer = useDoctorProfileInfoRenderer(node);
+
   return (
     <CreateForm
       readOnly={!hasAccess("DoctorProfile", "update")}
       defaultValue={node}
       styleManaged
       layout="sections"
-      renderer={{
-        firstName: { type: "text", title: ta("نام"), section: identity },
-        lastName: {
-          type: "text",
-          title: ta("نام خانوادگی"),
-          section: identity,
-        },
-        gender: {
-          type: "select",
-          title: ta("جنسیت"),
-          options: genderTitles(),
-          section: identity,
-        },
-        // verified by the council inquiry once the doctor signed up with
-        // it (node.mcCode): then it is read-only, never retyped
-        medicalSystemCode: {
-          type: "text",
-          title: node.mcCode
-            ? ta("کد نظام پزشکی (تأییدشده با استعلام)")
-            : ta("کد نظام پزشکی"),
-          readOnly: !!node.mcCode,
-          section: identity,
-        },
-        slug: { type: "text", title: ta("اسلاگ"), section: identity },
-        avatar: { type: "image", title: ta("تصویر اصلی"), section: identity },
-        ...specialityFields,
-        landLine: { type: "text", title: ta("تلفن ثابت"), section: contact },
-        website: { type: "text", title: ta("سایت"), section: contact },
-        introduction: { type: "area", title: ta("معرفی"), section: about },
-        services: { type: "strings", title: ta("خدمات"), section: about },
-        achivements: {
-          type: "strings",
-          title: ta("دستاوردها"),
-          section: about,
-        },
-        active: { type: "bool", title: ta("فعال"), section: visibility },
-        popular: { type: "bool", title: ta("محبوب"), section: visibility },
-        order: { type: "number", title: ta("رتبه"), section: visibility },
-      }}
+      renderer={renderer}
       hookProvided={form}
     />
   );

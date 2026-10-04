@@ -16,9 +16,9 @@ import usePopup from "@/Components/Hooks/usePopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeletePharmacyPopup from "./DeletePharmacyPopup";
 import WithTitle from "../UI/WithTitle";
-import CreatePharmacyPopup from "./CreatePharmacyPopup";
 import OrderEditor from "../UI/OrderEditor";
 import { providerStateColumn } from "../UI/ProviderStatus";
+import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const AdminManagePharmaciesPage = () => {
@@ -28,6 +28,7 @@ const AdminManagePharmaciesPage = () => {
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -37,11 +38,8 @@ const AdminManagePharmaciesPage = () => {
           actions={[
             {
               title: ta("جدید"),
-              action: () =>
-                setPopup(
-                  "CreatePharmacy",
-                  <CreatePharmacyPopup mutate={mutate} />,
-                ),
+              // the full form, saved once (AdminRecordEditor)
+              action: () => push(adminPath("/pharmacy/new")),
             },
           ]}
         >

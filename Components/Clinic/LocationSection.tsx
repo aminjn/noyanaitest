@@ -1,6 +1,9 @@
 import classes from "./LocationSection.module.css";
 import { WithStyleProps } from "../Layout/Layout";
-import PlaceLocationCard from "../Map/PlaceLocationCard";
+import dynamic from "next/dynamic";
+
+// the map library loads after the page, not before it
+const PlaceLocationCard = dynamic(() => import("../Map/PlaceLocationCard"), { ssr: false });
 
 // The location block of the clinic / hospital / para-clinic / pharmacy /
 // insurance pages: the shared "how to get there" card (map, address,

@@ -19,7 +19,6 @@ import {
 } from "../Product/AdminManageProductsPage";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import NodesManager from "../UI/NodesManager";
-import { API } from "@/Components/config";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -81,18 +80,8 @@ const AdminManageProductPackagesPage = () => {
 
   return (
     <NodesManager<IProductPackage<{ Owner: Record<never, never> }>>
-      create={{
-        owner: {
-          type: "nodes",
-          path: `${API}/auto/pharmacy`,
-          title: ta("صاحب"),
-          multi: false,
-          getOptionLabel: (node) =>
-            (node as IPharmacy).name || ta("بدون نام"),
-          getOptionValue: (node) => (node as IPharmacy)._id,
-        },
-        name: { type: "text", title: ta("نام") },
-      }}
+      // the full form, saved once (AdminRecordEditor)
+      newPath="/productPackage/new"
       modelName="productPackage"
       table={({ mutate }) => ({
         name: { name: ta("نام"), value: (node) => node.name, filter: "Text" },

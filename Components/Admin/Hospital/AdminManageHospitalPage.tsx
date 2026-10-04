@@ -16,11 +16,13 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import TabSystem from "../UI/TabSystem";
-import CreateForm from "../UI/CreateForm";
+import CreateForm, { FormRenderer } from "../UI/CreateForm";
 import { IHospitalCategory } from "../HospitalCategory/AdminManageHospitalCategoriesPage";
 import { IHospitalTag } from "../HospitalTag/AdminManageHospitalTagsPage";
 import useForm from "@/Components/Hooks/useForm";
-import AdminLocationTab from "../UI/AdminLocationTab";
+import AdminLocationTab, {
+  newRecordLocationFields,
+} from "../UI/AdminLocationTab";
 import FormActions from "../UI/FormActions";
 import Button from "@/Components/UI/Button";
 import {
@@ -57,6 +59,7 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 
 export type HospitalClinicPopulation = Population<{
   Hospital: HospitalPopulation;
@@ -90,9 +93,7 @@ const MutateHospitalClinicPopup = ({
   return (
     <PopupCard
       title={
-        node
-          ? ta("ویرایش کلینیک بیمارستان")
-          : ta("افزودن کلینیک به بیمارستان")
+        node ? ta("ویرایش کلینیک بیمارستان") : ta("افزودن کلینیک به بیمارستان")
       }
     >
       <CreateForm
@@ -210,11 +211,114 @@ const HospitalClinicsManager = ({ node }: { node: IHospital }) => {
   );
 };
 
-const HospitalLocationManager = ({ mutate, node }: { node: IHospital; mutate: () => unknown }) => (
-  <AdminLocationTab path={`${API}/auto/hospital/${node._id}`} node={node as never} mutate={mutate} />
+// The hospital's record fields: its info tab and the one form of a new hospital (`/hospital/new`)
+export const hospitalInfoRenderer = (
+  // a saved hospital: its manager is picked from its own doctors
+  nodeId?: string,
+): FormRenderer<IHospital> => ({
+  name: { type: "text", title: ta("نام"), required: true },
+  isActive: { type: "bool", title: ta("فعال") },
+  order: { type: "number", title: ta("رتبه") },
+  slug: { type: "text", title: ta("اسلاگ") },
+  bedCount: { type: "number", title: ta("تعداد تخت") },
+  isRoundTheClock: { type: "bool", title: ta("شبانه‌روزی") },
+  special: { type: "bool", title: ta("ویژه") },
+  category: {
+    type: "nodes",
+    multi: false,
+    path: `${API}/auto/hospitalCategory`,
+    creatable: { path: `${API}/auto/hospitalCategory` },
+    getOptionLabel: (node) =>
+      (node as IHospitalCategory).name || (node as IHospitalCategory)._id,
+    getOptionValue: (node) => (node as IHospitalCategory)._id,
+    getDefaultValue: (inp) => inp.category,
+    title: ta("دسته بندی"),
+  },
+  image: { type: "image", title: ta("تصویر") },
+  tags: {
+    type: "nodes",
+    title: ta("تگ ها"),
+    getOptionLabel: (node) =>
+      (node as IHospitalTag).name || (node as IHospitalTag)._id,
+    getOptionValue: (node) => (node as IHospitalTag)._id,
+    multi: true,
+    getDefaultValue: (inp) => inp.tags,
+    path: `${API}/auto/hospitalTag`,
+    creatable: { path: `${API}/auto/hospitalTag` },
+  },
+  code: { type: "text", title: ta("کد") },
+  establishment: { type: "text", title: ta("تاسیس") },
+  personelCount: { type: "number", title: ta("تعداد پرسنل") },
+  summary: { type: "area", title: ta("خلاصه") },
+  businessTimes: {
+    type: "text",
+    title: ta("ساعات کاری"),
+    section: ta("تماس"),
+  },
+  mail: { type: "text", title: ta("ایمیل"), section: ta("تماس") },
+  phone: {
+    type: "text",
+    title: ta("شماره تماس"),
+    section: ta("تماس"),
+  },
+  website: { type: "text", title: ta("سایت"), section: ta("تماس") },
+  services: { type: "strings", title: ta("خدمات") },
+  insurances: {
+    type: "nodes",
+    title: ta("بیمه ها"),
+    section: ta("بیمه‌ها"),
+    getOptionLabel: (node) =>
+      (node as IInsurance).name || (node as IInsurance)._id,
+    getOptionValue: (node) => (node as IInsurance)._id,
+    path: `${API}/auto/insurance`,
+    multi: true,
+    getDefaultValue: (inp) => inp.insurances,
+  },
+  certificates: {
+    type: "strings",
+    title: ta("اعتبار نامه ها"),
+  },
+  ...(nodeId
+    ? {
+        owner: {
+          type: "nodes",
+          // shown on the public page as «مدیریت»; not the panel owner
+          title: ta("پزشک مدیر (از پزشکان همین بیمارستان)"),
+          // only the hospital's own doctors (2026-10)
+          path: `${API}/auto/hospitaldoctor?hospital=${nodeId}`,
+          getOptionLabel: (node) => {
+            const doctor = (node as { doctor?: IDoctorProfile }).doctor;
+            return doctor ? getDoctorProfileLabel(doctor) : "";
+          },
+          getOptionValue: (node) =>
+            (node as { doctor?: IDoctorProfile }).doctor?._id || "",
+          multi: false,
+          getDefaultValue: (inp) => {
+            const owner = inp.owner as unknown;
+            return owner && typeof owner === "object"
+              ? (owner as { _id?: string })._id
+              : owner;
+          },
+        },
+      }
+    : {}),
+});
+
+const HospitalLocationManager = ({
+  mutate,
+  node,
+}: {
+  node: IHospital;
+  mutate: () => unknown;
+}) => (
+  <AdminLocationTab
+    path={`${API}/auto/hospital/${node._id}`}
+    node={node as never}
+    mutate={mutate}
+  />
 );
 
-const AdminManageHospitalPage = () => {
+const HospitalRecordPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
@@ -256,10 +360,31 @@ const AdminManageHospitalPage = () => {
             },
           ]}
         >
-          <ProviderStatusBanner node={data as unknown as ProviderStatusFields} />
+          <ProviderStatusBanner
+            node={data as unknown as ProviderStatusFields}
+          />
           <TabSystem
             name="AdminManageHospital"
             items={[
+              // the record itself first: the same fields as the "new" form
+              {
+                title: ta("اطلاعات"),
+                content: (
+                  <CreateForm
+                    defaultValue={data}
+                    layout="sections"
+                    renderer={hospitalInfoRenderer(data._id)}
+                    hookProps={{
+                      path: `${API}/auto/hospital/${data._id}`,
+                      method: "POST",
+                      successCb: () => {
+                        mutate();
+                      },
+                    }}
+                  />
+                ),
+                id: "Details",
+              },
               ...(isAdmin
                 ? [
                     {
@@ -272,110 +397,6 @@ const AdminManageHospitalPage = () => {
                     },
                   ]
                 : []),
-              {
-                title: ta("اطلاعات"),
-                content: (
-                  <CreateForm
-                    defaultValue={data}
-                    layout="sections"
-                    renderer={{
-                      name: { type: "text", title: ta("نام") },
-                      isActive: { type: "bool", title: ta("فعال") },
-                      order: { type: "number", title: ta("رتبه") },
-                      slug: { type: "text", title: ta("اسلاگ") },
-                      bedCount: { type: "number", title: ta("تعداد تخت") },
-                      isRoundTheClock: { type: "bool", title: ta("شبانه‌روزی") },
-                      special: { type: "bool", title: ta("ویژه") },
-                      category: {
-                        type: "nodes",
-                        multi: false,
-                        path: `${API}/auto/hospitalCategory`,
-                        creatable: { path: `${API}/auto/hospitalCategory` },
-                        getOptionLabel: (node) =>
-                          (node as IHospitalCategory).name ||
-                          (node as IHospitalCategory)._id,
-                        getOptionValue: (node) =>
-                          (node as IHospitalCategory)._id,
-                        getDefaultValue: (inp) => inp.category,
-                        title: ta("دسته بندی"),
-                      },
-                      image: { type: "image", title: ta("تصویر") },
-                      tags: {
-                        type: "nodes",
-                        title: ta("تگ ها"),
-                        getOptionLabel: (node) =>
-                          (node as IHospitalTag).name ||
-                          (node as IHospitalTag)._id,
-                        getOptionValue: (node) => (node as IHospitalTag)._id,
-                        multi: true,
-                        getDefaultValue: (inp) => inp.tags,
-                        path: `${API}/auto/hospitalTag`,
-                        creatable: { path: `${API}/auto/hospitalTag` },
-                      },
-                      code: { type: "text", title: ta("کد") },
-                      establishment: { type: "text", title: ta("تاسیس") },
-                      personelCount: { type: "number", title: ta("تعداد پرسنل") },
-                      summary: { type: "area", title: ta("خلاصه") },
-                      businessTimes: {
-                        type: "text",
-                        title: ta("ساعات کاری"),
-                        section: ta("تماس"),
-                      },
-                      mail: { type: "text", title: ta("ایمیل"), section: ta("تماس") },
-                      owner: {
-                        type: "nodes",
-                        // shown on the public page as «مدیریت»; not the panel owner
-                        title: ta("پزشک مدیر (از پزشکان همین بیمارستان)"),
-                        // only the hospital's own doctors (2026-10)
-                        path: `${API}/auto/hospitaldoctor?hospital=${data._id}`,
-                        getOptionLabel: (node) => {
-                          const doctor = (node as { doctor?: IDoctorProfile }).doctor;
-                          return doctor ? getDoctorProfileLabel(doctor) : "";
-                        },
-                        getOptionValue: (node) =>
-                          (node as { doctor?: IDoctorProfile }).doctor?._id || "",
-                        multi: false,
-                        getDefaultValue: (inp) => {
-                          const owner = inp.owner as unknown;
-                          return owner && typeof owner === "object"
-                            ? (owner as { _id?: string })._id
-                            : owner;
-                        },
-                      },
-                      phone: {
-                        type: "text",
-                        title: ta("شماره تماس"),
-                        section: ta("تماس"),
-                      },
-                      website: { type: "text", title: ta("سایت"), section: ta("تماس") },
-                      services: { type: "strings", title: ta("خدمات") },
-                      insurances: {
-                        type: "nodes",
-                        title: ta("بیمه ها"),
-                        section: ta("بیمه‌ها"),
-                        getOptionLabel: (node) =>
-                          (node as IInsurance).name || (node as IInsurance)._id,
-                        getOptionValue: (node) => (node as IInsurance)._id,
-                        path: `${API}/auto/insurance`,
-                        multi: true,
-                        getDefaultValue: (inp) => inp.insurances,
-                      },
-                      certificates: {
-                        type: "strings",
-                        title: ta("اعتبار نامه ها"),
-                      },
-                    }}
-                    hookProps={{
-                      path: `${API}/auto/hospital/${data._id}`,
-                      method: "POST",
-                      successCb: () => {
-                        mutate();
-                      },
-                    }}
-                  />
-                ),
-                id: "Details",
-              },
               {
                 title: ta("آدرس و موقعیت"),
                 id: "Geo",
@@ -433,6 +454,25 @@ const AdminManageHospitalPage = () => {
       )}
     </HandleLoading>
   );
+};
+
+// "New" is this route with `new`: every field of the record in one form,
+// saved once (Components/Admin/UI/AdminRecordEditor), then this page with
+// its other tabs
+const AdminManageHospitalPage = () => {
+  const { nodeId } = useParams<{ nodeId: string }>();
+  if (nodeId === "new")
+    return (
+      <AdminRecordEditor<IHospital>
+        segment="hospital"
+        path="/hospital"
+        nodeId="new"
+        newTitle={ta("بیمارستان جدید")}
+        titleOf={(node) => node.name || ""}
+        renderer={{ ...hospitalInfoRenderer(), ...newRecordLocationFields() }}
+      />
+    );
+  return <HospitalRecordPage />;
 };
 
 export default AdminManageHospitalPage;

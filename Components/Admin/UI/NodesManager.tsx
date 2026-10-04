@@ -7,17 +7,23 @@ import WithTitle from "./WithTitle";
 import CreateShitPopup from "./CreateShitPopup";
 import { FormRenderer } from "./CreateForm";
 import Table, { TableRenderer } from "./Table";
+import useProgress from "@/Components/Hooks/useProgress";
+import { adminPath } from "@/Components/helpers/adminPath";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 const NodesManager = <T,>({
   modelName,
   title,
   create,
+  newPath,
   table,
 }: {
   modelName: string;
   title: string;
   create?: FormRenderer<T>;
+  // admin path of the record's full "new" form (`<path>/new`,
+  // AdminRecordEditor); takes the place of the `create` popup
+  newPath?: string;
   table: (args: { mutate: () => unknown }) => TableRenderer<T>;
 }) => {
   const { data, error, mutate } = useSWR<T[]>(
@@ -26,6 +32,7 @@ const NodesManager = <T,>({
   );
 
   const { setPopup } = usePopup();
+  const push = useProgress();
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -33,23 +40,25 @@ const NodesManager = <T,>({
         <WithTitle
           title={title}
           actions={
-            create
-              ? [
-                  {
-                    title: ta("جدید"),
-                    action: () =>
-                      setPopup(
-                        "CreateShit",
-                        <CreateShitPopup
-                          modelName={modelName}
-                          title={title}
-                          renderer={create}
-                          mutate={mutate}
-                        />,
-                      ),
-                  },
-                ]
-              : []
+            newPath
+              ? [{ title: ta("جدید"), action: () => push(adminPath(newPath)) }]
+              : create
+                ? [
+                    {
+                      title: ta("جدید"),
+                      action: () =>
+                        setPopup(
+                          "CreateShit",
+                          <CreateShitPopup
+                            modelName={modelName}
+                            title={title}
+                            renderer={create}
+                            mutate={mutate}
+                          />,
+                        ),
+                    },
+                  ]
+                : []
           }
         >
           <Table

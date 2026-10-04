@@ -10,6 +10,10 @@ import CreateForm from "../UI/CreateForm";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminSectionHub from "../UI/AdminSectionHub";
 import AdminMapSettingsTab from "./AdminMapSettingsTab";
+import AdminAiSettingsTab from "./AdminAiSettingsTab";
+import AdminIntegrationsOverviewTab from "./AdminIntegrationsOverviewTab";
+import AdminSmsSettingsPage from "../Sms/AdminSmsSettingsPage";
+import AdminManageSmsPatternsPage from "../SmsPatterns/AdminManageSmsPatternsPage";
 
 // Mirrors backend Models/AppConfig.ts - the single source of truth for
 // these settings now lives in the DB (singleton document), not .env.
@@ -139,14 +143,24 @@ const AdminGeneralSettingsTab = () => {
   );
 };
 
-// تنظیمات سیستم (super admin): the general settings and the map provider
-// (NexaMap, 2026-10) as tabs of one page.
+// تنظیمات سیستم (super admin): every outside service and its keys in one
+// page (2026-10) - an overview first, then general, SMS, map and AI.
+const AdminSmsTab = () => (
+  <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+    <AdminSmsSettingsPage />
+    <AdminManageSmsPatternsPage />
+  </div>
+);
+
 const AdminManageAppConfigPage = () => (
   <AdminSectionHub
     title={ta("تنظیمات سیستم")}
     tabs={[
+      { id: "services", title: ta("سرویس‌ها و کلیدها"), content: <AdminIntegrationsOverviewTab /> },
       { id: "general", title: ta("عمومی"), content: <AdminGeneralSettingsTab /> },
+      { id: "sms", title: ta("پیامک"), content: <AdminSmsTab /> },
       { id: "map", title: ta("نقشه (نکسا مپ)"), content: <AdminMapSettingsTab /> },
+      { id: "ai", title: ta("هوش مصنوعی"), content: <AdminAiSettingsTab /> },
     ]}
   />
 );

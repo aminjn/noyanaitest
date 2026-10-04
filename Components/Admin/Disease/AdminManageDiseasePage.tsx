@@ -1,14 +1,8 @@
 "use client";
 
-import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
 import { useParams } from "next/navigation";
-import useSWR from "swr";
-import HandleLoading from "../UI/HandleLoading";
-import WithTitle from "../UI/WithTitle";
-import TabSystem from "../UI/TabSystem";
+import { API } from "@/Components/config";
 import InfoIcon from "@/Components/Icons/InfoIcon";
-import CreateForm from "../UI/CreateForm";
 import {
   genderSpecificOptionsDict,
   IDisease,
@@ -25,69 +19,57 @@ import { IDiseaseTag } from "../DiseaseTag/AdminManageDiseaseTagsPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
+import AdminRecordEditor from "../UI/AdminRecordEditor";
 
+type DiseaseNode = IDisease<{
+  Drugs: Record<never, never>;
+  SameAs: Record<never, never>;
+  Speciality: Record<never, never>;
+  Symptom: Record<never, never>;
+}>;
+
+// one form for a disease, new or existing (Components/Admin/UI/
+// AdminRecordEditor): its details, medical information and links are
+// sections of that form, saved together
 const AdminManageDiseasePage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
-  const { data, error, mutate } = useSWR<
-    IDisease<{
-      Drugs: Record<never, never>;
-      SameAs: Record<never, never>;
-      Speciality: Record<never, never>;
-      Symptom: Record<never, never>;
-    }>
-  >(nodeId ? `${API}/auto/disease/${nodeId}` : null, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data),
-  );
-
   const { setPopup } = usePopup();
   const push = useProgress();
+  const details = ta("جزئیات");
+  const medical = ta("اطلاعات پزشکی");
+  const connections = ta("اتصالات");
 
   return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <WithTitle
-          title={data.name || ta("بدون نام")}
-          actions={[
-            {
-              title: ta("حذف"),
-              danger: true,
-              action: () =>
-                setPopup(
-                  "DeleetDisease",
-                  <DeleteDiseasePopup
-                    mutate={() => push(adminPath(`/disease`))}
-                    node={data}
-                  />,
-                ),
-            },
-          ]}
-        >
-          <TabSystem
-            name="AdminManageDisease"
-            items={[
-              {
-                title: ta("جزئیات"),
-                content: (
-                  <CreateForm
-                    defaultValue={data}
-                    hookProps={{
-                      path: `${API}/auto/disease/${data._id}`,
-                      method: "POST",
-                      successCb: () => mutate(),
-                    }}
-                    renderer={{
-                      name: { title: ta("نام"), type: "text" },
-                      description: { title: ta("توضیحات"), type: "area" },
-                      summary: { title: ta("خلاصه"), type: "text" },
-                      genderSpecific: {
+    <AdminRecordEditor<DiseaseNode>
+      segment="disease"
+      path="/disease"
+      nodeId={nodeId}
+      newTitle={ta("بیماری جدید")}
+      titleOf={(node) => node.name || ""}
+      actions={(node) => [
+        {
+          title: ta("حذف"),
+          danger: true,
+          action: () =>
+            setPopup(
+              "DeleetDisease",
+              <DeleteDiseasePopup mutate={() => push(adminPath(`/disease`))} node={node} />,
+            ),
+        },
+      ]}
+      renderer={{
+                      name: { section: details, title: ta("نام"), type: "text", required: true },
+                      description: { section: details, title: ta("توضیحات"), type: "area" },
+                      summary: { section: details, title: ta("خلاصه"), type: "text" },
+                      genderSpecific: { section: details,
                         title: ta("مخصوص جنسیت"),
                         type: "select",
                         options: genderSpecificOptionsDict,
                       },
-                      image: { type: "image", title: ta("تصویر") },
-                      slug: { type: "text", title: ta("اسلاگ") },
-                      order: { type: "number", title: ta("رتبه") },
-                      tag: {
+                      image: { section: details, type: "image", title: ta("تصویر") },
+                      slug: { section: details, type: "text", title: ta("اسلاگ") },
+                      order: { section: details, type: "number", title: ta("رتبه") },
+                      tag: { section: details,
                         type: "nodes",
                         title: ta("تگ"),
                         multi: false,
@@ -98,7 +80,7 @@ const AdminManageDiseasePage = () => {
                         path: `${API}/auto/diseasetag`,
                         creatable: { path: `${API}/auto/diseasetag` },
                       },
-                      category: {
+                      category: { section: details,
                         type: "nodes",
                         title: ta("دسته بندی"),
                         path: `${API}/auto/diseaseCategory`,
@@ -110,61 +92,25 @@ const AdminManageDiseasePage = () => {
                         multi: false,
                         getDefaultValue: (inp) => inp.category,
                       },
-                      aiSummary: { type: "rtf", title: ta("خلاصه AI") },
-                      content:{type:"rtf" , title:ta("محتوا") }
-                    }}
-                  />
-                ),
-                icon: <InfoIcon />,
-                id: "Details",
-              },
-              {
-                title: ta("اطلاعات پزشکی"),
-                icon: <InfoIcon />,
-                id: "More",
-                content: (
-                  <CreateForm
-                    defaultValue={data}
-                    hookProps={{
-                      path: `${API}/auto/disease/${data._id}`,
-                      method: "POST",
-                      successCb: () => mutate(),
-                    }}
-                    renderer={{
-                      pathophysiology: {
+                      aiSummary: { section: details, type: "rtf", title: ta("خلاصه AI") },
+                      content: { section: details, type: "rtf", title: ta("محتوا") },
+                      pathophysiology: { section: medical,
                         type: "area",
                         title: ta("پاتوفیزیولوژی"),
                       },
-                      naturalProgression: {
+                      naturalProgression: { section: medical,
                         type: "area",
                         title: ta("سیر طبیعی"),
                       },
-                      possibleComplication: {
+                      possibleComplication: { section: medical,
                         type: "area",
                         title: ta("عوارض احتمالی"),
                       },
-                      expectedPrognosis: {
+                      expectedPrognosis: { section: medical,
                         type: "area",
                         title: ta("پیش‌آگهی"),
                       },
-                    }}
-                  />
-                ),
-              },
-              {
-                title: ta("اتصالات"),
-                icon: <InfoIcon />,
-                id: "Connections",
-                content: (
-                  <CreateForm
-                    defaultValue={data}
-                    hookProps={{
-                      path: `${API}/auto/disease/${data._id}`,
-                      method: "POST",
-                      successCb: () => mutate(),
-                    }}
-                    renderer={{
-                      symptoms: {
+                      symptoms: { section: connections,
                         type: "nodes",
                         path: `${API}/auto/symptom`,
                         title: ta("علائم"),
@@ -176,7 +122,7 @@ const AdminManageDiseasePage = () => {
                         getOptionValue: (node) => (node as ISymptom)._id,
                         clearable: true,
                       },
-                      specialities: {
+                      specialities: { section: connections,
                         type: "nodes",
                         title: ta("تخصص ها"),
                         path: `${API}/auto/speciality`,
@@ -188,7 +134,7 @@ const AdminManageDiseasePage = () => {
                         getDefaultValue: (val) =>
                           val.specialities?.map((el) => el._id),
                       },
-                      drugs: {
+                      drugs: { section: connections,
                         title: ta("دارو ها"),
                         type: "nodes",
                         getOptionLabel: (node) =>
@@ -199,7 +145,7 @@ const AdminManageDiseasePage = () => {
                         getDefaultValue: (val) =>
                           val.drugs?.map((el) => el._id),
                       },
-                      sameAs: {
+                      sameAs: { section: connections,
                         type: "nodes",
                         title: ta("مشابهات"),
                         path: `${API}/auto/disease`,
@@ -210,28 +156,21 @@ const AdminManageDiseasePage = () => {
                         getDefaultValue: (val) =>
                           val.sameAs?.map((el) => el._id),
                       },
-                    }}
-                  />
-                ),
-              },
-              {
-                title: ta("سئو"),
-                icon: <InfoIcon />,
-                id: "Meta",
-                content: (
-                  <PageMetaEditor resourceType="/disease/[slug]" slug={data.slug} />
-                ),
-              },
-              {
-                id: "translations",
-                title: ta("ترجمه‌ها"),
-                content: <AdminContentTranslationPage segment="disease" />,
-              },
-            ]}
-          />
-        </WithTitle>
-      )}
-    </HandleLoading>
+      }}
+      extraTabs={(node) => [
+        {
+          title: ta("سئو"),
+          icon: <InfoIcon />,
+          id: "Meta",
+          content: <PageMetaEditor resourceType="/disease/[slug]" slug={node.slug} />,
+        },
+        {
+          id: "translations",
+          title: ta("ترجمه‌ها"),
+          content: <AdminContentTranslationPage segment="disease" />,
+        },
+      ]}
+    />
   );
 };
 

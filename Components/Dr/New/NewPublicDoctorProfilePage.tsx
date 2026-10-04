@@ -19,7 +19,10 @@ import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 import HostedImage from "@/Components/UI/HostedImage";
 import Ixon from "@/Components/UI/Ixon";
 import FaqList from "@/Components/UI/FaqList";
-import PlaceLocationCard from "@/Components/Map/PlaceLocationCard";
+import dynamic from "next/dynamic";
+
+// the map library loads after the page, not before it
+const PlaceLocationCard = dynamic(() => import("@/Components/Map/PlaceLocationCard"), { ssr: false });
 import { toLatLng } from "@/Components/Map/nexamap";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";

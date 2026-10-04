@@ -32,6 +32,16 @@ export type UseFormReturn<TInput> = {
   isLoading: boolean;
   submit: () => void;
   reset: () => void;
+  // the input differs from what was last saved
+  dirty?: boolean;
+};
+
+const snapshot = (value: unknown) => {
+  try {
+    return JSON.stringify(value, (_k, v) => (typeof File !== "undefined" && v instanceof File ? `file:${v.name}:${v.size}` : v));
+  } catch {
+    return String(Math.random());
+  }
 };
 
 const useForm = function <TInput, TResult = unknown>({
@@ -48,6 +58,9 @@ const useForm = function <TInput, TResult = unknown>({
   errorCb,
 }: UseFormProps<TInput, TResult>): UseFormReturn<TInput> {
   const [input, setInput] = useState<Partial<TInput>>({});
+  // what the last successful save sent: the form is "dirty" while the
+  // input differs from it (a switch flipped but never saved looked saved)
+  const [savedInput, setSavedInput] = useState<string>("{}");
   const [isSaving, setIsSaving] = useState<Record<string, unknown> | null>(
     null,
   );
@@ -69,6 +82,7 @@ const useForm = function <TInput, TResult = unknown>({
       dedupingInterval: 0,
       onSuccess: (data) => {
         setIsSaving(null);
+        setSavedInput(snapshot(input));
         pushNotification(
           successMessage || getContent("operationWasSuccessful"),
           "Success",
@@ -101,7 +115,8 @@ const useForm = function <TInput, TResult = unknown>({
     mutator,
     pushNotification,
   ]);
-  return { input, setInput, isLoading: !!isSaving, submit, reset };
+  const dirty = Object.keys(input).length > 0 && snapshot(input) !== savedInput;
+  return { input, setInput, isLoading: !!isSaving, submit, reset, dirty };
 };
 
 export default useForm;
