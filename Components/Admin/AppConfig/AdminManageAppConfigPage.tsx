@@ -60,6 +60,16 @@ export interface IAppConfig extends MongoDoc {
 
   reservationNoShowNudgeMinutesAfterStart: number;
   reservationNoShowNudgeInterval: number;
+
+  // booking rules (2026-10): the patient's free-cancel window, and the
+  // 24-hour / 2-hour reminders (booking settings tab)
+  patientFreeCancelHours?: number;
+  reservationReminder24hEnabled?: boolean;
+  reservationReminder2hEnabled?: boolean;
+
+  // the emergency note of the disease / symptom / drug pages (General)
+  emergencyNumber?: string;
+  emergencyNoteEnabled?: boolean;
 }
 
 // the general settings: one form, its parts as its own tabs. Booking,
@@ -89,6 +99,20 @@ const AdminGeneralSettingsTab = () => {
                 title: ta("آدرس عمومی سایت (مثال: https://example.com)"),
                 type: "text", ltr: true,
                 section: ta("سایت"),
+              },
+              // the "in an emergency call ..." line of the health pages
+              // (2026-10): number and switch here, wording per language in
+              // the UI texts (seeDoctorWarningNote, drugSafetyNote)
+              emergencyNoteEnabled: {
+                title: ta("نمایش یادداشت اورژانس در صفحه‌های بیماری، علائم و دارو"),
+                type: "bool",
+                section: ta("سایت"),
+              },
+              emergencyNumber: {
+                title: ta("شماره‌ی اورژانس"),
+                type: "text", ltr: true,
+                section: ta("سایت"),
+                hint: ta("همین شماره در متن یادداشت نشان داده می‌شود. خود متن را برای هر زبان در «زبان و ترجمه ← متن‌های رابط کاربری» (کلیدهای seeDoctorWarningNote و drugSafetyNote) ویرایش کنید."),
               },
               sipHost: { title: ta("آدرس سرور SIP"), type: "text", ltr: true, section: ta("تماس تلفنی (SIP)") },
               sipUsername: { title: ta("نام کاربری SIP"), type: "text", ltr: true, section: ta("تماس تلفنی (SIP)") },

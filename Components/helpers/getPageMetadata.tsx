@@ -298,3 +298,34 @@ export const getNodePageWebSchema = async (
   const slug = decodeSlug(nodeSlug);
   return seoGraph(await fetchSeo(path, slug)) ?? (await fetchNodePageMeta(path, slug))?.webSchema;
 };
+
+// The medical directory (2026-10): /disease, /drug, /symptom and their facet
+// pages (/disease/letter/ب, /disease/part/<slug>, /drug/class/<slug>, ...).
+// The backend builds each facet's title, description, canonical and
+// MedicalWebPage + ItemList + breadcrumb graph (Lib/seo/seoResolver.ts);
+// here a later page of a list is its own canonical (Google indexes each
+// page of a series), and a search result is kept out of the index.
+export const getDirectoryPageMetadata = async (
+  path: string,
+  slug: string | undefined,
+  { page = 1, search }: { page?: number; search?: string } = {},
+): Promise<Metadata> => {
+  const seo = await fetchSeo(path, slug ? decodeSlug(slug) : undefined);
+  const meta = seoToMetadata(seo);
+  if (search)
+    return { ...meta, robots: { index: false, follow: true } };
+  if (page > 1 && seo?.canonical) {
+    const base = /^https?:\/\//.test(seo.canonical) ? seo.canonical : `${origin()}${seo.canonical}`;
+    return {
+      ...meta,
+      alternates: { canonical: localizeCanonical(`${base}?page=${page}`), ...localeAlternates() },
+    };
+  }
+  return meta;
+};
+
+export const getDirectoryWebSchema = async (
+  path: string,
+  slug?: string,
+): Promise<Record<string, unknown> | undefined> =>
+  seoGraph(await fetchSeo(path, slug ? decodeSlug(slug) : undefined));

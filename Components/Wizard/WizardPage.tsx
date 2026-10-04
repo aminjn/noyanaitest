@@ -20,6 +20,10 @@ import ChatsSidebar from "./ChatsSidebar";
 import LoginRequired from "../UI/LoginRequired";
 import Loading from "../Admin/UI/Loading";
 import { IBotChat, wizardChatsKey } from "./useBotChats";
+import ProUpsellCard from "../Pro/ProUpsellCard";
+import { PRO_ME_URL, useMyPro } from "../Pro/useProData";
+import { ContentKey } from "../Enums/contentKeys";
+import { useIntlLocale } from "../i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "wizardPage"];
 
@@ -77,6 +81,10 @@ const WizardPage = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const [incomingStream, setIncomingStream] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  // the day's free messages are used up (429, 2026-10 «پرو»)
+  const [limitReached, setLimitReached] = useState<boolean>(false);
+  const { data: pro } = useMyPro();
+  const intlTag = useIntlLocale();
 
   const push = useProgress();
   const pushNotification = useNotification();
@@ -91,6 +99,21 @@ const WizardPage = () => {
 
   useEffect(() => {
     setIsSidebarOpen(false);
+  }, [nodeId]);
+
+  // a new chat opened from a disease / symptom / directory page arrives with
+  // its question typed (/wizard?q=...), for the visitor to finish and send
+  useEffect(() => {
+    if (nodeId) return;
+    try {
+      const q = new URLSearchParams(window.location.search).get("q");
+      if (q) {
+        setPrompt(q.slice(0, 500));
+        textareaRef.current?.focus();
+      }
+    } catch {
+      // no prefill
+    }
   }, [nodeId]);
 
   useEffect(() => {
@@ -120,6 +143,10 @@ const WizardPage = () => {
       );
       if (!response.ok) {
         const errBody = await response.json().catch(() => undefined);
+        if (response.status === 429) {
+          setLimitReached(true);
+          setPrompt(message);
+        }
         pushNotification(
           errBody?.message || getContent("unknownErrorOccured"),
           "Error",
@@ -153,6 +180,7 @@ const WizardPage = () => {
       }
       await mutate();
       mutateGlobal(wizardChatsKey);
+      mutateGlobal(PRO_ME_URL);
       // the chat's title (only for its first exchange) finishes generating
       // shortly after the answer itself - one more revalidate picks it up
       // without having to poll the sidebar continuously.
@@ -267,6 +295,17 @@ const WizardPage = () => {
             </div>
           )}
         </div>
+        {/* «پرو»: the free tier's daily limit and the way past it */}
+        {limitReached && !pro?.active && (
+          <ProUpsellCard moment="ai" className={classes.proCard} />
+        )}
+        {!limitReached && !!pro?.ai.limit && pro.ai.remaining !== null && pro.ai.remaining <= 5 && (
+          <p className={classes.allowance}>
+            {getContent("proAiRemaining", [
+              new Intl.NumberFormat(intlTag).format(pro.ai.remaining),
+            ])}
+          </p>
+        )}
         <Form className={classes.composer} onSubmit={onSend}>
           <textarea
             ref={textareaRef}

@@ -17,6 +17,8 @@ import { tsmBold } from "@/Components/UI/Typography";
 import LicensePriceDetails from "./LicensePriceDetails";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ContentKey } from "@/Components/Enums/contentKeys";
+import { ILicenseQuote } from "./useLicenseQuotes";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -24,10 +26,24 @@ const LicenseCard = ({
   duration,
   license,
   org,
+  quote,
+  href,
+  actionLabel,
+  current,
 }: {
+  // the provider's running plan (panel pricing): its card says so, a
+  // higher plan reads «ارتقا», a lower one waits until it ends
+  current?: { planId: string | null; remainingDays: number } | null;
   org: LicenseOrg;
   license: IBaseLicense;
   duration: ILicenseDuration | null;
+  // the server's price of the shown option (useLicenseQuotes): the
+  // option's own discount plus a running promotion
+  quote?: ILicenseQuote | null;
+  // where the action goes (the public pricing page sends a visitor to
+  // sign up instead of the panel); and its label
+  href?: string;
+  actionLabel?: string;
 }) => {
   const getContent = useScopedLocale(LOCALE_NS);
 
@@ -42,10 +58,19 @@ const LicenseCard = ({
   // period on sale), never a hand-set flag
   const discounted =
     (pricing?.discount || 0) > 0 ||
+    (quote?.promotionDiscount || 0) > 0 ||
     (!pricing &&
       (Array.isArray(license.pricing) ? license.pricing : []).some(
         (el) => el.isActive !== false && (el.discount || 0) > 0,
       ));
+  // nothing to buy: the free default tier ("free forever")
+  const hasPrice = (Array.isArray(license.pricing) ? license.pricing : []).some(
+    (el) => el.isActive !== false,
+  );
+  const free = !hasPrice && !!license.isDefault;
+  const isCurrent = !!current && current.planId === license._id;
+  const blocked = !!current && !isCurrent && !!quote && !quote.upgradable;
+  const upgrade = !!current && !isCurrent && !!quote?.upgradable;
   const features = Array.isArray(license.descriptions)
     ? license.descriptions.filter(Boolean)
     : [];
@@ -62,9 +87,15 @@ const LicenseCard = ({
             {getContent("specialDiscount")}
           </Badge>
         )}
+        {isCurrent && (
+          <Badge size="L" mode="Fill" radius="High" color="Primarylight">
+            {getContent("licenseCurrentPlan")}
+          </Badge>
+        )}
+        {/* the middle tier: "best seller" (2026-10 plan lineup) */}
         {license.isRecommended && (
           <Badge size="L" mode="Fill" radius="High" color="Primarylight">
-            {getContent("specialOffer")}
+            {getContent("licenseBestSeller")}
           </Badge>
         )}
       </div>
@@ -76,7 +107,13 @@ const LicenseCard = ({
           {license.displayName}
         </span>
       </div>
-      <LicensePriceDetails duration={duration} pricing={pricing} />
+      <LicensePriceDetails
+        duration={duration}
+        pricing={pricing}
+        quote={quote}
+        free={free}
+        remainingDays={current?.remainingDays}
+      />
       {!!license.summary && (
         <p className={classes.summary}>{license.summary}</p>
       )}
@@ -90,9 +127,17 @@ const LicenseCard = ({
           </li>
         ))}
       </ul>
+      {/* in a panel the free tier is what the provider already runs on:
+          nothing to choose */}
+      {blocked && (
+        <p className={classes.summary}>
+          {getContent("licenseUpgradeBlocked")}
+        </p>
+      )}
+      {(!free || !!href) && !isCurrent && !blocked && (
       <Button
         className={classes.action}
-        href={`${licensePanelRootByOrg[org]}/license/${license._id}`}
+        href={href || `${licensePanelRootByOrg[org]}/license/${license._id}`}
         tailIcon={
           <Ixon style={{ transform: "rotateZ(90deg)" }}>
             <ChevronIcon />
@@ -103,8 +148,10 @@ const LicenseCard = ({
         radius="Medium"
         variant="Primary"
       >
-        {getContent("chooseLicense")}
+        {actionLabel ||
+          (upgrade ? getContent("licenseUpgrade") : getContent("chooseLicense"))}
       </Button>
+      )}
     </div>
   );
 };

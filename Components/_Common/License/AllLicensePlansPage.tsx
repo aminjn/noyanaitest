@@ -25,6 +25,8 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import { t3xlBold, txsRegular } from "@/Components/UI/Typography";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import useLicenseQuotes from "./useLicenseQuotes";
+import LicensePromotionBanner from "./LicensePromotionBanner";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -44,6 +46,8 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   );
 
   const getContent = useScopedLocale(LOCALE_NS);
+  // the server's price for each option, promotion included
+  const { quoteOf, promotions } = useLicenseQuotes(name, undefined, true);
 
   const [selectedDuration, setSelectedDuration] =
     useState<ILicenseDuration | null>(null);
@@ -94,6 +98,7 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
               className={classes.durationSelector}
             />
           </div>
+          <LicensePromotionBanner promotions={promotions} />
           <div className={classes.table}>
             <Table
               data={licenses}
@@ -116,7 +121,11 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                     name: getContent("discount"),
                     value: (node) => {
                       const option = getPricingOption(node);
-                      return option ? currencize(option.discount || 0) : "";
+                      if (!option) return "";
+                      const quote = quoteOf(node._id, selectedDuration?.duration);
+                      return currencize(
+                        quote ? quote.listPrice - quote.final : option.discount || 0,
+                      );
                     },
                     filter: "Number",
                   },
@@ -125,11 +134,14 @@ const AllLicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                     value: (node) => {
                       const option = getPricingOption(node);
                       if (!option) return "";
+                      const quote = quoteOf(node._id, selectedDuration?.duration);
                       return currencize(
-                        Math.max(
-                          0,
-                          (option.price || 0) - (option.discount || 0),
-                        ),
+                        quote
+                          ? quote.final
+                          : Math.max(
+                              0,
+                              (option.price || 0) - (option.discount || 0),
+                            ),
                       );
                     },
                     filter: "Number",

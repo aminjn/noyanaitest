@@ -15,6 +15,11 @@ const NS: ContentNamespace[] = ["common", "symptomCard"];
 
 const SymptomCard = ({ node }: { node: ISymptom }) => {
   const getContent = useScopedLocale(NS);
+  // populated by the directory; a list of bare ids shows no chips
+  const parts = (Array.isArray(node.part) ? node.part : []).filter(
+    (p): p is { _id: string; name?: string } & typeof p =>
+      !!p && typeof p === "object" && !!(p as { name?: string }).name,
+  ) as unknown as { _id: string; name?: string }[];
   return (
     <li className={classes.main}>
       <div className={classes.header}>
@@ -26,14 +31,17 @@ const SymptomCard = ({ node }: { node: ISymptom }) => {
         <h3 className={`${classes.name} ${tsmDemiBold}`}>{node.name}</h3>
       </div>
       <p className={`${classes.summary} ${tsmRegular}`}>{node.summary}</p>
-      <div className={classes.tags}>
-        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-          tag
-        </Badge>
-        <Badge radius="High" color="Primarylight" mode="Fill" size="S">
-          tag
-        </Badge>
-      </div>
+      {/* the body parts it is filed under (the placeholder "tag" chips were
+          drawn on every card) */}
+      {parts.length > 0 && (
+        <div className={classes.tags}>
+          {parts.map((part) => (
+            <Badge key={part._id} radius="High" color="Primarylight" mode="Fill" size="S">
+              {part.name}
+            </Badge>
+          ))}
+        </div>
+      )}
       <div className={classes.actions}>
         <Link
           href={`/symptom/${node.slug || node._id}`}

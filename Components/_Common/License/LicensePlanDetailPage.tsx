@@ -25,6 +25,8 @@ import Ixon from "@/Components/UI/Ixon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import useLicenseQuotes from "./useLicenseQuotes";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -57,6 +59,11 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
   }, [selectedDuration, data]);
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const { quoteOf, current } = useLicenseQuotes(name, undefined, true);
+  const quote = quoteOf(data?._id, selectedDuration?.duration);
+  // a running plan: only a higher plan is sold (prorated upgrade)
+  const blocked = !!current && (current.planId === data?._id || (!!quote && !quote.upgradable));
+  const upgrade = !!current && !blocked;
   const push = useProgress();
 
   // TODO: render `license` (plan details + duration/price picker + purchase
@@ -103,6 +110,8 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
                 selectedDuration={selectedDuration}
               />
               <LicensePriceDetails
+                quote={quote}
+                remainingDays={current?.remainingDays}
                 duration={selectedDuration}
                 pricing={
                   (Array.isArray(data.pricing) ? data.pricing : []).find(
@@ -115,6 +124,8 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
           <RenderRtf value={data.details} />
           <div className={classes.footer}>
             <LicensePriceDetails
+              quote={quote}
+              remainingDays={current?.remainingDays}
               duration={selectedDuration}
               pricing={
                 (Array.isArray(data.pricing) ? data.pricing : []).find(
@@ -122,6 +133,11 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
                 ) || null
               }
             />
+            {blocked ? (
+              <p className={classes.blocked}>
+                {getContent("licenseUpgradeBlocked")}
+              </p>
+            ) : (
             <Button
               size="M"
               variant="Primary"
@@ -139,8 +155,11 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
                 )
               }
             >
-              {getContent("confirmAndContinue")}
+              {upgrade
+                ? getContent("licenseUpgrade")
+                : getContent("confirmAndContinue")}
             </Button>
+            )}
           </div>
         </div>
       )}

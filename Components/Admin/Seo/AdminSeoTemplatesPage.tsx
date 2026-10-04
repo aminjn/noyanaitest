@@ -30,7 +30,7 @@ type Preview = {
   keywords?: string[];
   canonical?: string;
   noIndex?: boolean;
-  schema?: { "@type"?: string }[];
+  schema?: { "@type"?: string | string[] }[];
   vars?: Record<string, string>;
   slug?: string;
 };
@@ -51,6 +51,17 @@ const nodeLabels: Record<string, () => string> = {
   "/product/[slug]": () => ta("صفحه‌ی محصول"),
   "/productPackage/[slug]": () => ta("صفحه‌ی بسته‌ی محصول"),
   "/mag/[blogSlug]": () => ta("صفحه‌ی مقاله"),
+  // the medical directory's facet pages (2026-10)
+  "/disease/letter/[letter]": () => ta("فهرست بیماری‌ها بر اساس حرف"),
+  "/disease/part/[slug]": () => ta("فهرست بیماری‌ها بر اساس عضو بدن"),
+  "/disease/speciality/[slug]": () => ta("فهرست بیماری‌ها بر اساس تخصص"),
+  "/disease/category/[slug]": () => ta("فهرست بیماری‌ها بر اساس دسته"),
+  "/drug/letter/[letter]": () => ta("فهرست داروها بر اساس حرف"),
+  "/drug/class/[slug]": () => ta("فهرست داروها بر اساس گروه درمانی"),
+  "/drug/status/[slug]": () => ta("فهرست داروها بر اساس نوع نسخه"),
+  "/symptom/letter/[letter]": () => ta("فهرست علائم بر اساس حرف"),
+  "/symptom/part/[slug]": () => ta("فهرست علائم بر اساس عضو بدن"),
+  "/symptom/category/[slug]": () => ta("فهرست علائم بر اساس دسته"),
 };
 
 const variableLabels: Record<string, () => string> = {
@@ -325,7 +336,7 @@ const AdminSeoTemplatesPage = () => {
                   )}
                   {!!preview.schema?.length && (
                     <span className={classes.meta} dir="ltr">
-                      schema.org: {preview.schema.map((s) => s["@type"]).filter(Boolean).join(" + ")}
+                      schema.org: {preview.schema.map((s) => [s["@type"]].flat().join("/")).filter(Boolean).join(" + ")}
                     </span>
                   )}
                   <span className={classes.meta}>{ta("ذخیره نشده‌ها در پیش‌نمایش دیده نمی‌شوند؛ بعد از ذخیره به‌روز می‌شود.")}</span>

@@ -16,6 +16,7 @@ import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { ILicensePricingEntry } from "../UI/LicensePricingInput";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import SeedRecommendedPlansPopup from "../LicensePlans/SeedRecommendedPlansPopup";
 
 // Menu items available in the doctor dashboard (DoctorSidebar). Kept in
 // sync with Models/BaseDoctorLicense.ts on noyanai-back and with the
@@ -53,6 +54,8 @@ export const doctorDashboardModules = [
   "crm",
   // Noyan Business phase 5 (2026-10): electronic invoices (Moadian)
   "moadian",
+  // the AI visit assistant (2026-10): note draft and transcription
+  "aiAssistant",
 ] as const;
 
 export type DoctorDashboardModule = (typeof doctorDashboardModules)[number];
@@ -142,6 +145,9 @@ export const doctorDashboardModuleLabels: Record<
   get moadian() {
   return ta("صورتحساب الکترونیکی (سامانه‌ی مودیان)");
 },
+  get aiAssistant() {
+  return ta("دستیار هوش مصنوعی ویزیت");
+},
 };
 
 export type BaseDoctorLicensePopulation = Population<Record<never, never>>;
@@ -227,6 +233,18 @@ const AdminManageBaseDoctorLicensesPage = () => {
     <NodesManager<IBaseDoctorLicense>
       create={baseDoctorLicenseFormRenderer}
       modelName="baseDoctorLicense"
+      // the recommended free / professional / premium lineup, created on
+      // demand for what this kind is missing (2026-10)
+      actions={({ mutate }) => [
+        {
+          title: ta("ساخت پلن‌های پیشنهادی"),
+          action: () =>
+            setPopup(
+              "SeedRecommendedPlans",
+              <SeedRecommendedPlansPopup kind="doctor" mutate={mutate} />,
+            ),
+        },
+      ]}
       title={ta("پلن های مجوز پزشک")}
       table={({ mutate }) => ({
         displayName: {

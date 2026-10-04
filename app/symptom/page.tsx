@@ -1,48 +1,20 @@
-import { getPublicData } from "@/Components/helpers/getPublicData";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import SymptomsListPage, {
-  SymptomsListPageProps,
-} from "@/Components/Symptom/SymptomsListPage";
-import { notFound } from "next/navigation";
-import {
-  getListPageMetadata,
-  getListPageWebSchema,
-} from "@/Components/helpers/getPageMetadata";
-import JsonLdSchema from "@/Components/UI/JsonLdSchema";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { permanentRedirect } from "next/navigation";
+import DirectoryRoute, {
+  directoryMetadata,
+  DirectorySearchParams,
+} from "@/Components/Directory/DirectoryRoute";
 
-export const generateMetadata = () => getListPageMetadata("/symptom");
+// the symptom directory: A to Z and its facets (Components/Directory)
+type Props = { searchParams: DirectorySearchParams & { category?: string } };
 
-const SymptomsList = async (ctx: {
-  searchParams: Promise<{ page?: string; search?: string; category?: string }>;
-}) => {
-  const { page: _page, search, category } = await ctx.searchParams;
-  const page = Number(_page || 1);
-  if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
-  const params = new URLSearchParams();
-  params.append("page", page.toString());
-  if (search) params.append("query", search);
-  if (category) params.append("category", category);
-  const [data, textContent] = await Promise.all([
-    getPublicData<SymptomsListPageProps>(`symptom?${params.toString()}`),
-    getScopedTextContent(["symptomsList", "symptomCard"]),
-  ]);
+export const generateMetadata = ({ searchParams }: Props) =>
+  directoryMetadata("symptom", undefined, undefined, searchParams);
 
-  if (!data) return notFound();
-
-  const webSchema = await getListPageWebSchema("/symptom");
-
-  return (
-    <>
-      <JsonLdSchema schema={webSchema} />
-      <LocaleScopeProvider
-        namespaces={["symptomsList", "symptomCard"]}
-        initialTextContent={textContent}
-      >
-        <SymptomsListPage {...data} />
-      </LocaleScopeProvider>
-    </>
-  );
+const Page = ({ searchParams }: Props) => {
+  // the old ?category= filter has its own URL now
+  if (searchParams.category)
+    permanentRedirect(`/symptom/category/${encodeURIComponent(searchParams.category)}`);
+  return <DirectoryRoute kind="symptom" searchParams={searchParams} />;
 };
 
-export default SymptomsList;
+export default Page;

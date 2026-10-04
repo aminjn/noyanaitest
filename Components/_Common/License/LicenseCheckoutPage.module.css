@@ -104,3 +104,31 @@
 .submit {
   width: 100%;
 }
+
+/* promotion code (2026-10) */
+.codeRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.codeRow > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.codeInput {
+  direction: ltr;
+  text-align: start;
+  text-transform: uppercase;
+}
+
+.codeError {
+  color: var(--error);
+  font-size: 0.8125rem;
+}
+
+.codeOk {
+  color: var(--success, var(--primary6));
+  font-size: 0.8125rem;
+}

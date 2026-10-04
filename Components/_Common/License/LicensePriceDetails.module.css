@@ -47,3 +47,61 @@
   color: var(--gray8);
   font-size: 0.875rem;
 }
+
+/* a running promotion (2026-10): its badge, "first purchase" note and
+   countdown under the price */
+.promo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.promoTitle {
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: var(--gradAccent, var(--primary6));
+  color: var(--onColor);
+  font-size: 0.6875rem;
+  font-weight: 800;
+}
+
+.promoNote {
+  color: var(--gray9);
+  font-size: 0.6875rem;
+}
+
+/* mid-term upgrade (2026-10): new price, credit for the remaining days,
+   payable */
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--primary6) 8%, transparent);
+  font-size: 0.75rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--gray10);
+}
+
+.row dt,
+.row dd {
+  margin: 0;
+}
+
+.row dd {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.payable {
+  color: var(--gray13);
+  font-weight: 800;
+}

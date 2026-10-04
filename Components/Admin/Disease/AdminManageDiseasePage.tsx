@@ -7,6 +7,7 @@ import {
   genderSpecificOptionsDict,
   IDisease,
   IDrug,
+  IPart,
   ISymptom,
 } from "./AdminManageDiseasesPage";
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
@@ -15,7 +16,6 @@ import DeleteDiseasePopup from "./DeleteDiseasePopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { IDiseaseCategory } from "../DiseaseCategory/AdminManageDiseaseCategoriesPage";
-import { IDiseaseTag } from "../DiseaseTag/AdminManageDiseaseTagsPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
@@ -74,17 +74,6 @@ const AdminManageDiseasePage = () => {
                       image: { section: details, type: "image", title: ta("تصویر") },
                       slug: { section: details, type: "text", title: ta("اسلاگ") },
                       order: { section: details, type: "number", title: ta("رتبه") },
-                      tag: { section: details,
-                        type: "nodes",
-                        title: ta("تگ"),
-                        multi: false,
-                        getOptionLabel: (node) =>
-                          (node as IDiseaseTag).name || ta("بدون نام"),
-                        getOptionValue: (node) => (node as IDiseaseTag)._id,
-                        getDefaultValue: (inp) => inp.tag,
-                        path: `${API}/auto/diseasetag`,
-                        creatable: { path: `${API}/auto/diseasetag` },
-                      },
                       category: { section: details,
                         type: "nodes",
                         title: ta("دسته بندی"),
@@ -126,6 +115,23 @@ const AdminManageDiseasePage = () => {
                           (node as ISymptom).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as ISymptom)._id,
                         clearable: true,
+                      },
+                      // the directory's "by body part" (its symptoms' parts
+                      // count too); a new part is created right here
+                      parts: { section: connections,
+                        type: "nodes",
+                        path: `${API}/auto/part`,
+                        title: ta("اعضای بدن"),
+                        multi: true,
+                        clearable: true,
+                        getOptionLabel: (node) =>
+                          (node as IPart).name || ta("بدون نام"),
+                        getOptionValue: (node) => (node as IPart)._id,
+                        getDefaultValue: (val) =>
+                          (val.parts || []).map((el) =>
+                            typeof el === "string" ? el : el._id,
+                          ),
+                        creatable: { path: `${API}/auto/part` },
                       },
                       specialities: { section: connections,
                         type: "nodes",

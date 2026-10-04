@@ -1,4 +1,5 @@
 import { useParams } from "next/navigation";
+import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import useChatScope from "./useChatScope";
 import classes from "./CurrentChat.module.css";
 import useSWR from "swr";
@@ -205,6 +206,7 @@ const InnerChat = ({
   const title = useMemo(() => getChatParticipantName(other), [other]);
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const { emergencyNumberText } = useSiteSettings();
 
   return (
     <div className={classes.main}>
@@ -233,7 +235,7 @@ const InnerChat = ({
             <Ixon width="0.9rem">
               <SparkIcon />
             </Ixon>
-            {getContent("chatUrgentNote")}
+            {getContent("chatUrgentNote", [emergencyNumberText])}
           </p>
         )}
         {!!chat.messages.length ? (

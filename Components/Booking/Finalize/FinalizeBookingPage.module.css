@@ -386,3 +386,8 @@
   padding-inline: 1rem;
   box-sizing: border-box;
 }
+
+/* the «پرو» member's discount line (2026-10) */
+.proDiscount {
+  color: var(--successS2);
+}

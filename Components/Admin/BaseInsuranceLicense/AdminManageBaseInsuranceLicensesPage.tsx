@@ -16,6 +16,7 @@ import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { ILicensePricingEntry } from "../UI/LicensePricingInput";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import SeedRecommendedPlansPopup from "../LicensePlans/SeedRecommendedPlansPopup";
 
 // Menu items available in the insurance dashboard (InsurancePanelSidebar).
 // Kept in sync with Models/BaseInsuranceLicense.ts on noyanai-back and with
@@ -152,6 +153,18 @@ const AdminManageBaseInsuranceLicensesPage = () => {
     <NodesManager<IBaseInsuranceLicense>
       create={baseInsuranceLicenseFormRenderer}
       modelName="baseInsuranceLicense"
+      // the recommended free / professional / premium lineup, created on
+      // demand for what this kind is missing (2026-10)
+      actions={({ mutate }) => [
+        {
+          title: ta("ساخت پلن‌های پیشنهادی"),
+          action: () =>
+            setPopup(
+              "SeedRecommendedPlans",
+              <SeedRecommendedPlansPopup kind="insurance" mutate={mutate} />,
+            ),
+        },
+      ]}
       title={ta("پلن های مجوز بیمه")}
       table={({ mutate }) => ({
         displayName: {

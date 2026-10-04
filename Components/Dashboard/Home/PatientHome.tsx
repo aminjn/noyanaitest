@@ -27,6 +27,9 @@ import SearchIcon from "@/Components/Icons/SearchIcon";
 import ReservationJoinButton from "../Booking/ReservationJoinButton";
 import { DoctorSessionType } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
+import ProUpsellCard from "@/Components/Pro/ProUpsellCard";
+import ProBadge from "@/Components/Pro/ProBadge";
+import { useMyPro } from "@/Components/Pro/useProData";
 
 const NS: ContentNamespace[] = ["common", "dashboardHome"];
 
@@ -101,6 +104,8 @@ const PatientHome = ({ name }: { name?: string }) => {
     return `${two(Math.floor(m / 60))}:${two(m % 60)}`;
   };
 
+  // «پرو» (2026-10): members see their badge, others the offer
+  const { data: pro } = useMyPro();
   const { data } = useSWR<PatientDashboard>(`${API}/user/dashboard`, (u: string) =>
     fetcher({ url: u }).then((r) => r.data),
   );
@@ -203,7 +208,9 @@ const PatientHome = ({ name }: { name?: string }) => {
     <div className={classes.main}>
       <header className={classes.header}>
         <span className={classes.date}>{today}</span>
-        <h1 className={classes.title}>{name ? getContent("phGreeting", [name]) : getContent("phGreetingPlain")}</h1>
+        <h1 className={classes.title}>
+          {name ? getContent("phGreeting", [name]) : getContent("phGreetingPlain")} <ProBadge active={!!pro?.active} />
+        </h1>
       </header>
 
       <div className={classes.top}>
@@ -333,6 +340,8 @@ const PatientHome = ({ name }: { name?: string }) => {
           </Link>
         ))}
       </nav>
+
+      {!!pro && !pro.active && pro.onSale && <ProUpsellCard moment="home" />}
 
       {(recent.length > 0 || rebook.length > 0) && (
         <div className={classes.bottom}>

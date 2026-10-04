@@ -17,7 +17,10 @@ const NodesManager = <T,>({
   create,
   newPath,
   table,
+  actions,
 }: {
+  // extra header actions next to «جدید» (e.g. «ساخت پلن‌های پیشنهادی»)
+  actions?: (args: { mutate: () => unknown }) => { title: string; action: () => unknown }[];
   modelName: string;
   title: string;
   create?: FormRenderer<T>;
@@ -39,8 +42,8 @@ const NodesManager = <T,>({
       {!!data && (
         <WithTitle
           title={title}
-          actions={
-            newPath
+          actions={[
+            ...(newPath
               ? [{ title: ta("جدید"), action: () => push(adminPath(newPath)) }]
               : create
                 ? [
@@ -58,8 +61,9 @@ const NodesManager = <T,>({
                         ),
                     },
                   ]
-                : []
-          }
+                : []),
+            ...(actions ? actions({ mutate }) : []),
+          ]}
         >
           <Table
             name={`AdminManage${modelName}s`}

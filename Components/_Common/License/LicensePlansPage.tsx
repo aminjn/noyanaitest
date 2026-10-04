@@ -22,6 +22,8 @@ import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import { t3xlBold, tlgDemiBold, txsRegular } from "@/Components/UI/Typography";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import useLicenseQuotes from "./useLicenseQuotes";
+import LicensePromotionBanner from "./LicensePromotionBanner";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -59,6 +61,8 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
   }, [selectedDuration, durations]);
 
   const getContent = useScopedLocale(LOCALE_NS);
+  // the server's price of each option, a running promotion included
+  const { quoteOf, promotions, current } = useLicenseQuotes(name, undefined, true);
 
   // TODO: render `licenses`/`durations` (plan cards + duration picker +
   // purchase action, calling `mutate` on a successful purchase) once the
@@ -90,6 +94,7 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                 {getContent("primaryLicensesIntroDescription")}
               </p>
             </div>
+            <LicensePromotionBanner promotions={promotions} />
             <LicenseDurationSelector
               durations={durations}
               selectedDuration={selectedDuration}
@@ -104,6 +109,8 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
                     duration={selectedDuration}
                     license={license}
                     org={name}
+                    quote={quoteOf(license._id, selectedDuration?.duration)}
+                    current={current}
                   />
                 ))}
               </div>

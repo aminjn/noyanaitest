@@ -20,8 +20,11 @@ const DrugHub = () => {
           content: <AdminManageDrugsPage />,
         },
         {
+          // DrugTag is the therapeutic class since 2026-10 (the id stays
+          // "tags" so old links keep landing here)
           id: "tags",
-          title: ta("برچسب‌ها"),
+          title: ta("گروه‌های درمانی"),
+          hint: ta("گروه درمانی هر دارو (مثل مسکن‌ها یا آنتی‌بیوتیک‌ها). هر گروه فعال یک صفحه در دارونامه‌ی سایت دارد."),
           exclude: !canOpen("Drug"),
           content: <AdminManageDrugtagsPage />,
         },

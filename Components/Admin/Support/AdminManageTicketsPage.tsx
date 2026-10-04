@@ -72,6 +72,8 @@ const AdminManageTicketsPage = () => {
   const [view, setView] = useState<View>(userFilter ? "all" : "open");
   const [priority, setPriority] = useState<"" | TicketPriority>("");
   const [assignee, setAssignee] = useState("");
+  // only «پرو» members' tickets (priority support, 2026-10)
+  const [proOnly, setProOnly] = useState(false);
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -97,6 +99,7 @@ const AdminManageTicketsPage = () => {
   else if (view === "unassigned") params.set("assignee", "none");
   else if (assignee) params.set("assignee", assignee);
   if (priority) params.set("priority", priority);
+  if (proOnly) params.set("pro", "1");
   if (query) params.set("q", query);
   if (/^[0-9a-f]{24}$/i.test(userFilter)) params.set("user", userFilter);
 
@@ -198,6 +201,14 @@ const AdminManageTicketsPage = () => {
                   ))}
                 </select>
               )}
+              <label className={classes.proToggle}>
+                <input
+                  type="checkbox"
+                  checked={proOnly}
+                  onChange={(e) => select(() => setProOnly(e.target.checked))}
+                />
+                {ta("فقط اعضای پرو")}
+              </label>
               {!!userFilter && (
                 <InlineLink href={adminPath("/ticket")}>{ta("حذف فیلترهای پیوند")}</InlineLink>
               )}
@@ -210,9 +221,16 @@ const AdminManageTicketsPage = () => {
                   name: ta("عنوان"),
                   value: (node) => node.title,
                   component: (node) => (
-                    <InlineLink href={adminPath(`/ticket/${node._id}`)}>
-                      {node.title || ta("بدون عنوان")}
-                    </InlineLink>
+                    <span className={classes.titleCell}>
+                      <InlineLink href={adminPath(`/ticket/${node._id}`)}>
+                        {node.title || ta("بدون عنوان")}
+                      </InlineLink>
+                      {(node as { pro?: boolean }).pro && (
+                        <span className={classes.proBadge} title={ta("عضو پرو: پشتیبانی با اولویت")}>
+                          {ta("پرو")}
+                        </span>
+                      )}
+                    </span>
                   ),
                 },
                 waiting: {

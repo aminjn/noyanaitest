@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import useSiteSettings from "../Hooks/useSiteSettings";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./DiseasePage.module.css";
 import { imagePath } from "../helpers/imagepath";
@@ -29,6 +30,10 @@ import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
+import DirectoryFunnel, {
+  aiCheckHref,
+  bookSpecialistHref,
+} from "../Directory/DirectoryFunnel";
 
 const NS: ContentNamespace[] = ["common", "diseasePage"];
 
@@ -58,6 +63,7 @@ export type DiseasePageProps = {
 
 const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
   const getContent = useScopedLocale(NS);
+  const emergency = useSiteSettings();
 
   return (
     <ListPageLayout
@@ -80,12 +86,17 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
         summary={data.summary}
         reviewer={medicalReviewerOf(data)}
         pendingReview={medicalReviewPending(data)}
+        // the directory's two ways on (2026-10): a specialist of its
+        // speciality on the booking search (else the doctors who treat this
+        // disease), and the AI symptom check opened on this disease
         primaryAction={{
-          title: getContent("bookASessionFromADoctor"),
-          // doctors who treat this disease, on the booking search
-          href: `/book?disease=${data._id}&name=${encodeURIComponent(data.name || "")}`,
+          title: getContent("bookASpecialist"),
+          href: bookSpecialistHref(data.specialities?.[0], data),
         }}
-        secondaryAction={{ title: getContent("inpectDiseaseWithAi"), href: "/wizard" }}
+        secondaryAction={{
+          title: getContent("inspectSymptomWithAi"),
+          href: aiCheckHref(getContent("aiPrefillDisease", [data.name || ""])),
+        }}
       />
       <BigAd position="disease1" resourceModel="Disease" resource={data._id} />
       <ListPageWithSide
@@ -114,6 +125,16 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
                 title: el.name || "",
                 target: `/speciality/${el.slug || el._id}`,
               }))}
+            />
+            <ListPageSideExpandable
+              // the directory's "by body part" pages of this disease
+              title={getContent("directoryByPart")}
+              items={(data.parts ?? [])
+                .filter((el): el is Exclude<typeof el, string> => !!el && typeof el === "object")
+                .map((el) => ({
+                  title: el.name || "",
+                  target: `/disease/part/${el.slug || el._id}`,
+                }))}
             />
             <ListPageSideExpandable
               title={getContent("similarDiseases")}
@@ -160,13 +181,24 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
             items={[
               { title: getContent("possibleComplications"), value: data.possibleComplication },
             ]}
-            note={getContent("seeDoctorWarningNote")}
+            note={
+            // the number and the on/off are the super admin's (System
+            // settings -> General); the wording is the UI text
+            emergency.emergencyNoteEnabled
+              ? getContent("seeDoctorWarningNote", [emergency.emergencyNumberText])
+              : undefined
+          }
           />
           {!!data.content && (
             <div className={classes.box}>
               <RenderRtf value={data.content} />
             </div>
           )}
+          <DirectoryFunnel
+            aiPrompt={getContent("aiPrefillDisease", [data.name || ""])}
+            speciality={data.specialities?.[0]}
+            disease={data}
+          />
         </Fragment>
       </ListPageWithSide>
       <SmallAd position="disease2" resourceModel="Disease" resource={data._id} />

@@ -328,3 +328,12 @@
   gap: 1rem;
   min-width: 0;
 }
+
+/* a .link that runs an action («اشتراک پرو» card, 2026-10) */
+button.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}

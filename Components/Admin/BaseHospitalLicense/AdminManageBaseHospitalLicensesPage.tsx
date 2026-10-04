@@ -16,6 +16,7 @@ import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { ILicensePricingEntry } from "../UI/LicensePricingInput";
 import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
+import SeedRecommendedPlansPopup from "../LicensePlans/SeedRecommendedPlansPopup";
 
 // Menu items available in the hospital dashboard (HospitalPanelSidebar). Kept in
 // sync with Models/BaseHospitalLicense.ts on noyanai-back and with the
@@ -166,6 +167,18 @@ const AdminManageBaseHospitalLicensesPage = () => {
     <NodesManager<IBaseHospitalLicense>
       create={baseHospitalLicenseFormRenderer}
       modelName="baseHospitalLicense"
+      // the recommended free / professional / premium lineup, created on
+      // demand for what this kind is missing (2026-10)
+      actions={({ mutate }) => [
+        {
+          title: ta("ساخت پلن‌های پیشنهادی"),
+          action: () =>
+            setPopup(
+              "SeedRecommendedPlans",
+              <SeedRecommendedPlansPopup kind="hospital" mutate={mutate} />,
+            ),
+        },
+      ]}
       title={ta("پلن های مجوز بیمارستان")}
       table={({ mutate }) => ({
         displayName: {

@@ -10,6 +10,7 @@ import Ixon from "../UI/Ixon";
 import Button from "../UI/Button";
 import { tsmMedium, tsmRegular, txsMedium, txsRegular } from "../UI/Typography";
 import Badge from "../UI/Badge";
+import { ContentKey } from "../Enums/contentKeys";
 
 const NS: ContentNamespace[] = ["common", "drugCard"];
 const DrugCard = ({ node }: { node: IDrug<{ Tag: Record<never, never> }> }) => {
@@ -30,10 +31,27 @@ const DrugCard = ({ node }: { node: IDrug<{ Tag: Record<never, never> }> }) => {
               {node.brand}
             </span>
           )}
-          {node.tag && (
-            <Badge color="Primarylight" mode="Fill" radius="High" size="S">
-              {node.tag.name}
-            </Badge>
+          {/* the therapeutic class and Rx / OTC, as Drugs.com lists them */}
+          {(!!node.tag?.name || !!node.prescriptionStatus) && (
+            <span className={classes.badges}>
+              {!!node.tag?.name && (
+                <Badge color="Primarylight" mode="Fill" radius="High" size="S">
+                  {node.tag.name}
+                </Badge>
+              )}
+              {!!node.prescriptionStatus && (
+                <Badge
+                  color={node.prescriptionStatus === "rx" ? "Warning" : "Success"}
+                  mode="Fill"
+                  radius="High"
+                  size="S"
+                >
+                  {getContent(
+                    (node.prescriptionStatus === "rx" ? "drugStatusRx" : "drugStatusOtc") as ContentKey,
+                  )}
+                </Badge>
+              )}
+            </span>
           )}
         </div>
       </div>

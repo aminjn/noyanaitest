@@ -7,7 +7,6 @@ import Image from "next/image";
 import { imagePath } from "../helpers/imagepath";
 import Ixon from "../UI/Ixon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
-import Badge from "../UI/Badge";
 import TemperatureIcon from "../Icons/TemperatureIcon";
 import PillIcon from "../Icons/PillIcon";
 import Button from "../UI/Button";
@@ -30,11 +29,6 @@ const DiseaseCard = ({
             <StetoscopeIcon />
           </Ixon>
         </div>
-        {!!node.tag && (
-          <Badge color={node.tag.level} size="S" radius="High" mode="Fill">
-            {node.tag.name}
-          </Badge>
-        )}
       </div>
       <h3 className={`${classes.name} ${tsmDemiBold}`}>{node.name}</h3>
       {!!node.category && (

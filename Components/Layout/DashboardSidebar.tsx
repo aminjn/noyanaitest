@@ -10,6 +10,8 @@ import ChatIcon from "../Icons/ChatIcon";
 import WalletIcon from "../Icons/WalletIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import LocationIcon from "../Icons/LocationIcon";
+import CrownIcon from "../Icons/CrownIcon";
+import { ContentKey } from "../Enums/contentKeys";
 
 const DashboardSidebar = () => {
   const links = useMemo<LinkMap>(
@@ -53,6 +55,8 @@ const DashboardSidebar = () => {
         target: "notification",
       },
       { icon: <ChatIcon />, show: true, title: "chats", target: "chat" },
+      // the «پرو» membership (2026-10)
+      { icon: <CrownIcon />, show: true, title: "proPlan", target: "pro" },
     ],
     [],
   );

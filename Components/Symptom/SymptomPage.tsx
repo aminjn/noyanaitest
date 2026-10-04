@@ -7,6 +7,7 @@ import {
 } from "../Admin/Disease/AdminManageDiseasesPage";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import useSiteSettings from "../Hooks/useSiteSettings";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./SymptomPage.module.css";
 import { imagePath } from "../helpers/imagepath";
@@ -28,6 +29,10 @@ import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
+import DirectoryFunnel, {
+  aiCheckHref,
+  bookSpecialistHref,
+} from "../Directory/DirectoryFunnel";
 
 const NS: ContentNamespace[] = ["common", "symptomPage"];
 
@@ -35,6 +40,7 @@ export type SymptomPageProps = {
   data: ISymptom<{
     SameAs: Record<never, never>;
     Category: Record<never, never>;
+    Part: Record<never, never>;
   }>;
   diseases: IDisease[];
   doctors: IDoctorProfile<{
@@ -76,6 +82,7 @@ const SymptomPage = ({
   specialities,
 }: SymptomPageProps) => {
   const getContent = useScopedLocale(NS);
+  const emergency = useSiteSettings();
 
   return (
     <ListPageLayout
@@ -102,13 +109,15 @@ const SymptomPage = ({
         reviewer={medicalReviewerOf(data)}
         pendingReview={medicalReviewPending(data)}
         primaryAction={{
-          title: getContent("bookASessionFromADoctor"),
+          title: getContent("bookASpecialist"),
           // the booking search narrowed to the speciality that treats it
-          href: specialities[0]
-            ? `/book?speciality=${specialities[0]._id}&name=${encodeURIComponent(specialities[0].name || "")}`
-            : "/book",
+          href: bookSpecialistHref(specialities[0]),
         }}
-        secondaryAction={{ title: getContent("inspectSymptomWithAi"), href: "/wizard" }}
+        // the AI symptom check opened on this symptom (2026-10)
+        secondaryAction={{
+          title: getContent("inspectSymptomWithAi"),
+          href: aiCheckHref(getContent("aiPrefillSymptom", [data.name || ""])),
+        }}
         summary={data.summary}
       />
       <BigAd position="symptom1" resourceModel="Symptom" resource={data._id} />
@@ -144,6 +153,16 @@ const SymptomPage = ({
               }))}
             />
             <ListPageSideExpandable
+              // the directory's "by body part" pages of this symptom
+              title={getContent("directoryByPart")}
+              items={(Array.isArray(data.part) ? data.part : [])
+                .filter((el): el is Exclude<typeof el, string> => !!el && typeof el === "object")
+                .map((el) => ({
+                  title: el.name || "",
+                  target: `/symptom/part/${el.slug || el._id}`,
+                }))}
+            />
+            <ListPageSideExpandable
               title={getContent("similarSymptoms")}
               items={(data.sameAs ?? []).map((el) => ({
                 title: el.name || "",
@@ -173,13 +192,23 @@ const SymptomPage = ({
           items={[
             { title: getContent("possibleComplications"), value: data.possibleComplication },
           ]}
-          note={getContent("seeDoctorWarningNote")}
+          note={
+            // the number and the on/off are the super admin's (System
+            // settings -> General); the wording is the UI text
+            emergency.emergencyNoteEnabled
+              ? getContent("seeDoctorWarningNote", [emergency.emergencyNumberText])
+              : undefined
+          }
         />
         {!!data.content && (
           <div className={classes.box}>
             <RenderRtf value={data.content} />
           </div>
         )}
+        <DirectoryFunnel
+          aiPrompt={getContent("aiPrefillSymptom", [data.name || ""])}
+          speciality={specialities[0]}
+        />
       </ListPageWithSide>
       <SmallAd
         position="symptom2"

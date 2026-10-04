@@ -53,6 +53,8 @@ export const notificationSmsEvents = [
   "reservationCompletedBySupportDoctor",
   "reservationPayoutReversedDoctor",
   "visitNoteReadyPatient",
+  "reservationReminderDayBeforePatient",
+  "reservationReminderTwoHoursPatient",
   "orderShippedUser",
   "orderItemFulfilledUser",
   "orderItemCancelledUser",
@@ -84,6 +86,9 @@ export const notificationSmsEvents = [
   "licensePurchasedProvider",
   "licenseExpiringProvider",
   "licenseExpiredProvider",
+  "proPurchasedUser",
+  "proExpiringUser",
+  "proExpiredUser",
   "ticketAnsweredUser",
   "accountSuspendedUser",
   "accountReactivatedUser",
@@ -333,6 +338,20 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     variables: ["reservationId", "doctorName"],
     sample: () => ta("دکتر %doctorName% توصیه‌های پس از ویزیت شما را ثبت کرد. آن‌ها را در صفحه‌ی نوبت ببینید."),
   },
+  // 24 hours / 2 hours before the visit (2026-10), each switchable in the
+  // booking settings
+  reservationReminderDayBeforePatient: {
+    audience: "patient",
+    label: () => ta("یادآوری ۲۴ ساعت پیش از نوبت - بیمار"),
+    variables: ["reservationId", "doctorName", "date", "time"],
+    sample: () => ta("یادآوری: نوبت شما با دکتر %doctorName% در تاریخ %date% ساعت %time% است."),
+  },
+  reservationReminderTwoHoursPatient: {
+    audience: "patient",
+    label: () => ta("یادآوری ۲ ساعت پیش از نوبت - بیمار"),
+    variables: ["reservationId", "doctorName", "date", "time"],
+    sample: () => ta("یادآوری: نوبت شما با دکتر %doctorName% ساعت %time% آغاز می‌شود."),
+  },
   orderShippedUser: {
     audience: "patient",
     label: () => ta("ارسال سفارش - خریدار"),
@@ -518,6 +537,26 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("پایان اشتراک - ارائه‌دهنده"),
     variables: ["plan"],
     sample: () => ta("اشتراک «%plan%» به پایان رسید. برای ادامه‌ی دسترسی اشتراک تازه بخرید."),
+  },
+  // the patients' «پرو» membership (2026-10, backend Lib/patientPro.ts,
+  // Services/patientProService.ts)
+  proPurchasedUser: {
+    audience: "patient",
+    label: () => ta("خرید اشتراک پرو - کاربر"),
+    variables: ["plan", "expiresAt"],
+    sample: () => ta("اشتراک «%plan%» شما تا %expiresAt% فعال شد."),
+  },
+  proExpiringUser: {
+    audience: "patient",
+    label: () => ta("نزدیک شدن پایان اشتراک پرو - کاربر"),
+    variables: ["plan", "days", "expiresAt"],
+    sample: () => ta("اشتراک «%plan%» %days% روز دیگر (%expiresAt%) تمام می‌شود. برای ادامه‌ی مزایا آن را تمدید کنید."),
+  },
+  proExpiredUser: {
+    audience: "patient",
+    label: () => ta("پایان اشتراک پرو - کاربر"),
+    variables: ["plan"],
+    sample: () => ta("اشتراک «%plan%» به پایان رسید. برای استفاده‌ی دوباره از مزایا آن را تمدید کنید."),
   },
   ticketAnsweredUser: {
     audience: "patient",
