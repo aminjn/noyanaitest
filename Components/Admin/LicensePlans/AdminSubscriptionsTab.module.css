@@ -65,3 +65,12 @@
   background: var(--errorT1, var(--gray3));
   color: var(--errorS1, var(--gray10));
 }
+
+/* a line of explanation above a list or form («اشتراک پرو کاربران») */
+.note {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--gray10);
+  text-align: start;
+}

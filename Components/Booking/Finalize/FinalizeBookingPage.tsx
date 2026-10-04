@@ -3,6 +3,7 @@ import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useParams, useSearchParams } from "next/navigation";
 import classes from "./FinalizeBookingPage.module.css";
 import useSWR from "swr";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import LeaveByHint from "@/Components/Map/LeaveByHint";
 import { currencize } from "@/Components/helpers/currencize";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -74,6 +75,7 @@ import useForm from "@/Components/Hooks/useForm";
 import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
 import Act from "@/Components/UI/Act";
 import WalletShortfallTopUp from "@/Components/Payment/WalletShortfallTopUp";
+import ProUpsellCard from "@/Components/Pro/ProUpsellCard";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import BookingSessionSelectorPopup from "@/Components/Booking/BookingSessionSelectorPopup";
 import BookingSidebar from "@/Components/Dr/New/BookingSidebar";
@@ -490,9 +492,29 @@ const CheckoutStage = ({
     [getSessionTypePrice, doctor.visitTaxPercent, doctor.officeTaxPercents, officeId],
   );
 
+  // «پرو» (2026-10): the server's discount for this visit (a member's,
+  // paid by Noyan out of its commission - the doctor's fee is unchanged), or
+  // what Pro would save here
+  const { data: proQuote } = useSWR<{ discount: number; potential: number; pro: boolean }>(
+    context.sessionType
+      ? [`${API}/pro/quote/booking`, doctor._id, context.sessionType, context.patient?._id || ""]
+      : null,
+    ([url, d, st, p]: [string, string, string, string]) =>
+      fetcher({ url, method: "POST", payload: { doctor: d, sessionType: st, ...(p ? { patient: p } : {}) } })
+        .then((res) => ({
+          discount: Math.max(0, Number(res?.data?.discount) || 0),
+          potential: Math.max(0, Number(res?.data?.potential) || 0),
+          pro: !!res?.data?.pro,
+        }))
+        .catch(() => ({ discount: 0, potential: 0, pro: false })),
+    { revalidateOnFocus: false },
+  );
+
   if (!context.sessionType || !wallet) return <Loading />;
   const sessionPrice = getSessionTypePrice(context.sessionType);
   const sessionTax = getSessionTypeTax(context.sessionType);
+  const proDiscount = Math.min(sessionPrice + sessionTax, proQuote?.discount || 0);
+  const payable = sessionPrice + sessionTax - proDiscount;
   return (
     <div className={classes.boxs}>
       <div className={classes.box}>
@@ -513,15 +535,19 @@ const CheckoutStage = ({
                   : getContent("freeOfCharge")}
               </span>
             </div>
+            {proDiscount > 0 && (
+              <div className={`${classes.paymentDetail} ${classes.proDiscount} ${tsmMedium}`}>
+                <span>{getContent("proDiscountLine")}</span>
+                <span>{`− ${getCompContent("xToman", [currencize(proDiscount)])}`}</span>
+              </div>
+            )}
           </div>
           <div className={classes.totalBox}>
             <span className={`${classes.totalLabel} ${tbaseDemiBold}`}>
               {getContent("totalPrice")}
             </span>
             <span className={`${classes.totalValue} ${tbaseDemiBold}`}>
-              {getCompContent("xToman", [
-                currencize(sessionPrice + sessionTax),
-              ])}
+              {getCompContent("xToman", [currencize(payable)])}
             </span>
           </div>
         </div>
@@ -559,10 +585,10 @@ const CheckoutStage = ({
       </div>
       {/* wallet can't cover the booking -> offer a SEP top-up of the gap,
           returning here afterwards (2026-09) */}
-      <WalletShortfallTopUp
-        balance={wallet.balance}
-        total={sessionPrice + sessionTax}
-      />
+      {!proQuote?.pro && !!proQuote?.potential && (
+        <ProUpsellCard moment="booking" amount={proQuote.potential} />
+      )}
+      <WalletShortfallTopUp balance={wallet.balance} total={payable} />
       <div className={classes.tips}>
         <div className={classes.tipsHeader}>
           <Ixon className={classes.tipsIcon} width="1.5rem">

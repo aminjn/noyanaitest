@@ -27,7 +27,8 @@ import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 // and /pricing show the struck-through price, the badge and a countdown.
 
 const KINDS = ["doctor", "clinic", "hospital", "pharmacy", "paraClinic", "insurance"] as const;
-type Kind = (typeof KINDS)[number];
+// the patients' «پرو» membership (2026-10) is priced by the same engine
+type Kind = (typeof KINDS)[number] | "patient";
 
 const kindLabels: Record<Kind, string> = {
   get doctor() {
@@ -48,9 +49,12 @@ const kindLabels: Record<Kind, string> = {
   get insurance() {
     return ta("بیمه");
   },
+  get patient() {
+    return ta("کاربران (اشتراک پرو)");
+  },
 };
 
-const planModels: Record<Kind, string> = {
+const planModels: Record<(typeof KINDS)[number], string> = {
   doctor: "baseDoctorLicense",
   clinic: "baseClinicLicense",
   hospital: "baseHospitalLicense",
@@ -97,6 +101,11 @@ const usePlanOptions = () => {
           options[plan._id] = `${kindLabels[KINDS[i]]} · ${plan.displayName || ta("بدون نام")}`;
         }),
       );
+      // the one «پرو» plan
+      const pro = await fetcher({ url: `${API}/admin/pro/plan` })
+        .then((res) => res?.data as { _id?: string; displayName?: string } | undefined)
+        .catch(() => undefined);
+      if (pro?._id) options[pro._id] = `${kindLabels.patient} · ${pro.displayName || ta("بدون نام")}`;
       return options;
     },
     { revalidateOnFocus: false },

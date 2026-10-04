@@ -26,6 +26,7 @@ import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
 import MobileUserButton from "./MobileUserButton";
 import useUserMenus from "./useUserMenus";
+import ProBadge from "../Pro/ProBadge";
 import SwitchProfile from "./SwitchProfile";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -76,6 +77,7 @@ const UserButton = () => {
           className={`${classes.button} ${isOpen ? classes.openButton : ""}`}
         >
           {!!user ? user.username || user.phone : getContent("loginOrSignup")}
+          {!!user && <ProBadge className={classes.proBadge} />}
         </Button>
         {isOpen && (
           <div className={classes.menuContainer}>

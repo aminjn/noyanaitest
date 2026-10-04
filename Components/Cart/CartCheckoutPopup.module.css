@@ -168,3 +168,8 @@
 .warn {
   color: var(--warningS2);
 }
+
+/* the «پرو» member's delivery saving (2026-10) */
+.proSaving {
+  color: var(--successS2);
+}

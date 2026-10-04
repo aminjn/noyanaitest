@@ -1,4 +1,5 @@
 "use client";
+import UserProCard from "./UserProCard";
 import { useEffect, useState } from "react";
 import Link from "@/Components/i18n/Link";
 import { useParams } from "next/navigation";
@@ -440,6 +441,14 @@ const AdminManageUserPage = () => {
               )}
             </section>
           </div>
+
+          {/* the patients' «پرو» membership (2026-10) */}
+          {(viewer?.role === "admin" || hasAccess("Finance", "readAll")) && (
+            <UserProCard
+              userId={data._id}
+              canManage={viewer?.role === "admin" || hasAccess("Finance", "update")}
+            />
+          )}
 
           <UserActivity
             userId={data._id}

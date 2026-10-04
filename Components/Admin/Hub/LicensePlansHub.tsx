@@ -11,6 +11,7 @@ import AdminManageBaseParaClinicLicensesPage from "@/Components/Admin/BaseParaCl
 import AdminManageBasePharmacyLicensesPage from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
 import AdminSubscriptionsTab from "@/Components/Admin/LicensePlans/AdminSubscriptionsTab";
 import AdminLicensePromotionsTab from "@/Components/Admin/LicensePlans/AdminLicensePromotionsTab";
+import AdminPatientProTab from "@/Components/Admin/LicensePlans/AdminPatientProTab";
 
 // پلن‌ها و مجوزها: one admin page, its parts as tabs (2026-09 admin audit).
 const LicensePlansHub = () => {
@@ -55,6 +56,14 @@ const LicensePlansHub = () => {
           title: ta("بیمه"),
           exclude: !canOpen("admin"),
           content: <AdminManageBaseInsuranceLicensesPage />,
+        },
+        {
+          // the patients' «پرو» membership (2026-10): prices, benefits,
+          // subscribers
+          id: "patientPro",
+          title: ta("اشتراک پرو کاربران"),
+          exclude: !canOpen("admin"),
+          content: <AdminPatientProTab />,
         },
         {
           // launch discount and other plan promotions (2026-10)

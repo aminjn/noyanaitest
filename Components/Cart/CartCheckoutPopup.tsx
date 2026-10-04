@@ -1,4 +1,5 @@
 "use client";
+import ProUpsellCard from "../Pro/ProUpsellCard";
 import { useListSeparator } from "@/Components/i18n/navigation";
 
 import { ReactNode, useEffect, useState } from "react";
@@ -68,6 +69,8 @@ type CartShipment = {
   pharmacyName?: string;
   method: "tapsi" | "tipax";
   fee: number;
+  // the part of fee Noyan pays for a «پرو» member (2026-10)
+  proDiscount?: number;
   payOnDelivery: boolean;
 };
 // shipping (2026-09): one shipment per pharmacy - Tapsi's flat fee when it
@@ -80,6 +83,8 @@ type CartSummary = {
   needsAddress?: boolean;
   // a prescription-only item is in the cart (2026-10): ask for it
   requiresPrescription?: boolean;
+  // «پرو»: the member's delivery discount, or what Pro would save
+  pro?: { member?: boolean; discount?: number; potential?: number; threshold?: number };
   total: number;
 };
 
@@ -259,9 +264,11 @@ const CartCheckoutPopup = ({
                       <span className={tsmRegular}>
                         {el.payOnDelivery
                           ? ""
-                          : el.fee > 0
-                            ? `${currencize(el.fee)} ${getContent("toman")}`
-                            : getContent("shippingFree")}
+                          : el.fee > 0 && (el.proDiscount || 0) >= el.fee
+                            ? getContent("proDeliveryFree")
+                            : el.fee > 0
+                              ? `${currencize(el.fee - Math.max(0, el.proDiscount || 0))} ${getContent("toman")}`
+                              : getContent("shippingFree")}
                       </span>
                     </div>
                     {!!el.pharmacyName && (
@@ -308,6 +315,18 @@ const CartCheckoutPopup = ({
               {`${currencize(summary.deliveryFee)} ${getContent("toman")}`}
             </span>
           </div>
+        )}
+        {/* «پرو» (2026-10): what Noyan paid of the courier fee, or the offer */}
+        {!!summary?.pro?.member && !!summary.pro.discount && (
+          <div className={`${classes.totalRow} ${classes.proSaving}`}>
+            <span className={tsmRegular}>{getContent("proDeliverySaving")}</span>
+            <span className={tsmRegular}>
+              {`${currencize(summary.pro.discount)} ${getContent("toman")}`}
+            </span>
+          </div>
+        )}
+        {!!summary?.pro && !summary.pro.member && !!summary.pro.potential && (
+          <ProUpsellCard moment="delivery" amount={summary.pro.potential} />
         )}
         <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("totalPrice")}</span>

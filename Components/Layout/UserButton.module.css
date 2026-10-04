@@ -54,3 +54,8 @@
     display: none;
   }
 }
+
+/* «پرو» next to the member's name (2026-10) */
+.proBadge {
+  margin-inline-start: 0.375rem;
+}

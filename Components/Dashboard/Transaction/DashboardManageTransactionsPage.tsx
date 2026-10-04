@@ -137,6 +137,8 @@ const DashboardManageTransactionsPage = () => {
       return { title: getContent(t.amount >= 0 ? "trOrderRefund" : "trOrderPay"), href: `/order/${t.order}` };
     if (kind === "topUp") return { title: getContent("walletTopUp"), href: `/payment/${t.gatewayPayment}` };
     if ((t as { withdrawal?: string }).withdrawal) return { title: getContent("wdTitle") };
+    // the «پرو» membership (2026-10)
+    if ((t as { proPlan?: string }).proPlan) return { title: getContent("trProPay"), href: "/dashboard/pro" };
     return { title: getContent("trOther"), href: undefined };
   };
 

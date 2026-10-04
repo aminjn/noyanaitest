@@ -289,3 +289,27 @@
     padding-inline: 1.25rem;
   }
 }
+
+/* «پرو» (2026-10): the offer when the day's free messages are used up, and
+   the "N messages left today" line */
+.proCard {
+  margin-inline: 1.5rem;
+  margin-block-start: 0.75rem;
+  flex-shrink: 0;
+}
+
+.allowance {
+  margin-inline: 1.5rem;
+  margin-block-start: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--gray9);
+  text-align: start;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .proCard,
+  .allowance {
+    margin-inline: 1rem;
+  }
+}

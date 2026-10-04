@@ -1,5 +1,7 @@
 "use client";
 
+import { useIntlLocale } from "@/Components/i18n/navigation";
+import { useMyPro } from "@/Components/Pro/useProData";
 import { useState } from "react";
 import classes from "./ReservationCancel.module.css";
 import { API } from "@/Components/config";
@@ -122,7 +124,16 @@ const ReservationCancel = ({
 }) => {
   const getContent = useScopedLocale(ns);
   const { setPopup } = usePopup();
-  const { patientFreeCancelHours, freeCancelHoursText } = useSiteSettings();
+  const { patientFreeCancelHours: siteHours, freeCancelHoursText: siteHoursText } = useSiteSettings();
+  // a «پرو» member's window is shorter (server: Lib/patientPro.ts
+  // freeCancelHoursFor); the page follows what the API will accept
+  const { data: pro } = useMyPro();
+  const intlTag = useIntlLocale();
+  const proHours = side === "patient" && pro?.active ? pro.freeCancelHours : null;
+  const patientFreeCancelHours =
+    proHours !== null && proHours >= 0 && proHours < siteHours ? proHours : siteHours;
+  const freeCancelHoursText =
+    patientFreeCancelHours === siteHours ? siteHoursText : new Intl.NumberFormat(intlTag).format(patientFreeCancelHours);
 
   if (reservation.status === "cancelled")
     return <p className={classes.done}>{getContent("cancelledRefunded")}</p>;

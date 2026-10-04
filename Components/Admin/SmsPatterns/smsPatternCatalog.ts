@@ -86,6 +86,9 @@ export const notificationSmsEvents = [
   "licensePurchasedProvider",
   "licenseExpiringProvider",
   "licenseExpiredProvider",
+  "proPurchasedUser",
+  "proExpiringUser",
+  "proExpiredUser",
   "ticketAnsweredUser",
   "accountSuspendedUser",
   "accountReactivatedUser",
@@ -534,6 +537,26 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("پایان اشتراک - ارائه‌دهنده"),
     variables: ["plan"],
     sample: () => ta("اشتراک «%plan%» به پایان رسید. برای ادامه‌ی دسترسی اشتراک تازه بخرید."),
+  },
+  // the patients' «پرو» membership (2026-10, backend Lib/patientPro.ts,
+  // Services/patientProService.ts)
+  proPurchasedUser: {
+    audience: "patient",
+    label: () => ta("خرید اشتراک پرو - کاربر"),
+    variables: ["plan", "expiresAt"],
+    sample: () => ta("اشتراک «%plan%» شما تا %expiresAt% فعال شد."),
+  },
+  proExpiringUser: {
+    audience: "patient",
+    label: () => ta("نزدیک شدن پایان اشتراک پرو - کاربر"),
+    variables: ["plan", "days", "expiresAt"],
+    sample: () => ta("اشتراک «%plan%» %days% روز دیگر (%expiresAt%) تمام می‌شود. برای ادامه‌ی مزایا آن را تمدید کنید."),
+  },
+  proExpiredUser: {
+    audience: "patient",
+    label: () => ta("پایان اشتراک پرو - کاربر"),
+    variables: ["plan"],
+    sample: () => ta("اشتراک «%plan%» به پایان رسید. برای استفاده‌ی دوباره از مزایا آن را تمدید کنید."),
   },
   ticketAnsweredUser: {
     audience: "patient",
