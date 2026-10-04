@@ -304,7 +304,7 @@ const CommentSection = ({
               <CommentIcon />
             </Ixon>
             <legend className={`${classes.title} ${tbaseMedium}`}>
-              {`${getContent(rated ? "useComments" : ("questionsAndComments" as ContentKey))} (${getContent("xComments", [String(data.count || 0)])})`}
+              {`${getContent(rated ? "useComments" : ("questionsAndComments"))} (${getContent("xComments", [String(data.count || 0)])})`}
             </legend>
           </div>
           {rated && (

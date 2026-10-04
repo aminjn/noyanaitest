@@ -120,9 +120,9 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
               title: getContent("prescribingStatus"),
               value:
                 data.prescriptionStatus === "rx"
-                  ? getContent("rxRequired" as ContentKey)
+                  ? getContent("rxRequired")
                   : data.prescriptionStatus === "otc"
-                    ? getContent("rxNotRequired" as ContentKey)
+                    ? getContent("rxNotRequired")
                     : undefined,
             },
             { title: getContent("description"), value: data.description },
@@ -141,7 +141,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
             { title: getContent("overdosage"), value: data.overdosage },
           ]}
           // shown with every drug: never start or stop on one's own, 115
-          note={getContent("drugSafetyNote" as ContentKey)}
+          note={getContent("drugSafetyNote")}
         />
         <ListPageFacts
           items={[

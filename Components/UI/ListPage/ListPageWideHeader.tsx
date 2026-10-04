@@ -73,7 +73,7 @@ const ListPageWideHeader = ({
           )}
           {!reviewer && !!pendingReview && (
             <span className={`${classes.reviewer} ${classes.pending} ${txsMedium}`}>
-              {getContent("aiDraftAwaitingReview" as ContentKey)}
+              {getContent("aiDraftAwaitingReview")}
             </span>
           )}
           {!!category?.value && (

@@ -99,7 +99,7 @@ const SubmitCommentForm = ({
             mode="Outline"
             onClick={() => setPopup("auth", <AuthPopup />)}
           >
-            {getContent("reviewLoginButton" as ContentKey)}
+            {getContent("reviewLoginButton")}
           </Button>
         </div>
       </div>
@@ -124,7 +124,7 @@ const SubmitCommentForm = ({
         {(eligibility.basis ?? basis) === "visit" &&
           eligibility.reason !== "alreadyReviewed" && (
             <a className={`${classes.bookLink} ${tsmMedium}`} href="#doctors">
-              {getContent("reviewBookVisitLink" as ContentKey)}
+              {getContent("reviewBookVisitLink")}
             </a>
           )}
       </div>
@@ -135,12 +135,12 @@ const SubmitCommentForm = ({
       <legend className={`${classes.formTitle} ${tsmMedium}`}>
         {rated
           ? getContent("submitYourComment")
-          : getContent("submitYourQuestion" as ContentKey)}
+          : getContent("submitYourQuestion")}
       </legend>
       {rated && eligibility?.eligible && (
         <p className={`${classes.verifiedHint} ${tsmRegular}`}>
           <VerifiedBadge kind={eligibility.basis} at={eligibility.at} />
-          {getContent("reviewWillBeVerified" as ContentKey)}
+          {getContent("reviewWillBeVerified")}
         </p>
       )}
       {rated && (

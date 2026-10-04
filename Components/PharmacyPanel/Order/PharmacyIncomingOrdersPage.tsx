@@ -141,12 +141,12 @@ const PharmacyIncomingOrdersPage = () => {
                 },
                 // prescriptions waiting on this pharmacy's check (2026-10)
                 prescriptions: {
-                  name: getContent("rxPrescription" as ContentKey),
+                  name: getContent("rxPrescription"),
                   value: (node) => node.pendingPrescriptions || 0,
                   component: (node) =>
                     node.pendingPrescriptions ? (
                       <Badge color="Warning" size="S">
-                        {getContent("rxNeedReview" as ContentKey, [String(node.pendingPrescriptions)])}
+                        {getContent("rxNeedReview", [String(node.pendingPrescriptions)])}
                       </Badge>
                     ) : (
                       "-"

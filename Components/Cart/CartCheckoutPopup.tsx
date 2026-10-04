@@ -328,7 +328,7 @@ const CartCheckoutPopup = ({
               return;
             }
             if (needsRx && !rxPayload) {
-              pushNotification(getContent("rxMissing" as ContentKey), "Warn");
+              pushNotification(getContent("rxMissing"), "Warn");
               return;
             }
             setIsSubmitting(true);

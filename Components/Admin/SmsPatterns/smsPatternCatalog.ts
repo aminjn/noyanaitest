@@ -56,6 +56,7 @@ export const notificationSmsEvents = [
   "orderShippedUser",
   "orderItemFulfilledUser",
   "orderItemCancelledUser",
+  "prescriptionRejectedUser",
   "labResultReadyUser",
   "orderCancelledByBuyerSeller",
   "walletChargedUser",
@@ -349,6 +350,12 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("لغو قلم سفارش - خریدار"),
     variables: ["orderId"],
     sample: () => ta("بخشی از سفارش %orderId% لغو شد و مبلغ آن به کیف پول شما برگشت."),
+  },
+  prescriptionRejectedUser: {
+    audience: "patient",
+    label: () => ta("رد نسخه توسط داروخانه - خریدار"),
+    variables: ["orderId", "pharmacyName", "reason"],
+    sample: () => ta("داروخانه‌ی %pharmacyName% نسخه‌ی سفارش %orderId% را نپذیرفت (%reason%). مبلغ آن قلم به کیف پول شما برگشت."),
   },
   labResultReadyUser: {
     audience: "patient",

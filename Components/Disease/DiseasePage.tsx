@@ -155,12 +155,12 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
           <ListPageFacts
             // safety apart and highlighted: complications, and the warning
             // signs that need a doctor or the emergency number (every page)
-            title={getContent("whenToSeeADoctor" as ContentKey)}
+            title={getContent("whenToSeeADoctor")}
             tone="warning"
             items={[
               { title: getContent("possibleComplications"), value: data.possibleComplication },
             ]}
-            note={getContent("seeDoctorWarningNote" as ContentKey)}
+            note={getContent("seeDoctorWarningNote")}
           />
           {!!data.content && (
             <div className={classes.box}>

@@ -15,6 +15,7 @@ import BreadCrump from "@/Components/UI/BreadCrump";
 import { BreadCrumpTrail } from "@/Components/Store/BreadCrumpStore";
 const CartableNodePage = <T,>({
   beforeTabs,
+  badges,
   commentsCount,
   images,
   score,
@@ -39,6 +40,8 @@ const CartableNodePage = <T,>({
   freeDelivery,
 }: {
   beforeTabs?: ReactNode;
+  // under the name, e.g. the prescription badge
+  badges?: ReactNode;
   images: IProductImage[];
   category?: { name?: string };
   name?: string;
@@ -79,6 +82,7 @@ const CartableNodePage = <T,>({
               category={category}
               name={name}
               original={original}
+              badges={badges}
             />
             <div className={classes.mobileOnly}>
               <CartablePageCartSection

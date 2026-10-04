@@ -20,7 +20,7 @@ const RxBadge = ({ size = "S", className }: { size?: BadgeSize; className?: stri
       leadIcon={<DocumentIcon />}
       className={className}
     >
-      {getContent("rxRequired" as ContentKey)}
+      {getContent("rxRequired")}
     </Badge>
   );
 };

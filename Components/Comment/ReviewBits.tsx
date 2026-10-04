@@ -51,7 +51,7 @@ export const ProviderReply = ({ reply }: { reply: ReviewReply }) => {
   return (
     <div className={classes.reply}>
       <div className={classes.replyHead}>
-        <span>{getContent("providerReplyTitle" as ContentKey)}</span>
+        <span>{getContent("providerReplyTitle")}</span>
         <span className={classes.replyDate}>{safeFormatDate(fmt, reply.at, "")}</span>
       </div>
       <p className={classes.replyText}>{reply.content}</p>

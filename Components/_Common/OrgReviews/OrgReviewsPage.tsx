@@ -50,7 +50,7 @@ const ReplyForm = ({ kind, id, onDone }: { kind: ReviewKind; id: string; onDone:
     return (
       <div className={classes.replyActions}>
         <Button size="S" mode="Outline" onClick={() => setOpen(true)}>
-          {getContent("replyPublicly" as ContentKey)}
+          {getContent("replyPublicly")}
         </Button>
       </div>
     );
@@ -64,7 +64,7 @@ const ReplyForm = ({ kind, id, onDone }: { kind: ReviewKind; id: string; onDone:
         bodyParser: "JSON",
         payload: { content: text.trim() },
       });
-      pushNotification(getContent("replySent" as ContentKey), "Success");
+      pushNotification(getContent("replySent"), "Success");
       setOpen(false);
       await onDone();
     } catch (err) {
@@ -80,11 +80,11 @@ const ReplyForm = ({ kind, id, onDone }: { kind: ReviewKind; id: string; onDone:
         value={text}
         maxLength={1000}
         onChange={(e) => setText(e.target.value)}
-        placeholder={getContent("replyPlaceholder" as ContentKey)}
+        placeholder={getContent("replyPlaceholder")}
       />
       <div className={classes.replyActions}>
         <Button size="S" variant="Primary" onClick={send} isLoading={busy}>
-          {getContent("sendReply" as ContentKey)}
+          {getContent("sendReply")}
         </Button>
         <Button size="S" variant="Neutral" mode="Outline" onClick={() => setOpen(false)}>
           {getContent("cancel")}
