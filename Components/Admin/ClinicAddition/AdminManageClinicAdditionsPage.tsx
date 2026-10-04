@@ -98,6 +98,23 @@ const AdminManageClinicAdditionsPage = () => {
                 value: (node) => node.ownerPhone,
                 filter: "Text",
               },
+              // the centre this request created or was linked to
+              createdNode: {
+                name: ta("مرکز ساخته‌شده"),
+                value: (node) =>
+                  (node as { createdNode?: string }).createdNode ? ta("دارد") : ta("ندارد"),
+                filter: "Set",
+                component: (node) => {
+                  const id = (node as { createdNode?: string }).createdNode;
+                  return id ? (
+                    <InlineLink href={adminPath(`/clinic/${id}`)}>
+                      {ta("مشاهده")}
+                    </InlineLink>
+                  ) : (
+                    "—"
+                  );
+                },
+              },
               rejectReason: {
                 name: ta("دلیل رد"),
                 value: (node) => node.rejectReason || "",

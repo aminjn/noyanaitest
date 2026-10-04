@@ -13,8 +13,8 @@ const CreateFaqPopup = ({ mutate }: { mutate: () => unknown }) => {
       <CreateForm<IDoctorFaq>
         onCancel={() => closePopup()}
         renderer={{
-          question: { type: "text", title: ta("سوال") },
-          answer: { type: "text", title: ta("جواب") },
+          question: { type: "text", title: ta("سوال"), required: true },
+          answer: { type: "area", title: ta("جواب"), required: true },
           order: { type: "number", title: ta("رتبه") },
           active: { type: "bool", title: ta("فعال") },
         }}

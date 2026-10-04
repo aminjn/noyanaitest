@@ -13,7 +13,10 @@ import { imagePath } from "../helpers/imagepath";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
-import ListPageWideHeader from "../UI/ListPage/ListPageWideHeader";
+import ListPageWideHeader, {
+  medicalReviewerOf,
+} from "../UI/ListPage/ListPageWideHeader";
+import ListPageFacts from "../UI/ListPage/ListPageFacts";
 import FlaskIcon from "../Icons/FlaskIcon";
 import BigAd from "../UI/ListPage/BigAd";
 import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
@@ -95,7 +98,14 @@ const SymptomPage = ({
               }
             : undefined
         }
-        primaryAction={{ title: getContent("bookASessionFromADoctor"), href: "/book" }}
+        reviewer={medicalReviewerOf(data)}
+        primaryAction={{
+          title: getContent("bookASessionFromADoctor"),
+          // the booking search narrowed to the speciality that treats it
+          href: specialities[0]
+            ? `/book?speciality=${specialities[0]._id}&name=${encodeURIComponent(specialities[0].name || "")}`
+            : "/book",
+        }}
         secondaryAction={{ title: getContent("inspectSymptomWithAi"), href: "/wizard" }}
         summary={data.summary}
       />
@@ -133,7 +143,7 @@ const SymptomPage = ({
             />
             <ListPageSideExpandable
               title={getContent("similarSymptoms")}
-              items={data.sameAs.map((el) => ({
+              items={(data.sameAs ?? []).map((el) => ({
                 title: el.name || "",
                 target: `/symptom/${el.slug || el._id}`,
               }))}
@@ -145,9 +155,20 @@ const SymptomPage = ({
           title={getContent("symptomAiSummaryTitle")}
           content={data.aiSummary}
         />
-        <div className={classes.box}>
-          <RenderRtf value={data.content} />
-        </div>
+        <ListPageFacts
+          items={[
+            { title: getContent("description"), value: data.description },
+            { title: getContent("pathophysiology"), value: data.pathophysiology },
+            { title: getContent("naturalProgeression"), value: data.naturalProgression },
+            { title: getContent("possibleComplications"), value: data.possibleComplication },
+            { title: getContent("expectedPrognosis"), value: data.expectedPrognosis },
+          ]}
+        />
+        {!!data.content && (
+          <div className={classes.box}>
+            <RenderRtf value={data.content} />
+          </div>
+        )}
       </ListPageWithSide>
       <SmallAd
         position="symptom2"

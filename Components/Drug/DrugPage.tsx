@@ -3,11 +3,13 @@ import Image from "next/image";
 import { IDisease, IDrug } from "../Admin/Disease/AdminManageDiseasesPage";
 import classes from "./DrugPage.module.css";
 import { imagePath } from "../helpers/imagepath";
-import { TitleTextSection } from "../Symptom/SymptomPage";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
-import ListPageWideHeader from "../UI/ListPage/ListPageWideHeader";
+import ListPageWideHeader, {
+  medicalReviewerOf,
+} from "../UI/ListPage/ListPageWideHeader";
+import ListPageFacts from "../UI/ListPage/ListPageFacts";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import PillIcon from "../Icons/PillIcon";
@@ -58,7 +60,13 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
           value: data.alternateName || "",
         }}
         summary={data.summary}
-        primaryAction={{ title: getContent("seeNoyanClinic"), href: "/product" }}
+        reviewer={medicalReviewerOf(data)}
+        // the pharmacy products matching this drug (the label used to say
+        // "see Noyan clinic" and opened the whole product list)
+        primaryAction={{
+          title: getContent("poShop"),
+          href: `/product?search=${encodeURIComponent(data.name || "")}`,
+        }}
         secondaryAction={{ title: getContent("inspectDrugWithAi"), href: "/wizard" }}
         icon={<PillIcon />}
       />
@@ -89,7 +97,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
             />
             <ListPageSideExpandable
               title={getContent("relatedDrugs")}
-              items={data.sameAs.map((el) => ({
+              items={(data.sameAs ?? []).map((el) => ({
                 title: el.name || "",
                 target: `/drug/${el.slug || el._id}`,
               }))}
@@ -101,7 +109,40 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
           title={getContent("drugAiSummary")}
           content={data.aiSummary}
         />
-        <div className={classes.box}>{<RenderRtf value={data.content} />}</div>
+        <ListPageFacts
+          items={[
+            { title: getContent("activeIngridients"), value: data.activeIngridient },
+            { title: getContent("dosageForm"), value: data.dosageForm },
+            { title: getContent("prescribingStatus"), value: data.prescriptionStatus },
+            { title: getContent("description"), value: data.description },
+          ]}
+        />
+        <ListPageFacts
+          title={getContent("warnings")}
+          tone="warning"
+          items={[
+            { title: getContent("warning"), value: data.warning },
+            { title: getContent("sideEffects"), value: data.sideEffects },
+            { title: getContent("pregnancyWarning"), value: data.pregnancyWarning },
+            { title: getContent("breastfeedingWarning"), value: data.breastfeedingWarning },
+            { title: getContent("alcoholWarning"), value: data.alcoholWarning },
+            { title: getContent("foodWarning"), value: data.foodWarning },
+            { title: getContent("overdosage"), value: data.overdosage },
+          ]}
+        />
+        <ListPageFacts
+          items={[
+            { title: getContent("dosage"), value: data.dosage },
+            { title: getContent("adminstrationRoute"), value: data.adminstrationRoute },
+            { title: getContent("prescribingInfo"), value: data.prescribingInfo },
+            { title: getContent("clinicalPharmacology"), value: data.clinicalPharmacology },
+          ]}
+        />
+        {!!data.content && (
+          <div className={classes.box}>
+            <RenderRtf value={data.content} />
+          </div>
+        )}
       </ListPageWithSide>
       <SmallAd position="drug2" />
     </ListPageLayout>

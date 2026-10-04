@@ -71,8 +71,8 @@ const MutateFaqPopup = ({
           isActive: { title: ta("فعال"), type: "bool" },
           order: { title: ta("رتبه"), type: "number" },
           isHome: { title: ta("نمایش در خانه"), type: "bool" },
-          question: { title: ta("سوال"), type: "text" },
-          answer: { title: ta("جواب"), type: "area" },
+          question: { title: ta("سوال"), type: "text", required: true },
+          answer: { title: ta("جواب"), type: "area", required: true },
           category: {
             title: ta("دسته بندی"),
             type: "nodes",

@@ -20,6 +20,7 @@ import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import AdminRecordEditor from "../UI/AdminRecordEditor";
+import { medicalPublishFields } from "../Disease/medicalPublishing";
 
 type DiseaseNode = IDisease<{
   Drugs: Record<never, never>;
@@ -57,6 +58,8 @@ const AdminManageDiseasePage = () => {
             ),
         },
       ]}
+      // a new page is on the site once saved, unless switched off here
+      newDefaults={{ published: true } as Partial<DiseaseNode>}
       renderer={{
                       name: { section: details, title: ta("نام"), type: "text", required: true },
                       description: { section: details, title: ta("توضیحات"), type: "area" },
@@ -156,6 +159,7 @@ const AdminManageDiseasePage = () => {
                         getDefaultValue: (val) =>
                           val.sameAs?.map((el) => el._id),
                       },
+                      ...medicalPublishFields<DiseaseNode>(ta("انتشار و بازبینی")),
       }}
       extraTabs={(node) => [
         {

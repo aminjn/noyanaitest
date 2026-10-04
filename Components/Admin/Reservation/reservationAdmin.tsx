@@ -342,6 +342,8 @@ export const ResolveReservationPopup = ({
   noShowParty,
   refundable,
   doctorPaid,
+  paid,
+  refunded,
   dispute,
   onDone,
 }: {
@@ -352,10 +354,26 @@ export const ResolveReservationPopup = ({
   dispute?: { at?: string; reason?: string } | null;
   refundable: number;
   doctorPaid: number;
+  // what the booker paid and what already came back to them
+  paid?: number;
+  refunded?: number;
   onDone: () => unknown;
 }) => {
   const { closePopup } = usePopup();
   const requestKey = useRequestKey();
+  // Only the outcomes the server can carry out (adminReservationController
+  // resolve): "refund" needs money left to return or a payout to take back;
+  // "complete" needs a payment nothing was refunded from. An "error" or a
+  // doctor no-show was already refunded by the sweep, so there only
+  // "accept" is left - offering the other two just ended in an error.
+  const canRefund = refundable > 0 || doctorPaid > 0;
+  const canComplete = (paid ?? 1) > 0 && (refunded ?? 0) <= 0;
+  const options: Record<string, string> = {
+    ...(canRefund ? { refund: ta("بازگشت وجه به بیمار") } : {}),
+    ...(canComplete ? { complete: ta("انجام‌شده (تسویه با پزشک)") } : {}),
+    // an objection is upheld or rejected, never just "accepted"
+    ...(dispute ? {} : { accept: ta("تأیید نتیجه‌ی خودکار") }),
+  };
   return (
     <PopupCard title={ta("حل وضعیت نوبت")}>
       <div className={classes.hint}>
@@ -369,8 +387,12 @@ export const ResolveReservationPopup = ({
             : ta("سیستم نتوانست نتیجه‌ی این نوبت را مشخص کند (کانال باز نشد یا هیچ‌کدام حاضر نشدند).")}
         </p>
         <ul className={classes.list}>
-          <li>{ta("بازگشت وجه: باقی‌مانده‌ی مبلغ (${1} تومان) به بیمار برمی‌گردد و اگر به پزشک تسویه شده (${2} تومان) از کیف پول او برگشت می‌خورد.", [currencize(refundable), currencize(doctorPaid)])}</li>
-          <li>{ta("انجام‌شده: ویزیت برگزار شده؛ وضعیت «انجام‌شده» می‌شود و مبلغ به پزشک تسویه می‌شود (فقط اگر چیزی به بیمار برنگشته باشد).")}</li>
+          {canRefund && (
+            <li>{ta("بازگشت وجه: باقی‌مانده‌ی مبلغ (${1} تومان) به بیمار برمی‌گردد و اگر به پزشک تسویه شده (${2} تومان) از کیف پول او برگشت می‌خورد.", [currencize(refundable), currencize(doctorPaid)])}</li>
+          )}
+          {canComplete && (
+            <li>{ta("انجام‌شده: ویزیت برگزار شده؛ وضعیت «انجام‌شده» می‌شود و مبلغ به پزشک تسویه می‌شود (فقط اگر چیزی به بیمار برنگشته باشد).")}</li>
+          )}
           {!dispute && (
             <li>{ta("تأیید نتیجه: نتیجه‌ی خودکار درست است؛ فقط بررسی‌شده علامت می‌خورد.")}</li>
           )}
@@ -399,12 +421,7 @@ export const ResolveReservationPopup = ({
             type: "select",
             title: ta("راه‌حل"),
             required: true,
-            options: {
-              refund: ta("بازگشت وجه به بیمار"),
-              complete: ta("انجام‌شده (تسویه با پزشک)"),
-              // an objection is upheld or rejected, never just "accepted"
-              ...(dispute ? {} : { accept: ta("تأیید نتیجه‌ی خودکار") }),
-            },
+            options,
           },
           reason: { type: "area", title: ta("توضیح بررسی"), required: true },
         }}

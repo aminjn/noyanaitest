@@ -2,6 +2,7 @@
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import useSWR from "swr";
@@ -92,7 +93,7 @@ const MutateInsurancePlanPopup = ({
         onCancel={() => closePopup()}
         defaultValue={node}
         renderer={{
-          name: { type: "text", title: ta("نام") },
+          name: { type: "text", title: ta("نام"), required: true },
           order: { type: "number", title: ta("رتبه") },
           isActive: { type: "bool", title: ta("فعال") },
           price: { type: "number", title: ta("قیمت"), price: true },
@@ -284,6 +285,7 @@ const InsuranceRecordPage = () => {
   const params = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
+  const hasAccess = useAccessLevel();
   const { data, error, mutate } = useSWR<
     IInsurance<{ User: Record<never, never> }>
   >(params ? `${API}/auto/insurance/${params.nodeId}` : null, (url: string) =>
@@ -307,18 +309,22 @@ const InsuranceRecordPage = () => {
           title={data.name || ta("بدون نام")}
           actions={[
             ...statusActions,
-            {
-              title: ta("حذف"),
-              danger: true,
-              action: () =>
-                setPopup(
-                  "DeleteInsurance",
-                  <DeleteInsurancePopup
-                    node={data}
-                    mutate={() => push(adminPath("/insurance"))}
-                  />,
-                ),
-            },
+            ...(hasAccess("Insurance", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeleteInsurance",
+                        <DeleteInsurancePopup
+                          node={data}
+                          mutate={() => push(adminPath("/insurance"))}
+                        />,
+                      ),
+                  },
+                ]
+              : []),
           ]}
         >
           <ProviderStatusBanner
@@ -383,12 +389,17 @@ const InsuranceRecordPage = () => {
                 id: "User",
                 content: <InsuranceUserTab node={data} mutate={mutate} />,
               },
-              {
-                title: ta("مجوز"),
-                id: "License",
-                icon: <CartIcon />,
-                content: <InsuranceProfileLicenseTab node={data} />,
-              },
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      title: ta("مجوز"),
+                      id: "License",
+                      icon: <CartIcon />,
+                      content: <InsuranceProfileLicenseTab node={data} />,
+                    },
+                  ]
+                : []),
               {
                 id: "Meta",
                 title: ta("سئو"),

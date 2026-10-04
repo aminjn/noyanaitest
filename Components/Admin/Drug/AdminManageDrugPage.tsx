@@ -13,6 +13,7 @@ import { IDrugTag } from "../DrugTag/AdminManageDrugTagsPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminRecordEditor from "../UI/AdminRecordEditor";
+import { medicalPublishFields } from "../Disease/medicalPublishing";
 
 // one form for a drug, new or existing (Components/Admin/UI/
 // AdminRecordEditor): details and the medical sections, saved together
@@ -40,6 +41,8 @@ const AdminManageDrugPage = () => {
             ),
         },
       ]}
+      // a new page is on the site once saved, unless switched off here
+      newDefaults={{ published: true } as Partial<IDrug>}
       renderer={{
                       name: { section: details, type: "text", title: ta("نام"), required: true },
                       summary: { section: details, type: "text", title: ta("خلاصه") },
@@ -156,6 +159,7 @@ const AdminManageDrugPage = () => {
                         title: ta("هشدار غذایی"),
                         section: ta("هشدار ها"),
                       },
+                      ...medicalPublishFields<IDrug>(ta("انتشار و بازبینی")),
       }}
       extraTabs={(node) => [
         {

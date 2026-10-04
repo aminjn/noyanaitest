@@ -55,9 +55,10 @@ export const adminPinnedItems: (AdminMenuItem & {
     get title() {
   return ta("کارهای در انتظار");
 },
+    // staff see the kinds of pending work their access level can read
+    // (the backend filters /admin/inbox the same way)
     href: "inbox",
     icon: <Bell01Icon />,
-    adminOnly: true,
   },
   {
     // every provider request (join, suggested centres, doctor memberships)
@@ -719,6 +720,11 @@ export const canNotAdminOpen = (
 ): boolean => {
   const path = pathOf(rawPath).replace(/^\/+|\/+$/g, "");
   if (path === "") return true;
+  // pinned pages meant for staff (the inbox, the requests queue) filter
+  // their own content by access level; they are not in any menu group, so
+  // the lookups below would 404 them
+  if (adminPinnedItems.some((item) => item.href === path && !item.adminOnly))
+    return true;
   // A hub page opens for staff who can open at least one page on it.
   const hub = adminHubs.find((el) => el.hub === path);
   // its own list (e.g. "clinic" is the clinics list and the hub of their

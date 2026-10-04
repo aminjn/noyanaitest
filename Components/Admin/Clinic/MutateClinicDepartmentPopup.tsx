@@ -21,7 +21,7 @@ const MutateClinicDepartmentPopup = ({
       <CreateForm
         defaultValue={department}
         renderer={{
-          name: { title: ta("نام"), type: "text" },
+          name: { title: ta("نام"), type: "text", required: true },
           description: { title: ta("توضیحات"), type: "text" },
           image: { title: ta("تصویر"), type: "image" },
           active: { title: ta("فعال"), type: "bool" },

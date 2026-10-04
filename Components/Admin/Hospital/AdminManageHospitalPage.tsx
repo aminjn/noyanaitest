@@ -2,6 +2,7 @@
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import { useParams } from "next/navigation";
@@ -322,6 +323,7 @@ const HospitalRecordPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
+  const hasAccess = useAccessLevel();
   const { data, error, mutate } = useSWR<
     IHospital<{ User: Record<never, never> }>
   >(`${API}/auto/hospital/${nodeId}`, (url: string) =>
@@ -346,18 +348,22 @@ const HospitalRecordPage = () => {
           title={data.name || ta("بدون نام")}
           actions={[
             ...statusActions,
-            {
-              title: ta("حذف"),
-              danger: true,
-              action: () =>
-                setPopup(
-                  "DeleteHospital",
-                  <DeleteHospitalPopup
-                    node={data}
-                    mutate={() => push(adminPath("/hospital"))}
-                  />,
-                ),
-            },
+            ...(hasAccess("Hospital", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeleteHospital",
+                        <DeleteHospitalPopup
+                          node={data}
+                          mutate={() => push(adminPath("/hospital"))}
+                        />,
+                      ),
+                  },
+                ]
+              : []),
           ]}
         >
           <ProviderStatusBanner
@@ -427,12 +433,17 @@ const HospitalRecordPage = () => {
                     },
                   ]
                 : []),
-              {
-                title: ta("مجوز"),
-                id: "License",
-                icon: <CartIcon />,
-                content: <HospitalProfileLicenseTab node={data} />,
-              },
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      title: ta("مجوز"),
+                      id: "License",
+                      icon: <CartIcon />,
+                      content: <HospitalProfileLicenseTab node={data} />,
+                    },
+                  ]
+                : []),
               {
                 title: ta("سئو"),
                 id: "Meta",

@@ -64,7 +64,10 @@ type Dashboard = {
     insurances: number;
   };
   pending: { key: string; title: string; href?: string; count: number }[];
-  orders: { paidCount: number; paidTotal: number };
+  // refunded: what came back to buyers of those orders (cancelled lines)
+  orders: { paidCount: number; paidTotal: number; refunded?: number };
+  // the platform's commission on provider payouts in the period
+  commissionTotal?: number;
   reservations: {
     total: number;
     byStatus: Record<string, number>;
@@ -209,14 +212,29 @@ const AdminDashboard = () => {
             <StatTile
               icon={<ShoppingCartIcon />}
               label={ta("فروش سفارش‌ها (${1} روز)", [num.format(data.periodDays)])}
-              value={ta("${1} تومان", [num.format(data.orders.paidTotal)])}
-              note={ta("${1} سفارش پرداخت‌شده", [num.format(data.orders.paidCount)])}
+              value={ta("${1} تومان", [
+                num.format(Math.max(0, (data.orders.paidTotal || 0) - (data.orders.refunded || 0))),
+              ])}
+              note={
+                data.orders.refunded
+                  ? ta("${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده", [
+                      num.format(data.orders.paidCount),
+                      num.format(data.orders.refunded),
+                    ])
+                  : ta("${1} سفارش پرداخت‌شده", [num.format(data.orders.paidCount)])
+              }
+            />
+            <StatTile
+              icon={<CalendarIcon />}
+              label={ta("ارزش نوبت‌های انجام‌شده (${1} روز)", [num.format(data.periodDays)])}
+              value={ta("${1} تومان", [num.format(data.reservations.completedTotal)])}
+              note={ta("مبلغی که بیماران پرداخته‌اند، با مالیات")}
             />
             <StatTile
               icon={<WalletIcon />}
-              label={ta("درآمد نوبت‌ها (${1} روز)", [num.format(data.periodDays)])}
-              value={ta("${1} تومان", [num.format(data.reservations.completedTotal)])}
-              note={ta("مجموع مبلغ نوبت‌های انجام‌شده")}
+              label={ta("درآمد کمیسیون (${1} روز)", [num.format(data.periodDays)])}
+              value={ta("${1} تومان", [num.format(data.commissionTotal || 0)])}
+              note={ta("سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها")}
             />
           </div>
 
@@ -385,6 +403,10 @@ const AdminDashboardPage = () => {
           <p className={classes.welcome}>
             {ta("برای شروع، بخش مورد نظر خود را از منوی کناری انتخاب کنید.")}
           </p>
+          {/* the work queue, filtered to what this role may handle */}
+          <Link href={adminPath("/inbox")} className={classes.inboxLink}>
+            {ta("کارهای در انتظار")}
+          </Link>
         </section>
       </div>
     );

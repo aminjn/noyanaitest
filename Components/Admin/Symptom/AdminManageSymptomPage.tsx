@@ -18,6 +18,7 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import AdminRecordEditor from "../UI/AdminRecordEditor";
+import { medicalPublishFields } from "../Disease/medicalPublishing";
 
 // one form for a symptom, new or existing (Components/Admin/UI/
 // AdminRecordEditor): details, medical information and links, saved together
@@ -49,6 +50,8 @@ const AdminManageSymptomPage = () => {
             ),
         },
       ]}
+      // a new page is on the site once saved, unless switched off here
+      newDefaults={{ published: true } as Partial<SymptomNode>}
       renderer={{
                       name: { section: details, type: "text", title: ta("نام"), required: true },
                       summary: { section: details, title: ta("خلاصه"), type: "text" },
@@ -101,6 +104,7 @@ const AdminManageSymptomPage = () => {
                         getDefaultValue: (val) => val.part?.map((el) => el._id),
                         multi: true,
                         clearable: true,
+                        creatable: { path: `${API}/auto/part` },
                       },
                       sameAs: { section: connections,
                         type: "nodes",
@@ -114,6 +118,7 @@ const AdminManageSymptomPage = () => {
                         getDefaultValue: (val) =>
                           val.sameAs?.map((el) => el._id),
                       },
+                      ...medicalPublishFields<SymptomNode>(ta("انتشار و بازبینی")),
       }}
       extraTabs={(node) => [
         {

@@ -241,6 +241,8 @@ const AdminManageReservationPage = () => {
               noShowParty={data.noShowParty}
               refundable={refundable}
               doctorPaid={doctorPaid}
+              paid={Number(money.paid) || 0}
+              refunded={Number(money.refunded) || 0}
               dispute={data.dispute}
               onDone={refresh}
             />,

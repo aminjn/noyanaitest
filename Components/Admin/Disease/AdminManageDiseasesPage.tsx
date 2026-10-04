@@ -39,6 +39,16 @@ import {
 } from "../SymptomCategory/AdminManageSymptomCategoriesPage";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
+import { booleanToValue } from "@/Components/UI/BooleanToIcon";
+
+// the reviewing doctor as the public pages receive it (Lib/medicalContent)
+export type MedicalReviewer = {
+  _id: string;
+  firstName?: string;
+  lastName?: string;
+  slug?: string;
+};
 
 export const genderSpicificOptions = ["male", "female", "none"] as const;
 
@@ -96,6 +106,11 @@ export interface ISymptom<
     : string;
   aiSummary?: string;
   content?: string;
+  // off = the page is hidden from the site (lists, search, sitemap, links)
+  published?: boolean;
+  // the doctor who medically reviewed the page, and when
+  reviewedBy?: string | MedicalReviewer;
+  reviewedAt?: string;
 }
 
 export type DrugPopulation = Population<{
@@ -133,6 +148,11 @@ export interface IDrug<
   sameAs: T["SameAs"] extends DrugPopulation ? IDrug<T["SameAs"]>[] : string[];
   aiSummary?: string;
   content?: string;
+  // off = the page is hidden from the site (lists, search, sitemap, links)
+  published?: boolean;
+  // the doctor who medically reviewed the page, and when
+  reviewedBy?: string | MedicalReviewer;
+  reviewedAt?: string;
 }
 
 export type DiseasePopulation = Population<{
@@ -174,6 +194,11 @@ export interface IDisease<
     : string;
   aiSummary?: string;
   content?: string;
+  // off = the page is hidden from the site (lists, search, sitemap, links)
+  published?: boolean;
+  // the doctor who medically reviewed the page, and when
+  reviewedBy?: string | MedicalReviewer;
+  reviewedAt?: string;
 }
 
 const AdminManageDiseasePage = () => {
@@ -222,6 +247,25 @@ const AdminManageDiseasePage = () => {
                   node.genderSpecific
                     ? genderSpecificOptionsDict[node.genderSpecific]
                     : undefined,
+                filter: "Set",
+              },
+              // on the site or hidden, switched right here
+              published: {
+                name: ta("منتشرشده"),
+                value: (node) => booleanToValue[`${node.published !== false}`],
+                filter: "Set",
+                component: (node) => (
+                  <PublishToggle
+                    modelName="disease"
+                    _id={node._id}
+                    value={node.published !== false}
+                    mutate={mutate}
+                  />
+                ),
+              },
+              reviewed: {
+                name: ta("بازبینی پزشکی"),
+                value: (node) => (node.reviewedBy ? ta("دارد") : ta("ندارد")),
                 filter: "Set",
               },
               actions: {

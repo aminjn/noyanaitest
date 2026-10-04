@@ -17,6 +17,8 @@ import DeleteDrugPopup from "./DeleetDrugPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
+import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 
 const AdminManageDrugsPage = () => {
@@ -67,6 +69,25 @@ const AdminManageDrugsPage = () => {
                     _id={node._id}
                   />
                 ),
+              },
+              // on the site or hidden, switched right here
+              published: {
+                name: ta("منتشرشده"),
+                value: (node) => booleanToValue[`${node.published !== false}`],
+                filter: "Set",
+                component: (node) => (
+                  <PublishToggle
+                    modelName="drug"
+                    _id={node._id}
+                    value={node.published !== false}
+                    mutate={mutate}
+                  />
+                ),
+              },
+              reviewed: {
+                name: ta("بازبینی پزشکی"),
+                value: (node) => (node.reviewedBy ? ta("دارد") : ta("ندارد")),
+                filter: "Set",
               },
               actions: {
                 name: ta("عملیات"),

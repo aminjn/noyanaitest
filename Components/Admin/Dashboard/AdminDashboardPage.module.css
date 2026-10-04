@@ -49,7 +49,7 @@
 
 .tiles {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   gap: 1rem;
 }
 
@@ -319,7 +319,7 @@ a.pendingItem:hover {
   font-size: 0.875rem;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 600px) {
   .tiles {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
