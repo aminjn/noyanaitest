@@ -163,10 +163,15 @@ const NewDoctorProfilePage = ({
   }, [tabs]);
 
   const primaryOffice = doctor.offices?.[0];
-  const mapCoords: [number, number] | undefined =
-    doctor.lat && doctor.lng
-      ? [doctor.lng, doctor.lat]
-      : primaryOffice?.location?.coordinates;
+  // the office first: the doctor's own point is derived from it on the
+  // backend (Lib/doctorLocation.ts); lat / lng is the legacy import copy
+  const mapCoords = useMemo<[number, number] | undefined>(
+    () =>
+      (primaryOffice?.location?.coordinates as [number, number] | undefined) ||
+      (doctor.location?.coordinates as [number, number] | undefined) ||
+      (doctor.lat && doctor.lng ? [doctor.lng, doctor.lat] : undefined),
+    [primaryOffice, doctor.location, doctor.lat, doctor.lng],
+  );
   // one "how to get there" card per office on the map; a doctor without
   // offices on the map but with a point of their own gets one card for it
   const locationCards = useMemo(() => {
