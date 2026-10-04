@@ -6,6 +6,30 @@
 
 پروفایل‌ها: پ = پزشک، ک = کلینیک، ب = بیمارستان، د = داروخانه، پا = پاراکلینیک (آزمایشگاه و تصویربرداری)، بی = بیمه.
 
+## ۰. تطبیق با هر پروفایل
+
+نکسا منبع قابلیت‌ها و منطق است، اما هر پروفایل فقط بخش‌هایی را می‌گیرد که به کارش می‌خورد، با واژه‌ها و پیش‌فرض‌های خودش. این قاعده در `Components/_Common/Business/Crm/Service/profiles.ts` (منو و زیرمنوی بخش) و `Lib/business/crmService/profiles.ts` (نگهبان مسیرها در بک‌اند) نوشته شده است. منو فقط برای کسانی دیده می‌شود که دسترسی `readCrm` دارند، و مسیرها فقط وقتی باز می‌شوند که ماژول `crm` پلن مرکز فعال باشد.
+
+| بخش | پزشک | کلینیک | بیمارستان | داروخانه | پاراکلینیک | بیمه |
+|---|---|---|---|---|---|---|
+| باشگاه | ✓ (سبک) | ✓ | ✓ | ✓ «باشگاه مشتریان» | ✓ | — |
+| پیام‌های زنجیره‌ای | ✓ (سبک) | ✓ | ✓ | ✓ یادآوری تمدید دارو | ✓ «آمادگی پیش از آزمایش» | ✓ «پیام‌های بیمه‌شدگان» |
+| گردش‌کار و کارتابل | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| درخواست و شکایت با SLA | ✓ | ✓ | ✓ به تفکیک بخش‌ها | ✓ «درخواست‌های مشتریان» | ✓ | ✓ «درخواست‌های بیمه‌شدگان» |
+| کارهای تیم و تقویم | ✓ (برای منشی) | ✓ | ✓ | ✓ | ✓ | ✓ |
+| کارکرد | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| چک‌لیست | پیش و پس از ویزیت | ایمنی جراحی، پیش از ویزیت | ایمنی جراحی، پیش از ویزیت | تحویل نسخه (بدون جراحی) | نمونه‌گیری | — |
+| آموزش و آزمون کارکنان | فقط اگر منشی دارد | ✓ | ✓ | ✓ | ✓ | ✓ |
+| مرجوعی و استرداد | خدمت | خدمت | خدمت | کالا و خدمت | کالا و خدمت | — |
+
+**الگوهای آماده (seed):** با دکمه‌ی «ساخت الگوهای آماده» در صفحه‌های پیام زنجیره‌ای، گردش‌کار و چک‌لیست ساخته می‌شوند (`POST /<panel>/crm/service/seed`، یک بار و بر اساس نام). همه خاموش ساخته می‌شوند. متن‌ها به زبان کاربر نوشته می‌شوند (`Crm/Service/starters.tsx`).
+
+- **پزشک:** پیگیری پس از اولین ویزیت؛ چک‌لیست پیش و پس از ویزیت؛ گردش‌کار پیگیری پس از ویزیت و تماس با بیمار غایب.
+- **کلینیک و بیمارستان:** دستورهای پیش از عمل و پیگیری پس از ویزیت؛ چک‌لیست ایمنی جراحی WHO و چک‌لیست پیش از ویزیت؛ اطلاع شکایت به مدیر، پیگیری پس از ویزیت و تماس با بیمار غایب.
+- **داروخانه:** یادآوری تمدید دارو (۲۵ روز بعد)؛ چک‌لیست تحویل نسخه؛ خوش‌آمد مشتری جدید و اطلاع مرجوعی به مدیر.
+- **پاراکلینیک:** آمادگی پیش از آزمایش (ناشتایی)؛ چک‌لیست نمونه‌گیری؛ خوش‌آمد بیمار جدید و اطلاع شکایت. پیامک «جواب آماده است» از قبل با رویداد `labResultReadyUser` در `notifyWithSms` فرستاده می‌شود و تکرار نشده است.
+- **بیمه:** خوش‌آمد بیمه‌شده‌ی جدید؛ اطلاع درخواست بیمه‌شده به کارشناس و خوش‌آمد.
+
 ## ۱. ماتریس شکاف
 
 | صفحه / اکشن نکسا | پروفایل‌ها | نام در نویان | وضعیت در نویان | یادداشت |
@@ -44,6 +68,6 @@
 
 ## ۳. نقشه‌ی پیاده‌سازی
 
-- بک‌اند: مدل‌های `Models/Biz{ClubSettings,ClubReward,ClubRedemption,ClubAdjustment,Sequence,SequenceEnrollment,KbCategory,KbArticle,Quiz,QuizAssignment,QuizAttempt,Ticket,Project,Task,TimeLog,CalendarEvent,Checklist,ChecklistItem,Flow,FlowRun,Approval,Return}.ts`، هسته‌ها در `Lib/business/crmService/*.ts`، کنترلرها در `Controllers/crmServiceController.ts` و `Controllers/userCrmController.ts`، و مسیرها در `Routers/crmServiceRoutes.ts` (زیر `/<panel>/crm`) و `/user/crm/*`.
+- بک‌اند: مدل‌های `Models/Biz{ClubSettings,ClubReward,ClubRedemption,ClubAdjustment,Sequence,SequenceEnrollment,KbCategory,KbArticle,Quiz,QuizAssignment,QuizAttempt,Ticket,Project,Task,TimeLog,CalendarEvent,Checklist,ChecklistItem,Flow,FlowRun,InboxTask,Return}.ts`، هسته‌ها در `Lib/business/crmService/*.ts`، کنترلرها در `Controllers/crmServiceController.ts`، `crmWorkController.ts` و `userCrmController.ts`، و مسیرها در `Routers/crmServiceRoutes.ts` (زیر `/<panel>/crm`) و `/user/crm/*`. مدل کارتابل `BizInboxTask` نام دارد، چون `BizApproval` مال تأییدهای بخش فروش است.
 - فرانت: `Components/_Common/Business/Crm/Service/*` و صفحه‌های `app/<panel>/crm/{club,sequences,knowledge,quizzes,tickets,tasks,calendar,checklists,flows,inbox,returns,timesheet}`، و در پنل بیمار `app/dashboard/{club,centres}`.
 - دسترسی: خواندن با `readCrm`. نوشتن با `manageCrm`. هر کاری که پول خرج می‌کند (روشن کردن سکوئنس یا گردش‌کار پیامکی) با `sendCampaigns`. کارکنان با `readCrm` آزمون می‌دهند، تیکت جواب می‌دهند و کارتابل خودشان را می‌بینند.

@@ -24,6 +24,7 @@ import {
   useAccPopup,
   useAccText,
   useOpenVoucher,
+  TreasuryRow,
   useTreasury,
   useView,
 } from "./accShared";
@@ -386,7 +387,7 @@ export const TreasuryLedger = () => {
   const t = useAccText();
   const f = useBizFormat();
   const { data } = useTreasury();
-  const list = asArray(data);
+  const list = asArray<TreasuryRow>(data);
   const [sel, setSel] = useState("");
   useEffect(() => {
     if (!sel && list[0]) setSel(String(list[0].account));
@@ -418,7 +419,13 @@ const Review = () => {
   const [openRows, setOpenRows] = useState<Set<string>>(new Set());
   const { data, error } = useAccGet<ReviewRow[]>(`/acc/review?${rangeQs(from, to)}`, (d) => asArray<ReviewRow>(d));
   const rows = asArray<ReviewRow>(data);
-  const toggle = (id: string) => setOpenRows((s) => (s.has(id) ? new Set([...s].filter((x) => x !== id)) : new Set([...s, id])));
+  const toggle = (id: string) =>
+    setOpenRows((s) => {
+      const next = new Set(Array.from(s));
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   return (
     <div className={classes.main}>
       <RangeFilter from={from} to={to} setFrom={setFrom} setTo={setTo} />

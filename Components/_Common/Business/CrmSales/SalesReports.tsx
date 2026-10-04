@@ -293,7 +293,7 @@ const Builder = ({ meta }: { meta?: SalesMeta }) => {
           </button>
           {canWrite && (
             <>
-              <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("crmsReportName")} aria-label={t("crmsReportName")} />
+              <input className={s.input} value={name} onChange={(e) => setName(e.target.value)} placeholder={t("crmsReportName")} aria-label={t("crmsReportName")} />
               <button
                 type="button"
                 className={classes.ghost}

@@ -76,9 +76,9 @@ const CrmInbox = () => {
                 <li key={k._id} className={s.stack}>
                   <div className={s.between}>
                     <span className={s.stack}>
-                      <span className={s.strong}>{k.title}</span>
+                      <span className={s.strong}>{k.entityType === "return" ? `${t("crmeInFromReturn")} #${k.detail || ""}` : k.title}</span>
                       <span className={classes.muted}>
-                        {k.detail ? `${k.detail} · ` : ""}
+                        {k.entityType !== "return" && k.detail ? `${k.detail} · ` : ""}
                         {t(k.entityType === "return" ? "crmeInFromReturn" : "crmeInFromFlow")} · {w.at(k.createdAt)}
                         {all ? ` · ${nameOf(k.approver)}` : ""}
                       </span>

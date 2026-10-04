@@ -232,6 +232,7 @@ const SourceList = ({ kind, rows, refresh }: { kind: LeadSource["kind"]; rows: L
           <li key={x._id} className={crm.followUp}>
             <div className={crm.fuMain}>
               <input
+                className={s.input}
                 defaultValue={names.source(x)}
                 disabled={!canWrite}
                 aria-label={t("crmsName")}

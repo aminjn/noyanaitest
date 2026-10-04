@@ -13,6 +13,7 @@ import fin from "./Finance.module.css";
 import { asArray, isoDay, useBizFormat } from "../bizShared";
 import AccountingReports from "../AccountingReports";
 import FinanceShell from "./FinanceShell";
+import { AccProfileIncome } from "../Acc/AccProfile";
 import { downloadCsv, insurerKey, useFin, useFinText, useTabParam } from "./finShared";
 
 type Breakdown = {
@@ -275,13 +276,17 @@ const AgingReport = () => {
   );
 };
 
-const Body = () => {
+const Body = ({ node }: { node: NodeWithAcl }) => {
   const t = useFinText();
-  const view = useTabParam("statements");
+  const view = useTabParam("profile");
   return (
     <ClientTabSystem
       viewState={view}
       items={[
+        // (2026-10) income in the profile's own grouping first: a doctor's
+        // visit types, a pharmacy's drug classes and insurers, a lab's
+        // sections, a hospital's wards (Acc/AccProfile.tsx)
+        { id: "profile", title: t(`accIncomeBy_${node}`), content: <AccProfileIncome node={node} /> },
         { id: "statements", title: t("finTabStatements"), content: <AccountingReports refreshKey={0} /> },
         { id: "income", title: t("finTabIncome"), content: <IncomeBreakdown /> },
         { id: "aging", title: t("finAging"), content: <AgingReport /> },
@@ -296,7 +301,7 @@ const Body = () => {
 // and insurers owe by age; every table exports to CSV.
 const FinanceReports = ({ node, panel }: { node: NodeWithAcl; panel: string }) => (
   <FinanceShell node={node} panel={panel} title="finReportsTitle" subtitle="finReportsSubtitle" segment="reports">
-    <Body />
+    <Body node={node} />
   </FinanceShell>
 );
 

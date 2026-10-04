@@ -8,6 +8,27 @@
   gap: 0.5rem;
 }
 
+.toolbar input:not([type="checkbox"]):not([type="radio"]),
+.toolbar select,
+.stack > select,
+.input {
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--gray4);
+  background: var(--glassStrong);
+  color: var(--gray13);
+  font: inherit;
+  font-size: 0.875rem;
+  min-width: 0;
+}
+
+.toolbar input:focus,
+.toolbar select:focus {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+
 .grow {
   flex: 1 1 12rem;
   min-width: 0;

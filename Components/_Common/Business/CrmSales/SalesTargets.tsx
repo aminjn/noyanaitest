@@ -515,7 +515,7 @@ const DayPlan = ({ meta }: { meta?: SalesMeta }) => {
       <div className={classes.cardHead}>
         <p className={classes.muted}>{t("crmsDayPlanHint")}</p>
         {isOwner && (
-          <select value={user} onChange={(e) => setUser(e.target.value)} aria-label={t("crmsStaffMember")}>
+          <select className={s.input} value={user} onChange={(e) => setUser(e.target.value)} aria-label={t("crmsStaffMember")}>
             <option value="me">{t("crmsMine")}</option>
             <option value="all">{t("crmsEveryone")}</option>
             {meta?.staff.map((m) => (

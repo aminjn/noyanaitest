@@ -15,6 +15,7 @@ import fin from "./Finance.module.css";
 import { asArray, isoDay, useBizFormat } from "../bizShared";
 import { useBizAccounts } from "../AccountingSummary";
 import FinanceShell from "./FinanceShell";
+import AccSales from "../Acc/AccSales";
 import PaymentForm, { POPUP_KEY as PAY_KEY } from "./PaymentForm";
 import {
   FinInvoice,
@@ -742,7 +743,8 @@ const Body = () => {
 // to Moadian.
 const FinanceInvoices = ({ node, panel }: { node: NodeWithAcl; panel: string }) => (
   <FinanceShell node={node} panel={panel} title="finInvoicesTitle" subtitle="finInvoicesSubtitle" segment="invoices">
-    <Body />
+    {/* (2026-10) the quick sale, pre-invoices and the price list beside the invoices */}
+    <AccSales invoices={<Body />} />
   </FinanceShell>
 );
 

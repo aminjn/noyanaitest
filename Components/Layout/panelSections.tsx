@@ -52,12 +52,12 @@ export type FinanceProfile = "doctor" | "clinic" | "hospital" | "pharmacy" | "pa
 // treasury and the stock with expiry first, an insurer puts its claims and
 // provider settlements first. The plan's modules still gate each page.
 const FINANCE_ORDER: Record<FinanceProfile, string[]> = {
-  doctor: ["overview", "wallet", "invoices", "payments", "expenses", "insurance", "accounting", "treasury", "moadian", "payroll", "reports"],
-  clinic: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports"],
-  hospital: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports"],
-  pharmacy: ["overview", "wallet", "payments", "treasury", "inventory", "insurance", "invoices", "expenses", "accounting", "assets", "requests", "moadian", "payroll", "reports"],
-  paraClinic: ["overview", "wallet", "invoices", "insurance", "payments", "inventory", "expenses", "accounting", "treasury", "assets", "requests", "payroll", "moadian", "reports"],
-  insurance: ["overview", "settlements", "payments", "accounting", "treasury", "requests", "expenses", "invoices", "wallet", "payroll", "moadian", "reports"],
+  doctor: ["overview", "wallet", "invoices", "payments", "expenses", "insurance", "accounting", "treasury", "moadian", "payroll", "reports", "ai"],
+  clinic: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports", "ai"],
+  hospital: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports", "ai"],
+  pharmacy: ["overview", "wallet", "payments", "treasury", "inventory", "insurance", "invoices", "expenses", "accounting", "assets", "requests", "moadian", "payroll", "reports", "ai"],
+  paraClinic: ["overview", "wallet", "invoices", "insurance", "payments", "inventory", "expenses", "accounting", "treasury", "assets", "requests", "payroll", "moadian", "reports", "ai"],
+  insurance: ["overview", "settlements", "payments", "accounting", "treasury", "requests", "expenses", "invoices", "wallet", "payroll", "moadian", "reports", "ai"],
 };
 
 export const financeSection = <A extends string>({
@@ -98,6 +98,8 @@ export const financeSection = <A extends string>({
     payroll: { title: "payMenu", icon: <UserGroupIcon />, target: "finance/payroll", show: can("readPayroll") },
     inventory: { title: "invMenu", icon: <PackageIcon />, target: "finance/inventory", show: inventory && can("readInventory") },
     reports: { title: k("finNavReports"), icon: <MedicalReportIcon />, target: "finance/reports", show: finance },
+    // the finance assistant (Nexxa's AI pages as tabs, Finance/Ai)
+    ai: { title: k("finNavAi"), icon: <SparkIcon />, target: "finance/ai", show: finance },
   };
   return {
     title: k("financeSectionMenu"),

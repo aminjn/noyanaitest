@@ -12,6 +12,7 @@ import classes from "../Accounting.module.css";
 import fin from "./Finance.module.css";
 import { asArray, useBizFormat } from "../bizShared";
 import FinanceShell from "./FinanceShell";
+import { AccProfilePanel } from "../Acc/AccProfile";
 import PaymentForm, { POPUP_KEY } from "./PaymentForm";
 import { FinMoney, moneyKindKey, Pill, useFin, useFinPopup, useFinText } from "./finShared";
 
@@ -323,6 +324,8 @@ const Body = ({ hasInsurance }: { hasInsurance: boolean }) => {
 // falling due, the insurers' share, the Noyan wallet and its settlement.
 const FinanceOverview = ({ node, panel }: { node: NodeWithAcl; panel: string }) => (
   <FinanceShell node={node} panel={panel} title="finOverviewTitle" subtitle="finOverviewSubtitle" segment="">
+    {/* the profile's own tiles and entries first (2026-10, Acc/AccProfile.tsx) */}
+    <AccProfilePanel node={node} />
     <Body hasInsurance={node !== "insurance"} />
   </FinanceShell>
 );
