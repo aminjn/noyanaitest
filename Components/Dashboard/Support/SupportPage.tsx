@@ -1,4 +1,5 @@
 "use client";
+import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import useSWR from "swr";
 import classes from "./SupportPage.module.css";
 import { API } from "@/Components/config";
@@ -157,6 +158,7 @@ const SupportPage = () => {
 
   const { setPopup } = usePopup();
   const getContent = useScopedLocale(NS);
+  const { emergencyNumberText } = useSiteSettings();
   const intlTag = useIntlLocale();
   const [tab, setTab] = useState<"active" | "done">("active");
   const fmt = useMemo(
@@ -193,7 +195,7 @@ const SupportPage = () => {
             <Ixon width="0.9rem">
               <SparkIcon />
             </Ixon>
-            {getContent("chatUrgentNote")}
+            {getContent("chatUrgentNote", [emergencyNumberText])}
           </p>
 
           <section className={classes.topics}>

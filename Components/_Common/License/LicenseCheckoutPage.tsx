@@ -119,11 +119,11 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
           </div>
           <div className={classes.section}>
             <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
-              {getContent("licensePromoCode" as ContentKey)}
+              {getContent("licensePromoCode")}
             </span>
             <div className={classes.codeRow}>
               <Input
-                title={getContent("licensePromoCode" as ContentKey)}
+                title={getContent("licensePromoCode")}
                 placeholder
                 inputClass={classes.codeInput}
                 autoComplete="off"
@@ -136,17 +136,17 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
                 radius="Medium"
                 onClick={() => setCode(codeInput.trim())}
               >
-                {getContent("licensePromoApply" as ContentKey)}
+                {getContent("licensePromoApply")}
               </Button>
             </div>
             {codeRejected && (
               <span className={classes.codeError}>
-                {getContent("licensePromoCodeInvalid" as ContentKey)}
+                {getContent("licensePromoCodeInvalid")}
               </span>
             )}
             {!!code && !codeRejected && !!quote?.promotion?.withCode && (
               <span className={classes.codeOk}>
-                {getContent("licensePromoCodeApplied" as ContentKey)}
+                {getContent("licensePromoCodeApplied")}
               </span>
             )}
           </div>
@@ -197,7 +197,7 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
           </div>
           {blocked && (
             <span className={classes.codeError}>
-              {getContent("licenseUpgradeBlocked" as ContentKey)}
+              {getContent("licenseUpgradeBlocked")}
             </span>
           )}
           <Button
@@ -210,7 +210,7 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
             variant={blocked ? "Disable" : "Primary"}
           >
             {current && !blocked
-              ? getContent("licenseUpgrade" as ContentKey)
+              ? getContent("licenseUpgrade")
               : getContent("buyLicense")}
           </Button>
           <Act

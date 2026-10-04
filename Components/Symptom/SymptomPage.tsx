@@ -109,14 +109,14 @@ const SymptomPage = ({
         reviewer={medicalReviewerOf(data)}
         pendingReview={medicalReviewPending(data)}
         primaryAction={{
-          title: getContent("bookASpecialist" as ContentKey),
+          title: getContent("bookASpecialist"),
           // the booking search narrowed to the speciality that treats it
           href: bookSpecialistHref(specialities[0]),
         }}
         // the AI symptom check opened on this symptom (2026-10)
         secondaryAction={{
           title: getContent("inspectSymptomWithAi"),
-          href: aiCheckHref(getContent("aiPrefillSymptom" as ContentKey, [data.name || ""])),
+          href: aiCheckHref(getContent("aiPrefillSymptom", [data.name || ""])),
         }}
         summary={data.summary}
       />
@@ -154,7 +154,7 @@ const SymptomPage = ({
             />
             <ListPageSideExpandable
               // the directory's "by body part" pages of this symptom
-              title={getContent("directoryByPart" as ContentKey)}
+              title={getContent("directoryByPart")}
               items={(Array.isArray(data.part) ? data.part : [])
                 .filter((el): el is Exclude<typeof el, string> => !!el && typeof el === "object")
                 .map((el) => ({
@@ -206,7 +206,7 @@ const SymptomPage = ({
           </div>
         )}
         <DirectoryFunnel
-          aiPrompt={getContent("aiPrefillSymptom" as ContentKey, [data.name || ""])}
+          aiPrompt={getContent("aiPrefillSymptom", [data.name || ""])}
           speciality={specialities[0]}
         />
       </ListPageWithSide>

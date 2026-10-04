@@ -50,12 +50,12 @@ const LicensePriceDetails = ({
       <div className={classes.details}>
         <div className={classes.duraBox}>
           <span className={`${classes.duraName} ${txsRegular}`}>
-            {getContent("licenseFreeForever" as ContentKey)}
+            {getContent("licenseFreeForever")}
           </span>
         </div>
         <div className={classes.priceBox}>
           <span className={`${classes.price} ${txlBold}`}>
-            {getContent("licenseFree" as ContentKey)}
+            {getContent("licenseFree")}
           </span>
         </div>
       </div>
@@ -101,19 +101,19 @@ const LicensePriceDetails = ({
       {!!quote && quote.upgradeCredit > 0 && (
         <dl className={classes.breakdown}>
           <div className={classes.row}>
-            <dt>{getContent("licenseUpgradeNewPrice" as ContentKey)}</dt>
+            <dt>{getContent("licenseUpgradeNewPrice")}</dt>
             <dd>{`${currencize(quote.quoted)} ${getContent("toman")}`}</dd>
           </div>
           <div className={classes.row}>
             <dt>
-              {getContent("licenseUpgradeCredit" as ContentKey, [
+              {getContent("licenseUpgradeCredit", [
                 new Intl.NumberFormat(intlTag).format(remainingDays || 0),
               ])}
             </dt>
             <dd>{`−${currencize(quote.upgradeCredit)} ${getContent("toman")}`}</dd>
           </div>
           <div className={`${classes.row} ${classes.payable}`}>
-            <dt>{getContent("licenseUpgradePayable" as ContentKey)}</dt>
+            <dt>{getContent("licenseUpgradePayable")}</dt>
             <dd>{`${currencize(quote.final)} ${getContent("toman")}`}</dd>
           </div>
         </dl>
@@ -125,7 +125,7 @@ const LicensePriceDetails = ({
           )}
           {promotion.firstPurchaseOnly && (
             <span className={classes.promoNote}>
-              {getContent("licensePromoFirstPurchase" as ContentKey)}
+              {getContent("licensePromoFirstPurchase")}
             </span>
           )}
           <LicensePromotionCountdown endsAt={promotion.endsAt} compact />

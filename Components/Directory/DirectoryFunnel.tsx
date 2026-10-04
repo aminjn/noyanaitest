@@ -46,8 +46,8 @@ const DirectoryFunnel = ({
   const doctorLabel =
     doctorTitle ||
     (speciality?.name
-      ? getContent("bookSpecialistOf" as ContentKey, [speciality.name])
-      : getContent("bookASpecialist" as ContentKey));
+      ? getContent("bookSpecialistOf", [speciality.name])
+      : getContent("bookASpecialist"));
   return (
     <section className={`${classes.main} ${compact ? classes.compact : ""}`}>
       <div className={classes.text}>
@@ -56,10 +56,10 @@ const DirectoryFunnel = ({
         </Ixon>
         <div>
           <h2 className={`${classes.title} ${tsmDemiBold}`}>
-            {getContent("directoryFunnelTitle" as ContentKey)}
+            {getContent("directoryFunnelTitle")}
           </h2>
           <p className={`${classes.note} ${txsRegular}`}>
-            {getContent("directoryFunnelText" as ContentKey)}
+            {getContent("directoryFunnelText")}
           </p>
         </div>
       </div>

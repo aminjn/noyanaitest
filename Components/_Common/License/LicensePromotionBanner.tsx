@@ -37,11 +37,11 @@ const LicensePromotionBanner = ({
             </strong>
             <span className={classes.off}>
               {p.discountType === "amount"
-                ? getContent("licensePromoAmountOff" as ContentKey, [currencize(p.value)])
-                : getContent("licensePromoPercentOff" as ContentKey, [
+                ? getContent("licensePromoAmountOff", [currencize(p.value)])
+                : getContent("licensePromoPercentOff", [
                     new Intl.NumberFormat(intlTag).format(Number(p.value) || 0),
                   ])}
-              {p.firstPurchaseOnly && ` · ${getContent("licensePromoFirstPurchase" as ContentKey)}`}
+              {p.firstPurchaseOnly && ` · ${getContent("licensePromoFirstPurchase")}`}
             </span>
           </div>
           <LicensePromotionCountdown endsAt={p.endsAt} className={classes.timer} />

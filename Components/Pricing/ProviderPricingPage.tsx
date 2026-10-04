@@ -65,12 +65,12 @@ const KindPlans = ({ org }: { org: LicenseOrg }) => {
                   duration={selected}
                   quote={quoteOf(license._id, selected?.duration)}
                   href={becomeOrgs[org].path}
-                  actionLabel={getContent("pricingStart" as ContentKey)}
+                  actionLabel={getContent("pricingStart")}
                 />
               ))}
             </div>
           ) : (
-            <p className={classes.empty}>{getContent("pricingNoPlans" as ContentKey)}</p>
+            <p className={classes.empty}>{getContent("pricingNoPlans")}</p>
           )}
         </div>
       )}
@@ -85,10 +85,10 @@ const ProviderPricingPage = () => {
     <div className={classes.main}>
       <header className={classes.header}>
         <h1 className={`${classes.h1} ${t3xlBold}`}>
-          {getContent("pricingPageTitle" as ContentKey)}
+          {getContent("pricingPageTitle")}
         </h1>
         <p className={`${classes.legend} ${txsRegular}`}>
-          {getContent("pricingPageDescription" as ContentKey)}
+          {getContent("pricingPageDescription")}
         </p>
       </header>
       <ClientTabSystem

@@ -89,13 +89,13 @@ const LicenseCard = ({
         )}
         {isCurrent && (
           <Badge size="L" mode="Fill" radius="High" color="Primarylight">
-            {getContent("licenseCurrentPlan" as ContentKey)}
+            {getContent("licenseCurrentPlan")}
           </Badge>
         )}
         {/* the middle tier: "best seller" (2026-10 plan lineup) */}
         {license.isRecommended && (
           <Badge size="L" mode="Fill" radius="High" color="Primarylight">
-            {getContent("licenseBestSeller" as ContentKey)}
+            {getContent("licenseBestSeller")}
           </Badge>
         )}
       </div>
@@ -131,7 +131,7 @@ const LicenseCard = ({
           nothing to choose */}
       {blocked && (
         <p className={classes.summary}>
-          {getContent("licenseUpgradeBlocked" as ContentKey)}
+          {getContent("licenseUpgradeBlocked")}
         </p>
       )}
       {(!free || !!href) && !isCurrent && !blocked && (
@@ -149,7 +149,7 @@ const LicenseCard = ({
         variant="Primary"
       >
         {actionLabel ||
-          (upgrade ? getContent("licenseUpgrade" as ContentKey) : getContent("chooseLicense"))}
+          (upgrade ? getContent("licenseUpgrade") : getContent("chooseLicense"))}
       </Button>
       )}
     </div>

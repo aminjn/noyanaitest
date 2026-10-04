@@ -279,7 +279,7 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
           {!capabilities.ai &&
             (capabilities.aiInPlan === false ? (
               <Link href="/doctorpanel/license" className={classes.muted}>
-                {getContent("visitAiNotInPlan" as ContentKey)}
+                {getContent("visitAiNotInPlan")}
               </Link>
             ) : (
               <span className={classes.muted}>{getContent("visitAiOff")}</span>

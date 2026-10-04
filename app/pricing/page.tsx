@@ -11,8 +11,8 @@ const NS: ContentNamespace[] = ["common", "sharedLicense", "becomeSomething"];
 export const generateMetadata = async (): Promise<Metadata> => {
   const getContent = await getServerContent();
   return {
-    title: getContent("pricingPageTitle" as ContentKey),
-    description: getContent("pricingPageDescription" as ContentKey),
+    title: getContent("pricingPageTitle"),
+    description: getContent("pricingPageDescription"),
   };
 };
 

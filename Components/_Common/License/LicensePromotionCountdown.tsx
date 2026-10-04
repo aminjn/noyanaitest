@@ -48,8 +48,8 @@ const LicensePromotionCountdown = ({
     .map((n) => two.format(n))
     .join(":");
   const text = days > 0
-    ? getContent("licensePromoEndsInDays" as ContentKey, [plain.format(days), time])
-    : getContent("licensePromoEndsIn" as ContentKey, [time]);
+    ? getContent("licensePromoEndsInDays", [plain.format(days), time])
+    : getContent("licensePromoEndsIn", [time]);
 
   return (
     <span

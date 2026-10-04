@@ -1,5 +1,6 @@
 "use client";
 
+import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import classes from "./Visit.module.css";
@@ -59,6 +60,7 @@ const toggle = <T,>(list: T[], value: T) =>
 // (Amazon One Medical / K Health style intake, not a free chat).
 const PatientIntakeCard = ({ reservationId }: { reservationId: string }) => {
   const getContent = useScopedLocale(NS);
+  const { emergencyNumberText } = useSiteSettings();
   const notify = useNotification();
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
@@ -253,7 +255,7 @@ const PatientIntakeCard = ({ reservationId }: { reservationId: string }) => {
       {draft.redFlags.length > 0 && (
         <div className={classes.urgent} role="alert">
           <strong>{getContent("visitUrgentTitle")}</strong>
-          <span>{getContent("visitUrgentBody")}</span>
+          <span>{getContent("visitUrgentBody", [emergencyNumberText])}</span>
         </div>
       )}
 

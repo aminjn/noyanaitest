@@ -96,6 +96,11 @@
   margin: 0;
 }
 
+.row dd {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
 .payable {
   color: var(--gray13);
   font-weight: 800;

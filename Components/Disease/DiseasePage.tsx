@@ -90,12 +90,12 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
         // speciality on the booking search (else the doctors who treat this
         // disease), and the AI symptom check opened on this disease
         primaryAction={{
-          title: getContent("bookASpecialist" as ContentKey),
+          title: getContent("bookASpecialist"),
           href: bookSpecialistHref(data.specialities?.[0], data),
         }}
         secondaryAction={{
           title: getContent("inspectSymptomWithAi"),
-          href: aiCheckHref(getContent("aiPrefillDisease" as ContentKey, [data.name || ""])),
+          href: aiCheckHref(getContent("aiPrefillDisease", [data.name || ""])),
         }}
       />
       <BigAd position="disease1" resourceModel="Disease" resource={data._id} />
@@ -128,7 +128,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
             />
             <ListPageSideExpandable
               // the directory's "by body part" pages of this disease
-              title={getContent("directoryByPart" as ContentKey)}
+              title={getContent("directoryByPart")}
               items={(data.parts ?? [])
                 .filter((el): el is Exclude<typeof el, string> => !!el && typeof el === "object")
                 .map((el) => ({
@@ -195,7 +195,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
             </div>
           )}
           <DirectoryFunnel
-            aiPrompt={getContent("aiPrefillDisease" as ContentKey, [data.name || ""])}
+            aiPrompt={getContent("aiPrefillDisease", [data.name || ""])}
             speciality={data.specialities?.[0]}
             disease={data}
           />

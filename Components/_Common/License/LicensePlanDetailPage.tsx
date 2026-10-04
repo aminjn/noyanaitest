@@ -135,7 +135,7 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
             />
             {blocked ? (
               <p className={classes.blocked}>
-                {getContent("licenseUpgradeBlocked" as ContentKey)}
+                {getContent("licenseUpgradeBlocked")}
               </p>
             ) : (
             <Button
@@ -156,7 +156,7 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
               }
             >
               {upgrade
-                ? getContent("licenseUpgrade" as ContentKey)
+                ? getContent("licenseUpgrade")
                 : getContent("confirmAndContinue")}
             </Button>
             )}

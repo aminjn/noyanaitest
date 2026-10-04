@@ -76,7 +76,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
         // «مشورت با پزشک» (2026-10): a doctor of the speciality that
         // prescribes it, on the booking search
         secondaryAction={{
-          title: getContent("consultADoctor" as ContentKey),
+          title: getContent("consultADoctor"),
           href: bookSpecialistHref(specialities[0]),
         }}
         icon={<PillIcon />}
@@ -108,7 +108,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
             />
             <ListPageSideExpandable
               // the drug directory's pages of its class and Rx / OTC
-              title={getContent("directoryByClass" as ContentKey)}
+              title={getContent("directoryByClass")}
               items={[
                 ...(data.tag && typeof data.tag === "object" && data.tag.name
                   ? [{ title: data.tag.name, target: `/drug/class/${data.tag.slug || data.tag._id}` }]
