@@ -7,7 +7,8 @@ import { fetcher } from "../helpers/fetcher";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
-import { crmSection, financeSection } from "./panelSections";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
@@ -16,6 +17,7 @@ import useAcl from "../Hooks/useAcl";
 
 const ClinicPanelSidebar = () => {
   const hasAccess = useAcl("clinic");
+  const kartabl = useKartablCount("clinic");
 
   // doctors waiting for an answer (same SWR key as the doctors page)
   const { data: doctors } = useSWR<{ incoming?: unknown[] }>(
@@ -70,6 +72,7 @@ const ClinicPanelSidebar = () => {
       },
       financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "clinic" }),
       crmSection({ hasAccess, group: "groupCenter", profile: "clinic" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupCenter", badge: kartabl }),
       {
         title: "teamTitle",
         group: "groupCenter",
@@ -95,7 +98,7 @@ const ClinicPanelSidebar = () => {
         target: "article",
       },
     ],
-    [hasAccess, joinRequests],
+    [hasAccess, joinRequests, kartabl],
   );
 
   return <PanelSidebar links={links} panel="clinicpanel" />;

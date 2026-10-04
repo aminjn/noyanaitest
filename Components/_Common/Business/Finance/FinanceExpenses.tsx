@@ -12,7 +12,7 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { NodeWithAcl } from "@/Components/_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
 import classes from "../Accounting.module.css";
 import fin from "./Finance.module.css";
-import { asArray, isoDay, useBizFormat } from "../bizShared";
+import { asArray, bizFileHref, isoDay, useBizFormat } from "../bizShared";
 import CostCenterSelect from "../CostCenterSelect";
 import FinanceShell from "./FinanceShell";
 import PaymentForm, { POPUP_KEY as PAY_KEY } from "./PaymentForm";
@@ -436,7 +436,7 @@ const Body = () => {
                           <td>
                             <div className={fin.rowActions}>
                               {!!e.attachment && (
-                                <a href={/^https?:\/\//.test(e.attachment) ? e.attachment : `${FilePath}/${e.attachment}`} target="_blank" rel="noreferrer" className={fin.link}>
+                                <a href={bizFileHref(api, e.attachment)} target="_blank" rel="noreferrer" className={fin.link}>
                                   {t("finReceiptPhoto")}
                                 </a>
                               )}

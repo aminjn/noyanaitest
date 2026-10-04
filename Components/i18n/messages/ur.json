@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "معاہدہ نمبر ${1}",
  "crmsPubAmount": "رقم",
  "crmsPubSigned": "${1} نے ${2} کو یہ معاہدہ دستخط کیا۔",
- "crmsPubSign": "معاہدے پر دستخط کریں"
+ "crmsPubSign": "معاہدے پر دستخط کریں",
+ "kartablSubtitle": "ہر وہ چیز جو فیصلے کی منتظر ہے، ایک جگہ: مالی درخواستیں، علاج کے منصوبے کی منظوری، رعایت، کریڈٹ کی حد، واپسی اور ورک فلو کے مراحل",
+ "kartablMine": "میرے فیصلے کی منتظر",
+ "kartablAll": "تمام درخواستیں",
+ "kartablAllKinds": "تمام اقسام",
+ "kartablKind_flow": "ورک فلو کا مرحلہ",
+ "kartablReopen": "دوبارہ کھولیں",
+ "kartablReopenConfirm": "کیا یہ درخواست دوبارہ پہلے منظور کنندہ کے پاس جائے؟",
+ "kartablDate": "درج ہونے کی تاریخ",
+ "kartablDecidedAt": "فیصلے کی تاریخ",
+ "kartablEmptyMine": "کوئی چیز آپ کے فیصلے کی منتظر نہیں۔",
+ "kartablIssuedInvoice": "جاری شدہ انوائس"
 }

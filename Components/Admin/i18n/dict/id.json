@@ -2899,5 +2899,7 @@
  "دستیار پنل‌ها: امروز ${1} درخواست، ۷ روز اخیر ${2} درخواست از ${3} کاربر": "Asisten panel: ${1} permintaan hari ini, ${2} dalam 7 hari dari ${3} pengguna",
  "«دستیار نویان» در همه‌ی پنل‌ها، نسخه با صدا، پیشنهاد پاسخ گفتگو، خلاصه‌ی پرونده، متن پیامک و تحلیل تماس همه با «دستیار بالینی» کار می‌کنند (داده‌ی بیمار) و صدا با «گفتار به متن».": "“Asisten Noyan” di semua panel, resep lewat suara, saran balasan, ringkasan berkas, teks SMS, dan analisis panggilan berjalan di “Asisten klinis” (data pasien), dan suara di “Ucapan ke teks”.",
  "لینک طرح درمان یا قرارداد": "Tautan rencana perawatan atau kontrak",
- "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center%: lihat dan setujui %title% di tautan ini: %link%"
+ "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center%: lihat dan setujui %title% di tautan ini: %link%",
+ "پاسخ مرکز درمانی به درخواست - کاربر": "Pusat menjawab permintaan - pengguna",
+ "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% menjawab permintaan Anda no. %ticketId%."
 }

@@ -90,6 +90,7 @@ export const notificationSmsEvents = [
   "proExpiringUser",
   "proExpiredUser",
   "ticketAnsweredUser",
+  "crmTicketAnsweredUser",
   "accountSuspendedUser",
   "accountReactivatedUser",
 ] as const;
@@ -565,6 +566,14 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("پاسخ تیکت - کاربر"),
     variables: ["ticketId", "ticketTitle"],
     sample: () => ta("پشتیبانی به تیکت «%ticketTitle%» پاسخ داد."),
+  },
+  // a centre answered the patient's request to it (backend
+  // Controllers/crmWorkController.ts replyTicket)
+  crmTicketAnsweredUser: {
+    audience: "patient",
+    label: () => ta("پاسخ مرکز درمانی به درخواست - کاربر"),
+    variables: ["ticketId", "centre"],
+    sample: () => ta("%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد."),
   },
   accountSuspendedUser: {
     audience: "patient",

@@ -1,11 +1,11 @@
-import { Suspense } from "react";
-import AccRequests from "@/Components/_Common/Business/Acc/AccRequests";
+import { redirect } from "next/navigation";
+import { getServerLocale } from "@/Components/i18n/serverContent";
+import { localizePath } from "@/Components/i18n/locales";
 
-// «مالی و حسابداری» (2026-10): see Components/_Common/Business/Acc
-const Page = () => (
-  <Suspense>
-    <AccRequests node="clinic" panel="/clinicpanel" />
-  </Suspense>
-);
+// (2026-10) the CRM inbox, the sales approvals and the finance requests desk
+// became the panel's one «کارتابل»; old links and notifications land there
+const Moved = () => {
+  redirect(localizePath("/clinicpanel/kartabl", getServerLocale()));
+};
 
-export default Page;
+export default Moved;

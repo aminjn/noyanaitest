@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "Contrato n.º ${1}",
  "crmsPubAmount": "Importe",
  "crmsPubSigned": "${1} firmó este contrato el ${2}.",
- "crmsPubSign": "Firmar el contrato"
+ "crmsPubSign": "Firmar el contrato",
+ "kartablSubtitle": "Todo lo que espera una decisión, en un solo lugar: solicitudes financieras, aprobaciones de planes de tratamiento, descuentos, límites de crédito, devoluciones y pasos de flujo",
+ "kartablMine": "Pendientes de mí",
+ "kartablAll": "Todas las solicitudes",
+ "kartablAllKinds": "Todos los tipos",
+ "kartablKind_flow": "Paso de flujo",
+ "kartablReopen": "Reabrir",
+ "kartablReopenConfirm": "¿Devolver esta solicitud a su primer aprobador?",
+ "kartablDate": "Registrada el",
+ "kartablDecidedAt": "Decidida el",
+ "kartablEmptyMine": "Nada espera su decisión.",
+ "kartablIssuedInvoice": "Factura emitida"
 }

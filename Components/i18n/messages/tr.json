@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "${1} numaralı sözleşme",
  "crmsPubAmount": "Tutar",
  "crmsPubSigned": "${1} bu sözleşmeyi ${2} tarihinde imzaladı.",
- "crmsPubSign": "Sözleşmeyi imzala"
+ "crmsPubSign": "Sözleşmeyi imzala",
+ "kartablSubtitle": "Karar bekleyen her şey tek yerde: mali talepler, tedavi planı onayları, indirimler, kredi limitleri, iadeler ve iş akışı adımları",
+ "kartablMine": "Kararımı bekleyenler",
+ "kartablAll": "Tüm talepler",
+ "kartablAllKinds": "Tüm türler",
+ "kartablKind_flow": "İş akışı adımı",
+ "kartablReopen": "Yeniden aç",
+ "kartablReopenConfirm": "Bu talep ilk onaylayana geri gönderilsin mi?",
+ "kartablDate": "Kayıt tarihi",
+ "kartablDecidedAt": "Karar tarihi",
+ "kartablEmptyMine": "Kararınızı bekleyen bir şey yok.",
+ "kartablIssuedInvoice": "Kesilmiş fatura"
 }

@@ -2,7 +2,8 @@ import StarIcon from "../Icons/StarIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
-import { crmSection, financeSection } from "./panelSections";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FlaskIcon from "../Icons/FlaskIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
@@ -14,6 +15,7 @@ import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
 const ParaClinicSidebar = () => {
   const hasAccess = useAcl("paraClinic");
+  const kartabl = useKartablCount("paraClinic");
 
   const orders = useOrdersTodo("paraClinic", hasAccess("readOrders"));
 
@@ -63,6 +65,7 @@ const ParaClinicSidebar = () => {
       },
       financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "paraClinic" }),
       crmSection({ hasAccess, group: "groupCenter", profile: "paraClinic" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupCenter", badge: kartabl }),
       {
         title: "teamTitle",
         icon: <UserEditIcon />,
@@ -88,7 +91,7 @@ const ParaClinicSidebar = () => {
         target: "article",
       },
     ],
-    [hasAccess, orders.count],
+    [hasAccess, orders.count, kartabl],
   );
 
   return <PanelSidebar links={links} panel="paraClinicPanel" />;

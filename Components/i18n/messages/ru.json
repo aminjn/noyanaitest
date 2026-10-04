@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "Договор № ${1}",
  "crmsPubAmount": "Сумма",
  "crmsPubSigned": "${1} подписал договор ${2}.",
- "crmsPubSign": "Подписать договор"
+ "crmsPubSign": "Подписать договор",
+ "kartablSubtitle": "Всё, что ждёт решения, в одном месте: финансовые заявки, утверждение планов лечения, скидки, кредитные лимиты, возвраты и шаги процессов",
+ "kartablMine": "Ждут моего решения",
+ "kartablAll": "Все заявки",
+ "kartablAllKinds": "Все виды",
+ "kartablKind_flow": "Шаг процесса",
+ "kartablReopen": "Открыть снова",
+ "kartablReopenConfirm": "Вернуть заявку первому согласующему?",
+ "kartablDate": "Дата подачи",
+ "kartablDecidedAt": "Дата решения",
+ "kartablEmptyMine": "Ничто не ждёт вашего решения.",
+ "kartablIssuedInvoice": "Выставленный счёт"
 }

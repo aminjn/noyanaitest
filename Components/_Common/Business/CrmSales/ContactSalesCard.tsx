@@ -108,7 +108,7 @@ const ContactSalesCard = ({ contactId }: { contactId: string }) => {
       {data.credit && (
         <p className={classes.muted}>
           {data.credit.enforced ? t("crmsCreditLine", [f.money(data.credit.balance), f.money(data.credit.limit)]) : t("crmsCreditNone", [f.money(data.credit.balance)])}{" "}
-          <Link href={`${panel}/crm/approvals`} className={crm.linkButton}>
+          <Link href={`${panel}/kartabl?new=credit`} className={crm.linkButton}>
             {t("crmsAskCredit")}
           </Link>
         </p>

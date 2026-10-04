@@ -6110,5 +6110,16 @@
  "crmsPubContractN": "قرارداد شماره‌ی ${1}",
  "crmsPubAmount": "مبلغ",
  "crmsPubSigned": "${1} این قرارداد را در ${2} امضا کرد.",
- "crmsPubSign": "امضا و تأیید قرارداد"
+ "crmsPubSign": "امضا و تأیید قرارداد",
+ "kartablSubtitle": "هر چه منتظر تصمیم است، یک‌جا: درخواست‌های مالی، تأیید طرح درمان، تخفیف، سقف اعتبار، مرجوعی و گام‌های گردش‌کار",
+ "kartablMine": "منتظر تصمیم من",
+ "kartablAll": "همه‌ی درخواست‌ها",
+ "kartablAllKinds": "همه‌ی انواع",
+ "kartablKind_flow": "گام گردش‌کار",
+ "kartablReopen": "باز کردن دوباره",
+ "kartablReopenConfirm": "این درخواست دوباره به نخستین تأییدکننده برگردد؟",
+ "kartablDate": "تاریخ ثبت",
+ "kartablDecidedAt": "تاریخ تصمیم",
+ "kartablEmptyMine": "چیزی منتظر تصمیم شما نیست.",
+ "kartablIssuedInvoice": "صورتحساب صادرشده"
 }

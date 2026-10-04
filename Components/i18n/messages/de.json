@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "Vertrag Nr. ${1}",
  "crmsPubAmount": "Betrag",
  "crmsPubSigned": "${1} hat diesen Vertrag am ${2} unterschrieben.",
- "crmsPubSign": "Vertrag unterschreiben"
+ "crmsPubSign": "Vertrag unterschreiben",
+ "kartablSubtitle": "Alles, was auf eine Entscheidung wartet, an einem Ort: Finanzanträge, Freigaben von Behandlungsplänen, Rabatte, Kreditlimits, Rückgaben und Workflow-Schritte",
+ "kartablMine": "Wartet auf mich",
+ "kartablAll": "Alle Anträge",
+ "kartablAllKinds": "Alle Arten",
+ "kartablKind_flow": "Workflow-Schritt",
+ "kartablReopen": "Wieder öffnen",
+ "kartablReopenConfirm": "Diesen Antrag an die erste freigebende Person zurückgeben?",
+ "kartablDate": "Eingereicht am",
+ "kartablDecidedAt": "Entschieden am",
+ "kartablEmptyMine": "Nichts wartet auf Ihre Entscheidung.",
+ "kartablIssuedInvoice": "Ausgestellte Rechnung"
 }

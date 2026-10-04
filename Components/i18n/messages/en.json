@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "Contract no. ${1}",
  "crmsPubAmount": "Amount",
  "crmsPubSigned": "${1} signed this contract on ${2}.",
- "crmsPubSign": "Sign the contract"
+ "crmsPubSign": "Sign the contract",
+ "kartablSubtitle": "Everything waiting for a decision, in one place: finance requests, treatment-plan approvals, discounts, credit limits, returns and workflow steps",
+ "kartablMine": "Waiting for me",
+ "kartablAll": "All requests",
+ "kartablAllKinds": "All kinds",
+ "kartablKind_flow": "Workflow step",
+ "kartablReopen": "Reopen",
+ "kartablReopenConfirm": "Send this request back to its first approver?",
+ "kartablDate": "Filed on",
+ "kartablDecidedAt": "Decided on",
+ "kartablEmptyMine": "Nothing is waiting for your decision.",
+ "kartablIssuedInvoice": "Issued invoice"
 }

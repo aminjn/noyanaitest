@@ -43,13 +43,15 @@ export type SalesPage =
   | "contracts"
   | "contract"
   | "carePlans"
-  | "approvals"
   | "calls"
   | "targets"
   | "reports"
   | "settings";
 
 type ApprovalKindP = "plan" | "discount" | "credit";
+// (the requests themselves are decided in the panel's «کارتابل»,
+// Components/_Common/Business/Kartabl - `approvals` is what this profile may
+// ask for there)
 export type ProfileFeatures = {
   parts: SalesPage[];
   // a funnel of leads (the pharmacy works with customers instead)
@@ -72,7 +74,7 @@ export type ProfileFeatures = {
 
 const CARE_KINDS = ["cosmetic", "dental", "ivf", "surgery", "checkup", "corporate", "other"];
 const CENTRE: ProfileFeatures = {
-  parts: ["pipeline", "inquiries", "plans", "contracts", "carePlans", "approvals", "calls", "targets", "reports", "settings"],
+  parts: ["pipeline", "inquiries", "plans", "contracts", "carePlans", "calls", "targets", "reports", "settings"],
   funnel: true,
   teams: true,
   assignment: true,
@@ -99,7 +101,7 @@ export const PROFILES: Record<Profile, ProfileFeatures> = {
   hospital: CENTRE,
   pharmacy: {
     ...CENTRE,
-    parts: ["carePlans", "contracts", "approvals", "calls", "targets", "reports", "settings"],
+    parts: ["carePlans", "contracts", "calls", "targets", "reports", "settings"],
     funnel: false,
     teams: false,
     assignment: false,
@@ -112,7 +114,7 @@ export const PROFILES: Record<Profile, ProfileFeatures> = {
   },
   paraClinic: {
     ...CENTRE,
-    parts: ["pipeline", "inquiries", "plans", "contracts", "approvals", "calls", "targets", "reports", "settings"],
+    parts: ["pipeline", "inquiries", "plans", "contracts", "calls", "targets", "reports", "settings"],
     commission: false,
     approvals: ["plan", "discount"],
     doctors: false,
@@ -134,7 +136,6 @@ export const salesParts: { page: SalesPage; path: string; title: string; hint: s
   { page: "plans", path: "/plans", title: "crmsNavPlans", hint: "crmsNavPlansHint" },
   { page: "contracts", path: "/contracts", title: "crmsNavContracts", hint: "crmsNavContractsHint" },
   { page: "carePlans", path: "/care-plans", title: "crmsNavCarePlans", hint: "crmsNavCarePlansHint" },
-  { page: "approvals", path: "/approvals", title: "crmsNavApprovals", hint: "crmsNavApprovalsHint" },
   { page: "calls", path: "/calls", title: "crmsNavCalls", hint: "crmsNavCallsHint" },
   { page: "targets", path: "/targets", title: "crmsNavTargets", hint: "crmsNavTargetsHint" },
   { page: "reports", path: "/reports", title: "crmsNavReports", hint: "crmsNavReportsHint" },
@@ -329,7 +330,7 @@ export type Plan = {
 export type Credit = { enforced: boolean; limit: number; freeCredit: boolean; balance: number; remaining: number };
 
 export type ApprovalKind = "plan" | "discount" | "credit";
-export type ApprovalStatus = "pending" | "approved" | "rejected" | "cancelled" | "applied";
+export type ApprovalStatus = "pending" | "approved" | "rejected" | "cancelled" | "done";
 export type Approval = {
   _id: string;
   kind: ApprovalKind;
@@ -361,7 +362,7 @@ export const approvalStatusKey: Record<ApprovalStatus, string> = {
   approved: "crmsApApproved",
   rejected: "crmsApRejected",
   cancelled: "crmsApCancelled",
-  applied: "crmsApApplied",
+  done: "crmsApApplied",
 };
 export const leadStatusKey: Record<Lead["status"], string> = { open: "crmsLeadOpen", won: "crmsLeadWon", lost: "crmsLeadLost" };
 

@@ -29,7 +29,6 @@ import CrmTasks, { CrmTimesheet } from "./Service/CrmTasks";
 import CrmCalendar from "./Service/CrmCalendar";
 import CrmChecklists from "./Service/CrmChecklists";
 import CrmFlows from "./Service/CrmFlows";
-import CrmInbox from "./Service/CrmInbox";
 import CrmReturns from "./Service/CrmReturns";
 import { isProfile, partOn, partTitle, ServicePart } from "./Service/profiles";
 
@@ -71,7 +70,6 @@ export const crmParts: { page: CrmPageKind; path: string; title: string; hint: s
   { page: "club", path: "/club", title: "crmeNavClub", hint: "crmeNavClubHint", service: "club" },
   { page: "sequences", path: "/sequences", title: "crmeNavSequences", hint: "crmeNavSequencesHint", service: "sequences" },
   { page: "flows", path: "/flows", title: "crmeNavFlows", hint: "crmeNavFlowsHint", service: "flows" },
-  { page: "inbox", path: "/inbox", title: "crmeNavInbox", hint: "crmeNavInboxHint", service: "inbox", row: "service" },
   { page: "tickets", path: "/tickets", title: "crmeNavTickets", hint: "crmeNavTicketsHint", service: "tickets", row: "service" },
   { page: "tasks", path: "/tasks", title: "crmeNavTasks", hint: "crmeNavTasksHint", service: "tasks", row: "service" },
   { page: "timesheet", path: "/timesheet", title: "crmeNavTimesheet", hint: "crmeNavTimesheetHint", service: "timesheet", row: "service" },
@@ -172,8 +170,6 @@ const CrmSection = ({
       <CrmChecklists />
     ) : page === "flows" || page === "flow" ? (
       <CrmFlows id={id} />
-    ) : page === "inbox" ? (
-      <CrmInbox />
     ) : (
       <CrmReturns />
     );

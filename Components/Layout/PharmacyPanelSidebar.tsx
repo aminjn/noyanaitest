@@ -1,7 +1,8 @@
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
-import { crmSection, financeSection } from "./panelSections";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
 import CartIcon from "../Icons/CartIcon";
@@ -13,6 +14,7 @@ import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
 const PharmacyPanelSidebar = () => {
   const hasAccess = useAcl("pharmacy");
+  const kartabl = useKartablCount("pharmacy");
 
   const orders = useOrdersTodo("pharmacy", hasAccess("readOrders"));
 
@@ -79,6 +81,7 @@ const PharmacyPanelSidebar = () => {
       },
       financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "pharmacy" }),
       crmSection({ hasAccess, group: "groupCenter", profile: "pharmacy" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupCenter", badge: kartabl }),
       {
         title: "licenses",
         icon: <CartIcon />,
@@ -94,7 +97,7 @@ const PharmacyPanelSidebar = () => {
         target: "article",
       },
     ],
-    [hasAccess, orders.count],
+    [hasAccess, orders.count, kartabl],
   );
 
   return <PanelSidebar links={links} panel="pharmacypanel" />;

@@ -4,7 +4,8 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
-import { crmSection, financeSection } from "./panelSections";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
@@ -13,6 +14,7 @@ import useAcl from "../Hooks/useAcl";
 
 const InsurancePanelSidebar = () => {
   const hasAccess = useAcl("insurance");
+  const kartabl = useKartablCount("insurance");
 
   const links = useMemo<LinkMap>(
     () => [
@@ -47,6 +49,7 @@ const InsurancePanelSidebar = () => {
       },
       financeSection({ hasAccess, inventory: false, insurance: false, group: "groupCenter", profile: "insurance" }),
       crmSection({ hasAccess, group: "groupCenter", profile: "insurance" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupCenter", badge: kartabl }),
       {
         icon: <UserEditIcon />,
         title: "teamTitle",
@@ -72,7 +75,7 @@ const InsurancePanelSidebar = () => {
         target: "article",
       },
     ],
-    [hasAccess],
+    [hasAccess, kartabl],
   );
 
   return <PanelSidebar links={links} panel="insurancepanel" />;

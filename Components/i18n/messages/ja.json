@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "契約 No.${1}",
  "crmsPubAmount": "金額",
  "crmsPubSigned": "${1}が${2}にこの契約に署名しました。",
- "crmsPubSign": "契約に署名"
+ "crmsPubSign": "契約に署名",
+ "kartablSubtitle": "決定を待つものをひとまとめに：経理申請、治療計画の承認、値引き、与信枠、返品、ワークフローの手順",
+ "kartablMine": "自分の判断待ち",
+ "kartablAll": "すべての申請",
+ "kartablAllKinds": "すべての種類",
+ "kartablKind_flow": "ワークフローの手順",
+ "kartablReopen": "再オープン",
+ "kartablReopenConfirm": "この申請を最初の承認者に戻しますか？",
+ "kartablDate": "申請日",
+ "kartablDecidedAt": "判断日",
+ "kartablEmptyMine": "あなたの判断を待つものはありません。",
+ "kartablIssuedInvoice": "発行済みの請求書"
 }

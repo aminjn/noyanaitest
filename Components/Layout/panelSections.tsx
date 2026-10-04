@@ -48,16 +48,16 @@ export type FinanceProfile = "doctor" | "clinic" | "hospital" | "pharmacy" | "pa
 
 // (2026-10, the per-profile work) each profile gets the finance menu its
 // work needs, in its own order: a doctor's is a simple book (no fixed-asset
-// desk or approval desk), a pharmacy puts payments and cheques, the
+// desk), a pharmacy puts payments and cheques, the
 // treasury and the stock with expiry first, an insurer puts its claims and
 // provider settlements first. The plan's modules still gate each page.
 const FINANCE_ORDER: Record<FinanceProfile, string[]> = {
   doctor: ["overview", "wallet", "invoices", "payments", "expenses", "insurance", "accounting", "treasury", "moadian", "payroll", "reports", "ai"],
-  clinic: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports", "ai"],
-  hospital: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "requests", "inventory", "payroll", "moadian", "reports", "ai"],
-  pharmacy: ["overview", "wallet", "payments", "treasury", "inventory", "insurance", "invoices", "expenses", "accounting", "assets", "requests", "moadian", "payroll", "reports", "ai"],
-  paraClinic: ["overview", "wallet", "invoices", "insurance", "payments", "inventory", "expenses", "accounting", "treasury", "assets", "requests", "payroll", "moadian", "reports", "ai"],
-  insurance: ["overview", "settlements", "payments", "accounting", "treasury", "requests", "expenses", "invoices", "wallet", "payroll", "moadian", "reports", "ai"],
+  clinic: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "inventory", "payroll", "moadian", "reports", "ai"],
+  hospital: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "inventory", "payroll", "moadian", "reports", "ai"],
+  pharmacy: ["overview", "wallet", "payments", "treasury", "inventory", "insurance", "invoices", "expenses", "accounting", "assets", "moadian", "payroll", "reports", "ai"],
+  paraClinic: ["overview", "wallet", "invoices", "insurance", "payments", "inventory", "expenses", "accounting", "treasury", "assets", "payroll", "moadian", "reports", "ai"],
+  insurance: ["overview", "settlements", "payments", "accounting", "treasury", "expenses", "invoices", "wallet", "payroll", "moadian", "reports", "ai"],
 };
 
 export const financeSection = <A extends string>({
@@ -93,7 +93,6 @@ export const financeSection = <A extends string>({
     // the insurer's provider settlements: the treasury's settlements tab
     settlements: { title: k("finNavProviderSettlements"), icon: <ShieldCheckIcon />, target: "finance/treasury?tab=settlements", show: finance },
     assets: { title: k("finNavAssets"), icon: <PackageIcon />, target: "finance/assets", show: finance },
-    requests: { title: k("finNavRequests"), icon: <EditSquareIcon />, target: "finance/requests", show: finance },
     moadian: { title: "moadianMenu", icon: <ReceiptIcon />, target: "finance/moadian", show: can("readMoadian") },
     payroll: { title: "payMenu", icon: <UserGroupIcon />, target: "finance/payroll", show: can("readPayroll") },
     inventory: { title: "invMenu", icon: <PackageIcon />, target: "finance/inventory", show: inventory && can("readInventory") },
@@ -148,7 +147,6 @@ export const crmSection = <A extends string>({
       part("club", "crmeNavClub", <MedalStarIcon />, "crm/club"),
       part("sequences", "crmeNavSequences", <SendLineIcon />, "crm/sequences"),
       part("flows", "crmeNavFlows", <PuzzleIcon />, "crm/flows"),
-      part("inbox", "crmeNavInbox", <DoubleCheckIcon />, "crm/inbox"),
       part("tickets", "crmeNavTickets", <CommentIcon />, "crm/tickets"),
       part("tasks", "crmeNavTasks", <CheckSquareIcon />, "crm/tasks"),
       part("calendar", "crmeNavCalendar", <Calendar01Icon />, "crm/calendar"),
@@ -158,3 +156,16 @@ export const crmSection = <A extends string>({
     ],
   };
 };
+
+// The panel's one «کارتابل» (2026-10, Components/_Common/Business/Kartabl):
+// a single top-level item for every approval - finance requests, sales
+// approvals, returns, workflow steps - instead of one per section. Any team
+// member may have something waiting there; the badge is what waits for them.
+export const kartablItem = ({ show, group, badge }: { show: boolean; group?: ContentKey; badge?: number }): LinkMapItem => ({
+  title: k("crmeNavInbox"),
+  icon: <DoubleCheckIcon />,
+  target: "kartabl",
+  group,
+  badge,
+  show,
+});

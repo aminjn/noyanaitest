@@ -17,7 +17,6 @@ import SalesPlan from "./SalesPlan";
 import SalesContracts from "./SalesContracts";
 import SalesContract from "./SalesContract";
 import SalesCarePlans from "./SalesCarePlans";
-import SalesApprovals from "./SalesApprovals";
 import SalesCalls from "./SalesCalls";
 import SalesTargets from "./SalesTargets";
 import SalesReports from "./SalesReports";
@@ -60,8 +59,6 @@ const SalesSection = ({ node, panel, page, id }: { node: NodeWithAcl; panel: str
       <SalesContract id={id} />
     ) : page === "carePlans" ? (
       <SalesCarePlans />
-    ) : page === "approvals" ? (
-      <SalesApprovals />
     ) : page === "calls" ? (
       <SalesCalls />
     ) : page === "targets" ? (

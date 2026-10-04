@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "Kontrak no. ${1}",
  "crmsPubAmount": "Jumlah",
  "crmsPubSigned": "${1} menandatangani kontrak ini pada ${2}.",
- "crmsPubSign": "Tandatangani kontrak"
+ "crmsPubSign": "Tandatangani kontrak",
+ "kartablSubtitle": "Semua yang menunggu keputusan, di satu tempat: permintaan keuangan, persetujuan rencana perawatan, diskon, batas kredit, retur, dan langkah alur kerja",
+ "kartablMine": "Menunggu saya",
+ "kartablAll": "Semua permintaan",
+ "kartablAllKinds": "Semua jenis",
+ "kartablKind_flow": "Langkah alur kerja",
+ "kartablReopen": "Buka kembali",
+ "kartablReopenConfirm": "Kembalikan permintaan ini ke pemberi persetujuan pertama?",
+ "kartablDate": "Diajukan pada",
+ "kartablDecidedAt": "Diputuskan pada",
+ "kartablEmptyMine": "Tidak ada yang menunggu keputusan Anda.",
+ "kartablIssuedInvoice": "Faktur yang diterbitkan"
 }

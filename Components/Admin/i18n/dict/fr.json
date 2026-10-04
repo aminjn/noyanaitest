@@ -2899,5 +2899,7 @@
  "دستیار پنل‌ها: امروز ${1} درخواست، ۷ روز اخیر ${2} درخواست از ${3} کاربر": "Assistant des panneaux : ${1} requêtes aujourd’hui, ${2} sur 7 jours par ${3} utilisateurs",
  "«دستیار نویان» در همه‌ی پنل‌ها، نسخه با صدا، پیشنهاد پاسخ گفتگو، خلاصه‌ی پرونده، متن پیامک و تحلیل تماس همه با «دستیار بالینی» کار می‌کنند (داده‌ی بیمار) و صدا با «گفتار به متن».": "L’« Assistant Noyan » de chaque panneau, l’ordonnance à la voix, les suggestions de réponse, les résumés de dossier, les SMS et l’analyse d’appels passent tous par l’« Assistant clinique » (données patients), et la voix par « Parole en texte ».",
  "لینک طرح درمان یا قرارداد": "Lien du plan de traitement ou du contrat",
- "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center% : consultez et validez %title% via ce lien : %link%"
+ "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center% : consultez et validez %title% via ce lien : %link%",
+ "پاسخ مرکز درمانی به درخواست - کاربر": "Réponse du centre à une demande - utilisateur",
+ "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% a répondu à votre demande n° %ticketId%."
 }

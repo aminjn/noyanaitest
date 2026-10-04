@@ -18,7 +18,8 @@ import PillIcon from "../Icons/PillIcon";
 import LogoutIcon from "../Icons/LogoutIcon";
 import { currencize } from "../helpers/currencize";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
-import { crmSection, financeSection } from "./panelSections";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import useDoctorAcl from "../Hooks/useDoctorAcl";
 import usePopup from "../Hooks/usePopup";
 import LogoutPopup from "../Popups/LogoutPopup";
@@ -36,6 +37,8 @@ const DoctorSidebar = () => {
   const getContent = useScopedLocale(LOCALE_NS);
 
   const hasAccess = useDoctorAcl();
+
+  const kartabl = useKartablCount("doctor");
 
   // the doctor's wallet, also for a secretary allowed to see finance
   const { data: balance } = useSWR<number>(
@@ -147,6 +150,7 @@ const DoctorSidebar = () => {
         ),
       }),
       crmSection({ hasAccess, group: "groupPractice", profile: "doctor" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupPractice", badge: kartabl }),
       {
         // verified visit reviews and the doctor's public replies (2026-10)
         title: "orgReviewsTitle",
@@ -214,7 +218,7 @@ const DoctorSidebar = () => {
         show: true,
       },
     ],
-    [balance, canNetwork, getContent, hasAccess, ordersTodo, setPopup],
+    [balance, canNetwork, getContent, hasAccess, ordersTodo, setPopup, kartabl],
   );
 
   return <PanelSidebar links={links} panel="doctorpanel" />;

@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "合同 ${1} 号",
  "crmsPubAmount": "金额",
  "crmsPubSigned": "${1} 已于 ${2} 签署此合同。",
- "crmsPubSign": "签署合同"
+ "crmsPubSign": "签署合同",
+ "kartablSubtitle": "所有待决定的事项集中于此：财务申请、治疗方案审批、折扣、信用额度、退货和流程步骤",
+ "kartablMine": "待我处理",
+ "kartablAll": "全部申请",
+ "kartablAllKinds": "全部类型",
+ "kartablKind_flow": "流程步骤",
+ "kartablReopen": "重新打开",
+ "kartablReopenConfirm": "将此申请退回给第一位审批人？",
+ "kartablDate": "提交日期",
+ "kartablDecidedAt": "决定日期",
+ "kartablEmptyMine": "没有待您决定的事项。",
+ "kartablIssuedInvoice": "已开具的发票"
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo } from "react";
+import { API, FilePath } from "@/Components/config";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -107,3 +108,10 @@ export const isoDay = (d?: Date | null) => {
 };
 
 export const asArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+
+// A finance file (receipt, bill, voucher scan) is private (2026-10): it is
+// read back through the panel's own authenticated route, never from the
+// public files folder. `api` is the context's /<node>/biz or
+// /<node>/biz/finance; a full URL is shown as it is.
+export const bizFileHref = (api: string, name: string) =>
+  /^https?:\/\//.test(name) ? name : /^biz__/.test(name) ? `${API}${api.replace(/\/finance$/, "")}/finance/files/${encodeURIComponent(name)}` : `${FilePath}/${name}`;

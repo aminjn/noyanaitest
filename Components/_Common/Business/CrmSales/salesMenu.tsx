@@ -3,7 +3,6 @@ import FilterIcon from "@/Components/Icons/FilterIcon";
 import FileIcon from "@/Components/Icons/FileIcon";
 import MedicalReportIcon from "@/Components/Icons/MedicalReportIcon";
 import RetryIcon from "@/Components/Icons/RetryIcon";
-import BadgeCheckIcon from "@/Components/Icons/BadgeCheckIcon";
 import CallCallingIcon from "@/Components/Icons/CallCallingIcon";
 import TargetIcon from "@/Components/Icons/TargetIcon";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
@@ -20,7 +19,6 @@ const icons: Partial<Record<SalesPage, ReactNode>> = {
   plans: <MedicalReportIcon />,
   contracts: <FileIcon />,
   carePlans: <RetryIcon />,
-  approvals: <BadgeCheckIcon />,
   calls: <CallCallingIcon />,
   targets: <TargetIcon />,
   reports: <DashboardIcon />,

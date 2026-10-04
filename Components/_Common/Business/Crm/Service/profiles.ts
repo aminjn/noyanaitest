@@ -17,17 +17,17 @@
 // section's own sub-menu (CrmSection).
 
 export type CrmProfile = "doctor" | "clinic" | "hospital" | "pharmacy" | "paraClinic" | "insurance";
-export type ServicePart = "club" | "sequences" | "flows" | "inbox" | "tickets" | "tasks" | "timesheet" | "calendar" | "checklists" | "knowledge" | "quizzes" | "returns";
+export type ServicePart = "club" | "sequences" | "flows" | "tickets" | "tasks" | "timesheet" | "calendar" | "checklists" | "knowledge" | "quizzes" | "returns";
 
-const ALL: ServicePart[] = ["club", "sequences", "flows", "inbox", "tickets", "tasks", "timesheet", "calendar", "checklists", "knowledge", "quizzes", "returns"];
+const ALL: ServicePart[] = ["club", "sequences", "flows", "tickets", "tasks", "timesheet", "calendar", "checklists", "knowledge", "quizzes", "returns"];
 
 export const PROFILE_PARTS: Record<CrmProfile, ServicePart[]> = {
-  doctor: ["club", "sequences", "flows", "inbox", "tickets", "tasks", "calendar", "checklists", "knowledge", "quizzes", "returns"],
+  doctor: ["club", "sequences", "flows", "tickets", "tasks", "calendar", "checklists", "knowledge", "quizzes", "returns"],
   clinic: ALL,
   hospital: ALL,
-  pharmacy: ["club", "sequences", "flows", "inbox", "tickets", "tasks", "timesheet", "calendar", "checklists", "knowledge", "quizzes", "returns"],
-  paraClinic: ["club", "sequences", "flows", "inbox", "tickets", "tasks", "timesheet", "calendar", "checklists", "knowledge", "quizzes", "returns"],
-  insurance: ["sequences", "flows", "inbox", "tickets", "tasks", "timesheet", "calendar", "knowledge", "quizzes"],
+  pharmacy: ["club", "sequences", "flows", "tickets", "tasks", "timesheet", "calendar", "checklists", "knowledge", "quizzes", "returns"],
+  paraClinic: ["club", "sequences", "flows", "tickets", "tasks", "timesheet", "calendar", "checklists", "knowledge", "quizzes", "returns"],
+  insurance: ["sequences", "flows", "tickets", "tasks", "timesheet", "calendar", "knowledge", "quizzes"],
 };
 
 // parts that need a team (a doctor working alone has no one to train)

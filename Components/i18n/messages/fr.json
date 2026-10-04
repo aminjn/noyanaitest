@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "Contrat n° ${1}",
  "crmsPubAmount": "Montant",
  "crmsPubSigned": "${1} a signé ce contrat le ${2}.",
- "crmsPubSign": "Signer le contrat"
+ "crmsPubSign": "Signer le contrat",
+ "kartablSubtitle": "Tout ce qui attend une décision, au même endroit : demandes financières, validations de plans de traitement, remises, plafonds de crédit, retours et étapes de workflow",
+ "kartablMine": "En attente de moi",
+ "kartablAll": "Toutes les demandes",
+ "kartablAllKinds": "Tous les types",
+ "kartablKind_flow": "Étape de workflow",
+ "kartablReopen": "Rouvrir",
+ "kartablReopenConfirm": "Renvoyer cette demande à son premier approbateur ?",
+ "kartablDate": "Déposée le",
+ "kartablDecidedAt": "Décidée le",
+ "kartablEmptyMine": "Rien n’attend votre décision.",
+ "kartablIssuedInvoice": "Facture émise"
 }

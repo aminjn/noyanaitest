@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "अनुबंध सं. ${1}",
  "crmsPubAmount": "राशि",
  "crmsPubSigned": "${1} ने ${2} को यह अनुबंध हस्ताक्षरित किया।",
- "crmsPubSign": "अनुबंध पर हस्ताक्षर करें"
+ "crmsPubSign": "अनुबंध पर हस्ताक्षर करें",
+ "kartablSubtitle": "निर्णय की प्रतीक्षा करने वाला सब कुछ एक जगह: वित्तीय अनुरोध, उपचार योजना की स्वीकृति, छूट, क्रेडिट सीमा, वापसी और वर्कफ़्लो के चरण",
+ "kartablMine": "मेरे निर्णय की प्रतीक्षा में",
+ "kartablAll": "सभी अनुरोध",
+ "kartablAllKinds": "सभी प्रकार",
+ "kartablKind_flow": "वर्कफ़्लो चरण",
+ "kartablReopen": "फिर से खोलें",
+ "kartablReopenConfirm": "क्या यह अनुरोध पहले स्वीकृतकर्ता को वापस भेजें?",
+ "kartablDate": "दर्ज करने की तिथि",
+ "kartablDecidedAt": "निर्णय की तिथि",
+ "kartablEmptyMine": "आपके निर्णय की प्रतीक्षा में कुछ नहीं है।",
+ "kartablIssuedInvoice": "जारी चालान"
 }

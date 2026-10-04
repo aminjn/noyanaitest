@@ -11,7 +11,7 @@ import { useLocale } from "@/Components/i18n/navigation";
 import classes from "../Accounting.module.css";
 import fin from "../Finance/Finance.module.css";
 import acc from "./Acc.module.css";
-import { asArray, BizAccount, isoDay, useBiz, useBizFormat } from "../bizShared";
+import { asArray, BizAccount, bizFileHref, isoDay, useBiz, useBizFormat } from "../bizShared";
 import { useBizAccounts } from "../AccountingSummary";
 import { useCostCenters } from "../CostCenterSelect";
 import CostCenterSelect from "../CostCenterSelect";
@@ -258,7 +258,7 @@ const Attachments = ({ value, onChange, readOnly }: { value: string[]; onChange?
       setBusy(false);
     }
   };
-  const href = (a: string) => (/^https?:\/\//.test(a) ? a : `${FilePath}/${a}`);
+  const href = (a: string) => bizFileHref(api, a);
   return (
     <div className={classes.field}>
       <span>{t("accAttachments")}</span>

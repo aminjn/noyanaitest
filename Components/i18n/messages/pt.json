@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "Contrato n.º ${1}",
  "crmsPubAmount": "Valor",
  "crmsPubSigned": "${1} assinou este contrato em ${2}.",
- "crmsPubSign": "Assinar o contrato"
+ "crmsPubSign": "Assinar o contrato",
+ "kartablSubtitle": "Tudo o que aguarda uma decisão, num só lugar: pedidos financeiros, aprovações de planos de tratamento, descontos, limites de crédito, devoluções e etapas de fluxo",
+ "kartablMine": "À minha espera",
+ "kartablAll": "Todos os pedidos",
+ "kartablAllKinds": "Todos os tipos",
+ "kartablKind_flow": "Etapa de fluxo",
+ "kartablReopen": "Reabrir",
+ "kartablReopenConfirm": "Devolver este pedido ao primeiro aprovador?",
+ "kartablDate": "Registado em",
+ "kartablDecidedAt": "Decidido em",
+ "kartablEmptyMine": "Nada aguarda a sua decisão.",
+ "kartablIssuedInvoice": "Fatura emitida"
 }

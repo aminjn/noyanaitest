@@ -2899,5 +2899,7 @@
  "دستیار پنل‌ها: امروز ${1} درخواست، ۷ روز اخیر ${2} درخواست از ${3} کاربر": "Panel-Assistent: heute ${1} Anfragen, in 7 Tagen ${2} von ${3} Nutzern",
  "«دستیار نویان» در همه‌ی پنل‌ها، نسخه با صدا، پیشنهاد پاسخ گفتگو، خلاصه‌ی پرونده، متن پیامک و تحلیل تماس همه با «دستیار بالینی» کار می‌کنند (داده‌ی بیمار) و صدا با «گفتار به متن».": "Der „Noyan-Assistent“ in allen Panels, Rezept per Sprache, Antwortvorschläge, Aktenzusammenfassungen, SMS-Texte und Anrufanalyse laufen über den „Klinischen Assistenten“ (Patientendaten), Sprache über „Sprache zu Text“.",
  "لینک طرح درمان یا قرارداد": "Link zum Behandlungsplan oder Vertrag",
- "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center%: %title% unter diesem Link ansehen und bestätigen: %link%"
+ "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center%: %title% unter diesem Link ansehen und bestätigen: %link%",
+ "پاسخ مرکز درمانی به درخواست - کاربر": "Zentrum hat Anfrage beantwortet - Nutzer",
+ "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% hat Ihre Anfrage Nr. %ticketId% beantwortet."
 }

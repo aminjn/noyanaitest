@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "চুক্তি নং ${1}",
  "crmsPubAmount": "পরিমাণ",
  "crmsPubSigned": "${1} ${2} তারিখে এই চুক্তিতে স্বাক্ষর করেছেন।",
- "crmsPubSign": "চুক্তিতে স্বাক্ষর করুন"
+ "crmsPubSign": "চুক্তিতে স্বাক্ষর করুন",
+ "kartablSubtitle": "সিদ্ধান্তের অপেক্ষায় থাকা সবকিছু এক জায়গায়: আর্থিক অনুরোধ, চিকিৎসা পরিকল্পনার অনুমোদন, ছাড়, ক্রেডিট সীমা, ফেরত ও ওয়ার্কফ্লোর ধাপ",
+ "kartablMine": "আমার সিদ্ধান্তের অপেক্ষায়",
+ "kartablAll": "সব অনুরোধ",
+ "kartablAllKinds": "সব ধরন",
+ "kartablKind_flow": "ওয়ার্কফ্লোর ধাপ",
+ "kartablReopen": "আবার খুলুন",
+ "kartablReopenConfirm": "এই অনুরোধটি কি প্রথম অনুমোদনকারীর কাছে ফেরত যাবে?",
+ "kartablDate": "জমার তারিখ",
+ "kartablDecidedAt": "সিদ্ধান্তের তারিখ",
+ "kartablEmptyMine": "আপনার সিদ্ধান্তের অপেক্ষায় কিছু নেই।",
+ "kartablIssuedInvoice": "জারি করা চালান"
 }

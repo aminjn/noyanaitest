@@ -6088,5 +6088,16 @@
  "crmsPubContractN": "العقد رقم ${1}",
  "crmsPubAmount": "المبلغ",
  "crmsPubSigned": "وقّع ${1} هذا العقد في ${2}.",
- "crmsPubSign": "توقيع العقد"
+ "crmsPubSign": "توقيع العقد",
+ "kartablSubtitle": "كل ما ينتظر قرارًا في مكان واحد: الطلبات المالية، اعتماد خطط العلاج، الخصومات، حدود الائتمان، المرتجعات وخطوات سير العمل",
+ "kartablMine": "بانتظار قراري",
+ "kartablAll": "كل الطلبات",
+ "kartablAllKinds": "كل الأنواع",
+ "kartablKind_flow": "خطوة سير العمل",
+ "kartablReopen": "إعادة فتح",
+ "kartablReopenConfirm": "هل يُعاد هذا الطلب إلى أول معتمِد؟",
+ "kartablDate": "تاريخ التسجيل",
+ "kartablDecidedAt": "تاريخ القرار",
+ "kartablEmptyMine": "لا شيء بانتظار قرارك.",
+ "kartablIssuedInvoice": "الفاتورة الصادرة"
 }
