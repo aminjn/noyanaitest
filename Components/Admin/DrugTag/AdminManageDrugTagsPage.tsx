@@ -12,6 +12,7 @@ export interface IDrugTag<
   T extends DrugTagPopulation = DrugTagPopulation,
 > extends MongoDoc {
   name?: string;
+  slug?: string;
   isActive: boolean;
   order: number;
 }
@@ -21,6 +22,12 @@ const drugTagFormRenderer: FormRenderer<IDrugTag> = {
     type: "text",
     get title() {
       return ta("نام");
+    },
+  },
+  slug: {
+    type: "text",
+    get title() {
+      return ta("اسلاگ");
     },
   },
   isActive: {
@@ -37,11 +44,13 @@ const drugTagFormRenderer: FormRenderer<IDrugTag> = {
   },
 };
 
+// the therapeutic classes of drugs (the model is still DrugTag, backend
+// Models/Drugtag.ts): /drug/class/<slug> on the public site
 const AdminManageDrugtagsPage = () => (
   <AdminCatalogList<IDrugTag>
     model="drugTag"
-    title={ta("تگ دارو ها")}
-    noun={ta("برچسب دارو")}
+    title={ta("گروه‌های درمانی")}
+    noun={ta("گروه درمانی")}
     fields={drugTagFormRenderer}
   />
 );

@@ -1,47 +1,17 @@
-import DrugsListPage, {
-  DrugsListPageProps,
-} from "@/Components/Drug/DrugsListPage";
-import { getPublicData } from "@/Components/helpers/getPublicData";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
-import { notFound } from "next/navigation";
-import {
-  getListPageMetadata,
-  getListPageWebSchema,
-} from "@/Components/helpers/getPageMetadata";
-import JsonLdSchema from "@/Components/UI/JsonLdSchema";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { permanentRedirect } from "next/navigation";
+import DirectoryRoute, {
+  directoryMetadata,
+  DirectorySearchParams,
+} from "@/Components/Directory/DirectoryRoute";
 
-export const generateMetadata = () => getListPageMetadata("/drug");
+// the drug directory: A to Z and its facets (Components/Directory)
+type Props = { searchParams: DirectorySearchParams & { category?: string } };
 
-const DrugsList = async (ctx: {
-  searchParams: Promise<{ page?: string; search?: string }>;
-}) => {
-  const { page: _page, search } = await ctx.searchParams;
+export const generateMetadata = ({ searchParams }: Props) =>
+  directoryMetadata("drug", undefined, undefined, searchParams);
 
-  const page = Number(_page || 1);
-  if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
-  const params = new URLSearchParams();
-  params.append("page", page.toString());
-  if (search) params.append("query", search);
-
-  const [data, textContent] = await Promise.all([
-    getPublicData<DrugsListPageProps>(`drug?${params.toString()}`),
-    getScopedTextContent(["drugsList", "drugCard"]),
-  ]);
-
-  if (!data) return notFound();
-  const webSchema = await getListPageWebSchema("/drug");
-  return (
-    <>
-      <JsonLdSchema schema={webSchema} />
-      <LocaleScopeProvider
-        namespaces={["drugsList", "drugCard"]}
-        initialTextContent={textContent}
-      >
-        <DrugsListPage {...data} />
-      </LocaleScopeProvider>
-    </>
-  );
+const Page = ({ searchParams }: Props) => {
+  return <DirectoryRoute kind="drug" searchParams={searchParams} />;
 };
 
-export default DrugsList;
+export default Page;

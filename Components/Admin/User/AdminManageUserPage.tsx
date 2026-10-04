@@ -449,7 +449,9 @@ const AdminManageUserPage = () => {
             }
             canSeeOrders={viewer?.role === "admin" || hasAccess("Order", "readAll")}
             canSeeWallet={viewer?.role === "admin" || hasAccess("Finance", "readAll")}
-            canAdjustWallet={viewer?.role === "admin"}
+            // the manual correction: full admins and the finance team
+            // (Finance "update", same as POST /admin/wallet/:id/adjust)
+            canAdjustWallet={viewer?.role === "admin" || hasAccess("Finance", "update")}
             onChanged={() => mutate()}
           />
 

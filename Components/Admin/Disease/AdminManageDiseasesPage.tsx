@@ -74,8 +74,28 @@ export interface IPart<
   T extends PartPopulation = PartPopulation,
 > extends MongoDoc {
   name?: string;
+  slug?: string;
+  // off = hidden from the public directory
+  isActive?: boolean;
+  // where it is drawn on the symptom directory's body map
+  region?: PartRegion;
   order: number;
 }
+
+// backend Models/Part.ts partRegions
+export const partRegions = [
+  "head",
+  "neck",
+  "chest",
+  "abdomen",
+  "pelvis",
+  "back",
+  "arms",
+  "legs",
+  "skin",
+  "general",
+] as const;
+export type PartRegion = (typeof partRegions)[number];
 
 export type SymptomPopulation = Population<{
   Part: PartPopulation;
@@ -186,6 +206,8 @@ export interface IDisease<
     ? ISpeciality<T["Speciality"]>[]
     : string[];
   drugs: T["Drugs"] extends DrugPopulation ? IDrug<T["Drugs"]>[] : string[];
+  // body parts / systems it affects (the directory's "by body part")
+  parts?: (IPart | string)[];
   genderSpecific?: GenderSpecificOption;
   expectedPrognosis?: string;
   image?: string;

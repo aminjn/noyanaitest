@@ -1,0 +1,41 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.875rem 1.125rem;
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--error) 30%, transparent);
+  background: color-mix(in srgb, var(--error) 7%, var(--glass, transparent));
+  text-align: start;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.title {
+  color: var(--gray13);
+  font-size: 0.9375rem;
+  font-weight: 900;
+}
+
+.off {
+  color: var(--gray10);
+  font-size: 0.8125rem;
+}
+
+.timer {
+  font-size: 0.8125rem;
+}

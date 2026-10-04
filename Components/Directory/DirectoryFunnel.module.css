@@ -1,0 +1,55 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  margin-block: 1.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, var(--primary1), var(--secondary1));
+  border: 1px solid var(--primary2);
+}
+
+.compact {
+  margin-block: 1rem 0;
+}
+
+.text {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1 1 20rem;
+}
+
+.icon {
+  color: var(--primary6);
+  flex-shrink: 0;
+}
+
+.title {
+  color: var(--black);
+  margin: 0;
+}
+
+.note {
+  color: var(--gray10);
+  margin: 0.25rem 0 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+}
+
+@media (max-width: 40rem) {
+  .actions {
+    flex: 1 1 100%;
+  }
+  .action {
+    flex: 1 1 100%;
+  }
+}

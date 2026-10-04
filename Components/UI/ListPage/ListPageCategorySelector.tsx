@@ -16,17 +16,31 @@ const ListPageCategorySelector = ({
   className = "",
   style,
   noIcon,
+  hrefOf,
+  isActive,
+  allHref,
+  allActive,
 }: WithStyleProps<{
   categories: { _id: string; name?: string; slug?: string; title?: string }[];
   basePath: string;
   title?: string;
   noIcon?: boolean;
+  // path-based filters (the medical directory's /disease/part/<slug>):
+  // each chip's own URL and active state instead of ?category=; `allHref`
+  // null hides the "all" chip
+  hrefOf?: (category: { _id: string; slug?: string }) => string;
+  isActive?: (category: { _id: string; slug?: string }) => boolean;
+  allHref?: string | null;
+  allActive?: boolean;
 }>) => {
   const searchParams = useSearchParams();
 
   const getContent = useScopedLocale(LOCALE_NS);
 
   if (!categories.length) return null;
+  const current = searchParams.get("category");
+  const activeOf = (category: { _id: string; slug?: string }) =>
+    isActive ? isActive(category) : current === (category.slug || category._id);
   return (
     <div className={`${classes.categoryBox} ${className}`} style={style}>
       <div className={classes.titleBox}>
@@ -38,17 +52,20 @@ const ListPageCategorySelector = ({
         {!!title && <span>{title}</span>}
       </div>
       <div className={classes.categories}>
-        <Link
-          href={basePath}
-          className={`${classes.category} ${searchParams.get("category") ? "" : classes.activeCategory} ${txsMedium}`}
-        >
-          {getContent("all")}
-        </Link>
+        {allHref !== null && (
+          <Link
+            href={allHref || basePath}
+            className={`${classes.category} ${(allActive ?? !current) ? classes.activeCategory : ""} ${txsMedium}`}
+          >
+            {getContent("all")}
+          </Link>
+        )}
         {categories.map((category) => (
           <Link
-            className={`${classes.category} ${searchParams.get("category") === (category.slug || category._id) ? classes.activeCategory : ""} ${txsMedium}`}
+            className={`${classes.category} ${activeOf(category) ? classes.activeCategory : ""} ${txsMedium}`}
             key={category._id}
-            href={`${basePath}?category=${category.slug || category._id}`}
+            aria-current={activeOf(category) ? "page" : undefined}
+            href={hrefOf ? hrefOf(category) : `${basePath}?category=${category.slug || category._id}`}
           >
             {category.name || category.title}
           </Link>

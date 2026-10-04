@@ -25,6 +25,7 @@ import Ixon from "@/Components/UI/Ixon";
 import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import useLicenseQuotes from "./useLicenseQuotes";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -57,6 +58,8 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
   }, [selectedDuration, data]);
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const { quoteOf } = useLicenseQuotes(name);
+  const quote = quoteOf(data?._id, selectedDuration?.duration);
   const push = useProgress();
 
   // TODO: render `license` (plan details + duration/price picker + purchase
@@ -103,6 +106,7 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
                 selectedDuration={selectedDuration}
               />
               <LicensePriceDetails
+                quote={quote}
                 duration={selectedDuration}
                 pricing={
                   (Array.isArray(data.pricing) ? data.pricing : []).find(
@@ -115,6 +119,7 @@ const LicensePlanDetailPage = ({ name }: { name: LicenseOrg }) => {
           <RenderRtf value={data.details} />
           <div className={classes.footer}>
             <LicensePriceDetails
+              quote={quote}
               duration={selectedDuration}
               pricing={
                 (Array.isArray(data.pricing) ? data.pricing : []).find(

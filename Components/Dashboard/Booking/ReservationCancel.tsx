@@ -12,11 +12,12 @@ import PopupCard from "@/Components/UI/PopupCard";
 import Button from "@/Components/UI/Button";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { ReservationStatus } from "./reservationStatus";
+import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 
 // Same rule as the API (Services/reservationCancelService.ts): the patient
-// cancels online, fully refunded, up to 24h before; the doctor any time
-// before the start.
-const PATIENT_FREE_CANCEL_HOURS = 24;
+// cancels online, fully refunded, up to the super admin's free-cancel window
+// (booking settings, default 24h) before; the doctor any time before the
+// start.
 
 type Side = "patient" | "doctor";
 
@@ -121,6 +122,7 @@ const ReservationCancel = ({
 }) => {
   const getContent = useScopedLocale(ns);
   const { setPopup } = usePopup();
+  const { patientFreeCancelHours, freeCancelHoursText } = useSiteSettings();
 
   if (reservation.status === "cancelled")
     return <p className={classes.done}>{getContent("cancelledRefunded")}</p>;
@@ -128,8 +130,12 @@ const ReservationCancel = ({
 
   const msLeft = startsAt(reservation) - Date.now();
   if (msLeft <= 0) return null;
-  if (side === "patient" && msLeft < PATIENT_FREE_CANCEL_HOURS * 3600 * 1000)
-    return <p className={classes.hint}>{getContent("cancelClosedHint")}</p>;
+  if (side === "patient" && msLeft < patientFreeCancelHours * 3600 * 1000)
+    return (
+      <p className={classes.hint}>
+        {getContent("cancelClosedHint", [freeCancelHoursText])}
+      </p>
+    );
 
   return (
     <Button

@@ -56,12 +56,13 @@ const AdminManageDrugPage = () => {
                       tag: { section: details,
                         type: "nodes",
                         multi: false,
-                        title: ta("تگ"),
+                        // the therapeutic class (DrugTag), created here when new
+                        title: ta("گروه درمانی"),
                         getOptionLabel: (node) =>
                           (node as IDrugTag).name || ta("بدون نام"),
                         getOptionValue: (node) => (node as IDrugTag)._id,
                         path: `${API}/auto/drugTag`,
-                        creatable: { path: `${API}/auto/drugTag` },
+                        creatable: { path: `${API}/auto/drugTag`, extra: { isActive: true } },
                         getDefaultValue: (inp) => inp.tag,
                       },
                       sameAs: { section: details,

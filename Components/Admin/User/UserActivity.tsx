@@ -196,7 +196,8 @@ const UserWallet = ({
   onChanged,
 }: {
   userId: string;
-  // a manual correction creates or removes money: full admins only
+  // a manual correction creates or removes money: full admins and staff
+  // with Finance "update" (audited: ledger row + admin audit log)
   canAdjust: boolean;
   onChanged: () => unknown;
 }) => {

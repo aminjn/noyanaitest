@@ -53,6 +53,8 @@ export const notificationSmsEvents = [
   "reservationCompletedBySupportDoctor",
   "reservationPayoutReversedDoctor",
   "visitNoteReadyPatient",
+  "reservationReminderDayBeforePatient",
+  "reservationReminderTwoHoursPatient",
   "orderShippedUser",
   "orderItemFulfilledUser",
   "orderItemCancelledUser",
@@ -332,6 +334,20 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("توصیه‌های پس از ویزیت - بیمار"),
     variables: ["reservationId", "doctorName"],
     sample: () => ta("دکتر %doctorName% توصیه‌های پس از ویزیت شما را ثبت کرد. آن‌ها را در صفحه‌ی نوبت ببینید."),
+  },
+  // 24 hours / 2 hours before the visit (2026-10), each switchable in the
+  // booking settings
+  reservationReminderDayBeforePatient: {
+    audience: "patient",
+    label: () => ta("یادآوری ۲۴ ساعت پیش از نوبت - بیمار"),
+    variables: ["reservationId", "doctorName", "date", "time"],
+    sample: () => ta("یادآوری: نوبت شما با دکتر %doctorName% در تاریخ %date% ساعت %time% است."),
+  },
+  reservationReminderTwoHoursPatient: {
+    audience: "patient",
+    label: () => ta("یادآوری ۲ ساعت پیش از نوبت - بیمار"),
+    variables: ["reservationId", "doctorName", "date", "time"],
+    sample: () => ta("یادآوری: نوبت شما با دکتر %doctorName% ساعت %time% آغاز می‌شود."),
   },
   orderShippedUser: {
     audience: "patient",

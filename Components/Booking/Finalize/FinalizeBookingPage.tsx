@@ -30,6 +30,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import useShiftUtils from "@/Components/DoctorPanel/Shift/useShiftUtils";
 import ErrorMessage from "@/Components/Admin/UI/ErrorMessage";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { numberToTime } from "@/Components/DoctorPanel/Calendar/AddSessionsAgent";
 import useUser, {
@@ -438,6 +439,8 @@ const CheckoutStage = ({
 }) => {
   const getContent = useScopedLocale(NS);
   const getCompContent = getContent;
+  // the free-cancel window the API applies (super admin booking settings)
+  const { freeCancelHoursText } = useSiteSettings();
   const { data: wallet, error } = useSWR<IWallet>(
     `${API}/user/wallet`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -572,7 +575,7 @@ const CheckoutStage = ({
             {getContent("bookingTip1")}
           </p>
           <p className={`${classes.tip} ${tsmDemiBold}`}>
-            {getContent("bookingTip2")}
+            {getContent("bookingTip2", [freeCancelHoursText])}
           </p>
         </div>
       </div>

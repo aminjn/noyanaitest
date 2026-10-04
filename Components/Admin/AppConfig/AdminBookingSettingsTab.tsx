@@ -17,6 +17,9 @@ import { IAppConfig } from "./AdminManageAppConfigPage";
 type BookingSettings = Pick<
   IAppConfig,
   | "bookingHorizonDays"
+  | "patientFreeCancelHours"
+  | "reservationReminder24hEnabled"
+  | "reservationReminder2hEnabled"
   | "reservationReminderMinutesBefore"
   | "reservationNoShowNudgeMinutesAfterStart"
   | "callRingTimeoutMs"
@@ -51,6 +54,24 @@ const AdminBookingSettingsTab = () => {
               bookingHorizonDays: {
                 title: ta("بازه زمانی امکان رزرو نوبت (روز)"),
                 type: "number",
+                section: ta("نوبت‌دهی و یادآوری"),
+              },
+              // 2026-10: set by the platform, as Doctolib / Zocdoc let the
+              // practice set its cancellation window
+              patientFreeCancelHours: {
+                title: ta("لغو رایگان بیمار تا چند ساعت پیش از نوبت (ساعت)"),
+                type: "number",
+                section: ta("نوبت‌دهی و یادآوری"),
+                hint: ta("بین ۰ تا ۱۶۸ ساعت. ۰ یعنی تا شروع نوبت. متن‌های صفحه‌ی رزرو و نوبت همین عدد را نشان می‌دهند."),
+              },
+              reservationReminder24hEnabled: {
+                title: ta("یادآوری پیامکی و درون‌برنامه‌ای ۲۴ ساعت پیش از نوبت"),
+                type: "bool",
+                section: ta("نوبت‌دهی و یادآوری"),
+              },
+              reservationReminder2hEnabled: {
+                title: ta("یادآوری پیامکی و درون‌برنامه‌ای ۲ ساعت پیش از نوبت"),
+                type: "bool",
                 section: ta("نوبت‌دهی و یادآوری"),
               },
               reservationReminderMinutesBefore: {

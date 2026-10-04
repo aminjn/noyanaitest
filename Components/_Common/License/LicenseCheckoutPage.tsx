@@ -31,6 +31,9 @@ import {
 } from "@/Components/UI/Typography";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ContentKey } from "@/Components/Enums/contentKeys";
+import Input from "@/Components/UI/Input";
+import useLicenseQuotes from "./useLicenseQuotes";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "sharedLicense"];
 
@@ -77,9 +80,20 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
     (Array.isArray(data?.pricing) ? data.pricing : []).find(
       (p) => p?.duration?._id === durationId,
     ) || null;
-  const price = pricing
-    ? Math.max(0, (pricing.price || 0) - (pricing.discount || 0))
-    : 0;
+
+  // a promotion code (2026-10): typed, then applied - the quote below is
+  // re-read with it, and the purchase sends it (an invalid code is refused
+  // by the server instead of charging the full price)
+  const [codeInput, setCodeInput] = useState("");
+  const [code, setCode] = useState("");
+  const { data: pricingData, quoteOf } = useLicenseQuotes(name, code || undefined);
+  const quote = quoteOf(data?._id, pricing?.duration?.duration);
+  const codeRejected = !!code && pricingData?.code === code.toUpperCase() && !quote?.promotion?.withCode;
+  const price = quote
+    ? quote.final
+    : pricing
+      ? Math.max(0, (pricing.price || 0) - (pricing.discount || 0))
+      : 0;
 
   const submit = () => {
     if (isSubmitting || !durationId) return;
@@ -97,7 +111,41 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
             <LicensePriceDetails
               duration={pricing?.duration || null}
               pricing={pricing}
+              quote={quote}
             />
+          </div>
+          <div className={classes.section}>
+            <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
+              {getContent("licensePromoCode" as ContentKey)}
+            </span>
+            <div className={classes.codeRow}>
+              <Input
+                title={getContent("licensePromoCode" as ContentKey)}
+                placeholder
+                inputClass={classes.codeInput}
+                autoComplete="off"
+                onChange={(e) => setCodeInput(e.target.value)}
+              />
+              <Button
+                variant="Secondary"
+                mode="Fill"
+                size="M"
+                radius="Medium"
+                onClick={() => setCode(codeInput.trim())}
+              >
+                {getContent("licensePromoApply" as ContentKey)}
+              </Button>
+            </div>
+            {codeRejected && (
+              <span className={classes.codeError}>
+                {getContent("licensePromoCodeInvalid" as ContentKey)}
+              </span>
+            )}
+            {!!code && !codeRejected && !!quote?.promotion?.withCode && (
+              <span className={classes.codeOk}>
+                {getContent("licensePromoCodeApplied" as ContentKey)}
+              </span>
+            )}
           </div>
           <div className={classes.section}>
             <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
@@ -162,7 +210,11 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
                 : null
             }
             method="POST"
-            payload={{ duration: durationId }}
+            payload={
+              code && !codeRejected
+                ? { duration: durationId, promoCode: code }
+                : { duration: durationId }
+            }
             onDone={(status) => {
               setIsSubmitting(false);
               if (!status) return;

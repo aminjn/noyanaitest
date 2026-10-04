@@ -12,6 +12,7 @@ import ListPageWideHeader, {
 } from "../UI/ListPage/ListPageWideHeader";
 import ListPageFacts from "../UI/ListPage/ListPageFacts";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import useSiteSettings from "../Hooks/useSiteSettings";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ContentKey } from "../Enums/contentKeys";
 import PillIcon from "../Icons/PillIcon";
@@ -24,11 +25,12 @@ import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
+import { bookSpecialistHref } from "../Directory/DirectoryFunnel";
 
 const NS: ContentNamespace[] = ["common", "drugPage"];
 
 export type DrugPageProps = {
-  data: IDrug<{ SameAs: Record<never, never> }>;
+  data: IDrug<{ SameAs: Record<never, never>; Tag: Record<never, never> }>;
   diseases: IDisease[];
   doctors: IDoctorProfile<{
     MainSpecialityPopulated: Record<never, never>;
@@ -43,6 +45,7 @@ export type DrugPageProps = {
 };
 const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
   const getContent = useScopedLocale(NS);
+  const emergency = useSiteSettings();
 
   return (
     <ListPageLayout
@@ -70,7 +73,12 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
           title: getContent("poShop"),
           href: `/product?search=${encodeURIComponent(data.name || "")}`,
         }}
-        secondaryAction={{ title: getContent("inspectDrugWithAi"), href: "/wizard" }}
+        // «مشورت با پزشک» (2026-10): a doctor of the speciality that
+        // prescribes it, on the booking search
+        secondaryAction={{
+          title: getContent("consultADoctor" as ContentKey),
+          href: bookSpecialistHref(specialities[0]),
+        }}
         icon={<PillIcon />}
       />
       <BigAd position="drug1" />
@@ -97,6 +105,25 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
                 title: el.name || "",
                 target: `/disease/${el.slug || el._id}`,
               }))}
+            />
+            <ListPageSideExpandable
+              // the drug directory's pages of its class and Rx / OTC
+              title={getContent("directoryByClass" as ContentKey)}
+              items={[
+                ...(data.tag && typeof data.tag === "object" && data.tag.name
+                  ? [{ title: data.tag.name, target: `/drug/class/${data.tag.slug || data.tag._id}` }]
+                  : []),
+                ...(data.prescriptionStatus
+                  ? [
+                      {
+                        title: getContent(
+                          (data.prescriptionStatus === "rx" ? "directoryDrugsRx" : "directoryDrugsOtc") as ContentKey,
+                        ),
+                        target: `/drug/status/${data.prescriptionStatus}`,
+                      },
+                    ]
+                  : []),
+              ]}
             />
             <ListPageSideExpandable
               title={getContent("relatedDrugs")}
@@ -141,7 +168,13 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
             { title: getContent("overdosage"), value: data.overdosage },
           ]}
           // shown with every drug: never start or stop on one's own, 115
-          note={getContent("drugSafetyNote")}
+          note={
+            // the number and the on/off are the super admin's (System
+            // settings -> General); the wording is the UI text
+            emergency.emergencyNoteEnabled
+              ? getContent("drugSafetyNote", [emergency.emergencyNumberText])
+              : undefined
+          }
         />
         <ListPageFacts
           items={[

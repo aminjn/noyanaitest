@@ -1,0 +1,101 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-block: 1.5rem 2.5rem;
+  padding-inline: 1rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.25rem 1.5rem;
+  border-radius: var(--radiusLg, 1.5rem);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  text-align: center;
+}
+
+.h1 {
+  color: var(--gray13);
+  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+  font-weight: 900;
+}
+
+.legend {
+  max-width: 44rem;
+  color: var(--gray10);
+  line-height: 1.9;
+}
+
+.kind {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding-block-start: 1rem;
+}
+
+.durations {
+  align-self: center;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.empty {
+  color: var(--gray9);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.infos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border-radius: var(--radiusLg, 1.5rem);
+  background: var(--aiLine);
+}
+
+.info {
+  padding: 1.25rem 1.5rem;
+  background: var(--aiSoft);
+  color: var(--aiText);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.outro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.consult {
+  color: var(--gray9);
+  text-align: center;
+}
+
+@media (max-width: 48rem) {
+  .infos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .header {
+    padding: 1.5rem 1rem;
+  }
+}
