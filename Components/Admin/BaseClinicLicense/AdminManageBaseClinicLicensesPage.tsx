@@ -16,6 +16,7 @@ import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { ILicensePricingEntry } from "../UI/LicensePricingInput";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import SeedRecommendedPlansPopup from "../LicensePlans/SeedRecommendedPlansPopup";
 
 // Menu items available in the clinic dashboard (ClinicPanelSidebar). Kept in
 // sync with Models/BaseClinicLicense.ts on noyanai-back and with the
@@ -162,6 +163,18 @@ const AdminManageBaseClinicLicensesPage = () => {
     <NodesManager<IBaseClinicLicense>
       create={baseClinicLicenseFormRenderer}
       modelName="baseClinicLicense"
+      // the recommended free / professional / premium lineup, created on
+      // demand for what this kind is missing (2026-10)
+      actions={({ mutate }) => [
+        {
+          title: ta("ساخت پلن‌های پیشنهادی"),
+          action: () =>
+            setPopup(
+              "SeedRecommendedPlans",
+              <SeedRecommendedPlansPopup kind="clinic" mutate={mutate} />,
+            ),
+        },
+      ]}
       title={ta("پلن های مجوز کلینیک")}
       table={({ mutate }) => ({
         displayName: {

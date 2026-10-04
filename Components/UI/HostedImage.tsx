@@ -2,7 +2,7 @@
 
 import Image, { ImageProps } from "next/image";
 import { useEffect, useState } from "react";
-import { imagePath } from "../helpers/imagepath";
+import { imagePath, isAbsoluteFileUrl } from "../helpers/imagepath";
 import classes from "./HostedImage.module.css";
 
 export type HostedImageProps = Omit<ImageProps, "src" | "alt"> & {
@@ -81,6 +81,9 @@ const HostedImage = ({
         onLoad?.(e);
       }}
       {...rest}
+      // an absolute URL on another host (an old-site image) is not one the
+      // image optimizer may fetch: the browser loads it directly
+      unoptimized={rest.unoptimized || isAbsoluteFileUrl(src)}
     />
   );
 };

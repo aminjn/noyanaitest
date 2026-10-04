@@ -16,6 +16,7 @@ import OrderEditor from "../UI/OrderEditor";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { ILicensePricingEntry } from "../UI/LicensePricingInput";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import SeedRecommendedPlansPopup from "../LicensePlans/SeedRecommendedPlansPopup";
 
 // Menu items available in the pharmacy dashboard (PharmacyPanelSidebar).
 // Kept in sync with Models/BasePharmacyLicense.ts on noyanai-back and with
@@ -178,6 +179,18 @@ const AdminManageBasePharmacyLicensesPage = () => {
     <NodesManager<IBasePharmacyLicense>
       create={basePharmacyLicenseFormRenderer}
       modelName="basePharmacyLicense"
+      // the recommended free / professional / premium lineup, created on
+      // demand for what this kind is missing (2026-10)
+      actions={({ mutate }) => [
+        {
+          title: ta("ساخت پلن‌های پیشنهادی"),
+          action: () =>
+            setPopup(
+              "SeedRecommendedPlans",
+              <SeedRecommendedPlansPopup kind="pharmacy" mutate={mutate} />,
+            ),
+        },
+      ]}
       title={ta("پلن های مجوز داروخانه")}
       table={({ mutate }) => ({
         displayName: {

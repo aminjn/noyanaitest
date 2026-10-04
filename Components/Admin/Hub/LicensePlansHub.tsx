@@ -10,6 +10,7 @@ import AdminManageBaseInsuranceLicensesPage from "@/Components/Admin/BaseInsuran
 import AdminManageBaseParaClinicLicensesPage from "@/Components/Admin/BaseParaClinicLicense/AdminManageBaseParaClinicLicensesPage";
 import AdminManageBasePharmacyLicensesPage from "@/Components/Admin/BasePharmacyLicense/AdminManageBasePharmacyLicensesPage";
 import AdminSubscriptionsTab from "@/Components/Admin/LicensePlans/AdminSubscriptionsTab";
+import AdminLicensePromotionsTab from "@/Components/Admin/LicensePlans/AdminLicensePromotionsTab";
 
 // پلن‌ها و مجوزها: one admin page, its parts as tabs (2026-09 admin audit).
 const LicensePlansHub = () => {
@@ -54,6 +55,13 @@ const LicensePlansHub = () => {
           title: ta("بیمه"),
           exclude: !canOpen("admin"),
           content: <AdminManageBaseInsuranceLicensesPage />,
+        },
+        {
+          // launch discount and other plan promotions (2026-10)
+          id: "promotions",
+          title: ta("تخفیف و پیشنهاد ویژه"),
+          exclude: !canOpen("admin"),
+          content: <AdminLicensePromotionsTab />,
         },
         {
           // every provider's current plan, expiry and owner in one list

@@ -15,6 +15,7 @@ import AiOrb from "../UI/AiOrb";
 import SparkIcon from "../Icons/SparkIcon";
 import MicrophoneIcon from "../Icons/MicrophoneIcon";
 import IntakeAnswers from "./IntakeAnswers";
+import Link from "../i18n/Link";
 import { IVisitIntake, IVisitNote } from "./visitTypes";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 
@@ -23,7 +24,8 @@ const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 type VisitRecord = {
   intake: IVisitIntake | null;
   note: IVisitNote | null;
-  capabilities: { ai: boolean; stt: boolean };
+  // aiInPlan: the doctor's plan has the AI assistant module (2026-10)
+  capabilities: { ai: boolean; stt: boolean; aiInPlan?: boolean };
 };
 
 type NoteFields = Required<Pick<IVisitNote, "subjective" | "objective" | "assessment" | "plan" | "patientInstructions">>;
@@ -121,7 +123,8 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
       </section>
     );
   if (!data) return null;
-  const { intake, note, capabilities } = data;
+  const { intake, note } = data;
+  const capabilities = data.capabilities || { ai: false, stt: false };
 
   const edit = (key: keyof NoteFields, value: string) => {
     setFields((f) => ({ ...f, [key]: value }));
@@ -273,7 +276,14 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
               </button>
             )}
           </div>
-          {!capabilities.ai && <span className={classes.muted}>{getContent("visitAiOff")}</span>}
+          {!capabilities.ai &&
+            (capabilities.aiInPlan === false ? (
+              <Link href="/doctorpanel/license" className={classes.muted}>
+                {getContent("visitAiNotInPlan" as ContentKey)}
+              </Link>
+            ) : (
+              <span className={classes.muted}>{getContent("visitAiOff")}</span>
+            ))}
         </div>
 
         {draftFresh && <div className={classes.draftNote}>{getContent("visitDraftReady")}</div>}

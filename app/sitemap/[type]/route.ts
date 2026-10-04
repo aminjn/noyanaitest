@@ -2,6 +2,7 @@ import { getEnabledLocales } from "@/Components/i18n/getEnabledLocales";
 import { DOMAIN } from "@/Components/config";
 import {
   buildUrlsetXml,
+  fetchDirectorySitemapPaths,
   fetchSitemapNodes,
   xmlResponse,
 } from "@/Components/helpers/sitemap";
@@ -45,6 +46,19 @@ export const GET = async (
     return xmlResponse(
       buildUrlsetXml(
         sitemapStaticPages.map((path) => ({ loc: `${DOMAIN}${path}` })),
+        await getEnabledLocales(),
+      ),
+    );
+  }
+
+  // the medical directory's facet pages (A to Z, body part, speciality,
+  // category, drug class, Rx / OTC) that list something
+  if (base === "directory") {
+    return xmlResponse(
+      buildUrlsetXml(
+        (await fetchDirectorySitemapPaths()).map((path) => ({
+          loc: `${DOMAIN}${encodeURI(path)}`,
+        })),
         await getEnabledLocales(),
       ),
     );

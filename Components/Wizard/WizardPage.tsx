@@ -93,6 +93,21 @@ const WizardPage = () => {
     setIsSidebarOpen(false);
   }, [nodeId]);
 
+  // a new chat opened from a disease / symptom / directory page arrives with
+  // its question typed (/wizard?q=...), for the visitor to finish and send
+  useEffect(() => {
+    if (nodeId) return;
+    try {
+      const q = new URLSearchParams(window.location.search).get("q");
+      if (q) {
+        setPrompt(q.slice(0, 500));
+        textareaRef.current?.focus();
+      }
+    } catch {
+      // no prefill
+    }
+  }, [nodeId]);
+
   useEffect(() => {
     const el = textareaRef.current;
     if (!el) return;

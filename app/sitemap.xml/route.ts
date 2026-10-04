@@ -24,6 +24,7 @@ export const GET = async () => {
   );
   const sitemaps = [
     { loc: `${DOMAIN}/sitemap/pages.xml` },
+    { loc: `${DOMAIN}/sitemap/directory.xml` },
     ...sitemapNodeTypes.flatMap((type, index) =>
       sitemapFileNames(type, counts[index]).map((fileName) => ({
         loc: `${DOMAIN}/sitemap/${fileName}`,

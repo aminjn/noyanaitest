@@ -29,6 +29,22 @@ export const fetchSitemapNodes = async (
   }
 };
 
+// the medical directory's facet pages (/disease/letter/ب, /drug/class/x,
+// ...), from backend Controllers/directoryController.getDirectorySitemap
+export const fetchDirectorySitemapPaths = async (): Promise<string[]> => {
+  const response = await fetch(`${BACKEND}/api/v1/public/directory/sitemap`, {
+    next: { revalidate: SITEMAP_REVALIDATE_SECONDS },
+  });
+  if (!response.ok) return [];
+  try {
+    const json = await response.json();
+    const paths = json?.data?.paths;
+    return Array.isArray(paths) ? paths.filter((p): p is string => typeof p === "string") : [];
+  } catch {
+    return [];
+  }
+};
+
 export const fetchSitemapNodeCount = async (type: string): Promise<number> => {
   const response = await fetch(
     `${BACKEND}/api/v1/public/sitemap/${type}/count`,

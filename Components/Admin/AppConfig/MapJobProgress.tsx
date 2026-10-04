@@ -32,7 +32,19 @@ const phaseLabel = (phase: string) => {
   }
 };
 
-const MapJobProgress = ({ job }: { job: MapJob }) => {
+// Also used by other background jobs of the admin (the old-site import,
+// Components/Admin/Old/Migrate): `phaseText` names their own phases.
+export type JobProgressState = Pick<MapJob, "status" | "phase" | "total" | "processed" | "startedAt"> & {
+  error?: { code?: string; message: string };
+};
+
+const MapJobProgress = ({
+  job,
+  phaseText,
+}: {
+  job: JobProgressState;
+  phaseText?: (phase: string) => string | undefined;
+}) => {
   const total = Number(job.total) || 0;
   const processed = Math.min(Number(job.processed) || 0, total || Infinity);
   const percent = total ? Math.round((processed / total) * 100) : 0;
@@ -42,7 +54,10 @@ const MapJobProgress = ({ job }: { job: MapJob }) => {
     <div className={classes.progress} aria-live="polite">
       <div className={classes.row}>
         <Badge color={color} size="L">
-          {phaseLabel(job.status === "running" ? job.phase || "" : job.status)}
+          {(() => {
+            const phase = job.status === "running" ? job.phase || "" : job.status;
+            return phaseText?.(phase) || phaseLabel(phase);
+          })()}
         </Badge>
         {total > 0 && (
           <span className={classes.note}>
