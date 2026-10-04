@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "Booking dalam ${1} hari terakhir",
  "dpdProfileInactive": "Profil Anda belum aktif dan tidak ditampilkan di situs.",
  "dpdRating": "Rating ${1} dari ${2} ulasan",
- "dpdSetupDescription": "Selesaikan langkah-langkah ini agar pasien dapat melakukan booking dengan Anda.",
+ "dpdSetupDescription": "Selesaikan langkah ini: setelah data Anda (nama, spesialisasi, foto), ruang praktik, satu jenis kunjungan berharga, dan jadwal Anda lengkap, halaman Anda terbit otomatis dan pasien dapat membuat janji.",
  "dpdSetupIntroduction": "Tulis perkenalan",
  "dpdSetupOffice": "Tambah tempat praktik",
  "dpdSetupProfile": "Lengkapi profil Anda (nama, spesialisasi utama, dan foto)",

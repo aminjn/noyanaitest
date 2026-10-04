@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "Son ${1} gündeki randevular",
  "dpdProfileInactive": "Profiliniz henüz aktif değil ve sitede gösterilmiyor.",
  "dpdRating": "${2} yorumdan ${1} puan",
- "dpdSetupDescription": "Hastaların sizden randevu alabilmesi için bu adımları tamamlayın.",
+ "dpdSetupDescription": "Bu adımları tamamlayın: bilgileriniz (ad, uzmanlık, fotoğraf), bir muayenehane, fiyatlı bir muayene türü ve çalışma programınız hazır olduğunda sayfanız otomatik yayınlanır ve hastalar randevu alabilir.",
  "dpdSetupIntroduction": "Tanıtım yazısı yazın",
  "dpdSetupOffice": "Muayenehane ekleyin",
  "dpdSetupProfile": "Profilinizi tamamlayın (ad, ana uzmanlık ve fotoğraf)",

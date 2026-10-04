@@ -2210,6 +2210,7 @@
  "کد ملی بیمار": "Nationale ID des Patienten",
  "کد نظام": "Kammernummer",
  "کد نظام پزشکی": "Ärztekammernummer",
+ "کد نظام پزشکی (تأییدشده با استعلام)": "Ärztekammer-Nummer (per Abfrage bestätigt)",
  "کد نوع خدمت": "Code der Leistungsart",
  "کد ورود (OTP)": "Anmeldecode (OTP)",
  "کد ورود ارسال‌شده": "Gesendeter Anmeldecode",

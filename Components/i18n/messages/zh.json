@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "过去 ${1} 天的预约",
  "dpdProfileInactive": "您的资料尚未启用，不会在网站上显示。",
  "dpdRating": "评分 ${1}，共 ${2} 条评价",
- "dpdSetupDescription": "完成以下步骤，患者即可向您预约。",
+ "dpdSetupDescription": "完成以下步骤：填写资料（姓名、专科、照片）、诊室、一种带价格的就诊类型和工作时间表后，您的页面将自动发布，患者即可预约。",
  "dpdSetupIntroduction": "撰写简介",
  "dpdSetupOffice": "添加诊室",
  "dpdSetupProfile": "完善资料（姓名、主要专科和照片）",

@@ -2210,6 +2210,7 @@
  "کد ملی بیمار": "Numéro d'identité nationale du patient",
  "کد نظام": "Numéro d'Ordre",
  "کد نظام پزشکی": "Numéro d'Ordre des médecins",
+ "کد نظام پزشکی (تأییدشده با استعلام)": "Numéro d’ordre (vérifié par consultation)",
  "کد نوع خدمت": "Code du type de service",
  "کد ورود (OTP)": "Code de connexion (OTP)",
  "کد ورود ارسال‌شده": "Code de connexion envoyé",

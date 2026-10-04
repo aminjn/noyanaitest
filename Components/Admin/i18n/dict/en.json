@@ -2210,6 +2210,7 @@
  "کد ملی بیمار": "Patient's national ID",
  "کد نظام": "Council code",
  "کد نظام پزشکی": "Medical council code",
+ "کد نظام پزشکی (تأییدشده با استعلام)": "Medical council code (verified by inquiry)",
  "کد نوع خدمت": "Service type code",
  "کد ورود (OTP)": "Login code (OTP)",
  "کد ورود ارسال‌شده": "Login code sent",

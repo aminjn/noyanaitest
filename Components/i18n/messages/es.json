@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "Reservas de los últimos ${1} días",
  "dpdProfileInactive": "Tu perfil aún no está activo y no se muestra en el sitio.",
  "dpdRating": "Valoración de ${1} en ${2} reseñas",
- "dpdSetupDescription": "Completa estos pasos para que los pacientes puedan reservar contigo.",
+ "dpdSetupDescription": "Complete estos pasos: cuando estén sus datos (nombre, especialidad, foto), un consultorio, un tipo de consulta con precio y su horario, su página se publica automáticamente y los pacientes pueden reservar.",
  "dpdSetupIntroduction": "Escribe una presentación",
  "dpdSetupOffice": "Añade un consultorio",
  "dpdSetupProfile": "Completa tu perfil (nombre, especialidad principal y foto)",

@@ -2210,6 +2210,7 @@
  "کد ملی بیمار": "NIK pasien",
  "کد نظام": "Kode ikatan profesi",
  "کد نظام پزشکی": "Kode ikatan dokter",
+ "کد نظام پزشکی (تأییدشده با استعلام)": "Nomor konsil kedokteran (terverifikasi lewat pengecekan)",
  "کد نوع خدمت": "Kode jenis layanan",
  "کد ورود (OTP)": "Kode masuk (OTP)",
  "کد ورود ارسال‌شده": "Kode masuk terkirim",

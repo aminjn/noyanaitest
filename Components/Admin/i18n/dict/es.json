@@ -2210,6 +2210,7 @@
  "کد ملی بیمار": "DNI del paciente",
  "کد نظام": "Número de colegiado",
  "کد نظام پزشکی": "Número de colegiado médico",
+ "کد نظام پزشکی (تأییدشده با استعلام)": "Número de colegiado (verificado por consulta)",
  "کد نوع خدمت": "Código del tipo de servicio",
  "کد ورود (OTP)": "Código de acceso (OTP)",
  "کد ورود ارسال‌شده": "Código de acceso enviado",

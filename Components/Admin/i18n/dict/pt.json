@@ -2210,6 +2210,7 @@
  "کد ملی بیمار": "Documento nacional do paciente",
  "کد نظام": "Código do conselho",
  "کد نظام پزشکی": "Código do conselho de medicina",
+ "کد نظام پزشکی (تأییدشده با استعلام)": "Registro no conselho (verificado por consulta)",
  "کد نوع خدمت": "Código do tipo de serviço",
  "کد ورود (OTP)": "Código de acesso (OTP)",
  "کد ورود ارسال‌شده": "Código de acesso enviado",
