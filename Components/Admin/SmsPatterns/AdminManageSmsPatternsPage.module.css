@@ -14,3 +14,76 @@
   line-height: 1.8;
   text-align: start;
 }
+
+/* one pattern's variables and sample text (under its field) */
+.pattern {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.625rem;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  min-width: 0;
+}
+
+.variables {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.caption {
+  color: var(--gray7);
+  font-size: 0.8125rem;
+}
+
+.variable {
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.375rem;
+  background: var(--line);
+  font-size: 0.8125rem;
+  unicode-bidi: isolate;
+}
+
+.sampleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.sample {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+  line-height: 1.8;
+  font-size: 0.875rem;
+  color: var(--gray9);
+  text-align: start;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.copy {
+  flex-shrink: 0;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.copy:hover {
+  background: var(--line);
+}
+
+@media (max-width: 480px) {
+  .sampleRow {
+    flex-direction: column;
+  }
+}

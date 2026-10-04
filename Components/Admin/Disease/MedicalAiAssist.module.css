@@ -1,0 +1,85 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+  border: 1px dashed var(--gray4, #d0d5dd);
+  border-radius: 0.875rem;
+  background-color: var(--white);
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.title {
+  font-size: 0.9375rem;
+  color: var(--gray13);
+}
+
+.note {
+  margin: 0;
+  color: var(--gray8);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  text-align: start;
+}
+
+.warn,
+.done {
+  margin: 0;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  text-align: start;
+}
+
+.warn {
+  background: var(--warningT1);
+  color: var(--warningS3);
+}
+
+.done {
+  background: var(--successT1);
+  color: var(--successS3);
+}
+
+.error {
+  margin: 0;
+  color: var(--error);
+  font-size: 0.875rem;
+  text-align: start;
+}
+
+.issues {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.issue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.75rem;
+  background: var(--gray1, #f9fafb);
+  font-size: 0.875rem;
+  line-height: 1.8;
+  text-align: start;
+  overflow-wrap: anywhere;
+}

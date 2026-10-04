@@ -18,7 +18,7 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 
 import AdminRecordEditor from "../UI/AdminRecordEditor";
-import { medicalPublishFields } from "../Disease/medicalPublishing";
+import { medicalAiTools, medicalPublishFields } from "../Disease/medicalPublishing";
 
 // one form for a symptom, new or existing (Components/Admin/UI/
 // AdminRecordEditor): details, medical information and links, saved together
@@ -34,6 +34,8 @@ const AdminManageSymptomPage = () => {
 
   return (
     <AdminRecordEditor<SymptomNode>
+      // AI draft of the empty fields / AI check, reviewed by a doctor
+      tools={medicalAiTools<SymptomNode>("symptom")}
       segment="symptom"
       path="/symptom"
       nodeId={nodeId}

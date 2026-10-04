@@ -12,6 +12,11 @@ import Button from "@/Components/UI/Button";
 import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
 import { Stars } from "@/Components/Visit/VisitFeedbackCard";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import {
+  ProviderReply,
+  ReviewReply,
+  VerifiedBadge,
+} from "@/Components/Comment/ReviewBits";
 
 const NS: ContentNamespace[] = ["common", "drProfile"];
 
@@ -23,6 +28,9 @@ type Review = {
   submittedAt: string;
   author: string;
   verified: boolean;
+  // the visit's date (the badge shows its month) and the doctor's reply
+  visitAt?: string | null;
+  reply?: ReviewReply;
 };
 
 type ReviewsPage = {
@@ -102,12 +110,15 @@ const DoctorReviews = ({ doctorId }: { doctorId: string }) => {
           <li key={r._id} className={classes.item}>
             <div className={classes.itemHead}>
               <span className={classes.author}>{r.author || "—"}</span>
-              {r.verified && (
-                <span className={classes.verified}>
-                  <CheckCircleIcon />
-                  {getContent("reviewsVerified")}
-                </span>
-              )}
+              {r.verified &&
+                (r.visitAt ? (
+                  <VerifiedBadge kind="visit" at={r.visitAt} />
+                ) : (
+                  <span className={classes.verified}>
+                    <CheckCircleIcon />
+                    {getContent("reviewsVerified")}
+                  </span>
+                ))}
               <span className={classes.date}>
                 {safeFormatDate(dateFmt, r.submittedAt)}
               </span>
@@ -123,6 +134,7 @@ const DoctorReviews = ({ doctorId }: { doctorId: string }) => {
             {!!r.publicMessage && (
               <p className={classes.text}>{r.publicMessage}</p>
             )}
+            <ProviderReply reply={r.reply} />
           </li>
         ))}
       </ul>

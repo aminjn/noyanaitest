@@ -3,7 +3,7 @@ import {
   IProductSpec,
 } from "@/Components/Admin/Product/AdminManageProductsPage";
 import classes from "./CartableNodePageIntro.module.css";
-import { Fragment, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import {
@@ -76,11 +76,14 @@ const Intro = ({
   category,
   original,
   className = "",
+  badges,
 }: {
   category?: string;
   name: string;
   original?: string;
   className?: string;
+  // shown under the name (e.g. «نسخه لازم است»)
+  badges?: ReactNode;
 }) => {
   return (
     <div className={`${classes.intro} ${className}`}>
@@ -104,6 +107,7 @@ const Intro = ({
         </button>
       </div>
       <h1 className={`${classes.h1} ${txlMedium}`}>{name}</h1>
+      {badges}
       {!!original && (
         <div className={`${classes.originalBox} ${tsmRegular}`}>
           <Ixon width="1rem" className={classes.originalIcon}>
@@ -125,7 +129,9 @@ const CartableNodePageIntro = ({
   totalScore,
   commentsCount,
   specs,
+  badges,
 }: {
+  badges?: ReactNode;
   images: IProductImage[];
   category?: { name?: string };
   name?: string;
@@ -147,6 +153,7 @@ const CartableNodePageIntro = ({
         category={category?.name}
         name={name || ""}
         original={original}
+        badges={badges}
         className={classes.desktopIntro}
       />
       <div className={classes.content}>
@@ -184,6 +191,7 @@ const CartableNodePageIntro = ({
             name={name || ""}
             category={category?.name}
             original={original}
+            badges={badges}
           />
           <div className={classes.stats}>
             <div className={classes.score}>

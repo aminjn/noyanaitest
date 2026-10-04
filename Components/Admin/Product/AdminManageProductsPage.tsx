@@ -79,7 +79,15 @@ export interface IProduct<
   price?: number;
   averageScore: number;
   commentCount: number;
+  // prescription-only products (2026-10, backend Models/Product.ts): the
+  // linked drug, the admin's choice (auto = follow the drug) and the
+  // effective answer the server computes
+  drug?: string | null | { _id: string; name?: string; slug?: string; prescriptionStatus?: "otc" | "rx" };
+  prescriptionRequired?: ProductPrescriptionMode;
+  requiresPrescription?: boolean;
 }
+
+export type ProductPrescriptionMode = "auto" | "rx" | "otc";
 
 export type ProductImagePopulation = Population<{ Product: ProductPopulation }>;
 

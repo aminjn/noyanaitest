@@ -1,0 +1,37 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  color: var(--gray10);
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.75rem;
+}
+
+.code {
+  direction: ltr;
+  unicode-bidi: isolate;
+  color: var(--gray13);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.link {
+  color: var(--primary7);
+  font-weight: 700;
+}
+
+.note {
+  color: var(--gray12);
+  overflow-wrap: anywhere;
+}
+
+.reason {
+  color: var(--error);
+  overflow-wrap: anywhere;
+}

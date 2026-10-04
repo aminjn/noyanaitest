@@ -13,7 +13,7 @@ import { IDrugTag } from "../DrugTag/AdminManageDrugTagsPage";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminRecordEditor from "../UI/AdminRecordEditor";
-import { medicalPublishFields } from "../Disease/medicalPublishing";
+import { medicalAiTools, medicalPublishFields } from "../Disease/medicalPublishing";
 
 // one form for a drug, new or existing (Components/Admin/UI/
 // AdminRecordEditor): details and the medical sections, saved together
@@ -25,6 +25,8 @@ const AdminManageDrugPage = () => {
 
   return (
     <AdminRecordEditor<IDrug>
+      // AI draft of the empty fields / AI check, reviewed by a doctor
+      tools={medicalAiTools<IDrug>("drug")}
       segment="drug"
       path="/drug"
       nodeId={nodeId}
@@ -99,10 +101,17 @@ const AdminManageDrugPage = () => {
                         title: ta("شناسه"),
                         section: ta("مشخصات دارو"),
                       },
+                      // otc / rx (2026-10): an rx drug makes the products
+                      // linked to it prescription-only at checkout
                       prescriptionStatus: {
-                        type: "text",
+                        type: "select",
                         title: ta("وضعیت نسخه"),
                         section: ta("مشخصات دارو"),
+                        options: {
+                          "": ta("نامشخص"),
+                          otc: ta("بدون نسخه (OTC)"),
+                          rx: ta("نسخه‌ای (Rx)"),
+                        },
                       },
                       dosage: {
                         type: "text",

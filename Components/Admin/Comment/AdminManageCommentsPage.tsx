@@ -14,7 +14,13 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
-import { useModeration } from "../Support/moderation";
+import { removeReviewReply, useModeration } from "../Support/moderation";
+import {
+  VerificationCell,
+  VerificationState,
+  verificationLabel,
+} from "../Support/reviewVerification";
+import useNotification from "@/Components/Hooks/useNotification";
 import supportClasses from "../Support/support.module.css";
 import InlineLink from "../UI/InlineLink";
 import { adminPath } from "@/Components/helpers/adminPath";
@@ -63,10 +69,31 @@ type AdminCommentRow = IComment<{
   resource: Record<never, never>;
 }> & { rejectReason?: string };
 
+// rated pages take stars from verified reviewers only; the rest is Q&A
+const ratedPaths = new Set([
+  "Clinic",
+  "Hospital",
+  "ParaClinic",
+  "Product",
+  "ProductPackage",
+  "Service",
+  "ServicePackage",
+]);
+
+const verificationOf = (node: AdminCommentRow): VerificationState =>
+  !ratedPaths.has(node.refPath as string)
+    ? "qa"
+    : node.verified
+      ? node.verifiedKind === "purchase"
+        ? "purchase"
+        : "visit"
+      : "unverified";
+
 // Moderation queue: one by one or in bulk (checkboxes); a rejection keeps
 // its reason on the comment.
 const AdminManageCommentsPage = () => {
   const { setPopup } = usePopup();
+  const pushNotification = useNotification();
   const hasAccess = useAccessLevel();
   const { data, error, mutate } = useSWR<AdminCommentRow[]>(
     `${API}/auto/comment`,
@@ -117,14 +144,27 @@ const AdminManageCommentsPage = () => {
                   ),
                   filter: "Set",
                 },
+                verification: {
+                  name: ta("احراز ویزیت / خرید"),
+                  value: (node) => verificationLabel(verificationOf(node)),
+                  component: (node) => (
+                    <VerificationCell state={verificationOf(node)} at={node.verifiedAt} />
+                  ),
+                  filter: "Set",
+                },
                 score: {
                   name: ta("امتیاز"),
-                  value: (node) => node.score,
+                  value: (node) => (verificationOf(node) === "qa" ? "" : node.score),
                   filter: "Number",
                 },
                 content: {
                   name: ta("متن نظر"),
                   value: (node) => node.content || "—",
+                  filter: "Text",
+                },
+                reply: {
+                  name: ta("پاسخ ارائه‌دهنده"),
+                  value: (node) => node.reply?.content || "—",
                   filter: "Text",
                 },
                 refPath: {
@@ -156,7 +196,7 @@ const AdminManageCommentsPage = () => {
                 },
                 actions: {
                   name: ta("عملیات"),
-                  width: 168,
+                  width: 208,
                   component: (node) => (
                     <TableActions>
                       {canModerate && node.status !== "Approved" && (
@@ -175,6 +215,23 @@ const AdminManageCommentsPage = () => {
                           onClick={() => reject([node._id])}
                         >
                           <CloseIcon />
+                        </IconButton>
+                      )}
+                      {canModerate && !!node.reply?.content && (
+                        <IconButton
+                          variant="Neutral"
+                          title={ta("حذف پاسخ ارائه‌دهنده")}
+                          onClick={async () => {
+                            try {
+                              await removeReviewReply("comments", [node._id]);
+                              pushNotification(ta("پاسخ حذف شد"), "Success");
+                              await mutate();
+                            } catch (err) {
+                              pushNotification((err as Error).message, "Error");
+                            }
+                          }}
+                        >
+                          <GarbageIcon />
                         </IconButton>
                       )}
                       <IconLink href={adminPath(`/comment/${node._id}`)} title={ta("مشاهده")}>

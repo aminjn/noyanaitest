@@ -1,0 +1,24 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-width: min(28rem, 100%);
+}
+
+.name {
+  color: var(--gray13);
+  font-size: 0.9375rem;
+}
+
+.hint {
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--gray10);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}

@@ -31,6 +31,7 @@ import {
   txsMedium,
 } from "../UI/Typography";
 import CartItemActions from "./CartItemActions";
+import RxBadge from "../Product/RxBadge";
 
 const NS: ContentNamespace[] = ["common", "cartPage"];
 
@@ -47,6 +48,8 @@ export type CartRow = {
   price: number;
   discount?: number;
   qty: number;
+  // prescription-only (2026-10): checkout asks for a prescription
+  requiresPrescription?: boolean;
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -71,6 +74,7 @@ export const buildCartRows = (cart: UseCartNode): CartRow[] => {
       price: item.price || 0,
       discount: item.discount,
       qty,
+      requiresPrescription: !!item.product?.requiresPrescription,
     });
   });
 
@@ -84,6 +88,7 @@ export const buildCartRows = (cart: UseCartNode): CartRow[] => {
       price: item.price || 0,
       discount: item.discount,
       qty,
+      requiresPrescription: !!item.requiresPrescription,
     });
   });
 
@@ -161,6 +166,7 @@ const CartRowItem = ({
             {row.subtitle}
           </span>
         )}
+        {!!row.requiresPrescription && <RxBadge className={classes.rx} />}
       </div>
       <div className={classes.priceBox}>
         {!!row.discount && (

@@ -88,6 +88,10 @@
   color: var(--gray10);
 }
 
+.pending {
+  color: var(--warningS3, var(--gray10));
+}
+
 .reviewerLink {
   color: var(--primary);
   text-decoration: underline;

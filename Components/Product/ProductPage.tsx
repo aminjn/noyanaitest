@@ -10,6 +10,7 @@ import ShareIcon from "../Icons/ShareIcon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import ProductPageIntro from "./ProductPageIntro";
 import ProductSellers from "./ProductSellers";
+import RxBadge from "./RxBadge";
 import ProductTabs, { ProductTab, WhyBox } from "./ProductTabs";
 import ProductSameAs from "./ProductSameAs";
 import ProductCart from "./ProductCart";
@@ -113,6 +114,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
       specs={data.specs}
       totalScore={data.commentCount}
       beforeTabs={<ProductSellers data={data.sellers} />}
+      badges={data.requiresPrescription ? <RxBadge size="L" /> : undefined}
       category={data.category ? { name: data.category.name || "" } : undefined}
       name={data.name}
       original={data.original}

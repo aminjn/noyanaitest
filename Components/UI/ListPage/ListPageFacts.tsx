@@ -1,5 +1,7 @@
 import classes from "./ListPageFacts.module.css";
 import { tmdDemiBold, tsmMedium, tsmRegular } from "../Typography";
+import Ixon from "../Ixon";
+import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
 
 export type ListPageFact = { title: string; value?: string | null };
 
@@ -12,29 +14,47 @@ const ListPageFacts = ({
   title,
   items,
   tone = "default",
+  note,
 }: {
   title?: string;
   items: ListPageFact[];
-  // "warning": safety information (pregnancy, overdose...)
+  // "warning": safety information (pregnancy, overdose, warning signs) -
+  // drawn as a highlighted block with a warning sign, as Drugs.com and
+  // Mayo Clinic set their warnings apart
   tone?: "default" | "warning";
+  // a fixed line under the items (e.g. "call 115 in an emergency"); the
+  // block is drawn for it even when no field is filled
+  note?: string;
 }) => {
-  const filled = items.filter(
-    (el) => typeof el.value === "string" && el.value.trim(),
+  const filled = (Array.isArray(items) ? items : []).filter(
+    (el) => typeof el?.value === "string" && el.value.trim(),
   );
-  if (!filled.length) return null;
+  if (!filled.length && !note) return null;
   return (
     <section
       className={`${classes.main} ${tone === "warning" ? classes.warning : ""}`}
     >
-      {!!title && <h2 className={`${classes.title} ${tmdDemiBold}`}>{title}</h2>}
-      <dl className={classes.list}>
-        {filled.map((el) => (
-          <div key={el.title} className={classes.item}>
-            <dt className={`${classes.term} ${tsmMedium}`}>{el.title}</dt>
-            <dd className={`${classes.value} ${tsmRegular}`}>{el.value}</dd>
-          </div>
-        ))}
-      </dl>
+      {!!title && (
+        <h2 className={`${classes.title} ${tmdDemiBold}`}>
+          {tone === "warning" && (
+            <Ixon width="1.25rem" className={classes.icon}>
+              <AlertTriangleIcon />
+            </Ixon>
+          )}
+          {title}
+        </h2>
+      )}
+      {!!filled.length && (
+        <dl className={classes.list}>
+          {filled.map((el) => (
+            <div key={el.title} className={classes.item}>
+              <dt className={`${classes.term} ${tsmMedium}`}>{el.title}</dt>
+              <dd className={`${classes.value} ${tsmRegular}`}>{el.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {!!note && <p className={`${classes.note} ${tsmMedium}`}>{note}</p>}
     </section>
   );
 };

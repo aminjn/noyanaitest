@@ -36,6 +36,12 @@ import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import {
+  ProviderReply,
+  ReviewBasisKind,
+  ReviewReply,
+  VerifiedBadge,
+} from "./ReviewBits";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "commentSection"];
 
@@ -142,6 +148,12 @@ export interface IComment<
   upvotes: T["Votes"] extends UserPopulation ? IUser<T["Votes"]>[] : string[];
   status: CommentStatus;
   createdAt: Date;
+  // verified review (2026-10): backed by a completed visit / delivered
+  // order; only these feed a rated page's score
+  verified?: boolean;
+  verifiedKind?: ReviewBasisKind;
+  verifiedAt?: string;
+  reply?: ReviewReply;
 }
 
 const filters = [5, 4, 3, "low"] as const;
@@ -157,9 +169,11 @@ const filterContentKeyDict: Record<Filter, ContentKey> = {
 const CommentItem = ({
   node,
   mutate,
+  rated,
 }: {
   node: IComment<{ Author: Record<never, never> }>;
   mutate: () => unknown;
+  rated: boolean;
 }) => {
   const { user } = useUser();
 
@@ -174,8 +188,8 @@ const CommentItem = ({
       <div className={classes.itemHeader}>
         <div className={classes.itemImage}>
           <HostedImage
-            alt={node.author.username || ""}
-            src={node.author.avatar}
+            alt={node.author?.username || ""}
+            src={node.author?.avatar}
             sizes="2.5rem"
             fill
             style={{ objectFit: "cover" }}
@@ -183,25 +197,33 @@ const CommentItem = ({
         </div>
         <div className={classes.itemContent}>
           <div className={`${classes.itemName} ${tbaseBold}`}>
-            {node.author.username || getContent("user")}
+            {node.author?.username || getContent("user")}
           </div>
           <div className={`${classes.itemDate} ${tsmRegular}`}>
             {getRelativeTime(node.createdAt)}
           </div>
         </div>
-        <div className={classes.itemScore}>
-          {scores.map((score) => (
-            <Ixon
-              width=".875rem"
-              key={score}
-              className={node.score >= score ? classes.activeScore : ""}
-            >
-              <StarIcon />
-            </Ixon>
-          ))}
-        </div>
+        {rated && !!node.score && (
+          <div className={classes.itemScore}>
+            {scores.map((score) => (
+              <Ixon
+                width=".875rem"
+                key={score}
+                className={node.score >= score ? classes.activeScore : ""}
+              >
+                <StarIcon />
+              </Ixon>
+            ))}
+          </div>
+        )}
       </div>
+      {node.verified && (
+        <div className={classes.itemBadge}>
+          <VerifiedBadge kind={node.verifiedKind} at={node.verifiedAt} />
+        </div>
+      )}
       <p className={classes.itemMessage}>{node.content}</p>
+      <ProviderReply reply={node.reply} />
       <div className={classes.itemFooter}>
         <Button
           className={classes.upVote}
@@ -210,7 +232,9 @@ const CommentItem = ({
           leadIcon={
             <Ixon
               className={
-                !!user && node.upvotes.includes(user._id) ? classes.upvoted : ""
+                !!user && Array.isArray(node.upvotes) && node.upvotes.includes(user._id)
+                  ? classes.upvoted
+                  : ""
               }
             >
               <HandThumbUpLineIcon />
@@ -223,7 +247,7 @@ const CommentItem = ({
           }}
           isLoading={isLoading}
         >
-          {`${getContent("wasUseful")} (${node.upvotes.length})`}
+          {`${getContent("wasUseful")} (${Array.isArray(node.upvotes) ? node.upvotes.length : 0})`}
         </Button>
       </div>
       <Act
@@ -258,12 +282,18 @@ const CommentSection = ({
     count: number;
     scores: Record<Score, number>;
     pagesCount: number;
+    // does this page take star ratings, and what proves a reviewer
+    rated?: boolean;
+    basis?: ReviewBasisKind | null;
   }>(
     `${API}/comment/${model}/${nodeId}?page=${page}${filter ? `&star=${filter}` : ""}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
   const getContent = useScopedLocale(LOCALE_NS);
+
+  // older API responses carry no flag: they were all rated
+  const rated = data?.rated !== false;
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -274,15 +304,23 @@ const CommentSection = ({
               <CommentIcon />
             </Ixon>
             <legend className={`${classes.title} ${tbaseMedium}`}>
-              {`${getContent("useComments")} (${getContent("xComments", [data.count.toString()])})`}
+              {`${getContent(rated ? "useComments" : ("questionsAndComments"))} (${getContent("xComments", [String(data.count || 0)])})`}
             </legend>
           </div>
-          <CommentsSummary
-            average={data.average}
-            count={data.count}
-            scores={data.scores}
+          {rated && (
+            <CommentsSummary
+              average={data.average || 0}
+              count={data.count || 0}
+              scores={data.scores || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }}
+            />
+          )}
+          <SubmitCommentForm
+            model={model}
+            nodeId={nodeId}
+            rated={rated}
+            basis={data.basis ?? null}
           />
-          <SubmitCommentForm model={model} nodeId={nodeId} />
+          {rated && (
           <div className={classes.filterBox}>
             <Button
               variant={!!filter ? "Disable" : "Primary"}
@@ -306,9 +344,15 @@ const CommentSection = ({
               </Button>
             ))}
           </div>
+          )}
           <div className={classes.comments}>
-            {data.data.map((comment) => (
-              <CommentItem key={comment._id} node={comment} mutate={mutate} />
+            {(Array.isArray(data.data) ? data.data : []).map((comment) => (
+              <CommentItem
+                key={comment._id}
+                node={comment}
+                mutate={mutate}
+                rated={rated}
+              />
             ))}
           </div>
           <Pagination

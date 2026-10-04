@@ -83,6 +83,16 @@
   color: var(--successS1, var(--gray10));
 }
 
+.badge_approved {
+  background: var(--successT1, var(--gray3));
+  color: var(--successS1, var(--gray10));
+}
+
+.badge_rejected {
+  background: var(--errorT1, var(--gray3));
+  color: var(--errorS1, var(--gray10));
+}
+
 .badge_pending {
   background: var(--warningT1, var(--gray3));
   color: var(--warningS1, var(--gray10));

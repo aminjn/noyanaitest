@@ -64,6 +64,27 @@ export const productInfoRenderer = (): FormRenderer<IProduct> => ({
   },
   image: { title: ta("تصویر"), type: "image" },
   original: { title: ta("اصالت"), type: "text" },
+  // prescription-only (2026-10): a product selling an Rx drug asks for a
+  // prescription at checkout; "auto" follows the drug's own status
+  drug: {
+    title: ta("داروی مرتبط"),
+    type: "nodes",
+    multi: false,
+    clearable: true,
+    path: `${API}/auto/drug`,
+    getOptionLabel: (node) => (node as { name?: string }).name || ta("بدون نام"),
+    getOptionValue: (node) => (node as { _id: string })._id,
+    getDefaultValue: (inp) => inp.drug,
+  },
+  prescriptionRequired: {
+    title: ta("نیاز به نسخه"),
+    type: "select",
+    options: {
+      auto: ta("مطابق دارو"),
+      rx: ta("نسخه لازم است"),
+      otc: ta("بدون نسخه"),
+    },
+  },
   sameAs: {
     title: ta("مشابهات"),
     type: "nodes",

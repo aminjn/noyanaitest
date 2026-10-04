@@ -10,11 +10,29 @@
 
 .warning {
   border-inline-start: 0.25rem solid var(--yellow);
+  background-color: var(--warningT1, var(--white));
 }
 
 .title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--gray13);
   margin: 0;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--warningS3, var(--yellow));
+}
+
+.note {
+  margin: 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--gray3);
+  color: var(--gray12);
+  line-height: 1.9;
+  text-align: start;
 }
 
 .list {

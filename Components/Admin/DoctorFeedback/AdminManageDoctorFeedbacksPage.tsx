@@ -17,7 +17,9 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import CloseIcon from "@/Components/Icons/CloseIcon";
 import { ta } from "@/Components/Admin/i18n/adminText";
-import { useModeration } from "../Support/moderation";
+import { removeReviewReply, useModeration } from "../Support/moderation";
+import { VerificationCell, verificationLabel } from "../Support/reviewVerification";
+import useNotification from "@/Components/Hooks/useNotification";
 import supportClasses from "../Support/support.module.css";
 
 type FeedbackStatus = "Pending" | "Approved" | "Rejected";
@@ -34,6 +36,7 @@ type AdminDoctorFeedback = {
   doctor?: { _id: string; firstName?: string; lastName?: string; slug?: string } | null;
   user?: { _id: string; phone?: string } | null;
   reservation?: { _id: string; date?: string } | string | null;
+  reply?: { content?: string; at?: string } | null;
 };
 
 const statusDict: Record<FeedbackStatus, string> = {
@@ -58,6 +61,7 @@ const reservationId = (node: AdminDoctorFeedback) =>
 // approves it here. One by one or in bulk; a rejection keeps its reason.
 const AdminManageDoctorFeedbacksPage = () => {
   const { setPopup } = usePopup();
+  const pushNotification = useNotification();
   const hasAccess = useAccessLevel();
   const { data, error, mutate } = useSWR<AdminDoctorFeedback[]>(
     `${API}/auto/doctorFeedback`,
@@ -135,6 +139,19 @@ const AdminManageDoctorFeedbacksPage = () => {
                     );
                   },
                 },
+                // only reviews backed by a completed visit count toward the
+                // doctor's public score (legacy ones stay here only)
+                verification: {
+                  name: ta("احراز ویزیت / خرید"),
+                  value: (node) => verificationLabel(reservationId(node) ? "visit" : "unverified"),
+                  component: (node) => (
+                    <VerificationCell
+                      state={reservationId(node) ? "visit" : "unverified"}
+                      at={typeof node.reservation === "object" ? node.reservation?.date : undefined}
+                    />
+                  ),
+                  filter: "Set",
+                },
                 overalScore: {
                   name: ta("امتیاز"),
                   value: (node) => node.overalScore,
@@ -150,6 +167,11 @@ const AdminManageDoctorFeedbacksPage = () => {
                   value: (node) => node.publicMessage || "—",
                   filter: "Text",
                 },
+                reply: {
+                  name: ta("پاسخ ارائه‌دهنده"),
+                  value: (node) => node.reply?.content || "—",
+                  filter: "Text",
+                },
                 privateMessage: {
                   name: ta("پیام خصوصی به نویان"),
                   value: (node) => node.privateMessage || "—",
@@ -162,7 +184,7 @@ const AdminManageDoctorFeedbacksPage = () => {
                 },
                 actions: {
                   name: ta("عملیات"),
-                  width: 168,
+                  width: 208,
                   component: (node) => (
                     <TableActions>
                       {canModerate && node.status !== "Approved" && (
@@ -181,6 +203,23 @@ const AdminManageDoctorFeedbacksPage = () => {
                           onClick={() => reject([node._id])}
                         >
                           <CloseIcon />
+                        </IconButton>
+                      )}
+                      {canModerate && !!node.reply?.content && (
+                        <IconButton
+                          variant="Neutral"
+                          title={ta("حذف پاسخ ارائه‌دهنده")}
+                          onClick={async () => {
+                            try {
+                              await removeReviewReply("doctorfeedback", [node._id]);
+                              pushNotification(ta("پاسخ حذف شد"), "Success");
+                              await mutate();
+                            } catch (err) {
+                              pushNotification((err as Error).message, "Error");
+                            }
+                          }}
+                        >
+                          <GarbageIcon />
                         </IconButton>
                       )}
                       {hasAccess("DoctorFeedback", "delete") && (

@@ -31,6 +31,7 @@ const AdminRecordEditor = <T extends { _id: string }>({
   actions,
   readOnly,
   newDefaults,
+  tools,
 }: {
   // the /auto segment, e.g. "disease"
   segment: string;
@@ -53,6 +54,14 @@ const AdminRecordEditor = <T extends { _id: string }>({
   // what a new record's form shows before anything is typed: the values the
   // server's schema defaults to (a switch that is on by default shows on)
   newDefaults?: Partial<T>;
+  // helpers above the form's fields (CreateForm `tools`); `node` is the
+  // saved record, undefined while it is new
+  tools?: (api: {
+    node?: T;
+    nodeId: string;
+    input: Partial<T>;
+    fill: (values: Partial<T>) => void;
+  }) => ReactNode;
 }) => {
   const isNew = nodeId === "new";
   const push = useProgress();
@@ -80,6 +89,11 @@ const AdminRecordEditor = <T extends { _id: string }>({
         },
       }}
       renderer={renderer}
+      tools={
+        tools
+          ? (api) => tools({ ...api, nodeId, node: isNew ? undefined : data })
+          : undefined
+      }
     />
   );
 

@@ -18,6 +18,9 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import FormatDate from "@/Components/UI/FormatDate";
 import { OrderStatus } from "@/Components/Dashboard/Order/orderStatus";
 import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+import { IOrderLinePrescription } from "@/Components/Order/RxPrescription";
+import { ContentKey } from "@/Components/Enums/contentKeys";
+import Badge from "@/Components/UI/Badge";
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
@@ -31,6 +34,9 @@ export interface IIncomingOrderProductItem {
   qty: number;
   price: number;
   status: OrderItemStatus;
+  // prescription-only line (2026-10): approve its prescription first
+  requiresPrescription?: boolean;
+  prescription?: IOrderLinePrescription;
 }
 
 export interface IIncomingOrderPackageItem {
@@ -38,6 +44,8 @@ export interface IIncomingOrderPackageItem {
   qty: number;
   price: number;
   status: OrderItemStatus;
+  requiresPrescription?: boolean;
+  prescription?: IOrderLinePrescription;
 }
 
 export interface IIncomingOrder extends MongoDoc {
@@ -56,6 +64,8 @@ export interface IIncomingOrder extends MongoDoc {
   };
   // this pharmacy's lines still waiting on it
   pendingLines?: number;
+  // Rx lines whose prescription waits on this pharmacy (2026-10)
+  pendingPrescriptions?: number;
   subtotal: number;
   // where to deliver (only the delivery fields of the buyer's address)
   address?: {
@@ -128,6 +138,20 @@ const PharmacyIncomingOrdersPage = () => {
                       ? getContent("ordersNeedAction", [String(node.pendingLines)])
                       : getContent("ordersAllDone"),
                   filter: "Set",
+                },
+                // prescriptions waiting on this pharmacy's check (2026-10)
+                prescriptions: {
+                  name: getContent("rxPrescription"),
+                  value: (node) => node.pendingPrescriptions || 0,
+                  component: (node) =>
+                    node.pendingPrescriptions ? (
+                      <Badge color="Warning" size="S">
+                        {getContent("rxNeedReview", [String(node.pendingPrescriptions)])}
+                      </Badge>
+                    ) : (
+                      "-"
+                    ),
+                  filter: "Number",
                 },
                 actions: {
                   name: getContent("actions"),
