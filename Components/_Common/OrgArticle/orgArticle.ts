@@ -44,5 +44,5 @@ export const articleStatusOf = (
   node.published
     ? getContent("articlePublished")
     : node.reviewStatus === "rejected"
-      ? getContent("articleRejected" as ContentKey)
+      ? getContent("articleRejected")
       : getContent("articlePendingReview");

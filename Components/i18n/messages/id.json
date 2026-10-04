@@ -3118,5 +3118,8 @@
  "bizVatBasisMoadian": "Faktur pembelian kuartal ini sudah diambil dari portal; PPN pembelian dapat dikreditkan bila dipasangkan dengan faktur Moadian yang tidak ditolak.",
  "bizVatBasisCode": "Faktur pembelian kuartal ini belum diambil dari portal; sampai saat itu, PPN dari pemasok berkode ekonomi dianggap dapat dikreditkan.",
  "bizVatPinvOpen": "${1} faktur pembelian Moadian belum dipasangkan dengan pembelian atau beban; PPN-nya belum dapat dikreditkan",
- "formUnsavedChanges": "Perubahan belum disimpan; tekan Simpan untuk menerapkannya."
+ "formUnsavedChanges": "Perubahan belum disimpan; tekan Simpan untuk menerapkannya.",
+ "medicallyReviewedByXOnY": "Ditinjau secara medis oleh dr. ${1} pada ${2}",
+ "medicallyReviewedByX": "Ditinjau secara medis oleh dr. ${1}",
+ "articleRejected": "Ditolak"
 }

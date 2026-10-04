@@ -3118,5 +3118,8 @@
  "bizVatBasisMoadian": "Die Eingangsrechnungen dieses Quartals stammen aus dem Portal; Vorsteuer ist abziehbar, wenn sie einer nicht abgelehnten Moadian-Rechnung zugeordnet ist.",
  "bizVatBasisCode": "Für dieses Quartal wurden noch keine Eingangsrechnungen aus dem Portal geholt; bis dahin gilt die Steuer von Lieferanten mit Wirtschaftscode als abziehbar.",
  "bizVatPinvOpen": "${1} Moadian-Eingangsrechnungen sind noch keinem Einkauf oder Aufwand zugeordnet; bis dahin ist ihre Steuer nicht abziehbar",
- "formUnsavedChanges": "Änderungen sind noch nicht gespeichert; zum Übernehmen auf Speichern klicken."
+ "formUnsavedChanges": "Änderungen sind noch nicht gespeichert; zum Übernehmen auf Speichern klicken.",
+ "medicallyReviewedByXOnY": "Medizinisch geprüft von Dr. ${1} am ${2}",
+ "medicallyReviewedByX": "Medizinisch geprüft von Dr. ${1}",
+ "articleRejected": "Abgelehnt"
 }

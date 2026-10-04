@@ -58,8 +58,8 @@ const ListPageWideHeader = ({
           {!!reviewer && (
             <span className={`${classes.reviewer} ${txsMedium}`}>
               {reviewedOn
-                ? getContent("medicallyReviewedByXOnY" as ContentKey, [reviewer.name, reviewedOn])
-                : getContent("medicallyReviewedByX" as ContentKey, [reviewer.name])}
+                ? getContent("medicallyReviewedByXOnY", [reviewer.name, reviewedOn])
+                : getContent("medicallyReviewedByX", [reviewer.name])}
               {!!reviewer.href && (
                 <Link href={reviewer.href} className={classes.reviewerLink}>
                   {getContent("seeProfile")}

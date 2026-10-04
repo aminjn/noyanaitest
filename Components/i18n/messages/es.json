@@ -3118,5 +3118,8 @@
  "bizVatBasisMoadian": "Las facturas de compra del trimestre vienen del portal; el IVA de una compra es deducible si está vinculada a una factura de Moadian no rechazada.",
  "bizVatBasisCode": "Aún no se han traído las facturas de compra del trimestre desde el portal; hasta entonces, el IVA de proveedores con código económico se considera deducible.",
  "bizVatPinvOpen": "${1} facturas de compra de Moadian aún no están vinculadas; su IVA no es deducible hasta entonces",
- "formUnsavedChanges": "Los cambios aún no están guardados; pulse Guardar para aplicarlos."
+ "formUnsavedChanges": "Los cambios aún no están guardados; pulse Guardar para aplicarlos.",
+ "medicallyReviewedByXOnY": "Revisado médicamente por el Dr. ${1} el ${2}",
+ "medicallyReviewedByX": "Revisado médicamente por el Dr. ${1}",
+ "articleRejected": "Rechazado"
 }
