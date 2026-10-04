@@ -2210,6 +2210,7 @@
  "کد ملی بیمار": "Hastanın kimlik numarası",
  "کد نظام": "Tabip odası kodu",
  "کد نظام پزشکی": "Tabip odası sicil kodu",
+ "کد نظام پزشکی (تأییدشده با استعلام)": "Tabip odası kodu (sorguyla doğrulandı)",
  "کد نوع خدمت": "Hizmet türü kodu",
  "کد ورود (OTP)": "Giriş kodu (OTP)",
  "کد ورود ارسال‌شده": "Gönderilen giriş kodu",

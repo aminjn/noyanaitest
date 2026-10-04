@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "Buchungen der letzten ${1} Tage",
  "dpdProfileInactive": "Ihr Profil ist noch nicht aktiv und wird auf der Website nicht angezeigt.",
  "dpdRating": "Bewertet mit ${1} aus ${2} Bewertungen",
- "dpdSetupDescription": "Schließen Sie diese Schritte ab, damit Patienten bei Ihnen buchen können.",
+ "dpdSetupDescription": "Schließen Sie diese Schritte ab: Sobald Ihre Angaben (Name, Fachrichtung, Foto), eine Praxis, eine Terminart mit Preis und Ihr Zeitplan vorliegen, geht Ihre Seite automatisch online und Patienten können buchen.",
  "dpdSetupIntroduction": "Vorstellung verfassen",
  "dpdSetupOffice": "Praxis hinzufügen",
  "dpdSetupProfile": "Profil vervollständigen (Name, Hauptfachgebiet und Foto)",

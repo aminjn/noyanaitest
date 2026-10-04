@@ -108,7 +108,8 @@ const setupSteps: Record<string, { label: ContentKey; href: string }> = {
 
 // the steps without which patients can't book at all; the rest (profile,
 // introduction, services) only make the profile stronger
-const BOOKING_STEPS = ["office", "settings", "shift"];
+// the steps that publish the page (Lib/doctorPublish.ts on the backend)
+const BOOKING_STEPS = ["profile", "office", "settings", "shift"];
 
 const QUIET_WEEK = 5;
 

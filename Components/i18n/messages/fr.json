@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "Réservations des ${1} derniers jours",
  "dpdProfileInactive": "Votre profil n'est pas encore actif et n'apparaît pas sur le site.",
  "dpdRating": "Note de ${1} sur ${2} avis",
- "dpdSetupDescription": "Terminez ces étapes pour que les patients puissent réserver avec vous.",
+ "dpdSetupDescription": "Terminez ces étapes : dès que vos informations (nom, spécialité, photo), un cabinet, un type de consultation avec un prix et votre planning sont en place, votre page est publiée automatiquement et les patients peuvent réserver.",
  "dpdSetupIntroduction": "Rédiger une présentation",
  "dpdSetupOffice": "Ajouter un cabinet",
  "dpdSetupProfile": "Compléter votre profil (nom, spécialité principale et photo)",

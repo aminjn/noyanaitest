@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "過去${1}日間の予約",
  "dpdProfileInactive": "プロフィールはまだ有効化されておらず、サイトに表示されていません。",
  "dpdRating": "${2}件のレビューで評価${1}",
- "dpdSetupDescription": "患者が予約できるよう、以下の手順を完了してください。",
+ "dpdSetupDescription": "次の手順を完了してください。情報（氏名・専門・写真）、診療所、料金付きの診療タイプ1つ、診療スケジュールがそろうと、ページは自動で公開され患者が予約できるようになります。",
  "dpdSetupIntroduction": "自己紹介を書く",
  "dpdSetupOffice": "診療所を追加",
  "dpdSetupProfile": "プロフィールを完成させる（氏名・主な専門・写真）",

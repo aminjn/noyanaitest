@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "Bookings in the last ${1} days",
  "dpdProfileInactive": "Your profile is not active yet and is not shown on the site.",
  "dpdRating": "Rated ${1} from ${2} reviews",
- "dpdSetupDescription": "Complete these steps so patients can book with you.",
+ "dpdSetupDescription": "Complete these steps: once your details (name, speciality, photo), an office, one visit type with a price and your schedule are in place, your page goes live automatically and patients can book.",
  "dpdSetupIntroduction": "Write an introduction",
  "dpdSetupOffice": "Add an office",
  "dpdSetupProfile": "Complete your profile (name, main specialty and photo)",

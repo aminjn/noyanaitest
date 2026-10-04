@@ -95,9 +95,14 @@ const DoctorProfileInfoTab = ({
           options: genderTitles(),
           section: identity,
         },
+        // verified by the council inquiry once the doctor signed up with
+        // it (node.mcCode): then it is read-only, never retyped
         medicalSystemCode: {
           type: "text",
-          title: ta("کد نظام پزشکی"),
+          title: node.mcCode
+            ? ta("کد نظام پزشکی (تأییدشده با استعلام)")
+            : ta("کد نظام پزشکی"),
+          readOnly: !!node.mcCode,
           section: identity,
         },
         slug: { type: "text", title: ta("اسلاگ"), section: identity },

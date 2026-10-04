@@ -402,7 +402,7 @@
  "dpdPeriodReservations": "Agendamentos nos últimos ${1} dias",
  "dpdProfileInactive": "Seu perfil ainda não está ativo e não aparece no site.",
  "dpdRating": "Nota ${1} com base em ${2} avaliações",
- "dpdSetupDescription": "Conclua estas etapas para que os pacientes possam agendar com você.",
+ "dpdSetupDescription": "Conclua estas etapas: assim que seus dados (nome, especialidade, foto), um consultório, um tipo de consulta com preço e sua agenda estiverem prontos, sua página é publicada automaticamente e os pacientes podem agendar.",
  "dpdSetupIntroduction": "Escreva uma apresentação",
  "dpdSetupOffice": "Adicione um consultório",
  "dpdSetupProfile": "Complete seu perfil (nome, especialidade principal e foto)",
