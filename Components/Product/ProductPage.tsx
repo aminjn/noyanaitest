@@ -8,7 +8,6 @@ import classes from "./ProductPage.module.css";
 import Ixon from "../UI/Ixon";
 import ShareIcon from "../Icons/ShareIcon";
 import VerifyIcon from "../Icons/VerifyIcon";
-import ProductPageIntro from "./ProductPageIntro";
 import ProductSellers from "./ProductSellers";
 import RxBadge from "./RxBadge";
 import ProductTabs, { ProductTab, WhyBox } from "./ProductTabs";
