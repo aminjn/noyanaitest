@@ -2347,5 +2347,19 @@
  "کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.": "Kayıtlı anahtar: ${1}. Değiştirmek için yeni anahtar girin; boş bırakılırsa aynı anahtar kalır.",
  "نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1": "Model adı örnekleri: claude-sonnet-5 (Anthropic), gpt-4o (OpenAI), qwen2.5:14b (Ollama). Adres örnekleri: Ollama http://10.0.0.5:11434, konuşmadan metne http://127.0.0.1:8000/v1",
  "تنظیم‌شده": "Ayarlandı",
- "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Sitenin tüm dış hizmetleri ve ayarlanıp ayarlanmadıkları. Her hizmetin anahtarı yalnızca kendi sekmesinde girilir ve sunucuda kalır; «Bağlantıyı test et» de oradadır."
+ "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Sitenin tüm dış hizmetleri ve ayarlanıp ayarlanmadıkları. Her hizmetin anahtarı yalnızca kendi sekmesinde girilir ve sunucuda kalır; «Bağlantıyı test et» de oradadır.",
+ "مرکز ساخته‌شده": "Oluşturulan merkez",
+ "${1} مورد بیش از ${2} روز": "${1} tanesi ${2} günden uzun süredir bekliyor",
+ "${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده": "${1} ödenmiş sipariş; ${2} toman iade düşüldü",
+ "ارزش نوبت‌های انجام‌شده (${1} روز)": "Tamamlanan randevuların tutarı (${1} gün)",
+ "مبلغی که بیماران پرداخته‌اند، با مالیات": "Hastaların ödediği tutar, vergi dahil",
+ "درآمد کمیسیون (${1} روز)": "Komisyon geliri (${1} gün)",
+ "سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها": "Randevu ve sipariş ödemelerinden Noyan'ın payı",
+ "سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.": "${1} erişim düzeyi silinsin mi? Bu role sahip personel normal kullanıcı olur ve yönetim paneline erişimini kaybeder.",
+ "بازبینی پزشکی": "Tıbbi inceleme",
+ "پزشک بازبینی‌کننده": "İnceleyen doktor",
+ "تاریخ بازبینی": "İnceleme tarihi",
+ "انتشار و بازبینی": "Yayın ve inceleme",
+ "همه‌ی مقاله‌ها": "Tüm makaleler",
+ "مقاله‌های در انتظار بررسی": "İnceleme bekleyen makaleler"
 }

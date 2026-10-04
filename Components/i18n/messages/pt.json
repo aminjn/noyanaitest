@@ -3118,5 +3118,8 @@
  "bizVatBasisMoadian": "As notas de compra do trimestre vieram do portal; o IVA de uma compra é dedutível quando vinculado a uma nota do Moadian não rejeitada.",
  "bizVatBasisCode": "Ainda não foram trazidas notas de compra do trimestre do portal; até lá, o IVA de fornecedores com código econômico conta como dedutível.",
  "bizVatPinvOpen": "${1} notas de compra do Moadian ainda não foram vinculadas; seu IVA não é dedutível até lá",
- "formUnsavedChanges": "As alterações ainda não foram salvas; clique em Salvar para aplicá-las."
+ "formUnsavedChanges": "As alterações ainda não foram salvas; clique em Salvar para aplicá-las.",
+ "medicallyReviewedByXOnY": "Revisado clinicamente pelo Dr. ${1} em ${2}",
+ "medicallyReviewedByX": "Revisado clinicamente pelo Dr. ${1}",
+ "articleRejected": "Rejeitado"
 }

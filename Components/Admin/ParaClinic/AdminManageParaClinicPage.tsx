@@ -2,6 +2,7 @@
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import { API } from "@/Components/config";
@@ -331,6 +332,7 @@ const ParaClinicRecordPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
+  const hasAccess = useAccessLevel();
   const { data, error, mutate } = useSWR<
     IParaClinic<{ User: Record<never, never> }>
   >(`${API}/auto/paraClinic/${nodeId}`, (url: string) =>
@@ -355,19 +357,23 @@ const ParaClinicRecordPage = () => {
           title={data.name || ta("بدون نام")}
           actions={[
             ...statusActions,
-            {
-              title: ta("حذف"),
-              danger: true,
-              action: () =>
-                setPopup(
-                  "DeleteParaClinic",
-                  <DeleteShitPopup
-                    modelName="paraClinic"
-                    nodeId={data._id}
-                    mutate={() => push(adminPath("/paraClinic"))}
-                  />,
-                ),
-            },
+            ...(hasAccess("ParaClinic", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeleteParaClinic",
+                        <DeleteShitPopup
+                          modelName="paraClinic"
+                          nodeId={data._id}
+                          mutate={() => push(adminPath("/paraClinic"))}
+                        />,
+                      ),
+                  },
+                ]
+              : []),
           ]}
         >
           <ProviderStatusBanner
@@ -435,26 +441,36 @@ const ParaClinicRecordPage = () => {
                   />
                 ),
               },
-              {
-                id: "Finance",
-                title: ta("مالی"),
-                content: (
-                  <CentreSections>
-                    <CentreSection title={ta("کمیسیون")}>
-                      <ParaClinicCommissionTab node={data} />
-                    </CentreSection>
-                    <CentreSection title={ta("مالیات")}>
-                      <ParaClinicTaxTab node={data} />
-                    </CentreSection>
-                  </CentreSections>
-                ),
-              },
-              {
-                id: "License",
-                title: ta("مجوز"),
-                icon: <CartIcon />,
-                content: <ParaClinicProfileLicenseTab node={data} />,
-              },
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      id: "Finance",
+                      title: ta("مالی"),
+                      content: (
+                        <CentreSections>
+                          <CentreSection title={ta("کمیسیون")}>
+                            <ParaClinicCommissionTab node={data} />
+                          </CentreSection>
+                          <CentreSection title={ta("مالیات")}>
+                            <ParaClinicTaxTab node={data} />
+                          </CentreSection>
+                        </CentreSections>
+                      ),
+                    },
+                  ]
+                : []),
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      id: "License",
+                      title: ta("مجوز"),
+                      icon: <CartIcon />,
+                      content: <ParaClinicProfileLicenseTab node={data} />,
+                    },
+                  ]
+                : []),
               {
                 id: "Meta",
                 title: ta("سئو"),

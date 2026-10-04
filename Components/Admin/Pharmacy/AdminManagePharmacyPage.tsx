@@ -2,6 +2,7 @@
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import { API } from "@/Components/config";
@@ -95,6 +96,7 @@ const PharmacyRecordPage = () => {
   const params = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
+  const hasAccess = useAccessLevel();
   const { data, error, mutate } = useSWR<IPharmacy>(
     params ? `${API}/auto/pharmacy/${params.nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data.data),
@@ -119,18 +121,22 @@ const PharmacyRecordPage = () => {
           title={data.name || ta("بدون نام")}
           actions={[
             ...statusActions,
-            {
-              title: ta("حذف"),
-              danger: true,
-              action: () =>
-                setPopup(
-                  "DeletePharmacy",
-                  <DeletePharmacyPopup
-                    node={data}
-                    mutate={() => push(adminPath("/pharmacy"))}
-                  />,
-                ),
-            },
+            ...(hasAccess("Pharmacy", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeletePharmacy",
+                        <DeletePharmacyPopup
+                          node={data}
+                          mutate={() => push(adminPath("/pharmacy"))}
+                        />,
+                      ),
+                  },
+                ]
+              : []),
           ]}
         >
           <ProviderStatusBanner
@@ -190,27 +196,37 @@ const PharmacyRecordPage = () => {
                   />
                 ),
               },
-              {
-                title: ta("مالی"),
-                id: "Finance",
-                icon: <WalletIcon />,
-                content: (
-                  <CentreSections>
-                    <CentreSection title={ta("کمیسیون")}>
-                      <PharmacyCommissionTab node={data} />
-                    </CentreSection>
-                    <CentreSection title={ta("مالیات")}>
-                      <PharmacyTaxTab node={data} />
-                    </CentreSection>
-                  </CentreSections>
-                ),
-              },
-              {
-                title: ta("مجوز"),
-                id: "License",
-                icon: <CartIcon />,
-                content: <PharmacyProfileLicenseTab node={data} />,
-              },
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      title: ta("مالی"),
+                      id: "Finance",
+                      icon: <WalletIcon />,
+                      content: (
+                        <CentreSections>
+                          <CentreSection title={ta("کمیسیون")}>
+                            <PharmacyCommissionTab node={data} />
+                          </CentreSection>
+                          <CentreSection title={ta("مالیات")}>
+                            <PharmacyTaxTab node={data} />
+                          </CentreSection>
+                        </CentreSections>
+                      ),
+                    },
+                  ]
+                : []),
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      title: ta("مجوز"),
+                      id: "License",
+                      icon: <CartIcon />,
+                      content: <PharmacyProfileLicenseTab node={data} />,
+                    },
+                  ]
+                : []),
               {
                 title: ta("سئو"),
                 id: "Meta",

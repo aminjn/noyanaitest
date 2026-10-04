@@ -30,6 +30,7 @@ const AdminRecordEditor = <T extends { _id: string }>({
   extraTabs,
   actions,
   readOnly,
+  newDefaults,
 }: {
   // the /auto segment, e.g. "disease"
   segment: string;
@@ -49,6 +50,9 @@ const AdminRecordEditor = <T extends { _id: string }>({
   ) => { title: string; action: () => unknown; danger?: boolean }[];
   // an admin whose role may read but not update this model
   readOnly?: boolean;
+  // what a new record's form shows before anything is typed: the values the
+  // server's schema defaults to (a switch that is on by default shows on)
+  newDefaults?: Partial<T>;
 }) => {
   const isNew = nodeId === "new";
   const push = useProgress();
@@ -62,7 +66,7 @@ const AdminRecordEditor = <T extends { _id: string }>({
       key={isNew ? "new" : data?._id}
       layout="tabs"
       readOnly={readOnly}
-      defaultValue={isNew ? undefined : data}
+      defaultValue={isNew ? (newDefaults as T | undefined) : data}
       hookProps={{
         path: isNew
           ? `${API}/auto/${segment}`

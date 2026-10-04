@@ -3118,5 +3118,8 @@
  "bizVatBasisMoadian": "この四半期の仕入請求書はポータルから取り込み済みです。却下されていないMoadian請求書と紐づいた仕入の税額が控除できます。",
  "bizVatBasisCode": "この四半期の仕入請求書はまだポータルから取り込まれていません。それまでは経済コードのある仕入先の税額を控除可能とみなします。",
  "bizVatPinvOpen": "${1}件のMoadian仕入請求書がまだ仕入か費用に紐づいていません。それまで税額は控除できません",
- "formUnsavedChanges": "変更はまだ保存されていません。反映するには「保存」を押してください。"
+ "formUnsavedChanges": "変更はまだ保存されていません。反映するには「保存」を押してください。",
+ "medicallyReviewedByXOnY": "${1} 医師による医学的レビュー（${2}）",
+ "medicallyReviewedByX": "${1} 医師による医学的レビュー",
+ "articleRejected": "却下"
 }

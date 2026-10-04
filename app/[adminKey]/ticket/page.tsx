@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import AdminManageTicketsPage from "@/Components/Admin/Support/AdminManageTicketsPage";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
@@ -9,7 +10,10 @@ const AdminManageTickets = async () => {
   const textContent = await getScopedTextContent(LOCALE_NS);
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
-      <AdminManageTicketsPage />
+      {/* the list reads ?user= (useSearchParams) */}
+      <Suspense>
+        <AdminManageTicketsPage />
+      </Suspense>
     </LocaleScopeProvider>
   );
 };

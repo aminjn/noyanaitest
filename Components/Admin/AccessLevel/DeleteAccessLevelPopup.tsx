@@ -8,6 +8,8 @@ import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
+// Deleting a role demotes every staff member on it to a plain user
+// (backend Models/AccessLevel.ts): the confirmation says so.
 const DeleteAccessLevelPopup = ({
   node,
   mutate,
@@ -20,7 +22,7 @@ const DeleteAccessLevelPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={ta("آیا از حذف سطح دسترسی ${1} مطمئنید؟", [node.name || ta("بدون نام")])}
+        message={ta("سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.", [node.name || ta("بدون نام")])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />

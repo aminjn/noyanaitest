@@ -2347,5 +2347,19 @@
  "کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.": "Kunci tersimpan: ${1}. Untuk mengganti, masukkan kunci baru; jika kosong, kunci yang sama tetap dipakai.",
  "نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1": "Contoh nama model: claude-sonnet-5 (Anthropic), gpt-4o (OpenAI), qwen2.5:14b (Ollama). Contoh alamat: Ollama http://10.0.0.5:11434, ucapan ke teks http://127.0.0.1:8000/v1",
  "تنظیم‌شده": "Sudah diatur",
- "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Semua layanan eksternal situs dan apakah sudah diatur. Kunci setiap layanan hanya dimasukkan di tabnya sendiri dan tetap di server; «Uji koneksi» juga ada di sana."
+ "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Semua layanan eksternal situs dan apakah sudah diatur. Kunci setiap layanan hanya dimasukkan di tabnya sendiri dan tetap di server; «Uji koneksi» juga ada di sana.",
+ "مرکز ساخته‌شده": "Pusat yang dibuat",
+ "${1} مورد بیش از ${2} روز": "${1} menunggu lebih dari ${2} hari",
+ "${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده": "${1} pesanan dibayar; ${2} toman pengembalian dikurangkan",
+ "ارزش نوبت‌های انجام‌شده (${1} روز)": "Nilai janji temu yang selesai (${1} hari)",
+ "مبلغی که بیماران پرداخته‌اند، با مالیات": "Yang dibayar pasien, termasuk pajak",
+ "درآمد کمیسیون (${1} روز)": "Pendapatan komisi (${1} hari)",
+ "سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها": "Bagian Noyan dari pembayaran janji temu dan pesanan",
+ "سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.": "Hapus tingkat akses ${1}? Staf dengan peran ini menjadi pengguna biasa dan kehilangan akses ke panel admin.",
+ "بازبینی پزشکی": "Tinjauan medis",
+ "پزشک بازبینی‌کننده": "Dokter peninjau",
+ "تاریخ بازبینی": "Tanggal tinjauan",
+ "انتشار و بازبینی": "Publikasi dan tinjauan",
+ "همه‌ی مقاله‌ها": "Semua artikel",
+ "مقاله‌های در انتظار بررسی": "Artikel menunggu tinjauan"
 }

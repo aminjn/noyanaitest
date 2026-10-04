@@ -27,6 +27,7 @@ import {
 import OrderEditor from "../UI/OrderEditor";
 import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
 
 export type SpecialityPopulation = Population<{
   // kept only so existing type arguments still compile; specialities have
@@ -97,7 +98,16 @@ const AdminManageSpecialitiesPage = () => {
                 name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.active}`],
                 filter: "Set",
-                component: (node) => <BooleanToIcon value={node.active} />,
+                component: (node) => (
+                  // one click switches it on or off
+                  <PublishToggle
+                    modelName="speciality"
+                    field="active"
+                    _id={node._id}
+                    value={!!node.active}
+                    mutate={mutate}
+                  />
+                ),
               },
               order: {
                 name: ta("رتبه"),

@@ -100,6 +100,9 @@ export const transactionKindDict: Record<string, string> = {
   get insuranceLicense() {
   return ta("اشتراک بیمه");
 },
+  get smsCampaign() {
+    return ta("کمپین پیامکی");
+  },
   get checkout() {
   return ta("صورتحساب قدیمی");
 },
@@ -249,3 +252,13 @@ export const adminNoteActionDict: Record<string, string> = {
     return ta("ثبت تحویل قلم");
   },
 };
+
+// a ledger row's record in the admin panel, when it has a page of its own
+export const transactionRefHref = (kind: string, ref?: string | null) =>
+  !ref
+    ? null
+    : kind === "reservation"
+      ? `/reservation/${ref}`
+      : kind === "order"
+        ? `/finance/orders/${ref}`
+        : null;

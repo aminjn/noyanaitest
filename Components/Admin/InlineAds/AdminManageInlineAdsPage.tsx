@@ -21,6 +21,7 @@ import DeleteInlineAdPopup from "./DeleteInlineAdPopup";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import useProgress from "@/Components/Hooks/useProgress";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
 
 export interface IInlineAdvertisement extends MongoDoc {
   name?: string;
@@ -88,7 +89,16 @@ const AdminManageInlineAdsPage = () => {
               active: {
                 name: ta("وضعیت"),
                 value: (node) => booleanToValue[`${node.active}`],
-                component: (node) => <BooleanToIcon value={node.active} />,
+                component: (node) => (
+                  // one click switches it on or off
+                  <PublishToggle
+                    modelName="inlinead"
+                    field="active"
+                    _id={node._id}
+                    value={!!node.active}
+                    mutate={mutate}
+                  />
+                ),
                 filter: "Set",
               },
               expiration: {

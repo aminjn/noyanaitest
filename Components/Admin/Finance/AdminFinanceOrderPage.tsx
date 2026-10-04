@@ -9,6 +9,8 @@ import { currencize } from "@/Components/helpers/currencize";
 import { adminPath } from "@/Components/helpers/adminPath";
 import usePopup from "@/Components/Hooks/usePopup";
 import useNotification from "@/Components/Hooks/useNotification";
+import useUser from "@/Components/Hooks/useUser";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import PopupCard from "@/Components/UI/PopupCard";
 import AreaInput from "@/Components/UI/AreaInput";
 import Button from "@/Components/UI/Button";
@@ -211,6 +213,11 @@ const AdminFinanceOrderPage = () => {
   const nodeId = params?.nodeId;
   const { setPopup } = usePopup();
   const pushNotification = useNotification();
+  const { user: viewer } = useUser();
+  const hasAccess = useAccessLevel();
+  // the actions need Order "update" (adminFinanceRouter): staff who may
+  // only read orders don't get buttons that would answer 403
+  const canAct = viewer?.role === "admin" || hasAccess("Order", "update");
   const [busyShipment, setBusyShipment] = useState("");
   const { data, error, mutate } = useSWR<IOrderDetail | null>(
     nodeId ? `${API}/admin/finance/orders/${nodeId}` : null,
@@ -317,7 +324,7 @@ const AdminFinanceOrderPage = () => {
         <WithTitle
           title={ta("سفارش ${1}", [data._id.slice(-8)])}
           actions={
-            data.canCancel
+            data.canCancel && canAct
               ? [
                   {
                     title: ta("لغو سفارش"),
@@ -432,7 +439,7 @@ const AdminFinanceOrderPage = () => {
                     name: ta("عملیات"),
                     width: 210,
                     component: (line) =>
-                      paid && line.status === "pending" ? (
+                      canAct && paid && line.status === "pending" ? (
                         <TableActions>
                           <Button size="S" variant="Neutral" onClick={() => lineAction(line, "fulfilled")}>
                             {ta("ثبت تحویل")}
@@ -497,14 +504,16 @@ const AdminFinanceOrderPage = () => {
                           <div className={classes.shipmentActions}>
                             {s.ride ? (
                               <>
-                                <Button
-                                  size="S"
-                                  variant="Neutral"
-                                  isLoading={busyShipment === pharmacyId}
-                                  onClick={() => delivery(pharmacyId, true)}
-                                >
-                                  {ta("به‌روزرسانی وضعیت پیک")}
-                                </Button>
+                                {canAct && (
+                                  <Button
+                                    size="S"
+                                    variant="Neutral"
+                                    isLoading={busyShipment === pharmacyId}
+                                    onClick={() => delivery(pharmacyId, true)}
+                                  >
+                                    {ta("به‌روزرسانی وضعیت پیک")}
+                                  </Button>
+                                )}
                                 {s.ride.shareUrl && (
                                   <a
                                     className={classes.link}
@@ -517,7 +526,7 @@ const AdminFinanceOrderPage = () => {
                                 )}
                               </>
                             ) : (
-                              paid && (
+                              paid && canAct && (
                                 <Button
                                   size="S"
                                   isLoading={busyShipment === pharmacyId}

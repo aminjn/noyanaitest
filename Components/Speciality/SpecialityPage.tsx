@@ -18,7 +18,8 @@ import DoctorCardAlt from "../UI/DoctorCardAlt";
 import BigAd from "../UI/ListPage/BigAd";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
-import { t2xlRegular } from "../UI/Typography";
+import { t2xlRegular, tmdDemiBold, tsmMedium } from "../UI/Typography";
+import Link from "@/Components/i18n/Link";
 
 const NS: ContentNamespace[] = ["common", "specialityPage"];
 
@@ -39,6 +40,8 @@ export type SpecialityPageProps = {
   doctors: SpecialityDoctorProfileRow[];
   pagesCount: number;
   count: number;
+  // the diseases linked to this speciality (published ones)
+  diseases?: { _id: string; name?: string; slug?: string }[];
 };
 
 const SpecialityPage = ({
@@ -46,6 +49,7 @@ const SpecialityPage = ({
   doctors,
   pagesCount,
   count,
+  diseases,
 }: SpecialityPageProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -123,6 +127,23 @@ const SpecialityPage = ({
           resource={data._id}
         />
         <RenderRtf value={data.description} />
+        {!!diseases?.length && (
+          <section className={classes.diseases}>
+            <h2 className={tmdDemiBold}>{getContent("relatedDiseases")}</h2>
+            <ul className={classes.diseaseList}>
+              {diseases.map((el) => (
+                <li key={el._id}>
+                  <Link
+                    href={`/disease/${el.slug || el._id}`}
+                    className={`${classes.diseaseLink} ${tsmMedium}`}
+                  >
+                    {el.name || el._id}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
       <SmallAd
         position="speciality2"

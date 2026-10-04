@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import {
   ITicket,
@@ -65,7 +66,10 @@ const views: { view: View; title: () => string }[] = [
 ];
 
 const AdminManageTicketsPage = () => {
-  const [view, setView] = useState<View>("open");
+  // ?user=<id>: one user's tickets (the user page's «تیکت‌های کاربر» link)
+  // - every status, so their closed tickets show too
+  const userFilter = useSearchParams()?.get("user") || "";
+  const [view, setView] = useState<View>(userFilter ? "all" : "open");
   const [priority, setPriority] = useState<"" | TicketPriority>("");
   const [assignee, setAssignee] = useState("");
   const [search, setSearch] = useState("");
@@ -94,6 +98,7 @@ const AdminManageTicketsPage = () => {
   else if (assignee) params.set("assignee", assignee);
   if (priority) params.set("priority", priority);
   if (query) params.set("q", query);
+  if (/^[0-9a-f]{24}$/i.test(userFilter)) params.set("user", userFilter);
 
   const { data, error } = useSWR<TicketsResponse>(
     `${API}/admin/support/tickets?${params}`,
@@ -192,6 +197,9 @@ const AdminManageTicketsPage = () => {
                     </option>
                   ))}
                 </select>
+              )}
+              {!!userFilter && (
+                <InlineLink href={adminPath("/ticket")}>{ta("حذف فیلترهای پیوند")}</InlineLink>
               )}
             </div>
             <Table

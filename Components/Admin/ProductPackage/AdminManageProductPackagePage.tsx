@@ -61,7 +61,27 @@ const productPackageInfoRenderer = (
     getOptionValue: (node) => (node as IProduct)._id,
     getDefaultValue: (inp) => inp.products,
     multi: true,
-    path: `${API}/auto/product`,
+    // only what the owner pharmacy sells (the server refuses anything else)
+    path: (values) => {
+      const owner = values.owner as unknown;
+      const ownerId =
+        owner && typeof owner === "object"
+          ? String((owner as { _id?: string })._id || "")
+          : String(owner || "");
+      // no owner picked yet: an id that matches nothing (an empty value
+      // is a cast error on the server)
+      return `${API}/auto/productSeller?seller=${ownerId || "0".repeat(24)}`;
+    },
+    dataParser: (res) => {
+      const rows = (res as { data?: { data?: unknown } })?.data?.data;
+      const products = new Map<string, unknown>();
+      for (const row of Array.isArray(rows) ? rows : []) {
+        const product = (row as { product?: { _id?: string } }).product;
+        if (product && typeof product === "object" && product._id)
+          products.set(product._id, product);
+      }
+      return Array.from(products.values());
+    },
   },
   description: { type: "rtf", title: ta("توضیحات") },
   summary: { type: "text", title: ta("خلاصه") },

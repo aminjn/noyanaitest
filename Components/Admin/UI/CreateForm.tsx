@@ -145,6 +145,8 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
     title: string;
     readOnly?: boolean;
     required?: boolean;
+    // a text field holding a URL, a key or a code: left to right, Latin digits
+    ltr?: boolean;
     // groups the field under its own heading / tab instead of the automatic
     // one (see sectionOf)
     section?: string;
@@ -308,6 +310,7 @@ const CreateForm = <TInput, TResult = unknown>({
             content = (
               <Input
                 {...commons}
+                inputClass={segment.ltr ? classes.ltrInput : undefined}
                 onChange={(e) => {
                   if (segment.readOnly) return;
                   setInput((prev) => ({ ...prev, [key]: e.target.value }));

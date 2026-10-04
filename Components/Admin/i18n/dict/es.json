@@ -2347,5 +2347,19 @@
  "کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.": "Clave guardada: ${1}. Para cambiarla, introduzca una nueva; si queda vacío, se mantiene la misma.",
  "نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1": "Ejemplos de modelo: claude-sonnet-5 (Anthropic), gpt-4o (OpenAI), qwen2.5:14b (Ollama). Ejemplos de dirección: Ollama http://10.0.0.5:11434, voz a texto http://127.0.0.1:8000/v1",
  "تنظیم‌شده": "Configurado",
- "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Todos los servicios externos del sitio y si están configurados. La clave de cada servicio se introduce solo en su pestaña y queda en el servidor; «Probar conexión» también está allí."
+ "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Todos los servicios externos del sitio y si están configurados. La clave de cada servicio se introduce solo en su pestaña y queda en el servidor; «Probar conexión» también está allí.",
+ "مرکز ساخته‌شده": "Centro creado",
+ "${1} مورد بیش از ${2} روز": "${1} esperando más de ${2} días",
+ "${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده": "${1} pedidos pagados; descontados ${2} tomanes de reembolsos",
+ "ارزش نوبت‌های انجام‌شده (${1} روز)": "Valor de las citas realizadas (${1} días)",
+ "مبلغی که بیماران پرداخته‌اند، با مالیات": "Lo que pagaron los pacientes, impuestos incluidos",
+ "درآمد کمیسیون (${1} روز)": "Ingresos por comisión (${1} días)",
+ "سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها": "La parte de Noyan en las liquidaciones de citas y pedidos",
+ "سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.": "¿Eliminar el nivel de acceso ${1}? El personal con este rol pasará a ser usuario normal y perderá el acceso al panel de administración.",
+ "بازبینی پزشکی": "Revisión médica",
+ "پزشک بازبینی‌کننده": "Médico revisor",
+ "تاریخ بازبینی": "Fecha de revisión",
+ "انتشار و بازبینی": "Publicación y revisión",
+ "همه‌ی مقاله‌ها": "Todos los artículos",
+ "مقاله‌های در انتظار بررسی": "Artículos pendientes de revisión"
 }

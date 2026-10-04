@@ -16,7 +16,12 @@ import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import HandleLoading from "../UI/HandleLoading";
 import { FinancePager, useFinanceList } from "../Finance/FinanceListControls";
-import { orderStatusDict, paymentMethodDict, transactionKindDict } from "../Finance/adminFinance";
+import {
+  orderStatusDict,
+  paymentMethodDict,
+  transactionKindDict,
+  transactionRefHref,
+} from "../Finance/adminFinance";
 import AdminManageReservationsPage from "../Reservation/AdminManageReservationsPage";
 import { formatDateTime, newRequestKey, personLabel } from "../Reservation/reservationAdmin";
 import classes from "./AdminManageUserPage.module.css";
@@ -64,10 +69,8 @@ const signed = (amount?: number) =>
 
 // a ledger row's record in the admin panel, when it has one
 const refHref = (row: LedgerRow) => {
-  if (!row.ref) return null;
-  if (row.kind === "reservation") return adminPath(`/reservation/${row.ref}`);
-  if (row.kind === "order") return adminPath(`/finance/orders/${row.ref}`);
-  return null;
+  const href = transactionRefHref(row.kind, row.ref);
+  return href ? adminPath(href) : null;
 };
 
 export const AdjustWalletPopup = ({
@@ -187,7 +190,16 @@ const UserOrders = ({ userId }: { userId: string }) => {
   );
 };
 
-const UserWallet = ({ userId, onChanged }: { userId: string; onChanged: () => unknown }) => {
+const UserWallet = ({
+  userId,
+  canAdjust,
+  onChanged,
+}: {
+  userId: string;
+  // a manual correction creates or removes money: full admins only
+  canAdjust: boolean;
+  onChanged: () => unknown;
+}) => {
   const [page, setPage] = useState(1);
   const { setPopup } = usePopup();
   const { data, error, isValidating, mutate } = useSWR<Ledger>(
@@ -216,6 +228,7 @@ const UserWallet = ({ userId, onChanged }: { userId: string; onChanged: () => un
               {data.pending > 0 &&
                 ` · ${ta("در دوره‌ی تسویه: ${1} تومان", [currencize(data.pending)])}`}
             </strong>
+            {canAdjust && (
             <Button
               size="M"
               mode="Outline"
@@ -235,6 +248,7 @@ const UserWallet = ({ userId, onChanged }: { userId: string; onChanged: () => un
             >
               {ta("اصلاح موجودی کیف پول")}
             </Button>
+            )}
           </div>
           <Table
             name="AdminUserWallet"
@@ -288,16 +302,21 @@ const UserWallet = ({ userId, onChanged }: { userId: string; onChanged: () => un
 const UserActivity = ({
   userId,
   canSeeReservations,
-  canSeeMoney,
+  canSeeOrders,
+  canSeeWallet,
+  canAdjustWallet,
   onChanged,
 }: {
   userId: string;
+  // each tab follows the access level its backend route checks
+  // (Reservation / Order / Finance readAll); full admins see all
   canSeeReservations: boolean;
-  // orders and the wallet are money: full admins only
-  canSeeMoney: boolean;
+  canSeeOrders: boolean;
+  canSeeWallet: boolean;
+  canAdjustWallet: boolean;
   onChanged: () => unknown;
 }) => {
-  if (!canSeeReservations && !canSeeMoney) return null;
+  if (!canSeeReservations && !canSeeOrders && !canSeeWallet) return null;
   return (
     <section className={classes.card}>
       <h2 className={classes.cardTitle}>{ta("فعالیت کاربر")}</h2>
@@ -316,14 +335,16 @@ const UserActivity = ({
           {
             id: "orders",
             title: ta("سفارش‌ها"),
-            exclude: !canSeeMoney,
+            exclude: !canSeeOrders,
             content: <UserOrders userId={userId} />,
           },
           {
             id: "wallet",
             title: ta("کیف پول"),
-            exclude: !canSeeMoney,
-            content: <UserWallet userId={userId} onChanged={onChanged} />,
+            exclude: !canSeeWallet,
+            content: (
+              <UserWallet userId={userId} canAdjust={canAdjustWallet} onChanged={onChanged} />
+            ),
           },
         ]}
       />

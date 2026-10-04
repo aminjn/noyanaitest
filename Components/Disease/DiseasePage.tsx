@@ -5,7 +5,6 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./DiseasePage.module.css";
 import { imagePath } from "../helpers/imagepath";
-import { TitleTextSection } from "../Symptom/SymptomPage";
 import SymptomCard from "../Symptom/SymptomCard";
 import { Fragment, ReactNode } from "react";
 import { ContentKey } from "../Enums/contentKeys";
@@ -14,7 +13,10 @@ import DrugCard from "../Drug/DrugCard";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
-import ListPageWideHeader from "../UI/ListPage/ListPageWideHeader";
+import ListPageWideHeader, {
+  medicalReviewerOf,
+} from "../UI/ListPage/ListPageWideHeader";
+import ListPageFacts from "../UI/ListPage/ListPageFacts";
 import FlaskIcon from "../Icons/FlaskIcon";
 import BigAd from "../UI/ListPage/BigAd";
 import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
@@ -75,6 +77,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
           value: data.category?.name || "",
         }}
         summary={data.summary}
+        reviewer={medicalReviewerOf(data)}
         primaryAction={{
           title: getContent("bookASessionFromADoctor"),
           // doctors who treat this disease, on the booking search
@@ -105,28 +108,28 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
             />
             <ListPageSideExpandable
               title={getContent("relatedSpecialities")}
-              items={data.specialities.map((el) => ({
+              items={(data.specialities ?? []).map((el) => ({
                 title: el.name || "",
                 target: `/speciality/${el.slug || el._id}`,
               }))}
             />
             <ListPageSideExpandable
               title={getContent("similarDiseases")}
-              items={data.sameAs.map((el) => ({
+              items={(data.sameAs ?? []).map((el) => ({
                 title: el.name || "",
                 target: `/disease/${el.slug || el._id}`,
               }))}
             />
             <ListPageSideExpandable
               title={getContent("relatedSymptoms")}
-              items={data.symptoms.map((el) => ({
+              items={(data.symptoms ?? []).map((el) => ({
                 title: el.name || el._id,
                 target: `/symptom/${el.slug || el._id}`,
               }))}
             />
             <ListPageSideExpandable
               title={getContent("relatedDrugs")}
-              items={data.drugs.map((el) => ({
+              items={(data.drugs ?? []).map((el) => ({
                 title: el.name || "",
                 target: `/drug/${el.slug || el._id}`,
               }))}
@@ -139,9 +142,20 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
             title={getContent("diseaseAiSummaryTitle")}
             content={data.aiSummary}
           />
-          <div className={classes.box}>
-            <RenderRtf value={data.content} />
-          </div>
+          <ListPageFacts
+            items={[
+              { title: getContent("description"), value: data.description },
+              { title: getContent("pathophysiology"), value: data.pathophysiology },
+              { title: getContent("naturalProgeression"), value: data.naturalProgression },
+              { title: getContent("possibleComplications"), value: data.possibleComplication },
+              { title: getContent("expectedPrognosis"), value: data.expectedPrognosis },
+            ]}
+          />
+          {!!data.content && (
+            <div className={classes.box}>
+              <RenderRtf value={data.content} />
+            </div>
+          )}
         </Fragment>
       </ListPageWithSide>
       <SmallAd position="disease2" resourceModel="Disease" resource={data._id} />

@@ -2,6 +2,7 @@
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import EntityOverview from "../UI/EntityOverview";
 import useUser from "@/Components/Hooks/useUser";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import DashboardIcon from "@/Components/Icons/DashboardIcon";
 
 import useSWR from "swr";
@@ -60,6 +61,7 @@ const ClinicRecordPage = () => {
   const params = useParams<{ nodeId: string }>();
   // Entity 360 tab (its endpoint is full-admin only)
   const isAdmin = useUser(true).user?.role === "admin";
+  const hasAccess = useAccessLevel();
 
   const { data, error, mutate } = useSWR<IClinic>(
     params ? `${API}/auto/clinic/${params.nodeId}` : null,
@@ -87,19 +89,22 @@ const ClinicRecordPage = () => {
           title={data.name || ta("بدون نام")}
           actions={[
             ...statusActions,
-            {
-              title: ta("حذف"),
-              danger: true,
-              //TODO: server-side clean up of the clinic's departments and doctor relations
-              action: () =>
-                setPopup(
-                  "DeleteClinic",
-                  <DeleteClinicPopup
-                    node={data}
-                    mutate={() => push(adminPath("/clinic"))}
-                  />,
-                ),
-            },
+            ...(hasAccess("Clinic", "delete")
+              ? [
+                  {
+                    title: ta("حذف"),
+                    danger: true,
+                    action: () =>
+                      setPopup(
+                        "DeleteClinic",
+                        <DeleteClinicPopup
+                          node={data}
+                          mutate={() => push(adminPath("/clinic"))}
+                        />,
+                      ),
+                  },
+                ]
+              : []),
           ]}
         >
           <ProviderStatusBanner
@@ -147,19 +152,29 @@ const ClinicRecordPage = () => {
                   </CentreSections>
                 ),
               },
-              {
-                // the clinic's rate for in-person visits in its offices
-                title: ta("مالی"),
-                id: "Tax",
-                icon: <InfoIcon />,
-                content: <ClinicTaxTab node={data} />,
-              },
-              {
-                title: ta("مجوز"),
-                id: "License",
-                icon: <CartIcon />,
-                content: <ClinicProfileLicenseTab node={data} />,
-              },
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      // the clinic's rate for in-person visits in its offices
+                      title: ta("مالی"),
+                      id: "Tax",
+                      icon: <InfoIcon />,
+                      content: <ClinicTaxTab node={data} />,
+                    },
+                  ]
+                : []),
+              // admin-only endpoints (no access level): staff would get an error
+              ...(isAdmin
+                ? [
+                    {
+                      title: ta("مجوز"),
+                      id: "License",
+                      icon: <CartIcon />,
+                      content: <ClinicProfileLicenseTab node={data} />,
+                    },
+                  ]
+                : []),
               {
                 title: ta("سئو"),
                 icon: <InfoIcon />,

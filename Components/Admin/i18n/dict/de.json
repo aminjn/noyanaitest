@@ -2347,5 +2347,19 @@
  "کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.": "Gespeicherter Schlüssel: ${1}. Zum Ändern einen neuen eingeben; leer gelassen bleibt derselbe Schlüssel.",
  "نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1": "Beispiele für Modellnamen: claude-sonnet-5 (Anthropic), gpt-4o (OpenAI), qwen2.5:14b (Ollama). Adressbeispiele: Ollama http://10.0.0.5:11434, Sprache-zu-Text http://127.0.0.1:8000/v1",
  "تنظیم‌شده": "Eingerichtet",
- "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Alle externen Dienste der Website und ob sie eingerichtet sind. Der Schlüssel jedes Dienstes wird nur in seinem Tab eingegeben und bleibt auf dem Server; dort ist auch «Verbindung testen»."
+ "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Alle externen Dienste der Website und ob sie eingerichtet sind. Der Schlüssel jedes Dienstes wird nur in seinem Tab eingegeben und bleibt auf dem Server; dort ist auch «Verbindung testen».",
+ "مرکز ساخته‌شده": "Erstelltes Zentrum",
+ "${1} مورد بیش از ${2} روز": "${1} warten länger als ${2} Tage",
+ "${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده": "${1} bezahlte Bestellungen; ${2} Toman Erstattungen abgezogen",
+ "ارزش نوبت‌های انجام‌شده (${1} روز)": "Wert der durchgeführten Termine (${1} Tage)",
+ "مبلغی که بیماران پرداخته‌اند، با مالیات": "Von Patienten bezahlt, inklusive Steuer",
+ "درآمد کمیسیون (${1} روز)": "Provisionseinnahmen (${1} Tage)",
+ "سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها": "Noyans Anteil an den Auszahlungen für Termine und Bestellungen",
+ "سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.": "Zugriffsstufe ${1} löschen? Mitarbeitende mit dieser Rolle werden zu normalen Nutzern und verlieren den Zugang zum Admin-Bereich.",
+ "بازبینی پزشکی": "Medizinische Prüfung",
+ "پزشک بازبینی‌کننده": "Prüfender Arzt",
+ "تاریخ بازبینی": "Prüfdatum",
+ "انتشار و بازبینی": "Veröffentlichung und Prüfung",
+ "همه‌ی مقاله‌ها": "Alle Artikel",
+ "مقاله‌های در انتظار بررسی": "Artikel, die auf Prüfung warten"
 }

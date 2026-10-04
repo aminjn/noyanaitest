@@ -22,9 +22,19 @@ type InboxItem = {
   kind: string;
   title: string;
   subtitle?: string;
+  // money rows (withdrawals, payments): toman; review rows: score of 5
+  amount?: number;
+  score?: number;
   date?: string;
   href: string;
 };
+
+// the row's headline in the panel's language
+const itemTitle = (item: InboxItem) =>
+  typeof item.amount === "number"
+    ? ta("${1} تومان", [num.format(item.amount)])
+    : item.title ||
+      (typeof item.score === "number" ? ta("${1} از ۵", [num.format(item.score)]) : "—");
 type Inbox = { kinds: InboxKind[]; items: InboxItem[] };
 
 // Waiting longer than this is flagged.
@@ -98,7 +108,7 @@ const AdminInboxPage = () => {
                 {total === 0
                   ? ta("همه‌ی درخواست‌ها رسیدگی شده‌اند")
                   : ta("${1} مورد در انتظار رسیدگی${2}", [num.format(total), staleCount
-                        ? ` · ${num.format(staleCount)} مورد بیش از ${num.format(STALE_DAYS)} روز`
+                        ? ` · ${ta("${1} مورد بیش از ${2} روز", [num.format(staleCount), num.format(STALE_DAYS)])}`
                         : ""])}
               </span>
             </div>
@@ -166,7 +176,7 @@ const AdminInboxPage = () => {
                         </span>
                         <span className={classes.text}>
                           <span className={classes.title}>
-                            {item.title || "—"}
+                            {itemTitle(item)}
                           </span>
                           {item.subtitle && (
                             <span className={classes.subtitle}>

@@ -189,18 +189,18 @@ const AdminAiSettingsTab = () => {
                 },
                 aiBaseUrl: {
                   title: ta("آدرس سرویس (Base URL)"),
-                  type: "text",
+                  type: "text", ltr: true,
                   section: ta("اتصال"),
                 },
                 ollamaHost: {
                   title: ta("آدرس سرور Ollama"),
-                  type: "text",
+                  type: "text", ltr: true,
                   section: ta("اتصال"),
                 },
                 translationAiEnabled: { title: ta("ترجمه‌ی خودکار محتوا"), type: "bool", section: ta("ترجمه") },
                 translationAiModel: {
                   title: ta("مدل ترجمه"),
-                  type: "text",
+                  type: "text", ltr: true,
                   section: ta("ترجمه"),
                 },
                 clinicalAiEnabled: { title: ta("دستیار بالینی پزشک"), type: "bool", section: ta("دستیار بالینی") },
@@ -213,11 +213,11 @@ const AdminAiSettingsTab = () => {
                   },
                   section: ta("دستیار بالینی"),
                 },
-                clinicalAiModel: { title: ta("مدل دستیار بالینی"), type: "text", section: ta("دستیار بالینی") },
+                clinicalAiModel: { title: ta("مدل دستیار بالینی"), type: "text", ltr: true, section: ta("دستیار بالینی") },
                 sttEnabled: { title: ta("تبدیل گفتار به متن (نسخه‌نویس ویزیت)"), type: "bool", section: ta("گفتار به متن") },
                 sttUrl: {
                   title: ta("آدرس سرور گفتار به متن"),
-                  type: "text",
+                  type: "text", ltr: true,
                   section: ta("گفتار به متن"),
                 },
                 sttApiKey: {
@@ -225,8 +225,8 @@ const AdminAiSettingsTab = () => {
                   type: "secret",
                   section: ta("گفتار به متن"),
                 },
-                sttModel: { title: ta("مدل (پیش‌فرض whisper-1)"), type: "text", section: ta("گفتار به متن") },
-                sttLanguage: { title: ta("زبان گفتار (پیش‌فرض fa)"), type: "text", section: ta("گفتار به متن") },
+                sttModel: { title: ta("مدل (پیش‌فرض whisper-1)"), type: "text", ltr: true, section: ta("گفتار به متن") },
+                sttLanguage: { title: ta("زبان گفتار (پیش‌فرض fa)"), type: "text", ltr: true, section: ta("گفتار به متن") },
               }}
             />
           </WithTitle>

@@ -34,6 +34,7 @@ import {
 } from "../Product/AdminManageProductsPage";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
 
 export type ServicePackagePopulation = Population<{
   Owner: DoctorProfilePopulation;
@@ -108,7 +109,16 @@ const AdminManageServicePackagesPage = () => {
         isActive: {
           name: ta("وضعیت"),
           value: (node) => booleanToValue[`${node.isActive}`],
-          component: (node) => <BooleanToIcon value={node.isActive} />,
+          component: (node) => (
+                  // one click switches it on or off
+                  <PublishToggle
+                    modelName="servicePackage"
+                    field="isActive"
+                    _id={node._id}
+                    value={!!node.isActive}
+                    mutate={mutate}
+                  />
+                ),
           filter: "Set",
         },
         price: {

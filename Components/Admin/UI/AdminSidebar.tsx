@@ -157,9 +157,10 @@ const AdminSidebar = () => {
 
   const isAdmin = user?.role === "admin";
 
-  // Pending-work count on the inbox item, refreshed every minute.
+  // Pending-work count on the inbox item, refreshed every minute (staff:
+  // the kinds their access level can read).
   const { data: inboxCount } = useSWR<number>(
-    isAdmin ? `${API}/admin/inbox?countOnly=1` : null,
+    user && user.role !== "user" ? `${API}/admin/inbox?countOnly=1` : null,
     (url: string) =>
       fetcher({ url }).then((res) =>
         (res.data.data?.kinds || []).reduce(

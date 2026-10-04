@@ -1,5 +1,3 @@
-import useUser, { IUser } from "@/Components/Hooks/useUser";
-import classes from "./BecomeDoctorProfileSelector.module.css";
 import useSWR from "swr";
 import {
   IBecomeDoctorRequest,
@@ -8,24 +6,30 @@ import {
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "../UI/HandleLoading";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import AssignDoctorProfileToUserPopup from "./AssignProfileToUserPopup";
-import InstantCreateDoctorProfilePopup from "./InstantCreateDoctorProfilePopup";
 import FormActions from "../UI/FormActions";
 import List from "../UI/List";
-import Link from "@/Components/i18n/Link";
 import RemoveUserFromDoctorProfilePopup from "./RemoveUserFromDoctorProfilePopup";
 import { adminPath } from "@/Components/helpers/adminPath";
 import InlineLink from "../UI/InlineLink";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
+// The applicant's doctor profile. Building a new one is the approve button
+// in the decision banner (it copies the request); the "create" button here
+// ran the same approval a second way and was dropped. Linking an existing,
+// unclaimed profile is the one alternative, offered while the request is
+// pending, and it approves the request too.
 const BecomeDoctorProfileSelector = ({
   req,
+  mutateRequest,
 }: {
   req: IBecomeDoctorRequest<{ UserPopulated: true }>;
+  // linking approves the request: its page refreshes too
+  mutateRequest?: () => unknown;
 }) => {
   const { data, error, mutate } = useSWR<
     IDoctorProfile<{ UserPopulated: Record<never, never> }>[]
@@ -33,10 +37,8 @@ const BecomeDoctorProfileSelector = ({
     fetcher({ url }).then((res) => res.data.data),
   );
 
-  const { user } = useUser();
-
   const profile = useMemo<IDoctorProfile | null>(
-    () => (data ? data[0] || null : null),
+    () => (Array.isArray(data) ? data[0] || null : null),
     [data],
   );
 
@@ -56,7 +58,7 @@ const BecomeDoctorProfileSelector = ({
             </InlineLink>
           </p>
           <FormActions>
-            {user?.role === "admin" && (
+            {hasAccess("DoctorProfile", "update") && (
               <Button
                 variant="Error"
                 mode="Outline"
@@ -71,7 +73,7 @@ const BecomeDoctorProfileSelector = ({
                   )
                 }
               >
-                {ta("حذف پروفایل اختصاص داده شده به این کاربر")}
+                {ta("جدا کردن مالک پنل")}
               </Button>
             )}
           </FormActions>
@@ -79,37 +81,26 @@ const BecomeDoctorProfileSelector = ({
       ) : (
         <List>
           <p>{ta("هنوز پروفایلی برای این کاربر ثبت نشده")}</p>
-          <FormActions>
-            {hasAccess("DoctorProfile", "update") && (
+          {req.status === "Pending" && hasAccess("DoctorProfile", "update") && (
+            <FormActions>
               <Button
                 onClick={() =>
                   setPopup(
                     "AssignDoctorProfileToUserPopup",
-                    <AssignDoctorProfileToUserPopup mutate={mutate} req={req} />,
+                    <AssignDoctorProfileToUserPopup
+                      mutate={() => {
+                        mutate();
+                        mutateRequest?.();
+                      }}
+                      req={req}
+                    />,
                   )
                 }
               >
                 {ta("ثبت پروفایل موجود برای این کاربر")}
               </Button>
-            )}
-            {hasAccess("DoctorProfile", "write") && (
-              <Fragment>
-                <Button
-                  onClick={() =>
-                    setPopup(
-                      "InstantCreateDoctorProfile",
-                      <InstantCreateDoctorProfilePopup
-                        req={req}
-                        mutate={mutate}
-                      />,
-                    )
-                  }
-                >
-                  {ta("ساخت پروفایل جدید و ثبت برای این کاربر")}
-                </Button>
-              </Fragment>
-            )}
-          </FormActions>
+            </FormActions>
+          )}
         </List>
       )}
     </HandleLoading>

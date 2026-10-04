@@ -105,6 +105,13 @@ const AdminCatalogList = <T extends CatalogNode>({
       ),
   );
   const { setPopup } = usePopup();
+  // a record without its name can't be saved (the server refuses it too)
+  const labelSegment = (fields as Record<string, object | undefined>)[labelField];
+  const formFields = (
+    labelSegment
+      ? { ...fields, [labelField]: { ...labelSegment, required: true } }
+      : fields
+  ) as FormRenderer<T>;
   const open = (node?: T) =>
     setPopup(
       `Catalog-${model}`,
@@ -112,7 +119,7 @@ const AdminCatalogList = <T extends CatalogNode>({
         model={model}
         node={node}
         noun={noun}
-        fields={fields}
+        fields={formFields}
         mutate={mutate}
       />,
     );

@@ -40,6 +40,7 @@ import {
 import IconLink from "../UI/IconLink";
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PublishToggle from "../UI/PublishToggle";
 
 export type ServicePopulation = Population<{
   Owner: DoctorProfilePopulation;
@@ -295,7 +296,16 @@ const AdminManageServicesPage = () => {
               isActive: {
                 name: ta("فعال"),
                 value: (node) => booleanToValue[`${node.isActive}`],
-                component: (node) => <BooleanToIcon value={node.isActive} />,
+                component: (node) => (
+                  // one click switches it on or off
+                  <PublishToggle
+                    modelName="service"
+                    field="isActive"
+                    _id={node._id}
+                    value={!!node.isActive}
+                    mutate={mutate}
+                  />
+                ),
                 filter: "Set",
               },
               isHome: {

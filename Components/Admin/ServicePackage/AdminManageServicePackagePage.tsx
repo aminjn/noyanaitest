@@ -64,7 +64,9 @@ const servicePackageInfoRenderer = (
     getOptionValue: (node) => (node as IService)._id,
     getDefaultValue: (inp) => inp.services,
     // the owner's own services
-    path: (values) => `${API}/auto/service?owner=${idOf(values.owner)}`,
+    // (no owner picked yet: an id that matches nothing, not a cast error)
+    path: (values) =>
+      `${API}/auto/service?owner=${idOf(values.owner) || "0".repeat(24)}`,
     multi: true,
   },
   image: { type: "image", title: ta("تصویر") },

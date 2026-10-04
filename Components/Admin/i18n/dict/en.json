@@ -2347,5 +2347,19 @@
  "کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.": "Saved key: ${1}. To change it, enter a new key; left empty, the same key stays.",
  "نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1": "Model name examples: claude-sonnet-5 (Anthropic), gpt-4o (OpenAI), qwen2.5:14b (Ollama). Address examples: Ollama http://10.0.0.5:11434, speech-to-text http://127.0.0.1:8000/v1",
  "تنظیم‌شده": "Set up",
- "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Every outside service of the site and whether it is set up. Each service's key is entered only in its own tab and stays on the server; «Test connection» is there too."
+ "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Every outside service of the site and whether it is set up. Each service's key is entered only in its own tab and stays on the server; «Test connection» is there too.",
+ "مرکز ساخته‌شده": "Created centre",
+ "${1} مورد بیش از ${2} روز": "${1} waiting more than ${2} days",
+ "${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده": "${1} paid orders; ${2} toman of refunds deducted",
+ "ارزش نوبت‌های انجام‌شده (${1} روز)": "Value of completed appointments (${1} days)",
+ "مبلغی که بیماران پرداخته‌اند، با مالیات": "What patients paid, tax included",
+ "درآمد کمیسیون (${1} روز)": "Commission income (${1} days)",
+ "سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها": "Noyan's share of appointment and order payouts",
+ "سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.": "Delete the access level ${1}? Staff with this role become regular users and lose access to the admin panel.",
+ "بازبینی پزشکی": "Medical review",
+ "پزشک بازبینی‌کننده": "Reviewing doctor",
+ "تاریخ بازبینی": "Review date",
+ "انتشار و بازبینی": "Publishing and review",
+ "همه‌ی مقاله‌ها": "All articles",
+ "مقاله‌های در انتظار بررسی": "Articles awaiting review"
 }

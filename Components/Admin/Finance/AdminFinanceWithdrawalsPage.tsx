@@ -6,6 +6,8 @@ import { API } from "@/Components/config";
 import { currencize } from "@/Components/helpers/currencize";
 import { adminPath } from "@/Components/helpers/adminPath";
 import usePopup from "@/Components/Hooks/usePopup";
+import useUser from "@/Components/Hooks/useUser";
+import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
@@ -60,6 +62,11 @@ const AdminFinanceWithdrawalsPage = () => {
   const status = useSearchParams().get("status") || "";
   const router = useRouter();
   const { setPopup } = usePopup();
+  const { user: viewer } = useUser();
+  const hasAccess = useAccessLevel();
+  // deciding needs Finance "update" (adminRouter); read-only staff get no
+  // button that would answer 403
+  const canAct = viewer?.role === "admin" || hasAccess("Finance", "update");
   const state = useFinanceFilters({ status });
   const { data: list, error, mutate, isValidating } =
     useFinanceList<IAdminWithdrawalRow>(WITHDRAWALS_PATH, state.query, state.page);
@@ -150,7 +157,7 @@ toolbar={false}
               actions: {
                 name: ta("عملیات"),
                 component: (node) =>
-                  node.status === "pending" ? (
+                  canAct && node.status === "pending" ? (
                     <TableActions>
                       <Button
                         size="S"

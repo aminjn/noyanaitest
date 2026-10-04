@@ -2347,5 +2347,19 @@
  "کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.": "Chave salva: ${1}. Para alterá-la, insira uma nova; se ficar vazio, a mesma chave é mantida.",
  "نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1": "Exemplos de modelo: claude-sonnet-5 (Anthropic), gpt-4o (OpenAI), qwen2.5:14b (Ollama). Exemplos de endereço: Ollama http://10.0.0.5:11434, fala para texto http://127.0.0.1:8000/v1",
  "تنظیم‌شده": "Configurado",
- "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Todos os serviços externos do site e se estão configurados. A chave de cada serviço é inserida apenas na própria aba e fica no servidor; «Testar conexão» também está lá."
+ "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Todos os serviços externos do site e se estão configurados. A chave de cada serviço é inserida apenas na própria aba e fica no servidor; «Testar conexão» também está lá.",
+ "مرکز ساخته‌شده": "Centro criado",
+ "${1} مورد بیش از ${2} روز": "${1} aguardando há mais de ${2} dias",
+ "${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده": "${1} pedidos pagos; ${2} tomans de reembolsos descontados",
+ "ارزش نوبت‌های انجام‌شده (${1} روز)": "Valor das consultas realizadas (${1} dias)",
+ "مبلغی که بیماران پرداخته‌اند، با مالیات": "O que os pacientes pagaram, com impostos",
+ "درآمد کمیسیون (${1} روز)": "Receita de comissão (${1} dias)",
+ "سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها": "A parte da Noyan nos repasses de consultas e pedidos",
+ "سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.": "Excluir o nível de acesso ${1}? A equipe com esta função passa a ser usuário comum e perde o acesso ao painel de administração.",
+ "بازبینی پزشکی": "Revisão médica",
+ "پزشک بازبینی‌کننده": "Médico revisor",
+ "تاریخ بازبینی": "Data da revisão",
+ "انتشار و بازبینی": "Publicação e revisão",
+ "همه‌ی مقاله‌ها": "Todos os artigos",
+ "مقاله‌های در انتظار بررسی": "Artigos aguardando revisão"
 }

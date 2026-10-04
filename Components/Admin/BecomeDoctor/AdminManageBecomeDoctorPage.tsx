@@ -204,7 +204,10 @@ const AdminManageBecomeDoctorPage = () => {
                 id: "Profile",
                 title: ta("پروفایل پزشک"),
                 icon: <InfoIcon />,
-                content: <BecomeDoctorProfileSelector req={data} />,
+                content: <BecomeDoctorProfileSelector
+                    req={data}
+                    mutateRequest={mutate}
+                  />,
               },
             ]}
           />

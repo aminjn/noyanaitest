@@ -2347,5 +2347,19 @@
  "کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.": "Clé enregistrée : ${1}. Pour la changer, saisissez une nouvelle clé ; laissé vide, la même clé est conservée.",
  "نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1": "Exemples de modèle : claude-sonnet-5 (Anthropic), gpt-4o (OpenAI), qwen2.5:14b (Ollama). Exemples d'adresse : Ollama http://10.0.0.5:11434, reconnaissance vocale http://127.0.0.1:8000/v1",
  "تنظیم‌شده": "Configuré",
- "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Tous les services externes du site et s'ils sont configurés. La clé de chaque service se saisit uniquement dans son onglet et reste sur le serveur ; « Tester la connexion » s'y trouve aussi."
+ "همه‌ی سرویس‌های بیرونی سایت و اینکه تنظیم شده‌اند یا نه. کلید هر سرویس فقط در تب خودش وارد می‌شود و روی سرور می‌ماند؛ «آزمایش اتصال» هم همان‌جاست.": "Tous les services externes du site et s'ils sont configurés. La clé de chaque service se saisit uniquement dans son onglet et reste sur le serveur ; « Tester la connexion » s'y trouve aussi.",
+ "مرکز ساخته‌شده": "Centre créé",
+ "${1} مورد بیش از ${2} روز": "${1} en attente depuis plus de ${2} jours",
+ "${1} سفارش پرداخت‌شده؛ ${2} تومان بازپرداخت کسر شده": "${1} commandes payées ; ${2} tomans de remboursements déduits",
+ "ارزش نوبت‌های انجام‌شده (${1} روز)": "Valeur des rendez-vous effectués (${1} jours)",
+ "مبلغی که بیماران پرداخته‌اند، با مالیات": "Ce que les patients ont payé, taxes comprises",
+ "درآمد کمیسیون (${1} روز)": "Revenus de commission (${1} jours)",
+ "سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها": "La part de Noyan sur les versements des rendez-vous et commandes",
+ "سطح دسترسی ${1} حذف شود؟ کارکنانی که این نقش را دارند کاربر عادی می‌شوند و دسترسی‌شان به پنل مدیریت قطع می‌شود.": "Supprimer le niveau d'accès ${1} ? Les membres de l'équipe ayant ce rôle deviennent des utilisateurs ordinaires et perdent l'accès au panneau d'administration.",
+ "بازبینی پزشکی": "Relecture médicale",
+ "پزشک بازبینی‌کننده": "Médecin relecteur",
+ "تاریخ بازبینی": "Date de relecture",
+ "انتشار و بازبینی": "Publication et relecture",
+ "همه‌ی مقاله‌ها": "Tous les articles",
+ "مقاله‌های در انتظار بررسی": "Articles en attente de relecture"
 }

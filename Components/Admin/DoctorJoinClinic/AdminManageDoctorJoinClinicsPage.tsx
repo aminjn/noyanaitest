@@ -145,13 +145,17 @@ const AdminManageDoctorJoinClinicsPage = () => {
                 name: ta("عملیات"),
                 component: (node) => (
                   <TableActions>
-                    <IconButton
-                      variant="Success"
-                      title={ta("بررسی")}
-                      onClick={() => openActions(node)}
-                    >
-                      <CheckIcon />
-                    </IconButton>
+                    {/* a centre's invitation is the doctor's to answer,
+                        not the admin's (the backend refuses it too) */}
+                    {node.submissionParty === "DoctorProfile" && (
+                      <IconButton
+                        variant="Success"
+                        title={ta("بررسی")}
+                        onClick={() => openActions(node)}
+                      >
+                        <CheckIcon />
+                      </IconButton>
+                    )}
                     <IconButton
                       title={ta("حذف")}
                       variant="Danger"

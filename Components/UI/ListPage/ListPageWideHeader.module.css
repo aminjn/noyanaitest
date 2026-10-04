@@ -79,3 +79,16 @@
     flex-direction: column-reverse;
   }
 }
+
+.reviewer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray10);
+}
+
+.reviewerLink {
+  color: var(--primary);
+  text-decoration: underline;
+}

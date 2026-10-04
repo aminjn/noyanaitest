@@ -1,4 +1,5 @@
 "use client";
+import { articleStatusOf } from "@/Components/_Common/OrgArticle/orgArticle";
 import useSWR from "swr";
 import { MongoDoc } from "@/Components/Hooks/useUser";
 import { API } from "@/Components/config";
@@ -32,6 +33,9 @@ export interface IArticle extends MongoDoc {
   readTime?: string;
   slug?: string;
   published: boolean;
+  // the admin's review: a rejected post carries the reason
+  reviewStatus?: "pending" | "approved" | "rejected";
+  rejectReason?: string;
   category?: IArticleCategory | string;
   createdAt?: string;
 }
@@ -97,16 +101,15 @@ const DoctorManageArticlesPage = () => {
               },
               published: {
                 name: getContent("publishStatus"),
-                value: (node) =>
-                  node.published
-                    ? getContent("articlePublished")
-                    : getContent("articlePendingReview"),
+                value: (node) => articleStatusOf(node, getContent),
                 filter: "Set",
+                // a rejected post says why (and goes back to review once edited)
                 component: (node) => (
                   <span>
-                    {node.published
-                      ? getContent("articlePublished")
-                      : getContent("articlePendingReview")}
+                    {articleStatusOf(node, getContent)}
+                    {node.reviewStatus === "rejected" && !!node.rejectReason
+                      ? ` - ${getContent("reason")}: ${node.rejectReason}`
+                      : ""}
                   </span>
                 ),
               },

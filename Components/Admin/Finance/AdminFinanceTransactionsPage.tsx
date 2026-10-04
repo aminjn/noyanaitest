@@ -7,7 +7,12 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
-import { IFinanceUser, transactionKindDict, userLabel } from "./adminFinance";
+import {
+  IFinanceUser,
+  transactionKindDict,
+  transactionRefHref,
+  userLabel,
+} from "./adminFinance";
 import {
   FinanceFilterBar,
   FinancePager,
@@ -102,6 +107,12 @@ toolbar={false}
                 name: ta("بابت"),
                 value: (node) => transactionKindDict[node.kind] || node.kind,
                 filter: "Set",
+                // the order / reservation the row is about opens its record
+                component: (node) => {
+                  const label = transactionKindDict[node.kind] || node.kind;
+                  const href = transactionRefHref(node.kind, node.ref);
+                  return href ? <InlineLink href={adminPath(href)}>{label}</InlineLink> : label;
+                },
               },
               createdAt: {
                 name: ta("تاریخ"),

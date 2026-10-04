@@ -447,7 +447,9 @@ const AdminManageUserPage = () => {
               viewer?.role === "admin" ||
               hasAccess("Reservation", "readAll")
             }
-            canSeeMoney={viewer?.role === "admin"}
+            canSeeOrders={viewer?.role === "admin" || hasAccess("Order", "readAll")}
+            canSeeWallet={viewer?.role === "admin" || hasAccess("Finance", "readAll")}
+            canAdjustWallet={viewer?.role === "admin"}
             onChanged={() => mutate()}
           />
 
