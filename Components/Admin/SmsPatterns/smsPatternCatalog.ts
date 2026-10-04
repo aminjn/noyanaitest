@@ -108,6 +108,7 @@ export type SmsPatternNameFor<E extends string> =
 export type SmsPatternName =
   | "OTP_PATTERN"
   | "SECRETARY_INVITE_PATTERN"
+  | "INVOICE_LINK_PATTERN"
   | SmsPatternNameFor<UserAlertEvent>
   | SmsPatternNameFor<ReservationSmsEvent>
   | SmsPatternNameFor<OrderSmsEvent>
@@ -597,6 +598,14 @@ export const smsPatternCatalog: SmsPatternEntry[] = [
     variables: ["owner"],
     sample: () =>
       ta("%owner% شما را به همکاری به‌عنوان منشی در نویان دعوت کرده است. برای پذیرش وارد پنل منشی شوید."),
+  }),
+  // a provider's invoice link to its patient (2026-10, «مالی و حسابداری»
+  // → صورتحساب‌ها; backend Lib/business/invoices.ts smsInvoice)
+  entry("INVOICE_LINK_PATTERN", {
+    audience: "patient",
+    label: () => ta("لینک صورتحساب بیمار"),
+    variables: ["center", "amount", "link"],
+    sample: () => ta("صورتحساب %center% به مبلغ %amount% تومان: %link%"),
   }),
   ...reservationSmsEvents.map((event) =>
     entry(smsPatternNameForEvent(event), reservationMeta[event]),

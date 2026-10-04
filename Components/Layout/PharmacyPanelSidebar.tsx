@@ -1,17 +1,13 @@
-import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
-import PeopleIcon from "@/Components/Icons/PeopleIcon";
-import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
-import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
+import { crmSection, financeSection } from "./panelSections";
 import UserEditIcon from "../Icons/UserEditIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
 import CartIcon from "../Icons/CartIcon";
 import FolderIcon from "../Icons/FolderIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
-import WalletIcon from "../Icons/WalletIcon";
 import useAcl from "../Hooks/useAcl";
 import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
@@ -81,48 +77,8 @@ const PharmacyPanelSidebar = () => {
         show: hasAccess(),
         target: "secretary",
       },
-      {
-        title: "financialMangement",
-        icon: <WalletIcon />,
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "finance",
-      },
-      {
-        title: "accounting",
-        icon: <BookOpenIcon />,
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "accounting",
-      },
-      {
-        title: "payMenu",
-        icon: <UserGroupIcon />,
-        group: "groupCenter",
-        show: hasAccess("readPayroll"),
-        target: "payroll",
-      },
-      {
-        title: "crmMenu",
-        icon: <PeopleIcon />,
-        group: "groupCenter",
-        show: hasAccess("readCrm"),
-        target: "crm",
-      },
-      {
-        title: "moadianMenu",
-        icon: <ReceiptIcon />,
-        group: "groupCenter",
-        show: hasAccess("readMoadian"),
-        target: "moadian",
-      },
-      {
-        title: "invMenu",
-        icon: <PackageIcon />,
-        group: "groupCenter",
-        show: hasAccess("readInventory"),
-        target: "inventory",
-      },
+      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter" }),
+      crmSection({ hasAccess, group: "groupCenter" }),
       {
         title: "licenses",
         icon: <CartIcon />,

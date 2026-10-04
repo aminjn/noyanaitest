@@ -1,8 +1,3 @@
-import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
-import PeopleIcon from "@/Components/Icons/PeopleIcon";
-import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
-import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
-import Link from "@/Components/i18n/Link";
 import classes from "./PanelSidebar.module.css";
 import { imagePath } from "../helpers/imagepath";
 import { Fragment, ReactNode, useMemo } from "react";
@@ -11,7 +6,6 @@ import useSWR from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import DashboardIcon from "../Icons/DashboardIcon";
-import WalletIcon from "../Icons/WalletIcon";
 import UserEditIcon from "../Icons/UserEditIcon";
 import CalendarIcon from "../Icons/CalendarIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
@@ -24,6 +18,7 @@ import PillIcon from "../Icons/PillIcon";
 import LogoutIcon from "../Icons/LogoutIcon";
 import { currencize } from "../helpers/currencize";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
+import { crmSection, financeSection } from "./panelSections";
 import useDoctorAcl from "../Hooks/useDoctorAcl";
 import usePopup from "../Hooks/usePopup";
 import LogoutPopup from "../Popups/LogoutPopup";
@@ -138,47 +133,20 @@ const DoctorSidebar = () => {
         group: "groupPractice",
         show: hasAccess("readServicePackages"),
       },
-      {
-        title: "financialMangement",
-        icon: <WalletIcon />,
-        target: "finance",
+      financeSection({
+        hasAccess,
+        inventory: false,
+        insurance: true,
         group: "groupPractice",
-        side: (
+        // the wallet balance beside its item, as on the old top-level one
+        walletSide: (
           <span className={classes.balance}>
             <span>{currencize(balance || 0)}</span>
             <span className={classes.toman}>{getContent("toman")}</span>
           </span>
         ),
-        show: hasAccess("readFinance"),
-      },
-      {
-        title: "accounting",
-        icon: <BookOpenIcon />,
-        target: "accounting",
-        group: "groupPractice",
-        show: hasAccess("readFinance"),
-      },
-      {
-        title: "payMenu",
-        icon: <UserGroupIcon />,
-        group: "groupPractice",
-        show: hasAccess("readPayroll"),
-        target: "payroll",
-      },
-      {
-        title: "crmMenu",
-        icon: <PeopleIcon />,
-        group: "groupPractice",
-        show: hasAccess("readCrm"),
-        target: "crm",
-      },
-      {
-        title: "moadianMenu",
-        icon: <ReceiptIcon />,
-        group: "groupPractice",
-        show: hasAccess("readMoadian"),
-        target: "moadian",
-      },
+      }),
+      crmSection({ hasAccess, group: "groupPractice" }),
       {
         // verified visit reviews and the doctor's public replies (2026-10)
         title: "orgReviewsTitle",

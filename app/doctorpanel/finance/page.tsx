@@ -1,17 +1,11 @@
-import DoctorManageFinancePage from "@/Components/DoctorPanel/Finance/DoctorManageFinancePage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { Suspense } from "react";
+import FinanceOverview from "@/Components/_Common/Business/Finance/FinanceOverview";
 
-const DoctorManageFinance = async () => {
-  const textContent = await getScopedTextContent(["doctorPanelFinance", "walletWithdrawal"]);
-  return (
-    <LocaleScopeProvider
-      namespaces={["doctorPanelFinance", "walletWithdrawal"]}
-      initialTextContent={textContent}
-    >
-      <DoctorManageFinancePage />
-    </LocaleScopeProvider>
-  );
-};
+// «مالی و حسابداری» (2026-10): see Components/_Common/Business/Finance
+const Page = () => (
+  <Suspense>
+    <FinanceOverview node="doctor" panel="/doctorpanel" />
+  </Suspense>
+);
 
-export default DoctorManageFinance;
+export default Page;

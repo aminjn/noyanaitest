@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { API } from "@/Components/config";
@@ -71,7 +72,8 @@ const InventoryPage = ({
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("invTitle"), target: `${panel}/inventory` },
+    { title: t("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: t("invTitle"), target: `${panel}/finance/inventory` },
   ]);
   const api = `/${node}/inv`;
   const [refreshKey, setRefreshKey] = useState(0);

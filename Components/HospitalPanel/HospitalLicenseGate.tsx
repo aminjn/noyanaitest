@@ -1,6 +1,7 @@
 "use client";
 import { ReactNode } from "react";
 import { usePathname } from "@/Components/i18n/navigation";
+import { FINANCE_GATES, panelGateKey } from "@/Components/Layout/legacyPanelPages";
 import useHospitalLicenseModules from "../Hooks/useHospitalLicenseModules";
 import LicenseNotCoveredNotice from "./LicenseNotCoveredNotice";
 import { HospitalDashboardModule } from "../Admin/BaseHospitalLicense/AdminManageBaseHospitalLicensesPage";
@@ -15,6 +16,9 @@ import { HospitalDashboardModule } from "../Admin/BaseHospitalLicense/AdminManag
 // Components/PharmacyPanel/PharmacyLicenseGate.tsx /
 // Components/DoctorPanel/DoctorLicenseGate.tsx's own pathModuleMap.
 const pathModuleMap: Record<string, HospitalDashboardModule> = {
+  // «مالی و حسابداری» (2026-10): the pages moved under /<panel>/finance
+  ...FINANCE_GATES,
+  "finance/inventory": "inventory",
   // Noyan Business (2026-10): /<panel>/accounting
   accounting: "accounting",
   // phase 3: /<panel>/payroll (employees, payslips, insurance and tax)
@@ -35,8 +39,9 @@ const pathModuleMap: Record<string, HospitalDashboardModule> = {
 // fetch error, or when the path doesn't map to any gated module.
 const HospitalLicenseGate = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
-  const segment = (pathname || "").split("/").filter(Boolean)[1];
-  const mod = segment ? pathModuleMap[segment] : undefined;
+  // inside «مالی و حسابداری» (2026-10) the page under /finance decides
+  const key = panelGateKey(pathname || "");
+  const mod = key ? pathModuleMap[key] : undefined;
   const { modules, error } = useHospitalLicenseModules();
 
   if (!mod) return <>{children}</>;

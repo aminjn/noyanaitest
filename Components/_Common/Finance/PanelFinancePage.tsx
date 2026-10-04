@@ -132,7 +132,9 @@ const PanelFinancePage = ({
 
   useBreadCrump([
     { title: getContent("dashboard"), target: panel },
-    { title: getContent("financialMangement"), target: `${panel}/finance` },
+    // the wallet page sits in «مالی و حسابداری» since 2026-10
+    { title: getContent("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: getContent("financialMangement"), target: `${panel}/finance/wallet` },
   ]);
 
   const { data, error, isValidating } = useSWR<PanelFinance>(

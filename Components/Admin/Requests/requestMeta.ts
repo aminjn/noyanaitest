@@ -6,7 +6,9 @@ import { BadgeColor } from "@/Components/UI/Badge";
 // backend's Controllers/adminRequestsController.ts.
 
 // "campaign" (2026-10): a provider's SMS campaign whose text waits to be cleared
-export const requestGroups = ["become", "addition", "join", "campaign"] as const;
+// "smsTemplate" (2026-10): a provider's CRM SMS template, cleared once for
+// its automations and one-off sends
+export const requestGroups = ["become", "addition", "join", "campaign", "smsTemplate"] as const;
 export type RequestGroup = (typeof requestGroups)[number];
 
 export const requestKinds: Record<RequestGroup, readonly string[]> = {
@@ -14,6 +16,7 @@ export const requestKinds: Record<RequestGroup, readonly string[]> = {
   addition: ["clinic", "hospital", "pharmacy", "insurance"],
   join: ["clinic", "hospital"],
   campaign: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
+  smsTemplate: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
 };
 
 export const isRequestGroup = (v: unknown): v is RequestGroup =>
@@ -34,6 +37,9 @@ export const requestGroupLabels: Record<RequestGroup, string> = {
   },
   get campaign() {
     return ta("کمپین‌های پیامکی");
+  },
+  get smsTemplate() {
+    return ta("قالب‌های پیامک");
   },
 };
 

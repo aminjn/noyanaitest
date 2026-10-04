@@ -4,6 +4,7 @@ import { IShortLink } from "./Components/Admin/ShortLink/AdminManageShortLinksPa
 import { IRedirection } from "./Components/Admin/Redirection/AdminManageRedirectionsPage";
 import { getSiteLocales } from "./Components/i18n/getEnabledLocales";
 import { legacyAdminTarget } from "./Components/Admin/legacyAdminPages";
+import { legacyPanelTarget } from "./Components/Layout/legacyPanelPages";
 import {
   LOCALE_HEADER,
   PATH_HEADER,
@@ -46,6 +47,14 @@ const middleware = async (req: NextRequest) => {
       });
       return NextResponse.redirect(url, 307);
     }
+  }
+
+  // a provider-panel page that moved under /<panel>/finance (2026-10)
+  const panelTarget = legacyPanelTarget(pathname);
+  if (panelTarget) {
+    const url = new URL(localizePath(panelTarget, locale, site.default), req.url);
+    req.nextUrl.searchParams.forEach((v, k) => url.searchParams.set(k, v));
+    return NextResponse.redirect(url, 307);
   }
 
   if (pathname.startsWith("/l/")) {

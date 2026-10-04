@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import { useState } from "react";
 import useSWR from "swr";
 import { API } from "@/Components/config";
@@ -32,7 +33,8 @@ const PayrollPage = ({
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("payTitle"), target: `${panel}/payroll` },
+    { title: t("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: t("payTitle"), target: `${panel}/finance/payroll` },
   ]);
   const api = `/${node}/payroll`;
   const [refreshKey, setRefreshKey] = useState(0);

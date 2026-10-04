@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import useAcl from "@/Components/Hooks/useAcl";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import { NodeWithAcl } from "@/Components/_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
@@ -21,7 +22,8 @@ const PanelAccountingPage = ({
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("bizTitle"), target: `${panel}/accounting` },
+    { title: t("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: t("bizTitle"), target: `${panel}/finance/accounting` },
   ]);
   return (
     <AccountingPage

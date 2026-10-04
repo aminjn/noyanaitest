@@ -1,20 +1,11 @@
-import OrgFinancePage from "@/Components/_Common/Finance/OrgFinancePage";
-import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
-import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
+import { Suspense } from "react";
+import FinanceOverview from "@/Components/_Common/Business/Finance/FinanceOverview";
 
-const Finance = async () => {
-  const textContent = await getScopedTextContent(["pharmacyPanelFinance", "walletWithdrawal"]);
-  return (
-    <LocaleScopeProvider namespaces={["pharmacyPanelFinance", "walletWithdrawal"]} initialTextContent={textContent}>
-      <OrgFinancePage
-        panel="/paraClinicPanel"
-        api="/paraClinic/finance"
-        noteKey="pfNote"
-      upcomingKey="pfUpcoming"
-      upcomingNoteKey="pfUpcomingNote"
-      />
-    </LocaleScopeProvider>
-  );
-};
+// «مالی و حسابداری» (2026-10): see Components/_Common/Business/Finance
+const Page = () => (
+  <Suspense>
+    <FinanceOverview node="paraClinic" panel="/paraClinicPanel" />
+  </Suspense>
+);
 
-export default Finance;
+export default Page;
