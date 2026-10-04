@@ -186,3 +186,49 @@
   letter-spacing: 0.02em;
   color: var(--gray8);
 }
+
+/* a menu section with its own submenu (2026-10) */
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionActive {
+  color: var(--gray13);
+  font-weight: 700;
+}
+
+.sectionActive > :first-child {
+  color: var(--primary6);
+}
+
+.sectionChevron {
+  margin-inline-start: auto;
+  color: var(--gray8);
+  transform: rotate(90deg);
+  transition: transform var(--transTime);
+}
+
+[dir="rtl"] .sectionChevron {
+  transform: rotate(-90deg);
+}
+
+.sectionChevronOpen,
+[dir="rtl"] .sectionChevronOpen {
+  transform: rotate(0deg);
+}
+
+.sub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin-block: 0.125rem 0.25rem;
+  margin-inline-start: 1.25rem;
+  padding-inline-start: 0.5rem;
+  border-inline-start: 1px solid var(--line);
+}
+
+.subLink.subLink {
+  min-height: 2.375rem;
+  font-size: 0.8125rem;
+}
