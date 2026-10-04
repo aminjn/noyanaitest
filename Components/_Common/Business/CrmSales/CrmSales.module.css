@@ -1,0 +1,423 @@
+/* The CRM sales side (pipeline board, line editor, plan, contract, targets).
+   Logical properties only: the panel runs RTL and LTR. */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.grow {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.pipeTabs {
+  display: flex;
+  gap: 0.375rem;
+  overflow-x: auto;
+  padding-block-end: 0.25rem;
+}
+
+.pipeTab {
+  flex: none;
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 0.8125rem;
+  color: var(--gray11);
+  background: transparent;
+}
+
+.pipeTabOn {
+  background: var(--primary6);
+  border-color: var(--primary6);
+  color: var(--white);
+}
+
+.board {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(15rem, 1fr);
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-block-end: 0.5rem;
+  min-height: 22rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  min-width: 0;
+}
+
+.columnOver {
+  border-color: var(--primary6);
+  background: var(--primary1);
+}
+
+.colHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.125rem 0.25rem 0.375rem;
+  border-block-end: 1px solid var(--line);
+}
+
+.colName {
+  font-weight: 800;
+  font-size: 0.875rem;
+  color: var(--gray13);
+}
+
+.colSum {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.leadCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius, 0.75rem);
+  background: var(--white);
+  border: 1px solid var(--line);
+  cursor: grab;
+  text-align: start;
+  color: var(--gray13);
+}
+
+.leadCard:focus-visible {
+  outline: 2px solid var(--primary6);
+}
+
+.leadTitle {
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.leadMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--gray10);
+}
+
+.rotting {
+  border-inline-start: 3px solid var(--warning, #f59e0b);
+}
+
+.late {
+  color: var(--error);
+}
+
+.won {
+  border-inline-start: 3px solid var(--success);
+}
+
+.lost {
+  opacity: 0.6;
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lineRow {
+  display: grid;
+  grid-template-columns: minmax(10rem, 3fr) repeat(var(--cols, 4), minmax(4.5rem, 1fr)) auto;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.lineRow input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0 0.625rem;
+  border-radius: 0.625rem;
+  border: 1px solid var(--gray4);
+  background: var(--white);
+  color: var(--gray13);
+  font-size: 0.8125rem;
+}
+
+.lineHead {
+  font-size: 0.6875rem;
+  color: var(--gray9);
+  font-weight: 700;
+}
+
+.lineTitle {
+  position: relative;
+  min-width: 0;
+}
+
+.suggest {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 100%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  max-height: 14rem;
+  overflow-y: auto;
+  border-radius: 0.625rem;
+  border: 1px solid var(--line);
+  background: var(--white);
+  box-shadow: var(--glassShadow);
+}
+
+.suggest button {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+  font-size: 0.8125rem;
+  color: var(--gray12);
+}
+
+.suggest button:hover,
+.suggest button:focus-visible {
+  background: var(--glassStrong);
+}
+
+.totals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-end;
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.totals strong {
+  font-size: 1rem;
+  color: var(--gray13);
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.kv dt {
+  color: var(--gray9);
+}
+
+.kv dd {
+  color: var(--gray13);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.history li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.progress {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+  position: relative;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--primary6);
+}
+
+.progressBehind {
+  background: var(--warning, #f59e0b);
+}
+
+.pace {
+  position: absolute;
+  inset-block: 0;
+  width: 2px;
+  background: var(--gray12);
+}
+
+.goalGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.75rem;
+}
+
+.goalCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: var(--radiusLg);
+  border: 1px solid var(--glassLine);
+  background: var(--glass);
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(6rem, 10rem) 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.8125rem;
+}
+
+.barTrack {
+  height: 0.625rem;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--primary6);
+  border-radius: 999px;
+}
+
+.sig {
+  width: 100%;
+  max-width: 28rem;
+  height: 10rem;
+  border-radius: 0.75rem;
+  border: 1px dashed var(--gray6, var(--line));
+  background: var(--white);
+  touch-action: none;
+}
+
+.copyRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.copyRow code {
+  direction: ltr;
+  unicode-bidi: isolate;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.5rem;
+  background: var(--line);
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.condRow {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) minmax(7rem, 1fr) minmax(7rem, 1fr) auto;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.condRow select,
+.condRow input {
+  min-height: 2.5rem;
+  padding: 0 0.5rem;
+  border-radius: 0.625rem;
+  border: 1px solid var(--gray4);
+  background: var(--white);
+  color: var(--gray13);
+  font-size: 0.8125rem;
+  width: 100%;
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.checks label {
+  display: inline-flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.content {
+  white-space: pre-wrap;
+  line-height: 2;
+  font-size: 0.875rem;
+  color: var(--gray12);
+}
+
+@media (max-width: 900px) {
+  .twoCol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .lineRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lineRow > .lineTitle {
+    grid-column: 1 / -1;
+  }
+  .lineHeadRow {
+    display: none;
+  }
+  .condRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .board {
+    grid-auto-columns: minmax(80vw, 1fr);
+  }
+  .barRow {
+    grid-template-columns: minmax(5rem, 7rem) 1fr auto;
+  }
+}

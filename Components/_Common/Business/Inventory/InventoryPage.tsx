@@ -16,6 +16,7 @@ import InventoryItems from "./InventoryItems";
 import InventoryPurchases from "./InventoryPurchases";
 import InventorySuppliers from "./InventorySuppliers";
 import InventoryMoves from "./InventoryMoves";
+import { AiInsight } from "../Finance/Ai/finAi";
 
 type Summary = {
   items: number;
@@ -85,6 +86,7 @@ const InventoryPage = ({
           <h1 className={classes.title}>{t("invTitle")}</h1>
           <span className={classes.subtitle}>{t("invSubtitle")}</span>
         </header>
+        <AiInsight kind="inventory" api={`/${node}/biz/finance`} />
         <Tiles api={api} refreshKey={refreshKey} />
         <ClientTabSystem
           items={[

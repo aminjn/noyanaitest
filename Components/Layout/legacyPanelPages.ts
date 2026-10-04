@@ -33,6 +33,7 @@ export const FINANCE_GATES = {
   "finance/expenses": "accounting",
   "finance/insurance": "accounting",
   "finance/reports": "accounting",
+  "finance/ai": "accounting",
   "finance/accounting": "accounting",
   "finance/payroll": "payroll",
   "finance/moadian": "moadian",

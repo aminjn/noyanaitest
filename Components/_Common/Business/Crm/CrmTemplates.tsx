@@ -12,6 +12,7 @@ import crm from "./Crm.module.css";
 import { asArray } from "../bizShared";
 import { automationKey, CrmContext, CrmTemplate, errText, templateStatusKey, useCrm, useCrmTemplates, useCrmText } from "./crmShared";
 import SmsTextField from "./SmsTextField";
+import CrmAiWrite from "./CrmAiWrite";
 
 const POPUP = "CrmTemplate";
 const CATEGORIES: CrmTemplate["category"][] = ["general", "recall", "thanks", "birthday", "noShow", "winback", "chronic"];
@@ -33,7 +34,7 @@ const tone = (s: CrmTemplate["status"]) => (s === "Approved" ? crm.badgeOk : s =
 
 const TemplateForm = ({ template, starter, onDone }: { template?: CrmTemplate; starter?: CrmTemplate["category"]; onDone: () => unknown }) => {
   const t = useCrmText();
-  const { api } = useCrm();
+  const { api, node } = useCrm();
   const { closePopup } = usePopup();
   const pushNotification = useNotification();
   const [name, setName] = useState(template?.name || (starter ? t(catKey(starter)) : ""));
@@ -83,6 +84,14 @@ const TemplateForm = ({ template, starter, onDone }: { template?: CrmTemplate; s
             </select>
           </label>
         </div>
+        <CrmAiWrite
+          node={node}
+          onText={(r) => {
+            setText(r.text);
+            if (!name.trim()) setName(r.name);
+            if (!template && CATEGORIES.includes(r.category as CrmTemplate["category"])) setCategory(r.category as CrmTemplate["category"]);
+          }}
+        />
         <SmsTextField value={text} onChange={setText} label={t("crmCampaignText")} />
         <p className={classes.muted}>{t("crmTextRules")}</p>
         {changed && template?.status === "Approved" && <p className={crm.warnLine}>{t("crmTplReapprove")}</p>}

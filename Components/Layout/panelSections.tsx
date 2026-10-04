@@ -68,6 +68,8 @@ export const financeSection = <A extends string>({
       { title: "payMenu", icon: <UserGroupIcon />, target: "finance/payroll", show: can("readPayroll") },
       { title: "invMenu", icon: <PackageIcon />, target: "finance/inventory", show: inventory && can("readInventory") },
       { title: k("finNavReports"), icon: <MedicalReportIcon />, target: "finance/reports", show: finance },
+      // the finance assistant (Nexxa's AI pages as tabs)
+      { title: k("finNavAi"), icon: <SparkIcon />, target: "finance/ai", show: finance },
     ],
   };
 };

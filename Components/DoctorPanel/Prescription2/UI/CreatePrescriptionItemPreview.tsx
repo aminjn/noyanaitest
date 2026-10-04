@@ -23,6 +23,8 @@ import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { dateToString } from "@/Components/UI/FormatDate";
+import ai from "@/Components/Ai/Ai.module.css";
+import { useRxText, useRxWarningText } from "./VoiceRxBox";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
@@ -40,9 +42,13 @@ const Item = ({ item }: { item: PrescCtxItem }) => {
 
   const getCompContent = useScopedLocale(LOCALE_NS);
 
-  const { setWorking, setItems, readOnly } = usePrescription();
+  const { setWorking, setItems, readOnly, aiMarks, setAiMarks } = usePrescription();
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const rx = useRxText();
+  const warnText = useRxWarningText();
+  // a line the voice parser added, until the doctor marks it reviewed
+  const mark = aiMarks[item._id];
 
   return (
     <div className={classes.itemWrapper}>
@@ -50,6 +56,7 @@ const Item = ({ item }: { item: PrescCtxItem }) => {
         <div className={classes.itemContent}>
           <span className={`${txsMedium} ${classes.itemName}`}>
             {item.service.srvName}
+            {!!mark && <span className={ai.badge}> {rx("rxAiFromVoice")}</span>}
           </span>
           <span
             style={{ opacity: isOpen ? 0 : 1 }}
@@ -109,6 +116,29 @@ const Item = ({ item }: { item: PrescCtxItem }) => {
           </button>
         </div>
       </div>
+      {!!mark && !readOnly && (
+        <div className={classes.aiReview}>
+          {!!mark.spoken && <span className={classes.aiSpoken}>«{mark.spoken}»</span>}
+          {mark.warnings.map((w, i) => (
+            <span key={i} className={classes.aiWarn}>
+              ⚠ {warnText(w)}
+            </span>
+          ))}
+          <button
+            type="button"
+            className={ai.aiButton}
+            onClick={() =>
+              setAiMarks((prev) => {
+                const next = { ...prev };
+                delete next[item._id];
+                return next;
+              })
+            }
+          >
+            ✓ {rx("rxAiReviewed")}
+          </button>
+        </div>
+      )}
       <div className={`${classes.expansion} ${isOpen ? classes.open : ""}`}>
         {[
           { title: getContent("drugCount"), value: item.qty.toString() },

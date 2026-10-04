@@ -8,6 +8,17 @@ import classes from "../Accounting.module.css";
 import fin from "./Finance.module.css";
 import { BizContext } from "../bizShared";
 import { FinContext, useFinText } from "./finShared";
+import { AiInsight, InsightKind } from "./Ai/finAi";
+
+// the finance assistant's analysis block of each page (Nexxa's AiInsight)
+const INSIGHT: Record<string, InsightKind> = {
+  "": "overview",
+  invoices: "invoices",
+  payments: "treasury",
+  expenses: "expenses",
+  insurance: "claims",
+  reports: "reports",
+};
 
 // The frame of every «مالی و حسابداری» page (2026-10): the breadcrumb under
 // the section, the page's title, and the two contexts its parts read - the
@@ -53,6 +64,7 @@ const FinanceShell = ({
             </header>
             {actions}
           </div>
+          {!!INSIGHT[segment] && <AiInsight kind={INSIGHT[segment]} />}
           {children}
         </div>
       </FinContext.Provider>

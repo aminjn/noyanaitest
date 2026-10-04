@@ -16,6 +16,7 @@ import classes from "../Accounting.module.css";
 import pay from "./Payroll.module.css";
 import { asArray, isoDay, useBizFormat } from "../bizShared";
 import { PayContext, PayRun, PaySlip, toNum, useJalaliMonth, usePay, usePayAccounts, usePayText } from "./payShared";
+import PayslipAssistant from "../Finance/Ai/PayslipAssistant";
 
 type Ctx = React.ContextType<typeof PayContext>;
 type Row = { employee: string; workedDays: string; overtimeHours: string; otherEarnings: string; deductions: string };
@@ -33,6 +34,7 @@ const Payslip = ({ run, slip }: { run: PayRun; slip: PaySlip }) => {
   const t = usePayText();
   const f = useBizFormat();
   const jm = useJalaliMonth();
+  const { api } = usePay();
   useEffect(() => () => document.body.classList.remove("printingSlip"), []);
   const print = () => {
     document.body.classList.add("printingSlip");
@@ -119,6 +121,7 @@ const Payslip = ({ run, slip }: { run: PayRun; slip: PaySlip }) => {
             {t("payTaxableBase")}: {f.money(slip.taxableBase)}
           </p>
         </div>
+        <PayslipAssistant api={api} runId={run._id} employee={String(slip.employee)} />
         <div className={classes.actions}>
           <button type="button" className={classes.primary} onClick={print}>
             {t("payPrint")}

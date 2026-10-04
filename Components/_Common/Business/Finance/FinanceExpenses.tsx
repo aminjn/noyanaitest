@@ -17,8 +17,13 @@ import CostCenterSelect from "../CostCenterSelect";
 import FinanceShell from "./FinanceShell";
 import PaymentForm, { POPUP_KEY as PAY_KEY } from "./PaymentForm";
 import { downloadCsv, FinExpense, FinMoney, idOf, moneyKindKey, nameOf, parseAmount, Pill, useFin, useFinPopup, useFinText, useMoneyAccounts } from "./finShared";
+import { RECEIPT_POPUP, ReceiptDraft, ReceiptOcrPopup } from "./Ai/ReceiptOcr";
+import { useFinAiPost, useFinAiStatus } from "./Ai/finAi";
+import SparkIcon from "@/Components/Icons/SparkIcon";
+import ai from "./Ai/FinAi.module.css";
+import UncategorizedExpenses from "./Ai/UncategorizedExpenses";
 
-const FORM_KEY = "FinExpenseForm";
+export const FORM_KEY = "FinExpenseForm";
 type Acc = { _id: string; code: string; name: string; role?: string };
 const NEW = "__new";
 
@@ -27,10 +32,17 @@ const useExpenseAccounts = () => {
   return useSWR<Acc[]>(`${API}${api}/expense-accounts`, (url: string) => fetcher({ url }).then((res) => asArray<Acc>(res.data)));
 };
 
+// a receipt the AI read: the form opens filled, the user checks it
+export type ExpenseInitial = ReceiptDraft["expense"];
+const day = (s?: string) => {
+  const d = s ? new Date(`${s}T12:00:00`) : new Date();
+  return Number.isNaN(d.getTime()) ? new Date() : d;
+};
+
 // New expense: its kind (an expense account - a new kind is made right
 // here), vendor, amount and VAT, cost centre, the receipt's photo, paid now
 // or owed, once or every month / quarter / year.
-const ExpenseForm = ({ onDone }: { onDone: () => unknown }) => {
+export const ExpenseForm = ({ onDone, initial }: { onDone: () => unknown; initial?: ExpenseInitial }) => {
   const t = useFinText();
   const f = useBizFormat();
   const { api } = useFin();
@@ -38,18 +50,19 @@ const ExpenseForm = ({ onDone }: { onDone: () => unknown }) => {
   const pushNotification = useNotification();
   const { data: accounts, mutate: refreshAccounts } = useExpenseAccounts();
   const { data: money } = useMoneyAccounts();
-  const [account, setAccount] = useState("");
+  const learn = useFinAiPost();
+  const [account, setAccount] = useState(initial?.account || "");
   const [newKind, setNewKind] = useState("");
-  const [vendor, setVendor] = useState("");
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [tax, setTax] = useState("");
-  const [date, setDate] = useState<Date>(new Date());
+  const [vendor, setVendor] = useState(initial?.vendor || "");
+  const [description, setDescription] = useState(initial?.description || "");
+  const [amount, setAmount] = useState(initial?.amount ? String(initial.amount) : "");
+  const [tax, setTax] = useState(initial?.tax ? String(initial.tax) : "");
+  const [date, setDate] = useState<Date>(day(initial?.date));
   const [dueDate, setDueDate] = useState<Date | null>(null);
-  const [center, setCenter] = useState("");
-  const [attachment, setAttachment] = useState("");
+  const [center, setCenter] = useState(initial?.center || "");
+  const [attachment, setAttachment] = useState(initial?.attachment || "");
   const [uploading, setUploading] = useState(false);
-  const [payNow, setPayNow] = useState(true);
+  const [payNow, setPayNow] = useState(initial ? !!initial.payNow : true);
   const [payFrom, setPayFrom] = useState("");
   const [recurring, setRecurring] = useState(false);
   const [interval, setEvery] = useState<"monthly" | "quarterly" | "yearly">("monthly");
@@ -110,6 +123,8 @@ const ExpenseForm = ({ onDone }: { onDone: () => unknown }) => {
         },
       });
       pushNotification(t("bizSaved"), "Success");
+      // the vendor's kind, remembered for the next receipt
+      if (initial && vendor.trim().length > 1) learn("learn", { text: vendor.trim(), account, center: center || undefined }).catch(() => undefined);
       close(FORM_KEY);
       onDone();
     } catch (err) {
@@ -119,7 +134,7 @@ const ExpenseForm = ({ onDone }: { onDone: () => unknown }) => {
   };
 
   return (
-    <PopupCard title={t("finNewExpense")}>
+    <PopupCard title={t(initial ? "faiExpenseFromReceipt" : "finNewExpense")}>
       <div className={classes.popup}>
         <div className={classes.form}>
           <label className={classes.field}>
@@ -267,6 +282,9 @@ const Body = () => {
   const top = asArray<List["byAccount"][number]>(data?.byAccount);
   const topMax = Math.max(1, ...top.map((b) => b.total));
   const create = () => open(FORM_KEY, <ExpenseForm onDone={() => mutate()} />);
+  const { data: aiStatus } = useFinAiStatus();
+  const readReceipt = () =>
+    open(RECEIPT_POPUP, <ReceiptOcrPopup onDraft={(d) => open(FORM_KEY, <ExpenseForm initial={d.expense} onDone={() => mutate()} />)} />);
   const opened = useRef(false);
   useEffect(() => {
     if (!opened.current && canWrite && params?.get("new") === "1") {
@@ -345,6 +363,12 @@ const Body = () => {
             <button type="button" className={classes.ghost} onClick={exportCsv} disabled={!rows.length}>
               {t("finExportCsv")}
             </button>
+            {canWrite && aiStatus?.enabled && (
+              <button type="button" className={ai.aiButton} onClick={readReceipt}>
+                <SparkIcon />
+                {t("faiReadReceipt")}
+              </button>
+            )}
             {canWrite && (
               <button type="button" className={classes.primary} onClick={create}>
                 {t("finNewExpense")}
@@ -366,6 +390,7 @@ const Body = () => {
           <DateInput title={t("bizTo")} onChange={(d) => (setTo(d), setPage(1))} onClear={() => setTo(null)} />
         </div>
         <p className={classes.muted}>{t("finPayrollNote")}</p>
+        {canWrite && aiStatus?.enabled && status !== "recurring" && <UncategorizedExpenses onChanged={() => mutate()} />}
         <HandleLoading data={!!data} error={error}>
           {!!data &&
             (rows.length === 0 ? (

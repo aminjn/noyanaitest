@@ -13,6 +13,8 @@
   flex: 1;
   min-width: 0;
   max-width: calc(100dvw - var(--adminSidebarWidth) - 3rem);
+  /* clear of the floating «دستیار نویان» button */
+  padding-block-end: 4.5rem;
 }
 
 .topbar,

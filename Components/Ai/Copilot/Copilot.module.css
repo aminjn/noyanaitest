@@ -1,0 +1,342 @@
+/* «دستیار نویان»: floating button + command bar (2026-10). */
+
+.fab {
+  position: fixed;
+  inset-block-end: 1.25rem;
+  inset-inline-end: 1.25rem;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.25rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--aiLine);
+  background: var(--glassStrong, var(--white));
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+  box-shadow: var(--glassShadow);
+  color: var(--ai);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.fabLabel {
+  white-space: nowrap;
+}
+
+.panel {
+  position: fixed;
+  inset-block-end: 1.25rem;
+  inset-inline-end: 1.25rem;
+  z-index: 70;
+  width: min(26rem, calc(100vw - 2.5rem));
+  height: min(40rem, calc(100dvh - 6rem));
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radiusLg);
+  border: 1px solid var(--aiLine);
+  background: var(--meshBase, var(--white));
+  box-shadow: 0 1.5rem 3rem rgba(15, 10, 40, 0.25);
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.875rem;
+  border-block-end: 1px solid var(--line);
+  background: var(--aiSoft);
+}
+
+.title {
+  margin-inline-end: auto;
+  font-weight: 900;
+  font-size: 0.9375rem;
+  color: var(--gray13);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iconBtn {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: var(--gray11);
+  cursor: pointer;
+}
+
+.iconBtn:hover {
+  background: var(--glass);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.875rem;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.msg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.mine {
+  align-items: flex-end;
+}
+
+.bubble {
+  margin: 0;
+  max-width: 90%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1rem;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  color: var(--gray13);
+  font-size: 0.875rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.mine .bubble {
+  background: var(--aiSoft);
+  border-color: var(--aiLine);
+}
+
+.typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--ai);
+}
+
+.msg > div {
+  width: 100%;
+}
+
+.bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  border-block-start: 1px solid var(--line);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.5rem;
+  max-height: 8rem;
+  resize: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--gray13);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.input:focus {
+  outline: 2px solid var(--aiLine);
+}
+
+.send {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 0;
+  background: var(--ai);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.send:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+[dir="rtl"] .send svg {
+  transform: scaleX(-1);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-block-end: 1px solid var(--line);
+}
+
+.row:last-child {
+  border-block-end: 0;
+}
+
+.rowMain {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray13);
+  overflow-wrap: anywhere;
+}
+
+.rowMain a {
+  color: inherit;
+}
+
+.link {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--ai);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--gray10);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.5rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--gray13);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.slotField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chipOn {
+  border-color: var(--ai) !important;
+  background: var(--aiSoft) !important;
+  color: var(--ai) !important;
+  font-weight: 800;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.5rem 6rem auto;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.lineName {
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.callResult {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .fab {
+    inset-block-end: 0.875rem;
+    inset-inline-end: 0.875rem;
+    padding: 0.25rem;
+  }
+
+  .fabLabel {
+    display: none;
+  }
+
+  .panel {
+    inset: auto 0 0 0;
+    width: 100vw;
+    height: min(88dvh, 100dvh);
+    border-radius: var(--radiusLg) var(--radiusLg) 0 0;
+  }
+
+  .line {
+    grid-template-columns: minmax(0, 1fr) 4rem 5rem;
+  }
+
+  .line > span:last-child {
+    display: none;
+  }
+}

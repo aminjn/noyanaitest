@@ -22,6 +22,7 @@ import {
 } from "./bizShared";
 import { useBizAccounts } from "./AccountingSummary";
 import CostCenterSelect from "./CostCenterSelect";
+import JournalAiBar from "./Finance/Ai/JournalAiBar";
 
 type Line = { account: string; label: string; debit: string; credit: string };
 const emptyLine = (): Line => ({ account: "", label: "", debit: "", credit: "" });
@@ -116,6 +117,16 @@ const VoucherForm = ({
   return (
     <PopupCard title={voucher ? t("bizVoucherTitle", [f.money(voucher.number)]) : t("bizNewVoucher")}>
       <div className={classes.popup}>
+        {/* the finance assistant drafts the lines from one sentence (a new voucher only) */}
+        {!voucher && (
+          <JournalAiBar
+            api={`${api}/finance`}
+            onDraft={(d) => {
+              setLines(d.lines.map((l) => ({ account: l.account, label: l.label, debit: l.debit ? String(l.debit) : "", credit: l.credit ? String(l.credit) : "" })));
+              if (d.description) setDescription(d.description);
+            }}
+          />
+        )}
         <div className={classes.form}>
           <div className={classes.field}>
             <DateInput title={t("bizDate")} defaultValue={date} onChange={(d) => setDate(d)} />

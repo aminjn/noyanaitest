@@ -15,6 +15,7 @@ import { Fragment } from "react";
 import UserVitals from "@/Components/Dashboard/UserVitals";
 import UserMedicalDetails from "@/Components/Dashboard/UserMedicalDetails";
 import PatientFiles, { IPatientProfile } from "./PatientFiles";
+import PatientAiSummary from "./PatientAiSummary";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
@@ -50,6 +51,8 @@ const DoctorManagePatientPage = () => {
             avatar={data.user?.avatar}
             username={data.user?.username}
           />
+          {/* the history in a few lines (clinical assistant, owner only) */}
+          <PatientAiSummary patientId={data._id} />
           <UserVitals vitals={data.user?.vital} patient={data._id} />
           <UserMedicalDetails data={data.user?.medical} />
           {!!files && (

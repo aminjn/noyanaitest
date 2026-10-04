@@ -89,6 +89,7 @@ const Body = ({ hasInsurance }: { hasInsurance: boolean }) => {
                 {t("finNewPayment")}
               </button>
               <Link href={`${base}/expenses?new=1`}>{t("finNewExpense")}</Link>
+              <Link href={`${base}/ai?tab=entry`}>{t("faiQuickSentence")}</Link>
               {hasInsurance && <Link href={`${base}/insurance?new=1`}>{t("finNewClaim")}</Link>}
             </nav>
           )}

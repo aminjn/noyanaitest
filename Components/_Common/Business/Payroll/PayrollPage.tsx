@@ -16,6 +16,7 @@ import PayrollRuns from "./PayrollRuns";
 import PayrollEmployees from "./PayrollEmployees";
 import PayrollRules from "./PayrollRules";
 import PayrollBonus from "./PayrollBonus";
+import { AiInsight } from "../Finance/Ai/finAi";
 
 // Noyan Business payroll (2026-10, docs/business-suite.md phase 3) for every
 // provider panel: the month's payroll (payslips with insurance and tax, the
@@ -51,6 +52,7 @@ const PayrollPage = ({
           <h1 className={classes.title}>{t("payTitle")}</h1>
           <span className={classes.subtitle}>{t("paySubtitle")}</span>
         </header>
+        <AiInsight kind="payroll" api={`/${node}/biz/finance`} />
         <ClientTabSystem
           items={[
             { id: "runs", title: t("payTabRuns"), content: <PayrollRuns refreshKey={refreshKey} onChanged={bump} /> },

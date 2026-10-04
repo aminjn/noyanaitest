@@ -36,6 +36,7 @@ import BarsIcon from "../Icons/BarsIcon";
 import ChatIcon from "../Icons/ChatIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import ChatAiSuggest from "./ChatAiSuggest";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "chat"];
 
@@ -73,8 +74,20 @@ const MessageSender = ({
   });
 
   const hasContent = !!input.message?.trim() || !!input.file;
+  const isDoctorSide = usePathname().startsWith("/doctorpanel");
 
   return (
+    <>
+    {isDoctorSide && (
+      <ChatAiSuggest
+        chatId={chat._id}
+        onPick={(text) => {
+          if (textRef.current) textRef.current.value = text;
+          setInput((prev) => ({ ...prev, message: text }));
+          textRef.current?.focus();
+        }}
+      />
+    )}
     <Form className={classes.footer} onSubmit={submit}>
       {hasContent ? (
         <button
@@ -136,6 +149,7 @@ const MessageSender = ({
         </div>
       )}
     </Form>
+    </>
   );
 };
 

@@ -132,7 +132,15 @@ export type PrescCtxItem = Omit<
   "prescription"
 >;
 
+// A line the voice / free-text parser added (2026-10, VoiceRxBox): what was
+// said and the safety hints, until the doctor marks it reviewed. The writer
+// does not submit while any such line is unreviewed.
+export type RxAiWarning = { code: string; params?: string[] };
+export type RxAiMark = { spoken: string; warnings: RxAiWarning[] };
+
 const DoctorPrescriptionContext = createContext<{
+  aiMarks: Record<string, RxAiMark>;
+  setAiMarks: Dispatch<SetStateAction<Record<string, RxAiMark>>>;
   view: PrescriptionView;
   setView: Dispatch<SetStateAction<PrescriptionView>>;
   items: PrescCtxItem[];
@@ -146,6 +154,8 @@ const DoctorPrescriptionContext = createContext<{
   defaultValue?: LoadedPrescription2;
   refresh: () => void;
 }>({
+  aiMarks: {},
+  setAiMarks: () => {},
   items: [],
   patient: null,
   setItems: () => {},
@@ -205,9 +215,13 @@ export const DoctorPrescriptionContextProvider = ({
     _id: newPrescription2ItemId(),
   });
 
+  const [aiMarks, setAiMarks] = useState<Record<string, RxAiMark>>({});
+
   return (
     <DoctorPrescriptionContext.Provider
       value={{
+        aiMarks,
+        setAiMarks,
         items,
         setItems,
         patient,
