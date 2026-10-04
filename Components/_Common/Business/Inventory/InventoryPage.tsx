@@ -72,7 +72,7 @@ const InventoryPage = ({
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: t("financeSectionMenu"), target: `${panel}/finance` },
     { title: t("invTitle"), target: `${panel}/finance/inventory` },
   ]);
   const api = `/${node}/inv`;

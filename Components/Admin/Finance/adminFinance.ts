@@ -103,6 +103,15 @@ export const transactionKindDict: Record<string, string> = {
   get smsCampaign() {
     return ta("کمپین پیامکی");
   },
+  get smsAutomation() {
+    return ta("پیامک خودکار ارتباط با بیماران");
+  },
+  get smsMessage() {
+    return ta("پیامک تکی به بیمار");
+  },
+  get proPlan() {
+    return ta("اشتراک پرو");
+  },
   get checkout() {
   return ta("صورتحساب قدیمی");
 },

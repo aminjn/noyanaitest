@@ -14,7 +14,7 @@ const PanelMoadianPage = ({ node, panel }: { node: NodeWithAcl; panel: string })
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: t("financeSectionMenu"), target: `${panel}/finance` },
     { title: t("moaTitle"), target: `${panel}/finance/moadian` },
   ]);
   return <MoadianPage api={`/${node}/moadian`} canWrite={hasAccess("manageMoadian")} />;

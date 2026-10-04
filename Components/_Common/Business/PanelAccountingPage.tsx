@@ -22,7 +22,7 @@ const PanelAccountingPage = ({
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: t("financeSectionMenu"), target: `${panel}/finance` },
     { title: t("bizTitle"), target: `${panel}/finance/accounting` },
   ]);
   return (

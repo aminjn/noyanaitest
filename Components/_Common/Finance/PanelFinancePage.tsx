@@ -133,7 +133,7 @@ const PanelFinancePage = ({
   useBreadCrump([
     { title: getContent("dashboard"), target: panel },
     // the wallet page sits in «مالی و حسابداری» since 2026-10
-    { title: getContent("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: getContent("financeSectionMenu"), target: `${panel}/finance` },
     { title: getContent("financialMangement"), target: `${panel}/finance/wallet` },
   ]);
 

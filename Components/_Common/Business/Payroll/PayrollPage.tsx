@@ -33,7 +33,7 @@ const PayrollPage = ({
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("financeSectionMenu" as ContentKey), target: `${panel}/finance` },
+    { title: t("financeSectionMenu"), target: `${panel}/finance` },
     { title: t("payTitle"), target: `${panel}/finance/payroll` },
   ]);
   const api = `/${node}/payroll`;
