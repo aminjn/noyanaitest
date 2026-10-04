@@ -334,7 +334,7 @@ const AssetDetail = ({ id, onChanged, revalue }: { id: string; onChanged: () => 
                 <div>
                   <dt>{t("accDisposedOn")}</dt>
                   <dd>
-                    {f.date(a.disposalDate)} · {f.money(a.disposalProceeds)}
+                    <bdi>{f.date(a.disposalDate)}</bdi> · <bdi>{f.money(a.disposalProceeds)}</bdi>
                   </dd>
                 </div>
               )}

@@ -50,7 +50,7 @@ export const categorizedInsuranceActions: Readonly<
   orgReviewsTitle: ["readReviews"],
   insPlans: ["managePlans"],
   insNetwork: ["readNetwork"],
-  financialMangement: ["readFinance", "manageAccounting", "approveVouchers" as ContentKey],
+  financialMangement: ["readFinance", "manageAccounting", "approveVouchers"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   moadianMenu: ["readMoadian", "manageMoadian"],

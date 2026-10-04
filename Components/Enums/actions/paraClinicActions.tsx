@@ -62,7 +62,7 @@ export const categorizedParaClinicActions: Readonly<
   Record<(typeof paraClinicActionCategories)[number], readonly ContentKey[]>
 > = {
   orgReviewsTitle: ["readReviews"],
-  financialMangement: ["readFinance", "manageAccounting", "approveVouchers" as ContentKey],
+  financialMangement: ["readFinance", "manageAccounting", "approveVouchers"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   moadianMenu: ["readMoadian", "manageMoadian"],

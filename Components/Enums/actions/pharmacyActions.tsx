@@ -71,7 +71,7 @@ export const categorizedPharmacyActions: Readonly<
   tamin: ["readTamin"],
   incomingOrders: ["readOrders", "mutateOrders"],
   licenses: ["readLicenses"],
-  financialMangement: ["readFinance", "manageAccounting", "approveVouchers" as ContentKey],
+  financialMangement: ["readFinance", "manageAccounting", "approveVouchers"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   moadianMenu: ["readMoadian", "manageMoadian"],

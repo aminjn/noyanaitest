@@ -945,13 +945,19 @@ const BankRec = () => {
                 <div className={classes.tile}>
                   <span className={classes.tileLabel}>{t("accOpenBookLines")}</span>
                   <span className={classes.tileValue}>
-                    {f.money(data.summary.openBook)} · {f.signed(data.summary.openBookSum)}
+                    <bdi>{f.signed(data.summary.openBookSum)}</bdi>
+                  </span>
+                  <span className={acc.mutedSmall}>
+                    {t("accCount")}: <bdi>{f.money(data.summary.openBook)}</bdi>
                   </span>
                 </div>
                 <div className={classes.tile}>
                   <span className={classes.tileLabel}>{t("accOpenStatementLines")}</span>
                   <span className={classes.tileValue}>
-                    {f.money(data.summary.openStatement)} · {f.signed(data.summary.openStatementSum)}
+                    <bdi>{f.signed(data.summary.openStatementSum)}</bdi>
+                  </span>
+                  <span className={acc.mutedSmall}>
+                    {t("accCount")}: <bdi>{f.money(data.summary.openStatement)}</bdi>
                   </span>
                 </div>
                 {data.summary.difference !== null && (

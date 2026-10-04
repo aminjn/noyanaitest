@@ -109,6 +109,7 @@ export type SmsPatternName =
   | "OTP_PATTERN"
   | "SECRETARY_INVITE_PATTERN"
   | "INVOICE_LINK_PATTERN"
+  | "CRM_DOC_LINK_PATTERN"
   | SmsPatternNameFor<UserAlertEvent>
   | SmsPatternNameFor<ReservationSmsEvent>
   | SmsPatternNameFor<OrderSmsEvent>
@@ -606,6 +607,14 @@ export const smsPatternCatalog: SmsPatternEntry[] = [
     label: () => ta("لینک صورتحساب بیمار"),
     variables: ["center", "amount", "link"],
     sample: () => ta("صورتحساب %center% به مبلغ %amount% تومان: %link%"),
+  }),
+  // a treatment plan or contract link to its patient or party («ارتباط با
+  // بیماران» → فروش؛ backend Lib/business/crmSales.ts smsLink)
+  entry("CRM_DOC_LINK_PATTERN", {
+    audience: "patient",
+    label: () => ta("لینک طرح درمان یا قرارداد"),
+    variables: ["center", "title", "link"],
+    sample: () => ta("%center%: %title% را از این لینک ببینید و تأیید کنید: %link%"),
   }),
   ...reservationSmsEvents.map((event) =>
     entry(smsPatternNameForEvent(event), reservationMeta[event]),

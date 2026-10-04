@@ -137,7 +137,7 @@ export const categorizedDoctorActions: Readonly<
   ],
   calendar: ["readCalendar", "mutateCalendar"],
   settings: ["readSettings", "mutateSettings"],
-  financialMangement: ["readFinance", "manageAccounting", "approveVouchers" as ContentKey],
+  financialMangement: ["readFinance", "manageAccounting", "approveVouchers"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   moadianMenu: ["readMoadian", "manageMoadian"],

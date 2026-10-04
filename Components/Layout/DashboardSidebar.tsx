@@ -61,8 +61,8 @@ const DashboardSidebar = () => {
       { icon: <CrownIcon />, show: true, title: "proPlan", target: "pro" },
       // the centres' CRM, the patient's side (2026-10): my loyalty clubs,
       // my requests to the centres (Components/Dashboard/Crm)
-      { icon: <MedalStarIcon />, show: true, title: "crmeMyClubs" as ContentKey, target: "club" },
-      { icon: <CommentIcon />, show: true, title: "crmeMyCentres" as ContentKey, target: "centres" },
+      { icon: <MedalStarIcon />, show: true, title: "crmeMyClubs", target: "club" },
+      { icon: <CommentIcon />, show: true, title: "crmeMyCentres", target: "centres" },
     ],
     [],
   );
