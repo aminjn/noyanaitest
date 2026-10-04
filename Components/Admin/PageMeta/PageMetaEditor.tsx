@@ -182,7 +182,7 @@ const PageMetaEditor = ({
                   type: "image",
                   title: ta("تصویر اشتراک گذاری (og:image)"),
                 },
-                canonicalUrl: { type: "text", title: ta("آدرس کنونیکال") },
+                canonicalUrl: { type: "text", ltr: true, title: ta("آدرس کنونیکال") },
                 webSchema: { type: "area", title: ta("اسکیمای وب (JSON-LD)") },
                 noIndex: { type: "bool", title: "noindex" },
                 noFollow: { type: "bool", title: "nofollow" },

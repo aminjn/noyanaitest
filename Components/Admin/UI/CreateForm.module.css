@@ -131,6 +131,21 @@
   padding-inline-end: 3rem;
 }
 
+/* keys, URLs, model names: left to right with Latin digits (the site font
+   draws every digit in Persian, so "http://127.0.0.1" read as ۱۲۷.۰.۰.۱) */
+.ltrInput,
+.secretInput {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.875rem;
+}
+
+/* the secret field keeps the page's direction: its show/hide button sits
+   at the inline end */
+.ltrInput {
+  direction: ltr;
+  text-align: start;
+}
+
 /* a map point field: its title, then the picker */
 .point {
   display: flex;

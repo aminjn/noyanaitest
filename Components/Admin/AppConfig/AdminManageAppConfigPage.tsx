@@ -87,11 +87,11 @@ const AdminGeneralSettingsTab = () => {
               // read by payment returns, CRM links and campaign SMS alike
               siteBaseUrl: {
                 title: ta("آدرس عمومی سایت (مثال: https://example.com)"),
-                type: "text",
+                type: "text", ltr: true,
                 section: ta("سایت"),
               },
-              sipHost: { title: ta("آدرس سرور SIP"), type: "text", section: ta("تماس تلفنی (SIP)") },
-              sipUsername: { title: ta("نام کاربری SIP"), type: "text", section: ta("تماس تلفنی (SIP)") },
+              sipHost: { title: ta("آدرس سرور SIP"), type: "text", ltr: true, section: ta("تماس تلفنی (SIP)") },
+              sipUsername: { title: ta("نام کاربری SIP"), type: "text", ltr: true, section: ta("تماس تلفنی (SIP)") },
               sipPassword: { title: ta("رمز عبور SIP"), type: "secret", section: ta("تماس تلفنی (SIP)") },
 
               getIdentityInfoApiKey: {

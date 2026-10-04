@@ -274,15 +274,15 @@ const AdminMapSettingsTab = () => {
               }}
               renderer={{
                 nexamapEnabled: { title: ta("فعال بودن نقشه‌ی نکسا مپ"), type: "bool" },
-                nexamapBaseUrl: { title: ta("آدرس سرویس (Base URL)"), type: "text" },
+                nexamapBaseUrl: { title: ta("آدرس سرویس (Base URL)"), type: "text", ltr: true },
                 nexamapApiKey: {
                   title: data.apiKeySet
                     ? ta("کلید API (ذخیره‌شده: ${1}؛ برای تغییر، کلید جدید را وارد کنید)", [data.apiKeyPreview])
                     : ta("کلید API"),
                   type: "secret",
                 },
-                nexamapDefaultStyle: { title: ta("نام سبک نقشه برای تم روشن (روز)"), type: "text" },
-                nexamapDarkStyle: { title: ta("نام سبک نقشه برای تم تیره (شب)"), type: "text" },
+                nexamapDefaultStyle: { title: ta("نام سبک نقشه برای تم روشن (روز)"), type: "text", ltr: true },
+                nexamapDarkStyle: { title: ta("نام سبک نقشه برای تم تیره (شب)"), type: "text", ltr: true },
               }}
             />
           </WithTitle>

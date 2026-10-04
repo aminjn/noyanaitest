@@ -40,14 +40,14 @@ const AdminPaymentSettingsTab = () => {
               },
               sepTerminalId: {
                 title: ta("شماره ترمینال درگاه سپ (TerminalId)"),
-                type: "text",
+                type: "text", ltr: true,
                 section: ta("درگاه پرداخت"),
               },
               sepCallbackBaseUrl: {
                 title: ta(
                   "آدرس عمومی بک‌اند برای بازگشت از درگاه (مثال: https://api.example.com)",
                 ),
-                type: "text",
+                type: "text", ltr: true,
                 section: ta("درگاه پرداخت"),
               },
               sepTokenExpiryMinutes: {
