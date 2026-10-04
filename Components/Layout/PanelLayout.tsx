@@ -18,6 +18,7 @@ import BreadCrumpContext from "../Store/BreadCrumpStore";
 import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import Copilot from "../Ai/Copilot/Copilot";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
@@ -154,6 +155,8 @@ const PanelLayout = ({
         </header>
         <main className={classes.content}>{children}</main>
       </div>
+      {/* «دستیار نویان»: the profile's own assistant (none on the secretary's home) */}
+      <Copilot />
     </div>
   );
 };

@@ -161,7 +161,8 @@
   width: 100%;
   max-width: 96rem;
   margin-inline: auto;
-  padding: 1.5rem 0.25rem 1rem;
+  /* the bottom keeps clear of the floating «دستیار نویان» button */
+  padding: 1.5rem 0.25rem 5rem;
   min-width: 0;
 }
 

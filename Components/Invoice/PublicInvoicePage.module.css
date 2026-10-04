@@ -1,0 +1,134 @@
+.main {
+  min-height: 70dvh;
+  display: grid;
+  place-items: start center;
+  padding: 2rem 1rem;
+}
+
+.card {
+  width: min(44rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: var(--radiusLg);
+  background: var(--glassStrong);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  color: var(--gray13);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--gray11);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem;
+  text-align: start;
+  border-bottom: 1px solid var(--line);
+}
+
+.table th {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.num {
+  text-align: end !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.totals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-inline-start: auto;
+  min-width: min(20rem, 100%);
+  font-size: 0.875rem;
+}
+
+.totals > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.grand {
+  font-weight: 900;
+  border-top: 1px solid var(--line);
+  padding-top: 0.375rem;
+}
+
+.pill {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: var(--line);
+  color: var(--gray11);
+}
+
+.paid {
+  background: var(--successT1, var(--line));
+  color: var(--success);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions button {
+  min-height: 2.5rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-weight: 800;
+  color: var(--gray12);
+}
+
+.text {
+  color: var(--gray11);
+  text-align: center;
+}
+
+@media print {
+  .actions {
+    display: none;
+  }
+  .card {
+    box-shadow: none;
+    border: none;
+    background: #fff;
+    color: #000;
+  }
+}

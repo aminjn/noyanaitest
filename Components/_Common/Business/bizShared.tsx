@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo } from "react";
+import { API, FilePath } from "@/Components/config";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -19,6 +20,15 @@ export type BizAccount = {
   level: "group" | "total" | "detail";
   parentCode?: string;
   role?: string;
+  // (2026-10, the chart editor) deactivated accounts take no new lines;
+  // the تفصیلی kinds a detail account takes; ماهیت and دائم / موقت
+  isActive?: boolean;
+  tafsiliKinds?: string[];
+  nature?: "debit" | "credit" | "both";
+  permanent?: boolean;
+  description?: string;
+  bD?: number;
+  bC?: number;
   pD: number;
   pC: number;
   before: number;
@@ -52,7 +62,10 @@ export type BizVoucher = {
   center?: string;
 };
 
-type Ctx = { api: string; canWrite: boolean };
+// canApprove: finalize / revert / delete final vouchers and decide finance
+// requests (approveVouchers); platform: the super admin's own books, which
+// have no tills or banks of their own (2026-10)
+type Ctx = { api: string; canWrite: boolean; canApprove?: boolean; platform?: boolean };
 export const BizContext = createContext<Ctx>({ api: "", canWrite: false });
 export const useBiz = () => useContext(BizContext);
 
@@ -95,3 +108,10 @@ export const isoDay = (d?: Date | null) => {
 };
 
 export const asArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+
+// A finance file (receipt, bill, voucher scan) is private (2026-10): it is
+// read back through the panel's own authenticated route, never from the
+// public files folder. `api` is the context's /<node>/biz or
+// /<node>/biz/finance; a full URL is shown as it is.
+export const bizFileHref = (api: string, name: string) =>
+  /^https?:\/\//.test(name) ? name : /^biz__/.test(name) ? `${API}${api.replace(/\/finance$/, "")}/finance/files/${encodeURIComponent(name)}` : `${FilePath}/${name}`;

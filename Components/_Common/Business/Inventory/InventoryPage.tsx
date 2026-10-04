@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { API } from "@/Components/config";
@@ -15,6 +16,7 @@ import InventoryItems from "./InventoryItems";
 import InventoryPurchases from "./InventoryPurchases";
 import InventorySuppliers from "./InventorySuppliers";
 import InventoryMoves from "./InventoryMoves";
+import { AiInsight } from "../Finance/Ai/finAi";
 
 type Summary = {
   items: number;
@@ -71,7 +73,8 @@ const InventoryPage = ({
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("invTitle"), target: `${panel}/inventory` },
+    { title: t("financeSectionMenu"), target: `${panel}/finance` },
+    { title: t("invTitle"), target: `${panel}/finance/inventory` },
   ]);
   const api = `/${node}/inv`;
   const [refreshKey, setRefreshKey] = useState(0);
@@ -83,6 +86,7 @@ const InventoryPage = ({
           <h1 className={classes.title}>{t("invTitle")}</h1>
           <span className={classes.subtitle}>{t("invSubtitle")}</span>
         </header>
+        <AiInsight kind="inventory" api={`/${node}/biz/finance`} />
         <Tiles api={api} refreshKey={refreshKey} />
         <ClientTabSystem
           items={[

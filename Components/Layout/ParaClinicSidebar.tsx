@@ -1,12 +1,9 @@
-import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
-import PeopleIcon from "@/Components/Icons/PeopleIcon";
-import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
-import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import StarIcon from "../Icons/StarIcon";
-import WalletIcon from "../Icons/WalletIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FlaskIcon from "../Icons/FlaskIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
@@ -18,6 +15,7 @@ import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
 const ParaClinicSidebar = () => {
   const hasAccess = useAcl("paraClinic");
+  const kartabl = useKartablCount("paraClinic");
 
   const orders = useOrdersTodo("paraClinic", hasAccess("readOrders"));
 
@@ -65,48 +63,9 @@ const ParaClinicSidebar = () => {
         show: hasAccess("mutateProfile"),
         target: "profile",
       },
-      {
-        title: "financialMangement",
-        icon: <WalletIcon />,
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "finance",
-      },
-      {
-        title: "accounting",
-        icon: <BookOpenIcon />,
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "accounting",
-      },
-      {
-        title: "payMenu",
-        icon: <UserGroupIcon />,
-        group: "groupCenter",
-        show: hasAccess("readPayroll"),
-        target: "payroll",
-      },
-      {
-        title: "crmMenu",
-        icon: <PeopleIcon />,
-        group: "groupCenter",
-        show: hasAccess("readCrm"),
-        target: "crm",
-      },
-      {
-        title: "moadianMenu",
-        icon: <ReceiptIcon />,
-        group: "groupCenter",
-        show: hasAccess("readMoadian"),
-        target: "moadian",
-      },
-      {
-        title: "invMenu",
-        icon: <PackageIcon />,
-        group: "groupCenter",
-        show: hasAccess("readInventory"),
-        target: "inventory",
-      },
+      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "paraClinic" }),
+      crmSection({ hasAccess, group: "groupCenter", profile: "paraClinic" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupCenter", badge: kartabl }),
       {
         title: "teamTitle",
         icon: <UserEditIcon />,
@@ -132,7 +91,7 @@ const ParaClinicSidebar = () => {
         target: "article",
       },
     ],
-    [hasAccess, orders.count],
+    [hasAccess, orders.count, kartabl],
   );
 
   return <PanelSidebar links={links} panel="paraClinicPanel" />;

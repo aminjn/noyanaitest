@@ -66,7 +66,7 @@ const ProPriceOptions = ({
             )}
             {!!q.promotion && (
               <span className={classes.promo}>
-                <span>{q.promotion.title || getContent("specialDiscount" as ContentKey)}</span>
+                <span>{q.promotion.title || getContent("specialDiscount")}</span>
                 {!!q.promotion.endsAt && <LicensePromotionCountdown endsAt={q.promotion.endsAt} />}
               </span>
             )}

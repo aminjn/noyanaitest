@@ -196,7 +196,7 @@ const flowTitle = { operating: "bizCashOperating", investing: "bizCashInvesting"
 
 // where cash (till, banks, the Noyan wallet) came from and went, direct
 // method: each movement under the account on its other side
-const CashFlow = ({ from, to, refreshKey }: { from: Date | null; to: Date | null; refreshKey: number }) => {
+export const CashFlow = ({ from, to, refreshKey }: { from: Date | null; to: Date | null; refreshKey: number }) => {
   const t = useBizText();
   const f = useBizFormat();
   const { data, error } = useReport<Cash>("cash-flow", from, to, refreshKey);
@@ -255,7 +255,7 @@ const CashFlow = ({ from, to, refreshKey }: { from: Date | null; to: Date | null
 };
 
 // income and expense of each cost centre, and of what was booked to none
-const CostCenters = ({ from, to, refreshKey }: { from: Date | null; to: Date | null; refreshKey: number }) => {
+export const CostCenters = ({ from, to, refreshKey }: { from: Date | null; to: Date | null; refreshKey: number }) => {
   const t = useBizText();
   const f = useBizFormat();
   const { data, error } = useReport<Centers>("cost-centers", from, to, refreshKey);

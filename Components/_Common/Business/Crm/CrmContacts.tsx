@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -8,48 +9,59 @@ import useNotification from "@/Components/Hooks/useNotification";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import DateInput from "@/Components/UI/DateInput";
+import { useRouter } from "@/Components/i18n/navigation";
 import classes from "../Accounting.module.css";
 import crm from "./Crm.module.css";
-import { asArray, isoDay, useBizFormat } from "../bizShared";
+import { asArray, useBizFormat } from "../bizShared";
 import {
   CrmContact,
   CrmContext,
-  CrmTimelineItem,
+  CrmInsurer,
+  CrmRules,
+  CrmSegment,
+  emptyRules,
+  errText,
+  hasRules,
+  insurerKey,
   phoneText,
-  sourceKey,
+  presetKey,
   useCrm,
-  useCrmTags,
   useCrmText,
 } from "./crmShared";
+import CrmRulesForm, { TagPicker } from "./CrmRulesForm";
+import CrmImport from "./CrmImport";
 
 type Ctx = React.ContextType<typeof CrmContext>;
-const POPUP = "CrmContact";
 const NEW_POPUP = "CrmNewContact";
+const TAG_POPUP = "CrmBulkTag";
+const SEG_POPUP = "CrmSaveSegment";
 
-// tags typed as "diabetes, check-up" (comma or Persian comma)
-const splitTags = (s: string) =>
-  Array.from(new Set(s.split(/[,،]/).map((x) => x.trim()).filter(Boolean))).slice(0, 20);
-
-const NewContact = ({ onDone }: { onDone: () => unknown }) => {
+// a hand-added patient: only someone who agreed to hear from this centre
+const NewContact = ({ onDone }: { onDone: (id?: string) => unknown }) => {
   const t = useCrmText();
   const { api } = useCrm();
   const { closePopup } = usePopup();
   const pushNotification = useNotification();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [tags, setTags] = useState("");
+  const [gender, setGender] = useState("");
+  const [insurer, setInsurer] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const save = async () => {
     if (busy) return;
     setBusy(true);
     try {
-      await fetcher({ url: `${API}${api}/contacts`, method: "POST", payload: { name: name.trim(), phone, tags: splitTags(tags) } });
+      const res = await fetcher({
+        url: `${API}${api}/contacts`,
+        method: "POST",
+        payload: { name: name.trim(), phone, tags, ...(gender ? { gender } : {}), ...(insurer ? { insurer } : {}) },
+      });
       pushNotification(t("bizSaved"), "Success");
       closePopup(NEW_POPUP);
-      onDone();
+      onDone((res.data as { _id?: string })?._id);
     } catch (err) {
-      pushNotification((err as Error)?.message || String(err), "Error");
+      pushNotification(errText(err), "Error");
       setBusy(false);
     }
   };
@@ -66,10 +78,28 @@ const NewContact = ({ onDone }: { onDone: () => unknown }) => {
             {t("crmPhone")}
             <input value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={20} dir="ltr" inputMode="tel" placeholder="09…" />
           </label>
-          <label className={`${classes.field} ${classes.wide}`}>
-            {t("crmTags")}
-            <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder={t("crmTagsHint")} />
+          <label className={classes.field}>
+            {t("crmGender")}
+            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="">{t("crmAny")}</option>
+              <option value="female">{t("crmFemale")}</option>
+              <option value="male">{t("crmMale")}</option>
+            </select>
           </label>
+          <label className={classes.field}>
+            {t("crmInsurer")}
+            <select value={insurer} onChange={(e) => setInsurer(e.target.value)}>
+              <option value="">—</option>
+              {(Object.keys(insurerKey) as CrmInsurer[]).map((k) => (
+                <option key={k} value={k}>
+                  {t(insurerKey[k])}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className={`${classes.field} ${classes.wide}`}>
+            <TagPicker title={t("crmTags")} value={tags} onChange={setTags} />
+          </div>
         </div>
         <div className={classes.actions}>
           <button type="button" className={classes.ghost} onClick={() => closePopup(NEW_POPUP)}>
@@ -84,230 +114,130 @@ const NewContact = ({ onDone }: { onDone: () => unknown }) => {
   );
 };
 
-const kindKey = {
-  visit: "crmTlVisit",
-  order: "crmTlOrder",
-  note: "crmTlNote",
-  call: "crmTlCall",
-  followUp: "crmTlFollowUp",
-} as const;
-
-// One contact: details the owner keeps (tags, note, opt-out), the history
-// with this owner, and a new note, call or follow-up.
-const ContactDetail = ({ id, onChanged }: { id: string; onChanged: () => unknown }) => {
+// add or remove tags on the selected contacts
+const BulkTag = ({ ids, onDone }: { ids: string[]; onDone: () => unknown }) => {
   const t = useCrmText();
   const f = useBizFormat();
-  const { api, canWrite } = useCrm();
+  const { api } = useCrm();
+  const { closePopup } = usePopup();
   const pushNotification = useNotification();
-  const { data, error, mutate } = useSWR<{ contact: CrmContact; timeline: CrmTimelineItem[] }>(
-    `${API}${api}/contacts/${id}`,
-    (url: string) => fetcher({ url }).then((res) => res.data as { contact: CrmContact; timeline: CrmTimelineItem[] }),
-  );
-  const c = data?.contact;
-  const [name, setName] = useState<string | null>(null);
-  const [tags, setTags] = useState<string | null>(null);
-  const [note, setNote] = useState<string | null>(null);
-  const [kind, setKind] = useState<"note" | "call" | "followUp">("note");
-  const [text, setText] = useState("");
-  const [due, setDue] = useState<Date | null>(null);
+  const [add, setAdd] = useState<string[]>([]);
+  const [remove, setRemove] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
-  const call = async (fn: () => Promise<unknown>) => {
-    if (busy) return;
+  const save = async () => {
     setBusy(true);
     try {
-      await fn();
+      await fetcher({ url: `${API}${api}/contacts/bulk-tag`, method: "POST", payload: { ids, add, remove } });
       pushNotification(t("bizSaved"), "Success");
-      mutate();
-      onChanged();
+      closePopup(TAG_POPUP);
+      onDone();
     } catch (err) {
-      pushNotification((err as Error)?.message || String(err), "Error");
-    } finally {
+      pushNotification(errText(err), "Error");
       setBusy(false);
     }
   };
-  const saveDetails = () =>
-    call(() =>
-      fetcher({
-        url: `${API}${api}/contacts/${id}`,
-        method: "PATCH",
-        payload: {
-          ...(name !== null ? { name: name.trim() } : {}),
-          ...(tags !== null ? { tags: splitTags(tags) } : {}),
-          ...(note !== null ? { note: note.trim() } : {}),
-        },
-      }),
-    );
-  const setOptOut = (v: boolean) =>
-    call(() => fetcher({ url: `${API}${api}/contacts/${id}`, method: "PATCH", payload: { smsOptOut: v } }));
-  const addActivity = () =>
-    call(async () => {
-      await fetcher({
-        url: `${API}${api}/contacts/${id}/activities`,
-        method: "POST",
-        payload: { kind, text: text.trim(), ...(kind === "followUp" && due ? { dueAt: isoDay(due) } : {}) },
-      });
-      setText("");
-    });
-  const dirty = name !== null || tags !== null || note !== null;
   return (
-    <PopupCard size="wide" title={c?.name || (c ? phoneText(c.phone) : t("crmTabContacts"))}>
+    <PopupCard title={t("crmBulkTagTitle", [f.money(ids.length)])}>
       <div className={classes.popup}>
-        <HandleLoading data={!!data} error={error}>
-          {!!c && (
-            <>
-              <div className={classes.tiles}>
-                <div className={classes.tile}>
-                  <span className={classes.tileLabel}>{t("crmPhone")}</span>
-                  <span className={classes.tileValue} dir="ltr">
-                    {phoneText(c.phone)}
-                  </span>
-                </div>
-                <div className={classes.tile}>
-                  <span className={classes.tileLabel}>{t("crmVisitsOrders")}</span>
-                  <span className={classes.tileValue}>
-                    {f.money(c.visits)} / {f.money(c.orders)}
-                  </span>
-                </div>
-                <div className={classes.tile}>
-                  <span className={classes.tileLabel}>{t("crmSpent")}</span>
-                  <span className={classes.tileValue}>
-                    {f.money(c.spent)}
-                    <span className={classes.tileUnit}>{t("toman")}</span>
-                  </span>
-                </div>
-                <div className={classes.tile}>
-                  <span className={classes.tileLabel}>{t("crmLastSeen")}</span>
-                  <span className={classes.tileValue}>{f.date(c.lastSeenAt)}</span>
-                </div>
-              </div>
-              <section className={crm.subCard}>
-                <div className={classes.form}>
-                  <label className={classes.field}>
-                    {t("crmName")}
-                    <input value={name ?? c.name} onChange={(e) => setName(e.target.value)} disabled={!canWrite} maxLength={200} />
-                  </label>
-                  <label className={classes.field}>
-                    {t("crmTags")}
-                    <input
-                      value={tags ?? c.tags.join("، ")}
-                      onChange={(e) => setTags(e.target.value)}
-                      disabled={!canWrite}
-                      placeholder={t("crmTagsHint")}
-                    />
-                  </label>
-                  <label className={`${classes.field} ${classes.wide}`}>
-                    {t("crmNote")}
-                    <textarea value={note ?? c.note ?? ""} onChange={(e) => setNote(e.target.value)} disabled={!canWrite} maxLength={1000} />
-                  </label>
-                </div>
-                {canWrite && (
-                  <div className={classes.actions}>
-                    <label className={crm.check}>
-                      <input type="checkbox" checked={c.smsOptOut} onChange={(e) => setOptOut(e.target.checked)} />
-                      {t("crmOptOut")}
-                    </label>
-                    <button type="button" className={classes.primary} disabled={busy || !dirty} onClick={saveDetails}>
-                      {t("bizSave")}
-                    </button>
-                  </div>
-                )}
-              </section>
-              {canWrite && (
-                <section className={crm.subCard}>
-                  <div className={classes.cardHead}>
-                    <span className={classes.cardTitle}>{t("crmAddActivity")}</span>
-                    <div className={classes.segmented} role="tablist">
-                      {(["note", "call", "followUp"] as const).map((k) => (
-                        <button key={k} type="button" className={kind === k ? classes.on : ""} onClick={() => setKind(k)}>
-                          {t(kindKey[k])}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className={classes.form}>
-                    <label className={`${classes.field} ${classes.wide}`}>
-                      {t(kind === "followUp" ? "crmFollowUpText" : "crmActivityText")}
-                      <input value={text} onChange={(e) => setText(e.target.value)} maxLength={1000} />
-                    </label>
-                    {kind === "followUp" && (
-                      <div className={classes.field}>
-                        <DateInput title={t("crmDueAt")} onChange={(d) => setDue(d)} />
-                      </div>
-                    )}
-                    <div className={classes.actions}>
-                      <button
-                        type="button"
-                        className={classes.primary}
-                        disabled={busy || text.trim().length < 2 || (kind === "followUp" && !due)}
-                        onClick={addActivity}
-                      >
-                        {t("bizSave")}
-                      </button>
-                    </div>
-                  </div>
-                </section>
-              )}
-              <section className={crm.subCard}>
-                <span className={classes.cardTitle}>{t("crmTimeline")}</span>
-                {asArray<CrmTimelineItem>(data?.timeline).length === 0 ? (
-                  <p className={classes.empty}>{t("bizEmpty")}</p>
-                ) : (
-                  <ol className={crm.timeline}>
-                    {asArray<CrmTimelineItem>(data?.timeline).map((i, n) => (
-                      <li key={`${i.kind}${i.id || n}`} className={crm.tlItem}>
-                        <span className={`${classes.badge} ${crm[`tl_${i.kind}`] || ""}`}>{t(kindKey[i.kind])}</span>
-                        <span className={crm.tlText}>
-                          {i.text || ""}
-                          {i.kind === "followUp" && i.dueAt ? ` · ${t("crmDueAt")}: ${f.date(i.dueAt)}` : ""}
-                          {i.kind === "followUp" && i.doneAt ? ` · ${t("crmDone")}` : ""}
-                        </span>
-                        <span className={classes.muted}>{f.date(i.at)}</span>
-                      </li>
-                    ))}
-                  </ol>
-                )}
-              </section>
-            </>
-          )}
-        </HandleLoading>
+        <TagPicker title={t("crmBulkTagAdd")} value={add} onChange={setAdd} />
+        <TagPicker title={t("crmBulkTagRemove")} value={remove} onChange={setRemove} />
+        <div className={classes.actions}>
+          <button type="button" className={classes.ghost} onClick={() => closePopup(TAG_POPUP)}>
+            {t("bizCancel")}
+          </button>
+          <button type="button" className={classes.primary} disabled={busy || (!add.length && !remove.length)} onClick={save}>
+            {t("bizSave")}
+          </button>
+        </div>
+      </div>
+    </PopupCard>
+  );
+};
+
+// the current filter as a saved, dynamic segment
+const SaveSegment = ({ rules, onDone }: { rules: CrmRules; onDone: () => unknown }) => {
+  const t = useCrmText();
+  const { api } = useCrm();
+  const { closePopup } = usePopup();
+  const pushNotification = useNotification();
+  const [name, setName] = useState("");
+  const [busy, setBusy] = useState(false);
+  const save = async () => {
+    setBusy(true);
+    try {
+      await fetcher({ url: `${API}${api}/segments`, method: "POST", payload: { name: name.trim(), rules } });
+      pushNotification(t("bizSaved"), "Success");
+      closePopup(SEG_POPUP);
+      onDone();
+    } catch (err) {
+      pushNotification(errText(err), "Error");
+      setBusy(false);
+    }
+  };
+  return (
+    <PopupCard title={t("crmSaveAsSegment")}>
+      <div className={classes.popup}>
+        <label className={classes.field}>
+          {t("crmSegmentName")}
+          <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} placeholder={t("crmSegmentNameHint")} />
+        </label>
+        <div className={classes.actions}>
+          <button type="button" className={classes.ghost} onClick={() => closePopup(SEG_POPUP)}>
+            {t("bizCancel")}
+          </button>
+          <button type="button" className={classes.primary} disabled={busy || name.trim().length < 2} onClick={save}>
+            {t("bizSave")}
+          </button>
+        </div>
       </div>
     </PopupCard>
   );
 };
 
 const LIMIT = 30;
-const SEGMENTS = ["", "recent", "lapsed", "loyal", "optedOut"] as const;
-const segmentKey = {
-  "": "crmSegAll",
-  recent: "crmSegRecent",
-  lapsed: "crmSegLapsed",
-  loyal: "crmSegLoyal",
-  optedOut: "crmSegOptedOut",
-} as const;
+const SORTS = ["recent", "visits", "spent", "name", "new"] as const;
+const sortKey: Record<(typeof SORTS)[number], string> = {
+  recent: "crmSortRecent",
+  visits: "crmSortVisits",
+  spent: "crmSortSpent",
+  name: "crmSortName",
+  new: "crmSortNew",
+};
 
-const CrmContacts = ({ refreshKey, onChanged }: { refreshKey: number; onChanged: () => unknown }) => {
+const CrmContacts = () => {
   const t = useCrmText();
   const f = useBizFormat();
   const ctx = useCrm();
+  const router = useRouter();
+  const search = useSearchParams();
   const { setPopup } = usePopup();
-  const { data: tags } = useCrmTags();
+  const pushNotification = useNotification();
   const [q, setQ] = useState("");
   const [query, setQuery] = useState("");
-  const [tag, setTag] = useState("");
-  const [segment, setSegment] = useState<(typeof SEGMENTS)[number]>("");
+  const [segment, setSegment] = useState(search?.get("segment") || "");
+  const [sort, setSort] = useState<(typeof SORTS)[number]>("recent");
+  const [optedOut, setOptedOut] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [rules, setRules] = useState<CrmRules>(emptyRules());
+  const [applied, setApplied] = useState<CrmRules>(emptyRules());
   const [page, setPage] = useState(1);
-  const params = new URLSearchParams({ page: String(page), limit: String(LIMIT) });
-  if (query) params.set("q", query);
-  if (tag) params.set("tag", tag);
-  if (segment) params.set("segment", segment);
+  const [selected, setSelected] = useState<string[]>([]);
+  const { data: segs, mutate: mutateSegs } = useSWR<{ presets: CrmSegment[]; saved: CrmSegment[] }>(`${API}${ctx.api}/segments`, (url: string) =>
+    fetcher({ url }).then((res) => res.data as { presets: CrmSegment[]; saved: CrmSegment[] }),
+  );
+  const params = useMemo(() => {
+    const p = new URLSearchParams({ page: String(page), limit: String(LIMIT), sort });
+    if (query) p.set("q", query);
+    if (segment) p.set("segment", segment);
+    if (optedOut) p.set("optedOut", "1");
+    if (hasRules(applied)) p.set("rules", JSON.stringify(applied));
+    return p;
+  }, [page, sort, query, segment, optedOut, applied]);
   const { data, error, mutate, isValidating } = useSWR<{ items: CrmContact[]; total: number }>(
     `${API}${ctx.api}/contacts?${params}`,
     (url: string) => fetcher({ url }).then((res) => ({ items: asArray<CrmContact>(res.data?.items), total: Number(res.data?.total) || 0 })),
     { keepPreviousData: true },
   );
-  useEffect(() => {
-    mutate();
-  }, [refreshKey, mutate]);
   useEffect(() => {
     const h = setTimeout(() => {
       setQuery(q.trim());
@@ -315,91 +245,202 @@ const CrmContacts = ({ refreshKey, onChanged }: { refreshKey: number; onChanged:
     }, 350);
     return () => clearTimeout(h);
   }, [q]);
+  useEffect(() => setSelected([]), [params]);
   const pages = Math.max(1, Math.ceil((data?.total || 0) / LIMIT));
-  const changed = () => {
-    mutate();
-    onChanged();
-  };
   const withCtx = (node: React.ReactNode, c: Ctx = ctx) => <CrmContext.Provider value={c}>{node}</CrmContext.Provider>;
-  const open = (c: CrmContact) => setPopup(POPUP, withCtx(<ContactDetail id={c._id} onChanged={changed} />));
+  const open = (c: CrmContact) => router.push(`${ctx.panel}/crm/contacts/${c._id}`);
+  const rows = data?.items || [];
+  const allOn = rows.length > 0 && rows.every((r) => selected.includes(r._id));
+  const toggle = (id: string) => setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  const exportCsv = async () => {
+    try {
+      const p = new URLSearchParams(params);
+      p.delete("page");
+      p.delete("limit");
+      const res = await fetch(`${API}${ctx.api}/contacts/export?${p}`, { credentials: "include" });
+      if (!res.ok) throw new Error(t("crmExportFailed"));
+      const url = URL.createObjectURL(await res.blob());
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "contacts.csv";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } catch (err) {
+      pushNotification(errText(err), "Error");
+    }
+  };
   return (
     <section className={classes.card}>
       <div className={classes.cardHead}>
         <div className={classes.filters}>
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("crmSearch")} aria-label={t("crmSearch")} />
-          <select value={tag} onChange={(e) => { setTag(e.target.value); setPage(1); }} aria-label={t("crmTags")}>
-            <option value="">{t("crmAllTags")}</option>
-            {asArray<string>(tags).map((x) => (
-              <option key={x} value={x}>
-                {x}
+          <select
+            value={segment}
+            onChange={(e) => {
+              setSegment(e.target.value);
+              setPage(1);
+            }}
+            aria-label={t("crmNavSegments")}
+          >
+            <option value="">{t("crmSegAll")}</option>
+            {asArray<CrmSegment>(segs?.presets).map((s) => (
+              <option key={s._id} value={s._id}>
+                {t(presetKey[s.preset || ""] || s.preset || "")} ({f.money(s.count)})
+              </option>
+            ))}
+            {asArray<CrmSegment>(segs?.saved).map((s) => (
+              <option key={s._id} value={s._id}>
+                {s.name} ({f.money(s.count)})
               </option>
             ))}
           </select>
-        </div>
-        {ctx.canWrite && (
-          <button type="button" className={classes.primary} onClick={() => setPopup(NEW_POPUP, withCtx(<NewContact onDone={changed} />))}>
-            {t("crmAddContact")}
+          <select value={sort} onChange={(e) => setSort(e.target.value as (typeof SORTS)[number])} aria-label={t("crmSort")}>
+            {SORTS.map((s) => (
+              <option key={s} value={s}>
+                {t(sortKey[s])}
+              </option>
+            ))}
+          </select>
+          <button type="button" className={`${classes.ghost} ${showFilters || hasRules(applied) ? crm.ghostOn : ""}`} onClick={() => setShowFilters((v) => !v)}>
+            {t("crmFilters")}
           </button>
-        )}
-      </div>
-      <div className={crm.scrollRow}>
-        <div className={classes.segmented} role="tablist">
-          {SEGMENTS.map((s) => (
-            <button key={s || "all"} type="button" className={segment === s ? classes.on : ""} onClick={() => { setSegment(s); setPage(1); }}>
-              {t(segmentKey[s])}
+          <label className={crm.check}>
+            <input type="checkbox" checked={optedOut} onChange={(e) => setOptedOut(e.target.checked)} />
+            {t("crmSegOptedOut")}
+          </label>
+        </div>
+        <div className={crm.rowActions}>
+          <button type="button" className={classes.ghost} onClick={exportCsv}>
+            {t("crmExport")}
+          </button>
+          {ctx.canWrite && (
+            <button type="button" className={classes.ghost} onClick={() => setPopup("CrmImport", withCtx(<CrmImport onDone={() => mutate()} />))}>
+              {t("crmImport")}
             </button>
-          ))}
+          )}
+          {ctx.canWrite && (
+            <button
+              type="button"
+              className={classes.primary}
+              onClick={() => setPopup(NEW_POPUP, withCtx(<NewContact onDone={(id) => (id ? router.push(`${ctx.panel}/crm/contacts/${id}`) : mutate())} />))}
+            >
+              {t("crmAddContact")}
+            </button>
+          )}
         </div>
       </div>
+      {showFilters && (
+        <div className={crm.subCard}>
+          <CrmRulesForm rules={rules} onChange={setRules} />
+          <div className={classes.actions}>
+            <button
+              type="button"
+              className={classes.ghost}
+              onClick={() => {
+                setRules(emptyRules());
+                setApplied(emptyRules());
+              }}
+            >
+              {t("crmClearFilters")}
+            </button>
+            {ctx.canWrite && hasRules(rules) && (
+              <button type="button" className={classes.ghost} onClick={() => setPopup(SEG_POPUP, withCtx(<SaveSegment rules={rules} onDone={() => mutateSegs()} />))}>
+                {t("crmSaveAsSegment")}
+              </button>
+            )}
+            <button
+              type="button"
+              className={classes.primary}
+              onClick={() => {
+                setApplied(rules);
+                setPage(1);
+              }}
+            >
+              {t("crmApplyFilters")}
+            </button>
+          </div>
+        </div>
+      )}
+      {selected.length > 0 && ctx.canWrite && (
+        <div className={crm.bulkBar}>
+          <span>{t("crmSelected", [f.money(selected.length)])}</span>
+          <button type="button" className={classes.ghost} onClick={() => setPopup(TAG_POPUP, withCtx(<BulkTag ids={selected} onDone={() => mutate()} />))}>
+            {t("crmBulkTag")}
+          </button>
+          <button type="button" className={classes.ghost} onClick={() => router.push(`${ctx.panel}/crm/campaigns?contacts=${selected.join(",")}`)}>
+            {t("crmBulkCampaign")}
+          </button>
+          <button type="button" className={crm.linkButton} onClick={() => setSelected([])}>
+            {t("bizCancel")}
+          </button>
+        </div>
+      )}
       <HandleLoading data={!!data} error={error}>
         {!!data &&
-          (data.items.length === 0 ? (
+          (rows.length === 0 ? (
             <p className={classes.empty}>{t("crmNoContacts")}</p>
           ) : (
-            <div className={classes.tableWrap} style={{ opacity: isValidating ? 0.6 : 1 }}>
-              <table className={classes.table}>
-                <thead>
-                  <tr>
-                    <th>{t("crmName")}</th>
-                    <th>{t("crmPhone")}</th>
-                    <th>{t("crmSource")}</th>
-                    <th className={classes.num}>{t("crmVisitsOrders")}</th>
-                    <th className={classes.num}>{t("crmSpent")}</th>
-                    <th>{t("crmLastSeen")}</th>
-                    <th>{t("crmTags")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.items.map((c) => (
-                    <tr key={c._id} className={classes.rowLink} tabIndex={0} onClick={() => open(c)} onKeyDown={(e) => e.key === "Enter" && open(c)}>
-                      <td className={classes.wrap}>
-                        {c.name || "—"} {c.smsOptOut && <span className={`${classes.badge} ${crm.badgeMuted}`}>{t("crmOptedOutBadge")}</span>}
-                      </td>
-                      <td dir="ltr" className={crm.start}>
-                        {phoneText(c.phone)}
-                      </td>
-                      <td>
-                        <span className={classes.badge}>{t(sourceKey[c.source] || "crmSourceManual")}</span>
-                      </td>
-                      <td className={classes.num}>
-                        {f.money(c.visits)} / {f.money(c.orders)}
-                      </td>
-                      <td className={classes.num}>{f.money(c.spent)}</td>
-                      <td>{f.date(c.lastSeenAt)}</td>
-                      <td className={classes.wrap}>
-                        <span className={crm.tags}>
-                          {asArray<string>(c.tags).map((x) => (
-                            <span key={x} className={crm.tag}>
-                              {x}
-                            </span>
-                          ))}
-                        </span>
-                      </td>
+            <>
+              <p className={classes.muted}>{t("crmContactsCount", [f.money(data.total)])}</p>
+              <div className={classes.tableWrap} style={{ opacity: isValidating ? 0.6 : 1 }}>
+                <table className={classes.table}>
+                  <thead>
+                    <tr>
+                      {ctx.canWrite && (
+                        <th className={crm.selCol}>
+                          <input
+                            type="checkbox"
+                            aria-label={t("crmSelectAll")}
+                            checked={allOn}
+                            onChange={() => setSelected(allOn ? [] : rows.map((r) => r._id))}
+                          />
+                        </th>
+                      )}
+                      <th>{t("crmName")}</th>
+                      <th>{t("crmPhone")}</th>
+                      <th>{t("crmLastSeen")}</th>
+                      <th className={classes.num}>{t("crmVisitsOrders")}</th>
+                      <th className={classes.num}>{t("crmNoShows")}</th>
+                      <th className={classes.num}>{t("crmSpent")}</th>
+                      <th>{t("crmTags")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {rows.map((c) => (
+                      <tr key={c._id} className={classes.rowLink} tabIndex={0} onClick={() => open(c)} onKeyDown={(e) => e.key === "Enter" && open(c)}>
+                        {ctx.canWrite && (
+                          <td className={crm.selCol} onClick={(e) => e.stopPropagation()}>
+                            <input type="checkbox" aria-label={c.name || c.phone} checked={selected.includes(c._id)} onChange={() => toggle(c._id)} />
+                          </td>
+                        )}
+                        <td className={classes.wrap}>
+                          {c.name || "—"} {c.smsOptOut && <span className={`${classes.badge} ${crm.badgeMuted}`}>{t("crmOptedOutBadge")}</span>}
+                          {!!c.insurer && c.insurer !== "none" && <span className={crm.subText}>{t(insurerKey[c.insurer])}</span>}
+                        </td>
+                        <td dir="ltr" className={crm.start}>
+                          {phoneText(c.phone)}
+                        </td>
+                        <td>{f.date(c.lastSeenAt)}</td>
+                        <td className={classes.num}>
+                          {f.money(c.visits)} / {f.money(c.orders)}
+                        </td>
+                        <td className={classes.num}>{c.noShows ? f.money(c.noShows) : "—"}</td>
+                        <td className={classes.num}>{f.money(c.spent)}</td>
+                        <td className={classes.wrap}>
+                          <span className={crm.tags}>
+                            {asArray<string>(c.tags).map((x) => (
+                              <span key={x} className={crm.tag}>
+                                {x}
+                              </span>
+                            ))}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           ))}
       </HandleLoading>
       {pages > 1 && (

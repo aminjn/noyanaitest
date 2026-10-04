@@ -1,0 +1,201 @@
+/* AI layer (2026-10): violet = AI, as in the visit scribe (Aurora tokens). */
+
+.mic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 999px;
+  border: 1px solid var(--aiLine);
+  background: var(--aiSoft);
+  color: var(--ai);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transTime, 0.2s), transform var(--transTime, 0.2s);
+  white-space: nowrap;
+}
+
+.mic:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.micCompact {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  justify-content: center;
+}
+
+.micOn {
+  background: var(--error);
+  border-color: var(--error);
+  color: var(--white);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--error) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 0.5rem color-mix(in srgb, var(--error) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .micOn {
+    animation: none;
+  }
+}
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--radiusMd);
+  border: 1px dashed var(--aiLine);
+  background: var(--aiSoft);
+  color: var(--gray12);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.notice a {
+  color: var(--ai);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: var(--aiSoft);
+  color: var(--ai);
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.warnBadge {
+  background: color-mix(in srgb, var(--warning) 18%, transparent);
+  color: var(--gray13);
+}
+
+.errBadge {
+  background: color-mix(in srgb, var(--error) 15%, transparent);
+  color: var(--error);
+}
+
+.aiButton {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.25rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--aiLine);
+  background: var(--aiSoft);
+  color: var(--ai);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.aiButton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 1rem 1.125rem;
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--aiLine);
+  box-shadow: var(--glassShadow);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--gray13);
+  margin-inline-end: auto;
+}
+
+.muted {
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--gray9);
+}
+
+.text {
+  font-size: 0.875rem;
+  line-height: 1.9;
+  color: var(--gray12);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--glassStrong, var(--white));
+  color: var(--gray12);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  text-align: start;
+  max-width: 100%;
+}
+
+.chip:hover {
+  border-color: var(--aiLine);
+  color: var(--ai);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--gray12);
+}

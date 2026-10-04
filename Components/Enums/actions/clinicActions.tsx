@@ -9,6 +9,8 @@ export const clinicActions = [
   "readFinance",
   // «حسابداری» (2026-10): vouchers, accounts and quick entries
   "manageAccounting",
+  // finalizing / reverting / deleting final vouchers, deciding finance requests (2026-10)
+  "approveVouchers",
   // «حقوق و دستمزد» (2026-10): employees, payslips and their payments
   "readPayroll",
   "managePayroll",
@@ -50,7 +52,7 @@ export const categorizedClinicActions: Readonly<
   Record<(typeof clinicActionCategories)[number], readonly ContentKey[]>
 > = {
   orgReviewsTitle: ["readReviews"],
-  financialMangement: ["readFinance", "manageAccounting"],
+  financialMangement: ["readFinance", "manageAccounting", "approveVouchers"],
   payMenu: ["readPayroll", "managePayroll"],
   crmMenu: ["readCrm", "manageCrm", "sendCampaigns"],
   moadianMenu: ["readMoadian", "manageMoadian"],

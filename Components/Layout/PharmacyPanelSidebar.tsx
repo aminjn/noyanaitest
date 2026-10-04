@@ -1,22 +1,20 @@
-import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
-import PeopleIcon from "@/Components/Icons/PeopleIcon";
-import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
-import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
 import CartIcon from "../Icons/CartIcon";
 import FolderIcon from "../Icons/FolderIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
-import WalletIcon from "../Icons/WalletIcon";
 import useAcl from "../Hooks/useAcl";
 import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
 
 const PharmacyPanelSidebar = () => {
   const hasAccess = useAcl("pharmacy");
+  const kartabl = useKartablCount("pharmacy");
 
   const orders = useOrdersTodo("pharmacy", hasAccess("readOrders"));
 
@@ -81,48 +79,9 @@ const PharmacyPanelSidebar = () => {
         show: hasAccess(),
         target: "secretary",
       },
-      {
-        title: "financialMangement",
-        icon: <WalletIcon />,
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "finance",
-      },
-      {
-        title: "accounting",
-        icon: <BookOpenIcon />,
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "accounting",
-      },
-      {
-        title: "payMenu",
-        icon: <UserGroupIcon />,
-        group: "groupCenter",
-        show: hasAccess("readPayroll"),
-        target: "payroll",
-      },
-      {
-        title: "crmMenu",
-        icon: <PeopleIcon />,
-        group: "groupCenter",
-        show: hasAccess("readCrm"),
-        target: "crm",
-      },
-      {
-        title: "moadianMenu",
-        icon: <ReceiptIcon />,
-        group: "groupCenter",
-        show: hasAccess("readMoadian"),
-        target: "moadian",
-      },
-      {
-        title: "invMenu",
-        icon: <PackageIcon />,
-        group: "groupCenter",
-        show: hasAccess("readInventory"),
-        target: "inventory",
-      },
+      financeSection({ hasAccess, inventory: true, insurance: true, group: "groupCenter", profile: "pharmacy" }),
+      crmSection({ hasAccess, group: "groupCenter", profile: "pharmacy" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupCenter", badge: kartabl }),
       {
         title: "licenses",
         icon: <CartIcon />,
@@ -138,7 +97,7 @@ const PharmacyPanelSidebar = () => {
         target: "article",
       },
     ],
-    [hasAccess, orders.count],
+    [hasAccess, orders.count, kartabl],
   );
 
   return <PanelSidebar links={links} panel="pharmacypanel" />;

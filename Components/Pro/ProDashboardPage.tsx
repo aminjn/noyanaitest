@@ -170,27 +170,27 @@ const ProDashboardPage = () => {
                   <ProPriceOptions options={options} selected={selected} onSelect={setSelected} />
                   <div className={classes.codeRow}>
                     <Input
-                      title={getContent("licensePromoCode" as ContentKey)}
+                      title={getContent("licensePromoCode")}
                       placeholder
                       autoComplete="off"
                       onChange={(e) => setCodeInput(e.target.value)}
                     />
                     <Button variant="Secondary" mode="Fill" size="M" radius="Medium" onClick={() => setCode(codeInput.trim())}>
-                      {getContent("licensePromoApply" as ContentKey)}
+                      {getContent("licensePromoApply")}
                     </Button>
                   </div>
-                  {codeRejected && <span className={classes.err}>{getContent("licensePromoCodeInvalid" as ContentKey)}</span>}
+                  {codeRejected && <span className={classes.err}>{getContent("licensePromoCodeInvalid")}</span>}
                   {!!code && !codeRejected && !!quote?.promotion?.withCode && (
-                    <span className={classes.ok}>{getContent("licensePromoCodeApplied" as ContentKey)}</span>
+                    <span className={classes.ok}>{getContent("licensePromoCodeApplied")}</span>
                   )}
                   {!!wallet && (
                     <div className={classes.totalRow}>
-                      <span>{getContent("balance" as ContentKey)}</span>
+                      <span>{getContent("balance")}</span>
                       <span>{`${currencize(balance)} ${getContent("toman")}`}</span>
                     </div>
                   )}
                   <div className={classes.totalRow}>
-                    <span>{getContent("totalPrice" as ContentKey)}</span>
+                    <span>{getContent("totalPrice")}</span>
                     <strong>{`${currencize(price)} ${getContent("toman")}`}</strong>
                   </div>
                   {!!wallet && <WalletShortfallTopUp balance={balance} total={price} />}

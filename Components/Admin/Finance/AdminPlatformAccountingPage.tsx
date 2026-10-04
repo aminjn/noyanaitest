@@ -16,7 +16,7 @@ const AdminPlatformAccountingPage = () => {
   const canWrite = user?.role === "admin" || hasAccess("Finance", "update");
   return (
     <WithTitle title={ta("حسابداری پلتفرم")}>
-      <AccountingPage api="/admin/finance/biz" canWrite={canWrite} hideHeader />
+      <AccountingPage api="/admin/finance/biz" canWrite={canWrite} canApprove={canWrite} platform hideHeader />
     </WithTitle>
   );
 };

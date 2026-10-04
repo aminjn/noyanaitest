@@ -9,11 +9,20 @@ import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
 import { IPrescription2 } from "../Store/DoctorPrescriptionContext";
 import useProgress from "@/Components/Hooks/useProgress";
+import { useRxText } from "./VoiceRxBox";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
+// lines the voice parser added and the doctor has not reviewed yet
+const useUnreviewed = () => {
+  const { items, aiMarks } = usePrescription();
+  return items.some((i) => !!aiMarks[i._id]);
+};
+
 const Submitter = () => {
   const { items, patient, defaultValue, readOnly } = usePrescription();
+  const unreviewed = useUnreviewed();
+  const rx = useRxText();
 
   const [isDrafting, setIsDrafting] = useState<Record<string, unknown> | null>(
     null,
@@ -31,6 +40,7 @@ const Submitter = () => {
 
   const onSubmit = useCallback(() => {
     if (!!isDrafting || !!isCommiting) return;
+    if (unreviewed) return pushNotification(rx("rxAiReviewFirst"), "Warn");
     if (!patient) return pushNotification(getContent("checkInput"), "Warn");
     if (!items.length)
       return pushNotification(getContent("checkInput"), "Warn");
@@ -45,7 +55,7 @@ const Submitter = () => {
         dateDo: el.dateDo,
       })),
     });
-  }, [isDrafting, isCommiting, patient, pushNotification, getContent, items]);
+  }, [isDrafting, isCommiting, patient, pushNotification, getContent, items, unreviewed, rx]);
 
   if (readOnly || !!defaultValue) return null;
   return (
@@ -86,6 +96,8 @@ const Submitter = () => {
 
 const Drafter = () => {
   const { items, patient, defaultValue, readOnly } = usePrescription();
+  const unreviewed = useUnreviewed();
+  const rx = useRxText();
 
   const [isLoading, setIsLoading] = useState<Record<string, unknown> | null>(
     null,
@@ -99,6 +111,7 @@ const Drafter = () => {
 
   const onSubmit = useCallback(() => {
     if (!!isLoading) return;
+    if (unreviewed) return pushNotification(rx("rxAiReviewFirst"), "Warn");
     if (!patient) return pushNotification(getContent("checkInput"), "Warn");
     if (!items.length)
       return pushNotification(getContent("checkInput"), "Warn");
@@ -113,7 +126,7 @@ const Drafter = () => {
         dateDo: el.dateDo,
       })),
     });
-  }, [isLoading, patient, pushNotification, getContent, items]);
+  }, [isLoading, patient, pushNotification, getContent, items, unreviewed, rx]);
 
   if (readOnly) return null;
   if (!!defaultValue?.taminPrescriptions.length) return null;
@@ -142,6 +155,8 @@ const Drafter = () => {
 
 const Editor = () => {
   const { readOnly, defaultValue, items, refresh } = usePrescription();
+  const unreviewed = useUnreviewed();
+  const rx = useRxText();
 
   const [isLoading, setIsLoading] = useState<Record<string, unknown> | null>(
     null,
@@ -154,6 +169,7 @@ const Editor = () => {
 
   const onEdit = useCallback(() => {
     if (!!isLoading) return;
+    if (unreviewed) return pushNotification(rx("rxAiReviewFirst"), "Warn");
     if (!items.length)
       return pushNotification(getContent("checkInput"), "Warn");
     setIsLoading({
@@ -166,7 +182,7 @@ const Editor = () => {
         dateDo: el.dateDo,
       })),
     });
-  }, [isLoading, items, getContent, pushNotification]);
+  }, [isLoading, items, getContent, pushNotification, unreviewed, rx]);
 
   if (readOnly || !defaultValue) return null;
   return (

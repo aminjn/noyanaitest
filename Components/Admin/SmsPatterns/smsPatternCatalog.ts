@@ -90,6 +90,7 @@ export const notificationSmsEvents = [
   "proExpiringUser",
   "proExpiredUser",
   "ticketAnsweredUser",
+  "crmTicketAnsweredUser",
   "accountSuspendedUser",
   "accountReactivatedUser",
 ] as const;
@@ -108,6 +109,8 @@ export type SmsPatternNameFor<E extends string> =
 export type SmsPatternName =
   | "OTP_PATTERN"
   | "SECRETARY_INVITE_PATTERN"
+  | "INVOICE_LINK_PATTERN"
+  | "CRM_DOC_LINK_PATTERN"
   | SmsPatternNameFor<UserAlertEvent>
   | SmsPatternNameFor<ReservationSmsEvent>
   | SmsPatternNameFor<OrderSmsEvent>
@@ -564,6 +567,14 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     variables: ["ticketId", "ticketTitle"],
     sample: () => ta("پشتیبانی به تیکت «%ticketTitle%» پاسخ داد."),
   },
+  // a centre answered the patient's request to it (backend
+  // Controllers/crmWorkController.ts replyTicket)
+  crmTicketAnsweredUser: {
+    audience: "patient",
+    label: () => ta("پاسخ مرکز درمانی به درخواست - کاربر"),
+    variables: ["ticketId", "centre"],
+    sample: () => ta("%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد."),
+  },
   accountSuspendedUser: {
     audience: "patient",
     label: () => ta("تعلیق حساب - کاربر"),
@@ -597,6 +608,22 @@ export const smsPatternCatalog: SmsPatternEntry[] = [
     variables: ["owner"],
     sample: () =>
       ta("%owner% شما را به همکاری به‌عنوان منشی در نویان دعوت کرده است. برای پذیرش وارد پنل منشی شوید."),
+  }),
+  // a provider's invoice link to its patient (2026-10, «مالی و حسابداری»
+  // → صورتحساب‌ها; backend Lib/business/invoices.ts smsInvoice)
+  entry("INVOICE_LINK_PATTERN", {
+    audience: "patient",
+    label: () => ta("لینک صورتحساب بیمار"),
+    variables: ["center", "amount", "link"],
+    sample: () => ta("صورتحساب %center% به مبلغ %amount% تومان: %link%"),
+  }),
+  // a treatment plan or contract link to its patient or party («ارتباط با
+  // بیماران» → فروش؛ backend Lib/business/crmSales.ts smsLink)
+  entry("CRM_DOC_LINK_PATTERN", {
+    audience: "patient",
+    label: () => ta("لینک طرح درمان یا قرارداد"),
+    variables: ["center", "title", "link"],
+    sample: () => ta("%center%: %title% را از این لینک ببینید و تأیید کنید: %link%"),
   }),
   ...reservationSmsEvents.map((event) =>
     entry(smsPatternNameForEvent(event), reservationMeta[event]),

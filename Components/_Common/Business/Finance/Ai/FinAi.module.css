@@ -1,0 +1,376 @@
+/* The finance assistant (2026-10): Nexxa's AI blocks on Noyan's design
+   tokens (--ai, --aiSoft, --aiLine, --aiText). Builds on
+   ../../Accounting.module.css for cards, tables and forms. */
+
+.aiButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: 999px;
+  border: 1px solid var(--aiLine);
+  background: var(--aiSoft);
+  color: var(--aiText);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.aiButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.aiButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+.aiSolid {
+  background: var(--ai);
+  border-color: var(--ai);
+  color: #fff;
+}
+
+.insight {
+  width: 100%;
+}
+.insightBox {
+  position: relative;
+  border: 1px solid var(--aiLine);
+  background: var(--aiSoft);
+  border-radius: 1rem;
+  padding: 0.875rem 1rem;
+}
+.insightHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--aiText);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  margin-block-end: 0.5rem;
+}
+.insightHead svg {
+  width: 1rem;
+  height: 1rem;
+}
+.insightTools {
+  margin-inline-start: auto;
+  display: flex;
+  gap: 0.25rem;
+}
+.iconBtn {
+  border: 0;
+  background: transparent;
+  color: var(--aiText);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.iconBtn:hover {
+  background: var(--aiSoft);
+}
+.insightText {
+  white-space: pre-wrap;
+  font-size: 0.8125rem;
+  line-height: 1.9;
+  color: var(--gray12);
+  text-align: start;
+}
+
+.off {
+  border: 1px dashed var(--aiLine);
+  border-radius: 1rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.8125rem;
+  color: var(--gray11);
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.warnings li {
+  font-size: 0.75rem;
+  color: var(--warningS3);
+  background: var(--warningT1);
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.625rem;
+}
+
+.draft {
+  border: 1px solid var(--aiLine);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--glass);
+}
+.draftHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-weight: 800;
+  font-size: 0.875rem;
+}
+.kv {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.5rem 1rem;
+  margin: 0;
+}
+.kv div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+.kv dt {
+  font-size: 0.6875rem;
+  color: var(--gray10);
+}
+.kv dd {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.entryRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+.entryRow input,
+.entryRow textarea {
+  flex: 1;
+  min-width: 0;
+}
+.mic {
+  flex: none;
+  width: 2.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--gray12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.mic svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.micOn {
+  background: var(--errorT1, var(--aiSoft));
+  color: var(--error);
+  border-color: var(--error);
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.examples button {
+  border: 1px solid var(--aiLine);
+  background: transparent;
+  color: var(--aiText);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-align: start;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 16rem;
+  max-height: 32rem;
+  overflow-y: auto;
+  padding: 0.25rem;
+}
+.msg {
+  max-width: 85%;
+  white-space: pre-wrap;
+  border-radius: 1rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.8;
+  text-align: start;
+}
+.msgUser {
+  align-self: flex-start;
+  background: var(--primary6, var(--ai));
+  color: #fff;
+}
+.msgBot {
+  align-self: flex-end;
+  background: var(--glassStrong, var(--aiSoft));
+  border: 1px solid var(--line);
+}
+.cite {
+  display: inline-flex;
+  margin-inline: 0.125rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: var(--aiSoft);
+  color: var(--aiText);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-decoration: none;
+  vertical-align: middle;
+}
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-block-start: 0.375rem;
+}
+
+.preview {
+  max-height: 20rem;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+}
+.ocrGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+.drop {
+  border: 1px dashed var(--line);
+  border-radius: 0.75rem;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--gray10);
+}
+
+.sev {
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.sevHigh {
+  background: var(--errorT1, var(--line));
+  color: var(--error);
+}
+.sevMedium {
+  background: var(--warningT1);
+  color: var(--warningS3);
+}
+.sevLow {
+  background: var(--line);
+  color: var(--gray10);
+}
+
+.alert {
+  border: 1px solid var(--error);
+  background: var(--errorT1, transparent);
+  color: var(--error);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.horizons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.flowList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--gray11);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.flowList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 8rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--gray12);
+  padding: 0.625rem 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .ocrGrid,
+  .horizons {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .msg {
+    max-width: 100%;
+  }
+}
+
+.note {
+  margin: 0.5rem 0 0;
+  font-size: 0.6875rem;
+  color: var(--gray10);
+}
+
+/* the assistant's mark keeps its size wherever it sits */
+.off svg,
+.draftHead svg,
+.insightHead svg,
+.aiButton svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.entryRow input,
+.entryRow textarea,
+.textarea,
+.draft select,
+.ocrGrid select {
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--gray4);
+  background: var(--glassStrong);
+  color: var(--gray13);
+  font: inherit;
+  font-size: 0.875rem;
+}
+.textarea {
+  padding: 0.625rem 0.75rem;
+}
+.entryRow input:focus,
+.textarea:focus {
+  outline: none;
+  box-shadow: var(--focusRing);
+}

@@ -84,3 +84,28 @@
   padding-block: 0.25rem;
   color: var(--black);
 }
+
+/* a line from the voice / free-text parser (2026-10) */
+.aiReview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-block-start: 0.25rem;
+  border-radius: var(--radiusSm);
+  border: 1px dashed var(--aiLine);
+  background: var(--aiSoft);
+}
+
+.aiSpoken {
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.aiWarn {
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--gray13);
+  flex-basis: 100%;
+}

@@ -42,11 +42,14 @@ type AiSettings = {
   sttKeyPreview: string;
   sttModel: string;
   sttLanguage: string;
+  // AI in the provider panels (2026-10): requests per user per day, 0 = none
+  panelAiDailyLimit?: number;
+  panelAiUsage?: { today: number; week: number; users: number; features: Record<string, number> };
   defaults?: Record<string, string>;
   status?: { translation?: AiStatus; clinical?: AiStatus; stt?: AiStatus; chat?: AiStatus };
 };
 
-type AiInput = Omit<AiSettings, "apiKeySet" | "apiKeyPreview" | "apiKeyFromEnv" | "sttKeySet" | "sttKeyPreview" | "defaults" | "status"> & {
+type AiInput = Omit<AiSettings, "apiKeySet" | "apiKeyPreview" | "apiKeyFromEnv" | "sttKeySet" | "sttKeyPreview" | "defaults" | "status" | "panelAiUsage"> & {
   aiApiKey: string;
   sttApiKey: string;
 };
@@ -134,6 +137,9 @@ const AdminAiSettingsTab = () => {
               {ta("سرویس‌دهنده، کلید و مدل‌های هوش مصنوعی سایت: ترجمه‌ی خودکار محتوا، دستیار بالینی پزشک، تبدیل گفتار به متن و دستیار گفتگو. کلیدها فقط روی سرور می‌مانند. فیلد خالی یعنی مقدار فایل ‎.env سرور.")}
             </p>
             <p className={classes.note}>
+              {ta("«دستیار نویان» در همه‌ی پنل‌ها، نسخه با صدا، پیشنهاد پاسخ گفتگو، خلاصه‌ی پرونده، متن پیامک و تحلیل تماس همه با «دستیار بالینی» کار می‌کنند (داده‌ی بیمار) و صدا با «گفتار به متن».")}
+            </p>
+            <p className={classes.note}>
               {ta("نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1")}
             </p>
             {[data.apiKeySet && data.apiKeyPreview, data.sttKeySet && data.sttKeyPreview]
@@ -164,6 +170,7 @@ const AdminAiSettingsTab = () => {
                 sttApiKey: "",
                 sttModel: data.sttModel || "",
                 sttLanguage: data.sttLanguage || "",
+                panelAiDailyLimit: data.panelAiDailyLimit ?? 200,
               }}
               hookProps={{
                 path: `${API}/admin/ai/settings`,
@@ -227,6 +234,11 @@ const AdminAiSettingsTab = () => {
                 },
                 sttModel: { title: ta("مدل (پیش‌فرض whisper-1)"), type: "text", ltr: true, section: ta("گفتار به متن") },
                 sttLanguage: { title: ta("زبان گفتار (پیش‌فرض fa)"), type: "text", ltr: true, section: ta("گفتار به متن") },
+                panelAiDailyLimit: {
+                  title: ta("سقف روزانه‌ی درخواست هوش مصنوعی هر کاربر پنل (۰ = بی‌سقف)"),
+                  type: "number",
+                  section: ta("دستیار پنل‌ها"),
+                },
               }}
             />
           </WithTitle>
@@ -234,6 +246,23 @@ const AdminAiSettingsTab = () => {
           <Box className={classes.box}>
             <h3 className={classes.sectionTitle}>{ta("وضعیت و آزمایش اتصال")}</h3>
             <p className={classes.note}>{ta("هر آزمایش یک درخواست کوتاه واقعی با تنظیمات ذخیره‌شده می‌فرستد. اول «ثبت» را بزنید.")}</p>
+            {!!data.panelAiUsage && (
+              <p className={classes.note}>
+                {ta("دستیار پنل‌ها: امروز ${1} درخواست، ۷ روز اخیر ${2} درخواست از ${3} کاربر", [
+                  data.panelAiUsage.today.toLocaleString(adminIntlTag()),
+                  data.panelAiUsage.week.toLocaleString(adminIntlTag()),
+                  data.panelAiUsage.users.toLocaleString(adminIntlTag()),
+                ])}
+                {Object.keys(data.panelAiUsage.features || {}).length > 0 && (
+                  <span className={classes.ltr}>
+                    {" "}
+                    ({Object.entries(data.panelAiUsage.features)
+                      .map(([k, v]) => `${k}: ${Number(v).toLocaleString(adminIntlTag())}`)
+                      .join("، ")})
+                  </span>
+                )}
+              </p>
+            )}
             <TestRow feature="translation" title={ta("ترجمه‌ی خودکار محتوا")} status={data.status?.translation} />
             <TestRow feature="clinical" title={ta("دستیار بالینی پزشک")} status={data.status?.clinical} />
             <TestRow feature="stt" title={ta("تبدیل گفتار به متن")} status={data.status?.stt} />

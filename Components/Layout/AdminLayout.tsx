@@ -11,6 +11,7 @@ import BarsIcon from "../Icons/BarsIcon";
 import CloseIcon from "../Icons/CloseIcon";
 import LogoLong from "../UI/LogoLong";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import Copilot from "../Ai/Copilot/Copilot";
 
 const hasAccessToAdmin: UserRole[] = ["admin", "notadmin"];
 
@@ -82,6 +83,8 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         <AdminSidebar />
       </div>
       <div className={classes.content}>{children}</div>
+      {/* the super admin's assistant (platform stats, requests, users, finance) */}
+      <Copilot profile="admin" />
     </div>
   );
 };

@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
 import usePopup from "@/Components/Hooks/usePopup";
 import PopupCard from "@/Components/UI/PopupCard";
+import DateInput from "@/Components/UI/DateInput";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
+import Link from "@/Components/i18n/Link";
 import classes from "../Accounting.module.css";
 import crm from "./Crm.module.css";
 import { asArray, useBizFormat } from "../bizShared";
@@ -16,62 +19,112 @@ import {
   CrmCampaign,
   CrmContext,
   CrmEstimate,
+  CrmRules,
+  CrmSegment,
+  emptyRules,
+  errText,
+  presetKey,
   statusKey,
   useCrm,
-  useCrmTags,
+  useCrmTemplates,
   useCrmText,
+  useHourLabel,
 } from "./crmShared";
+import CrmRulesForm from "./CrmRulesForm";
+import SmsTextField from "./SmsTextField";
 
 const POPUP = "CrmCampaign";
-const num = (s: string) => Math.max(0, Math.round(Number(String(s).replace(/[^\d]/g, "")) || 0));
+const HOURS = Array.from({ length: 14 }, (_, i) => 8 + i);
 
-const statusTone = (s: CrmCampaign["status"]) =>
+export const campaignTone = (s: CrmCampaign["status"]) =>
   s === "Sent" || s === "Approved" ? crm.badgeOk : s === "Rejected" ? crm.badgeBad : s === "Pending" ? crm.badgeWarn : "";
 
-// The campaign form: the audience (only the owner's own patients and
-// customers who have not opted out), the text with its SMS parts, and a
-// live estimate of who it reaches and what it costs - the plan's quota
-// first, then the wallet. Saved as a draft; "send for approval" puts it in
-// the super admin's queue.
-const CampaignForm = ({ campaign, onDone }: { campaign?: CrmCampaign; onDone: () => unknown }) => {
+type Mode = "segment" | "rules" | "selection";
+const modeKey: Record<Mode, string> = { segment: "crmNavSegments", rules: "crmAudRules", selection: "crmAudSelection" };
+
+// The campaign form (2026-10): the text (from a template or typed, with
+// variables and the tracked link), the audience - a segment, rules or a
+// hand-picked selection, always only this centre's own patients who have
+// not opted out - when to send (now or a chosen day and hour, inside its
+// own window within 08-21), and a live estimate of reach and cost against
+// the plan's quota and the wallet. Saved as a draft; "send for approval"
+// puts it in the super admin's queue.
+const CampaignForm = ({
+  campaign,
+  initial,
+  onDone,
+}: {
+  campaign?: CrmCampaign;
+  initial?: { segment?: string; contactIds?: string[] };
+  onDone: () => unknown;
+}) => {
   const t = useCrmText();
   const f = useBizFormat();
   const { api, canSend } = useCrm();
   const popup = usePopup();
   const close = () => popup.closePopup(POPUP);
   const pushNotification = useNotification();
-  const { data: allTags } = useCrmTags();
+  const { data: templates } = useCrmTemplates();
+  const hourLabel = useHourLabel();
+  const { data: segs } = useSWR<{ presets: CrmSegment[]; saved: CrmSegment[] }>(`${API}${api}/segments`, (url: string) =>
+    fetcher({ url }).then((res) => res.data as { presets: CrmSegment[]; saved: CrmSegment[] }),
+  );
+  const a = campaign?.audience;
   const [name, setName] = useState(campaign?.name || "");
   const [text, setText] = useState(campaign?.text || "");
-  const [tags, setTags] = useState<string[]>(campaign?.audience.tags || []);
-  const [sources, setSources] = useState<string[]>(campaign?.audience.sources || []);
-  const [gender, setGender] = useState<string>(campaign?.audience.gender || "");
-  const [inactiveDays, setInactiveDays] = useState(campaign?.audience.inactiveDays ? String(campaign.audience.inactiveDays) : "");
-  const [activeDays, setActiveDays] = useState(campaign?.audience.activeDays ? String(campaign.audience.activeDays) : "");
-  const [minVisits, setMinVisits] = useState(campaign?.audience.minVisits ? String(campaign.audience.minVisits) : "");
+  const [template, setTemplate] = useState(campaign?.template || "");
+  const [mode, setMode] = useState<Mode>(
+    initial?.contactIds?.length || a?.contactIds?.length ? "selection" : initial?.segment || a?.segment ? "segment" : "rules",
+  );
+  const [segment, setSegment] = useState(a?.segment || initial?.segment || "");
+  const [contactIds] = useState<string[]>(a?.contactIds || initial?.contactIds || []);
+  const [rules, setRules] = useState<CrmRules>(() => {
+    const { segment: _s, contactIds: _c, ...r } = (a || {}) as CrmAudience; // eslint-disable-line @typescript-eslint/no-unused-vars
+    return { ...emptyRules(), ...r };
+  });
+  const [later, setLater] = useState(!!campaign?.sendAt);
+  const [day, setDay] = useState<Date | null>(campaign?.sendAt ? new Date(campaign.sendAt) : null);
+  const [hour, setHour] = useState(campaign?.sendAt ? new Date(campaign.sendAt).getHours() : 10);
+  const [wFrom, setWFrom] = useState(campaign?.windowFrom ?? 8);
+  const [wUntil, setWUntil] = useState(campaign?.windowUntil ?? 21);
   const [estimate, setEstimate] = useState<CrmEstimate | null>(null);
   const [busy, setBusy] = useState(false);
-  const audience: CrmAudience = {
-    tags,
-    sources,
-    gender: (gender || null) as CrmAudience["gender"],
-    inactiveDays: inactiveDays ? num(inactiveDays) : null,
-    activeDays: activeDays ? num(activeDays) : null,
-    minVisits: minVisits ? num(minVisits) : null,
-  };
+  // a preset segment is sent as its rules (it is not stored)
+  const presetRules = (id: string) => asArray<CrmSegment>(segs?.presets).find((s) => s._id === id)?.rules;
+  const audience: CrmAudience =
+    mode === "selection"
+      ? { ...emptyRules(), contactIds }
+      : mode === "segment"
+        ? segment.startsWith("preset:")
+          ? { ...emptyRules(), ...(presetRules(segment) || {}) }
+          : { ...emptyRules(), segment: segment || null }
+        : rules;
   const key = JSON.stringify([text, audience]);
+  const first = useRef(true);
   useEffect(() => {
-    const h = setTimeout(() => {
-      fetcher({ url: `${API}${api}/campaigns/estimate`, method: "POST", payload: { text, audience: JSON.parse(key)[1] } })
-        .then((res) => setEstimate(res.data as CrmEstimate))
-        .catch(() => setEstimate(null));
-    }, 400);
+    const h = setTimeout(
+      () => {
+        first.current = false;
+        fetcher({ url: `${API}${api}/campaigns/estimate`, method: "POST", payload: { text, audience: JSON.parse(key)[1] } })
+          .then((res) => setEstimate(res.data as CrmEstimate))
+          .catch(() => setEstimate(null));
+      },
+      first.current ? 0 : 500,
+    );
     return () => clearTimeout(h);
   }, [api, key, text]);
-  const toggle = (list: string[], set: (v: string[]) => void, v: string) =>
-    set(list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
-  const valid = name.trim().length >= 2 && text.trim().length >= 5;
-
+  const sendAt = (() => {
+    if (!later || !day) return null;
+    const d = new Date(day);
+    d.setHours(hour, 0, 0, 0);
+    return d.toISOString();
+  })();
+  const valid = name.trim().length >= 2 && text.trim().length >= 5 && (mode !== "segment" || !!segment) && wUntil > wFrom && (!later || !!sendAt);
+  const pickTemplate = (id: string) => {
+    setTemplate(id);
+    const tx = asArray<{ _id: string; text: string }>(templates).find((x) => x._id === id)?.text;
+    if (tx) setText(tx);
+  };
   const save = async (submit: boolean) => {
     if (busy || !valid) return;
     setBusy(true);
@@ -79,10 +132,9 @@ const CampaignForm = ({ campaign, onDone }: { campaign?: CrmCampaign; onDone: ()
       const res = await fetcher({
         url: campaign ? `${API}${api}/campaigns/${campaign._id}` : `${API}${api}/campaigns`,
         method: campaign ? "PATCH" : "POST",
-        payload: { name: name.trim(), text: text.trim(), audience },
+        payload: { name: name.trim(), text: text.trim(), audience, template: template || null, sendAt, windowFrom: wFrom, windowUntil: wUntil },
       });
       const id = (res.data as { _id?: string })?._id || campaign?._id;
-      // the draft is kept either way; a refused submit leaves it to fix
       close();
       onDone();
       if (submit && id) {
@@ -91,12 +143,10 @@ const CampaignForm = ({ campaign, onDone }: { campaign?: CrmCampaign; onDone: ()
         onDone();
       } else pushNotification(t("bizSaved"), "Success");
     } catch (err) {
-      pushNotification((err as Error)?.message || String(err), "Error");
+      pushNotification(errText(err), "Error");
       setBusy(false);
     }
   };
-
-  const chars = Array.from(text).length;
   return (
     <PopupCard size="wide" title={campaign ? campaign.name : t("crmNewCampaign")}>
       <div className={classes.popup}>
@@ -107,58 +157,109 @@ const CampaignForm = ({ campaign, onDone }: { campaign?: CrmCampaign; onDone: ()
         )}
         <div className={crm.campaignGrid}>
           <div className={classes.main}>
-            <label className={classes.field}>
-              {t("crmCampaignName")}
-              <input value={name} onChange={(e) => setName(e.target.value)} maxLength={120} placeholder={t("crmCampaignNameHint")} />
-            </label>
-            <label className={classes.field}>
-              {t("crmCampaignText")}
-              <textarea className={crm.smsText} value={text} onChange={(e) => setText(e.target.value)} maxLength={700} dir="auto" />
-              <span className={classes.muted}>
-                {t("crmChars", [f.money(chars), f.money(estimate?.parts || 1)])}
-              </span>
-            </label>
+            <div className={classes.form}>
+              <label className={classes.field}>
+                {t("crmCampaignName")}
+                <input value={name} onChange={(e) => setName(e.target.value)} maxLength={120} placeholder={t("crmCampaignNameHint")} />
+              </label>
+              <label className={classes.field}>
+                {t("crmFromTemplate")}
+                <select value={template} onChange={(e) => pickTemplate(e.target.value)}>
+                  <option value="">{t("crmNoTemplate")}</option>
+                  {asArray<{ _id: string; name: string }>(templates).map((x) => (
+                    <option key={x._id} value={x._id}>
+                      {x.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <SmsTextField value={text} onChange={setText} label={t("crmCampaignText")} showPreview={false} />
             <p className={classes.muted}>{t("crmTextRules")}</p>
+
             <section className={crm.subCard}>
-              <span className={classes.cardTitle}>{t("crmAudience")}</span>
-              {asArray<string>(allTags).length > 0 && (
-                <div className={crm.chips}>
-                  {asArray<string>(allTags).map((x) => (
-                    <button key={x} type="button" className={`${crm.chip} ${tags.includes(x) ? crm.chipOn : ""}`} onClick={() => toggle(tags, setTags, x)}>
-                      {x}
+              <div className={classes.cardHead}>
+                <span className={classes.cardTitle}>{t("crmAudience")}</span>
+                <div className={classes.segmented} role="tablist">
+                  {(["segment", "rules", ...(contactIds.length ? ["selection"] : [])] as Mode[]).map((m) => (
+                    <button key={m} type="button" role="tab" aria-selected={mode === m} className={mode === m ? classes.on : ""} onClick={() => setMode(m)}>
+                      {t(modeKey[m])}
                     </button>
                   ))}
                 </div>
+              </div>
+              {mode === "segment" && (
+                <label className={classes.field}>
+                  {t("crmNavSegments")}
+                  <select value={segment} onChange={(e) => setSegment(e.target.value)}>
+                    <option value="">{t("bizSelect")}</option>
+                    {asArray<CrmSegment>(segs?.saved).map((s) => (
+                      <option key={s._id} value={s._id}>
+                        {s.name} ({f.money(s.reachable)})
+                      </option>
+                    ))}
+                    {asArray<CrmSegment>(segs?.presets).map((s) => (
+                      <option key={s._id} value={s._id}>
+                        {t(presetKey[s.preset || ""] || "")} ({f.money(s.reachable)})
+                      </option>
+                    ))}
+                  </select>
+                </label>
               )}
-              <div className={crm.chips}>
-                {(["visit", "order", "manual"] as const).map((s) => (
-                  <button key={s} type="button" className={`${crm.chip} ${sources.includes(s) ? crm.chipOn : ""}`} onClick={() => toggle(sources, setSources, s)}>
-                    {t(s === "visit" ? "crmSourceVisit" : s === "order" ? "crmSourceOrder" : "crmSourceManual")}
-                  </button>
-                ))}
+              {mode === "rules" && <CrmRulesForm rules={rules} onChange={setRules} showCount={false} compact />}
+              {mode === "selection" && <p className={classes.muted}>{t("crmSelectionN", [f.money(contactIds.length)])}</p>}
+            </section>
+
+            <section className={crm.subCard}>
+              <span className={classes.cardTitle}>{t("crmWhen")}</span>
+              <div className={classes.segmented} role="tablist">
+                <button type="button" role="tab" aria-selected={!later} className={!later ? classes.on : ""} onClick={() => setLater(false)}>
+                  {t("crmSendAsap")}
+                </button>
+                <button type="button" role="tab" aria-selected={later} className={later ? classes.on : ""} onClick={() => setLater(true)}>
+                  {t("crmSendLater")}
+                </button>
               </div>
               <div className={classes.form}>
+                {later && (
+                  <>
+                    <div className={classes.field}>
+                      <DateInput title={t("crmSendDay")} defaultValue={day || undefined} onChange={(d) => setDay(d)} />
+                    </div>
+                    <label className={classes.field}>
+                      {t("crmSendHour")}
+                      <select value={hour} onChange={(e) => setHour(Number(e.target.value))}>
+                        {HOURS.slice(0, -1).map((h) => (
+                          <option key={h} value={h}>
+                            {hourLabel(h)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </>
+                )}
                 <label className={classes.field}>
-                  {t("crmGender")}
-                  <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                    <option value="">{t("crmAny")}</option>
-                    <option value="female">{t("crmFemale")}</option>
-                    <option value="male">{t("crmMale")}</option>
+                  {t("crmWindowFrom")}
+                  <select value={wFrom} onChange={(e) => setWFrom(Number(e.target.value))}>
+                    {HOURS.slice(0, -1).map((h) => (
+                      <option key={h} value={h}>
+                        {hourLabel(h)}
+                      </option>
+                    ))}
                   </select>
                 </label>
                 <label className={classes.field}>
-                  {t("crmInactiveDays")}
-                  <input value={inactiveDays} onChange={(e) => setInactiveDays(e.target.value)} inputMode="numeric" />
-                </label>
-                <label className={classes.field}>
-                  {t("crmActiveDays")}
-                  <input value={activeDays} onChange={(e) => setActiveDays(e.target.value)} inputMode="numeric" />
-                </label>
-                <label className={classes.field}>
-                  {t("crmMinVisits")}
-                  <input value={minVisits} onChange={(e) => setMinVisits(e.target.value)} inputMode="numeric" />
+                  {t("crmWindowUntil")}
+                  <select value={wUntil} onChange={(e) => setWUntil(Number(e.target.value))}>
+                    {HOURS.slice(1).map((h) => (
+                      <option key={h} value={h}>
+                        {hourLabel(h)}
+                      </option>
+                    ))}
+                  </select>
                 </label>
               </div>
+              <p className={classes.muted}>{t("crmWindowHint")}</p>
             </section>
           </div>
           <aside className={crm.estimate}>
@@ -184,6 +285,7 @@ const CampaignForm = ({ campaign, onDone }: { campaign?: CrmCampaign; onDone: ()
                 </dd>
               </dl>
             )}
+            {!!estimate?.sample?.length && <p className={classes.muted}>{t("crmSampleRecipients", [estimate.sample.join("، ")])}</p>}
             {!!estimate && !estimate.affordable && <p className={crm.reject}>{t("crmNotAffordable", [f.money(estimate.balance)])}</p>}
             <p className={classes.muted}>{t("crmApprovalHint")}</p>
           </aside>
@@ -211,43 +313,49 @@ const CampaignForm = ({ campaign, onDone }: { campaign?: CrmCampaign; onDone: ()
   );
 };
 
-const CrmCampaigns = ({ refreshKey, onChanged }: { refreshKey: number; onChanged: () => unknown }) => {
+const CrmCampaigns = () => {
   const t = useCrmText();
   const f = useBizFormat();
   const ctx = useCrm();
+  const search = useSearchParams();
   const { setPopup } = usePopup();
   const pushNotification = useNotification();
   const { data, error, mutate } = useSWR<CrmCampaign[]>(`${API}${ctx.api}/campaigns`, (url: string) =>
     fetcher({ url }).then((res) => asArray<CrmCampaign>(res.data)),
   );
-  useEffect(() => {
-    mutate();
-  }, [refreshKey, mutate]);
-  const changed = () => {
-    mutate();
-    onChanged();
-  };
-  const open = (c?: CrmCampaign) =>
+  const open = (c?: CrmCampaign, initial?: { segment?: string; contactIds?: string[] }) =>
     setPopup(
       POPUP,
       <CrmContext.Provider value={ctx}>
-        <CampaignForm campaign={c} onDone={changed} />
+        <CampaignForm campaign={c} initial={initial} onDone={() => mutate()} />
       </CrmContext.Provider>,
     );
+  // opened from a segment or a selection of contacts
+  const opened = useRef(false);
+  useEffect(() => {
+    if (opened.current || !ctx.canWrite) return;
+    const segment = search?.get("segment") || "";
+    const contactIds = (search?.get("contacts") || "").split(",").filter((x) => /^[0-9a-f]{24}$/.test(x));
+    if (segment || contactIds.length) {
+      opened.current = true;
+      open(undefined, { segment, contactIds });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, ctx.canWrite]);
   const cancel = async (c: CrmCampaign) => {
     try {
       await fetcher({ url: `${API}${ctx.api}/campaigns/${c._id}/cancel`, method: "POST" });
       pushNotification(t("crmCancelled"), "Success");
-      changed();
+      mutate();
     } catch (err) {
-      pushNotification((err as Error)?.message || String(err), "Error");
+      pushNotification(errText(err), "Error");
     }
   };
   const rows = asArray<CrmCampaign>(data);
   return (
     <section className={classes.card}>
       <div className={classes.cardHead}>
-        <span className={classes.cardTitle}>{t("crmTabCampaigns")}</span>
+        <span className={classes.cardTitle}>{t("crmNavCampaigns")}</span>
         {ctx.canWrite && (
           <button type="button" className={classes.primary} onClick={() => open()}>
             {t("crmNewCampaign")}
@@ -268,6 +376,8 @@ const CrmCampaigns = ({ refreshKey, onChanged }: { refreshKey: number; onChanged
                     <th>{t("status")}</th>
                     <th className={classes.num}>{t("crmRecipients")}</th>
                     <th className={classes.num}>{t("crmSentFailed")}</th>
+                    <th className={classes.num}>{t("crmClicked")}</th>
+                    <th className={classes.num}>{t("crmBooked")}</th>
                     <th className={classes.num}>{t("crmCharged")}</th>
                     <th>{t("bizDate")}</th>
                     <th />
@@ -277,19 +387,24 @@ const CrmCampaigns = ({ refreshKey, onChanged }: { refreshKey: number; onChanged
                   {rows.map((c) => {
                     const editable = ctx.canWrite && (c.status === "Draft" || c.status === "Rejected");
                     const cancellable = ctx.canWrite && ["Draft", "Pending", "Rejected", "Approved"].includes(c.status);
+                    const done = c.status === "Sent" || c.status === "Sending";
                     return (
                       <tr key={c._id}>
                         <td className={classes.wrap}>
-                          {c.name}
+                          <Link href={`${ctx.panel}/crm/campaigns/${c._id}`} className={crm.linkButton}>
+                            {c.name}
+                          </Link>
                           {c.status === "Rejected" && c.rejectReason ? <span className={crm.rejectInline}> · {c.rejectReason}</span> : null}
                         </td>
                         <td>
-                          <span className={`${classes.badge} ${statusTone(c.status)}`}>{t(statusKey[c.status] || "crmStDraft")}</span>
+                          <span className={`${classes.badge} ${campaignTone(c.status)}`}>{t(statusKey[c.status] || "crmStDraft")}</span>
                         </td>
                         <td className={classes.num}>{f.money(c.recipients)}</td>
-                        <td className={classes.num}>{c.status === "Sent" ? `${f.money(c.sentCount)} / ${f.money(c.failedCount)}` : "—"}</td>
+                        <td className={classes.num}>{done ? `${f.money(c.sentCount)} / ${f.money(c.failedCount)}` : "—"}</td>
+                        <td className={classes.num}>{done ? f.money(c.clicks) : "—"}</td>
+                        <td className={classes.num}>{done ? f.money(c.bookings) : "—"}</td>
                         <td className={classes.num}>{c.status === "Sent" ? f.money(c.charged - c.refunded) : "—"}</td>
-                        <td>{f.date(c.finishedAt || c.submittedAt || c.createdAt)}</td>
+                        <td>{f.date(c.finishedAt || c.sendAfter || c.sendAt || c.submittedAt || c.createdAt)}</td>
                         <td>
                           <span className={crm.rowActions}>
                             {editable && (

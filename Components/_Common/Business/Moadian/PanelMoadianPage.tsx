@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import useAcl from "@/Components/Hooks/useAcl";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import { NodeWithAcl } from "@/Components/_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
@@ -13,7 +14,8 @@ const PanelMoadianPage = ({ node, panel }: { node: NodeWithAcl; panel: string })
   const hasAccess = useAcl(node);
   useBreadCrump([
     { title: t("dashboard"), target: panel },
-    { title: t("moaTitle"), target: `${panel}/moadian` },
+    { title: t("financeSectionMenu"), target: `${panel}/finance` },
+    { title: t("moaTitle"), target: `${panel}/finance/moadian` },
   ]);
   return <MoadianPage api={`/${node}/moadian`} canWrite={hasAccess("manageMoadian")} />;
 };

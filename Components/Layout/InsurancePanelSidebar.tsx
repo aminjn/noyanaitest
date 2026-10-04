@@ -1,14 +1,11 @@
-import ReceiptIcon from "@/Components/Icons/ReceiptIcon";
-import PeopleIcon from "@/Components/Icons/PeopleIcon";
-import UserGroupIcon from "@/Components/Icons/UserGroupIcon";
-import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import StarIcon from "../Icons/StarIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
-import WalletIcon from "../Icons/WalletIcon";
 import DashboardIcon from "../Icons/DashboardIcon";
 import { useMemo } from "react";
 import PanelSidebar, { LinkMap } from "./PanelSidebar";
+import { crmSection, financeSection, kartablItem } from "./panelSections";
+import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
@@ -17,6 +14,7 @@ import useAcl from "../Hooks/useAcl";
 
 const InsurancePanelSidebar = () => {
   const hasAccess = useAcl("insurance");
+  const kartabl = useKartablCount("insurance");
 
   const links = useMemo<LinkMap>(
     () => [
@@ -49,41 +47,9 @@ const InsurancePanelSidebar = () => {
         show: hasAccess("mutateProfile"),
         target: "profile",
       },
-      {
-        icon: <WalletIcon />,
-        title: "financialMangement",
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "finance",
-      },
-      {
-        title: "accounting",
-        icon: <BookOpenIcon />,
-        group: "groupCenter",
-        show: hasAccess("readFinance"),
-        target: "accounting",
-      },
-      {
-        title: "payMenu",
-        icon: <UserGroupIcon />,
-        group: "groupCenter",
-        show: hasAccess("readPayroll"),
-        target: "payroll",
-      },
-      {
-        title: "crmMenu",
-        icon: <PeopleIcon />,
-        group: "groupCenter",
-        show: hasAccess("readCrm"),
-        target: "crm",
-      },
-      {
-        title: "moadianMenu",
-        icon: <ReceiptIcon />,
-        group: "groupCenter",
-        show: hasAccess("readMoadian"),
-        target: "moadian",
-      },
+      financeSection({ hasAccess, inventory: false, insurance: false, group: "groupCenter", profile: "insurance" }),
+      crmSection({ hasAccess, group: "groupCenter", profile: "insurance" }),
+      kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupCenter", badge: kartabl }),
       {
         icon: <UserEditIcon />,
         title: "teamTitle",
@@ -109,7 +75,7 @@ const InsurancePanelSidebar = () => {
         target: "article",
       },
     ],
-    [hasAccess],
+    [hasAccess, kartabl],
   );
 
   return <PanelSidebar links={links} panel="insurancepanel" />;

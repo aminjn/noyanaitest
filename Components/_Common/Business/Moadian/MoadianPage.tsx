@@ -11,6 +11,7 @@ import { MoadianContext, MoadianSettings, useMoadianText } from "./moadianShared
 import MoadianPurchases from "./MoadianPurchases";
 import MoadianInvoices from "./MoadianInvoices";
 import MoadianSettingsTab from "./MoadianSettings";
+import { AiInsight } from "../Finance/Ai/finAi";
 
 const Tiles = ({ settings }: { settings?: MoadianSettings }) => {
   const t = useMoadianText();
@@ -73,6 +74,8 @@ const MoadianPage = ({
           </header>
         )}
         {hideHeader && <span className={classes.subtitle}>{t("moaSubtitlePlatform")}</span>}
+        {/* the finance assistant's VAT / Moadian analysis (a provider's own books only) */}
+        {!platform && /\/moadian$/.test(api) && <AiInsight kind="tax" api={api.replace(/\/moadian$/, "/biz/finance")} />}
         <Tiles settings={data || undefined} />
         <ClientTabSystem
           viewState={[tab || "invoices", setTab]}

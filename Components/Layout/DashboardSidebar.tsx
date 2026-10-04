@@ -11,6 +11,8 @@ import WalletIcon from "../Icons/WalletIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import CrownIcon from "../Icons/CrownIcon";
+import MedalStarIcon from "../Icons/MedalStarIcon";
+import CommentIcon from "../Icons/CommentIcon";
 import { ContentKey } from "../Enums/contentKeys";
 
 const DashboardSidebar = () => {
@@ -57,6 +59,10 @@ const DashboardSidebar = () => {
       { icon: <ChatIcon />, show: true, title: "chats", target: "chat" },
       // the «پرو» membership (2026-10)
       { icon: <CrownIcon />, show: true, title: "proPlan", target: "pro" },
+      // the centres' CRM, the patient's side (2026-10): my loyalty clubs,
+      // my requests to the centres (Components/Dashboard/Crm)
+      { icon: <MedalStarIcon />, show: true, title: "crmeMyClubs", target: "club" },
+      { icon: <CommentIcon />, show: true, title: "crmeMyCentres", target: "centres" },
     ],
     [],
   );
