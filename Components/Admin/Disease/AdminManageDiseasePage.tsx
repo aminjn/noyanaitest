@@ -20,7 +20,7 @@ import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import AdminRecordEditor from "../UI/AdminRecordEditor";
-import { medicalPublishFields } from "../Disease/medicalPublishing";
+import { medicalAiTools, medicalPublishFields } from "../Disease/medicalPublishing";
 
 type DiseaseNode = IDisease<{
   Drugs: Record<never, never>;
@@ -42,6 +42,8 @@ const AdminManageDiseasePage = () => {
 
   return (
     <AdminRecordEditor<DiseaseNode>
+      // AI draft of the empty fields / AI check, reviewed by a doctor
+      tools={medicalAiTools<DiseaseNode>("disease")}
       segment="disease"
       path="/disease"
       nodeId={nodeId}

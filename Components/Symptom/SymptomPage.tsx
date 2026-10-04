@@ -15,6 +15,7 @@ import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageWideHeader, {
   medicalReviewerOf,
+  medicalReviewPending,
 } from "../UI/ListPage/ListPageWideHeader";
 import ListPageFacts from "../UI/ListPage/ListPageFacts";
 import FlaskIcon from "../Icons/FlaskIcon";
@@ -99,6 +100,7 @@ const SymptomPage = ({
             : undefined
         }
         reviewer={medicalReviewerOf(data)}
+        pendingReview={medicalReviewPending(data)}
         primaryAction={{
           title: getContent("bookASessionFromADoctor"),
           // the booking search narrowed to the speciality that treats it
@@ -160,9 +162,18 @@ const SymptomPage = ({
             { title: getContent("description"), value: data.description },
             { title: getContent("pathophysiology"), value: data.pathophysiology },
             { title: getContent("naturalProgeression"), value: data.naturalProgression },
-            { title: getContent("possibleComplications"), value: data.possibleComplication },
             { title: getContent("expectedPrognosis"), value: data.expectedPrognosis },
           ]}
+        />
+        <ListPageFacts
+          // safety apart and highlighted: complications, and the warning
+          // signs that need a doctor or the emergency number (every page)
+          title={getContent("whenToSeeADoctor" as ContentKey)}
+          tone="warning"
+          items={[
+            { title: getContent("possibleComplications"), value: data.possibleComplication },
+          ]}
+          note={getContent("seeDoctorWarningNote" as ContentKey)}
         />
         {!!data.content && (
           <div className={classes.box}>

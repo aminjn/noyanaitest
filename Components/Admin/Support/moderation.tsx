@@ -34,6 +34,16 @@ export const moderate = (
     payload: { ids, status, ...(reason ? { reason } : {}) },
   });
 
+// takes down a provider's public reply to a review (2026-10); the provider
+// can then answer again
+export const removeReviewReply = (kind: "comments" | "doctorfeedback", ids: string[]) =>
+  fetcher({
+    url: `${API}/admin/support/${kind}/reply/remove`,
+    method: "POST",
+    bodyParser: "JSON",
+    payload: { ids },
+  });
+
 export const RejectReasonPopup = ({
   kind,
   ids,

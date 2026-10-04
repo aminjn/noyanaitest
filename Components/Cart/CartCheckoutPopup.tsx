@@ -27,6 +27,12 @@ import {
   localPhone,
 } from "../Dashboard/Address/DashboardManageAddressesPage";
 import DashboardMutateAddressPopup from "../Dashboard/Address/DashboardMutateAddressPopup";
+import CartPrescriptionSection, {
+  emptyRxDraft,
+  rxDraftToPayload,
+  RxDraft,
+} from "./CartPrescriptionSection";
+import { ContentKey } from "../Enums/contentKeys";
 import {
   t2xsRegular,
   tbaseDemiBold,
@@ -72,6 +78,8 @@ type CartSummary = {
   deliveryFee?: number;
   shipments?: CartShipment[];
   needsAddress?: boolean;
+  // a prescription-only item is in the cart (2026-10): ask for it
+  requiresPrescription?: boolean;
   total: number;
 };
 
@@ -130,6 +138,9 @@ const CartCheckoutPopup = ({
     : undefined;
   const [method, setMethod] = useState<OrderPaymentMethod>("wallet");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [rxDraft, setRxDraft] = useState<RxDraft>(emptyRxDraft);
+  const needsRx = !!summary?.requiresPrescription;
+  const rxPayload = needsRx ? rxDraftToPayload(rxDraft) : null;
 
   return (
     <PopupCard title={getContent("confirmAndPayOrder")}>
@@ -192,6 +203,7 @@ const CartCheckoutPopup = ({
             {getContent("addNewAddress")}
           </Button>
         </div>
+        {needsRx && <CartPrescriptionSection value={rxDraft} onChange={setRxDraft} />}
         <div className={classes.section}>
           <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
             {getContent("paymentMethod")}
@@ -315,6 +327,10 @@ const CartCheckoutPopup = ({
               pushNotification(getContent("selectAddressFirst"), "Warn");
               return;
             }
+            if (needsRx && !rxPayload) {
+              pushNotification(getContent("rxMissing" as ContentKey), "Warn");
+              return;
+            }
             setIsSubmitting(true);
           }}
         >
@@ -324,7 +340,11 @@ const CartCheckoutPopup = ({
       <Act<SubmitCartResponse>
         path={isSubmitting ? `${API}/cart/submit` : null}
         method="POST"
-        payload={{ method, address: address || undefined }}
+        payload={{
+          method,
+          address: address || undefined,
+          ...(rxPayload ? { prescription: rxPayload } : {}),
+        }}
         successMessage={
           method === "wallet" ? getContent("orderSubmittedMessage") : undefined
         }

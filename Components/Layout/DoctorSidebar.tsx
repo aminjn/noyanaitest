@@ -31,6 +31,7 @@ import CogIcon from "../Icons/CogIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import CategoriesIcon from "../Icons/CategoriesIcon";
 import PackageIcon from "../Icons/PackageIcon";
+import StarIcon from "../Icons/StarIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -177,6 +178,14 @@ const DoctorSidebar = () => {
         group: "groupPractice",
         show: hasAccess("readMoadian"),
         target: "moadian",
+      },
+      {
+        // verified visit reviews and the doctor's public replies (2026-10)
+        title: "orgReviewsTitle",
+        icon: <StarIcon />,
+        target: "review",
+        group: "groupPractice",
+        show: true,
       },
       {
         title: "teamTitle",

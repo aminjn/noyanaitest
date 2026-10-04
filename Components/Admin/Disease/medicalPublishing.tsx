@@ -5,6 +5,7 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
 import { MedicalReviewer } from "./AdminManageDiseasesPage";
+import MedicalAiAssist, { MedicalKind } from "./MedicalAiAssist";
 
 // The publish switch and the medical review of an encyclopedia page
 // (disease, drug, symptom), the same three fields in each editor. The page
@@ -46,3 +47,15 @@ export const medicalPublishFields = <
     title: ta("تاریخ بازبینی"),
   },
 });
+
+// the AI draft / AI check box above the editor's fields (AdminRecordEditor
+// `tools`); see MedicalAiAssist
+export const medicalAiTools =
+  <T extends { aiDrafted?: boolean; reviewedBy?: unknown }>(kind: MedicalKind) =>
+  // eslint-disable-next-line react/display-name
+  (api: {
+    node?: T;
+    nodeId: string;
+    input: Partial<T>;
+    fill: (values: Partial<T>) => void;
+  }) => <MedicalAiAssist<T> kind={kind} {...api} />;

@@ -42,6 +42,7 @@ import {
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage";
 import OrderItemStatusBadge from "../Dashboard/Order/OrderItemStatusBadge";
+import { IOrderLinePrescription, RxPrescriptionDetails } from "./RxPrescription";
 import { OrderItemStatus } from "../Dashboard/Order/orderItemStatus";
 import usePopup from "../Hooks/usePopup";
 import useNotification from "../Hooks/useNotification";
@@ -79,6 +80,9 @@ export interface IOrder<
     price: number;
     // per-line fulfillment, set by the seller (Models/Order.ts)
     status?: OrderItemStatus;
+    // prescription-only line and the prescription given (2026-10)
+    requiresPrescription?: boolean;
+    prescription?: IOrderLinePrescription;
   }[];
   productPackages: {
     item: T["ProductPackages"] extends ProductPackagePopulation
@@ -88,6 +92,8 @@ export interface IOrder<
     price: number;
     // per-line fulfillment, set by the seller (Models/Order.ts)
     status?: OrderItemStatus;
+    requiresPrescription?: boolean;
+    prescription?: IOrderLinePrescription;
   }[];
   services: {
     item: T["Services"] extends ServicePopulation
@@ -155,6 +161,7 @@ type OrderRow = {
   qty: number;
   status?: OrderItemStatus;
   result?: { files?: string[]; note?: string };
+  prescription?: IOrderLinePrescription;
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -174,7 +181,7 @@ const statusContent: Record<OrderStatus, ContentKey> = {
 const buildRows = (order: OrderNode): OrderRow[] => {
   const rows: OrderRow[] = [];
 
-  (Array.isArray(order.products) ? order.products : []).forEach(({ item, qty, price, status }) => {
+  (Array.isArray(order.products) ? order.products : []).forEach(({ item, qty, price, status, requiresPrescription, prescription }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -185,10 +192,11 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       price,
       qty,
       status,
+      prescription: requiresPrescription ? prescription : undefined,
     });
   });
 
-  (Array.isArray(order.productPackages) ? order.productPackages : []).forEach(({ item, qty, price, status }) => {
+  (Array.isArray(order.productPackages) ? order.productPackages : []).forEach(({ item, qty, price, status, requiresPrescription, prescription }) => {
     if (!item || typeof item === "string") return;
     rows.push({
       itemId: item._id,
@@ -198,6 +206,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       price,
       qty,
       status,
+      prescription: requiresPrescription ? prescription : undefined,
     });
   });
 
@@ -358,6 +367,9 @@ const OrderConfirmationPage = () => {
                           <span className={classes.itemStatus}>
                             <OrderItemStatusBadge status={row.status} />
                           </span>
+                        )}
+                        {!!row.prescription && (
+                          <RxPrescriptionDetails prescription={row.prescription} />
                         )}
                         {(!!row.result?.files?.length || !!row.result?.note) && (
                           <span className={`${classes.itemSubtitle} ${t2xsRegular}`}>

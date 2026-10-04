@@ -27,6 +27,7 @@ import {
   txsRegular,
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
+import RxBadge from "./RxBadge";
 
 const NS: ContentNamespace[] = ["common", "products"];
 
@@ -106,6 +107,11 @@ const ProductPageIntro = ({
         </button>
       </div>
       <h1 className={`${classes.h1} ${txlMedium}`}>{data.name}</h1>
+      {!!data.requiresPrescription && (
+        <div className={classes.rxRow}>
+          <RxBadge size="L" />
+        </div>
+      )}
       {!!data.original && (
         <div className={`${classes.originalBox} ${tsmRegular}`}>
           <Ixon width="1rem" className={classes.originalIcon}>

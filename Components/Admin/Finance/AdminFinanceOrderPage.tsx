@@ -31,6 +31,9 @@ import {
   paymentMethodDict,
   paymentStatusDict,
   failureReasonLabel,
+  rxInsurerDict,
+  rxKindDict,
+  rxStatusDict,
   shipmentMethodDict,
   snappStateLabel,
   userLabel,
@@ -50,6 +53,19 @@ interface IOrderLine {
   lineTotal: number;
   status: "pending" | "fulfilled" | "cancelled";
   seller: Seller;
+  // prescription-only line (2026-10)
+  requiresPrescription?: boolean;
+  prescription?: {
+    kind: string;
+    insurer: string;
+    trackingCode: string;
+    nationalCode: string;
+    files: string[];
+    note: string;
+    status: string;
+    reason: string;
+    reviewedAt?: string | null;
+  } | null;
 }
 
 interface IRide {
@@ -303,6 +319,7 @@ const AdminFinanceOrderPage = () => {
   const notes = asArray<IOrderDetail["adminNotes"][number]>(data?.adminNotes);
   const paid = data?.status === "paid";
   const lineName = (id: string) => lines.find((l) => l._id === id)?.name || "";
+  const rxLines = lines.filter((l) => !!l.requiresPrescription);
 
   const sellerLink = (seller: Seller) =>
     seller ? (
@@ -435,6 +452,24 @@ const AdminFinanceOrderPage = () => {
                       </span>
                     ),
                   },
+                  prescription: {
+                    name: ta("نسخه"),
+                    value: (line) =>
+                      line.requiresPrescription
+                        ? rxStatusDict[line.prescription?.status || "pending"] || ""
+                        : "",
+                    component: (line) =>
+                      line.requiresPrescription ? (
+                        <span
+                          className={`${classes.badge} ${classes[`badge_${line.prescription?.status || "pending"}`] || ""}`}
+                        >
+                          {rxStatusDict[line.prescription?.status || "pending"] ||
+                            line.prescription?.status}
+                        </span>
+                      ) : (
+                        "—"
+                      ),
+                  },
                   actions: {
                     name: ta("عملیات"),
                     width: 210,
@@ -453,6 +488,68 @@ const AdminFinanceOrderPage = () => {
                 }}
               />
             </Card>
+
+            {rxLines.length > 0 && (
+              <Card title={ta("نسخه‌ها")}>
+                <p className={classes.hint}>
+                  {ta("این اقلام نسخه‌ای‌اند؛ داروخانه‌ی فروشنده باید نسخه را تأیید کند تا قلم آماده و ارسال شود. رد نسخه، قلم را لغو و مبلغش را به خریدار برمی‌گرداند.")}
+                </p>
+                <div className={classes.shipments}>
+                  {rxLines.map((line) => {
+                    const p = line.prescription;
+                    const files = Array.isArray(p?.files) ? p.files : [];
+                    return (
+                      <div key={`rx-${line._id}`} className={classes.shipment}>
+                        <div className={classes.shipmentHead}>
+                          <span>{line.name || "—"}</span>
+                          <span className={`${classes.badge} ${classes[`badge_${p?.status || "pending"}`] || ""}`}>
+                            {rxStatusDict[p?.status || "pending"] || p?.status}
+                          </span>
+                        </div>
+                        <div className={classes.grid}>
+                          <Field label={ta("فروشنده")}>{sellerLink(line.seller)}</Field>
+                          <Field label={ta("نوع نسخه")}>
+                            {p ? rxKindDict[p.kind] || p.kind : ta("ثبت نشده")}
+                          </Field>
+                          {p?.kind === "erx" && (
+                            <>
+                              <Field label={ta("بیمه")}>{rxInsurerDict[p.insurer] || p.insurer || "—"}</Field>
+                              <Field label={ta("کد رهگیری نسخه")}>
+                                <bdi dir="ltr">{p.trackingCode || "—"}</bdi>
+                              </Field>
+                              <Field label={ta("کد ملی بیمار")}>
+                                <bdi dir="ltr">{p.nationalCode || "—"}</bdi>
+                              </Field>
+                            </>
+                          )}
+                          {files.length > 0 && (
+                            <Field label={ta("تصویر نسخه")}>
+                              {files.map((id, i) => (
+                                <a
+                                  key={id}
+                                  href={`/api/v1/notpublic/${id}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  {ta("فایل ${1}", [String(i + 1)])}{" "}
+                                </a>
+                              ))}
+                            </Field>
+                          )}
+                          {!!p?.note && <Field label={ta("توضیح خریدار")}>{p.note}</Field>}
+                          {!!p?.reviewedAt && (
+                            <Field label={ta("زمان بررسی")}>{fmtDate(p.reviewedAt)}</Field>
+                          )}
+                          {p?.status === "rejected" && !!p.reason && (
+                            <Field label={ta("دلیل رد")}>{p.reason}</Field>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            )}
 
             {shipments.length > 0 && (
               <Card title={ta("ارسال")}>

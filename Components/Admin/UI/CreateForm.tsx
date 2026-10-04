@@ -4,7 +4,14 @@ import useForm, {
 } from "@/Components/Hooks/useForm";
 import Button from "@/Components/UI/Button";
 import Form from "@/Components/UI/Form";
-import { Dispatch, Fragment, ReactNode, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  Fragment,
+  ReactNode,
+  SetStateAction,
+  useCallback,
+  useState,
+} from "react";
 import Ixon from "@/Components/UI/Ixon";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import FormActions from "./FormActions";
@@ -150,6 +157,8 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
     // groups the field under its own heading / tab instead of the automatic
     // one (see sectionOf)
     section?: string;
+    // help shown under the field (what to enter, an example to copy)
+    hint?: ReactNode;
   };
 };
 
@@ -222,6 +231,7 @@ const CreateForm = <TInput, TResult = unknown>({
   styleManaged = true,
   readOnly,
   layout = "auto",
+  tools,
 }: WithStyleProps<
   {
     readOnly?: boolean;
@@ -232,6 +242,13 @@ const CreateForm = <TInput, TResult = unknown>({
     renderer: FormRenderer<TInput>;
     defaultValue?: TInput;
     onCancel?: () => unknown;
+    // helpers drawn above the fields (e.g. the encyclopedia's AI draft):
+    // they read the unsaved input and can fill fields in (`fill` sets the
+    // values and redraws those inputs; nothing is saved until "Save")
+    tools?: (api: {
+      input: Partial<TInput>;
+      fill: (values: Partial<TInput>) => void;
+    }) => ReactNode;
     more?: ({
       input,
     }: {
@@ -282,7 +299,23 @@ const CreateForm = <TInput, TResult = unknown>({
   // text fields a map point fills: bumped to remount the (uncontrolled)
   // input with the new value
   const [refill, setRefill] = useState<Record<string, number>>({});
-  const filledByPoint = new Set<string>();
+  // fields `tools` filled in: their inputs show the filled value
+  const [filled, setFilled] = useState<string[]>([]);
+  const fill = useCallback(
+    (values: Partial<TInput>) => {
+      const keys = Object.keys(values);
+      if (!keys.length) return;
+      setInput((prev) => ({ ...prev, ...values }));
+      setFilled((prev) => Array.from(new Set([...prev, ...keys])));
+      setRefill((prev) => {
+        const next = { ...prev };
+        for (const k of keys) next[k] = (next[k] || 0) + 1;
+        return next;
+      });
+    },
+    [setInput],
+  );
+  const filledByPoint = new Set<string>(filled);
   Object.values(renderer).forEach((segment) => {
     const seg = segment as { type?: string; addressField?: string } | undefined;
     if (seg?.type === "point" && seg.addressField) filledByPoint.add(seg.addressField);
@@ -298,7 +331,7 @@ const CreateForm = <TInput, TResult = unknown>({
           title: ta(segment.title),
           defaultValue:
             filledByPoint.has(key.toString()) && input[key] !== undefined
-              ? String(input[key])
+              ? String(input[key] ?? "")
               : defaultValue?.[key]?.toString(),
           placeholder: true,
           readOnly: isLoading || readOnly || segment.readOnly,
@@ -490,9 +523,11 @@ const CreateForm = <TInput, TResult = unknown>({
                 getOptionValue={segment.getOptionValue}
                 path={nodesPath}
                 defaultValue={
-                  defaultValue
-                    ? segment.getDefaultValue?.(defaultValue)
-                    : undefined
+                  filled.includes(key.toString())
+                    ? ((input[key] ?? undefined) as never)
+                    : defaultValue
+                      ? segment.getDefaultValue?.(defaultValue)
+                      : undefined
                 }
                 onChange={(e) => setInput((prev) => ({ ...prev, [key]: e }))}
                 multi={segment.multi}
@@ -618,6 +653,7 @@ const CreateForm = <TInput, TResult = unknown>({
               }
             >
               {content}
+              {segment.hint ? <div className={classes.fieldHint}>{segment.hint}</div> : null}
             </div>
           ),
         });
@@ -665,6 +701,7 @@ const CreateForm = <TInput, TResult = unknown>({
       className={`${styleManaged ? classes.main : ""} ${className}`}
       style={style}
     >
+      {!!tools && !readOnly && <div className={classes.tools}>{tools({ input, fill })}</div>}
       {mode === "flat" && <div className={classes.grid}>{collected.map((el) => el.node)}</div>}
       {mode === "sections" &&
         sections.map((section) => (

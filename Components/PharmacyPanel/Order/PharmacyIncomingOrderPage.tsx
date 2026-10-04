@@ -30,6 +30,15 @@ import { IIncomingOrder } from "./PharmacyIncomingOrdersPage";
 import { localPhone } from "@/Components/Dashboard/Address/DashboardManageAddressesPage";
 import { navigationUrl } from "@/Components/helpers/navigationUrl";
 import ShipmentSender from "./ShipmentSender";
+import RxReviewPopup from "./RxReviewPopup";
+import {
+  IOrderLinePrescription,
+  RxPrescriptionDetails,
+  RxStatusBadge,
+  rxStatusOf,
+} from "@/Components/Order/RxPrescription";
+import { ContentKey } from "@/Components/Enums/contentKeys";
+import DocumentIcon from "@/Components/Icons/DocumentIcon";
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
@@ -46,6 +55,8 @@ interface OrderItemRow {
   qty: number;
   price: number;
   status: OrderItemStatus;
+  // prescription-only (2026-10): fulfilled only once its prescription is approved
+  prescription?: IOrderLinePrescription;
 }
 
 const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
@@ -59,6 +70,7 @@ const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
     qty: p.qty,
     price: p.price,
     status: p.status,
+    prescription: p.requiresPrescription ? p.prescription || { kind: "erx" as const } : undefined,
   })),
   ...(Array.isArray(order.productPackages) ? order.productPackages : [])
     .filter((p) => p?.item?._id)
@@ -70,6 +82,7 @@ const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
     qty: p.qty,
     price: p.price,
     status: p.status,
+    prescription: p.requiresPrescription ? p.prescription || { kind: "erx" as const } : undefined,
   })),
 ];
 
@@ -124,6 +137,22 @@ const PharmacyIncomingOrderPage = () => {
 
   const { setPopup } = usePopup();
   const getContent = useScopedLocale(NS);
+  const t = (key: string) => getContent(key as ContentKey);
+  const rows = data ? buildItemRows(data) : [];
+  const rxRows = rows.filter((row) => !!row.prescription);
+  const openRx = (row: OrderItemRow, decision: "approve" | "reject") =>
+    setPopup(
+      decision === "approve" ? "ApproveIncomingOrderRx" : "RejectIncomingOrderRx",
+      <RxReviewPopup
+        orderId={nodeId}
+        model={row.model}
+        itemId={row.itemId}
+        name={row.name}
+        prescription={row.prescription}
+        decision={decision}
+        onDone={() => mutate()}
+      />,
+    );
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/pharmacypanel" },
@@ -213,9 +242,20 @@ const PharmacyIncomingOrderPage = () => {
               )}
             </List>
           )}
+          {!!rxRows.length && (
+            <List>
+              {rxRows.map((row) => (
+                <DataPair
+                  key={`rx:${row.key}`}
+                  title={`${t("rxPrescriptionOf")} ${row.name}`}
+                  value={<RxPrescriptionDetails prescription={row.prescription} />}
+                />
+              ))}
+            </List>
+          )}
           <Table
             name="PharmacyIncomingOrderItems"
-            data={buildItemRows(data)}
+            data={rows}
             renderer={{
               name: {
                 name: getContent("name"),
@@ -247,10 +287,37 @@ const PharmacyIncomingOrderPage = () => {
                 filter: "Set",
                 component: (node) => <OrderItemStatusBadge status={node.status} />,
               },
+              prescription: {
+                name: t("rxPrescription"),
+                value: (node) => (node.prescription ? rxStatusOf(node.prescription) : ""),
+                component: (node) =>
+                  node.prescription ? <RxStatusBadge prescription={node.prescription} /> : "-",
+              },
               actions: {
                 name: getContent("actions"),
                 component: (node) =>
-                  node.status === "pending" ? (
+                  // an Rx line waits on its prescription: approve or reject it
+                  // first (rejecting cancels and refunds the line)
+                  node.status === "pending" &&
+                  node.prescription &&
+                  rxStatusOf(node.prescription) === "pending" ? (
+                    <TableActions>
+                      <IconButton
+                        variant="Success"
+                        title={t("rxApprove")}
+                        onClick={() => openRx(node, "approve")}
+                      >
+                        <DocumentIcon />
+                      </IconButton>
+                      <IconButton
+                        variant="Danger"
+                        title={t("rxReject")}
+                        onClick={() => openRx(node, "reject")}
+                      >
+                        <XMarkIcon />
+                      </IconButton>
+                    </TableActions>
+                  ) : node.status === "pending" ? (
                     <TableActions>
                       <IconButton
                         variant="Success"

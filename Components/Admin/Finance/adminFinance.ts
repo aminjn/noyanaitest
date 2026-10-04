@@ -262,3 +262,38 @@ export const transactionRefHref = (kind: string, ref?: string | null) =>
       : kind === "order"
         ? `/finance/orders/${ref}`
         : null;
+
+// a prescription-only line's prescription (2026-10, backend
+// Lib/rxPrescription.ts): what the buyer gave and the pharmacy's decision
+export const rxStatusDict: Record<string, string> = {
+  get pending() {
+    return ta("در انتظار بررسی داروخانه");
+  },
+  get approved() {
+    return ta("تأیید شده");
+  },
+  get rejected() {
+    return ta("رد شده");
+  },
+};
+
+export const rxKindDict: Record<string, string> = {
+  get erx() {
+    return ta("نسخه‌ی الکترونیک");
+  },
+  get paper() {
+    return ta("تصویر نسخه‌ی کاغذی");
+  },
+};
+
+export const rxInsurerDict: Record<string, string> = {
+  get tamin() {
+    return ta("تأمین اجتماعی");
+  },
+  get salamat() {
+    return ta("بیمه سلامت");
+  },
+  get other() {
+    return ta("سایر");
+  },
+};

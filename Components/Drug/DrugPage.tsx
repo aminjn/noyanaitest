@@ -8,10 +8,12 @@ import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import ListPageWideHeader, {
   medicalReviewerOf,
+  medicalReviewPending,
 } from "../UI/ListPage/ListPageWideHeader";
 import ListPageFacts from "../UI/ListPage/ListPageFacts";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { ContentKey } from "../Enums/contentKeys";
 import PillIcon from "../Icons/PillIcon";
 import BigAd from "../UI/ListPage/BigAd";
 import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
@@ -61,6 +63,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
         }}
         summary={data.summary}
         reviewer={medicalReviewerOf(data)}
+        pendingReview={medicalReviewPending(data)}
         // the pharmacy products matching this drug (the label used to say
         // "see Noyan clinic" and opened the whole product list)
         primaryAction={{
@@ -113,7 +116,15 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
           items={[
             { title: getContent("activeIngridients"), value: data.activeIngridient },
             { title: getContent("dosageForm"), value: data.dosageForm },
-            { title: getContent("prescribingStatus"), value: data.prescriptionStatus },
+            {
+              title: getContent("prescribingStatus"),
+              value:
+                data.prescriptionStatus === "rx"
+                  ? getContent("rxRequired" as ContentKey)
+                  : data.prescriptionStatus === "otc"
+                    ? getContent("rxNotRequired" as ContentKey)
+                    : undefined,
+            },
             { title: getContent("description"), value: data.description },
           ]}
         />
@@ -129,6 +140,8 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
             { title: getContent("foodWarning"), value: data.foodWarning },
             { title: getContent("overdosage"), value: data.overdosage },
           ]}
+          // shown with every drug: never start or stop on one's own, 115
+          note={getContent("drugSafetyNote" as ContentKey)}
         />
         <ListPageFacts
           items={[

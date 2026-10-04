@@ -19,6 +19,7 @@ const ListPageWideHeader = ({
   primaryAction,
   secondaryAction,
   reviewer,
+  pendingReview,
 }: {
   icon: ReactNode;
   name: string;
@@ -30,6 +31,9 @@ const ListPageWideHeader = ({
   // the doctor who medically reviewed the page; the shield is shown only
   // then (it used to be drawn on every page, a trust mark nobody earned)
   reviewer?: { name: string; href?: string; date?: string | Date };
+  // AI drafted some of the text and no doctor has reviewed it since: a
+  // small note in place of the review line (medicalReviewPending)
+  pendingReview?: boolean;
 }) => {
   const getContent = useScopedLocale();
   const intlLocale = useIntlLocale();
@@ -65,6 +69,11 @@ const ListPageWideHeader = ({
                   {getContent("seeProfile")}
                 </Link>
               )}
+            </span>
+          )}
+          {!reviewer && !!pendingReview && (
+            <span className={`${classes.reviewer} ${classes.pending} ${txsMedium}`}>
+              {getContent("aiDraftAwaitingReview" as ContentKey)}
             </span>
           )}
           {!!category?.value && (
@@ -120,3 +129,10 @@ export const medicalReviewerOf = (node: {
     date: node.reviewedAt,
   };
 };
+
+// some of the text was drafted by AI and no doctor reviewed it since
+export const medicalReviewPending = (node: {
+  aiDrafted?: boolean;
+  reviewedBy?: unknown;
+  reviewedAt?: string;
+}) => !!node.aiDrafted && !medicalReviewerOf(node);

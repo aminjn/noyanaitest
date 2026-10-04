@@ -74,6 +74,8 @@ export interface IProductPackage<
   whyChoose?: string;
   averageScore: number;
   commentCount: number;
+  // set by the cart (2026-10): one of its products needs a prescription
+  requiresPrescription?: boolean;
 }
 
 const AdminManageProductPackagesPage = () => {

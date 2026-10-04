@@ -42,6 +42,9 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 import PublishToggle from "../UI/PublishToggle";
 import { booleanToValue } from "@/Components/UI/BooleanToIcon";
 
+export const drugPrescriptionStatuses = ["otc", "rx"] as const;
+export type DrugPrescriptionStatus = (typeof drugPrescriptionStatuses)[number];
+
 // the reviewing doctor as the public pages receive it (Lib/medicalContent)
 export type MedicalReviewer = {
   _id: string;
@@ -111,6 +114,8 @@ export interface ISymptom<
   // the doctor who medically reviewed the page, and when
   reviewedBy?: string | MedicalReviewer;
   reviewedAt?: string;
+  // AI drafted some text (backend Lib/medicalContent.ts)
+  aiDrafted?: boolean;
 }
 
 export type DrugPopulation = Population<{
@@ -138,7 +143,9 @@ export interface IDrug<
   overdosage?: string;
   pregnancyWarning?: string;
   prescribingInfo?: string;
-  prescriptionStatus?: string;
+  // otc / rx (2026-10) - was free text; an rx drug makes its products
+  // prescription-only in the pharmacy marketplace
+  prescriptionStatus?: DrugPrescriptionStatus;
   warning?: string;
   order: number;
   slug?: string;
@@ -153,6 +160,8 @@ export interface IDrug<
   // the doctor who medically reviewed the page, and when
   reviewedBy?: string | MedicalReviewer;
   reviewedAt?: string;
+  // AI drafted some text (backend Lib/medicalContent.ts)
+  aiDrafted?: boolean;
 }
 
 export type DiseasePopulation = Population<{
@@ -199,6 +208,8 @@ export interface IDisease<
   // the doctor who medically reviewed the page, and when
   reviewedBy?: string | MedicalReviewer;
   reviewedAt?: string;
+  // AI drafted some text (backend Lib/medicalContent.ts)
+  aiDrafted?: boolean;
 }
 
 const AdminManageDiseasePage = () => {

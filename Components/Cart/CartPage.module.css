@@ -211,3 +211,8 @@
   align-items: center;
   gap: 0.375rem;
 }
+
+/* «نسخه لازم است» under the item's name (2026-10) */
+.rx {
+  align-self: flex-start;
+}
