@@ -2511,6 +2511,10 @@
  "invNearBadge": "即将到期",
  "invName": "品项名称",
  "invUnit": "单位",
+ "invItemClass": "商品类别",
+ "invClassDrug": "处方药",
+ "invClassOtc": "非处方药（OTC）",
+ "invClassCosmetic": "化妆品、卫生用品和补充剂",
  "invUnitHint": "个、盒、包、套",
  "invSku": "品项编码",
  "invBarcode": "条码 / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "税率 (%)",
  "finTax": "增值税",
  "finIncomeAccount": "收入科目",
+ "finStockItem": "库存商品",
+ "finNoStockItem": "无库存商品（服务）",
  "finDefaultIncome": "默认",
  "finAddLine": "添加一行",
  "finHasInsurer": "部分由保险支付",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "按顺序；每人在前一人批准后再决定。",
  "accAssetAccount": "资产科目",
  "accAssetGroup": "资产类别",
+ "accAssetName": "名称",
  "accAssetGroups": "资产类别",
  "accAssetReport": "资产报表",
  "accAssets": "资产",
@@ -6099,5 +6106,8 @@
  "kartablDate": "提交日期",
  "kartablDecidedAt": "决定日期",
  "kartablEmptyMine": "没有待您决定的事项。",
- "kartablIssuedInvoice": "已开具的发票"
+ "kartablIssuedInvoice": "已开具的发票",
+ "crmsApOn_discount": "超过上限的折扣需要经理批准",
+ "crmsApMaxPercent": "无需批准的最高折扣（%）",
+ "crmsDiscountSentForApproval": "已保存；超出您上限的折扣已提交审批"
 }

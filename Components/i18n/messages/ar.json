@@ -2511,6 +2511,10 @@
  "invNearBadge": "قريب الانتهاء",
  "invName": "اسم الصنف",
  "invUnit": "الوحدة",
+ "invItemClass": "فئة الصنف",
+ "invClassDrug": "دواء بوصفة",
+ "invClassOtc": "دواء بدون وصفة",
+ "invClassCosmetic": "مستحضرات تجميل وصحة ومكملات",
  "invUnitHint": "قطعة، علبة، عبوة، طقم",
  "invSku": "رمز الصنف",
  "invBarcode": "الباركود / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "الضريبة (٪)",
  "finTax": "ضريبة القيمة المضافة",
  "finIncomeAccount": "حساب الإيراد",
+ "finStockItem": "صنف المخزون",
+ "finNoStockItem": "بلا صنف مخزون (خدمة)",
  "finDefaultIncome": "الافتراضي",
  "finAddLine": "إضافة سطر",
  "finHasInsurer": "تدفع جهة تأمين جزءًا منها",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "بالترتيب؛ يقرّر كلٌّ بعد موافقة من قبله.",
  "accAssetAccount": "حساب الأصل",
  "accAssetGroup": "مجموعة الأصل",
+ "accAssetName": "الاسم",
  "accAssetGroups": "مجموعات الأصول",
  "accAssetReport": "تقرير الأصول",
  "accAssets": "الأصول",
@@ -6099,5 +6106,8 @@
  "kartablDate": "تاريخ التسجيل",
  "kartablDecidedAt": "تاريخ القرار",
  "kartablEmptyMine": "لا شيء بانتظار قرارك.",
- "kartablIssuedInvoice": "الفاتورة الصادرة"
+ "kartablIssuedInvoice": "الفاتورة الصادرة",
+ "crmsApOn_discount": "الخصم الذي يتجاوز الحد يحتاج إلى موافقة المدير",
+ "crmsApMaxPercent": "أقصى خصم دون موافقة (٪)",
+ "crmsDiscountSentForApproval": "تم الحفظ؛ أُرسل الخصم الذي يتجاوز حدك إلى صندوق الموافقات"
 }

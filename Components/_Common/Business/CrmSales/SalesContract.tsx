@@ -13,7 +13,7 @@ import s from "./CrmSales.module.css";
 import { useBizFormat } from "../bizShared";
 import { useCrm } from "../Crm/crmShared";
 import { contactName, dayOf, useAction, useList, useSalesText } from "./salesShared";
-import { CopyLink } from "./SalesWidgets";
+import { CopyLink, DayField } from "./SalesWidgets";
 import { Block, Contract, contractStateKey } from "./SalesContracts";
 
 // the people a corporate contract covers: added one by one or pasted
@@ -177,14 +177,8 @@ const SalesContract = ({ id }: { id: string }) => {
                 onChange={(e) => setEdit({ ...edit, value: Number(e.target.value.replace(/\D/g, "")) || 0 })}
               />
             </label>
-            <label className={classes.field}>
-              {t("crmsStartDate")}
-              <input type="date" value={edit.startDate ?? dayOf(c.startDate)} disabled={!canWrite} onChange={(e) => setEdit({ ...edit, startDate: e.target.value })} />
-            </label>
-            <label className={classes.field}>
-              {t("crmsEndDate")}
-              <input type="date" value={edit.endDate ?? dayOf(c.endDate)} disabled={!canWrite} onChange={(e) => setEdit({ ...edit, endDate: e.target.value })} />
-            </label>
+            <DayField label={t("crmsStartDate")} value={edit.startDate ?? dayOf(c.startDate)} onChange={(d) => setEdit({ ...edit, startDate: d })} disabled={!canWrite} />
+            <DayField label={t("crmsEndDate")} value={edit.endDate ?? dayOf(c.endDate)} onChange={(d) => setEdit({ ...edit, endDate: d })} disabled={!canWrite} optional />
           </div>
           {!c.contact && (
             <div className={s.formGrid}>

@@ -13,7 +13,7 @@ import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
 import { CrmContext, useCrm } from "../Crm/crmShared";
 import { contactName, dayOf, MiniContact, useAction, useList, useSalesText } from "./salesShared";
-import { ContactChoice, ContactPicker } from "./SalesWidgets";
+import { ContactChoice, ContactPicker, DayField } from "./SalesWidgets";
 
 const CP_POPUP = "CrmsCarePlan";
 
@@ -93,15 +93,9 @@ const CarePlanForm = ({ plan, onDone }: { plan?: CarePlan; onDone: () => void })
             </select>
           </label>
           {!plan && (
-            <label className={classes.field}>
-              {t("crmsStartDate")}
-              <input type="date" value={startDate} onChange={(e) => setStart(e.target.value)} />
-            </label>
+            <DayField label={t("crmsStartDate")} value={startDate} onChange={(d) => setStart(d)} />
           )}
-          <label className={classes.field}>
-            {t("crmsEndDate")}
-            <input type="date" value={endDate} min={startDate} onChange={(e) => setEnd(e.target.value)} />
-          </label>
+          <DayField label={t("crmsEndDate")} value={endDate} onChange={(d) => setEnd(d)} optional />
         </div>
         <label className={crm.checkField}>
           <input type="checkbox" checked={autoIssue} onChange={(e) => setAuto(e.target.checked)} />

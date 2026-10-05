@@ -2511,6 +2511,10 @@
  "invNearBadge": "Vence em breve",
  "invName": "Nome do item",
  "invUnit": "Unidade",
+ "invItemClass": "Classe do produto",
+ "invClassDrug": "Medicamento sob prescrição",
+ "invClassOtc": "Medicamento sem prescrição (OTC)",
+ "invClassCosmetic": "Cosméticos, higiene e suplementos",
  "invUnitHint": "unidade, caixa, pacote, kit",
  "invSku": "Código",
  "invBarcode": "Código de barras / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "Imposto (%)",
  "finTax": "Imposto",
  "finIncomeAccount": "Conta de receita",
+ "finStockItem": "Item de estoque",
+ "finNoStockItem": "Sem item de estoque (serviço)",
  "finDefaultIncome": "Padrão",
  "finAddLine": "Adicionar linha",
  "finHasInsurer": "Um convênio paga parte",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "Em ordem; cada um decide após a aprovação do anterior.",
  "accAssetAccount": "Conta do ativo",
  "accAssetGroup": "Grupo do ativo",
+ "accAssetName": "Nome",
  "accAssetGroups": "Grupos de ativos",
  "accAssetReport": "Relatório de ativos",
  "accAssets": "Ativos",
@@ -6099,5 +6106,8 @@
  "kartablDate": "Registado em",
  "kartablDecidedAt": "Decidido em",
  "kartablEmptyMine": "Nada aguarda a sua decisão.",
- "kartablIssuedInvoice": "Fatura emitida"
+ "kartablIssuedInvoice": "Fatura emitida",
+ "crmsApOn_discount": "Descontos acima de um limite precisam da aprovação do gestor",
+ "crmsApMaxPercent": "Desconto máximo sem aprovação (%)",
+ "crmsDiscountSentForApproval": "Salvo; o desconto acima do seu limite foi enviado para aprovação"
 }

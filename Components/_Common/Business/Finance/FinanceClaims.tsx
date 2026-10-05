@@ -62,8 +62,12 @@ const ClaimForm = ({ onDone }: { onDone: (c?: FinClaim) => unknown }) => {
   }, [from, kind, to]);
   const { data } = useSWR<Candidate[]>(`${API}${api}/claims/candidates?${query}`, (url: string) => fetcher({ url }).then((res) => asArray<Candidate>(res.data)));
   const candidates = asArray<Candidate>(data);
-  const picked = candidates.filter((c) => !skip.has(c._id));
   const insurerName = name.trim() || candidates[0]?.insurer?.name || t(insurerKey(kind));
+  // one list is one insurer: an invoice of another insurer of the same kind
+  // (two supplementary insurers) waits for its own list
+  const norm = (n?: string) => (n || "").trim().replace(/\s+/g, " ");
+  const ofThis = (c: Candidate) => norm(c.insurer?.name) === norm(insurerName);
+  const picked = candidates.filter((c) => ofThis(c) && !skip.has(c._id));
   const total = picked.reduce((s, c) => s + (c.insurer?.share || 0), 0) + typed.reduce((s, l) => s + parseAmount(l.share), 0);
   const setLine = (i: number, patch: Partial<Typed>) => setTyped((ls) => ls.map((l, j) => (j === i ? { ...l, ...patch } : l)));
   const save = async () => {
@@ -139,7 +143,8 @@ const ClaimForm = ({ onDone }: { onDone: (c?: FinClaim) => unknown }) => {
                       <input
                         type="checkbox"
                         aria-label={c.party?.name}
-                        checked={!skip.has(c._id)}
+                        disabled={!ofThis(c)}
+                        checked={ofThis(c) && !skip.has(c._id)}
                         onChange={(e) =>
                           setSkip((s) => {
                             const n = new Set(s);
@@ -151,7 +156,10 @@ const ClaimForm = ({ onDone }: { onDone: (c?: FinClaim) => unknown }) => {
                       />
                     </td>
                     <td>{f.date(c.date)}</td>
-                    <td className={classes.wrap}>{c.party?.name}</td>
+                    <td className={classes.wrap}>
+                      {c.party?.name}
+                      {!ofThis(c) && <span className={fin.small}> · {c.insurer?.name}</span>}
+                    </td>
                     <td className={classes.wrap}>{asArray<{ title: string }>(c.lines).map((l) => l.title).join("، ")}</td>
                     <td className={classes.num}>{f.money(c.insurer?.share)}</td>
                   </tr>
@@ -269,9 +277,13 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
                     {data.insurer?.name} · {t(insurerKey(data.insurer?.kind))}
                   </b>
                   <span>
-                    {data.from || data.to ? `${data.from ? f.date(data.from) : "…"} – ${data.to ? f.date(data.to) : "…"}` : ""}
-                    {data.submittedAt ? ` · ${t("finSubmittedOn")}: ${f.date(data.submittedAt)}` : ""}
-                    {data.trackingCode ? ` · ${t("finTrackingCode")}: ${data.trackingCode}` : ""}
+                    {[
+                      data.from || data.to ? `${data.from ? f.date(data.from) : "…"} – ${data.to ? f.date(data.to) : "…"}` : "",
+                      data.submittedAt ? `${t("finSubmittedOn")}: ${f.date(data.submittedAt)}` : "",
+                      data.trackingCode ? `${t("finTrackingCode")}: ${data.trackingCode}` : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
                   </span>
                 </div>
                 <Pill status={data.status}>{t(statusKey(data.status))}</Pill>

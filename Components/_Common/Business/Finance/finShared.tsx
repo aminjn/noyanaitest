@@ -65,6 +65,8 @@ export type FinInvoiceLine = {
   account?: string | { _id: string; code: string; name: string } | null;
   net: number;
   tax: number;
+  // a stock item sold on the line (the counter sale)
+  item?: string | null;
 };
 
 export type FinInvoice = {

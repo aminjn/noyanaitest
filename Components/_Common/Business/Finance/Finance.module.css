@@ -240,6 +240,14 @@
   font-size: 0.8125rem;
 }
 
+/* the service and, where the panel keeps stock, the item it sells */
+.invItemCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
 .invLineHead {
   font-size: 0.75rem;
   color: var(--gray9);

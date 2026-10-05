@@ -2511,6 +2511,10 @@
  "invNearBadge": "Bientôt périmé",
  "invName": "Nom de l'article",
  "invUnit": "Unité",
+ "invItemClass": "Classe de produit",
+ "invClassDrug": "Médicament sur ordonnance",
+ "invClassOtc": "Médicament sans ordonnance (OTC)",
+ "invClassCosmetic": "Cosmétiques, hygiène et compléments",
  "invUnitHint": "pièce, boîte, paquet, kit",
  "invSku": "Référence",
  "invBarcode": "Code-barres / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "Taxe (%)",
  "finTax": "TVA",
  "finIncomeAccount": "Compte de produit",
+ "finStockItem": "Article en stock",
+ "finNoStockItem": "Sans article en stock (prestation)",
  "finDefaultIncome": "Par défaut",
  "finAddLine": "Ajouter une ligne",
  "finHasInsurer": "Un assureur en paie une partie",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "Dans l'ordre ; chacun décide après l'approbation du précédent.",
  "accAssetAccount": "Compte d'immobilisation",
  "accAssetGroup": "Catégorie d'immobilisation",
+ "accAssetName": "Nom",
  "accAssetGroups": "Catégories d'immobilisations",
  "accAssetReport": "Rapport des immobilisations",
  "accAssets": "Immobilisations",
@@ -6099,5 +6106,8 @@
  "kartablDate": "Déposée le",
  "kartablDecidedAt": "Décidée le",
  "kartablEmptyMine": "Rien n’attend votre décision.",
- "kartablIssuedInvoice": "Facture émise"
+ "kartablIssuedInvoice": "Facture émise",
+ "crmsApOn_discount": "Les remises au-delà d'un plafond doivent être approuvées par le responsable",
+ "crmsApMaxPercent": "Remise maximale sans approbation (%)",
+ "crmsDiscountSentForApproval": "Enregistré ; la remise au-delà de votre plafond a été envoyée pour approbation"
 }

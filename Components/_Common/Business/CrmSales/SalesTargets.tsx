@@ -14,6 +14,7 @@ import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
 import { CrmContext, phoneText, useCrm, usePercent } from "../Crm/crmShared";
 import { dayOf, SalesMeta, useAction, useList, useNames, useProfile, useSalesMeta, useSalesText } from "./salesShared";
+import { DayField } from "./SalesWidgets";
 
 const GOAL_POPUP = "CrmsGoal";
 const COMM_POPUP = "CrmsCommission";
@@ -142,15 +143,9 @@ const GoalForm = ({ meta, goal, onDone }: { meta?: SalesMeta; goal?: Goal; onDon
               ))}
             </select>
           </label>
-          <label className={classes.field}>
-            {t(period === "custom" ? "crmsStartDate" : "crmsPeriodOf")}
-            <input type="date" value={startDate} onChange={(e) => setStart(e.target.value)} />
-          </label>
+          <DayField label={t(period === "custom" ? "crmsStartDate" : "crmsPeriodOf")} value={startDate} onChange={(d) => setStart(d)} />
           {period === "custom" && (
-            <label className={classes.field}>
-              {t("crmsEndDate")}
-              <input type="date" value={endDate} min={startDate} onChange={(e) => setEnd(e.target.value)} />
-            </label>
+            <DayField label={t("crmsEndDate")} value={endDate} onChange={(d) => setEnd(d)} optional />
           )}
         </div>
         {metric === "serviceSales" && (
@@ -393,15 +388,9 @@ const CommissionForm = ({ meta, rule, onDone }: { meta?: SalesMeta; rule?: Rule;
               ))}
             </select>
           </label>
-          <label className={classes.field}>
-            {t(r.period === "custom" ? "crmsStartDate" : "crmsPeriodOf")}
-            <input type="date" value={dayOf(r.periodStart)} onChange={(e) => set({ periodStart: e.target.value })} />
-          </label>
+          <DayField label={t(r.period === "custom" ? "crmsStartDate" : "crmsPeriodOf")} value={dayOf(r.periodStart)} onChange={(d) => set({ periodStart: d })} />
           {r.period === "custom" && (
-            <label className={classes.field}>
-              {t("crmsEndDate")}
-              <input type="date" value={dayOf(r.periodEnd)} onChange={(e) => set({ periodEnd: e.target.value })} />
-            </label>
+            <DayField label={t("crmsEndDate")} value={dayOf(r.periodEnd)} onChange={(d) => set({ periodEnd: d })} optional />
           )}
         </div>
         {r.mode === "tiered" && (

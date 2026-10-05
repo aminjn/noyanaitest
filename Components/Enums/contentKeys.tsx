@@ -2662,6 +2662,10 @@ const contentKeys = [
   "invNearBadge",
   "invName",
   "invUnit",
+  "invItemClass",
+  "invClassDrug",
+  "invClassOtc",
+  "invClassCosmetic",
   "invUnitHint",
   "invSku",
   "invBarcode",
@@ -3305,6 +3309,7 @@ const contentKeys = [
   "accApproversHint",
   "accAssetAccount",
   "accAssetGroup",
+  "accAssetName",
   "accAssetGroups",
   "accAssetReport",
   "accAssets",
@@ -5601,6 +5606,8 @@ const contentKeys = [
   "finTaxRate",
   "finTax",
   "finIncomeAccount",
+  "finStockItem",
+  "finNoStockItem",
   "finDefaultIncome",
   "finAddLine",
   "finHasInsurer",
@@ -6251,6 +6258,9 @@ const contentKeys = [
   "articleRejected",
   "medicallyReviewedByX",
   "medicallyReviewedByXOnY",
+  "crmsApOn_discount",
+  "crmsApMaxPercent",
+  "crmsDiscountSentForApproval",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

@@ -2511,6 +2511,10 @@
  "invNearBadge": "মেয়াদ শেষের পথে",
  "invName": "পণ্যের নাম",
  "invUnit": "একক",
+ "invItemClass": "পণ্যের শ্রেণি",
+ "invClassDrug": "প্রেসক্রিপশন ওষুধ",
+ "invClassOtc": "প্রেসক্রিপশন ছাড়া ওষুধ (OTC)",
+ "invClassCosmetic": "প্রসাধনী, স্বাস্থ্যবিধি ও সাপ্লিমেন্ট",
  "invUnitHint": "পিস, বাক্স, প্যাক, কিট",
  "invSku": "পণ্য কোড",
  "invBarcode": "বারকোড / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "কর (%)",
  "finTax": "ভ্যাট",
  "finIncomeAccount": "আয়ের হিসাব",
+ "finStockItem": "মজুত পণ্য",
+ "finNoStockItem": "মজুত পণ্য নেই (সেবা)",
  "finDefaultIncome": "ডিফল্ট",
  "finAddLine": "সারি যোগ করুন",
  "finHasInsurer": "এর একাংশ বীমা দেয়",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "ক্রমানুসারে; প্রত্যেকে আগের জনের অনুমোদনের পরে সিদ্ধান্ত নেন।",
  "accAssetAccount": "সম্পদ হিসাব",
  "accAssetGroup": "সম্পদ গ্রুপ",
+ "accAssetName": "নাম",
  "accAssetGroups": "সম্পদ গ্রুপসমূহ",
  "accAssetReport": "সম্পদ প্রতিবেদন",
  "accAssets": "সম্পদ",
@@ -6099,5 +6106,8 @@
  "kartablDate": "জমার তারিখ",
  "kartablDecidedAt": "সিদ্ধান্তের তারিখ",
  "kartablEmptyMine": "আপনার সিদ্ধান্তের অপেক্ষায় কিছু নেই।",
- "kartablIssuedInvoice": "জারি করা চালান"
+ "kartablIssuedInvoice": "জারি করা চালান",
+ "crmsApOn_discount": "সীমার বেশি ছাড়ের জন্য ব্যবস্থাপকের অনুমোদন লাগে",
+ "crmsApMaxPercent": "অনুমোদন ছাড়া সর্বোচ্চ ছাড় (%)",
+ "crmsDiscountSentForApproval": "সংরক্ষিত হয়েছে; আপনার সীমার বেশি ছাড় অনুমোদনের জন্য পাঠানো হয়েছে"
 }

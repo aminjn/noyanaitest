@@ -19,6 +19,8 @@ export type InvItem = {
   _id: string;
   name: string;
   kind: "goods" | "supply";
+  // a pharmacy's goods by class: their own stock, income and cost accounts
+  itemClass?: "drug" | "otc" | "cosmetic";
   product?: string;
   sku?: string;
   barcode?: string;

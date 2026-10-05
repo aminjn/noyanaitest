@@ -2511,6 +2511,10 @@
  "invNearBadge": "میعاد قریب",
  "invName": "مال کا نام",
  "invUnit": "اکائی",
+ "invItemClass": "کالا کی قسم",
+ "invClassDrug": "نسخے والی دوا",
+ "invClassOtc": "بغیر نسخے کی دوا (OTC)",
+ "invClassCosmetic": "آرائشی، حفظان صحت اور سپلیمنٹ",
  "invUnitHint": "عدد، ڈبہ، پیکٹ، کٹ",
  "invSku": "مال کا کوڈ",
  "invBarcode": "بارکوڈ / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "ٹیکس (٪)",
  "finTax": "ویٹ",
  "finIncomeAccount": "آمدنی اکاؤنٹ",
+ "finStockItem": "گودام کی کالا",
+ "finNoStockItem": "گودام کی کالا نہیں (خدمت)",
  "finDefaultIncome": "ڈیفالٹ",
  "finAddLine": "سطر شامل کریں",
  "finHasInsurer": "اس کا کچھ حصہ بیمہ ادا کرتا ہے",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "ترتیب سے؛ ہر شخص پچھلے کی منظوری کے بعد فیصلہ کرتا ہے۔",
  "accAssetAccount": "اثاثے کا اکاؤنٹ",
  "accAssetGroup": "اثاثے کا گروپ",
+ "accAssetName": "نام",
  "accAssetGroups": "اثاثوں کے گروپ",
  "accAssetReport": "اثاثوں کی رپورٹ",
  "accAssets": "اثاثے",
@@ -6099,5 +6106,8 @@
  "kartablDate": "درج ہونے کی تاریخ",
  "kartablDecidedAt": "فیصلے کی تاریخ",
  "kartablEmptyMine": "کوئی چیز آپ کے فیصلے کی منتظر نہیں۔",
- "kartablIssuedInvoice": "جاری شدہ انوائس"
+ "kartablIssuedInvoice": "جاری شدہ انوائس",
+ "crmsApOn_discount": "حد سے زیادہ رعایت کے لیے مینیجر کی منظوری ضروری ہے",
+ "crmsApMaxPercent": "منظوری کے بغیر زیادہ سے زیادہ رعایت (%)",
+ "crmsDiscountSentForApproval": "محفوظ ہو گیا؛ آپ کی حد سے زیادہ رعایت منظوری کے لیے کارتابل میں بھیج دی گئی"
 }

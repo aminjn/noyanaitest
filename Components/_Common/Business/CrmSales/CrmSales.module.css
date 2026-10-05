@@ -442,3 +442,19 @@
     grid-template-columns: minmax(5rem, 7rem) 1fr auto;
   }
 }
+
+/* a day field with its clear button at the end of the input */
+.dayField {
+  position: relative;
+}
+.dayClear {
+  position: absolute;
+  inset-inline-end: 0.75rem;
+  inset-block-end: 0.7rem;
+  border: 0;
+  background: transparent;
+  color: var(--gray9);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}

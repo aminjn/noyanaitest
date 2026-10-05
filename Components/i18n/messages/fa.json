@@ -2533,6 +2533,10 @@
  "invNearBadge": "نزدیک انقضا",
  "invName": "نام کالا",
  "invUnit": "واحد",
+ "invItemClass": "گروه کالا",
+ "invClassDrug": "دارو (نسخه‌ای)",
+ "invClassOtc": "داروی بدون نسخه (OTC)",
+ "invClassCosmetic": "آرایشی، بهداشتی و مکمل",
  "invUnitHint": "عدد، جعبه، بسته، کیت",
  "invSku": "کد کالا",
  "invBarcode": "بارکد / IRC",
@@ -3403,6 +3407,8 @@
  "finTaxRate": "مالیات (٪)",
  "finTax": "مالیات بر ارزش افزوده",
  "finIncomeAccount": "حساب درآمد",
+ "finStockItem": "کالای انبار",
+ "finNoStockItem": "بدون کالای انبار (خدمت)",
  "finDefaultIncome": "پیش‌فرض",
  "finAddLine": "افزودن ردیف",
  "finHasInsurer": "بخشی را بیمه می‌پردازد",
@@ -3896,6 +3902,7 @@
  "accApproversHint": "به ترتیب؛ هر نفر پس از تأیید نفر قبلی تصمیم می‌گیرد.",
  "accAssetAccount": "حساب دارایی",
  "accAssetGroup": "گروه دارایی",
+ "accAssetName": "نام",
  "accAssetGroups": "گروه‌های دارایی",
  "accAssetReport": "گزارش دارایی‌ها",
  "accAssets": "دارایی‌ها",
@@ -6121,5 +6128,8 @@
  "kartablDate": "تاریخ ثبت",
  "kartablDecidedAt": "تاریخ تصمیم",
  "kartablEmptyMine": "چیزی منتظر تصمیم شما نیست.",
- "kartablIssuedInvoice": "صورتحساب صادرشده"
+ "kartablIssuedInvoice": "صورتحساب صادرشده",
+ "crmsApOn_discount": "تخفیف بیش از سقف، تأیید مدیر لازم دارد",
+ "crmsApMaxPercent": "بیشترین تخفیف بدون تأیید (درصد)",
+ "crmsDiscountSentForApproval": "ذخیره شد؛ تخفیف بیش از سقف شما برای تأیید به کارتابل رفت"
 }

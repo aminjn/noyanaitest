@@ -43,8 +43,13 @@ const ItemForm = ({ item, onDone, onClose }: { item?: InvItem; onDone: () => unk
   const [reorderPoint, setReorderPoint] = useState(item?.reorderPoint ? String(item.reorderPoint) : "");
   const [maxStock, setMaxStock] = useState(item?.maxStock ? String(item.maxStock) : "");
   const [isActive, setIsActive] = useState(item?.isActive ?? true);
+  const [itemClass, setItemClass] = useState<NonNullable<InvItem["itemClass"]>>(item?.itemClass || "drug");
   const [busy, setBusy] = useState(false);
   const kindLocked = fromCatalog || !!item?.tracked || panelKind === "pharmacy";
+  // (2026-10) a pharmacy's goods: drug, OTC or cosmetic, each with its own
+  // stock, income and cost of sales; fixed once stock is booked
+  const showClass = panelKind === "pharmacy" && (fromCatalog || item?.kind === "goods");
+  const classLocked = !!item?.tracked;
 
   const save = async () => {
     if (busy) return;
@@ -56,6 +61,7 @@ const ItemForm = ({ item, onDone, onClose }: { item?: InvItem; onDone: () => unk
         payload: {
           ...(fromCatalog ? {} : { name: name.trim() }),
           ...(kindLocked && item ? {} : { kind: panelKind === "pharmacy" ? "supply" : kind }),
+          ...(showClass && !classLocked && itemClass !== (item?.itemClass || "drug") ? { itemClass } : {}),
           unit: unit.trim(),
           sku: sku.trim() || undefined,
           barcode: barcode.trim() || undefined,
@@ -85,6 +91,16 @@ const ItemForm = ({ item, onDone, onClose }: { item?: InvItem; onDone: () => unk
           <select value={kind} onChange={(e) => setKind(e.target.value as InvItem["kind"])} disabled={kindLocked && !!item}>
             <option value="supply">{t("invKindSupply")}</option>
             <option value="goods">{t("invKindGoods")}</option>
+          </select>
+        </label>
+      )}
+      {showClass && (
+        <label className={classes.field}>
+          {t("invItemClass")}
+          <select value={itemClass} onChange={(e) => setItemClass(e.target.value as NonNullable<InvItem["itemClass"]>)} disabled={classLocked}>
+            <option value="drug">{t("invClassDrug")}</option>
+            <option value="otc">{t("invClassOtc")}</option>
+            <option value="cosmetic">{t("invClassCosmetic")}</option>
           </select>
         </label>
       )}
@@ -438,7 +454,9 @@ const InventoryItems = ({ refreshKey, onChanged }: { refreshKey: number; onChang
                         {i.name} {i.low && <span className={`${classes.badge} ${inv.badgeWarn}`}>{t("invLow")}</span>}
                       </td>
                       <td>
-                        <span className={classes.badge}>{t(i.kind === "supply" ? "invKindSupply" : "invKindGoods")}</span>
+                        <span className={classes.badge}>
+                          {t(i.kind === "supply" ? "invKindSupply" : ctx.kind === "pharmacy" ? (i.itemClass === "otc" ? "invClassOtc" : i.itemClass === "cosmetic" ? "invClassCosmetic" : "invClassDrug") : "invKindGoods")}
+                        </span>
                       </td>
                       <td className={classes.num}>
                         {i.tracked ? (

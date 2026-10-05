@@ -15,7 +15,7 @@ import s from "./CrmSales.module.css";
 import { useBizFormat } from "../bizShared";
 import { CrmContext, useCrm } from "../Crm/crmShared";
 import { approvalStatusKey, contactName, dayOf, Line, Plan, planStatusKey, useAction, useSalesText } from "./salesShared";
-import { ContactChoice, ContactPicker, contactPayload, CopyLink, LineEditor, Totals } from "./SalesWidgets";
+import { ContactChoice, ContactPicker, contactPayload, CopyLink, LineEditor, Totals, DayField } from "./SalesWidgets";
 
 const DISCOUNT_POPUP = "CrmsPlanDiscount";
 
@@ -146,10 +146,7 @@ const SalesPlan = ({ id }: { id: string }) => {
               {t("crmsSubject")}
               <input value={edit.subject ?? p.subject} disabled={!editable} onChange={(e) => setEdit({ ...edit, subject: e.target.value })} />
             </label>
-            <label className={classes.field}>
-              {t("crmsOpenTill")}
-              <input type="date" value={edit.openTill ?? dayOf(p.openTill)} disabled={!editable} onChange={(e) => setEdit({ ...edit, openTill: e.target.value })} />
-            </label>
+            <DayField label={t("crmsOpenTill")} value={edit.openTill ?? dayOf(p.openTill)} onChange={(d) => setEdit({ ...edit, openTill: d })} disabled={!editable} optional />
             <label className={classes.field}>
               {t("crmsPlanDiscount")}
               <input

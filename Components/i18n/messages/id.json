@@ -2511,6 +2511,10 @@
  "invNearBadge": "Segera kedaluwarsa",
  "invName": "Nama barang",
  "invUnit": "Satuan",
+ "invItemClass": "Kelas produk",
+ "invClassDrug": "Obat resep",
+ "invClassOtc": "Obat bebas (OTC)",
+ "invClassCosmetic": "Kosmetik, kebersihan, dan suplemen",
  "invUnitHint": "buah, kotak, bungkus, kit",
  "invSku": "Kode barang",
  "invBarcode": "Barcode / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "Pajak (%)",
  "finTax": "PPN",
  "finIncomeAccount": "Akun pendapatan",
+ "finStockItem": "Barang stok",
+ "finNoStockItem": "Tanpa barang stok (layanan)",
  "finDefaultIncome": "Bawaan",
  "finAddLine": "Tambah baris",
  "finHasInsurer": "Sebagian dibayar asuransi",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "Berurutan; tiap orang memutuskan setelah orang sebelumnya menyetujui.",
  "accAssetAccount": "Akun aset",
  "accAssetGroup": "Kelompok aset",
+ "accAssetName": "Nama",
  "accAssetGroups": "Kelompok aset",
  "accAssetReport": "Laporan aset",
  "accAssets": "Aset",
@@ -6099,5 +6106,8 @@
  "kartablDate": "Diajukan pada",
  "kartablDecidedAt": "Diputuskan pada",
  "kartablEmptyMine": "Tidak ada yang menunggu keputusan Anda.",
- "kartablIssuedInvoice": "Faktur yang diterbitkan"
+ "kartablIssuedInvoice": "Faktur yang diterbitkan",
+ "crmsApOn_discount": "Diskon di atas batas memerlukan persetujuan manajer",
+ "crmsApMaxPercent": "Diskon tertinggi tanpa persetujuan (%)",
+ "crmsDiscountSentForApproval": "Tersimpan; diskon di atas batas Anda dikirim untuk disetujui"
 }

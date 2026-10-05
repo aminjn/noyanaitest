@@ -2511,6 +2511,10 @@
  "invNearBadge": "Скоро истекает",
  "invName": "Название товара",
  "invUnit": "Единица",
+ "invItemClass": "Группа товара",
+ "invClassDrug": "Рецептурный препарат",
+ "invClassOtc": "Безрецептурный препарат (OTC)",
+ "invClassCosmetic": "Косметика, гигиена и добавки",
  "invUnitHint": "шт., коробка, упаковка, набор",
  "invSku": "Артикул",
  "invBarcode": "Штрихкод / IRC",
@@ -3381,6 +3385,8 @@
  "finTaxRate": "Налог (%)",
  "finTax": "НДС",
  "finIncomeAccount": "Счёт дохода",
+ "finStockItem": "Складская позиция",
+ "finNoStockItem": "Без складской позиции (услуга)",
  "finDefaultIncome": "По умолчанию",
  "finAddLine": "Добавить строку",
  "finHasInsurer": "Часть оплачивает страховщик",
@@ -3874,6 +3880,7 @@
  "accApproversHint": "По порядку: каждый решает после утверждения предыдущим.",
  "accAssetAccount": "Счёт актива",
  "accAssetGroup": "Группа ОС",
+ "accAssetName": "Название",
  "accAssetGroups": "Группы ОС",
  "accAssetReport": "Отчёт по ОС",
  "accAssets": "Основные средства",
@@ -6099,5 +6106,8 @@
  "kartablDate": "Дата подачи",
  "kartablDecidedAt": "Дата решения",
  "kartablEmptyMine": "Ничто не ждёт вашего решения.",
- "kartablIssuedInvoice": "Выставленный счёт"
+ "kartablIssuedInvoice": "Выставленный счёт",
+ "crmsApOn_discount": "Скидка выше лимита требует одобрения руководителя",
+ "crmsApMaxPercent": "Максимальная скидка без одобрения (%)",
+ "crmsDiscountSentForApproval": "Сохранено; скидка сверх вашего лимита отправлена на согласование"
 }

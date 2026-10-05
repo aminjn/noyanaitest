@@ -35,8 +35,23 @@ import {
 const FORM_KEY = "FinInvoiceForm";
 const VIEW_KEY = "FinInvoiceView";
 
-type Line = { title: string; qty: string; unitPrice: string; discount: string; taxRate: string; account: string };
-const emptyLine = (): Line => ({ title: "", qty: "1", unitPrice: "", discount: "", taxRate: "0", account: "" });
+type Line = { title: string; qty: string; unitPrice: string; discount: string; taxRate: string; account: string; item: string };
+const emptyLine = (): Line => ({ title: "", qty: "1", unitPrice: "", discount: "", taxRate: "0", account: "", item: "" });
+
+// the panels that keep stock (Routers/inventoryRoutes.ts)
+const STOCK_NODES = ["pharmacy", "paraClinic", "clinic", "hospital"];
+type StockItem = { _id: string; name: string; unit?: string; kind: string; stock: number; isActive?: boolean };
+
+// (2026-10) the owner's stock items, for a line that sells one: issuing the
+// invoice takes it out of stock (FEFO) with its cost of sales, voiding it
+// brings it back. Empty where the panel keeps no stock or its plan has no
+// inventory.
+const useStockItems = (node: string) =>
+  useSWR<StockItem[]>(STOCK_NODES.includes(node) ? `${API}/${node}/inv/items` : null, (url: string) =>
+    fetcher({ url })
+      .then((res) => asArray<StockItem>(res.data).filter((i) => i && i._id && i.isActive !== false))
+      .catch(() => []),
+  );
 
 // New invoice or a draft's edit: the patient, the lines (service, quantity,
 // price, discount, VAT, income account), the insurer's share and a note.
@@ -66,6 +81,7 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
           discount: l.discount ? String(l.discount) : "",
           taxRate: String(l.taxRate || 0),
           account: idOf(l.account),
+          item: l.item ? String(l.item) : "",
         }))
       : [emptyLine()],
   );
@@ -75,6 +91,19 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
   const [insShare, setInsShare] = useState(invoice?.insurer?.share ? String(invoice.insurer.share) : "");
   const [note, setNote] = useState(invoice?.note || "");
   const [busy, setBusy] = useState(false);
+  const { data: stockData } = useStockItems(node);
+  const stock = asArray<StockItem>(stockData);
+  const pickItem = (i: number, id: string) =>
+    setLines((ls) =>
+      ls.map((l, j) => {
+        if (j !== i) return l;
+        const before = stock.find((x) => x._id === l.item);
+        const it = stock.find((x) => x._id === id);
+        // the title follows the item unless it was typed by hand
+        const title = !l.title.trim() || (before && l.title === before.name) ? it?.name || "" : l.title;
+        return { ...l, item: id, title, account: id ? "" : l.account };
+      }),
+    );
 
   const priced = lines.map((l) => {
     const gross = Math.round(parseAmount(l.qty) * parseAmount(l.unitPrice));
@@ -106,6 +135,7 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
             discount: parseAmount(l.discount),
             taxRate: parseAmount(l.taxRate),
             account: l.account || undefined,
+            item: l.item || undefined,
           })),
           insurer: hasInsurer ? { kind: insKind, name: insName.trim(), share } : null,
           note: note.trim() || undefined,
@@ -163,7 +193,19 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
           </div>
           {lines.map((l, i) => (
             <div key={i} className={fin.invLine}>
-              <input aria-label={t("finService")} placeholder={t("finService")} value={l.title} maxLength={300} onChange={(e) => set(i, { title: e.target.value })} />
+              <div className={fin.invItemCell}>
+                <input aria-label={t("finService")} placeholder={t("finService")} value={l.title} maxLength={300} onChange={(e) => set(i, { title: e.target.value })} />
+                {stock.length > 0 && (
+                  <select aria-label={t("finStockItem")} value={l.item} onChange={(e) => pickItem(i, e.target.value)}>
+                    <option value="">{t("finNoStockItem")}</option>
+                    {stock.map((x) => (
+                      <option key={x._id} value={x._id}>
+                        {x.name} · {f.money(x.stock)} {x.unit || ""}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
               <input aria-label={t("finQty")} placeholder={t("finQty")} value={l.qty} dir="ltr" inputMode="decimal" onChange={(e) => set(i, { qty: e.target.value })} />
               <input aria-label={t("finUnitPrice")} placeholder={t("finUnitPrice")} value={l.unitPrice} dir="ltr" inputMode="numeric" onChange={(e) => set(i, { unitPrice: e.target.value })} />
               <input aria-label={t("finDiscount")} placeholder={t("finDiscount")} value={l.discount} dir="ltr" inputMode="numeric" onChange={(e) => set(i, { discount: e.target.value })} />

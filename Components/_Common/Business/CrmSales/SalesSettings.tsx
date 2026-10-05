@@ -30,7 +30,7 @@ const condOps = ["eq", "neq", "contains", "in", "gt", "lt", "empty", "notempty"]
 type Cond = { field: string; op: string; value: string };
 type Rule = { _id: string; kind: "assign" | "score"; name: string; order: number; active: boolean; conditions: Cond[]; assignType: "user" | "team"; user?: string; team?: string; stopOnMatch: boolean; points: number };
 type Team = { _id: string; name: string; manager?: string; members: string[] };
-type Chain = { enabled: boolean; approvers: string[]; minAmount: number };
+type Chain = { enabled: boolean; approvers: string[]; minAmount: number; maxPercent?: number };
 type Settings = {
   autoAssign: { enabled: boolean; users: string[] };
   teamScope: boolean;
@@ -804,10 +804,19 @@ const Approvals = ({ meta, refresh }: { meta: SalesMeta; refresh: () => void }) 
       {(["plan", "discount", "credit"] as const).filter((k) => pf.approvals.includes(k)).map((k) => (
         <div key={k} className={s.stack}>
           <h3 className={classes.cardTitle}>{t(`crmsApKind_${k}`)}</h3>
-          {k !== "discount" && (
-            <label className={crm.checkField}>
-              <input type="checkbox" checked={!!cur[k].enabled} disabled={!canWrite} onChange={(e) => set(k, { enabled: e.target.checked })} />
-              {t(`crmsApOn_${k}`)}
+          <label className={crm.checkField}>
+            <input type="checkbox" checked={!!cur[k].enabled} disabled={!canWrite} onChange={(e) => set(k, { enabled: e.target.checked })} />
+            {t(`crmsApOn_${k}`)}
+          </label>
+          {k === "discount" && cur.discount.enabled && (
+            <label className={classes.field}>
+              {t("crmsApMaxPercent")}
+              <input
+                inputMode="decimal"
+                value={cur.discount.maxPercent || ""}
+                disabled={!canWrite}
+                onChange={(e) => set("discount", { maxPercent: Math.min(100, Number(e.target.value.replace(/[^\d.]/g, "")) || 0) })}
+              />
             </label>
           )}
           {k === "plan" && (
