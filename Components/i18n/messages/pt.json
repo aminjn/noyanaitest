@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "«Não sou eu»: ${1}",
  "clkUnlinkedAt": "Desligado: ${1}",
  "clkCentreHint": "A ligação só é feita quando o paciente a confirma na Noyan; o centro não a pode fazer.",
- "clkCentreWrongHint": "O titular deste número indicou na Noyan que não é seu paciente; verifique o número."
+ "clkCentreWrongHint": "O titular deste número indicou na Noyan que não é seu paciente; verifique o número.",
+ "clkSrc_merge": "Fusão de duplicados pelo centro"
 }

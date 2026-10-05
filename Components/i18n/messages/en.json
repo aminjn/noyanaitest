@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "“Not me”: ${1}",
  "clkUnlinkedAt": "Unlinked: ${1}",
  "clkCentreHint": "The link is made only when the patient confirms it in Noyan; the centre can’t make it.",
- "clkCentreWrongHint": "The holder of this number said on Noyan that they are not your patient; please check the number."
+ "clkCentreWrongHint": "The holder of this number said on Noyan that they are not your patient; please check the number.",
+ "clkSrc_merge": "Centre merged duplicate records"
 }

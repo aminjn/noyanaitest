@@ -63,7 +63,7 @@ export type CrmContact = {
 export type CrmLinkState = {
   status: "linked" | "pending" | "declined" | "unlinked" | "none";
   verified: boolean;
-  source?: "manual" | "csv" | "webform" | "visit";
+  source?: "manual" | "csv" | "webform" | "visit" | "merge";
   offeredAt?: string;
   linkedAt?: string;
   declinedAt?: string;

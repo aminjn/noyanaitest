@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "«No soy yo»: ${1}",
  "clkUnlinkedAt": "Desvinculado: ${1}",
  "clkCentreHint": "El vínculo solo se crea cuando el paciente lo confirma en Noyan; el centro no puede crearlo.",
- "clkCentreWrongHint": "El titular de este número ha indicado en Noyan que no es su paciente; compruebe el número."
+ "clkCentreWrongHint": "El titular de este número ha indicado en Noyan que no es su paciente; compruebe el número.",
+ "clkSrc_merge": "Fusión de duplicados por el centro"
 }

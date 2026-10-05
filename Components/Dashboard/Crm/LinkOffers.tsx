@@ -38,7 +38,7 @@ type LinkRow = {
   source: LinkSource;
   since?: string;
 };
-type LinkSource = "manual" | "csv" | "webform" | "visit";
+type LinkSource = "manual" | "csv" | "webform" | "visit" | "merge";
 type HistoryRow = {
   _id: string;
   at: string;
@@ -63,6 +63,7 @@ export const LINK_SOURCE_KEY: Record<LinkSource, string> = {
   csv: "clkSrc_csv",
   webform: "clkSrc_webform",
   visit: "clkSrc_visit",
+  merge: "clkSrc_merge",
 };
 const ACTION_KEY: Record<HistoryRow["action"], string> = {
   offered: "clkAct_offered",

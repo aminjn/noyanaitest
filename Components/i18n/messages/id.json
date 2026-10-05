@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "“Bukan saya”: ${1}",
  "clkUnlinkedAt": "Tautan diputus: ${1}",
  "clkCentreHint": "Tautan hanya dibuat jika pasien sendiri mengonfirmasinya di Noyan; pusat tidak dapat membuatnya.",
- "clkCentreWrongHint": "Pemilik nomor ini menyatakan di Noyan bahwa ia bukan pasien Anda; periksa nomornya."
+ "clkCentreWrongHint": "Pemilik nomor ini menyatakan di Noyan bahwa ia bukan pasien Anda; periksa nomornya.",
+ "clkSrc_merge": "Pusat menggabungkan catatan ganda"
 }

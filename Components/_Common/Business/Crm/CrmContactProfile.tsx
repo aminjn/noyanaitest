@@ -195,7 +195,7 @@ const LINK_BADGE: Record<CrmLinkState["status"], string> = {
   unlinked: "clkCentreUnlinked",
   none: "clkCentreNone",
 };
-const LINK_SOURCE: Record<string, string> = { manual: "clkSrc_manual", csv: "clkSrc_csv", webform: "clkSrc_webform", visit: "clkSrc_visit" };
+const LINK_SOURCE: Record<string, string> = { manual: "clkSrc_manual", csv: "clkSrc_csv", webform: "clkSrc_webform", visit: "clkSrc_visit", merge: "clkSrc_merge" };
 
 // the contact's link to a Noyan account: its state and dates (the centre
 // can't make the link - only the patient's «وصل شود» in Noyan does)

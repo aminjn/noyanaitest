@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "「私ではない」：${1}",
  "clkUnlinkedAt": "連携解除：${1}",
  "clkCentreHint": "連携は患者本人が Noyan で確認したときのみ成立し、施設が行うことはできません。",
- "clkCentreWrongHint": "この番号の持ち主が Noyan で「あなたの患者ではない」と回答しました。番号を確認してください。"
+ "clkCentreWrongHint": "この番号の持ち主が Noyan で「あなたの患者ではない」と回答しました。番号を確認してください。",
+ "clkSrc_merge": "施設による重複記録の統合"
 }

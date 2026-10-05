@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "« Pas moi » : ${1}",
  "clkUnlinkedAt": "Lien retiré : ${1}",
  "clkCentreHint": "Le lien n’est établi que si le patient le confirme dans Noyan ; le centre ne peut pas l’établir.",
- "clkCentreWrongHint": "Le titulaire de ce numéro a indiqué sur Noyan ne pas être votre patient ; vérifiez le numéro."
+ "clkCentreWrongHint": "Le titulaire de ce numéro a indiqué sur Noyan ne pas être votre patient ; vérifiez le numéro.",
+ "clkSrc_merge": "Fusion de doublons par le centre"
 }

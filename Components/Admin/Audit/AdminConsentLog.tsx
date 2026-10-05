@@ -25,7 +25,7 @@ type ConsentRow = {
   at: string;
   action: "offered" | "linked" | "declined" | "dismissed-later" | "unlinked" | "withdrawn";
   actor: "patient" | "system";
-  source: "manual" | "csv" | "webform" | "visit";
+  source: "manual" | "csv" | "webform" | "visit" | "merge";
   reason?: string;
   ownerKind: string;
   ownerId: string;
@@ -71,6 +71,9 @@ const sourceLabels: Record<ConsentRow["source"], string> = {
   get visit() {
     return ta("نوبت یا خرید در نویان");
   },
+  get merge() {
+    return ta("ادغام پرونده‌های تکراری");
+  },
 };
 const kindLabels: Record<string, string> = {
   get doctor() {
@@ -101,6 +104,9 @@ const reasonLabels: Record<string, string> = {
   },
   get linkedElsewhere() {
     return ta("به حساب دیگری وصل شد");
+  },
+  get merged() {
+    return ta("پرونده‌ها ادغام شدند");
   },
 };
 

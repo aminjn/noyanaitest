@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "„Nicht ich“: ${1}",
  "clkUnlinkedAt": "Gelöst: ${1}",
  "clkCentreHint": "Die Verknüpfung entsteht nur, wenn der Patient sie in Noyan bestätigt; die Einrichtung kann sie nicht herstellen.",
- "clkCentreWrongHint": "Der Inhaber dieser Nummer hat auf Noyan angegeben, nicht Ihr Patient zu sein; bitte prüfen Sie die Nummer."
+ "clkCentreWrongHint": "Der Inhaber dieser Nummer hat auf Noyan angegeben, nicht Ihr Patient zu sein; bitte prüfen Sie die Nummer.",
+ "clkSrc_merge": "Einrichtung hat Duplikate zusammengeführt"
 }

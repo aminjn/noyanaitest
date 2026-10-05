@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "“不是我”：${1}",
  "clkUnlinkedAt": "取消关联：${1}",
  "clkCentreHint": "只有患者本人在 Noyan 中确认后才会建立关联；机构无法自行建立。",
- "clkCentreWrongHint": "该号码的持有人在 Noyan 表示自己不是您的患者，请核对号码。"
+ "clkCentreWrongHint": "该号码的持有人在 Noyan 表示自己不是您的患者，请核对号码。",
+ "clkSrc_merge": "机构合并了重复档案"
 }

@@ -6251,5 +6251,6 @@
  "clkDeclinedAt": "“Ben değilim”: ${1}",
  "clkUnlinkedAt": "Bağlantı kaldırıldı: ${1}",
  "clkCentreHint": "Bağlantı yalnızca hasta Noyan’da onayladığında kurulur; merkez kuramaz.",
- "clkCentreWrongHint": "Bu numaranın sahibi Noyan’da hastanız olmadığını söyledi; numarayı kontrol edin."
+ "clkCentreWrongHint": "Bu numaranın sahibi Noyan’da hastanız olmadığını söyledi; numarayı kontrol edin.",
+ "clkSrc_merge": "Merkez yinelenen kayıtları birleştirdi"
 }
