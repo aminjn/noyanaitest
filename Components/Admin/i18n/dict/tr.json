@@ -2901,5 +2901,7 @@
  "لینک طرح درمان یا قرارداد": "Tedavi planı veya sözleşme bağlantısı",
  "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center%: %title% belgesini bu bağlantıdan görüp onaylayın: %link%",
  "پاسخ مرکز درمانی به درخواست - کاربر": "Merkez talebe yanıt verdi - kullanıcı",
- "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre%, %ticketId% numaralı talebinizi yanıtladı."
+ "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre%, %ticketId% numaralı talebinizi yanıtladı.",
+ "${1} پیشنهاد دیگر": "${1} öneri daha",
+ "کمتر": "Daha az"
 }

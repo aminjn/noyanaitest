@@ -2901,5 +2901,7 @@
  "لینک طرح درمان یا قرارداد": "Treatment plan or contract link",
  "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center%: view and approve %title% at this link: %link%",
  "پاسخ مرکز درمانی به درخواست - کاربر": "Centre answered a request - user",
- "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% answered your request no. %ticketId%."
+ "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% answered your request no. %ticketId%.",
+ "${1} پیشنهاد دیگر": "${1} more",
+ "کمتر": "Less"
 }

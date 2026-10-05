@@ -2901,5 +2901,7 @@
  "لینک طرح درمان یا قرارداد": "Lien du plan de traitement ou du contrat",
  "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center% : consultez et validez %title% via ce lien : %link%",
  "پاسخ مرکز درمانی به درخواست - کاربر": "Réponse du centre à une demande - utilisateur",
- "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% a répondu à votre demande n° %ticketId%."
+ "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% a répondu à votre demande n° %ticketId%.",
+ "${1} پیشنهاد دیگر": "${1} de plus",
+ "کمتر": "Moins"
 }

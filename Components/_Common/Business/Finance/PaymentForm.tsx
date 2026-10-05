@@ -165,7 +165,7 @@ const PaymentForm = ({
             <DateInput title={t("bizDate")} defaultValue={date} onChange={(d) => setDate(d)} />
           </div>
           <label className={classes.field}>
-            <span>{t(isCheque ? "finChqDepositTo" : direction === "in" ? "bizReceivedIn" : "bizPaidFrom")}</span>
+            <span>{t(isCheque && direction === "in" ? "finChqDepositTo" : direction === "in" ? "bizReceivedIn" : "bizPaidFrom")}</span>
             <select value={selected} onChange={(e) => setMoneyId(e.target.value)}>
               {isCheque && <option value="">{t("finChqDepositLater")}</option>}
               {!isCheque && !tills.length && <option value="">{t("finNoTill")}</option>}

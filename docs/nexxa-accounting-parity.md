@@ -45,9 +45,10 @@ Status: **done** = same capability. **adapted** = same capability, reshaped for 
 | payments, payments/new, payments/[id] | `finance/payments` + `finance/expenses` | adapted | Existing pages, party-tagged now |
 | checks, checks/issued | `T=cheques&view=register` | done | Deposit, clear, bounce, endorse, undo last status |
 | checks/trust | `T=cheques&view=trust` | done | No postings, tracked only |
-| checkbooks | `T=cheques&view=books` | done | Leaves and used count |
+| checkbooks | `T=cheques&view=books` | done | Leaves and used count; a cheque paid out picks its book and gets the next leaf, a used or out-of-range leaf is refused |
 | bank-rec | `T=bank` | done | CSV/Excel import with column mapping, duplicate skip, auto-match, manual match, post-from-line, ignore |
 | settlements | `T=settlements` (insurer menu: «تسویه با مراکز درمانی») | adapted | Receivables/payables by party with ageing; payables include cheques, claims payable, doctors' share |
+| (claims received, insurer) | `finance/claims` (insurer menu: «مطالبات دریافتی از مراکز») | added | A centre's list sent to an insurer with a Noyan panel: line review (accept / deduct with reason / reject), one-way result with its date, full or on-account payment; both books post, the centre is notified |
 | petty-cash-requests | `finance/requests` kind petty | done | |
 | expense-requests | `finance/requests` kind expense | done | |
 | payment-requests | `finance/requests` kind payment | done | |

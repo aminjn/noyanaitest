@@ -340,3 +340,9 @@
     display: none;
   }
 }
+
+/* "N more" / "less" after the first chips */
+.panel .chipMore {
+  border-style: dashed;
+  color: var(--gray11);
+}
