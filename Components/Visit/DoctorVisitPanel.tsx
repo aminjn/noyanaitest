@@ -18,14 +18,17 @@ import IntakeAnswers from "./IntakeAnswers";
 import Link from "../i18n/Link";
 import { IVisitIntake, IVisitNote } from "./visitTypes";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
+import AiLocked, { aiGateOf, AiFeatureState, AiGateInfo, AiQuota, gateOfState } from "../Ai/AiLocked";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
 type VisitRecord = {
   intake: IVisitIntake | null;
   note: IVisitNote | null;
-  // aiInPlan: the doctor's plan has the AI assistant module (2026-10)
-  capabilities: { ai: boolean; stt: boolean; aiInPlan?: boolean };
+  // aiInPlan: the AI policy lets this doctor draft notes (2026-10; by
+  // default the plan's AI assistant module); features: the scribe's and the
+  // draft's state and quota
+  capabilities: { ai: boolean; stt: boolean; aiInPlan?: boolean; features?: Record<string, AiFeatureState> };
 };
 
 type NoteFields = Required<Pick<IVisitNote, "subjective" | "objective" | "assessment" | "plan" | "patientInstructions">>;
@@ -61,7 +64,8 @@ const useRecordRecorder = () => {
   const start = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const type = MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : "";
-    const rec = new MediaRecorder(stream, type ? { mimeType: type } : undefined);
+    // 32 kbps: the rate the server counts scribe minutes by (Lib/ai/aiGate.ts)
+    const rec = new MediaRecorder(stream, { ...(type ? { mimeType: type } : {}), audioBitsPerSecond: 32000 });
     chunks.current = [];
     rec.ondataavailable = (e) => e.data.size && chunks.current.push(e.data);
     rec.start(1000);
@@ -105,6 +109,8 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
   const [busy, setBusy] = useState<"" | "draft" | "stt" | "save">("");
   const [dirty, setDirty] = useState(false);
   const [draftFresh, setDraftFresh] = useState(false);
+  // a refusal of the AI policy (plan, quota): shown as the locked state
+  const [refused, setRefused] = useState<AiGateInfo | null>(null);
   const rec = useRecordRecorder();
 
   useEffect(() => {
@@ -125,6 +131,8 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
   if (!data) return null;
   const { intake, note } = data;
   const capabilities = data.capabilities || { ai: false, stt: false };
+  const draftState = capabilities.features?.["clinical.noteDraft"];
+  const scribeState = capabilities.features?.["clinical.scribe"];
 
   const edit = (key: keyof NoteFields, value: string) => {
     setFields((f) => ({ ...f, [key]: value }));
@@ -133,6 +141,7 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
 
   const record = async () => {
     if (rec.recording) {
+      const seconds = rec.seconds;
       const blob = await rec.stop();
       if (!blob?.size) return;
       setBusy("stt");
@@ -141,7 +150,7 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
           url: `${base}/transcribe`,
           method: "POST",
           bodyParser: "FORM",
-          payload: { audio: new File([blob], "visit.webm", { type: blob.type }) },
+          payload: { audio: new File([blob], "visit.webm", { type: blob.type }), seconds: String(seconds) },
         });
         const text = String(res.data?.text || "").trim();
         if (text) {
@@ -149,7 +158,9 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
           setDirty(true);
         }
       } catch (err) {
-        notify((err as Error).message, "Error");
+        const g = aiGateOf(err);
+        if (g) setRefused(g);
+        else notify((err as Error).message, "Error");
       } finally {
         setBusy("");
       }
@@ -179,7 +190,9 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
       setDirty(true);
       notify(getContent("visitDraftReady"), "Notify");
     } catch (err) {
-      notify((err as Error).message, "Error");
+      const g = aiGateOf(err);
+      if (g) setRefused(g);
+      else notify((err as Error).message, "Error");
     } finally {
       setBusy("");
     }
@@ -276,14 +289,21 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
               </button>
             )}
           </div>
-          {!capabilities.ai &&
+          {/* the AI policy: locked by plan / quota (with the upgrade link and
+              the reset time), off, or the minutes left today */}
+          {refused || gateOfState(draftState) || gateOfState(scribeState) ? (
+            <AiLocked profile="doctor" gate={refused || gateOfState(draftState) || gateOfState(scribeState)} compact />
+          ) : (
+            !capabilities.ai &&
             (capabilities.aiInPlan === false ? (
               <Link href="/doctorpanel/license" className={classes.muted}>
                 {getContent("visitAiNotInPlan")}
               </Link>
             ) : (
               <span className={classes.muted}>{getContent("visitAiOff")}</span>
-            ))}
+            ))
+          )}
+          {capabilities.stt && <AiQuota profile="doctor" state={scribeState} />}
         </div>
 
         {draftFresh && <div className={classes.draftNote}>{getContent("visitDraftReady")}</div>}

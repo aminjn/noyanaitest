@@ -2,7 +2,8 @@
 
 import Link from "@/Components/i18n/Link";
 import useUser from "@/Components/Hooks/useUser";
-import { AI_SETTINGS_PATH, AiProfile, AiStatus, T, useAiText } from "./aiShared";
+import { AI_SETTINGS_PATH, AiProfile, AiStatus, copilotFeatureOf, T, useAiText } from "./aiShared";
+import AiLocked, { gateOfState } from "./AiLocked";
 import classes from "./Ai.module.css";
 
 const LICENSE_PATH: Partial<Record<AiProfile, string>> = {
@@ -36,6 +37,10 @@ const AiSetupNotice = ({ profile, status }: { profile: AiProfile; status?: AiSta
       </p>
     );
   }
+  // the copilot's own feature: locked by plan, quota used up, or off
+  const own = status.features?.[copilotFeatureOf(profile)];
+  const gate = gateOfState(own);
+  if (gate) return <AiLocked profile={profile} gate={{ ...gate, upgrade: gate.upgrade ?? LICENSE_PATH[profile] ?? null }} />;
   if (!status.inPlan)
     return (
       <p className={classes.notice} role="note">

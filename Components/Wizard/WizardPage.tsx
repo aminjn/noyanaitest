@@ -1,4 +1,5 @@
 "use client";
+import AiLocked, { aiGateOf, AiGateInfo } from "@/Components/Ai/AiLocked";
 import { useParams } from "next/navigation";
 import useUser, { MongoDoc } from "../Hooks/useUser";
 import classes from "./WizardPage.module.css";
@@ -83,6 +84,9 @@ const WizardPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   // the day's free messages are used up (429, 2026-10 «پرو»)
   const [limitReached, setLimitReached] = useState<boolean>(false);
+  // the AI policy's refusal (2026-10): locked by plan, quota used up and
+  // when it opens again, or switched off
+  const [gate, setGate] = useState<AiGateInfo | null>(null);
   const { data: pro } = useMyPro();
   const intlTag = useIntlLocale();
 
@@ -145,6 +149,11 @@ const WizardPage = () => {
         const errBody = await response.json().catch(() => undefined);
         if (response.status === 429) {
           setLimitReached(true);
+          setPrompt(message);
+        }
+        const refused = aiGateOf(errBody);
+        if (refused) {
+          setGate(refused);
           setPrompt(message);
         }
         pushNotification(
@@ -296,6 +305,7 @@ const WizardPage = () => {
           )}
         </div>
         {/* «پرو»: the free tier's daily limit and the way past it */}
+        {!!gate && <AiLocked profile="user" gate={gate} />}
         {limitReached && !pro?.active && (
           <ProUpsellCard moment="ai" className={classes.proCard} />
         )}

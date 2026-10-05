@@ -7,6 +7,8 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { adminPath } from "@/Components/helpers/adminPath";
 import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
+import DateInput from "@/Components/UI/DateInput";
+import { isoDay } from "@/Components/_Common/Business/bizShared";
 import Table from "../UI/Table";
 import HandleLoading from "../UI/HandleLoading";
 import { FinancePager } from "../Finance/FinanceListControls";
@@ -173,14 +175,12 @@ const AdminConsentLog = ({ user }: { user?: string }) => {
           <span>{ta("شماره‌ی موبایل")}</span>
           <input dir="ltr" inputMode="tel" value={phone} onChange={(e) => reset(setPhone)(e.target.value)} placeholder="09…" />
         </label>
-        <label>
-          <span>{ta("از تاریخ")}</span>
-          <input type="date" value={from} onChange={(e) => reset(setFrom)(e.target.value)} />
-        </label>
-        <label>
-          <span>{ta("تا تاریخ")}</span>
-          <input type="date" value={to} onChange={(e) => reset(setTo)(e.target.value)} />
-        </label>
+        <div className={classes.dateFilter}>
+          <DateInput title={ta("از تاریخ")} onChange={(d) => reset(setFrom)(isoDay(d))} />
+        </div>
+        <div className={classes.dateFilter}>
+          <DateInput title={ta("تا تاریخ")} onChange={(d) => reset(setTo)(isoDay(d))} />
+        </div>
       </div>
       <HandleLoading data={!!data} error={error}>
         {!!data && (

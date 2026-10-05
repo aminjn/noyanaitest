@@ -20,21 +20,27 @@ export type AdminSectionHubTab = {
 // blog, its categories, tags, media and newsletter were five menu items;
 // commission, tax, gateway and shipping settings lived in three menu
 // groups). Each tab renders the part's existing page, embedded; the open tab
-// is kept in ?tab= so links and "back" land on the same tab.
+// is kept in ?tab= so links and "back" land on the same tab. A hub inside a
+// hub's tab (e.g. System settings -> AI -> its parts) keeps its own in
+// another query parameter (`param`) and drops its title (`bare`).
 const AdminSectionHub = ({
   title,
   intro,
   tabs,
+  param = "tab",
+  bare,
 }: {
   title: string;
   intro?: string;
   tabs: AdminSectionHubTab[];
+  param?: string;
+  bare?: boolean;
 }) => {
   const params = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
   const visible = tabs.filter((t) => !t.exclude);
-  const requested = params.get("tab");
+  const requested = params.get(param);
   const current = visible.some((t) => t.id === requested)
     ? (requested as string)
     : visible[0]?.id || "";
@@ -42,16 +48,16 @@ const AdminSectionHub = ({
   const setCurrent = useCallback(
     (id: string) => {
       const next = new URLSearchParams(params.toString());
-      next.set("tab", id);
+      next.set(param, id);
       replace(`${pathname}?${next.toString()}`, { scroll: false });
     },
-    [params, pathname, replace],
+    [params, pathname, replace, param],
   );
 
   const active = visible.find((t) => t.id === current);
 
-  return (
-    <WithTitle title={title}>
+  const body = (
+    <>
       {!!intro && <p className={classes.intro}>{intro}</p>}
       <ClientTabSystem
         viewState={[current, setCurrent]}
@@ -66,8 +72,9 @@ const AdminSectionHub = ({
         }))}
       />
       {!!active?.hint && <p className={classes.hint}>{active.hint}</p>}
-    </WithTitle>
+    </>
   );
+  return bare ? <div aria-label={title}>{body}</div> : <WithTitle title={title}>{body}</WithTitle>;
 };
 
 export default AdminSectionHub;

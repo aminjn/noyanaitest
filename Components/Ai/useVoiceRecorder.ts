@@ -74,7 +74,9 @@ const useVoiceRecorder = () => {
   const start = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const type = pickType();
-    const rec = new MediaRecorder(stream, type ? { mimeType: type } : undefined);
+    // 32 kbps: plenty for speech, light on Iran's networks, and the rate the
+    // server counts minutes of speech-to-text by (backend Lib/ai/aiGate.ts)
+    const rec = new MediaRecorder(stream, { ...(type ? { mimeType: type } : {}), audioBitsPerSecond: 32000 });
     chunks.current = [];
     rec.ondataavailable = (e) => {
       if (e.data.size) chunks.current.push(e.data);

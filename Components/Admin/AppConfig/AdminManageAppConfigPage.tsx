@@ -10,7 +10,7 @@ import CreateForm from "../UI/CreateForm";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminSectionHub from "../UI/AdminSectionHub";
 import AdminMapSettingsTab from "./AdminMapSettingsTab";
-import AdminAiSettingsTab from "./AdminAiSettingsTab";
+import AdminAiHub from "./Ai/AdminAiHub";
 import AdminIntegrationsOverviewTab from "./AdminIntegrationsOverviewTab";
 import AdminSmsSettingsPage from "../Sms/AdminSmsSettingsPage";
 import AdminManageSmsPatternsPage from "../SmsPatterns/AdminManageSmsPatternsPage";
@@ -184,7 +184,7 @@ const AdminManageAppConfigPage = () => (
       { id: "general", title: ta("عمومی"), content: <AdminGeneralSettingsTab /> },
       { id: "sms", title: ta("پیامک"), content: <AdminSmsTab /> },
       { id: "map", title: ta("نقشه (نکسا مپ)"), content: <AdminMapSettingsTab /> },
-      { id: "ai", title: ta("هوش مصنوعی"), content: <AdminAiSettingsTab /> },
+      { id: "ai", title: ta("هوش مصنوعی"), content: <AdminAiHub /> },
     ]}
   />
 );

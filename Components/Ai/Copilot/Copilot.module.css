@@ -145,6 +145,13 @@
   border-block-start: 1px solid var(--line);
 }
 
+/* today's quota under the input (2026-10, the AI policy) */
+.foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0.75rem 0.5rem;
+}
+
 .input {
   flex: 1;
   min-width: 0;

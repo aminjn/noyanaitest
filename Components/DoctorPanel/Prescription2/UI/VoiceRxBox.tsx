@@ -11,6 +11,7 @@ import SparkIcon from "@/Components/Icons/SparkIcon";
 import VoiceButton from "@/Components/Ai/VoiceButton";
 import AiSetupNotice from "@/Components/Ai/AiSetupNotice";
 import { T, useAiStatus, useAiText } from "@/Components/Ai/aiShared";
+import AiLocked, { aiGateOf, AiGateInfo, gateOfState } from "@/Components/Ai/AiLocked";
 import { ITaminService } from "@/Components/Admin/Tamin/Service/AdminManageTaminServicesPage";
 import usePrescription from "../Store/usePrescription";
 import { newPrescription2ItemId, PrescCtxItem, RxAiWarning } from "../Store/DoctorPrescriptionContext";
@@ -96,7 +97,12 @@ const VoiceRxBox = () => {
   const getContent = useRxText();
   const warnText = useRxWarningText();
   const notify = useNotification();
-  const { status, ok } = useAiStatus("doctor");
+  const { status, mutate } = useAiStatus("doctor");
+  // the AI policy's "clinical.rx": usable, locked by plan / quota, or off
+  const rxFeature = status?.features?.["clinical.rx"];
+  const [refused, setRefused] = useState<AiGateInfo | null>(null);
+  const gate = refused || gateOfState(rxFeature);
+  const ok = !!status?.configured && rxFeature?.state === "ok" && !refused;
   const { items, setItems, patient, setAiMarks, setWorking, setView, readOnly } = usePrescription();
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -161,13 +167,16 @@ const VoiceRxBox = () => {
         setContext(d.patient && (d.patient.allergies || d.patient.medications) ? d.patient : null);
         setText("");
         notify(getContent("rxAiAdded", [String(added), String(left.length)]), added ? "Success" : "Warn");
+        mutate();
       } catch (err) {
-        notify((err as Error).message, "Error");
+        const g = aiGateOf(err);
+        if (g) setRefused(g);
+        else notify((err as Error).message, "Error");
       } finally {
         setBusy(false);
       }
     },
-    [addLine, busy, getContent, items, notify, patient?._id],
+    [addLine, busy, getContent, items, notify, patient?._id, mutate],
   );
 
   // the copilot opened the writer with the dictated medicines (?rx=...)
@@ -180,6 +189,8 @@ const VoiceRxBox = () => {
   }, [ok, params, parse]);
 
   if (readOnly) return null;
+  // switched off by the super admin: no box at all
+  if (rxFeature?.state === "off") return null;
   return (
     <section className={classes.box} aria-label={getContent("rxAiTitle")}>
       <div className={classes.head}>
@@ -194,7 +205,11 @@ const VoiceRxBox = () => {
         </div>
       </div>
       {!ok ? (
-        <AiSetupNotice profile="doctor" status={status} />
+        status?.configured && gate ? (
+          <AiLocked profile="doctor" gate={gate} />
+        ) : (
+          <AiSetupNotice profile="doctor" status={status} />
+        )
       ) : (
         <>
           <div className={classes.inputRow}>

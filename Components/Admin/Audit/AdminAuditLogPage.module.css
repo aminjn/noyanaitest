@@ -210,3 +210,8 @@
   opacity: 0.4;
   cursor: default;
 }
+
+/* a Jalali date filter (the consent log) beside the selects */
+.dateFilter {
+  min-width: 12rem;
+}

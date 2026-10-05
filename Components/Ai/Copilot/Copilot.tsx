@@ -13,7 +13,8 @@ import TrashIcon from "@/Components/Icons/TrashIcon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import VoiceButton from "../VoiceButton";
 import AiSetupNotice from "../AiSetupNotice";
-import { aiBase, AiProfile, T, useAiProfile, useAiStatus, useAiText } from "../aiShared";
+import { aiBase, AiProfile, copilotFeatureOf, T, useAiProfile, useAiStatus, useAiText } from "../aiShared";
+import AiLocked, { aiGateOf, AiGateInfo, AiQuota } from "../AiLocked";
 import { CHIP_LIMIT, chipsFor, COPILOT_PROFILES } from "./copilotProfiles";
 import CopilotCard, { CopilotCardData } from "./CopilotCard";
 import ai from "../Ai.module.css";
@@ -30,7 +31,11 @@ type Msg = { role: "user" | "assistant"; text: string; card?: CopilotCardData; t
 const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () => void }) => {
   const t = useAiText(profile);
   const ui = COPILOT_PROFILES[profile];
-  const { status, ok, hasTool } = useAiStatus(profile);
+  const { status, ok: setUp, hasTool, mutate } = useAiStatus(profile);
+  // the copilot's own feature in the AI policy: its quota, or why it is shut
+  const own = status?.features?.[copilotFeatureOf(profile)];
+  const ok = setUp && (!own || own.state === "ok");
+  const [gate, setGate] = useState<AiGateInfo | null>(null);
   const pathname = usePathname();
   const push = useProgress();
   const intl = useIntlLocale();
@@ -73,6 +78,7 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
         const res = await fetcher({ url: `${aiBase(profile)}/copilot`, method: "POST", payload: { text: query, page: pathname } });
         const d = (res?.data || {}) as { reply?: string; tool?: string; card?: CopilotCardData };
         setMsgs((m) => [...m, { role: "assistant", text: d.reply || "", card: d.card, tool: d.tool }]);
+        mutate();
         // a page the user asked for opens right away
         if (d.card?.type === "navigate") {
           const path = d.card.path;
@@ -80,12 +86,17 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
           else push(path);
         }
       } catch (err) {
-        setError((err as Error).message);
+        // refused by the AI policy: the locked / limit state, not an error
+        const g = aiGateOf(err);
+        if (g) {
+          setGate(g);
+          mutate();
+        } else setError((err as Error).message);
       } finally {
         setBusy(false);
       }
     },
-    [busy, pathname, profile, push],
+    [busy, pathname, profile, push, mutate],
   );
 
   const clear = async () => {
@@ -106,11 +117,6 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
       <header className={classes.head}>
         <AiOrb size="2rem" />
         <span className={classes.title}>{t(ui.title)}</span>
-        {!!status?.limit && (
-          <span className={ai.muted} title={t(T("copUsage", "درخواست‌های امروز"))}>
-            {fmt.format(status.used)}/{fmt.format(status.limit)}
-          </span>
-        )}
         <button type="button" className={classes.iconBtn} onClick={clear} aria-label={t(T("copClear", "پاک کردن گفتگو"))} title={t(T("copClear", "پاک کردن گفتگو"))}>
           <Ixon width="1rem">
             <TrashIcon />
@@ -167,6 +173,7 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
           </div>
         )}
         {!!error && <p className={`${ai.notice}`}>{error}</p>}
+        {!!gate && <AiLocked profile={profile} gate={gate} />}
       </div>
       <form
         className={classes.bar}
@@ -198,6 +205,12 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
           </Ixon>
         </button>
       </form>
+      {/* today's requests left (nothing when unlimited) */}
+      {ok && !!own?.limit && (
+        <div className={classes.foot}>
+          <AiQuota profile={profile} state={own} />
+        </div>
+      )}
     </div>
   );
 };

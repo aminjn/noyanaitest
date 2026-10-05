@@ -5,22 +5,23 @@ import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher, FetchError } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
-import HandleLoading from "../UI/HandleLoading";
-import WithTitle from "../UI/WithTitle";
-import CreateForm from "../UI/CreateForm";
-import Box from "../UI/Box";
+import HandleLoading from "../../UI/HandleLoading";
+import WithTitle from "../../UI/WithTitle";
+import CreateForm from "../../UI/CreateForm";
+import Box from "../../UI/Box";
 import Button from "@/Components/UI/Button";
 import Badge from "@/Components/UI/Badge";
 import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
-import AdminManageOllamaPage from "../Ollama/AdminManageOllamaPage";
-import classes from "./AdminMapSettings.module.css";
+import AdminManageOllamaPage from "../../Ollama/AdminManageOllamaPage";
+import classes from "../AdminMapSettings.module.css";
 
-// «هوش مصنوعی» in the system settings (2026-10): every AI provider of the
+// «هوش مصنوعی ← اتصال و مدل‌ها» in the system settings (2026-10): every AI provider of the
 // site in one form - machine translation of content, the doctor's clinical
 // assistant, the visit scribe's speech-to-text and the Ollama server of the
 // chat bot (backend Lib/aiSettings.ts, GET/POST /admin/ai/settings). Keys
 // are write-only. An empty field falls back to the server's .env. Below:
-// a connection test per feature and the Ollama models.
+// a connection test per feature and the Ollama models. Who may use which
+// AI feature, and how much, is the «سیاست هوش مصنوعی» tab (AdminAiPolicyTab).
 
 type AiStatus = { on: boolean; provider?: string; model?: string };
 
@@ -42,14 +43,11 @@ type AiSettings = {
   sttKeyPreview: string;
   sttModel: string;
   sttLanguage: string;
-  // AI in the provider panels (2026-10): requests per user per day, 0 = none
-  panelAiDailyLimit?: number;
-  panelAiUsage?: { today: number; week: number; users: number; features: Record<string, number> };
   defaults?: Record<string, string>;
   status?: { translation?: AiStatus; clinical?: AiStatus; stt?: AiStatus; chat?: AiStatus };
 };
 
-type AiInput = Omit<AiSettings, "apiKeySet" | "apiKeyPreview" | "apiKeyFromEnv" | "sttKeySet" | "sttKeyPreview" | "defaults" | "status" | "panelAiUsage"> & {
+type AiInput = Omit<AiSettings, "apiKeySet" | "apiKeyPreview" | "apiKeyFromEnv" | "sttKeySet" | "sttKeyPreview" | "defaults" | "status"> & {
   aiApiKey: string;
   sttApiKey: string;
 };
@@ -170,7 +168,6 @@ const AdminAiSettingsTab = () => {
                 sttApiKey: "",
                 sttModel: data.sttModel || "",
                 sttLanguage: data.sttLanguage || "",
-                panelAiDailyLimit: data.panelAiDailyLimit ?? 200,
               }}
               hookProps={{
                 path: `${API}/admin/ai/settings`,
@@ -234,11 +231,6 @@ const AdminAiSettingsTab = () => {
                 },
                 sttModel: { title: ta("مدل (پیش‌فرض whisper-1)"), type: "text", ltr: true, section: ta("گفتار به متن") },
                 sttLanguage: { title: ta("زبان گفتار (پیش‌فرض fa)"), type: "text", ltr: true, section: ta("گفتار به متن") },
-                panelAiDailyLimit: {
-                  title: ta("سقف روزانه‌ی درخواست هوش مصنوعی هر کاربر پنل (۰ = بی‌سقف)"),
-                  type: "number",
-                  section: ta("دستیار پنل‌ها"),
-                },
               }}
             />
           </WithTitle>
@@ -246,23 +238,6 @@ const AdminAiSettingsTab = () => {
           <Box className={classes.box}>
             <h3 className={classes.sectionTitle}>{ta("وضعیت و آزمایش اتصال")}</h3>
             <p className={classes.note}>{ta("هر آزمایش یک درخواست کوتاه واقعی با تنظیمات ذخیره‌شده می‌فرستد. اول «ثبت» را بزنید.")}</p>
-            {!!data.panelAiUsage && (
-              <p className={classes.note}>
-                {ta("دستیار پنل‌ها: امروز ${1} درخواست، ۷ روز اخیر ${2} درخواست از ${3} کاربر", [
-                  data.panelAiUsage.today.toLocaleString(adminIntlTag()),
-                  data.panelAiUsage.week.toLocaleString(adminIntlTag()),
-                  data.panelAiUsage.users.toLocaleString(adminIntlTag()),
-                ])}
-                {Object.keys(data.panelAiUsage.features || {}).length > 0 && (
-                  <span className={classes.ltr}>
-                    {" "}
-                    ({Object.entries(data.panelAiUsage.features)
-                      .map(([k, v]) => `${k}: ${Number(v).toLocaleString(adminIntlTag())}`)
-                      .join("، ")})
-                  </span>
-                )}
-              </p>
-            )}
             <TestRow feature="translation" title={ta("ترجمه‌ی خودکار محتوا")} status={data.status?.translation} />
             <TestRow feature="clinical" title={ta("دستیار بالینی پزشک")} status={data.status?.clinical} />
             <TestRow feature="stt" title={ta("تبدیل گفتار به متن")} status={data.status?.stt} />

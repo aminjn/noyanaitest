@@ -7,29 +7,43 @@ import Ixon from "@/Components/UI/Ixon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import { aiBase, T, useAiStatus, useAiText } from "@/Components/Ai/aiShared";
+import AiLocked, { aiGateOf, AiGateInfo, gateOfState } from "@/Components/Ai/AiLocked";
 import ai from "@/Components/Ai/Ai.module.css";
 import classes from "./ChatAiSuggest.module.css";
 
 // AI reply suggestions in the doctor's patient chat (2026-10): a one-line
 // summary of the thread and up to three replies to pick from. A picked
 // reply only fills the message box - the doctor (or the secretary answering
-// for the doctor) edits and sends it. Hidden when the plan, the server or
-// the access does not allow it.
+// for the doctor) edits and sends it. Hidden when the server or the access
+// does not allow it or the AI policy switched it off; locked (with the
+// upgrade link) when the plan does not include it or its quota is used up.
 const ChatAiSuggest = ({ chatId, onPick }: { chatId: string; onPick: (text: string) => void }) => {
-  const { status, ok } = useAiStatus("doctor");
+  const { status, mutate } = useAiStatus("doctor");
   const t = useAiText("doctor");
   const notify = useNotification();
   const [busy, setBusy] = useState(false);
   const [data, setData] = useState<{ summary: string; suggestions: string[] } | null>(null);
-  if (!ok || !status?.acl?.chat) return null;
+  const [refused, setRefused] = useState<AiGateInfo | null>(null);
+  const feature = status?.features?.["clinical.chatSuggest"];
+  if (!status?.configured || !status?.acl?.chat || !feature || feature.state === "off") return null;
+  const gate = refused || gateOfState(feature);
+  if (gate)
+    return (
+      <div className={classes.bar}>
+        <AiLocked profile="doctor" gate={gate} compact />
+      </div>
+    );
 
   const load = async () => {
     setBusy(true);
     try {
       const res = await fetcher({ url: `${aiBase("doctor")}/chat/${chatId}/suggest`, method: "POST" });
       setData(res.data);
+      mutate();
     } catch (err) {
-      notify((err as Error).message, "Error");
+      const g = aiGateOf(err);
+      if (g) setRefused(g);
+      else notify((err as Error).message, "Error");
     } finally {
       setBusy(false);
     }

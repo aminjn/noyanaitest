@@ -81,6 +81,9 @@ export interface IBaseInsuranceLicense<
   isDefault: boolean;
   // campaign SMS parts included each month (2026-10); beyond it the wallet pays
   monthlySmsQuota: number;
+  // the AI the plan sells (2026-10): features it includes and its own limits
+  aiFeatures?: string[];
+  aiQuotas?: Record<string, { day?: number; month?: number; orgMonth?: number }>;
   // One pricing option per Models/LicenseDuration.ts catalog entry, edited
   // via the "licensePricing" CreateForm field type below.
   pricing: ILicensePricingEntry[];
@@ -128,6 +131,10 @@ export const baseInsuranceLicenseFormRenderer: FormRenderer<IBaseInsuranceLicens
     monthlySmsQuota: { get title() {
   return ta("سهمیه‌ی پیامک کمپین در ماه (بیشتر از آن از کیف پول)");
 }, type: "number" },
+    // the AI the plan sells (2026-10, AiPlanInput): from the AI feature registry
+    aiFeatures: { get title() {
+      return ta("هوش مصنوعی در این پلن");
+    }, type: "aiPlan", audience: "insurance" },
     descriptions: { get title() {
   return ta("توضیحات");
 }, type: "strings" },
