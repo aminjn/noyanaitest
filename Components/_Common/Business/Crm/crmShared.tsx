@@ -57,6 +57,20 @@ export type CrmContact = {
   createdAt?: string;
 };
 
+// the contact's tie to a Noyan account (backend Lib/business/crmService/
+// link.ts): made only by the patient's own «وصل شود»; the centre sees the
+// state and its dates, never who the user is
+export type CrmLinkState = {
+  status: "linked" | "pending" | "declined" | "unlinked" | "none";
+  verified: boolean;
+  source?: "manual" | "csv" | "webform" | "visit";
+  offeredAt?: string;
+  linkedAt?: string;
+  declinedAt?: string;
+  unlinkedAt?: string;
+  wrongNumber?: boolean;
+};
+
 export type CrmTimelineItem = {
   kind: "visit" | "order" | "note" | "call" | "followUp" | "sms";
   at: string;

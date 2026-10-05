@@ -212,6 +212,20 @@ export type AdminHub = {
 
 export const adminHubs: AdminHub[] = [
   {
+    hub: "audit",
+    sections: [
+      {
+        id: "auditParts",
+        get title() { return ta("لاگ عملیات"); },
+        icon: <FolderIcon />,
+        items: [
+      { get title() { return ta("عملیات ادمین‌ها"); }, href: "audit?tab=admin" },
+      { get title() { return ta("رضایت اتصال پرونده‌ها"); }, href: "audit?tab=consent" },
+        ],
+      },
+    ],
+  },
+  {
     hub: "reservation",
     sections: [
       {

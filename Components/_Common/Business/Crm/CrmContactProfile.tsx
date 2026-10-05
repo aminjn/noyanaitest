@@ -17,6 +17,7 @@ import {
   CrmContact,
   CrmContext,
   CrmInsurer,
+  CrmLinkState,
   CrmTimelineItem,
   errText,
   insurerKey,
@@ -187,6 +188,45 @@ export const NewFollowUp = ({ contactId, onDone }: { contactId: string; onDone: 
   );
 };
 
+const LINK_BADGE: Record<CrmLinkState["status"], string> = {
+  linked: "clkCentreLinked",
+  pending: "clkCentrePending",
+  declined: "clkCentreDeclined",
+  unlinked: "clkCentreUnlinked",
+  none: "clkCentreNone",
+};
+const LINK_SOURCE: Record<string, string> = { manual: "clkSrc_manual", csv: "clkSrc_csv", webform: "clkSrc_webform", visit: "clkSrc_visit" };
+
+// the contact's link to a Noyan account: its state and dates (the centre
+// can't make the link - only the patient's «وصل شود» in Noyan does)
+const LinkStateCard = ({ link }: { link: CrmLinkState }) => {
+  const t = useCrmText();
+  const f = useBizFormat();
+  const dates = [
+    link.offeredAt ? t("clkOfferedAt", [f.date(link.offeredAt)]) : "",
+    link.linkedAt ? t("clkLinkedAt", [f.date(link.linkedAt)]) : "",
+    link.declinedAt ? t("clkDeclinedAt", [f.date(link.declinedAt)]) : "",
+    link.unlinkedAt && link.status === "unlinked" ? t("clkUnlinkedAt", [f.date(link.unlinkedAt)]) : "",
+  ].filter(Boolean);
+  return (
+    <section className={classes.card}>
+      <div className={classes.cardHead}>
+        <span className={classes.cardTitle}>{t("clkCentreTitle")}</span>
+        <span className={`${classes.badge} ${link.status === "linked" ? crm.badgeLinked : link.status === "declined" ? crm.badgeWarn : crm.badgeMuted}`}>
+          {t(LINK_BADGE[link.status] || "clkCentreNone")}
+        </span>
+      </div>
+      {(!!dates.length || !!link.source) && (
+        <span className={classes.muted}>
+          {[link.source ? t(LINK_SOURCE[link.source] || "clkSrc_manual") : "", ...dates].filter(Boolean).join(" · ")}
+        </span>
+      )}
+      {link.wrongNumber && <span className={classes.muted}>{t("clkCentreWrongHint")}</span>}
+      <span className={classes.muted}>{t("clkCentreHint")}</span>
+    </section>
+  );
+};
+
 const TL_FILTERS = ["all", "visits", "messages", "notes"] as const;
 const tlLabel: Record<(typeof TL_FILTERS)[number], string> = { all: "crmSegAll", visits: "crmTlVisits", messages: "crmTlMessages", notes: "crmTlNotes" };
 
@@ -201,10 +241,11 @@ const CrmContactProfile = ({ id }: { id: string }) => {
   const { api, canWrite, canSend, panel, node } = ctx;
   const { setPopup } = usePopup();
   const pushNotification = useNotification();
-  const { data, error, mutate } = useSWR<{ contact: CrmContact; timeline: CrmTimelineItem[] }>(`${API}${api}/contacts/${id}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data as { contact: CrmContact; timeline: CrmTimelineItem[] }),
+  const { data, error, mutate } = useSWR<{ contact: CrmContact; timeline: CrmTimelineItem[]; link?: CrmLinkState | null }>(`${API}${api}/contacts/${id}`, (url: string) =>
+    fetcher({ url }).then((res) => res.data as { contact: CrmContact; timeline: CrmTimelineItem[]; link?: CrmLinkState | null }),
   );
   const c = data?.contact;
+  const link = data?.link && typeof data.link === "object" ? data.link : null;
   const [edit, setEdit] = useState<Partial<CrmContact> & { birth?: string | null }>({});
   const [noteKind, setNoteKind] = useState<"note" | "call">("note");
   const [note, setNote] = useState("");
@@ -268,6 +309,11 @@ const CrmContactProfile = ({ id }: { id: string }) => {
                   <span className={classes.badge}>{t(sourceKey[c.source] || "crmSourceManual")}</span>
                   {c.smsOptOut && <span className={`${classes.badge} ${crm.badgeMuted}`}>{t("crmOptedOutBadge")}</span>}
                   {!c.isActive && <span className={`${classes.badge} ${crm.badgeMuted}`}>{t("crmInactive")}</span>}
+                  {!!link && link.status !== "none" && (
+                    <span className={`${classes.badge} ${link.status === "linked" ? crm.badgeLinked : link.status === "declined" ? crm.badgeWarn : crm.badgeMuted}`}>
+                      {t(LINK_BADGE[link.status])}
+                    </span>
+                  )}
                 </span>
               </div>
               <div className={crm.rowActions}>
@@ -313,6 +359,8 @@ const CrmContactProfile = ({ id }: { id: string }) => {
               </div>
             </div>
           </section>
+
+          {!!link && <LinkStateCard link={link} />}
 
           <div className={crm.profileGrid}>
             <section className={classes.card}>

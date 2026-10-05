@@ -13,6 +13,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import classes from "@/Components/_Common/Business/Accounting.module.css";
 import s from "@/Components/_Common/Business/Crm/Service/Service.module.css";
 import { asArray, useBizFormat } from "@/Components/_Common/Business/bizShared";
+import { LinkOffers } from "./LinkOffers";
 import { tierKey, TierKey, redemptionStatusKey } from "@/Components/_Common/Business/Crm/Service/CrmClub";
 
 // «باشگاه‌های من» (2026-10): the patient's points in every centre whose
@@ -58,6 +59,8 @@ const MyClubsPage = () => {
         <h1 className={classes.title}>{t("crmeMyClubs")}</h1>
         <span className={classes.subtitle}>{t("crmeMyClubsHint")}</span>
       </header>
+      {/* centres that added the patient themselves: linked only on «وصل شود» */}
+      <LinkOffers onChanged={() => mutate()} />
       <HandleLoading data={!!data} error={error}>
         {!!data &&
           (!data.length ? (

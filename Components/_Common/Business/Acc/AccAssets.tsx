@@ -31,6 +31,7 @@ type Asset = {
   group?: string;
   account: string;
   acquisitionDate: string;
+  inServiceDate?: string;
   cost: number;
   salvageValue: number;
   usefulLifeYears: number;
@@ -48,7 +49,32 @@ type Asset = {
   revaluationSurplus?: number;
   due?: number;
 };
-type Group = { _id: string; name: string; usefulLifeYears: number; method: "straight" | "declining"; decliningRate: number; account?: string };
+type Group = {
+  _id: string;
+  name: string;
+  usefulLifeYears: number;
+  method: "straight" | "declining";
+  decliningRate: number;
+  account?: string;
+  // seeded from a preset: the official ماده‌ی ۱۴۹ row it follows (null: not confirmed)
+  presetKey?: string;
+  taxRef?: { group?: number; row?: number | null } | null;
+};
+
+// the official row of a preset group, as a hint (nothing for an owner's own group)
+const TaxRefHint = ({ g }: { g?: Group }) => {
+  const t = useAccText();
+  const f = useBizFormat();
+  if (!g?.presetKey) return null;
+  const ref = g.taxRef;
+  const text =
+    ref && typeof ref.group === "number"
+      ? typeof ref.row === "number"
+        ? t("accTaxRef", [f.money(ref.group), f.money(ref.row)])
+        : t("accTaxRefGroup", [f.money(ref.group)])
+      : t("accTaxRefUnconfirmed");
+  return <span className={classes.muted}>{text}</span>;
+};
 type Event = { _id: string; asset: string; assetName?: string; assetCode?: string; kind: string; date: string; note?: string; fromLocation?: string; toLocation?: string; fromCustodian?: string; toCustodian?: string; maintenanceKind?: string; cost?: number; vendor?: string; nextDueDate?: string; oldNbv?: number; fairValue?: number; surplus?: number; voucherRef?: string };
 
 const useGroups = () => useAccGet<Group[]>("/acc/assets/groups", (d) => asArray<Group>(d));
@@ -73,6 +99,7 @@ const AssetForm = ({ onDone }: { onDone: () => unknown }) => {
   const [money, setMoney] = useState("");
   const [center, setCenter] = useState("");
   const [date, setDate] = useState<Date>(new Date());
+  const [inService, setInService] = useState<Date | null>(null);
   const g = asArray<Group>(groups).find((x) => x._id === group);
   const field = (k: keyof typeof d, label: string, ltr?: boolean) => (
     <label className={classes.field}>
@@ -91,6 +118,7 @@ const AssetForm = ({ onDone }: { onDone: () => unknown }) => {
       method: method || undefined,
       decliningRate: rate ? Number(rate) : undefined,
       acquisitionDate: isoDay(date),
+      inServiceDate: inService ? isoDay(inService) : undefined,
       book,
       money: book === "money" ? money : undefined,
       priorDepreciation: book === "opening" ? parseAmount(prior) : undefined,
@@ -116,6 +144,7 @@ const AssetForm = ({ onDone }: { onDone: () => unknown }) => {
               </option>
             ))}
           </select>
+          <TaxRefHint g={g} />
         </label>
         <label className={classes.field}>
           <span>{t("accAssetAccount")}</span>
@@ -129,7 +158,11 @@ const AssetForm = ({ onDone }: { onDone: () => unknown }) => {
           </select>
         </label>
         <AmountInput label={t("accCost")} value={cost} onChange={setCost} />
-        <AmountInput label={t("accSalvage")} value={salvage} onChange={setSalvage} />
+        <label className={classes.field}>
+          <span>{t("accSalvage")}</span>
+          <AmountInput value={salvage} onChange={setSalvage} />
+          <span className={classes.muted}>{t("accSalvageTaxHint")}</span>
+        </label>
         <label className={classes.field}>
           <span>{t("accMethod")}</span>
           <select value={method} onChange={(e) => setMethod(e.target.value)}>
@@ -148,6 +181,10 @@ const AssetForm = ({ onDone }: { onDone: () => unknown }) => {
         </label>
         <div className={classes.field}>
           <DateInput title={t("accAcquisitionDate")} defaultValue={date} onChange={(x) => setDate(x)} />
+        </div>
+        <div className={classes.field}>
+          <DateInput title={t("accInServiceDate")} defaultValue={inService || undefined} onChange={(x) => setInService(x)} />
+          <span className={classes.muted}>{t("accInServiceHint")}</span>
         </div>
         {field("serial", t("accSerial"), true)}
         {field("location", t("accLocation"))}
@@ -326,6 +363,12 @@ const AssetDetail = ({ id, onChanged, revalue }: { id: string; onChanged: () => 
                 <dt>{t("accAcquisitionDate")}</dt>
                 <dd>{f.date(a.acquisitionDate)}</dd>
               </div>
+              {a.inServiceDate && (
+                <div>
+                  <dt>{t("accInServiceDate")}</dt>
+                  <dd>{f.date(a.inServiceDate)}</dd>
+                </div>
+              )}
               <div>
                 <dt>{t("accLocation")}</dt>
                 <dd>{[a.location, a.custodian].filter(Boolean).join(" · ") || "—"}</dd>
@@ -543,6 +586,7 @@ const GroupForm = ({ group, onDone }: { group?: Group; onDone: () => unknown }) 
   const [account, setAccount] = useState(group?.account || "");
   return (
     <SimplePopup title={group ? group.name : t("accNewGroup")}>
+      <TaxRefHint g={group} />
       <div className={classes.form}>
         <label className={classes.field}>
           <span>{t("accAssetName")}</span>
@@ -642,7 +686,10 @@ const Groups = () => {
               )}
               {rows.map((g) => (
                 <tr key={g._id}>
-                  <td className={classes.wrap}>{g.name}</td>
+                  <td className={classes.wrap}>
+                    <div>{g.name}</div>
+                    <TaxRefHint g={g} />
+                  </td>
                   <td>{t(g.method === "declining" ? "accDeclining" : "accStraight")}</td>
                   <td className={classes.num}>{f.money(g.usefulLifeYears)}</td>
                   <td className={classes.num}>{f.money(g.decliningRate)}</td>

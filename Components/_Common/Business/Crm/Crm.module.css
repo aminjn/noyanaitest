@@ -75,6 +75,17 @@
   color: var(--gray9);
 }
 
+/* the contact's tie to a Noyan account (record linking) */
+.badgeLinked {
+  background: var(--successT1);
+  color: var(--success);
+}
+
+.badgeWarn {
+  background: var(--warningT1);
+  color: var(--warningS3);
+}
+
 .timeline {
   list-style: none;
   display: flex;
