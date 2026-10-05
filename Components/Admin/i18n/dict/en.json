@@ -3063,5 +3063,6 @@
  "پرسیدن با صدا از دستیار پنل مدیریت (دقیقه)": "Asking the admin assistant by voice (minutes)",
  "ترجمه‌ی ماشینی محتوای سایت به زبان‌های دیگر (ابزار داخلی)": "Machine translation of site content into other languages (internal tool)",
  "پیش‌نویس و بررسی محتوای پزشکی": "Medical content draft and check",
- "پیش‌نویس و بررسی متن بیماری، علائم و دارو (ابزار داخلی)": "Drafting and checking disease, symptom and drug texts (internal tool)"
+ "پیش‌نویس و بررسی متن بیماری، علائم و دارو (ابزار داخلی)": "Drafting and checking disease, symptom and drug texts (internal tool)",
+ "با پرو: ${1}": "With Pro: ${1}"
 }

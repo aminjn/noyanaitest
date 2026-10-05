@@ -12,7 +12,6 @@ import Badge from "@/Components/UI/Badge";
 import Input from "@/Components/UI/Input";
 import SelectInput from "@/Components/UI/SelectInput";
 import ToggleInput from "@/Components/UI/ToggleInput";
-import CheckboxGroupInput from "@/Components/UI/CheckboxGroupInput";
 import HandleLoading from "../../UI/HandleLoading";
 import WithTitle from "../../UI/WithTitle";
 import CreateForm from "../../UI/CreateForm";
@@ -87,6 +86,40 @@ const limitText = (l: AiLimitSet, unit: string, org: boolean) => {
 };
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+
+// the plan modules of one provider kind as compact toggles (a feature has
+// one or two; a long checkbox list per kind made the card very tall)
+const ModuleChips = ({
+  title,
+  options,
+  value,
+  onChange,
+}: {
+  title: string;
+  options: Record<string, string>;
+  value: string[];
+  onChange: (v: string[]) => void;
+}) => (
+  <div className={classes.modules} role="group" aria-label={title}>
+    <span className={classes.modulesTitle}>{title}</span>
+    <span className={classes.chips}>
+      {Object.keys(options).map((m) => {
+        const on = value.includes(m);
+        return (
+          <button
+            key={m}
+            type="button"
+            aria-pressed={on}
+            className={`${classes.modChip} ${on ? classes.modChipOn : ""}`}
+            onClick={() => onChange(on ? value.filter((x) => x !== m) : [...value, m])}
+          >
+            {options[m]}
+          </button>
+        );
+      })}
+    </span>
+  </div>
+);
 
 const LimitRow = ({
   title,
@@ -185,7 +218,9 @@ const FeatureCard = ({
             <>
               {draft.access === "plan" ? ta("بدون پلن: بسته") : ta("رایگان: ${1}", [limitText(draft.limits.free, def.unit, org)])}
               {" · "}
-              {ta("با پلن: ${1}", [limitText(draft.limits.paid, def.unit, org)])}
+              {patient && !org
+                ? ta("با پرو: ${1}", [limitText(draft.limits.paid, def.unit, org)])
+                : ta("با پلن: ${1}", [limitText(draft.limits.paid, def.unit, org)])}
             </>
           )}
         </p>
@@ -199,17 +234,15 @@ const FeatureCard = ({
               <span className={classes.note}>
                 {ta("دارنده‌ی هر پلنی که یکی از این ماژول‌ها را دارد «با پلن» حساب می‌شود. پلن می‌تواند این قابلیت را مستقیم هم در خودش بگذارد.")}
               </span>
-              <div className={classes.moduleGrid}>
-                {kinds.map((kind) => (
-                  <CheckboxGroupInput
-                    key={kind}
-                    title={audienceLabel(kind)}
-                    options={MODULE_LABELS[kind] || {}}
-                    defaultValue={draft.modules[kind] || []}
-                    onChange={(list) => setDraft((d) => ({ ...d, modules: { ...d.modules, [kind]: list } }))}
-                  />
-                ))}
-              </div>
+              {kinds.map((kind) => (
+                <ModuleChips
+                  key={kind}
+                  title={audienceLabel(kind)}
+                  options={MODULE_LABELS[kind] || {}}
+                  value={draft.modules[kind] || []}
+                  onChange={(list) => setDraft((d) => ({ ...d, modules: { ...d.modules, [kind]: list } }))}
+                />
+              ))}
             </div>
           )}
           {patient && (
