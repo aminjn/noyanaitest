@@ -46,8 +46,10 @@ const isItemActive = (pathname: string, panel: string, target?: string, match?: 
   if (segments[0] !== panel) return false;
   if (!target) return segments.length === 1;
   const parts = target.split("/").filter(Boolean);
-  // a sub-page target ("finance/accounting") matches its own path
-  if (parts.length > 1) return parts.every((p, i) => segments[i + 1] === p);
+  // a sub-page target ("finance/accounting") matches its own path, and the
+  // sub-pages it stands for ("crm/leads" for "crm/pipeline")
+  const under = (path: string) => path.split("/").filter(Boolean).every((p, i) => segments[i + 1] === p);
+  if (parts.length > 1) return under(target) || (!!match && match.some((m) => m.includes("/") && under(m)));
   return segments[1] === target || (!!match && match.includes(segments[1]));
 };
 

@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "Issued invoice",
  "crmsApOn_discount": "Discounts above a limit need the manager's approval",
  "crmsApMaxPercent": "Largest discount without approval (%)",
- "crmsDiscountSentForApproval": "Saved; the discount above your limit was sent to the approvals inbox"
+ "crmsDiscountSentForApproval": "Saved; the discount above your limit was sent to the approvals inbox",
+ "crmeOpenMember": "Club card"
 }

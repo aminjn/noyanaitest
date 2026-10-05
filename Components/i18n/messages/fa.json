@@ -6131,5 +6131,6 @@
  "kartablIssuedInvoice": "صورتحساب صادرشده",
  "crmsApOn_discount": "تخفیف بیش از سقف، تأیید مدیر لازم دارد",
  "crmsApMaxPercent": "بیشترین تخفیف بدون تأیید (درصد)",
- "crmsDiscountSentForApproval": "ذخیره شد؛ تخفیف بیش از سقف شما برای تأیید به کارتابل رفت"
+ "crmsDiscountSentForApproval": "ذخیره شد؛ تخفیف بیش از سقف شما برای تأیید به کارتابل رفت",
+ "crmeOpenMember": "کارت باشگاه"
 }

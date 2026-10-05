@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "発行済みの請求書",
  "crmsApOn_discount": "上限を超える割引には管理者の承認が必要です",
  "crmsApMaxPercent": "承認なしの最大割引率（%）",
- "crmsDiscountSentForApproval": "保存しました。上限を超える割引は承認待ちに送られました"
+ "crmsDiscountSentForApproval": "保存しました。上限を超える割引は承認待ちに送られました",
+ "crmeOpenMember": "会員カード"
 }

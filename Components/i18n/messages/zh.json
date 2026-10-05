@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "已开具的发票",
  "crmsApOn_discount": "超过上限的折扣需要经理批准",
  "crmsApMaxPercent": "无需批准的最高折扣（%）",
- "crmsDiscountSentForApproval": "已保存；超出您上限的折扣已提交审批"
+ "crmsDiscountSentForApproval": "已保存；超出您上限的折扣已提交审批",
+ "crmeOpenMember": "会员卡"
 }

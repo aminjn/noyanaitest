@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "जारी चालान",
  "crmsApOn_discount": "सीमा से अधिक छूट के लिए प्रबंधक की स्वीकृति ज़रूरी है",
  "crmsApMaxPercent": "बिना स्वीकृति अधिकतम छूट (%)",
- "crmsDiscountSentForApproval": "सहेजा गया; आपकी सीमा से अधिक छूट स्वीकृति के लिए भेजी गई"
+ "crmsDiscountSentForApproval": "सहेजा गया; आपकी सीमा से अधिक छूट स्वीकृति के लिए भेजी गई",
+ "crmeOpenMember": "क्लब कार्ड"
 }

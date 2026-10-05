@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "الفاتورة الصادرة",
  "crmsApOn_discount": "الخصم الذي يتجاوز الحد يحتاج إلى موافقة المدير",
  "crmsApMaxPercent": "أقصى خصم دون موافقة (٪)",
- "crmsDiscountSentForApproval": "تم الحفظ؛ أُرسل الخصم الذي يتجاوز حدك إلى صندوق الموافقات"
+ "crmsDiscountSentForApproval": "تم الحفظ؛ أُرسل الخصم الذي يتجاوز حدك إلى صندوق الموافقات",
+ "crmeOpenMember": "بطاقة النادي"
 }

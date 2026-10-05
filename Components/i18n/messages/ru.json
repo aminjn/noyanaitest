@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "Выставленный счёт",
  "crmsApOn_discount": "Скидка выше лимита требует одобрения руководителя",
  "crmsApMaxPercent": "Максимальная скидка без одобрения (%)",
- "crmsDiscountSentForApproval": "Сохранено; скидка сверх вашего лимита отправлена на согласование"
+ "crmsDiscountSentForApproval": "Сохранено; скидка сверх вашего лимита отправлена на согласование",
+ "crmeOpenMember": "Карта клуба"
 }

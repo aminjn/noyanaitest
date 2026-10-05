@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "Facture émise",
  "crmsApOn_discount": "Les remises au-delà d'un plafond doivent être approuvées par le responsable",
  "crmsApMaxPercent": "Remise maximale sans approbation (%)",
- "crmsDiscountSentForApproval": "Enregistré ; la remise au-delà de votre plafond a été envoyée pour approbation"
+ "crmsDiscountSentForApproval": "Enregistré ; la remise au-delà de votre plafond a été envoyée pour approbation",
+ "crmeOpenMember": "Carte du club"
 }

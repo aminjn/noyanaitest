@@ -669,6 +669,11 @@
     flex-wrap: wrap;
   }
 
+  /* the row's text keeps a readable width; its actions wrap below it */
+  .followUp > .fuMain {
+    flex: 1 1 12rem;
+  }
+
   .tlItem {
     grid-template-columns: auto minmax(0, 1fr);
   }

@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "جاری شدہ انوائس",
  "crmsApOn_discount": "حد سے زیادہ رعایت کے لیے مینیجر کی منظوری ضروری ہے",
  "crmsApMaxPercent": "منظوری کے بغیر زیادہ سے زیادہ رعایت (%)",
- "crmsDiscountSentForApproval": "محفوظ ہو گیا؛ آپ کی حد سے زیادہ رعایت منظوری کے لیے کارتابل میں بھیج دی گئی"
+ "crmsDiscountSentForApproval": "محفوظ ہو گیا؛ آپ کی حد سے زیادہ رعایت منظوری کے لیے کارتابل میں بھیج دی گئی",
+ "crmeOpenMember": "کلب کارڈ"
 }

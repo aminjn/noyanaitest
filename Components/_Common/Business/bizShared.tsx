@@ -75,6 +75,7 @@ export const useBizFormat = () => {
   const tag = useIntlLocale();
   return useMemo(() => {
     const num = new Intl.NumberFormat(tag, { maximumFractionDigits: 0 });
+    const pct = new Intl.NumberFormat(tag, { style: "percent", maximumFractionDigits: 2 });
     // a Jalali fiscal year (1404), in the reader's digits, never grouped
     const yearNum = new Intl.NumberFormat(tag, { useGrouping: false });
     // fiscal year bounds are Tehran midnights; shown as Tehran sees them
@@ -90,6 +91,8 @@ export const useBizFormat = () => {
     };
     return {
       money: (n?: number) => num.format(Math.round(Number(n) || 0)),
+      // 15 -> "۱۵٪" / "15%", the reader's own sign and side
+      percent: (n?: number) => pct.format((Number(n) || 0) / 100),
       year: (y?: number) => (y ? yearNum.format(y) : "—"),
       tehranDate: (v?: string | Date | null) => safe(tehran, v),
       // a negative balance in parentheses, the way statements show it

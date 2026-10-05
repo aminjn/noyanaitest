@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "Ausgestellte Rechnung",
  "crmsApOn_discount": "Rabatte über einer Grenze brauchen die Freigabe der Leitung",
  "crmsApMaxPercent": "Höchster Rabatt ohne Freigabe (%)",
- "crmsDiscountSentForApproval": "Gespeichert; der Rabatt über Ihrer Grenze wurde zur Freigabe weitergeleitet"
+ "crmsDiscountSentForApproval": "Gespeichert; der Rabatt über Ihrer Grenze wurde zur Freigabe weitergeleitet",
+ "crmeOpenMember": "Clubkarte"
 }

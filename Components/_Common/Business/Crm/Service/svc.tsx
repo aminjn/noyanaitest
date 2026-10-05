@@ -10,6 +10,7 @@ import classes from "../../Accounting.module.css";
 import crm from "../Crm.module.css";
 import s from "./Service.module.css";
 import { asArray } from "../../bizShared";
+import Ixon from "@/Components/UI/Ixon";
 import { CrmContact, CrmTeamMember, errText, phoneText, useCrm, useCrmTeam, useCrmText } from "../crmShared";
 
 // Shared bits of the CRM's engagement and service pages (2026-10,
@@ -161,14 +162,28 @@ export const Badge = ({ tone, children }: { tone?: "ok" | "warn" | "bad" | "mute
   </span>
 );
 
-// a button that asks once more before doing it
-export const ConfirmButton = ({ onConfirm, children, className, disabled }: { onConfirm: () => unknown; children: ReactNode; className?: string; disabled?: boolean }) => {
+// a button that asks once more before doing it; an icon (not text) is
+// drawn at icon size and named by `label`
+export const ConfirmButton = ({
+  onConfirm,
+  children,
+  className,
+  disabled,
+  label,
+}: {
+  onConfirm: () => unknown;
+  children: ReactNode;
+  className?: string;
+  disabled?: boolean;
+  label?: string;
+}) => {
   const t = useCrmText();
   const [ask, setAsk] = useState(false);
+  const text = typeof children === "string" || typeof children === "number";
   if (!ask)
     return (
-      <button type="button" className={className || classes.ghost} disabled={disabled} onClick={() => setAsk(true)}>
-        {children}
+      <button type="button" className={className || classes.ghost} disabled={disabled} onClick={() => setAsk(true)} aria-label={label} title={label}>
+        {text ? children : <Ixon width="1.125rem">{children}</Ixon>}
       </button>
     );
   return (

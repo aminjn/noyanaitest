@@ -134,7 +134,7 @@ const NewReturn = ({ goods, onDone }: { goods: boolean; onDone: () => unknown })
               <option value="">—</option>
               {listOf<{ _id: string; number: number; total: number; party?: { name?: string } }>(look.data?.invoices).map((i) => (
                 <option key={i._id} value={i._id}>
-                  {t("crmeInvoiceN", [String(i.number)])} · {i.party?.name || ""} · {f.money(i.total)}
+                  {t("crmeInvoiceN", [f.year(i.number)])} · {i.party?.name || ""} · {f.money(i.total)}
                 </option>
               ))}
             </select>

@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "জারি করা চালান",
  "crmsApOn_discount": "সীমার বেশি ছাড়ের জন্য ব্যবস্থাপকের অনুমোদন লাগে",
  "crmsApMaxPercent": "অনুমোদন ছাড়া সর্বোচ্চ ছাড় (%)",
- "crmsDiscountSentForApproval": "সংরক্ষিত হয়েছে; আপনার সীমার বেশি ছাড় অনুমোদনের জন্য পাঠানো হয়েছে"
+ "crmsDiscountSentForApproval": "সংরক্ষিত হয়েছে; আপনার সীমার বেশি ছাড় অনুমোদনের জন্য পাঠানো হয়েছে",
+ "crmeOpenMember": "ক্লাব কার্ড"
 }

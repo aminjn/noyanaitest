@@ -181,10 +181,17 @@ const TableGrid = <T,>({
     });
     // Plain values get a sensible look without every page repeating it:
     // dates formatted, booleans as status pills.
+    // numbers in the reader's digits (a raw number showed Latin digits in
+    // Persian, Arabic and Urdu); grouped from five digits, so a year or a
+    // short code stays as it is written
+    const plain = new Intl.NumberFormat(intlTag, { maximumFractionDigits: 2, useGrouping: false });
+    const grouped = new Intl.NumberFormat(intlTag, { maximumFractionDigits: 2 });
     const display = (value: unknown): ReactNode => {
       if (value instanceof Date)
         return isNaN(value.getTime()) ? "—" : dateFormat.format(value);
       if (typeof value === "boolean") return <BooleanToIcon value={value} />;
+      if (typeof value === "number")
+        return Number.isFinite(value) ? (Math.abs(value) >= 10000 ? grouped : plain).format(value) : "—";
       if (value === null || value === undefined || value === "") return "—";
       return value as ReactNode;
     };

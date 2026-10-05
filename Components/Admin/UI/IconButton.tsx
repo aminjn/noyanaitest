@@ -28,6 +28,7 @@ const IconButton = ({
       onClick={onClick}
       type={type}
       title={title}
+      aria-label={title}
       style={style}
     >
       <Ixon width="1.25rem">{children}</Ixon>

@@ -317,16 +317,40 @@ export const AccountSelect = ({
 };
 
 // a party searched by name / code / phone, or made right here
+// (2026-10) the kind a new تفصیلی most likely is on an account of this
+// role: a distributor on «payable», an insurer on «insurers»; a party typed
+// on a payable no longer starts as a patient
+const ROLE_PARTY_KIND: Record<string, string> = {
+  payable: "supplier",
+  chequesPayable: "supplier",
+  claimsPayable: "supplier",
+  receivable: "patient",
+  chequesReceivable: "patient",
+  patientDeposits: "patient",
+  insuranceReceivable: "insurer",
+  subsidyReceivable: "insurer",
+  reinsuranceReceivable: "insurer",
+  employeeAdvances: "person",
+  salaryPayable: "person",
+  doctorsSharePayable: "doctor",
+  bank: "bank",
+};
+export const preferredPartyKind = (account?: { role?: string; tafsiliKinds?: string[] } | null) =>
+  account?.tafsiliKinds?.[0] || (account?.role ? ROLE_PARTY_KIND[account.role] : undefined);
+
 export const PartyPicker = ({
   value,
   onChange,
   kinds,
+  prefer,
   label,
   placeholder,
 }: {
   value: AccParty | null;
   onChange: (p: AccParty | null) => void;
   kinds?: string[];
+  // the kind a party created here starts as (preferredPartyKind)
+  prefer?: string;
   label?: string;
   placeholder?: string;
 }) => {
@@ -336,7 +360,11 @@ export const PartyPicker = ({
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<AccParty[]>([]);
-  const [newKind, setNewKind] = useState<string>(kinds?.[0] || "patient");
+  const [newKind, setNewKind] = useState<string>(kinds?.[0] || prefer || "patient");
+  // the line's account may be picked after the picker is drawn
+  useEffect(() => {
+    if (!kinds?.length && prefer) setNewKind(prefer);
+  }, [prefer, kinds]);
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;

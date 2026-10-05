@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "Kesilmiş fatura",
  "crmsApOn_discount": "Sınırın üzerindeki indirimler yönetici onayı gerektirir",
  "crmsApMaxPercent": "Onaysız en yüksek indirim (%)",
- "crmsDiscountSentForApproval": "Kaydedildi; sınırınızı aşan indirim onay kutusuna gönderildi"
+ "crmsDiscountSentForApproval": "Kaydedildi; sınırınızı aşan indirim onay kutusuna gönderildi",
+ "crmeOpenMember": "Kulüp kartı"
 }

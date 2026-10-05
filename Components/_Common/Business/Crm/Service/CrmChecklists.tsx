@@ -204,11 +204,11 @@ const CrmChecklists = () => {
           <nav className={s.listNav} aria-label={t("crmeLists")}>
             <button type="button" className={sel === LOOSE ? s.listOn : ""} onClick={() => setSel(LOOSE)}>
               <span>{t("crmeLoose")}</span>
-              <span className={classes.muted}>{items.filter((i) => !i.list && !i.done).length}</span>
+              <span className={classes.muted}>{f.money(items.filter((i) => !i.list && !i.done).length)}</span>
             </button>
             <button type="button" className={sel === STARRED ? s.listOn : ""} onClick={() => setSel(STARRED)}>
               <span>{t("crmeStarred")}</span>
-              <span className={classes.muted}>{items.filter((i) => i.starred && !i.done).length}</span>
+              <span className={classes.muted}>{f.money(items.filter((i) => i.starred && !i.done).length)}</span>
             </button>
             {lists.map((l) => (
               <button key={l._id} type="button" className={sel === l._id ? s.listOn : ""} onClick={() => setSel(l._id)}>
@@ -216,7 +216,7 @@ const CrmChecklists = () => {
                   {l.name}
                   {l.isTemplate ? ` · ${t("crmeTemplateBadge")}` : ""}
                 </span>
-                <span className={classes.muted}>{items.filter((i) => i.list === l._id && !i.done).length}</span>
+                <span className={classes.muted}>{f.money(items.filter((i) => i.list === l._id && !i.done).length)}</span>
               </button>
             ))}
           </nav>

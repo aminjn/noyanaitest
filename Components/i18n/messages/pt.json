@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "Fatura emitida",
  "crmsApOn_discount": "Descontos acima de um limite precisam da aprovação do gestor",
  "crmsApMaxPercent": "Desconto máximo sem aprovação (%)",
- "crmsDiscountSentForApproval": "Salvo; o desconto acima do seu limite foi enviado para aprovação"
+ "crmsDiscountSentForApproval": "Salvo; o desconto acima do seu limite foi enviado para aprovação",
+ "crmeOpenMember": "Cartão do clube"
 }

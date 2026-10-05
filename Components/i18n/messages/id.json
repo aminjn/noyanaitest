@@ -6109,5 +6109,6 @@
  "kartablIssuedInvoice": "Faktur yang diterbitkan",
  "crmsApOn_discount": "Diskon di atas batas memerlukan persetujuan manajer",
  "crmsApMaxPercent": "Diskon tertinggi tanpa persetujuan (%)",
- "crmsDiscountSentForApproval": "Tersimpan; diskon di atas batas Anda dikirim untuk disetujui"
+ "crmsDiscountSentForApproval": "Tersimpan; diskon di atas batas Anda dikirim untuk disetujui",
+ "crmeOpenMember": "Kartu klub"
 }
