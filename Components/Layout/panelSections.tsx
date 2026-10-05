@@ -57,7 +57,7 @@ const FINANCE_ORDER: Record<FinanceProfile, string[]> = {
   hospital: ["overview", "wallet", "invoices", "insurance", "payments", "expenses", "accounting", "treasury", "assets", "inventory", "payroll", "moadian", "reports", "ai"],
   pharmacy: ["overview", "wallet", "payments", "treasury", "inventory", "insurance", "invoices", "expenses", "accounting", "assets", "moadian", "payroll", "reports", "ai"],
   paraClinic: ["overview", "wallet", "invoices", "insurance", "payments", "inventory", "expenses", "accounting", "treasury", "assets", "payroll", "moadian", "reports", "ai"],
-  insurance: ["overview", "settlements", "payments", "accounting", "treasury", "expenses", "invoices", "wallet", "payroll", "moadian", "reports", "ai"],
+  insurance: ["overview", "claimsIn", "settlements", "payments", "accounting", "treasury", "expenses", "invoices", "wallet", "payroll", "moadian", "reports", "ai"],
 };
 
 export const financeSection = <A extends string>({
@@ -92,6 +92,8 @@ export const financeSection = <A extends string>({
     treasury: { title: k("finNavTreasury"), icon: <WalletIcon />, target: "finance/treasury", show: finance },
     // the insurer's provider settlements: the treasury's settlements tab
     settlements: { title: k("finNavProviderSettlements"), icon: <ShieldCheckIcon />, target: "finance/treasury?tab=settlements", show: finance },
+    // the insurer's lists received from centres on Noyan, reviewed and paid
+    claimsIn: { title: k("finNavClaimsIn"), icon: <FileIcon />, target: "finance/claims", show: finance },
     assets: { title: k("finNavAssets"), icon: <PackageIcon />, target: "finance/assets", show: finance },
     moadian: { title: "moadianMenu", icon: <ReceiptIcon />, target: "finance/moadian", show: can("readMoadian") },
     payroll: { title: "payMenu", icon: <UserGroupIcon />, target: "finance/payroll", show: can("readPayroll") },

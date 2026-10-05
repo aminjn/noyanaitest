@@ -8,7 +8,7 @@ import fin from "../Finance/Finance.module.css";
 import acc from "./Acc.module.css";
 import { asArray, BizAccount, useBiz, useBizFormat } from "../bizShared";
 import { useBizAccounts } from "../AccountingSummary";
-import { parseAmount } from "../Finance/finShared";
+import { parseAmount, StockItem, useFin, useStockItems } from "../Finance/finShared";
 import { AccountSelect, AmountInput, ConfirmButton, ExportBar, MoneySelect, SimplePopup, SubNav, useAccCall, useAccGet, useAccPopup, useAccText, useView } from "./accShared";
 
 // The sales tools beside the invoices (2026-10), after Nexxa's price-list,
@@ -19,8 +19,10 @@ import { AccountSelect, AmountInput, ConfirmButton, ExportBar, MoneySelect, Simp
 // that issues an invoice and takes its payment at the desk.
 
 type Price = { _id: string; code?: string; title: string; group?: string; unit?: string; price: number; insurancePrice?: number; taxRate: number; account?: string; isActive: boolean };
-type Line = { title: string; qty: string; unitPrice: string; discount: string; taxRate: string; account: string };
-const emptyLine = (): Line => ({ title: "", qty: "1", unitPrice: "", discount: "", taxRate: "0", account: "" });
+// item: a stock item sold on the line (2026-10): the sale takes it out of
+// stock FEFO with its cost of sales, voiding the invoice brings it back
+type Line = { title: string; qty: string; unitPrice: string; discount: string; taxRate: string; account: string; item: string };
+const emptyLine = (): Line => ({ title: "", qty: "1", unitPrice: "", discount: "", taxRate: "0", account: "", item: "" });
 
 const usePrices = (all = false) => useAccGet<Price[]>(`/acc/prices${all ? "?all=1" : ""}`, (d) => asArray<Price>(d));
 
@@ -166,7 +168,22 @@ const SaleLines = ({ lines, setLines }: { lines: Line[]; setLines: (fn: (l: Line
   const f = useBizFormat();
   const { data } = usePrices();
   const prices = asArray<Price>(data);
+  const { node } = useFin();
+  const { data: stockData } = useStockItems(node);
+  const stock = asArray<StockItem>(stockData);
   const set = (i: number, patch: Partial<Line>) => setLines((p) => p.map((l, j) => (j === i ? { ...l, ...patch } : l)));
+  // the title follows the item unless it was typed by hand; an item's sale
+  // books to its class's income account, so a price-list account is dropped
+  const pickItem = (i: number, id: string) =>
+    setLines((ls) =>
+      ls.map((l, j) => {
+        if (j !== i) return l;
+        const before = stock.find((x) => x._id === l.item);
+        const it = stock.find((x) => x._id === id);
+        const title = !l.title.trim() || (before && l.title === before.name) ? it?.name || "" : l.title;
+        return { ...l, item: id, title, account: id ? "" : l.account };
+      }),
+    );
   const total = lines.reduce((s, l) => {
     const net = parseAmount(l.qty) * parseAmount(l.unitPrice) - parseAmount(l.discount);
     return s + net + Math.round((net * (Number(l.taxRate) || 0)) / 100);
@@ -174,8 +191,8 @@ const SaleLines = ({ lines, setLines }: { lines: Line[]; setLines: (fn: (l: Line
   return (
     <div className={classes.lines}>
       {lines.map((l, i) => (
-        <div key={i} className={acc.editLine} style={{ gridTemplateColumns: "minmax(0,2fr) 4rem 7rem 6rem 4rem 2.25rem" }}>
-          <div className={acc.pick}>
+        <div key={i} className={`${acc.editLine} ${acc.saleLine}`}>
+          <div className={`${acc.pick} ${fin.invItemCell}`}>
             <input
               list="acc-price-list"
               value={l.title}
@@ -183,9 +200,19 @@ const SaleLines = ({ lines, setLines }: { lines: Line[]; setLines: (fn: (l: Line
               aria-label={t("accPriceTitle")}
               onChange={(e) => {
                 const hit = prices.find((p) => p.title === e.target.value);
-                set(i, hit ? { title: hit.title, unitPrice: String(hit.price), taxRate: String(hit.taxRate), account: hit.account || "" } : { title: e.target.value });
+                set(i, hit ? { title: hit.title, unitPrice: String(hit.price), taxRate: String(hit.taxRate), account: l.item ? "" : hit.account || "" } : { title: e.target.value });
               }}
             />
+            {stock.length > 0 && (
+              <select aria-label={t("finStockItem")} value={l.item} onChange={(e) => pickItem(i, e.target.value)}>
+                <option value="">{t("finNoStockItem")}</option>
+                {stock.map((x) => (
+                  <option key={x._id} value={x._id}>
+                    {x.name} · {f.money(x.stock)} {x.unit || ""}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <input inputMode="decimal" dir="ltr" value={l.qty} aria-label={t("accQty")} onChange={(e) => set(i, { qty: e.target.value })} />
           <input inputMode="numeric" dir="ltr" value={l.unitPrice} placeholder={t("accUnitPrice")} aria-label={t("accUnitPrice")} onChange={(e) => set(i, { unitPrice: e.target.value })} />
@@ -217,7 +244,15 @@ const payloadOf = (party: { name: string; phone: string; nationalId: string }, l
   party,
   lines: lines
     .filter((l) => l.title.trim() && parseAmount(l.unitPrice) > 0)
-    .map((l) => ({ title: l.title.trim(), qty: parseAmount(l.qty) || 1, unitPrice: parseAmount(l.unitPrice), discount: parseAmount(l.discount), taxRate: Number(l.taxRate) || 0, account: l.account || undefined })),
+    .map((l) => ({
+      title: l.title.trim(),
+      qty: parseAmount(l.qty) || 1,
+      unitPrice: parseAmount(l.unitPrice),
+      discount: parseAmount(l.discount),
+      taxRate: Number(l.taxRate) || 0,
+      account: l.account || undefined,
+      item: l.item || undefined,
+    })),
 });
 
 const PartyFields = ({ v, set }: { v: { name: string; phone: string; nationalId: string }; set: (v: { name: string; phone: string; nationalId: string }) => void }) => {

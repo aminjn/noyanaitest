@@ -265,6 +265,8 @@ const CrmReturns = () => {
                 createdAt: { name: t("bizDate"), value: (r) => new Date(r.createdAt), filter: "Date" },
                 actions: {
                   name: t("crmeActions"),
+                  // room for «انجام (ثبت سند)» and «لغو» (and the confirm step) side by side
+                  width: 290,
                   component: (r) =>
                     canWrite ? (
                       <span className={s.row}>

@@ -279,7 +279,17 @@
   color: var(--gray12);
 }
 
+/* (2026-10) a sale line: item and title, qty, price, discount, VAT, remove */
+.saleLine {
+  grid-template-columns: minmax(0, 2fr) 4rem 7rem 6rem 4rem 2.25rem;
+  align-items: start;
+}
+
 @media (max-width: 64rem) {
+  .saleLine > :first-child {
+    grid-column: 1 / -1;
+  }
+
   .editLine {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     padding: 0.5rem;

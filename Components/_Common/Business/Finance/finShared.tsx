@@ -34,6 +34,21 @@ type Ctx = { node: NodeWithAcl; panel: string; api: string; canWrite: boolean };
 export const FinContext = createContext<Ctx>({ node: "doctor", panel: "", api: "", canWrite: false });
 export const useFin = () => useContext(FinContext);
 
+// the panels that keep stock (Routers/inventoryRoutes.ts)
+export const STOCK_NODES = ["pharmacy", "paraClinic", "clinic", "hospital"];
+export type StockItem = { _id: string; name: string; unit?: string; kind: string; stock: number; isActive?: boolean };
+
+// (2026-10) the owner's stock items, for a sale line that sells one (an
+// invoice, the quick sale, a pre-invoice): issuing it takes the item out of
+// stock (FEFO) with its cost of sales, voiding it brings it back. Empty
+// where the panel keeps no stock or its plan has no inventory.
+export const useStockItems = (node: string) =>
+  useSWR<StockItem[]>(STOCK_NODES.includes(node) ? `${API}/${node}/inv/items` : null, (url: string) =>
+    fetcher({ url })
+      .then((res) => asArray<StockItem>(res.data).filter((i) => i && i._id && i.isActive !== false))
+      .catch(() => []),
+  );
+
 export const InsurerKinds = ["tamin", "salamat", "armed", "supplementary", "other"] as const;
 export type InsurerKind = (typeof InsurerKinds)[number];
 export const insurerKey = (k?: string) =>
@@ -152,7 +167,16 @@ export type FinClaim = {
   insurer: { kind: InsurerKind; name: string };
   from?: string;
   to?: string;
-  items?: { invoice?: string; date: string; patient: string; service: string; total: number; share: number }[];
+  items?: {
+    invoice?: string;
+    date: string;
+    patient: string;
+    service: string;
+    total: number;
+    share: number;
+    // (2026-10) the insurer's decision, when it reviews the list on Noyan
+    decision?: { status: ClaimLineDecision; approved: number; deducted: number; reason?: string };
+  }[];
   claimed: number;
   paid: number;
   deducted: number;
@@ -164,6 +188,41 @@ export type FinClaim = {
   note?: string;
   payments?: FinPayment[];
   createdAt: string;
+  // (2026-10) sent to an insurer with a panel on Noyan, and its review
+  insurerProfile?: string;
+  centreName?: string;
+  ownerKind?: string;
+  review?: ClaimReview;
+};
+
+export type ClaimLineDecision = "accepted" | "deducted" | "rejected";
+export type ClaimReview = {
+  status: "pending" | "decided" | "paid";
+  receivedAt: string;
+  decidedAt?: string;
+  approved: number;
+  deducted: number;
+  paid: number;
+  note?: string;
+  payments: { _id: string; amount: number; date: string; reference?: string; moneyName?: string }[];
+};
+
+// the insurer's review status, as both sides read it
+export const reviewKey = (r?: Pick<ClaimReview, "status" | "approved">) =>
+  !r ? "" : r.status === "pending" ? "finRevPending" : r.status === "paid" ? "finRevPaid" : r.approved > 0 ? "finRevDecided" : "finRevRejected";
+export const reviewTone = (r?: Pick<ClaimReview, "status" | "approved">) =>
+  !r ? "draft" : r.status === "pending" ? "submitted" : r.status === "paid" ? "paid" : r.approved > 0 ? "partial" : "rejected";
+export const decisionKey = (d?: ClaimLineDecision) =>
+  d === "deducted" ? "finDecDeducted" : d === "rejected" ? "finDecRejected" : "finDecAccepted";
+
+// the Noyan insurers a list can be sent to (their own panel reviews it)
+export const useNoyanInsurers = () => {
+  const { api } = useFin();
+  return useSWR<{ _id: string; name?: string; isBasic?: boolean }[]>(api ? `${API}${api}/claims/insurers` : null, (url: string) =>
+    fetcher({ url })
+      .then((res) => asArray<{ _id: string; name?: string; isBasic?: boolean }>(res.data))
+      .catch(() => []),
+  );
 };
 
 export const nameOf = (v: unknown, fallback = "—"): string =>

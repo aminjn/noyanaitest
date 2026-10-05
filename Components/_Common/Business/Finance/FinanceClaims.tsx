@@ -26,9 +26,13 @@ import {
   parseAmount,
   Pill,
   statusKey,
+  decisionKey,
+  reviewKey,
+  reviewTone,
   useFin,
   useFinPopup,
   useFinText,
+  useNoyanInsurers,
 } from "./finShared";
 
 const FORM_KEY = "FinClaimForm";
@@ -48,6 +52,11 @@ const ClaimForm = ({ onDone }: { onDone: (c?: FinClaim) => unknown }) => {
   const pushNotification = useNotification();
   const [kind, setKind] = useState<InsurerKind>("tamin");
   const [name, setName] = useState("");
+  // (2026-10) an insurer with its own panel on Noyan reviews and pays the
+  // list there; its name is the list's insurer
+  const { data: noyanData } = useNoyanInsurers();
+  const noyan = asArray<{ _id: string; name?: string; isBasic?: boolean }>(noyanData);
+  const [profile, setProfile] = useState("");
   const [from, setFrom] = useState<Date | null>(null);
   const [to, setTo] = useState<Date | null>(null);
   const [skip, setSkip] = useState<Set<string>>(new Set());
@@ -79,6 +88,7 @@ const ClaimForm = ({ onDone }: { onDone: (c?: FinClaim) => unknown }) => {
         method: "POST",
         payload: {
           insurer: { kind, name: insurerName },
+          insurerProfile: profile || null,
           from: from ? isoDay(from) : null,
           to: to ? isoDay(to) : null,
           invoices: picked.map((c) => c._id),
@@ -110,9 +120,30 @@ const ClaimForm = ({ onDone }: { onDone: (c?: FinClaim) => unknown }) => {
               ))}
             </select>
           </label>
+          {noyan.length > 0 && (
+            <label className={classes.field}>
+              <span>{t("finNoyanInsurer")}</span>
+              <select
+                value={profile}
+                onChange={(e) => {
+                  const hit = noyan.find((x) => x._id === e.target.value);
+                  setProfile(e.target.value);
+                  if (hit?.name) setName(hit.name);
+                  setSkip(new Set());
+                }}
+              >
+                <option value="">{t("finNoyanInsurerNone")}</option>
+                {noyan.map((x) => (
+                  <option key={x._id} value={x._id}>
+                    {x.name || "—"}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <label className={classes.field}>
             <span>{t("finInsurerName")}</span>
-            <input value={name} maxLength={120} placeholder={insurerName} onChange={(e) => setName(e.target.value)} />
+            <input value={name} maxLength={120} placeholder={insurerName} disabled={!!profile} onChange={(e) => setName(e.target.value)} />
           </label>
           <div className={classes.field}>
             <DateInput title={t("bizFrom")} onChange={(d) => setFrom(d)} onClear={() => setFrom(null)} />
@@ -121,6 +152,7 @@ const ClaimForm = ({ onDone }: { onDone: (c?: FinClaim) => unknown }) => {
             <DateInput title={t("bizTo")} onChange={(d) => setTo(d)} onClear={() => setTo(null)} />
           </div>
         </div>
+        {!!profile && <p className={fin.notice}>{t("finNoyanInsurerHint")}</p>}
         <span className={classes.cardTitle}>{t("finClaimFromInvoices")}</span>
         {candidates.length === 0 ? (
           <p className={classes.muted}>{t("finNoCandidates")}</p>
@@ -258,6 +290,9 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
     }
   };
   const openAmount = data ? Math.max(0, data.claimed - data.paid - data.deducted) : 0;
+  // (2026-10) reviewed and paid by the insurer on Noyan: its decisions are
+  // the deductions and its payments the receipts
+  const byInsurer = !!(data?.insurerProfile && data?.review);
   const items = asArray<NonNullable<FinClaim["items"]>[number]>(data?.items);
   const exportCsv = () =>
     data &&
@@ -288,6 +323,13 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
                 </div>
                 <Pill status={data.status}>{t(statusKey(data.status))}</Pill>
               </div>
+              {!!data.insurerProfile && data.status === "draft" && <p className={fin.notice}>{t("finNoyanInsurerHint")}</p>}
+              {byInsurer && (
+                <p className={fin.notice}>
+                  {t("finByInsurerNotice")} <Pill status={reviewTone(data.review)}>{t(reviewKey(data.review))}</Pill>
+                  {data.review?.decidedAt ? ` · ${t("finDecidedOn")}: ${f.date(data.review.decidedAt)}` : ""}
+                </p>
+              )}
               <div className={classes.tiles}>
                 <div className={classes.tile}>
                   <span className={classes.tileLabel}>{t("finClaimed")}</span>
@@ -320,6 +362,7 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
                       <th>{t("finService")}</th>
                       <th className={classes.num}>{t("bizTotal")}</th>
                       <th className={classes.num}>{t("finInsurerShare")}</th>
+                      {byInsurer && <th>{t("finInsurerDecision")}</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -330,6 +373,19 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
                         <td className={classes.wrap}>{i.service || "—"}</td>
                         <td className={classes.num}>{f.money(i.total)}</td>
                         <td className={classes.num}>{f.money(i.share)}</td>
+                        {byInsurer && (
+                          <td className={fin.decisionCol}>
+                            {i.decision ? (
+                              <>
+                                <Pill status={i.decision.status === "accepted" ? "paid" : i.decision.status === "rejected" ? "rejected" : "partial"}>{t(decisionKey(i.decision.status))}</Pill>
+                                {i.decision.deducted > 0 && <span className={classes.negative}> −{f.money(i.decision.deducted)}</span>}
+                                {i.decision.reason && <span className={fin.small}> · {i.decision.reason}</span>}
+                              </>
+                            ) : (
+                              <span className={classes.muted}>{t("finRevPending")}</span>
+                            )}
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
@@ -408,12 +464,12 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
                     </button>
                   </>
                 )}
-                {canWrite && data.status !== "draft" && (
+                {canWrite && data.status !== "draft" && (!byInsurer || data.review?.status === "pending") && (
                   <button type="button" className={classes.ghost} disabled={busy} onClick={() => window.confirm(t("finReopenConfirm")) && act("/reopen", {})}>
                     {t("finReopen")}
                   </button>
                 )}
-                {canWrite && openAmount > 0 && data.status !== "draft" && (
+                {canWrite && openAmount > 0 && data.status !== "draft" && !byInsurer && (
                   <>
                     <button type="button" className={classes.danger} onClick={() => setMode(mode === "reject" ? "" : "reject")}>
                       {t("finRejectRest")}
@@ -460,6 +516,12 @@ const Body = () => {
     if (!opened.current && canWrite && params?.get("new") === "1") {
       opened.current = true;
       create();
+    }
+    // a notification's link opens its list
+    const claim = params?.get("claim");
+    if (!opened.current && claim && /^[a-f0-9]{24}$/.test(claim)) {
+      opened.current = true;
+      open(VIEW_KEY, <ClaimView id={claim} onChanged={() => mutate()} />);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canWrite, params]);
@@ -538,6 +600,12 @@ const Body = () => {
                         <td className={`${classes.num} ${c.deducted > 0 ? classes.negative : ""}`}>{f.money(c.deducted)}</td>
                         <td>
                           <Pill status={c.status}>{t(statusKey(c.status))}</Pill>
+                          {c.review && (
+                            <>
+                              {" "}
+                              <Pill status={reviewTone(c.review)}>{t(reviewKey(c.review))}</Pill>
+                            </>
+                          )}
                         </td>
                       </tr>
                     ))}

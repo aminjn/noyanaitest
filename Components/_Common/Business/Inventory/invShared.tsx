@@ -79,7 +79,7 @@ export type InvPurchase = {
   tax: number;
   total: number;
   paid: number;
-  payments: { _id: string; amount: number; via: { _id: string; code: string; name: string } | null; date: string; note?: string }[];
+  payments: { _id: string; amount: number; via: { _id: string; code: string; name: string } | null; date: string; note?: string; voidedAt?: string; voidReason?: string }[];
   note?: string;
 };
 

@@ -27,9 +27,11 @@ import {
   parseAmount,
   Pill,
   statusKey,
+  StockItem,
   useFin,
   useFinPopup,
   useFinText,
+  useStockItems,
 } from "./finShared";
 
 const FORM_KEY = "FinInvoiceForm";
@@ -37,21 +39,6 @@ const VIEW_KEY = "FinInvoiceView";
 
 type Line = { title: string; qty: string; unitPrice: string; discount: string; taxRate: string; account: string; item: string };
 const emptyLine = (): Line => ({ title: "", qty: "1", unitPrice: "", discount: "", taxRate: "0", account: "", item: "" });
-
-// the panels that keep stock (Routers/inventoryRoutes.ts)
-const STOCK_NODES = ["pharmacy", "paraClinic", "clinic", "hospital"];
-type StockItem = { _id: string; name: string; unit?: string; kind: string; stock: number; isActive?: boolean };
-
-// (2026-10) the owner's stock items, for a line that sells one: issuing the
-// invoice takes it out of stock (FEFO) with its cost of sales, voiding it
-// brings it back. Empty where the panel keeps no stock or its plan has no
-// inventory.
-const useStockItems = (node: string) =>
-  useSWR<StockItem[]>(STOCK_NODES.includes(node) ? `${API}/${node}/inv/items` : null, (url: string) =>
-    fetcher({ url })
-      .then((res) => asArray<StockItem>(res.data).filter((i) => i && i._id && i.isActive !== false))
-      .catch(() => []),
-  );
 
 // New invoice or a draft's edit: the patient, the lines (service, quantity,
 // price, discount, VAT, income account), the insurer's share and a note.

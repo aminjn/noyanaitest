@@ -310,6 +310,24 @@ const PurchaseDetail = ({ ctx, id, onChanged }: { ctx: Ctx; id: string; onChange
   );
   const [confirm, setConfirm] = useState<"" | "receive" | "cancel">("");
   const [busy, setBusy] = useState(false);
+  // (2026-10) a payment to the supplier voided: reversed, the payable open again
+  const [voiding, setVoiding] = useState("");
+  const [voidReason, setVoidReason] = useState("");
+  const voidPayment = async (paymentId: string) => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await fetcher({ url: `${API}${ctx.api}/purchases/${id}/payments/${paymentId}/void`, method: "POST", payload: { reason: voidReason.trim() || undefined } });
+      pushNotification(t("invPaymentVoided"), "Success");
+      setVoiding("");
+      setVoidReason("");
+      changed();
+    } catch (err) {
+      pushNotification((err as Error)?.message || String(err), "Error");
+    } finally {
+      setBusy(false);
+    }
+  };
   const changed = () => {
     mutate();
     onChanged();
@@ -408,10 +426,47 @@ const PurchaseDetail = ({ ctx, id, onChanged }: { ctx: Ctx; id: string; onChange
                     <table className={classes.table}>
                       <tbody>
                         {asArray<InvPurchase["payments"][number]>(data.payments).map((p) => (
-                          <tr key={p._id}>
+                          <tr key={p._id} style={p.voidedAt ? { opacity: 0.6 } : undefined}>
                             <td>{f.date(p.date)}</td>
-                            <td className={classes.wrap}>{p.via?.name || "—"}</td>
-                            <td className={classes.num}>{f.money(p.amount)}</td>
+                            <td className={classes.wrap}>
+                              {p.via?.name || "—"}
+                              {p.voidedAt && (
+                                <span className={classes.muted}>
+                                  {" "}
+                                  · {t("invPaymentVoid")}
+                                  {p.voidReason ? `: ${p.voidReason}` : ""}
+                                </span>
+                              )}
+                            </td>
+                            <td className={classes.num} style={p.voidedAt ? { textDecoration: "line-through" } : undefined}>
+                              {f.money(p.amount)}
+                            </td>
+                            {ctx.canWrite && data.status === "received" && (
+                              <td>
+                                {!p.voidedAt &&
+                                  (voiding === p._id ? (
+                                    <div className={inv.voidRow}>
+                                      <input
+                                        value={voidReason}
+                                        maxLength={500}
+                                        placeholder={t("invVoidReason")}
+                                        aria-label={t("invVoidReason")}
+                                        onChange={(e) => setVoidReason(e.target.value)}
+                                      />
+                                      <button type="button" className={classes.ghost} onClick={() => setVoiding("")}>
+                                        {t("bizCancel")}
+                                      </button>
+                                      <button type="button" className={classes.danger} disabled={busy} onClick={() => voidPayment(p._id)}>
+                                        {t("invVoidPayment")}
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <button type="button" className={classes.ghost} onClick={() => (setVoiding(p._id), setVoidReason(""))}>
+                                      {t("invVoidPayment")}
+                                    </button>
+                                  ))}
+                              </td>
+                            )}
                           </tr>
                         ))}
                       </tbody>
@@ -447,6 +502,7 @@ const PurchaseDetail = ({ ctx, id, onChanged }: { ctx: Ctx; id: string; onChange
                             {t("invCancelPurchase")}
                           </button>
                         )}
+                        {data.status === "received" && data.paid > 0 && <span className={classes.muted}>{t("invCancelNeedsVoid")}</span>}
                         {data.status === "draft" && (
                           <>
                             <button

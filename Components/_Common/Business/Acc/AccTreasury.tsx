@@ -755,7 +755,7 @@ const Import = ({ money, onDone }: { money: string; onDone: () => unknown }) => 
           <p className={classes.statusOk}>{t("accStatementResult", [String(result.added), String(result.duplicates), String(result.invalid), String(result.matched)])}</p>
           <div className={classes.actions}>
             <button type="button" className={classes.primary} onClick={() => closePopup()}>
-              {t("bizCancel")}
+              {t("close")}
             </button>
           </div>
         </>
@@ -978,7 +978,7 @@ const BankRec = () => {
                   <ConfirmButton danger label={t("accClearStatement")} confirm={t("accClearStatementConfirm")} onConfirm={async () => (await call(`/acc/bank/${money}/lines`, "DELETE")) && mutate()} />
                 </div>
               )}
-              <div className={fin.grid2}>
+              <div className={`${fin.grid2} ${fin.grid2Wide}`}>
                 <div className={classes.main}>
                   <h3 className={classes.cardTitle}>{t("accStatementLines")}</h3>
                   <div className={classes.tableWrap}>
