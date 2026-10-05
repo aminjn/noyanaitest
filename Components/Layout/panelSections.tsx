@@ -113,20 +113,23 @@ export const crmSection = <A extends string>({
   hasAccess,
   group,
   profile,
+  hasTeam,
 }: {
   hasAccess: (action?: A) => boolean;
   group?: ContentKey;
   // the panel's profile: which engagement and service parts it gets
-  // (Crm/Service/profiles.ts; a doctor's team parts show in the section
-  // itself once there is staff)
+  // (Crm/Service/profiles.ts)
   profile?: CrmProfile;
+  // a doctor's team parts (knowledge, quizzes) once there is staff; the
+  // centres always have them
+  hasTeam?: boolean;
 }): LinkMapItem => {
   const crm = hasAccess("readCrm" as A);
   const part = (p: ServicePart, title: string, icon: ReactNode, target: string) => ({
     title: k(partTitle(profile, title, p)),
     icon,
     target,
-    show: crm && partOn(profile, p, profile !== "doctor"),
+    show: crm && partOn(profile, p, profile !== "doctor" || !!hasTeam),
   });
   return {
     title: k("crmSectionMenu"),
