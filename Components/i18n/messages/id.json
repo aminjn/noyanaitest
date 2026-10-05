@@ -6252,5 +6252,14 @@
  "clkUnlinkedAt": "Tautan diputus: ${1}",
  "clkCentreHint": "Tautan hanya dibuat jika pasien sendiri mengonfirmasinya di Noyan; pusat tidak dapat membuatnya.",
  "clkCentreWrongHint": "Pemilik nomor ini menyatakan di Noyan bahwa ia bukan pasien Anda; periksa nomornya.",
- "clkSrc_merge": "Pusat menggabungkan catatan ganda"
+ "clkSrc_merge": "Pusat menggabungkan catatan ganda",
+ "aiFeatureOff": "Fitur AI ini sedang tidak tersedia",
+ "aiLockedPlan": "Fitur ini tidak ada dalam paket Anda",
+ "aiComparePlans": "Bandingkan paket",
+ "aiLimitOrg": "Organisasi Anda mencapai batas bulanan fitur ini; tersedia lagi mulai ${1}",
+ "aiLimitMonth": "Kuota bulan ini untuk fitur ini habis; tersedia lagi mulai ${1}",
+ "aiLimitDay": "Kuota hari ini untuk fitur ini habis; tersedia lagi mulai ${1}",
+ "aiLeftMinutes": "Sisa ${1} dari ${2} menit hari ini",
+ "aiLeftToday": "Sisa ${1} dari ${2} hari ini",
+ "aiGetPro": "Langganan Pro"
 }

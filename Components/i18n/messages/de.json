@@ -6252,5 +6252,14 @@
  "clkUnlinkedAt": "Gelöst: ${1}",
  "clkCentreHint": "Die Verknüpfung entsteht nur, wenn der Patient sie in Noyan bestätigt; die Einrichtung kann sie nicht herstellen.",
  "clkCentreWrongHint": "Der Inhaber dieser Nummer hat auf Noyan angegeben, nicht Ihr Patient zu sein; bitte prüfen Sie die Nummer.",
- "clkSrc_merge": "Einrichtung hat Duplikate zusammengeführt"
+ "clkSrc_merge": "Einrichtung hat Duplikate zusammengeführt",
+ "aiFeatureOff": "Diese KI-Funktion ist derzeit nicht verfügbar",
+ "aiLockedPlan": "Diese Funktion ist nicht in Ihrem Tarif",
+ "aiComparePlans": "Tarife vergleichen",
+ "aiLimitOrg": "Ihre Einrichtung hat das Monatslimit dieser Funktion erreicht; ab ${1} wieder verfügbar",
+ "aiLimitMonth": "Das Monatskontingent dieser Funktion ist aufgebraucht; ab ${1} wieder verfügbar",
+ "aiLimitDay": "Das Tageskontingent dieser Funktion ist aufgebraucht; ab ${1} wieder verfügbar",
+ "aiLeftMinutes": "Heute noch ${1} von ${2} Minuten",
+ "aiLeftToday": "Heute noch ${1} von ${2}",
+ "aiGetPro": "Pro-Mitgliedschaft"
 }

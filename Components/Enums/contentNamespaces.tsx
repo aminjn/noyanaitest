@@ -4297,6 +4297,15 @@ export const contentNamespaces = {
     "finNavClaimsIn",
     "copChipsMore",
     "copChipsLess",
+    "aiFeatureOff",
+    "aiLockedPlan",
+    "aiComparePlans",
+    "aiLimitOrg",
+    "aiLimitMonth",
+    "aiLimitDay",
+    "aiLeftMinutes",
+    "aiLeftToday",
+    "aiGetPro",
   ],
   // Components/Layout/DoctorPanelLicenseBalanceHeader (doctorpanel clinic/hospital
   // pages and DoctorPanel/_UI/WithBalanceHeader users).
@@ -5868,6 +5877,16 @@ export const contentNamespaces = {
   // app/wizard + app/wizard/[nodeId] (WizardPage, ChatsSidebar incl. chatDateGroupLabelKeys, WizardSidebarItem).
   wizardPage: [
     "newChat",
+    "aiFeatureOff",
+    "aiLockedPlan",
+    "aiComparePlans",
+    "aiLimitOrg",
+    "aiLimitMonth",
+    "aiLimitDay",
+    "aiLeftMinutes",
+    "aiLeftToday",
+    "aiGetPro",
+    "aiUpgrade",
     "noChatYetMessage",
     "lastMonth",
     "lastWeek",

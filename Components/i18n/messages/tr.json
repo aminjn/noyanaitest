@@ -6252,5 +6252,14 @@
  "clkUnlinkedAt": "Bağlantı kaldırıldı: ${1}",
  "clkCentreHint": "Bağlantı yalnızca hasta Noyan’da onayladığında kurulur; merkez kuramaz.",
  "clkCentreWrongHint": "Bu numaranın sahibi Noyan’da hastanız olmadığını söyledi; numarayı kontrol edin.",
- "clkSrc_merge": "Merkez yinelenen kayıtları birleştirdi"
+ "clkSrc_merge": "Merkez yinelenen kayıtları birleştirdi",
+ "aiFeatureOff": "Bu yapay zekâ özelliği şu anda kullanılamıyor",
+ "aiLockedPlan": "Bu özellik planınızda yok",
+ "aiComparePlans": "Planları karşılaştır",
+ "aiLimitOrg": "Kurumunuz bu özelliğin aylık sınırına ulaştı; ${1} itibarıyla yeniden kullanılabilir",
+ "aiLimitMonth": "Bu özelliğin bu ayki hakkı doldu; ${1} itibarıyla yeniden kullanılabilir",
+ "aiLimitDay": "Bu özelliğin bugünkü hakkı doldu; ${1} itibarıyla yeniden kullanılabilir",
+ "aiLeftMinutes": "Bugün ${2} dakikadan ${1} kaldı",
+ "aiLeftToday": "Bugün ${2} hakkın ${1} tanesi kaldı",
+ "aiGetPro": "Pro üyelik"
 }

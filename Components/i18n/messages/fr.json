@@ -6252,5 +6252,14 @@
  "clkUnlinkedAt": "Lien retiré : ${1}",
  "clkCentreHint": "Le lien n’est établi que si le patient le confirme dans Noyan ; le centre ne peut pas l’établir.",
  "clkCentreWrongHint": "Le titulaire de ce numéro a indiqué sur Noyan ne pas être votre patient ; vérifiez le numéro.",
- "clkSrc_merge": "Fusion de doublons par le centre"
+ "clkSrc_merge": "Fusion de doublons par le centre",
+ "aiFeatureOff": "Cette fonction d’IA n’est pas disponible pour le moment",
+ "aiLockedPlan": "Cette fonction n’est pas dans votre offre",
+ "aiComparePlans": "Comparer les offres",
+ "aiLimitOrg": "Votre établissement a atteint la limite mensuelle de cette fonction ; de nouveau disponible à partir du ${1}",
+ "aiLimitMonth": "Le quota mensuel de cette fonction est épuisé ; de nouveau disponible à partir du ${1}",
+ "aiLimitDay": "Le quota du jour de cette fonction est épuisé ; de nouveau disponible à partir de ${1}",
+ "aiLeftMinutes": "Il reste ${1} min sur ${2} aujourd’hui",
+ "aiLeftToday": "Il reste ${1} sur ${2} aujourd’hui",
+ "aiGetPro": "Abonnement Pro"
 }

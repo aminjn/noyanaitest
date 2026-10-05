@@ -6252,5 +6252,14 @@
  "clkUnlinkedAt": "Desvinculado: ${1}",
  "clkCentreHint": "El vínculo solo se crea cuando el paciente lo confirma en Noyan; el centro no puede crearlo.",
  "clkCentreWrongHint": "El titular de este número ha indicado en Noyan que no es su paciente; compruebe el número.",
- "clkSrc_merge": "Fusión de duplicados por el centro"
+ "clkSrc_merge": "Fusión de duplicados por el centro",
+ "aiFeatureOff": "Esta función de IA no está disponible en este momento",
+ "aiLockedPlan": "Esta función no está en tu plan",
+ "aiComparePlans": "Comparar planes",
+ "aiLimitOrg": "Tu centro alcanzó el límite mensual de esta función; disponible de nuevo desde ${1}",
+ "aiLimitMonth": "Se agotó la cuota de este mes de esta función; disponible de nuevo desde ${1}",
+ "aiLimitDay": "Se agotó la cuota de hoy de esta función; disponible de nuevo desde ${1}",
+ "aiLeftMinutes": "Quedan ${1} de ${2} minutos hoy",
+ "aiLeftToday": "Quedan ${1} de ${2} hoy",
+ "aiGetPro": "Membresía Pro"
 }

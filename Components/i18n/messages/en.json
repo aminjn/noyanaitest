@@ -6252,5 +6252,14 @@
  "clkUnlinkedAt": "Unlinked: ${1}",
  "clkCentreHint": "The link is made only when the patient confirms it in Noyan; the centre can’t make it.",
  "clkCentreWrongHint": "The holder of this number said on Noyan that they are not your patient; please check the number.",
- "clkSrc_merge": "Centre merged duplicate records"
+ "clkSrc_merge": "Centre merged duplicate records",
+ "aiFeatureOff": "This AI feature is not available right now",
+ "aiLockedPlan": "This feature is not in your plan",
+ "aiComparePlans": "Compare plans",
+ "aiLimitOrg": "Your organisation has reached this feature’s monthly limit; available again from ${1}",
+ "aiLimitMonth": "This month’s allowance of this feature is used up; available again from ${1}",
+ "aiLimitDay": "Today’s allowance of this feature is used up; available again from ${1}",
+ "aiLeftMinutes": "${1} of ${2} minutes left today",
+ "aiLeftToday": "${1} of ${2} left today",
+ "aiGetPro": "Pro membership"
 }
