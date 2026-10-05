@@ -24,6 +24,7 @@ import {
   ExportBar,
   JVoucher,
   PartyPicker,
+  preferredPartyKind,
   printElement,
   RangeFilter,
   SimplePopup,
@@ -185,7 +186,7 @@ export const VoucherEditor = ({ voucher, onDone }: { voucher?: JVoucher; onDone:
                     </option>
                   ))}
               </select>
-              <PartyPicker value={l.party} kinds={kinds} onChange={(p) => set(i, { party: p })} />
+              <PartyPicker value={l.party} kinds={kinds} prefer={preferredPartyKind(a)} onChange={(p) => set(i, { party: p })} />
               <select value={l.center} aria-label={t("bizCostCenter")} onChange={(e) => set(i, { center: e.target.value })}>
                 <option value="">{t("accVoucherCenter")}</option>
                 {centers.map((c) => (

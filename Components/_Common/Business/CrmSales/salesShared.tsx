@@ -410,7 +410,9 @@ export const useAction = () => {
       setBusy(key);
       try {
         const res = await fetcher({ url: `${API}${api}${path}`, method, payload, bodyParser: "JSON" });
-        if (!opts?.quiet) pushNotification(t("bizSaved"), "Success");
+        // a discount over the team's limit was filed in the «کارتابل» instead
+        if ((res.data as { discountRequest?: string } | undefined)?.discountRequest) pushNotification(t("crmsDiscountSentForApproval"), "Notify");
+        else if (!opts?.quiet) pushNotification(t("bizSaved"), "Success");
         return res.data as R;
       } catch (err) {
         pushNotification(errText(err), "Error");

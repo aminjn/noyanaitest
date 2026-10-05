@@ -14,7 +14,7 @@ import SparkIcon from "@/Components/Icons/SparkIcon";
 import VoiceButton from "../VoiceButton";
 import AiSetupNotice from "../AiSetupNotice";
 import { aiBase, AiProfile, T, useAiProfile, useAiStatus, useAiText } from "../aiShared";
-import { COPILOT_PROFILES } from "./copilotProfiles";
+import { CHIP_LIMIT, chipsFor, COPILOT_PROFILES } from "./copilotProfiles";
 import CopilotCard, { CopilotCardData } from "./CopilotCard";
 import ai from "../Ai.module.css";
 import classes from "./Copilot.module.css";
@@ -38,6 +38,7 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [allChips, setAllChips] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -92,8 +93,13 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
     await fetcher({ url: `${aiBase(profile)}/copilot/history`, method: "DELETE" }).catch(() => undefined);
   };
 
-  const chips = ui.chips.filter((c) => hasTool(c.tool)).slice(0, 6);
   const fmt = new Intl.NumberFormat(profile === "admin" ? adminIntlTag() : intl);
+  const allowed = chipsFor(
+    ui.chips.filter((c) => hasTool(c.tool)),
+    pathname,
+  );
+  const chips = allChips ? allowed : allowed.slice(0, CHIP_LIMIT);
+  const hidden = allowed.length - CHIP_LIMIT;
 
   return (
     <div className={classes.panel} role="dialog" aria-modal="false" aria-label={t(ui.title)}>
@@ -128,6 +134,11 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
                     {t(c.text)}
                   </button>
                 ))}
+                {hidden > 0 && (
+                  <button type="button" className={`${ai.chip} ${classes.chipMore}`} aria-expanded={allChips} onClick={() => setAllChips((v) => !v)}>
+                    {allChips ? t(T("copChipsLess", "کمتر")) : t(T("copChipsMore", "${1} پیشنهاد دیگر"), [fmt.format(hidden)])}
+                  </button>
+                )}
               </div>
             )}
           </div>

@@ -30,7 +30,7 @@ import CrmCalendar from "./Service/CrmCalendar";
 import CrmChecklists from "./Service/CrmChecklists";
 import CrmFlows from "./Service/CrmFlows";
 import CrmReturns from "./Service/CrmReturns";
-import { isProfile, partOn, partTitle, ServicePart } from "./Service/profiles";
+import { isProfile, partOn, partTitle, profileKey, ServicePart } from "./Service/profiles";
 
 // «ارتباط با بیماران» (2026-10): the Noyan Business CRM as one section of
 // every provider panel, a page per part - dashboard, contacts (and one
@@ -178,7 +178,7 @@ const CrmSection = ({
       <div className={classes.main}>
         <header className={classes.header}>
           <h1 className={classes.title}>{t(page === "dashboard" ? "crmMenu" : titleOf(own))}</h1>
-          <span className={classes.subtitle}>{t(own.hint)}</span>
+          <span className={classes.subtitle}>{t(profileKey(profile, own.hint))}</span>
         </header>
         <nav className={crm.subNav} aria-label={t("crmMenu")}>
           {navRow.map((p) => (

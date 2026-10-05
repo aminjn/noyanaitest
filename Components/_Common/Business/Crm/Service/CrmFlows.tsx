@@ -394,7 +394,7 @@ const FlowEditor = ({ id }: { id: string }) => {
                   {t("back")}
                 </Link>
                 <input value={name} disabled={!canWrite} onChange={(e) => setName(e.target.value)} maxLength={80} aria-label={t("crmeFlowName")} />
-                <Badge tone={flow.active ? "ok" : "muted"}>{t(flow.active ? "crmAutoOn" : "crmAutoOff")}</Badge>
+                <Badge tone={flow.active ? "ok" : "muted"}>{t(flow.active ? "crmeActive" : "crmInactive")}</Badge>
               </div>
               <div className={s.row}>
                 {canSend && (
@@ -586,7 +586,7 @@ const FlowList = () => {
                   name: { name: t("crmeFlowName"), value: (f) => f.name, filter: "Text", component: (f) => <Link href={`${panel}/crm/flows/${f._id}`}>{f.name}</Link> },
                   trigger: { name: t("crmeTrigger"), value: (f) => t(triggerKey(f.trigger)), filter: "Set" },
                   steps: { name: t("crmeSteps"), value: (f) => f.steps?.length || 0, filter: "Number" },
-                  active: { name: t("crmeStatus"), value: (f) => t(f.active ? "crmAutoOn" : "crmAutoOff"), filter: "Set", component: (f) => <Badge tone={f.active ? "ok" : "muted"}>{t(f.active ? "crmAutoOn" : "crmAutoOff")}</Badge> },
+                  active: { name: t("crmeStatus"), value: (f) => t(f.active ? "crmeActive" : "crmInactive"), filter: "Set", component: (f) => <Badge tone={f.active ? "ok" : "muted"}>{t(f.active ? "crmeActive" : "crmInactive")}</Badge> },
                   runs: { name: t("crmeRuns"), value: (f) => f.runCount || 0, filter: "Number" },
                   waiting: { name: t("crmeWaiting"), value: (f) => (f.runs?.waitingDelay || 0) + (f.runs?.waitingApproval || 0), filter: "Number" },
                   lastRunAt: { name: t("crmeLastRun"), value: (f) => (f.lastRunAt ? new Date(f.lastRunAt) : ""), component: (f) => (f.lastRunAt ? w.at(f.lastRunAt) : "—") },
@@ -609,7 +609,7 @@ const FlowList = () => {
               <span>
                 {a.name} · <span className={classes.muted}>{t(automationKey[a.kind]?.title || a.kind)}</span>
               </span>
-              <Badge tone={a.enabled ? "ok" : "muted"}>{t(a.enabled ? "crmAutoOn" : "crmAutoOff")}</Badge>
+              <Badge tone={a.enabled ? "ok" : "muted"}>{t(a.enabled ? "crmeActive" : "crmInactive")}</Badge>
             </li>
           ))}
         </ul>

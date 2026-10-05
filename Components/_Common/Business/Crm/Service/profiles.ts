@@ -52,3 +52,29 @@ const WORDED: Partial<Record<CrmProfile, ServicePart[]>> = {
 };
 export const partTitle = (profile: CrmProfile | undefined, base: string, part: ServicePart) =>
   profile && WORDED[profile]?.includes(part) ? `${base}_${profile}` : base;
+
+// the people a page is about, in the profile's own words (the way the sales
+// side does it with WORDS in CrmSales/salesShared.tsx): a pharmacy serves
+// customers, an insurer its members; "crmePatient" becomes
+// "crmePatient_pharmacy". The service pages read every key through it
+// (useCrmText in svc.tsx), and so does the section's hint (CrmSection).
+const PEOPLE_KEYS: Partial<Record<CrmProfile, string[]>> = {
+  pharmacy: [
+    "crmePatient",
+    "crmeAboutPatient",
+    "crmeInternalNote",
+    "crmeReplyPlaceholder",
+    "crmeTkPending",
+    "crmeStartFor",
+    "crmeStartForPatient",
+    "crmeTemplateHint",
+    "crmeAsTemplate",
+    "crmeRetCredit",
+    "crmeNavTicketsHint",
+    "crmeNavTasksHint",
+    "crmeNavChecklistsHint",
+    "crmPickContact",
+  ],
+  insurance: ["crmePatient", "crmeAboutPatient", "crmeInternalNote", "crmeReplyPlaceholder", "crmeTkPending", "crmeNavTicketsHint", "crmeNavTasksHint", "crmPickContact"],
+};
+export const profileKey = (profile: CrmProfile | undefined, key: string) => (profile && PEOPLE_KEYS[profile]?.includes(key) ? `${key}_${profile}` : key);

@@ -16,7 +16,7 @@ import { asArray, useBizFormat } from "../bizShared";
 import { CrmContext, phoneText, useCrm, usePercent } from "../Crm/crmShared";
 import { NewFollowUp } from "../Crm/CrmContactProfile";
 import { CustomField, dayOf, Lead, LeadSource, leadKindKey, useProfile, leadStatusKey, Line, MiniContact, Pipeline, planStatusKey, PlanStatus, useAction, useNames, useSalesMeta, useSalesText } from "./salesShared";
-import { ContactChoice, ContactPicker, contactPayload, CustomFieldInputs, DoctorReferrerFields, LineEditor, Totals } from "./SalesWidgets";
+import { ContactChoice, ContactPicker, contactPayload, CustomFieldInputs, DoctorReferrerFields, LineEditor, Totals, DayField } from "./SalesWidgets";
 import { Call, CALL_POPUP, CallForm } from "./SalesCallForm";
 
 const LOST_POPUP = "CrmsLost";
@@ -187,10 +187,7 @@ const SalesLead = ({ id }: { id: string }) => {
                 ))}
               </select>
             </label>
-            <label className={classes.field}>
-              {t("crmsExpectedClose")}
-              <input type="date" value={dayOf(v("expectedClose"))} disabled={!canWrite} onChange={(e) => setEdit({ ...edit, expectedClose: e.target.value })} />
-            </label>
+            <DayField label={t("crmsExpectedClose")} value={dayOf(v("expectedClose"))} onChange={(d) => setEdit({ ...edit, expectedClose: d })} disabled={!canWrite} optional />
             <label className={classes.field}>
               {t("crmsSource")}
               <select value={v("source") || ""} disabled={!canWrite} onChange={(e) => setEdit({ ...edit, source: e.target.value })}>

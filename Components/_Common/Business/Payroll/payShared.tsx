@@ -35,6 +35,8 @@ export type PayEmployee = {
   iban?: string;
   isActive: boolean;
   note?: string;
+  // (2026-10) what the employee still owes for advances and loans (their own تفصیلی)
+  advanceBalance?: number;
   // for the Tamin list disk
   firstName?: string;
   lastName?: string;

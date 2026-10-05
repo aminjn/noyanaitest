@@ -241,7 +241,7 @@ const Kartabl = ({ node, panel }: { node: NodeWithAcl; panel: string }) => {
     if (r.invoice && typeof r.invoice === "object") return t("crmsInvoiceN", [f.money(r.invoice.number), f.money(r.invoice.total)]);
     return [r.contact?.name || r.contact?.phone, r.partyName, r.description].filter(Boolean).join(" · ") || "—";
   };
-  const amountOf = (r: Item) => (r.kind === "credit" ? f.money(r.requestedLimit || 0) : r.kind === "discount" && r.percent ? `${f.money(r.percent)}%` : r.kind === "flow" ? "—" : f.money(r.amount));
+  const amountOf = (r: Item) => (r.kind === "credit" ? f.money(r.requestedLimit || 0) : r.kind === "discount" && r.percent ? f.percent(r.percent) : r.kind === "flow" ? "—" : f.money(r.amount));
   const pendingN = asArray<Data["counts"][number]>(data?.counts)
     .filter((c) => c.status === "pending")
     .reduce((s, c) => s + c.n, 0);

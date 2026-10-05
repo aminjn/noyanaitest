@@ -8,7 +8,7 @@ import { asArray, BizAccount, isoDay, useBiz, useBizFormat } from "../bizShared"
 import { useBizAccounts } from "../AccountingSummary";
 import AccountingYears from "../AccountingYears";
 import { parseAmount } from "../Finance/finShared";
-import { AccParty, PartyPicker, SubNav, useAccCall, useAccText, useAccUpload, useView } from "./accShared";
+import { AccParty, PartyPicker, preferredPartyKind, SubNav, useAccCall, useAccText, useAccUpload, useView } from "./accShared";
 
 // The fiscal year (2026-10): the existing year-end close and reopening
 // (AccountingYears - now carrying every patient's, insurer's and supplier's
@@ -75,7 +75,7 @@ const Opening = ({ onChanged }: { onChanged: () => unknown }) => {
                   </option>
                 ))}
               </select>
-              <PartyPicker value={r.party} kinds={a?.tafsiliKinds?.length ? a.tafsiliKinds : undefined} onChange={(p) => set(i, { party: p })} />
+              <PartyPicker value={r.party} kinds={a?.tafsiliKinds?.length ? a.tafsiliKinds : undefined} prefer={preferredPartyKind(a)} onChange={(p) => set(i, { party: p })} />
               <input inputMode="numeric" dir="ltr" placeholder={t("bizDebit")} value={r.debit} aria-label={t("bizDebit")} onChange={(e) => set(i, { debit: e.target.value, credit: e.target.value ? "" : r.credit })} />
               <input inputMode="numeric" dir="ltr" placeholder={t("bizCredit")} value={r.credit} aria-label={t("bizCredit")} onChange={(e) => set(i, { credit: e.target.value, debit: e.target.value ? "" : r.debit })} />
               <button type="button" className={classes.removeLine} disabled={rows.length <= 1} aria-label={t("bizDelete")} onClick={() => setRows((p) => p.filter((_, j) => j !== i))}>
@@ -103,7 +103,7 @@ const Opening = ({ onChanged }: { onChanged: () => unknown }) => {
         </button>
       </div>
       <p className={acc.mutedSmall}>{t("accOpeningFileHint")}</p>
-      {!!result && <p className={classes.statusOk}>{t("accOpeningResult", [String(result.posted), String(asArray(result.skipped).length), f.money(Math.abs(result.balancedBy || 0))])}</p>}
+      {!!result && <p className={classes.statusOk}>{t("accOpeningResult", [f.money(result.posted), f.money(asArray(result.skipped).length), f.money(Math.abs(result.balancedBy || 0))])}</p>}
     </section>
   );
 };

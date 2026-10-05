@@ -19,6 +19,8 @@ export type InvItem = {
   _id: string;
   name: string;
   kind: "goods" | "supply";
+  // a pharmacy's goods by class: their own stock, income and cost accounts
+  itemClass?: "drug" | "otc" | "cosmetic";
   product?: string;
   sku?: string;
   barcode?: string;
@@ -77,7 +79,7 @@ export type InvPurchase = {
   tax: number;
   total: number;
   paid: number;
-  payments: { _id: string; amount: number; via: { _id: string; code: string; name: string } | null; date: string; note?: string }[];
+  payments: { _id: string; amount: number; via: { _id: string; code: string; name: string } | null; date: string; note?: string; voidedAt?: string; voidReason?: string }[];
   note?: string;
 };
 

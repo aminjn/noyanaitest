@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
@@ -9,7 +10,7 @@ import PopupCard from "@/Components/UI/PopupCard";
 import DateInput from "@/Components/UI/DateInput";
 import classes from "../Accounting.module.css";
 import fin from "./Finance.module.css";
-import { isoDay, useBizFormat } from "../bizShared";
+import { asArray, isoDay, useBiz, useBizFormat } from "../bizShared";
 import { useBizAccounts } from "../AccountingSummary";
 import { FinMoney, methodKey, moneyKindKey, parseAmount, useFin, useFinText, useMoneyAccounts } from "./finShared";
 
@@ -63,8 +64,23 @@ const PaymentForm = ({
   const [party, setParty] = useState(initialParty || "");
   const [description, setDescription] = useState("");
   const [reference, setReference] = useState("");
-  const [cheque, setCheque] = useState({ number: "", bank: "", sayad: "", dueDate: new Date() });
+  const [cheque, setCheque] = useState({ number: "", bank: "", sayad: "", dueDate: new Date(), checkbook: "" });
   const [busy, setBusy] = useState(false);
+  // (2026-10) a cheque paid out is a leaf of one of the chequebooks
+  // (treasury → cheques → chequebooks): its next number and bank fill in
+  const { api: bizApi } = useBiz();
+  type Book = { _id: string; serial: string; bankName?: string; money?: string; nextNo?: string; isActive?: boolean };
+  const { data: booksData } = useSWR<Book[]>(direction === "out" && method === "cheque" && bizApi ? `${API}${bizApi}/acc/checkbooks` : null, (url: string) =>
+    fetcher({ url })
+      .then((res) => asArray<Book>(res.data).filter((b) => b && b._id && b.isActive !== false && b.nextNo))
+      .catch(() => []),
+  );
+  const books = asArray<Book>(booksData);
+  const pickBook = (id: string) => {
+    const b = books.find((x) => x._id === id);
+    setCheque((c) => ({ ...c, checkbook: id, number: b?.nextNo || (id ? c.number : ""), bank: b?.bankName || c.bank }));
+    if (b?.money) setMoneyId(b.money);
+  };
 
   const tills = useMemo(() => (Array.isArray(money) ? money : []).filter((a) => a.isActive && fits(method, a)), [method, money]);
   // a cheque may be deposited later ("" picked on purpose)
@@ -105,7 +121,13 @@ const PaymentForm = ({
           description: description.trim() || undefined,
           reference: reference.trim() || undefined,
           cheque: isCheque
-            ? { number: cheque.number.trim(), bank: cheque.bank.trim(), sayad: cheque.sayad.trim() || undefined, dueDate: isoDay(cheque.dueDate) }
+            ? {
+                number: cheque.number.trim(),
+                bank: cheque.bank.trim(),
+                sayad: cheque.sayad.trim() || undefined,
+                dueDate: isoDay(cheque.dueDate),
+                checkbook: direction === "out" && cheque.checkbook ? cheque.checkbook : undefined,
+              }
             : undefined,
         },
       });
@@ -143,7 +165,7 @@ const PaymentForm = ({
             <DateInput title={t("bizDate")} defaultValue={date} onChange={(d) => setDate(d)} />
           </div>
           <label className={classes.field}>
-            <span>{t(isCheque ? "finChqDepositTo" : direction === "in" ? "bizReceivedIn" : "bizPaidFrom")}</span>
+            <span>{t(isCheque && direction === "in" ? "finChqDepositTo" : direction === "in" ? "bizReceivedIn" : "bizPaidFrom")}</span>
             <select value={selected} onChange={(e) => setMoneyId(e.target.value)}>
               {isCheque && <option value="">{t("finChqDepositLater")}</option>}
               {!isCheque && !tills.length && <option value="">{t("finNoTill")}</option>}
@@ -179,6 +201,19 @@ const PaymentForm = ({
           )}
           {isCheque && (
             <>
+              {direction === "out" && books.length > 0 && (
+                <label className={classes.field}>
+                  <span>{t("finChqBook")}</span>
+                  <select value={cheque.checkbook} onChange={(e) => pickBook(e.target.value)}>
+                    <option value="">{t("finChqNoBook")}</option>
+                    {books.map((b) => (
+                      <option key={b._id} value={b._id}>
+                        {[b.bankName, b.serial].filter(Boolean).join(" · ")}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
               <label className={classes.field}>
                 <span>{t("finChqNumber")}</span>
                 <input value={cheque.number} maxLength={40} dir="ltr" inputMode="numeric" onChange={(e) => setCheque({ ...cheque, number: e.target.value })} />

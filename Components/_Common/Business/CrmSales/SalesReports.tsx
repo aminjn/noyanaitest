@@ -12,6 +12,7 @@ import s from "./CrmSales.module.css";
 import { isoDay, useBizFormat } from "../bizShared";
 import { insurerKey, sourceKey, useCrm, usePercent } from "../Crm/crmShared";
 import { leadKindKey, leadStatusKey, planStatusKey, SalesMeta, useAction, useList, useNames, useSalesMeta, useSalesText } from "./salesShared";
+import { DayField } from "./SalesWidgets";
 
 type Group = { key: string; count: number; won: number; lost: number; value: number; wonValue: number };
 type Report = {
@@ -69,14 +70,8 @@ const Standard = ({ meta }: { meta?: SalesMeta }) => {
   return (
     <div className={s.stack}>
       <div className={classes.filters}>
-        <label className={classes.field}>
-          {t("crmsFrom")}
-          <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
-        </label>
-        <label className={classes.field}>
-          {t("crmsTo")}
-          <input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
-        </label>
+        <DayField label={t("crmsFrom")} value={from} onChange={(d) => setFrom(d)} />
+        <DayField label={t("crmsTo")} value={to} onChange={(d) => setTo(d)} />
       </div>
       <HandleLoading data={!!data} error={error}>
         {data && (

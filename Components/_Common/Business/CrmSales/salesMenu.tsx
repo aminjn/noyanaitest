@@ -30,5 +30,6 @@ export const salesMenu = (profile: Profile | undefined, show: boolean) => {
   const own = PROFILES[profile].parts;
   return salesParts
     .filter((p) => own.includes(p.page))
-    .map((p) => ({ title: partKey(profile, p.title) as ContentKey, icon: icons[p.page], target: `crm${p.path}`, show }));
+    // a lead's own page belongs to the funnel
+    .map((p) => ({ title: partKey(profile, p.title) as ContentKey, icon: icons[p.page], target: `crm${p.path}`, show, ...(p.page === "pipeline" ? { match: ["crm/leads"] } : {}) }));
 };

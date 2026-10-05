@@ -7,7 +7,7 @@ import classes from "../Accounting.module.css";
 import s from "./CrmSales.module.css";
 
 import { MiniContact, SalesMeta, useAction, useSalesText } from "./salesShared";
-import { ContactChoice, ContactPicker, contactPayload } from "./SalesWidgets";
+import { ContactChoice, ContactPicker, contactPayload, DayField } from "./SalesWidgets";
 
 export const CALL_POPUP = "CrmsCall";
 export const callStatuses = ["completed", "missed", "noAnswer", "busy", "voicemail"] as const;
@@ -99,9 +99,10 @@ export const CallForm = ({
               ))}
             </select>
           </label>
+          <DayField label={t("crmsCallAt")} value={at.slice(0, 10)} onChange={(d) => d && setAt(`${d}T${at.slice(11, 16) || "00:00"}`)} />
           <label className={classes.field}>
-            {t("crmsCallAt")}
-            <input type="datetime-local" value={at} onChange={(e) => setAt(e.target.value)} />
+            {t("crmeTime")}
+            <input type="time" dir="ltr" value={at.slice(11, 16)} onChange={(e) => e.target.value && setAt(`${at.slice(0, 10)}T${e.target.value}`)} />
           </label>
           <label className={classes.field}>
             {t("crmsMinutes")}

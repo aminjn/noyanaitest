@@ -10,10 +10,10 @@ import { useRouter } from "@/Components/i18n/navigation";
 import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
-import { isoDay, useBizFormat } from "../bizShared";
+import { useBizFormat } from "../bizShared";
 import { CrmContext, useCrm } from "../Crm/crmShared";
 import { contactName, Plan, planStatusKey, PlanStatus, useAction, useList, useSalesText } from "./salesShared";
-import { ContactChoice, ContactPicker, contactPayload, emptyLine, LineEditor, Totals } from "./SalesWidgets";
+import { ContactChoice, ContactPicker, contactPayload, emptyLine, LineEditor, Totals, DayField } from "./SalesWidgets";
 import { Line } from "./salesShared";
 
 const NEW_PLAN = "CrmsNewPlan";
@@ -49,10 +49,7 @@ const NewPlan = ({ onDone }: { onDone: (id: string) => void }) => {
             {t("crmsSubject")}
             <input value={subject} onChange={(e) => setSubject(e.target.value)} autoFocus />
           </label>
-          <label className={classes.field}>
-            {t("crmsOpenTill")}
-            <input type="date" min={isoDay(new Date())} value={openTill} onChange={(e) => setOpenTill(e.target.value)} />
-          </label>
+          <DayField label={t("crmsOpenTill")} value={openTill} onChange={(d) => setOpenTill(d)} optional />
           <label className={classes.field}>
             {t("crmsPlanDiscount")}
             <input inputMode="decimal" value={discountPercent} onChange={(e) => setDiscount(Math.min(100, Number(e.target.value.replace(/[^\d.]/g, "")) || 0))} />

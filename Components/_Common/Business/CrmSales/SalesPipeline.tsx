@@ -12,10 +12,10 @@ import { useRouter } from "@/Components/i18n/navigation";
 import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
-import { asArray, isoDay, useBizFormat } from "../bizShared";
+import { asArray, useBizFormat } from "../bizShared";
 import { CrmContext, useCrm, usePercent } from "../Crm/crmShared";
 import { contactName, Lead, leadKindKey, Pipeline, useProfile, SalesMeta, useAction, useNames, useSalesMeta, useSalesText } from "./salesShared";
-import { ContactChoice, ContactPicker, contactPayload, DoctorReferrerFields, emptyLine, LineEditor, Totals } from "./SalesWidgets";
+import { ContactChoice, ContactPicker, contactPayload, DoctorReferrerFields, emptyLine, LineEditor, Totals, DayField } from "./SalesWidgets";
 import { Line } from "./salesShared";
 
 const NEW_LEAD = "CrmsNewLead";
@@ -121,10 +121,7 @@ export const NewLead = ({ meta, pipeline, onDone }: { meta: SalesMeta; pipeline?
               ))}
             </select>
           </label>
-          <label className={classes.field}>
-            {t("crmsExpectedClose")}
-            <input type="date" value={expectedClose} min={isoDay(new Date())} onChange={(e) => setExpectedClose(e.target.value)} />
-          </label>
+          <DayField label={t("crmsExpectedClose")} value={expectedClose} onChange={(d) => setExpectedClose(d)} optional />
         </div>
         <h3 className={classes.cardTitle}>{t("crmsPatient")}</h3>
         <ContactPicker value={who} onChange={setWho} />

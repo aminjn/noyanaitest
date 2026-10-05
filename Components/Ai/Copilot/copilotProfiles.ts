@@ -125,3 +125,25 @@ export const COPILOT_PROFILES: Record<AiProfile, CopilotProfileUi> = {
     ],
   },
 };
+
+// the chips the page is about come first (2026-10): on /crm pages the CRM
+// chips, under finance/inventory the stock ones, and so on; the rest keep
+// their order. Only the first CHIP_LIMIT show until "more" is pressed, so
+// every chip stays reachable without crowding a phone screen.
+export const CHIP_LIMIT = 6;
+const AREAS: [RegExp, RegExp][] = [
+  [/\/crm(\/|$)/, /^(crm_|call_)/],
+  [/\/finance\/inventory(\/|$)/, /^(inventory_|purchase_)/],
+  [/\/finance\/payroll(\/|$)/, /^payroll_/],
+  [/\/finance(\/|$)/, /^finance_/],
+  [/\/(tamin|insurance|claims)(\/|$)/, /^insurance_/],
+  [/\/booking(\/|$)/, /^(center_agenda|center_occupancy|today_schedule|book_appointment)$/],
+  [/\/doctor(\/|$)/, /^center_doctors$/],
+  [/\/prescription(\/|$)/, /^write_prescription$/],
+];
+export const chipsFor = (chips: CopilotChip[], path: string | null | undefined) => {
+  const area = AREAS.find(([page]) => page.test(path || ""));
+  if (!area) return chips;
+  const [, tool] = area;
+  return [...chips.filter((ch) => tool.test(ch.tool)), ...chips.filter((ch) => !tool.test(ch.tool))];
+};

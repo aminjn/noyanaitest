@@ -315,7 +315,7 @@ const MemberPopup = ({ contactId, onDone }: { contactId: string; onDone: () => u
                         </span>
                         <span className={classes.muted}>
                           {r.kind === "tier" ? t("crmeTierCodeName", [t(tierKey[r.name as TierKey] || r.name)]) : r.name} · {rewardText(r)}
-                          {r.invoice ? ` · ${t("crmeInvoiceN", [String(r.invoice.number)])}` : ""}
+                          {r.invoice ? ` · ${t("crmeInvoiceN", [f.year(r.invoice.number)])}` : ""}
                           {r.discountAmount ? ` · ${f.money(r.discountAmount)}` : ""}
                           {r.status === "issued" && r.expiresAt ? ` · ${t("crmeUntil", [f.date(r.expiresAt)])}` : ""}
                         </span>
@@ -328,7 +328,7 @@ const MemberPopup = ({ contactId, onDone }: { contactId: string; onDone: () => u
                                 <option value="">{t("crmeDraftInvoice")}</option>
                                 {data.drafts.map((d) => (
                                   <option key={d._id} value={d._id}>
-                                    {t("crmeInvoiceN", [String(d.number)])} · {f.money(d.total)}
+                                    {t("crmeInvoiceN", [f.year(d.number)])} · {f.money(d.total)}
                                   </option>
                                 ))}
                               </select>
@@ -457,10 +457,10 @@ const CrmClub = () => {
                         {!r.active && <Badge tone="muted">{t("crmInactive")}</Badge>}
                         {canWrite && (
                           <>
-                            <IconButton onClick={() => openReward(r)}>
+                            <IconButton onClick={() => openReward(r)} title={t("crmeEditReward")}>
                               <EditIcon />
                             </IconButton>
-                            <ConfirmButton onConfirm={async () => (await call("DELETE", `/club/rewards/${r._id}`)) && refresh()}>
+                            <ConfirmButton label={t("bizDelete")} onConfirm={async () => (await call("DELETE", `/club/rewards/${r._id}`)) && refresh()}>
                               <GarbageIcon />
                             </ConfirmButton>
                           </>
@@ -488,7 +488,7 @@ const CrmClub = () => {
                     name: t("crmeActions"),
                     component: (m) => (
                       <TableActions>
-                        <IconButton onClick={() => openMember(m.contact)}>
+                        <IconButton onClick={() => openMember(m.contact)} title={t("crmeOpenMember")}>
                           <EyeIcon />
                         </IconButton>
                       </TableActions>
@@ -518,7 +518,7 @@ const CrmClub = () => {
                     component: (r) =>
                       r.contact ? (
                         <TableActions>
-                          <IconButton onClick={() => openMember(r.contact!._id)}>
+                          <IconButton onClick={() => openMember(r.contact!._id)} title={t("crmeOpenMember")}>
                             <EyeIcon />
                           </IconButton>
                         </TableActions>

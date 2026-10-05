@@ -40,6 +40,15 @@ const DoctorSidebar = () => {
 
   const kartabl = useKartablCount("doctor");
 
+  // the team's size: the CRM's knowledge base and quizzes show once the
+  // doctor has a secretary (same SWR key as the CRM section's own menu)
+  const { data: crmMine } = useSWR<{ teamSize?: number } | null>(hasAccess("readCrm") ? `${API}/doctor/crm/service/mine` : null, (url: string) =>
+    fetcher({ url })
+      .then((res) => res?.data || null)
+      .catch(() => null),
+  );
+  const hasTeam = (crmMine?.teamSize || 0) > 1;
+
   // the doctor's wallet, also for a secretary allowed to see finance
   const { data: balance } = useSWR<number>(
     hasAccess("readFinance") ? `${API}/doctor/balance` : null,
@@ -149,7 +158,7 @@ const DoctorSidebar = () => {
           </span>
         ),
       }),
-      crmSection({ hasAccess, group: "groupPractice", profile: "doctor" }),
+      crmSection({ hasAccess, group: "groupPractice", profile: "doctor", hasTeam }),
       kartablItem({ show: hasAccess() || hasAccess("readFinance") || hasAccess("readCrm") || kartabl > 0, group: "groupPractice", badge: kartabl }),
       {
         // verified visit reviews and the doctor's public replies (2026-10)
@@ -218,7 +227,7 @@ const DoctorSidebar = () => {
         show: true,
       },
     ],
-    [balance, canNetwork, getContent, hasAccess, ordersTodo, setPopup, kartabl],
+    [balance, canNetwork, getContent, hasAccess, ordersTodo, setPopup, kartabl, hasTeam],
   );
 
   return <PanelSidebar links={links} panel="doctorpanel" />;

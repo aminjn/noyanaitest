@@ -104,7 +104,7 @@ const AssetForm = ({ onDone }: { onDone: () => unknown }) => {
   return (
     <SimplePopup title={t("accNewAsset")} wide>
       <div className={classes.form}>
-        {field("name", t("bizName"))}
+        {field("name", t("accAssetName"))}
         {field("code", t("accCodeOptional"), true)}
         <label className={classes.field}>
           <span>{t("accAssetGroup")}</span>
@@ -479,7 +479,7 @@ const AssetList = ({ state, revalue }: { state: "active" | "disposed"; revalue: 
             printRef={ref}
             sheet={() => ({
               title: t(state === "active" ? "accAssets" : "accDisposals"),
-              head: [t("bizCode"), t("bizName"), t("accAssetGroup"), t("accCost"), t("accAccumulated"), t("accBookValue"), t("accLocation")],
+              head: [t("bizCode"), t("accAssetName"), t("accAssetGroup"), t("accCost"), t("accAccumulated"), t("accBookValue"), t("accLocation")],
               rows: rows.map((a) => [a.code, a.name, a.category, a.cost, a.accumulatedDep, a.bookValue, a.location || ""]),
             })}
           />
@@ -496,7 +496,7 @@ const AssetList = ({ state, revalue }: { state: "active" | "disposed"; revalue: 
             <thead>
               <tr>
                 <th>{t("bizCode")}</th>
-                <th>{t("bizName")}</th>
+                <th>{t("accAssetName")}</th>
                 <th>{t("accAssetGroup")}</th>
                 <th className={classes.num}>{t("accCost")}</th>
                 <th className={classes.num}>{t("accAccumulated")}</th>
@@ -545,7 +545,7 @@ const GroupForm = ({ group, onDone }: { group?: Group; onDone: () => unknown }) 
     <SimplePopup title={group ? group.name : t("accNewGroup")}>
       <div className={classes.form}>
         <label className={classes.field}>
-          <span>{t("bizName")}</span>
+          <span>{t("accAssetName")}</span>
           <input value={name} onChange={(e) => setName(e.target.value)} />
         </label>
         <label className={classes.field}>
@@ -625,7 +625,7 @@ const Groups = () => {
           <table className={classes.table}>
             <thead>
               <tr>
-                <th>{t("bizName")}</th>
+                <th>{t("accAssetName")}</th>
                 <th>{t("accMethod")}</th>
                 <th className={classes.num}>{t("accUsefulLife")}</th>
                 <th className={classes.num}>{t("accDecliningRate")}</th>
@@ -690,7 +690,7 @@ const Depreciation = () => {
           <table className={classes.table}>
             <thead>
               <tr>
-                <th>{t("bizName")}</th>
+                <th>{t("accAssetName")}</th>
                 <th>{t("accLastRun")}</th>
                 <th className={classes.num}>{t("accBookValue")}</th>
                 <th className={classes.num}>{t("accDueNow")}</th>

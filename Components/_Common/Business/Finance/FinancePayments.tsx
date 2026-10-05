@@ -235,7 +235,11 @@ const ChequeStatusForm = ({ p, to, onDone }: { p: FinPayment; to: string; onDone
   const [date, setDate] = useState<Date>(new Date());
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
-  const pick = banks.find((b) => b._id === bank) ? bank : banks[0]?._id || "";
+  // by default the account the cheque was deposited to, else a bank: a
+  // cheque clears into a bank, the cash till only when cashed at the counter
+  const own = typeof p.money === "object" && p.money ? (p.money as { _id?: string })._id : (p.money as string | undefined);
+  const fallback = banks.find((b) => b._id === own) || banks.find((b) => b.kind === "bank") || banks[0];
+  const pick = banks.find((b) => b._id === bank) ? bank : fallback?._id || "";
   const save = async () => {
     if (busy) return;
     setBusy(true);
@@ -378,7 +382,8 @@ export const Cheques = ({ extra }: { extra?: (p: FinPayment, refresh: () => unkn
                   </thead>
                   <tbody>
                     {rows.map((p) => {
-                      const overdue = p.cheque?.status === "pending" && new Date(p.cheque.dueDate).getTime() < now;
+                      // overdue once its due day (a Tehran midnight) has passed, like the tile
+                      const overdue = !!p.cheque && ["pending", "deposited"].includes(p.cheque.status) && new Date(p.cheque.dueDate).getTime() + 864e5 <= now;
                       return (
                         <tr key={p._id}>
                           <td>

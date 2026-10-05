@@ -7,7 +7,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import classes from "../Accounting.module.css";
 import crm from "../Crm/Crm.module.css";
 import s from "./CrmSales.module.css";
-import { asArray, useBizFormat } from "../bizShared";
+import DateInput from "@/Components/UI/DateInput";
+import { asArray, isoDay, useBizFormat } from "../bizShared";
 import { CrmContact, phoneText, useCrm } from "../Crm/crmShared";
 import { CustomField, Line, LineRef, MiniContact, SalesMeta, useProfile, useSalesText } from "./salesShared";
 
@@ -379,5 +380,34 @@ export const DoctorReferrerFields = ({
         </label>
       )}
     </>
+  );
+};
+
+// A day field on the panel's own (Jalali) date picker, as the rest of the
+// panel: the value stays the API's YYYY-MM-DD; an optional one can be cleared.
+export const DayField = ({
+  label,
+  value,
+  onChange,
+  disabled,
+  optional,
+}: {
+  label: string;
+  value?: string | null;
+  onChange: (day: string) => void;
+  disabled?: boolean;
+  optional?: boolean;
+}) => {
+  const t = useSalesText();
+  const day = value ? String(value).slice(0, 10) : "";
+  return (
+    <div className={`${classes.field} ${s.dayField}`}>
+      <DateInput key={day || "none"} title={label} defaultValue={day ? new Date(`${day}T12:00:00`) : undefined} onChange={(d) => onChange(isoDay(d))} readOnly={disabled} />
+      {optional && !!day && !disabled && (
+        <button type="button" className={s.dayClear} onClick={() => onChange("")} aria-label={t("clearSelection")} title={t("clearSelection")}>
+          ×
+        </button>
+      )}
+    </div>
   );
 };

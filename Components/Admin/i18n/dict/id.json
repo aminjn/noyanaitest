@@ -2901,5 +2901,7 @@
  "لینک طرح درمان یا قرارداد": "Tautan rencana perawatan atau kontrak",
  "%center%: %title% را از این لینک ببینید و تأیید کنید: %link%": "%center%: lihat dan setujui %title% di tautan ini: %link%",
  "پاسخ مرکز درمانی به درخواست - کاربر": "Pusat menjawab permintaan - pengguna",
- "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% menjawab permintaan Anda no. %ticketId%."
+ "%centre% به درخواست شماره‌ی %ticketId% شما پاسخ داد.": "%centre% menjawab permintaan Anda no. %ticketId%.",
+ "${1} پیشنهاد دیگر": "${1} lainnya",
+ "کمتر": "Lebih sedikit"
 }

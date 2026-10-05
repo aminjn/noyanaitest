@@ -27,16 +27,18 @@ import {
   parseAmount,
   Pill,
   statusKey,
+  StockItem,
   useFin,
   useFinPopup,
   useFinText,
+  useStockItems,
 } from "./finShared";
 
 const FORM_KEY = "FinInvoiceForm";
 const VIEW_KEY = "FinInvoiceView";
 
-type Line = { title: string; qty: string; unitPrice: string; discount: string; taxRate: string; account: string };
-const emptyLine = (): Line => ({ title: "", qty: "1", unitPrice: "", discount: "", taxRate: "0", account: "" });
+type Line = { title: string; qty: string; unitPrice: string; discount: string; taxRate: string; account: string; item: string };
+const emptyLine = (): Line => ({ title: "", qty: "1", unitPrice: "", discount: "", taxRate: "0", account: "", item: "" });
 
 // New invoice or a draft's edit: the patient, the lines (service, quantity,
 // price, discount, VAT, income account), the insurer's share and a note.
@@ -66,6 +68,7 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
           discount: l.discount ? String(l.discount) : "",
           taxRate: String(l.taxRate || 0),
           account: idOf(l.account),
+          item: l.item ? String(l.item) : "",
         }))
       : [emptyLine()],
   );
@@ -75,6 +78,19 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
   const [insShare, setInsShare] = useState(invoice?.insurer?.share ? String(invoice.insurer.share) : "");
   const [note, setNote] = useState(invoice?.note || "");
   const [busy, setBusy] = useState(false);
+  const { data: stockData } = useStockItems(node);
+  const stock = asArray<StockItem>(stockData);
+  const pickItem = (i: number, id: string) =>
+    setLines((ls) =>
+      ls.map((l, j) => {
+        if (j !== i) return l;
+        const before = stock.find((x) => x._id === l.item);
+        const it = stock.find((x) => x._id === id);
+        // the title follows the item unless it was typed by hand
+        const title = !l.title.trim() || (before && l.title === before.name) ? it?.name || "" : l.title;
+        return { ...l, item: id, title, account: id ? "" : l.account };
+      }),
+    );
 
   const priced = lines.map((l) => {
     const gross = Math.round(parseAmount(l.qty) * parseAmount(l.unitPrice));
@@ -106,6 +122,7 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
             discount: parseAmount(l.discount),
             taxRate: parseAmount(l.taxRate),
             account: l.account || undefined,
+            item: l.item || undefined,
           })),
           insurer: hasInsurer ? { kind: insKind, name: insName.trim(), share } : null,
           note: note.trim() || undefined,
@@ -163,7 +180,19 @@ const InvoiceForm = ({ invoice, onDone }: { invoice?: FinInvoice; onDone: (inv?:
           </div>
           {lines.map((l, i) => (
             <div key={i} className={fin.invLine}>
-              <input aria-label={t("finService")} placeholder={t("finService")} value={l.title} maxLength={300} onChange={(e) => set(i, { title: e.target.value })} />
+              <div className={fin.invItemCell}>
+                <input aria-label={t("finService")} placeholder={t("finService")} value={l.title} maxLength={300} onChange={(e) => set(i, { title: e.target.value })} />
+                {stock.length > 0 && (
+                  <select aria-label={t("finStockItem")} value={l.item} onChange={(e) => pickItem(i, e.target.value)}>
+                    <option value="">{t("finNoStockItem")}</option>
+                    {stock.map((x) => (
+                      <option key={x._id} value={x._id}>
+                        {x.name} · {f.money(x.stock)} {x.unit || ""}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
               <input aria-label={t("finQty")} placeholder={t("finQty")} value={l.qty} dir="ltr" inputMode="decimal" onChange={(e) => set(i, { qty: e.target.value })} />
               <input aria-label={t("finUnitPrice")} placeholder={t("finUnitPrice")} value={l.unitPrice} dir="ltr" inputMode="numeric" onChange={(e) => set(i, { unitPrice: e.target.value })} />
               <input aria-label={t("finDiscount")} placeholder={t("finDiscount")} value={l.discount} dir="ltr" inputMode="numeric" onChange={(e) => set(i, { discount: e.target.value })} />
@@ -282,6 +311,19 @@ const InvoiceView = ({ id, onChanged }: { id: string; onChanged: () => unknown }
   const changed = () => {
     mutate();
     onChanged();
+  };
+  const voidPayment = async (paymentId: string) => {
+    if (busy || !window.confirm(t("finVoidPaymentConfirm"))) return;
+    setBusy(true);
+    try {
+      await fetcher({ url: `${API}${api}/payments/${paymentId}/void`, method: "POST", payload: {} });
+      pushNotification(t("finVoided"), "Success");
+      changed();
+    } catch (err) {
+      pushNotification((err as Error)?.message || String(err), "Error");
+    } finally {
+      setBusy(false);
+    }
   };
   const act = async (path: string, payload?: Record<string, unknown>, done?: string) => {
     if (busy) return;
@@ -440,6 +482,7 @@ const InvoiceView = ({ id, onChanged }: { id: string; onChanged: () => unknown }
                         <th>{t("finMethod")}</th>
                         <th>{t("finTill")}</th>
                         <th className={classes.num}>{t("bizAmount")}</th>
+                        {canWrite && manual && <th />}
                       </tr>
                     </thead>
                     <tbody>
@@ -454,6 +497,19 @@ const InvoiceView = ({ id, onChanged }: { id: string; onChanged: () => unknown }
                           </td>
                           <td>{nameOf(p.money)}</td>
                           <td className={classes.num}>{f.money(p.amount)}</td>
+                          {/* a receipt is voided here too: an issued invoice
+                              is voided only after its receipts */}
+                          {canWrite && manual && (
+                            <td>
+                              {!p.isVoid && (
+                                <div className={fin.rowActions}>
+                                  <button type="button" className={fin.bad} disabled={busy} onClick={() => voidPayment(p._id)}>
+                                    {t("finVoid")}
+                                  </button>
+                                </div>
+                              )}
+                            </td>
+                          )}
                         </tr>
                       ))}
                     </tbody>

@@ -21,6 +21,8 @@ const latin = (s: string) => s.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶
 // deduction.
 const AdvanceForm = ({ employee }: { employee: PayEmployee }) => {
   const t = usePayText();
+  const f = useBizFormat();
+  const [balance, setBalance] = useState(employee.advanceBalance || 0);
   const { api } = usePay();
   const pushNotification = useNotification();
   const { data: accounts } = usePayAccounts();
@@ -38,6 +40,7 @@ const AdvanceForm = ({ employee }: { employee: PayEmployee }) => {
         payload: { amount: toNum(amount), via, date: isoDay(date) },
       });
       pushNotification(t("payAdvancePaid"), "Success");
+      setBalance((b) => b + toNum(amount));
       setAmount("");
     } catch (err) {
       pushNotification((err as Error)?.message || String(err), "Error");
@@ -49,6 +52,9 @@ const AdvanceForm = ({ employee }: { employee: PayEmployee }) => {
     <section className={pay.subCard}>
       <span className={classes.cardTitle}>{t("payAdvance")}</span>
       <p className={classes.muted}>{t("payAdvanceHint")}</p>
+      <p className={classes.muted}>
+        {t("payAdvanceBalance")}: <strong>{f.money(balance)}</strong>
+      </p>
       <div className={classes.form}>
         <label className={classes.field}>
           {t("bizAmount")}
@@ -352,6 +358,7 @@ const PayrollEmployees = ({ refreshKey, onChanged }: { refreshKey: number; onCha
                     <th>{t("payPosition")}</th>
                     <th className={classes.num}>{t("payBaseSalary")}</th>
                     <th className={classes.num}>{t("payChildren")}</th>
+                    <th className={classes.num}>{t("payAdvanceBalance")}</th>
                     <th>{t("payInsured")}</th>
                     <th>{t("status")}</th>
                   </tr>
@@ -369,6 +376,7 @@ const PayrollEmployees = ({ refreshKey, onChanged }: { refreshKey: number; onCha
                       <td>{e.position || "—"}</td>
                       <td className={classes.num}>{f.money(e.baseSalary)}</td>
                       <td className={classes.num}>{f.money(e.children)}</td>
+                      <td className={classes.num}>{f.money(e.advanceBalance || 0)}</td>
                       <td>{e.insured ? t("payYes") : t("payNo")}</td>
                       <td>
                         <span className={`${classes.badge} ${e.isActive ? pay.badgeOk : ""}`}>

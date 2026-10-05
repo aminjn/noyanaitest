@@ -75,18 +75,24 @@ export const useBizFormat = () => {
   const tag = useIntlLocale();
   return useMemo(() => {
     const num = new Intl.NumberFormat(tag, { maximumFractionDigits: 0 });
+    const pct = new Intl.NumberFormat(tag, { style: "percent", maximumFractionDigits: 2 });
     // a Jalali fiscal year (1404), in the reader's digits, never grouped
     const yearNum = new Intl.NumberFormat(tag, { useGrouping: false });
     // fiscal year bounds are Tehran midnights; shown as Tehran sees them
     const tehran = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric", timeZone: "Asia/Tehran" });
     const date = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric" });
     const month = new Intl.DateTimeFormat(tag, { month: "short" });
+    // the books' month buckets are Jalali months as Tehran sees them:
+    // named that way in every language (a Gregorian name would straddle two)
+    const jMonth = new Intl.DateTimeFormat(tag, { month: "short", calendar: "persian", timeZone: "Asia/Tehran" });
     const safe = (f: Intl.DateTimeFormat, v?: string | Date | null) => {
       const d = v ? new Date(v) : null;
       return d && !Number.isNaN(d.getTime()) ? f.format(d) : "—";
     };
     return {
       money: (n?: number) => num.format(Math.round(Number(n) || 0)),
+      // 15 -> "۱۵٪" / "15%", the reader's own sign and side
+      percent: (n?: number) => pct.format((Number(n) || 0) / 100),
       year: (y?: number) => (y ? yearNum.format(y) : "—"),
       tehranDate: (v?: string | Date | null) => safe(tehran, v),
       // a negative balance in parentheses, the way statements show it
@@ -96,6 +102,7 @@ export const useBizFormat = () => {
       },
       date: (v?: string | Date | null) => safe(date, v),
       month: (v?: string | Date | null) => safe(month, v),
+      jMonth: (v?: string | Date | null) => safe(jMonth, v),
     };
   }, [tag]);
 };

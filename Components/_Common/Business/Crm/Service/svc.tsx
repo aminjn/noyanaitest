@@ -10,7 +10,9 @@ import classes from "../../Accounting.module.css";
 import crm from "../Crm.module.css";
 import s from "./Service.module.css";
 import { asArray } from "../../bizShared";
-import { CrmContact, CrmTeamMember, errText, phoneText, useCrm, useCrmTeam, useCrmText } from "../crmShared";
+import Ixon from "@/Components/UI/Ixon";
+import { CrmContact, CrmTeamMember, errText, phoneText, useCrm, useCrmTeam, useCrmText as useBaseText } from "../crmShared";
+import { isProfile, profileKey } from "./profiles";
 
 // Shared bits of the CRM's engagement and service pages (2026-10,
 // docs/nexxa-crm-engagement-parity.md): the API calls with their success /
@@ -18,7 +20,16 @@ import { CrmContact, CrmTeamMember, errText, phoneText, useCrm, useCrmTeam, useC
 // team as select options, and small view helpers. The backend is
 // Controllers/crmServiceController.ts and crmWorkController.ts.
 
-export { useCrm, useCrmText, errText, phoneText, asArray };
+export { useCrm, errText, phoneText, asArray };
+
+// the CRM's texts in the panel's own words: a pharmacy's tickets wait on a
+// customer, an insurer's on a member (profiles.ts, profileKey)
+export const useCrmText = () => {
+  const t = useBaseText();
+  const { node } = useCrm();
+  const profile = isProfile(node) ? node : undefined;
+  return useCallback((key: string, vars?: string[]) => t(profileKey(profile, key), vars), [t, profile]);
+};
 
 export type Ref = { _id: string; name?: string; phone?: string } | null | undefined;
 
@@ -161,14 +172,28 @@ export const Badge = ({ tone, children }: { tone?: "ok" | "warn" | "bad" | "mute
   </span>
 );
 
-// a button that asks once more before doing it
-export const ConfirmButton = ({ onConfirm, children, className, disabled }: { onConfirm: () => unknown; children: ReactNode; className?: string; disabled?: boolean }) => {
+// a button that asks once more before doing it; an icon (not text) is
+// drawn at icon size and named by `label`
+export const ConfirmButton = ({
+  onConfirm,
+  children,
+  className,
+  disabled,
+  label,
+}: {
+  onConfirm: () => unknown;
+  children: ReactNode;
+  className?: string;
+  disabled?: boolean;
+  label?: string;
+}) => {
   const t = useCrmText();
   const [ask, setAsk] = useState(false);
+  const text = typeof children === "string" || typeof children === "number";
   if (!ask)
     return (
-      <button type="button" className={className || classes.ghost} disabled={disabled} onClick={() => setAsk(true)}>
-        {children}
+      <button type="button" className={className || classes.ghost} disabled={disabled} onClick={() => setAsk(true)} aria-label={label} title={label}>
+        {text ? children : <Ixon width="1.125rem">{children}</Ixon>}
       </button>
     );
   return (

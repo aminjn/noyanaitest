@@ -82,9 +82,9 @@ const SequenceList = () => {
                 steps: { name: t("crmeSteps"), value: (q) => q.steps.length, filter: "Number" },
                 active: {
                   name: t("crmeStatus"),
-                  value: (q) => t(q.active ? "crmAutoOn" : "crmAutoOff"),
+                  value: (q) => t(q.active ? "crmeActive" : "crmInactive"),
                   filter: "Set",
-                  component: (q) => <Badge tone={q.active ? "ok" : "muted"}>{t(q.active ? "crmAutoOn" : "crmAutoOff")}</Badge>,
+                  component: (q) => <Badge tone={q.active ? "ok" : "muted"}>{t(q.active ? "crmeActive" : "crmInactive")}</Badge>,
                 },
                 enrolled: { name: t("crmeEnrActive"), value: (q) => q.activeCount || 0, filter: "Number", component: (q) => f.money(q.activeCount || 0) },
                 completed: { name: t("crmeEnrCompleted"), value: (q) => q.completed || 0, filter: "Number", component: (q) => f.money(q.completed || 0) },
@@ -216,7 +216,7 @@ const SequenceDetail = ({ id }: { id: string }) => {
                   {t("back")}
                 </Link>
                 <input value={name} disabled={!canWrite} onChange={(e) => setName(e.target.value)} maxLength={80} aria-label={t("crmeSeqName")} />
-                <Badge tone={seq.active ? "ok" : "muted"}>{t(seq.active ? "crmAutoOn" : "crmAutoOff")}</Badge>
+                <Badge tone={seq.active ? "ok" : "muted"}>{t(seq.active ? "crmeActive" : "crmInactive")}</Badge>
               </div>
               <div className={s.row}>
                 {canSend && (

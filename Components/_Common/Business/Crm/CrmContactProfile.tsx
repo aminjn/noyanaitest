@@ -309,7 +309,7 @@ const CrmContactProfile = ({ id }: { id: string }) => {
               </div>
               <div className={classes.tile}>
                 <span className={classes.tileLabel}>{t("crmFirstSeen")}</span>
-                <span className={classes.tileValue}>{f.date(c.firstSeenAt || c.createdAt)}</span>
+                <span className={classes.tileValue}>{f.date(c.firstSeenAt)}</span>
               </div>
             </div>
           </section>
