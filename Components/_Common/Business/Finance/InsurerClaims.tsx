@@ -202,14 +202,17 @@ const ReviewView = ({ id, onChanged }: { id: string; onChanged: () => unknown })
     ]);
   const review = data?.review;
   return (
-    <PopupCard title={data ? t("finClaimInN", [f.year(data.number)]) : t("finClaimsInTitle")}>
+    <PopupCard title={data ? t("finClaimInN", [f.year(data.number)]) : t("finClaimsInTitle")} size="wide">
       <div className={classes.popup}>
         <HandleLoading data={!!data} error={error}>
           {!!data && (
             <>
               <div className={fin.sheetHead}>
                 <div className={fin.sheetMeta}>
-                  <b>{data.centreName || "—"}</b>
+                  <b>
+                    {data.centreName || "—"}
+                    {!!data.ownerKind && <span className={fin.small}> · {t(data.ownerKind)}</span>}
+                  </b>
                   <span>
                     {[
                       t(insurerKey(data.insurer?.kind)),
@@ -459,7 +462,10 @@ const Body = () => {
                     {rows.map((c) => (
                       <tr key={c._id} className={classes.rowLink} tabIndex={0} onClick={() => view(c._id)} onKeyDown={(e) => e.key === "Enter" && view(c._id)}>
                         <td>{f.year(c.number)}</td>
-                        <td className={classes.wrap}>{c.centreName || "—"}</td>
+                        <td className={classes.wrap}>
+                          {c.centreName || "—"}
+                          {!!c.ownerKind && <span className={fin.small}> · {t(c.ownerKind)}</span>}
+                        </td>
                         <td>{c.submittedAt ? f.date(c.submittedAt) : "—"}</td>
                         <td className={classes.num}>{f.money(c.lines || 0)}</td>
                         <td className={classes.num}>{f.money(c.claimed)}</td>

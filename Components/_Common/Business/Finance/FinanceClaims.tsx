@@ -301,7 +301,7 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
       ...items.map((i) => [f.date(i.date), i.patient, i.service, i.total, i.share]),
     ]);
   return (
-    <PopupCard title={data ? t("finClaimN", [f.year(data.number)]) : t("finClaim")}>
+    <PopupCard title={data ? t("finClaimN", [f.year(data.number)]) : t("finClaim")} size={data?.review ? "wide" : "normal"}>
       <div className={classes.popup}>
         <HandleLoading data={!!data} error={error}>
           {!!data && (
