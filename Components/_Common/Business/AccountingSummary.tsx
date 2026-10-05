@@ -219,7 +219,7 @@ const AccountingSummary = ({ onChanged }: { onChanged: () => unknown }) => {
                       style={{ height: `${(Math.max(0, m.expense) / max) * 100}%` }}
                     />
                   </div>
-                  <span className={classes.barLabel}>{f.month(m.month)}</span>
+                  <span className={classes.barLabel}>{f.jMonth(m.month)}</span>
                 </div>
               ))}
             </div>

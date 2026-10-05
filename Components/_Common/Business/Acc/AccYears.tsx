@@ -103,7 +103,7 @@ const Opening = ({ onChanged }: { onChanged: () => unknown }) => {
         </button>
       </div>
       <p className={acc.mutedSmall}>{t("accOpeningFileHint")}</p>
-      {!!result && <p className={classes.statusOk}>{t("accOpeningResult", [String(result.posted), String(asArray(result.skipped).length), f.money(Math.abs(result.balancedBy || 0))])}</p>}
+      {!!result && <p className={classes.statusOk}>{t("accOpeningResult", [f.money(result.posted), f.money(asArray(result.skipped).length), f.money(Math.abs(result.balancedBy || 0))])}</p>}
     </section>
   );
 };

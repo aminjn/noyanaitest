@@ -81,6 +81,9 @@ export const useBizFormat = () => {
     const tehran = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric", timeZone: "Asia/Tehran" });
     const date = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric" });
     const month = new Intl.DateTimeFormat(tag, { month: "short" });
+    // the books' month buckets are Jalali months as Tehran sees them:
+    // named that way in every language (a Gregorian name would straddle two)
+    const jMonth = new Intl.DateTimeFormat(tag, { month: "short", calendar: "persian", timeZone: "Asia/Tehran" });
     const safe = (f: Intl.DateTimeFormat, v?: string | Date | null) => {
       const d = v ? new Date(v) : null;
       return d && !Number.isNaN(d.getTime()) ? f.format(d) : "—";
@@ -96,6 +99,7 @@ export const useBizFormat = () => {
       },
       date: (v?: string | Date | null) => safe(date, v),
       month: (v?: string | Date | null) => safe(month, v),
+      jMonth: (v?: string | Date | null) => safe(jMonth, v),
     };
   }, [tag]);
 };

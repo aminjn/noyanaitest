@@ -283,6 +283,19 @@ const InvoiceView = ({ id, onChanged }: { id: string; onChanged: () => unknown }
     mutate();
     onChanged();
   };
+  const voidPayment = async (paymentId: string) => {
+    if (busy || !window.confirm(t("finVoidPaymentConfirm"))) return;
+    setBusy(true);
+    try {
+      await fetcher({ url: `${API}${api}/payments/${paymentId}/void`, method: "POST", payload: {} });
+      pushNotification(t("finVoided"), "Success");
+      changed();
+    } catch (err) {
+      pushNotification((err as Error)?.message || String(err), "Error");
+    } finally {
+      setBusy(false);
+    }
+  };
   const act = async (path: string, payload?: Record<string, unknown>, done?: string) => {
     if (busy) return;
     setBusy(true);
@@ -440,6 +453,7 @@ const InvoiceView = ({ id, onChanged }: { id: string; onChanged: () => unknown }
                         <th>{t("finMethod")}</th>
                         <th>{t("finTill")}</th>
                         <th className={classes.num}>{t("bizAmount")}</th>
+                        {canWrite && manual && <th />}
                       </tr>
                     </thead>
                     <tbody>
@@ -454,6 +468,19 @@ const InvoiceView = ({ id, onChanged }: { id: string; onChanged: () => unknown }
                           </td>
                           <td>{nameOf(p.money)}</td>
                           <td className={classes.num}>{f.money(p.amount)}</td>
+                          {/* a receipt is voided here too: an issued invoice
+                              is voided only after its receipts */}
+                          {canWrite && manual && (
+                            <td>
+                              {!p.isVoid && (
+                                <div className={fin.rowActions}>
+                                  <button type="button" className={fin.bad} disabled={busy} onClick={() => voidPayment(p._id)}>
+                                    {t("finVoid")}
+                                  </button>
+                                </div>
+                              )}
+                            </td>
+                          )}
                         </tr>
                       ))}
                     </tbody>
