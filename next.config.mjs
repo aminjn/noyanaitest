@@ -71,6 +71,11 @@ const nextConfig = {
   images: {
     remotePatterns: fileHostPatterns(),
   },
+  // The deploy script sets SKIP_BUILD_CHECKS=1: tsc and ESLint already run
+  // before every merge, and running them again inside next build adds
+  // minutes to each deploy. CHECKS=1 on the deploy turns them back on.
+  typescript: { ignoreBuildErrors: process.env.SKIP_BUILD_CHECKS === "1" },
+  eslint: { ignoreDuringBuilds: process.env.SKIP_BUILD_CHECKS === "1" },
   ...(BUILD_SEED && {
     generateBuildId: async () => seededBuildId(),
     webpack: (config, { dev }) => {
