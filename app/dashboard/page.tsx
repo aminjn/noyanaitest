@@ -10,6 +10,8 @@ const NS: ContentNamespace[] = [
   "dashboardUserVitals",
   "dashboardUserMedicalDetails",
   "dashboardMutateUserMedicalPopup",
+  // the record-linking offers banner (Components/Dashboard/Crm/LinkOffers)
+  "bizCrm",
 ];
 
 // DashboardPage is "use client" and pulls its data via useSWR after auth;

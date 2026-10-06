@@ -25,6 +25,7 @@ import {
 import AdminManageReservationsPage from "../Reservation/AdminManageReservationsPage";
 import { formatDateTime, newRequestKey, personLabel } from "../Reservation/reservationAdmin";
 import classes from "./AdminManageUserPage.module.css";
+import AdminConsentLog from "../Audit/AdminConsentLog";
 
 // The user's activity on their admin page (2026-10, audit P1-3 / P2-6):
 // their reservations, orders and wallet ledger, each a server-paged list
@@ -306,6 +307,7 @@ const UserActivity = ({
   canSeeOrders,
   canSeeWallet,
   canAdjustWallet,
+  canSeeConsent,
   onChanged,
 }: {
   userId: string;
@@ -315,9 +317,11 @@ const UserActivity = ({
   canSeeOrders: boolean;
   canSeeWallet: boolean;
   canAdjustWallet: boolean;
+  // the record-linking consent log (super admin, GET /admin/consent-log)
+  canSeeConsent?: boolean;
   onChanged: () => unknown;
 }) => {
-  if (!canSeeReservations && !canSeeOrders && !canSeeWallet) return null;
+  if (!canSeeReservations && !canSeeOrders && !canSeeWallet && !canSeeConsent) return null;
   return (
     <section className={classes.card}>
       <h2 className={classes.cardTitle}>{ta("فعالیت کاربر")}</h2>
@@ -346,6 +350,12 @@ const UserActivity = ({
             content: (
               <UserWallet userId={userId} canAdjust={canAdjustWallet} onChanged={onChanged} />
             ),
+          },
+          {
+            id: "consent",
+            title: ta("رضایت اتصال پرونده‌ها"),
+            exclude: !canSeeConsent,
+            content: <AdminConsentLog user={userId} />,
           },
         ]}
       />

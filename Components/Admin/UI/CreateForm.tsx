@@ -41,6 +41,7 @@ import LicensePricingInput, {
 } from "./LicensePricingInput";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import dynamic from "next/dynamic";
+import AiPlanInput from "./AiPlanInput";
 
 // the map library (~1 MB) loads only when a form actually shows a map
 const PointPicker = dynamic(() => import("./PointPicker"), { ssr: false });
@@ -136,6 +137,13 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
     | { type: "number"; price?: boolean }
     | { type: "licensePricing" }
     | {
+        // the AI a plan sells (2026-10, ./AiPlanInput.tsx): put on the
+        // "aiFeatures" key; it also sets "aiQuotas". `audience` is the
+        // plan's kind (doctor, clinic, ..., patient)
+        type: "aiPlan";
+        audience: string;
+      }
+    | {
         // a map point: search, map click, "my location", and the point's
         // address under the map
         type: "point";
@@ -178,6 +186,7 @@ const sectionOf = (
       return { id: "status" };
     case "licensePricing":
     case "multiselect":
+    case "aiPlan":
       return { id: `field:${key}`, title: segment.title };
     case "area":
     case "rtf":
@@ -207,6 +216,7 @@ const wideFieldTypes: string[] = [
   "files",
   "multiselect",
   "licensePricing",
+  "aiPlan",
   "range",
   "options",
   "point",
@@ -599,6 +609,20 @@ const CreateForm = <TInput, TResult = unknown>({
               />
             );
             break;
+          case "aiPlan": {
+            const own = defaultValue as unknown as { aiFeatures?: string[]; aiQuotas?: Record<string, Record<string, number>> } | undefined;
+            content = (
+              <AiPlanInput
+                title={commons.title}
+                audience={segment.audience}
+                readOnly={commons.readOnly}
+                defaultFeatures={Array.isArray(own?.aiFeatures) ? own!.aiFeatures : []}
+                defaultQuotas={own?.aiQuotas && typeof own.aiQuotas === "object" ? own.aiQuotas : {}}
+                onChange={(v) => setInput((prev) => ({ ...prev, aiFeatures: v.aiFeatures, aiQuotas: v.aiQuotas }))}
+              />
+            );
+            break;
+          }
           case "point": {
             const addressKey = segment.addressField as keyof TInput | undefined;
             const store = segment.store || "geojson";

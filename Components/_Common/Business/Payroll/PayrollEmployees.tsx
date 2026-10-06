@@ -194,6 +194,7 @@ const EmployeeForm = ({ employee, onDone }: { employee?: PayEmployee; onDone: ()
           </label>
           <div className={classes.field}>
             <DateInput title={t("payHireDate")} defaultValue={hireDate || undefined} onChange={(d) => setHireDate(d)} />
+            <span className={classes.muted}>{t("payHireDateTaxHint")}</span>
           </div>
           <div className={classes.field}>
             <DateInput title={t("payEndDate")} defaultValue={endDate || undefined} onChange={(d) => setEndDate(d)} />

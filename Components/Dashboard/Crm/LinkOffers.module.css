@@ -1,0 +1,124 @@
+/* Record-linking offers and linked records (2026-10). Logical properties
+   only (RTL and LTR), the panel's colour tokens, phone first. */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.offer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.125rem 1.25rem;
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  border-inline-start: 4px solid var(--primary, var(--gradAccentSolid));
+  box-shadow: var(--glassShadow);
+  min-width: 0;
+}
+
+.head,
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.centre {
+  font-weight: 800;
+  color: var(--gray13);
+  overflow-wrap: anywhere;
+}
+
+.question {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+  color: var(--gray12);
+  text-align: start;
+}
+
+.shared {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--radiusMd);
+  background: var(--line);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--gray11);
+}
+
+.shared ul {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.later {
+  min-height: 2.5rem;
+  padding: 0 0.875rem;
+  font-weight: 800;
+  font-size: 0.8125rem;
+  color: var(--gray10);
+}
+
+.later:disabled {
+  opacity: 0.5;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  padding-block: 0.75rem;
+  border-block-end: 1px solid var(--line);
+}
+
+.row:last-child {
+  border-block-end: none;
+}
+
+.rowMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 1 1 14rem;
+}
+
+.on {
+  background: var(--successT1, var(--line));
+  color: var(--success);
+}
+
+.off {
+  color: var(--gray9);
+}
+
+@media (max-width: 30rem) {
+  .actions > button {
+    flex: 1 1 auto;
+  }
+}

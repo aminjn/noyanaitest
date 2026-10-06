@@ -16,6 +16,7 @@ import UserIdentity from "./UserIdentity";
 import UserVitals from "./UserVitals";
 import UserMedicalDetails, { IMedicalDetail } from "./UserMedicalDetails";
 import PatientHome from "./Home/PatientHome";
+import { LinkOffers } from "./Crm/LinkOffers";
 
 export type UserIdentityPopulation = Population<{ User: UserPopulation }>;
 
@@ -49,6 +50,8 @@ const DashboardPage = () => {
 
   return (
     <div className={classes.main}>
+      {/* a centre that added this patient asks to link its record */}
+      <LinkOffers />
       <PatientHome
         name={[identity?.givenName, identity?.lastName].filter(Boolean).join(" ") || user?.username}
       />

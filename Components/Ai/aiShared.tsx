@@ -8,6 +8,7 @@ import useLocale from "@/Components/Hooks/useLocale";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import { usePathname } from "@/Components/i18n/navigation";
+import type { AiFeatureState } from "./AiLocked";
 
 // AI in every panel (2026-10, backend Routers/panelAiRouter.ts): which
 // profile's assistant a page belongs to, what the server allows it (plan,
@@ -49,7 +50,16 @@ export type AiStatus = {
   planModule?: string;
   acl?: Record<string, boolean>;
   tools?: { name: string; kind: string }[];
+  // every AI feature of this panel with its state and quota (the AI policy,
+  // backend Lib/ai/aiGate.ts aiFeatureStates)
+  features?: Record<string, AiFeatureState>;
 };
+
+// the copilot's own feature in each profile (backend Lib/ai/aiFeatures.ts)
+export const copilotFeatureOf = (profile: AiProfile) =>
+  profile === "user" ? "assistant.copilot.patient" : profile === "admin" ? "staff.copilot" : "assistant.copilot";
+export const voiceFeatureOf = (profile: AiProfile) =>
+  profile === "user" ? "assistant.voice.patient" : profile === "admin" ? "staff.voice" : "assistant.voice";
 
 export const useAiStatus = (profile: AiProfile | null) => {
   const { data, error, mutate } = useSWR<AiStatus>(

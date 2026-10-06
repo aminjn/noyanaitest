@@ -1,12 +1,14 @@
 "use client";
 
 import { ReactNode, useCallback, useState } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import Link from "@/Components/i18n/Link";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import { useFin, useFinText } from "../finShared";
+import AiLocked, { aiGateOf, AiFeatureState, gateOfState } from "@/Components/Ai/AiLocked";
+import { AiProfile } from "@/Components/Ai/aiShared";
 import ai from "./FinAi.module.css";
 
 // Shared bits of the finance assistant (2026-10, «دستیار هوش مصنوعی مالی»,
@@ -25,7 +27,22 @@ export type FinAiStatus = {
   // the panel's profile and its copilot example questions (content keys)
   profile?: string;
   questions?: string[];
+  // each finance AI feature's state and quota in the AI policy (2026-10)
+  features?: Record<string, AiFeatureState>;
 };
+
+export type FinAiFeature =
+  | "finance.receipt"
+  | "finance.entry"
+  | "finance.journal"
+  | "finance.copilot"
+  | "finance.insight"
+  | "finance.categorize"
+  | "finance.payslip"
+  | "finance.voice";
+
+// the panel profile of a finance API ("/doctor/biz/finance" -> doctor)
+export const finProfileOf = (api?: string) => ((api || "").split("/").filter(Boolean)[0] || "doctor") as AiProfile;
 
 export type FinAiWarning = { key: string; vars?: string[] };
 
@@ -43,16 +60,37 @@ export const useFinAiStatus = (api?: string) => {
   });
 };
 
-// POST to /<panel>/biz/finance/ai/<path>
+// POST to /<panel>/biz/finance/ai/<path>; a refusal of the AI policy
+// (plan, quota) refreshes the status, so the tool shows its locked state
 export const useFinAiPost = (api?: string) => {
   const base = useFinAiApi(api);
+  const { mutate } = useSWRConfig();
   return useCallback(
     async <T,>(path: string, payload?: Record<string, unknown>, form?: boolean): Promise<T> => {
-      const res = await fetcher({ url: `${API}${base}/ai/${path}`, method: "POST", payload, bodyParser: form ? "FORM" : "JSON" });
-      return res.data as T;
+      try {
+        const res = await fetcher({ url: `${API}${base}/ai/${path}`, method: "POST", payload, bodyParser: form ? "FORM" : "JSON" });
+        mutate(`${API}${base}/ai/status`);
+        return res.data as T;
+      } catch (err) {
+        if (aiGateOf(err)) mutate(`${API}${base}/ai/status`);
+        throw err;
+      }
     },
-    [base],
+    [base, mutate],
   );
+};
+
+// One finance AI tool under the AI policy: hidden when the super admin
+// switched the feature off, the locked / limit-reached state when the plan
+// lacks it or its quota is used up, the tool itself otherwise.
+export const FinAiGate = ({ feature, api, compact, children }: { feature: FinAiFeature; api?: string; compact?: boolean; children: ReactNode }) => {
+  const base = useFinAiApi(api);
+  const { data: status } = useFinAiStatus(api);
+  const st = status?.features?.[feature];
+  if (st?.state === "off") return null;
+  const gate = gateOfState(st);
+  if (gate) return <AiLocked profile={finProfileOf(base)} gate={gate} compact={compact} />;
+  return <>{children}</>;
 };
 
 // the AI is off on this server: what to do, and for the super admin a link
@@ -136,6 +174,10 @@ export const AiInsight = ({ kind, label, api, aside }: { kind: InsightKind; labe
   // nothing until the assistant is known to be on (off: the AI page says why)
   if (!status?.enabled) return null;
   if (off) return <AiOff status={status} />;
+  // the AI policy's "finance.insight": off, locked or used up
+  const st = status.features?.["finance.insight"];
+  if (st?.state === "off") return null;
+  if (gateOfState(st)) return <FinAiGate feature="finance.insight" api={api} compact>{null}</FinAiGate>;
   return (
     <div className={ai.insight}>
       {text === null ? (

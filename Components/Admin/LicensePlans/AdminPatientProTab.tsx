@@ -36,9 +36,11 @@ type ProPlan = {
   summary: string;
   isActive: boolean;
   pricing: ILicensePricingEntry[];
-  freeAiDailyLimit: number;
-  aiEnabled: boolean;
-  proAiDailyLimit: number;
+  // the AI Pro sells (2026-10): features it includes and its own limits;
+  // the daily messages of the free tier and of Pro are the AI policy's
+  // (System settings -> AI -> «سیاست هوش مصنوعی»)
+  aiFeatures?: string[];
+  aiQuotas?: Record<string, { day?: number; month?: number }>;
   bookingDiscountEnabled: boolean;
   bookingDiscountPercent: number;
   bookingDiscountMax: number;
@@ -86,17 +88,17 @@ const ProPlanForm = () => {
               },
               isActive: { type: "bool", title: ta("در حال فروش"), section: sBasics },
               pricing: { type: "licensePricing", title: ta("قیمت‌ها"), section: sBasics },
-              freeAiDailyLimit: {
-                type: "number",
-                title: ta("پیام روزانه‌ی کاربران رایگان (۰ = بدون محدودیت)"),
+              aiFeatures: {
+                type: "aiPlan",
+                audience: "patient",
+                title: ta("هوش مصنوعی در اشتراک پرو"),
                 section: sAi,
-                hint: ta("برای همه‌ی کاربران بدون پرو اعمال می‌شود، حتی وقتی پرو فروخته نمی‌شود"),
-              },
-              aiEnabled: { type: "bool", title: ta("مزیت دستیار هوشمند برای پرو"), section: sAi },
-              proAiDailyLimit: {
-                type: "number",
-                title: ta("پیام روزانه‌ی اعضای پرو (۰ = نامحدود)"),
-                section: sAi,
+                hint: (
+                  <>
+                    {ta("سهمیه‌ی روزانه‌ی کاربران رایگان و اعضای پرو، و اینکه پرو کدام قابلیت را باز می‌کند، در «سیاست هوش مصنوعی» تنظیم می‌شود.")}{" "}
+                    <InlineLink href={adminPath("/appConfig?tab=ai&ai=policy")}>{ta("سیاست هوش مصنوعی")}</InlineLink>
+                  </>
+                ),
               },
               bookingDiscountEnabled: { type: "bool", title: ta("تخفیف ویزیت برای پرو"), section: sVisit },
               bookingDiscountPercent: { type: "number", title: ta("درصد تخفیف ویزیت"), section: sVisit },

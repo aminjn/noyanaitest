@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import AdminAuditLogPage from "@/Components/Admin/Audit/AdminAuditLogPage";
+import AdminAuditHub from "@/Components/Admin/Audit/AdminAuditHub";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -11,7 +11,7 @@ const AdminAuditLog = async () => {
   return (
     <LocaleScopeProvider namespaces={LOCALE_NS} initialTextContent={textContent}>
       <Suspense>
-        <AdminAuditLogPage />
+        <AdminAuditHub />
       </Suspense>
     </LocaleScopeProvider>
   );

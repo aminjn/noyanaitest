@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
@@ -16,6 +16,7 @@ import s from "@/Components/_Common/Business/Crm/Service/Service.module.css";
 import { asArray } from "@/Components/_Common/Business/bizShared";
 import { CATEGORIES, categoryKey, ticketStatusKey } from "@/Components/_Common/Business/Crm/Service/CrmTickets";
 import { MY_CRM_NS } from "./MyClubsPage";
+import { LINKS_KEY, LinkOffers, MyConsentHistory, MyLinks } from "./LinkOffers";
 
 // «پیام به مراکز درمانی» (2026-10): the patient's requests and complaints
 // to the centres they are a patient of, answered by the centre's team
@@ -173,6 +174,7 @@ const MyCentresPage = ({ id }: { id?: string }) => {
   const t = useT();
   const at = useAt();
   const router = useRouter();
+  const { mutate: globalMutate } = useSWRConfig();
   useBreadCrump([
     { title: t("dashboard"), target: "/dashboard" },
     { title: t("crmeMyCentres"), target: "/dashboard/centres" },
@@ -190,6 +192,13 @@ const MyCentresPage = ({ id }: { id?: string }) => {
         <Thread id={id} />
       ) : (
         <>
+          {/* centres that added the patient themselves: linked only on «وصل شود» */}
+          <LinkOffers
+            onChanged={() => {
+              globalMutate(`${API}/user/crm/centres`);
+              globalMutate(LINKS_KEY);
+            }}
+          />
           <NewRequest
             onDone={(nid) => {
               mutate();
@@ -218,6 +227,8 @@ const MyCentresPage = ({ id }: { id?: string }) => {
               )}
             </HandleLoading>
           </section>
+          <MyLinks />
+          <MyConsentHistory />
         </>
       )}
     </div>

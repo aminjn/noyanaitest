@@ -6,7 +6,7 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import { useFinText } from "../finShared";
 import ai from "./FinAi.module.css";
-import { errorText, useFinAiStatus } from "./finAi";
+import { errorText, FinAiGate, useFinAiStatus } from "./finAi";
 
 // Nexxa's payslip assistant (/api/ai/payslip): the payroll engine's own
 // figures for one slip, explained and checked for completeness by the AI.
@@ -29,7 +29,9 @@ const PayslipAssistant = ({ api, runId, employee }: { api: string; runId: string
       setBusy(false);
     }
   };
-  return text === null ? (
+  return (
+    <FinAiGate feature="finance.payslip" api={finApi} compact>
+      {text === null ? (
     <button type="button" className={ai.aiButton} onClick={run} disabled={busy} aria-busy={busy}>
       <SparkIcon />
       {busy ? t("faiThinking") : t("faiPayslipExplain")}
@@ -48,6 +50,8 @@ const PayslipAssistant = ({ api, runId, employee }: { api: string; runId: string
       <div className={ai.insightText}>{text}</div>
       <p className={ai.note}>{t("faiPayslipNote")}</p>
     </div>
+      )}
+    </FinAiGate>
   );
 };
 

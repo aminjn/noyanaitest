@@ -1,0 +1,64 @@
+/* the AI a plan sells (AiPlanInput) */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.title {
+  padding: 0;
+  font-weight: 600;
+  color: var(--gray13);
+}
+
+.note {
+  margin: 0;
+  color: var(--gray8);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  text-align: start;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: 0.5rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--line, var(--gray3));
+  border-radius: 0.625rem;
+  min-width: 0;
+}
+
+.on {
+  border-color: var(--aiLine, var(--primary4));
+  background: var(--aiSoft, transparent);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.off {
+  font-size: 0.75rem;
+  color: var(--gray8);
+}
+
+.quotas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr));
+  gap: 0.5rem;
+}

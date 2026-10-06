@@ -4,12 +4,14 @@ import { useState } from "react";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
 import { aiBase, AiProfile, T, useAiStatus, useAiText } from "@/Components/Ai/aiShared";
+import AiLocked, { aiGateOf, AiGateInfo, gateOfState } from "@/Components/Ai/AiLocked";
 import ai from "@/Components/Ai/Ai.module.css";
 
 // «نوشتن با هوش مصنوعی» in the SMS template form (2026-10, after Nexxa's
 // api/ai/campaign): the goal in a few words -> a short SMS with the CRM's
 // variables. It only fills the form; saving and Noyan's approval are as
-// before. Hidden when the plan, the server or the access does not allow it.
+// before. Hidden when the server or the access does not allow it or the AI
+// policy switched it off; locked when the plan lacks it or its quota is used.
 const CrmAiWrite = ({
   node,
   onText,
@@ -17,13 +19,17 @@ const CrmAiWrite = ({
   node: AiProfile;
   onText: (r: { name: string; category: string; text: string }) => void;
 }) => {
-  const { status, ok } = useAiStatus(node);
+  const { status, mutate } = useAiStatus(node);
   const t = useAiText(node);
   const notify = useNotification();
   const [open, setOpen] = useState(false);
   const [goal, setGoal] = useState("");
   const [busy, setBusy] = useState(false);
-  if (!ok || !status?.acl?.crmWrite) return null;
+  const [refused, setRefused] = useState<AiGateInfo | null>(null);
+  const feature = status?.features?.["crm.template"];
+  if (!status?.configured || !status?.acl?.crmWrite || !feature || feature.state === "off") return null;
+  const gate = refused || gateOfState(feature);
+  if (gate) return <AiLocked profile={node} gate={gate} compact />;
 
   const write = async () => {
     if (goal.trim().length < 3) return;
@@ -32,8 +38,11 @@ const CrmAiWrite = ({
       const res = await fetcher({ url: `${aiBase(node)}/crm/template`, method: "POST", payload: { goal: goal.trim() } });
       onText(res.data);
       setOpen(false);
+      mutate();
     } catch (err) {
-      notify((err as Error).message, "Error");
+      const g = aiGateOf(err);
+      if (g) setRefused(g);
+      else notify((err as Error).message, "Error");
     } finally {
       setBusy(false);
     }

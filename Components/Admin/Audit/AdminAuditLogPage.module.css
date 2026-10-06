@@ -49,7 +49,8 @@
   color: var(--gray9);
 }
 
-.filters select {
+.filters select,
+.filters input {
   height: 2.25rem;
   min-width: 12rem;
   padding: 0 0.625rem;
@@ -208,4 +209,9 @@
 .pagination button:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+/* a Jalali date filter (the consent log) beside the selects */
+.dateFilter {
+  min-width: 12rem;
 }

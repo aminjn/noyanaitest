@@ -8,11 +8,14 @@ import Ixon from "@/Components/UI/Ixon";
 import MicrophoneIcon from "@/Components/Icons/MicrophoneIcon";
 import LoadingIcon from "@/Components/Icons/LoadingIcon";
 import useVoiceRecorder, { audioFile, voiceSupported } from "./useVoiceRecorder";
-import { aiBase, AiProfile, T, useAiText } from "./aiShared";
+import { aiBase, AiProfile, T, useAiText, voiceFeatureOf } from "./aiShared";
+import { useAiFeature } from "./AiLocked";
 import classes from "./Ai.module.css";
 
 // A mic button: press to record, press again to stop; the audio goes to the
-// profile's speech-to-text and the text comes back to `onText`.
+// profile's speech-to-text and the text comes back to `onText`. Hidden
+// while the AI policy keeps the profile's voice feature off or out of the
+// plan, or its minutes are used up (the server says so on a refusal too).
 const VoiceButton = ({
   profile,
   onText,
@@ -31,10 +34,12 @@ const VoiceButton = ({
   const notify = useNotification();
   const intl = useIntlLocale();
   const [busy, setBusy] = useState(false);
+  const voice = useAiFeature(profile, voiceFeatureOf(profile));
   // decided after mount, so the server and the first render agree
   const [supported, setSupported] = useState(false);
   useEffect(() => setSupported(voiceSupported()), []);
   if (!supported) return null;
+  if (voice.state && voice.state.state !== "ok") return null;
 
   const toggle = async () => {
     if (busy) return;
@@ -46,6 +51,7 @@ const VoiceButton = ({
       }
       return;
     }
+    const seconds = rec.seconds;
     const blob = await rec.stop();
     if (!blob) return;
     setBusy(true);
@@ -54,7 +60,8 @@ const VoiceButton = ({
         url: `${aiBase(profile)}/transcribe`,
         method: "POST",
         bodyParser: "FORM",
-        payload: { audio: audioFile(blob) },
+        // the length, for the minutes the server counts (checked against the size)
+        payload: { audio: audioFile(blob), seconds: String(seconds) },
       });
       const text = String(res?.data?.text || "").trim();
       if (text) onText(text);

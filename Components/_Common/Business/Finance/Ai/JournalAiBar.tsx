@@ -4,7 +4,7 @@ import { useState } from "react";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import { useFinText } from "../finShared";
 import ai from "./FinAi.module.css";
-import { errorText, isAiOff, useFinAiPost, useFinAiStatus } from "./finAi";
+import { errorText, FinAiGate, isAiOff, useFinAiPost, useFinAiStatus } from "./finAi";
 
 export type JournalDraft = {
   lines: { code: string; account: string; name: string; debit: number; credit: number; label: string }[];
@@ -45,6 +45,7 @@ const JournalAiBar = ({ api, onDraft }: { api: string; onDraft: (d: JournalDraft
     }
   };
   return (
+    <FinAiGate feature="finance.journal" api={api} compact>
     <div className={ai.insightBox}>
       <div className={ai.insightHead}>
         <SparkIcon />
@@ -67,6 +68,7 @@ const JournalAiBar = ({ api, onDraft }: { api: string; onDraft: (d: JournalDraft
       {!!err && <p className={ai.note}>{err}</p>}
       <p className={ai.note}>{t("faiReviewNote")}</p>
     </div>
+    </FinAiGate>
   );
 };
 
