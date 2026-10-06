@@ -589,13 +589,69 @@ h6 {
   }
 }
 
-/* Soft icon tiles: <span class="tone-teal"> (the --tone* tokens above). */
-.tone-indigo { background-color: var(--toneIndigo); color: var(--toneIndigoInk); }
-.tone-violet { background-color: var(--toneViolet); color: var(--toneVioletInk); }
-.tone-teal { background-color: var(--toneTeal); color: var(--toneTealInk); }
-.tone-amber { background-color: var(--toneAmber); color: var(--toneAmberInk); }
-.tone-rose { background-color: var(--toneRose); color: var(--toneRoseInk); }
-.tone-sky { background-color: var(--toneSky); color: var(--toneSkyInk); }
+/* Glass icon tiles: <span class="tone-teal"> (the --tone* tokens above), or
+   any icon box with class="glassIcon" (it takes the brand tint unless a
+   tone class or --tint sets another). A tinted, translucent tile with a soft
+   inner highlight and a hairline border; a plain soft fill where
+   color-mix / backdrop-filter aren't supported. */
+.tone-indigo { --tint: var(--toneIndigoInk); --tintFill: var(--toneIndigo); color: var(--toneIndigoInk); }
+.tone-violet { --tint: var(--toneVioletInk); --tintFill: var(--toneViolet); color: var(--toneVioletInk); }
+.tone-teal { --tint: var(--toneTealInk); --tintFill: var(--toneTeal); color: var(--toneTealInk); }
+.tone-amber { --tint: var(--toneAmberInk); --tintFill: var(--toneAmber); color: var(--toneAmberInk); }
+.tone-rose { --tint: var(--toneRoseInk); --tintFill: var(--toneRose); color: var(--toneRoseInk); }
+.tone-sky { --tint: var(--toneSkyInk); --tintFill: var(--toneSky); color: var(--toneSkyInk); }
+.glassIcon { --tint: var(--toneIndigoInk); --tintFill: var(--toneIndigo); color: var(--tint); }
+.glassIcon.tone-indigo, .glassIcon.tone-violet, .glassIcon.tone-teal,
+.glassIcon.tone-amber, .glassIcon.tone-rose, .glassIcon.tone-sky { color: var(--tint); }
+
+:is(.tone-indigo, .tone-violet, .tone-teal, .tone-amber, .tone-rose, .tone-sky, .glassIcon) {
+  background-color: var(--tintFill);
+  border: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+@supports (background: color-mix(in srgb, red 50%, transparent)) {
+  :is(.tone-indigo, .tone-violet, .tone-teal, .tone-amber, .tone-rose, .tone-sky, .glassIcon) {
+    background:
+      radial-gradient(120% 90% at 20% 0%, rgba(255, 255, 255, 0.7), transparent 55%),
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--tint) 20%, transparent),
+        color-mix(in srgb, var(--tint) 7%, transparent));
+    border-color: color-mix(in srgb, var(--tint) 24%, rgba(255, 255, 255, 0.6));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      inset 0 -1px 0 color-mix(in srgb, var(--tint) 12%, transparent),
+      0 6px 16px -10px color-mix(in srgb, var(--tint) 55%, transparent);
+    -webkit-backdrop-filter: blur(10px) saturate(1.5);
+    backdrop-filter: blur(10px) saturate(1.5);
+  }
+  html[data-theme="dark"] :is(.tone-indigo, .tone-violet, .tone-teal, .tone-amber, .tone-rose, .tone-sky, .glassIcon) {
+    background:
+      radial-gradient(120% 90% at 20% 0%, rgba(255, 255, 255, 0.14), transparent 55%),
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--tint) 24%, transparent),
+        color-mix(in srgb, var(--tint) 8%, transparent));
+    border-color: color-mix(in srgb, var(--tint) 30%, rgba(255, 255, 255, 0.08));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 6px 16px -10px color-mix(in srgb, var(--tint) 60%, transparent);
+  }
+}
+
+/* A glass tile on a deep brand band (footer, register strip, CTA): frosted
+   white over the band, white glyph. Use with .glassIcon. */
+.glassIcon.glassOnBand { --tint: #fff; --tintFill: rgba(255, 255, 255, 0.14); color: var(--onColor); }
+@supports (background: color-mix(in srgb, red 50%, transparent)) {
+  .glassIcon.glassOnBand,
+  html[data-theme="dark"] .glassIcon.glassOnBand {
+    background:
+      radial-gradient(120% 90% at 20% 0%, rgba(255, 255, 255, 0.28), transparent 55%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.07));
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      0 6px 16px -10px rgba(0, 0, 0, 0.5);
+  }
+}
 
 /* Space taken by the phone tab bar (Components/Layout/BottomNav): floating
    buttons, sheets and page bottoms add it so nothing sits under the bar. */

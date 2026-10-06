@@ -128,8 +128,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.95);
-  color: #3730a3;
 }
 
 .propTitle {

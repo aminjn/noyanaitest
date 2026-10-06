@@ -33,9 +33,7 @@ import useHeaderCategories from "./useHeaderCategories";
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
 // how many items a category shows before "see all"
-const MAX_ITEMS = 12;
-// below this many, popular shortcuts fill the rest of the panel
-const SHORT_LIST = 6;
+const MAX_ITEMS = 18;
 
 // Shortcuts shown when a category has no items yet: every one of them is a
 // real page with content, so the panel is never a lone "nothing found".
@@ -64,8 +62,8 @@ export const itemsOf = (
 };
 
 // Header "categories" mega menu: a frosted panel with the category column
-// at the start and the active category's items (or popular shortcuts) next
-// to it. Opens on click, on hover (pointer devices, with a short intent
+// at the start and the active category's own items (e.g. every speciality)
+// next to it, each as a glass tile with the category's icon. Opens on click, on hover (pointer devices, with a short intent
 // delay) and from the keyboard (Enter/Space/ArrowDown); Escape closes and
 // returns focus to the trigger; arrow keys move along the category column.
 const MegaMenu = () => {
@@ -259,7 +257,7 @@ const MegaMenu = () => {
             </Link>
           </div>
 
-          {!!shown.length && (
+          {shown.length ? (
             <ul className={classes.items}>
               {shown.map((cat) => (
                 <li key={cat._id}>
@@ -268,39 +266,34 @@ const MegaMenu = () => {
                     className={classes.item}
                     onClick={() => close()}
                   >
-                    <span className={classes.itemDot} aria-hidden="true" />
+                    <span className={`${classes.itemIcon} tone-${active.tone}`}>
+                      <Ixon width="1rem">{active.icon}</Ixon>
+                    </span>
                     <span className={classes.itemLabel}>
                       {cat.title || cat.name}
                     </span>
                   </Link>
                 </li>
               ))}
+              {items.length > shown.length && (
+                <li>
+                  <Link
+                    href={active.allTarget}
+                    className={`${classes.item} ${classes.itemMore}`}
+                    onClick={() => close()}
+                  >
+                    <span className={classes.itemLabel}>
+                      {getContent("fullListOfX", [label])}
+                    </span>
+                    <Ixon width="0.875rem">
+                      <ArrowLeftIcon />
+                    </Ixon>
+                  </Link>
+                </li>
+              )}
             </ul>
-          )}
-
-          {/* few or no items: fill the panel with real shortcuts */}
-          {shown.length < SHORT_LIST && (
-            <div className={classes.empty}>
-              <span className={classes.emptyTitle}>
-                {getContent("megaPopular")}
-              </span>
-              <ul className={classes.popular}>
-                {popularLinks.map((link) => (
-                  <li key={link.title}>
-                    <Link
-                      href={link.target}
-                      className={classes.popularLink}
-                      onClick={() => close()}
-                    >
-                      <span className={`${classes.popularIcon} tone-${link.tone}`}>
-                        <Ixon width="1.125rem">{link.icon}</Ixon>
-                      </span>
-                      <span>{getContent(link.title)}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          ) : (
+            <p className={classes.emptyNote}>{getContent("nothingFound")}</p>
           )}
 
           <Link
