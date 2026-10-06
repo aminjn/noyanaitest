@@ -158,7 +158,8 @@ const DoctorManageSchedulePage = () => {
         open,
         missed: open ? history[userId]?.missed || 0 : 0,
         intake: open && intakes ? (intakes[r._id] ? "filled" : "missing") : null,
-        desk: (r as { source?: string }).source === "desk",
+        // booked at the desk, or the patient chose to pay at the visit
+        desk: (r as { source?: string }).source === "desk" || !!(r as { payAtDesk?: boolean }).payAtDesk,
         visit: r,
       });
     }

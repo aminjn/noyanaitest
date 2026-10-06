@@ -262,8 +262,9 @@
 }
 
 @media only screen and (max-width: 750px) {
-  /* phones: the theme switch lives in the burger menu instead */
-  .theme {
+  /* phones: the theme switch lives in the burger menu instead (scoped
+     to win over the toggle's own display, which overflowed the 390px bar) */
+  .endContent .theme {
     display: none;
   }
 

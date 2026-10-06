@@ -1,0 +1,68 @@
+.steps {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.step:not(:last-child)::after {
+  content: "";
+  flex: 1;
+  min-width: var(--sp3);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.done:not(:last-child)::after {
+  background: var(--primary6);
+}
+.dot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radiusPill);
+  border: 1.5px solid var(--gray4);
+  background: var(--cardBg);
+  font-weight: 700;
+  font-size: var(--fsXs);
+}
+.label {
+  white-space: nowrap;
+  font-weight: 600;
+}
+.now {
+  color: var(--textStrong);
+}
+.now .dot {
+  border-color: transparent;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  color: var(--onColor);
+  box-shadow: 0 0 0 4px var(--activeTint);
+}
+.done {
+  color: var(--primary7);
+}
+.done .dot {
+  border-color: var(--primary6);
+  background: var(--primary6);
+  color: var(--onColor);
+}
+@media (max-width: 420px) {
+  .next .label {
+    display: none;
+  }
+}

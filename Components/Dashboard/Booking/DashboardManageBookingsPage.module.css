@@ -239,3 +239,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+button.ghost {
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}

@@ -1,0 +1,280 @@
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+  min-width: 0;
+}
+
+/* "first available" shortcut */
+.first {
+  display: flex;
+  align-items: center;
+  gap: var(--sp3);
+  width: 100%;
+  min-height: 3.25rem;
+  padding: var(--sp2) var(--sp3);
+  border-radius: var(--radiusSm);
+  border: 1px dashed var(--cardLineHover);
+  background: var(--hoverTint);
+  color: var(--textStrong);
+  text-align: start;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.first:hover {
+  background: var(--activeTint);
+}
+.firstOn {
+  border-style: solid;
+  border-color: var(--primary6);
+  background: var(--activeTint);
+}
+.firstIcon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: var(--radiusXs);
+}
+.firstText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.firstText small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.firstText b {
+  font-size: var(--fsSm);
+  font-weight: 600;
+}
+
+/* day strip */
+.stripWrap {
+  position: relative;
+  margin-inline: calc(var(--sp1) * -1);
+}
+.strip {
+  display: flex;
+  gap: var(--sp2);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding: var(--sp1);
+  overscroll-behavior-x: contain;
+}
+.strip::-webkit-scrollbar {
+  display: none;
+}
+.day {
+  flex: none;
+  scroll-snap-align: start;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  width: 4.25rem;
+  min-height: 5.25rem;
+  padding: var(--sp2) var(--sp1);
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  color: var(--textStrong);
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+.day:hover:not(:disabled) {
+  border-color: var(--cardLineHover);
+}
+.day:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+.day:focus-visible,
+.slot:focus-visible,
+.first:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+.dayOn {
+  border-color: transparent;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  color: var(--onColor);
+  box-shadow: var(--elev2);
+}
+.dayName {
+  font-size: var(--fsXs);
+  white-space: nowrap;
+}
+.dayNum {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.dayMonth {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+.dayCount {
+  margin-block-start: 2px;
+  min-width: 1.5rem;
+  padding: 0 var(--sp1);
+  border-radius: var(--radiusPill);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background: var(--toneTeal);
+  color: var(--toneTealInk);
+}
+.dayOn .dayCount {
+  background: rgba(255, 255, 255, 0.22);
+  color: var(--onColor);
+}
+.day:disabled .dayCount {
+  background: transparent;
+  color: var(--textMuted);
+}
+
+.dayHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp1) var(--sp3);
+  font-size: var(--fsSm);
+  color: var(--textStrong);
+}
+
+/* times */
+.period {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+}
+.periodTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+  margin: 0;
+  font-size: var(--fsXs);
+  font-weight: 600;
+  color: var(--textMuted);
+}
+.periodTitle span {
+  font-weight: 500;
+  opacity: 0.8;
+}
+.periodTitle::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+  gap: var(--sp2);
+}
+.slot {
+  min-height: 2.75rem;
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--cardLineHover);
+  background: var(--cardBg);
+  color: var(--primary7);
+  font-size: var(--fsSm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.slot:hover {
+  background: var(--hoverTint);
+}
+.slotOn,
+.slotOn:hover {
+  border-color: transparent;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  color: var(--onColor);
+}
+
+/* empty / error / fully booked */
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp2);
+  padding: var(--sp3);
+  border-radius: var(--radiusSm);
+  background: var(--hoverTint);
+  color: var(--textBody);
+  font-size: var(--fsSm);
+}
+.state p {
+  margin: 0;
+}
+.nextBtn,
+.linkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp1);
+  min-height: 2.75rem;
+  padding: 0 var(--sp3);
+  border-radius: var(--radiusPill);
+  border: 1px solid var(--cardLineHover);
+  background: var(--cardBg);
+  color: var(--primary7);
+  font-weight: 600;
+  font-size: var(--fsSm);
+  cursor: pointer;
+}
+:global([dir="ltr"]) .nextChevron {
+  transform: scaleX(-1);
+}
+.full {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+  padding: var(--sp4);
+  border-radius: var(--radiusSm);
+  background: var(--toneAmber);
+  color: var(--textStrong);
+}
+.full strong {
+  color: var(--toneAmberInk);
+}
+.full p {
+  margin: 0;
+  font-size: var(--fsSm);
+  color: var(--textBody);
+}
+
+.skeleton {
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--gray2), var(--gray3), var(--gray2));
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+  cursor: default;
+}
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+.more {
+  border-style: dashed;
+  color: var(--textMuted);
+  font-weight: 600;
+  font-size: var(--fsXs);
+}

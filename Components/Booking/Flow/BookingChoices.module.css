@@ -1,0 +1,86 @@
+.types,
+.offices {
+  display: grid;
+  gap: var(--sp2);
+}
+.type,
+.office {
+  display: flex;
+  align-items: center;
+  gap: var(--sp3);
+  width: 100%;
+  min-height: 3.5rem;
+  padding: var(--sp2) var(--sp3);
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  color: var(--textStrong);
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+.type:hover,
+.office:hover {
+  border-color: var(--cardLineHover);
+}
+.type:focus-visible,
+.office:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+.on,
+.on:hover {
+  border-color: var(--primary6);
+  background: var(--hoverTint);
+  box-shadow: inset 0 0 0 1px var(--primary6);
+}
+.icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radiusXs);
+}
+.typeText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.typeText b {
+  font-size: var(--fsSm);
+  font-weight: 600;
+}
+.typeText small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.price {
+  flex: none;
+  font-size: var(--fsSm);
+  font-weight: 700;
+  color: var(--primary7);
+  font-variant-numeric: tabular-nums;
+}
+
+.insurance {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp2);
+  font-size: var(--fsXs);
+  color: var(--textBody);
+  line-height: 1.7;
+}
+.miniIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.4rem;
+}

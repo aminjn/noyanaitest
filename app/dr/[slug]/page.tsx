@@ -17,6 +17,7 @@ import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 const NS: ContentNamespace[] = [
   "drProfile",
   "drBookingSidebar",
+  "bookingFlow",
   "drSelectClinicFirstPopup",
   "drSessions",
   "bookingSessionSelectorPopup",
