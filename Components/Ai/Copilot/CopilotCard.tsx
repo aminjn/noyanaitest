@@ -91,7 +91,7 @@ const SlotField = ({
   return (
     <div className={classes.slotField}>
       <DateInput
-        defaultValue={value.date ? new Date(`${value.date}T12:00:00`) : undefined}
+        defaultValue={value.date || undefined}
         onChange={(d) => {
           onChange({ date: toYmd(d) });
         }}
@@ -245,7 +245,7 @@ const ConfirmCard = ({ profile, card, onDone }: { profile: AiProfile; card: Extr
               <textarea rows={3} value={String(v ?? "")} onChange={(e) => set(f.key, e.target.value)} dir="auto" />
             ) : f.type === "date" ? (
               <DateInput
-                defaultValue={v ? new Date(`${String(v)}T12:00:00`) : undefined}
+                defaultValue={v ? String(v) : undefined}
                 onChange={(d) => set(f.key, toYmd(d))}
               />
             ) : (

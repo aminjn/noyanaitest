@@ -1,6 +1,6 @@
 "use client";
 import { fromTehranWallClock } from "@/Components/helpers/tehranTime";
-import { toYmd as dayKey } from "@/Components/DoctorPanel/Desk/deskShared";
+import { tehranYmd as dayKey } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";

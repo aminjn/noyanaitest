@@ -1,4 +1,4 @@
-import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
+import { TEHRAN_TZ, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import FormatDate from "@/Components/UI/FormatDate";
 import classes from "./DoctorCalendarDay.module.css";
@@ -122,11 +122,8 @@ const DoctorCalendarDay = ({
 
   const push = useProgress();
 
-  const past = useMemo<boolean>(() => {
-    const now = new Date();
-    const then = new Date(stamp);
-    return then < now;
-  }, [stamp]);
+  // today and earlier (Tehran days) are past, as before
+  const past = useMemo<boolean>(() => tehranYmd(stamp) <= tehranTodayYmd(), [stamp]);
 
   return (
     <div

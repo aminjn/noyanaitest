@@ -1,5 +1,5 @@
 "use client";
-import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
+import { TEHRAN_TZ, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import useSWR from "swr";
@@ -52,7 +52,7 @@ const DoctorManageCalendarDayPage = () => {
   ]);
 
   const past = useMemo<boolean>(
-    () => new Date(Number(params.stamp)) < new Date(),
+    () => tehranYmd(Number(params.stamp)) <= tehranTodayYmd(),
     [params.stamp],
   );
 

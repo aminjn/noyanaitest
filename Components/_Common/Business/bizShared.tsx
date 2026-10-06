@@ -1,4 +1,5 @@
 "use client";
+import { tehranYmd } from "@/Components/helpers/tehranTime";
 import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { createContext, useContext, useMemo } from "react";
@@ -108,11 +109,11 @@ export const useBizFormat = () => {
   }, [tag]);
 };
 
-// YYYY-MM-DD of a local date, the format the API takes
+// YYYY-MM-DD of the Tehran day of a date (a picked day is its Tehran noon,
+// Components/helpers/tehranTime.ts), the format the API takes
 export const isoDay = (d?: Date | null) => {
   if (!d || Number.isNaN(d.getTime())) return "";
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  return tehranYmd(d);
 };
 
 export const asArray = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);

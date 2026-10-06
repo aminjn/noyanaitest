@@ -1,3 +1,4 @@
+import { tehranNoon, tehranTodayYmd } from "@/Components/helpers/tehranTime";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import {
   Fragment,
@@ -71,17 +72,20 @@ function rangeInclusive(x: number, y: number): number[] {
   return Array.from({ length }, (_, i) => x + i);
 }
 
+// pure calendar math (UTC), no device zone
 export const getJDate = (year: number, month: number, day: number) =>
-  moment(`${year}/${month}/${day}`, "jYYYY/jM/jD");
+  moment.utc(`${year}/${month}/${day}`, "jYYYY/jM/jD");
 
+// a Jalali day as its Tehran noon: the same day in any device zone
+// (Components/helpers/tehranTime.ts)
 export const getDate = (year: number, month: number, day: number) =>
-  getJDate(year, month, day).toDate();
+  tehranNoon(getJDate(year, month, day).format("YYYY-MM-DD"));
 
 export const jDaysInMonth = (year: number, month: number) =>
   moment.jDaysInMonth(year, month);
 
 export const jWeekday = (year: number, month: number, day: number) => {
-  const weekday = moment(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
+  const weekday = moment.utc(`${year}/${month}/${day}`, "jYYYY/jM/jD").day();
   return (weekday + 1) % 7;
 };
 
@@ -96,7 +100,8 @@ const Calendxr2 = ({
   initialView?: CalendxrView;
   onViewChange?: (view: CalendxrView) => void;
 }) => {
-  const today = useMemo(() => new Date(), []);
+  // today's Jalali month in Tehran
+  const today = useMemo(() => moment.utc(tehranTodayYmd(), "YYYY-MM-DD"), []);
   const [view, setView] = useState<CalendxrView>(
     initialView || {
       month: moment(today).jMonth(), // 0-based

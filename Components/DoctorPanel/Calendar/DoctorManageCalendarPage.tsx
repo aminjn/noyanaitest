@@ -1,4 +1,5 @@
 "use client";
+import { sameTehranDay, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import Calendxr2, {
   CalendxrView,
@@ -50,11 +51,12 @@ const WeekDay = ({
         view.month + 1,
         currentDayMatchingThisWeekDay
       );
-      if (theDay > new Date()) theseWeekDayDays.push(theDay);
+      // days after today in Tehran
+      if (tehranYmd(theDay) > tehranTodayYmd()) theseWeekDayDays.push(theDay);
       currentDayMatchingThisWeekDay += 7;
     }
     const applicableSelectedDays = theseWeekDayDays.filter(
-      (day) => !!selected.find((d) => d.toDateString() === day.toDateString())
+      (day) => !!selected.find((d) => sameTehranDay(d, day))
     );
     if (!applicableSelectedDays.length) return "None";
     return applicableSelectedDays.length !== theseWeekDayDays.length
@@ -78,18 +80,19 @@ const WeekDay = ({
               view.month + 1,
               currentDayMatchingThisWeekDay
             );
-            if (theDay > new Date()) theseWeekDayDays.push(theDay);
+            // days after today in Tehran
+      if (tehranYmd(theDay) > tehranTodayYmd()) theseWeekDayDays.push(theDay);
             currentDayMatchingThisWeekDay += 7;
           }
           const someSelected = theseWeekDayDays.some(
             (day) =>
-              !!selected.find((d) => d.toDateString() === day.toDateString())
+              !!selected.find((d) => sameTehranDay(d, day))
           );
           if (someSelected) {
             for (let i = clone.length - 1; i >= 0; i--) {
               if (
                 theseWeekDayDays.some(
-                  (day) => day.toDateString() === clone[i].toDateString()
+                  (day) => sameTehranDay(day, clone[i])
                 )
               ) {
                 clone.splice(i, 1);
@@ -124,14 +127,8 @@ const DoctorManageCalendarPage = () => {
     { title: getContent("bookingCalendar"), target: "/doctorpanel/calendar" },
   ]);
 
-  const today = useMemo<Date>(() => {
-    const then = new Date();
-    then.setMinutes(0);
-    then.setHours(0);
-    then.setSeconds(0);
-    then.setMilliseconds(0);
-    return then;
-  }, []);
+  // today in Tehran (Components/helpers/tehranTime.ts)
+  const today = useMemo(() => moment.utc(tehranTodayYmd(), "YYYY-MM-DD"), []);
   const [selected, setSelected] = useState<Date[]>([]);
   const [view, setView] = useState<CalendxrView>({
     month: moment(today).jMonth(),
@@ -155,14 +152,14 @@ const DoctorManageCalendarPage = () => {
                 stamp={date}
                 selected={
                   !!selected.find(
-                    (d) => date.toDateString() === d.toDateString()
+                    (d) => sameTehranDay(date, d)
                   )
                 }
                 onSelect={() =>
                   setSelected((prev) => {
                     const clone = [...prev];
                     const index = clone.findIndex(
-                      (d) => d.toDateString() === date.toDateString()
+                      (d) => sameTehranDay(d, date)
                     );
                     if (index === -1) {
                       clone.push(date);

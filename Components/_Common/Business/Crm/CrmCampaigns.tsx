@@ -1,5 +1,5 @@
 "use client";
-import { fromTehranWallClock, pickerDate, tehranParts, tehranYmd } from "@/Components/helpers/tehranTime";
+import { fromTehranWallClock, tehranNoon, tehranParts, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -85,7 +85,7 @@ const CampaignForm = ({
   });
   const [later, setLater] = useState(!!campaign?.sendAt);
   // the send day and hour are Tehran's (the send window is 08-21 Tehran)
-  const [day, setDay] = useState<Date | null>(campaign?.sendAt ? pickerDate(tehranYmd(campaign.sendAt)) : null);
+  const [day, setDay] = useState<Date | null>(campaign?.sendAt ? tehranNoon(tehranYmd(campaign.sendAt)) : null);
   const [hour, setHour] = useState(campaign?.sendAt ? tehranParts(campaign.sendAt).hour : 10);
   const [wFrom, setWFrom] = useState(campaign?.windowFrom ?? 8);
   const [wUntil, setWUntil] = useState(campaign?.windowUntil ?? 21);
@@ -117,9 +117,7 @@ const CampaignForm = ({
   }, [api, key, text]);
   const sendAt = (() => {
     if (!later || !day) return null;
-    const p = (n: number) => String(n).padStart(2, "0");
-    const ymd = `${day.getFullYear()}-${p(day.getMonth() + 1)}-${p(day.getDate())}`;
-    return fromTehranWallClock(ymd, hour * 60).toISOString();
+    return fromTehranWallClock(tehranYmd(day), hour * 60).toISOString();
   })();
   const valid = name.trim().length >= 2 && text.trim().length >= 5 && (mode !== "segment" || !!segment) && wUntil > wFrom && (!later || !!sendAt);
   const pickTemplate = (id: string) => {

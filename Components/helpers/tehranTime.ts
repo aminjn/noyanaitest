@@ -149,16 +149,35 @@ export const fromTehranLocalInput = (value: string) => {
   return m ? fromTehranWallClock(m[1], Number(m[2]) * 60 + Number(m[3])) : new Date(NaN);
 };
 
-// A Tehran "YYYY-MM-DD" day as a date picker's own value. The pickers work
-// in the device's calendar (the day clicked is the device-local day), so a
-// day goes in as its local noon and comes out with local getters.
+// Date pickers (Components/UI/DateInput, InlineDateInput): the picker widget
+// works in the device's calendar, so inside it a day is its LOCAL noon
+// (pickerDate). Outside, a picked day is always its TEHRAN noon (fromPicker),
+// read back with tehranYmd: the same day in every zone, on the API too.
 export const pickerDate = (ymd: string) => {
   const [y, m, d] = splitYmd(ymd);
   return new Date(y, (m || 1) - 1, d || 1, 12);
 };
 
-// today in Tehran (n days on) as a date picker's value
-export const tehranTodayPicker = (n = 0) => pickerDate(tehranTodayYmd(n));
+// "YYYY-MM-DD" of a Date's device-local day (a picker widget's own value)
+export const localYmd = (d: Date) =>
+  isNaN(d.getTime()) ? "" : ymdOf(d.getFullYear(), d.getMonth() + 1, d.getDate());
+
+// the widget value for any day value: "YYYY-MM-DD", or an instant read as
+// its Tehran day (a stored date, a picked day)
+export const pickerValueOf = (value: DateLike | null | undefined): Date | undefined => {
+  if (value === null || value === undefined || value === "") return undefined;
+  const ymd = tehranYmd(value);
+  return ymd ? pickerDate(ymd) : undefined;
+};
+
+// the day the widget returned, as its Tehran noon
+export const fromPicker = (d: Date) => tehranNoon(localYmd(d));
+
+// today in Tehran (n days on), as a picked day (its Tehran noon)
+export const tehranTodayPicker = (n = 0) => tehranNoon(tehranTodayYmd(n));
+
+// the first of the Gregorian month of a day (its Tehran noon)
+export const tehranMonthStart = (at: DateLike = new Date()) => tehranNoon(`${tehranYmd(at).slice(0, 8)}01`);
 
 // Intl options with Tehran's zone, unless the caller named one
 export const withTehranZone = <T extends Intl.DateTimeFormatOptions | undefined>(options?: T) =>

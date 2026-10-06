@@ -17,6 +17,9 @@ const TableDateInput = ({ date, onDateChange }: CustomDateProps) => {
             onDateChange(null);
             return;
           }
+          // the device-local midnight of the picked day, as ag-grid expects;
+          // TableGrid's comparator reads it as that day against each cell's
+          // Tehran day
           const then = e.toDate();
           then.setHours(0, 0, 0, 0);
           onDateChange(then);

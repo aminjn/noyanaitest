@@ -16,7 +16,7 @@ import DateInput from "@/Components/UI/DateInput";
 import ReservationStatusBadge from "@/Components/Dashboard/Booking/ReservationStatusBadge";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import { getSessionDateKey } from "@/Components/helpers/lib";
-import { pickerDate, toYmd } from "@/Components/DoctorPanel/Desk/deskShared";
+import { toYmd } from "@/Components/DoctorPanel/Desk/deskShared";
 import { tehranNoon, tehranTodayYmd } from "@/Components/helpers/tehranTime";
 import schedule from "@/Components/DoctorPanel/Schedule/DoctorManageSchedulePage.module.css";
 import classes from "./CenterAgendaPage.module.css";
@@ -109,8 +109,8 @@ const CenterAgendaPage = ({ kind, panel }: { kind: "clinic" | "hospital"; panel:
               ))}
             </select>
           </label>
-          <DateInput className={classes.date} title={getContent("caFrom")} defaultValue={pickerDate(from)} onChange={(d) => setFrom(toYmd(d))} />
-          <DateInput className={classes.date} title={getContent("caTo")} defaultValue={pickerDate(to)} onChange={(d) => setTo(toYmd(d))} />
+          <DateInput className={classes.date} title={getContent("caFrom")} defaultValue={from} onChange={(d) => setFrom(toYmd(d))} />
+          <DateInput className={classes.date} title={getContent("caTo")} defaultValue={to} onChange={(d) => setTo(toYmd(d))} />
         </div>
       </header>
 

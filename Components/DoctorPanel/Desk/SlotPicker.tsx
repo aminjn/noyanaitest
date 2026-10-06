@@ -8,7 +8,7 @@ import { useIntlLocale } from "@/Components/i18n/navigation";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import DateInput from "@/Components/UI/DateInput";
-import { DeskSlot, PickedSlot, pickerDate, toYmd } from "./deskShared";
+import { DeskSlot, PickedSlot, toYmd } from "./deskShared";
 import { tehranTodayYmd } from "@/Components/helpers/tehranTime";
 import classes from "./Desk.module.css";
 
@@ -77,7 +77,7 @@ const SlotPicker = ({
       <DateInput
         key={pickerKey}
         title={getContent("deskDay")}
-        defaultValue={day ? pickerDate(day) : undefined}
+        defaultValue={day || undefined}
         onChange={(d) => {
           setDay(toYmd(d));
           onChange(null);

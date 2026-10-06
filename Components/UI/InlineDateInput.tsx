@@ -8,6 +8,7 @@ import Ixon from "./Ixon";
 import XMarkIcon from "../Icons/XMarkIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { fromPicker, pickerValueOf } from "../helpers/tehranTime";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
@@ -48,14 +49,16 @@ const InlineDateInput = ({
         calendar={persian}
         locale={persian_fa}
         multiple={false}
-        value={innerValue}
+        // Tehran days in and out (Components/helpers/tehranTime.ts)
+        value={pickerValueOf(innerValue) || null}
         onChange={(e) => {
-          const newValue = e?.toDate() || null;
+          const picked = e?.toDate();
+          const newValue = picked ? fromPicker(picked) : null;
           setInnerValue(newValue);
           onChange(newValue);
         }}
-        minDate={min}
-        maxDate={max}
+        minDate={pickerValueOf(min)}
+        maxDate={pickerValueOf(max)}
       />
       {!!innerValue && (
         <button

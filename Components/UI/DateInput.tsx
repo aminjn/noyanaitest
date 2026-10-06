@@ -6,6 +6,7 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { fromPicker, pickerValueOf } from "../helpers/tehranTime";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "uiForm"];
 
@@ -20,7 +21,9 @@ const DateInput = ({
   onClear,
 }: WithStyleProps<{
   title?: string;
+  // a "YYYY-MM-DD" day or an instant, read as its Tehran day
   defaultValue?: Date | string;
+  // the picked day as its Tehran noon (Components/helpers/tehranTime.ts)
   onChange?: (e: Date) => unknown;
   readOnly?: boolean;
   placeholder?: string | boolean;
@@ -42,10 +45,10 @@ const DateInput = ({
         portal
         portalTarget={document.body}
         calendarPosition="top-center"
-        value={defaultValue}
+        value={pickerValueOf(defaultValue)}
         onChange={(e) => {
           const newVal = e?.toDate();
-          if (newVal) onChange?.(newVal);
+          if (newVal) onChange?.(fromPicker(newVal));
         }}
         calendar={persian}
         locale={persian_fa}
