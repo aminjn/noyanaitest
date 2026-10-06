@@ -28,8 +28,6 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background-color: var(--successT1);
-  color: var(--successS1);
   flex-shrink: 0;
 }
 

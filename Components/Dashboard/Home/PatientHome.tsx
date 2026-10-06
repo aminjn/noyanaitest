@@ -70,6 +70,14 @@ type PatientDashboard = {
   unreadMessages: number;
 };
 
+// suggestion / action tone -> glass icon tile tone (globals.css .tone-*)
+const GLASS_TONE: Record<string, string> = {
+  blue: "tone-indigo",
+  violet: "tone-violet",
+  green: "tone-teal",
+  amber: "tone-amber",
+};
+
 type Suggestion = { key: string; icon: ReactNode; tone: string; title: string; meta?: string; href: string };
 
 const doctorName = (d?: DashDoctor | null) => [d?.firstName, d?.lastName].filter(Boolean).join(" ");
@@ -246,7 +254,7 @@ const PatientHome = ({ name }: { name?: string }) => {
               {suggestions.slice(0, 4).map((s) => (
                 <li key={s.key}>
                   <Link href={s.href} className={classes.suggestion}>
-                    <span className={`${classes.sugIcon} ${classes[s.tone]}`}>
+                    <span className={`${classes.sugIcon} glassIcon ${GLASS_TONE[s.tone] || ""}`}>
                       <Ixon width="1rem">{s.icon}</Ixon>
                     </span>
                     <span className={classes.sugText}>
@@ -330,7 +338,7 @@ const PatientHome = ({ name }: { name?: string }) => {
       <nav className={classes.actions} aria-label={getContent("phQuickActions")}>
         {actions.map((a) => (
           <Link key={a.href} href={a.href} className={classes.action}>
-            <span className={`${classes.actionIcon} ${classes[a.tone]}`}>
+            <span className={`${classes.actionIcon} glassIcon ${GLASS_TONE[a.tone] || ""}`}>
               <Ixon width="1.25rem">{a.icon}</Ixon>
             </span>
             <span className={classes.actionText}>

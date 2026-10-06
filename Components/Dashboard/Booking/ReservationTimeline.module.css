@@ -22,25 +22,11 @@
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: var(--gray3);
-  color: var(--gray7);
   flex-shrink: 0;
 }
 
-.stepIcon.done {
-  background-color: var(--successT1);
-  color: var(--successS1);
-}
 
-.stepIcon.error {
-  background-color: var(--errorT1);
-  color: var(--errorS1);
-}
 
-.stepIcon.skipped {
-  background-color: var(--gray3);
-  color: var(--gray6);
-}
 
 .stepLine {
   width: 2px;

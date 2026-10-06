@@ -73,7 +73,7 @@ const LicensePlansPage = ({ name }: { name: LicenseOrg }) => {
       {!!data && (
         <div className={classes.main}>
           <div className={classes.header}>
-            <div className={classes.icon}>
+            <div className={`${classes.icon} glassIcon`}>
               <Ixon width="1.5rem">
                 <LockCloseIcon />
               </Ixon>

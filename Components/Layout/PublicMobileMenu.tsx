@@ -192,9 +192,9 @@ const PublicMobileMenu = ({
                 className={classes.navItem}
                 onClick={onClose}
               >
-                <Ixon width="1.25rem" className={classes.navItemIcon}>
-                  {item.icon}
-                </Ixon>
+                <span className={`${classes.navItemIcon} glassIcon`}>
+                  <Ixon width="1.125rem">{item.icon}</Ixon>
+                </span>
                 <span className={tsmMedium}>{getContent(item.title)}</span>
               </Link>
             ))}

@@ -22,7 +22,7 @@ const PatientRenderer = ({ className = "", style }: WithStyleProps) => {
   if (!patient)
     return (
       <div className={`${classes.empty} ${className}`} style={style}>
-        <Ixon width="2.5rem" className={classes.emptyIcon}>
+        <Ixon width="2.5rem" className={`${classes.emptyIcon} glassIcon`}>
           <UserIcon />
         </Ixon>
         <legend className={classes.emptyLegend}>

@@ -127,8 +127,8 @@ const BottomNav = () => {
           const active = item.match(pathname);
           const content = (
             <>
-              <span className={classes.iconWrap}>
-                <Ixon width={item.center ? "1.375rem" : "1.375rem"}>{item.icon}</Ixon>
+              <span className={`${classes.iconWrap} ${item.center ? "glassIcon tone-violet" : active ? "glassIcon" : ""}`}>
+                <Ixon width="1.375rem">{item.icon}</Ixon>
               </span>
               <span className={classes.label}>{getContent(item.label)}</span>
             </>

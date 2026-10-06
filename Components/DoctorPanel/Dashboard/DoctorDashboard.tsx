@@ -132,6 +132,18 @@ const Avatar = ({ name, seed, big }: { name: string; seed: string; big?: boolean
   </span>
 );
 
+// KPI / suggestion tone -> glass icon tile tone (globals.css .tone-*)
+const GLASS_TONE: Record<string, string> = {
+  warn: "tone-amber",
+  ai: "tone-violet",
+  violet: "tone-violet",
+  accent: "tone-indigo",
+  blue: "tone-indigo",
+  ok: "tone-teal",
+  green: "tone-teal",
+  sky: "tone-sky",
+};
+
 const Kpi = ({
   icon,
   tone,
@@ -152,7 +164,7 @@ const Kpi = ({
   const body = (
     <>
       <span className={classes.kpiHead}>
-        <span className={`${classes.kpiIcon} ${classes[tone]}`}>
+        <span className={`${classes.kpiIcon} glassIcon ${GLASS_TONE[tone] || ""}`}>
           <Ixon width="1.1rem">{icon}</Ixon>
         </span>
         <span>{label}</span>
@@ -412,7 +424,7 @@ const DoctorDashboard = () => {
                   {view.suggestions.slice(0, 5).map((s) => (
                     <li key={s.key}>
                       <Link href={s.href} className={classes.suggestion}>
-                        <span className={`${classes.sugIcon} ${classes[s.tone]}`}>
+                        <span className={`${classes.sugIcon} glassIcon ${GLASS_TONE[s.tone] || ""}`}>
                           <Ixon width="1rem">{s.icon}</Ixon>
                         </span>
                         <span className={classes.sugText}>

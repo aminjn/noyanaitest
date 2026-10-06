@@ -200,7 +200,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.875rem;
   color: var(--textStrong);
 }
@@ -211,7 +211,13 @@
 }
 
 .navItemIcon {
-  color: var(--primary);
+  flex-shrink: 0;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ctas {

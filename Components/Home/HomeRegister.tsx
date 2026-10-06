@@ -91,7 +91,7 @@ const HomeRegister = ({ stats }: { stats?: SiteStats }) => {
         <ul className={classes.stats}>
           {props.map(({ title, icon }) => (
             <li key={title} className={`${classes.stat} ${classes.prop}`}>
-              <span className={classes.propIcon}>
+              <span className={`${classes.propIcon} glassIcon glassOnBand`}>
                 <Ixon width="1.25rem">{icon}</Ixon>
               </span>
               <span className={classes.propTitle}>{getContent(title)}</span>

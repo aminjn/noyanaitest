@@ -297,7 +297,7 @@ const CurrentChat = ({ onOpenSidebar }: { onOpenSidebar?: () => void }) => {
           </button>
         </div>
         <div className={classes.empty}>
-          <span className={classes.emptyIcon} aria-hidden>
+          <span className={`${classes.emptyIcon} glassIcon tone-violet`} aria-hidden>
             <Ixon width="1.75rem">
               <ChatIcon />
             </Ixon>

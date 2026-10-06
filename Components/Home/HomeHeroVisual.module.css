@@ -158,9 +158,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  background-color: var(--ai);
-  background-image: var(--gradAccent);
 }
 
 .aiSpecialty {
@@ -385,7 +382,7 @@
   color: var(--textMuted);
 }
 
+/* the active tab is a glass tile (glassIcon); keep its tint over the span colour */
 .tabBar > .tabOn {
-  color: var(--primary);
-  background: var(--activeTint);
+  color: var(--tint);
 }

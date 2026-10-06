@@ -155,20 +155,10 @@
   gap: 0.5rem;
 }
 
-.itemIcon,
 .itemScore {
   flex-shrink: 0;
 }
 
-.itemIcon {
-  padding: 0.625rem;
-  border-radius: 0.625rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--onColor);
-  background-color: var(--primary);
-}
 
 .itemContent {
   flex: 1;

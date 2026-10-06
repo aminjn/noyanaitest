@@ -93,7 +93,7 @@ const ProBenefitList = ({ benefits, compact }: { benefits: IProBenefits | null |
     <ul className={`${classes.benefits} ${compact ? classes.benefitsCompact : ""}`}>
       {list.map((item) => (
         <li key={item.key} className={classes.benefit}>
-          <span className={classes.benefitIcon}>
+          <span className={`${classes.benefitIcon} glassIcon`}>
             <Ixon width="1.125rem">{item.icon}</Ixon>
           </span>
           <span className={classes.benefitText}>

@@ -28,14 +28,14 @@ const Card = ({
   const getContent = useScopedLocale(NS);
   return (
     <li className={`${classes.card} ${alt ? classes.alt : ""}`}>
-      <div className={classes.icon}>
+      <div className={`${classes.icon} glassIcon ${alt ? "tone-teal" : ""}`}>
         <Ixon width="2.25rem">{icon}</Ixon>
       </div>
       <h3 className={`${classes.cardTitle} ${tmdBold}`}>{getContent(title)}</h3>
       <ul className={classes.items}>
         {items.map((item) => (
           <li key={item} className={classes.item}>
-            <div className={classes.itemIcon}>
+            <div className={`${classes.itemIcon} glassIcon ${alt ? "tone-teal" : ""}`}>
               <Ixon width=".875rem">
                 <CheckIcon />
               </Ixon>

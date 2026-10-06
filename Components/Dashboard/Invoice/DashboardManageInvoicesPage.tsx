@@ -138,7 +138,7 @@ const DashboardManageinvoicesPage = () => {
                       {docName ? (
                         <InitialAvatar name={docName} seed={doc?._id || inv._id} size="2.75rem" />
                       ) : (
-                        <span className={classes.icon}>
+                        <span className={`${classes.icon} glassIcon`}>
                           <Ixon width="1.25rem">
                             <ReceiptIcon />
                           </Ixon>

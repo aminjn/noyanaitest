@@ -19,7 +19,7 @@ const DrugCard = ({ node }: { node: IDrug<{ Tag: Record<never, never> }> }) => {
   return (
     <li className={classes.main}>
       <div className={classes.header}>
-        <div className={classes.icon}>
+        <div className={`${classes.icon} glassIcon tone-teal`}>
           <Ixon width="1.5rem">
             <PillIcon />
           </Ixon>

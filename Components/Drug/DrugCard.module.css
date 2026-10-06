@@ -28,7 +28,10 @@
 }
 
 .icon {
+  flex-shrink: 0;
+  display: flex;
   padding: 0.75rem;
+  border-radius: 1rem;
 }
 
 .details {

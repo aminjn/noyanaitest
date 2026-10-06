@@ -78,9 +78,6 @@
   display: grid;
   place-items: center;
   border-radius: 0.875rem;
-  background-color: var(--gradAccentSolid);
-  background-image: var(--gradAccent);
-  color: var(--onColor);
 }
 
 .count {

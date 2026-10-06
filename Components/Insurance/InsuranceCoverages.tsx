@@ -21,7 +21,7 @@ const InsuranceCoverages = ({ node }: { node: InsurancePageNode }) => {
       <div className={classes.list}>
         {node.coverages.map((el, i) => (
           <div key={i} className={classes.item}>
-            <div className={classes.itemIcon}>
+            <div className={`${classes.itemIcon} glassIcon tone-sky`}>
               <Ixon width="1rem">
                 <CheckIcon />
               </Ixon>

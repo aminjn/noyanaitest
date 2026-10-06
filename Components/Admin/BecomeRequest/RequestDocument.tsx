@@ -29,7 +29,7 @@ const RequestDocument = ({
         // eslint-disable-next-line @next/next/no-img-element
         <img className={classes.thumb} src={href} alt={label} loading="lazy" />
       ) : (
-        <span className={classes.icon}>
+        <span className={`${classes.icon} glassIcon`}>
           <FileIcon />
         </span>
       )}

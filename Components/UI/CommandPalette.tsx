@@ -165,7 +165,7 @@ const CommandPalette = ({
                         onClick={() => go(it)}
                       >
                         {!!it.icon && (
-                          <span className={classes.icon}>
+                          <span className={`${classes.icon} glassIcon`}>
                             <Ixon width="1.125rem">{it.icon}</Ixon>
                           </span>
                         )}

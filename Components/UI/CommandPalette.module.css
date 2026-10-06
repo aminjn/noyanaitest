@@ -113,14 +113,8 @@
   width: 2rem;
   height: 2rem;
   border-radius: 0.625rem;
-  background: var(--line);
 }
 
-.on .icon {
-  background-color: var(--gradAccentSolid);
-  background-image: var(--gradAccent);
-  color: var(--onColor);
-}
 
 .text {
   display: flex;

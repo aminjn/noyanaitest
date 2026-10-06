@@ -55,8 +55,6 @@
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 0.75rem;
-  background: var(--primary1);
-  color: var(--primary7);
 }
 
 .benefitText {
@@ -212,8 +210,6 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.875rem;
-  background: linear-gradient(135deg, #f5b301, #f08c00);
-  color: #2b1a00;
 }
 
 .upsellText {

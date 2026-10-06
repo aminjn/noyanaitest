@@ -36,7 +36,7 @@ const TestItem = ({
 
   return (
     <div className={classes.item}>
-      <div className={classes.itemIcon}>
+      <div className={`${classes.itemIcon} glassIcon tone-teal`}>
         <Ixon width="1.5rem">
           <FlaskIcon />
         </Ixon>

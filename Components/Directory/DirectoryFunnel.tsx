@@ -51,9 +51,11 @@ const DirectoryFunnel = ({
   return (
     <section className={`${classes.main} ${compact ? classes.compact : ""}`}>
       <div className={classes.text}>
-        <Ixon width="1.75rem" className={classes.icon}>
-          <AiIcon />
-        </Ixon>
+        <span className={`${classes.icon} glassIcon tone-violet`}>
+          <Ixon width="1.375rem">
+            <AiIcon />
+          </Ixon>
+        </span>
         <div>
           <h2 className={`${classes.title} ${tsmDemiBold}`}>
             {getContent("directoryFunnelTitle")}

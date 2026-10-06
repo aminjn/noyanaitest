@@ -24,7 +24,7 @@ const SpecialsBox = ({
   return (
     <div className={classes.main}>
       <div className={classes.header}>
-        <div className={classes.icon}>
+        <div className={`${classes.icon} glassIcon tone-sky`}>
           <Ixon width="1.25rem">{icon}</Ixon>
         </div>
         <div className={classes.details}>

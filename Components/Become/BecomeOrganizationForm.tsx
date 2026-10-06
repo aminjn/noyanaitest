@@ -102,7 +102,7 @@ const BecomeOrganizationForm = ({
     <div className={classes.container}>
       {!!pending && (
         <div className={classes.pending}>
-          <div className={classes.icon}>
+          <div className={`${classes.icon} glassIcon tone-amber`}>
             <Ixon width="1.5rem">
               <ClockSolidIcon />
             </Ixon>

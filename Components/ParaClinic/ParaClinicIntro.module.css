@@ -162,8 +162,6 @@
 }
 
 .cardIcon {
-  background-color: var(--primary1);
-  color: var(--primary);
   border-radius: 1rem;
   flex-shrink: 0;
 }

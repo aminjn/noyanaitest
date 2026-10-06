@@ -117,7 +117,7 @@ const PublicFooter = () => {
         </div>
         <div className={classes.contacts}>
           <div className={classes.contactItem}>
-            <span className={classes.contactIcon}>
+            <span className={`${classes.contactIcon} glassIcon glassOnBand`}>
               <Ixon width="1.25rem">
                 <LocationIcon />
               </Ixon>
@@ -130,7 +130,7 @@ const PublicFooter = () => {
             </p>
           </div>
           <div className={classes.contactItem}>
-            <span className={classes.contactIcon}>
+            <span className={`${classes.contactIcon} glassIcon glassOnBand`}>
               <Ixon width="1.25rem">
                 <CallingIconStroke />
               </Ixon>
@@ -152,7 +152,7 @@ const PublicFooter = () => {
             </p>
           </div>
           <div className={classes.contactItem}>
-            <span className={classes.contactIcon}>
+            <span className={`${classes.contactIcon} glassIcon glassOnBand`}>
               <Ixon width="1.25rem">
                 <EnvelopeIcon />
               </Ixon>

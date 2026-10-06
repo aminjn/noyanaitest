@@ -224,7 +224,7 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
       {/* ---- the note ---- */}
       <section className={`${classes.card} ${classes.noteCard}`} aria-labelledby="visit-note">
         <div className={classes.cardHead}>
-          <span className={classes.headIcon}>
+          <span className={`${classes.headIcon} glassIcon tone-violet`}>
             <Ixon width="1.1rem">
               <SparkIcon />
             </Ixon>

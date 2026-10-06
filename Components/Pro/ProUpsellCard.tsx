@@ -37,7 +37,7 @@ const ProUpsellCard = ({
   const t = texts[moment];
   return (
     <Link href="/pro" className={`${classes.upsell} ${className}`}>
-      <span className={classes.upsellIcon}>
+      <span className={`${classes.upsellIcon} glassIcon tone-amber`}>
         <Ixon width="1.25rem">
           <CrownIcon />
         </Ixon>

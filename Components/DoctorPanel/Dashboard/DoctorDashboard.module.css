@@ -178,30 +178,6 @@ a.pill:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--onColor);
-}
-
-.warn {
-  background: #d97706;
-}
-
-.ai,
-.violet {
-  background: #6d4aff;
-}
-
-.accent,
-.blue {
-  background: #2563eb;
-}
-
-.ok,
-.green {
-  background: #059669;
-}
-
-.sky {
-  background: #0284c7;
 }
 
 .sugText {
@@ -299,7 +275,6 @@ a.pill:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--onColor);
 }
 
 .kpiValue {

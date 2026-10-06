@@ -155,6 +155,17 @@
 }
 
 /* the service cards of «سرویس‌ها و کلیدها» */
+/* «سرویس‌ها و کلیدها» card: the state as a glass icon tile */
+.stateIcon {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));

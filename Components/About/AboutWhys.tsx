@@ -10,7 +10,7 @@ import TitleLegend from "./TitleLegend";
 const Item = ({ item }: { item: IAboutWhy }) => {
   return (
     <li className={classes.item}>
-      <div className={classes.icon}>
+      <div className={`${classes.icon} glassIcon tone-violet`}>
         <HostedImage
           src={item.image}
           alt={item.title || ""}

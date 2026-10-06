@@ -19,7 +19,7 @@ const TestCard = ({
 
   return (
     <li className={classes.main}>
-      <div className={classes.icon}>
+      <div className={`${classes.icon} glassIcon tone-amber`}>
         <Ixon width="1.5rem">
           <FlaskIcon />
         </Ixon>

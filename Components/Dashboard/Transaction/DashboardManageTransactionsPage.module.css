@@ -232,25 +232,9 @@ a.row:hover {
   border-radius: 0.875rem;
 }
 
-.visit {
-  background: var(--aiSoft);
-  color: var(--aiText);
-}
 
-.order {
-  background: #05966922;
-  color: #059669;
-}
 
-.topUp {
-  background: var(--successT1);
-  color: var(--successS3);
-}
 
-.other {
-  background: var(--line);
-  color: var(--gray10);
-}
 
 .what {
   flex: 1;

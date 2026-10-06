@@ -25,8 +25,6 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.75rem;
-  background: var(--ai);
-  color: var(--white);
 }
 
 .headText {

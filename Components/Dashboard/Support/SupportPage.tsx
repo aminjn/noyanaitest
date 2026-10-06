@@ -203,7 +203,7 @@ const SupportPage = () => {
             <div className={classes.topicGrid}>
               {ticketSubjects.map((s) => (
                 <button key={s} type="button" className={classes.topic} onClick={() => open(s)}>
-                  <span className={classes.topicIcon}>
+                  <span className={`${classes.topicIcon} glassIcon tone-violet`}>
                     <Ixon width="1.25rem">{ticketSubjectIcons[s]}</Ixon>
                   </span>
                   {getContent(ticketSubjectContentKeyDict[s])}
@@ -242,7 +242,7 @@ const SupportPage = () => {
                 return (
                   <li key={ticket._id}>
                     <Link href={`/dashboard/support/${ticket._id}`} className={classes.item}>
-                      <span className={classes.itemIcon}>
+                      <span className={`${classes.itemIcon} glassIcon tone-violet`}>
                         <Ixon width="1.125rem">{ticketSubjectIcons[ticket.subject] || <HelpCircleIcon />}</Ixon>
                       </span>
                       <span className={classes.itemBody}>

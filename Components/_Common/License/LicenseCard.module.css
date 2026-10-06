@@ -28,10 +28,6 @@
   box-shadow: 0 18px 40px -18px rgba(99, 102, 241, 0.55);
 }
 
-.alt .icon {
-  color: #d97706;
-}
-
 .badges {
   min-height: 1.5rem;
   display: flex;
@@ -47,7 +43,13 @@
 }
 
 .icon {
-  color: var(--primary6);
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .name {

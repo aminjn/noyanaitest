@@ -47,6 +47,14 @@ const stepIcon: Record<StepState, ReactNode> = {
   skipped: <XMarkIcon />,
 };
 
+// glass tile tone per step state (globals.css .tone-*)
+const stepTone: Record<StepState, string> = {
+  done: "tone-teal",
+  pending: "tone-muted",
+  error: "tone-rose",
+  skipped: "tone-muted",
+};
+
 const ReservationTimeline = ({ data }: { data: ReservationLifecycleData }) => {
   const getContent = useScopedLocale(NS);
 
@@ -127,9 +135,7 @@ const ReservationTimeline = ({ data }: { data: ReservationLifecycleData }) => {
           <div className={classes.step}>
             <div className={classes.stepIconCol}>
               <div
-                className={`${classes.stepIcon} ${
-                  step.state === "pending" ? "" : classes[step.state]
-                }`}
+                className={`${classes.stepIcon} glassIcon ${stepTone[step.state] || ""}`}
               >
                 <Ixon width="0.875rem">{stepIcon[step.state]}</Ixon>
               </div>

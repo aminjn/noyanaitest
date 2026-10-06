@@ -12,16 +12,14 @@ import BuildingIcon from "../Icons/BuildingIcon";
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
 const InfoIcon = ({
-  bacCol,
+  tone,
   children,
-  color,
 }: {
   children: ReactNode;
-  color: string;
-  bacCol: string;
+  tone: "indigo" | "teal" | "violet";
 }) => {
   return (
-    <div className={classes.icon} style={{ color, backgroundColor: bacCol }}>
+    <div className={`${classes.icon} glassIcon tone-${tone}`}>
       <Ixon width="1rem">{children}</Ixon>
     </div>
   );
@@ -79,7 +77,7 @@ const MedicalCenterSummary = ({
         {!!code && (
           <Info
             icon={
-              <InfoIcon color="var(--primary)" bacCol="var(--primary1)">
+              <InfoIcon tone="indigo">
                 <HashtagIcon />
               </InfoIcon>
             }
@@ -90,7 +88,7 @@ const MedicalCenterSummary = ({
         {!!doctorCount && (
           <Info
             icon={
-              <InfoIcon color="var(--primary)" bacCol="var(--primary1)">
+              <InfoIcon tone="indigo">
                 <StetoscopeIcon />
               </InfoIcon>
             }
@@ -101,7 +99,7 @@ const MedicalCenterSummary = ({
         {!!personelCount && (
           <Info
             icon={
-              <InfoIcon color="var(--successS1)" bacCol="var(--successT1)">
+              <InfoIcon tone="teal">
                 <PeopleIcon />
               </InfoIcon>
             }
@@ -112,7 +110,7 @@ const MedicalCenterSummary = ({
         {!!establishment && (
           <Info
             icon={
-              <InfoIcon color="var(--secondary)" bacCol="vvar(--secondary1)">
+              <InfoIcon tone="violet">
                 <BuildingIcon />
               </InfoIcon>
             }

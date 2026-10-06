@@ -45,15 +45,9 @@
   justify-content: center;
   padding: 0.75rem;
   border-radius: 50%;
-  background-color: var(--primary1);
-  color: var(--primary);
   margin-bottom: 1rem;
 }
 
-.alt .icon {
-  color: var(--successS1);
-  background-color: var(--successT1);
-}
 
 .cardTitle {
   color: var(--gray13);
@@ -77,14 +71,8 @@
 .itemIcon {
   padding: 0.25rem;
   border-radius: 50%;
-  background-color: var(--primary1);
-  color: var(--primary);
 }
 
-.alt .itemIcon {
-  background-color: var(--successT1);
-  color: var(--successS1);
-}
 
 .itemContent {
   color: var(--gray8);
