@@ -1,325 +1,119 @@
-import TehranTimeHint from "./TehranTimeHint";
-import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
+"use client";
+import { useEffect, useMemo, useState } from "react";
+import useSWR from "swr";
 import { useIntlLocale } from "@/Components/i18n/navigation";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
-import {
-  IDoctorAvailability,
-  IDoctorProfile,
-} from "../DoctorPanel/DoctorPanelPage";
+import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import ClockIcon from "../Icons/ClockIcon";
-import PopupCard from "../UI/PopupCard";
-import classes from "./BookingSessionSelectorPopup.module.css";
-import { range } from "../helpers/lib";
-import Ixon from "../UI/Ixon";
-import CheckIcon from "../Icons/CheckIcon";
-import { IDoctorShift } from "../DoctorPanel/Shift/DoctorManageShiftsPage";
-import useShiftUtils from "../DoctorPanel/Shift/useShiftUtils";
-import { numberToTime } from "../DoctorPanel/Calendar/AddSessionsAgent";
-import { tbaseDemiBold, tmdMedium, tsmRegular } from "../UI/Typography";
-import Button from "../UI/Button";
-import useProgress from "../Hooks/useProgress";
 import usePopup from "../Hooks/usePopup";
-import useUser from "../Hooks/useUser";
-import LoginPopup from "../Popups/LoginPopup";
-import AuthPopup from "../Popups/AuthPopup";
-import useSWR from "swr";
+import useProgress from "../Hooks/useProgress";
+import PopupCard from "../UI/PopupCard";
+import BottomSheet from "../UI/BottomSheet";
+import Button from "../UI/Button";
+import ClockIcon from "../Icons/ClockIcon";
 import { API } from "../config";
-import Loading from "../Admin/UI/Loading";
 import { fetcher } from "../helpers/fetcher";
-import { useRouter } from "@/Components/i18n/navigation";
-import ChevronIcon from "../Icons/ChevronIcon";
-import { availabilityOfDay, bookableBounds, shiftDateFromNow } from "./availabilityDay";
+import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
+import { DoctorSessionType } from "../DoctorPanel/Calendar/DoctorCalendarDay";
+import { DoctorConfig } from "../Dr/PublicDrSessions";
+import SlotPicker, { SlotPick } from "./Flow/SlotPicker";
+import { VisitTypePicker } from "./Flow/BookingChoices";
+import { clock, finalizeHref, visitTypeOrder } from "./Flow/bookingFlow";
 import { tehranYmd } from "@/Components/helpers/tehranTime";
+import classes from "./BookingSessionSelectorPopup.module.css";
 
-const NS: ContentNamespace[] = ["common", "bookingSessionSelectorPopup"];
+const NS: ContentNamespace[] = ["common", "bookingSessionSelectorPopup", "bookingFlow"];
 
-// The YYYY-MM-DD key of the Tehran day (2026-10): the doctor's calendar
-// day, whatever the patient's device zone (Components/helpers/tehranTime.ts;
-// "today + N" in Components/Booking/availabilityDay.ts).
-const toLocalDateKey = (date: Date) => tehranYmd(date);
-
-const SessionButton = ({
-  bounds,
-  selectedSession,
-  setSelectedSession,
-}: {
-  bounds: [number, number];
-  selectedSession: [number, number] | null;
-  setSelectedSession: Dispatch<SetStateAction<[number, number] | null>>;
-}) => {
-  const getCompContent = useScopedLocale(NS);
-
-  return (
-    <div
-      className={`${classes.session}`}
-      onClick={() => setSelectedSession(bounds)}
-    >
-      <div
-        className={`${classes.sessionCheckBox} ${bounds[0] === selectedSession?.[0] && bounds[1] === selectedSession?.[1] ? classes.activeSession : ""}`}
-      >
-        <Ixon width="1rem" className={`${classes.sessionCheck}`}>
-          <CheckIcon />
-        </Ixon>
-      </div>
-      <span>
-        {getCompContent("fromTimeXtoTimeY", [
-          numberToTime(bounds[0]),
-          numberToTime(bounds[1]),
-        ])}
-      </span>
-    </div>
-  );
-};
-
-const DayBadge = ({
-  index,
-  selectedDay,
-  setSelectedDay,
-}: {
-  index: number;
-  setSelectedDay: Dispatch<SetStateAction<Date>>;
-  selectedDay: Date;
-}) => {
-  const intlTag = useIntlLocale();
-  const getContent = useScopedLocale(NS);
-
-  return (
-    <div
-      onClick={() => setSelectedDay(shiftDateFromNow(index))}
-      className={`${classes.dayTab} ${tehranYmd(selectedDay) === tehranYmd(shiftDateFromNow(index)) ? classes.activeTab : ""}`}
-    >
-      <span className={tbaseDemiBold}>
-        {index === 0
-          ? getContent("today")
-          : index === 1
-            ? getContent("tomorrow")
-            : shiftDateFromNow(index).toLocaleString(intlTag, {
-                timeZone: TEHRAN_TZ,
-                weekday: "long",
-              })}
-      </span>
-      <span className={tsmRegular}>
-        {shiftDateFromNow(index).toLocaleString(intlTag, {
-          timeZone: TEHRAN_TZ,
-          month: "long",
-          day: "numeric",
-        })}
-      </span>
-    </div>
-  );
-};
-
+// Quick booking from a doctor card (the search list, the old profile
+// widget): visit type and a time with the shared picker, then the
+// details step. As a bottom sheet when opened with `open` (phone-first),
+// else inside the site popup.
 const BookingSessionSelectorPopup = ({
   node,
   initialDate,
-  standalone,
+  open,
+  onClose,
 }: {
   node: IDoctorProfile;
   initialDate?: Date;
   standalone?: boolean;
+  open?: boolean;
+  onClose?: () => void;
 }) => {
-  const { data: availabilities } = useSWR<IDoctorAvailability[]>(
-    `${API}/public/dr/${node._id}/availability`,
+  const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const nf = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const { closePopup } = usePopup();
+  const push = useProgress();
+  const { data: config } = useSWR<DoctorConfig>(
+    `${API}/public/doctor/${node._id}/config`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+  const types = useMemo(
+    () => (config ? visitTypeOrder.filter((t) => config[t]?.active && !!config[t]?.price) : []),
+    [config],
+  );
+  const [type, setType] = useState<DoctorSessionType | null>(null);
+  useEffect(() => {
+    if (!type && types.length) setType(types[0]);
+  }, [type, types]);
+  const [pick, setPick] = useState<SlotPick | null>(null);
+  useEffect(() => setPick(null), [type]);
 
-  const { user } = useUser();
+  const close = () => (onClose ? onClose() : closePopup());
+  const go = () => {
+    if (!pick) return;
+    close();
+    push(finalizeHref(node._id, { ...pick, sessionType: type }));
+  };
 
-  const getContent = useScopedLocale(NS);
-
-  const { closePopup } = usePopup();
-
-  const push = useProgress();
-
-  const [tabView, setTabView] = useState<boolean>(true);
-
-  const [selectedDay, setSelectedDay] = useState<Date>(
-    () => initialDate || shiftDateFromNow(0),
+  const body = (
+    <div className={classes.main}>
+      {types.length > 1 && <VisitTypePicker settings={config} value={type} onChange={setType} />}
+      <SlotPicker
+        doctorId={node._id}
+        sessionType={type}
+        value={pick}
+        onChange={setPick}
+        initialDay={initialDate ? tehranYmd(initialDate) : undefined}
+      />
+    </div>
+  );
+  const actions = (
+    <div className={classes.actions}>
+      <Button
+        variant="Primary"
+        mode="Outline"
+        size="M"
+        radius="High"
+        href={`/dr/${node.slug || node._id}`}
+        onClick={() => close()}
+      >
+        {getContent("seeDoctorProfile")}
+      </Button>
+      <Button variant={pick ? "Primary" : "Disable"} size="M" radius="High" onClick={go}>
+        {pick ? `${getContent("bfContinue")} · ${clock(pick.start, nf)}` : getContent("bfPickATime")}
+      </Button>
+    </div>
   );
 
-  const { setPopup } = usePopup();
-
-  const selectedDateAvailableSessions = useMemo<[number, number][]>(
-    () => bookableBounds(availabilityOfDay(availabilities, selectedDay)),
-    [availabilities, selectedDay],
-  );
-
-  const [selectedSession, setSelectedSession] = useState<
-    [number, number] | null
-  >(null);
-
-  useEffect(() => setSelectedSession(null), [selectedDay]);
-
-  const content = useMemo(
-    () => (
-      <div className={`${classes.main}`}>
-        {tabView && (
-          <div className={classes.tabView}>
-            <div className={classes.week}>
-              {range(0, 5).map((index) => (
-                <DayBadge
-                  key={index}
-                  index={index}
-                  selectedDay={selectedDay}
-                  setSelectedDay={setSelectedDay}
-                />
-              ))}
-            </div>
-            <div className={classes.sessions}>
-              {selectedDateAvailableSessions.map((bounds) => (
-                <SessionButton
-                  key={`${bounds[0]}8===D${bounds[1]}`}
-                  selectedSession={selectedSession}
-                  setSelectedSession={setSelectedSession}
-                  bounds={bounds}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        <div
-          className={`${classes.toggle} ${!tabView ? classes.activeToggle : ""}`}
-          onClick={() => setTabView((prev) => !prev)}
-        >
-          <div className={classes.toggleCheck}>
-            <Ixon width="1rem">
-              <CheckIcon />
-            </Ixon>
-          </div>
-          <span>{getContent("selectFromOtherTimes")}</span>
-        </div>
-        <TehranTimeHint ns={NS} />
-        {!tabView && (
-          <div className={classes.listView}>
-            <div className={classes.side}>
-              {range(0, 29).map((index) => (
-                <DayBadge
-                  key={index}
-                  index={index}
-                  selectedDay={selectedDay}
-                  setSelectedDay={setSelectedDay}
-                />
-              ))}
-            </div>
-            <div className={classes.sessions}>
-              {selectedDateAvailableSessions.map((bounds) => (
-                <SessionButton
-                  key={`${bounds[0]}8===D${bounds[1]}`}
-                  selectedSession={selectedSession}
-                  setSelectedSession={setSelectedSession}
-                  bounds={bounds}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        {standalone ? (
-          <div className={classes.standaloneActions}>
-            <Button
-              variant="Neutral"
-              mode="Inline"
-              size="M"
-              radius="High"
-              onClick={() => push("/book")}
-              tailIcon={
-                <Ixon style={{ transform: "rotateZ(90deg)" }}>
-                  <ChevronIcon />
-                </Ixon>
-              }
-            >
-              {getContent("previousStage")}
-            </Button>
-            <Button
-              size="M"
-              radius="High"
-              mode="Fill"
-              variant="Primary"
-              onClick={() => {
-                if (!selectedSession) return;
-                if (!user) {
-                  setPopup("Auth", <AuthPopup />);
-                  return;
-                }
-                push(
-                  `/book/finalize/${node._id}?d=${toLocalDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
-                );
-              }}
-            >
-              {getContent("confirmAndContinue")}
-            </Button>
-          </div>
-        ) : (
-          <div className={classes.actions}>
-            <Button
-              variant="Primary"
-              mode="Outline"
-              size="L"
-              radius="High"
-              onClick={() => {
-                closePopup();
-                push(`/dr/${node.slug || node._id}`);
-              }}
-            >
-              {getContent("seeDoctorProfile")}
-            </Button>
-            <Button
-              variant={selectedSession ? "Primary" : "Disable"}
-              mode="Fill"
-              size="L"
-              radius="High"
-              onClick={() => {
-                if (!selectedSession) return;
-                if (!user) {
-                  setPopup("Auth", <AuthPopup />);
-                  return;
-                }
-                push(
-                  `/book/finalize/${node._id}?d=${toLocalDateKey(selectedDay)}&s=${selectedSession[0]}&e=${selectedSession[1]}`,
-                );
-                closePopup();
-              }}
-            >
-              {getContent("confirmAndContinue")}
-            </Button>
-          </div>
-        )}
-      </div>
-    ),
-    [
-      closePopup,
-      getContent,
-      node._id,
-      node.slug,
-      push,
-      selectedDateAvailableSessions,
-      selectedDay,
-      selectedSession,
-      setPopup,
-      standalone,
-      tabView,
-      user,
-    ],
-  );
-
-  if (!availabilities) return <Loading />;
-  if (standalone)
+  if (open !== undefined)
     return (
-      <div className={classes.standalone}>
-        <div className={`${classes.standaloneHeader} ${tmdMedium}`}>
-          {getContent("chooseSession")}
-        </div>
-        <div>{content}</div>
-      </div>
+      <BottomSheet
+        open={open}
+        onClose={close}
+        title={getDoctorProfileLabel(node)}
+        subtitle={getContent("bfStepOf", [nf.format(1), nf.format(3)])}
+        closeLabel={getContent("bfClose")}
+        footer={actions}
+      >
+        {open && body}
+      </BottomSheet>
     );
   return (
-    <PopupCard
-      title={getContent("selectSessionTime")}
-      icon={<ClockIcon />}
-      className={classes.popup}
-    >
-      {content}
+    <PopupCard title={getContent("selectSessionTime")} icon={<ClockIcon />} className={classes.popup}>
+      {body}
+      {actions}
     </PopupCard>
   );
 };

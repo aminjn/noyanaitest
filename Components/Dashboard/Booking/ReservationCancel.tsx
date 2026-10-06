@@ -66,7 +66,7 @@ const ConfirmCancelPopup = ({
         method: side === "patient" ? "POST" : "PATCH",
         payload: reason.trim() ? { reason: reason.trim() } : {},
       });
-      pushNotification(getContent("cancelledRefunded"), "Success");
+      pushNotification(getContent(reservation.total || side === "doctor" ? "cancelledRefunded" : "bfCancelled"), "Success");
       closePopup();
       onDone();
     } catch (err) {
@@ -85,9 +85,12 @@ const ConfirmCancelPopup = ({
       <div className={classes.popup}>
         <p className={classes.text}>
           {side === "patient"
-            ? getContent("cancelBookingConfirmPatient", [
-                currencize(reservation.total ?? 0),
-              ])
+            ? // nothing was paid online (pay at the desk): nothing to refund
+              reservation.total
+              ? getContent("cancelBookingConfirmPatient", [
+                  currencize(reservation.total),
+                ])
+              : getContent("bfCancelConfirmNoCharge")
             : getContent("cancelBookingConfirmDoctor")}
         </p>
         <label className={classes.reason}>
@@ -137,7 +140,11 @@ const ReservationCancel = ({
     patientFreeCancelHours === siteHours ? siteHoursText : new Intl.NumberFormat(intlTag).format(patientFreeCancelHours);
 
   if (reservation.status === "cancelled")
-    return <p className={classes.done}>{getContent("cancelledRefunded")}</p>;
+    return (
+      <p className={classes.done}>
+        {getContent(reservation.total || side === "doctor" ? "cancelledRefunded" : "bfCancelled")}
+      </p>
+    );
   if (reservation.status !== "pending") return null;
 
   const msLeft = startsAt(reservation) - Date.now();

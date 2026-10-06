@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import classes from "./DashboardManageBookingPage.module.css";
 import useSWR from "swr";
 import { API } from "@/Components/config";
@@ -18,17 +18,18 @@ import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import { IReservation } from "./DashboardManageBookingsPage";
 import ReservationStatusBadge from "./ReservationStatusBadge";
 import ReservationTimeline from "./ReservationTimeline";
-import ReservationJoinButton from "./ReservationJoinButton";
 import PatientIntakeCard from "@/Components/Visit/PatientIntakeCard";
-import ReservationCancel from "./ReservationCancel";
 import ReservationDispute from "./ReservationDispute";
 import VisitFeedbackCard from "@/Components/Visit/VisitFeedbackCard";
 import LeaveByHint from "@/Components/Map/LeaveByHint";
+import BookingManagePanel from "./BookingManagePanel";
 
-const NS: ContentNamespace[] = ["common", "dashboardBooking"];
+const NS: ContentNamespace[] = ["common", "dashboardBooking", "bookingFlow"];
 
 const DashboardManageBookingPage = () => {
   const params = useParams<{ nodeId: string }>();
+  // right after booking: the confirmation (step 3 of the booking flow)
+  const isNew = useSearchParams().get("new") === "1";
 
   const { data, error, mutate } = useSWR<
     IReservation<{
@@ -59,6 +60,12 @@ const DashboardManageBookingPage = () => {
             </Button>
             <ReservationStatusBadge status={data.status} />
           </div>
+
+          <BookingManagePanel
+            data={data as Parameters<typeof BookingManagePanel>[0]["data"]}
+            isNew={isNew}
+            onChanged={() => mutate()}
+          />
 
           <div className={classes.card}>
             <div className={classes.cardHeader}>
@@ -156,30 +163,7 @@ const DashboardManageBookingPage = () => {
               />
             )}
 
-            {(!!data.chat || !!data.callRoom) && data.status === "active" && (
-              <div className={classes.joinRow}>
-                <ReservationJoinButton
-                  chat={data.chat}
-                  callRoom={data.callRoom}
-                  sessionType={data.sessionType}
-                />
-              </div>
-            )}
-
             <div className={classes.joinRow}>
-              <ReservationCancel
-                side="patient"
-                reservation={{
-                  ...data,
-                  total:
-                    data.total ??
-                    (data.transaction
-                      ? Math.abs(data.transaction.amount)
-                      : undefined),
-                }}
-                ns={NS}
-                onDone={() => mutate()}
-              />
               <ReservationDispute
                 reservation={data}
                 ns={NS}
@@ -194,7 +178,9 @@ const DashboardManageBookingPage = () => {
 
           {/* no questionnaire for a cancelled visit */}
           {data.status !== "cancelled" && (
-            <PatientIntakeCard reservationId={data._id} />
+            <div id="intake">
+              <PatientIntakeCard reservationId={data._id} />
+            </div>
           )}
 
           <div className={classes.card}>

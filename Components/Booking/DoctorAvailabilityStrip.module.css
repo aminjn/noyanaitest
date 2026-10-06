@@ -64,3 +64,17 @@
 .dayCardEmpty .dayCount {
   color: var(--gray7);
 }
+
+/* buttons now (keyboard reachable), styled as before */
+button.dayCard,
+button.moreSessions {
+  border: 0;
+  font-family: inherit;
+  color: inherit;
+  min-height: 2.75rem;
+}
+button.moreSessions {
+  border: 1px dashed var(--gray7);
+  background: transparent;
+  color: var(--gray10);
+}

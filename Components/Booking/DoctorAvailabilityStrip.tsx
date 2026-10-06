@@ -1,12 +1,11 @@
 import { diffDaysYmd, TEHRAN_TZ, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
 import { availabilityOfDay, bookableBounds, shiftDateFromNow } from "./availabilityDay";
 import { useIntlLocale } from "@/Components/i18n/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import classes from "./DoctorAvailabilityStrip.module.css";
 import { IDoctorAvailability, IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import usePopup from "../Hooks/usePopup";
 import Ixon from "../UI/Ixon";
 import PlusIcon from "../Icons/PlusIcon";
 import { t2xsMedium, txsRegular } from "../UI/Typography";
@@ -19,14 +18,14 @@ const NS: ContentNamespace[] = ["common", "booking"];
 const DayCard = ({
   date,
   node,
+  onOpen,
 }: {
   date: Date;
   node: IDoctorProfile<{ Availabilities: Record<never, never> }>;
+  onOpen: (date: Date) => void;
 }) => {
   const intlTag = useIntlLocale();
   const getContent = useScopedLocale(NS);
-
-  const { setPopup } = usePopup();
 
   // the record of this Tehran day (Components/Booking/availabilityDay.ts)
   const todaysShifs = useMemo<IDoctorAvailability | null>(
@@ -55,15 +54,11 @@ const DayCard = ({
   const sessionsCount = useMemo<number>(() => bookableBounds(todaysShifs || undefined).length, [todaysShifs]);
 
   return (
-    <div
+    <button
+      type="button"
       className={`${classes.dayCard} ${sessionsCount ? "" : classes.dayCardEmpty}`}
       title={`${sessionsCount.toLocaleString(intlTag)} ${getContent("availableSessionsCount")}`}
-      onClick={() =>
-        setPopup(
-          "BookingSessionSelector",
-          <BookingSessionSelectorPopup node={node} initialDate={date} />,
-        )
-      }
+      onClick={() => onOpen(date)}
     >
       <span className={`${classes.dayLabel} ${txsRegular}`}>
         {isToday && getContent("today")}
@@ -81,7 +76,7 @@ const DayCard = ({
         </span>
         <span>{getContent("availableSessionsCount")}</span>
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -91,7 +86,8 @@ const DAY_CARD_COUNT = 3;
 // search (the Doctolib / Zocdoc availability strip).
 const DoctorAvailabilityStrip = ({ node }: { node: BookingPageDoctor }) => {
   const getContent = useScopedLocale(NS);
-  const { setPopup } = usePopup();
+  // the picker opens as a bottom sheet, on the day tapped
+  const [openOn, setOpenOn] = useState<Date | null | undefined>(undefined);
   // today and the next days in Tehran
   const showDates = useMemo<Date[]>(
     () => Array.from({ length: DAY_CARD_COUNT }, (_, i) => shiftDateFromNow(i)),
@@ -101,19 +97,22 @@ const DoctorAvailabilityStrip = ({ node }: { node: BookingPageDoctor }) => {
   return (
     <div className={classes.sessions}>
       {showDates.map((date) => (
-        <DayCard key={date.toISOString()} node={node} date={date} />
+        <DayCard key={date.toISOString()} node={node} date={date} onOpen={setOpenOn} />
       ))}
-      <div
-        className={classes.moreSessions}
-        onClick={() =>
-          setPopup("BookingSessionSelector", <BookingSessionSelectorPopup node={node} />)
-        }
-      >
+      <button type="button" className={classes.moreSessions} onClick={() => setOpenOn(null)}>
         <Ixon width="1rem">
           <PlusIcon />
         </Ixon>
         <span>{getContent("more")}</span>
-      </div>
+      </button>
+      {openOn !== undefined && (
+        <BookingSessionSelectorPopup
+          node={node}
+          initialDate={openOn || undefined}
+          open
+          onClose={() => setOpenOn(undefined)}
+        />
+      )}
     </div>
   );
 };

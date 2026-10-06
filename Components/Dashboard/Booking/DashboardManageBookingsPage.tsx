@@ -36,8 +36,10 @@ import Ixon from "@/Components/UI/Ixon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { ReservationParty, ReservationStatus } from "./reservationStatus";
+import RescheduleSheet from "@/Components/Booking/Flow/RescheduleSheet";
+import useChangeWindow from "@/Components/Booking/Flow/useChangeWindow";
 
-const NS: ContentNamespace[] = ["common", "dashboardBooking"];
+const NS: ContentNamespace[] = ["common", "dashboardBooking", "bookingFlow"];
 
 export type CheckoutPopulation = Population<{ User: UserPopulation }>;
 
@@ -151,7 +153,7 @@ const OPEN = ["pending", "active"];
 // Patient's appointments as cards: upcoming first (soonest on top), with
 // the questionnaire status, join / details, and "book again" on past ones.
 const DashboardManageBookingsPage = () => {
-  const { data, error } = useSWR<PatientReservation[]>(`${API}/user/reservation`, (url: string) =>
+  const { data, error, mutate } = useSWR<PatientReservation[]>(`${API}/user/reservation`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
 
@@ -170,6 +172,8 @@ const DashboardManageBookingsPage = () => {
     return `${two(Math.floor(m / 60))}:${two(m % 60)}`;
   };
   const [tab, setTab] = useState<Tab>("upcoming");
+  const { hoursText, canChange } = useChangeWindow();
+  const [moving, setMoving] = useState<PatientReservation | null>(null);
   const [onlyNoIntake, setOnlyNoIntake] = useState(false);
 
   const list = useMemo(() => (Array.isArray(data) ? data : []), [data]);
@@ -298,6 +302,11 @@ const DashboardManageBookingsPage = () => {
                       {r.status === "active" && (!!r.chat || !!r.callRoom) && (
                         <ReservationJoinButton chat={r.chat} callRoom={r.callRoom} sessionType={r.sessionType} />
                       )}
+                      {canChange(r) && (
+                        <button type="button" className={classes.ghost} onClick={() => setMoving(r)}>
+                          {getContent("bfReschedule")}
+                        </button>
+                      )}
                       <Link href={`/dashboard/booking/${r._id}`} className={classes.primary}>
                         {open && !r.intakeFilled ? getContent("pbFillIntake") : getContent("pbDetails")}
                       </Link>
@@ -311,6 +320,17 @@ const DashboardManageBookingsPage = () => {
                 );
               })}
             </ul>
+          )}
+          {!!moving && (
+            <RescheduleSheet
+              open
+              onClose={() => setMoving(null)}
+              reservationId={moving._id}
+              doctorId={String((moving.doctor as unknown as { _id?: string })?._id || moving.doctor)}
+              sessionType={moving.sessionType}
+              hoursText={hoursText}
+              onDone={() => mutate()}
+            />
           )}
         </div>
       )}

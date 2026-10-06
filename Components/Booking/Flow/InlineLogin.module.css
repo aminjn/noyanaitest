@@ -1,0 +1,46 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+  max-width: 26rem;
+}
+.lead {
+  margin: 0;
+  font-size: var(--fsSm);
+  color: var(--textBody);
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp2);
+}
+.link {
+  min-height: 2.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary7);
+  font-size: var(--fsXs);
+  font-weight: 600;
+  cursor: pointer;
+}
+.link:disabled {
+  opacity: 0.5;
+}
+.notice {
+  margin: 0;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.notice a {
+  color: var(--primary7);
+}
+html[data-theme="dark"] .link,
+html[data-theme="dark"] .notice a {
+  color: var(--primary3);
+}

@@ -1,656 +1,71 @@
 "use client";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import useSWR from "swr";
+import classes from "./FinalizeBookingPage.module.css";
 import TehranTimeHint from "@/Components/Booking/TehranTimeHint";
 import {
+  diffDaysYmd,
+  isYmd,
   TEHRAN_TZ,
   tehranMinutesOfDay,
   tehranNoon,
-  tehranSaturdayDay,
   tehranTodayYmd,
-  tehranYmd,
 } from "@/Components/helpers/tehranTime";
-import { useIntlLocale } from "@/Components/i18n/navigation";
-import { useParams, useSearchParams } from "next/navigation";
-import classes from "./FinalizeBookingPage.module.css";
-import useSWR from "swr";
-import { ContentKey } from "@/Components/Enums/contentKeys";
-import LeaveByHint from "@/Components/Map/LeaveByHint";
-import { currencize } from "@/Components/helpers/currencize";
-import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { useIntlLocale, usePathname, useRouter } from "@/Components/i18n/navigation";
 import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
-import HandleLoading from "@/Components/Admin/UI/HandleLoading";
-import HostedImage from "@/Components/UI/HostedImage";
+import { fetcher, FetchError } from "@/Components/helpers/fetcher";
+import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
+import { IDoctorShift } from "@/Components/DoctorPanel/Shift/DoctorManageShiftsPage";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
-import {
-  Dispatch,
-  Fragment,
-  ReactNode,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import {
-  DoctorShiftPopulation,
-  IDoctorShift,
-  ShiftContext,
-} from "@/Components/DoctorPanel/Shift/DoctorManageShiftsPage";
-import useProgress from "@/Components/Hooks/useProgress";
-import useShiftUtils from "@/Components/DoctorPanel/Shift/useShiftUtils";
-import ErrorMessage from "@/Components/Admin/UI/ErrorMessage";
+import HostedImage from "@/Components/UI/HostedImage";
+import InitialAvatar from "@/Components/UI/InitialAvatar";
+import Ixon from "@/Components/UI/Ixon";
+import Button from "@/Components/UI/Button";
+import Input from "@/Components/UI/Input";
+import DateInput from "@/Components/UI/DateInput";
+import BottomSheet from "@/Components/UI/BottomSheet";
+import Link from "@/Components/i18n/Link";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useSiteSettings from "@/Components/Hooks/useSiteSettings";
+import useNotification from "@/Components/Hooks/useNotification";
+import useProgress from "@/Components/Hooks/useProgress";
+import useUser from "@/Components/Hooks/useUser";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
-import { numberToTime } from "@/Components/DoctorPanel/Calendar/AddSessionsAgent";
-import useUser, {
-  IUser,
-  MongoDoc,
-  UserPopulation,
-} from "@/Components/Hooks/useUser";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import { IUserIdentity } from "@/Components/Dashboard/DashboardPage";
-import Loading from "@/Components/Admin/UI/Loading";
-import LoginRequired from "@/Components/UI/LoginRequired";
+import IdentityVerifyForm from "@/Components/_Common/Identity/IdentityVerifyForm";
+import WalletShortfallTopUp from "@/Components/Payment/WalletShortfallTopUp";
+import WalletChargeAct from "@/Components/Payment/WalletChargeAct";
+import { usePaymentConfig } from "@/Components/Payment/paymentTypes";
+import ProUpsellCard from "@/Components/Pro/ProUpsellCard";
+import LeaveByHint from "@/Components/Map/LeaveByHint";
 import {
   DoctorSessionType,
-  doctorSessionTypes,
+  doctorSessionTypeContentKeyDict,
 } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
-import Ixon from "@/Components/UI/Ixon";
+import { DoctorConfig } from "@/Components/Dr/PublicDrSessions";
 import CheckIcon from "@/Components/Icons/CheckIcon";
-import Tick02Icon from "@/Components/Icons/Tick02Icon";
-import Button from "@/Components/UI/Button";
-import ChevronIcon from "@/Components/Icons/ChevronIcon";
-import useNotification from "@/Components/Hooks/useNotification";
-import { paymentMethods } from "../SelectSessionToReservePopup";
+import PlusIcon from "@/Components/Icons/PlusIcon";
 import WalletIcon from "@/Components/Icons/WalletIcon";
-import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
-import {
-  t2xsMedium,
-  t2xsRegular,
-  tbaseDemiBold,
-  tbaseMedium,
-  tsmDemiBold,
-  tsmMedium,
-  txsDemiBold,
-  txsRegular,
-} from "@/Components/UI/Typography";
-import usePopup from "@/Components/Hooks/usePopup";
-import PopupCard from "@/Components/UI/PopupCard";
-import Input from "@/Components/UI/Input";
-import Form from "@/Components/UI/Form";
-import DateInput from "@/Components/UI/DateInput";
-import IdentityVerifyForm from "@/Components/_Common/Identity/IdentityVerifyForm";
-import useForm from "@/Components/Hooks/useForm";
+import HospitalIcon from "@/Components/Icons/HospitalIcon";
+import ShieldCheckIcon from "@/Components/Icons/ShieldCheckIcon";
+import TagIcon from "@/Components/Icons/TagIcon";
+import UserIcon from "@/Components/Icons/UserIcon";
+import MedicalRecordIcon from "@/Components/Icons/MedicalRecordIcon";
+import LockIcon from "@/Components/Icons/LockIcon";
 import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
-import Act from "@/Components/UI/Act";
-import WalletShortfallTopUp from "@/Components/Payment/WalletShortfallTopUp";
-import ProUpsellCard from "@/Components/Pro/ProUpsellCard";
+import Calendar02Icon from "@/Components/Icons/Calendar02Icon";
+import LocationIcon from "@/Components/Icons/LocationIcon";
+import EditIcon from "@/Components/Icons/EditIcon";
+import SlotPicker, { SlotPick } from "../Flow/SlotPicker";
+import BookingSteps from "../Flow/BookingSteps";
+import InlineLogin from "../Flow/InlineLogin";
+import { OfficePicker, visitTypeIcon, visitTypeTone, VisitTypePicker } from "../Flow/BookingChoices";
+import { BookingQuote, clock, useBookableSlots, visitTypeOrder } from "../Flow/bookingFlow";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
-import BookingSessionSelectorPopup from "@/Components/Booking/BookingSessionSelectorPopup";
-import BookingSidebar from "@/Components/Dr/New/BookingSidebar";
 
-const NS: ContentNamespace[] = ["common", "bookingFinalize"];
-
-const AddRelativePopup = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useScopedLocale(NS);
-
-  const { closePopup } = usePopup();
-
-  const { setInput, isLoading, submit } = useForm<{
-    nationalCode: string;
-    birthDate: Date;
-    phone: string;
-  }>({
-    path: `${API}/user/relative`,
-    method: "POST",
-    successCb: () => {
-      mutate();
-      closePopup();
-    },
-  });
-
-  return (
-    <PopupCard title={getContent("addRelative")}>
-      <Form className={classes.addRelative} onSubmit={submit}>
-        <Input
-          title={getContent("nationalCode")}
-          onChange={(e) =>
-            setInput((prev) => ({ ...prev, nationalCode: e.target.value }))
-          }
-        />
-        <DateInput
-          title={getContent("dateOfBirth")}
-          onChange={(e) => setInput((prev) => ({ ...prev, birthDate: e }))}
-        />
-        <Input
-          title={getContent("phoneNumber")}
-          onChange={(e) =>
-            setInput((prev) => ({ ...prev, phone: e.target.value }))
-          }
-        />
-        <Button type="submit" isLoading={isLoading}>
-          {getContent("submit")}
-        </Button>
-      </Form>
-    </PopupCard>
-  );
-};
-
-const PatientStage = ({
-  selfIdentity,
-  context,
-  setContext,
-  setStage,
-}: {
-  selfIdentity: IUserIdentity;
-  context: FinalizeBookingContext;
-  setContext: Dispatch<SetStateAction<FinalizeBookingContext>>;
-  setStage: Dispatch<SetStateAction<BookingStage>>;
-}) => {
-  const { data, error, mutate } = useSWR<IUserIdentity[]>(
-    `${API}/user/relative`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
-
-  const { nodeId } = useParams();
-
-  const [didConsent, setDidConsent] = useState<boolean>(false);
-
-  const { user } = useUser();
-
-  const getContent = useScopedLocale(NS);
-
-  const push = useProgress();
-
-  const pushNotification = useNotification();
-
-  const { setPopup } = usePopup();
-
-  return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <div className={classes.box}>
-          <span
-            className={`${classes.title} ${classes.patientTitle} ${tbaseMedium}`}
-          >
-            {getContent("selectPatient")}
-          </span>
-          <div className={classes.identityList}>
-            {[selfIdentity, ...data].map((identity) => (
-              <div
-                className={`${classes.identity} ${context.patient._id === identity._id ? classes.activeIdentity : ""}`}
-                key={identity._id}
-                onClick={() =>
-                  setContext((prev) => ({ ...prev, patient: identity }))
-                }
-              >
-                <div className={classes.identityCheck}>
-                  <Ixon width=".75rem">
-                    <CheckIcon />
-                  </Ixon>
-                </div>
-                <div className={classes.identityDetails}>
-                  <span
-                    className={`${classes.identityName} ${tbaseMedium}`}
-                  >{`${identity.givenName} ${identity.lastName}`}</span>
-                  <span className={classes.identityPhone}>
-                    {identity.phones[0] || user?.phone}
-                  </span>
-                </div>
-              </div>
-            ))}
-            <Button
-              className={classes.newPatient}
-              variant="Primary"
-              mode="Outline"
-              radius="Medium"
-              onClick={() =>
-                setPopup("AddRelative", <AddRelativePopup mutate={mutate} />)
-              }
-            >
-              {getContent("reserveBookingForOther")}
-            </Button>
-          </div>
-          <div
-            className={`${classes.consent} ${didConsent ? classes.activeConsent : ""}`}
-            onClick={() => setDidConsent((prev) => !prev)}
-          >
-            <div className={classes.consentCheck}>
-              <Ixon width=".75rem">
-                <Tick02Icon />
-              </Ixon>
-            </div>
-            <span>{getContent("iConsentToPolicy")}</span>
-          </div>
-          <div className={`${classes.actions} ${classes.patientActions}`}>
-            <Button
-              onClick={() => push(`/book/finalize/${nodeId}`)}
-              tailIcon={
-                <Ixon style={{ transform: "rotateZ(90deg)" }}>
-                  <ChevronIcon />
-                </Ixon>
-              }
-              variant="Neutral"
-              mode="Inline"
-              size="M"
-              radius="High"
-            >
-              {getContent("previousStage")}
-            </Button>
-            <Button
-              size="M"
-              radius="High"
-              mode="Fill"
-              variant="Primary"
-              onClick={() => {
-                if (!didConsent)
-                  return pushNotification(getContent("consentFirst"));
-                setStage("Session");
-              }}
-            >
-              {getContent("confirmAndContinue")}
-            </Button>
-          </div>
-        </div>
-      )}
-    </HandleLoading>
-  );
-};
-
-const SessionTypeStage = ({
-  context,
-  setContext,
-  setStage,
-  doctor,
-  shift,
-}: {
-  context: FinalizeBookingContext;
-  setContext: Dispatch<SetStateAction<FinalizeBookingContext>>;
-  setStage: Dispatch<SetStateAction<BookingStage>>;
-  doctor: FinalizeBookingDoctor;
-  shift: IDoctorShift<{ Office: Record<never, never> }>;
-}) => {
-  const getContent = useScopedLocale(NS);
-
-  const getCompContent = getContent;
-
-  const sessionTypeAvailable = useCallback(
-    (st: DoctorSessionType): boolean => {
-      if (!shift.sessionTypes.includes(st)) return false;
-      switch (st) {
-        case "inPerson":
-          return (
-            !!doctor.inPersonSettings?.price && doctor.inPersonSettings.active
-          );
-        case "sipCall":
-          return (
-            !!doctor.sipCallSettings?.price && doctor.sipCallSettings.active
-          );
-        case "textChat":
-          return (
-            !!doctor.textChatSettings?.price && doctor.textChatSettings.active
-          );
-        case "voiceCall":
-          return (
-            !!doctor.voiceCallSettings?.price &&
-            doctor.voiceCallSettings.active
-          );
-        case "videoCall":
-          return (
-            !!doctor.videoCallSettings?.price && doctor.videoCallSettings.active
-          );
-        default:
-          return false;
-      }
-    },
-    [doctor, shift.sessionTypes],
-  );
-
-  const getSessionTypePrice = useCallback(
-    (st: DoctorSessionType): number => {
-      switch (st) {
-        case "inPerson":
-          return doctor.inPersonSettings?.price || 0;
-        case "textChat":
-          return doctor.textChatSettings?.price || 0;
-        case "sipCall":
-          return doctor.sipCallSettings?.price || 0;
-        case "voiceCall":
-          return doctor.voiceCallSettings?.price || 0;
-        case "videoCall":
-          return doctor.videoCallSettings?.price || 0;
-        default:
-          return 0;
-      }
-    },
-    [doctor],
-  );
-
-  const pushNotification = useNotification();
-
-  // the type picked on the doctor's page (?t=) - or the only one on offer -
-  // is preselected instead of an empty radio to click again
-  const searchParams = useSearchParams();
-  const pickedType = searchParams.get("t");
-  const availableTypes = useMemo(
-    () => doctorSessionTypes.filter((st) => sessionTypeAvailable(st)),
-    [sessionTypeAvailable],
-  );
-  useEffect(() => {
-    if (context.sessionType) return;
-    const fromLink = availableTypes.find((st) => st === pickedType);
-    const next =
-      fromLink || (availableTypes.length === 1 ? availableTypes[0] : null);
-    if (next) setContext((prev) => ({ ...prev, sessionType: next }));
-  }, [availableTypes, context.sessionType, pickedType, setContext]);
-
-  return (
-    <div className={classes.box}>
-      <span className={`${classes.title} ${classes.sessionsTitle}`}>
-        {getContent("selectSessionType")}
-      </span>
-      <div className={classes.sessionsList}>
-        {doctorSessionTypes.map((st) => (
-          <Fragment key={st}>
-            {sessionTypeAvailable(st) ? (
-              <div
-                className={`${classes.sessionType} ${context.sessionType === st ? classes.activeSessionType : ""}`}
-                onClick={() =>
-                  setContext((prev) => ({ ...prev, sessionType: st }))
-                }
-              >
-                <div className={classes.sessionTypeCheck}>
-                  <Ixon width=".75rem">
-                    <CheckIcon />
-                  </Ixon>
-                </div>
-                <span className={`${classes.sessionTypeTitle} ${txsRegular}`}>
-                  {getContent(st)}
-                </span>
-                <span
-                  className={`${classes.sessionTypeDuration} ${t2xsMedium}`}
-                >
-                  {st === "inPerson"
-                    ? shift.office.name
-                    : getCompContent("xMinutes", [shift.duration.toString()])}
-                </span>
-                <span className={`${classes.sessionTypePrice} ${t2xsMedium}`}>
-                  {getCompContent("xToman", [
-                    currencize(getSessionTypePrice(st)),
-                  ])}
-                </span>
-              </div>
-            ) : null}
-          </Fragment>
-        ))}
-      </div>
-      <div className={classes.actions}>
-        <Button
-          onClick={() => setStage("Patient")}
-          tailIcon={
-            <Ixon style={{ transform: "rotateZ(90deg)" }}>
-              <ChevronIcon />
-            </Ixon>
-          }
-          variant="Neutral"
-          mode="Inline"
-          size="M"
-          radius="High"
-        >
-          {getContent("previousStage")}
-        </Button>
-        <Button
-          size="M"
-          radius="High"
-          mode="Fill"
-          variant="Primary"
-          onClick={() => {
-            if (!context.sessionType)
-              return pushNotification(getContent("checkInput"));
-            setStage("Checkout");
-          }}
-        >
-          {getContent("confirmAndContinue")}
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const methodIcons: Record<CheckoutOption, ReactNode> = {
-  wallet: <WalletIcon />,
-};
-
-export type WalletPopulation = Population<{ User: UserPopulation }>;
-
-export interface IWallet<
-  T extends WalletPopulation = WalletPopulation,
-> extends MongoDoc {
-  user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
-  balance: number;
-}
-
-const CheckoutStage = ({
-  context,
-  doctor,
-  officeId,
-  setContext,
-  onFinalize,
-  busy,
-}: {
-  context: FinalizeBookingContext;
-  setContext: Dispatch<SetStateAction<FinalizeBookingContext>>;
-  busy?: boolean;
-  doctor: FinalizeBookingDoctor;
-  // the shift's office: an in-person visit in a clinic office is taxed at
-  // the clinic's rate (backend Lib/taxSettings.ts getVisitTaxPercent)
-  officeId?: string;
-  setStage: Dispatch<SetStateAction<BookingStage>>;
-  onFinalize: () => unknown;
-}) => {
-  const getContent = useScopedLocale(NS);
-  const getCompContent = getContent;
-  // the free-cancel window the API applies (super admin booking settings)
-  const { freeCancelHoursText } = useSiteSettings();
-  const { data: wallet, error } = useSWR<IWallet>(
-    `${API}/user/wallet`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
-
-  const getSessionTypePrice = useCallback(
-    (st: DoctorSessionType): number => {
-      switch (st) {
-        case "inPerson":
-          return doctor.inPersonSettings?.price || 0;
-        case "textChat":
-          return doctor.textChatSettings?.price || 0;
-        case "sipCall":
-          return doctor.sipCallSettings?.price || 0;
-        case "voiceCall":
-          return doctor.voiceCallSettings?.price || 0;
-        case "videoCall":
-          return doctor.videoCallSettings?.price || 0;
-        default:
-          return 0;
-      }
-    },
-    [
-      doctor.inPersonSettings?.price,
-      doctor.voiceCallSettings?.price,
-      doctor.sipCallSettings?.price,
-      doctor.textChatSettings?.price,
-      doctor.videoCallSettings?.price,
-    ],
-  );
-
-  // Tax is additive on top of the session price shown throughout this page
-  // - the price itself never changes (2026-09 user decision). Rounding
-  // matches Lib/taxSettings.ts's calcTax on the backend (plain
-  // Math.round, no fractional Toman).
-  const getSessionTypeTax = useCallback(
-    (st: DoctorSessionType): number =>
-      Math.round(
-        (getSessionTypePrice(st) *
-          ((st === "inPerson" && officeId
-            ? doctor.officeTaxPercents?.[officeId]
-            : undefined) ??
-            doctor.visitTaxPercent ??
-            0)) /
-          100,
-      ),
-    [getSessionTypePrice, doctor.visitTaxPercent, doctor.officeTaxPercents, officeId],
-  );
-
-  // «پرو» (2026-10): the server's discount for this visit (a member's,
-  // paid by Noyan out of its commission - the doctor's fee is unchanged), or
-  // what Pro would save here
-  const { data: proQuote } = useSWR<{ discount: number; potential: number; pro: boolean }>(
-    context.sessionType
-      ? [`${API}/pro/quote/booking`, doctor._id, context.sessionType, context.patient?._id || ""]
-      : null,
-    ([url, d, st, p]: [string, string, string, string]) =>
-      fetcher({ url, method: "POST", payload: { doctor: d, sessionType: st, ...(p ? { patient: p } : {}) } })
-        .then((res) => ({
-          discount: Math.max(0, Number(res?.data?.discount) || 0),
-          potential: Math.max(0, Number(res?.data?.potential) || 0),
-          pro: !!res?.data?.pro,
-        }))
-        .catch(() => ({ discount: 0, potential: 0, pro: false })),
-    { revalidateOnFocus: false },
-  );
-
-  if (!context.sessionType || !wallet) return <Loading />;
-  const sessionPrice = getSessionTypePrice(context.sessionType);
-  const sessionTax = getSessionTypeTax(context.sessionType);
-  const proDiscount = Math.min(sessionPrice + sessionTax, proQuote?.discount || 0);
-  const payable = sessionPrice + sessionTax - proDiscount;
-  return (
-    <div className={classes.boxs}>
-      <div className={classes.box}>
-        <div className={classes.paymentInfo}>
-          <span className={`${classes.title} ${classes.paymentInfoTitle}`}>
-            {getContent("paymentDetails")}
-          </span>
-          <div className={classes.paymentDetails}>
-            <div className={`${classes.paymentDetail} ${tsmMedium}`}>
-              <span>{getContent("downPayment")}</span>
-              <span>{getCompContent("xToman", [currencize(sessionPrice)])}</span>
-            </div>
-            <div className={`${classes.paymentDetail} ${tsmMedium}`}>
-              <span>{getContent("tax")}</span>
-              <span>
-                {sessionTax > 0
-                  ? getCompContent("xToman", [currencize(sessionTax)])
-                  : getContent("freeOfCharge")}
-              </span>
-            </div>
-            {proDiscount > 0 && (
-              <div className={`${classes.paymentDetail} ${classes.proDiscount} ${tsmMedium}`}>
-                <span>{getContent("proDiscountLine")}</span>
-                <span>{`− ${getCompContent("xToman", [currencize(proDiscount)])}`}</span>
-              </div>
-            )}
-          </div>
-          <div className={classes.totalBox}>
-            <span className={`${classes.totalLabel} ${tbaseDemiBold}`}>
-              {getContent("totalPrice")}
-            </span>
-            <span className={`${classes.totalValue} ${tbaseDemiBold}`}>
-              {getCompContent("xToman", [currencize(payable)])}
-            </span>
-          </div>
-        </div>
-      </div>
-      <div className={classes.box}>
-        <span className={classes.title}>{getContent("paymentMethod")}</span>
-        <div className={classes.methods}>
-          {checkoutOptions.map((method) => (
-            <div
-              key={method}
-              onClick={() =>
-                setContext((prev) => ({ ...prev, checkout: method }))
-              }
-              className={`${classes.method} ${method === context.checkout ? classes.activeMethod : ""}`}
-            >
-              <div className={classes.methodIcon}>
-                <Ixon width="1.5rem">{methodIcons[method]}</Ixon>
-              </div>
-              <span className={classes.methodName}>{getContent(method)}</span>
-              <div className={classes.methodTail}>
-                {method === "wallet" && (
-                  <div className={`${classes.balance} ${t2xsRegular}`}>
-                    {`${getContent("balance")}: ${getCompContent("xToman", [currencize(wallet.balance)])}`}
-                  </div>
-                )}
-                <div className={classes.methodCheck}>
-                  <Ixon width="1rem">
-                    <CheckIcon />
-                  </Ixon>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* wallet can't cover the booking -> offer a SEP top-up of the gap,
-          returning here afterwards (2026-09) */}
-      {!proQuote?.pro && !!proQuote?.potential && (
-        <ProUpsellCard moment="booking" amount={proQuote.potential} />
-      )}
-      <WalletShortfallTopUp balance={wallet.balance} total={payable} />
-      <div className={classes.tips}>
-        <div className={classes.tipsHeader}>
-          <Ixon className={classes.tipsIcon} width="1.5rem">
-            <AlertTriangleIcon />
-          </Ixon>
-          <span className={tsmDemiBold}>{getContent("importantTips")}</span>
-        </div>
-        <div className={classes.tipsList}>
-          <p className={`${classes.tip} ${tsmDemiBold}`}>
-            {getContent("bookingTip1")}
-          </p>
-          <p className={`${classes.tip} ${tsmDemiBold}`}>
-            {getContent("bookingTip2", [freeCancelHoursText])}
-          </p>
-        </div>
-      </div>
-      <Button
-        className={classes.finalize}
-        radius="Medium"
-        variant="Primary"
-        mode="Fill"
-        size="M"
-        isLoading={busy}
-        onClick={onFinalize}
-      >
-        {getContent("payAndReserveBooking")}
-      </Button>
-    </div>
-  );
-};
-
-const bookingStages = ["Patient", "Session", "Checkout"] as const;
-
-type BookingStage = (typeof bookingStages)[number];
-
-const checkoutOptions = ["wallet"] as const;
-
-type CheckoutOption = (typeof checkoutOptions)[number];
-
-const Pair = ({ title, value }: { title: string; value: string }) => {
-  return (
-    <div className={classes.pair}>
-      <span className={`${classes.pairTitle} ${txsRegular}`}>{title}</span>
-      <span className={`${classes.pairValue} ${txsDemiBold}`}>{value}</span>
-    </div>
-  );
-};
-
-type FinalizeBookingContext = {
-  patient: IUserIdentity;
-  sessionType: DoctorSessionType | null;
-  checkout: CheckoutOption;
-};
+const NS: ContentNamespace[] = ["common", "bookingFinalize", "bookingFlow"];
 
 type FinalizeBookingDoctor = IDoctorProfile<{
   Shifts: { Office: Record<never, never> };
@@ -661,421 +76,962 @@ type FinalizeBookingDoctor = IDoctorProfile<{
   VideoCallSettings: Record<never, never>;
   VoiceCallSettings: Record<never, never>;
 }> & {
-  // Effective visit tax percent (2026-09) - attached by
-  // Controllers/publicController.ts's getDoctorProfileById, not stored on
-  // DoctorProfile itself. Already resolved server-side (this doctor's own
-  // Models/DoctorTaxSettings.ts doc if set, else the platform default), so
-  // this page just applies it - see Lib/taxSettings.ts.
+  // the effective visit tax (publicController.getDoctorProfileById)
   visitTaxPercent?: number;
-  // office id -> the clinic's tax percent, for offices inside a clinic
   officeTaxPercents?: Record<string, number>;
 };
 
-const BookingFlowSidebar = ({
-  doctor,
-  shift,
-  date,
-  end,
-  start,
-  sessionType,
-}: {
-  doctor: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
-  shift?: IDoctorShift<{ Office: Record<never, never> }>;
-  date?: Date;
-  start?: number;
-  end?: number;
-  sessionType?: DoctorSessionType | null;
-}) => {
-  const intlTag = useIntlLocale();
-  const getContent = useScopedLocale(NS);
-
-  return (
-    <div className={classes.detail}>
-      <div className={classes.doctor}>
-        <div className={classes.doctorImage}>
-          <HostedImage
-            src={doctor.avatar}
-            alt={getDoctorProfileLabel(doctor as IDoctorProfile)}
-            fill
-            sizes="4rem"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-        <div className={classes.doctorDetails}>
-          <span className={`${classes.doctorName} ${tsmDemiBold}`}>
-            {getDoctorProfileLabel(doctor as IDoctorProfile)}
-          </span>
-          {!!doctor.mainSpeciality && (
-            <span className={`${classes.doctorSpeciality} ${txsRegular}`}>
-              {doctor.mainSpeciality.name}
-            </span>
-          )}
-        </div>
-      </div>
-      {!!shift && !!date && !!start && !!end && (
-        <div className={classes.sessionDetails}>
-          {/* an online visit has no place: show its type instead */}
-          {!!sessionType && sessionType !== "inPerson" ? (
-            <Pair
-              title={getContent("sessionType")}
-              value={getContent(sessionType)}
-            />
-          ) : (
-            <Pair
-              title={getContent("sessionOffice")}
-              value={shift.office.name || "-"}
-            />
-          )}
-          <Pair
-            title={getContent("sessionTime")}
-            value={`${date.toLocaleDateString(intlTag, { timeZone: TEHRAN_TZ, month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
-          />
-          <TehranTimeHint ns={NS} />
-          {/* in person: when to leave, and the traffic zone at that time */}
-          {sessionType === "inPerson" && (
-            <LeaveByHint
-              coords={shift.office?.location?.coordinates}
-              date={date}
-              start={start}
-            />
-          )}
-        </div>
-      )}
-    </div>
-  );
+const onsets = ["today", "days", "week", "month", "longer"] as const;
+type Onset = (typeof onsets)[number];
+const onsetKey: Record<Onset, ContentKey> = {
+  today: "bfOnsetToday",
+  days: "bfOnsetDays",
+  week: "bfOnsetWeek",
+  month: "bfOnsetMonth",
+  longer: "bfOnsetLonger",
 };
 
-const BookingFlowContent = ({
-  data,
-  shift,
+type Method = "wallet" | "gateway" | "desk";
+
+// what the patient filled in, kept while they top up at the gateway
+type Draft = {
+  patient?: string;
+  complaint?: string;
+  onset?: Onset | null;
+  insurance?: string | null;
+  code?: string;
+  method?: Method;
+};
+const draftKey = (doctor: string) => `noyan-booking-${doctor}`;
+const readDraft = (doctor: string): Draft => {
+  try {
+    return JSON.parse(sessionStorage.getItem(draftKey(doctor)) || "{}") || {};
+  } catch {
+    return {};
+  }
+};
+const writeDraft = (doctor: string, draft: Draft | null) => {
+  try {
+    if (draft) sessionStorage.setItem(draftKey(doctor), JSON.stringify(draft));
+    else sessionStorage.removeItem(draftKey(doctor));
+  } catch {
+    // private mode: the form just starts empty after the gateway
+  }
+};
+
+const Section = ({
+  icon,
+  tone = "tone-indigo",
+  title,
+  hint,
   children,
-  date,
-  end,
-  start,
-  sessionType,
+  aside,
 }: {
-  children?: ReactNode;
-  data: IDoctorProfile;
-  date?: Date;
-  shift?: IDoctorShift<{ Office: Record<never, never> }>;
-  start?: number;
-  end?: number;
-  sessionType?: DoctorSessionType | null;
-}) => {
-  return (
-    <div className={classes.main}>
-      <div className={classes.var}>{children}</div>
-      <BookingFlowSidebar
-        doctor={data as IDoctorProfile}
-        date={date}
-        shift={shift}
-        start={start}
-        end={end}
-        sessionType={sessionType}
-      />
-    </div>
-  );
+  icon: ReactNode;
+  tone?: string;
+  title: ReactNode;
+  hint?: ReactNode;
+  children: ReactNode;
+  aside?: ReactNode;
+}) => (
+  <section className={classes.section}>
+    <header className={classes.sectionHead}>
+      <span className={`${classes.sectionIcon} ${tone}`}>
+        <Ixon width="1.1rem">{icon}</Ixon>
+      </span>
+      <div className={classes.sectionTitles}>
+        <h2 className={classes.sectionTitle}>{title}</h2>
+        {!!hint && <p className={classes.sectionHint}>{hint}</p>}
+      </div>
+      {aside}
+    </header>
+    <div className={classes.sectionBody}>{children}</div>
+  </section>
+);
+
+// the slot in the link, checked: a Tehran day from today on, a real range,
+// today only from now on
+const parsePick = (sp: URLSearchParams) => {
+  const d = sp.get("d");
+  const s = Number(sp.get("s"));
+  const e = Number(sp.get("e"));
+  if (!d && !sp.get("s") && !sp.get("e")) return { pick: null, bad: false };
+  if (!d || !isYmd(d) || !Number.isFinite(s) || !Number.isFinite(e)) return { pick: null, bad: true };
+  const today = tehranTodayYmd();
+  if (d < today || s >= e || s < 0 || e > 24 * 60 || (d === today && s <= tehranMinutesOfDay()))
+    return { pick: null, bad: true };
+  return { pick: { ymd: d, start: s, end: e }, bad: false };
 };
 
-const InnerBookingFlow = ({
-  date,
-  end,
-  start,
-  identity,
-  doctor: data,
-}: {
-  date: Date;
-  start: number;
-  end: number;
-  identity: IUserIdentity;
-  doctor: FinalizeBookingDoctor;
-}) => {
-  const [doesntExist, setDoesntExist] = useState<boolean>(false);
+// ------------------------------------------------------------------ page
 
-  const getContent = useScopedLocale(NS);
-
-  const getCompContent = getContent;
-
-  const { getShiftSessionBounds } = useShiftUtils();
-
-  //TODO: add logic if session is booked
-  const shift = useMemo<IDoctorShift<{
-    Office: Record<never, never>;
-  }> | null>(() => {
-    if (!data) return null;
-    // the shift day (0 = Saturday) of the visit's Tehran day
-    const thisDayOfWeek = tehranSaturdayDay(date);
-    const target = data.shifts.find(
-      (shift) =>
-        shift.day === thisDayOfWeek && shift.start <= start && shift.end >= end,
-    );
-    if (!target) {
-      setDoesntExist(true);
-      return null;
-    }
-    const bounds = getShiftSessionBounds(
-      target as unknown as ShiftContext[number],
-    );
-    const bound = bounds.find((b) => b[0] === start && b[1] === end);
-    if (!bound) {
-      setDoesntExist(true);
-      return null;
-    }
-    return target;
-  }, [data, date, end, getShiftSessionBounds, start]);
-
-  const [stage, setStage] = useState<BookingStage>("Patient");
-
-  const [context, setContext] = useState<FinalizeBookingContext>({
-    checkout: "wallet",
-    sessionType: null,
-    patient: identity,
-  });
-
-  const pushNotification = useNotification();
-
-  const [isLoading, setIsLoading] = useState<{
-    doctor: string;
-    date: string;
-    start: number;
-    end: number;
-    sessionType: DoctorSessionType;
-    patient: string;
-    method: CheckoutOption;
-  } | null>(null);
-
-  const [reserved, setReserved] = useState(false);
-
-  const onFinalize = useCallback(() => {
-    if (!!isLoading || reserved || !data) return;
-    if (!context.sessionType || !context.patient || !context.checkout)
-      return pushNotification(getContent("checkInput"), "Warn");
-    setIsLoading({
-      // the Tehran day as "YYYY-MM-DD": the server reads it as that day
-      date: tehranYmd(date),
-      start,
-      end,
-      method: context.checkout,
-      doctor: data._id,
-      patient: context.patient._id,
-      sessionType: context.sessionType,
-    });
-  }, [
-    context.checkout,
-    context.patient,
-    context.sessionType,
-    data,
-    date,
-    end,
-    getContent,
-    isLoading,
-    pushNotification,
-    reserved,
-    start,
-  ]);
-
-  const stageDict = useMemo<Record<BookingStage, ReactNode>>(
-    () =>
-      !!data && !!shift
-        ? {
-            Session: (
-              <SessionTypeStage
-                context={context}
-                setContext={setContext}
-                doctor={data}
-                setStage={setStage}
-                shift={shift}
-              />
-            ),
-            Checkout: (
-              <CheckoutStage
-                context={context}
-                setContext={setContext}
-                doctor={data}
-                officeId={shift?.office?._id}
-                setStage={setStage}
-                onFinalize={onFinalize}
-                busy={!!isLoading || reserved}
-              />
-            ),
-            Patient: (
-              <PatientStage
-                selfIdentity={identity}
-                context={context}
-                setContext={setContext}
-                setStage={setStage}
-              />
-            ),
-          }
-        : { Checkout: <Loading />, Patient: <Loading />, Session: <Loading /> },
-    [context, data, identity, isLoading, onFinalize, reserved, shift],
-  );
-
-  const push = useProgress();
-
-  return (
-    <Fragment>
-      {!!shift ? (
-        <BookingFlowContent
-          data={data as IDoctorProfile}
-          start={start}
-          end={end}
-          shift={shift}
-          date={date}
-          sessionType={context.sessionType}
-        >
-          {stageDict[stage]}
-        </BookingFlowContent>
-      ) : (
-        <Fragment>
-          {doesntExist ? (
-            <ErrorMessage message={getContent("shiftDoesNotExist")} />
-          ) : (
-            <Loading />
-          )}
-        </Fragment>
-      )}
-      <Act<{ data: IReservation }>
-        path={!!isLoading ? `${API}/booking/reserve` : null}
-        method="POST"
-        payload={isLoading || undefined}
-        onDone={(status, result) => {
-          setIsLoading(null);
-          if (!status || !result) return;
-          // paid: keep the button busy until the booking page opens, so a
-          // second click can't book (and charge the wallet) twice
-          setReserved(true);
-          push(`/dashboard/booking/${result.data._id}`);
-        }}
-      />
-    </Fragment>
-  );
-};
-
-const Inner = ({
-  date,
-  end,
-  start,
-  identity,
-}: {
-  date?: Date;
-  start?: number;
-  end?: number;
-  identity: IUserIdentity;
-}) => {
-  const { user } = useUser();
-
+// /book/finalize/<doctor>[?d=YYYY-MM-DD&s=&e=&t=&o=]
+// Step 1 (choose) when the link has no slot, step 2 (details: who, why,
+// insurance, code, payment, the price and the policy) when it has one.
+// The booking posts the Tehran day as "YYYY-MM-DD". A guest signs in
+// inline; the slot stays on screen the whole time.
+const FinalizeBookingPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const nf = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const money = useCallback((n: number) => getContent("xToman", [nf.format(Math.max(0, Math.round(n)))]), [getContent, nf]);
 
-  const { data, error } = useSWR<FinalizeBookingDoctor>(
-    `${API}/public/dr/${nodeId}/id`,
+  const { pick: linkPick, bad } = useMemo(() => parsePick(new URLSearchParams(searchParams.toString())), [searchParams]);
+  const linkType = searchParams.get("t") as DoctorSessionType | null;
+  const linkOffice = searchParams.get("o");
+  const resumed = searchParams.get("resume") === "1";
+
+  const { data: doctor, error: doctorError } = useSWR<FinalizeBookingDoctor>(
+    nodeId ? `${API}/public/dr/${nodeId}/id` : null,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+  const { data: config } = useSWR<DoctorConfig>(
+    nodeId ? `${API}/public/doctor/${nodeId}/config` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
+  const activeTypes = useMemo(
+    () => (config ? visitTypeOrder.filter((t) => config[t]?.active && !!config[t]?.price) : []),
+    [config],
+  );
+  const sessionType: DoctorSessionType | null =
+    (linkType && activeTypes.includes(linkType) ? linkType : null) || (activeTypes.length ? activeTypes[0] : null);
+
+  // places of this doctor's shifts (name, address, map point)
+  const officeOf = useMemo(() => {
+    const map = new Map<string, NonNullable<IDoctorShift<{ Office: Record<never, never> }>["office"]>>();
+    for (const sh of Array.isArray(doctor?.shifts) ? doctor.shifts : []) {
+      const o = (sh as IDoctorShift<{ Office: Record<never, never> }>)?.office;
+      if (o && typeof o === "object" && o._id) map.set(o._id, o);
+    }
+    return map;
+  }, [doctor?.shifts]);
+
+  const { user, isUserLoading } = useUser();
+  const pushNotification = useNotification();
+  const push = useProgress();
+
+  // ---- slot: still free?
+  const { data: slots } = useBookableSlots(nodeId, sessionType, null);
+  const freeSlot = useMemo(() => {
+    if (!linkPick || !slots) return undefined;
+    const day = slots.days.find((d) => d.ymd === linkPick.ymd);
+    return day?.bounds.find((b) => b.start === linkPick.start && b.end === linkPick.end) || null;
+  }, [linkPick, slots]);
+  const office = (linkOffice && officeOf.has(linkOffice) ? linkOffice : null) || freeSlot?.office || null;
+  const officeDoc = office ? officeOf.get(office) : undefined;
+
+  const setPick = useCallback(
+    (p: SlotPick | null, type: DoctorSessionType | null = sessionType) => {
+      const q = new URLSearchParams();
+      if (p) {
+        q.set("d", p.ymd);
+        q.set("s", String(p.start));
+        q.set("e", String(p.end));
+        q.set("o", p.office);
+      }
+      if (type) q.set("t", type);
+      router.replace(`${pathname}?${q.toString()}`, { scroll: false });
+    },
+    [pathname, router, sessionType],
+  );
+
+  // ---- step 1 (choose) state
+  const [choice, setChoice] = useState<SlotPick | null>(null);
+  const [chooseType, setChooseType] = useState<DoctorSessionType | null>(null);
+  const [chooseOffice, setChooseOffice] = useState<string | null>(null);
+  const [changeOpen, setChangeOpen] = useState(false);
+  const pickType = chooseType || sessionType;
+  const offices = useMemo(
+    () =>
+      (Array.isArray(config?.offices) ? config.offices : [])
+        .filter((o) => o && o.active !== false)
+        .map((o) => ({ _id: o._id, name: o.name, address: (o as { address?: string }).address })),
+    [config],
+  );
+  const pickOffice = pickType === "inPerson" && offices.length > 1 ? chooseOffice || offices[0]._id : null;
+  useEffect(() => setChoice(null), [pickType, pickOffice]);
+
+  const today = tehranTodayYmd();
+  const dayText = (ymd: string) => {
+    const diff = diffDaysYmd(today, ymd);
+    const date = tehranNoon(ymd).toLocaleDateString(intlTag, {
+      timeZone: TEHRAN_TZ,
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+    return diff === 0
+      ? getContent("bfDayAndDate", [getContent("today"), date])
+      : diff === 1
+        ? getContent("bfDayAndDate", [getContent("tomorrow"), date])
+        : date;
+  };
+
+  useEffect(() => {
+    if (bad) router.replace(pathname);
+  }, [bad, pathname, router]);
+
+  if (doctorError)
+    return (
+      <div className={classes.page}>
+        <div className={classes.errorBox} role="alert">
+          <p>{getContent("bfDoctorMissing")}</p>
+          <Button href="/book" size="M" radius="High">
+            {getContent("bfFindDoctor")}
+          </Button>
+        </div>
+      </div>
+    );
+
+  const name = doctor ? getDoctorProfileLabel(doctor as unknown as IDoctorProfile) : "";
+  const speciality = doctor?.mainSpeciality as { name?: string; slug?: string; _id?: string } | undefined;
+
+  const doctorCard = (
+    <div className={classes.doctor}>
+      {doctor?.avatar ? (
+        <span className={classes.avatar}>
+          <HostedImage src={doctor.avatar} alt={name} fill sizes="3.5rem" style={{ objectFit: "cover" }} />
+        </span>
+      ) : (
+        <InitialAvatar name={name || "…"} seed={nodeId} size="3.5rem" />
+      )}
+      <div className={classes.doctorText}>
+        <strong>{name || "…"}</strong>
+        {!!speciality?.name && <span>{speciality.name}</span>}
+      </div>
+      {!!doctor && (
+        <Link className={classes.profileLink} href={`/dr/${doctor.slug || doctor._id}`}>
+          {getContent("bfProfile")}
+        </Link>
+      )}
+    </div>
+  );
+
+  const otherDoctors = !!speciality?.name && (
+    <Button href={`/speciality/${speciality.slug || speciality._id}`} variant="Primary" mode="Outline" size="S" radius="High">
+      {getContent("bfOtherDoctors", [speciality.name])}
+    </Button>
+  );
+
+  const chooser = (
+    <div className={classes.chooser}>
+      <div className={classes.block}>
+        <h3 className={classes.blockTitle}>{getContent("bfVisitType")}</h3>
+        {config ? (
+          <VisitTypePicker settings={config} value={pickType} onChange={(t) => setChooseType(t)} />
+        ) : (
+          <div className={classes.skeleton} style={{ height: "7rem" }} />
+        )}
+      </div>
+      {pickType === "inPerson" && offices.length > 1 && (
+        <div className={classes.block}>
+          <h3 className={classes.blockTitle}>{getContent("bfOffice")}</h3>
+          <OfficePicker offices={offices} value={pickOffice} onChange={setChooseOffice} />
+        </div>
+      )}
+      <div className={classes.block}>
+        <h3 className={classes.blockTitle}>{getContent("bfPickTime")}</h3>
+        <SlotPicker
+          doctorId={nodeId}
+          sessionType={pickType}
+          office={pickOffice}
+          value={choice}
+          onChange={setChoice}
+          fallback={otherDoctors}
+        />
+      </div>
+    </div>
+  );
+
+  // ---------------------------------------------------- step 1: choose
+  if (!linkPick) {
+    return (
+      <div className={classes.page}>
+        <BookingSteps current={0} />
+        <div className={classes.layout}>
+          <div className={classes.main}>
+            <div className={classes.card}>{doctorCard}</div>
+            <div className={classes.card}>
+              {config && !activeTypes.length ? (
+                <div className={classes.block}>
+                  <p className={classes.muted}>{getContent("bfNoOnlineBooking")}</p>
+                  {otherDoctors}
+                </div>
+              ) : (
+                chooser
+              )}
+            </div>
+          </div>
+          <aside className={classes.aside}>
+            <div className={`${classes.card} ${classes.sticky}`}>
+              <h3 className={classes.blockTitle}>{getContent("bfYourVisit")}</h3>
+              <p className={classes.muted}>{choice ? dayText(choice.ymd) : getContent("bfPickATime")}</p>
+              {!!choice && <strong className={classes.bigTime}>{clock(choice.start, nf)}</strong>}
+              <Button
+                size="L"
+                radius="High"
+                variant={choice ? "Primary" : "Disable"}
+                className={classes.wide}
+                onClick={() => choice && setPick(choice, pickType)}
+              >
+                {getContent("bfContinue")}
+              </Button>
+            </div>
+          </aside>
+        </div>
+        <div className={classes.mobileBar}>
+          <div className={classes.mobileBarText}>
+            <b>{choice ? `${dayText(choice.ymd)} · ${clock(choice.start, nf)}` : getContent("bfPickATime")}</b>
+          </div>
+          <Button size="M" radius="High" variant={choice ? "Primary" : "Disable"} onClick={() => choice && setPick(choice, pickType)}>
+            {getContent("bfContinue")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------------------------------------------------- step 2: details
+  const takenBanner = slots && freeSlot === null && (
+    <div className={classes.taken} role="alert">
+      <Ixon width="1.1rem">
+        <AlertTriangleIcon />
+      </Ixon>
+      <div>
+        <strong>{getContent("bfSlotTaken")}</strong>
+        <p>{getContent("bfSlotTakenText")}</p>
+      </div>
+      <Button size="S" radius="High" onClick={() => setChangeOpen(true)}>
+        {getContent("bfPickAnother")}
+      </Button>
+    </div>
+  );
+
+  const visitSummary = (
+    <div className={classes.visit}>
+      {doctorCard}
+      <ul className={classes.facts}>
+        <li>
+          <span className={`${classes.factIcon} ${sessionType ? visitTypeTone[sessionType] : "tone-indigo"}`}>
+            <Ixon width="0.95rem">{sessionType ? visitTypeIcon[sessionType] : <HospitalIcon />}</Ixon>
+          </span>
+          <span>{sessionType ? getContent(doctorSessionTypeContentKeyDict[sessionType]) : "…"}</span>
+        </li>
+        <li>
+          <span className={`${classes.factIcon} tone-violet`}>
+            <Ixon width="0.95rem">
+              <Calendar02Icon />
+            </Ixon>
+          </span>
+          <span>
+            <b>{dayText(linkPick.ymd)}</b>
+            <br />
+            {getContent("fromTimeXtoTimeY", [clock(linkPick.start, nf), clock(linkPick.end, nf)])}
+          </span>
+        </li>
+        {sessionType === "inPerson" && !!officeDoc && (
+          <li>
+            <span className={`${classes.factIcon} tone-teal`}>
+              <Ixon width="0.95rem">
+                <LocationIcon />
+              </Ixon>
+            </span>
+            <span>
+              <b>{officeDoc.name}</b>
+              {!!(officeDoc as { address?: string }).address && (
+                <>
+                  <br />
+                  {(officeDoc as { address?: string }).address}
+                </>
+              )}
+            </span>
+          </li>
+        )}
+      </ul>
+      <TehranTimeHint ns={NS} />
+      {sessionType === "inPerson" && (
+        <LeaveByHint
+          coords={(officeDoc as { location?: { coordinates?: [number, number] } } | undefined)?.location?.coordinates}
+          date={tehranNoon(linkPick.ymd)}
+          start={linkPick.start}
+        />
+      )}
+      <button type="button" className={classes.change} onClick={() => setChangeOpen(true)}>
+        <Ixon width="0.9rem">
+          <EditIcon />
+        </Ixon>
+        {getContent("bfChangeTime")}
+      </button>
+    </div>
+  );
+
+  const changeSheet = (
+    <BottomSheet
+      open={changeOpen}
+      onClose={() => setChangeOpen(false)}
+      title={getContent("bfChangeTime")}
+      closeLabel={getContent("bfClose")}
+      footer={
+        <Button
+          size="L"
+          radius="High"
+          className={classes.wide}
+          variant={choice ? "Primary" : "Disable"}
+          onClick={() => {
+            if (!choice) return;
+            setPick(choice, pickType);
+            setChangeOpen(false);
+          }}
+        >
+          {choice ? `${getContent("bfUseThisTime")} · ${clock(choice.start, nf)}` : getContent("bfPickATime")}
+        </Button>
+      }
+    >
+      {chooser}
+    </BottomSheet>
+  );
+
   return (
-    <HandleLoading data={!!data && !!user} error={error}>
-      {!!data && !!user && (
-        <Fragment>
-          {date !== undefined && start !== undefined && end !== undefined ? (
-            <InnerBookingFlow
-              date={date}
-              start={start}
-              end={end}
-              identity={identity}
-              doctor={data}
+    <div className={classes.page}>
+      <BookingSteps current={1} />
+      {takenBanner}
+      <div className={classes.layout}>
+        <div className={classes.main}>
+          <div className={`${classes.card} ${classes.mobileOnly}`}>{visitSummary}</div>
+          {isUserLoading ? (
+            <div className={`${classes.card} ${classes.skeleton}`} style={{ height: "14rem" }} />
+          ) : !user ? (
+            <div className={classes.card}>
+              <Section icon={<LockIcon />} title={getContent("bfLoginTitle")} hint={getContent("bfLoginHint")}>
+                <InlineLogin />
+              </Section>
+            </div>
+          ) : doctor && sessionType ? (
+            <Details
+              doctor={doctor}
+              sessionType={sessionType}
+              office={office}
+              pick={linkPick}
+              blocked={freeSlot === null}
+              resumed={resumed}
+              money={money}
+              onBooked={(id) => push(`/dashboard/booking/${id}?new=1`)}
+              notify={pushNotification}
             />
           ) : (
-            <BookingFlowContent data={data as IDoctorProfile}>
-              <BookingSessionSelectorPopup
-                node={data as unknown as IDoctorProfile}
-                standalone
-              />
-            </BookingFlowContent>
+            <div className={`${classes.card} ${classes.skeleton}`} style={{ height: "14rem" }} />
           )}
-        </Fragment>
-      )}
-    </HandleLoading>
+        </div>
+        <aside className={classes.aside}>
+          <div className={`${classes.card} ${classes.sticky}`}>{visitSummary}</div>
+        </aside>
+      </div>
+      {changeSheet}
+    </div>
   );
 };
 
-const FinalizeBookingPage = () => {
-  const searchParams = useSearchParams();
-  const { user, isUserLoading } = useUser();
+// ------------------------------------------------------------- details
 
-  const {
-    data: identity,
-    error: identityError,
-    mutate: mutateIdentity,
-  } = useSWR<IUserIdentity | null>(
+const Details = ({
+  doctor,
+  sessionType,
+  office,
+  pick,
+  blocked,
+  resumed,
+  money,
+  onBooked,
+  notify,
+}: {
+  doctor: FinalizeBookingDoctor;
+  sessionType: DoctorSessionType;
+  office: string | null;
+  pick: { ymd: string; start: number; end: number };
+  blocked: boolean;
+  resumed: boolean;
+  money: (n: number) => string;
+  onBooked: (id: string) => void;
+  notify: ReturnType<typeof useNotification>;
+}) => {
+  const getContent = useScopedLocale(NS);
+  const { user } = useUser();
+  const { freeCancelHoursText, emergencyNumberText } = useSiteSettings();
+  const { data: payment } = usePaymentConfig();
+
+  const { data: identity, mutate: mutateIdentity } = useSWR<IUserIdentity | null>(
     `${API}/user/identity`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+  const { data: relatives, mutate: mutateRelatives } = useSWR<IUserIdentity[]>(
+    identity ? `${API}/user/relative` : null,
+    (url: string) => fetcher({ url }).then((res) => (Array.isArray(res.data) ? res.data : [])),
+  );
 
-  const [data, setData] = useState<{
-    date: Date;
-    end: number;
-    start: number;
-  } | null>(null);
+  const [draft, setDraft] = useState<Draft>(() => (typeof window === "undefined" ? {} : readDraft(doctor._id)));
+  const update = (patch: Partial<Draft>) => setDraft((prev) => ({ ...prev, ...patch }));
+  // a saved pick that is no longer on the list falls back to me
+  const patientId =
+    draft.patient && (draft.patient === identity?._id || (relatives || []).some((r) => r?._id === draft.patient))
+      ? draft.patient
+      : identity?._id;
+  const [codeInput, setCodeInput] = useState(draft.code || "");
+  const [codeOpen, setCodeOpen] = useState(!!draft.code);
+  const [addOpen, setAddOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [charge, setCharge] = useState<{ amount: number; returnPath: string } | null>(null);
 
-  const push = useProgress();
+  const { data: quote, isValidating: quoting } = useSWR<BookingQuote>(
+    user ? [`${API}/booking/quote`, doctor._id, sessionType, office || "", patientId || "", draft.code || ""] : null,
+    ([url, d, st, o, p, c]: string[]) =>
+      fetcher({
+        url,
+        method: "POST",
+        payload: { doctor: d, sessionType: st, ...(o ? { office: o } : {}), ...(p ? { patient: p } : {}), ...(c ? { code: c } : {}) },
+      }).then((res) => res.data),
+    { revalidateOnFocus: false, keepPreviousData: true },
+  );
 
-
+  // the default way to pay: the wallet when it covers the visit, else at
+  // the desk for an in-person visit, else the gateway when it is on
+  const method: Method =
+    draft.method ||
+    (quote && quote.balance >= quote.total
+      ? "wallet"
+      : sessionType === "inPerson"
+        ? "desk"
+        : payment?.sepEnabled
+          ? "gateway"
+          : "wallet");
+  const deskAllowed = sessionType === "inPerson";
   useEffect(() => {
-    const _date = searchParams.get("d");
-    const _start = searchParams.get("s");
-    const _end = searchParams.get("e");
-    // Session info in the query is optional - if none of it is present the
-    // user simply hasn't picked a session yet, so they get prompted to
-    // choose one on this page instead of being redirected away. If it's
-    // only partially present, though, the link is malformed.
-    if (!_date && !_start && !_end) return setData(null);
-    if (!_date || !_start || !_end) return push("/book");
-    // The YYYY-MM-DD key is a Tehran day; kept as its Tehran noon, an
-    // instant that formats as that day in any zone, and compared with
-    // Tehran's today and clock, not the device's.
-    const date = tehranNoon(_date);
-    const start = Number(_start);
-    const end = Number(_end);
-    const today = tehranTodayYmd();
-    const isToday = tehranYmd(date) === today;
-    if (
-      isNaN(date.getTime()) ||
-      isNaN(start) ||
-      isNaN(end) ||
-      tehranYmd(date) < today ||
-      start >= end ||
-      start < 0 ||
-      start > 24 * 60 ||
-      end < 0 ||
-      end > 24 * 60 ||
-      (isToday && start <= tehranMinutesOfDay())
-    )
-      return push("/book");
-    setData({ date, end, start });
-  }, [push, searchParams]);
+    if (method === "desk" && !deskAllowed) update({ method: "wallet" });
+  }, [deskAllowed, method]);
+  // back from the gateway: the top-up is in the wallet now
+  useEffect(() => {
+    if (resumed) update({ method: "wallet" });
+  }, [resumed]);
 
-  if (isUserLoading) return <Loading />;
-  if (!user) return <LoginRequired />;
-  // no identity on this account yet: booking for yourself needs one, so
-  // verify it here (this used to spin forever)
   if (identity === null)
     return (
-      <div className={classes.identityGate}>
-        <IdentityVerifyForm onDone={() => mutateIdentity()} />
+      <div className={classes.card}>
+        <Section icon={<UserIcon />} title={getContent("bfVerifyTitle")} hint={getContent("bfVerifyHint")}>
+          <IdentityVerifyForm onDone={() => mutateIdentity()} />
+        </Section>
       </div>
     );
+  if (!identity)
+    return <div className={`${classes.card} ${classes.skeleton}`} style={{ height: "14rem" }} />;
+
+  const people = [identity, ...(relatives || [])].filter((p) => !!p?._id);
+  const insurances = quote?.insurances || [];
+  const payNow = method === "desk" ? 0 : quote?.total || 0;
+  const shortfall = method === "wallet" && quote ? Math.max(0, quote.total - quote.balance) : 0;
+  const canSubmit = !!quote && !!patientId && !blocked && !busy && !(method === "wallet" && shortfall > 0);
+
+  const submit = async () => {
+    if (!quote || !patientId || busy || blocked) return;
+    if (method === "gateway") {
+      // top up what the wallet lacks, come back here to confirm
+      const need = Math.max(0, quote.total - quote.balance);
+      if (need <= 0) return update({ method: "wallet" });
+      writeDraft(doctor._id, { ...draft, method: "wallet" });
+      const q = new URLSearchParams(window.location.search);
+      q.set("resume", "1");
+      setCharge({ amount: Math.max(need, payment?.minAmount || 1), returnPath: `${window.location.pathname}?${q.toString()}` });
+      return;
+    }
+    setBusy(true);
+    try {
+      const res = await fetcher({
+        url: `${API}/booking/reserve`,
+        method: "POST",
+        payload: {
+          doctor: doctor._id,
+          // the Tehran day as "YYYY-MM-DD": the server reads it as that day
+          date: pick.ymd,
+          start: pick.start,
+          end: pick.end,
+          sessionType,
+          patient: patientId,
+          method: method === "desk" ? "desk" : "wallet",
+          ...(office ? { office } : {}),
+          ...(draft.code && quote.code?.applied ? { code: draft.code } : {}),
+          ...(draft.insurance ? { insurance: draft.insurance } : {}),
+        },
+      });
+      const booked = res?.data as IReservation | undefined;
+      if (!booked?._id) throw new Error(getContent("bfBookFailed"));
+      // the reason for the visit goes to the doctor's questionnaire
+      const complaint = (draft.complaint || "").trim();
+      if (complaint.length >= 2)
+        await fetcher({
+          url: `${API}/user/reservation/${booked._id}/intake`,
+          method: "PUT",
+          payload: { complaint, ...(draft.onset ? { onset: draft.onset } : {}) },
+        }).catch(() => undefined);
+      writeDraft(doctor._id, null);
+      onBooked(booked._id);
+    } catch (err) {
+      notify(err instanceof FetchError || err instanceof Error ? err.message : getContent("bfBookFailed"), "Error");
+      setBusy(false);
+    }
+  };
+
+  const ctaText =
+    method === "desk"
+      ? getContent("bfConfirmDesk")
+      : method === "gateway"
+        ? getContent("bfPayGateway", [money(Math.max(0, (quote?.total || 0) - (quote?.balance || 0)))])
+        : payNow > 0
+          ? getContent("bfConfirmPay", [money(payNow)])
+          : getContent("bfConfirmFree");
+
+  const methods: { key: Method; icon: ReactNode; title: ContentKey; text: string; show: boolean }[] = [
+    {
+      key: "wallet",
+      icon: <WalletIcon />,
+      title: "bfPayWallet",
+      text: getContent("bfWalletBalance", [money(quote?.balance || 0)]),
+      show: true,
+    },
+    {
+      key: "gateway",
+      icon: <ShieldCheckIcon />,
+      title: "bfPayOnline",
+      text: getContent("bfPayOnlineText"),
+      show: !!payment?.sepEnabled && (quote?.total || 0) > (quote?.balance || 0),
+    },
+    {
+      key: "desk",
+      icon: <HospitalIcon />,
+      title: "bfPayDesk",
+      text: getContent("bfPayDeskText"),
+      show: deskAllowed,
+    },
+  ];
 
   return (
-    <HandleLoading data={!!identity} error={identityError}>
-      {!!identity && (
-        <Inner
-          identity={identity}
-          date={data?.date}
-          start={data?.start}
-          end={data?.end}
-        />
+    <div className={classes.details}>
+      {resumed && (
+        <div className={classes.resumed} role="status">
+          <Ixon width="1rem">
+            <CheckIcon />
+          </Ixon>
+          {getContent("bfTopUpDone")}
+        </div>
       )}
-    </HandleLoading>
+
+      {/* who */}
+      <div className={classes.card}>
+        <Section icon={<UserIcon />} title={getContent("bfWho")} hint={getContent("bfWhoHint")}>
+          <div className={classes.chips} role="radiogroup">
+            {people.map((p) => {
+              const on = patientId === p._id;
+              const isSelf = p._id === identity._id;
+              return (
+                <button
+                  key={p._id}
+                  type="button"
+                  role="radio"
+                  aria-checked={on}
+                  className={`${classes.person} ${on ? classes.on : ""}`}
+                  onClick={() => update({ patient: p._id })}
+                >
+                  <span className={classes.check}>{on && <CheckIcon />}</span>
+                  <span className={classes.personText}>
+                    <b>{`${p.givenName || ""} ${p.lastName || ""}`.trim() || "—"}</b>
+                    <small>{isSelf ? getContent("bfMyself") : getContent("bfFamily")}</small>
+                  </span>
+                </button>
+              );
+            })}
+            <button type="button" className={classes.addPerson} onClick={() => setAddOpen((v) => !v)} aria-expanded={addOpen}>
+              <Ixon width="1rem">
+                <PlusIcon />
+              </Ixon>
+              {getContent("bfAddFamily")}
+            </button>
+          </div>
+          {addOpen && (
+            <AddFamily
+              onDone={async () => {
+                const list = await mutateRelatives();
+                const last = Array.isArray(list) ? list[list.length - 1] : null;
+                if (last?._id) update({ patient: last._id });
+                setAddOpen(false);
+              }}
+              notify={notify}
+            />
+          )}
+        </Section>
+      </div>
+
+      {/* why */}
+      <div className={classes.card}>
+        <Section
+          icon={<MedicalRecordIcon />}
+          tone="tone-violet"
+          title={getContent("bfReason")}
+          hint={getContent("bfReasonHint")}
+          aside={<span className={classes.optional}>{getContent("bfOptional")}</span>}
+        >
+          <textarea
+            className={classes.textarea}
+            rows={3}
+            maxLength={1000}
+            value={draft.complaint || ""}
+            placeholder={getContent("bfReasonPlaceholder")}
+            onChange={(e) => update({ complaint: e.target.value })}
+          />
+          <div className={classes.onsets}>
+            <span className={classes.muted}>{getContent("bfSince")}</span>
+            {onsets.map((o) => (
+              <button
+                key={o}
+                type="button"
+                aria-pressed={draft.onset === o}
+                className={`${classes.pill} ${draft.onset === o ? classes.pillOn : ""}`}
+                onClick={() => update({ onset: draft.onset === o ? null : o })}
+              >
+                {getContent(onsetKey[o])}
+              </button>
+            ))}
+          </div>
+          <p className={classes.redFlag}>
+            <Ixon width="0.9rem">
+              <AlertTriangleIcon />
+            </Ixon>
+            {getContent("bfRedFlag", [emergencyNumberText])}
+          </p>
+        </Section>
+      </div>
+
+      {/* insurance */}
+      {!!insurances.length && (
+        <div className={classes.card}>
+          <Section icon={<ShieldCheckIcon />} tone="tone-teal" title={getContent("bfInsurance")} hint={getContent("bfInsuranceHint")}>
+            <div className={classes.chips} role="radiogroup">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={!draft.insurance}
+                className={`${classes.pill} ${!draft.insurance ? classes.pillOn : ""}`}
+                onClick={() => update({ insurance: null })}
+              >
+                {getContent("bfNoInsurance")}
+              </button>
+              {insurances.map((i) => (
+                <button
+                  key={i._id}
+                  type="button"
+                  role="radio"
+                  aria-checked={draft.insurance === i._id}
+                  className={`${classes.pill} ${draft.insurance === i._id ? classes.pillOn : ""}`}
+                  onClick={() => update({ insurance: i._id })}
+                >
+                  {i.name}
+                </button>
+              ))}
+            </div>
+            {!!draft.insurance && <p className={classes.note}>{getContent("bfInsuranceNote")}</p>}
+          </Section>
+        </div>
+      )}
+
+      {/* pay */}
+      <div className={classes.card}>
+        <Section icon={<WalletIcon />} tone="tone-amber" title={getContent("bfPayment")}>
+          <div className={classes.methods} role="radiogroup">
+            {methods
+              .filter((m) => m.show)
+              .map((m) => (
+                <button
+                  key={m.key}
+                  type="button"
+                  role="radio"
+                  aria-checked={method === m.key}
+                  className={`${classes.method} ${method === m.key ? classes.on : ""}`}
+                  onClick={() => update({ method: m.key })}
+                >
+                  <span className={classes.check}>{method === m.key && <CheckIcon />}</span>
+                  <span className={classes.methodIcon}>
+                    <Ixon width="1.2rem">{m.icon}</Ixon>
+                  </span>
+                  <span className={classes.personText}>
+                    <b>{getContent(m.title)}</b>
+                    <small>{m.text}</small>
+                  </span>
+                </button>
+              ))}
+          </div>
+          {method === "wallet" && !!quote && <WalletShortfallTopUp balance={quote.balance} total={quote.total} />}
+          {method === "wallet" && shortfall > 0 && !payment?.sepEnabled && (
+            <p className={classes.note}>{getContent("bfWalletShort", [money(shortfall)])}</p>
+          )}
+
+          {/* club code */}
+          {!codeOpen ? (
+            <button type="button" className={classes.codeToggle} onClick={() => setCodeOpen(true)}>
+              <Ixon width="0.95rem">
+                <TagIcon />
+              </Ixon>
+              {getContent("bfHaveCode")}
+            </button>
+          ) : (
+            <div className={classes.code}>
+              <Input
+                title={getContent("bfClubCode")}
+                defaultValue={codeInput}
+                onChange={(e) => setCodeInput(e.target.value.toUpperCase())}
+              />
+              <Button
+                size="M"
+                radius="High"
+                mode="Outline"
+                isLoading={quoting && !!codeInput && codeInput === draft.code}
+                onClick={() => update({ code: codeInput.trim() })}
+              >
+                {getContent("bfApply")}
+              </Button>
+              {!!draft.code && quote?.code && (
+                <p className={quote.code.applied ? classes.codeOk : classes.codeBad}>
+                  {quote.code.applied ? getContent("bfCodeApplied", [quote.code.name || draft.code]) : getContent("bfCodeInvalid")}
+                </p>
+              )}
+            </div>
+          )}
+
+          {!!quote && !quote.pro && !!quote.proPotential && method !== "desk" && (
+            <ProUpsellCard moment="booking" amount={quote.proPotential} />
+          )}
+        </Section>
+      </div>
+
+      {/* price + policy + confirm */}
+      <div className={`${classes.card} ${classes.totalCard}`}>
+        {!quote ? (
+          <div className={classes.skeleton} style={{ height: "8rem" }} />
+        ) : (
+          <dl className={classes.lines}>
+            <div>
+              <dt>{getContent("bfVisitFee")}</dt>
+              <dd>{money(quote.price)}</dd>
+            </div>
+            {quote.clubDiscount > 0 && (
+              <div className={classes.minus}>
+                <dt>{getContent("bfClubDiscount")}</dt>
+                <dd>{`− ${money(quote.clubDiscount)}`}</dd>
+              </div>
+            )}
+            {quote.tax > 0 && (
+              <div>
+                <dt>{getContent("tax")}</dt>
+                <dd>{money(quote.tax)}</dd>
+              </div>
+            )}
+            {method !== "desk" && quote.proDiscount > 0 && (
+              <div className={classes.minus}>
+                <dt>{getContent("proDiscountLine")}</dt>
+                <dd>{`− ${money(quote.proDiscount)}`}</dd>
+              </div>
+            )}
+            <div className={classes.totalLine}>
+              <dt>{method === "desk" ? getContent("bfPayAtVisit") : getContent("bfPayNow")}</dt>
+              <dd>{money(method === "desk" ? quote.deskTotal : quote.total)}</dd>
+            </div>
+          </dl>
+        )}
+        <div className={classes.policy}>
+          <Ixon width="1rem">
+            <ShieldCheckIcon />
+          </Ixon>
+          <p>
+            {method === "desk"
+              ? getContent("bfPolicyDesk", [freeCancelHoursText])
+              : getContent("bfPolicyOnline", [freeCancelHoursText])}
+          </p>
+        </div>
+        <div className={classes.submitRow}>
+          <Button
+            size="L"
+            radius="High"
+            className={classes.wide}
+            variant={canSubmit || method === "gateway" ? "Primary" : "Disable"}
+            isLoading={busy || !!charge}
+            onClick={submit}
+          >
+            {ctaText}
+          </Button>
+          <p className={classes.agree}>
+            {getContent("bfAgreePrefix")} <Link href="/policy">{getContent("bfAgreeLink")}</Link>
+            {getContent("bfAgreeSuffix")}
+          </p>
+        </div>
+      </div>
+
+      {/* phone: the total and the action stay under the thumb */}
+      <div className={classes.mobileBar}>
+        <div className={classes.mobileBarText}>
+          <small>{method === "desk" ? getContent("bfPayAtVisit") : getContent("bfPayNow")}</small>
+          <b>{quote ? money(method === "desk" ? quote.deskTotal : quote.total) : "…"}</b>
+        </div>
+        <Button
+          size="M"
+          radius="High"
+          variant={canSubmit || method === "gateway" ? "Primary" : "Disable"}
+          isLoading={busy || !!charge}
+          onClick={submit}
+        >
+          {method === "desk" ? getContent("bfConfirmShort") : method === "gateway" ? getContent("bfPayShort") : getContent("bfConfirmShort")}
+        </Button>
+      </div>
+      <WalletChargeAct payload={charge} onFailed={() => setCharge(null)} />
+    </div>
+  );
+};
+
+// a family member, added inline (POST /user/relative; the identity check
+// is the same as for the account holder)
+const AddFamily = ({ onDone, notify }: { onDone: () => unknown; notify: ReturnType<typeof useNotification> }) => {
+  const getContent = useScopedLocale(NS);
+  const [form, setForm] = useState<{ nationalCode?: string; birthDate?: Date; phone?: string }>({});
+  const [busy, setBusy] = useState(false);
+  const save = async () => {
+    if (busy) return;
+    if (!form.nationalCode || !form.birthDate) return notify(getContent("bfFillFamily"), "Warn");
+    setBusy(true);
+    try {
+      await fetcher({ url: `${API}/user/relative`, method: "POST", payload: form });
+      await onDone();
+    } catch (err) {
+      notify(err instanceof Error ? err.message : String(err), "Error");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className={classes.addForm}>
+      <Input
+        title={getContent("nationalCode")}
+        inputMode="numeric"
+        onChange={(e) => setForm((p) => ({ ...p, nationalCode: e.target.value }))}
+      />
+      <DateInput title={getContent("dateOfBirth")} onChange={(d) => setForm((p) => ({ ...p, birthDate: d }))} />
+      <Input
+        title={getContent("phoneNumber")}
+        inputMode="tel"
+        onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
+      />
+      <Button size="M" radius="High" isLoading={busy} onClick={save}>
+        {getContent("bfAddFamilySave")}
+      </Button>
+    </div>
   );
 };
 
