@@ -5,6 +5,9 @@ import HomeIcon from "../Icons/HomeIcon";
 import NotFoundRobotIllustration from "./NotFoundRobotIllustration";
 import { t3xlBold, tbaseRegular } from "../UI/Typography";
 import classes from "./NotFoundPage.module.css";
+import Link from "@/Components/i18n/Link";
+import Ixon from "../UI/Ixon";
+import { popularLinks } from "../Layout/MegaMenu";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -45,6 +48,22 @@ const NotFoundPage = () => {
         >
           {getContent("goToHomePage")}
         </Button>
+      </div>
+      {/* somewhere useful to go instead of a dead end */}
+      <div className={classes.popular}>
+        <span className={classes.popularTitle}>{getContent("megaPopular")}</span>
+        <ul className={classes.popularList}>
+          {popularLinks.map((link) => (
+            <li key={link.title}>
+              <Link href={link.target} className={classes.popularLink}>
+                <span className={`${classes.popularIcon} tone-${link.tone}`}>
+                  <Ixon width="1.125rem">{link.icon}</Ixon>
+                </span>
+                <span>{getContent(link.title)}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

@@ -10,9 +10,11 @@
   grid-auto-rows: min-content;
   grid-template-columns: repeat(
     auto-fill,
-    minmax(min(var(--item-width), 100%), var(--item-width))
+    minmax(min(var(--item-width), 100%), 1fr)
   );
-  justify-content: center;
+  /* tracks share the row: a short list starts at the inline-start edge
+     instead of floating in the middle */
+  justify-content: stretch;
   gap: 1rem;
 }
 
@@ -35,8 +37,8 @@
   gap: 0.5rem;
   padding: 3rem 1.5rem;
   border-radius: 1rem;
-  background: var(--glass);
-  border: 1px solid var(--glassLine);
+  background: var(--cardBg);
+  border: 1px solid var(--cardLine);
   text-align: center;
   color: var(--gray10);
   font-size: 0.875rem;

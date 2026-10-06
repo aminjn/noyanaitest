@@ -1,0 +1,419 @@
+/* The root is not positioned: the panel anchors to the header bar's inner
+   row (PublicHeader .inner, position: relative), so it is centred under the
+   whole header rather than under the trigger. */
+.root {
+  display: flex;
+  align-items: center;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2.5rem;
+  padding-inline: 0.875rem;
+  border-radius: var(--radiusPill);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--textBody);
+  white-space: nowrap;
+  transition:
+    background-color var(--transTime),
+    color var(--transTime);
+}
+
+.trigger:hover {
+  background-color: var(--hoverTint);
+  color: var(--textStrong);
+}
+
+.triggerOpen,
+.triggerOpen:hover {
+  background-color: var(--activeTint);
+  color: var(--primary7);
+}
+
+:global(html[data-theme="dark"]) .triggerOpen {
+  color: var(--primary8);
+}
+
+.triggerChevron {
+  transition: transform var(--transTime);
+}
+
+.triggerOpen .triggerChevron {
+  transform: rotate(180deg);
+}
+
+/* ---- panel ---- */
+.panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  inset-inline: 0;
+  margin-inline: auto;
+  width: min(66rem, calc(100vw - 2rem));
+  display: grid;
+  grid-template-columns: 16.5rem 1fr;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  border-radius: var(--radiusLg);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.985);
+  transform-origin: top center;
+  transition:
+    opacity 180ms ease-out,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 80;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.open {
+  opacity: 1;
+  transform: none;
+  animation: megaIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes megaIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* category column */
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.25rem;
+  border-radius: calc(var(--radiusLg) - 0.375rem);
+  background-color: var(--hoverTint);
+  max-height: min(34rem, calc(100dvh - 7rem));
+  overflow-y: auto;
+}
+
+.tab {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.4375rem 0.5rem;
+  border-radius: 0.875rem;
+  color: var(--textBody);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-align: start;
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+
+.tab:hover {
+  color: var(--textStrong);
+}
+
+.tabActive,
+.tabActive:hover {
+  background-color: var(--glassChip);
+  box-shadow: inset 0 0 0 1px var(--glassChipLine), var(--elev1);
+  color: var(--textStrong);
+  font-weight: 700;
+}
+
+.tabIcon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.625rem;
+}
+
+.tabLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tabCount {
+  min-width: 1.5rem;
+  height: 1.375rem;
+  padding-inline: 0.375rem;
+  border-radius: var(--radiusPill);
+  background-color: var(--activeTint);
+  color: var(--primary7);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global(html[data-theme="dark"]) .tabCount {
+  color: var(--primary8);
+}
+
+/* points to the panel: inline-end */
+.tabChevron {
+  flex-shrink: 0;
+  opacity: 0;
+  color: var(--textMuted);
+  transform: rotate(90deg);
+  transition: opacity 150ms;
+}
+
+:global(html[dir="ltr"]) .tabChevron {
+  transform: rotate(-90deg);
+}
+
+.tabActive .tabChevron {
+  opacity: 1;
+}
+
+/* content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.125rem 1.25rem 1.25rem;
+  min-width: 0;
+}
+
+.contentHead {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding-block-end: 1rem;
+  border-block-end: 1px solid var(--cardLine);
+}
+
+.headIcon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+}
+
+.headText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.headTitle {
+  font-size: 1.1875rem;
+  font-weight: 800;
+  color: var(--textStrong);
+  line-height: var(--lhTight);
+}
+
+.headDesc {
+  font-size: 0.875rem;
+  color: var(--textMuted);
+  line-height: 1.6;
+}
+
+.seeAll {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2.375rem;
+  padding-inline: 1rem;
+  border-radius: var(--radiusPill);
+  background-color: var(--activeTint);
+  color: var(--primary7);
+  font-size: 0.875rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color var(--transTime);
+}
+
+.seeAll:hover {
+  background-color: var(--primary2);
+}
+
+:global(html[data-theme="dark"]) .seeAll {
+  color: var(--primary8);
+}
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25rem 1rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.75rem;
+  color: var(--textBody);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+
+.item:hover,
+.item:focus-visible {
+  background-color: var(--hoverTint);
+  color: var(--primary7);
+}
+
+:global(html[data-theme="dark"]) .item:hover {
+  color: var(--primary8);
+}
+
+.itemDot {
+  flex-shrink: 0;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background-color: var(--primary4);
+}
+
+.itemLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* no items yet: popular shortcuts instead of "nothing found" */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.emptyTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--textMuted);
+}
+
+.popular {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.popularLink {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--glassChipLine);
+  background-color: var(--glassChip);
+  color: var(--textStrong);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms,
+    transform 150ms;
+}
+
+.popularLink:hover {
+  border-color: var(--cardLineHover);
+  box-shadow: var(--elev2);
+  transform: translateY(-1px);
+}
+
+.popularIcon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+}
+
+/* AI triage card at the bottom: the "front door" when unsure */
+.aiCard {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border-radius: 1.125rem;
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(109, 74, 255, 0.16), transparent 60%),
+    var(--aiSoft);
+  border: 1px solid var(--aiLine);
+  color: var(--textStrong);
+}
+
+.aiIcon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  color: var(--onColor);
+}
+
+.aiText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.aiTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.aiDesc {
+  font-size: 0.8125rem;
+  color: var(--textMuted);
+  line-height: 1.6;
+}
+
+.aiGo {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--aiText);
+}
+
+.aiCard:hover .aiGo {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 72rem) {
+  .items,
+  .popular {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

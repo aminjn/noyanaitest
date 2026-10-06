@@ -1,31 +1,21 @@
-import Link from "@/Components/i18n/Link";
+import { ReactNode } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HomeRegister.module.css";
 import Ixon from "../UI/Ixon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import {
-  t3xlDemiBold,
-  tmdMedium,
-  tsmMedium,
-  tsmRegular,
-  txlBold,
-} from "../UI/Typography";
+import StetoscopeIcon from "../Icons/StetoscopeIcon";
+import MedicalRecordIcon from "../Icons/MedicalRecordIcon";
+import NotifyIcon from "../Icons/NotifyIcon";
+import WalletIcon from "../Icons/WalletIcon";
+import RocketIcon from "../Icons/RocketIcon";
 import { ContentKey } from "../Enums/contentKeys";
 import Button from "../UI/Button";
 import { SiteStats, useStatFormat } from "../helpers/siteStats";
 
 const NS: ContentNamespace[] = ["common", "home"];
 
-// const stats: ContentKey[] = [
-//   "statPharmacyCount",
-//   "statDoctorCount",
-//   "statLabCount",
-//   "statPatientCount",
-// ];
-
-// real counts from the site (getHome's stats); a zero is left out rather
-// than shown as a boast
+// real counts from the site (getHome's stats)
 const statTiles: { title: ContentKey; key: keyof SiteStats }[] = [
   { title: "doctors", key: "doctors" },
   { title: "pharmacies", key: "pharmacies" },
@@ -33,60 +23,83 @@ const statTiles: { title: ContentKey; key: keyof SiteStats }[] = [
   { title: "patients", key: "patients" },
 ];
 
-// Redesigned "join Noyan" CTA (Figma, Aug 2026): a gradient stats banner
-// instead of the previous split content/avatar-stack card. Replaces the
-// former "cunts" avatar row and register.png illustration entirely.
+// A count is shown only once it says something ("1 doctors" read as a
+// joke); until at least two of them do, the band lists what a provider
+// gets instead (the benchmark's reasons doctors pick a panel: e-Rx for
+// Tamin/Salamat, SMS reminders against no-shows, domestic payments, a free
+// start with no exclusivity).
+const MIN_STAT = 50;
+
+const props: { title: ContentKey; icon: ReactNode }[] = [
+  { title: "joinPropRx", icon: <MedicalRecordIcon /> },
+  { title: "joinPropSms", icon: <NotifyIcon /> },
+  { title: "joinPropPay", icon: <WalletIcon /> },
+  { title: "joinPropFree", icon: <RocketIcon /> },
+];
+
 const HomeRegister = ({ stats }: { stats?: SiteStats }) => {
   const getContent = useScopedLocale(NS);
   const format = useStatFormat();
-  const shown = statTiles.filter((el) => Number(stats?.[el.key]) > 0);
+  const shown = statTiles.filter((el) => Number(stats?.[el.key]) >= MIN_STAT);
+  const showStats = shown.length >= 2;
 
   return (
-    <div className={classes.main}>
+    <section className={classes.main}>
+      <div className={classes.decor} aria-hidden="true" />
       <div className={classes.content}>
-        <h3 className={`${classes.title} ${t3xlDemiBold}`}>
-          {getContent("homeJoinNoyanTitle")}
-        </h3>
-        <p className={`${classes.description} ${tmdMedium}`}>
+        <span className={classes.eyebrow}>
+          <Ixon width="0.875rem">
+            <StetoscopeIcon />
+          </Ixon>
+          {getContent("doctorsAndMedicalCenters")}
+        </span>
+        <h2 className={classes.title}>{getContent("homeJoinNoyanTitle")}</h2>
+        <p className={classes.description}>
           {getContent("homeJoinNoyanDescription")}
         </p>
         <div className={classes.actions}>
           <Button
-            href={"/become"}
-            variant="Primary"
-            mode="Outline"
+            href={"/become/doctor"}
+            mode="Light"
             radius="High"
-            size="M"
+            size="L"
+            tailIcon={
+              <span style={{ display: "flex" }}>
+                <ArrowLeftIcon />
+              </span>
+            }
           >
             {getContent("registerDoctors")}
           </Button>
-          <Button
-            href={"/become"}
-            variant="Primary"
-            mode="Outline"
-            size="M"
-            radius="High"
-            className={classes.secondary}
-          >
+          <Button href={"/become"} mode="Glass" size="L" radius="High">
             {getContent("registerPharmacyAndLab")}
           </Button>
         </div>
       </div>
-      {!!shown.length && (
-        <div className={classes.stats}>
+      {showStats ? (
+        <ul className={classes.stats}>
           {shown.map(({ title, key }) => (
-            <div key={title} className={`${classes.stat} ${tsmMedium}`}>
-              <span className={`${classes.statValue} ${txlBold}`}>
+            <li key={title} className={classes.stat}>
+              <span className={classes.statValue}>
                 {format.count(stats?.[key] as number)}
               </span>
-              <span className={`${classes.statTitle} ${tsmRegular}`}>
-                {getContent(title)}
-              </span>
-            </div>
+              <span className={classes.statTitle}>{getContent(title)}</span>
+            </li>
           ))}
-        </div>
+        </ul>
+      ) : (
+        <ul className={classes.stats}>
+          {props.map(({ title, icon }) => (
+            <li key={title} className={`${classes.stat} ${classes.prop}`}>
+              <span className={classes.propIcon}>
+                <Ixon width="1.25rem">{icon}</Ixon>
+              </span>
+              <span className={classes.propTitle}>{getContent(title)}</span>
+            </li>
+          ))}
+        </ul>
       )}
-    </div>
+    </section>
   );
 };
 

@@ -1,0 +1,38 @@
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: clamp(2rem, 1rem + 6vw, 6rem);
+}
+
+.card {
+  width: min(100%, 30rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-radius: var(--radiusLg);
+  background: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev2);
+}
+
+.art {
+  width: 7.5rem;
+  color: var(--primary4);
+}
+
+.title {
+  font-size: var(--fsH2);
+  font-weight: 900;
+  color: var(--textStrong);
+}
+
+.text {
+  line-height: var(--lhBody);
+  color: var(--textBody);
+  margin-bottom: 0.5rem;
+}

@@ -25,7 +25,16 @@ export const buttonVariants = [
 
 export type ButtonVariant = (typeof buttonVariants)[number];
 
-export const buttonModes = ["Fill", "Outline", "Black", "Inline"] as const;
+// Light: solid white on a coloured band; Glass: frosted, for a second
+// action on a coloured band or over an image (both keep AA contrast)
+export const buttonModes = [
+  "Fill",
+  "Outline",
+  "Black",
+  "Inline",
+  "Light",
+  "Glass",
+] as const;
 
 export type ButtonMode = (typeof buttonModes)[number];
 

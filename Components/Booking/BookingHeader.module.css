@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-block: 1.75rem;
+  padding-block: clamp(1.5rem, 1rem + 2vw, 2.75rem);
 }
 
 .header::before {
@@ -10,23 +10,34 @@
   z-index: -1;
   pointer-events: none;
   content: "";
-  background-color: khaki;
   top: 0;
   height: 100%;
-  width: 100dvw;
-  left: 50%;
-  background: linear-gradient(90deg, #bad9f7 0%, #8dc0f2 88%, #bad9f7 100%);
-  transform: translateX(-50%);
+  inset-inline: calc(50% - 50dvw);
+  /* the same soft brand mesh as the home hero, fading into the page */
+  background:
+    radial-gradient(40% 90% at 85% 0%, rgba(165, 180, 252, 0.55), transparent 70%),
+    radial-gradient(35% 80% at 10% 30%, rgba(196, 181, 253, 0.4), transparent 70%);
+  border-block-end: 1px solid var(--cardLine);
 }
 
-.title {
-  color: var(--gray13);
-  margin-bottom: 1rem;
+:global(html[data-theme="dark"]) .header::before {
+  background:
+    radial-gradient(40% 90% at 85% 0%, rgba(99, 86, 255, 0.3), transparent 70%),
+    radial-gradient(35% 80% at 10% 30%, rgba(168, 85, 247, 0.18), transparent 70%);
 }
 
-.subtitle {
-  color: var(--gray11);
-  margin-bottom: 2rem;
+.title.title {
+  font-size: var(--fsH1);
+  font-weight: 900;
+  line-height: var(--lhTight);
+  color: var(--textStrong);
+  margin-bottom: 0.625rem;
+}
+
+.subtitle.subtitle {
+  font-size: var(--fsLead);
+  color: var(--textBody);
+  margin-bottom: 1.5rem;
 }
 
 .searchContainer {
@@ -38,12 +49,15 @@
 .searchBox {
   display: flex;
   align-items: center;
-  padding-inline: 0.75rem;
+  min-height: 3.5rem;
+  padding-inline: 1rem 0.5rem;
   padding-block: 0.5rem;
-  border-radius: 100dvw;
+  border-radius: var(--radiusPill);
   gap: 0.5rem;
   flex: 1;
-  background-color: var(--gray3);
+  background: var(--menuGlass);
+  border: 1px solid var(--menuEdge);
+  box-shadow: 0 0 0 5px var(--hoverTint), var(--elev2);
   position: relative;
 }
 

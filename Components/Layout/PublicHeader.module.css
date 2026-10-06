@@ -1,286 +1,258 @@
-.container {
-  width: 100%;
-  position: sticky;
-  height: 5rem;
-  top: 0;
-  z-index: 70;
+/* Frosted, full-bleed sticky bar. The glass sits on ::before rather than on
+   the bar itself: an element with backdrop-filter becomes the containing
+   block of its fixed children (the drawer, the search sheet) and the
+   "backdrop root" of the mega menu, which would then blur only the bar. */
+.sentinel {
+  display: block;
+  height: 0;
+  width: 0;
 }
 
-.main {
+.container {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  height: var(--headerH);
+  width: 100dvw;
+  margin-inline: calc(50% - 50dvw);
+}
+
+/* at the top of the page the bar sits on the page itself; once the page
+   scrolls under it, it turns frosted */
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: transparent;
+  border-block-end: 1px solid transparent;
+  transition:
+    background-color var(--transTime),
+    border-color var(--transTime),
+    box-shadow var(--transTime);
+}
+
+.scrolled::before {
+  background: var(--headerGlass);
+  border-block-end-color: var(--menuEdge);
+  box-shadow: 0 10px 30px -18px rgba(30, 32, 100, 0.35);
+  backdrop-filter: var(--menuBlur);
+  -webkit-backdrop-filter: var(--menuBlur);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .scrolled::before {
+    background: var(--headerGlassSolid);
+  }
+}
+
+.inner {
+  position: relative;
+  height: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 1rem;
-  width: 100dvw;
-  position: absolute;
-  left: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding-inline: 2.25rem;
-  z-index: 19;
-}
-
-.main::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100dvw;
-  background-color: var(--white);
-  left: 50%;
-  transform: translateX(-50%);
-  content: "";
-  display: block;
-  z-index: -1;
-  border-bottom: 1px solid var(--gray4);
+  gap: 1rem;
 }
 
 .start {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 1;
-  justify-content: flex-start;
-}
-
-.left,
-.start {
-  flex-shrink: 1;
-  width: 18.75rem;
-}
-
-.left {
-  position: relative;
-  width: auto;
-  min-width: 18.75rem;
   flex-shrink: 0;
 }
 
-.leftContent {
-  justify-content: flex-end;
+.logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-}
-
-.right {
-  justify-content: flex-start;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.125rem;
+  min-width: 0;
 }
 
 .link {
-  color: var(--gray7);
-  transition: all var(--transTime) ease-in-out;
-  height: 2rem;
-  position: relative;
-  white-space: nowrap;
-}
-
-.link:not(.active):not(.accent):hover {
-  color: var(--black);
-}
-
-.link::after {
-  content: "";
-  display: block;
-  position: absolute;
-  bottom: 0;
-  top: calc(100% + 4px);
-  height: 2px;
-  border-radius: 100dvw;
-  background-color: currentColor;
-  inset-inline-end: 0;
-  inset-inline-start: 0;
-  transform: scaleX(0);
-  opacity: 0;
-  transition: all var(--transTime) ease-in-out;
-}
-
-.active {
-  color: var(--primary);
-}
-
-.active::after {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-.subedBtn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.375rem;
+  height: 2.5rem;
+  padding-inline: 0.875rem;
+  border-radius: var(--radiusPill);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--textBody);
+  white-space: nowrap;
+  transition:
+    background-color var(--transTime),
+    color var(--transTime);
 }
 
-.sub {
-  display: flex;
-  padding-inline: 1.6rem;
-  padding-block: 0.5rem;
-  transition: all var(--transTime);
-  white-space: nowrap;
-  min-width: fit-content;
-  color: var(--gray);
-  gap: 1rem;
-  transition: all var(--transTime) ease-in-out;
-  justify-content: center;
+.link:hover,
+.linkOpen {
+  background-color: var(--hoverTint);
+  color: var(--textStrong);
+}
+
+.active,
+.active:hover {
+  background-color: var(--activeTint);
+  color: var(--primary7);
+}
+
+:global(html[data-theme="dark"]) .active {
+  color: var(--primary8);
+}
+
+.accent,
+.accent:hover {
+  margin-inline-start: 0.375rem;
+  color: var(--aiText);
+  background-color: var(--aiSoft);
+  box-shadow: inset 0 0 0 1px var(--aiLine);
+}
+
+.accent:hover {
+  background-color: var(--activeTint);
+}
+
+.chevron {
+  transition: transform var(--transTime);
+}
+
+.linkOpen .chevron {
+  transform: rotate(180deg);
+}
+
+/* "more" dropdown */
+.subsRoot {
+  position: relative;
 }
 
 .subs {
   position: absolute;
-  right: 0;
-  top: calc(100% + 0.875rem);
-  background-color: var(--white);
-  border: 1px solid #00000012;
-  border-radius: 4px;
-  padding-block: 0.25rem;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow);
-  transform-origin: top;
-  animation: carpet var(--transTime) ease-in-out forwards;
-}
-
-.sub:hover {
-  color: var(--black);
-  background-color: #00000012;
-}
-
-.sub:hover > .subIcon {
-  color: var(--primary);
-}
-
-.accent {
-  color: var(--secondary);
-}
-
-.categoriesContainer {
-  position: relative;
-  height: 2rem;
-}
-
-.categoriesDropdown {
-  position: absolute;
-  top: calc(100% + 0.875rem);
+  top: calc(100% + 0.625rem);
   inset-inline-start: 0;
+  min-width: 13rem;
+  padding: 0.375rem;
+  border-radius: var(--radiusMd);
   display: flex;
-  align-items: stretch;
-  gap: 0.5rem;
-  background-color: var(--white);
-  border: 1px solid var(--gray3);
-  border-radius: 4px;
-  padding: 0.5rem;
-  box-shadow: var(--shadow);
+  flex-direction: column;
+  gap: 2px;
   transform-origin: top;
-  animation: carpet var(--transTime) ease-in-out forwards;
-  max-width: min(46rem, 90dvw);
+  animation: dropIn 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 80;
 }
 
-.categoriesTabs {
-  display: flex;
-  flex-direction: column;
-  align-content: flex-start;
-  gap: 0.5rem;
-  padding: 0.25rem;
-  max-width: 13rem;
-}
-
-.categoryTabBtn {
+.sub {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 2rem;
-  padding-inline: 0.75rem;
-  border-radius: 4px;
-  color: var(--gray11);
-  white-space: nowrap;
-  transition: all var(--transTime) ease-in-out;
-}
-
-.categoryTabBtn:hover {
-  background-color: var(--gray2);
-}
-
-.categoryTabBtnActive {
-  background-color: var(--gray4);
-}
-
-.categoriesDivider {
-  align-self: stretch;
-  width: 1px;
-  background-color: var(--gray8);
-}
-
-.categoriesContent {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 0.75rem;
-  padding: 0.25rem 0.75rem;
-  min-width: 16rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.75rem;
+  white-space: nowrap;
+  color: var(--textBody);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition:
+    background-color 150ms,
+    color 150ms;
 }
 
-.categoriesAllLink {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.sub:hover,
+.sub:focus-visible {
+  color: var(--textStrong);
+  background-color: var(--hoverTint);
+}
+
+.subIcon {
   color: var(--primary);
 }
 
-.categoriesWrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 0.5rem 1.25rem;
-  width: min(70dvw, 38rem);
-}
-
-.categoryItem {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding-inline-start: 0.25rem;
-  border-inline-start: 2px solid var(--primary);
-  color: var(--gray11);
-  transition: color var(--transTime) ease-in-out;
-  min-width: 30%;
-}
-
-.categoryItem:hover {
-  color: var(--primary);
-}
-
-.categoriesEmpty {
-  color: var(--gray8);
-}
-
-.categoriesChevron {
-  transform: rotate(90deg);
-}
-
-@keyframes carpet {
+@keyframes dropIn {
   from {
-    transform: scaleY(0);
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
   }
   to {
-    transform: scaleY(1);
+    opacity: 1;
+    transform: none;
   }
+}
+
+/* actions */
+.end {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.endContent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.375rem;
+}
+
+.iconBtn {
+  display: inline-flex;
+}
+
+/* the search / cart / bell buttons: one round, tinted hit area */
+.iconBtn :global(button) {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radiusPill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--textBody);
+  transition:
+    background-color var(--transTime),
+    color var(--transTime);
+}
+
+.iconBtn :global(button):hover {
+  background-color: var(--hoverTint);
+  color: var(--textStrong);
+}
+
+.iconBtn :global(button) > span {
+  width: 1.375rem !important;
 }
 
 .burgerBtn {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  color: var(--gray11);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radiusPill);
+  color: var(--textStrong);
   flex-shrink: 0;
+  transition: background-color var(--transTime);
+}
+
+.burgerBtn:hover {
+  background-color: var(--hoverTint);
 }
 
 .mobileOpen {
   display: none;
+}
+
+@media (max-width: 82rem) {
+  .nav {
+    display: none;
+  }
+
+  .burgerBtn {
+    display: flex;
+  }
 }
 
 @media only screen and (max-width: 750px) {
@@ -289,56 +261,59 @@
     display: none;
   }
 
-  .leftContent {
+  .inner {
     gap: 0.25rem;
   }
 
+  .start {
+    gap: 0.125rem;
+  }
+
+  .endContent {
+    gap: 0;
+  }
+
+  .iconBtn :global(button),
+  .burgerBtn {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .logo :global(svg) {
+    max-width: 6.5rem;
+    height: auto;
+  }
+
+  .hideMobileOpen {
+    visibility: hidden;
+  }
+
   .mobileOpen {
-    display: block;
     position: absolute;
-    height: 5rem;
-    background-color: var(--white);
-    top: 50%;
-    left: 50%;
-    width: 102%;
-    transform: translateY(-50%) translateX(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    inset-block: 0;
+    inset-inline-end: 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    padding-inline: 0.75rem 0.25rem;
+    border-radius: var(--radiusPill);
+    background-color: var(--activeTint);
+    color: var(--textStrong);
   }
 
   .mobileClose {
-    color: var(--error);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: var(--textStrong);
+    background-color: var(--white);
   }
 
-  .mobileLabel {
-    color: var(--gray10);
-  }
-
+  .mobileLabel,
   .mobileIcon {
-    color: var(--gray10);
-  }
-}
-
-@media (max-width: 80rem) {
-  .main {
-    padding-inline: 1rem;
-  }
-
-  .nav {
-    display: none;
-  }
-
-  .burgerBtn {
-    display: flex;
-  }
-
-  .left,
-  .right {
-    width: unset;
-    min-width: 0;
+    color: var(--textBody);
   }
 }

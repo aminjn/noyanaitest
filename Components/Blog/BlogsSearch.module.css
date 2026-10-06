@@ -1,10 +1,23 @@
 .main {
-  background: linear-gradient(135deg, #1a80e5 0%, #166cc2 55%, #125aa0 100%);
+  /* the brand band (same as the home join band) instead of a sky blue */
+  background-color: #3730a3;
+  background-image:
+    radial-gradient(60% 90% at 100% 0%, rgba(167, 139, 250, 0.55), transparent 60%),
+    radial-gradient(50% 80% at 0% 100%, rgba(37, 99, 235, 0.5), transparent 60%),
+    linear-gradient(135deg, #4c1fd6 0%, #3730a3 55%, #1e3a8a 100%);
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2.5rem;
-  border-radius: 1rem;
+  padding: clamp(1.5rem, 1rem + 3vw, 3.5rem);
+  border-radius: var(--radiusLg);
+  box-shadow: var(--elev3);
+}
+
+:global(html[data-theme="dark"]) .main {
+  background-color: #1e1b4b;
+  background-image:
+    radial-gradient(60% 90% at 100% 0%, rgba(139, 92, 246, 0.45), transparent 60%),
+    linear-gradient(135deg, #2e1a87 0%, #1e1b4b 60%, #172554 100%);
 }
 
 .badge {
@@ -13,7 +26,9 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.h1 {
+.h1.h1 {
+  font-size: var(--fsH1);
+  font-weight: 900;
   color: var(--onColor);
   margin-top: 1.5rem;
   text-align: center;

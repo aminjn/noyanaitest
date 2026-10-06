@@ -6,35 +6,20 @@ import LanguageSwitcher from "../i18n/LanguageSwitcher";
 import ThemeToggle from "../UI/Theme/ThemeToggle";
 import { usePathname } from "@/Components/i18n/navigation";
 import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
-import useSWR from "swr";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
-import CallingIcon from "../Icons/CallingIcon";
-import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
 import { ContentKey } from "../Enums/contentKeys";
 import SearchIcon from "../Icons/SearchIcon";
 import Bell01Icon from "../Icons/Bell01Icon";
 import SearchButton from "./SearchButton";
-import { API } from "../config";
-import { fetcher } from "../helpers/fetcher";
-import {
-  t2xsRegular,
-  tsmMedium,
-  txsMedium,
-  txsRegular,
-} from "../UI/Typography";
-import useUser from "../Hooks/useUser";
-import useProgress from "../Hooks/useProgress";
+import { txsRegular } from "../UI/Typography";
 import NotificationButton from "./NotificationButton";
-import CartIcon from "../Icons/CartIcon";
 import CartButton from "./CartButton";
 import BarsIcon from "../Icons/BarsIcon";
 import PublicMobileMenu from "./PublicMobileMenu";
-import {
-  HeaderCategories,
-  categoryTabs,
-  CategoryLike,
-} from "./headerCategories";
+import MegaMenu from "./MegaMenu";
+import SparkIcon from "../Icons/SparkIcon";
+import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import SearchModal from "./SearchModal";
 import XMarkIcon from "../Icons/XMarkIcon";
 import LineBagIcon from "../Icons/LinebagIcon";
@@ -47,126 +32,29 @@ const NavLink = ({
   target,
   title,
   accent,
+  icon,
 }: {
   target: string;
   title: ContentKey;
   accent?: boolean;
+  icon?: ReactNode;
 }) => {
   const pathname = usePathname();
   const getContent = useScopedLocale(LOCALE_NS);
+  const isActive =
+    target === "/" ? pathname === "/" : pathname.startsWith(target);
 
   return (
     <Link
       href={target}
-      className={`${classes.link} ${
-        pathname === target ? classes.active : ""
-      } ${accent ? classes.accent : ""} ${tsmMedium}`}
+      aria-current={isActive ? "page" : undefined}
+      className={`${classes.link} ${isActive ? classes.active : ""} ${
+        accent ? classes.accent : ""
+      }`}
     >
-      {getContent(title)}
+      {!!icon && <Ixon width="1rem">{icon}</Ixon>}
+      <span>{getContent(title)}</span>
     </Link>
-  );
-};
-
-const Categories = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<keyof HeaderCategories>(
-    "specialities",
-  );
-
-  const { data } = useSWR<HeaderCategories>(
-    `${API}/public/header`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const listener = (e: MouseEvent) => {
-      if (
-        !containerRef.current ||
-        !e.target ||
-        !containerRef.current.contains(e.target as Node)
-      )
-        return setIsOpen(false);
-    };
-    window.addEventListener("click", listener, false);
-    return () => window.removeEventListener("click", listener, false);
-  }, []);
-
-  const getContent = useScopedLocale(LOCALE_NS);
-
-  const activeTabConfig =
-    categoryTabs.find((tab) => tab.key === activeTab) || categoryTabs[0];
-  const activeCategories: CategoryLike[] =
-    (data?.[activeTab] as CategoryLike[] | undefined) || [];
-
-  return (
-    <div className={classes.categoriesContainer} ref={containerRef}>
-      <button
-        style={{ height: "unset" }}
-        className={`${classes.subedBtn} ${classes.link}`}
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        <span>{getContent("categories")}</span>
-        <Ixon width="1rem">
-          <ChevronIcon />
-        </Ixon>
-      </button>
-      {isOpen && (
-        <div className={classes.categoriesDropdown}>
-          <div className={classes.categoriesTabs}>
-            {categoryTabs.map((tab) => (
-              <button
-                key={tab.key}
-                type="button"
-                onClick={() => setActiveTab(tab.key)}
-                className={`${classes.categoryTabBtn} ${txsMedium} ${
-                  tab.key === activeTab ? classes.categoryTabBtnActive : ""
-                }`}
-              >
-                {getContent(tab.label)}
-              </button>
-            ))}
-          </div>
-          <div className={classes.categoriesDivider} />
-          <div className={classes.categoriesContent}>
-            <Link
-              href={activeTabConfig.allTarget}
-              className={classes.categoriesAllLink}
-              onClick={() => setIsOpen(false)}
-            >
-              <span className={t2xsRegular}>
-                {getContent("fullListOfX", [getContent(activeTabConfig.label)])}
-              </span>
-              <Ixon width=".875rem" className={classes.categoriesChevron}>
-                <ChevronIcon />
-              </Ixon>
-            </Link>
-            <div className={classes.categoriesWrap}>
-              {activeCategories.length ? (
-                activeCategories.map((cat) => (
-                  <Link
-                    key={cat._id}
-                    href={activeTabConfig.hrefFor(cat.slug || cat._id)}
-                    className={`${classes.categoryItem} ${txsMedium}`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <span>{cat.title || cat.name}</span>
-                    <Ixon width=".875rem" className={classes.categoriesChevron}>
-                      <ChevronIcon />
-                    </Ixon>
-                  </Link>
-                ))
-              ) : (
-                <span className={`${classes.categoriesEmpty} ${t2xsRegular}`}>
-                  {getContent("nothingWasFound")}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
   );
 };
 
@@ -184,21 +72,34 @@ const WithSubs = ({
   useEffect(() => {
     if (isOpen) {
       const listener = () => setIsOpen(false);
+      const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
       document.addEventListener("click", listener, false);
-      return () => document.removeEventListener("click", listener, false);
+      document.addEventListener("keydown", onKey, false);
+      return () => {
+        document.removeEventListener("click", listener, false);
+        document.removeEventListener("keydown", onKey, false);
+      };
     }
   }, [isOpen]);
 
   return (
-    <div className={classes.link}>
-      <button className={classes.subedBtn} onClick={() => setIsOpen(true)}>
+    <div className={classes.subsRoot}>
+      <button
+        type="button"
+        className={`${classes.link} ${isOpen ? classes.linkOpen : ""}`}
+        aria-expanded={isOpen}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen((prev) => !prev);
+        }}
+      >
         <span>{getContent(title)}</span>
-        <Ixon width="1rem">
+        <Ixon width="0.875rem" className={classes.chevron}>
           <ChevronIcon />
         </Ixon>
       </button>
       {isOpen && (
-        <div className={classes.subs}>
+        <div className={`${classes.subs} glassMenu`}>
           {subs.map((sub) => (
             <Link key={sub.title} href={sub.taregt} className={classes.sub}>
               {!!sub.icon && (
@@ -232,40 +133,55 @@ const modalIcons: Record<Modal, ReactNode> = {
 };
 
 const PublicHeader = () => {
-  const { user } = useUser();
-
-  const push = useProgress();
-
   const getContent = useScopedLocale(LOCALE_NS);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const [openModel, setOpenModel] = useState<Modal | null>(null);
 
+  // the page scrolls inside <body>, so watch a sentinel instead of window
+  // scroll events: the bar gets its shadow once the page leaves the top
+  const sentinelRef = useRef<HTMLSpanElement>(null);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(([entry]) =>
+      setIsScrolled(!entry.isIntersecting),
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <Fragment>
-      <div className={classes.container}>
-        <header className={classes.main}>
+      <span ref={sentinelRef} className={classes.sentinel} aria-hidden="true" />
+      <div
+        className={`${classes.container} ${isScrolled ? classes.scrolled : ""}`}
+      >
+        <header className={classes.inner}>
           <div className={classes.start}>
             <button
               type="button"
+              data-burger
               className={classes.burgerBtn}
               aria-label={getContent("menu")}
+              aria-expanded={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Ixon width="1.25rem">
                 <BarsIcon />
               </Ixon>
             </button>
-            <Link className={classes.right} href={"/"}>
+            <Link className={classes.logo} href={"/"}>
               <LogoLong />
             </Link>
           </div>
           <nav className={classes.nav}>
             <NavLink title="homePage" target="/" />
-            <Categories />
+            <MegaMenu />
             <NavLink title="officeBook" target="/book" />
-            <NavLink title="aiDetection" target="/wizard" />
+            <NavLink title="aiDetection" target="/wizard" icon={<SparkIcon />} />
             <NavLink title="noyanClinic" target="/product" />
             <WithSubs
               title="more"
@@ -277,45 +193,56 @@ const PublicHeader = () => {
                 { title: "aboutUs", taregt: "/about" },
               ]}
             />
-            <NavLink title="forDoctors" target="/onboarding" accent />
+            <NavLink
+              title="forDoctors"
+              target="/onboarding"
+              accent
+              icon={<StetoscopeIcon />}
+            />
           </nav>
-          <div className={classes.left}>
+          <div className={classes.end}>
             <div
-              className={`${classes.leftContent} ${!!openModel ? classes.hideMobileOpen : ""}`}
+              className={`${classes.endContent} ${!!openModel ? classes.hideMobileOpen : ""}`}
             >
-              <span className={classes.searchWrap}>
+              <span className={classes.iconBtn}>
                 <SearchButton open={() => setOpenModel("search")} />
               </span>
-              <CartButton
-                isOpen={openModel === "cart"}
-                open={() => setOpenModel("cart")}
-                close={() => setOpenModel(null)}
-              />
-              <NotificationButton
-                isOpen={openModel === "notification"}
-                open={() => setOpenModel("notification")}
-                close={() => setOpenModel(null)}
-              />
+              <span className={classes.iconBtn}>
+                <CartButton
+                  isOpen={openModel === "cart"}
+                  open={() => setOpenModel("cart")}
+                  close={() => setOpenModel(null)}
+                />
+              </span>
+              <span className={classes.iconBtn}>
+                <NotificationButton
+                  isOpen={openModel === "notification"}
+                  open={() => setOpenModel("notification")}
+                  close={() => setOpenModel(null)}
+                />
+              </span>
               <ThemeToggle compact className={classes.theme} />
               <LanguageSwitcher />
               <UserButton />
             </div>
             {!!openModel && (
               <div className={classes.mobileOpen}>
+                <Ixon width="1rem" className={classes.mobileIcon}>
+                  {modalIcons[openModel]}
+                </Ixon>
                 <span className={`${classes.mobileLabel} ${txsRegular}`}>
                   {getContent(modalLabels[openModel])}
                 </span>
                 <button
+                  type="button"
                   onClick={() => setOpenModel(null)}
                   className={classes.mobileClose}
+                  aria-label={getContent("close")}
                 >
                   <Ixon width="1rem">
                     <XMarkIcon />
                   </Ixon>
                 </button>
-                <Ixon width="1rem" className={classes.mobileIcon}>
-                  {modalIcons[openModel]}
-                </Ixon>
               </div>
             )}
           </div>

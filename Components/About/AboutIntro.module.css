@@ -13,8 +13,16 @@
   width: 100dvw;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(270.22deg, #dfefff 0.37%, #ffffff 99.62%);
+  background:
+    radial-gradient(40% 120% at 90% 0%, rgba(165, 180, 252, 0.45), transparent 70%),
+    var(--white);
   z-index: -1;
+}
+
+:global(html[data-theme="dark"]) .main::before {
+  background:
+    radial-gradient(40% 120% at 90% 0%, rgba(99, 86, 255, 0.28), transparent 70%),
+    var(--gray1);
 }
 
 .content {
@@ -56,9 +64,16 @@
 .image {
   position: relative;
   height: 32.875rem;
-  min-width: 28.875rem;
-  border-radius: 1rem;
+  /* min() so a phone gets the full width instead of a 462px image cut off */
+  min-width: min(28.875rem, 100%);
+  border-radius: var(--radiusLg);
   overflow: hidden;
   flex-shrink: 0;
   flex: 1;
+}
+
+@media (max-width: 36rem) {
+  .image {
+    height: 20rem;
+  }
 }

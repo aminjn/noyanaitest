@@ -114,7 +114,7 @@
 @media only screen and (max-width: 750px) {
   .main {
     position: fixed;
-    top: 5rem;
+    top: var(--headerH);
     height: calc(100dvh - 5rem);
     width: 100dvw;
     border-radius: 0;

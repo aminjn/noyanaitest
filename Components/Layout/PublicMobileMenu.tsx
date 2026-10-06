@@ -1,6 +1,5 @@
 import Link from "@/Components/i18n/Link";
-import { ReactNode, useEffect, useState } from "react";
-import useSWR from "swr";
+import { ReactNode, useEffect, useRef } from "react";
 import classes from "./PublicMobileMenu.module.css";
 import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
@@ -9,20 +8,13 @@ import Button from "../UI/Button";
 import LogoLong from "../UI/LogoLong";
 import ThemeToggle from "../UI/Theme/ThemeToggle";
 import AuthPopup from "../Popups/AuthPopup";
-import { API } from "../config";
-import { fetcher } from "../helpers/fetcher";
 import { ContentKey } from "../Enums/contentKeys";
-import {
-  categoryTabs,
-  CategoryLike,
-  HeaderCategories,
-} from "./headerCategories";
+import { categoryTabs } from "./headerCategories";
+import useHeaderCategories from "./useHeaderCategories";
+import { itemsOf } from "./MegaMenu";
 import XMarkIcon from "../Icons/XMarkIcon";
-import ChevronIcon from "../Icons/ChevronIcon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import CategoriesIcon from "../Icons/CategoriesIcon";
 import Calendar02Icon from "../Icons/Calendar02Icon";
-import StarsSolidIcon from "../Icons/StarsSolidIcon";
 import BuildingIcon from "../Icons/BuildingIcon";
 import BookIcon from "../Icons/BookIcon";
 import InfoiCircleIcon from "../Icons/InfoiCircleIcon";
@@ -32,12 +24,10 @@ import MapIcon from "../Icons/MapIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import HeadphoneIcon from "../Icons/HeadphoneIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
-import {
-  t2xsRegular,
-  tbaseMedium,
-  tsmMedium,
-  txsMedium,
-} from "../UI/Typography";
+import SparkIcon from "../Icons/SparkIcon";
+import DownloadIcon from "../Icons/DownloadIcon";
+import usePwaInstall, { openInstallSheet } from "../Pwa/usePwaInstall";
+import { t2xsRegular, tbaseMedium, tsmMedium } from "../UI/Typography";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -45,7 +35,7 @@ const LOCALE_NS: ContentNamespace[] = ["common"];
 
 const menuItems: { title: ContentKey; target: string; icon: ReactNode }[] = [
   { title: "officeBook", target: "/book", icon: <Calendar02Icon /> },
-  { title: "aiDetection", target: "/wizard", icon: <StarsSolidIcon /> },
+  { title: "aiDetection", target: "/wizard", icon: <SparkIcon /> },
   { title: "noyanClinic", target: "/clinic", icon: <BuildingIcon /> },
   { title: "blogs", target: "/mag", icon: <BookIcon /> },
   {
@@ -69,20 +59,18 @@ const PublicMobileMenu = ({
   const { user } = useUser();
   const { setPopup } = usePopup();
 
-  const [isCategoriesOpen, setIsCategoriesOpen] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<keyof HeaderCategories>(
-    "specialities",
-  );
-
-  const { data } = useSWR<HeaderCategories>(
-    `${API}/public/header`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
+  const data = useHeaderCategories();
+  const { isStandalone } = usePwaInstall();
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) return;
 
     document.body.style.overflow = "hidden";
+    // move focus into the drawer for keyboard and screen-reader users
+    requestAnimationFrame(() =>
+      panelRef.current?.querySelector<HTMLElement>("button, a")?.focus(),
+    );
 
     const listener = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -95,10 +83,9 @@ const PublicMobileMenu = ({
     };
   }, [isOpen, onClose]);
 
-  const activeTabConfig =
-    categoryTabs.find((tab) => tab.key === activeTab) || categoryTabs[0];
-  const activeCategories: CategoryLike[] =
-    (data?.[activeTab] as CategoryLike[] | undefined) || [];
+  // the specialities the header knows about, as quick chips
+  const specialities = itemsOf(data, "specialities").slice(0, 8);
+  const specialitiesTab = categoryTabs[0];
 
   return (
     <div
@@ -106,7 +93,13 @@ const PublicMobileMenu = ({
       aria-hidden={!isOpen}
     >
       <div className={classes.backdrop} onClick={onClose} />
-      <div className={classes.panel}>
+      <div
+        className={`${classes.panel} glassMenu`}
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={getContent("menu")}
+      >
         <div className={classes.top}>
           <button
             type="button"
@@ -153,82 +146,45 @@ const PublicMobileMenu = ({
             </Button>
           )}
 
-          <div className={classes.categoriesBox}>
-            <button
-              type="button"
-              className={classes.categoriesToggle}
-              onClick={() => setIsCategoriesOpen((prev) => !prev)}
-            >
-              <Ixon width="1.25rem" className={classes.categoriesToggleIcon}>
-                <CategoriesIcon />
-              </Ixon>
-              <span className={tsmMedium}>{getContent("categories")}</span>
-              <Ixon
-                width="1rem"
-                className={`${classes.chevron} ${
-                  isCategoriesOpen ? classes.chevronOpen : ""
-                }`}
-              >
-                <ChevronIcon />
-              </Ixon>
-            </button>
-            {isCategoriesOpen && (
-              <div className={classes.categoriesPanel}>
-                <div className={classes.categoriesTabs}>
-                  {categoryTabs.map((tab) => (
-                    <button
-                      key={tab.key}
-                      type="button"
-                      onClick={() => setActiveTab(tab.key)}
-                      className={`${classes.categoryTabBtn} ${txsMedium} ${
-                        tab.key === activeTab
-                          ? classes.categoryTabBtnActive
-                          : ""
-                      }`}
-                    >
-                      {getContent(tab.label)}
-                    </button>
-                  ))}
-                </div>
-                <Link
-                  href={activeTabConfig.allTarget}
-                  className={classes.categoriesAllLink}
-                  onClick={onClose}
-                >
-                  <span className={t2xsRegular}>
-                    {getContent("fullListOfX", [
-                      getContent(activeTabConfig.label),
-                    ])}
-                  </span>
-                  <Ixon width=".875rem" className={classes.categoriesChevron}>
-                    <ChevronIcon />
-                  </Ixon>
-                </Link>
-                <div className={classes.categoriesList}>
-                  {activeCategories.length ? (
-                    activeCategories.map((cat) => (
-                      <Link
-                        key={cat._id}
-                        href={activeTabConfig.hrefFor(cat.slug || cat._id)}
-                        className={`${classes.categoryItem} ${txsMedium}`}
-                        onClick={onClose}
-                      >
-                        <span>{cat.title || cat.name}</span>
-                      </Link>
-                    ))
-                  ) : (
-                    <span
-                      className={`${classes.categoriesEmpty} ${t2xsRegular}`}
-                    >
-                      {getContent("nothingWasFound")}
+          <section className={classes.section}>
+            <span className={`${classes.sectionTitle} ${t2xsRegular}`}>
+              {getContent("categories")}
+            </span>
+            <ul className={classes.tiles}>
+              {categoryTabs.map((tab) => (
+                <li key={tab.key}>
+                  <Link
+                    href={tab.allTarget}
+                    className={classes.tile}
+                    onClick={onClose}
+                  >
+                    <span className={`${classes.tileIcon} tone-${tab.tone}`}>
+                      <Ixon width="1.125rem">{tab.icon}</Ixon>
                     </span>
-                  )}
-                </div>
+                    <span className={classes.tileLabel}>
+                      {getContent(tab.label)}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            {!!specialities.length && (
+              <div className={classes.chips}>
+                {specialities.map((cat) => (
+                  <Link
+                    key={cat._id}
+                    href={specialitiesTab.hrefFor(cat.slug || cat._id)}
+                    className={classes.chip}
+                    onClick={onClose}
+                  >
+                    {cat.title || cat.name}
+                  </Link>
+                ))}
               </div>
             )}
-          </div>
+          </section>
 
-          <nav className={classes.nav}>
+          <nav className={classes.nav} aria-label={getContent("menu")}>
             {menuItems.map((item) => (
               <Link
                 key={item.title}
@@ -245,9 +201,22 @@ const PublicMobileMenu = ({
           </nav>
 
           <div className={classes.ctas} onClick={onClose}>
+            {!isStandalone && (
+              <Button
+                variant="Primary"
+                mode="Inline"
+                size="L"
+                radius="Medium"
+                leadIcon={<DownloadIcon />}
+                className={classes.installBtn}
+                onClick={() => openInstallSheet()}
+              >
+                {getContent("installApp")}
+              </Button>
+            )}
             <Button
               href="/onboarding"
-              variant="Error"
+              variant="Secondary"
               mode="Outline"
               size="L"
               radius="Medium"

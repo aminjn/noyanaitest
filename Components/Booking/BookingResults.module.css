@@ -59,8 +59,21 @@
 }
 
 .grid {
-  flex-wrap: wrap;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+/* cards fill their grid cell instead of a fixed carousel width */
+.grid > * {
+  width: auto !important;
+  min-width: 0;
+}
+
+@media only screen and (max-width: 36rem) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media only screen and (max-width: 800px) {

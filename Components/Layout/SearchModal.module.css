@@ -2,15 +2,17 @@
   position: fixed;
   inset: 0;
   z-index: 100000;
-  height: calc(100dvh - 5rem);
-  top: 5rem;
+  height: calc(100dvh - var(--headerH));
+  top: var(--headerH);
 }
 
 .blur {
   position: fixed;
   inset: 0;
-  top: 5rem;
-  backdrop-filter: brightness(40%);
+  top: var(--headerH);
+  background-color: rgba(8, 10, 30, 0.38);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .content {
@@ -18,8 +20,11 @@
   max-height: calc(100dvh - 6.5rem);
   max-height: calc(100dvh - 6.5rem);
   overflow-y: auto;
-  background-color: var(--white);
-  border-radius: 0 0 1rem 1rem;
+  background: var(--menuGlass);
+  border: 1px solid var(--menuEdge);
+  backdrop-filter: var(--menuBlur);
+  -webkit-backdrop-filter: var(--menuBlur);
+  border-radius: 0 0 var(--radiusLg) var(--radiusLg);
   left: 50%;
   transform: translateX(-50%);
   position: absolute;
@@ -28,7 +33,7 @@
   flex-direction: column;
   gap: 1.5rem;
   overflow-x: hidden;
-  box-shadow: var(--shadow);
+  box-shadow: var(--menuShadow);
 }
 
 .searchBox {

@@ -2,7 +2,8 @@
 
 .fab {
   position: fixed;
-  inset-block-end: 1.25rem;
+  /* above the phone tab bar when there is one */
+  inset-block-end: calc(1.25rem + var(--bottomNavSpace, 0px));
   inset-inline-end: 1.25rem;
   z-index: 60;
   display: inline-flex;
@@ -28,11 +29,11 @@
 
 .panel {
   position: fixed;
-  inset-block-end: 1.25rem;
+  inset-block-end: calc(1.25rem + var(--bottomNavSpace, 0px));
   inset-inline-end: 1.25rem;
   z-index: 70;
   width: min(26rem, calc(100vw - 2.5rem));
-  height: min(40rem, calc(100dvh - 6rem));
+  height: min(40rem, calc(100dvh - 6rem - var(--bottomNavSpace, 0px)));
   display: flex;
   flex-direction: column;
   border-radius: var(--radiusLg);

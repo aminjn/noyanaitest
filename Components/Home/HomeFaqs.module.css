@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
 }
 
 .header {
@@ -33,14 +32,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding-inline: 1.5rem;
-  padding-block: 1rem;
-  background-color: var(--white);
-  border-radius: 0.5rem;
+  padding-block: 1.125rem;
+  background-color: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  border-radius: var(--radiusSm);
+  cursor: pointer;
 }
 
 .question {
-  color: var(--primary);
+  color: var(--textStrong);
+  font-weight: 700;
 }
 
 .chevron {
@@ -51,12 +54,12 @@
   max-height: 0;
   transition: all var(--transTime);
   overflow: hidden;
-  background-color: var(--primary1);
-  color: var(--primary8);
+  color: var(--textBody);
+  line-height: var(--lhBody);
   padding: 0;
 }
 
 .open {
-  max-height: 10rem;
-  padding: 0.75rem 1.5rem;
+  max-height: 30rem;
+  padding: 0.875rem 1.5rem 0.5rem;
 }

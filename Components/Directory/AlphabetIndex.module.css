@@ -33,6 +33,17 @@
   transition: all var(--transTime);
 }
 
+a.letter:not(.active) {
+  border-color: transparent;
+  background-color: var(--activeTint);
+  color: var(--primary7);
+  font-weight: 800;
+}
+
+:global(html[data-theme="dark"]) a.letter:not(.active) {
+  color: var(--primary8);
+}
+
 a.letter:hover {
   border-color: var(--primary4);
   color: var(--primary6);
@@ -49,9 +60,9 @@ a.active:hover {
 }
 
 .empty {
-  color: var(--gray6);
-  background-color: var(--gray2);
-  border-color: var(--gray3);
+  color: var(--gray7);
+  background-color: transparent;
+  border-color: var(--cardLine);
   cursor: default;
 }
 

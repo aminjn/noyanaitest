@@ -22,7 +22,10 @@ import FaqList from "@/Components/UI/FaqList";
 import dynamic from "next/dynamic";
 
 // the map library loads after the page, not before it
-const PlaceLocationCard = dynamic(() => import("@/Components/Map/PlaceLocationCard"), { ssr: false });
+const PlaceLocationCard = dynamic(
+  () => import("@/Components/Map/PlaceLocationCard"),
+  { ssr: false },
+);
 import { toLatLng } from "@/Components/Map/nexamap";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -43,7 +46,6 @@ import MedalStarIcon from "@/Components/Icons/MedalStarIcon";
 import InfoiCircleIcon from "@/Components/Icons/InfoiCircleIcon";
 import StetoscopeIcon from "@/Components/Icons/StetoscopeIcon";
 import MedicalRecordIcon from "@/Components/Icons/MedicalRecordIcon";
-import BookOpenIcon from "@/Components/Icons/BookOpenIcon";
 import MountIcon from "@/Components/Icons/MountIcon";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { tmdMedium } from "@/Components/UI/Typography";
@@ -98,12 +100,15 @@ const NewDoctorProfilePage = ({
   const specialityChips = (() => {
     const list = [
       doctor.mainSpeciality,
-      ...(((doctor as { specialities?: unknown[] }).specialities || []) as unknown[]),
+      ...(((doctor as { specialities?: unknown[] }).specialities ||
+        []) as unknown[]),
     ].filter(
       (el): el is { _id: string; name?: string; slug?: string } =>
         !!el && typeof el === "object" && !!(el as { name?: string }).name,
     );
-    return list.filter((el, i) => list.findIndex((o) => o._id === el._id) === i);
+    return list.filter(
+      (el, i) => list.findIndex((o) => o._id === el._id) === i,
+    );
   })();
 
   const fullName = getDoctorProfileLabel(doctor);
@@ -121,11 +126,13 @@ const NewDoctorProfilePage = ({
   const aboutRef = useRef<HTMLDivElement>(null);
   const specialityRef = useRef<HTMLDivElement>(null);
   const recordsRef = useRef<HTMLDivElement>(null);
-  const articlesRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const addressRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
+
+  const hasRecords = !!doctor.achivements?.length;
+  const hasGallery = !!doctor.gallery?.some((el) => !!el?.image);
 
   const tabs: {
     id: string;
@@ -139,14 +146,31 @@ const NewDoctorProfilePage = ({
         ref: specialityRef,
         label: "specialityAndServices",
       },
-      { id: "dr-records", ref: recordsRef, label: "recordsAndDocuments" },
-      { id: "dr-articles", ref: articlesRef, label: "articles" },
-      { id: "dr-gallery", ref: galleryRef, label: "gallery" },
+      // sections with nothing in them are left out (tab and card): a row
+      // of "nothing found" boxes made a new profile look abandoned
+      ...(hasRecords
+        ? [
+            {
+              id: "dr-records",
+              ref: recordsRef,
+              label: "recordsAndDocuments" as ContentKey,
+            },
+          ]
+        : []),
+      ...(hasGallery
+        ? [
+            {
+              id: "dr-gallery",
+              ref: galleryRef,
+              label: "gallery" as ContentKey,
+            },
+          ]
+        : []),
       { id: "dr-reviews", ref: reviewsRef, label: "patientReviews" },
       { id: "dr-address", ref: addressRef, label: "address" },
       { id: "dr-faq", ref: faqRef, label: "faqs" },
     ],
-    [],
+    [hasRecords, hasGallery],
   );
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
@@ -188,7 +212,14 @@ const NewDoctorProfilePage = ({
       }));
     if (offices.length) return offices;
     return toLatLng(mapCoords)
-      ? [{ key: "doctor", coords: mapCoords as number[], name: undefined, address: doctor.address || primaryOffice?.address }]
+      ? [
+          {
+            key: "doctor",
+            coords: mapCoords as number[],
+            name: undefined,
+            address: doctor.address || primaryOffice?.address,
+          },
+        ]
       : [];
   }, [doctor.offices, doctor.address, mapCoords, primaryOffice?.address]);
   const displayAddress = doctor.address || primaryOffice?.address;
@@ -336,7 +367,13 @@ const NewDoctorProfilePage = ({
               <p className={classes.unclaimedLegend}>
                 {getContent("unclaimedProfileLegend")}
               </p>
-              <Button href="/become/doctor" variant="Primary" mode="Outline" size="M" radius="High">
+              <Button
+                href="/become/doctor"
+                variant="Primary"
+                mode="Outline"
+                size="M"
+                radius="High"
+              >
                 {getContent("claimThisProfile")}
               </Button>
             </div>
@@ -409,51 +446,47 @@ const NewDoctorProfilePage = ({
             )}
           </SectionCard>
 
-          <SectionCard
-            id="dr-records"
-            sectionRef={recordsRef}
-            icon={<MedicalRecordIcon />}
-            title={getContent("recordsAndDocuments")}
-          >
-            {!doctor.achivements.length ? (
-              <EmptyState>{getContent("nothingFound")}</EmptyState>
-            ) : (
-              <ul className={classes.list}>
-                {doctor.achivements.map((achivement, i) => (
-                  <li key={`${achivement}${i}`} className={classes.achivement}>
-                    <Ixon width="1.125rem" className={classes.achivementIcon}>
-                      <MedalStarIcon />
-                    </Ixon>
-                    <span>{achivement}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </SectionCard>
-          <SectionCard
-            id="dr-articles"
-            sectionRef={articlesRef}
-            icon={<BookOpenIcon />}
-            title={getContent("articles")}
-          >
-            {/* TODO: wire real doctor-authored articles once the public
-                blog listing endpoint (publicController.getBlogs) supports
-                filtering by authorType/authorOrg. */}
-            <EmptyState>{getContent("nothingFound")}</EmptyState>
-          </SectionCard>
+          {hasRecords && (
+            <SectionCard
+              id="dr-records"
+              sectionRef={recordsRef}
+              icon={<MedicalRecordIcon />}
+              title={getContent("recordsAndDocuments")}
+            >
+              {!doctor.achivements.length ? (
+                <EmptyState>{getContent("nothingFound")}</EmptyState>
+              ) : (
+                <ul className={classes.list}>
+                  {doctor.achivements.map((achivement, i) => (
+                    <li
+                      key={`${achivement}${i}`}
+                      className={classes.achivement}
+                    >
+                      <Ixon width="1.125rem" className={classes.achivementIcon}>
+                        <MedalStarIcon />
+                      </Ixon>
+                      <span>{achivement}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </SectionCard>
+          )}
 
-          <SectionCard
-            id="dr-gallery"
-            sectionRef={galleryRef}
-            icon={<MountIcon />}
-            title={getContent("gallery")}
-          >
-            {!galleryItems.length ? (
-              <EmptyState>{getContent("nothingFound")}</EmptyState>
-            ) : (
-              <DoctorGallery items={galleryItems} />
-            )}
-          </SectionCard>
+          {hasGallery && (
+            <SectionCard
+              id="dr-gallery"
+              sectionRef={galleryRef}
+              icon={<MountIcon />}
+              title={getContent("gallery")}
+            >
+              {!galleryItems.length ? (
+                <EmptyState>{getContent("nothingFound")}</EmptyState>
+              ) : (
+                <DoctorGallery items={galleryItems} />
+              )}
+            </SectionCard>
+          )}
 
           <SectionCard
             id="dr-reviews"

@@ -462,3 +462,40 @@
 .High {
   border-radius: 100dvw;
 }
+
+/* Light: the primary action on a coloured band (white fill, deep-indigo
+   text, ~10:1). Glass: the second action there, frosted with a white edge.
+   Both ignore the variant on purpose: on a band there is one look. */
+.main.Light {
+  background-color: #fff;
+  background-image: none;
+  color: #2a267a;
+  --btnRingColor: transparent;
+  box-shadow: 0 10px 24px -12px rgba(10, 12, 50, 0.55);
+}
+
+.main.Light:hover,
+.main.Light:focus-visible {
+  background-color: #f1f0ff;
+  color: #1b1a4b;
+  --btnRingColor: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 0 0 var(--btnRingWidth, 0px) var(--btnRingColor),
+    0 14px 28px -12px rgba(10, 12, 50, 0.6);
+}
+
+.main.Glass {
+  background-color: rgba(12, 14, 52, 0.22);
+  background-image: none;
+  color: #fff;
+  --btnRingColor: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.main.Glass:hover,
+.main.Glass:focus-visible {
+  background-color: rgba(12, 14, 52, 0.34);
+  color: #fff;
+  --btnRingColor: #fff;
+}

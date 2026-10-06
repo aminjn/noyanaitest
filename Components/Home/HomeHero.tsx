@@ -1,207 +1,176 @@
 import Link from "@/Components/i18n/Link";
-import { ReactNode } from "react";
+import { FormEvent, ReactNode, useState } from "react";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import useProgress from "../Hooks/useProgress";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { ContentKey } from "../Enums/contentKeys";
 import classes from "./HomeHero.module.css";
-import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
-import PlusIcon from "../Icons/PlusIcon";
-import MicrophoneIcon from "../Icons/MicrophoneIcon";
-import AirPodsIcon from "../Icons/AirPodsIcon";
-import AiIcon from "../Icons/AiIcon";
-import VideoIcon from "../Icons/VideoIcon";
+import SparkIcon from "../Icons/SparkIcon";
 import FlaskIcon from "../Icons/FlaskIcon";
 import PillIcon from "../Icons/PillIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import {
-  t2xsRegular,
-  t3xlBold,
-  tmdDemiBold,
-  tmdMedium,
-  tsmRegular,
-  txsDemiBold,
-  txsMedium,
-} from "../UI/Typography";
-import Badge from "../UI/Badge";
-import StarsLineIcon from "../Icons/StarsLineIcon";
+import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
+import Calendar02Icon from "../Icons/Calendar02Icon";
 import Button from "../UI/Button";
-import BrainIcon from "../Icons/BrainIcon";
+import HomeHeroVisual from "./HomeHeroVisual";
 
 const NS: ContentNamespace[] = ["common", "home"];
 
-// Redesigned hero (Figma "Home Page" frame, Aug 2026): a framed AI-branded
-// image with two floating stat badges on the right, and on the left a
-// badge pill + two-tone headline + AI search bar + two CTAs, followed by a
-// row of four quick-link cards. Note: the previous "AI example prompts"
-// strip isn't part of the new design and has been dropped — `examples`
-// stays a prop for now (data fetching in app/page.tsx is unchanged) but is
-// no longer rendered here.
-const HomeHero = ({ homeMain }: { homeMain?: string }) => {
-  // Reference usage of the scoped hook: this component only needs the
-  // "home" namespace, so it declares that directly instead of relying on
-  // an ancestor already having fetched everything.
-  const getContent = useScopedLocale(NS);
+const chips: ContentKey[] = ["heroChip1", "heroChip2", "heroChip3"];
 
-  const quickLinks: {
-    key:
-      | "homeHeroQuickLinkLab"
-      | "homeHeroQuickLinkPharmacy"
-      | "aiDetection"
-      | "doctors";
-    href: string;
-    icon: ReactNode;
-  }[] = [
-    { key: "doctors", href: "/book", icon: <StetoscopeIcon /> },
-    { key: "aiDetection", href: "/wizard", icon: <BrainIcon /> },
-    { key: "homeHeroQuickLinkPharmacy", href: "/product", icon: <PillIcon /> },
-    { key: "homeHeroQuickLinkLab", href: "/paraClinic", icon: <FlaskIcon /> },
-  ];
+const tiles: {
+  key: ContentKey;
+  description: ContentKey;
+  href: string;
+  icon: ReactNode;
+  tone: string;
+}[] = [
+  { key: "doctors", description: "tileDoctorsDesc", href: "/book", icon: <StetoscopeIcon />, tone: "tone-indigo" },
+  { key: "aiDetection", description: "tileAiDesc", href: "/wizard", icon: <SparkIcon />, tone: "tone-violet" },
+  { key: "homeHeroQuickLinkPharmacy", description: "tilePharmacyDesc", href: "/product", icon: <PillIcon />, tone: "tone-teal" },
+  { key: "homeHeroQuickLinkLab", description: "tileLabDesc", href: "/paraClinic", icon: <FlaskIcon />, tone: "tone-amber" },
+];
+
+// Home hero (2026-10 redesign). Like K Health and Ada, the AI assistant's
+// input is the centrepiece: what the visitor types opens /wizard with the
+// question filled in (/wizard?q=...), for them to review and send. Next to
+// it, a composed product mock (HomeHeroVisual, pure CSS) instead of a photo,
+// and under it the four services as tiles. The headline is text, so it is
+// the LCP element and paints without waiting for any image.
+const HomeHero = () => {
+  const getContent = useScopedLocale(NS);
+  const push = useProgress();
+  const [question, setQuestion] = useState<string>("");
+
+  const ask = (text: string) => {
+    const q = text.trim();
+    push(q ? `/wizard?q=${encodeURIComponent(q)}` : "/wizard");
+  };
+
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    ask(question);
+  };
 
   return (
-    <div className={classes.hero}>
-      {/* Decorative background. This used to be an inline SVG (HomeHeroBg,
-          ~176KB of JSX with 122px feGaussianBlur filters, an 11000px
-          foreignObject and mix-blend-mode) that iOS WebKit rendered very
-          slowly and re-rasterized on every viewport change. It is now two
-          pre-rendered static layers set in HomeHero.module.css (.heroBg). */}
-      <div className={classes.heroBg} aria-hidden="true" />
+    <section className={classes.hero}>
+      <div className={classes.bg} aria-hidden="true" />
       <div className={classes.top}>
         <div className={classes.content}>
-          <Badge leadIcon={<StarsLineIcon />} color="SecondaryLight">
+          <span className={classes.badge}>
+            <Ixon width="0.875rem">
+              <SparkIcon />
+            </Ixon>
             {getContent("homeHeroBadge")}
-          </Badge>
-          <div className={classes.textBox}>
-            <h1 className={`${classes.title} ${t3xlBold}`}>
-              <span className={classes.highlightPrimary}>
-                {getContent("homeHeroTitleHighlight1")}
-              </span>{" "}
-              <span className={classes.highlightSecondary}>
-                {getContent("homeHeroTitleHighlight2")}
-              </span>{" "}
-              <br className={classes.br} />
-              <span>{getContent("homeHeroTitle")}</span>
-            </h1>
-            <p className={`${classes.legend} ${tmdMedium}`}>
-              {getContent("homeHeroLegend")}
-            </p>
-          </div>
-          <div className={classes.searchBox}>
-            <div className={classes.searchRight}>
-              <button type="button" className={classes.searchIconButton}>
-                <Ixon width="1.25rem">
-                  <PlusIcon />
-                </Ixon>
-              </button>
+          </span>
+          <h1 className={classes.title}>
+            <span className="gradText">
+              {getContent("homeHeroTitleHighlight1")}
+            </span>{" "}
+            <span>{getContent("homeHeroTitle")}</span>
+          </h1>
+          <p className={classes.legend}>{getContent("homeHeroLegend")}</p>
+
+          <form className={classes.ask} onSubmit={onSubmit} role="search">
+            <label className={classes.askLabel} htmlFor="hero-ask">
+              <Ixon width="0.875rem">
+                <SparkIcon />
+              </Ixon>
+              {getContent("heroAiLabel")}
+            </label>
+            <div className={classes.askBar}>
               <input
-                className={`${classes.searchInput} ${tsmRegular}`}
+                id="hero-ask"
+                className={classes.askInput}
                 placeholder={getContent("aiInputPlaceholder")}
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                autoComplete="off"
+                enterKeyHint="send"
               />
-            </div>
-            <div className={classes.searchLeft}>
-              <button
-                type="button"
-                className={`${classes.searchIconButton} ${classes.searchIconButtonDark}`}
-              >
-                <Ixon width="1.25rem">
-                  <AirPodsIcon />
-                </Ixon>
-              </button>
-              <button type="button" className={classes.searchIconButton}>
-                <Ixon width="1.25rem">
-                  <MicrophoneIcon />
+              <button type="submit" className={classes.askSend}>
+                <span>{getContent("heroAsk")}</span>
+                <Ixon width="1.125rem">
+                  <ArrowLeftIcon />
                 </Ixon>
               </button>
             </div>
-          </div>
+            <div className={classes.chips}>
+              {chips.map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  className={classes.chip}
+                  onClick={() => ask(getContent(chip))}
+                >
+                  {getContent(chip)}
+                </button>
+              ))}
+            </div>
+            <p className={classes.note}>
+              <Ixon width="0.875rem">
+                <ShieldCheckIcon />
+              </Ixon>
+              {getContent("heroAiNote")}
+            </p>
+          </form>
+
           <div className={classes.actions}>
-            <Button
-              href="/wizard"
-              variant="Primary"
-              mode="Fill"
-              radius="High"
-              size="S"
-              tailIcon={<ArrowLeftIcon />}
-            >
-              {getContent("chatWithAi")}
-            </Button>
             <Button
               href="/book"
               variant="Primary"
-              mode="Inline"
+              mode="Fill"
               radius="High"
-              size="S"
-              tailIcon={<ArrowLeftIcon />}
+              size="L"
+              leadIcon={<Calendar02Icon />}
             >
               {getContent("reserveABooking")}
             </Button>
+            <Button
+              href="/wizard"
+              variant="Secondary"
+              mode="Inline"
+              radius="High"
+              size="L"
+              tailIcon={
+                <span style={{ display: "flex" }}>
+                  <ArrowLeftIcon />
+                </span>
+              }
+              className={classes.secondaryAction}
+            >
+              {getContent("chatWithAi")}
+            </Button>
           </div>
         </div>
-        <div className={classes.imageCard}>
-          <div className={classes.imageTilt} />
-          <div className={classes.imageFrame}>
-            <div className={classes.image}>
-              <HostedImage
-                src={homeMain}
-                alt="Noyan AI"
-                fill
-                priority
-                sizes="(max-width: 800px) 100vw, 32rem"
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-            <div
-              className={`${classes.floatBadge} ${classes.floatBadgeBottom}`}
-            >
-              <div className={classes.floatText}>
-                <span className={`${classes.floatLabel} ${t2xsRegular}`}>
-                  {getContent("homeHeroLiveVisitLabel")}
-                </span>
-                <span className={`${classes.floatValue} ${txsDemiBold}`}>
-                  {getContent("homeHeroLiveVisitValue")}
-                </span>
-              </div>
-              <span className={`${classes.floatIcon} ${classes.floatIconInfo}`}>
-                <Ixon width="1rem">
-                  <VideoIcon />
-                </Ixon>
-              </span>
-            </div>
-            <div className={`${classes.floatBadge} ${classes.floatBadgeTop}`}>
-              <div className={classes.floatText}>
-                <span className={`${classes.floatLabel} ${t2xsRegular}`}>
-                  {getContent("aiDetection")}
-                </span>
-                <span className={`${classes.floatValue} ${txsDemiBold}`}>
-                  {getContent("homeHeroAiFreeValue")}
-                </span>
-              </div>
-              <span
-                className={`${classes.floatIcon} ${classes.floatIconSecondary}`}
-              >
-                <Ixon width="1rem">
-                  <BrainIcon />
-                </Ixon>
-              </span>
-            </div>
-          </div>
+        <div className={classes.visual}>
+          <HomeHeroVisual />
         </div>
       </div>
-      <ul className={classes.quickLinks}>
-        {quickLinks.map((link) => (
-          <li key={link.key} className={classes.quickLinkWrap}>
-            <Link href={link.href} className={classes.quickLink}>
-              <span className={classes.quickLinkIcon}>
-                <Ixon width="1.5rem">{link.icon}</Ixon>
+
+      <ul className={classes.tiles}>
+        {tiles.map((tile) => (
+          <li key={tile.key}>
+            <Link href={tile.href} className={classes.tile}>
+              <span className={`${classes.tileIcon} ${tile.tone}`}>
+                <Ixon width="1.5rem">{tile.icon}</Ixon>
               </span>
-              <span className={`${classes.quickLinkLabel} ${tmdDemiBold}`}>
-                {getContent(link.key)}
+              <span className={classes.tileText}>
+                <span className={classes.tileTitle}>{getContent(tile.key)}</span>
+                <span className={classes.tileDesc}>
+                  {getContent(tile.description)}
+                </span>
               </span>
+              <Ixon width="1.125rem" className={classes.tileArrow}>
+                <ArrowLeftIcon />
+              </Ixon>
             </Link>
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 

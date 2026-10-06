@@ -37,7 +37,7 @@
   --gray5: #ceced1;
   --gray6: #b6b6b9;
   --gray7: #9d9ea2;
-  --gray8: #85858b;
+  --gray8: #737379; /* 4.7:1 on white (was #85858b, 3.7:1) */
   --gray9: #6d6d74;
   --gray10: #54555d;
   --gray11: #3c3d45;
@@ -110,6 +110,75 @@
   --radiusMd: 1.25rem;
   --radiusSm: 0.875rem;
   --focusRing: 0 0 0 3px rgba(79, 70, 229, 0.28);
+
+  /* ---- Public-site scale (2026-10 redesign, docs/design-system.md) ---- */
+  /* spacing: 4px base */
+  --sp1: 0.25rem;
+  --sp2: 0.5rem;
+  --sp3: 0.75rem;
+  --sp4: 1rem;
+  --sp5: 1.5rem;
+  --sp6: 2rem;
+  --sp7: 3rem;
+  --sp8: 4rem;
+  --sp9: 6rem;
+  --sectionGap: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --headerH: 4.5rem;
+  /* radius (radiusSm/Md/Lg above) */
+  --radiusXs: 0.5rem;
+  --radiusPill: 999px;
+  /* type scale (fluid; Persian needs a generous line height) */
+  --fsDisplay: clamp(2rem, 1.35rem + 2.6vw, 3.5rem);
+  --fsH1: clamp(1.75rem, 1.35rem + 1.6vw, 2.625rem);
+  --fsH2: clamp(1.375rem, 1.15rem + 0.95vw, 2rem);
+  --fsH3: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);
+  --fsLead: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem);
+  --fsBody: 1rem;
+  --fsSm: 0.875rem;
+  --fsXs: 0.8125rem;
+  --lhTight: 1.3;
+  --lhBody: 1.85;
+  /* text roles (all pass WCAG AA on --white and --meshBase) */
+  --textStrong: var(--gray13);
+  --textBody: var(--gray11);
+  --textMuted: var(--gray9);
+  /* elevation: soft, indigo-tinted */
+  --elev1: 0 1px 2px rgba(23, 26, 64, 0.06), 0 1px 1px rgba(23, 26, 64, 0.03);
+  --elev2: 0 10px 24px -12px rgba(30, 35, 100, 0.18), 0 2px 6px -2px rgba(30, 35, 100, 0.08);
+  --elev3: 0 30px 60px -24px rgba(40, 44, 130, 0.32), 0 10px 20px -10px rgba(40, 44, 130, 0.14);
+  /* cards on the public site */
+  --cardBg: var(--white);
+  --cardLine: rgba(30, 35, 70, 0.08);
+  --cardLineHover: rgba(79, 70, 229, 0.32);
+  /* frosted menus (header, mega menu, drawer, dropdowns) */
+  --menuGlass: rgba(255, 255, 255, 0.66);
+  --menuGlassSolid: #ffffff; /* when backdrop-filter is unsupported */
+  --menuLine: rgba(255, 255, 255, 0.85);
+  --menuEdge: rgba(30, 35, 70, 0.1);
+  --menuBlur: blur(30px) saturate(190%);
+  --menuShadow: 0 28px 64px -24px rgba(30, 32, 100, 0.35), 0 4px 14px -6px rgba(30, 32, 100, 0.12);
+  --headerGlass: rgba(246, 247, 255, 0.6);
+  /* frosted chips inside a glass surface (active tab, shortcut tiles) */
+  --glassChip: rgba(255, 255, 255, 0.72);
+  --glassChipLine: rgba(255, 255, 255, 0.9);
+  --headerGlassSolid: #f6f7ff;
+  --hoverTint: rgba(79, 70, 229, 0.07);
+  --activeTint: rgba(79, 70, 229, 0.12);
+  /* soft tones for icon tiles */
+  --toneIndigo: #eef0ff;
+  --toneIndigoInk: #4338ca;
+  --toneViolet: #f1ecff;
+  --toneVioletInk: #5a36e8;
+  --toneTeal: #e3f7f3;
+  --toneTealInk: #0f766e;
+  --toneAmber: #fff4e0;
+  --toneAmberInk: #b45309;
+  --toneRose: #ffeef2;
+  --toneRoseInk: #be123c;
+  --toneSky: #e6f4fd;
+  --toneSkyInk: #0369a1;
+  --gradText: linear-gradient(120deg, #5b3df5 10%, #2563eb 90%);
 
   --primary: var(--primary6);
   --secondary: var(--secondary6);
@@ -235,6 +304,38 @@ html[data-theme="dark"] {
   --line: rgba(255, 255, 255, 0.08);
   --focusRing: 0 0 0 3px rgba(161, 139, 255, 0.35);
 
+  --textMuted: var(--gray9);
+  --elev1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --elev2: 0 12px 28px -14px rgba(0, 0, 0, 0.7), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+  --elev3: 0 30px 70px -24px rgba(0, 0, 0, 0.8), 0 10px 24px -12px rgba(0, 0, 0, 0.5);
+  --cardBg: rgba(23, 28, 58, 0.82);
+  --cardLine: rgba(255, 255, 255, 0.08);
+  --cardLineHover: rgba(161, 139, 255, 0.45);
+  --menuGlass: rgba(18, 22, 48, 0.64);
+  --menuGlassSolid: #161a36;
+  --menuLine: rgba(255, 255, 255, 0.1);
+  --menuEdge: rgba(255, 255, 255, 0.08);
+  --menuShadow: 0 30px 70px -24px rgba(0, 0, 0, 0.85), 0 4px 14px -6px rgba(0, 0, 0, 0.5);
+  --headerGlass: rgba(9, 12, 30, 0.55);
+  --glassChip: rgba(255, 255, 255, 0.07);
+  --glassChipLine: rgba(255, 255, 255, 0.1);
+  --headerGlassSolid: #0b0e22;
+  --hoverTint: rgba(161, 139, 255, 0.1);
+  --activeTint: rgba(161, 139, 255, 0.18);
+  --toneIndigo: rgba(99, 102, 241, 0.16);
+  --toneIndigoInk: #a5b4fc;
+  --toneViolet: rgba(161, 139, 255, 0.16);
+  --toneVioletInk: #c4b5fd;
+  --toneTeal: rgba(45, 212, 191, 0.13);
+  --toneTealInk: #5eead4;
+  --toneAmber: rgba(251, 191, 36, 0.13);
+  --toneAmberInk: #fcd34d;
+  --toneRose: rgba(251, 113, 133, 0.13);
+  --toneRoseInk: #fda4af;
+  --toneSky: rgba(56, 189, 248, 0.13);
+  --toneSkyInk: #7dd3fc;
+  --gradText: linear-gradient(120deg, #b4a5ff 10%, #7cb4ff 90%);
+
   --shadow: 0 0 0.75rem #00000080;
   --shadowBase: 0 1px 3px 0 #00000060;
   --shadowSm: 0 1px 2px 0 #00000060;
@@ -284,6 +385,46 @@ body {
   box-shadow: var(--glassShadow);
   backdrop-filter: var(--glassBlur);
   -webkit-backdrop-filter: var(--glassBlur);
+}
+
+/* Frosted menu surface (header dropdowns, mega menu, drawer). */
+.glassMenu {
+  background: var(--menuGlass);
+  border: 1px solid var(--menuEdge);
+  box-shadow: var(--menuShadow), inset 0 1px 0 var(--menuLine);
+  backdrop-filter: var(--menuBlur);
+  -webkit-backdrop-filter: var(--menuBlur);
+}
+
+/* No backdrop-filter (old Android WebView, some low-power modes): a
+   translucent surface over busy content would be unreadable, so go solid. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--white);
+  }
+  .glassMenu {
+    background: var(--menuGlassSolid);
+  }
+}
+
+/* Gradient-filled text for one highlighted phrase (falls back to a color). */
+.gradText {
+  color: var(--primary);
+  background-image: var(--gradText);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 :focus-visible {
@@ -445,5 +586,24 @@ h6 {
     padding: 1.5rem;
     background: #fff;
     color: #000;
+  }
+}
+
+/* Soft icon tiles: <span class="tone-teal"> (the --tone* tokens above). */
+.tone-indigo { background-color: var(--toneIndigo); color: var(--toneIndigoInk); }
+.tone-violet { background-color: var(--toneViolet); color: var(--toneVioletInk); }
+.tone-teal { background-color: var(--toneTeal); color: var(--toneTealInk); }
+.tone-amber { background-color: var(--toneAmber); color: var(--toneAmberInk); }
+.tone-rose { background-color: var(--toneRose); color: var(--toneRoseInk); }
+.tone-sky { background-color: var(--toneSky); color: var(--toneSkyInk); }
+
+/* Space taken by the phone tab bar (Components/Layout/BottomNav): floating
+   buttons, sheets and page bottoms add it so nothing sits under the bar. */
+:root {
+  --bottomNavSpace: 0px;
+}
+@media (max-width: 48rem) {
+  body.hasBottomNav {
+    --bottomNavSpace: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
