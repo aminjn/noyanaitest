@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -37,7 +38,7 @@ const DeskBookingPopup = ({
   preset?: DeskPatient;
 }) => {
   const intlTag = useIntlLocale();
-  const dateFmt = useMemo(() => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "short", year: "numeric" }), [intlTag]);
+  const dateFmt = useMemo(() => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "short", year: "numeric" }), [intlTag]);
   const [mode, setMode] = useState<"returning" | "new">("returning");
   const [q, setQ] = useState("");
   const [picked, setPicked] = useState<DeskPatient | null>(preset || null);

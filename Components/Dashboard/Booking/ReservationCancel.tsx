@@ -1,4 +1,5 @@
 "use client";
+import { tehranInstantOf } from "@/Components/helpers/tehranTime";
 
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useMyPro } from "@/Components/Pro/useProData";
@@ -31,8 +32,8 @@ type CancelTarget = {
   total?: number;
 };
 
-const startsAt = (r: CancelTarget) =>
-  new Date(r.date).getTime() + r.start * 60000;
+// the visit's day at its Tehran minutes (Components/helpers/tehranTime.ts)
+const startsAt = (r: CancelTarget) => tehranInstantOf(r.date, r.start).getTime();
 
 // Popup body keeps its own state: popup content is rendered from a
 // snapshot and doesn't receive fresh props after it opens.

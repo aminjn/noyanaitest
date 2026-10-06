@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -66,7 +67,7 @@ const PatientTimeline = ({ patientId, selfName }: { patientId: string; selfName?
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const dateFmt = useMemo(
-    () => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }),
+    () => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }),
     [intlTag],
   );
   // visit minutes are wall-clock (like shifts): shown as they are

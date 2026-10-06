@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo } from "react";
 import useSWR from "swr";
@@ -42,7 +43,7 @@ const PublicInvoicePage = ({ token }: { token: string }) => {
       int: (n?: number) => new Intl.NumberFormat(tag, { useGrouping: false }).format(Number(n) || 0),
       date: (v?: string) => {
         const d = v ? new Date(v) : null;
-        return d && !Number.isNaN(d.getTime()) ? new Intl.DateTimeFormat(tag, { dateStyle: "medium" }).format(d) : "—";
+        return d && !Number.isNaN(d.getTime()) ? new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, dateStyle: "medium" }).format(d) : "—";
       },
     }),
     [tag],

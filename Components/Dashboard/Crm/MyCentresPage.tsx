@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useCallback, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
@@ -41,7 +42,7 @@ const useT = () => {
 };
 const useAt = () => {
   const tag = useIntlLocale();
-  return (v?: string) => (v ? new Intl.DateTimeFormat(tag, { dateStyle: "medium", timeStyle: "short" }).format(new Date(v)) : "");
+  return (v?: string) => (v ? new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, dateStyle: "medium", timeStyle: "short" }).format(new Date(v)) : "");
 };
 
 const post = async (url: string, payload: Record<string, unknown>) => fetcher({ url: `${API}${url}`, method: "POST", bodyParser: "JSON", payload });

@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { createContext, useContext, useMemo } from "react";
 import { API, FilePath } from "@/Components/config";
@@ -80,8 +81,8 @@ export const useBizFormat = () => {
     const yearNum = new Intl.NumberFormat(tag, { useGrouping: false });
     // fiscal year bounds are Tehran midnights; shown as Tehran sees them
     const tehran = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric", timeZone: "Asia/Tehran" });
-    const date = new Intl.DateTimeFormat(tag, { year: "numeric", month: "short", day: "numeric" });
-    const month = new Intl.DateTimeFormat(tag, { month: "short" });
+    const date = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, year: "numeric", month: "short", day: "numeric" });
+    const month = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, month: "short" });
     // the books' month buckets are Jalali months as Tehran sees them:
     // named that way in every language (a Gregorian name would straddle two)
     const jMonth = new Intl.DateTimeFormat(tag, { month: "short", calendar: "persian", timeZone: "Asia/Tehran" });

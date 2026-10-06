@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { Fragment } from "react";
 import { WithStyleProps } from "../Layout/Layout";
@@ -45,6 +46,7 @@ const BreadCrump = ({
           {/* Isolated LTR so hours:minutes reads the same in RTL locales. */}
           <bdi dir="ltr">{`${hours} : ${minutes}`}</bdi>
           {` - ${new Date().toLocaleDateString(intlTag, {
+            timeZone: TEHRAN_TZ,
             month: "long",
             day: "numeric",
             year: "numeric",

@@ -1,4 +1,5 @@
 "use client";
+import { tehranInstantOf } from "@/Components/helpers/tehranTime";
 
 import { useParams } from "next/navigation";
 import classes from "./DoctorManageBookingPage.module.css";
@@ -64,7 +65,7 @@ const DoctorManageBookingPage = () => {
   const checkInOpen =
     !!data &&
     Date.now() >=
-      new Date(data.date).getTime() + (data.start - CHECK_IN_EARLY_MINUTES) * 60000;
+      tehranInstantOf(data.date, data.start - CHECK_IN_EARLY_MINUTES).getTime();
 
   return (
     <HandleLoading data={!!data} error={error}>

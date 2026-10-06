@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import WalletWithdrawal from "@/Components/_Common/Finance/WalletWithdrawal";
 import useSWR from "swr";
@@ -48,7 +49,8 @@ const icons: Record<Kind, ReactNode> = {
   other: <WalletIcon />,
 };
 
-const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+// the Tehran day (Components/helpers/tehranTime.ts)
+const dayKey = (d: Date) => tehranYmd(d);
 
 // Wallet + transaction feed (bank-app style): balance card with SEP
 // top-up, this month's in/out, and the history grouped by day.
@@ -73,8 +75,8 @@ const DashboardManageTransactionsPage = () => {
   const fmt = useMemo(
     () => ({
       num: new Intl.NumberFormat(intlTag),
-      day: new Intl.DateTimeFormat(intlTag, { weekday: "long", day: "numeric", month: "long" }),
-      time: new Intl.DateTimeFormat(intlTag, { hour: "2-digit", minute: "2-digit" }),
+      day: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long", day: "numeric", month: "long" }),
+      time: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, hour: "2-digit", minute: "2-digit" }),
       rel: new Intl.RelativeTimeFormat(intlTag, { numeric: "auto" }),
     }),
     [intlTag],
@@ -83,18 +85,20 @@ const DashboardManageTransactionsPage = () => {
   const rows = useMemo(() => (Array.isArray(data) ? data : []).filter((t) => typeof t?.amount === "number"), [data]);
 
   const month = useMemo(() => {
-    const now = new Date();
+    // this month in Tehran, in the reader's calendar (Jalali in Persian)
+    const monthOf = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, year: "numeric", month: "numeric" });
+    const now = monthOf.format(new Date());
     return rows.reduce(
       (acc, t) => {
         const d = new Date(t.createdAt);
-        if (d.getFullYear() !== now.getFullYear() || d.getMonth() !== now.getMonth()) return acc;
+        if (isNaN(d.getTime()) || monthOf.format(d) !== now) return acc;
         if (t.amount >= 0) acc.in += t.amount;
         else acc.out += -t.amount;
         return acc;
       },
       { in: 0, out: 0 },
     );
-  }, [rows]);
+  }, [rows, intlTag]);
 
   const counts: Record<Tab, number> = {
     all: rows.length,

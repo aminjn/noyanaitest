@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -101,9 +102,9 @@ const PatientHome = ({ name }: { name?: string }) => {
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const fmt = useMemo(
     () => ({
-      weekday: new Intl.DateTimeFormat(intlTag, { weekday: "long" }),
-      day: new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long" }),
-      full: new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }),
+      weekday: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" }),
+      day: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long" }),
+      full: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }),
     }),
     [intlTag],
   );

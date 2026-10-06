@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import { API } from "@/Components/config";
@@ -61,7 +62,7 @@ const DoctorManagePatientsPage = () => {
   const getContent = useScopedLocale(LOCALE_NS);
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const day = useMemo(() => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }), [intlTag]);
+  const day = useMemo(() => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }), [intlTag]);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"" | "recall" | "missed" | "upcoming">("");
 

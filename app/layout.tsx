@@ -15,6 +15,7 @@ import { loadAdminDictionary } from "@/Components/Admin/i18n/loadAdminDictionary
 import { setAdminDictionary } from "@/Components/Admin/i18n/adminText";
 import { headers } from "next/headers";
 import { themeInitScript } from "@/Components/UI/Theme/theme";
+import { installTehranTimeZone, tehranTimeZoneInitScript } from "@/Components/helpers/tehranTime";
 import { localeAlternates } from "@/Components/i18n/alternates";
 import {
   isLocale,
@@ -23,6 +24,10 @@ import {
   setSiteDefaultLocale,
   localeDir,
 } from "@/Components/i18n/locales";
+
+// Dates render in Tehran time on the server too, whatever its zone
+// (Components/helpers/tehranTime.ts)
+installTehranTimeZone();
 
 const font = localFont({
   src: "./fonts/IRANYekanXVFaNumVF.woff",
@@ -105,6 +110,8 @@ export default async function RootLayout({
     <html lang={locale} dir={localeDir(locale)} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Tehran time for every formatted date, before any bundle runs */}
+        <script dangerouslySetInnerHTML={{ __html: tehranTimeZoneInitScript }} />
       </head>
       <body className={font.variable}>
         <LocaleScopeProvider

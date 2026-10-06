@@ -1,4 +1,5 @@
 import { localeDir, siteDefaultLocale } from "@/Components/i18n/locales";
+import { withTehranZone } from "@/Components/helpers/tehranTime";
 
 // The super admin panel's texts (2026-09): the panel always shows the site's
 // default language (set by the super admin, "Site languages"), whatever a
@@ -75,5 +76,7 @@ const lazyIntl = <T extends Intl.NumberFormat | Intl.DateTimeFormat>(
 export const adminNumberFormat = (options?: Intl.NumberFormatOptions) =>
   lazyIntl((tag) => new Intl.NumberFormat(tag, options));
 
+// dates in the panel are Tehran time, whatever the browser's zone
+// (Components/helpers/tehranTime.ts)
 export const adminDateTimeFormat = (options?: Intl.DateTimeFormatOptions) =>
-  lazyIntl((tag) => new Intl.DateTimeFormat(tag, options));
+  lazyIntl((tag) => new Intl.DateTimeFormat(tag, withTehranZone(options)));

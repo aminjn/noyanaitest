@@ -1,4 +1,5 @@
 "use client";
+import { fromTehranLocalInput, tehranLocalInput } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -26,11 +27,8 @@ export type Call = {
   assignee?: string;
 };
 
-const localTime = (v?: string) => {
-  const d = v ? new Date(v) : new Date();
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
-};
+// "YYYY-MM-DDTHH:mm" in Tehran time (Components/helpers/tehranTime.ts)
+const localTime = (v?: string) => tehranLocalInput(v ? new Date(v) : new Date());
 
 // one call on a patient's file (Nexxa createCall / updateCallTranscript):
 // it also stands on the patient's timeline
@@ -65,7 +63,7 @@ export const CallForm = ({
       ...(lead ? { lead } : {}),
       direction,
       status,
-      startedAt: new Date(at).toISOString(),
+      startedAt: fromTehranLocalInput(at).toISOString(),
       durationSec: Math.max(0, Math.round(Number(minutes) * 60) || 0),
       summary,
       nextAction,

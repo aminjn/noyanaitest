@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import { usePathname, useIntlLocale } from "@/Components/i18n/navigation";
@@ -60,7 +61,7 @@ const DashboardManageinvoicesPage = () => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const day = useMemo(() => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }), [intlTag]);
+  const day = useMemo(() => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }), [intlTag]);
 
   const { data, error } = useSWR<{ data: IInvoiceListItem[]; total: number; summary?: Summary }>(
     `${API}/user/invoice?page=${page}${tab === "all" ? "" : `&status=${tab}`}`,

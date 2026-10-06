@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import useSWR from "swr";
@@ -87,6 +88,7 @@ const DoctorManageCalendarDayPage = () => {
           }
           title={`${getContent("timeLine")} ${safeFormatDate(
             new Intl.DateTimeFormat(intlTag, {
+              timeZone: TEHRAN_TZ,
               month: "long",
               day: "numeric",
               year: "numeric",

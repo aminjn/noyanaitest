@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -23,6 +24,7 @@ const DoctorTaminTokenManager = () => {
       >
         {data
           ? new Date(data).toLocaleString(intlTag, {
+              timeZone: TEHRAN_TZ,
               month: "long",
               year: "numeric",
               day: "numeric",

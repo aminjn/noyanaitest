@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -15,7 +16,8 @@ import DateInput from "@/Components/UI/DateInput";
 import ReservationStatusBadge from "@/Components/Dashboard/Booking/ReservationStatusBadge";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import { getSessionDateKey } from "@/Components/helpers/lib";
-import { toYmd } from "@/Components/DoctorPanel/Desk/deskShared";
+import { pickerDate, toYmd } from "@/Components/DoctorPanel/Desk/deskShared";
+import { tehranNoon, tehranTodayYmd } from "@/Components/helpers/tehranTime";
 import schedule from "@/Components/DoctorPanel/Schedule/DoctorManageSchedulePage.module.css";
 import classes from "./CenterAgendaPage.module.css";
 
@@ -52,8 +54,9 @@ const CenterAgendaPage = ({ kind, panel }: { kind: "clinic" | "hospital"; panel:
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const [doctor, setDoctor] = useState("");
-  const [from, setFrom] = useState<string>(() => toYmd(new Date()));
-  const [to, setTo] = useState<string>(() => toYmd(new Date(Date.now() + 14 * 86400000)));
+  // today and the next 14 days in Tehran (Components/helpers/tehranTime.ts)
+  const [from, setFrom] = useState<string>(() => tehranTodayYmd());
+  const [to, setTo] = useState<string>(() => tehranTodayYmd(14));
   useBreadCrump([
     { title: getContent("dashboard"), target: `/${panel}` },
     { title: getContent("schedule"), target: `/${panel}/booking` },
@@ -79,14 +82,14 @@ const CenterAgendaPage = ({ kind, panel }: { kind: "clinic" | "hospital"; panel:
       if (!map.has(key)) map.set(key, []);
       map.get(key)?.push(r);
     }
-    const weekday = new Intl.DateTimeFormat(intlTag, { weekday: "long" });
-    const date = new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" });
+    const weekday = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" });
+    const date = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" });
     const today = getSessionDateKey(new Date());
     return Array.from(map.entries()).map(([key, list]) => ({
       key,
       list,
-      weekday: weekday.format(new Date(key)),
-      date: date.format(new Date(key)),
+      weekday: weekday.format(tehranNoon(key)),
+      date: date.format(tehranNoon(key)),
       isToday: key === today,
     }));
   }, [items, intlTag]);
@@ -106,8 +109,8 @@ const CenterAgendaPage = ({ kind, panel }: { kind: "clinic" | "hospital"; panel:
               ))}
             </select>
           </label>
-          <DateInput className={classes.date} title={getContent("caFrom")} defaultValue={new Date(from)} onChange={(d) => setFrom(toYmd(d))} />
-          <DateInput className={classes.date} title={getContent("caTo")} defaultValue={new Date(to)} onChange={(d) => setTo(toYmd(d))} />
+          <DateInput className={classes.date} title={getContent("caFrom")} defaultValue={pickerDate(from)} onChange={(d) => setFrom(toYmd(d))} />
+          <DateInput className={classes.date} title={getContent("caTo")} defaultValue={pickerDate(to)} onChange={(d) => setTo(toYmd(d))} />
         </div>
       </header>
 

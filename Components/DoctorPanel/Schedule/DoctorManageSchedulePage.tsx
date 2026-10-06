@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ, tehranMinutesOfDay, tehranNoon } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import useSWR from "swr";
@@ -188,10 +189,8 @@ const DoctorManageSchedulePage = () => {
   }, [counts.today, data]);
 
   // today at a glance: done / waiting / missed, and who is next
-  const nowMin = (() => {
-    const d = new Date();
-    return d.getHours() * 60 + d.getMinutes();
-  })();
+  // Tehran's clock (Components/helpers/tehranTime.ts)
+  const nowMin = tehranMinutesOfDay();
   const todayRows = rows.filter((r) => r.dateKey === todayKey && r.kind === "reservation");
   const summary = {
     done: todayRows.filter((r) => r.status === "completed").length,
@@ -222,10 +221,10 @@ const DoctorManageSchedulePage = () => {
       if (!map.has(r.dateKey)) map.set(r.dateKey, []);
       map.get(r.dateKey)?.push(r);
     }
-    const weekday = new Intl.DateTimeFormat(intlTag, { weekday: "long" });
-    const date = new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" });
+    const weekday = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" });
+    const date = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" });
     return Array.from(map.entries()).map(([key, list]) => {
-      const d = new Date(key);
+      const d = tehranNoon(key);
       return { key, list, weekday: weekday.format(d), date: date.format(d), isToday: key === todayKey };
     });
   }, [rows, filter, tab, query, todayKey, intlTag]);

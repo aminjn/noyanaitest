@@ -1,4 +1,6 @@
 "use client";
+import TehranTimeHint from "@/Components/Booking/TehranTimeHint";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -38,6 +40,7 @@ import {
   patientTypeDict,
   patientTypes,
 } from "../PublicDrSessions";
+import { availabilityOfDay, bookableBounds, shiftDateFromNow } from "@/Components/Booking/availabilityDay";
 
 const NS: ContentNamespace[] = ["common", "drBookingSidebar"];
 
@@ -51,13 +54,8 @@ const visitTypeIcon: Record<DoctorSessionType, ReactNode> = {
   textChat: <ChatBubbleIcon />,
 };
 
-// Mirrors BookingSessionSelectorPopup.tsx's shiftDateFromNow - keep the two
-// in sync since they must agree on which calendar day "today + N" is.
-const shiftDateFromNow = (shift: number) => {
-  const now = new Date();
-  now.setDate(now.getDate() + shift);
-  return now;
-};
+// "today + N" is a Tehran day, shared with BookingSessionSelectorPopup.tsx
+// (Components/Booking/availabilityDay.ts)
 
 const DAYS_SHOWN = 7;
 
@@ -88,7 +86,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
   );
   const [selectedClinic, setSelectedClinic] = useState<string>();
 
-  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
+  const [selectedDay, setSelectedDay] = useState<Date>(() => shiftDateFromNow(0));
   const [selectedSession, setSelectedSession] = useState<
     [number, number] | null
   >(null);
@@ -137,48 +135,18 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
   const availableCountByDay = useMemo<Record<string, number>>(() => {
     const result: Record<string, number> = {};
     if (!availabilities) return result;
-    for (const date of days) {
-      const start = new Date(date);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(start);
-      end.setDate(end.getDate() + 1);
-      result[getSessionDateKey(date)] =
-        availabilities.find((el) => {
-          const elDate = new Date(el.date);
-          return elDate >= start && elDate < end;
-        })?.bounds.length || 0;
-    }
+    for (const date of days)
+      result[getSessionDateKey(date)] = bookableBounds(availabilityOfDay(availabilities, date)).length;
     return result;
   }, [availabilities, days]);
 
   // Identical logic to BookingSessionSelectorPopup.tsx's
   // selectedDateAvailableSessions - same day-window match, same
   // hide-past-slots-for-today rule.
-  const selectedDateAvailableSessions = useMemo<[number, number][]>(() => {
-    if (!availabilities) return [];
-    const start = new Date(selectedDay);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(start);
-    end.setDate(start.getDate() + 1);
-    const availability = availabilities.find(
-      (el) => new Date(el.date) >= start && new Date(el.date) < end,
-    );
-    if (!availability) return [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const isToday =
-      new Date(availability.date) >= today &&
-      new Date(availability.date) < tomorrow;
-    if (isToday) {
-      const hour = new Date().getHours();
-      return availability.bounds
-        .filter(({ start }) => start >= (hour + 1) * 60)
-        .map(({ start, end }) => [start, end]);
-    }
-    return availability.bounds.map(({ start, end }) => [start, end]);
-  }, [availabilities, selectedDay]);
+  const selectedDateAvailableSessions = useMemo<[number, number][]>(
+    () => bookableBounds(availabilityOfDay(availabilities, selectedDay)),
+    [availabilities, selectedDay],
+  );
 
   const confirmReservation = () => {
     if (sessionType === "inPerson" && !!offices.length && !selectedClinic) {
@@ -325,9 +293,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           </legend>
           <div className={classes.dateRow}>
             {days.map((date, index) => {
-              const isActive =
-                selectedDay.toLocaleDateString(intlTag) ===
-                date.toLocaleDateString(intlTag);
+              const isActive = getSessionDateKey(selectedDay) === getSessionDateKey(date);
               const count = availableCountByDay[getSessionDateKey(date)] || 0;
               return (
                 <button
@@ -343,10 +309,11 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
                       ? getContent("today")
                       : index === 1
                         ? getContent("tomorrow")
-                        : date.toLocaleString(intlTag, { weekday: "long" })}
+                        : date.toLocaleString(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" })}
                   </span>
                   <span className={classes.dayCardDate}>
                     {date.toLocaleString(intlTag, {
+                      timeZone: TEHRAN_TZ,
                       month: "long",
                       day: "numeric",
                     })}
@@ -366,6 +333,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           <legend className={classes.sidebarLabel}>
             {getContent("sessionTime")}
           </legend>
+          <TehranTimeHint ns={NS} />
           {selectedDateAvailableSessions.length ? (
             <div className={classes.timeGrid}>
               {selectedDateAvailableSessions.map((bounds) => (

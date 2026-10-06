@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayYmd } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import useSWR from "swr";
@@ -64,8 +65,8 @@ const Standard = ({ meta }: { meta?: SalesMeta }) => {
   const pct = usePercent();
   const names = useNames();
   const { api } = useCrm();
-  const [from, setFrom] = useState(isoDay(new Date(Date.now() - 90 * 864e5)));
-  const [to, setTo] = useState(isoDay(new Date()));
+  const [from, setFrom] = useState(tehranTodayYmd(-90));
+  const [to, setTo] = useState(tehranTodayYmd());
   const { data, error } = useSWR<Report>(`${API}${api}/sales/report?from=${from}&to=${to}`, (url: string) => fetcher({ url }).then((res) => res.data as Report));
   return (
     <div className={s.stack}>

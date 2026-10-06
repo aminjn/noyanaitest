@@ -1,3 +1,5 @@
+import TehranTimeHint from "./TehranTimeHint";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import {
@@ -28,25 +30,15 @@ import Loading from "../Admin/UI/Loading";
 import { fetcher } from "../helpers/fetcher";
 import { useRouter } from "@/Components/i18n/navigation";
 import ChevronIcon from "../Icons/ChevronIcon";
+import { availabilityOfDay, bookableBounds, shiftDateFromNow } from "./availabilityDay";
+import { tehranYmd } from "@/Components/helpers/tehranTime";
 
 const NS: ContentNamespace[] = ["common", "bookingSessionSelectorPopup"];
 
-const shiftDateFromNow = (shift: number) => {
-  const now = new Date();
-  now.setDate(now.getDate() + shift);
-  return now;
-};
-
-// Builds a YYYY-MM-DD key from the date's local calendar day. Using
-// Date#toISOString() here is wrong because it converts to UTC first, which
-// rolls the date back a day for any timezone ahead of UTC (e.g. Iran,
-// UTC+3:30) whenever the local time is earlier than the UTC offset.
-const toLocalDateKey = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
+// The YYYY-MM-DD key of the Tehran day (2026-10): the doctor's calendar
+// day, whatever the patient's device zone (Components/helpers/tehranTime.ts;
+// "today + N" in Components/Booking/availabilityDay.ts).
+const toLocalDateKey = (date: Date) => tehranYmd(date);
 
 const SessionButton = ({
   bounds,
@@ -96,7 +88,7 @@ const DayBadge = ({
   return (
     <div
       onClick={() => setSelectedDay(shiftDateFromNow(index))}
-      className={`${classes.dayTab} ${selectedDay.toLocaleDateString(intlTag) === shiftDateFromNow(index).toLocaleDateString(intlTag) ? classes.activeTab : ""}`}
+      className={`${classes.dayTab} ${tehranYmd(selectedDay) === tehranYmd(shiftDateFromNow(index)) ? classes.activeTab : ""}`}
     >
       <span className={tbaseDemiBold}>
         {index === 0
@@ -104,11 +96,13 @@ const DayBadge = ({
           : index === 1
             ? getContent("tomorrow")
             : shiftDateFromNow(index).toLocaleString(intlTag, {
+                timeZone: TEHRAN_TZ,
                 weekday: "long",
               })}
       </span>
       <span className={tsmRegular}>
         {shiftDateFromNow(index).toLocaleString(intlTag, {
+          timeZone: TEHRAN_TZ,
           month: "long",
           day: "numeric",
         })}
@@ -142,36 +136,15 @@ const BookingSessionSelectorPopup = ({
   const [tabView, setTabView] = useState<boolean>(true);
 
   const [selectedDay, setSelectedDay] = useState<Date>(
-    initialDate || new Date(),
+    () => initialDate || shiftDateFromNow(0),
   );
 
   const { setPopup } = usePopup();
 
-  const selectedDateAvailableSessions = useMemo<[number, number][]>(() => {
-    if (!availabilities) return [];
-    const start = new Date(selectedDay);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(start);
-    end.setDate(start.getDate() + 1);
-    const availability = availabilities.find(
-      (el) => new Date(el.date) >= start && new Date(el.date) < end,
-    );
-    if (!availability) return [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const isToday =
-      new Date(availability.date) >= today &&
-      new Date(availability.date) < tomorrow;
-    if (isToday) {
-      const hour = new Date().getHours();
-      return availability.bounds
-        .filter(({ start }) => start >= (hour + 1) * 60)
-        .map(({ start, end }) => [start, end]);
-    }
-    return availability.bounds.map(({ start, end }) => [start, end]);
-  }, [availabilities, selectedDay]);
+  const selectedDateAvailableSessions = useMemo<[number, number][]>(
+    () => bookableBounds(availabilityOfDay(availabilities, selectedDay)),
+    [availabilities, selectedDay],
+  );
 
   const [selectedSession, setSelectedSession] = useState<
     [number, number] | null
@@ -217,6 +190,7 @@ const BookingSessionSelectorPopup = ({
           </div>
           <span>{getContent("selectFromOtherTimes")}</span>
         </div>
+        <TehranTimeHint ns={NS} />
         {!tabView && (
           <div className={classes.listView}>
             <div className={classes.side}>

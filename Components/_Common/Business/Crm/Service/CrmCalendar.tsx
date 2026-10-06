@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -124,16 +125,16 @@ const CrmCalendar = () => {
   const { data, error, mutate } = useGet<Cal | null>(`/calendar?from=${first.toISOString()}&to=${last.toISOString()}`, (d) => (d && typeof d === "object" ? (d as Cal) : null));
   const fmt = useMemo(
     () => ({
-      day: new Intl.DateTimeFormat(tag, { day: "numeric" }),
+      day: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, day: "numeric" }),
       // the day of the month in Latin digits (is it the 1st?)
-      dayLatn: new Intl.DateTimeFormat(tag, { day: "numeric", numberingSystem: "latn" }),
-      dayMonth: new Intl.DateTimeFormat(tag, { day: "numeric", month: "short" }),
-      weekday: new Intl.DateTimeFormat(tag, { weekday: "short" }),
-      range: new Intl.DateTimeFormat(tag, { year: "numeric", month: "long" }),
+      dayLatn: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, day: "numeric", numberingSystem: "latn" }),
+      dayMonth: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, day: "numeric", month: "short" }),
+      weekday: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, weekday: "short" }),
+      range: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, year: "numeric", month: "long" }),
     }),
     [tag],
   );
-  const monthOf = (d: Date) => new Intl.DateTimeFormat(tag, { month: "numeric" }).format(d);
+  const monthOf = (d: Date) => new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, month: "numeric" }).format(d);
   const anchorMonth = monthOf(anchor);
   const sameDay = (a: string | Date, b: Date) => dayOf(a) === dayOf(b);
   const today = new Date();

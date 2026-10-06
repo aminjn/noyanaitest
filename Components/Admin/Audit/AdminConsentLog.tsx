@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import useSWR from "swr";
@@ -145,7 +146,7 @@ const AdminConsentLog = ({ user }: { user?: string }) => {
       }),
     { keepPreviousData: true },
   );
-  const fmt = new Intl.DateTimeFormat(adminIntlTag(), { dateStyle: "medium", timeStyle: "short" });
+  const fmt = new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, dateStyle: "medium", timeStyle: "short" });
   const when = (v?: string) => {
     const d = v ? new Date(v) : null;
     return d && !Number.isNaN(d.getTime()) ? fmt.format(d) : "—";

@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayYmd } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -47,7 +48,7 @@ const CarePlanForm = ({ plan, onDone }: { plan?: CarePlan; onDone: () => void })
   const [taxRate, setTax] = useState(plan ? String(plan.taxRate) : "0");
   const [interval, setIntv] = useState<CarePlan["interval"]>(plan?.interval || "month");
   const [count, setCount] = useState(plan ? String(plan.intervalCount) : "1");
-  const [startDate, setStart] = useState(plan ? dayOf(plan.startDate) : isoDay(new Date()));
+  const [startDate, setStart] = useState(plan ? dayOf(plan.startDate) : tehranTodayYmd());
   const [endDate, setEnd] = useState(plan ? dayOf(plan.endDate) : "");
   const [autoIssue, setAuto] = useState(!!plan?.autoIssue);
   const [note, setNote] = useState(plan?.note || "");

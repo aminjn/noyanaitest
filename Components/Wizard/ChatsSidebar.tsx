@@ -1,3 +1,4 @@
+import { diffDaysYmd, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
 import classes from "./ChatsSidebar.module.css";
 import useBotChats, { IBotChat } from "./useBotChats";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -35,19 +36,9 @@ const chatDateGroupLabelKeys: Record<ChatDateGroup, ContentKey> = {
   older: "older",
 };
 
-const startOfDay = (value: Date | string) => {
-  const date = new Date(value);
-  date.setHours(0, 0, 0, 0);
-  return date;
-};
-
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
-
+// whole Tehran days between the chat and today (Components/helpers/tehranTime.ts)
 const getChatDateGroup = (createdAt: Date | string): ChatDateGroup => {
-  const dayDiff = Math.round(
-    (startOfDay(new Date()).getTime() - startOfDay(createdAt).getTime()) /
-      MS_PER_DAY,
-  );
+  const dayDiff = diffDaysYmd(tehranYmd(createdAt) || tehranTodayYmd(), tehranTodayYmd());
   if (dayDiff <= 0) return "today";
   if (dayDiff === 1) return "yesterday";
   if (dayDiff <= 7) return "lastWeek";

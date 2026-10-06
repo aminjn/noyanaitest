@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import mlgl from "maplibre-gl";
 import { booleanPointInPolygon } from "@turf/turf";
@@ -194,7 +195,7 @@ export const useTravelText = () => {
       if (!value) return "";
       const d = value instanceof Date ? value : new Date(value);
       if (Number.isNaN(d.getTime())) return "";
-      return d.toLocaleTimeString(intl, { hour: "2-digit", minute: "2-digit" });
+      return d.toLocaleTimeString(intl, { timeZone: TEHRAN_TZ, hour: "2-digit", minute: "2-digit" });
     };
     // NexaMap amounts are in rials; the site shows toman
     const toman = (irr?: number | null) => {

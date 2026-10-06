@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import { Fragment, useMemo, useState } from "react";
 import useSWR, { mutate as globalMutate } from "swr";
@@ -54,7 +55,7 @@ const useWhen = () => {
   const intlTag = useIntlLocale();
   return useMemo(() => {
     const rel = new Intl.RelativeTimeFormat(intlTag, { numeric: "auto", style: "short" });
-    const time = new Intl.DateTimeFormat(intlTag, { hour: "2-digit", minute: "2-digit" });
+    const time = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, hour: "2-digit", minute: "2-digit" });
     return (value: Date | string) => {
       const d = new Date(value);
       const mins = Math.round((Date.now() - d.getTime()) / 6e4);
@@ -148,7 +149,8 @@ const NotificationItem = ({
   );
 };
 
-const dayKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+// the Tehran day (Components/helpers/tehranTime.ts)
+const dayKey = (d: Date) => tehranYmd(d);
 
 const DashboardNotificationsPage = () => {
   const [page, setPage] = useState<number>(1);
@@ -172,9 +174,9 @@ const DashboardNotificationsPage = () => {
   const groups = useMemo(() => {
     const list = Array.isArray(data?.data) ? data.data : [];
     const rel = new Intl.RelativeTimeFormat(intlTag, { numeric: "auto" });
-    const day = new Intl.DateTimeFormat(intlTag, { weekday: "long", day: "numeric", month: "long" });
+    const day = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long", day: "numeric", month: "long" });
     const today = dayKey(new Date());
-    const yesterday = dayKey(new Date(Date.now() - 864e5));
+    const yesterday = tehranTodayYmd(-1);
     const out: { key: string; label: string; items: typeof list }[] = [];
     for (const n of list) {
       const d = new Date(n.createdAt);

@@ -8,7 +8,8 @@ import { useIntlLocale } from "@/Components/i18n/navigation";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import DateInput from "@/Components/UI/DateInput";
-import { DeskSlot, PickedSlot, toYmd } from "./deskShared";
+import { DeskSlot, PickedSlot, pickerDate, toYmd } from "./deskShared";
+import { tehranTodayYmd } from "@/Components/helpers/tehranTime";
 import classes from "./Desk.module.css";
 
 // A day, then one of the doctor's free sessions that day (taken and past
@@ -30,13 +31,13 @@ const SlotPicker = ({
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   // opens on today (most desk bookings are for today or tomorrow)
-  const [day, setDay] = useState<string | null>(value?.date || toYmd(new Date()));
+  // today / tomorrow are Tehran's days, whatever the device's zone
+  const [day, setDay] = useState<string | null>(value?.date || tehranTodayYmd());
   const [pickerKey, setPickerKey] = useState(0);
-  const quickDays = [0, 1].map((offset) => {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return { ymd: toYmd(d), label: getContent(offset ? "deskTomorrow" : "deskToday") };
-  });
+  const quickDays = [0, 1].map((offset) => ({
+    ymd: tehranTodayYmd(offset),
+    label: getContent(offset ? "deskTomorrow" : "deskToday"),
+  }));
 
   const query = new URLSearchParams();
   if (day) query.set("date", day);
@@ -76,7 +77,7 @@ const SlotPicker = ({
       <DateInput
         key={pickerKey}
         title={getContent("deskDay")}
-        defaultValue={day ? new Date(`${day}T00:00:00`) : undefined}
+        defaultValue={day ? pickerDate(day) : undefined}
         onChange={(d) => {
           setDay(toYmd(d));
           onChange(null);

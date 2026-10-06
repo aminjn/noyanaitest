@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { AgGridReact } from "ag-grid-react";
 import classes from "./Table.module.css";
 import {
@@ -176,6 +177,7 @@ const TableGrid = <T,>({
       typeof window !== "undefined" &&
       window.matchMedia("(max-width: 600px)").matches;
     const dateFormat = new Intl.DateTimeFormat(intlTag, {
+      timeZone: TEHRAN_TZ,
       dateStyle: "medium",
       timeStyle: "short",
     });
@@ -326,6 +328,7 @@ const TableGrid = <T,>({
     const api = gridApi.current;
     if (!api) return;
     const dateFormat = new Intl.DateTimeFormat(intlTag, {
+      timeZone: TEHRAN_TZ,
       dateStyle: "short",
       timeStyle: "short",
     });

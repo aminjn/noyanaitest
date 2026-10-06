@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { Fragment } from "react";
 import { WithStyleProps } from "../Layout/Layout";
@@ -20,6 +21,7 @@ export const dateToString = ({
   if (value === undefined || value === null || isNaN(parsed.getTime()))
     return "—";
   return parsed.toLocaleString(intlTag, {
+    timeZone: TEHRAN_TZ,
     ...(date ? { day: "numeric", month: "long", year: "numeric" } : {}),
     ...(time ? { hour: "numeric", minute: "numeric", second: "numeric" } : {}),
   });

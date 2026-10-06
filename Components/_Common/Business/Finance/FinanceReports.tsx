@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayPicker } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -31,7 +32,8 @@ type Aging = { patients: AgingRow[]; insurers: AgingRow[]; patientTotals: AgingR
 const monthStart = () => {
   const now = new Date();
   const day = Number(new Intl.DateTimeFormat("en-u-ca-persian-nu-latn", { day: "numeric", timeZone: "Asia/Tehran" }).format(now)) || 1;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - (day - 1));
+  // Tehran's today, day - 1 days back, as the picker's value
+  return tehranTodayPicker(-(day - 1));
 };
 
 const ShareTable = <T,>({

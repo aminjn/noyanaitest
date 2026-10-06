@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import useSWR from "swr";
 import classes from "./SupportPage.module.css";
@@ -164,7 +165,7 @@ const SupportPage = () => {
   const fmt = useMemo(
     () => ({
       num: new Intl.NumberFormat(intlTag),
-      day: new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long" }),
+      day: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long" }),
     }),
     [intlTag],
   );

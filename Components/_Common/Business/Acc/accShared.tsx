@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayPicker } from "@/Components/helpers/tehranTime";
 
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
@@ -234,8 +235,9 @@ export const rangeQs = (from: Date | null, to: Date | null, extra: Record<string
   return p.toString();
 };
 
+// the first of this month, from Tehran's today (as the picker's value)
 export const monthStart = () => {
-  const d = new Date();
+  const d = tehranTodayPicker();
   return new Date(d.getFullYear(), d.getMonth(), 1);
 };
 

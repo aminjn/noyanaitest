@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ, tehranMinutesOfDay } from "@/Components/helpers/tehranTime";
 
 import Link from "@/Components/i18n/Link";
 import { ReactNode, useEffect, useMemo, useState } from "react";
@@ -86,10 +87,8 @@ const formatTime = (num: Intl.NumberFormat, minutes: number) => {
   return `${two(Math.floor(minutes / 60))}:${two(minutes % 60)}`;
 };
 
-const nowMinutes = () => {
-  const d = new Date();
-  return d.getHours() * 60 + d.getMinutes();
-};
+// Tehran's clock: visit minutes are Tehran wall-clock
+const nowMinutes = () => tehranMinutesOfDay();
 
 const statusKeys: Record<string, ContentKey> = {
   pending: "reservationStatusPending",
@@ -255,8 +254,8 @@ const DoctorDashboard = () => {
   // weekday and date formatted apart: ICU joins them in a scrambled order for fa
   const dateFormats = useMemo(
     () => ({
-      weekday: new Intl.DateTimeFormat(intlTag, { weekday: "long" }),
-      date: new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }),
+      weekday: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" }),
+      date: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }),
     }),
     [intlTag],
   );

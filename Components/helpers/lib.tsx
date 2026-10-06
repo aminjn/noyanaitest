@@ -1,3 +1,5 @@
+import { tehranYmd } from "./tehranTime";
+
 export const convertPersianToEnglishDigits = (str: string) =>
   str.replace(/[۰-۹]/g, (d) => String.fromCharCode(d.charCodeAt(0) - 1728));
 
@@ -6,18 +8,11 @@ export function range(x: number, y: number): number[] {
   return Array.from({ length }, (_, i) => x + i);
 }
 
-// F-19 fix: mirrors the backend's Lib/helpers.ts:getSessionDateKey - this
-// used to be UTC-based (toISOString()), which rolls over to the next
-// calendar day at UTC midnight, the wrong day for a timezone ahead of UTC.
-// Now reads the LOCAL (viewer's browser) calendar day instead, matching the
-// server-side fix. See AUDIT/FIXES_TODO.md F-19.
-export const getSessionDateKey = (date: Date): string => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
+// F-19 fix, then (2026-10) Tehran time: mirrors the backend's
+// Lib/helpers.ts:getSessionDateKey - the Tehran calendar day ("YYYY-MM-DD")
+// of a date, whatever the viewer's device zone, so "today" and the day a
+// visit falls on match the clinic's (Components/helpers/tehranTime.ts).
+export const getSessionDateKey = (date: Date | string | number): string => tehranYmd(date);
 
 export const calculateAge = (born: Date): number =>
   Math.floor(

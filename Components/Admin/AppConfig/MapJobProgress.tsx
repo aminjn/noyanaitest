@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { MapJob } from "./useMapJob";
 import Badge from "@/Components/UI/Badge";
@@ -66,7 +67,7 @@ const MapJobProgress = ({
         )}
         {!!job.startedAt && (
           <span className={classes.note}>
-            {new Date(job.startedAt).toLocaleString(adminIntlTag())}
+            {new Date(job.startedAt).toLocaleString(adminIntlTag(), { timeZone: TEHRAN_TZ })}
           </span>
         )}
       </div>

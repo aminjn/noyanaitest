@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import { useIntlLocale } from "@/Components/i18n/navigation";
@@ -59,15 +60,16 @@ type PanelFinance = {
 
 const makeFormats = (tag: string) => ({
   num: new Intl.NumberFormat(tag),
-  monthLabel: new Intl.DateTimeFormat(tag, { month: "long" }),
+  monthLabel: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, month: "long" }),
   dateTime: new Intl.DateTimeFormat(tag, {
+    timeZone: TEHRAN_TZ,
     year: "numeric",
     month: "short",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   }),
-  shortDate: new Intl.DateTimeFormat(tag, { month: "long", day: "numeric" }),
+  shortDate: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, month: "long", day: "numeric" }),
 });
 
 const Tile = ({

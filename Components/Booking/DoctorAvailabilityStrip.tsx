@@ -1,3 +1,5 @@
+import { diffDaysYmd, TEHRAN_TZ, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
+import { availabilityOfDay, bookableBounds, shiftDateFromNow } from "./availabilityDay";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useMemo } from "react";
 import classes from "./DoctorAvailabilityStrip.module.css";
@@ -13,11 +15,6 @@ import { BookingPageDoctor } from "./BookingPage2";
 
 const NS: ContentNamespace[] = ["common", "booking"];
 
-const addDaysToToday = (days: number) => {
-  const now = new Date();
-  now.setDate(now.getDate() + days);
-  return now;
-};
 
 const DayCard = ({
   date,
@@ -31,27 +28,13 @@ const DayCard = ({
 
   const { setPopup } = usePopup();
 
-  const todaysShifs = useMemo<IDoctorAvailability | null>(() => {
-    // [start of `date`, start of the next day) - the bounds used to be
-    // swapped, so no availability ever matched and every day showed 0
-    const start = new Date(date);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(start);
-    end.setDate(end.getDate() + 1);
-    const list = Array.isArray(node.availabilities) ? node.availabilities : [];
-    return (
-      list.find(
-        (el) => new Date(el.date) >= start && new Date(el.date) < end,
-      ) || null
-    );
-  }, [date, node.availabilities]);
+  // the record of this Tehran day (Components/Booking/availabilityDay.ts)
+  const todaysShifs = useMemo<IDoctorAvailability | null>(
+    () => availabilityOfDay(node.availabilities, date) || null,
+    [date, node.availabilities],
+  );
 
-  const distanceFromNow = useMemo<number>(() => {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const then = new Date(date);
-    return Math.floor((then.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
-  }, [date]);
+  const distanceFromNow = useMemo<number>(() => diffDaysYmd(tehranTodayYmd(), tehranYmd(date)), [date]);
 
   const isToday = useMemo<boolean>(
     () => distanceFromNow === 0,
@@ -68,16 +51,8 @@ const DayCard = ({
     [isToday, isTomorrow],
   );
 
-  const sessionsCount = useMemo<number>(() => {
-    if (!todaysShifs || !Array.isArray(todaysShifs.bounds)) return 0;
-    if (isToday) {
-      const hour = new Date().getHours();
-      return todaysShifs.bounds.filter((b) => b.start >= (hour + 1) * 60)
-        .length;
-    } else {
-      return todaysShifs.bounds.length;
-    }
-  }, [isToday, todaysShifs]);
+  // today: from the next hour on, in Tehran
+  const sessionsCount = useMemo<number>(() => bookableBounds(todaysShifs || undefined).length, [todaysShifs]);
 
   return (
     <div
@@ -95,6 +70,7 @@ const DayCard = ({
         {isTomorrow && getContent("tomorrow")}
         {isLater &&
           new Date(date).toLocaleString(intlTag, {
+            timeZone: TEHRAN_TZ,
             month: "long",
             day: "numeric",
           })}
@@ -116,16 +92,11 @@ const DAY_CARD_COUNT = 3;
 const DoctorAvailabilityStrip = ({ node }: { node: BookingPageDoctor }) => {
   const getContent = useScopedLocale(NS);
   const { setPopup } = usePopup();
-  const showDates = useMemo<Date[]>(() => {
-    const result: Date[] = [];
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    for (let i = 0; i < DAY_CARD_COUNT; ++i) {
-      result.push(new Date(now));
-      now.setDate(now.getDate() + 1);
-    }
-    return result;
-  }, []);
+  // today and the next days in Tehran
+  const showDates = useMemo<Date[]>(
+    () => Array.from({ length: DAY_CARD_COUNT }, (_, i) => shiftDateFromNow(i)),
+    [],
+  );
 
   return (
     <div className={classes.sessions}>

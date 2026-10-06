@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useCallback, useState } from "react";
 import useSWR from "swr";
@@ -254,7 +255,7 @@ export const MyConsentHistory = () => {
   const tag = useIntlLocale();
   const at = (v?: string) => {
     const d = v ? new Date(v) : null;
-    return d && !Number.isNaN(d.getTime()) ? new Intl.DateTimeFormat(tag, { dateStyle: "medium", timeStyle: "short" }).format(d) : "—";
+    return d && !Number.isNaN(d.getTime()) ? new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, dateStyle: "medium", timeStyle: "short" }).format(d) : "—";
   };
   const [open, setOpen] = useState(false);
   const { data } = useSWR<HistoryRow[]>(open ? HISTORY_KEY : null, (url: string) => fetcher({ url }).then((r) => asArray<HistoryRow>(r?.data)));

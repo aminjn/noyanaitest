@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo } from "react";
 import classes from "./ReviewBits.module.css";
@@ -40,7 +41,7 @@ export const ProviderReply = ({ reply }: { reply: ReviewReply }) => {
   const getContent = useLocale();
   const intlTag = useIntlLocale();
   const fmt = useMemo(
-    () => new Intl.DateTimeFormat(intlTag, { year: "numeric", month: "long", day: "numeric" }),
+    () => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, year: "numeric", month: "long", day: "numeric" }),
     [intlTag],
   );
   if (!reply || typeof reply.content !== "string" || !reply.content.trim()) return null;

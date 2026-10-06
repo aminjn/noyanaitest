@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { API } from "@/Components/config";
 import { currencize } from "@/Components/helpers/currencize";
@@ -90,7 +91,7 @@ const AdminSubscriptionsTab = () => {
   const data = list?.rows;
   const counts = (list?.body.counts || {}) as Counts;
   const num = new Intl.NumberFormat(adminIntlTag());
-  const dateFormat = new Intl.DateTimeFormat(adminIntlTag(), { dateStyle: "medium" });
+  const dateFormat = new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, dateStyle: "medium" });
   const tabs: { key: string; title: string; count?: number }[] = [
     { key: "", title: ta("همه"), count: counts.all },
     { key: "expiring", title: statusDict.expiring, count: counts.expiring },

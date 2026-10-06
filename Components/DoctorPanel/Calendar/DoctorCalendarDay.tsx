@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import FormatDate from "@/Components/UI/FormatDate";
 import classes from "./DoctorCalendarDay.module.css";
@@ -151,7 +152,7 @@ const DoctorCalendarDay = ({
       <div className={classes.info}>
         <span className={classes.stamp}>
           {safeFormatDate(
-            new Intl.DateTimeFormat(intlTag, { month: "long", day: "numeric" }),
+            new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, month: "long", day: "numeric" }),
             stamp,
           )}
         </span>

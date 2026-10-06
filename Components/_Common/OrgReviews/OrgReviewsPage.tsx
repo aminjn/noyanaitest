@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -102,7 +103,7 @@ const OrgReviewsPage = ({ kind, panel }: { kind: ReviewKind; panel: string }) =>
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag, { maximumFractionDigits: 1 }), [intlTag]);
-  const date = useMemo(() => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }), [intlTag]);
+  const date = useMemo(() => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }), [intlTag]);
   const { data, error, mutate } = useSWR<Reviews>(`${API}/${kind}/review`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );

@@ -1,4 +1,6 @@
 "use client";
+import { tehranYmd } from "@/Components/helpers/tehranTime";
+import { pickerDate } from "@/Components/DoctorPanel/Desk/deskShared";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -200,8 +202,8 @@ export const personLabel = (u?: AdminPerson | null) => {
   return u.username || phone || u._id;
 };
 
-// "YYYY-MM-DD" of a local date (the server stores reservation days as local
-// midnight)
+// "YYYY-MM-DD" of the day a date picker returned (the picker works in the
+// device's calendar); the API reads it as that Tehran day
 export const dayKey = (date: Date) =>
   `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(2, "0")}-${`${date.getDate()}`.padStart(2, "0")}`;
 
@@ -451,9 +453,10 @@ export const RescheduleReservationPopup = ({
 }) => {
   const { closePopup } = usePopup();
   const pushNotification = useNotification();
+  // the visit's Tehran day, as the picker's own (local) date
   const [day, setDay] = useState<Date | undefined>(() => {
-    const d = currentDate ? new Date(currentDate) : null;
-    return d && !isNaN(d.getTime()) ? d : undefined;
+    const ymd = currentDate ? tehranYmd(currentDate) : "";
+    return ymd ? pickerDate(ymd) : undefined;
   });
   const [picked, setPicked] = useState<Slot | null>(null);
   const [reason, setReason] = useState("");

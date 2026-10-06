@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayPicker } from "@/Components/helpers/tehranTime";
 
 import { Fragment, useEffect, useState } from "react";
 import useSWR from "swr";
@@ -299,7 +300,8 @@ const AccountingReports = ({ refreshKey }: { refreshKey: number }) => {
   const t = useBizText();
   const [report, setReport] = useState<"trial" | "income" | "sheet" | "cash" | "centers">("income");
   const [from, setFrom] = useState<Date | null>(() => {
-    const d = new Date();
+    // from Tehran's today (Components/helpers/tehranTime.ts)
+    const d = tehranTodayPicker();
     return new Date(d.getFullYear(), d.getMonth(), 1);
   });
   const [to, setTo] = useState<Date | null>(null);

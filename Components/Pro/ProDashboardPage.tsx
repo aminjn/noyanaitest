@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useMemo, useState } from "react";
 import useSWR, { mutate as mutateGlobal } from "swr";
@@ -40,7 +41,7 @@ const ProDashboardPage = () => {
   const intlTag = useIntlLocale();
   const periodLabel = useLicensePeriodLabel();
   const n = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const date = useMemo(() => new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }), [intlTag]);
+  const date = useMemo(() => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, dateStyle: "medium" }), [intlTag]);
 
   const [codeInput, setCodeInput] = useState("");
   const [code, setCode] = useState("");
