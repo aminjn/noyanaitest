@@ -16,6 +16,14 @@ import UserVitals from "@/Components/Dashboard/UserVitals";
 import UserMedicalDetails from "@/Components/Dashboard/UserMedicalDetails";
 import PatientFiles, { IPatientProfile } from "./PatientFiles";
 import PatientAiSummary from "./PatientAiSummary";
+import PatientTimeline from "./PatientTimeline";
+import Button from "@/Components/UI/Button";
+import PlusIcon from "@/Components/Icons/PlusIcon";
+import ChatIcon from "@/Components/Icons/ChatIcon";
+import usePopup from "@/Components/Hooks/usePopup";
+import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
+import DeskBookingPopup from "../Desk/DeskBookingPopup";
+import { formatPhone } from "../Desk/deskShared";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPatient"];
 
@@ -36,6 +44,10 @@ const DoctorManagePatientPage = () => {
   );
 
   const getContent = useScopedLocale(LOCALE_NS);
+  const { setPopup } = usePopup();
+  const hasAccess = useDoctorAcl();
+  const identity = data?.user?.identity as { _id?: string; givenName?: string; lastName?: string } | undefined;
+  const name = [identity?.givenName, identity?.lastName].filter(Boolean).join(" ");
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },
@@ -49,8 +61,39 @@ const DoctorManagePatientPage = () => {
           <UserIdentity
             identity={data.user?.identity}
             avatar={data.user?.avatar}
-            username={data.user?.username}
+            username={name || data.user?.username}
           />
+          {/* what the doctor does next with this patient */}
+          <div className={classes.actions}>
+            {hasAccess("mutateCalendar") && !!identity?._id && (
+              <Button
+                size="M"
+                leadIcon={<PlusIcon />}
+                onClick={() =>
+                  setPopup(
+                    "DeskBooking",
+                    <DeskBookingPopup
+                      onDone={() => undefined}
+                      preset={{ identity: identity._id as string, name, phone: data.user?.phone || "", nationalIdTail: "" }}
+                    />,
+                  )
+                }
+              >
+                {getContent("ptBookVisit")}
+              </Button>
+            )}
+            {hasAccess("readChat") && (
+              <Button size="M" variant="Neutral" mode="Outline" leadIcon={<ChatIcon />} href="/doctorpanel/chat">
+                {getContent("ptMessages")}
+              </Button>
+            )}
+            {!!data.user?.phone && (
+              <a className={classes.phone} href={`tel:${formatPhone(data.user.phone)}`} dir="ltr">
+                {formatPhone(data.user.phone)}
+              </a>
+            )}
+          </div>
+          <PatientTimeline patientId={data._id} selfName={name} />
           {/* the history in a few lines (clinical assistant, owner only) */}
           <PatientAiSummary patientId={data._id} />
           <UserVitals vitals={data.user?.vital} patient={data._id} />

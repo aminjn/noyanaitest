@@ -660,6 +660,14 @@ h6 {
    buttons, sheets and page bottoms add it so nothing sits under the bar. */
 :root {
   --bottomNavSpace: 0px;
+  /* room a sticky bottom action bar leaves at its inline end for the
+     floating «دستیار نویان» button (Components/Ai/Copilot) */
+  --fabClear: 11rem;
+}
+@media (max-width: 640px) {
+  :root {
+    --fabClear: 3.75rem;
+  }
 }
 @media (max-width: 48rem) {
   body.hasBottomNav {

@@ -15,6 +15,7 @@ import HostedImage from "../UI/HostedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import CommandPalette, { CommandItem } from "../UI/CommandPalette";
+import { formatPhone } from "../helpers/formatPhone";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
@@ -78,13 +79,15 @@ const LinkItem = ({
   const content = useMemo(
     () => (
       <Fragment>
-        <Ixon width="1.25rem">{icon}</Ixon>
-        <span>{getContent(title)}</span>
+        <span className={`${classes.tile} ${isActive ? "glassIcon" : ""}`}>
+          <Ixon width="1.125rem">{icon}</Ixon>
+        </span>
+        <span className={classes.text}>{getContent(title)}</span>
         {!!side && <span className={classes.side}>{side}</span>}
         {!!badge && badge > 0 && <span className={classes.badge}>{badge > 99 ? "99+" : badge}</span>}
       </Fragment>
     ),
-    [badge, getContent, icon, side, title],
+    [badge, getContent, icon, isActive, side, title],
   );
 
   return (
@@ -133,8 +136,10 @@ const SectionItem = ({ item, panel }: { item: LinkMapItem; panel: string }) => {
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
-        <Ixon width="1.25rem">{item.icon}</Ixon>
-        <span>{getContent(item.title)}</span>
+        <span className={`${classes.tile} ${anyActive ? "glassIcon" : ""}`}>
+          <Ixon width="1.125rem">{item.icon}</Ixon>
+        </span>
+        <span className={classes.text}>{getContent(item.title)}</span>
         {!!item.side && <span className={classes.side}>{item.side}</span>}
         {!open && badge > 0 && <span className={classes.badge}>{badge > 99 ? "99+" : badge}</span>}
         <Ixon width="1rem" className={`${classes.sectionChevron} ${open ? classes.sectionChevronOpen : ""}`}>
@@ -210,8 +215,17 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
           />
         </div>
         <div className={classes.userDetails}>
-          <span className={classes.userName}>{user.username || getContent("user")}</span>
-          <span className={classes.userPhone}>{user.phone}</span>
+          <span className={classes.userName}>
+            {user.username ||
+              [
+                (user.identity as { givenName?: string } | undefined)?.givenName,
+                (user.identity as { lastName?: string } | undefined)?.lastName,
+              ]
+                .filter(Boolean)
+                .join(" ") ||
+              getContent("user")}
+          </span>
+          <span className={classes.userPhone}>{formatPhone(user.phone)}</span>
         </div>
         <Ixon width="1.125rem" className={classes.userChevron}>
           <ChevronIcon />

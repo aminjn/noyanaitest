@@ -1,273 +1,252 @@
-import Input from "@/Components/UI/Input";
 import { ShiftContext } from "./DoctorManageShiftsPage";
 import classes from "./ShiftItem.module.css";
-import { Dispatch, SetStateAction, useMemo } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { numberToTime } from "../Calendar/AddSessionsAgent";
-import useSWR from "swr";
 import { IOffice } from "../Office/DoctorManageOfficesPage";
-import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
-import Button from "@/Components/UI/Button";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import TimePicker from "@/Components/UI/TimePicker";
-import { tmdBold } from "@/Components/UI/Typography";
-import OptionInput from "@/Components/UI/OptionInput";
-import MultiSelectInput from "@/Components/UI/MultiSelectInput";
-import {
-  doctorSessionTypes,
-  patientStatuses,
-} from "../Calendar/DoctorCalendarDay";
+import { doctorSessionTypes, patientStatuses } from "../Calendar/DoctorCalendarDay";
 import ShiftsPreview from "./ShiftsPreview";
 import useShiftUtils from "./useShiftUtils";
 import Ixon from "@/Components/UI/Ixon";
-import ErrorIcon from "@/Components/Icons/ErrorIcon";
-import PopupCard from "@/Components/UI/PopupCard";
-import FormActions from "@/Components/Admin/UI/FormActions";
-import usePopup from "@/Components/Hooks/usePopup";
+import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import AdjustmentHorizontalIcon from "@/Components/Icons/AdjustmentHorizontalIcon";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
-const ShiftProblemsPopup = ({ problems }: { problems: string[] }) => {
-  const { closePopup } = usePopup();
-  const getContent = useScopedLocale(NS);
-  return (
-    <PopupCard>
-      <div className={classes.problems}>
-        {problems.map((p) => (
-          <p key={p}>{p}</p>
-        ))}
-        <FormActions>
-          <Button onClick={() => closePopup()}>
-            {getContent("understood")}
-          </Button>
-        </FormActions>
-      </div>
-    </PopupCard>
-  );
-};
-
-const sessionDurations = [10, 15, 20, 30, 45, 60];
-
+const sessionDurations = [5, 10, 15, 20, 25, 30, 40, 45, 60, 90];
 const sessionGaps = [0, 5, 10, 15, 20, 30];
 
+// every 5 minutes of the day (a native select: a wheel on phones, type-ahead
+// on desktop), plus the current value if it is off that grid
+const times = (current: number, max = 24 * 60) => {
+  const out: number[] = [];
+  for (let m = 0; m <= max; m += 5) out.push(m);
+  if (!out.includes(current)) out.push(current);
+  return out.sort((a, b) => a - b);
+};
+
+const withCurrent = (list: number[], current: number) =>
+  (list.includes(current) ? list : [...list, current]).sort((a, b) => a - b);
+
+// One time range of a day: office, from-to, visit length and the number of
+// visits it makes, in one line; name, gap, visit and patient types and the
+// visit times behind "more".
 const ShiftItem = ({
   shift,
   setData,
+  offices,
+  overlap,
+  tone,
+  canEdit,
 }: {
   shift: ShiftContext[number];
   setData: Dispatch<SetStateAction<ShiftContext>>;
+  offices: IOffice[];
+  overlap: boolean;
+  tone: string;
+  canEdit: boolean;
 }) => {
-  const { data: officesData } = useSWR<IOffice[]>(
-    `${API}/doctor/office`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
-  // a non-array answer (error payload) must not crash the editor
-  const offices = Array.isArray(officesData) ? officesData : undefined;
-
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const { shiftHasProblem, getShiftSessions } = useShiftUtils();
+  const [open, setOpen] = useState(false);
 
-  const { shiftHasProblem } = useShiftUtils();
+  const problems = useMemo<string[]>(() => {
+    const list = shiftHasProblem(shift);
+    if (overlap) list.push(getContent("shOverlapRow"));
+    return list;
+  }, [getContent, overlap, shift, shiftHasProblem]);
+  const sessions = getShiftSessions(shift).length;
 
-  const problems = useMemo<string[]>(
-    () => shiftHasProblem(shift),
-    [shift, shiftHasProblem],
-  );
+  const patch = (change: Partial<ShiftContext[number]>) =>
+    setData((prev) => prev.map((el) => (el._id === shift._id ? { ...el, ...change } : el)));
 
-  const { setPopup } = usePopup();
+  const toggleIn = <T extends string>(list: readonly T[], current: T[], item: T): T[] =>
+    list.filter((el) => (el === item ? !current.includes(item) : current.includes(el)));
+
+  const startTimes = useMemo(() => times(shift.start, 24 * 60 - 5), [shift.start]);
+  const endTimes = useMemo(() => times(shift.end), [shift.end]);
+  const officeName = offices.find((o) => o._id === shift.office)?.name;
 
   return (
-    <div
-      key={shift._id}
-      className={`${classes.shift} ${!!problems.length ? classes.withProblem : ""}`}
-    >
-      <div className={classes.shiftHeader}>
-        <div className={classes.shiftNameBox}>
-          <Input
-            className={classes.shiftName}
-            defaultValue={shift.name}
-            onChange={(e) =>
-              setData((prev) => {
-                const clone = [...prev];
-                const index = clone.findIndex((el) => el._id === shift._id);
-                if (index === -1) return clone;
-                clone[index].name = e.target.value;
-                return clone;
-              })
-            }
-          />
-          <span className={classes.subName}>
-            {`${numberToTime(shift.start)} - ${numberToTime(shift.end)} - ${offices?.find((el) => el._id === shift.office)?.name || ""}`}
-          </span>
-        </div>
-        <div className={classes.shiftError}>
-          <Button
-            variant="Error"
-            mode="Outline"
-            onClick={() =>
-              setData((prev) => {
-                const clone = [...prev];
-                const index = clone.findIndex((el) => el._id === shift._id);
-                if (index === -1) return clone;
-                clone.splice(index, 1);
-                return clone;
-              })
-            }
+    <div className={`${classes.shift} ${problems.length ? classes.withProblem : ""}`}>
+      <div className={classes.line}>
+        <span className={`${classes.officeDot} ${tone}`} aria-hidden />
+        {offices.length > 1 ? (
+          <select
+            className={`${classes.select} ${classes.office}`}
+            aria-label={getContent("office")}
+            disabled={!canEdit}
+            value={shift.office || ""}
+            onChange={(e) => patch({ office: e.target.value })}
           >
-            {getContent("deleteShift")}
-          </Button>
-          {!!problems.length && (
+            {!shift.office && <option value="">{getContent("office")}</option>}
+            {offices.map((o) => (
+              <option key={o._id} value={o._id}>
+                {o.name || o._id}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <span className={classes.officeName}>{officeName || getContent("office")}</span>
+        )}
+
+        <span className={classes.times}>
+          <select
+            className={classes.select}
+            aria-label={getContent("startTime")}
+            disabled={!canEdit}
+            value={shift.start}
+            onChange={(e) => patch({ start: Number(e.target.value) })}
+          >
+            {startTimes.map((m) => (
+              <option key={m} value={m}>
+                {numberToTime(m)}
+              </option>
+            ))}
+          </select>
+          <span className={classes.dash}>–</span>
+          <select
+            className={classes.select}
+            aria-label={getContent("endTime")}
+            disabled={!canEdit}
+            value={shift.end}
+            onChange={(e) => patch({ end: Number(e.target.value) })}
+          >
+            {endTimes.map((m) => (
+              <option key={m} value={m}>
+                {numberToTime(m)}
+              </option>
+            ))}
+          </select>
+        </span>
+
+        <select
+          className={classes.select}
+          aria-label={getContent("sessionDuration")}
+          title={getContent("sessionDuration")}
+          disabled={!canEdit}
+          value={shift.duration}
+          onChange={(e) => patch({ duration: Number(e.target.value) })}
+        >
+          {withCurrent(sessionDurations, shift.duration).map((d) => (
+            <option key={d} value={d}>
+              {getContent("xMinutes", [num.format(d)])}
+            </option>
+          ))}
+        </select>
+
+        <span className={classes.count}>{getContent("xSessions", [num.format(sessions)])}</span>
+
+        <span className={classes.tools}>
+          <button
+            type="button"
+            className={`${classes.iconButton} ${open ? classes.iconButtonOn : ""}`}
+            aria-expanded={open}
+            aria-label={getContent("shMore")}
+            title={getContent("shMore")}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <Ixon width="1.125rem">
+              <AdjustmentHorizontalIcon />
+            </Ixon>
+          </button>
+          {canEdit && (
             <button
               type="button"
-              onClick={() =>
-                setPopup(
-                  "ShiftProblems",
-                  <ShiftProblemsPopup problems={problems} />,
-                )
-              }
+              className={`${classes.iconButton} ${classes.danger}`}
+              aria-label={getContent("deleteShift")}
+              title={getContent("deleteShift")}
+              onClick={() => setData((prev) => prev.filter((el) => el._id !== shift._id))}
             >
-              <Ixon className={classes.errors} width="2rem">
-                <ErrorIcon />
+              <Ixon width="1.125rem">
+                <GarbageIcon />
               </Ixon>
             </button>
           )}
-        </div>
+        </span>
       </div>
-      <div className={classes.segment}>
-        <TimePicker
-          fontSize={tmdBold}
-          value={shift.start}
-          onChange={(e) => {
-            if (e === null) return;
-            setData((prev) => {
-              const clone = [...prev];
-              const index = clone.findIndex((el) => el._id === shift._id);
-              if (index === -1) return clone;
-              clone[index].start = e;
-              return clone;
-            });
-          }}
-          prefix={getContent("startTime")}
-          clearable={false}
-        />
-        <TimePicker
-          fontSize={tmdBold}
-          value={shift.end}
-          prefix={getContent("endTime")}
-          clearable={false}
-          onChange={(e) => {
-            if (!e) return;
-            setData((prev) => {
-              const clone = [...prev];
-              const index = clone.findIndex((el) => el._id === shift._id);
-              if (index === -1) return clone;
-              clone[index].end = e;
-              return clone;
-            });
-          }}
-        />
-      </div>
-      {offices && (
-        <div className={classes.segment}>
-          <OptionInput
-            options={offices.map((el) => ({
-              title: el.name || el._id,
-              value: el._id,
-            }))}
-            title={getContent("office")}
-            onChange={(e) =>
-              setData((prev) => {
-                const clone = [...prev];
-                const index = clone.findIndex((el) => el._id === shift._id);
-                if (index === -1) return clone;
-                clone[index].office = String(e);
-                return clone;
-              })
-            }
-            value={shift.office}
-          />
+
+      {!open && !!shift.name && <span className={classes.name}>{shift.name}</span>}
+
+      {!!problems.length && (
+        <ul className={classes.problems}>
+          {problems.map((p) => (
+            <li key={p}>{p}</li>
+          ))}
+        </ul>
+      )}
+
+      {open && (
+        <div className={classes.more}>
+          <div className={classes.moreGrid}>
+            <label className={classes.field}>
+              <span>{getContent("shRangeName")}</span>
+              <input
+                className={classes.input}
+                value={shift.name || ""}
+                maxLength={120}
+                disabled={!canEdit}
+                placeholder={getContent("newShift")}
+                onChange={(e) => patch({ name: e.target.value })}
+              />
+            </label>
+            <label className={classes.field}>
+              <span>{getContent("sessionsGap")}</span>
+              <select
+                className={classes.select}
+                disabled={!canEdit}
+                value={shift.gap}
+                onChange={(e) => patch({ gap: Number(e.target.value) })}
+              >
+                {withCurrent(sessionGaps, shift.gap).map((g) => (
+                  <option key={g} value={g}>
+                    {getContent("xMinutes", [num.format(g)])}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className={classes.field}>
+            <span>{getContent("sessionType")}</span>
+            <div className={classes.chips}>
+              {doctorSessionTypes.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  disabled={!canEdit}
+                  aria-pressed={shift.sessionTypes.includes(t)}
+                  className={`${classes.chip} ${shift.sessionTypes.includes(t) ? classes.chipOn : ""}`}
+                  onClick={() => patch({ sessionTypes: toggleIn(doctorSessionTypes, shift.sessionTypes, t) })}
+                >
+                  {getContent(t)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={classes.field}>
+            <span>{getContent("patientType")}</span>
+            <div className={classes.chips}>
+              {patientStatuses.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  disabled={!canEdit}
+                  aria-pressed={shift.patientTypes.includes(t)}
+                  className={`${classes.chip} ${shift.patientTypes.includes(t) ? classes.chipOn : ""}`}
+                  onClick={() => patch({ patientTypes: toggleIn(patientStatuses, shift.patientTypes, t) })}
+                >
+                  {getContent(t)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <ShiftsPreview shift={shift} />
         </div>
       )}
-      <div className={classes.segment}>
-        <OptionInput
-          title={getContent("sessionDuration")}
-          value={shift.duration.toString()}
-          options={sessionDurations.map((d) => ({
-            title: d.toString(),
-            value: d.toString(),
-          }))}
-          onChange={(e) =>
-            setData((prev) => {
-              const clone = [...prev];
-              const index = clone.findIndex((el) => el._id === shift._id);
-              if (index === -1) return clone;
-              clone[index].duration = Number(e);
-              return clone;
-            })
-          }
-        />
-        <OptionInput
-          title={getContent("sessionsGap")}
-          options={sessionGaps.map((g) => ({
-            title: g.toString(),
-            value: g.toString(),
-          }))}
-          value={shift.gap.toString()}
-          onChange={(e) => {
-            setData((prev) => {
-              const clone = [...prev];
-              const index = clone.findIndex((el) => el._id === shift._id);
-              if (index === -1) return clone;
-              clone[index].gap = Number(e);
-              return clone;
-            });
-          }}
-        />
-      </div>
-      <div className={classes.segment}>
-        <MultiSelectInput
-          title={getContent("sessionType")}
-          multi
-          placeholder={getContent("sessionType")}
-          options={doctorSessionTypes.map((el) => ({
-            title: getContent(el),
-            value: el,
-          }))}
-          value={shift.sessionTypes}
-          onChange={(e) => {
-            setData((prev) => {
-              const clone = [...prev];
-              const index = clone.findIndex((el) => el._id === shift._id);
-              if (index === -1) return clone;
-              clone[index].sessionTypes = doctorSessionTypes.filter((el) =>
-                e.includes(el),
-              );
-              return clone;
-            });
-          }}
-        />
-        <MultiSelectInput
-          title={getContent("patientType")}
-          multi
-          placeholder={getContent("patientType")}
-          value={shift.patientTypes}
-          options={patientStatuses.map((el) => ({
-            title: getContent(el),
-            value: el,
-          }))}
-          onChange={(e) =>
-            setData((prev) => {
-              const clone = [...prev];
-              const index = clone.findIndex((el) => el._id === shift._id);
-              if (index === -1) return clone;
-              clone[index].patientTypes = patientStatuses.filter((el) =>
-                e.includes(el),
-              );
-              return clone;
-            })
-          }
-        />
-      </div>
     </div>
   );
 };

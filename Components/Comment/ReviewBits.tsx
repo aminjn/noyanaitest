@@ -5,7 +5,7 @@ import classes from "./ReviewBits.module.css";
 import BadgeCheckIcon from "../Icons/BadgeCheckIcon";
 import useLocale from "../Hooks/useLocale";
 import { useIntlLocale } from "@/Components/i18n/navigation";
-import { safeFormatDate } from "../helpers/safeFormatDate";
+import { formatMonthYear, safeFormatDate } from "../helpers/safeFormatDate";
 import { ContentKey } from "../Enums/contentKeys";
 
 // Verified reviews (2026-10, Zocdoc / Doctolib / Digikala): the badge on a
@@ -25,11 +25,7 @@ export const VerifiedBadge = ({
 }) => {
   const getContent = useLocale();
   const intlTag = useIntlLocale();
-  const fmt = useMemo(
-    () => new Intl.DateTimeFormat(intlTag, { year: "numeric", month: "long" }),
-    [intlTag],
-  );
-  const month = safeFormatDate(fmt, at, "");
+  const month = formatMonthYear(intlTag, at, "");
   const key = (kind === "purchase" ? "verifiedPurchaseBadge" : "verifiedVisitBadge") as ContentKey;
   const label = getContent(key, [month]).replace(/[\s·،,-]+$/, "");
   return (

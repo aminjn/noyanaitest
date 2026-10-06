@@ -324,7 +324,7 @@
 
 @media (max-width: 640px) {
   .fab {
-    inset-block-end: 0.875rem;
+    inset-block-end: calc(0.875rem + var(--bottomNavSpace, 0px));
     inset-inline-end: 0.875rem;
     padding: 0.25rem;
   }

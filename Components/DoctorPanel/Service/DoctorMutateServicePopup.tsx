@@ -1,4 +1,5 @@
 import PopupCard from "@/Components/UI/PopupCard";
+import CategoriesIcon from "@/Components/Icons/CategoriesIcon";
 import { IService } from "./DoctorManageServicesPage";
 import classes from "./DoctorMutateServicePopup.module.css";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
@@ -16,7 +17,7 @@ const DoctorMutateServicePopup = ({ mutate }: { mutate: () => unknown }) => {
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={getContent("svcNewTitle")} icon={<CategoriesIcon />} size="wide">
       <CreateForm<IService>
         renderer={{
           name: { type: "text", title: getContent("name") },

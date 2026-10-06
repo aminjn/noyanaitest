@@ -11,7 +11,8 @@ import {
 } from "./ChatSidebar";
 import { API } from "../config";
 import Loading from "../Admin/UI/Loading";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
+import useNotification from "../Hooks/useNotification";
 import useUser, { IUser } from "../Hooks/useUser";
 import Button from "../UI/Button";
 import InitialAvatar from "../UI/InitialAvatar";
@@ -25,7 +26,7 @@ import useForm from "../Hooks/useForm";
 import Form from "../UI/Form";
 import CloseIcon from "../Icons/CloseIcon";
 import Link from "@/Components/i18n/Link";
-import { usePathname } from "@/Components/i18n/navigation";
+import { useIntlLocale, usePathname } from "@/Components/i18n/navigation";
 import useAnimateOnScroll from "../Hooks/useAnimateOnScroll";
 import CheckIcon from "../Icons/CheckIcon";
 import DoubleCheckIcon from "../Icons/DoubleCheckIcon";
@@ -157,11 +158,29 @@ const ChatMessage = ({ _id }: { _id: string }) => {
   const [messageRef, isVisible] = useAnimateOnScroll<HTMLDivElement>({});
   const { api, selfId } = useChatScope();
 
+  const intlTag = useIntlLocale();
+  // a message never changes: fetched once; only my own, not yet read by the
+  // other side, is re-checked now and then for its "read" tick (it used to
+  // poll every message every second)
   const { data } = useSWR<IMessage & { uploads: IUserFile[] }>(
     isVisible ? `${api}/message/${_id}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
-    { refreshInterval: 1000 },
+    {
+      refreshInterval: (latest) =>
+        latest && latest.sender === selfId && (Array.isArray(latest.readBy) ? latest.readBy.length : 0) < 2 ? 5000 : 0,
+      revalidateOnFocus: false,
+    },
   );
+  const sent = data?.createdAt ? new Date(data.createdAt) : null;
+  const sentLabel =
+    sent && !isNaN(sent.getTime())
+      ? sent.toLocaleString(intlTag, {
+          ...(sent.toDateString() === new Date().toDateString() ? {} : { day: "numeric", month: "short" }),
+          hour: "2-digit",
+          minute: "2-digit",
+          hourCycle: "h23",
+        })
+      : "";
 
   const isSelf = useMemo<boolean>(
     () => data?.sender === selfId,
@@ -173,7 +192,7 @@ const ChatMessage = ({ _id }: { _id: string }) => {
       className={`${classes.message} ${isSelf ? classes.selfMessage : ""}`}
       ref={messageRef}
     >
-      {!!data?.uploads[0] && (
+      {!!data?.uploads?.[0] && (
         <Link
           href={`/api/v1/notpublic/${data.uploads[0]._id}`}
           target="blank"
@@ -189,10 +208,10 @@ const ChatMessage = ({ _id }: { _id: string }) => {
       <div className={classes.messageFooter}>
         {isSelf && (
           <Ixon width="1rem">
-            {data?.readBy.length === 2 ? <DoubleCheckIcon /> : <CheckIcon />}
+            {(data?.readBy?.length || 0) >= 2 ? <DoubleCheckIcon /> : <CheckIcon />}
           </Ixon>
         )}
-        <FormatDate className={classes.messageDate} value={data?.createdAt} />
+        <span className={classes.messageDate}>{sentLabel}</span>
       </div>
     </div>
   );
@@ -210,10 +229,24 @@ const InnerChat = ({
   mutate: () => unknown;
   onOpenSidebar?: () => void;
 }) => {
-  const { selfId } = useChatScope();
+  const { selfId, api } = useChatScope();
   const isDoctorSide = usePathname().startsWith("/doctorpanel");
+  const pushNotification = useNotification();
+  const [closing, setClosing] = useState(false);
+  const closeChat = async () => {
+    setClosing(true);
+    try {
+      await fetcher({ url: `${api}/${chat._id}/close`, method: "PATCH" });
+      pushNotification(getContent("chatClosedToast"), "Success");
+      mutate();
+    } catch (err) {
+      pushNotification((err as Error)?.message || "", "Error");
+    } finally {
+      setClosing(false);
+    }
+  };
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
-    () => chat.participants.find((p) => p._id !== selfId),
+    () => (Array.isArray(chat.participants) ? chat.participants : []).find((p) => p && p._id !== selfId),
     [chat, selfId],
   );
 
@@ -238,9 +271,25 @@ const InnerChat = ({
         <InitialAvatar name={title || "?"} seed={other?._id || chat._id} size="2.75rem" />
         <div className={classes.details}>
           <span className={classes.name}>{title || getContent("chat")}</span>
-          <FormatDate className={classes.date} value={chat.createdAt} />
+          <FormatDate className={classes.date} value={chat.createdAt} time={false} />
         </div>
-        <Button className={classes.action}>{getContent("closeChat")}</Button>
+        {/* the practice ends the conversation; a closed one says so */}
+        {chat.closedAt ? (
+          <span className={classes.closedPill}>{getContent("close")}</span>
+        ) : (
+          isDoctorSide && (
+            <Button
+              className={classes.action}
+              variant="Neutral"
+              mode="Outline"
+              size="M"
+              isLoading={closing}
+              onClick={closeChat}
+            >
+              {getContent("closeChat")}
+            </Button>
+          )
+        )}
       </div>
       <div className={classes.body}>
         {/* the "call 115" note is for patients, not the doctor's side */}
@@ -252,7 +301,7 @@ const InnerChat = ({
             {getContent("chatUrgentNote", [emergencyNumberText])}
           </p>
         )}
-        {!!chat.messages.length ? (
+        {Array.isArray(chat.messages) && !!chat.messages.length ? (
           chat.messages.map((message) => (
             <ChatMessage key={message._id} _id={message._id} />
           ))
@@ -276,7 +325,7 @@ const CurrentChat = ({ onOpenSidebar }: { onOpenSidebar?: () => void }) => {
   >(
     params.nodeId ? `${api}/${params.nodeId}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
-    { refreshInterval: 1000 },
+    { refreshInterval: 3000 },
   );
 
   const getContent = useScopedLocale(LOCALE_NS);

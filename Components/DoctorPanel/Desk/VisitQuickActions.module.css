@@ -1,0 +1,40 @@
+.main {
+  align-self: flex-start;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+}
+
+.arrived {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radiusPill);
+  background: var(--toneTeal);
+  color: var(--toneTealInk);
+  font-size: var(--fsXs);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp4);
+  min-width: min(24rem, 80vw);
+}
+
+.confirm p {
+  margin: 0;
+  font-size: var(--fsSm);
+  line-height: var(--lhBody);
+  color: var(--textBody);
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp2);
+}

@@ -34,6 +34,8 @@ export interface IChat<
     : never;
   opensAt: Date;
   closedAt?: Date;
+  // messages from the other side not read yet (GET /chat)
+  unread?: number;
 }
 
 export const getChatParticipantName = (
@@ -86,7 +88,7 @@ const ChatSidebar = ({ onClose }: { onClose?: () => void }) => {
   const { data } = useSWR<
     IChat<{ Participants: { Identity: Record<never, never> } }>[]
   >(api, (url: string) => fetcher({ url }).then((res) => res.data), {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
 
   const getContent = useScopedLocale(LOCALE_NS);
@@ -127,11 +129,20 @@ const ChatSidebar = ({ onClose }: { onClose?: () => void }) => {
       </div>
       {data ? (
         <Fragment>
-          {!!data.length ? (
+          {Array.isArray(data) && !!data.length ? (
             <div className={classes.list}>
-              {data.map((chat) => (
-                <ChatSidebarItem key={chat._id} chat={chat} />
-              ))}
+              {/* unread first, then open, then newest (bad data never crashes) */}
+              {[...(Array.isArray(data) ? data : [])]
+                .filter((chat) => chat && chat._id)
+                .sort(
+                  (a, b) =>
+                    Number(!!b.unread) - Number(!!a.unread) ||
+                    Number(!b.closedAt) - Number(!a.closedAt) ||
+                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+                )
+                .map((chat) => (
+                  <ChatSidebarItem key={chat._id} chat={chat} />
+                ))}
             </div>
           ) : (
             <p>{getContent("noChatYetMessage")}</p>

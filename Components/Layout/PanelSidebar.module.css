@@ -19,11 +19,11 @@
 .link {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  min-height: 2.75rem;
-  padding: 0.5rem 0.875rem;
-  border: none;
-  border-radius: 1rem;
+  gap: 0.625rem;
+  min-height: 2.625rem;
+  padding: 0.3125rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.875rem;
   background: transparent;
   color: var(--gray11);
   font: inherit;
@@ -41,22 +41,42 @@
   color: var(--gray13);
 }
 
-.link > :first-child {
+/* the icon sits in a 2rem tile; the active page's tile is a glass tile
+   (.glassIcon, like the public site's icon tiles) */
+.tile {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.625rem;
   color: var(--gray8);
   transition: color var(--transTime);
 }
 
-.activeLink,
-.activeLink:hover {
-  background-color: var(--gradAccentSolid);
-  background-image: var(--gradAccent);
-  color: var(--onColor);
-  font-weight: 800;
-  box-shadow: 0 10px 24px -10px rgba(79, 70, 229, 0.75);
+.text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.activeLink > :first-child {
-  color: var(--onColor);
+.link:hover .tile {
+  color: var(--gray11);
+}
+
+/* the current page: a soft tinted glass row, not a loud fill */
+.activeLink,
+.activeLink:hover {
+  background: var(--toneIndigo);
+  border-color: color-mix(in srgb, var(--toneIndigoInk) 16%, transparent);
+  color: var(--toneIndigoInk);
+  font-weight: 800;
+}
+
+.activeLink .tile {
+  color: var(--toneIndigoInk);
 }
 
 .side {
@@ -77,12 +97,12 @@
 }
 
 .activeLink .balance {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--onColor);
+  background: var(--glassStrong);
+  color: var(--toneIndigoInk);
 }
 
 .activeLink .toman {
-  color: var(--onColor);
+  color: var(--toneIndigoInk);
 }
 
 .toman {
@@ -92,7 +112,7 @@
 }
 
 .logout,
-.logout > :first-child {
+.logout .tile {
   color: var(--error, #d92d20);
 }
 
@@ -183,8 +203,7 @@
   padding-inline: 0.875rem;
   font-size: 0.6875rem;
   font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--gray8);
+  color: var(--textMuted);
 }
 
 /* a menu section with its own submenu (2026-10) */

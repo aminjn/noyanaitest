@@ -110,9 +110,11 @@
 .phone {
   font-size: 0.8125rem;
   color: var(--gray9);
+  /* digits read left to right; the box hugs the name's side in both
+     directions (it was pushed to the far edge in English) */
+  align-self: flex-start;
   direction: ltr;
-  text-align: end;
-  unicode-bidi: plaintext;
+  unicode-bidi: isolate;
 }
 
 .stats {
@@ -186,5 +188,41 @@
 
   .grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* phones: a dense list, stats as one line instead of two boxes */
+@media (max-width: 48rem) {
+  .grid {
+    gap: 0.5rem;
+  }
+
+  .card {
+    gap: 0.5rem;
+    padding: 0.75rem 0.875rem;
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    padding-inline-start: 3.75rem;
+  }
+
+  .stats span {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.375rem;
+    padding: 0;
+    background: none;
+  }
+
+  .stats em {
+    font-size: 0.8125rem;
+  }
+
+  .chips {
+    padding-inline-start: 3.75rem;
   }
 }

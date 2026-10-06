@@ -164,3 +164,109 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.offHours {
+  flex-shrink: 0;
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radiusPill);
+  background: var(--toneAmber);
+  color: var(--toneAmberInk);
+  font-size: var(--fsXs);
+  font-weight: 800;
+}
+
+/* from-to hours of a partial day off */
+.timeRange {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.timeRange label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--fsXs);
+  font-weight: 700;
+  color: var(--textMuted);
+}
+
+.timeRange select {
+  height: 2.75rem;
+  padding: 0 0.625rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--cardLine);
+  background: var(--glassStrong);
+  color: var(--textStrong);
+  font: inherit;
+  font-size: var(--fsSm);
+  font-weight: 700;
+}
+
+@media (max-width: 48rem) {
+  .offItem {
+    flex-wrap: wrap;
+  }
+}
+
+/* returning patient picker (desk booking) */
+.patientPick {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.patientList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.patientItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid transparent;
+  border-radius: 0.875rem;
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.patientItem:hover {
+  background: var(--glassStrong);
+}
+
+.patientOn,
+.patientOn:hover {
+  background: var(--toneIndigo);
+  border-color: color-mix(in srgb, var(--toneIndigoInk) 25%, transparent);
+}
+
+.patientText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.patientText strong {
+  font-size: var(--fsSm);
+  font-weight: 800;
+  color: var(--textStrong);
+}
+
+.patientText small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -26,11 +26,14 @@ import ChatBubbleIcon from "@/Components/Icons/ChatBubbleIcon";
 import UserCheckIcon from "@/Components/Icons/UserCheckIcon";
 import FileIcon from "@/Components/Icons/FileIcon";
 import CurrentLicenseWidget from "../CurrentLicenseWidget";
+import VisitQuickActions from "../Desk/VisitQuickActions";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelHome"];
 
 type TodayReservation = {
   _id: string;
+  date: string;
+  patientPresentAt?: string;
   start: number;
   end: number;
   status: string;
@@ -258,7 +261,7 @@ const DoctorDashboard = () => {
     [intlTag],
   );
   const time = (minutes: number) => formatTime(num, minutes);
-  const { data, error } = useSWR<DoctorDashboardData>(`${API}/doctor/dashboard`, (url: string) =>
+  const { data, error, mutate } = useSWR<DoctorDashboardData>(`${API}/doctor/dashboard`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
 
@@ -515,7 +518,7 @@ const DoctorDashboard = () => {
           </div>
 
           {data.setup && view.remainingSteps.length > 0 && (
-            <section className={`${classes.card} ${classes.glass}`}>
+            <section className={`${classes.card} ${classes.glass} ${classes.setupCard}`}>
               <div className={classes.cardHead}>
                 <h2 className={classes.cardTitle}>{getContent("dpdSetupTitle")}</h2>
                 <span className={classes.badge}>
@@ -630,6 +633,8 @@ const DoctorDashboard = () => {
                         <span className={classes.muted}>{getContent("dpdIntakeMissing")}</span>
                       )}
                     </div>
+                    {/* arrived / didn't come, right from the card (Doctolib) */}
+                    <VisitQuickActions visit={view.next} name={patientName(view.next)} onDone={() => mutate()} size="M" />
                     <div className={classes.nextActions}>
                       <Link href={`/doctorpanel/booking/${view.next._id}`} className={classes.cta}>
                         {getContent("dpdStartVisit")}

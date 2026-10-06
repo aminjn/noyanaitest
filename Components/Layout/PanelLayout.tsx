@@ -19,6 +19,7 @@ import { ContentKey } from "../Enums/contentKeys";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Copilot from "../Ai/Copilot/Copilot";
+import { TabBar, TabItem } from "./BottomNav";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
@@ -58,13 +59,20 @@ const Trail = () => {
 
 // App shell shared by every panel (doctor, clinic, pharmacy, ...): a
 // full-height sidebar with the panel's menu and a slim top bar; on phones
-// the sidebar is a drawer opened from the top bar.
+// the sidebar is a drawer opened from the top bar. A panel may give `tabs`
+// for the phone tab bar (the daily pages); a last "menu" tab opens the
+// drawer with everything else.
 const PanelLayout = ({
   children,
   sidebar,
+  tabs,
+  tabsOff,
 }: {
   children: ReactNode;
   sidebar: ReactNode;
+  tabs?: TabItem[];
+  // full-screen tools (a chat room, a call) hide the tab bar
+  tabsOff?: boolean;
 }) => {
   const { user, isUserLoading } = useUser();
   const getContent = useScopedLocale(LOCALE_NS);
@@ -92,8 +100,22 @@ const PanelLayout = ({
 
   if (isUserLoading) return <Loading />;
   if (!user) return <LoginRequired />;
+  const tabItems: TabItem[] = tabs?.length
+    ? [
+        ...tabs,
+        {
+          key: "menu",
+          label: getContent("menu"),
+          icon: <BarsIcon />,
+          active: isSidebarOpen,
+          onClick: () => setIsSidebarOpen(true),
+        },
+      ]
+    : [];
   return (
-    <div className={classes.shell}>
+    <div
+      className={`${classes.shell} ${tabItems.length && !tabsOff ? classes.withTabs : ""} ${tabsOff ? classes.fullTool : ""}`}
+    >
       <div
         className={`${classes.backdrop} ${isSidebarOpen ? classes.backdropOpen : ""}`}
         onClick={() => setIsSidebarOpen(false)}
@@ -101,6 +123,7 @@ const PanelLayout = ({
       />
       <aside
         className={`${classes.sidebar} ${isSidebarOpen ? classes.sidebarOpen : ""}`}
+        aria-label={getContent("menu")}
       >
         <div className={classes.brand}>
           <Link href="/" className={classes.logo} aria-label={getContent("viewSite")}>
@@ -155,6 +178,7 @@ const PanelLayout = ({
         </header>
         <main className={classes.content}>{children}</main>
       </div>
+      {!!tabItems.length && <TabBar items={tabItems} label={getContent("menu")} off={tabsOff} />}
       {/* «دستیار نویان»: the profile's own assistant (none on the secretary's home) */}
       <Copilot />
     </div>

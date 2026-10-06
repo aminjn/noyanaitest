@@ -1,76 +1,225 @@
 .shift {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 1.25rem;
-  border: 1px solid var(--line);
-  background: var(--glassStrong);
+  gap: var(--sp2);
+  padding: var(--sp2);
+  padding-inline-start: var(--sp3);
+  border-radius: var(--radiusSm);
+  background: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev1);
 }
 
 .withProblem {
-  border-color: var(--error);
-  box-shadow: inset 0 0 0 1px var(--error);
+  border-color: var(--errorS1, #d92d20);
 }
 
-.shiftHeader {
+.line {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  justify-content: space-between;
-}
-
-.shiftNameBox {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-}
-
-.shiftName {
-  width: 8rem;
-}
-
-.shiftName > input {
-  background-color: var(--aiSoft);
-  border-color: var(--aiLine);
-  color: var(--aiText);
-  font-weight: 800;
-  border-radius: 100dvw;
-  text-align: center;
-}
-
-.segment {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.segment > * {
-  flex: 1;
-}
-
-.shiftError {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.errors {
-  color: var(--error);
-}
-
-
-.shiftHeader {
   flex-wrap: wrap;
+  gap: var(--sp2);
 }
 
-.shiftNameBox {
+.officeDot {
+  flex-shrink: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--tint) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.officeName {
+  flex: 1 1 8rem;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fsSm);
+  font-weight: 700;
+  color: var(--textStrong);
+}
+
+.select,
+.input {
+  height: 2.375rem;
+  padding: 0 0.625rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--cardLine);
+  background: var(--glassStrong);
+  color: var(--textStrong);
+  font: inherit;
+  font-size: var(--fsSm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: border-color var(--transTime);
+}
+
+.select:hover,
+.input:hover {
+  border-color: var(--cardLineHover);
+}
+
+.select:focus-visible,
+.input:focus-visible {
+  outline: 2px solid var(--primary5);
+  outline-offset: 1px;
+}
+
+.select:disabled,
+.input:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.input {
+  width: 100%;
+  cursor: text;
+  font-weight: 600;
+}
+
+.office {
+  flex: 1 1 10rem;
+  min-width: 0;
+  max-width: 16rem;
+  text-overflow: ellipsis;
+}
+
+.times {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dash {
+  color: var(--textMuted);
+}
+
+.count {
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radiusPill);
+  background: var(--toneIndigo);
+  color: var(--toneIndigoInk);
+  font-size: var(--fsXs);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tools {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-inline-start: auto;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.375rem;
+  height: 2.375rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--textMuted);
+  cursor: pointer;
+  transition: background-color var(--transTime), color var(--transTime);
+}
+
+.iconButton:hover,
+.iconButtonOn {
+  background: var(--toneIndigo);
+  color: var(--toneIndigoInk);
+}
+
+.danger:hover {
+  background: var(--toneRose);
+  color: var(--toneRoseInk);
+}
+
+.name {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+  padding-inline-start: 1.125rem;
+}
+
+.problems {
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 1.125rem;
+  list-style: none;
+  font-size: var(--fsXs);
+  line-height: var(--lhBody);
+  color: var(--errorS1, #d92d20);
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+  padding: var(--sp3);
+  border-radius: 0.75rem;
+  background: var(--line);
+}
+
+.moreGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--sp3);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.field > span {
+  font-size: var(--fsXs);
+  font-weight: 700;
+  color: var(--textMuted);
+}
+
+.chips {
+  display: flex;
   flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.chip {
+  min-height: 2.125rem;
+  padding: 0 0.75rem;
+  border-radius: var(--radiusPill);
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  color: var(--textBody);
+  font: inherit;
+  font-size: var(--fsXs);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chipOn {
+  border-color: color-mix(in srgb, var(--toneIndigoInk) 35%, transparent);
+  background: var(--toneIndigo);
+  color: var(--toneIndigoInk);
+  font-weight: 800;
+}
+
+.chip:disabled {
+  cursor: default;
 }
 
 @media (max-width: 48rem) {
-  .segment {
-    flex-direction: column;
+  .office {
+    max-width: none;
+    flex-basis: calc(100% - 1.5rem);
+  }
+
+  .moreGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

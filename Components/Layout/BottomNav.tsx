@@ -32,25 +32,22 @@ type Item = {
   needsUser?: boolean;
 };
 
-// Phone tab bar (<= 768px) for the public site and the patient dashboard:
-// home, find a doctor, the AI assistant (centre), my appointments, profile.
-// Frosted, respects the home-indicator safe area, hides while scrolling
-// down and comes back on scroll up. It sets `hasBottomNav` on <body> so the
-// floating «دستیار نویان» button, the install sheet and the page bottom
-// move above it (--bottomNavSpace in globals.css).
-const BottomNav = () => {
-  const getContent = useScopedLocale(LOCALE_NS);
-  const pathname = usePathname();
-  const { user } = useUser();
-  const { setPopup } = usePopup();
-  const [hidden, setHidden] = useState<boolean>(false);
-  // rendered into <body>: a fixed bar inside a frosted (backdrop-filter)
-  // panel would be positioned against that panel instead of the screen
-  const [mounted, setMounted] = useState<boolean>(false);
-  useEffect(() => setMounted(true), []);
-  const last = useRef(0);
+// One tab of a phone tab bar: a link, or a button (the panels' "menu").
+export type TabItem = {
+  key: string;
+  label: string;
+  icon: ReactNode;
+  active?: boolean;
+  center?: boolean;
+  // count pill on the icon (unread chats…)
+  badge?: number;
+} & ({ href: string; onClick?: never } | { onClick: () => unknown; href?: never });
 
-  const off = HIDDEN_ON.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+// Hides the bar while scrolling down, shows it on scroll up; sets
+// `hasBottomNav` on <body> while shown on the page (see --bottomNavSpace).
+const useTabBarScroll = (off: boolean, pathname: string) => {
+  const [hidden, setHidden] = useState<boolean>(false);
+  const last = useRef(0);
 
   useEffect(() => {
     if (off) return;
@@ -85,8 +82,82 @@ const BottomNav = () => {
 
   // a new page starts with the bar shown
   useEffect(() => setHidden(false), [pathname]);
+  return hidden;
+};
 
-  if (off || !mounted) return null;
+// The frosted phone tab bar itself (<= 768px), shared by the public site,
+// the patient dashboard (BottomNav) and the provider panels (PanelLayout).
+export const TabBar = ({
+  items,
+  label,
+  off = false,
+}: {
+  items: TabItem[];
+  label: string;
+  off?: boolean;
+}) => {
+  const pathname = usePathname();
+  // rendered into <body>: a fixed bar inside a frosted (backdrop-filter)
+  // panel would be positioned against that panel instead of the screen
+  const [mounted, setMounted] = useState<boolean>(false);
+  useEffect(() => setMounted(true), []);
+  const hidden = useTabBarScroll(off, pathname);
+  if (off || !mounted || !items.length) return null;
+  return createPortal(
+    <nav
+      className={`${classes.bar} ${hidden ? classes.hidden : ""}`}
+      aria-label={label}
+      data-bottom-nav
+    >
+      <ul className={classes.list} style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+        {items.map((item) => {
+          const content = (
+            <>
+              <span
+                className={`${classes.iconWrap} ${item.center ? "glassIcon tone-violet" : item.active ? "glassIcon" : ""}`}
+              >
+                <Ixon width="1.375rem">{item.icon}</Ixon>
+                {!!item.badge && item.badge > 0 && (
+                  <span className={classes.badge}>{item.badge > 99 ? "99+" : item.badge}</span>
+                )}
+              </span>
+              <span className={classes.label}>{item.label}</span>
+            </>
+          );
+          const className = `${classes.item} ${item.center ? classes.center : ""} ${item.active ? classes.active : ""}`;
+          return (
+            <li key={item.key} className={classes.cell}>
+              {item.href !== undefined ? (
+                <Link href={item.href} className={className} aria-current={item.active ? "page" : undefined}>
+                  {content}
+                </Link>
+              ) : (
+                <button type="button" className={className} onClick={item.onClick}>
+                  {content}
+                </button>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>,
+    document.body,
+  );
+};
+
+// Phone tab bar (<= 768px) for the public site and the patient dashboard:
+// home, find a doctor, the AI assistant (centre), my appointments, profile.
+// Frosted, respects the home-indicator safe area, hides while scrolling
+// down and comes back on scroll up. It sets `hasBottomNav` on <body> so the
+// floating «دستیار نویان» button, the install sheet and the page bottom
+// move above it (--bottomNavSpace in globals.css).
+const BottomNav = () => {
+  const getContent = useScopedLocale(LOCALE_NS);
+  const pathname = usePathname();
+  const { user } = useUser();
+  const { setPopup } = usePopup();
+
+  const off = HIDDEN_ON.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
   const items: Item[] = [
     { key: "home", label: "tabHome", icon: <HomeIcon />, href: "/", match: (p) => p === "/" },
@@ -116,49 +187,23 @@ const BottomNav = () => {
     },
   ];
 
-  return createPortal(
-    <nav
-      className={`${classes.bar} ${hidden ? classes.hidden : ""}`}
-      aria-label={getContent("menu")}
-      data-bottom-nav
-    >
-      <ul className={classes.list}>
-        {items.map((item) => {
-          const active = item.match(pathname);
-          const content = (
-            <>
-              <span className={`${classes.iconWrap} ${item.center ? "glassIcon tone-violet" : active ? "glassIcon" : ""}`}>
-                <Ixon width="1.375rem">{item.icon}</Ixon>
-              </span>
-              <span className={classes.label}>{getContent(item.label)}</span>
-            </>
-          );
-          const className = `${classes.item} ${item.center ? classes.center : ""} ${active ? classes.active : ""}`;
-          return (
-            <li key={item.key} className={classes.cell}>
-              {item.needsUser && !user ? (
-                <button
-                  type="button"
-                  className={className}
-                  onClick={() => setPopup("Auth", <AuthPopup />)}
-                >
-                  {content}
-                </button>
-              ) : (
-                <Link
-                  href={item.href}
-                  className={className}
-                  aria-current={active ? "page" : undefined}
-                >
-                  {content}
-                </Link>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </nav>,
-    document.body,
+  return (
+    <TabBar
+      off={off}
+      label={getContent("menu")}
+      items={items.map((item): TabItem => {
+        const base = {
+          key: item.key,
+          label: getContent(item.label),
+          icon: item.icon,
+          active: item.match(pathname),
+          center: item.center,
+        };
+        return item.needsUser && !user
+          ? { ...base, onClick: () => setPopup("Auth", <AuthPopup />) }
+          : { ...base, href: item.href };
+      })}
+    />
   );
 };
 

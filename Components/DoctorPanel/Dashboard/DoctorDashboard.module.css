@@ -747,3 +747,19 @@ a.pill:hover {
   font-weight: 800;
   color: var(--errorS1);
 }
+
+/* on the phone the day comes first (next patient, today's list), the setup
+   checklist after it */
+@media (max-width: 48rem) {
+  .rowBottom {
+    order: 2;
+  }
+
+  .setupCard {
+    order: 3;
+  }
+
+  .licenseRow {
+    order: 4;
+  }
+}

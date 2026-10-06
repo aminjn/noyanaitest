@@ -1,105 +1,25 @@
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import {
-  daysOfWeekContentKeys,
-  DoctorShiftDay,
-  ShiftContext,
-} from "./DoctorManageShiftsPage";
+import { ShiftContext } from "./DoctorManageShiftsPage";
 import classes from "./ShiftsPreview.module.css";
 import useShiftUtils from "./useShiftUtils";
-import { Fragment, useMemo } from "react";
-import { IOffice } from "../Office/DoctorManageOfficesPage";
-import useSWR from "swr";
-import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
-import { numberToTime } from "../Calendar/AddSessionsAgent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
-const ShiftsPreview = ({
-  data,
-  day,
-  off,
-}: {
-  data: ShiftContext;
-  day: DoctorShiftDay;
-  off?: boolean;
-}) => {
+// The visit start times a range makes (what patients will be offered).
+const ShiftsPreview = ({ shift }: { shift: ShiftContext[number] }) => {
   const { getShiftSessions } = useShiftUtils();
-
-  const { data: officesData } = useSWR<IOffice[]>(
-    `${API}/doctor/office`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
-  // a non-array answer (error payload) must not crash the editor
-  const offices = Array.isArray(officesData) ? officesData : undefined;
-
   const getContent = useScopedLocale(NS);
-
-  const getCompContent = useScopedLocale(NS);
-
-  const todaysShifts = useMemo<ShiftContext>(
-    () => data.filter((el) => el.day === day),
-    [data, day],
-  );
-
+  const sessions = getShiftSessions(shift);
+  if (!sessions.length) return null;
   return (
     <div className={classes.main}>
-      <div className={classes.header}>
-        <span className={classes.title}>
-          {getContent("previewXDayOfWeekShifts", [
-            getContent(daysOfWeekContentKeys[day]),
-          ])}
-        </span>
-        <span className={classes.value}>
-          {getCompContent("xSessions", [
-            todaysShifts
-              .reduce((acc, el) => acc + getShiftSessions(el).length, 0)
-              .toString(),
-          ])}
-        </span>
-      </div>
-      {!!off ? (
-        <div className={classes.off}>{getContent("thisDayIsOff")}</div>
-      ) : (
-        <Fragment>
-          {todaysShifts.map((shift) => (
-            <div className={classes.shift} key={shift._id}>
-              <div className={classes.shiftHeader}>
-                <span className={classes.shiftName}>{shift.name}</span>
-                {!!shift.office && (
-                  <span className={classes.office}>
-                    {
-                      offices?.find((office) => office._id === shift.office)
-                        ?.name
-                    }
-                  </span>
-                )}
-              </div>
-              <div className={classes.values}>
-                {getShiftSessions(shift).map((session) => (
-                  <div key={session} className={classes.value}>
-                    {session}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </Fragment>
-      )}
-
-      <div className={classes.summaries}>
-        <div className={classes.summary}>
-          {getCompContent("nShiftsInXDayOfWeek", [
-            todaysShifts.length.toString(),
-            getContent(daysOfWeekContentKeys[day]),
-          ])}
-        </div>
-        {todaysShifts.map((shift) => (
-          <div
-            key={shift._id}
-            className={classes.summary}
-          >{`${shift.name} (${offices?.find((office) => office._id === shift.office)?.name || ""}): ${numberToTime(shift.start)} - ${numberToTime(shift.end)} * ${getCompContent("xMinutes", [shift.duration.toString()])}`}</div>
+      <span className={classes.title}>{getContent("shVisitTimes")}</span>
+      <div className={classes.values}>
+        {sessions.map((session) => (
+          <span key={session} className={classes.value} dir="ltr">
+            {session}
+          </span>
         ))}
       </div>
     </div>

@@ -110,7 +110,7 @@ const DoctorSidebar = () => {
         show: hasAccess("readChat"),
       },
       {
-        title: "shifts",
+        title: "shAvailTitle",
         icon: <CalendarIcon />,
         target: "shift",
         group: "groupDaily",

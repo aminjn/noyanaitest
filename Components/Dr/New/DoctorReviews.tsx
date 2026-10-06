@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import classes from "./DoctorReviews.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { useIntlLocale } from "@/Components/i18n/navigation";
-import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
+import { formatMonthYear } from "@/Components/helpers/safeFormatDate";
 import Button from "@/Components/UI/Button";
 import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
 import { Stars } from "@/Components/Visit/VisitFeedbackCard";
@@ -50,9 +49,6 @@ const DoctorReviews = ({ doctorId }: { doctorId: string }) => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
   const num = new Intl.NumberFormat(intlTag);
-  const [dateFmt] = useState(
-    () => new Intl.DateTimeFormat(intlTag, { year: "numeric", month: "long" }),
-  );
 
   const { data, size, setSize, isValidating } = useSWRInfinite<ReviewsPage>(
     (index) => `${API}/public/doctor/${doctorId}/feedbacks?page=${index + 1}`,
@@ -120,7 +116,7 @@ const DoctorReviews = ({ doctorId }: { doctorId: string }) => {
                   </span>
                 ))}
               <span className={classes.date}>
-                {safeFormatDate(dateFmt, r.submittedAt)}
+                {formatMonthYear(intlTag, r.submittedAt)}
               </span>
             </div>
             <div className={classes.itemMeta}>

@@ -29,7 +29,14 @@ const SlotPicker = ({
   const getContent = useScopedLocale(ns);
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const [day, setDay] = useState<string | null>(value?.date || null);
+  // opens on today (most desk bookings are for today or tomorrow)
+  const [day, setDay] = useState<string | null>(value?.date || toYmd(new Date()));
+  const [pickerKey, setPickerKey] = useState(0);
+  const quickDays = [0, 1].map((offset) => {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return { ymd: toYmd(d), label: getContent(offset ? "deskTomorrow" : "deskToday") };
+  });
 
   const query = new URLSearchParams();
   if (day) query.set("date", day);
@@ -49,8 +56,27 @@ const SlotPicker = ({
 
   return (
     <div className={classes.slotPicker}>
+      <div className={classes.chips}>
+        {quickDays.map((q) => (
+          <button
+            key={q.ymd}
+            type="button"
+            className={`${classes.chip} ${day === q.ymd ? classes.chipOn : ""}`}
+            aria-pressed={day === q.ymd}
+            onClick={() => {
+              setDay(q.ymd);
+              setPickerKey((k) => k + 1);
+              onChange(null);
+            }}
+          >
+            {q.label}
+          </button>
+        ))}
+      </div>
       <DateInput
+        key={pickerKey}
         title={getContent("deskDay")}
+        defaultValue={day ? new Date(`${day}T00:00:00`) : undefined}
         onChange={(d) => {
           setDay(toYmd(d));
           onChange(null);
@@ -68,7 +94,8 @@ const SlotPicker = ({
         <>
           <span className={classes.label}>{getContent("deskPickSlot")}</span>
           <div className={classes.slots} role="listbox">
-            {slots.map((s) => {
+            {/* past sessions of today are left out, taken ones greyed */}
+            {slots.filter((s) => !s.past).map((s) => {
               const on = !!value && value.date === day && value.start === s.start && value.end === s.end;
               const disabled = s.taken || s.past;
               return (

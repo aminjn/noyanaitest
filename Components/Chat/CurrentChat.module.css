@@ -341,3 +341,13 @@
     max-width: 92%;
   }
 }
+
+.closedPill {
+  margin-inline-start: auto;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--gray3);
+  color: var(--gray10);
+  font-size: 0.75rem;
+  font-weight: 800;
+}

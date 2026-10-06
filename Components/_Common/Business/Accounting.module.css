@@ -290,6 +290,14 @@
   flex: 1;
 }
 
+/* every filter (a date field's wrapper too) wraps instead of pushing the
+   row off a phone screen */
+.filters > * {
+  flex: 1 1 10rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .tableWrap {
   overflow-x: auto;
   margin-inline: -0.25rem;
