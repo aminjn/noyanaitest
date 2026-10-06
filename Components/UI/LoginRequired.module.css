@@ -1,6 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
+  padding-inline: var(--gutter);
   margin-block: 5rem 10rem;
   align-items: center;
   justify-content: center;
@@ -49,4 +50,12 @@
   .actions > * {
     width: 100%;
   }
+}
+
+/* the illustration is drawn for a light page: on the dark theme it sits on
+   a soft light tile instead of showing bright boxes on ink */
+:global(html[data-theme="dark"]) .graphic {
+  border-radius: var(--radiusLg);
+  background: #eef0ff;
+  overflow: hidden;
 }

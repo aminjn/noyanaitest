@@ -13,7 +13,13 @@ import PwaInstallPrompt from "../Pwa/PwaInstallPrompt";
 const DashboardLayout = ({ children }: { children?: ReactNode }) => {
   const { user } = useUser();
 
-  if (!user) return <LoginRequired />;
+  if (!user)
+    return (
+      <>
+        <LoginRequired />
+        <BottomNav />
+      </>
+    );
   return (
     <PanelLayout sidebar={<DashboardSidebar />}>
       {children}
