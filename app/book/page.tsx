@@ -15,6 +15,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = [
   "booking",
+  "bookingFlow",
   "bookingSessionSelectorPopup",
   "doctorPanelShiftUtils",
 ];

@@ -67,9 +67,6 @@
   color: var(--primary7);
   font-variant-numeric: tabular-nums;
 }
-html[data-theme="dark"] .price {
-  color: var(--primary3);
-}
 
 .insurance {
   display: flex;

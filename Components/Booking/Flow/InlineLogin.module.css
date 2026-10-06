@@ -40,7 +40,3 @@
 .notice a {
   color: var(--primary7);
 }
-html[data-theme="dark"] .link,
-html[data-theme="dark"] .notice a {
-  color: var(--primary3);
-}

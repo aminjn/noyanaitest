@@ -173,9 +173,6 @@
 .stepDone span:last-child {
   color: var(--textMuted);
 }
-html[data-theme="dark"] .textLink {
-  color: var(--primary3);
-}
 @media (max-width: 48rem) {
   .hero,
   .card {

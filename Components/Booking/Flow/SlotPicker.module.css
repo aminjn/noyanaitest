@@ -272,9 +272,9 @@
   }
 }
 
-html[data-theme="dark"] .slot {
-  color: var(--primary3);
-}
-html[data-theme="dark"] .slotOn {
-  color: var(--onColor);
+.more {
+  border-style: dashed;
+  color: var(--textMuted);
+  font-weight: 600;
+  font-size: var(--fsXs);
 }

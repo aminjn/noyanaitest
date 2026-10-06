@@ -19,7 +19,8 @@ import UserCircleIcon from "../Icons/UserCircleIcon";
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
 // full-screen tools have their own bottom controls (chat composer, call bar)
-const HIDDEN_ON = ["/wizard", "/call", "/newCall", "/dashboard/chat", "/dashboard/call"];
+// the booking finalize step has its own sticky pay bar
+const HIDDEN_ON = ["/wizard", "/call", "/newCall", "/dashboard/chat", "/dashboard/call", "/book/finalize"];
 
 type Item = {
   key: string;

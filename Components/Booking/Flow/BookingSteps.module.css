@@ -61,9 +61,6 @@
   background: var(--primary6);
   color: var(--onColor);
 }
-html[data-theme="dark"] .done {
-  color: var(--primary3);
-}
 @media (max-width: 420px) {
   .next .label {
     display: none;

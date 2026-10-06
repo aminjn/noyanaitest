@@ -286,7 +286,7 @@ const DashboardManageBookingsPage = () => {
                         <span>{getContent(doctorSessionTypeContentKeyDict[r.sessionType])}</span>
                         <strong>
                           {time(r.start)}
-                          {r.office?.name ? ` · ${r.office.name}` : ""}
+                          {r.sessionType === "inPerson" && r.office?.name ? ` · ${r.office.name}` : ""}
                         </strong>
                       </div>
                     </div>

@@ -534,16 +534,6 @@
   display: none;
 }
 
-html[data-theme="dark"] .profileLink,
-html[data-theme="dark"] .change,
-html[data-theme="dark"] .bigTime,
-html[data-theme="dark"] .addPerson,
-html[data-theme="dark"] .pillOn,
-html[data-theme="dark"] .codeToggle,
-html[data-theme="dark"] .agree a,
-html[data-theme="dark"] .on .methodIcon {
-  color: var(--primary3);
-}
 
 @media (max-width: 64rem) {
   .layout {

@@ -196,12 +196,6 @@
   color: var(--primary7);
 }
 
-html[data-theme="dark"] .from,
-html[data-theme="dark"] .typeChipOn,
-html[data-theme="dark"] .nextLink,
-html[data-theme="dark"] .sheetNote {
-  color: var(--primary3);
-}
 
 @media (max-width: 48rem) {
   .desktop {

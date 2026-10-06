@@ -15,6 +15,9 @@ import classes from "./SlotPicker.module.css";
 
 const NS: ContentNamespace[] = ["common", "bookingFlow"];
 
+// times shown per part of the day before "more"
+const PER_PERIOD = 8;
+
 export type SlotPick = { ymd: string; start: number; end: number; office: string };
 
 // The slot picker of the whole booking flow (doctor profile sidebar and
@@ -94,6 +97,9 @@ const SlotPicker = ({
     if (!still) onChange(null);
   }, [data, freeOf, onChange, value]);
 
+  // a long day shows its first times per part, the rest on request
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  useEffect(() => setExpanded({}), [day]);
   const stripRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = stripRef.current?.querySelector<HTMLElement>("[data-on='true']");
@@ -225,7 +231,7 @@ const SlotPicker = ({
               <span>{nf.format(g.slots.length)}</span>
             </h4>
             <div className={classes.grid}>
-              {g.slots.map((b) => {
+              {(expanded[g.period] || g.slots.length <= PER_PERIOD ? g.slots : g.slots.slice(0, PER_PERIOD - 1)).map((b) => {
                 const on = !!value && value.ymd === day && value.start === b.start && value.end === b.end;
                 return (
                   <button
@@ -239,6 +245,15 @@ const SlotPicker = ({
                   </button>
                 );
               })}
+              {!expanded[g.period] && g.slots.length > PER_PERIOD && (
+                <button
+                  type="button"
+                  className={`${classes.slot} ${classes.more}`}
+                  onClick={() => setExpanded((prev) => ({ ...prev, [g.period]: true }))}
+                >
+                  {getContent("bfMoreTimes", [nf.format(g.slots.length - PER_PERIOD + 1)])}
+                </button>
+              )}
             </div>
           </section>
         ))

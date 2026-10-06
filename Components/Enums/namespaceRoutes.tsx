@@ -36,6 +36,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
 
   booking: ["/book"],
   bookingFinalize: ["/book/finalize"],
+  bookingFlow: ["/book/finalize", "/dr", "/book", "/dashboard/booking"],
 
   becomeSomething: ["/become"],
 

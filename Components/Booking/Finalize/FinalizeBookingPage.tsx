@@ -30,7 +30,8 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import useNotification from "@/Components/Hooks/useNotification";
 import useProgress from "@/Components/Hooks/useProgress";
-import useUser from "@/Components/Hooks/useUser";
+import useUser, { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
+import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { IUserIdentity } from "@/Components/Dashboard/DashboardPage";
@@ -80,6 +81,14 @@ type FinalizeBookingDoctor = IDoctorProfile<{
   visitTaxPercent?: number;
   officeTaxPercents?: Record<string, number>;
 };
+
+// the wallet as the API returns it (shared by the cart, transactions,
+// license checkout and Pro pages)
+export type WalletPopulation = Population<{ User: UserPopulation }>;
+export interface IWallet<T extends WalletPopulation = WalletPopulation> extends MongoDoc {
+  user: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
+  balance: number;
+}
 
 const onsets = ["today", "days", "week", "month", "longer"] as const;
 type Onset = (typeof onsets)[number];
@@ -212,6 +221,12 @@ const FinalizeBookingPage = () => {
   }, [doctor?.shifts]);
 
   const { user, isUserLoading } = useUser();
+  // once the sign-in form is up it stays mounted while the user reloads
+  // (a refetch would otherwise reset it to the phone step mid-OTP)
+  const [wasGuest, setWasGuest] = useState(false);
+  useEffect(() => {
+    if (!isUserLoading && !user) setWasGuest(true);
+  }, [isUserLoading, user]);
   const pushNotification = useNotification();
   const push = useProgress();
 
@@ -503,7 +518,7 @@ const FinalizeBookingPage = () => {
       <div className={classes.layout}>
         <div className={classes.main}>
           <div className={`${classes.card} ${classes.mobileOnly}`}>{visitSummary}</div>
-          {isUserLoading ? (
+          {isUserLoading && !wasGuest ? (
             <div className={`${classes.card} ${classes.skeleton}`} style={{ height: "14rem" }} />
           ) : !user ? (
             <div className={classes.card}>

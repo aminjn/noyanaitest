@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
@@ -86,7 +86,6 @@ const BookingManagePanel = ({
     weekday: "long",
     day: "numeric",
     month: "long",
-    year: "numeric",
   });
   const money = (n: number) => getContent("xToman", [nf.format(Math.max(0, Math.round(n)))]);
   const paid = data.total ?? (data.transaction ? Math.abs(data.transaction.amount) : 0);
@@ -130,7 +129,7 @@ const BookingManagePanel = ({
     details: link,
   }).toString()}`;
 
-  const steps: { icon: JSX.Element; key: ContentKey; done?: boolean; href?: string }[] = [
+  const steps: { icon: ReactNode; key: ContentKey; done?: boolean; href?: string }[] = [
     { icon: <MedicalRecordIcon />, key: data.intakeFilled ? "bfNextIntakeDone" : "bfNextIntake", done: !!data.intakeFilled, href: "#intake" },
     { icon: <Bell01Icon />, key: "bfNextReminders" },
     { icon: inPerson ? <Calendar02Icon /> : visitTypeIcon[data.sessionType], key: inPerson ? "bfNextArrive" : "bfNextJoin" },
@@ -199,12 +198,14 @@ const BookingManagePanel = ({
                 {getContent("bfReschedule")}
               </Button>
             )}
-            <ReservationCancel
-              side="patient"
-              reservation={{ ...data, total: data.payAtDesk ? 0 : paid }}
-              ns={NS}
-              onDone={() => onChanged()}
-            />
+            {(canChange(data) || data.status !== "pending") && (
+              <ReservationCancel
+                side="patient"
+                reservation={{ ...data, total: data.payAtDesk ? 0 : paid }}
+                ns={NS}
+                onDone={() => onChanged()}
+              />
+            )}
           </div>
         )}
         {open && data.status === "pending" && !canChange(data) && (
