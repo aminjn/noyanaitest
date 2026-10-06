@@ -280,7 +280,7 @@ const PlaceLocationCard = ({
   return (
     <section className={`${classes.main} ${className}`} style={style} id={id}>
       <div className={classes.header}>
-        <div className={classes.iconBox}>
+        <div className={`${classes.iconBox} glassIcon tone-rose`}>
           <Ixon width="1rem">
             <LocationIcon />
           </Ixon>

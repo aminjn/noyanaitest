@@ -23,7 +23,7 @@ const SymptomCard = ({ node }: { node: ISymptom }) => {
   return (
     <li className={classes.main}>
       <div className={classes.header}>
-        <div className={classes.icon}>
+        <div className={`${classes.icon} glassIcon tone-amber`}>
           <Ixon width="1.5rem">
             <VirusIcon />
           </Ixon>

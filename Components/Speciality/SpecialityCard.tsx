@@ -79,7 +79,7 @@ const SpecialityCard = ({
   return (
     <li className={classes.main}>
       <div className={classes.header}>
-        <div className={classes.headerIcon}>
+        <div className={`${classes.headerIcon} glassIcon`}>
           <Ixon width="2rem">
             <StetoscopeIcon />
           </Ixon>

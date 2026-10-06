@@ -14,9 +14,11 @@ const ListPageEmpty = () => {
   const getContent = useScopedLocale(NS);
   return (
     <div className={classes.empty}>
-      <Ixon width="2rem" className={classes.emptyIcon}>
-        <SearchIcon />
-      </Ixon>
+      <span className={`${classes.emptyIcon} glassIcon`}>
+        <Ixon width="1.75rem">
+          <SearchIcon />
+        </Ixon>
+      </span>
       <strong>{getContent("listEmptyTitle")}</strong>
       <span>{getContent("listEmptyHint")}</span>
     </div>

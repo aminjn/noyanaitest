@@ -84,34 +84,20 @@
   font-weight: 800;
 }
 
-.active .iconWrap {
-  background: var(--activeTint);
-}
-
 :global(html[data-theme="dark"]) .active {
   color: var(--primary8);
 }
 
-/* AI in the centre: a raised gradient button */
+/* AI in the centre: a raised violet glass tile (glassIcon tone-violet) */
 .center .iconWrap {
   width: 3.25rem;
   height: 3.25rem;
   margin-top: -1.5rem;
   border-radius: 1.125rem;
-  color: var(--onColor);
-  background-color: var(--gradAccentSolid);
-  background-image: var(--gradAccent);
-  box-shadow:
-    0 12px 24px -10px rgba(79, 70, 229, 0.8),
-    0 0 0 4px var(--menuGlassSolid);
 }
 
 .center {
   color: var(--aiText);
   font-weight: 800;
-}
-
-.center.active .iconWrap {
-  background-color: var(--gradAccentSolid);
 }
 

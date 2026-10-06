@@ -24,8 +24,13 @@
 }
 
 .icon {
-  color: var(--primary6);
   flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {

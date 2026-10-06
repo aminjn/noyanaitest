@@ -52,7 +52,7 @@ const AboutPrivacy = ({ aboutSecurity }: { aboutSecurity?: string }) => {
         <div className={classes.items}>
           {items.map((item) => (
             <div key={item.title} className={classes.item}>
-              <div className={classes.itemIcon}>
+              <div className={`${classes.itemIcon} glassIcon`}>
                 <Ixon width="1.5rem">{item.icon}</Ixon>
               </div>
               <div className={classes.itemContent}>

@@ -29,8 +29,6 @@
   position: relative;
   width: 1.75rem;
   height: 1.75rem;
-  background-color: var(--secondary1);
-  color: var(--secondary);
   padding: 0.5rem;
   border-radius: 50%;
   display: flex;

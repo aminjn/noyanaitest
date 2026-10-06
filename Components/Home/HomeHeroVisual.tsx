@@ -57,7 +57,7 @@ const HomeHeroVisual = () => {
             </div>
             <div className={`${classes.bubble} ${classes.ai}`}>
               <span className={classes.aiHead}>
-                <span className={classes.aiOrb}>
+                <span className={`${classes.aiOrb} glassIcon tone-violet`}>
                   <Ixon width="0.75rem">
                     <SparkIcon />
                   </Ixon>
@@ -96,7 +96,7 @@ const HomeHeroVisual = () => {
           </div>
 
           <div className={classes.tabBar}>
-            <span className={classes.tabOn}>
+            <span className={`${classes.tabOn} glassIcon`}>
               <Ixon width="1rem">
                 <SparkIcon />
               </Ixon>

@@ -103,9 +103,9 @@ const WithSubs = ({
           {subs.map((sub) => (
             <Link key={sub.title} href={sub.taregt} className={classes.sub}>
               {!!sub.icon && (
-                <Ixon className={classes.subIcon} width="1.125rem">
-                  {sub.icon}
-                </Ixon>
+                <span className={`${classes.subIcon} glassIcon`}>
+                  <Ixon width="1.125rem">{sub.icon}</Ixon>
+                </span>
               )}
               <span>{getContent(sub.title)}</span>
             </Link>
@@ -227,9 +227,9 @@ const PublicHeader = () => {
             </div>
             {!!openModel && (
               <div className={classes.mobileOpen}>
-                <Ixon width="1rem" className={classes.mobileIcon}>
-                  {modalIcons[openModel]}
-                </Ixon>
+                <span className={`${classes.mobileIcon} glassIcon`}>
+                  <Ixon width="1rem">{modalIcons[openModel]}</Ixon>
+                </span>
                 <span className={`${classes.mobileLabel} ${txsRegular}`}>
                   {getContent(modalLabels[openModel])}
                 </span>

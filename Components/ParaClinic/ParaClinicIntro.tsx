@@ -72,7 +72,7 @@ const Card = ({
 }) => {
   return (
     <div className={classes.card}>
-      <div className={classes.cardIcon}>
+      <div className={`${classes.cardIcon} glassIcon tone-teal`}>
         <Ixon width="1.5rem">{icon}</Ixon>
       </div>
       <div className={classes.cardContent}>

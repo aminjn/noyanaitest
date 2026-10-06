@@ -47,7 +47,7 @@ const ListPageWideHeader = ({
   return (
     <div className={classes.main}>
       <div className={classes.header}>
-        <div className={classes.icon}>
+        <div className={`${classes.icon} glassIcon`}>
           <Ixon width="2.25rem">{icon}</Ixon>
         </div>
         <div className={classes.content}>

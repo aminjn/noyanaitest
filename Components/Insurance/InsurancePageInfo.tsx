@@ -32,7 +32,7 @@ const Count = ({
   if (!value) return null;
   const content = (
     <>
-      <div className={classes.countIcon}>
+      <div className={`${classes.countIcon} glassIcon tone-sky`}>
         <Ixon width="1rem">{icon}</Ixon>
       </div>
       <div className={classes.countContent}>
@@ -101,7 +101,7 @@ const InsurancePageInfo = ({ node }: { node: InsurancePageNode }) => {
       )}
       {!!node.category && (
         <div className={classes.categoryBox}>
-          <div className={classes.categoryIcon}>
+          <div className={`${classes.categoryIcon} glassIcon tone-sky`}>
             <Ixon width="1rem">
               <ShieldIcon />
             </Ixon>

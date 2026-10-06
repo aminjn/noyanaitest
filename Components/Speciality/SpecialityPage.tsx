@@ -67,7 +67,7 @@ const SpecialityPage = ({
       ]}
     >
       <div className={classes.header}>
-        <div className={classes.headerIcon}>
+        <div className={`${classes.headerIcon} glassIcon`}>
           <Ixon width="2.5rem">
             <StetoscopeIcon />
           </Ixon>

@@ -171,7 +171,13 @@
 }
 
 .subIcon {
-  color: var(--primary);
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes dropIn {
@@ -312,8 +318,17 @@
     background-color: var(--white);
   }
 
-  .mobileLabel,
-  .mobileIcon {
+  .mobileLabel {
     color: var(--textBody);
+  }
+
+  .mobileIcon {
+    flex-shrink: 0;
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }

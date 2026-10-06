@@ -51,6 +51,11 @@
 }
 
 .emptyIcon {
-  color: var(--gray7);
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1.125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-block-end: 0.25rem;
 }

@@ -43,7 +43,7 @@ const AboutStories = () => {
       <ul className={classes.list}>
         {stories.map((story, i) => (
           <li key={story.title} className={classes.item}>
-            <div className={classes.icon}>
+            <div className={`${classes.icon} glassIcon`}>
               <Ixon width="2.5rem">{story.icon}</Ixon>
             </div>
             <div className={classes.itemContent}>
