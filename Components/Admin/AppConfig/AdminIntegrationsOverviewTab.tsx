@@ -9,6 +9,10 @@ import Badge from "@/Components/UI/Badge";
 import InlineLink from "../UI/InlineLink";
 import WithTitle from "../UI/WithTitle";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import Ixon from "@/Components/UI/Ixon";
+import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
+import ClockIcon from "@/Components/Icons/ClockIcon";
+import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import classes from "./AdminMapSettings.module.css";
 
 // «سرویس‌ها و کلیدها»: the first tab of the system settings (2026-10). Every
@@ -18,9 +22,19 @@ import classes from "./AdminMapSettings.module.css";
 
 type State = "on" | "off" | "partial";
 
+// the state as a glass icon tile (globals.css .glassIcon / .tone-*)
+const STATE_ICON: Record<State, { tone: string; icon: JSX.Element }> = {
+  on: { tone: "tone-teal", icon: <CheckCircleIcon /> },
+  partial: { tone: "tone-amber", icon: <ClockIcon /> },
+  off: { tone: "tone-muted", icon: <XMarkIcon /> },
+};
+
 const Card = ({ title, state, detail, href }: { title: string; state: State; detail: string; href: string }) => (
   <Box className={classes.box}>
     <div className={classes.row}>
+      <span className={`${classes.stateIcon} glassIcon ${(STATE_ICON[state] || STATE_ICON.off).tone}`} aria-hidden>
+        <Ixon width="1.125rem">{(STATE_ICON[state] || STATE_ICON.off).icon}</Ixon>
+      </span>
       <strong>{title}</strong>
       <Badge color={state === "on" ? "Success" : state === "partial" ? "Warning" : "Disabled"} size="L">
         {state === "on" ? ta("تنظیم‌شده") : state === "partial" ? ta("نیمه‌کاره") : ta("تنظیم نشده")}

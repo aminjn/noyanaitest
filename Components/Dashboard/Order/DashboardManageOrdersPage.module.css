@@ -100,8 +100,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #059669;
-  color: var(--onColor);
 }
 
 .meta {

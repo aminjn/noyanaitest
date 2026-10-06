@@ -163,7 +163,7 @@ const PwaInstallPrompt = () => {
       {sheet === "ios" && (
         <ol className={classes.steps}>
           <li className={classes.step}>
-            <span className={classes.stepIcon}>
+            <span className={`${classes.stepIcon} glassIcon`}>
               <Ixon width="1.125rem">
                 <ShareGlyph />
               </Ixon>
@@ -171,7 +171,7 @@ const PwaInstallPrompt = () => {
             <span>{getContent("pwaIosStep1")}</span>
           </li>
           <li className={classes.step}>
-            <span className={classes.stepIcon}>
+            <span className={`${classes.stepIcon} glassIcon`}>
               <Ixon width="1.125rem">
                 <PlusSquareIcon />
               </Ixon>
@@ -179,7 +179,7 @@ const PwaInstallPrompt = () => {
             <span>{getContent("pwaIosStep2")}</span>
           </li>
           <li className={classes.step}>
-            <span className={classes.stepIcon}>
+            <span className={`${classes.stepIcon} glassIcon`}>
               <Ixon width="1.125rem">
                 <CheckCircleIcon />
               </Ixon>

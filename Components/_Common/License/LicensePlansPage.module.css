@@ -28,10 +28,6 @@
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 1.25rem;
-  background-color: var(--gradAccentSolid);
-  background-image: var(--gradAccent);
-  color: var(--onColor);
-  box-shadow: 0 12px 28px -12px rgba(99, 102, 241, 0.7);
 }
 
 .h1 {

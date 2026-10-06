@@ -112,7 +112,7 @@ const PatientIntakeCard = ({ reservationId }: { reservationId: string }) => {
 
   const header = (
     <div className={classes.cardHead}>
-      <span className={classes.headIcon}>
+      <span className={`${classes.headIcon} glassIcon tone-violet`}>
         <Ixon width="1.1rem">
           <SparkIcon />
         </Ixon>

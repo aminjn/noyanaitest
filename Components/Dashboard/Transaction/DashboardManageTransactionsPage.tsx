@@ -36,6 +36,8 @@ type Tab = (typeof TABS)[number];
 const tabKeys: Record<Tab, ContentKey> = { all: "all", payments: "trTabPayments", credits: "trTabCredits" };
 
 type Kind = "visit" | "order" | "topUp" | "other";
+// glass tile tone per kind (globals.css .tone-*)
+const KIND_TONE: Record<Kind, string> = { visit: "tone-indigo", order: "tone-teal", topUp: "tone-amber", other: "tone-sky" };
 const kindOf = (t: Row): Kind =>
   t.reservation ? "visit" : t.order ? "order" : t.gatewayPayment ? "topUp" : "other";
 
@@ -226,7 +228,7 @@ const DashboardManageTransactionsPage = () => {
                         const { title, href } = describe(t);
                         const body = (
                           <>
-                            <span className={`${classes.icon} ${classes[kind]}`}>
+                            <span className={`${classes.icon} glassIcon ${KIND_TONE[kind] || ""}`}>
                               <Ixon width="1.125rem">{icons[kind]}</Ixon>
                             </span>
                             <span className={classes.what}>

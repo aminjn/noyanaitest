@@ -100,9 +100,11 @@ const LicenseCard = ({
         )}
       </div>
       <div className={classes.nameBox}>
-        <Ixon width="1.5rem" className={`${classes.icon}`}>
-          <CrownIcon />
-        </Ixon>
+        <span className={`${classes.icon} glassIcon ${license.isGolden ? "tone-amber" : ""}`}>
+          <Ixon width="1.25rem">
+            <CrownIcon />
+          </Ixon>
+        </span>
         <span className={`${classes.name} ${tsmBold}`}>
           {license.displayName}
         </span>

@@ -176,7 +176,7 @@ const DashboardManageOrdersPage = () => {
               {shown.map(({ o, names, count, ready, live }) => (
                 <li key={o._id} className={classes.card}>
                   <div className={classes.top}>
-                    <span className={classes.icon}>
+                    <span className={`${classes.icon} glassIcon tone-teal`}>
                       <Ixon width="1.25rem">
                         <PackageIcon />
                       </Ixon>

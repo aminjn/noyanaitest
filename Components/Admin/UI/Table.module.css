@@ -109,8 +109,6 @@
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 1.25rem;
-  background: var(--aiSoft);
-  color: var(--aiText);
 }
 
 /* Short list: the grid grows with its rows (domLayout autoHeight). */

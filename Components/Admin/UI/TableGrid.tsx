@@ -313,7 +313,7 @@ const TableGrid = <T,>({
   const emptyText = getContent("tbEmpty");
   const noRowsTemplate = useMemo(
     () =>
-      `<div class="tb-empty"><span class="tb-empty-icon">${emptyIcon}</span><span>${escapeHtml(emptyText)}</span></div>`,
+      `<div class="tb-empty"><span class="tb-empty-icon glassIcon tone-violet">${emptyIcon}</span><span>${escapeHtml(emptyText)}</span></div>`,
     [emptyText],
   );
 

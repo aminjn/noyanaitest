@@ -84,9 +84,6 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.875rem;
-  background-color: var(--gradAccentSolid);
-  background-image: var(--gradAccent);
-  color: var(--onColor);
 }
 
 .name {
@@ -227,8 +224,6 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--aiSoft);
-  color: var(--aiText);
 }
 
 @media (max-width: 40rem) {

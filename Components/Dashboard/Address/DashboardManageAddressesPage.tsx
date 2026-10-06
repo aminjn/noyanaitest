@@ -102,7 +102,7 @@ const AddressCard = ({ node, mutate }: { node: IUserAddress; mutate: () => unkno
   return (
     <li className={classes.card}>
       <div className={classes.top}>
-        <span className={classes.icon}>
+        <span className={`${classes.icon} glassIcon`}>
           <Ixon width="1.25rem">
             <LocationIcon />
           </Ixon>
@@ -212,7 +212,7 @@ const DashboardManageAddressesPage = () => {
             ))}
             <li>
               <button type="button" className={classes.addCard} onClick={add}>
-                <span className={classes.addIcon}>
+                <span className={`${classes.addIcon} glassIcon tone-violet`}>
                   <Ixon width="1.25rem">
                     <PlusIcon />
                   </Ixon>

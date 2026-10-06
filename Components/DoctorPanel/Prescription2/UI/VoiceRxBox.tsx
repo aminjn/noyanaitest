@@ -194,7 +194,7 @@ const VoiceRxBox = () => {
   return (
     <section className={classes.box} aria-label={getContent("rxAiTitle")}>
       <div className={classes.head}>
-        <span className={classes.icon} aria-hidden>
+        <span className={`${classes.icon} glassIcon tone-violet`} aria-hidden>
           <Ixon width="1.125rem">
             <SparkIcon />
           </Ixon>

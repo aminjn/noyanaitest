@@ -39,9 +39,9 @@ const AdminHubPage = ({ hub, intro }: { hub: string; intro: string }) => {
         {sections.map((section) => (
           <section key={section.id} className={classes.card}>
             <div className={classes.cardHead}>
-              <Ixon width="1.25rem" className={classes.icon}>
-                {section.icon}
-              </Ixon>
+              <span className={`${classes.icon} glassIcon`}>
+                <Ixon width="1.125rem">{section.icon}</Ixon>
+              </span>
               <h2 className={classes.cardTitle}>{section.title}</h2>
             </div>
             <ul className={classes.links}>

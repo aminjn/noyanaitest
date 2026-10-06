@@ -11,8 +11,6 @@
 .emptyIcon {
   padding: 0.625rem;
   border-radius: 50%;
-  background-color: var(--primary1);
-  border: 1px solid var(--primary3);
 }
 
 .emptyLegend {

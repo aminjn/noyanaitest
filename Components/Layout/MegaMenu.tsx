@@ -301,7 +301,7 @@ const MegaMenu = () => {
             className={classes.aiCard}
             onClick={() => close()}
           >
-            <span className={classes.aiIcon}>
+            <span className={`${classes.aiIcon} glassIcon tone-violet`}>
               <Ixon width="1.25rem">
                 <SparkIcon />
               </Ixon>

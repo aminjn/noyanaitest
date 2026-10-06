@@ -151,7 +151,7 @@ const DoctorNetworkPage = () => {
             <li key={c.key}>
               <Link href={c.href} className={classes.card}>
                 <div className={classes.cardHead}>
-                  <span className={classes.icon}>
+                  <span className={`${classes.icon} glassIcon`}>
                     <Ixon width="1.25rem">{c.icon}</Ixon>
                   </span>
                   <strong>{getContent(c.title)}</strong>

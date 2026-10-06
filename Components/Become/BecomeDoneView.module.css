@@ -12,8 +12,6 @@
   margin-inline: auto;
   padding: 1.25rem;
   border-radius: 50%;
-  background-color: var(--successT1);
-  color: var(--gray13);
   display: flex;
   align-items: center;
   justify-content: center;

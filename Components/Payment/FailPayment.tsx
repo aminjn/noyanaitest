@@ -24,7 +24,7 @@ const FailPayment = ({ payment }: { payment: IGatewayPayment }) => {
 
   return (
     <div className={classes.main}>
-      <Ixon width="3.875rem" className={classes.icon}>
+      <Ixon width="3.875rem" className={`${classes.icon} glassIcon tone-rose`}>
         <CloseIcon />
       </Ixon>
       <legend className={classes.legend}>

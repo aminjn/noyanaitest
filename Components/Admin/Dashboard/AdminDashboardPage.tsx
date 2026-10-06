@@ -125,20 +125,23 @@ const displayPhone = (phone: string) =>
 
 const StatTile = ({
   icon,
+  tone = "indigo",
   label,
   value,
   note,
 }: {
   icon: React.ReactNode;
+  // glass tile tone (globals.css .tone-*)
+  tone?: "indigo" | "violet" | "teal" | "amber" | "rose" | "sky";
   label: string;
   value: string;
   note?: string;
 }) => (
   <div className={classes.tile}>
     <div className={classes.tileHead}>
-      <Ixon width="1.25rem" className={classes.tileIcon}>
-        {icon}
-      </Ixon>
+      <span className={`${classes.tileIcon} glassIcon tone-${tone}`}>
+        <Ixon width="1.125rem">{icon}</Ixon>
+      </span>
       <span className={classes.tileLabel}>{label}</span>
     </div>
     <span className={classes.tileValue}>{value}</span>
@@ -205,12 +208,14 @@ const AdminDashboard = () => {
             />
             <StatTile
               icon={<CalendarIcon />}
+              tone="sky"
               label={ta("رزروها (${1} روز)", [num.format(data.periodDays)])}
               value={num.format(data.reservations.total)}
               note={ta("${1} نوبت انجام‌شده", [num.format(data.reservations.byStatus.completed || 0)])}
             />
             <StatTile
               icon={<ShoppingCartIcon />}
+              tone="teal"
               label={ta("فروش سفارش‌ها (${1} روز)", [num.format(data.periodDays)])}
               value={ta("${1} تومان", [
                 num.format(Math.max(0, (data.orders.paidTotal || 0) - (data.orders.refunded || 0))),
@@ -226,12 +231,14 @@ const AdminDashboard = () => {
             />
             <StatTile
               icon={<CalendarIcon />}
+              tone="violet"
               label={ta("ارزش نوبت‌های انجام‌شده (${1} روز)", [num.format(data.periodDays)])}
               value={ta("${1} تومان", [num.format(data.reservations.completedTotal)])}
               note={ta("مبلغی که بیماران پرداخته‌اند، با مالیات")}
             />
             <StatTile
               icon={<WalletIcon />}
+              tone="amber"
               label={ta("درآمد کمیسیون (${1} روز)", [num.format(data.periodDays)])}
               value={ta("${1} تومان", [num.format(data.commissionTotal || 0)])}
               note={ta("سهم نویان از تسویه‌ی نوبت‌ها و سفارش‌ها")}

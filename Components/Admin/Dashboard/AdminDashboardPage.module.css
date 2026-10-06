@@ -75,7 +75,13 @@
 }
 
 .tileIcon {
-  color: var(--primary6);
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tileLabel {

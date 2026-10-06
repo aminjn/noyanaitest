@@ -64,7 +64,7 @@ const IncomingCallBox = ({
   return (
     <div className={classes.main}>
       <div className={classes.info}>
-        <span className={classes.icon}>
+        <span className={`${classes.icon} glassIcon tone-teal`}>
           <Ixon width="1.25rem">
             <CallingIcon />
           </Ixon>

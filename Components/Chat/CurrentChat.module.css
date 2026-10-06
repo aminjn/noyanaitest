@@ -44,8 +44,6 @@
   width: 4rem;
   height: 4rem;
   border-radius: 1.5rem;
-  background: var(--aiSoft);
-  color: var(--aiText);
 }
 
 .emptyOpen {

@@ -97,8 +97,6 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.875rem;
-  background: var(--aiSoft);
-  color: var(--aiText);
 }
 
 .tabs {

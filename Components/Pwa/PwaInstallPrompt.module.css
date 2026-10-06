@@ -103,9 +103,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--white);
-  color: var(--primary);
-  box-shadow: var(--elev1);
 }
 
 .hint {

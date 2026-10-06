@@ -88,7 +88,7 @@ const NotificationItem = ({
       {fromAdmin ? (
         <InitialAvatar name={getContent("support")} seed="support" size="2.5rem" />
       ) : (
-        <span className={classes.sourceIcon} aria-hidden>
+        <span className={`${classes.sourceIcon} glassIcon tone-violet`} aria-hidden>
           <Ixon width="1.125rem">
             <SparkIcon />
           </Ixon>
@@ -253,7 +253,7 @@ const DashboardNotificationsPage = () => {
             </div>
           ) : (
             <div className={classes.nothing}>
-              <span className={classes.nothingIcon}>
+              <span className={`${classes.nothingIcon} glassIcon tone-violet`}>
                 <Ixon width="1.75rem">
                   <Bell01Icon />
                 </Ixon>

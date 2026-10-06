@@ -37,7 +37,7 @@ const SuccessPayment = ({ payment }: { payment: IGatewayPayment }) => {
 
   return (
     <div className={classes.main}>
-      <Ixon width="3.875rem" className={classes.icon}>
+      <Ixon width="3.875rem" className={`${classes.icon} glassIcon tone-teal`}>
         <CheckCircleIcon />
       </Ixon>
       <legend className={classes.legend}>

@@ -19,7 +19,7 @@ const BecomeDoneView = ({
 
   return (
     <div className={classes.main}>
-      <div className={classes.icon}>
+      <div className={`${classes.icon} glassIcon tone-teal`}>
         <Ixon width="1.5rem">
           <CheckIcon />
         </Ixon>

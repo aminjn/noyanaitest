@@ -30,9 +30,9 @@ const PopupCard = ({
         {!!title && (
           <div className={classes.titleBox}>
             {!!icon && (
-              <Ixon className={classes.icon} width="1.5rem">
-                {icon}
-              </Ixon>
+              <span className={`${classes.icon} glassIcon`}>
+                <Ixon width="1.125rem">{icon}</Ixon>
+              </span>
             )}
             <span className={classes.title}>{ta(title)}</span>
           </div>

@@ -637,6 +637,9 @@ h6 {
   }
 }
 
+/* A neutral glass tile for a waiting / skipped / inactive state. Use with .glassIcon. */
+.glassIcon.tone-muted { --tint: var(--gray9); --tintFill: var(--gray2); color: var(--tint); }
+
 /* A glass tile on a deep brand band (footer, register strip, CTA): frosted
    white over the band, white glyph. Use with .glassIcon. */
 .glassIcon.glassOnBand { --tint: #fff; --tintFill: rgba(255, 255, 255, 0.14); color: var(--onColor); }
