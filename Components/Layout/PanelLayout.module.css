@@ -21,11 +21,12 @@
   height: calc(100dvh - 2 * var(--shellGap));
   flex-shrink: 0;
   border-radius: var(--radiusLg);
-  background: var(--glass);
-  border: 1px solid var(--glassLine);
-  box-shadow: var(--glassShadow);
-  backdrop-filter: var(--glassBlur);
-  -webkit-backdrop-filter: var(--glassBlur);
+  /* the public site's frosted menu surface (.glassMenu) */
+  background: var(--menuGlass);
+  border: 1px solid var(--menuEdge);
+  box-shadow: var(--menuShadow), inset 0 1px 0 var(--menuLine);
+  backdrop-filter: var(--menuBlur);
+  -webkit-backdrop-filter: var(--menuBlur);
   z-index: 30;
 }
 
@@ -48,9 +49,9 @@
 
 .panelName {
   margin: 0 1.25rem 0.75rem;
-  font-size: 0.75rem;
+  font-size: var(--fsXs);
   font-weight: 700;
-  color: var(--gray9);
+  color: var(--textMuted);
 }
 
 .sidebarBody {
@@ -88,11 +89,21 @@
   padding: 0.625rem 0.75rem 0.625rem 0.75rem;
   padding-inline-start: 1.25rem;
   border-radius: var(--radiusLg);
-  background: var(--glass);
-  border: 1px solid var(--glassLine);
-  box-shadow: var(--glassShadow);
-  backdrop-filter: var(--glassBlur);
-  -webkit-backdrop-filter: var(--glassBlur);
+  /* the public header bar's glass */
+  background: var(--headerGlass);
+  border: 1px solid var(--menuEdge);
+  box-shadow: var(--elev2), inset 0 1px 0 var(--menuLine);
+  backdrop-filter: var(--menuBlur);
+  -webkit-backdrop-filter: var(--menuBlur);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sidebar {
+    background: var(--menuGlassSolid);
+  }
+  .topbar {
+    background: var(--headerGlassSolid);
+  }
 }
 
 .burger,
@@ -162,7 +173,7 @@
   max-width: 96rem;
   margin-inline: auto;
   /* the bottom keeps clear of the floating «دستیار نویان» button */
-  padding: 1.5rem 0.25rem 5rem;
+  padding: 1.5rem 0.25rem calc(5rem + var(--bottomNavSpace));
   min-width: 0;
 }
 
@@ -176,10 +187,14 @@
     width: min(86dvw, 19rem);
     height: 100dvh;
     border-radius: 0;
-    background: var(--glassStrong);
+    background: var(--menuGlass);
     transform: translateX(105%);
-    transition: transform 0.25s ease;
-    box-shadow: 0 24px 48px -12px #0f172a40;
+    /* closed: out of view and out of the tab order */
+    visibility: hidden;
+    transition:
+      transform 0.25s ease,
+      visibility 0s linear 0.25s;
+    box-shadow: var(--menuShadow);
     z-index: 10051;
   }
 
@@ -189,6 +204,8 @@
 
   .sidebar.sidebarOpen {
     transform: none;
+    visibility: visible;
+    transition: transform 0.25s ease;
   }
 
   .sidebarClose {
@@ -272,7 +289,18 @@
   }
 
   .content {
-    padding: 1rem 0 1.5rem;
+    padding: 1rem 0 calc(4.5rem + var(--bottomNavSpace));
+  }
+}
+
+/* phones with the tab bar: its "menu" tab opens the drawer */
+@media (max-width: 48rem) {
+  .withTabs .burger {
+    display: none;
+  }
+
+  .withTabs .topbar {
+    padding-inline-start: 0.625rem;
   }
 }
 
@@ -297,5 +325,13 @@
 @media (max-width: 64rem) {
   .content :global([data-tabs]) {
     padding: 0.25rem 0.875rem 1rem;
+  }
+}
+
+/* a full-screen tool (chat room, prescription writer) keeps its own bottom
+   controls: on phones the floating assistant button would sit on them */
+@media (max-width: 48rem) {
+  .fullTool [data-copilot-fab] {
+    display: none;
   }
 }

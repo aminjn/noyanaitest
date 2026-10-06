@@ -7,132 +7,183 @@ import {
 } from "./DoctorManageShiftsPage";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import ToggleInput from "@/Components/UI/ToggleInput";
-import Button from "@/Components/UI/Button";
 import PlusIcon from "@/Components/Icons/PlusIcon";
+import CopyIcon from "@/Components/Icons/CopyIcon";
+import Ixon from "@/Components/UI/Ixon";
 import { nanoid } from "nanoid";
-import ProTip from "@/Components/UI/ProTip";
 import Replicator from "./Replicator";
 import ShiftItem from "./ShiftItem";
-import ShiftsPreview from "./ShiftsPreview";
+import DayTrack, { HourAxis } from "./WeekOverview";
+import useShiftUtils from "./useShiftUtils";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
-import useSWR from "swr";
-import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
 import { IOffice } from "../Office/DoctorManageOfficesPage";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 
+const newId = () => `${nanoid()}${Date.now()}`;
+
+// One weekday of the weekly hours (Doctolib "horaires" / Google Calendar
+// "weekly hours" row): on/off switch, its time ranges inline, add a range,
+// copy the day to other days, and the day's bar on the week's hour axis.
 const DayShifts = ({
   day,
   data,
   setData,
   offDays,
   setOffDays,
+  offices,
+  overlaps,
+  axis,
+  toneOf,
+  canEdit,
 }: {
   day: DoctorShiftDay;
   data: ShiftContext;
   setData: Dispatch<SetStateAction<ShiftContext>>;
   offDays: DoctorShiftDay[];
   setOffDays: Dispatch<SetStateAction<DoctorShiftDay[]>>;
+  offices: IOffice[];
+  overlaps: Set<string>;
+  axis: HourAxis;
+  toneOf: (officeId?: string) => string;
+  canEdit: boolean;
 }) => {
-  const getCompContent = useScopedLocale(NS);
   const getContent = useScopedLocale(NS);
-
-  // same key as ShiftItem's office list, so SWR serves it from cache
-  const { data: officesData } = useSWR<IOffice[]>(
-    `${API}/doctor/office`,
-    (url: string) => fetcher({ url }).then((res) => res.data),
-  );
-  const offices = Array.isArray(officesData) ? officesData : [];
-  // a new shift starts at the office the doctor used last on this day (or
-  // any active office), instead of empty and flagged as an error
-  const defaultOffice =
-    [...data].reverse().find((shift) => shift.day === day && shift.office)
-      ?.office ||
-    (offices.find((el) => el?.active) || offices[0])?._id;
+  const intlTag = useIntlLocale();
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const { getShiftSessions } = useShiftUtils();
+  const [copyOpen, setCopyOpen] = useState(false);
 
   const todaysShifts = useMemo<ShiftContext>(
-    () => data.filter((shift) => shift.day === day),
+    () => data.filter((shift) => shift.day === day).sort((a, b) => a.start - b.start),
     [data, day],
   );
+  const switchedOff = offDays.includes(day);
+  const on = !switchedOff && todaysShifts.length > 0;
+  const sessions = on ? todaysShifts.reduce((acc, el) => acc + getShiftSessions(el).length, 0) : 0;
+
+  // a new range starts where the day's last one ends, at the same office
+  // and with the same visit settings; the first one of a day at the office
+  // the doctor used last (or the first active office)
+  const defaultOffice =
+    [...data].reverse().find((shift) => shift.office)?.office ||
+    (offices.find((el) => el?.active) || offices[0])?._id;
+
+  const addRange = () => {
+    const last = todaysShifts[todaysShifts.length - 1];
+    const start = last ? Math.min(last.end + 60, 23 * 60) : 9 * 60;
+    const end = Math.min(start + 4 * 60, 24 * 60);
+    setData((prev) => [
+      ...prev,
+      {
+        _id: newId(),
+        day,
+        office: last?.office || defaultOffice,
+        start,
+        end,
+        gap: last?.gap ?? 0,
+        duration: last?.duration ?? 20,
+        patientTypes: last?.patientTypes?.length ? [...last.patientTypes] : ["newPatient", "oldPatient"],
+        sessionTypes: last?.sessionTypes?.length
+          ? [...last.sessionTypes]
+          : ["inPerson", "sipCall", "textChat", "videoCall", "voiceCall"],
+        name: "",
+      },
+    ]);
+  };
+
+  const toggle = () => {
+    if (on) return setOffDays((prev) => [...prev, day]);
+    if (switchedOff) {
+      setOffDays((prev) => prev.filter((d) => d !== day));
+      if (todaysShifts.length) return;
+    }
+    // switching on an empty day: the hours of the nearest earlier day that
+    // has some (most practices repeat the same day), else one range
+    const order = [1, 2, 3, 4, 5, 6].map((i) => ((day - i + 7) % 7) as DoctorShiftDay);
+    const source = order.find(
+      (d) => !offDays.includes(d) && data.some((s) => s.day === d),
+    );
+    if (source === undefined) return addRange();
+    setData((prev) => [
+      ...prev,
+      ...prev.filter((s) => s.day === source).map((s) => ({ ...s, _id: newId(), day })),
+    ]);
+  };
+
+  const dayName = getContent(daysOfWeekContentKeys[day]);
 
   return (
-    <div className={classes.main}>
-      <div className={classes.shiftsBox}>
-        <div className={classes.header}>
-          <span className={classes.mainTitle}>
-            {getCompContent("xDaySettings", [
-              getContent(daysOfWeekContentKeys[day]),
-            ])}
-          </span>
-          <div className={classes.activeBox}>
-            {/* on = the day takes bookings; off = a day off */}
-            <ToggleInput
-              title={getContent("active")}
-              value={!offDays.includes(day)}
-              onChange={() =>
-                setOffDays((prev) => {
-                  const clone = [...prev];
-                  const index = offDays.indexOf(day);
-                  if (index === -1) {
-                    clone.push(day);
-                  } else {
-                    clone.splice(index, 1);
-                  }
-                  return clone;
-                })
-              }
-            />
-          </div>
-        </div>
-        <ProTip>{getContent("shiftsProTip")}</ProTip>
-        <div
-          className={`${classes.shiftsBoxInner} ${offDays.includes(day) ? classes.off : ""}`}
-        >
-          <div className={`${classes.shifts}`}>
+    <div id={`shift-day-${day}`} className={`${classes.row} ${on ? "" : classes.rowOff}`}>
+      <div className={classes.dayCol}>
+        <ToggleInput
+          title={dayName}
+          value={on}
+          readOnly={!canEdit}
+          onChange={toggle}
+          className={classes.dayToggle}
+        />
+        {on && <small className={classes.dayMeta}>{getContent("xSessions", [num.format(sessions)])}</small>}
+      </div>
+
+      <div className={classes.body}>
+        {on ? (
+          <div className={classes.ranges}>
             {todaysShifts.map((shift) => (
               <ShiftItem
                 key={shift._id}
                 setData={setData}
-                shift={{ ...shift }}
+                shift={shift}
+                offices={offices}
+                overlap={overlaps.has(shift._id)}
+                tone={toneOf(shift.office)}
+                canEdit={canEdit}
               />
             ))}
-            <Button
-              leadIcon={<PlusIcon />}
-              type="button"
-              variant="Primary"
-              mode="Outline"
-              onClick={() =>
-                setData((prev) => [
-                  ...prev,
-                  {
-                    _id: `${nanoid()}${new Date().getTime()}`,
-                    day,
-                    office: defaultOffice,
-                    end: 1200,
-                    start: 480,
-                    gap: 0,
-                    duration: 20,
-                    patientTypes: ["newPatient", "oldPatient"],
-                    sessionTypes: [
-                      "inPerson",
-                      "sipCall",
-                      "textChat",
-                      "videoCall",
-                      "voiceCall",
-                    ],
-                    name: getContent("newShift"),
-                  },
-                ])
-              }
-            >
-              {getContent("addANewShift")}
-            </Button>
           </div>
-          <Replicator data={data} day={day} setData={setData} />
+        ) : (
+          <p className={classes.offText}>
+            {switchedOff ? getContent("shOffPending") : getContent("offDay")}
+          </p>
+        )}
+
+        <div className={classes.footer}>
+          <DayTrack shifts={todaysShifts} axis={axis} toneOf={toneOf} off={!on} />
+          {canEdit && on && (
+            <div className={classes.dayActions}>
+              <button type="button" className={classes.linkButton} onClick={addRange}>
+                <Ixon width="1rem">
+                  <PlusIcon />
+                </Ixon>
+                {getContent("shAddRange")}
+              </button>
+              <button
+                type="button"
+                className={classes.linkButton}
+                aria-expanded={copyOpen}
+                onClick={() => setCopyOpen((v) => !v)}
+              >
+                <Ixon width="1rem">
+                  <CopyIcon />
+                </Ixon>
+                {getContent("shCopyTo")}
+              </button>
+            </div>
+          )}
         </div>
+        {copyOpen && on && (
+          <Replicator
+            day={day}
+            setData={setData}
+            onClose={() => setCopyOpen(false)}
+            onApplied={(days) =>
+              // copying onto a day switches it on
+              setOffDays((prev) => prev.filter((d) => !days.includes(d)))
+            }
+          />
+        )}
       </div>
-      <ShiftsPreview off={offDays.includes(day)} data={data} day={day} />
     </div>
   );
 };

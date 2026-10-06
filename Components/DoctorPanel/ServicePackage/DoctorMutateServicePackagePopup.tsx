@@ -1,4 +1,5 @@
 import PopupCard from "@/Components/UI/PopupCard";
+import PackageIcon from "@/Components/Icons/PackageIcon";
 import { IServicePackage } from "./DoctorManageServicePackagesPage";
 import classes from "./DoctorMutateServicePackagePopup.module.css";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
@@ -21,7 +22,7 @@ const DoctorMutateServicePackagePopup = ({
   const { closePopup } = usePopup();
 
   return (
-    <PopupCard>
+    <PopupCard title={getContent("pkgNewTitle")} icon={<PackageIcon />} size="wide">
       <CreateForm<IServicePackage>
         renderer={{
           name: { type: "text", title: getContent("name") },

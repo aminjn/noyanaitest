@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import classes from "./DoctorManagePatientsPage.module.css";
 import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
+import { formatPhone } from "../Desk/deskShared";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
@@ -98,7 +99,8 @@ const DoctorManagePatientsPage = () => {
         if (filter === "recall" && !r.recall) return false;
         if (filter === "missed" && !(r.s.missed > 0)) return false;
         if (filter === "upcoming" && !r.s.nextVisit) return false;
-        if (q && !`${r.name} ${r.phone}`.toLowerCase().includes(q)) return false;
+        // 0912… as typed, or the stored 98912…
+        if (q && !`${r.name} ${r.phone} ${formatPhone(r.phone)}`.toLowerCase().includes(q)) return false;
         return true;
       })
       .sort((a, b) => {
@@ -161,7 +163,7 @@ const DoctorManagePatientsPage = () => {
                       <InitialAvatar name={name} seed={p._id} size="3rem" />
                       <div className={classes.who}>
                         <strong>{name}</strong>
-                        {!!phone && <span className={classes.phone}>{phone}</span>}
+                        {!!phone && <span className={classes.phone}>{formatPhone(phone)}</span>}
                       </div>
                     </div>
                     <div className={classes.stats}>

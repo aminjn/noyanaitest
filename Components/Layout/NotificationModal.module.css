@@ -4,9 +4,11 @@
   position: absolute;
   top: calc(100% + 0.75rem);
   inset-inline-end: 0;
-  box-shadow: var(--shadow);
-  background-color: var(--white);
-  border-radius: 1rem;
+  /* the public site's frosted menu surface */
+  background: var(--menuGlassSolid);
+  border: 1px solid var(--menuEdge);
+  box-shadow: var(--menuShadow);
+  border-radius: var(--radiusMd);
   padding: 1rem;
   gap: 1.25rem;
   width: min(31.5rem, 90dvw);
@@ -78,14 +80,15 @@
 }
 
 @media only screen and (max-width: 750px) {
+  /* a sheet under the top bar (a frosted bar contains fixed children, so
+     the bar's own edges place it), clear of the phone tab bar */
   .main {
-    height: calc(100dvh - 5rem);
-    top: var(--headerH);
-    width: 100dvw;
     position: fixed;
+    top: calc(100% + 0.5rem);
     inset-inline: 0;
-    border-radius: none;
-    box-shadow: none;
+    width: auto;
+    height: calc(100dvh - 5.5rem - var(--bottomNavSpace));
+    border-radius: var(--radiusMd);
   }
   .content {
     max-height: unset;

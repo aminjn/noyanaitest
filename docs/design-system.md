@@ -56,5 +56,11 @@ Shared pieces:
 - `Components/UI/SectionHeader`: eyebrow, title, description and a "see all" pill. Use it for every public section heading.
 - `Button` modes `Light` (white solid on a coloured band) and `Glass` (frosted second action on a band).
 - Never show a lone "nothing found": hide the empty block or offer real shortcuts (`popularLinks` in `MegaMenu`). Never boast tiny counts: `HomeRegister` shows a stat only from 50 up, and value props otherwise.
-- Phone tab bar: `Components/Layout/BottomNav` (public layout and patient dashboard, up to 768px). It sets `body.hasBottomNav`; anything fixed at the bottom adds `var(--bottomNavSpace)` (the Copilot button, the install sheet, the footer padding).
+- Phone tab bar: `Components/Layout/BottomNav` (public layout and patient dashboard, up to 768px). Its bar is the shared `TabBar` (same file); a provider panel passes `tabs` (and `tabsOff` on full-screen tools) to `PanelLayout`, which adds a last "menu" tab that opens the drawer. The doctor panel's tabs are today, schedule, patients, chat (unread badge) and menu. It sets `body.hasBottomNav`; anything fixed at the bottom adds `var(--bottomNavSpace)` (the Copilot button, the install sheet, the footer padding).
+- A sticky bottom action bar (the shifts page's save bar) adds `var(--bottomNavSpace)` to its bottom and leaves `var(--fabClear)` at its inline end for the floating «دستیار نویان» button.
+
+## Panels (2026-10)
+- `PanelLayout`'s sidebar and top bar use the public frosted surfaces (`--menuGlass` / `--headerGlass`, `--menuEdge`, `--menuShadow`); the current page in `PanelSidebar` is a soft `--toneIndigo` row with its icon in a `.glassIcon` tile.
+- Visit arrival buttons (arrived / no-show) are `DoctorPanel/Desk/VisitQuickActions`; phone numbers show through `helpers/formatPhone` (0912…).
+
 - PWA: `public/service-worker.js` is the only worker (push, immutable build files, `/offline`); never cache `/api`, `/files` or pages there. The install sheet and its "install app" entries use `Components/Pwa/usePwaInstall`.

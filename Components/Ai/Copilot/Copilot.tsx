@@ -240,6 +240,7 @@ const Copilot = ({ profile: fixed }: { profile?: AiProfile }) => {
         <button
           type="button"
           className={classes.fab}
+          data-copilot-fab
           onClick={() => setOpen(true)}
           aria-label={t(COPILOT_PROFILES[profile].title)}
           title={`${t(COPILOT_PROFILES[profile].title)} (Ctrl+J)`}

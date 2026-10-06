@@ -12,3 +12,23 @@
   background: var(--successS3);
   flex-shrink: 0;
 }
+
+.head {
+  margin-bottom: var(--sp4);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fsH2);
+  line-height: var(--lhTight);
+  font-weight: 900;
+  color: var(--textStrong);
+}
+
+.lead {
+  margin: var(--sp2) 0 0;
+  max-width: 44rem;
+  font-size: var(--fsSm);
+  line-height: var(--lhBody);
+  color: var(--textMuted);
+}

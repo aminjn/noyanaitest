@@ -9,7 +9,7 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import { IBooking } from "../Calendar/DoctorCalendarDay";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "@/Components/i18n/Link";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 import ReservationStatusBadge from "@/Components/Dashboard/Booking/ReservationStatusBadge";
@@ -21,11 +21,14 @@ import InitialAvatar from "@/Components/UI/InitialAvatar";
 import Ixon from "@/Components/UI/Ixon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
 import SparkIcon from "@/Components/Icons/SparkIcon";
-import ChevronIcon from "@/Components/Icons/ChevronIcon";
 import Button from "@/Components/UI/Button";
 import usePopup from "@/Components/Hooks/usePopup";
 import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
 import DeskBookingPopup from "../Desk/DeskBookingPopup";
+import VisitQuickActions, { visitActions } from "../Desk/VisitQuickActions";
+import PlusIcon from "@/Components/Icons/PlusIcon";
+import ClockIcon from "@/Components/Icons/ClockIcon";
+import { formatPhone } from "../Desk/deskShared";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelSchedule"];
 
@@ -64,6 +67,8 @@ type Row = {
   missed: number;
   intake: "filled" | "missing" | null;
   desk: boolean;
+  // the raw visit, for the arrival buttons
+  visit?: IScheduleReservation;
 };
 
 const TABS = ["today", "upcoming", "past", "cancelled", "all"] as const;
@@ -89,6 +94,9 @@ const DoctorManageSchedulePage = () => {
 
   const getContent = useScopedLocale(NS);
   const [tab, setTab] = useState<Tab>("upcoming");
+  // the agenda opens on today when there is something today (Doctolib's
+  // day view), otherwise on what is coming
+  const tabPicked = useRef(false);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"" | "risk" | "noIntake">("");
 
@@ -129,6 +137,7 @@ const DoctorManageSchedulePage = () => {
       });
     }
     for (const r of Array.isArray(data.reservations) ? data.reservations : []) {
+      if (!r || typeof r.start !== "number") continue;
       const dateKey = getSessionDateKey(new Date(r.date));
       const open = dateKey >= todayKey && ["pending", "active"].includes(r.status);
       const userId = (r.user as { _id?: string } | undefined)?._id || "";
@@ -149,6 +158,7 @@ const DoctorManageSchedulePage = () => {
         missed: open ? history[userId]?.missed || 0 : 0,
         intake: open && intakes ? (intakes[r._id] ? "filled" : "missing") : null,
         desk: (r as { source?: string }).source === "desk",
+        visit: r,
       });
     }
     return out.sort((a, b) => (a.dateKey === b.dateKey ? a.start - b.start : a.dateKey < b.dateKey ? -1 : 1));
@@ -170,6 +180,27 @@ const DoctorManageSchedulePage = () => {
     }),
     [rows, todayKey],
   );
+
+  useEffect(() => {
+    if (tabPicked.current || !data) return;
+    tabPicked.current = true;
+    if (counts.today > 0) setTab("today");
+  }, [counts.today, data]);
+
+  // today at a glance: done / waiting / missed, and who is next
+  const nowMin = (() => {
+    const d = new Date();
+    return d.getHours() * 60 + d.getMinutes();
+  })();
+  const todayRows = rows.filter((r) => r.dateKey === todayKey && r.kind === "reservation");
+  const summary = {
+    done: todayRows.filter((r) => r.status === "completed").length,
+    waiting: todayRows.filter((r) => r.open).length,
+    missed: todayRows.filter((r) => r.status === "noShow").length,
+    cancelled: todayRows.filter((r) => r.status === "cancelled").length,
+  };
+  const next = todayRows.filter((r) => r.open).sort((a, b) => a.start - b.start)[0];
+  const openDesk = () => setPopup("DeskBooking", <DeskBookingPopup onDone={() => mutate()} />);
 
   const days = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -205,14 +236,18 @@ const DoctorManageSchedulePage = () => {
         <div className={classes.main}>
           <header className={classes.header}>
             <h1 className={classes.title}>{getContent("schedule")}</h1>
-            {hasAccess("mutateCalendar") && (
-              <Button
-                className={classes.newButton}
-                onClick={() => setPopup("DeskBooking", <DeskBookingPopup onDone={() => mutate()} />)}
-              >
-                {getContent("deskNewBooking")}
-              </Button>
-            )}
+            <div className={classes.headActions}>
+              {hasAccess("readShifts") && (
+                <Button href="/doctorpanel/shift" variant="Neutral" mode="Outline" size="M" leadIcon={<ClockIcon />}>
+                  {getContent("schWorkingHours")}
+                </Button>
+              )}
+              {hasAccess("mutateCalendar") && (
+                <Button size="M" leadIcon={<PlusIcon />} onClick={openDesk}>
+                  {getContent("deskNewBooking")}
+                </Button>
+              )}
+            </div>
             <div className={classes.tabs} role="tablist">
               {TABS.map((t) => (
                 <button
@@ -243,6 +278,41 @@ const DoctorManageSchedulePage = () => {
               />
             </label>
           </header>
+
+          {tab === "today" && !filter && todayRows.length > 0 && (
+            <section className={classes.todayPanel}>
+              <ul className={classes.summary}>
+                <li className="tone-teal">{getContent("schSumDone", [num.format(summary.done)])}</li>
+                <li className="tone-indigo">{getContent("schSumWaiting", [num.format(summary.waiting)])}</li>
+                {summary.missed > 0 && <li className="tone-rose">{getContent("schSumMissed", [num.format(summary.missed)])}</li>}
+                {summary.cancelled > 0 && <li className="glassIcon tone-muted">{getContent("schSumCancelled", [num.format(summary.cancelled)])}</li>}
+              </ul>
+              {next ? (
+                <div className={classes.next}>
+                  <span className={classes.nextLabel}>{getContent("schNextPatient")}</span>
+                  <Link href={next.href} className={classes.nextWho}>
+                    <InitialAvatar name={next.name} seed={next.id} size="2.75rem" />
+                    <span>
+                      <strong>{next.name}</strong>
+                      <small>
+                        {[time(next.start), next.type, next.place].filter(Boolean).join(" · ")}
+                      </small>
+                    </span>
+                  </Link>
+                  <span className={classes.nextActions}>
+                    {next.visit && (
+                      <VisitQuickActions visit={next.visit} name={next.name} onDone={() => mutate()} size="M" />
+                    )}
+                    <Button href={next.href} size="M" variant="Neutral" mode="Outline">
+                      {getContent("schOpenVisit")}
+                    </Button>
+                  </span>
+                </div>
+              ) : (
+                <p className={classes.nextNone}>{getContent("schNoMoreToday")}</p>
+              )}
+            </section>
+          )}
 
           <AssistantStrip
             title={getContent("schAssistant")}
@@ -286,49 +356,87 @@ const DoctorManageSchedulePage = () => {
                 <span className={classes.dayCount}>{getContent("schCount", [num.format(day.list.length)])}</span>
               </div>
               <ul className={classes.rows}>
-                {day.list.map((r) => (
-                  <li key={`${r.kind}-${r.id}`}>
-                    <Link href={r.href} className={`${classes.row} ${r.open ? "" : classes.closed}`}>
-                      <span className={classes.time}>
-                        <strong>{time(r.start)}</strong>
-                        <span>{time(r.end)}</span>
-                      </span>
-                      <InitialAvatar name={r.name} seed={r.id} />
-                      <span className={classes.who}>
-                        <strong>{r.name}</strong>
-                        {!!r.phone && <span className={classes.phone}>{r.phone}</span>}
-                      </span>
-                      <span className={classes.kind}>
-                        {[r.type, r.place, r.desk ? getContent("deskPayAtDesk") : ""].filter(Boolean).join(" · ")}
-                      </span>
-                      <span className={classes.insight}>
-                        {r.missed > 0 ? (
-                          <span className={classes.risk}>
-                            <Ixon width="0.8rem">
-                              <SparkIcon />
-                            </Ixon>
-                            {getContent("schMissed", [num.format(r.missed)])}
+                {day.list.map((r, i) => {
+                  // a free stretch of at least half an hour between two
+                  // open visits today: bookable straight from here
+                  const prev = day.list[i - 1];
+                  const gapFrom = prev ? prev.end : 0;
+                  const showGap =
+                    day.isToday &&
+                    tab === "today" &&
+                    !filter &&
+                    !query &&
+                    !!prev &&
+                    r.open &&
+                    r.start - gapFrom >= 30 &&
+                    r.start > nowMin &&
+                    hasAccess("mutateCalendar");
+                  const showNow =
+                    day.isToday && tab === "today" && !filter && (!prev || prev.start <= nowMin) && r.start > nowMin;
+                  const quick = r.visit ? visitActions(r.visit) : null;
+                  return (
+                    <li key={`${r.kind}-${r.id}`} className={classes.item}>
+                      {showNow && (
+                        <span className={classes.nowLine}>
+                          <span>{getContent("schNow", [time(nowMin)])}</span>
+                        </span>
+                      )}
+                      {showGap && (
+                        <button type="button" className={classes.gap} onClick={openDesk}>
+                          <Ixon width="0.875rem">
+                            <PlusIcon />
+                          </Ixon>
+                          {getContent("schFreeGap", [time(Math.max(gapFrom, nowMin)), time(r.start)])}
+                        </button>
+                      )}
+                      <div
+                        className={`${classes.row} ${r.open ? "" : classes.closed} ${next && next.id === r.id ? classes.isNext : ""}`}
+                      >
+                        <Link href={r.href} className={classes.rowMain}>
+                          <span className={classes.time}>
+                            <strong>{time(r.start)}</strong>
+                            <span>{time(r.end)}</span>
                           </span>
-                        ) : r.intake === "filled" ? (
-                          <span className={classes.ready}>
-                            <Ixon width="0.8rem">
-                              <SparkIcon />
-                            </Ixon>
-                            {getContent("schIntakeFilled")}
+                          <InitialAvatar name={r.name} seed={r.id} />
+                          <span className={classes.who}>
+                            <strong>{r.name}</strong>
+                            {!!r.phone && <span className={classes.phone}>{formatPhone(r.phone)}</span>}
                           </span>
-                        ) : r.intake === "missing" ? (
-                          <span className={classes.muted}>{getContent("schIntakeMissing")}</span>
-                        ) : null}
-                      </span>
-                      <span className={classes.status}>
-                        {r.status && <ReservationStatusBadge status={r.status} />}
-                      </span>
-                      <Ixon width="0.9rem" className={classes.chevron}>
-                        <ChevronIcon />
-                      </Ixon>
-                    </Link>
-                  </li>
-                ))}
+                          <span className={classes.kind}>
+                            {[r.type, r.place, r.desk ? getContent("deskPayAtDesk") : ""].filter(Boolean).join(" · ")}
+                          </span>
+                          <span className={classes.insight}>
+                            {r.missed > 0 ? (
+                              <span className={classes.risk}>
+                                <Ixon width="0.8rem">
+                                  <SparkIcon />
+                                </Ixon>
+                                {getContent("schMissed", [num.format(r.missed)])}
+                              </span>
+                            ) : r.intake === "filled" ? (
+                              <span className={classes.ready}>
+                                <Ixon width="0.8rem">
+                                  <SparkIcon />
+                                </Ixon>
+                                {getContent("schIntakeFilled")}
+                              </span>
+                            ) : r.intake === "missing" ? (
+                              <span className={classes.muted}>{getContent("schIntakeMissing")}</span>
+                            ) : null}
+                          </span>
+                          <span className={classes.status}>
+                            {r.status && <ReservationStatusBadge status={r.status} />}
+                          </span>
+                        </Link>
+                        {!!r.visit && !!quick && (quick.checkIn || quick.noShow || quick.arrived) && (
+                          <span className={classes.quick}>
+                            <VisitQuickActions visit={r.visit} name={r.name} onDone={() => mutate()} />
+                          </span>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           ))}

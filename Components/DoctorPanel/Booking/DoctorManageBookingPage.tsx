@@ -8,7 +8,6 @@ import { fetcher } from "@/Components/helpers/fetcher";
 import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import useForm from "@/Components/Hooks/useForm";
 import FormatDate from "@/Components/UI/FormatDate";
 import Button from "@/Components/UI/Button";
 import CheckCircleIcon from "@/Components/Icons/CheckCircleIcon";
@@ -23,6 +22,7 @@ import ReservationCancel from "@/Components/Dashboard/Booking/ReservationCancel"
 import usePopup from "@/Components/Hooks/usePopup";
 import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
 import MoveReservationPopup from "../Desk/MoveReservationPopup";
+import VisitQuickActions from "../Desk/VisitQuickActions";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
@@ -33,33 +33,6 @@ type DoctorReservation = IReservation<{
 }>;
 
 const CHECK_IN_EARLY_MINUTES = 60;
-
-const CheckInAction = ({
-  nodeId,
-  mutate,
-}: {
-  nodeId: string;
-  mutate: () => unknown;
-}) => {
-  const getContent = useScopedLocale(NS);
-
-  const { submit, isLoading } = useForm<Record<string, never>>({
-    path: `${API}/doctor/reservation/${nodeId}/check-in`,
-    method: "PATCH",
-    successMessage: getContent("checkInSuccessMessage"),
-    successCb: () => mutate(),
-  });
-
-  return (
-    <Button
-      isLoading={isLoading}
-      leadIcon={<CheckCircleIcon />}
-      onClick={() => submit()}
-    >
-      {getContent("checkInPatient")}
-    </Button>
-  );
-};
 
 const DoctorManageBookingPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -72,6 +45,9 @@ const DoctorManageBookingPage = () => {
   const getContent = useScopedLocale(NS);
   const { setPopup } = usePopup();
   const hasAccess = useDoctorAcl();
+
+  const patientName =
+    [data?.patient?.givenName, data?.patient?.lastName].filter(Boolean).join(" ") || "—";
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/doctorpanel" },
@@ -89,7 +65,6 @@ const DoctorManageBookingPage = () => {
     !!data &&
     Date.now() >=
       new Date(data.date).getTime() + (data.start - CHECK_IN_EARLY_MINUTES) * 60000;
-  const canCheckIn = checkInPossible && checkInOpen;
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -107,7 +82,7 @@ const DoctorManageBookingPage = () => {
                   {getContent("patientName")}
                 </span>
                 <span className={classes.infoValue}>
-                  {`${data.patient.givenName} ${data.patient.lastName}`}
+                  {patientName}
                 </span>
               </div>
 
@@ -172,9 +147,7 @@ const DoctorManageBookingPage = () => {
                   panel="doctor"
                 />
               )}
-              {canCheckIn && (
-                <CheckInAction nodeId={data._id} mutate={mutate} />
-              )}
+              <VisitQuickActions visit={data} name={patientName} onDone={() => mutate()} size="M" />
               {checkInPossible && !checkInOpen && (
                 <span className={classes.hint}>
                   {getContent("checkInOpensHint")}

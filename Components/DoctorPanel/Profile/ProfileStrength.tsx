@@ -32,6 +32,11 @@ const ProfileStrength = ({ onGo }: { onGo: (tab: string) => void }) => {
   const { data: gallery } = useSWR(`${API}/doctor/gallery`, listFetcher);
   const { data: socials } = useSWR(`${API}/doctor/social`, listFetcher);
   const { data: faqs } = useSWR(`${API}/doctor/faq`, listFetcher);
+  const { data: offices } = useSWR(`${API}/doctor/office`, listFetcher);
+  // an active office with its phone and address is a reachable practice too
+  const officeContact = (Array.isArray(offices) ? offices : []).some(
+    (o: { active?: boolean; tel?: string; address?: string }) => o && o.active !== false && !!o.tel && !!o.address,
+  );
 
   const items = useMemo<Item[]>(() => {
     if (!doctor) return [];
@@ -41,7 +46,7 @@ const ProfileStrength = ({ onGo }: { onGo: (tab: string) => void }) => {
       { key: "ppItemSpeciality", done: !!doctor.mainSpeciality, tab: "Details" },
       { key: "ppItemIntro", done: (doctor.introduction || "").trim().length >= 80, tab: "Details" },
       { key: "ppItemServices", done: count(doctor.services) > 0, tab: "Details" },
-      { key: "ppItemContact", done: !!doctor.landLine && !!doctor.address, tab: "Details" },
+      { key: "ppItemContact", done: (!!doctor.landLine && !!doctor.address) || officeContact, tab: "Details" },
       {
         key: "ppItemLocation",
         done: (Array.isArray(coords) && coords.length === 2) || (!!doctor.lat && !!doctor.lng),
@@ -51,7 +56,7 @@ const ProfileStrength = ({ onGo }: { onGo: (tab: string) => void }) => {
       { key: "ppItemSocial", done: count(socials) > 0, tab: "Social" },
       { key: "ppItemFaq", done: count(faqs) > 0, tab: "Faq" },
     ];
-  }, [doctor, gallery, socials, faqs]);
+  }, [doctor, gallery, socials, faqs, officeContact]);
 
   if (!doctor || !items.length) return null;
   const done = items.filter((i) => i.done).length;

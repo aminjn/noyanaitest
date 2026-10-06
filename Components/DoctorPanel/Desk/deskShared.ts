@@ -15,3 +15,5 @@ export type DeskSlot = {
 export type PickedSlot = { date: string; start: number; end: number };
 
 export const deskSessionTypes = ["inPerson", "phone", "voiceCall", "videoCall", "textChat"] as const;
+
+export { formatPhone } from "../../helpers/formatPhone";

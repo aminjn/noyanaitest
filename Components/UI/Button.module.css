@@ -407,17 +407,18 @@
 }
 
 .Neutral.Outline {
-  background-color: transparent;
-  color: var(--gray11);
-  --btnRingColor: var(--gray11);
+  /* a calm glass secondary action, not a heavy black frame */
+  background-color: var(--glassStrong);
+  color: var(--gray12);
+  --btnRingColor: var(--gray5);
 }
 
 .Neutral.Outline:hover,
 .Neutral.Outline:active,
 .Neutral.Outline:focus {
-  background-color: var(--gray4);
-  color: var(--gray11);
-  --btnRingColor: var(--gray11);
+  background-color: var(--gray3);
+  color: var(--gray13);
+  --btnRingColor: var(--gray7);
 }
 
 .XL {

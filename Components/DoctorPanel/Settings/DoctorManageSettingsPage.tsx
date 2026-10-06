@@ -49,6 +49,10 @@ const DoctorManageSettingsPage = () => {
 
   return (
     <WithBalanceHeader>
+      <header className={classes.head}>
+        <h1 className={classes.title}>{getContent("setPageTitle")}</h1>
+        <p className={classes.lead}>{getContent("setPageHint")}</p>
+      </header>
       <ClientTabSystem
         items={tabOrder.map((kind) => ({
           id: kind,

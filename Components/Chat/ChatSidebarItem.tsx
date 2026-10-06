@@ -27,7 +27,7 @@ const ChatSidebarItem = ({
   const base = usePathname().startsWith("/doctorpanel") ? "/doctorpanel/chat" : "/dashboard/chat";
 
   const other = useMemo<IUser<{ Identity: Record<never, never> }> | undefined>(
-    () => chat.participants.find((p) => p._id !== selfId),
+    () => (Array.isArray(chat.participants) ? chat.participants : []).find((p) => p && p._id !== selfId),
     [chat.participants, selfId],
   );
 
@@ -37,10 +37,13 @@ const ChatSidebarItem = ({
   );
 
 
+  const unread = Number(chat.unread) || 0;
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+
   return (
     <Link
       href={`${base}/${chat._id}`}
-      className={`${classes.main} ${isActive ? classes.active : ""}`}
+      className={`${classes.main} ${isActive ? classes.active : ""} ${unread ? classes.hasUnread : ""}`}
       aria-current={isActive ? "page" : undefined}
     >
       <InitialAvatar name={title || "?"} seed={other?._id || chat._id} size="3rem" />
@@ -50,8 +53,17 @@ const ChatSidebarItem = ({
           {getContent(chat.closedAt ? "close" : "open")}
         </span>
       </div>
-      <span className={classes.date}>
-        {new Date(chat.createdAt).toLocaleDateString(intlTag, { month: "short", day: "numeric" })}
+      <span className={classes.side}>
+        <span className={classes.date}>
+          {isNaN(new Date(chat.createdAt).getTime())
+            ? ""
+            : new Date(chat.createdAt).toLocaleDateString(intlTag, { month: "short", day: "numeric" })}
+        </span>
+        {unread > 0 && (
+          <span className={classes.unread} aria-label={getContent("chatUnreadN", [num.format(unread)])}>
+            {unread > 99 ? num.format(99) + "+" : num.format(unread)}
+          </span>
+        )}
       </span>
     </Link>
   );

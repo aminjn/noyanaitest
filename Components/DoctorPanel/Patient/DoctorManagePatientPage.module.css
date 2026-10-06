@@ -3,3 +3,22 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+}
+
+.phone {
+  margin-inline-start: auto;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radiusPill);
+  background: var(--glassStrong);
+  border: 1px solid var(--glassLine);
+  color: var(--textStrong);
+  font-size: var(--fsSm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
