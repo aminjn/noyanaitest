@@ -1,11 +1,9 @@
+import SectionHeader from "../UI/SectionHeader";
 import classes from "./HomeServices.module.css";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
-import CrownIcon from "../Icons/CrownIcon";
-import Link from "@/Components/i18n/Link";
-import DoubleChevronIcon from "../Icons/DoubleChevronIcon";
 import Image from "next/image";
 import serviceImage from "./services.png";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
@@ -14,9 +12,6 @@ import { SwiperSlide } from "swiper/react";
 // the one service card of the site (the homepage had its own dead copy)
 import ServiceCard from "../Service/ServiceCard";
 import {
-  t4xlBold,
-  tlgBold,
-  tmdMedium,
   tsmRegular,
   txlDemiBold,
 } from "../UI/Typography";
@@ -34,19 +29,10 @@ const HomeServices = ({
   if (!nodes?.length) return null;
   return (
     <div className={classes.main}>
-      <div className={classes.header}>
-        <Link href={"/service"} className={classes.chevron}>
-          <Ixon width="1.5rem">
-            <DoubleChevronIcon />
-          </Ixon>
-        </Link>
-        <div className={classes.titleBox}>
-          <h2 className={tlgBold}>{getContent("bestCliniclaServices")}</h2>
-          <Ixon width="1.5rem">
-            <CrownIcon />
-          </Ixon>
-        </div>
-      </div>
+      <SectionHeader
+        title={getContent("bestCliniclaServices")}
+        action={{ href: "/service", label: getContent("seeAll") }}
+      />
       <div className={classes.content}>
         <div className={classes.list}>
           <SwiperSlider swiperClass={classes.swiper} ltr>

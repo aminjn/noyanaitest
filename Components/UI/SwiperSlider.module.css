@@ -9,9 +9,19 @@
   padding: 0.625rem;
   z-index: 1;
   border-radius: 50%;
-  background-color: var(--white);
-  color: var(--black);
-  box-shadow: var(--shadowBase);
+  background: var(--menuGlass);
+  border: 1px solid var(--menuEdge);
+  backdrop-filter: var(--menuBlur);
+  -webkit-backdrop-filter: var(--menuBlur);
+  color: var(--textStrong);
+  box-shadow: var(--elev2);
+}
+
+/* phones swipe; the arrows only sat on the screen edge there */
+@media (max-width: 36rem) {
+  .navButton {
+    display: none;
+  }
 }
 
 .navPrev {

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { IFaq } from "../Admin/Faq/AdminManageFaqsPage";
+import SectionHeader from "../UI/SectionHeader";
 import classes from "./HomeFaqs.module.css";
 import Ixon from "../UI/Ixon";
 import ChevronDownSquareIcon from "../Icons/ChevronDownSquareIcon";
-import { tsmMedium, tsmRegular, txlDemiBold } from "../UI/Typography";
+import { tsmMedium, tsmRegular, } from "../UI/Typography";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import Button from "../UI/Button";
-import ChevronIcon from "../Icons/ChevronIcon";
 
 const NS: ContentNamespace[] = ["common", "homeFaqs"];
 
@@ -45,25 +44,10 @@ const HomeFaqs = ({ nodes }: { nodes?: IFaq[] }) => {
   if (!nodes?.length) return null;
   return (
     <div className={classes.container}>
-      <div className={classes.header}>
-        <h3 className={`${classes.title} ${txlDemiBold}`}>
-          {getContent("frequentlyAskedQuestions")}
-        </h3>
-        <Button
-          variant="Primary"
-          mode="Inline"
-          size="S"
-          tailIcon={
-            <Ixon style={{ transform: "rotateZ(90deg)" }}>
-              <ChevronIcon />
-            </Ixon>
-          }
-          className={classes.all}
-          href="/faq"
-        >
-          {getContent("seeAll")}
-        </Button>
-      </div>
+      <SectionHeader
+        title={getContent("frequentlyAskedQuestions")}
+        action={{ href: "/faq", label: getContent("seeAll") }}
+      />
       <ul className={classes.main}>
         {nodes.map((node) => (
           <FaqItem node={node} key={node._id} />

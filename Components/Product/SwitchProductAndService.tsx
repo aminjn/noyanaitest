@@ -28,9 +28,9 @@ const SwitchProductAndService = () => {
           key={link}
           href={link}
           variant="Primary"
-          mode={pathname === link ? "Fill" : "Outline"}
+          mode={pathname === link ? "Fill" : "Inline"}
           size="M"
-          radius="Medium"
+          radius="High"
         >
           {getContent(linkContentKeyDict[link])}
         </Button>

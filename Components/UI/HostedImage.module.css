@@ -2,8 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* no image: a soft brand tile with the initial, not a flat grey box */
   background-color: var(--primary1);
-  color: var(--primary7);
+  background-image:
+    radial-gradient(80% 80% at 85% 10%, var(--toneViolet), transparent 70%),
+    radial-gradient(70% 70% at 10% 95%, var(--toneSky), transparent 70%);
+  color: var(--primary6);
   overflow: hidden;
   user-select: none;
   container-type: size;
@@ -19,7 +23,8 @@
 .letter {
   font-size: 45cqb;
   line-height: 1;
-  font-weight: 600;
+  font-weight: 800;
+  opacity: 0.85;
 }
 
 @supports not (container-type: size) {

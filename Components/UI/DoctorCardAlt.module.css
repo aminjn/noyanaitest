@@ -1,10 +1,21 @@
 .main {
   display: flex;
   flex-direction: column;
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  background-color: var(--white);
+  padding: 1rem;
+  border-radius: var(--radiusMd);
+  background-color: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev1);
   width: 14.75rem;
+  transition:
+    box-shadow 200ms,
+    border-color 200ms,
+    transform 200ms;
+}
+
+.main:hover {
+  box-shadow: var(--elev2);
+  border-color: var(--cardLineHover);
 }
 
 .scores {

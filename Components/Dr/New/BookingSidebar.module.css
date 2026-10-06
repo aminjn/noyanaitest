@@ -209,9 +209,9 @@
 }
 
 .dayCardCount {
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 500;
-  color: var(--successS1);
+  color: var(--successS2); /* AA on white (S1 was 3.2:1) */
   white-space: nowrap;
 }
 
@@ -229,10 +229,10 @@
 
 .timeSlot {
   padding-block: 0.5rem;
-  border: 1px solid var(--gray6);
+  border: 1px solid var(--successT2);
   border-radius: 0.625rem;
   background-color: var(--white);
-  color: var(--successS1);
+  color: var(--successS2); /* AA on white (S1 was 3.2:1) */
   font-size: 0.875rem;
   font-weight: 500;
   text-align: center;

@@ -55,3 +55,62 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.popular {
+  width: min(100%, 44rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  margin-top: 1rem;
+}
+
+.popularTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--textMuted);
+}
+
+.popularList {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.625rem;
+}
+
+.popularLink {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  color: var(--textStrong);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.popularLink:hover {
+  border-color: var(--cardLineHover);
+  box-shadow: var(--elev2);
+}
+
+.popularIcon {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 36rem) {
+  .popularList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

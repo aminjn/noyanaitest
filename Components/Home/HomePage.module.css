@@ -1,12 +1,23 @@
 .main {
   display: flex;
   flex-direction: column;
+  gap: var(--sectionGap);
+}
+
+/* the sections bring no outer margins of their own: the gap above sets the
+   one rhythm of the page */
+.main > * {
+  margin-block: 0 !important;
 }
 
 .ads {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+.ads:empty {
+  display: none;
 }
 
 .ads > * {

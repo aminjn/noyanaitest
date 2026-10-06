@@ -1,0 +1,6 @@
+
+/* room for the phone tab bar under the last card */
+.navSpace {
+  flex-shrink: 0;
+  height: var(--bottomNavSpace, 0px);
+}

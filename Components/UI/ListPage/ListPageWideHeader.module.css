@@ -14,8 +14,21 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(270.22deg, #dfefff 0.37%, #ffffff 99.62%);
+  /* the brand mesh in both themes (it was a fixed light gradient that
+     left the dark theme's light title on near-white) */
+  background:
+    radial-gradient(40% 120% at 90% 0%, rgba(165, 180, 252, 0.45), transparent 70%),
+    radial-gradient(35% 120% at 10% 100%, rgba(196, 181, 253, 0.3), transparent 70%),
+    var(--white);
+  border-block-end: 1px solid var(--cardLine);
   z-index: -1;
+}
+
+:global(html[data-theme="dark"]) .main::before {
+  background:
+    radial-gradient(40% 120% at 90% 0%, rgba(99, 86, 255, 0.28), transparent 70%),
+    radial-gradient(35% 120% at 10% 100%, rgba(168, 85, 247, 0.16), transparent 70%),
+    var(--gray1);
 }
 
 .header {
@@ -27,7 +40,7 @@
 .icon {
   padding: 0.75rem;
   border-radius: 1rem;
-  background-color: var(--gray1);
+  background-color: var(--toneIndigo);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -7,10 +7,11 @@ import YoutubeIcon from "../Icons/YoutubeIcon";
 import TelegramIcon from "../Icons/TelegramIcon";
 import InstagramIcon from "../Icons/InstagramIcon";
 import LocationIcon from "../Icons/LocationIcon";
-import CallingIcon from "../Icons/CallingIcon";
 import EnvelopeIcon from "../Icons/EnvelopeIcon";
 import CallingIconStroke from "../Icons/CallingIconStroke";
 import useScopedLocale from "../Hooks/useScopedLocale";
+import DownloadIcon from "../Icons/DownloadIcon";
+import usePwaInstall, { openInstallSheet } from "../Pwa/usePwaInstall";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
@@ -52,134 +53,125 @@ const linkMap: {
 
 const PublicFooter = () => {
   const getContent = useScopedLocale(LOCALE_NS);
+  const { isStandalone } = usePwaInstall();
 
   return (
     <footer className={classes.main}>
-      <div className={classes.indent}>
-        <div className={classes.logo}>
-          <LogoLong inheritColors />
+      <div className={classes.inner}>
+        <div className={classes.top}>
+          <div className={classes.brand}>
+            <Link href="/" className={classes.logo}>
+              <LogoLong inheritColors />
+            </Link>
+            <p className={classes.tagline}>{getContent("footerText")}</p>
+            <ul className={classes.socials}>
+              {[
+                { href: getContent("youtubeValue"), icon: <YoutubeIcon />, label: "YouTube" },
+                { href: getContent("telegramValue"), icon: <TelegramIcon />, label: "Telegram" },
+                { href: getContent("instagramValue"), icon: <InstagramIcon />, label: "Instagram" },
+              ].map((social) => (
+                <li key={social.label}>
+                  <a
+                    className={classes.socialLink}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.label}
+                  >
+                    <Ixon width="1.375rem">{social.icon}</Ixon>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            {!isStandalone && (
+              <button
+                type="button"
+                className={classes.install}
+                onClick={() => openInstallSheet()}
+              >
+                <Ixon width="1.125rem">
+                  <DownloadIcon />
+                </Ixon>
+                <span>{getContent("installApp")}</span>
+              </button>
+            )}
+          </div>
+          <ul className={classes.linksCol}>
+            {linkMap.map((group) => (
+              <li className={classes.linksBox} key={group.title}>
+                <span className={classes.linkTitle}>
+                  {getContent(group.title)}
+                </span>
+                <ul className={classes.links}>
+                  {group.items.map((item) => (
+                    <li key={item.title}>
+                      <Link className={classes.link} href={item.target}>
+                        {getContent(item.title)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
         </div>
-        <p>{getContent("footerText")}</p>
-      </div>
-      <div className={classes.content}>
-        <div className={classes.contactCol}>
+        <div className={classes.contacts}>
           <div className={classes.contactItem}>
             <span className={classes.contactIcon}>
-              <Ixon width="1.5rem">
+              <Ixon width="1.25rem">
                 <LocationIcon />
               </Ixon>
             </span>
-            <p className={classes.address}>
-              <span className={classes.addressTop}>
+            <p className={classes.contactText}>
+              <span className={classes.contactStrong}>
                 {getContent("addressTop")}
               </span>
-              <span className={classes.addressBot}>
-                {getContent("addressBot")}
-              </span>
+              <span className={classes.contactSub}>{getContent("addressBot")}</span>
             </p>
           </div>
           <div className={classes.contactItem}>
             <span className={classes.contactIcon}>
-              <Ixon width="1.5rem">
+              <Ixon width="1.25rem">
                 <CallingIconStroke />
               </Ixon>
             </span>
-            <div className={classes.telContent}>
-              <span className={classes.telTitle}>{getContent("telTitle")}</span>
+            <p className={classes.contactText}>
+              <span className={classes.contactSub}>{getContent("telTitle")}</span>
               <a
                 href={`tel:${getContent("landLineValue")}`}
-                className={classes.tel}
+                className={classes.contactStrong}
               >
                 {getContent("landLineLabel")}
               </a>
               <a
-                className={classes.tel}
+                className={classes.contactStrong}
                 href={`tel:${getContent("mobileValue")}`}
               >
                 {getContent("mobileLabel")}
               </a>
-            </div>
+            </p>
           </div>
           <div className={classes.contactItem}>
             <span className={classes.contactIcon}>
-              <Ixon width="1.5rem">
+              <Ixon width="1.25rem">
                 <EnvelopeIcon />
               </Ixon>
             </span>
-            <div className={classes.emailContent}>
-              <span className={classes.telTitle}>
+            <p className={classes.contactText}>
+              <span className={classes.contactSub}>
                 {getContent("emailAddress")}
               </span>
               <a
-                className={classes.tel}
+                className={classes.contactStrong}
                 href={`mailto:${getContent("mailValue")}`}
               >
                 {getContent("mailLabel")}
               </a>
-            </div>
+            </p>
           </div>
         </div>
-        <ul className={classes.linksCol}>
-          {linkMap.map((group) => (
-            <li className={classes.linksBox} key={group.title}>
-              <span className={classes.linkTitle}>
-                {getContent(group.title)}
-              </span>
-              <ul className={classes.links}>
-                {group.items.map((item) => (
-                  <li className={classes.link} key={item.title}>
-                    <Link className={classes.linkInner} href={item.target}>
-                      {getContent(item.title)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-        <div className={classes.certsCol}>
-          <ul className={classes.socials}>
-            <li className={classes.social}>
-              <a
-                className={classes.socialLink}
-                href={getContent("youtubeValue")}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Ixon width="1.875rem">
-                  <YoutubeIcon />
-                </Ixon>
-              </a>
-            </li>
-            <li className={classes.social}>
-              <a
-                className={classes.socialLink}
-                href={getContent("telegramValue")}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Ixon width="1.875rem">
-                  <TelegramIcon />
-                </Ixon>
-              </a>
-            </li>
-            <li className={classes.social}>
-              <a
-                className={classes.socialLink}
-                href={getContent("instagramValue")}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Ixon width="1.875rem">
-                  <InstagramIcon />
-                </Ixon>
-              </a>
-            </li>
-          </ul>
-          <div className={classes.enamad}></div>
-        </div>
+        <p className={classes.note}>{getContent("legalNote")}</p>
       </div>
-      <p className={classes.note}>{getContent("legalNote")}</p>
     </footer>
   );
 };

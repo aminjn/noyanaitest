@@ -1,0 +1,391 @@
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  aspect-ratio: 1 / 1.02;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+
+.glow {
+  position: absolute;
+  inset: 8% 6%;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side at 35% 40%, rgba(109, 74, 255, 0.35), transparent 70%),
+    radial-gradient(closest-side at 70% 65%, rgba(37, 99, 235, 0.3), transparent 70%),
+    radial-gradient(closest-side at 60% 20%, rgba(20, 184, 166, 0.22), transparent 70%);
+  filter: blur(18px);
+  z-index: -2;
+}
+
+.ring {
+  position: absolute;
+  width: 88%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px dashed rgba(79, 70, 229, 0.22);
+  z-index: -1;
+}
+
+:global(html[data-theme="dark"]) .ring {
+  border-color: rgba(161, 139, 255, 0.22);
+}
+
+/* ---- phone ---- */
+.phone {
+  position: relative;
+  width: 56%;
+  aspect-ratio: 9 / 17;
+  padding: 0.5rem;
+  border-radius: 2.5rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(233, 236, 255, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    var(--elev3),
+    inset 0 0 0 1px rgba(30, 35, 70, 0.06);
+  transform: rotate(-3deg);
+}
+
+:global(html[dir="ltr"]) .phone {
+  transform: rotate(3deg);
+}
+
+:global(html[data-theme="dark"]) .phone {
+  background: linear-gradient(160deg, rgba(40, 46, 92, 0.95), rgba(20, 24, 52, 0.95));
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.notch {
+  position: absolute;
+  top: 0.95rem;
+  inset-inline: 0;
+  margin-inline: auto;
+  width: 28%;
+  height: 0.875rem;
+  border-radius: var(--radiusPill);
+  background: rgba(20, 22, 50, 0.9);
+  z-index: 2;
+}
+
+.screen {
+  position: relative;
+  height: 100%;
+  border-radius: 2rem;
+  overflow: hidden;
+  padding: 2.25rem 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background:
+    radial-gradient(90% 50% at 100% 0%, rgba(199, 210, 254, 0.7), transparent 70%),
+    radial-gradient(80% 40% at 0% 100%, rgba(191, 240, 230, 0.6), transparent 70%),
+    #f8f9ff;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--gray13);
+}
+
+:global(html[data-theme="dark"]) .screen {
+  background:
+    radial-gradient(90% 50% at 100% 0%, rgba(99, 86, 255, 0.35), transparent 70%),
+    radial-gradient(80% 40% at 0% 100%, rgba(20, 184, 166, 0.18), transparent 70%),
+    #0d1129;
+}
+
+.appBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.appDot {
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 50%;
+  background: var(--gradAccent);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.7);
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bubble {
+  max-width: 92%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1rem;
+  font-weight: 500;
+}
+
+.user {
+  align-self: flex-end;
+  color: #fff;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  border-end-end-radius: 0.25rem;
+}
+
+.ai {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  background: var(--white);
+  border: 1px solid var(--aiLine);
+  border-end-start-radius: 0.25rem;
+  box-shadow: var(--elev1);
+}
+
+.aiHead {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--aiText);
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+.aiOrb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: var(--ai);
+  background-image: var(--gradAccent);
+}
+
+.aiSpecialty {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 800;
+  font-size: 0.8125rem;
+  color: var(--textStrong);
+}
+
+.urgency {
+  align-self: flex-start;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radiusPill);
+  font-size: 0.625rem;
+  font-weight: 700;
+  background: var(--toneAmber);
+  color: var(--toneAmberInk);
+}
+
+.slotsCard {
+  padding: 0.625rem;
+  border-radius: 1rem;
+  background: var(--white);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slotsTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 700;
+  color: var(--textBody);
+  font-size: 0.6875rem;
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.375rem;
+}
+
+.slot {
+  text-align: center;
+  padding-block: 0.3125rem;
+  border-radius: 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--primary7);
+  background: var(--activeTint);
+  white-space: nowrap;
+}
+
+.slotOn {
+  color: #fff;
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+}
+
+:global(html[data-theme="dark"]) .slot:not(.slotOn) {
+  color: var(--primary8);
+}
+
+/* ---- floating cards ---- */
+.float {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.875rem 0.625rem 0.75rem;
+  border-radius: 1.125rem;
+  background: var(--menuGlass);
+  border: 1px solid var(--menuEdge);
+  box-shadow: var(--menuShadow), inset 0 1px 0 var(--menuLine);
+  backdrop-filter: var(--menuBlur);
+  -webkit-backdrop-filter: var(--menuBlur);
+  white-space: nowrap;
+  animation: bob 7s ease-in-out infinite;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .float {
+    background: var(--menuGlassSolid);
+  }
+}
+
+.floatIcon {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floatText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+}
+
+.floatTitle {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--textStrong);
+}
+
+.floatSub {
+  font-size: 0.75rem;
+  color: var(--textMuted);
+}
+
+.floatBooked {
+  top: 4%;
+  inset-inline-end: -1%;
+}
+
+.floatRx {
+  top: 50%;
+  inset-inline-start: -2%;
+  animation-delay: -3s;
+}
+
+.floatSafe {
+  bottom: 3%;
+  inset-inline-end: 8%;
+  padding-block: 0.4375rem;
+  animation-delay: -5s;
+}
+
+.floatSafe .floatIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.5rem;
+}
+
+.floatSafe .floatTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 30rem) {
+  .stage {
+    max-width: 22rem;
+  }
+
+  .phone {
+    width: 60%;
+    padding: 0.375rem;
+    border-radius: 2rem;
+  }
+
+  .screen {
+    border-radius: 1.625rem;
+    padding: 1.875rem 0.5rem 0.5rem;
+    font-size: 0.6875rem;
+    gap: 0.5rem;
+  }
+
+  .notch {
+    top: 0.75rem;
+  }
+
+  .float {
+    padding: 0.4375rem 0.625rem;
+    gap: 0.5rem;
+    border-radius: 0.875rem;
+  }
+
+  .floatIcon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .floatTitle {
+    font-size: 0.75rem;
+  }
+
+  .floatSub {
+    font-size: 0.6875rem;
+  }
+
+  .floatSafe {
+    display: none;
+  }
+}
+
+/* bottom tab bar of the mock app */
+.tabBar {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-radius: 1.125rem;
+  background: var(--white);
+  border: 1px solid var(--cardLine);
+}
+
+.tabBar > span {
+  height: 1.75rem;
+  border-radius: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--textMuted);
+}
+
+.tabBar > .tabOn {
+  color: var(--primary);
+  background: var(--activeTint);
+}

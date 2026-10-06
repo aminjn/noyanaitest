@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
+import SectionHeader from "../UI/SectionHeader";
 import classes from "./HomeSpecialities.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import Link from "@/Components/i18n/Link";
 import Ixon from "../UI/Ixon";
-import ChevronIcon from "../Icons/ChevronIcon";
 import HostedImage from "../UI/HostedImage";
-import { t2xlBold, tlgBold, tsmDemiBold, tsmMedium } from "../UI/Typography";
+import { tlgBold, tsmDemiBold, } from "../UI/Typography";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
@@ -81,26 +80,12 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
 
   return (
     <div className={classes.main}>
-      <div className={classes.header}>
-        <h2 className={`${classes.title} ${t2xlBold}`}>
-          {/* the admin's picks (isHome), not a view ranking */}
-          {getContent("featuredSpecialities")}
-        </h2>
-        <Button
-          href={"/speciality"}
-          tailIcon={
-            <span style={{ transform: "rotateZ(90deg)" }}>
-              <ChevronIcon />
-            </span>
-          }
-          variant="Primary"
-          mode="Inline"
-          size="S"
-          style={{ backgroundColor: "transparent" }}
-        >
-          {getContent("seeAll")}
-        </Button>
-      </div>
+      {/* the admin's picks (isHome), not a view ranking */}
+      <SectionHeader
+        title={getContent("featuredSpecialities")}
+        description={getContent("megaDescSpecialities")}
+        action={{ href: "/speciality", label: getContent("seeAll") }}
+      />
       <ul className={classes.grid}>
         {nodes.map((node) => (
           <li key={node._id}>

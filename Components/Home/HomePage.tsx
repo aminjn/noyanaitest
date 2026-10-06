@@ -56,12 +56,11 @@ const HomePage = ({
   sliderAds,
   faqs,
   blogs,
-  staticImages,
   stats,
 }: HomePageProps) => {
   return (
     <main className={classes.main}>
-      <HomeHero homeMain={staticImages?.homeMain} />
+      <HomeHero />
       {/* <HomeIntroduction nodes={introduction} /> */}
       <HomeSpecialities nodes={specialities} />
       {/* <HomeAds nodes={advertisements} /> */}

@@ -2,20 +2,13 @@
 
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import SectionHeader from "../UI/SectionHeader";
 import classes from "./HomePharmacyProducts.module.css";
-import Ixon from "../UI/Ixon";
-import CrownIcon from "../Icons/CrownIcon";
-import Link from "@/Components/i18n/Link";
-import DoubleChevronIcon from "../Icons/DoubleChevronIcon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import PillIcon from "../Icons/PillIcon";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
 import ProductCard from "../Product/ProductCard";
 import {
-  t4xlBold,
-  tlgBold,
-  tmdMedium,
   tsmRegular,
   txlDemiBold,
 } from "../UI/Typography";
@@ -58,19 +51,11 @@ const HomePharmacyProducts = () => {
 
   return (
     <div className={classes.main}>
-      <div className={classes.header}>
-        <div className={classes.titleBox}>
-          <Ixon width="1.5rem">
-            <CrownIcon />
-          </Ixon>
-          <h2 className={tlgBold}>{getContent("homePharmacyProductsTitle")}</h2>
-        </div>
-        <Link href={"/product"} className={classes.chevron}>
-          <Ixon width="1.5rem" style={{ transform: "rotateZ(180deg)" }}>
-            <DoubleChevronIcon />
-          </Ixon>
-        </Link>
-      </div>
+      <SectionHeader
+        title={getContent("homePharmacyProductsTitle")}
+        description={getContent("megaDescProducts")}
+        action={{ href: "/product", label: getContent("seeAll") }}
+      />
       <div className={classes.content}>
         <div className={classes.intro}>
           <div className={classes.image}>

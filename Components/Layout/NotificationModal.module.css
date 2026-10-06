@@ -80,7 +80,7 @@
 @media only screen and (max-width: 750px) {
   .main {
     height: calc(100dvh - 5rem);
-    top: 5rem;
+    top: var(--headerH);
     width: 100dvw;
     position: fixed;
     inset-inline: 0;

@@ -28,12 +28,26 @@ const Segment = ({
   );
 };
 
+const MIN_STAT = 50;
+
 // Every number here is counted from the site (getAbout's stats).
 const AboutStats = ({ stats }: { stats?: SiteStats }) => {
   const format = useStatFormat();
-  const count = (value?: number) => (value ? format.count(value) : "");
+  // a count says something only from MIN_STAT up ("2 doctors" reads as a
+  // joke on an about page), the same rule as the home join band
+  const count = (value?: number) =>
+    typeof value === "number" && value >= MIN_STAT ? format.count(value) : "";
   if (!stats) return null;
   const consult = count(stats.consultations);
+  const percent = format.percent(stats.satisfactionPercent);
+  const any = [
+    consult,
+    percent,
+    count(stats.centers),
+    count(stats.doctors),
+    count(stats.users),
+  ].some(Boolean);
+  if (!any) return null;
   return (
     <div className={classes.main}>
       <div className={classes.contentBox}>
@@ -51,7 +65,7 @@ const AboutStats = ({ stats }: { stats?: SiteStats }) => {
           {/* the share of reviews that recommend the doctor, once there are
               enough reviews for it to mean something */}
           <Segment
-            value={format.percent(stats.satisfactionPercent)}
+            value={percent}
             title="usersSatisfaction"
           />
           <Segment value={count(stats.centers)} title="aboutClinicCountTitle" />

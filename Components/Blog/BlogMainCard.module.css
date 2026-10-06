@@ -1,12 +1,21 @@
 .main {
   width: 24rem;
   height: 24rem;
-  border-radius: 1rem;
-  background-color: var(--white);
-  box-shadow:
-    0px 1px 2px 0px rgba(15, 40, 90, 0.04),
-    0px 4px 24px -12px rgba(15, 40, 90, 0.12);
   overflow: hidden;
+  /* shared public card surface (globals.css card tokens) */
+  background-color: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  border-radius: var(--radiusMd);
+  box-shadow: var(--elev1);
+  transition:
+    box-shadow 200ms,
+    border-color 200ms,
+    transform 200ms;
+}
+
+.main:hover {
+  box-shadow: var(--elev2);
+  border-color: var(--cardLineHover);
 }
 
 .image {

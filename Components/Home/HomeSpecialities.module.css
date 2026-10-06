@@ -1,8 +1,6 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
-  margin-bottom: 5.625rem;
 }
 
 .header {
@@ -28,8 +26,9 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
 }
 
 .speciality {
@@ -40,17 +39,28 @@
   justify-content: center;
   gap: 0.5rem;
   /* height: 7.125rem; */
-  padding-block: 1rem;
-  border-radius: 1rem;
-  background-color: var(--primary1);
-  border: 1px solid var(--gray4);
-  transition: all var(--transTime);
+  gap: 0.75rem;
+  padding: 1.25rem 0.75rem;
+  border-radius: var(--radiusMd);
+  background-color: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev1);
+  transition:
+    transform 200ms,
+    box-shadow 200ms,
+    border-color 200ms;
 }
 
-.activeSpeciality {
-  background-color: var(--white);
-  border: 2px solid var(--primary2);
-  box-shadow: var(--shadowSm);
+.speciality:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--elev2);
+  border-color: var(--cardLineHover);
+}
+
+.activeSpeciality,
+.activeSpeciality:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--activeTint), var(--elev2);
 }
 
 .image {
@@ -58,8 +68,9 @@
   width: 3.5rem;
   height: 3.5rem;
   flex-shrink: 0;
-  border-radius: 50%;
-  background-color: #ffffff99;
+  border-radius: 1.125rem;
+  overflow: hidden;
+  background-color: var(--toneIndigo);
 }
 
 .specialityName {
@@ -75,11 +86,12 @@
 .doctorsBox {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 1.5rem;
-  border-radius: 1rem;
-  background-color: var(--gray1);
-  box-shadow: var(--shadowMd);
+  border-radius: var(--radiusLg);
+  background-color: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev2);
 }
 
 .doctorsHeader {

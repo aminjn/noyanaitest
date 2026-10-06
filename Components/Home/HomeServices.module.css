@@ -1,8 +1,6 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
-  margin-bottom: 9.25rem;
 }
 
 .header {
@@ -13,19 +11,6 @@
   padding-block: 1rem;
 }
 
-.header::before {
-  position: absolute;
-  top: 100%;
-  height: 1.25rem;
-  width: 100dvw;
-  inset-inline-start: 0;
-  content: "";
-  display: block;
-  background: linear-gradient(90deg, var(--primary2) 0%, var(--primary3) 88%, var(--primary2) 100%);
-  border-radius: 0.5rem;
-  z-index: -1;
-  pointer-events: none;
-}
 
 .titleBox {
   display: flex;
@@ -50,10 +35,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--white);
-  border: 1px solid var(--gray4);
-  padding: 1rem;
-  border-radius: 1rem;
+  background:
+    radial-gradient(90% 60% at 50% 0%, var(--toneViolet), transparent 75%),
+    var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev1);
+  padding: 1.5rem 1.25rem;
+  border-radius: var(--radiusLg);
 }
 
 .introContent {
@@ -70,7 +58,7 @@
   margin-bottom: 1.5rem;
 }
 
-.secondaryTitle {
+.secondareyTitle {
   color: var(--gray12);
   margin-bottom: 1rem;
   text-align: center;

@@ -1,15 +1,11 @@
-import Link from "@/Components/i18n/Link";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import SectionHeader from "../UI/SectionHeader";
 import classes from "./HomePopular.module.css";
-import Ixon from "../UI/Ixon";
-import ChevronIcon from "../Icons/ChevronIcon";
 import SwiperSlider from "../UI/SwiperSlider";
 import { SwiperSlide } from "swiper/react";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
-import { t2xlBold, tlgMedium } from "../UI/Typography";
-import Button from "../UI/Button";
 
 const NS: ContentNamespace[] = ["common", "home"];
 
@@ -23,25 +19,10 @@ const HomePopular = ({
   if (!nodes?.length) return null;
   return (
     <div className={classes.main}>
-      <div className={classes.header}>
-        <h2 className={`${classes.title} ${t2xlBold}`}>
-          {getContent("popularDoctors")}
-        </h2>
-        <Button
-          href={"/book"}
-          variant="Primary"
-          mode="Inline"
-          style={{ backgroundColor: "transparent" }}
-          tailIcon={
-            <span style={{ transform: "rotateZ(90deg)" }}>
-              <ChevronIcon />
-            </span>
-          }
-          size="S"
-        >
-          {getContent("seeAll")}
-        </Button>
-      </div>
+      <SectionHeader
+        title={getContent("popularDoctors")}
+        action={{ href: "/book", label: getContent("seeAll") }}
+      />
       <SwiperSlider>
         {nodes.map((node) => (
           <SwiperSlide key={node._id} tag="li" className={classes.slide}>
