@@ -1,7 +1,10 @@
 // Front-desk helpers (2026-10), shared by the desk booking, move and days
-// off forms. The API takes days as "YYYY-MM-DD" (local calendar day).
-export const toYmd = (d: Date) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+// off forms. The API takes days as "YYYY-MM-DD" (a Tehran calendar day):
+// toYmd is the Tehran day of a date (a picked day is its Tehran noon, see
+// Components/helpers/tehranTime.ts); "today" is tehranTodayYmd().
+import { tehranYmd } from "../../helpers/tehranTime";
+
+export const toYmd = (d: Date) => tehranYmd(d);
 
 export type DeskSlot = {
   start: number;

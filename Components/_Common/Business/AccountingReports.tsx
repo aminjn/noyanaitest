@@ -1,4 +1,5 @@
 "use client";
+import { tehranMonthStart } from "@/Components/helpers/tehranTime";
 
 import { Fragment, useEffect, useState } from "react";
 import useSWR from "swr";
@@ -298,10 +299,8 @@ export const CostCenters = ({ from, to, refreshKey }: { from: Date | null; to: D
 const AccountingReports = ({ refreshKey }: { refreshKey: number }) => {
   const t = useBizText();
   const [report, setReport] = useState<"trial" | "income" | "sheet" | "cash" | "centers">("income");
-  const [from, setFrom] = useState<Date | null>(() => {
-    const d = new Date();
-    return new Date(d.getFullYear(), d.getMonth(), 1);
-  });
+  // the first of this month in Tehran (Components/helpers/tehranTime.ts)
+  const [from, setFrom] = useState<Date | null>(() => tehranMonthStart());
   const [to, setTo] = useState<Date | null>(null);
   return (
     <section className={classes.card}>

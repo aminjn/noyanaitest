@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import useSWR from "swr";
@@ -206,7 +207,7 @@ const Subscribers = () => {
   const counts = (list?.body.counts || {}) as Partial<Record<string, number>>;
   const stats = (list?.body.stats || {}) as { members?: number; revenue30d?: number };
   const num = new Intl.NumberFormat(adminIntlTag());
-  const dateFormat = new Intl.DateTimeFormat(adminIntlTag(), { dateStyle: "medium" });
+  const dateFormat = new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, dateStyle: "medium" });
   const fmt = (v?: string) => (v && !isNaN(new Date(v).getTime()) ? dateFormat.format(new Date(v)) : "—");
   const tabs: { key: string; title: string; count?: number }[] = [
     { key: "", title: ta("همه") },

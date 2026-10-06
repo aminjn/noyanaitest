@@ -1,3 +1,4 @@
+import { sameTehranDay, TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useParams } from "next/navigation";
 import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import useChatScope from "./useChatScope";
@@ -175,7 +176,8 @@ const ChatMessage = ({ _id }: { _id: string }) => {
   const sentLabel =
     sent && !isNaN(sent.getTime())
       ? sent.toLocaleString(intlTag, {
-          ...(sent.toDateString() === new Date().toDateString() ? {} : { day: "numeric", month: "short" }),
+          timeZone: TEHRAN_TZ,
+          ...(sameTehranDay(sent, new Date()) ? {} : { day: "numeric", month: "short" }),
           hour: "2-digit",
           minute: "2-digit",
           hourCycle: "h23",

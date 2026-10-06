@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { ReactNode, useState } from "react";
 import useSWR from "swr";
@@ -244,6 +245,7 @@ const AdminFinanceOrderPage = () => {
   );
 
   const dateFormat = new Intl.DateTimeFormat(adminIntlTag(), {
+    timeZone: TEHRAN_TZ,
     dateStyle: "medium",
     timeStyle: "short",
   });

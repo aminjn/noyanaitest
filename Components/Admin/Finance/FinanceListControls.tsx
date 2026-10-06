@@ -1,4 +1,6 @@
 "use client";
+import { fromTehranWallClock } from "@/Components/helpers/tehranTime";
+import { tehranYmd as dayKey } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -78,13 +80,11 @@ export const useFinanceFilters = (
     if (filters.q) params.set("q", filters.q);
     if (filters.status) params.set("status", filters.status);
     if (filters.extra) params.set(extraKey, filters.extra);
-    if (filters.from) params.set("from", filters.from.toISOString());
-    if (filters.to) {
-      // the whole "to" day counts
-      const end = new Date(filters.to);
-      end.setHours(23, 59, 59, 999);
-      params.set("to", end.toISOString());
-    }
+    // the picked days are Tehran days (Components/helpers/tehranTime.ts):
+    // from its midnight, through the whole "to" day
+    if (filters.from) params.set("from", fromTehranWallClock(dayKey(filters.from), 0).toISOString());
+    if (filters.to)
+      params.set("to", new Date(fromTehranWallClock(dayKey(filters.to), 24 * 60).getTime() - 1).toISOString());
     return params;
   }, [filters, extraKey]);
 

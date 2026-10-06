@@ -1,4 +1,5 @@
 "use client";
+import { tehranMonthStart } from "@/Components/helpers/tehranTime";
 
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
@@ -234,10 +235,8 @@ export const rangeQs = (from: Date | null, to: Date | null, extra: Record<string
   return p.toString();
 };
 
-export const monthStart = () => {
-  const d = new Date();
-  return new Date(d.getFullYear(), d.getMonth(), 1);
-};
+// the first of this month in Tehran (a picked day, its Tehran noon)
+export const monthStart = () => tehranMonthStart();
 
 // an amount typed with any digits
 export const AmountInput = ({ value, onChange, label, placeholder }: { value: string; onChange: (v: string) => void; label?: string; placeholder?: string }) => {

@@ -1,4 +1,5 @@
 "use client";
+import { tehranNoon, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
@@ -37,12 +38,16 @@ const useRows = (from: Date | null, to: Date | null, refreshKey: number) => {
 
 const shift = (from: Date | null, to: Date | null, mode: Compare): [Date | null, Date | null] => {
   if (mode === "none") return [null, null];
+  // Tehran days (Components/helpers/tehranTime.ts)
   const end = to || new Date();
   if (mode === "year") {
-    const y = (d: Date) => new Date(d.getFullYear() - 1, d.getMonth(), d.getDate(), d.getHours());
+    const y = (d: Date) => {
+      const ymd = tehranYmd(d);
+      return tehranNoon(`${Number(ymd.slice(0, 4)) - 1}${ymd.slice(4)}`);
+    };
     return [from ? y(from) : null, y(end)];
   }
-  const start = from || new Date(end.getFullYear(), 0, 1);
+  const start = from || tehranNoon(`${tehranYmd(end).slice(0, 4)}-01-01`);
   const len = end.getTime() - start.getTime();
   return [new Date(start.getTime() - len - 864e5), new Date(start.getTime() - 864e5)];
 };

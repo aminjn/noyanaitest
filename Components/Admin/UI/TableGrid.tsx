@@ -1,3 +1,15 @@
+import { localYmd, TEHRAN_TZ, tehranYmd } from "@/Components/helpers/tehranTime";
+
+// ag-grid date filter comparator: cell before / on / after the picked day,
+// comparing the cell's Tehran day (Components/helpers/tehranTime.ts)
+const tehranDayComparator = (filterDay: Date, cell: unknown) => {
+  if (cell === null || cell === undefined || cell === "") return -1;
+  const value = cell instanceof Date ? cell : new Date(cell as string);
+  const c = tehranYmd(value);
+  const f = localYmd(filterDay);
+  if (!c || !f) return -1;
+  return c < f ? -1 : c > f ? 1 : 0;
+};
 import { AgGridReact } from "ag-grid-react";
 import classes from "./Table.module.css";
 import {
@@ -176,6 +188,7 @@ const TableGrid = <T,>({
       typeof window !== "undefined" &&
       window.matchMedia("(max-width: 600px)").matches;
     const dateFormat = new Intl.DateTimeFormat(intlTag, {
+      timeZone: TEHRAN_TZ,
       dateStyle: "medium",
       timeStyle: "short",
     });
@@ -235,6 +248,9 @@ const TableGrid = <T,>({
         suppressKeyboardEvent: () => column.suppressKeyboardEvents,
         colId: key,
         filter: column.filter ? `ag${column.filter}ColumnFilter` : undefined,
+        // a date column filters by the cell's Tehran day (the filter's day
+        // is the one picked in TableDateInput, the device's calendar day)
+        ...(column.filter === "Date" ? { filterParams: { comparator: tehranDayComparator } } : {}),
         width: column.width,
         ...(column.width
           ? {}
@@ -326,6 +342,7 @@ const TableGrid = <T,>({
     const api = gridApi.current;
     if (!api) return;
     const dateFormat = new Intl.DateTimeFormat(intlTag, {
+      timeZone: TEHRAN_TZ,
       dateStyle: "short",
       timeStyle: "short",
     });

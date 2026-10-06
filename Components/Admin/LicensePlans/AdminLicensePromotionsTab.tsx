@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo } from "react";
 import useSWR from "swr";
@@ -269,7 +270,7 @@ const AdminLicensePromotionsTab = () => {
   const planOptions = usePlanOptions();
   const renderer = useMemo(() => promotionRenderer(planOptions), [planOptions]);
   const num = new Intl.NumberFormat(adminIntlTag());
-  const date = new Intl.DateTimeFormat(adminIntlTag(), { dateStyle: "medium" });
+  const date = new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, dateStyle: "medium" });
   const fmtDate = (v?: string) => {
     const d = v ? new Date(v) : null;
     return d && !Number.isNaN(d.getTime()) ? date.format(d) : "—";

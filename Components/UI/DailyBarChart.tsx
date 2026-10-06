@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import classes from "./DailyBarChart.module.css";
@@ -71,8 +72,9 @@ const DailyBarChart = ({
     () => ({
       num: new Intl.NumberFormat(locale),
       compact: new Intl.NumberFormat(locale, { notation: "compact" }),
-      dayLabel: new Intl.DateTimeFormat(locale, { month: "short", day: "numeric" }),
+      dayLabel: new Intl.DateTimeFormat(locale, { timeZone: TEHRAN_TZ, month: "short", day: "numeric" }),
       fullDayLabel: new Intl.DateTimeFormat(locale, {
+        timeZone: TEHRAN_TZ,
         weekday: "long",
         month: "long",
         day: "numeric",

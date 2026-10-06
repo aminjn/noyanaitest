@@ -1681,6 +1681,7 @@ export const contentNamespaces = {
   // namespace from "booking" since it's a distinct route with mostly
   // non-overlapping keys.
   bookingFinalize: [
+    "timesInTehranTime",
     "addRelative",
     "nationalCode",
     "dateOfBirth",
@@ -5415,6 +5416,7 @@ export const contentNamespaces = {
   // ---- booking / cart / product / service (useScopedLocale migration, 2026-09) ----
   // Components/Booking/BookingSessionSelectorPopup.tsx — reusable session picker popup, opened from /book (DoctorCardBooking, DoctorCardWithSessions), /book/finalize and the public doctor profile (Components/Dr/PublicDrSessions.tsx).
   bookingSessionSelectorPopup: [
+    "timesInTehranTime",
     "chooseSession",
     "confirmAndContinue",
     "fromTimeXtoTimeY",
@@ -5848,6 +5850,7 @@ export const contentNamespaces = {
   ],
   // Components/Dr/New/BookingSidebar — reusable (/dr/[slug], /book/finalize/[nodeId]); incl. doctorSessionTypeContentKeyDict + patientTypeDict values.
   drBookingSidebar: [
+    "timesInTehranTime",
     "availableSessionCount",
     "clinic",
     "insurance",

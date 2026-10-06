@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -55,7 +56,7 @@ const WalletWithdrawal = () => {
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const date = useMemo(
-    () => new Intl.DateTimeFormat(intlTag, { dateStyle: "medium" }),
+    () => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, dateStyle: "medium" }),
     [intlTag],
   );
   const { data, mutate } = useSWR<WithdrawalData>(

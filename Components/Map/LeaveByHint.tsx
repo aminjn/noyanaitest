@@ -12,6 +12,7 @@ import { tsmMedium, txsMedium, txsRegular } from "../UI/Typography";
 import { navigationUrl } from "../helpers/navigationUrl";
 import { getMapConfig, LatLng, placeInfo, route, toLatLng, trafficZones } from "./nexamap";
 import { useTravelText, useUserLocation } from "./mapHooks";
+import { sameTehranDay, tehranInstantOf, tehranMinutesOfDay, tehranWeekday } from "@/Components/helpers/tehranTime";
 
 const NS: ContentNamespace[] = ["common", "bookingFinalize", "dashboardBooking"];
 
@@ -34,13 +35,13 @@ const parseHours = (hours: unknown): [number, number] | null => {
 // for another day: never on Fridays (Iran's weekend), otherwise by hours.
 const zoneActiveAt = (status: unknown, at: Date): boolean => {
   const s = (status && typeof status === "object" ? status : {}) as { active_today?: unknown; hours?: unknown };
-  const today = new Date();
-  const sameDay = today.toDateString() === at.toDateString();
+  // Tehran's day and clock, whatever the device's zone
+  const sameDay = sameTehranDay(new Date(), at);
   if (sameDay && s.active_today === false) return false;
-  if (!sameDay && at.getDay() === 5) return false;
+  if (!sameDay && tehranWeekday(at) === 5) return false;
   const hours = parseHours(s.hours);
   if (!hours) return true;
-  const minute = at.getHours() * 60 + at.getMinutes();
+  const minute = tehranMinutesOfDay(at);
   return minute >= hours[0] && minute < hours[1];
 };
 
@@ -69,7 +70,8 @@ const LeaveByHint = ({
     if (!date || typeof start !== "number" || !Number.isFinite(start)) return null;
     const d = date instanceof Date ? date : new Date(date);
     if (Number.isNaN(d.getTime())) return null;
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, start);
+    // the visit's Tehran day at its Tehran minutes
+    return tehranInstantOf(d, start);
   }, [date, start]);
   const upcoming = !!visitAt && visitAt.getTime() > Date.now();
 

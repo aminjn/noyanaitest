@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import { Fragment, useCallback, useState } from "react";
@@ -63,6 +64,7 @@ const ClinicManagePrescriptionsPage = () => {
       >
         {data
           ? new Date(data).toLocaleString(intlTag, {
+              timeZone: TEHRAN_TZ,
               month: "long",
               year: "numeric",
               day: "numeric",

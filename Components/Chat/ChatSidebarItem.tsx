@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale, usePathname } from "@/Components/i18n/navigation";
 import useChatScope from "./useChatScope";
 import { useMemo } from "react";
@@ -57,7 +58,7 @@ const ChatSidebarItem = ({
         <span className={classes.date}>
           {isNaN(new Date(chat.createdAt).getTime())
             ? ""
-            : new Date(chat.createdAt).toLocaleDateString(intlTag, { month: "short", day: "numeric" })}
+            : new Date(chat.createdAt).toLocaleDateString(intlTag, { timeZone: TEHRAN_TZ, month: "short", day: "numeric" })}
         </span>
         {unread > 0 && (
           <span className={classes.unread} aria-label={getContent("chatUnreadN", [num.format(unread)])}>

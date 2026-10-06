@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import Link from "@/Components/i18n/Link";
 import { useIntlLocale } from "@/Components/i18n/navigation";
@@ -106,7 +107,7 @@ const AiLocked = ({ profile, gate, compact }: { profile: AiProfile; gate: AiGate
           ? new Intl.DateTimeFormat(tag, { weekday: "long", hour: "2-digit", minute: "2-digit", timeZone: "Asia/Tehran" }).format(at)
           : new Intl.DateTimeFormat(tag, { day: "numeric", month: "long", timeZone: "Asia/Tehran" }).format(at);
     } catch {
-      when = at.toLocaleString();
+      when = at.toLocaleString(undefined, { timeZone: TEHRAN_TZ });
     }
   const text =
     gate.scope === "orgMonth"

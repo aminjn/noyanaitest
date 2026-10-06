@@ -7,7 +7,10 @@ module.exports = {
       cwd: __dirname + "/..",
       script: "node_modules/next/dist/bin/next",
       args: "start -p 3100 -H 127.0.0.1",
-      env: { NODE_ENV: "production" },
+      // Tehran time (Asia/Tehran): server-rendered dates read Tehran
+      // through Components/helpers/tehranTime.ts whatever the zone; this
+      // keeps any stray server-local date on Tehran too
+      env: { NODE_ENV: "production", TZ: "Asia/Tehran" },
       max_memory_restart: "1G",
     },
   ],

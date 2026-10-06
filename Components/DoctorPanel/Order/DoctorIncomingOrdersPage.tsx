@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import useSWR from "swr";
 import { useMemo, useState } from "react";
@@ -144,7 +145,7 @@ const DoctorIncomingOrdersPage = () => {
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const day = useMemo(
-    () => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }),
+    () => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }),
     [intlTag],
   );
   const [tab, setTab] = useState<Tab>("todo");

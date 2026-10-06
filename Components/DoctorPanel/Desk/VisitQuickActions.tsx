@@ -1,4 +1,5 @@
 "use client";
+import { tehranInstantOf } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import classes from "./VisitQuickActions.module.css";
@@ -29,7 +30,8 @@ export type QuickVisit = {
   patientPresentAt?: string | Date;
 };
 
-const startsAt = (v: QuickVisit) => new Date(v.date).getTime() + v.start * 60000;
+// the visit's day at its Tehran minutes (Components/helpers/tehranTime.ts)
+const startsAt = (v: QuickVisit) => tehranInstantOf(v.date, v.start).getTime();
 
 // what the front desk can do with an in-person visit right now
 export const visitActions = (v: QuickVisit, now = Date.now()) => {

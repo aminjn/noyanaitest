@@ -1,4 +1,13 @@
 "use client";
+import TehranTimeHint from "@/Components/Booking/TehranTimeHint";
+import {
+  TEHRAN_TZ,
+  tehranMinutesOfDay,
+  tehranNoon,
+  tehranSaturdayDay,
+  tehranTodayYmd,
+  tehranYmd,
+} from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { useParams, useSearchParams } from "next/navigation";
 import classes from "./FinalizeBookingPage.module.css";
@@ -719,8 +728,9 @@ const BookingFlowSidebar = ({
           )}
           <Pair
             title={getContent("sessionTime")}
-            value={`${date.toLocaleDateString(intlTag, { month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
+            value={`${date.toLocaleDateString(intlTag, { timeZone: TEHRAN_TZ, month: "long", day: "numeric" })} ${getContent("fromTimeXtoTimeY", [numberToTime(start), numberToTime(end)])}`}
           />
+          <TehranTimeHint ns={NS} />
           {/* in person: when to leave, and the traffic zone at that time */}
           {sessionType === "inPerson" && (
             <LeaveByHint
@@ -793,7 +803,8 @@ const InnerBookingFlow = ({
     Office: Record<never, never>;
   }> | null>(() => {
     if (!data) return null;
-    const thisDayOfWeek = (date.getDay() + 1) % 7;
+    // the shift day (0 = Saturday) of the visit's Tehran day
+    const thisDayOfWeek = tehranSaturdayDay(date);
     const target = data.shifts.find(
       (shift) =>
         shift.day === thisDayOfWeek && shift.start <= start && shift.end >= end,
@@ -825,7 +836,7 @@ const InnerBookingFlow = ({
 
   const [isLoading, setIsLoading] = useState<{
     doctor: string;
-    date: Date;
+    date: string;
     start: number;
     end: number;
     sessionType: DoctorSessionType;
@@ -840,7 +851,8 @@ const InnerBookingFlow = ({
     if (!context.sessionType || !context.patient || !context.checkout)
       return pushNotification(getContent("checkInput"), "Warn");
     setIsLoading({
-      date,
+      // the Tehran day as "YYYY-MM-DD": the server reads it as that day
+      date: tehranYmd(date),
       start,
       end,
       method: context.checkout,
@@ -1007,14 +1019,6 @@ const FinalizeBookingPage = () => {
 
   const push = useProgress();
 
-  const todayStart = useMemo<Date>(() => {
-    const then = new Date();
-    then.setHours(0);
-    then.setMinutes(0);
-    then.setSeconds(0);
-    then.setMilliseconds(0);
-    return then;
-  }, []);
 
   useEffect(() => {
     const _date = searchParams.get("d");
@@ -1026,30 +1030,29 @@ const FinalizeBookingPage = () => {
     // only partially present, though, the link is malformed.
     if (!_date && !_start && !_end) return setData(null);
     if (!_date || !_start || !_end) return push("/book");
-    // Parse the YYYY-MM-DD key as local midnight explicitly. `new Date(_date)`
-    // would parse a date-only string as UTC midnight, which drifts from
-    // local midnight (and from `todayStart`) by the timezone offset.
-    const [dYear, dMonth, dDay] = _date.split("-").map(Number);
-    const date = new Date(dYear, (dMonth || 1) - 1, dDay || 1);
+    // The YYYY-MM-DD key is a Tehran day; kept as its Tehran noon, an
+    // instant that formats as that day in any zone, and compared with
+    // Tehran's today and clock, not the device's.
+    const date = tehranNoon(_date);
     const start = Number(_start);
     const end = Number(_end);
-    const now = new Date();
-    const isToday = date.getTime() === todayStart.getTime();
+    const today = tehranTodayYmd();
+    const isToday = tehranYmd(date) === today;
     if (
       isNaN(date.getTime()) ||
       isNaN(start) ||
       isNaN(end) ||
-      date < todayStart ||
+      tehranYmd(date) < today ||
       start >= end ||
       start < 0 ||
       start > 24 * 60 ||
       end < 0 ||
       end > 24 * 60 ||
-      (isToday && start <= now.getHours() * 60 + now.getMinutes())
+      (isToday && start <= tehranMinutesOfDay())
     )
       return push("/book");
     setData({ date, end, start });
-  }, [push, searchParams, todayStart]);
+  }, [push, searchParams]);
 
   if (isUserLoading) return <Loading />;
   if (!user) return <LoginRequired />;

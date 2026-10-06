@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import useSWR from "swr";
@@ -106,7 +107,7 @@ const AdminSmsSettingsPage = () => {
               )}
               {!!data.updatedAt && (
                 <p className={classes.note}>
-                  {ta("آخرین تغییر: ${1}${2}", [new Date(data.updatedAt).toLocaleString(adminIntlTag()), data.updatedBy?.phone ? ` - ${data.updatedBy.phone}` : ""])}
+                  {ta("آخرین تغییر: ${1}${2}", [new Date(data.updatedAt).toLocaleString(adminIntlTag(), { timeZone: TEHRAN_TZ }), data.updatedBy?.phone ? ` - ${data.updatedBy.phone}` : ""])}
                 </p>
               )}
             </Box>

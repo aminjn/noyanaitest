@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
@@ -97,7 +98,7 @@ const DoctorVisitPanel = ({ reservationId }: { reservationId: string }) => {
   const notify = useNotification();
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const clock = useMemo(() => new Intl.DateTimeFormat(intlTag, { hour: "2-digit", minute: "2-digit" }), [intlTag]);
+  const clock = useMemo(() => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, hour: "2-digit", minute: "2-digit" }), [intlTag]);
   const base = `${API}/doctor/reservation/${reservationId}/visit`;
   const { data, error, mutate } = useSWR<VisitRecord>(base, (u: string) => fetcher({ url: u }).then((r) => r.data), {
     shouldRetryOnError: false,

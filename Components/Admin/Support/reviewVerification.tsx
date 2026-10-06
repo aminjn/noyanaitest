@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
@@ -19,7 +20,7 @@ export const verificationLabel = (state: VerificationState) =>
         : ta("تأییدنشده (در امتیاز حساب نمی‌شود)");
 
 export const verificationMonth = (at: unknown) =>
-  safeFormatDate(new Intl.DateTimeFormat(adminIntlTag(), { year: "numeric", month: "long" }), at, "");
+  safeFormatDate(new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, year: "numeric", month: "long" }), at, "");
 
 export const VerificationCell = ({ state, at }: { state: VerificationState; at?: unknown }) => {
   const month = state === "visit" || state === "purchase" ? verificationMonth(at) : "";

@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import classes from "./SuspendedProviderBanner.module.css";
 import Link from "@/Components/i18n/Link";
@@ -26,7 +27,7 @@ const SuspendedProviderBanner = ({ node }: { node: SuspendableProvider }) => {
   const since = node.statusChangedAt ? new Date(node.statusChangedAt) : null;
   const sinceText =
     since && !isNaN(since.getTime())
-      ? new Intl.DateTimeFormat(intlTag, { year: "numeric", month: "long", day: "numeric" }).format(since)
+      ? new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, year: "numeric", month: "long", day: "numeric" }).format(since)
       : "";
   return (
     <div className={classes.main} role="alert">

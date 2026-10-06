@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { createContext, useContext, useMemo } from "react";
 import useSWR from "swr";
@@ -159,8 +160,8 @@ export const usePayAccounts = () => {
 export const useJalaliMonth = () => {
   const tag = useIntlLocale();
   return useMemo(() => {
-    const fmt = new Intl.DateTimeFormat(`${tag}-u-ca-persian`, { month: "long", year: "numeric" });
-    const monthOnly = new Intl.DateTimeFormat(`${tag}-u-ca-persian`, { month: "long" });
+    const fmt = new Intl.DateTimeFormat(`${tag}-u-ca-persian`, { timeZone: TEHRAN_TZ, month: "long", year: "numeric" });
+    const monthOnly = new Intl.DateTimeFormat(`${tag}-u-ca-persian`, { timeZone: TEHRAN_TZ, month: "long" });
     const approx = (year: number, month: number) =>
       new Date(Date.UTC(year + 621, 2, 21 + Math.round((month - 1) * 30.6) + 14));
     return {

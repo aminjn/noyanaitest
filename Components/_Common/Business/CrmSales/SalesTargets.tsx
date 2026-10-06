@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayYmd } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -75,7 +76,7 @@ const GoalForm = ({ meta, goal, onDone }: { meta?: SalesMeta; goal?: Goal; onDon
   const [metric, setMetric] = useState<Goal["metric"]>(goal?.metric || "wonValue");
   const [target, setTarget] = useState(goal ? String(goal.target) : "");
   const [period, setPeriod] = useState<Goal["period"]>(goal?.period || "month");
-  const [startDate, setStart] = useState(goal ? dayOf(goal.startDate) : isoDay(new Date()));
+  const [startDate, setStart] = useState(goal ? dayOf(goal.startDate) : tehranTodayYmd());
   const [endDate, setEnd] = useState(goal ? dayOf(goal.endDate) : "");
   const [lines, setLines] = useState(goal?.lines || []);
   const save = async () => {
@@ -298,7 +299,7 @@ const CommissionForm = ({ meta, rule, onDone }: { meta?: SalesMeta; rule?: Rule;
       salesPct: 0,
       collectionPct: 0,
       period: "month",
-      periodStart: isoDay(new Date()),
+      periodStart: tehranTodayYmd(),
       periodEnd: "",
       active: true,
     },

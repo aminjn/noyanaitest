@@ -402,7 +402,7 @@ export const DayField = ({
   const day = value ? String(value).slice(0, 10) : "";
   return (
     <div className={`${classes.field} ${s.dayField}`}>
-      <DateInput key={day || "none"} title={label} defaultValue={day ? new Date(`${day}T12:00:00`) : undefined} onChange={(d) => onChange(isoDay(d))} readOnly={disabled} />
+      <DateInput key={day || "none"} title={label} defaultValue={day || undefined} onChange={(d) => onChange(isoDay(d))} readOnly={disabled} />
       {optional && !!day && !disabled && (
         <button type="button" className={s.dayClear} onClick={() => onChange("")} aria-label={t("clearSelection")} title={t("clearSelection")}>
           ×

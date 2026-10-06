@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useMemo } from "react";
 import classes from "./HomeHeroVisual.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -26,10 +27,11 @@ const HomeHeroVisual = () => {
 
   const { slots, booked } = useMemo(() => {
     const time = new Intl.DateTimeFormat(intlTag, {
+      timeZone: TEHRAN_TZ,
       hour: "numeric",
       minute: "2-digit",
     });
-    const weekday = new Intl.DateTimeFormat(intlTag, { weekday: "long" });
+    const weekday = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" });
     // any fixed day/times: this is an illustration
     const at = (h: number, m: number) => time.format(new Date(2026, 0, 3, h, m));
     return {

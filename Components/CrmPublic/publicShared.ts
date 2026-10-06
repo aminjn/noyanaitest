@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useCallback, useMemo } from "react";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
@@ -16,7 +17,7 @@ export const usePublicFormat = () => {
   const tag = useIntlLocale();
   return useMemo(() => {
     const num = new Intl.NumberFormat(tag, { maximumFractionDigits: 0 });
-    const date = new Intl.DateTimeFormat(tag, { dateStyle: "medium" });
+    const date = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, dateStyle: "medium" });
     return {
       money: (n?: number) => num.format(Math.round(Number(n) || 0)),
       date: (v?: string) => {

@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import useSWR from "swr";
 import { useMemo, useState } from "react";
@@ -70,7 +71,7 @@ const DashboardManageOrdersPage = () => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const day = useMemo(() => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }), [intlTag]);
+  const day = useMemo(() => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }), [intlTag]);
   const [tab, setTab] = useState<Tab>("all");
   const [filter, setFilter] = useState<"" | "unpaid" | "preparing">("");
 

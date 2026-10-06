@@ -1,4 +1,5 @@
 "use client";
+import { tehranNoon, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -200,10 +201,8 @@ export const personLabel = (u?: AdminPerson | null) => {
   return u.username || phone || u._id;
 };
 
-// "YYYY-MM-DD" of a local date (the server stores reservation days as local
-// midnight)
-export const dayKey = (date: Date) =>
-  `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(2, "0")}-${`${date.getDate()}`.padStart(2, "0")}`;
+// "YYYY-MM-DD" of the Tehran day of a date (a picked day is its Tehran noon)
+export const dayKey = (date: Date) => tehranYmd(date);
 
 export const newRequestKey = () => {
   try {
@@ -451,9 +450,10 @@ export const RescheduleReservationPopup = ({
 }) => {
   const { closePopup } = usePopup();
   const pushNotification = useNotification();
+  // the visit's Tehran day, as the picker's own (local) date
   const [day, setDay] = useState<Date | undefined>(() => {
-    const d = currentDate ? new Date(currentDate) : null;
-    return d && !isNaN(d.getTime()) ? d : undefined;
+    const ymd = currentDate ? tehranYmd(currentDate) : "";
+    return ymd ? tehranNoon(ymd) : undefined;
   });
   const [picked, setPicked] = useState<Slot | null>(null);
   const [reason, setReason] = useState("");

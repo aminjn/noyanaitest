@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import useSWR from "swr";
@@ -75,7 +76,7 @@ const formatNumber = (v: unknown) =>
 const formatDate = (v: unknown) => {
   if (typeof v !== "string" || !v) return "—";
   const d = new Date(v);
-  return Number.isNaN(d.getTime()) ? v : d.toLocaleString(adminIntlTag());
+  return Number.isNaN(d.getTime()) ? v : d.toLocaleString(adminIntlTag(), { timeZone: TEHRAN_TZ });
 };
 
 const Stat = ({ label, value, ltr }: { label: string; value: string; ltr?: boolean }) => (

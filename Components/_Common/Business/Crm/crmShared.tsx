@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { useIntlLocale } from "@/Components/i18n/navigation";
@@ -330,7 +331,7 @@ export const usePercent = () => {
 export const useHourLabel = () => {
   const tag = useIntlLocale();
   return useMemo(() => {
-    const fmt = new Intl.DateTimeFormat(tag, { hour: "2-digit", minute: "2-digit", hour12: false });
+    const fmt = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, hour: "2-digit", minute: "2-digit", hour12: false });
     return (h: number) => fmt.format(new Date(2000, 0, 1, h, 0));
   }, [tag]);
 };

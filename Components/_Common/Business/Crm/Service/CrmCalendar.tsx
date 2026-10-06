@@ -1,4 +1,5 @@
 "use client";
+import { addDaysYmd, fromTehranWallClock, TEHRAN_TZ, tehranNoon, tehranWeekday, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -27,10 +28,10 @@ type Cal = { events: Event[]; followUps: Due[]; tasks: Due[] };
 const kindKey: Record<Kind, string> = { meeting: "crmeEvMeeting", call: "crmeEvCall", surgery: "crmeEvSurgery", visit: "crmeEvVisit", other: "crmeEvOther" };
 
 const DAY = 864e5;
-const startOfWeek = (d: Date, weekStart: number) => {
-  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  return new Date(+x - ((x.getDay() - weekStart + 7) % 7) * DAY);
-};
+// the first day of the week of d, as a Tehran "YYYY-MM-DD" (the calendar
+// runs on Tehran days, Components/helpers/tehranTime.ts)
+const startOfWeek = (d: Date, weekStart: number) =>
+  addDaysYmd(tehranYmd(d), -((tehranWeekday(d) - weekStart + 7) % 7));
 
 const EventPopup = ({ event, day, onDone }: { event?: Event; day?: Date; onDone: () => unknown }) => {
   const t = useCrmText();
@@ -119,21 +120,22 @@ const CrmCalendar = () => {
   const weekStart = ["fa", "ar", "ur"].includes(locale) ? 6 : 1;
   const [anchor, setAnchor] = useState(() => new Date());
   const first = useMemo(() => startOfWeek(anchor, weekStart), [anchor, weekStart]);
-  const days = useMemo(() => Array.from({ length: 42 }, (_, i) => new Date(+first + i * DAY + 12 * 36e5)), [first]);
-  const last = new Date(+first + 42 * DAY);
-  const { data, error, mutate } = useGet<Cal | null>(`/calendar?from=${first.toISOString()}&to=${last.toISOString()}`, (d) => (d && typeof d === "object" ? (d as Cal) : null));
+  const days = useMemo(() => Array.from({ length: 42 }, (_, i) => tehranNoon(addDaysYmd(first, i))), [first]);
+  const rangeFrom = fromTehranWallClock(first, 0);
+  const last = fromTehranWallClock(addDaysYmd(first, 42), 0);
+  const { data, error, mutate } = useGet<Cal | null>(`/calendar?from=${rangeFrom.toISOString()}&to=${last.toISOString()}`, (d) => (d && typeof d === "object" ? (d as Cal) : null));
   const fmt = useMemo(
     () => ({
-      day: new Intl.DateTimeFormat(tag, { day: "numeric" }),
+      day: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, day: "numeric" }),
       // the day of the month in Latin digits (is it the 1st?)
-      dayLatn: new Intl.DateTimeFormat(tag, { day: "numeric", numberingSystem: "latn" }),
-      dayMonth: new Intl.DateTimeFormat(tag, { day: "numeric", month: "short" }),
-      weekday: new Intl.DateTimeFormat(tag, { weekday: "short" }),
-      range: new Intl.DateTimeFormat(tag, { year: "numeric", month: "long" }),
+      dayLatn: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, day: "numeric", numberingSystem: "latn" }),
+      dayMonth: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, day: "numeric", month: "short" }),
+      weekday: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, weekday: "short" }),
+      range: new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, year: "numeric", month: "long" }),
     }),
     [tag],
   );
-  const monthOf = (d: Date) => new Intl.DateTimeFormat(tag, { month: "numeric" }).format(d);
+  const monthOf = (d: Date) => new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, month: "numeric" }).format(d);
   const anchorMonth = monthOf(anchor);
   const sameDay = (a: string | Date, b: Date) => dayOf(a) === dayOf(b);
   const today = new Date();

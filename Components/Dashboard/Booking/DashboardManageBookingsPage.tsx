@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ, tehranInstantOf } from "@/Components/helpers/tehranTime";
 
 import useSWR from "swr";
 import classes from "./DashboardManageBookingsPage.module.css";
@@ -159,8 +160,8 @@ const DashboardManageBookingsPage = () => {
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const fmt = useMemo(
     () => ({
-      weekday: new Intl.DateTimeFormat(intlTag, { weekday: "long" }),
-      day: new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }),
+      weekday: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" }),
+      day: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }),
     }),
     [intlTag],
   );
@@ -173,8 +174,9 @@ const DashboardManageBookingsPage = () => {
 
   const list = useMemo(() => (Array.isArray(data) ? data : []), [data]);
   const groups = useMemo(() => {
+    // the visit's real start (its Tehran day and minutes)
     const byTime = (a: PatientReservation, b: PatientReservation) =>
-      new Date(a.date).getTime() - new Date(b.date).getTime() || a.start - b.start;
+      tehranInstantOf(a.date, a.start).getTime() - tehranInstantOf(b.date, b.start).getTime() || 0;
     const upcoming = list.filter((r) => OPEN.includes(r.status)).sort(byTime);
     const past = list.filter((r) => !OPEN.includes(r.status) && r.status !== "cancelled").sort((a, b) => byTime(b, a));
     const cancelled = list.filter((r) => r.status === "cancelled").sort((a, b) => byTime(b, a));

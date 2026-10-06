@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import useSWR from "swr";
 import { API } from "@/Components/config";
@@ -104,7 +105,7 @@ const UserProCard = ({ userId, canManage }: { userId: string; canManage: boolean
   );
   if (!data) return null;
   const num = new Intl.NumberFormat(adminIntlTag());
-  const date = new Intl.DateTimeFormat(adminIntlTag(), { dateStyle: "medium" });
+  const date = new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, dateStyle: "medium" });
   const fmt = (v?: string | null) => (v && !isNaN(new Date(v).getTime()) ? date.format(new Date(v)) : "—");
   const history = Array.isArray(data.history) ? data.history : [];
   const running = history.find((p) => p.state === "active") || null;

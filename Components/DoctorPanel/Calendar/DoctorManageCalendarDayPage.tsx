@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ, tehranTodayYmd, tehranYmd } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import useSWR from "swr";
@@ -51,7 +52,7 @@ const DoctorManageCalendarDayPage = () => {
   ]);
 
   const past = useMemo<boolean>(
-    () => new Date(Number(params.stamp)) < new Date(),
+    () => tehranYmd(Number(params.stamp)) <= tehranTodayYmd(),
     [params.stamp],
   );
 
@@ -87,6 +88,7 @@ const DoctorManageCalendarDayPage = () => {
           }
           title={`${getContent("timeLine")} ${safeFormatDate(
             new Intl.DateTimeFormat(intlTag, {
+              timeZone: TEHRAN_TZ,
               month: "long",
               day: "numeric",
               year: "numeric",

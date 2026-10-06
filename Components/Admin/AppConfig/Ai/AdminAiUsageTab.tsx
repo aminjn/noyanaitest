@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -134,13 +135,13 @@ const AdminAiUsageTab = () => {
                         key={day}
                         className={classes.bar}
                         style={{ blockSize: `${Math.max(2, (v / peak) * 100)}%` }}
-                        title={`${new Intl.DateTimeFormat(adminIntlTag(), { day: "numeric", month: "short" }).format(new Date(`${day}T12:00:00+03:30`))}: ${n.format(v)}`}
+                        title={`${new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, day: "numeric", month: "short" }).format(new Date(`${day}T12:00:00+03:30`))}: ${n.format(v)}`}
                       />
                     ))}
                   </div>
                   <div className={classes.barsAxis}>
-                    <span>{new Intl.DateTimeFormat(adminIntlTag(), { day: "numeric", month: "short" }).format(new Date(`${series[0][0]}T12:00:00+03:30`))}</span>
-                    <span>{new Intl.DateTimeFormat(adminIntlTag(), { day: "numeric", month: "short" }).format(new Date(`${series[series.length - 1][0]}T12:00:00+03:30`))}</span>
+                    <span>{new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, day: "numeric", month: "short" }).format(new Date(`${series[0][0]}T12:00:00+03:30`))}</span>
+                    <span>{new Intl.DateTimeFormat(adminIntlTag(), { timeZone: TEHRAN_TZ, day: "numeric", month: "short" }).format(new Date(`${series[series.length - 1][0]}T12:00:00+03:30`))}</span>
                   </div>
                 </>
               ) : (

@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayPicker } from "@/Components/helpers/tehranTime";
 
 import { useState } from "react";
 import DateInput from "@/Components/UI/DateInput";
@@ -28,10 +29,8 @@ const Opening = ({ onChanged }: { onChanged: () => unknown }) => {
   const { data } = useBizAccounts();
   const accounts = asArray<BizAccount>(data).filter((a) => a.level === "detail" && ["asset", "liability", "equity"].includes(a.type) && a.isActive !== false && a.role !== "openingBalance");
   const [rows, setRows] = useState<Row[]>([empty(), empty(), empty()]);
-  const [date, setDate] = useState<Date>(() => {
-    const d = new Date();
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  });
+  // today in Tehran, as the picker's value
+  const [date, setDate] = useState<Date>(() => tehranTodayPicker());
   const [result, setResult] = useState<{ posted: number; skipped: string[]; balancedBy: number } | null>(null);
   const d = rows.reduce((s, r) => s + parseAmount(r.debit), 0);
   const c = rows.reduce((s, r) => s + parseAmount(r.credit), 0);

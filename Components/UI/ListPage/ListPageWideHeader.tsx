@@ -1,3 +1,4 @@
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { ReactNode } from "react";
 import classes from "./ListPageWideHeader.module.css";
 import Ixon from "../Ixon";
@@ -42,7 +43,7 @@ const ListPageWideHeader = ({
     const date = new Date(reviewer.date);
     return isNaN(date.getTime())
       ? ""
-      : date.toLocaleDateString(intlLocale, { dateStyle: "medium" });
+      : date.toLocaleDateString(intlLocale, { timeZone: TEHRAN_TZ, dateStyle: "medium" });
   })();
   return (
     <div className={classes.main}>

@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
 import { useParams } from "next/navigation";
@@ -56,6 +57,7 @@ const PrescrfiptionDocument = ({ node }: { node: DefaultPrescription }) => {
             <Text style={styles.date}>{`${getContent(
               "prescriptionCreationDate"
             )} : ${new Date(node.createdAt).toLocaleDateString(intlTag, {
+              timeZone: TEHRAN_TZ,
               month: "long",
               day: "numeric",
               year: "numeric",
@@ -96,7 +98,7 @@ const PrescrfiptionDocument = ({ node }: { node: DefaultPrescription }) => {
                 "taminSendDate"
               )} : ${new Date(node.taminStatus.submittedAt).toLocaleDateString(
                 intlTag,
-                { month: "long", day: "numeric", year: "numeric" }
+                { timeZone: TEHRAN_TZ, month: "long", day: "numeric", year: "numeric" }
               )}`}</Text>
             </View>
           </View>

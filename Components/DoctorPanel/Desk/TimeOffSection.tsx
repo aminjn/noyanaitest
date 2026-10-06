@@ -1,4 +1,5 @@
 "use client";
+import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -47,7 +48,7 @@ const TimeOffSection = () => {
   const [busy, setBusy] = useState(false);
   const [formKey, setFormKey] = useState(0);
   const fmt = useMemo(
-    () => new Intl.DateTimeFormat(intlTag, { day: "numeric", month: "long", year: "numeric" }),
+    () => new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }),
     [intlTag],
   );
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);

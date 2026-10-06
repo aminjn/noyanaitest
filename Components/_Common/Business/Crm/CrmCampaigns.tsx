@@ -1,4 +1,5 @@
 "use client";
+import { fromTehranWallClock, tehranNoon, tehranParts, tehranYmd } from "@/Components/helpers/tehranTime";
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -83,8 +84,9 @@ const CampaignForm = ({
     return { ...emptyRules(), ...r };
   });
   const [later, setLater] = useState(!!campaign?.sendAt);
-  const [day, setDay] = useState<Date | null>(campaign?.sendAt ? new Date(campaign.sendAt) : null);
-  const [hour, setHour] = useState(campaign?.sendAt ? new Date(campaign.sendAt).getHours() : 10);
+  // the send day and hour are Tehran's (the send window is 08-21 Tehran)
+  const [day, setDay] = useState<Date | null>(campaign?.sendAt ? tehranNoon(tehranYmd(campaign.sendAt)) : null);
+  const [hour, setHour] = useState(campaign?.sendAt ? tehranParts(campaign.sendAt).hour : 10);
   const [wFrom, setWFrom] = useState(campaign?.windowFrom ?? 8);
   const [wUntil, setWUntil] = useState(campaign?.windowUntil ?? 21);
   const [estimate, setEstimate] = useState<CrmEstimate | null>(null);
@@ -115,9 +117,7 @@ const CampaignForm = ({
   }, [api, key, text]);
   const sendAt = (() => {
     if (!later || !day) return null;
-    const d = new Date(day);
-    d.setHours(hour, 0, 0, 0);
-    return d.toISOString();
+    return fromTehranWallClock(tehranYmd(day), hour * 60).toISOString();
   })();
   const valid = name.trim().length >= 2 && text.trim().length >= 5 && (mode !== "segment" || !!segment) && wUntil > wFrom && (!later || !!sendAt);
   const pickTemplate = (id: string) => {

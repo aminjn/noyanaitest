@@ -1,4 +1,5 @@
 "use client";
+import { tehranTodayYmd } from "@/Components/helpers/tehranTime";
 
 import { ReactNode, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -550,7 +551,7 @@ const Reconcile = ({ account, onDone }: { account: FinMoney; onDone: () => unkno
         payload: {
           vouchers: ids,
           cleared: value,
-          ...(withStatement && statement ? { statementBalance: parseAmount(statement), statementDate: isoDay(new Date()) } : {}),
+          ...(withStatement && statement ? { statementBalance: parseAmount(statement), statementDate: tehranTodayYmd() } : {}),
         },
       });
       await mutate();
