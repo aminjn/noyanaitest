@@ -2,6 +2,8 @@
 import { TEHRAN_TZ, tehranInstantOf } from "@/Components/helpers/tehranTime";
 
 import useSWR from "swr";
+import InsuranceBreakdown, { BreakdownReservation } from "@/Components/Booking/Insurance/InsuranceBreakdown";
+import useBreakdownTexts from "@/Components/Booking/Insurance/useBreakdownTexts";
 import classes from "./DashboardManageBookingsPage.module.css";
 import {
   DoctorSessionType,
@@ -132,6 +134,12 @@ export interface IReservation<
   cancelledAt?: Date;
   cancelledBy?: ReservationParty;
   cancelReason?: string;
+  // (2026-10) paid at the desk, and the insurers' split
+  // (Components/Booking/Insurance/InsuranceBreakdown.tsx)
+  payAtDesk?: boolean;
+  deskFee?: number;
+  deskPaidAt?: string | null;
+  insuranceQuote?: BreakdownReservation["insuranceQuote"];
   createdAt: Date;
 }
 
@@ -172,6 +180,8 @@ const DashboardManageBookingsPage = () => {
     const two = (n: number) => num.format(n).padStart(2, num.format(0));
     return `${two(Math.floor(m / 60))}:${two(m % 60)}`;
   };
+  const breakdownText = useBreakdownTexts();
+  const money = (n: number) => getContent("xToman", [num.format(Math.max(0, Math.round(n)))]);
   const [tab, setTab] = useState<Tab>("upcoming");
   const { hoursText, canChange } = useChangeWindow();
   const [moving, setMoving] = useState<PatientReservation | null>(null);
@@ -294,6 +304,8 @@ const DashboardManageBookingsPage = () => {
                         </strong>
                       </div>
                     </div>
+                    {/* the insurers' lines and the patient's share, at a glance */}
+                    <InsuranceBreakdown compact reservation={r} text={breakdownText} money={money} />
                     {open && (
                       <span className={r.intakeFilled ? classes.chipOk : classes.chipTodo}>
                         <Ixon width="0.8rem">

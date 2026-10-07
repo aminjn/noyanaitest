@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WithStyleProps } from "../Layout/Layout";
 import classes from "./NodesSelector.module.css";
 import { fetcher } from "../helpers/fetcher";
@@ -25,6 +25,12 @@ export type NodesSelectorCreatable = {
   extra?: Record<string, unknown>;
 };
 
+// (2026-10) A long list (every doctor's services...) searched on the
+// server instead of loaded whole: the typed text goes to `param` (default
+// "q") and the current value to `selectedParam` (default "selected"), so
+// the list always holds the record already chosen.
+export type NodesSelectorSearch = { param?: string; selectedParam?: string };
+
 type NewOption = { label: string; value: string; __isNew__: true };
 const isNewOption = (option: unknown): option is NewOption =>
   !!option && typeof option === "object" && "__isNew__" in option;
@@ -43,6 +49,7 @@ const NodesSelector = <TMulti extends boolean = false>({
   dataParser,
   clearable,
   creatable,
+  search,
 }: WithStyleProps<{
   title?: string;
   path: string;
@@ -57,8 +64,25 @@ const NodesSelector = <TMulti extends boolean = false>({
   dataParser?: (res: unknown) => unknown[];
   clearable?: boolean;
   creatable?: NodesSelectorCreatable;
+  search?: NodesSelectorSearch | boolean;
 }>) => {
-  const { data, error, mutate } = useSWR(path, (url: string) =>
+  // the server search: the text typed, debounced
+  const [typed, setTyped] = useState("");
+  const [query, setQuery] = useState("");
+  useEffect(() => {
+    if (!search) return;
+    const t = setTimeout(() => setQuery(typed.trim()), 250);
+    return () => clearTimeout(t);
+  }, [typed, search]);
+  const searchOpts = search && typeof search === "object" ? search : {};
+  const selectedNow = Array.isArray(defaultValue) ? defaultValue.join(",") : typeof defaultValue === "string" ? defaultValue : "";
+  const url = search
+    ? `${path}${path.includes("?") ? "&" : "?"}${new URLSearchParams({
+        [searchOpts.param || "q"]: query,
+        ...(selectedNow ? { [searchOpts.selectedParam || "selected"]: selectedNow } : {}),
+      }).toString()}`
+    : path;
+  const { data, error, mutate } = useSWR(url, (url: string) =>
     fetcher({ url }).then((res) => {
       const list = dataParser ? dataParser(res) : res?.data?.data;
       if (!Array.isArray(list)) return [];
@@ -163,6 +187,14 @@ const NodesSelector = <TMulti extends boolean = false>({
       emit(e);
     },
     placeholder: getContent("selectPlaceholder"),
+    // server search: the server already filtered by the text typed
+    ...(search
+      ? {
+          onInputChange: (v: string) => setTyped(v),
+          filterOption: () => true,
+          isLoading: !data && !error,
+        }
+      : {}),
   };
 
   return (

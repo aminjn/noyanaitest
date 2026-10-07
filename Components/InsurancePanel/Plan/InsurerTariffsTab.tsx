@@ -36,6 +36,8 @@ const InsurerTariffsTab = () => {
     },
     speciality: getContent("insTariffSpeciality"),
     service: getContent("insTariffService"),
+    servicePackage: getContent("insTariffPackage"),
+    catalogHint: getContent("insTariffCatalogHint"),
     method: getContent("insTariffMethod"),
     methods: { percent: getContent("insTariffMethodPercent"), govTariff: getContent("insTariffMethodGov"), fixed: getContent("insTariffMethodFixed") },
     percent: getContent("insTariffPercent"),

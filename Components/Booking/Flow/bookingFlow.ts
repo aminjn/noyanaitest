@@ -98,8 +98,14 @@ export type InsurerLine = {
   planName?: string;
   base: number;
   share: number;
-  // no share: "noTariff" | "limit"
+  // no share: "noTariff" | "limit" | "notEligible"
   reason?: string;
+  method?: string;
+  // the clinic or hospital that holds the contract (its claim list)
+  holder?: "doctor" | "centre";
+  centreName?: string;
+  // the live eligibility check (backend Lib/insuranceEligibility.ts)
+  eligibility?: { provider?: string; status?: "verified" | "notEligible" | string; coverage?: number } | null;
 };
 
 // a slot's part of the day, Doctolib / Zocdoc style
@@ -134,12 +140,21 @@ export const prepKeys: Record<DoctorSessionType, ContentKey[]> = {
 // posts the Tehran day as "YYYY-MM-DD")
 export const finalizeHref = (
   doctorId: string,
-  pick?: { ymd: string; start: number; end: number; sessionType?: DoctorSessionType | null; office?: string | null },
+  pick?: {
+    ymd: string;
+    start: number;
+    end: number;
+    sessionType?: DoctorSessionType | null;
+    office?: string | null;
+    // a family member the booking is for (a waitlist offer made for them)
+    patient?: string | null;
+  },
 ) => {
   if (!pick) return `/book/finalize/${doctorId}`;
   const q = new URLSearchParams({ d: pick.ymd, s: String(pick.start), e: String(pick.end) });
   if (pick.sessionType) q.set("t", pick.sessionType);
   if (pick.office) q.set("o", pick.office);
+  if (pick.patient) q.set("p", pick.patient);
   return `/book/finalize/${doctorId}?${q.toString()}`;
 };
 

@@ -1,0 +1,124 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+  padding: var(--sp3);
+  border-radius: var(--radiusSm);
+  background: var(--hoverTint);
+  min-width: 0;
+}
+.compact {
+  padding: var(--sp2) var(--sp3);
+  gap: var(--sp1);
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp2);
+  font-size: var(--fsSm);
+  font-weight: 600;
+  color: var(--textStrong);
+}
+.pay {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp1);
+  padding-block: 0.15rem;
+  padding-inline: var(--sp2);
+  border-radius: 999px;
+  font-size: var(--fsXs);
+  font-weight: 500;
+  border: 1px solid var(--line);
+  color: var(--textBody);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp3);
+  font-size: var(--fsSm);
+  color: var(--textBody);
+  min-width: 0;
+}
+.label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp1) var(--sp2);
+  min-width: 0;
+}
+.label small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  text-align: end;
+  white-space: nowrap;
+}
+.amount b {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.status {
+  font-size: var(--fsXs);
+  font-weight: 500;
+  padding-inline: var(--sp2);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.st-pending {
+  background: color-mix(in srgb, #f59e0b 16%, transparent);
+  color: #b45309;
+}
+.st-booked {
+  background: color-mix(in srgb, #10b981 16%, transparent);
+  color: #047857;
+}
+.st-cancelled,
+.st-reversed,
+.st-none {
+  background: color-mix(in srgb, #94a3b8 20%, transparent);
+  color: var(--textMuted);
+}
+.st-desk {
+  background: color-mix(in srgb, #6366f1 14%, transparent);
+  color: #4338ca;
+}
+.you {
+  padding-block-start: var(--sp2);
+  border-top: 1px dashed var(--line);
+  color: var(--textStrong);
+  font-weight: 600;
+}
+.verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--fsXs);
+  color: #047857;
+}
+.note {
+  margin: 0;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+  line-height: 1.7;
+}
+/* the dark theme (app/layout.tsx sets html[data-theme]) */
+html[data-theme="dark"] .st-pending { color: #fbbf24; }
+html[data-theme="dark"] .st-booked,
+html[data-theme="dark"] .verified { color: #34d399; }
+html[data-theme="dark"] .st-desk { color: #a5b4fc; }

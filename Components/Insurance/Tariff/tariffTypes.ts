@@ -19,6 +19,8 @@ export type InsuranceTariff = {
   level?: TariffLevel;
   speciality?: Ref;
   service?: Ref;
+  // a doctor's service package (Models/ServicePackage.ts)
+  servicePackage?: Ref;
   method?: TariffMethod;
   percent?: number;
   amount?: number;

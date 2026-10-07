@@ -93,7 +93,14 @@ const WaitlistJoin = ({
   const [to, setTo] = useState(addDaysYmd(today, Math.min(13, horizon - 1)));
 
   const { data: mine, mutate: refreshMine } = useMyWaitlist(!!user && open);
-  const officeKey = type === "inPerson" ? place : "";
+  // (2026-10) a family member the account books for may wait too: the
+  // account is told and books for them
+  const { data: relatives } = useSWR<{ _id: string; givenName?: string; lastName?: string }[]>(
+    user && open ? `${API}/user/relative` : null,
+    (url: string) => fetcher({ url }).then((res) => (Array.isArray(res?.data) ? res.data.filter((r: { _id?: string }) => !!r?._id) : [])),
+  );
+  const [member, setMember] = useState<string>("");
+  const officeKey = `${type === "inPerson" ? place : ""}${member ? `|p:${member}` : ""}`;
   const existing = (mine || []).find(
     (e: MyWaitlistEntry) =>
       e.status === "active" &&
@@ -119,6 +126,7 @@ const WaitlistJoin = ({
           sessionType: type,
           ...(type === "inPerson" && place ? { office: place } : {}),
           ...(span === "custom" ? { from, to } : { days: span }),
+          ...(member ? { patient: member } : {}),
         },
       });
       setDone({ to: res?.data?.to || (span === "custom" ? to : addDaysYmd(today, Number(span) - 1)) });
@@ -201,6 +209,25 @@ const WaitlistJoin = ({
         </div>
       ) : (
         <>
+          {!!relatives?.length && (
+            <div className={classes.block}>
+              <span className={classes.label}>{getContent("wlWho")}</span>
+              <div className={classes.chips} role="radiogroup" aria-label={getContent("wlWho")}>
+                {[{ _id: "", name: getContent("wlMe") }, ...relatives.map((r) => ({ _id: r._id, name: [r.givenName, r.lastName].filter(Boolean).join(" ") || "—" }))].map((p) => (
+                  <button
+                    key={p._id || "me"}
+                    type="button"
+                    role="radio"
+                    aria-checked={member === p._id}
+                    className={`${classes.chip} ${member === p._id ? classes.chipOn : ""}`}
+                    onClick={() => setMember(p._id)}
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           {types.length > 1 && (
             <div className={classes.block}>
               <span className={classes.label}>{getContent("bfVisitType")}</span>

@@ -9,7 +9,7 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import { DoctorSessionType, doctorSessionTypeContentKeyDict } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
-import { diffDaysYmd, TEHRAN_TZ, tehranNoon, tehranTodayYmd } from "@/Components/helpers/tehranTime";
+import { diffDaysYmd, TEHRAN_TZ, tehranNoon, tehranTodayYmd, tehranYmd as tehranYmdOf } from "@/Components/helpers/tehranTime";
 import Ixon from "@/Components/UI/Ixon";
 import Link from "@/Components/i18n/Link";
 import Bell01Icon from "@/Components/Icons/Bell01Icon";
@@ -32,7 +32,19 @@ export type MyWaitlistEntry = {
   days?: number;
   status: "active" | "booked" | "cancelled" | "expired";
   offer?: { ymd: string; start: number; end: number; office?: string; holdUntil?: string } | null;
+  // (2026-10) "earlier": looking for an earlier slot for a booked visit
+  kind?: "slot" | "earlier";
+  forReservation?: { _id?: string; date?: string; start?: number; end?: number; status?: string } | string | null;
+  // a family member the wait is for (none: the account's own)
+  patient?: { _id?: string; givenName?: string; lastName?: string } | string | null;
 };
+
+// the reservation an earlier-slot wait moves
+export const earlierReservationId = (e: MyWaitlistEntry) =>
+  e.forReservation && typeof e.forReservation === "object" ? e.forReservation._id || "" : String(e.forReservation || "");
+
+// the one tap of an earlier-slot offer (POST /user/waitlist/:id/move)
+export const moveToOffer = (entryId: string) => fetcher({ url: `${API}/user/waitlist/${entryId}/move`, method: "POST" });
 
 export const useMyWaitlist = (enabled = true) =>
   useSWR<MyWaitlistEntry[]>(enabled ? `${API}/user/waitlist` : null, (url: string) =>
@@ -70,6 +82,20 @@ const MyWaitlists = () => {
     return dayFmt.format(tehranNoon(ymd));
   };
 
+  const move = async (id: string) => {
+    if (busy) return;
+    setBusy(id);
+    try {
+      await moveToOffer(id);
+      notify(getContent("wlEarlierMoved"), "Success");
+      await mutate();
+    } catch (err) {
+      notify(err instanceof Error ? err.message : String(err), "Error");
+    } finally {
+      setBusy(null);
+    }
+  };
+
   const leave = async (id: string) => {
     if (busy) return;
     setBusy(id);
@@ -102,6 +128,14 @@ const MyWaitlists = () => {
           const officeName = e.office && typeof e.office === "object" ? e.office.name : "";
           const active = e.status === "active";
           const offer = active && e.offer && e.offer.ymd >= today ? e.offer : null;
+          const earlier = e.kind === "earlier";
+          const visit = e.forReservation && typeof e.forReservation === "object" ? e.forReservation : null;
+          const member =
+            e.patient && typeof e.patient === "object" ? [e.patient.givenName, e.patient.lastName].filter(Boolean).join(" ") : "";
+          const visitAt =
+            visit?.date && typeof visit.start === "number"
+              ? getContent("bfAtTime", [day(tehranYmdOf(visit.date)), clock(visit.start, nf)])
+              : "";
           return (
             <li key={e._id} className={`${classes.item} ${active ? "" : classes.ended}`}>
               <div className={classes.main}>
@@ -110,7 +144,8 @@ const MyWaitlists = () => {
                   {[
                     getContent(doctorSessionTypeContentKeyDict[e.sessionType] || "bfVisitType"),
                     e.sessionType === "inPerson" ? officeName || getContent("bfWlAnyOffice") : "",
-                    getContent("bfWlRange", [day(e.from), day(e.to)]),
+                    earlier && visitAt ? getContent("wlEarlierBadge", [visitAt]) : getContent("bfWlRange", [day(e.from), day(e.to)]),
+                    member ? getContent("wlForMember", [member]) : "",
                   ]
                     .filter(Boolean)
                     .join(" · ")}
@@ -124,7 +159,12 @@ const MyWaitlists = () => {
               <span className={`${classes.badge} ${active ? classes.badgeOn : ""}`}>{getContent(statusKey[e.status])}</span>
               {active && (
                 <div className={classes.actions}>
-                  {!!offer && !!doctorId && (
+                  {!!offer && earlier && (
+                    <button type="button" className={classes.primary} disabled={busy === e._id} onClick={() => move(e._id)}>
+                      {getContent("wlEarlierMove")}
+                    </button>
+                  )}
+                  {!!offer && !earlier && !!doctorId && (
                     <Link
                       className={classes.primary}
                       href={finalizeHref(doctorId, {
@@ -133,6 +173,7 @@ const MyWaitlists = () => {
                         end: offer.end,
                         sessionType: e.sessionType,
                         office: offer.office,
+                        patient: e.patient && typeof e.patient === "object" ? e.patient._id : undefined,
                       })}
                     >
                       {getContent("bfWlBook")}

@@ -1,0 +1,57 @@
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp3);
+  padding: var(--sp4);
+  border-radius: var(--radiusMd);
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  min-width: 0;
+}
+.found {
+  border-color: color-mix(in srgb, #10b981 45%, var(--line));
+  background: color-mix(in srgb, #10b981 7%, var(--cardBg));
+}
+.highlight {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary6) 30%, transparent);
+}
+.icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.8rem;
+}
+.text {
+  flex: 1 1 14rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.text b {
+  font-size: var(--fsMd, 1rem);
+  color: var(--textStrong);
+}
+.text small {
+  font-size: var(--fsSm);
+  color: var(--textMuted);
+  line-height: 1.7;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+  margin-inline-start: auto;
+}
+@media (max-width: 600px) {
+  .actions {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+  .actions > * {
+    flex: 1 1 auto;
+  }
+}

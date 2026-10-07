@@ -24,6 +24,7 @@ import classes from "./CreateForm.module.css";
 import DateInput from "@/Components/UI/DateInput";
 import NodesSelector, {
   NodesSelectorCreatable,
+  NodesSelectorSearch,
 } from "@/Components/UI/NodesSelector";
 import ImageInput from "@/Components/UI/ImageInput";
 import { UserSearchField } from "./UserSearchSelect";
@@ -125,6 +126,8 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
         dataParser?: (res: unknown) => unknown[];
         // lets the admin create a missing option inline (POST to its path)
         creatable?: NodesSelectorCreatable;
+        // a long list searched on the server (the text typed as ?q=)
+        search?: NodesSelectorSearch | boolean;
       }
     | {
         type: "range";
@@ -544,6 +547,7 @@ const CreateForm = <TInput, TResult = unknown>({
                 dataParser={segment.dataParser}
                 clearable={segment.clearable}
                 creatable={segment.creatable}
+                search={segment.search}
               />
             );
             break;

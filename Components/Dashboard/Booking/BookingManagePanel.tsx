@@ -23,6 +23,7 @@ import StarIcon from "@/Components/Icons/StarIcon";
 import WalletIcon from "@/Components/Icons/WalletIcon";
 import { visitTypeIcon, visitTypeTone } from "@/Components/Booking/Flow/BookingChoices";
 import RescheduleSheet from "@/Components/Booking/Flow/RescheduleSheet";
+import EarlierSlotCard from "@/Components/Booking/Flow/EarlierSlotCard";
 import useChangeWindow from "@/Components/Booking/Flow/useChangeWindow";
 import { clock, prepKeys } from "@/Components/Booking/Flow/bookingFlow";
 import { IReservation } from "./DashboardManageBookingsPage";
@@ -61,10 +62,13 @@ const icsText = (s: string) => s.replace(/[\\,;]/g, (m) => `\\${m}`).replace(/\n
 const BookingManagePanel = ({
   data,
   isNew,
+  earlier = false,
   onChanged,
 }: {
   data: Reservation;
   isNew: boolean;
+  // opened from an earlier-slot notice (/w/<code> → ?earlier=1)
+  earlier?: boolean;
   onChanged: () => unknown;
 }) => {
   const getContent = useScopedLocale(NS);
@@ -212,6 +216,11 @@ const BookingManagePanel = ({
           <p className={classes.muted}>{getContent("bfChangeClosed", [hoursText])}</p>
         )}
       </div>
+
+      {/* «دنبال زمان زودتر هم بگرد»: while the visit can still be moved */}
+      {data.status === "pending" && canChange(data) && (
+        <EarlierSlotCard reservationId={data._id} highlight={earlier} onMoved={onChanged} />
+      )}
 
       {open && inPerson && !!coords && (
         <PlaceLocationCard coords={coords} name={office?.name} address={office?.address} />

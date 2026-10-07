@@ -89,3 +89,7 @@
 .leaveBy {
   margin-block-start: 1rem;
 }
+
+.breakdown {
+  margin-block-start: var(--sp3);
+}

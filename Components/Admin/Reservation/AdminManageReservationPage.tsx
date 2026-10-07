@@ -38,7 +38,34 @@ import {
   personLabel,
   sessionTypeDict,
 } from "./reservationAdmin";
+import InsuranceBreakdown, { BreakdownReservation, BreakdownTexts, hasInsuranceBreakdown } from "@/Components/Booking/Insurance/InsuranceBreakdown";
 import classes from "./AdminManageReservationPage.module.css";
+
+// the insurance split's texts in the admin panel (Persian ta())
+const breakdownTexts = (): BreakdownTexts => ({
+  title: ta("سهم بیمه و سهم بیمار"),
+  price: ta("مبلغ ویزیت"),
+  basic: ta("بیمه‌ی پایه"),
+  supplementary: ta("بیمه‌ی تکمیلی"),
+  patientShare: ta("سهم بیمار"),
+  paidOnline: ta("پرداخت آنلاین"),
+  paidDesk: ta("پرداخت در مطب"),
+  deskPaid: ta("پرداخت در مطب دریافت شد"),
+  status: {
+    pending: ta("در انتظار ویزیت"),
+    booked: ta("ثبت در مطالبات"),
+    cancelled: ta("لغو شد"),
+    reversed: ta("برگشت خورد"),
+    desk: ta("برآورد (پرداخت در مطب)"),
+    none: ta("بدون سهم"),
+  },
+  reason: (r: string) =>
+    r === "limit" ? ta("سقف بیمه پر شده") : r === "notEligible" ? ta("اعتبار بیمه تأیید نشد") : ta("تعرفه‌ای ثبت نشده"),
+  viaCentre: (name: string) => ta("قرارداد با ${1}", [name]),
+  verified: ta("اعتبار بیمه تأیید شد"),
+  onClaim: ta("در لیست بیمه"),
+  estimate: ta("سهم بیمه برآورد است و تأیید نهایی با بیمه است."),
+});
 
 // One reservation (2026-10): who, when, where, the money trail (what the
 // booker paid, refunds, the doctor's payout), the call / chat it ran on, the
@@ -403,6 +430,16 @@ const AdminManageReservationPage = () => {
                 <Pair title={ta("قابل بازپرداخت")} value={currencize(refundable)} />
                 <Pair title={ta("تسویه‌شده با پزشک (خالص)")} value={currencize(doctorPaid)} />
               </Section>
+
+              {hasInsuranceBreakdown(data as unknown as BreakdownReservation) && (
+                <Section title={ta("سهم بیمه")}>
+                  <InsuranceBreakdown
+                    reservation={data as unknown as BreakdownReservation}
+                    text={breakdownTexts()}
+                    money={(n) => ta("${1} تومان", [currencize(n)])}
+                  />
+                </Section>
+              )}
 
               <Section title={ta("جلسه")}>
                 {data.chat && <Pair title={ta("گفتگو")} value={data.chat} />}
