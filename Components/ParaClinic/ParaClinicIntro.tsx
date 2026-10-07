@@ -85,7 +85,9 @@ const Card = ({
   );
 };
 
-const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
+const ParaClinicIntro = ({ data, takesOrders }: ParaClinicPageProps) => {
+  const tests = Array.isArray(data.tests) ? data.tests : [];
+  const tags = Array.isArray(data.tags) ? data.tags : [];
   // gallery first; a paraclinic with only its main image still shows it
   const images: IProductImage[] = Array.isArray(data.images) ? data.images : [];
   const [currentImage, setCurrentImage] = useState<IProductImage | undefined>(
@@ -145,9 +147,9 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
                 <Detail icon={<CallingIcon />} value={data.phone} />
               )}
             </div>
-            {!!data.tags.length && (
+            {!!tags.length && (
               <div className={classes.tags}>
-                {data.tags.map((tag) => (
+                {tags.map((tag) => (
                   // a tag is a filter: it opens the list narrowed to it
                   <Link key={tag._id} href={`/paraClinic?tag=${tag._id}`}>
                     <Badge
@@ -180,16 +182,20 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
               />
             </div>
             <div className={classes.actions}>
-              <Button
-                variant="Primary"
-                mode="Fill"
-                radius="High"
-                size="M"
-                tailIcon={<FlaskIcon />}
-                href="#Tests"
-              >
-                {getContent("reserveTest")}
-              </Button>
+              {/* the CTA goes to the tests it can book: none listed, or a
+                  lab that takes no online orders, has no such list */}
+              {!!tests.length && takesOrders !== false && (
+                <Button
+                  variant="Primary"
+                  mode="Fill"
+                  radius="High"
+                  size="M"
+                  tailIcon={<FlaskIcon />}
+                  href="#Tests"
+                >
+                  {getContent("reserveTest")}
+                </Button>
+              )}
               {/* <Button
                 variant="Secondary"
                 mode="Fill"
@@ -238,7 +244,7 @@ const ParaClinicIntro = ({ data }: ParaClinicPageProps) => {
         <Card
           icon={<FlaskIcon />}
           title={getContent("servicesAndTests")}
-          value={data.tests.length.toString()}
+          value={tests.length.toString()}
         />
         <Card
           icon={<UserIcon />}

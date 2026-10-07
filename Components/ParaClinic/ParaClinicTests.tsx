@@ -23,8 +23,10 @@ const NS: ContentNamespace[] = ["common", "paraClinicPage"];
 
 const TestItem = ({
   node,
+  orderable,
 }: {
   node: IParaClinicTest<{ Test: { Category: Record<never, never> } }>;
+  orderable: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   const { cart, mutateCartItem, removeCartItem } = useCart();
@@ -65,6 +67,7 @@ const TestItem = ({
         <span className={`${classes.price} ${tbaseBold}`}>
           {getContent("xToman", [currencize(node.price)])}
         </span>
+        {orderable && (
         <Button
           variant={inCart ? "Error" : "Primary"}
           mode="Fill"
@@ -79,20 +82,25 @@ const TestItem = ({
         >
           {getContent(inCart ? "remove" : "add")}
         </Button>
+        )}
       </div>
     </div>
   );
 };
 
-const ParaClinicTests = ({ data }: ParaClinicPageProps) => {
+const ParaClinicTests = ({ data, takesOrders }: ParaClinicPageProps) => {
+  const tests = useMemo(
+    () => (Array.isArray(data.tests) ? data.tests : []).filter((el) => !!el?.test),
+    [data.tests],
+  );
   const categories = useMemo<ITestCategory[]>(() => {
-    return data.tests
+    return tests
       .map((el) => el.test.category)
       .filter(Boolean)
       .filter(
         (el, i, arr) => i === arr.findIndex((e) => e?._id === el?._id),
       ) as ITestCategory[];
-  }, [data.tests]);
+  }, [tests]);
 
   const [query, setQuery] = useState<string>("");
 
@@ -100,15 +108,15 @@ const ParaClinicTests = ({ data }: ParaClinicPageProps) => {
 
   const filtered = useMemo<IParaClinicTest[]>(
     () =>
-      data.tests
+      tests
         .filter((el) => !filter || filter === el.test.category?._id)
-        .filter((el) => el.test.name?.includes(query)),
-    [data.tests, filter, query],
+        .filter((el) => !query || el.test.name?.includes(query)),
+    [tests, filter, query],
   );
 
   const getContent = useScopedLocale(NS);
 
-  if (!data.tests.length) return null;
+  if (!tests.length) return null;
   return (
     <div className={classes.main} id="Tests" >
       <div className={classes.header}>
@@ -126,9 +134,12 @@ const ParaClinicTests = ({ data }: ParaClinicPageProps) => {
           setFilter={setFilter}
         />
       </div>
+      {takesOrders === false && (
+        <p className={`${classes.notice} ${txsRegular}`}>{getContent("onlineOrderUnavailable")}</p>
+      )}
       <div className={classes.list}>
         {filtered.map((test) => (
-          <TestItem key={test._id} node={test} />
+          <TestItem key={test._id} node={test} orderable={takesOrders !== false} />
         ))}
       </div>
     </div>

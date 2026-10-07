@@ -62,12 +62,14 @@ const HospitalManageDetailsTab = () => {
               title: getContent("roundTheClock"),
             },
             personelCount: { type: "number", title: getContent("personelCount") },
+            bedCount: { type: "number", title: getContent("mcBeds") },
             services: { type: "strings", title: getContent("services") },
             certificates: { type: "strings", title: getContent("certificates") },
             insurances: {
               type: "nodes",
               title: getContent("insurances"),
-              path: `${API}/public/insurance`,
+              // every active insurer (the public list is paged)
+              path: `${API}/public/selectinsurance`,
               getOptionLabel: (node) =>
                 (node as IInsurance).name || (node as IInsurance)._id,
               getOptionValue: (node) => (node as IInsurance)._id,

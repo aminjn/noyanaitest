@@ -38,7 +38,7 @@ type AvailableTest = ITest<{ Category: Record<never, never> }>;
 // rejects them outright via a strict schema.
 type ParaClinicEditableTestFields = Pick<
   IParaClinicTest,
-  "price" | "readyTime"
+  "price" | "readyTime" | "isActive"
 >;
 
 const AddMyTestPopup = ({
@@ -84,11 +84,13 @@ const EditMyTestPopup = ({
   return (
     <PopupCard>
       <CreateForm<ParaClinicEditableTestFields>
-        defaultValue={node}
+        defaultValue={{ ...node, isActive: node.isActive !== false }}
         onCancel={() => closePopup()}
         renderer={{
           price: { type: "number", title: getContent("price"), price: true },
           readyTime: { type: "text", title: getContent("readyTime") },
+          // pause the test (kit out, device down) without deleting it
+          isActive: { type: "bool", title: getContent("isActive") },
         }}
         hookProps={{
           path: `${API}/paraClinic/myTest/${node._id}`,
@@ -230,6 +232,11 @@ const ParaClinicMyTestsTab = () => {
                 name: getContent("readyTime"),
                 value: (node) => node.readyTime,
                 filter: "Text",
+              },
+              status: {
+                name: getContent("status"),
+                value: (node) => getContent(node.isActive === false ? "inactive" : "active"),
+                filter: "Set",
               },
               actions: {
                 name: getContent("actions"),

@@ -255,7 +255,9 @@ export type SalesMeta = {
   approvals: { plan: boolean };
 };
 
-export type LineRef = { kind: "service" | "package" | "item"; id: string };
+// "insurancePlan": an insurer's own plan, what its quotes and corporate
+// contracts sell per member (the catalog offers it to an insurer only)
+export type LineRef = { kind: "service" | "package" | "item" | "insurancePlan"; id: string };
 export type Line = { _id?: string; title: string; ref?: LineRef | null; qty: number; unitPrice: number; discount: number; taxRate?: number; sessions?: number | null };
 export type MiniContact = { _id: string; name?: string; phone?: string };
 

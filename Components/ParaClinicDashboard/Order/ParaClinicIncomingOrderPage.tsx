@@ -204,9 +204,12 @@ const ParaClinicIncomingOrderPage = () => {
                           <AttachmentIcon />
                         </IconButton>
                       )}
+                      {/* a test is done once its result reached the
+                          patient: the server refuses "done" before that */}
                       <IconButton
                         variant="Success"
-                        title={getContent("fulfill")}
+                        title={getContent(node.result?.uploadedAt ? "fulfill" : "labResultFirst")}
+                        disabled={!node.result?.uploadedAt}
                         onClick={() =>
                           setPopup(
                             "FulfillIncomingOrderItem",

@@ -1,11 +1,92 @@
 # NoyanAI logic audit: the DOCTOR domain
 
 Scope: the super-admin sections `speciality`, `specialityCategory`, `doctor`, `doctorprofile`, `service`, `serviceCategory`, `servicePackage`, `doctorfaq`, `doctorFeedback`, `bookingDescription`, `becomedoctor`, `doctorjoinclinic`, `doctorjoinhospital` and `baseDoctorLicense`, plus every public page and endpoint that shows the same data.
-Mode: read-only. No repo file was changed.
+Mode: read-only audit (2026-09-29); the status table below was re-checked and the open items fixed on 2026-10-07.
 Paths: `FE` = `/home/user/noyanaitest`, `BE` = `/home/user/noyanaitest-back`.
 
 Severity: **blocker** (data leak, broken core flow, or money at risk) / **major** (wrong behaviour users or admins will hit) / **minor** (cosmetic, dead code, or polish).
 `[PD]` = the fix needs a product decision.
+
+## Status (re-checked against the code on 2026-10-07)
+
+`fixed` = done in a later PR, `fixed now` = fixed in the doctor-profile pass of 2026-10-07, `open` = still to do, `[PD]` = waits on a product decision.
+
+| Item | Status |
+|---|---|
+| §0 two doctor entities | fixed: legacy `Doctor` merged into `DoctorProfile` at boot (`BE Lib/mergeLegacyDoctors.ts`, `claimed:false`, `legacyDoctor`); `/doctor/<slug>` 301s to `/dr/<slug>` (`getDoctor`); `/doctors` 301s to `/book`; the legacy admin entry is read-only |
+| 1.1a / 1.1b badge colours | fixed (`DoctorCardAlt` reads each type) |
+| 1.1c recommend count | fixed (`DoctorProfile.recommendCount`, `recalcDoctorFeedbackStats`) |
+| 1.1d always-on online dot | fixed (removed from the card) |
+| 1.1e visit types differ by page | fixed now: one server rule, `BE Lib/doctorOffer.ts` (on with a price AND a shift at an active office), written as `sessionTypes` + `bookable` on every card list (home, speciality slider/list/page, search, map, disease/drug/symptom, clinic/hospital members, `/book`) and on `/public/doctor/:id/config` for the profile page |
+| 1.1f TODO comment | fixed |
+| 1.2 A-L other doctor cards | fixed (A, G-K deleted; B-F use `DoctorCardAlt` `grid`/`row`; L guarded) |
+| 1.2 M patient "rebook" chip | open, minor, acceptable as a chip |
+| search modal / speciality slider fields, `perDocumentLimit` | fixed (and now also the header-search speciality preview) |
+| 2.3a apply request to new profile | fixed (`adminEntityController.approveBecomeDoctor` maps geo + specialities) |
+| 2.3b IRIMC title → speciality | fixed (`Lib/specialityMatch.ts`); fixed now for the claim path too (an old page with no speciality gets the council's) |
+| 2.3c clone from legacy | fixed (popup removed; merge does it) |
+| 2.3d speciality invariant | fixed (normalise hooks); fixed now: a page cannot be published without first name, last name and one speciality (`DoctorProfile` save + update hooks) |
+| 2.3e / 2.3g speciality category | fixed (SpecialityCategory removed; specialities stand alone) |
+| 2.3f "Specialty group" label | fixed |
+| 2.3h options order | fixed |
+| 3.1a-b nameless speciality, blank slug | fixed (`name` required, blank slug unset) |
+| 3.1c speciality delete guard | fixed (`specialityRemoveGuard`) |
+| 3.1d slider populate | fixed |
+| 3.1e two counts | fixed (both count active profiles) |
+| 3.1f dead "about" button | fixed (`#about`) |
+| 3.1g "most viewed" label | fixed |
+| 3.1h unbounded speciality doctors | fixed (limit + sort) |
+| 3.1i `Sepciality` ACL key | open, minor (persisted key; needs an ACL migration) |
+| 3.2a national ID leak | fixed (`select:false` + `Lib/stripPrivateFields.ts` on `/public`) |
+| 3.2b inactive profile public | fixed |
+| 3.2c `/dr` metadata + JSON-LD | fixed |
+| 3.2d secondary specialities | fixed |
+| 3.2e `services` strings vs Service | open [PD] |
+| 3.2f admin city column | fixed |
+| 3.2g PhoneConsultSettings | fixed (tab removed); open minor: `allPopulation` still loads it |
+| 3.2h slug unique | fixed (unique sparse index, friendly duplicate error) |
+| 3.2i `medicalSystemTitle` not in schema | fixed now (schema field; copied on approval) |
+| 3.2j geo cascade | fixed (the panel checks city ∈ province; location follows offices) |
+| 3.2k derived counters editable | fixed (`protectedFields`) |
+| 3.2l delete with dependants | fixed (`doctorProfileRemoveGuard`) |
+| 3.2m legacy form speciality | fixed (merge) |
+| 3.2n funnel to `/doctors` | fixed (redirect); fixed now: footer links straight to `/book` |
+| 3.3a ePresc filter | fixed |
+| 3.3b dead `filterBooking` v1 | fixed (removed) |
+| 3.3c sort vs shown fields | open, minor |
+| 3.3d search by speciality | fixed; fixed now: full name ("سارا محمدی"), council code and speciality match in both the header search and `/book` (`doctorQueryMatch`) |
+| 3.4a approve does nothing | fixed; fixed now: approval no longer force-publishes (a draft that goes live when bookable, as self sign-up; a suspended profile no longer makes approval fail) |
+| 3.4b two onboarding flows | open [PD] (`getMyBecomeDoctorRequest` still returns McCode rows) |
+| 3.4c request geo slugs | open, minor (mapped on approval by `resolveGeo`) |
+| 3.4d national ID shown to reviewers | open [PD] (needed to verify identity) |
+| 3.5a / 3.5b admin join decision | fixed (`decideDoctorJoin`, invitations left to the doctor) |
+| 3.6a-c feedback bounds, recommend, access | fixed |
+| 3.7a doctor FAQ moderation | open [PD] |
+| 3.7b admin FAQ doctor picker | open, minor |
+| 3.8a package summary | fixed |
+| 3.8b `inventory` unread | open, minor |
+| 3.8c price/discount | fixed |
+| 3.8d package items owner | fixed (`packageItemsOwned`, panel check) |
+| 3.8e inactive owner's services | fixed; fixed now: the "special" services strip too |
+| 3.8f-g product tables / field names | open, minor |
+| 3.8h service access levels | fixed |
+| 3.9a unused `descriptions` prop | open, minor |
+| 3.10a-d licence purchase | fixed (active tier only, atomic debit in `Lib/licenseQuote.ts`, single default, minimal modules with no default) |
+
+### New findings of the 2026-10-07 pass (all fixed now unless marked)
+| # | Where | Was | Now | Sev |
+|---|---|---|---|---|
+| N1 | `BE Lib/doctorPublish.ts` | Auto-publish counted "an office" and "a shift" separately: an inactive office, or a shift holding only a switched-off type, published a page nobody could book | Uses `doctorOffers` (bookable type = on + price + shift at an active office); the panel's setup checklist (`getMyDashboard`) uses the same `doctorReadiness` | major |
+| N2 | `FE DoctorCardAlt` | "Book" shown for every claimed doctor, even one with no office, hours or visit type | Follows the server's `bookable`; otherwise "no online booking" | major |
+| N3 | `BE filterBooking2` visit-type filter | Matched shifts only: a doctor with video in a shift but video switched off was listed under "video" | `doctorsOffering` | major |
+| N4 | `BE getSpeciality` | `sessionTypes` = union of shifts, ignoring the settings | the shared rule | major |
+| N5 | `DoctorProfile.medicalSystemCode` | No uniqueness: two profiles with one council code (double listing, the claim picked one at random) | A changed code that another profile holds is refused (save + update hooks; old duplicate pairs don't block other edits) | major |
+| N6 | `/dr` page + booking panel | Visit-type tags and choices from the `active` flag only (a type with no hours led to an empty slot picker); inactive offices on the map/address; FAQ tab with no FAQ block | `config.sessionTypes`; offices `active:true`; FAQ tab only with FAQs | minor |
+| N7 | verified tick | Drawn on every card, including imported directory profiles; the profile page used another rule | One rule on card and page: an account (`claimed`) with a council code on record; the page also shows the council number (Paziresh24 / Doctolib) | minor |
+| N8 | `getDoctorProfile` | Populated the whole McCode (its account id) | `mcCode` + `title` only | minor |
+| N9 | website, land line, social links | The panel lets the doctor fill them; no public page shows them | open [PD]: show them (Doctolib shows a practice phone, Paziresh24 hides it to keep bookings on-platform) or drop the fields | minor |
+| N10 | `DoctorProfile.tier` | No form sets it since the education filter was removed | open, minor: drop the field or give it a source | minor |
+| N11 | patient booking vs the doctor's plan licence | A doctor whose plan expired falls back to the default tier and stays bookable | open [PD]: decide whether an expired plan hides booking | minor |
 
 ---
 

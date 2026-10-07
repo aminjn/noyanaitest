@@ -107,3 +107,13 @@
     gap: 0.5rem;
   }
 }
+
+/* the lab takes no online orders: prices are shown, booking is by phone */
+.notice {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--warningT1);
+  color: var(--warningS3);
+  text-align: start;
+}

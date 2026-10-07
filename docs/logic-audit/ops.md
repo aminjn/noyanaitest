@@ -16,7 +16,7 @@ Severity scale: **blocker**, **major**, **minor**. "PD" means the fix needs a pr
 | # | Section | Defect | Sev |
 |---|---|---|---|
 | 1 | comment / doctorFeedback | Any logged-in user can reset a doctor's rating to 0. Two review systems both write `DoctorProfile.averageScore`. | blocker |
-| 2 | inbox / requests | Pharmacy addition requests from doctors never reach the admin: no admin route, no page and no inbox entry. | major |
+| 2 | inbox / requests | Pharmacy addition requests from doctors never reach the admin: no admin route, no page and no inbox entry. **Fixed (re-checked 2026-10-07).** | major |
 | 3 | tamin | All Tamin calls and reference-data syncs use the **sandbox** hosts (`ep-test`, `ap-test`, `account-pilot`) and hardcoded test IDs. | blocker (PD) |
 | 4 | access levels | Access levels restrict only about 35 models. Tickets, comments, reviews, contact requests, notifications, geo, paraClinic and more are "full admin only". A support agent therefore has to be made super admin. The `Comment` and `DoctorSeretaryAccessLevel` toggles have no effect. | major (PD) |
 | 5 | userAlert | Staff alerts, which carry requester phone numbers, go to any user who has a `UserAlert` document, including plain users and demoted staff. | major |
@@ -119,6 +119,7 @@ Severity scale: **blocker**, **major**, **minor**. "PD" means the fix needs a pr
 ## 3. Inbox and dashboard (the pending-work queue)
 
 ### 3.1 Pharmacy addition requests are never processed
+**Status (re-checked 2026-10-07): fixed.** `pharmacyaddition` segment (access level `PharmacyAdditionRequest`), admin page, `/requests` queue and counts, create-from-request endpoint, `submittedAt` default.
 - **Where:**
   - `BE Controllers/doctorController.ts:1523-1553` creates a `PharmacyAdditionRequest` and alerts staff with `newPharmacyAdditionRequest`.
   - There is no segment in `autoRouter.ts`, no admin page (no `app/[adminKey]/pharmacyaddition`), and no entry in `inboxSources`/`pendingSources` (`adminDashboardController.ts:36-58,258-384`).

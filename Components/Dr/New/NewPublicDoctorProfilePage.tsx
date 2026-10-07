@@ -113,14 +113,28 @@ const NewDoctorProfilePage = ({
   })();
 
   const fullName = getDoctorProfileLabel(doctor);
+  // the council number patients check a doctor by (Paziresh24 / Doctolib
+  // show it on the profile), and the tick: an account with that number on
+  // record - the same rule as the doctor card (Components/UI/DoctorCardAlt)
+  const councilCode = (doctor as { medicalSystemCode?: string }).medicalSystemCode;
+  const claimed = (doctor as { claimed?: boolean }).claimed !== false;
+  const verified = claimed && !!(doctor.mcCode || councilCode);
 
   const { data: config } = useSWR<DoctorConfig>(
     `${API}/public/doctor/${doctor._id}/config`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
+  // the visit types a patient can book (the server's rule, as on the card)
   const activeTypes = useMemo(
-    () => (config ? doctorSessionTypes.filter((st) => config[st]?.active) : []),
+    () =>
+      config
+        ? doctorSessionTypes.filter((st) =>
+            Array.isArray(config.sessionTypes)
+              ? config.sessionTypes.includes(st)
+              : !!config[st]?.active,
+          )
+        : [],
     [config],
   );
 
@@ -134,6 +148,7 @@ const NewDoctorProfilePage = ({
 
   const hasRecords = !!doctor.achivements?.length;
   const hasGallery = !!doctor.gallery?.some((el) => !!el?.image);
+  const hasFaqs = Array.isArray(faqs) && faqs.length > 0;
 
   const tabs: {
     id: string;
@@ -169,9 +184,13 @@ const NewDoctorProfilePage = ({
         : []),
       { id: "dr-reviews", ref: reviewsRef, label: "patientReviews" },
       { id: "dr-address", ref: addressRef, label: "address" },
-      { id: "dr-faq", ref: faqRef, label: "faqs" },
+      // the FAQ block is only drawn when there are questions: its tab
+      // scrolled to nothing
+      ...(hasFaqs
+        ? [{ id: "dr-faq", ref: faqRef, label: "faqs" as ContentKey }]
+        : []),
     ],
-    [hasRecords, hasGallery],
+    [hasRecords, hasGallery, hasFaqs],
   );
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
@@ -227,8 +246,8 @@ const NewDoctorProfilePage = ({
 
   const galleryItems = useMemo(
     () =>
-      doctor.gallery
-        .filter((el) => el.image)
+      (Array.isArray(doctor.gallery) ? doctor.gallery : [])
+        .filter((el) => el?.image)
         .map((el) => ({ src: el.image || "", alt: el.alt || fullName })),
     [doctor.gallery, fullName],
   );
@@ -291,7 +310,7 @@ const NewDoctorProfilePage = ({
             <div className={classes.identityDetails}>
               <div className={classes.identityTop}>
                 <h1 className={classes.name}>{fullName}</h1>
-                {!!doctor.mcCode && (
+                {verified && (
                   <Ixon width="1rem" className={classes.verifiedIcon}>
                     <VerifyIcon />
                   </Ixon>
@@ -306,6 +325,12 @@ const NewDoctorProfilePage = ({
                 )}
               </div>
               <div className={classes.identityMeta}>
+                {!!councilCode && (
+                  <span className={classes.metaItem}>
+                    <span>{getContent("medicalSystemCode")}:</span>
+                    <b>{councilCode}</b>
+                  </span>
+                )}
                 {!!displayAddress && (
                   <span className={classes.metaItem}>
                     <Ixon width="1rem">
@@ -530,7 +555,7 @@ const NewDoctorProfilePage = ({
             )}
           </SectionCard>
 
-          {!!faqs.length && (
+          {hasFaqs && (
             <div id="dr-faq" ref={faqRef} className={classes.section}>
               <FaqList items={faqs} />
             </div>

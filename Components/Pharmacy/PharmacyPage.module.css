@@ -163,3 +163,15 @@
   color: var(--primary8);
   font-weight: 800;
 }
+
+/* the pharmacy takes no online orders: its prices are shown, buying is in
+   person or by phone */
+.notice {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--warningT1);
+  color: var(--warningS3);
+  font-size: 0.875rem;
+  text-align: start;
+}

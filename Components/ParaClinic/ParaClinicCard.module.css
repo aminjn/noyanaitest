@@ -65,3 +65,34 @@
   color: var(--primary);
   padding: 0.5rem 0.75rem;
 }
+
+/* opened for one test: the card also carries that lab's price */
+.main.withOffer {
+  height: auto;
+  min-height: 20.0625rem;
+}
+
+.offer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 1rem 1rem;
+}
+
+.offerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.offerPrice {
+  color: var(--black);
+}
+
+.offerReady {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray8);
+}

@@ -15,7 +15,21 @@ type Doc = {
   slug?: string;
   mainSpeciality?: { name?: string } | string | null;
 };
-export type CenterMember = { _id: string; doctor: Doc };
+export type CenterDepartment = {
+  _id: string;
+  name?: string;
+  summary?: string;
+  phone?: string;
+  active?: boolean;
+  order?: number;
+};
+export type CenterMember = {
+  _id: string;
+  doctor: Doc;
+  department?: { _id: string; name?: string } | string | null;
+};
+export const memberDepartmentId = (m: CenterMember) =>
+  m.department && typeof m.department === "object" ? m.department._id : m.department || "";
 export type CenterRequest = { _id: string; doctor: Doc; message?: string; submittedAt?: string };
 
 export const doctorName = (d?: Doc | null) => [d?.firstName, d?.lastName].filter(Boolean).join(" ") || "—";
@@ -30,15 +44,19 @@ const useCenterDoctors = (kind: CenterKind) => {
     members?: CenterMember[];
     incoming?: CenterRequest[];
     outgoing?: CenterRequest[];
+    departments?: CenterDepartment[];
   }>(`${API}/${kind}/doctor`, (url: string) => fetcher({ url }).then((res) => res.data));
 
+  // true when the change went through (a popup closes only then)
   const run = async (id: string, args: Parameters<typeof fetcher>[0]) => {
     setBusy(id);
     try {
       await fetcher(args);
       await mutate();
+      return true;
     } catch (e) {
       pushNotification(e instanceof Error ? e.message : String(e), "Error");
+      return false;
     } finally {
       setBusy(null);
     }
@@ -58,8 +76,28 @@ const useCenterDoctors = (kind: CenterKind) => {
         bodyParser: "JSON",
         payload: { status, ...(reason ? { reason } : {}) },
       }),
+    departments: Array.isArray(data?.departments) ? data.departments : [],
     refresh: () => mutate(),
     remove: (id: string) => run(id, { url: `${API}/${kind}/doctor/${id}`, method: "DELETE" }),
+    // the centre takes back an invite the doctor has not answered
+    withdraw: (id: string) => run(id, { url: `${API}/${kind}/doctor/invite/${id}`, method: "DELETE" }),
+    // which department a member works in ("" = none)
+    setDepartment: (id: string, department: string) =>
+      run(id, {
+        url: `${API}/${kind}/doctor/${id}`,
+        method: "PATCH",
+        bodyParser: "JSON",
+        payload: { department: department || null },
+      }),
+    saveDepartment: (id: string | null, payload: Partial<Omit<CenterDepartment, "_id">>) =>
+      run(id || "new-department", {
+        url: id ? `${API}/${kind}/department/${id}` : `${API}/${kind}/department`,
+        method: id ? "PATCH" : "POST",
+        bodyParser: "JSON",
+        payload,
+      }),
+    removeDepartment: (id: string) =>
+      run(id, { url: `${API}/${kind}/department/${id}`, method: "DELETE" }),
   };
 };
 

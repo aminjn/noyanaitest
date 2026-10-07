@@ -68,7 +68,8 @@ const ClinicManageDetailsTab = () => {
             insurances: {
               type: "nodes",
               title: getContent("insurances"),
-              path: `${API}/public/insurance`,
+              // every active insurer (the public list is paged)
+              path: `${API}/public/selectinsurance`,
               getOptionLabel: (node) =>
                 (node as IInsurance).name || (node as IInsurance)._id,
               getOptionValue: (node) => (node as IInsurance)._id,

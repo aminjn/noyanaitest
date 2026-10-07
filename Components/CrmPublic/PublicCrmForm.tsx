@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
@@ -24,7 +25,10 @@ const PublicCrmForm = ({ slug, mode }: { slug: string; mode: "lead" | "request" 
   const t = usePublicText();
   const valid = /^[a-z0-9-]{3,40}$/.test(slug);
   const { data, error } = useSWR<Form | null>(valid ? `${API}/public/crm/form/${slug}` : null, (url: string) => fetcher({ url }).then((res) => (res.data as Form) || null));
-  const [v, setV] = useState<Record<string, string>>({});
+  // a link may name what is asked for (an insurer's plan card: ?subject=
+  // <plan>), the deal's title on the provider's pipeline
+  const preset = (useSearchParams()?.get("subject") || "").trim().slice(0, 200);
+  const [v, setV] = useState<Record<string, string>>(preset ? { subject: preset } : {});
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState("");
@@ -96,6 +100,12 @@ const PublicCrmForm = ({ slug, mode }: { slug: string; mode: "lead" | "request" 
                       </option>
                     ))}
                   </select>
+                </label>
+              )}
+              {mode === "lead" && !!preset && (
+                <label className={classes.field}>
+                  {t("crmsPubSubject")}
+                  <input value={v.subject || ""} onChange={(e) => set("subject", e.target.value)} />
                 </label>
               )}
               {mode === "request" && (

@@ -9,18 +9,76 @@ import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import ChevronIcon from "../Icons/ChevronIcon";
-import { tbaseMedium, txsRegular } from "../UI/Typography";
+import { tbaseMedium, tsmMedium, txsRegular } from "../UI/Typography";
+import useCart from "../Hooks/useCart";
+import Button from "../UI/Button";
+import MinusIcon from "../Icons/MinusIcon";
+import PlusIcon from "../Icons/PlusIcon";
+import ClockIcon from "../Icons/ClockIcon";
+import { currencize } from "../helpers/currencize";
 import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "paraClinicCard"];
+
+// one lab's offer of the test the list was opened for (Halodoc / Vezeeta:
+// "who does CBC, at what price"), bought from here like on the lab's page
+export type ParaClinicTestOffer = {
+  _id?: string;
+  price?: number;
+  readyTime?: string;
+  takesOrders?: boolean;
+};
+
+const OfferRow = ({ offer }: { offer: ParaClinicTestOffer }) => {
+  const getContent = useScopedLocale(NS);
+  const { cart, mutateCartItem, removeCartItem } = useCart();
+  const id = offer._id || "";
+  const inCart = !!cart?.tests?.find((el) => el?.item?._id === id)?.qty;
+  if (!id || !(Number(offer.price) > 0)) return null;
+  return (
+    <div className={classes.offer}>
+      <div className={classes.offerText}>
+        <span className={`${classes.offerPrice} ${tsmMedium}`}>
+          {getContent("xToman", [currencize(offer.price || 0)])}
+        </span>
+        {!!offer.readyTime && (
+          <span className={`${classes.offerReady} ${txsRegular}`}>
+            <Ixon width=".75rem">
+              <ClockIcon />
+            </Ixon>
+            {offer.readyTime}
+          </span>
+        )}
+      </div>
+      {offer.takesOrders !== false && (
+        <Button
+          variant={inCart ? "Error" : "Primary"}
+          mode="Fill"
+          radius="High"
+          size="S"
+          onClick={() =>
+            inCart
+              ? removeCartItem({ item: id, model: "tests" })
+              : mutateCartItem({ item: id, model: "tests" })
+          }
+          tailIcon={inCart ? <MinusIcon /> : <PlusIcon />}
+        >
+          {getContent(inCart ? "remove" : "add")}
+        </Button>
+      )}
+    </div>
+  );
+};
 
 // Also the card of a pharmacy in search results (same shape: image, name,
 // province, tags) - `kind` only changes the link and its label.
 const ParaClinicCard = ({
   node,
   kind = "paraClinic",
+  offer,
 }: {
   kind?: "paraClinic" | "pharmacy";
+  offer?: ParaClinicTestOffer;
   node: IParaClinic<{
     Tags: Record<never, never>;
     Province: Record<never, never>;
@@ -29,7 +87,7 @@ const ParaClinicCard = ({
   const getContent = useScopedLocale(NS);
 
   return (
-    <li className={classes.main}>
+    <li className={`${classes.main} ${offer ? classes.withOffer : ""}`}>
       <div className={classes.image}>
         <HostedImage
           src={node.image}
@@ -62,6 +120,7 @@ const ParaClinicCard = ({
           ))}
         </div>
       )}
+      {!!offer && <OfferRow offer={offer} />}
       <div className={classes.footer}>
         <Link
           className={classes.link}

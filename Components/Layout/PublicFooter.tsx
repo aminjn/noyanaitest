@@ -42,7 +42,7 @@ const linkMap: {
   {
     title: "lists",
     items: [
-      { title: "doctorsList", target: "/doctors" },
+      { title: "doctorsList", target: "/book" },
       { title: "specialitiesList", target: "/speciality" },
       { title: "symptomsList", target: "/symptom" },
       { title: "diseasesList", target: "/disease" },

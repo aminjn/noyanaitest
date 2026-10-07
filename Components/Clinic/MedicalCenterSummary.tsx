@@ -8,6 +8,9 @@ import HashtagIcon from "../Icons/HashtagIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import PeopleIcon from "../Icons/PeopleIcon";
 import BuildingIcon from "../Icons/BuildingIcon";
+import HospitalIcon from "../Icons/HospitalIcon";
+import ClockIcon from "../Icons/ClockIcon";
+import { useIntlLocale } from "../i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
@@ -54,6 +57,9 @@ const MedicalCenterSummary = ({
   doctorCount,
   personelCount,
   establishment,
+  bedCount,
+  emergency,
+  roundTheClock,
 }: {
   summary?: string;
   // the full introduction, shown whole under the summary
@@ -62,8 +68,14 @@ const MedicalCenterSummary = ({
   doctorCount?: number;
   personelCount?: number;
   establishment?: string;
+  // a hospital's beds and 24-hour emergency department
+  bedCount?: number;
+  emergency?: boolean;
+  // a clinic open around the clock
+  roundTheClock?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
+  const locale = useIntlLocale();
 
   return (
     <div className={classes.main} id="introduction">
@@ -93,7 +105,7 @@ const MedicalCenterSummary = ({
               </InfoIcon>
             }
             title={getContent("doctors")}
-            value={doctorCount.toString()}
+            value={doctorCount.toLocaleString(locale)}
           />
         )}
         {!!personelCount && (
@@ -105,6 +117,39 @@ const MedicalCenterSummary = ({
             }
             title={getContent("personel")}
             value={getContent("nPerson", [personelCount.toString()])}
+          />
+        )}
+        {!!emergency && (
+          <Info
+            icon={
+              <InfoIcon tone="violet">
+                <ClockIcon />
+              </InfoIcon>
+            }
+            title={getContent("mcEmergency")}
+            value={getContent("roundTheClock")}
+          />
+        )}
+        {!emergency && !!roundTheClock && (
+          <Info
+            icon={
+              <InfoIcon tone="violet">
+                <ClockIcon />
+              </InfoIcon>
+            }
+            title={getContent("businessTime")}
+            value={getContent("roundTheClock")}
+          />
+        )}
+        {typeof bedCount === "number" && bedCount > 0 && (
+          <Info
+            icon={
+              <InfoIcon tone="teal">
+                <HospitalIcon />
+              </InfoIcon>
+            }
+            title={getContent("mcBeds")}
+            value={bedCount.toLocaleString(locale)}
           />
         )}
         {!!establishment && (

@@ -36,6 +36,8 @@ export const doctorJoinClinicStatuses = [
   "Pending",
   "Approved",
   "Rejected",
+  // the membership ended later (the doctor left or was removed)
+  "Left",
 ] as const;
 
 export type DoctorJoinClinicStatus = (typeof doctorJoinClinicStatuses)[number];
@@ -47,6 +49,8 @@ export const doctorJoinClinicStatusesDict: Dictionary<DoctorJoinClinicStatus> =
   return ta("منتظر تایید");
 }, get Rejected() {
   return ta("رد شده");
+}, get Left() {
+  return ta("پایان‌یافته");
 } };
 
 export const joinClinicSubmissionParties = ["DoctorProfile", "Clinic"] as const;

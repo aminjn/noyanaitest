@@ -9,6 +9,7 @@ import Ixon from "../UI/Ixon";
 import LocationIcon from "../Icons/LocationIcon";
 import StarIcon from "../Icons/StarIcon";
 import HostedImage from "../UI/HostedImage";
+import { useIntlLocale } from "../i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const WideIntro = ({
@@ -27,6 +28,7 @@ const WideIntro = ({
   commentCount?: number;
 }) => {
   const getContent = useScopedLocale(NS);
+  const locale = useIntlLocale();
 
   return (
     <div className={classes.main}>
@@ -55,12 +57,15 @@ const WideIntro = ({
               <span>{province}</span>
             </div>
           )}
-          <div className={`${classes.stats} ${tsmRegular}`}>
-            <Ixon width=".875rem">
-              <StarIcon />
-            </Ixon>
-            <span>{`${score} (${getContent("xComments", [commentCount?.toString()])})`}</span>
-          </div>
+          {/* a rating only once there are reviews: "0" read as a bad score */}
+          {commentCount > 0 && (
+            <div className={`${classes.stats} ${tsmRegular}`}>
+              <Ixon width=".875rem">
+                <StarIcon />
+              </Ixon>
+              <span>{`${(Number(score) || 0).toLocaleString(locale, { maximumFractionDigits: 1 })} (${getContent("xComments", [commentCount.toLocaleString(locale)])})`}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

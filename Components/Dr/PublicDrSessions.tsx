@@ -28,6 +28,9 @@ export type DoctorConfig = Record<
   insurances: IDoctorInsurance<{ Insurance: Record<never, never> }>[];
   clinics: IClinicDoctor<{ ClinicPopulated: Record<never, never> }>[];
   offices: IOffice[];
+  // the visit types a patient can book: on with a price AND held by a shift
+  // at an active office (backend Lib/doctorOffer.ts) - the card's rule
+  sessionTypes?: DoctorSessionType[];
 };
 
 export const patientTypes = ["new", "old"] as const;

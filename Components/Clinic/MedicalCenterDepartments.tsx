@@ -88,15 +88,18 @@ const DepartmentItem = ({
 const MedicalCenterDepartments = ({
   departments,
   title,
+  id = "departments",
 }: {
   title: ContentKey;
   departments: MedicalCenterDepartmentItemProps[];
+  // the section's anchor (a hospital lists its wards and its clinics)
+  id?: string;
 }) => {
   const getContent = useScopedLocale(NS);
 
-  if (!departments.length) return null;
+  if (!Array.isArray(departments) || !departments.length) return null;
   return (
-    <div className={classes.main} id="departments">
+    <div className={classes.main} id={id}>
       <IconTitle
         icon={<BuildingIcon />}
       >{`${getContent(title)} (${departments.length})`}</IconTitle>

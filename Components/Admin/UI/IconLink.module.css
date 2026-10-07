@@ -58,3 +58,9 @@
   background-color: var(--gray3);
   border-color: var(--gray5);
 }
+
+.main:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: transparent;
+}

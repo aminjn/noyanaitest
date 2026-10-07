@@ -6,7 +6,8 @@ const ClinicSummary = ({ node }: { node: ClinicPageNode }) => {
   return (
     <MedicalCenterSummary
       code={node.clinicCode}
-      doctorCount={node.doctors.length}
+      doctorCount={Array.isArray(node.doctors) ? node.doctors.filter((m) => !!m?.doctor).length : 0}
+      roundTheClock={!!node.isRoundTheClock}
       establishment={node.establishment}
       personelCount={node.personelCount}
       summary={node.summary}

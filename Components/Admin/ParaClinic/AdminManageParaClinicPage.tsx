@@ -75,6 +75,8 @@ export interface IParaClinicTest<
     ? IParaClinic<T["ParaClinic"]>
     : string;
   readyTime?: string;
+  // the lab paused this offer (absent on old rows = on)
+  isActive?: boolean;
 }
 
 const MutateParaClinicTestPopup = ({
