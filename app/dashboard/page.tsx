@@ -3,7 +3,8 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = [
+const NS: ContentNamespace[] = [
+
   "dashboardHome",
   "dashboardUserIdentity",
   "dashboardEditUserDetailsPopup",
@@ -12,6 +13,8 @@ const NS: ContentNamespace[] = [
   "dashboardMutateUserMedicalPopup",
   // the record-linking offers banner (Components/Dashboard/Crm/LinkOffers)
   "bizCrm",
+  // «بیمه‌های من» card (Components/Dashboard/Insurance/MyInsurancesCard)
+  "patientInsurance",
 ];
 
 // DashboardPage is "use client" and pulls its data via useSWR after auth;

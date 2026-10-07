@@ -673,3 +673,27 @@
   color: var(--textMuted);
   line-height: 1.7;
 }
+
+/* the insurer confirmed the card live (backend Lib/insuranceEligibility.ts) */
+.insVerified {
+  flex-basis: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--fsXs);
+  color: #047857;
+  justify-content: flex-end;
+}
+html[data-theme="dark"] .insVerified {
+  color: #34d399;
+}
+.insManage {
+  align-self: flex-start;
+  font-size: var(--fsSm);
+  color: var(--primary6);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.insLines li {
+  flex-wrap: wrap;
+}

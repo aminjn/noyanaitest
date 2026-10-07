@@ -17,6 +17,7 @@ import UserVitals from "./UserVitals";
 import UserMedicalDetails, { IMedicalDetail } from "./UserMedicalDetails";
 import PatientHome from "./Home/PatientHome";
 import { LinkOffers } from "./Crm/LinkOffers";
+import MyInsurancesCard from "./Insurance/MyInsurancesCard";
 
 export type UserIdentityPopulation = Population<{ User: UserPopulation }>;
 
@@ -61,6 +62,8 @@ const DashboardPage = () => {
         username={user?.username}
         self
       />
+      {/* «بیمه‌های من»: preselected on every booking */}
+      <MyInsurancesCard />
       <UserVitals vitals={vitals} />
       <div>
         <UserMedicalDetails data={medicalDetail} mutate={mutate} />

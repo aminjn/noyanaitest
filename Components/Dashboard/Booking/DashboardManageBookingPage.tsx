@@ -23,13 +23,19 @@ import ReservationDispute from "./ReservationDispute";
 import VisitFeedbackCard from "@/Components/Visit/VisitFeedbackCard";
 import LeaveByHint from "@/Components/Map/LeaveByHint";
 import BookingManagePanel from "./BookingManagePanel";
+import InsuranceBreakdown, { BreakdownReservation } from "@/Components/Booking/Insurance/InsuranceBreakdown";
+import useBreakdownTexts from "@/Components/Booking/Insurance/useBreakdownTexts";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "dashboardBooking", "bookingFlow"];
 
 const DashboardManageBookingPage = () => {
   const params = useParams<{ nodeId: string }>();
   // right after booking: the confirmation (step 3 of the booking flow)
-  const isNew = useSearchParams().get("new") === "1";
+  const search = useSearchParams();
+  const isNew = search.get("new") === "1";
+  // an earlier-slot notice's link (/w/<code>): its one-tap move is on top
+  const earlier = search.get("earlier") === "1";
 
   const { data, error, mutate } = useSWR<
     IReservation<{
@@ -44,6 +50,9 @@ const DashboardManageBookingPage = () => {
   );
 
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const breakdownText = useBreakdownTexts();
+  const money = (n: number) => getContent("xToman", [new Intl.NumberFormat(intlTag).format(Math.max(0, Math.round(n)))]);
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -64,6 +73,7 @@ const DashboardManageBookingPage = () => {
           <BookingManagePanel
             data={data as Parameters<typeof BookingManagePanel>[0]["data"]}
             isNew={isNew}
+            earlier={earlier}
             onChanged={() => mutate()}
           />
 
@@ -151,6 +161,14 @@ const DashboardManageBookingPage = () => {
                 />
               </div>
             </div>
+
+            {/* the insurers' lines, the patient's share and how it was paid */}
+            <InsuranceBreakdown
+              className={classes.breakdown}
+              reservation={data as unknown as BreakdownReservation}
+              text={breakdownText}
+              money={money}
+            />
 
             {/* an upcoming in-person visit: when to leave, traffic zone */}
             {data.sessionType === "inPerson" &&

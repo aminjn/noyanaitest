@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import classes from "./FinalizeBookingPage.module.css";
@@ -595,6 +595,11 @@ const Details = ({
 
   const [draft, setDraft] = useState<Draft>(() => (typeof window === "undefined" ? {} : readDraft(doctor._id)));
   const update = (patch: Partial<Draft>) => setDraft((prev) => ({ ...prev, ...patch }));
+  // a waitlist offer made for a family member books for them (?p=)
+  const linkPatient = useSearchParams().get("p");
+  useEffect(() => {
+    if (linkPatient) setDraft((prev) => (prev.patient === linkPatient ? prev : { ...prev, patient: linkPatient, insurances: undefined }));
+  }, [linkPatient]);
   // a saved pick that is no longer on the list falls back to me
   const patientId =
     draft.patient && (draft.patient === identity?._id || (relatives || []).some((r) => r?._id === draft.patient))
@@ -639,9 +644,18 @@ const Details = ({
     { revalidateOnFocus: false, keepPreviousData: true },
   );
 
-  // the insurances this patient used last time are preselected, when this
-  // doctor accepts them (Zocdoc keeps the insurance on the account)
+  // the insurances this patient keeps on «بیمه‌های من» (or used last time)
+  // are preselected, when this doctor accepts them (Zocdoc keeps the
+  // insurance on the account); another person picked starts from theirs
   const [preselected, setPreselected] = useState(false);
+  const lastPatient = useRef(patientId);
+  useEffect(() => {
+    if (lastPatient.current && patientId && lastPatient.current !== patientId) {
+      setDraft((prev) => ({ ...prev, insurances: undefined, insurance: null }));
+      setPreselected(false);
+    }
+    lastPatient.current = patientId;
+  }, [patientId]);
   useEffect(() => {
     if (!quote || draft.insurances !== undefined || draft.insurance) return;
     const accepted = new Set((Array.isArray(quote.insurances) ? quote.insurances : []).map((o) => o?._id));
@@ -951,6 +965,9 @@ const Details = ({
               </div>
             )}
             {preselected && !!picks.length && <p className={classes.muted}>{getContent("bfInsRemembered")}</p>}
+            <Link href="/dashboard/insurance" className={classes.insManage}>
+              {getContent("bfInsManage")}
+            </Link>
             {notAccepted.map((n) => (
               <p key={n._id} className={classes.insNotHere}>
                 <Ixon width="0.9rem">
@@ -973,8 +990,18 @@ const Details = ({
                         ? money(l.share)
                         : l.reason === "limit"
                           ? getContent("bfInsOverLimit")
-                          : getContent("bfInsNoTariffLine")}
+                          : l.reason === "notEligible"
+                            ? getContent("bfInsNotEligible")
+                            : getContent("bfInsNoTariffLine")}
                     </b>
+                    {l.eligibility?.status === "verified" && (
+                      <span className={classes.insVerified}>
+                        <Ixon width="0.85rem">
+                          <ShieldCheckIcon />
+                        </Ixon>
+                        {getContent("bfInsVerified")}
+                      </span>
+                    )}
                   </li>
                 ))}
                 <li className={classes.insYou}>

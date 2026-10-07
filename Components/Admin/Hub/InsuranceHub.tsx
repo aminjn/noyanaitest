@@ -7,6 +7,7 @@ import AdminManageInsuranceCategoriesPage from "@/Components/Admin/InsuranceCate
 import AdminManageInsuranceTagsPage from "@/Components/Admin/InsuranceTag/AdminManageInsuranceTagsPage";
 import AdminManageInsurancesPage from "@/Components/Admin/Insurance/AdminManageInsurancesPage";
 import AdminInsuranceTariffsTab from "@/Components/Admin/Insurance/AdminInsuranceTariffsTab";
+import AdminInsuranceEligibilityTab from "@/Components/Admin/Insurance/AdminInsuranceEligibilityTab";
 
 // بیمه‌ها: one admin page, its parts as tabs (2026-09 admin audit).
 const InsuranceHub = () => {
@@ -27,6 +28,13 @@ const InsuranceHub = () => {
           title: ta("تعرفه‌ها"),
           exclude: !canOpen("Insurance"),
           content: <AdminInsuranceTariffsTab />,
+        },
+        {
+          // the live eligibility providers of the booking quote (2026-10)
+          id: "eligibility",
+          title: ta("استعلام برخط"),
+          exclude: !canOpen("Insurance"),
+          content: <AdminInsuranceEligibilityTab />,
         },
         {
           id: "categories",

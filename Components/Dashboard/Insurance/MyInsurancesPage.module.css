@@ -1,0 +1,193 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.title {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 900;
+  color: var(--gray13);
+}
+.intro,
+.note {
+  margin: 0;
+  font-size: var(--fsSm);
+  line-height: 1.8;
+  color: var(--textMuted);
+  max-width: 48rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.125rem;
+  border-radius: 1.5rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+  min-width: 0;
+}
+.empty {
+  border-style: dashed;
+  box-shadow: none;
+}
+.editing {
+  border-color: color-mix(in srgb, var(--primary6) 45%, var(--glassLine));
+}
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.icon,
+.logo {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.9rem;
+  overflow: hidden;
+}
+.logo {
+  background: var(--white);
+  border: 1px solid var(--glassLine);
+}
+.cardTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+.cardTitle b {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--textStrong);
+  overflow-wrap: anywhere;
+}
+.cardTitle small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.badge {
+  flex: none;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: var(--fsXs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.badgeOk {
+  background: var(--toneTeal);
+  color: var(--toneTealInk);
+}
+.badgeBad {
+  background: var(--toneRose);
+  color: var(--toneRoseInk);
+}
+.facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: 0.75rem;
+}
+.facts div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.facts dt {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.facts dd {
+  margin: 0;
+  font-size: var(--fsSm);
+  font-weight: 700;
+  color: var(--textBody);
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.label {
+  font-size: var(--fsSm);
+  font-weight: 700;
+  color: var(--textBody);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.chip {
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--glassLine);
+  background: var(--glass);
+  color: var(--textBody);
+  font-size: var(--fsSm);
+  font-weight: 600;
+  cursor: pointer;
+}
+.chipOn {
+  border-color: var(--primary6);
+  background: color-mix(in srgb, var(--primary6) 12%, transparent);
+  color: var(--primary7);
+}
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 0.75rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.actions .badge {
+  margin-inline-end: auto;
+}
+.muted {
+  margin: 0;
+  font-size: var(--fsSm);
+  color: var(--textMuted);
+  line-height: 1.7;
+}
+.warn {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--fsSm);
+  color: var(--toneAmberInk, #b45309);
+}
+.link {
+  font-size: var(--fsSm);
+  color: var(--primary6);
+  text-decoration: underline;
+}

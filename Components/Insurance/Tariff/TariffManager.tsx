@@ -46,6 +46,9 @@ export type TariffTexts = {
   levels: Record<TariffLevel, string>;
   speciality: string;
   service: string;
+  // (2026-10) a doctor's service package, and the pickers' search hint
+  servicePackage: string;
+  catalogHint: string;
   method: string;
   methods: Record<TariffMethod, string>;
   percent: string;
@@ -93,6 +96,11 @@ export type TariffTexts = {
 
 const idOf = (v: unknown) => (v && typeof v === "object" ? String((v as { _id?: unknown })._id || "") : v ? String(v) : "");
 const nameOf = (v: unknown) => (v && typeof v === "object" ? String((v as { name?: unknown }).name || "") : "");
+// a catalog row: "name · doctor"
+const catalogLabel = (v: unknown) => {
+  const o = (v || {}) as { name?: string; owner?: string };
+  return [o.name, o.owner].filter(Boolean).join(" · ");
+};
 const asList = (res: unknown) => {
   const d = (res as { data?: unknown })?.data;
   const inner = Array.isArray(d) ? d : (d as { data?: unknown })?.data;
@@ -154,13 +162,27 @@ const TariffPopup = ({
       ...pick(),
       getDefaultValue: (n: InsuranceTariff) => idOf(n.speciality) || undefined,
     },
+    // the doctors' services and packages, searched by name on the server
+    // (GET .../catalog): a rule may be limited to one of them
     service: {
       type: "nodes",
       title: text.service,
-      path: `${API}/public/service`,
+      hint: text.catalogHint,
+      path: `${api}/catalog?kind=service`,
+      search: true,
       dataParser: asList,
-      ...pick(),
+      ...pick(catalogLabel),
       getDefaultValue: (n: InsuranceTariff) => idOf(n.service) || undefined,
+    },
+    servicePackage: {
+      type: "nodes",
+      title: text.servicePackage,
+      hint: text.catalogHint,
+      path: `${api}/catalog?kind=package`,
+      search: true,
+      dataParser: asList,
+      ...pick(catalogLabel),
+      getDefaultValue: (n: InsuranceTariff) => idOf(n.servicePackage) || undefined,
     },
     method: { type: "select", title: text.method, required: true, options: options(tariffMethods, text.methods) },
     percent: { type: "number", title: text.percent, hint: text.hintPercent },
@@ -259,6 +281,7 @@ const TariffManager = ({
       text.visitKinds[(n.visitKind || "any") as TariffVisitKind],
       nameOf(n.speciality) || (n.level && n.level !== "any" ? text.levels[n.level as TariffLevel] : ""),
       nameOf(n.service),
+      nameOf(n.servicePackage),
     ]
       .filter(Boolean)
       .join(" · ");

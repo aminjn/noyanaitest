@@ -24,6 +24,8 @@ const texts = (): TariffTexts => ({
   levels: { any: ta("همه‌ی سطح‌ها"), general: ta("پزشک عمومی"), specialist: ta("متخصص"), subspecialist: ta("فوق تخصص") },
   speciality: ta("تخصص (اختیاری)"),
   service: ta("خدمت (اختیاری)"),
+  servicePackage: ta("بسته‌ی خدمت (اختیاری)"),
+  catalogHint: ta("با نام خدمت یا بسته جست‌وجو کنید؛ قاعده فقط برای همان خدمت یا بسته است"),
   method: ta("روش پرداخت بیمه"),
   methods: { percent: ta("درصدی از مبلغ ویزیت"), govTariff: ta("درصدی از تعرفه‌ی مصوب دولتی"), fixed: ta("مبلغ ثابت") },
   percent: ta("درصد پوشش"),

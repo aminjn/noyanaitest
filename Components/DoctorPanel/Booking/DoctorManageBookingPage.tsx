@@ -24,6 +24,10 @@ import usePopup from "@/Components/Hooks/usePopup";
 import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
 import MoveReservationPopup from "../Desk/MoveReservationPopup";
 import VisitQuickActions from "../Desk/VisitQuickActions";
+import DeskPaidAction from "../Desk/DeskPaidAction";
+import InsuranceBreakdown from "@/Components/Booking/Insurance/InsuranceBreakdown";
+import useBreakdownTexts from "@/Components/Booking/Insurance/useBreakdownTexts";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelBooking"];
 
@@ -44,6 +48,9 @@ const DoctorManageBookingPage = () => {
   );
 
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const breakdownText = useBreakdownTexts();
+  const money = (n: number) => getContent("xToman", [new Intl.NumberFormat(intlTag).format(Math.max(0, Math.round(n)))]);
   const { setPopup } = usePopup();
   const hasAccess = useDoctorAcl();
 
@@ -139,6 +146,10 @@ const DoctorManageBookingPage = () => {
               </div>
             </div>
 
+            {/* the insurers' lines (and whose claim list they go to), the
+                patient's share and how it is paid */}
+            <InsuranceBreakdown reservation={data} text={breakdownText} money={money} />
+
             <div className={classes.actionsRow}>
               {(!!data.chat || !!data.callRoom) && data.status === "active" && (
                 <ReservationJoinButton
@@ -149,6 +160,14 @@ const DoctorManageBookingPage = () => {
                 />
               )}
               <VisitQuickActions visit={data} name={patientName} onDone={() => mutate()} size="M" />
+              <DeskPaidAction visit={data} onDone={() => mutate()} />
+              {!!data.deskPaidAt && (
+                <span className={classes.present}>
+                  <CheckCircleIcon />
+                  <span>{getContent("dpPaidAt")}</span>
+                  <FormatDate value={data.deskPaidAt} />
+                </span>
+              )}
               {checkInPossible && !checkInOpen && (
                 <span className={classes.hint}>
                   {getContent("checkInOpensHint")}

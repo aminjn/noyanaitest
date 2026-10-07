@@ -13,6 +13,7 @@ import LocationIcon from "../Icons/LocationIcon";
 import CrownIcon from "../Icons/CrownIcon";
 import MedalStarIcon from "../Icons/MedalStarIcon";
 import CommentIcon from "../Icons/CommentIcon";
+import ShieldCheckIcon from "../Icons/ShieldCheckIcon";
 import { ContentKey } from "../Enums/contentKeys";
 
 const DashboardSidebar = () => {
@@ -26,6 +27,8 @@ const DashboardSidebar = () => {
         target: "invoice",
       },
       { icon: <BookIcon />, show: true, title: "bookings", target: "booking" },
+      // «بیمه‌های من» (2026-10): preselected on every booking
+      { icon: <ShieldCheckIcon />, show: true, title: "piTitle", target: "insurance" },
       {
         icon: <PackageIcon />,
         show: true,
