@@ -18,6 +18,8 @@ import CreateForm from "@/Components/Admin/UI/CreateForm";
 import PopupCard from "@/Components/UI/PopupCard";
 import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
+import ClientTabSystem from "@/Components/UI/ClientTabSystem";
+import InsurerTariffsTab from "./InsurerTariffsTab";
 
 const NS: ContentNamespace[] = ["common", "insurerPanel"];
 
@@ -83,7 +85,7 @@ const InsurerPlansPage = () => {
     }
   };
 
-  return (
+  const plans = (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
@@ -138,6 +140,17 @@ const InsurerPlansPage = () => {
         </WithTitle>
       )}
     </HandleLoading>
+  );
+
+  // (2026-10) the plans and their tariffs, one page: a tariff is "what a
+  // plan pays for a visit"
+  return (
+    <ClientTabSystem
+      items={[
+        { id: "Plans", title: getContent("insPlans"), content: plans },
+        { id: "Tariffs", title: getContent("insTariffs"), content: <InsurerTariffsTab /> },
+      ]}
+    />
   );
 };
 

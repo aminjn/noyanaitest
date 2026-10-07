@@ -45,6 +45,8 @@ export interface ISpeciality<
   order: number;
   summary?: string;
   active: boolean;
+  // for insurance tariffs (2026-10)
+  level?: "general" | "specialist" | "subspecialist";
   doctorsCountWithMainSpeciality?: number;
   doctorsCountWithSideSpeciality?: number;
   doctors: T["Doctors"] extends DoctorProfilePopulation

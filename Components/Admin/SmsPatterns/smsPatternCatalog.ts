@@ -55,6 +55,7 @@ export const notificationSmsEvents = [
   "visitNoteReadyPatient",
   "reservationReminderDayBeforePatient",
   "reservationReminderTwoHoursPatient",
+  "waitlistSlotOpenUser",
   "orderShippedUser",
   "orderItemFulfilledUser",
   "orderItemCancelledUser",
@@ -354,6 +355,13 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("یادآوری ۲ ساعت پیش از نوبت - بیمار"),
     variables: ["reservationId", "doctorName", "date", "time"],
     sample: () => ta("یادآوری: نوبت شما با دکتر %doctorName% ساعت %time% آغاز می‌شود."),
+  },
+  waitlistSlotOpenUser: {
+    audience: "patient",
+    label: () => ta("نوبت خالی شد (صف انتظار) - بیمار"),
+    variables: ["doctorName", "date", "time", "code"],
+    sample: () =>
+      ta("یک نوبت با دکتر %doctorName% در %date% ساعت %time% خالی شد. رزرو: noyan.ir/w/%code%"),
   },
   orderShippedUser: {
     audience: "patient",

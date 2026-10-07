@@ -1,0 +1,121 @@
+/* the patient's waits on «نوبت‌های من» (same glass card as the visits) */
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+  padding: 1.125rem;
+  border-radius: 1.5rem;
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+}
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+  margin: 0;
+  font-size: var(--fsH3);
+  color: var(--textStrong);
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radiusXs);
+}
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: var(--sp3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sp2) var(--sp3);
+  padding: var(--sp3);
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+}
+.ended {
+  opacity: 0.65;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.main strong {
+  color: var(--textStrong);
+  font-size: var(--fsSm);
+}
+.meta {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+  line-height: var(--lhBody);
+}
+.offer {
+  margin-block-start: var(--sp1);
+  font-size: var(--fsXs);
+  font-weight: 600;
+  color: var(--toneTealInk);
+}
+.badge {
+  padding: 2px var(--sp2);
+  border-radius: var(--radiusPill);
+  background: var(--gray2);
+  color: var(--textMuted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badgeOn {
+  background: var(--toneIndigo);
+  color: var(--toneIndigoInk);
+}
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+}
+.primary,
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1.125rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+.primary {
+  flex: 1;
+  background: var(--gray13);
+  color: var(--white);
+}
+.ghost {
+  border: 1px solid var(--primary3);
+  background: transparent;
+  color: var(--primary7);
+}
+.ghost:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+@media (max-width: 40rem) {
+  .list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

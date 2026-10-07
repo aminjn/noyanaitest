@@ -51,6 +51,7 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import { tmdMedium } from "@/Components/UI/Typography";
 import Badge from "@/Components/UI/Badge";
 import DoctorReviews from "./DoctorReviews";
+import InsuranceCoverage from "./InsuranceCoverage";
 import BookingSidebar from "./BookingSidebar";
 import Button from "@/Components/UI/Button";
 
@@ -395,20 +396,13 @@ const NewDoctorProfilePage = ({
             )}
             {!!config?.insurances.length && (
               <div className={classes.subBlock}>
-                <h3 className={classes.subTitle}>{getContent("insurances")}</h3>
-                <div className={classes.pillRow}>
-                  {config.insurances.map((inc) => (
-                    <Badge
-                      key={inc._id}
-                      color="Primarylight"
-                      size="XXL"
-                      radius="High"
-                      mode="Fill"
-                    >
-                      {inc.insurance?.name}
-                    </Badge>
-                  ))}
-                </div>
+                {/* «پوشش بیمه»: accepted insurances, the estimated share
+                    where a tariff covers the visit (2026-10) */}
+                <h3 className={classes.subTitle}>{getContent("drInsCoverage")}</h3>
+                <InsuranceCoverage
+                  doctorId={doctor._id}
+                  fallback={config.insurances.map((inc) => ({ _id: inc._id, name: inc.insurance?.name }))}
+                />
               </div>
             )}
           </SectionCard>

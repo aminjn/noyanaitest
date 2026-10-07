@@ -1,5 +1,5 @@
 import { Dispatch, Fragment, ReactNode, SetStateAction, useState } from "react";
-import { BookingCommon, bookingSorts } from "./BookingPage2";
+import { BookingCommon, sortsFor } from "./BookingPage2";
 import { ContentKey } from "../Enums/contentKeys";
 import classes from "./BookingFiltersMobile.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -79,7 +79,7 @@ const BookingFiltersMobile = ({
               setOpenDrawer({
                 content: (close) => (
                   <div className={classes.sortOptions}>
-                    {bookingSorts.map((sort) => (
+                    {sortsFor(common.node).map((sort) => (
                       <button
                         key={sort}
                         type="button"

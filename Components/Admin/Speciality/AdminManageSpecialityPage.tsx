@@ -51,6 +51,13 @@ const AdminManageSpecialityPage = () => {
         name: { type: "text", title: ta("نام"), required: true },
         slug: { type: "text", title: ta("اسلاگ") },
         summary: { type: "text", title: ta("خلاصه") },
+        // the doctor's level an insurance tariff reads (2026-10)
+        level: {
+          type: "select",
+          title: ta("سطح پزشک"),
+          hint: ta("برای تعرفه‌های بیمه؛ خالی: از نام تخصص حدس زده می‌شود"),
+          options: { general: ta("پزشک عمومی"), specialist: ta("متخصص"), subspecialist: ta("فوق تخصص") },
+        },
         order: { type: "number", title: ta("رتبه") },
         active: { type: "bool", title: ta("فعال") },
         isHome: { type: "bool", title: ta("نمایش در خانه") },

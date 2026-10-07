@@ -1,0 +1,44 @@
+/* «اولین نوبت» on the doctor cards */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--sp1) var(--sp2);
+  border-radius: var(--radiusSm);
+  border: 1px dashed var(--cardLineHover);
+  background: var(--hoverTint);
+  color: var(--textStrong);
+  text-align: start;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.btn:hover {
+  background: var(--activeTint);
+  border-style: solid;
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+.icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radiusXs);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fsXs);
+  font-weight: 600;
+  line-height: 1.45;
+}
+.type {
+  flex: none;
+  font-size: 0.6875rem;
+  color: var(--textMuted);
+}

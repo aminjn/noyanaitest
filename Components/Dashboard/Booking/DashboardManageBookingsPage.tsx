@@ -38,6 +38,7 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import { ReservationParty, ReservationStatus } from "./reservationStatus";
 import RescheduleSheet from "@/Components/Booking/Flow/RescheduleSheet";
 import useChangeWindow from "@/Components/Booking/Flow/useChangeWindow";
+import MyWaitlists from "@/Components/Booking/Flow/MyWaitlists";
 
 const NS: ContentNamespace[] = ["common", "dashboardBooking", "bookingFlow"];
 
@@ -235,6 +236,9 @@ const DashboardManageBookingsPage = () => {
                 : []
             }
           />
+
+          {/* the doctors I wait a free slot of (Lib/waitlist.ts) */}
+          {!onlyNoIntake && (tab === "upcoming" || tab === "all") && <MyWaitlists />}
 
           {!shown.length ? (
             <div className={classes.empty}>

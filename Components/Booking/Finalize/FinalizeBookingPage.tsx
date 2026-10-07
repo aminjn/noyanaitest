@@ -63,7 +63,7 @@ import SlotPicker, { SlotPick } from "../Flow/SlotPicker";
 import BookingSteps from "../Flow/BookingSteps";
 import InlineLogin from "../Flow/InlineLogin";
 import { OfficePicker, visitTypeIcon, visitTypeTone, VisitTypePicker } from "../Flow/BookingChoices";
-import { BookingQuote, clock, useBookableSlots, visitTypeOrder } from "../Flow/bookingFlow";
+import { BookingQuote, clock, InsuranceOption, InsurancePick, useBookableSlots, visitTypeOrder } from "../Flow/bookingFlow";
 import { IReservation } from "@/Components/Dashboard/Booking/DashboardManageBookingsPage";
 
 const NS: ContentNamespace[] = ["common", "bookingFinalize", "bookingFlow"];
@@ -107,7 +107,11 @@ type Draft = {
   patient?: string;
   complaint?: string;
   onset?: Onset | null;
+  // (older drafts) one insurance
   insurance?: string | null;
+  // the insurances picked, basic first (undefined: not chosen yet - the
+  // patient's saved ones are preselected)
+  insurances?: InsurancePick[];
   code?: string;
   method?: Method;
 };
@@ -358,6 +362,7 @@ const FinalizeBookingPage = () => {
           value={choice}
           onChange={setChoice}
           fallback={otherDoctors}
+          waitlist
         />
       </div>
     </div>
@@ -601,16 +606,51 @@ const Details = ({
   const [busy, setBusy] = useState(false);
   const [charge, setCharge] = useState<{ amount: number; returnPath: string } | null>(null);
 
+  // the insurances picked (an older draft kept one)
+  const picks: InsurancePick[] = useMemo(
+    () => draft.insurances ?? (draft.insurance ? [{ insurance: draft.insurance, plan: null }] : []),
+    [draft.insurances, draft.insurance],
+  );
+  const picksKey = picks.map((p) => `${p.insurance}:${p.plan || ""}`).join(",");
+
   const { data: quote, isValidating: quoting } = useSWR<BookingQuote>(
-    user ? [`${API}/booking/quote`, doctor._id, sessionType, office || "", patientId || "", draft.code || ""] : null,
-    ([url, d, st, o, p, c]: string[]) =>
+    user ? [`${API}/booking/quote`, doctor._id, sessionType, office || "", patientId || "", draft.code || "", picksKey, pick.ymd] : null,
+    ([url, d, st, o, p, c, ins, day]: string[]) =>
       fetcher({
         url,
         method: "POST",
-        payload: { doctor: d, sessionType: st, ...(o ? { office: o } : {}), ...(p ? { patient: p } : {}), ...(c ? { code: c } : {}) },
+        payload: {
+          doctor: d,
+          sessionType: st,
+          date: day,
+          ...(o ? { office: o } : {}),
+          ...(p ? { patient: p } : {}),
+          ...(c ? { code: c } : {}),
+          ...(ins
+            ? {
+                insurances: ins.split(",").map((x) => {
+                  const [insurance, plan] = x.split(":");
+                  return { insurance, plan: plan || null };
+                }),
+              }
+            : {}),
+        },
       }).then((res) => res.data),
     { revalidateOnFocus: false, keepPreviousData: true },
   );
+
+  // the insurances this patient used last time are preselected, when this
+  // doctor accepts them (Zocdoc keeps the insurance on the account)
+  const [preselected, setPreselected] = useState(false);
+  useEffect(() => {
+    if (!quote || draft.insurances !== undefined || draft.insurance) return;
+    const accepted = new Set((Array.isArray(quote.insurances) ? quote.insurances : []).map((o) => o?._id));
+    const saved = (Array.isArray(quote.insurance?.saved) ? quote.insurance!.saved : []).filter((p) => accepted.has(p?.insurance));
+    if (saved.length) {
+      setDraft((prev) => (prev.insurances !== undefined ? prev : { ...prev, insurances: saved }));
+      setPreselected(true);
+    }
+  }, [quote, draft.insurances, draft.insurance]);
 
   // the default way to pay: the wallet when it covers the visit, else at
   // the desk for an in-person visit, else the gateway when it is on
@@ -618,15 +658,17 @@ const Details = ({
     draft.method ||
     (quote && quote.balance >= quote.total
       ? "wallet"
-      : sessionType === "inPerson"
+      : sessionType === "inPerson" && !!quote?.payAtDesk
         ? "desk"
         : payment?.sepEnabled
           ? "gateway"
           : "wallet");
-  const deskAllowed = sessionType === "inPerson";
+  // in person, and only where the doctor takes payment at the desk (the
+  // quote says; the server refuses it otherwise)
+  const deskAllowed = sessionType === "inPerson" && !!quote?.payAtDesk;
   useEffect(() => {
-    if (method === "desk" && !deskAllowed) update({ method: "wallet" });
-  }, [deskAllowed, method]);
+    if (quote && method === "desk" && !deskAllowed) update({ method: "wallet" });
+  }, [deskAllowed, method, quote]);
   // back from the gateway: the top-up is in the wallet now
   useEffect(() => {
     if (resumed) update({ method: "wallet" });
@@ -644,7 +686,27 @@ const Details = ({
     return <div className={`${classes.card} ${classes.skeleton}`} style={{ height: "14rem" }} />;
 
   const people = [identity, ...(relatives || [])].filter((p) => !!p?._id);
-  const insurances = quote?.insurances || [];
+  const insurances: InsuranceOption[] = (Array.isArray(quote?.insurances) ? quote!.insurances : []).filter((o) => !!o?._id);
+  const insLines = Array.isArray(quote?.insurance?.lines) ? quote!.insurance!.lines : [];
+  const notAccepted = Array.isArray(quote?.insurance?.notAccepted) ? quote!.insurance!.notAccepted : [];
+  const picked = (id: string) => picks.some((p) => p.insurance === id);
+  // one basic and one supplementary at most: picking one replaces the
+  // other of its kind; basic first
+  const isBasicId = (id: string) => !!insurances.find((o) => o._id === id)?.isBasic;
+  const togglePick = (o: InsuranceOption) => {
+    const rest = picks.filter((p) => p.insurance !== o._id && isBasicId(p.insurance) !== !!o.isBasic);
+    // no plan until the patient says which is theirs
+    const next = picked(o._id) ? rest : [...rest, { insurance: o._id, plan: null }];
+    update({ insurances: next.sort((a, b) => Number(isBasicId(b.insurance)) - Number(isBasicId(a.insurance))) });
+    setPreselected(false);
+  };
+  // a second tap on the plan picked clears it
+  const setPlan = (id: string, plan: string) =>
+    update({ insurances: picks.map((p) => (p.insurance === id ? { ...p, plan: p.plan === plan ? null : plan } : p)) });
+  const insGroups = [
+    { key: "basic", title: getContent("bfInsBasic"), list: insurances.filter((o) => o.isBasic) },
+    { key: "supp", title: getContent("bfInsSupp"), list: insurances.filter((o) => !o.isBasic) },
+  ].filter((g) => g.list.length);
   const payNow = method === "desk" ? 0 : quote?.total || 0;
   const shortfall = method === "wallet" && quote ? Math.max(0, quote.total - quote.balance) : 0;
   const canSubmit = !!quote && !!patientId && !blocked && !busy && !(method === "wallet" && shortfall > 0);
@@ -677,7 +739,7 @@ const Details = ({
           method: method === "desk" ? "desk" : "wallet",
           ...(office ? { office } : {}),
           ...(draft.code && quote.code?.applied ? { code: draft.code } : {}),
-          ...(draft.insurance ? { insurance: draft.insurance } : {}),
+          ...(picks.length ? { insurances: picks } : {}),
         },
       });
       const booked = res?.data as IReservation | undefined;
@@ -827,34 +889,105 @@ const Details = ({
         </Section>
       </div>
 
-      {/* insurance */}
-      {!!insurances.length && (
+      {/* insurance: the doctor's accepted insurances, the estimated share live */}
+      {(!!insurances.length || !!notAccepted.length) && (
         <div className={classes.card}>
           <Section icon={<ShieldCheckIcon />} tone="tone-teal" title={getContent("bfInsurance")} hint={getContent("bfInsuranceHint")}>
-            <div className={classes.chips} role="radiogroup">
-              <button
-                type="button"
-                role="radio"
-                aria-checked={!draft.insurance}
-                className={`${classes.pill} ${!draft.insurance ? classes.pillOn : ""}`}
-                onClick={() => update({ insurance: null })}
-              >
-                {getContent("bfNoInsurance")}
-              </button>
-              {insurances.map((i) => (
+            {insGroups.map((g) => (
+              <div key={g.key} className={classes.insGroup}>
+                {insGroups.length > 1 && <span className={classes.insGroupTitle}>{g.title}</span>}
+                <div className={classes.chips} role="group" aria-label={g.title}>
+                  {g.list.map((o) => {
+                    const on = picked(o._id);
+                    return (
+                      <button
+                        key={o._id}
+                        type="button"
+                        aria-pressed={on}
+                        className={`${classes.pill} ${on ? classes.pillOn : ""}`}
+                        onClick={() => togglePick(o)}
+                      >
+                        {o.name}
+                        <small className={classes.pillHint}>
+                          {o.covered ? getContent("bfInsChipCovered") : getContent("bfInsChipNoTariff")}
+                        </small>
+                      </button>
+                    );
+                  })}
+                </div>
+                {g.list
+                  .filter((o) => picked(o._id) && (o.plans?.length || 0) > 0)
+                  .map((o) => (
+                    <div key={o._id} className={classes.onsets} role="group" aria-label={getContent("bfInsPlan")}>
+                      <span className={classes.muted}>{getContent("bfInsPlanOf", [o.name])}</span>
+                      {(o.plans || []).map((pl) => {
+                        const on = picks.find((p) => p.insurance === o._id)?.plan === pl._id;
+                        return (
+                          <button
+                            key={pl._id}
+                            type="button"
+                            aria-pressed={on}
+                            className={`${classes.pill} ${on ? classes.pillOn : ""}`}
+                            onClick={() => setPlan(o._id, pl._id)}
+                          >
+                            {pl.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+              </div>
+            ))}
+            {!!insurances.length && (
+              <div className={classes.chips}>
                 <button
-                  key={i._id}
                   type="button"
-                  role="radio"
-                  aria-checked={draft.insurance === i._id}
-                  className={`${classes.pill} ${draft.insurance === i._id ? classes.pillOn : ""}`}
-                  onClick={() => update({ insurance: i._id })}
+                  aria-pressed={!picks.length}
+                  className={`${classes.pill} ${!picks.length ? classes.pillOn : ""}`}
+                  onClick={() => (update({ insurances: [] }), setPreselected(false))}
                 >
-                  {i.name}
+                  {getContent("bfNoInsurance")}
                 </button>
-              ))}
-            </div>
-            {!!draft.insurance && <p className={classes.note}>{getContent("bfInsuranceNote")}</p>}
+              </div>
+            )}
+            {preselected && !!picks.length && <p className={classes.muted}>{getContent("bfInsRemembered")}</p>}
+            {notAccepted.map((n) => (
+              <p key={n._id} className={classes.insNotHere}>
+                <Ixon width="0.9rem">
+                  <AlertTriangleIcon />
+                </Ixon>
+                {getContent("bfInsNotHere", [n.name])}
+              </p>
+            ))}
+            {!!quote?.insurance?.error && <p className={classes.codeBad}>{quote.insurance.error}</p>}
+            {!!insLines.length && !!quote && (
+              <ul className={classes.insLines} aria-live="polite">
+                {insLines.map((l) => (
+                  <li key={l.insurance}>
+                    <span>
+                      {l.planName ? `${l.name} · ${l.planName}` : l.name}
+                      <small>{l.role === "basic" ? getContent("bfInsBasic") : getContent("bfInsSupp")}</small>
+                    </span>
+                    <b>
+                      {l.share > 0
+                        ? money(l.share)
+                        : l.reason === "limit"
+                          ? getContent("bfInsOverLimit")
+                          : getContent("bfInsNoTariffLine")}
+                    </b>
+                  </li>
+                ))}
+                <li className={classes.insYou}>
+                  <span>{getContent("bfInsYourShare")}</span>
+                  <b>{money(method === "desk" ? quote.deskTotal : quote.total)}</b>
+                </li>
+              </ul>
+            )}
+            {!!insLines.length && (
+              <p className={classes.note}>
+                {getContent(method === "desk" ? "bfInsDeskNote" : "bfInsOnlineNote")} {getContent("bfInsuranceNote")}
+              </p>
+            )}
           </Section>
         </div>
       )}
@@ -944,6 +1077,14 @@ const Details = ({
                 <dd>{`− ${money(quote.clubDiscount)}`}</dd>
               </div>
             )}
+            {insLines
+              .filter((l) => l.share > 0)
+              .map((l) => (
+                <div key={l.insurance} className={classes.minus}>
+                  <dt>{getContent("bfInsShareLine", [l.name])}</dt>
+                  <dd>{`− ${money(l.share)}`}</dd>
+                </div>
+              ))}
             {quote.tax > 0 && (
               <div>
                 <dt>{getContent("tax")}</dt>
@@ -962,6 +1103,7 @@ const Details = ({
             </div>
           </dl>
         )}
+        {(quote?.insurance?.insurerShare || 0) > 0 && <p className={classes.estimate}>{getContent("bfInsEstimate")}</p>}
         <div className={classes.policy}>
           <Ixon width="1rem">
             <ShieldCheckIcon />
