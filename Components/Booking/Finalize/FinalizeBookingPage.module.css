@@ -451,6 +451,7 @@
 }
 .lines dd {
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .minus dd {
   color: var(--toneTealInk);
@@ -599,4 +600,76 @@
   :global(body):has(.mobileBar) {
     padding-bottom: 4.75rem;
   }
+}
+
+/* insurance (2026-10): basic and supplementary groups, the estimated split */
+.insGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+}
+.insGroupTitle {
+  font-size: var(--fsXs);
+  font-weight: 600;
+  color: var(--textMuted);
+}
+.pill .pillHint {
+  margin-inline-start: var(--sp2);
+  font-size: var(--fsXs);
+  font-weight: 400;
+  color: var(--textMuted);
+}
+.insNotHere {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+  margin: 0;
+  font-size: var(--fsSm);
+  color: var(--toneAmberInk, var(--textBody));
+}
+.insLines {
+  list-style: none;
+  margin: 0;
+  padding: var(--sp3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+  border-radius: var(--radiusSm);
+  background: var(--hoverTint);
+}
+.insLines li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp3);
+  font-size: var(--fsSm);
+  color: var(--textBody);
+}
+.insLines li span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp2);
+  min-width: 0;
+}
+.insLines li small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.insLines li b {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-align: end;
+  font-weight: 600;
+}
+.insLines .insYou {
+  padding-block-start: var(--sp2);
+  border-top: 1px dashed var(--line);
+  color: var(--textStrong);
+}
+.estimate {
+  margin: 0;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+  line-height: 1.7;
 }

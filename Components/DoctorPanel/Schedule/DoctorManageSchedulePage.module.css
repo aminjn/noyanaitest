@@ -478,3 +478,48 @@
     white-space: nowrap;
   }
 }
+
+/* the waitlist (2026-10): patients waiting for a free slot */
+.waitPanel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.875rem 1rem;
+  border-radius: 1.25rem;
+  background: var(--toneIndigo);
+  color: var(--toneIndigoInk);
+}
+.waitText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  flex: 1 1 18rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.waitText strong {
+  font-size: 0.9375rem;
+}
+.waitDays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.waitDays li,
+.waitChip {
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--toneIndigoInk);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.waitChip {
+  background: var(--toneIndigo);
+}

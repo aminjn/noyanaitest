@@ -33,9 +33,14 @@ const BookingSessionSelectorPopup = ({
   initialDate,
   open,
   onClose,
+  initialType,
+  initialPick,
 }: {
   node: IDoctorProfile;
   initialDate?: Date;
+  // open on this visit type and slot (the card's «اولین نوبت»)
+  initialType?: DoctorSessionType;
+  initialPick?: SlotPick;
   standalone?: boolean;
   open?: boolean;
   onClose?: () => void;
@@ -53,12 +58,16 @@ const BookingSessionSelectorPopup = ({
     () => (config ? visitTypeOrder.filter((t) => config[t]?.active && !!config[t]?.price) : []),
     [config],
   );
-  const [type, setType] = useState<DoctorSessionType | null>(null);
+  const [type, setType] = useState<DoctorSessionType | null>(initialType || null);
   useEffect(() => {
     if (!type && types.length) setType(types[0]);
   }, [type, types]);
-  const [pick, setPick] = useState<SlotPick | null>(null);
-  useEffect(() => setPick(null), [type]);
+  const [pick, setPick] = useState<SlotPick | null>(initialPick || null);
+  // another visit type: the pick was for the old one
+  const changeType = (t: DoctorSessionType) => {
+    setType(t);
+    setPick(null);
+  };
 
   const close = () => (onClose ? onClose() : closePopup());
   const go = () => {
@@ -69,13 +78,14 @@ const BookingSessionSelectorPopup = ({
 
   const body = (
     <div className={classes.main}>
-      {types.length > 1 && <VisitTypePicker settings={config} value={type} onChange={setType} />}
+      {types.length > 1 && <VisitTypePicker settings={config} value={type} onChange={changeType} />}
       <SlotPicker
         doctorId={node._id}
         sessionType={type}
         value={pick}
         onChange={setPick}
         initialDay={initialDate ? tehranYmd(initialDate) : undefined}
+        waitlist
       />
     </div>
   );

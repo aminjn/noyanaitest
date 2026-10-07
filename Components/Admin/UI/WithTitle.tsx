@@ -27,6 +27,7 @@ const WithTitle = ({
   className = "",
   style,
   collapsed,
+  description,
 }: WithStyleProps<{
   children?: ReactNode;
   title: string;
@@ -39,6 +40,8 @@ const WithTitle = ({
     danger?: boolean;
   }[];
   collapsed?: ReactNode;
+  // one line under the heading: what this list is for
+  description?: ReactNode;
 }>) => {
   const dangerActions = (allActions || []).filter((a) => a.danger);
   const actions = (allActions || []).filter((a) => !a.danger);
@@ -163,6 +166,7 @@ const WithTitle = ({
           )}
         </div>
       </div>
+      {!!description && <p className={classes.description}>{description}</p>}
       <div className={classes.content}>{children}</div>
     </Box>
   );

@@ -10,6 +10,7 @@ import {
 import {
   BookingCommon,
   bookingSorts,
+  orgSort,
   DoctorBookingOptions,
 } from "./BookingPage2";
 import BookingHeader from "./BookingHeader";
@@ -371,7 +372,7 @@ const PharmacyBooking = ({
   const params = useMemo(() => {
     const params = new URLSearchParams();
     const options = { ...debouncedOptions };
-    params.append("sort", common.sort);
+    params.append("sort", orgSort(common.sort));
     params.append("page", "1");
     if (options.query) params.append("query", options.query);
     if (options.productQuery)
@@ -418,7 +419,7 @@ const PharmacyBooking = ({
       <MultiSelectInput
         placeholder={getContent("sortBy")}
         multi={false}
-        value={[common.sort]}
+        value={[orgSort(common.sort)]}
         options={bookingSorts.map((el) => ({
           title: getContent(el),
           value: el,

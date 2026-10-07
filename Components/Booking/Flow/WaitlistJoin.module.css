@@ -1,0 +1,156 @@
+/* «خبرم کن»: the waitlist offer, form and confirmation in the slot picker */
+.offer,
+.done,
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+  padding: var(--sp3);
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  color: var(--textStrong);
+  min-width: 0;
+}
+.offer {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.offer > :global(button),
+.offer > a {
+  margin-inline-start: auto;
+}
+.done {
+  flex-direction: row;
+  align-items: flex-start;
+  border-color: transparent;
+  background: var(--toneTeal);
+}
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp3);
+}
+.icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radiusXs);
+}
+.offerText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+.offerText b {
+  font-size: var(--fsSm);
+  font-weight: 700;
+}
+.offerText small {
+  font-size: var(--fsXs);
+  line-height: var(--lhBody);
+  color: var(--textBody);
+}
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+}
+.label {
+  font-size: var(--fsXs);
+  font-weight: 600;
+  color: var(--textMuted);
+}
+.lead {
+  margin: 0;
+  font-size: var(--fsSm);
+  color: var(--textBody);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+}
+.chip {
+  min-height: 2.75rem;
+  padding: 0 var(--sp3);
+  border-radius: var(--radiusPill);
+  border: 1px solid var(--cardLineHover);
+  background: var(--cardBg);
+  color: var(--textStrong);
+  font-size: var(--fsSm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.chip:hover {
+  background: var(--hoverTint);
+}
+.chip:focus-visible,
+.link:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+.chipOn,
+.chipOn:hover {
+  border-color: var(--primary6);
+  background: var(--activeTint);
+  color: var(--primary7);
+  font-weight: 600;
+}
+.range {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--sp2);
+}
+.error {
+  font-size: var(--fsXs);
+  color: var(--toneRoseInk);
+}
+.note {
+  margin: 0;
+  padding: var(--sp2) var(--sp3);
+  border-radius: var(--radiusXs);
+  background: var(--toneAmber);
+  color: var(--toneAmberInk);
+  font-size: var(--fsXs);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp3);
+}
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp1);
+  min-height: 2.75rem;
+  padding: 0 var(--sp1);
+  border: 0;
+  background: none;
+  color: var(--primary7);
+  font-size: var(--fsSm);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.linkLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--sp1);
+  margin: 0;
+  font-size: var(--fsSm);
+  color: var(--textMuted);
+}
+.skeleton {
+  height: 6rem;
+  border-radius: var(--radiusSm);
+  background: var(--gray2);
+}

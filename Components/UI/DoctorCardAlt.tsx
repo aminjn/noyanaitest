@@ -26,6 +26,7 @@ import LocationIcon from "../Icons/LocationIcon";
 import VerifiedImage from "./VerifiedImage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import FirstSlotButton, { nextSlotOf } from "../Booking/Flow/FirstSlotButton";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "uiDoctorCard"];
 
@@ -78,6 +79,9 @@ const DoctorCardAlt = ({
       ? apiTypes.includes(type)
       : !!node[`${type}Settings`]?.active;
   const score = node.averageScore ? node.averageScore.toFixed(1) : "0";
+  // «اولین نوبت» from the list endpoints (backend Lib/nextSlot.ts)
+  const firstSlot = canBook ? nextSlotOf(node) : null;
+  const first = firstSlot ? <FirstSlotButton node={node as never} slot={firstSlot} /> : null;
 
   if (variant === "row")
     return (
@@ -122,6 +126,7 @@ const DoctorCardAlt = ({
             </span>
           )}
         </div>
+        {first}
         {footer}
       </div>
     );
@@ -241,6 +246,7 @@ const DoctorCardAlt = ({
           </div>
         </div>
       </div>
+      {first}
       {footer}
       <div className={`${classes.actions} ${txsMedium}`}>
         <Link

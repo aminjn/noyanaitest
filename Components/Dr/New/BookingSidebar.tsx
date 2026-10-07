@@ -150,6 +150,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           value={pick}
           onChange={setPick}
           fallback={fallback}
+          waitlist
         />
       </section>
     </div>

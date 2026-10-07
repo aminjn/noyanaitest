@@ -137,3 +137,12 @@
   font-weight: 700;
   color: var(--gray12);
 }
+
+/* one line under the heading (what the list is for) */
+.description {
+  margin: -0.5rem 0 0;
+  color: var(--textMuted);
+  font-size: var(--fsSm);
+  line-height: var(--lhBody);
+  text-align: start;
+}

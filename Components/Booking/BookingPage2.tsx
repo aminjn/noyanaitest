@@ -45,7 +45,19 @@ export const bookingSorts = [
   "LeastRecommended",
 ] as const;
 
-export type BookingSort = (typeof bookingSorts)[number];
+// doctors also sort by the soonest free slot (2026-10, Zocdoc / Doctolib
+// "earliest available"); the org lists don't have slots
+export const doctorBookingSorts = [...bookingSorts, "Earliest"] as const;
+
+export type BookingSort = (typeof doctorBookingSorts)[number];
+
+// the sorts the list of this kind offers
+export const sortsFor = (node: BookingNode): readonly BookingSort[] =>
+  node === "doctor" ? doctorBookingSorts : bookingSorts;
+
+// what an org list is asked for when the doctors' own sort is on
+export const orgSort = (sort: BookingSort) =>
+  (bookingSorts as readonly string[]).includes(sort) ? sort : "Best";
 
 export type BookingCommon = {
   view: BookingView;

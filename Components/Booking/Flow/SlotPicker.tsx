@@ -11,6 +11,7 @@ import Ixon from "@/Components/UI/Ixon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import { clock, DayPeriod, dayPeriods, periodKey, periodOf, useBookableSlots } from "./bookingFlow";
+import WaitlistJoin from "./WaitlistJoin";
 import classes from "./SlotPicker.module.css";
 
 const NS: ContentNamespace[] = ["common", "bookingFlow"];
@@ -34,6 +35,7 @@ const SlotPicker = ({
   fallback,
   days: maxDays,
   initialDay,
+  waitlist,
 }: {
   doctorId: string;
   sessionType: DoctorSessionType | null | undefined;
@@ -45,6 +47,9 @@ const SlotPicker = ({
   days?: number;
   // the day to open on ("YYYY-MM-DD"), e.g. the one tapped on a card
   initialDay?: string;
+  // offer «خبرم کن» (the waitlist) when the doctor is full or no time suits
+  // (booking only, not when moving a visit)
+  waitlist?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
@@ -155,6 +160,7 @@ const SlotPicker = ({
       <div className={classes.full}>
         <strong>{getContent("bfFullyBooked")}</strong>
         <p>{getContent("bfFullyBookedText", [nf.format(horizon)])}</p>
+        {waitlist && <WaitlistJoin doctorId={doctorId} sessionType={sessionType} office={office} horizon={horizon} />}
         {fallback}
       </div>
     );
@@ -269,6 +275,10 @@ const SlotPicker = ({
             </button>
           )}
         </div>
+      )}
+
+      {waitlist && (
+        <WaitlistJoin doctorId={doctorId} sessionType={sessionType} office={office} horizon={horizon} variant="link" />
       )}
     </div>
   );

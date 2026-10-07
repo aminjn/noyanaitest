@@ -62,8 +62,44 @@ export type BookingQuote = {
   deskTotal: number;
   payAtDesk: boolean;
   code: { applied: boolean; name?: string } | null;
-  insurances: { _id: string; name: string }[];
+  // the insurances this doctor (or the office's centre) accepts for this
+  // visit: basic or supplementary, their plans with a tariff of their own,
+  // and whether a tariff covers this visit at all
+  insurances: InsuranceOption[];
+  // (2026-10) the insurers' estimated shares of the insurances picked
+  // (basic first); total and deskTotal are already the patient's part
+  insurance?: {
+    lines: InsurerLine[];
+    insurerShare: number;
+    patientShare: number;
+    notAccepted: { _id: string; name: string }[];
+    saved: InsurancePick[];
+    estimate: true;
+    error?: string;
+  };
   balance: number;
+};
+
+export type InsurancePick = { insurance: string; plan?: string | null };
+export type InsuranceOption = {
+  _id: string;
+  name: string;
+  image?: string;
+  isBasic?: boolean;
+  via?: "doctor" | "centre";
+  plans?: { _id: string; name: string }[];
+  covered?: boolean;
+};
+export type InsurerLine = {
+  insurance: string;
+  name: string;
+  role: "basic" | "supplementary";
+  plan?: string | null;
+  planName?: string;
+  base: number;
+  share: number;
+  // no share: "noTariff" | "limit"
+  reason?: string;
 };
 
 // a slot's part of the day, Doctolib / Zocdoc style

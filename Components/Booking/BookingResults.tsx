@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { BookingCommon, bookingSorts } from "./BookingPage2";
+import { BookingCommon, sortsFor } from "./BookingPage2";
 import classes from "./BookingResults.module.css";
 import SortButton from "../UI/SortButton";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -32,15 +32,15 @@ const BookingResults = ({
       <div className={classes.header}>
         <SortButton
           title={getContent("sortBy")}
-          options={bookingSorts.map((el) => ({
+          options={sortsFor(common.node).map((el) => ({
             title: getContent(el),
             value: el,
           }))}
-          value={common.sort}
+          value={sortsFor(common.node).includes(common.sort) ? common.sort : "Best"}
           onChange={(e) =>
             setCommon((prev) => ({
               ...prev,
-              sort: bookingSorts.find((el) => el === e) || prev.sort,
+              sort: sortsFor(prev.node).find((el) => el === e) || prev.sort,
             }))
           }
         />

@@ -48,6 +48,8 @@ export type IScheduleReservation = IReservation<{
 type ScheduleInsights = {
   noShowHistory?: Record<string, { missed: number; visits: number }>;
   intakes?: Record<string, boolean> | null;
+  // patients waiting for a free slot, per Tehran day (backend Lib/waitlist.ts)
+  waitlist?: { total: number; byDay: Record<string, number> } | null;
 };
 
 // One row of the list, from either system: Bookings (System A, clinic
@@ -202,6 +204,21 @@ const DoctorManageSchedulePage = () => {
   const next = todayRows.filter((r) => r.open).sort((a, b) => a.start - b.start)[0];
   const openDesk = () => setPopup("DeskBooking", <DeskBookingPopup onDone={() => mutate()} />);
 
+  // the waitlist: how many wait for each of the next days
+  const waitByDay = useMemo(() => {
+    const raw = data?.insights?.waitlist?.byDay;
+    return raw && typeof raw === "object" ? raw : {};
+  }, [data]);
+  const waitTotal = Number(data?.insights?.waitlist?.total) || 0;
+  const waitDays = useMemo(() => {
+    const fmt = new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "short", day: "numeric", month: "short" });
+    return Object.entries(waitByDay)
+      .filter(([key, n]) => key >= todayKey && Number(n) > 0)
+      .sort(([a], [b]) => (a < b ? -1 : 1))
+      .slice(0, 7)
+      .map(([key, n]) => ({ key, n: Number(n), label: fmt.format(tehranNoon(key)) }));
+  }, [waitByDay, todayKey, intlTag]);
+
   const days = useMemo(() => {
     const q = query.trim().toLowerCase();
     const visible = rows.filter((r) => {
@@ -314,6 +331,22 @@ const DoctorManageSchedulePage = () => {
             </section>
           )}
 
+          {waitTotal > 0 && (tab === "today" || tab === "upcoming") && !filter && (
+            <section className={classes.waitPanel} aria-label={getContent("schWaitlistTitle")}>
+              <p className={classes.waitText}>
+                <strong>{getContent("schWaitlistTitle")}</strong>
+                <span>{getContent("schWaitlistHint", [num.format(waitTotal)])}</span>
+              </p>
+              {!!waitDays.length && (
+                <ul className={classes.waitDays}>
+                  {waitDays.map((d) => (
+                    <li key={d.key}>{getContent("schWaitlistDay", [d.label, num.format(d.n)])}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
+
           <AssistantStrip
             title={getContent("schAssistant")}
             clearLabel={getContent("schClearFilter")}
@@ -353,6 +386,9 @@ const DoctorManageSchedulePage = () => {
               <div className={classes.dayHead}>
                 <span className={`${classes.dayName} ${day.isToday ? classes.today : ""}`}>{day.weekday}</span>
                 <span className={classes.dayDate}>{day.date}</span>
+                {!!waitByDay[day.key] && (
+                  <span className={classes.waitChip}>{getContent("schWaitlist", [num.format(waitByDay[day.key])])}</span>
+                )}
                 <span className={classes.dayCount}>{getContent("schCount", [num.format(day.list.length)])}</span>
               </div>
               <ul className={classes.rows}>

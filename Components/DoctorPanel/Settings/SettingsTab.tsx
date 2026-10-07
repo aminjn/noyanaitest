@@ -21,6 +21,10 @@ export interface ISessionSettings extends MongoDoc {
   price?: number;
   active: boolean;
   hidePrice?: boolean;
+  // in person (2026-10): pay at the desk on/off, and the offices it is on at
+  payAtDesk?: boolean;
+  payAtDeskOffices?: string[];
+  offices?: { _id: string; name?: string; active?: boolean }[];
 }
 
 const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
@@ -46,6 +50,19 @@ const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
       inPerson: {
         ...commons,
         hidePrice: { title: getContent("hidePrice"), type: "bool" },
+        payAtDesk: { title: getContent("setPayAtDesk"), type: "bool", hint: getContent("setPayAtDeskHint") },
+        // per office, when there is more than one
+        ...((Array.isArray(data?.offices) ? data.offices : []).length > 1
+          ? {
+              payAtDeskOffices: {
+                type: "multiselect" as const,
+                title: getContent("setPayAtDeskOffices"),
+                options: Object.fromEntries(
+                  (data?.offices || []).filter((o) => !!o?._id).map((o) => [o._id, o.name || o._id]),
+                ),
+              },
+            }
+          : {}),
       },
       sipCall: {
         ...commons,
@@ -55,7 +72,7 @@ const SettingsTab = ({ kind }: { kind: DoctorSessionType }) => {
       videoCall: { ...commons },
       voiceCall: { ...commons },
     }),
-    [commons, getContent],
+    [commons, getContent, data?.offices],
   );
 
   return (

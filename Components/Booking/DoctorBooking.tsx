@@ -14,7 +14,7 @@ import classes from "./DoctorBooking.module.css";
 import {
   BookingCommon,
   BookingPageDoctor,
-  bookingSorts,
+  doctorBookingSorts,
   DoctorBookingOptions,
 } from "./BookingPage2";
 import useDebounce from "../Hooks/useDebounce";
@@ -102,7 +102,7 @@ const DoctorBooking = ({
       for (const clinic of options.clinic) params.append("clinic", clinic._id);
     if (options.sessiontype?.length)
       for (const sessionType of options.sessiontype)
-        params.append("sessiontype", sessionType);
+        params.append("sessionType", sessionType);
     if (options.location) {
       params.append(
         "location.coords.lat",
@@ -188,14 +188,14 @@ const DoctorBooking = ({
         placeholder={getContent("sortBy")}
         multi={false}
         value={[common.sort]}
-        options={bookingSorts.map((el) => ({
+        options={doctorBookingSorts.map((el) => ({
           title: getContent(el),
           value: el,
         }))}
         onChange={(e) =>
           setCommon((prev) => ({
             ...prev,
-            sort: bookingSorts.find((el) => el === e[0]) || prev.sort,
+            sort: doctorBookingSorts.find((el) => el === e[0]) || prev.sort,
           }))
         }
       />
