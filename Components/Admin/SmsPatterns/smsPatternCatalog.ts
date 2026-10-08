@@ -62,10 +62,12 @@ export const notificationSmsEvents = [
   "orderItemCancelledUser",
   "prescriptionRejectedUser",
   "labResultReadyUser",
+  "labSamplingReminderUser",
   "orderCancelledByBuyerSeller",
   "orderResponseDueSoonSeller",
   "orderAutoCancelledSeller",
   "orderAutoCancelledUser",
+  "orderReviewRequestUser",
   "walletChargedUser",
   "gatewayPaymentCreditedUser",
   "gatewayPaymentRefundedUser",
@@ -405,6 +407,22 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("آماده شدن جواب آزمایش - خریدار"),
     variables: ["orderId", "labName"],
     sample: () => ta("جواب آزمایش شما در %labName% آماده است. سفارش: %orderId%"),
+  },
+  // the day before a lab sampling appointment (2026-10, backend Lib/labSampling.ts)
+  labSamplingReminderUser: {
+    audience: "patient",
+    label: () => ta("یادآوری نوبت نمونه‌گیری - خریدار"),
+    variables: ["labName", "date", "time"],
+    sample: () => ta("یادآوری: نمونه‌گیری شما با %labName% در تاریخ %date% ساعت %time% است."),
+  },
+  // seller reviews (2026-10, backend Services/orderSettlementService.ts
+  // inviteSellerReview): once per order and pharmacy / lab
+  orderReviewRequestUser: {
+    audience: "patient",
+    label: () => ta("درخواست امتیاز به فروشنده - خریدار"),
+    variables: ["orderId", "sellerName"],
+    sample: () =>
+      ta("سفارش %orderId% از %sellerName% انجام شد. با ثبت امتیاز و نظر به دیگران کمک کنید: noyan.ir/order/%orderId%"),
   },
   orderCancelledByBuyerSeller: {
     audience: "provider",

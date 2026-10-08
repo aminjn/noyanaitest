@@ -37,6 +37,22 @@
   color: var(--black);
 }
 
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray10);
+}
+
+.star {
+  color: var(--yellow);
+}
+
+.score {
+  font-weight: 700;
+  color: var(--black);
+}
+
 .province {
   display: flex;
   align-items: center;
@@ -95,4 +111,8 @@
   align-items: center;
   gap: 0.25rem;
   color: var(--gray8);
+}
+
+.offerStar {
+  color: var(--warning);
 }

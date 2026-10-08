@@ -32,3 +32,14 @@
   transform: translateY(-50%);
   inset-inline-start: 0.75rem;
 }
+
+.sortBox {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sortLabel {
+  color: var(--gray10);
+}

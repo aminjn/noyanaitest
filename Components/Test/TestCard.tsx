@@ -37,8 +37,9 @@ const TestCard = ({
           )}
         </div>
       </div>
-      {/* the labs that perform this test (there is no /test/<slug> page) */}
-      <Link href={`/paraClinic?test=${node._id}`} className={classes.link}>
+      {/* the test's own page: what it is, preparation, and the labs that
+          offer it by price (2026-10) */}
+      <Link href={`/test/${encodeURIComponent(node.slug || node._id)}`} className={classes.link}>
         {getContent("seeDetails")}
       </Link>
     </li>

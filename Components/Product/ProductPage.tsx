@@ -112,7 +112,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
       score={data.averageScore}
       specs={data.specs}
       totalScore={data.commentCount}
-      beforeTabs={<ProductSellers data={data.sellers} />}
+      beforeTabs={<ProductSellers data={data.sellers} rx={!!data.requiresPrescription} />}
       badges={data.requiresPrescription ? <RxBadge size="L" /> : undefined}
       category={data.category ? { name: data.category.name || "" } : undefined}
       name={data.name}

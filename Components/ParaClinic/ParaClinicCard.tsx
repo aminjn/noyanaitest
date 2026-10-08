@@ -17,6 +17,8 @@ import PlusIcon from "../Icons/PlusIcon";
 import ClockIcon from "../Icons/ClockIcon";
 import { currencize } from "../helpers/currencize";
 import HostedImage from "../UI/HostedImage";
+import StarIcon from "../Icons/StarIcon";
+import { useIntlLocale } from "../i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "paraClinicCard"];
 
@@ -27,10 +29,13 @@ export type ParaClinicTestOffer = {
   price?: number;
   readyTime?: string;
   takesOrders?: boolean;
+  // the lab's review score (the test page sorts by it), when it has reviews
+  rating?: { score?: number; count?: number };
 };
 
 const OfferRow = ({ offer }: { offer: ParaClinicTestOffer }) => {
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
   const { cart, mutateCartItem, removeCartItem } = useCart();
   const id = offer._id || "";
   const inCart = !!cart?.tests?.find((el) => el?.item?._id === id)?.qty;
@@ -47,6 +52,14 @@ const OfferRow = ({ offer }: { offer: ParaClinicTestOffer }) => {
               <ClockIcon />
             </Ixon>
             {offer.readyTime}
+          </span>
+        )}
+        {Number(offer.rating?.count) > 0 && Number(offer.rating?.score) > 0 && (
+          <span className={`${classes.offerReady} ${txsRegular}`}>
+            <Ixon width=".75rem" className={classes.offerStar}>
+              <StarIcon />
+            </Ixon>
+            {`${new Intl.NumberFormat(intlTag, { maximumFractionDigits: 1 }).format(Number(offer.rating?.score))} · ${getContent("nComments", [new Intl.NumberFormat(intlTag).format(Number(offer.rating?.count))])}`}
           </span>
         )}
       </div>
@@ -85,6 +98,9 @@ const ParaClinicCard = ({
   }>;
 }) => {
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  // approved, verified buyer reviews (2026-10); nothing shown before the first
+  const reviewCount = Number(node.commentCount) || 0;
 
   return (
     <li className={`${classes.main} ${offer ? classes.withOffer : ""}`}>
@@ -99,6 +115,19 @@ const ParaClinicCard = ({
       </div>
       <div className={classes.details}>
         <h3 className={`${classes.name} ${tbaseMedium}`}>{node.name}</h3>
+        {reviewCount > 0 && (
+          <div className={`${classes.rating} ${txsRegular}`}>
+            <Ixon width=".75rem" className={classes.star}>
+              <StarIcon />
+            </Ixon>
+            <span className={classes.score}>
+              {new Intl.NumberFormat(intlTag, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(
+                Number(node.averageScore) || 0,
+              )}
+            </span>
+            <span>{`(${getContent("nComments", [new Intl.NumberFormat(intlTag).format(reviewCount)])})`}</span>
+          </div>
+        )}
         {!!node.province && (
           <div className={`${classes.province} ${txsRegular}`}>
             <Ixon width=".75rem">

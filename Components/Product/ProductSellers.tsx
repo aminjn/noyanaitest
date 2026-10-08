@@ -19,18 +19,27 @@ import { currencize } from "../helpers/currencize";
 import Badge from "../UI/Badge";
 import { useMemo } from "react";
 import HostedImage from "../UI/HostedImage";
+import DeliveryAreaNote, { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
 
 const NS: ContentNamespace[] = ["common", "products"];
 
 const finalPrice = (el: { price?: number; discount?: number }) =>
   Math.max(0, (el.price || 0) - (el.discount || 0));
 
+// where the seller ships it (2026-10, backend getProduct)
+type SellerNode = IProductSeller<{ Seller: { Province: Record<never, never> } }> & {
+  deliveryArea?: DeliveryArea;
+};
+
 const Item = ({
   node,
   cheapest,
+  rx,
 }: {
-  node: IProductSeller<{ Seller: { Province: Record<never, never> } }>;
+  node: SellerNode;
   cheapest: boolean;
+  // the product is prescription-only: it ships only in the seller's city
+  rx?: boolean;
 }) => {
   const { mutateCartItem } = useCart();
 
@@ -63,6 +72,7 @@ const Item = ({
               <span>{node.seller.province.name}</span>
             </div>
           )}
+          <DeliveryAreaNote area={node.deliveryArea} rx={rx} />
         </div>
         <div className={classes.itemFooter}>
           {!!node.freeDelivery && (
@@ -104,8 +114,10 @@ const Item = ({
 
 const ProductSellers = ({
   data,
+  rx,
 }: {
-  data: IProductSeller<{ Seller: { Province: Record<never, never> } }>[];
+  data: SellerNode[];
+  rx?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
 
@@ -136,6 +148,7 @@ const ProductSellers = ({
               key={item._id}
               node={item}
               cheapest={!!cheapest && cheapest === finalPrice(item)}
+              rx={rx}
             />
           ))}
         </div>

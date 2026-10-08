@@ -51,6 +51,7 @@ const nodeLabels: Record<string, () => string> = {
   "/product/[slug]": () => ta("صفحه‌ی محصول"),
   "/productPackage/[slug]": () => ta("صفحه‌ی بسته‌ی محصول"),
   "/mag/[blogSlug]": () => ta("صفحه‌ی مقاله"),
+  "/test/[slug]": () => ta("صفحه‌ی آزمایش"),
   // the medical directory's facet pages (2026-10)
   "/disease/letter/[letter]": () => ta("فهرست بیماری‌ها بر اساس حرف"),
   "/disease/part/[slug]": () => ta("فهرست بیماری‌ها بر اساس عضو بدن"),

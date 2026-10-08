@@ -10,7 +10,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["pharmacyPage", "medicalCenterLocation", "productServiceCard"];
+const NS: ContentNamespace[] = ["pharmacyPage", "medicalCenterLocation", "productServiceCard", "commentSection"];
 
 export const generateMetadata = async (ctx: { params: { slug: string } }) => {
   const meta = await getNodePageMetadata("/pharmacy/[slug]", ctx.params.slug);

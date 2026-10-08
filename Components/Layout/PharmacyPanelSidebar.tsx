@@ -11,6 +11,7 @@ import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import useAcl from "../Hooks/useAcl";
 import useOrdersTodo from "../_Common/ProviderHome/useOrdersTodo";
+import StarIcon from "../Icons/StarIcon";
 
 const PharmacyPanelSidebar = () => {
   const hasAccess = useAcl("pharmacy");
@@ -61,6 +62,13 @@ const PharmacyPanelSidebar = () => {
         icon: <UserEditIcon />,
         group: "groupDaily",
         target: "tamin",
+      },
+      {
+        title: "orgReviewsTitle",
+        group: "groupCenter",
+        icon: <StarIcon />,
+        show: hasAccess("readReviews"),
+        target: "review",
       },
       {
         title: "profile",

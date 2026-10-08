@@ -16,6 +16,7 @@ export const sitemapNodeTypes = [
   "productPackage",
   "pharmacy",
   "blog",
+  "test",
 ] as const;
 
 export type SitemapNodeType = (typeof sitemapNodeTypes)[number];
@@ -44,6 +45,7 @@ export const sitemapNodePath: Record<
   productPackage: (slug) => `/productPackage/${slug}`,
   pharmacy: (slug) => `/pharmacy/${slug}`,
   blog: (slug) => `/mag/${slug}`,
+  test: (slug) => `/test/${slug}`,
 };
 
 // static + list pages that get bundled into /sitemap/pages.xml. Paginated
@@ -64,6 +66,7 @@ export const sitemapStaticPages: string[] = [
   "/product",
   "/mag",
   "/test",
+  "/pharmacy",
   "/faq",
   "/about",
   "/contact",

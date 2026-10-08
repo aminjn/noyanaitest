@@ -5,6 +5,9 @@ import { ContentKey } from "../contentKeys";
 // item itself (owner-only by design). Kept in sync with
 // Models/pharmacyAcl.ts on noyanai-back.
 export const pharmacyActions = [
+  // buyers' published reviews (2026-10) — pharmacypanel/review. Kept in
+  // sync with Models/pharmacyAcl.ts on noyanai-back.
+  "readReviews",
   "mutateProfile",
   "readProducts",
   "readProductPackages",
@@ -45,6 +48,7 @@ export const pharmacyActions = [
 // Access-level popup tab groupings (2026-08). Each category is the sidebar
 // nav item's own title key, reused as the tab label.
 export const pharmacyActionCategories = [
+  "orgReviewsTitle",
   "profile",
   "products",
   "productPackages",
@@ -63,6 +67,7 @@ export const pharmacyActionCategories = [
 export const categorizedPharmacyActions: Readonly<
   Record<(typeof pharmacyActionCategories)[number], readonly ContentKey[]>
 > = {
+  orgReviewsTitle: ["readReviews"],
   profile: ["mutateProfile"],
   products: ["readProducts"],
   productPackages: ["readProductPackages"],

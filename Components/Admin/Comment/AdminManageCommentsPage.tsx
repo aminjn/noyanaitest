@@ -32,6 +32,7 @@ import usePopup from "@/Components/Hooks/usePopup";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { tagsLabel } from "./reviewTagLabels";
 
 // admin route of each commentable model (lower-casing broke the camelCase
 // ones: /paracliniC, /productpackage...)
@@ -50,7 +51,9 @@ const commentTargetPath: Record<string, string> = {
   Hospital: "hospital",
   Insurance: "insurance",
   DoctorProfile: "doctorprofile",
+  Pharmacy: "pharmacy",
 };
+
 
 // the commented page by its name, never its raw id
 const resourceLabel = (resource: unknown) => {
@@ -74,6 +77,7 @@ const ratedPaths = new Set([
   "Clinic",
   "Hospital",
   "ParaClinic",
+  "Pharmacy",
   "Product",
   "ProductPackage",
   "Service",
@@ -160,6 +164,11 @@ const AdminManageCommentsPage = () => {
                 content: {
                   name: ta("متن نظر"),
                   value: (node) => node.content || "—",
+                  filter: "Text",
+                },
+                tags: {
+                  name: ta("برچسب‌های سریع"),
+                  value: (node) => tagsLabel(node.tags),
                   filter: "Text",
                 },
                 reply: {

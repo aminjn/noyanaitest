@@ -55,7 +55,14 @@ const ParaClinicManageDetailsTab = () => {
             establishment: { type: "text", title: getContent("establishment") },
             businessTime: { type: "text", title: getContent("businessTime") },
             phone: { type: "text", title: getContent("phone") },
-            onPremises: { type: "bool", title: getContent("onPremises") },
+            // «نمونه‌گیری در محل» is no longer typed here (2026-10): it follows
+            // the home-sampling switch of «نمونه‌گیری» > settings
+            onPremises: {
+              type: "bool",
+              title: getContent("onPremises"),
+              readOnly: true,
+              hint: getContent("lsOnPremisesHint"),
+            },
             onlineResponse: { type: "bool", title: getContent("onlineResponse") },
             personelCount: { type: "number", title: getContent("personelCount") },
             summary: { type: "area", title: getContent("summary") },

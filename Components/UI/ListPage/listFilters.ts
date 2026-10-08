@@ -6,6 +6,8 @@ export const KEPT_LIST_FILTERS = ["tag", "insurance"] as const;
 export type ListPageFilters = {
   tag?: { _id: string; name?: string };
   insurance?: { _id: string; name?: string; slug?: string };
+  // the pharmacy list's city (2026-10); not kept across lists
+  city?: { _id: string; name?: string };
 };
 
 export const keepListFilters = (

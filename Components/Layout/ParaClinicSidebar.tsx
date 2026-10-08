@@ -6,6 +6,7 @@ import { crmSection, financeSection, kartablItem } from "./panelSections";
 import useKartablCount from "../_Common/Business/Kartabl/useKartablCount";
 import UserEditIcon from "../Icons/UserEditIcon";
 import FlaskIcon from "../Icons/FlaskIcon";
+import CalendarIcon from "../Icons/CalendarIcon";
 import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import PackageIcon from "../Icons/PackageIcon";
 import CartIcon from "../Icons/CartIcon";
@@ -29,6 +30,14 @@ const ParaClinicSidebar = () => {
         badge: orders.count,
         show: hasAccess("readOrders"),
         target: "order",
+      },
+      // the day's sampling appointments and their schedule (2026-10)
+      {
+        title: "labSamplingNav",
+        icon: <CalendarIcon />,
+        group: "groupDaily",
+        show: hasAccess("readOrders"),
+        target: "sampling",
       },
       {
         title: "tests",

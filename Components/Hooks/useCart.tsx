@@ -9,6 +9,7 @@ import {
 } from "../Admin/Product/AdminManageProductsPage";
 import { useCallback, useState } from "react";
 import { fetcher } from "../helpers/fetcher";
+import useNotification from "./useNotification";
 import {
   IProductPackage,
   ProductPackagePopulation,
@@ -99,6 +100,7 @@ export type UseCartNode = ICart<{
 
 const useCart = () => {
   const { user } = useUser();
+  const pushNotification = useNotification();
 
   const {
     data: cart,
@@ -117,9 +119,14 @@ const useCart = () => {
     `${API}/cart/item`,
     (url, args) => fetcher({ url, payload: args.arg, method: "POST" }),
     {
-      onSuccess: () => {
+      onSuccess: (res) => {
         mutate();
         globalMutate(`${API}/cart/size`);
+        // added, but the pharmacy doesn't ship it to the buyer's newest
+        // address (2026-10, the server's translated hint)
+        const hint = (res as { data?: { delivery?: { message?: unknown } | null } } | undefined)?.data
+          ?.delivery?.message;
+        if (typeof hint === "string" && hint) pushNotification(hint, "Warn");
       },
     },
   );

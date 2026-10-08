@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import mlgl from "maplibre-gl";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import classes from "./MapPage.module.css";
-import { filterIcon, MapFilter } from "./MapPage";
+import { filterIcon, MapFilter, MapPlace } from "./MapPage";
 import Ixon from "../UI/Ixon";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import { UseMapReturns } from "../Hooks/useMap";
@@ -71,7 +71,7 @@ const MapMarker = ({
     <Fragment>
       <div style={{ display: "none" }}>
         <div
-          className={classes.marker}
+          className={`${classes.marker} ${classes[`pin_${mode}`] || ""}`}
           ref={markerRef}
           title={badge ? `${title} · ${badge}` : title}
         >
@@ -90,8 +90,9 @@ const MapMarkers = ({
   flyToMe,
   travelTimes,
 }: {
-  data?: { doctors?: IDoctorProfile[] };
-  // doctor id -> seconds from the visitor (NexaMap matrix), when known
+  // the doctors and the centres (clinics, labs, hospitals, pharmacies) in view
+  data?: { doctors?: IDoctorProfile[]; places?: MapPlace[] };
+  // doctor / centre id -> seconds from the visitor (NexaMap matrix), when known
   travelTimes?: Record<string, number> | null;
 } & UseMapReturns) => {
   const [isMeLoading, setIsMeLoading] = useState<boolean>(false);
@@ -123,6 +124,21 @@ const MapMarkers = ({
                   )}
                 </Fragment>
               ))}
+              {(Array.isArray(data?.places) ? data.places : []).map((place) => {
+                const c = place?.location?.coordinates;
+                if (!place?._id || !Array.isArray(c) || c.length !== 2) return null;
+                return (
+                  <MapMarker
+                    key={`${place.kind}-${place._id}`}
+                    mode={place.kind || "clinics"}
+                    title={place.name || ""}
+                    badge={text.duration(travelTimes?.[place._id]) || undefined}
+                    lat={c[1]}
+                    lng={c[0]}
+                    map={map}
+                  />
+                );
+              })}
               {!!me && <SelfMarker map={map} lat={me[1]} lng={me[0]} />}
             </Fragment>
           )}

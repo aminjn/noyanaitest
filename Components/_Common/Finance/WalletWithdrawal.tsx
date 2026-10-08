@@ -36,6 +36,8 @@ type WithdrawalData = {
   pending?: number;
   holdDays?: number;
   minAmount: number;
+  // false: a centre's team member - sees the wallet, the owner asks
+  canWithdraw?: boolean;
   requests: Withdrawal[];
   last: { iban: string; holderName: string } | null;
 };
@@ -49,9 +51,12 @@ const statusView: Record<Withdrawal["status"], { key: ContentKey; color: BadgeCo
 
 // Wallet -> bank withdrawal (2026-09), the same box on every page where
 // someone holds money: the user dashboard wallet, and the doctor /
-// pharmacy / paraclinic finance pages. Works on the signed-in user's own
-// wallet (a provider's payouts are credited to the owner's wallet).
-const WalletWithdrawal = () => {
+// pharmacy / paraclinic finance pages work on the signed-in user's own
+// wallet (a provider's payouts are credited to the owner's wallet). A
+// clinic or hospital has its own wallet (2026-10, one per centre): its
+// panel passes `api` ("/clinic/withdrawal"), which works on the active
+// centre's wallet.
+const WalletWithdrawal = ({ api = "/user/withdrawal" }: { api?: string }) => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
@@ -60,7 +65,7 @@ const WalletWithdrawal = () => {
     [intlTag],
   );
   const { data, mutate } = useSWR<WithdrawalData>(
-    `${API}/user/withdrawal`,
+    `${API}${api}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
   const [cancelId, setCancelId] = useState<string | null>(null);
@@ -70,7 +75,7 @@ const WalletWithdrawal = () => {
     iban: string;
     holderName: string;
   }>({
-    path: `${API}/user/withdrawal`,
+    path: `${API}${api}`,
     method: "POST",
     successMessage: getContent("wdSuccess"),
     hasProblem: (inp) =>
@@ -116,7 +121,7 @@ const WalletWithdrawal = () => {
           ])}
         </p>
       )}
-      {!hasPending && (
+      {!hasPending && data.canWithdraw !== false && (
         <div className={classes.form}>
           <Input
             title={getContent("wdAmount")}
@@ -179,7 +184,7 @@ const WalletWithdrawal = () => {
               <Badge size="S" radius="High" mode="Fill" color={statusView[r.status].color}>
                 {getContent(statusView[r.status].key)}
               </Badge>
-              {r.status === "pending" && (
+              {r.status === "pending" && data.canWithdraw !== false && (
                 <Button
                   size="S"
                   variant="Error"
@@ -195,7 +200,7 @@ const WalletWithdrawal = () => {
         </div>
       )}
       <Act
-        path={cancelId ? `${API}/user/withdrawal/${cancelId}` : null}
+        path={cancelId ? `${API}${api}/${cancelId}` : null}
         method="PUT"
         onDone={() => {
           setCancelId(null);

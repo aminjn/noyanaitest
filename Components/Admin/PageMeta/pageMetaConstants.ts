@@ -12,6 +12,7 @@ export const pageMetaListResourceTypes = [
   "/hospital",
   "/paraClinic",
   "/test",
+  "/pharmacy",
   "/service",
   "/product",
   "/symptom",
@@ -49,6 +50,7 @@ export const pageMetaNodeResourceTypes = [
   "/service/[slug]",
   "/servicePackage/[slug]",
   "/insurance/[slug]",
+  "/test/[slug]",
 ] as const;
 
 export type PageMetaListResourceType =
@@ -89,6 +91,9 @@ export const pageMetaListResourceTypeLabels: Record<
 },
   get "/test"() {
   return ta("تست ها");
+},
+  get "/pharmacy"() {
+  return ta("داروخانه‌ها");
 },
   get "/service"() {
   return ta("خدمات");

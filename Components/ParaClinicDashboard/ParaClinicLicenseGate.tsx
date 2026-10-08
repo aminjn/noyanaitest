@@ -41,6 +41,8 @@ const pathModuleMap: Record<string, ParaClinicDashboardModule> = {
   tamin: "tamin",
   test: "tests",
   order: "incomingOrders",
+  // sampling appointments are part of taking orders (backend paraClinicRouter)
+  sampling: "incomingOrders",
 };
 
 // Wraps every /paraClinicPanel/* page (from ParaClinicPanelLayout). If the

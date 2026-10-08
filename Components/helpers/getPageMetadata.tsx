@@ -177,6 +177,7 @@ const nodeApi: Record<PageMetaNodeResourceType, string> = {
   "/service/[slug]": "service",
   "/servicePackage/[slug]": "servicePackage",
   "/insurance/[slug]": "insurance",
+  "/test/[slug]": "test",
 };
 
 type NodeLike = Record<string, unknown>;

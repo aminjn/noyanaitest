@@ -1,0 +1,53 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border-inline-start: 3px solid var(--error);
+  background-color: var(--gray1);
+  color: var(--gray11);
+  text-align: start;
+}
+
+.title {
+  color: var(--error);
+}
+
+.alternatives {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-block-start: 0.25rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.count {
+  color: var(--gray9);
+}

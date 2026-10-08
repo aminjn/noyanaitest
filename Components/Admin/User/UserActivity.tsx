@@ -56,7 +56,26 @@ type LedgerRow = {
   availableAt?: string;
 };
 
-type Ledger = { balance: number; pending: number; items: LedgerRow[]; total: number; page: number; limit: number };
+// one of the user's wallets (2026-10, one wallet per centre): "" is the
+// personal one, else a clinic's / hospital's id
+type WalletChoice = { id: string; kind: "personal" | "clinic" | "hospital"; name: string; balance: number; pending: number };
+
+type Ledger = {
+  balance: number;
+  pending: number;
+  items: LedgerRow[];
+  total: number;
+  page: number;
+  limit: number;
+  wallets: WalletChoice[];
+};
+
+const walletLabel = (w: WalletChoice) =>
+  w.kind === "clinic"
+    ? ta("کلینیک: ${1}", [w.name || "—"])
+    : w.kind === "hospital"
+      ? ta("بیمارستان: ${1}", [w.name || "—"])
+      : ta("کیف پول شخصی");
 
 const LEDGER_SIZE = 20;
 
@@ -78,15 +97,21 @@ export const AdjustWalletPopup = ({
   userId,
   balance,
   onDone,
+  wallet = "",
+  walletName,
 }: {
   userId: string;
   balance: number;
   onDone: () => unknown;
+  // a centre's id: that clinic's / hospital's own wallet; "": personal
+  wallet?: string;
+  walletName?: string;
 }) => {
   const { closePopup } = usePopup();
   const [requestKey] = useState(newRequestKey);
   return (
     <PopupCard title={ta("اصلاح موجودی کیف پول")}>
+      {!!walletName && <p className={classes.note}>{walletName}</p>}
       <p className={classes.note}>
         {ta("موجودی فعلی: ${1} تومان. هر اصلاح با دلیلش در تاریخچه‌ی کیف پول کاربر و لاگ عملیات ثبت می‌شود و به کاربر اطلاع داده می‌شود. برداشت بیشتر از موجودی ممکن نیست.", [currencize(balance)])}
       </p>
@@ -111,6 +136,7 @@ export const AdjustWalletPopup = ({
             amount: Number(inp.amount),
             reason: String(inp.reason || "").trim(),
             requestKey,
+            wallet,
           }),
           successCb: () => {
             closePopup();
@@ -203,9 +229,10 @@ const UserWallet = ({
   onChanged: () => unknown;
 }) => {
   const [page, setPage] = useState(1);
+  const [wallet, setWallet] = useState("");
   const { setPopup } = usePopup();
   const { data, error, isValidating, mutate } = useSWR<Ledger>(
-    `${API}/admin/wallet/${userId}?page=${page}&limit=${LEDGER_SIZE}`,
+    `${API}/admin/wallet/${userId}?page=${page}&limit=${LEDGER_SIZE}&wallet=${wallet}`,
     (url: string) =>
       fetcher({ url }).then((res) => {
         const body = res?.data?.data || {};
@@ -216,6 +243,7 @@ const UserWallet = ({
           total: Number(body.total) || 0,
           page: Number(body.page) || page,
           limit: Number(body.limit) || LEDGER_SIZE,
+          wallets: Array.isArray(body.wallets) ? body.wallets : [],
         };
       }),
     { keepPreviousData: true },
@@ -224,6 +252,25 @@ const UserWallet = ({
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <div className={classes.activity}>
+          {/* a centre owner has one wallet per clinic / hospital besides the
+              personal one: pick which one the ledger and the correction are for */}
+          {data.wallets.length > 1 && (
+            <div className={classes.cardHead}>
+              {data.wallets.map((w) => (
+                <Button
+                  key={w.id || "personal"}
+                  size="S"
+                  mode={w.id === wallet ? "Fill" : "Outline"}
+                  onClick={() => {
+                    setWallet(w.id);
+                    setPage(1);
+                  }}
+                >
+                  {`${walletLabel(w)} · ${currencize(w.balance)}`}
+                </Button>
+              ))}
+            </div>
+          )}
           <div className={classes.cardHead}>
             <strong>
               {ta("موجودی: ${1} تومان", [currencize(data.balance)])}
@@ -240,6 +287,12 @@ const UserWallet = ({
                   <AdjustWalletPopup
                     userId={userId}
                     balance={data.balance}
+                    wallet={wallet}
+                    walletName={
+                      data.wallets.length > 1
+                        ? walletLabel(data.wallets.find((w) => w.id === wallet) || { id: "", kind: "personal", name: "", balance: 0, pending: 0 })
+                        : undefined
+                    }
                     onDone={() => {
                       mutate();
                       onChanged();

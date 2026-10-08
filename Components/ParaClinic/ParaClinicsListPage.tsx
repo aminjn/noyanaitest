@@ -22,6 +22,7 @@ import { tbaseMedium, tsmRegular } from "../UI/Typography";
 import useProgress from "../Hooks/useProgress";
 import { useEffect } from "react";
 import SmallAd from "../UI/ListPage/SmallAd";
+import Button from "../UI/Button";
 
 const NS: ContentNamespace[] = ["common", "paraClinicsList"];
 
@@ -77,8 +78,20 @@ const ParaClinicsListPage = ({
     // "which labs do this test" showed every lab)
     const test = searchParams.get("test");
     if (test) params.append("test", test);
+    if (searchParams.get("sort") === "best") params.append("sort", "best");
     push(`/paraClinic?${keepListFilters(searchParams, params).toString()}`);
   }, [searchParams, query, push]);
+
+  // "best rated" (2026-10): approved buyer reviews' average, as on the
+  // clinic and doctor lists; the default keeps the admin's order
+  const bestRated = searchParams.get("sort") === "best";
+  const setSort = (best: boolean) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    if (best) params.set("sort", "best");
+    else params.delete("sort");
+    push(`/paraClinic?${params.toString()}`);
+  };
 
   return (
     <ListPageLayout
@@ -128,6 +141,27 @@ const ParaClinicsListPage = ({
         title={getContent("paraClinicKind")}
       />
       <ListPageActiveFilters basePath="/paraClinic" filters={filters} />
+      <div className={classes.sortBox} role="group" aria-label={getContent("sortBy")}>
+        <span className={`${classes.sortLabel} ${tsmRegular}`}>{getContent("sortBy")}</span>
+        <Button
+          variant={bestRated ? "Disable" : "Primary"}
+          mode="Fill"
+          size="S"
+          radius="High"
+          onClick={() => setSort(false)}
+        >
+          {getContent("labSortSuggested")}
+        </Button>
+        <Button
+          variant={bestRated ? "Primary" : "Disable"}
+          mode="Fill"
+          size="S"
+          radius="High"
+          onClick={() => setSort(true)}
+        >
+          {getContent("labSortBestRated")}
+        </Button>
+      </div>
       <ListPageList
         itemWidth="24.0625rem"
         pagination={{
@@ -141,6 +175,7 @@ const ParaClinicsListPage = ({
             for (const cat of categories) params.append("category", cat);
             const test = searchParams.get("test");
             if (test) params.append("test", test);
+            if (searchParams.get("sort") === "best") params.append("sort", "best");
             return `/paraClinic?${keepListFilters(searchParams, params).toString()}`;
           },
           pagesCount: pagesCount,

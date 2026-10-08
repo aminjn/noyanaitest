@@ -40,6 +40,7 @@ import {
   ProviderReply,
   ReviewBasisKind,
   ReviewReply,
+  ReviewTagChips,
   VerifiedBadge,
 } from "./ReviewBits";
 
@@ -60,6 +61,8 @@ export const commentableDocumentPaths = [
   "Hospital",
   "Insurance",
   "DoctorProfile",
+  // a pharmacy rated as a seller by its buyers (2026-10)
+  "Pharmacy",
 ] as const;
 
 export type CommentableDocumentPath = (typeof commentableDocumentPaths)[number];
@@ -106,6 +109,9 @@ export const commentDocumentsDict: Record<CommentableDocumentPath, string> = {
 },
   get DoctorProfile() {
   return ta("پزشک");
+},
+  get Pharmacy() {
+  return ta("داروخانه");
 },
 };
 
@@ -154,6 +160,8 @@ export interface IComment<
   verifiedKind?: ReviewBasisKind;
   verifiedAt?: string;
   reply?: ReviewReply;
+  // quick tags of a seller review (pharmacy / lab)
+  tags?: string[];
 }
 
 const filters = [5, 4, 3, "low"] as const;
@@ -222,7 +230,8 @@ const CommentItem = ({
           <VerifiedBadge kind={node.verifiedKind} at={node.verifiedAt} />
         </div>
       )}
-      <p className={classes.itemMessage}>{node.content}</p>
+      {rated && <ReviewTagChips tags={node.tags} />}
+      {!!node.content && <p className={classes.itemMessage}>{node.content}</p>}
       <ProviderReply reply={node.reply} />
       <div className={classes.itemFooter}>
         <Button
@@ -285,6 +294,9 @@ const CommentSection = ({
     // does this page take star ratings, and what proves a reviewer
     rated?: boolean;
     basis?: ReviewBasisKind | null;
+    // seller reviews: the quick tags offered and how often each was ticked
+    tagOptions?: string[];
+    tags?: Record<string, number>;
   }>(
     `${API}/comment/${model}/${nodeId}?page=${page}${filter ? `&star=${filter}` : ""}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -313,6 +325,14 @@ const CommentSection = ({
               count={data.count || 0}
               scores={data.scores || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }}
             />
+          )}
+          {rated && !!data.tags && Object.values(data.tags).some((n) => Number(n) > 0) && (
+            <div className={classes.tagSummary}>
+              <span className={`${classes.tagSummaryTitle} ${tsmRegular}`}>
+                {getContent("reviewTagsSummaryTitle")}
+              </span>
+              <ReviewTagChips tags={data.tagOptions} counts={data.tags} />
+            </div>
           )}
           <SubmitCommentForm
             model={model}
