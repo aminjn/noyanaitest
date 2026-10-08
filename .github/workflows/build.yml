@@ -1,0 +1,61 @@
+# Builds the production frontend once per push to master and publishes it as
+# a release asset (build-<commit>). deploy/arvan/setup.sh on the server
+# downloads it instead of running `next build` on the 4 vCPU / 8 GB server,
+# which took most of a deploy; when the asset is missing (CI still running
+# or failed) the server falls back to building itself.
+name: build
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: next-${{ hashFiles('package-lock.json') }}-
+      # The same .env.local the server makes from deploy/env.ts.noyanai.com;
+      # its hash goes with the build so the server only uses a build made
+      # with its own settings.
+      - name: env
+        run: |
+          grep -v '^\s*#' deploy/env.ts.noyanai.com | grep '=' > .env.local
+          echo "BUILD_COMMIT=$(git rev-parse --short=12 HEAD)" >> "$GITHUB_ENV"
+      - name: next build
+        env:
+          SKIP_BUILD_CHECKS: "1"
+          NEXT_TELEMETRY_DISABLED: "1"
+          NODE_OPTIONS: --max-old-space-size=6144
+        run: npx next build
+      - name: package
+        run: |
+          grep -v '^\s*#' .env.local | grep '=' | sort | sha256sum | cut -c1-64 > .next/ENV_HASH
+          git rev-parse HEAD > .next/BUILD_COMMIT
+          tar --exclude=.next/cache -czf front-next.tar.gz .next
+          ls -lh front-next.tar.gz
+      - name: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="build-${BUILD_COMMIT}"
+          gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$tag" front-next.tar.gz --title "$tag" --notes "Prebuilt .next for $GITHUB_SHA" --prerelease
+          # keep only the latest 10 builds
+          gh release list --limit 100 --json tagName --jq '.[].tagName' | grep '^build-' | tail -n +11 | while read -r old; do
+            gh release delete "$old" --yes --cleanup-tag || true
+          done
