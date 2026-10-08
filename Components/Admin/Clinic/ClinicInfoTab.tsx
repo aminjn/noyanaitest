@@ -56,7 +56,8 @@ export const clinicInfoRenderer = (): FormRenderer<IClinic> => ({
     getOptionValue: (node) => (node as IInsurance)._id,
     getDefaultValue: (inp) => inp.insurances,
   },
-  clinicCode: { type: "text", title: ta("کد کلینیک") },
+  // the licence number (clinicCode) is edited with its verification in the
+  // «مجوز» tab (CentreLicenceSection): a number changed here skipped the check
   personelCount: { type: "number", title: ta("تعداد پرسنل") },
   establishment: { type: "text", title: ta("تاسیس") },
   website: { type: "text", title: ta("سایت"), section: ta("تماس") },

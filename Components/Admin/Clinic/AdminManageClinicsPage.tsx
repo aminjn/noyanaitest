@@ -1,5 +1,6 @@
 "use client";
 import { OpeningHours, OpenStatus } from "@/Components/OpeningHours/openingHours";
+import { CentreLicenceFields } from "@/Components/helpers/centreLicence";
 
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import classes from "./AdminManageClinicsPage.module.css";
@@ -74,7 +75,7 @@ export type ClinicPopulation = Population<{
 
 export interface IClinic<
   T extends ClinicPopulation = ClinicPopulation,
-> extends MongoDoc {
+> extends MongoDoc, CentreLicenceFields {
   slug?: string;
   name?: string;
   description?: string;

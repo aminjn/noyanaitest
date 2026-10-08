@@ -11,6 +11,7 @@ import StarIcon from "../Icons/StarIcon";
 import HostedImage from "../UI/HostedImage";
 import { useIntlLocale } from "../i18n/navigation";
 import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
+import CentreVerifiedTick from "../UI/CentreVerifiedTick";
 import { OpenStatus } from "../OpeningHours/openingHours";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
@@ -22,6 +23,7 @@ const WideIntro = ({
   commentCount = 0,
   score = 0,
   openStatus,
+  verified,
 }: {
   name?: string;
   image?: string;
@@ -31,6 +33,9 @@ const WideIntro = ({
   commentCount?: number;
   // open now / closes at (2026-10, backend Lib/openingHours.ts)
   openStatus?: OpenStatus | null;
+  // the verified tick (a valid licence the staff approved, backend
+  // Lib/centreVerified.ts)
+  verified?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   const locale = useIntlLocale();
@@ -51,7 +56,10 @@ const WideIntro = ({
               {category}
             </Badge>
           )}
-          <h1 className={`${classes.name} ${t4xlBold}`}>{name}</h1>
+          <h1 className={`${classes.name} ${t4xlBold}`}>
+            {name}
+            <CentreVerifiedTick verified={verified} size="1.5rem" className={classes.tick} />
+          </h1>
         </div>
         <div className={classes.details}>
           {!!province && (

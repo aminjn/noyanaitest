@@ -9,7 +9,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import BreadCrump from "../UI/BreadCrump";
 import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
-import VerifyIcon from "../Icons/VerifyIcon";
+import CentreVerifiedTick from "../UI/CentreVerifiedTick";
 import LocationIcon from "../Icons/LocationIcon";
 import CheckSquareIcon from "../Icons/CheckSquareIcon";
 import LocationSection from "../Clinic/LocationSection";
@@ -128,9 +128,8 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
           <div className={classes.headText}>
             <h1 className={classes.name}>
               {data.name}
-              <Ixon width="1.1rem" className={classes.verify}>
-                <VerifyIcon />
-              </Ixon>
+              {/* a valid licence the staff approved, not every pharmacy */}
+              <CentreVerifiedTick verified={data.verified} size="1.1rem" />
             </h1>
             {reviewCount > 0 && (
               <a className={classes.rating} href="#Comment">

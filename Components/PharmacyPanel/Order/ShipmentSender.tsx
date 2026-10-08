@@ -30,7 +30,15 @@ const ShipmentSender = ({
   orderId: string;
   shipment: Pick<
     IOrderShipment,
-    "method" | "trackingCode" | "shippedAt" | "confirmBy" | "deliveredAt" | "returnedAt" | "problem"
+    | "method"
+    | "trackingCode"
+    | "shippedAt"
+    | "confirmBy"
+    | "deliveredAt"
+    | "returnedAt"
+    | "problem"
+    | "sendBy"
+    | "unsentCancelledAt"
   >;
   onDone: () => unknown;
 }) => {
@@ -67,6 +75,13 @@ const ShipmentSender = ({
         )}
       </div>
     );
+  // past its sending deadline: closed, its lines refunded - nothing to send
+  if (tipax && shipment.unsentCancelledAt)
+    return (
+      <div className={`${classes.sent} ${classes.waiting}`}>
+        <span className={classes.state}>{getContent("shipStateNotSentCancelled")}</span>
+      </div>
+    );
   if (!canAct) return null;
 
   const submit = async () => {
@@ -91,6 +106,14 @@ const ShipmentSender = ({
     <div className={classes.main}>
       <p className={classes.hint}>{getContent("shipTrackingHint")}</p>
       {tipax && <p className={classes.hint}>{getContent("shipTipaxReadyHint")}</p>}
+      {/* every line prepared: the sending window runs */}
+      {tipax && !!shipment.sendBy && (
+        <p className={classes.hint}>
+          {getContent("shipSendBy", [
+            dateToString({ value: new Date(shipment.sendBy), time: true, intlTag }),
+          ])}
+        </p>
+      )}
       <div className={classes.row}>
         <Input title={getContent("shipTrackingCode")} onChange={(e) => setCode(e.target.value)} />
         <Button onClick={submit} isLoading={busy}>

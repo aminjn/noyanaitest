@@ -644,6 +644,8 @@ export const contentNamespaces = {
     "cisFormer",
     "cisTotal",
     "cisNone",
+    "cisColDeducted",
+    "cisDeductionsHint",
   ],
   common: [
     "becomeProfileRemoved",
@@ -4287,6 +4289,12 @@ export const contentNamespaces = {
     "orderAccept",
     "sureAcceptOrderItem",
     "orderRespondDeadline",
+    "sureFulfillOrderItemTipax",
+    "sureFulfillOrderItemTapsi",
+    "ioMarkPrepared",
+    "orderItemStatusAutoCancelledNotSent",
+    "shipStateNotSentCancelled",
+    "shipSendBy",
   ],
 
   // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,
@@ -5575,6 +5583,7 @@ export const contentNamespaces = {
     "orderItemStatusAutoCancelledLate",
     "orderRespondBySeller",
     "orderRespondByBuyer",
+    "orderItemStatusAutoCancelledNotSent",
   ],
   // Components/Dashboard/Call/DashboardManageCallsPage.tsx (not routed
   // anywhere currently; its types are imported by admin CallRoom pages).
@@ -5681,6 +5690,7 @@ export const contentNamespaces = {
     "orderAccept",
     "sureAcceptOrderItem",
     "orderRespondDeadline",
+    "orderItemStatusAutoCancelledNotSent",
   ],
 
   // app/paraClinicPanel/profile/page.tsx (ParaClinicManageProfilePage,
@@ -6191,6 +6201,8 @@ export const contentNamespaces = {
     "orderRespondByBuyer",
     "rateYourOrderTitle",
     "rateYourOrderHint",
+    "orderItemStatusAutoCancelledNotSent",
+    "shipStateNotSentCancelled",
   ],
   // Shared cartable node-page pieces (Components/Product/Cartable/*, CartActions, PlusBox, ProductCartInfos, UpgradeProBox) used by /product/[slug], /productPackage/[slug], /service/[slug], /servicePackage/[slug]. Includes the cartTitle keys passed in (seller/provider) and the ProductCartInfos ternary keys.
   productCartable: [
@@ -6940,6 +6952,7 @@ export const contentNamespaces = {
     "lsMovedByPatient",
     "lsMovedByLab",
     "lsMovedBySupport",
+    "lsMovedByProposal",
     "lsProposeHome",
     "lsProposeLab",
     "lsProposalHint",
@@ -6952,6 +6965,7 @@ export const contentNamespaces = {
     "lsProposalAccepted",
     "lsProposalDeclined",
     "lsProposalWithdrawn",
+    "lsProposalLimit",
     "lsProposalExpired",
     "lsProposalClosed",
     "lsProposalWithdraw",

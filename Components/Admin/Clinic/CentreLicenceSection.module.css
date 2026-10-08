@@ -1,0 +1,45 @@
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: var(--gray3);
+  color: var(--gray9);
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.badge_verified {
+  background: var(--successT1, var(--gray3));
+  color: var(--successS1, var(--gray10));
+}
+
+.badge_expired {
+  background: var(--errorT1, var(--gray3));
+  color: var(--errorS1, var(--gray10));
+}
+
+.meta {
+  font-size: 0.8125rem;
+  color: var(--gray9);
+}
+
+.warn {
+  font-size: 0.8125rem;
+  color: var(--warningS1, var(--gray10));
+}

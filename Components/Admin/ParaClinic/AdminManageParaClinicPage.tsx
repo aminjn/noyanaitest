@@ -52,6 +52,7 @@ import CartIcon from "@/Components/Icons/CartIcon";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import useProgress from "@/Components/Hooks/useProgress";
 import { CentreSection, CentreSections } from "../Clinic/CentreSections";
+import CentreLicenceSection from "../Clinic/CentreLicenceSection";
 import PanelOwnerSection from "../Clinic/PanelOwnerSection";
 import {
   ProviderStatusBanner,
@@ -500,7 +501,19 @@ const ParaClinicRecordPage = () => {
                       id: "License",
                       title: ta("مجوز"),
                       icon: <CartIcon />,
-                      content: <ParaClinicProfileLicenseTab node={data} />,
+                      // the operating licence (the verified tick) and the NoyanAI
+                      // plan, the centre's two licences
+                      content: (
+                        <CentreSections>
+                          <CentreLicenceSection kind="paraClinic" nodeId={data._id} />
+                          <CentreSection
+                            title={ta("اشتراک نویان")}
+                            hint={ta("ماژول‌های پنل مرکز و تاریخ پایان اشتراک آن.")}
+                          >
+                            <ParaClinicProfileLicenseTab node={data} />
+                          </CentreSection>
+                        </CentreSections>
+                      ),
                     },
                   ]
                 : []),

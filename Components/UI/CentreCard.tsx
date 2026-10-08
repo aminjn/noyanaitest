@@ -18,7 +18,7 @@ import PlusIcon from "../Icons/PlusIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
-import VerifySolidIcon from "../Icons/VerfySolidIcon";
+import CentreVerifiedTick from "./CentreVerifiedTick";
 import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 import { OpenStatus } from "../OpeningHours/openingHours";
 import DeliveryAreaNote, { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
@@ -87,10 +87,9 @@ export type CentreCardNode = {
   isRoundTheClock?: boolean;
   bedCount?: number;
   openStatus?: OpenStatus | null;
-  // an owner account runs it: it came in through a become-a-centre request
-  // whose licence (siam code, certificate) the staff checked
-  user?: unknown;
-  claimed?: boolean;
+  // the verified tick: a valid, non-expired licence the staff approved
+  // (backend Lib/centreVerified.ts) - never inferred from an owner account
+  verified?: boolean;
   // pharmacy: its plan takes online orders, and where it ships
   takesOrders?: boolean;
   deliveryArea?: DeliveryArea | null;
@@ -161,7 +160,8 @@ const OfferRow = ({ offer }: { offer: CentreTestOffer }) => {
 // (map, booking list view, panels). Kind-specific facts are shown only when
 // the data has them: a lab's offer of a test, a pharmacy's online orders and
 // delivery area, a hospital's beds and 24-hour emergency. Nothing invented:
-// no score before the first review, no tick without a checked owner.
+// no score before the first review, no tick without a valid licence the
+// staff approved.
 const CentreCard = ({
   node,
   kind,
@@ -199,8 +199,6 @@ const CentreCard = ({
   const category = named(node?.category)?.name;
   const tags = namedList(node?.tags);
   const insurers = namedList(node?.insurances);
-  const verified =
-    typeof node?.claimed === "boolean" ? node.claimed : !!node?.user;
   // approved, verified reviews only; nothing before the first one
   const reviews = Number(node?.reviewCount ?? node?.commentCount) || 0;
   const score = Number(node?.averageScore) || 0;
@@ -216,13 +214,7 @@ const CentreCard = ({
         <span>{`(${getContent("nComments", [new Intl.NumberFormat(intlTag).format(reviews)])})`}</span>
       </span>
     ) : null;
-  const tick = verified ? (
-    <span className={classes.tick} title={getContent("centreVerified")} aria-label={getContent("centreVerified")}>
-      <Ixon width="1rem">
-        <VerifySolidIcon />
-      </Ixon>
-    </span>
-  ) : null;
+  const tick = <CentreVerifiedTick verified={node?.verified} />;
   // "open 24 hours" is the open-status badge's job once hours are set; the
   // flag alone is shown on a centre without structured hours
   const roundTheClock = !!node?.isRoundTheClock && !node?.openStatus;

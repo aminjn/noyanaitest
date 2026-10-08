@@ -45,6 +45,9 @@ export const userAlertEvents = [
   "newInsuranceAdditionRequest",
   "newVisitDispute",
   "newSmsCampaign",
+  // an order's payout / refund still failing after retries (2026-10,
+  // backend Services/settlementRetryService.ts)
+  "settlementFailed",
 ] as const;
 
 export type UserAlertEvent = (typeof userAlertEvents)[number];
@@ -91,6 +94,9 @@ export const userAlertEventLabels: Record<UserAlertEvent, string> = {
 },
   get newSmsCampaign() {
   return ta("کمپین پیامکی برای تأیید");
+},
+  get settlementFailed() {
+  return ta("تسویه‌ی ناموفق سفارش");
 },
 };
 

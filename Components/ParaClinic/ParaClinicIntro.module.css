@@ -40,6 +40,10 @@
 .h1 {
   color: var(--primary7);
   margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem;
 }
 
 .stats {

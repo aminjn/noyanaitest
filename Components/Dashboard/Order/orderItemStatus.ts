@@ -28,8 +28,10 @@ export const orderItemStatusBadgeColorDict: Record<OrderItemStatus, BadgeColor> 
 // 72 h lab by default, super admin setting); the seller's first answer sets
 // `acceptedAt`. A line nobody answered is cancelled and refunded with
 // `autoCancel: "noResponse"`; one answered but never finished in 7 days gets
-// "notFulfilled".
-export type OrderLineAutoCancel = "noResponse" | "notFulfilled";
+// "notFulfilled"; a prepared Tipax line whose parcel the pharmacy never sent
+// within the sending window (backend Services/shipmentDeliveryService.ts)
+// gets "notSent".
+export type OrderLineAutoCancel = "noResponse" | "notFulfilled" | "notSent";
 
 export interface IOrderLineResponse {
   respondBy?: string;

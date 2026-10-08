@@ -79,6 +79,23 @@ const confirmKey: Record<OrderItemAction, ContentKey> = {
   cancelled: "sureCancelOrderItem",
 };
 
+// How this pharmacy's parcel leaves (backend Lib/shipmentDelivery.ts): in a
+// Tipax parcel not confirmed delivered, "fulfilled" means prepared - the
+// payout waits for the delivery; a Tapsi line is delivered when fulfilled.
+type LineShipping = "tipax" | "tapsi" | null;
+
+const shippingOf = (order?: IIncomingOrder): LineShipping => {
+  const s = order?.shipment;
+  if (!s) return null;
+  if (s.method === "tipax") return s.deliveredAt || s.returnedAt ? null : "tipax";
+  return s.method === "tapsi" ? "tapsi" : null;
+};
+
+const fulfilConfirmKey: Record<"tipax" | "tapsi", ContentKey> = {
+  tipax: "sureFulfillOrderItemTipax",
+  tapsi: "sureFulfillOrderItemTapsi",
+};
+
 const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
   ...(Array.isArray(order.products) ? order.products : [])
     .filter((p) => p?.item?._id)
@@ -119,11 +136,13 @@ const MutateOrderItemPopup = ({
   nodeId,
   row,
   status,
+  shipping = null,
   mutate,
 }: {
   nodeId: string;
   row: OrderItemRow;
   status: OrderItemAction;
+  shipping?: LineShipping;
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -133,7 +152,9 @@ const MutateOrderItemPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={getContent(confirmKey[status])}
+        message={getContent(
+          status === "fulfilled" && shipping ? fulfilConfirmKey[shipping] : confirmKey[status],
+        )}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -164,6 +185,7 @@ const PharmacyIncomingOrderPage = () => {
   const t = (key: string) => getContent(key as ContentKey);
   const rows = data ? buildItemRows(data) : [];
   const rxRows = rows.filter((row) => !!row.prescription);
+  const shipping = shippingOf(data);
   const openRx = (row: OrderItemRow, decision: "approve" | "reject") =>
     setPopup(
       decision === "approve" ? "ApproveIncomingOrderRx" : "RejectIncomingOrderRx",
@@ -385,7 +407,7 @@ const PharmacyIncomingOrderPage = () => {
                       )}
                       <IconButton
                         variant="Success"
-                        title={getContent("fulfill")}
+                        title={getContent(shipping === "tipax" ? "ioMarkPrepared" : "fulfill")}
                         onClick={() =>
                           setPopup(
                             "FulfillIncomingOrderItem",
@@ -393,6 +415,7 @@ const PharmacyIncomingOrderPage = () => {
                               nodeId={nodeId}
                               row={node}
                               status="fulfilled"
+                              shipping={shipping}
                               mutate={mutate}
                             />,
                           )

@@ -112,6 +112,10 @@ interface IShipment {
   deliveredBy?: string | null;
   returnedAt?: string | null;
   problem?: { reportedAt: string; note: string; ticket: string } | null;
+  // the sending deadline of a prepared parcel (backend shipmentDeliveryService.ts)
+  sendBy?: string | null;
+  sendWarnedAt?: string | null;
+  unsentCancelledAt?: string | null;
 }
 
 interface IOrderDetail {
@@ -301,27 +305,70 @@ const AdminFinanceOrderPage = () => {
       />,
     );
 
-  const lineAction = (line: IOrderLine, status: "fulfilled" | "cancelled") =>
+  // How a line's "fulfilled" reads (backend Lib/shipmentDelivery.ts): a
+  // pharmacy line in a Tipax parcel not confirmed delivered is only
+  // prepared - its payout waits for the delivery; a Tapsi (same-city) line
+  // is delivered; a lab or doctor line is done. Every payout goes into the
+  // seller's settlement hold, never straight to withdrawable.
+  const lineShipping = (line: IOrderLine): "tipax" | "tapsi" | null => {
+    const sellerId = line.seller?._id;
+    if (!sellerId || (line.model !== "products" && line.model !== "productPackages")) return null;
+    const s = asArray<IShipment>(data?.shipments).find((el) => el?.pharmacy?._id === sellerId);
+    if (!s) return null;
+    if (s.method === "tipax") return s.deliveredAt || s.returnedAt || s.unsentCancelledAt ? null : "tipax";
+    return s.method === "tapsi" ? "tapsi" : null;
+  };
+
+  const fulfilText = (line: IOrderLine) => {
+    const name = line.name || "—";
+    switch (lineShipping(line)) {
+      case "tipax":
+        return {
+          title: ta("ثبت آماده‌سازی قلم"),
+          hint: ta("«${1}» آماده‌شده ثبت می‌شود. این قلم با مرسوله‌ی تیپاکس فرستاده می‌شود: سهم فروشنده (پس از کمیسیون) فقط وقتی تحویل مرسوله ثبت شد (با تأیید خریدار، خودکار پس از مهلت یا پشتیبانی) به دوره‌ی تسویه‌ی او می‌رود. اگر داروخانه مرسوله را در مهلت ارسال نفرستد، این قلم لغو و مبلغش به خریدار برمی‌گردد.", [name]),
+          confirm: ta("ثبت آماده‌سازی"),
+          done: ta("آماده‌سازی قلم ثبت شد"),
+        };
+      case "tapsi":
+        return {
+          title: ta("ثبت تحویل قلم"),
+          hint: ta("«${1}» تحویل‌شده ثبت می‌شود (ارسال هم‌شهری با پیک تپسی) و سهم فروشنده (پس از کمیسیون) به دوره‌ی تسویه‌ی او می‌رود و پس از آن قابل برداشت است. فقط وقتی تحویل را تأیید کرده‌اید انجام دهید.", [name]),
+          confirm: ta("ثبت تحویل"),
+          done: ta("تحویل قلم ثبت شد"),
+        };
+      default:
+        return {
+          title: ta("ثبت انجام قلم"),
+          hint: ta("«${1}» انجام‌شده ثبت می‌شود و سهم فروشنده (پس از کمیسیون) به دوره‌ی تسویه‌ی او می‌رود و پس از آن قابل برداشت است. فقط وقتی انجام آن را تأیید کرده‌اید این کار را بکنید.", [name]),
+          confirm: ta("ثبت انجام"),
+          done: ta("انجام قلم ثبت شد"),
+        };
+    }
+  };
+
+  const lineAction = (line: IOrderLine, status: "fulfilled" | "cancelled") => {
+    const fulfil = fulfilText(line);
     setPopup(
       "AdminOrderLineStatus",
       <ReasonPopup
-        title={status === "cancelled" ? ta("لغو قلم") : ta("ثبت تحویل قلم")}
+        title={status === "cancelled" ? ta("لغو قلم") : fulfil.title}
         hint={
           status === "cancelled"
             ? ta("«${1}» لغو و مبلغش با مالیاتش به کیف پول خریدار برمی‌گردد؛ به فروشنده گفته می‌شود آن را ارسال نکند.", [line.name || "—"])
-            : ta("«${1}» تحویل‌شده ثبت می‌شود و سهم فروشنده (پس از کمیسیون) به کیف پولش واریز می‌شود. فقط وقتی تحویل را تأیید کرده‌اید انجام دهید.", [line.name || "—"])
+            : fulfil.hint
         }
-        confirm={status === "cancelled" ? ta("لغو قلم") : ta("ثبت تحویل")}
+        confirm={status === "cancelled" ? ta("لغو قلم") : fulfil.confirm}
         danger={status === "cancelled"}
         onSubmit={(reason) =>
           post(
             `${base}/lines/${line._id}/status`,
             { model: line.model, status, reason },
-            status === "cancelled" ? ta("قلم لغو شد") : ta("تحویل قلم ثبت شد"),
+            status === "cancelled" ? ta("قلم لغو شد") : fulfil.done,
           )
         }
       />,
     );
+  };
 
   const rescheduleSampling = (sampling: IAdminSampling) =>
     setPopup(
@@ -390,6 +437,11 @@ const AdminFinanceOrderPage = () => {
 
   const lines = asArray<IOrderLine>(data?.lines);
   const shipments = asArray<IShipment>(data?.shipments);
+  // a fulfilled line in a Tipax parcel on its way is prepared, not delivered
+  const lineStatusLabel = (line: IOrderLine) =>
+    line.status === "fulfilled" && lineShipping(line) === "tipax"
+      ? ta("آماده، در انتظار تحویل مرسوله")
+      : lineStatusDict[line.status] || line.status;
   const ledger = asArray<IOrderDetail["transactions"][number]>(data?.transactions);
   const payments = asArray<IOrderDetail["payments"][number]>(data?.payments);
   const notes = asArray<IOrderDetail["adminNotes"][number]>(data?.adminNotes);
@@ -522,10 +574,10 @@ const AdminFinanceOrderPage = () => {
                   },
                   status: {
                     name: ta("وضعیت"),
-                    value: (line) => lineStatusDict[line.status] || line.status,
+                    value: (line) => lineStatusLabel(line),
                     component: (line) => (
                       <span className={`${classes.badge} ${classes[`badge_${line.status}`] || ""}`}>
-                        {lineStatusDict[line.status] || line.status}
+                        {lineStatusLabel(line)}
                       </span>
                     ),
                   },
@@ -554,7 +606,7 @@ const AdminFinanceOrderPage = () => {
                       canAct && paid && line.status === "pending" ? (
                         <TableActions>
                           <Button size="S" variant="Neutral" onClick={() => lineAction(line, "fulfilled")}>
-                            {ta("ثبت تحویل")}
+                            {fulfilText(line).confirm}
                           </Button>
                           <Button size="S" variant="Error" mode="Outline" onClick={() => lineAction(line, "cancelled")}>
                             {ta("لغو")}
@@ -806,7 +858,9 @@ const AdminFinanceOrderPage = () => {
                               <Field label={ta("وضعیت مرسوله")}>
                                 {s.returnedAt
                                   ? ta("برگشتی / گم‌شده")
-                                  : s.deliveredAt
+                                  : s.unsentCancelledAt
+                                    ? ta("در مهلت ارسال نشد؛ اقلام لغو و بازپرداخت شد")
+                                    : s.deliveredAt
                                     ? ta("تحویل‌شده")
                                     : s.shippedAt
                                       ? s.problem
@@ -815,6 +869,17 @@ const AdminFinanceOrderPage = () => {
                                       : ta("هنوز ارسال نشده")}
                               </Field>
                               <Field label={ta("زمان ارسال")}>{fmtDate(s.shippedAt)}</Field>
+                              {!s.shippedAt && (s.sendBy || s.unsentCancelledAt) && (
+                                <Field label={ta("مهلت ارسال")}>
+                                  {[
+                                    fmtDate(s.sendBy),
+                                    s.sendWarnedAt ? ta("هشدار: ${1}", [fmtDate(s.sendWarnedAt)]) : "",
+                                    s.unsentCancelledAt ? ta("لغو: ${1}", [fmtDate(s.unsentCancelledAt)]) : "",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" · ")}
+                                </Field>
+                              )}
                               {s.deliveredAt ? (
                                 <Field label={ta("تحویل")}>
                                   {`${fmtDate(s.deliveredAt)} · ${shipmentDeliveredByDict[s.deliveredBy || ""] || s.deliveredBy || "—"}`}
@@ -858,7 +923,7 @@ const AdminFinanceOrderPage = () => {
                             </>
                           )}
                         </div>
-                        {s.method === "tipax" && s._id && paid && canAct && !s.deliveredAt && !s.returnedAt && (
+                        {s.method === "tipax" && s._id && paid && canAct && !s.deliveredAt && !s.returnedAt && !s.unsentCancelledAt && (
                           <div className={classes.shipmentActions}>
                             {s.shippedAt && (
                               <Button size="S" onClick={() => shipmentAction(s, "delivered")}>

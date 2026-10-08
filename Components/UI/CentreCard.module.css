@@ -86,11 +86,6 @@
   text-align: start;
 }
 
-.tick {
-  flex-shrink: 0;
-  color: var(--primary);
-}
-
 .rating {
   display: inline-flex;
   align-items: center;

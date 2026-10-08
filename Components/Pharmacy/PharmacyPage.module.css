@@ -60,10 +60,6 @@
   color: var(--gray12);
 }
 
-.verify {
-  color: var(--primary6);
-}
-
 .place {
   display: flex;
   align-items: flex-start;

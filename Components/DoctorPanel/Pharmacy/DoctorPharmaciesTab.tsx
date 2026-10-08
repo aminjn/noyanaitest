@@ -1,4 +1,5 @@
 import { OpeningHours, OpenStatus } from "@/Components/OpeningHours/openingHours";
+import { CentreLicenceFields } from "@/Components/helpers/centreLicence";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
@@ -38,7 +39,7 @@ export type PharmacyPopulation = Population<{
 
 export interface IPharmacy<
   T extends PharmacyPopulation = PharmacyPopulation,
-> extends MongoDoc {
+> extends MongoDoc, CentreLicenceFields {
   user?: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   name?: string;
   order: number;

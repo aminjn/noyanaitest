@@ -9,7 +9,12 @@ import fin from "./Finance.module.css";
 import { asArray, useBizFormat } from "../bizShared";
 import { useFin, useFinText } from "./finShared";
 
-type Sum = { insurer?: number; doctor?: number; count?: number };
+// doctor: the doctor's share as booked; deducted: its part of the insurers'
+// deductions (کسورات, backend Lib/business/doctorShareDeductions.ts)
+type Sum = { insurer?: number; doctor?: number; deducted?: number; count?: number };
+
+// what is owed after the doctor's part of the deductions
+const netOf = (s?: Sum) => Math.max(0, (s?.doctor || 0) - (s?.deducted || 0));
 type Row = {
   kind: "clinic" | "hospital" | "doctor";
   id: string;
@@ -41,6 +46,8 @@ const CentreSplitCard = () => {
   // a doctor who never practised in a centre has nothing to see here
   if (asDoctor && data && !rows.length) return null;
   const totals = data?.totals || {};
+  // the deductions column only once an insurer deducted something
+  const anyDeducted = rows.some((r) => (r.booked?.deducted || 0) > 0);
   return (
     <section className={classes.card}>
       <div className={classes.cardHead}>
@@ -59,6 +66,7 @@ const CentreSplitCard = () => {
                     <th>{t(asDoctor ? "cisColCentre" : "cisColDoctor")}</th>
                     <th className={classes.num}>{t("cisColPercent")}</th>
                     <th className={classes.num}>{t("cisColInsurer")}</th>
+                    {anyDeducted && <th className={classes.num}>{t("cisColDeducted")}</th>}
                     <th className={classes.num}>{t(asDoctor ? "cisColDue" : "cisColOwed")}</th>
                     <th className={classes.num}>{t("cisColUpcoming")}</th>
                   </tr>
@@ -77,8 +85,13 @@ const CentreSplitCard = () => {
                         )}
                       </td>
                       <td className={classes.num}>{f.money(r.booked?.insurer)}</td>
+                      {anyDeducted && (
+                        <td className={classes.num}>
+                          {(r.booked?.deducted || 0) > 0 ? f.money(-(r.booked?.deducted || 0)) : "—"}
+                        </td>
+                      )}
                       <td className={classes.num}>
-                        <b>{f.money(r.booked?.doctor)}</b>
+                        <b>{f.money(netOf(r.booked))}</b>
                       </td>
                       <td className={classes.num}>{f.money(r.upcoming?.doctor)}</td>
                     </tr>
@@ -90,12 +103,14 @@ const CentreSplitCard = () => {
                       <th>{t("cisTotal")}</th>
                       <th />
                       <th className={classes.num}>{f.money(totals.booked?.insurer)}</th>
-                      <th className={classes.num}>{f.money(totals.booked?.doctor)}</th>
+                      {anyDeducted && <th className={classes.num}>{f.money(-(totals.booked?.deducted || 0))}</th>}
+                      <th className={classes.num}>{f.money(netOf(totals.booked))}</th>
                       <th className={classes.num}>{f.money(totals.upcoming?.doctor)}</th>
                     </tr>
                   </tfoot>
                 )}
               </table>
+              {anyDeducted && <p className={classes.muted}>{t("cisDeductionsHint")}</p>}
             </div>
           ))}
       </HandleLoading>
