@@ -22,7 +22,7 @@ import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import ThinOwner from "./ThinOwner";
-import DeliveryAreaNote, { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
+import { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
 
 const NS: ContentNamespace[] = ["common", "productPackagePage"];
 
@@ -76,12 +76,9 @@ const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
       discount={data.discount}
       name={data.name}
       price={data.price}
-      owner={
-        <>
-          <ThinOwner name={data.owner?.name} src={data.owner?.avatar} />
-          <DeliveryAreaNote area={data.deliveryArea} rx={!!data.requiresPrescription} />
-        </>
-      }
+      owner={<ThinOwner name={data.owner?.name} src={data.owner?.avatar} />}
+      deliveryArea={data.deliveryArea}
+      rx={!!data.requiresPrescription}
       tabs={[
         {
           id: "Description",

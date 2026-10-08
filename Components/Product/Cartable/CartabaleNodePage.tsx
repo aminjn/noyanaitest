@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { DeliveryArea } from "../../Pharmacy/DeliveryAreaNote";
 import classes from "./CartabaleNodePage.module.css";
 import CartableNodePageIntro from "./CartableNodePageIntro";
 import CartableNodePageTabs from "./CartabelNodePageTabs";
@@ -38,6 +39,8 @@ const CartableNodePage = <T,>({
   trail,
   fastDelivery,
   freeDelivery,
+  deliveryArea,
+  rx,
 }: {
   beforeTabs?: ReactNode;
   // under the name, e.g. the prescription badge
@@ -64,6 +67,9 @@ const CartableNodePage = <T,>({
   trail?: BreadCrumpTrail;
   fastDelivery?: boolean;
   freeDelivery?: boolean;
+  // where the seller ships it (2026-10)
+  deliveryArea?: DeliveryArea;
+  rx?: boolean;
 }) => {
   return (
     <div className={classes.container}>
@@ -96,6 +102,8 @@ const CartableNodePage = <T,>({
                 price={price}
                 fastDelivery={fastDelivery}
                 freeDelivery={freeDelivery}
+                deliveryArea={deliveryArea}
+                rx={rx}
               />
             </div>
           </div>
@@ -119,6 +127,8 @@ const CartableNodePage = <T,>({
             price={price}
             fastDelivery={fastDelivery}
             freeDelivery={freeDelivery}
+            deliveryArea={deliveryArea}
+            rx={rx}
           />
         </div>
       </div>
