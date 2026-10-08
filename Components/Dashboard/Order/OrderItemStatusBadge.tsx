@@ -1,20 +1,48 @@
-import Badge from "@/Components/UI/Badge";
+import Badge, { BadgeColor } from "@/Components/UI/Badge";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import {
   OrderItemStatus,
+  OrderLineAutoCancel,
   orderItemStatusBadgeColorDict,
   orderItemStatusContentKeyDict,
 } from "./orderItemStatus";
 
 const NS: ContentNamespace[] = ["common", "dashboardOrderItemStatusBadge"];
 
-const OrderItemStatusBadge = ({ status }: { status: OrderItemStatus }) => {
+const autoCancelKey: Record<OrderLineAutoCancel, ContentKey> = {
+  noResponse: "orderItemStatusAutoCancelled",
+  notFulfilled: "orderItemStatusAutoCancelledLate",
+};
+
+// One line's status, shared by the buyer's order page and every seller
+// panel. A pending line the seller already accepted reads "accepted"; a
+// line the platform cancelled says why (backend Lib/orderResponse.ts).
+const OrderItemStatusBadge = ({
+  status,
+  acceptedAt,
+  autoCancel,
+}: {
+  status: OrderItemStatus;
+  acceptedAt?: string;
+  autoCancel?: OrderLineAutoCancel;
+}) => {
   const getContent = useScopedLocale(NS);
+  const auto = status === "cancelled" && autoCancel ? autoCancelKey[autoCancel] : undefined;
+  const accepted = status === "pending" && !!acceptedAt;
+  const color: BadgeColor =
+    auto ? "Error" : accepted ? "Info" : orderItemStatusBadgeColorDict[status] || "Disabled";
+  // an unknown status (bad data) reads as pending rather than blank
+  const key: ContentKey =
+    auto ||
+    (accepted
+      ? "orderItemStatusAccepted"
+      : orderItemStatusContentKeyDict[status] || "orderItemStatusPending");
 
   return (
-    <Badge color={orderItemStatusBadgeColorDict[status]} mode="Outline">
-      {getContent(orderItemStatusContentKeyDict[status])}
+    <Badge color={color} mode="Outline">
+      {getContent(key)}
     </Badge>
   );
 };

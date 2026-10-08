@@ -6755,5 +6755,21 @@
  "cdHideDepartment": "Ocultar",
  "cdDeleteDepartmentAsk": "¿Eliminar este departamento? Sus médicos siguen siendo miembros del centro.",
  "cdNoDepartments": "Todavía no hay departamentos.",
- "cdSave": "Guardar"
+ "cdSave": "Guardar",
+ "addAnotherCentre": "Añadir otro centro",
+ "centreSwitcherLabel": "Centro activo",
+ "centreStaffRole": "Personal",
+ "centreRequestNeedsPlan": "Mejora tu plan para enviar solicitudes de incorporación",
+ "orderItemStatusAccepted": "Aceptado, en curso",
+ "orderItemStatusAutoCancelled": "Cancelado automáticamente: el vendedor no respondió",
+ "orderItemStatusAutoCancelledLate": "Cancelado automáticamente: no se completó a tiempo",
+ "orderRespondBySeller": "Debe responderse antes del ${1}",
+ "orderRespondByBuyer": "El vendedor debe responder antes del ${1}; si no, este artículo se cancela automáticamente y se reembolsa a su monedero",
+ "orderAccept": "Aceptar pedido",
+ "sureAcceptOrderItem": "¿Acepta este artículo? Una vez aceptado ya no se cancela automáticamente y debe completarlo.",
+ "orderRespondDeadline": "Plazo de respuesta",
+ "serviceCatalogAdd": "+ Añadir «${1}» a la lista de servicios",
+ "serviceCatalogAddFailed": "No se pudo añadir este servicio; inténtelo de nuevo",
+ "serviceCatalogPending": "${1} (pendiente de revisión)",
+ "serviceCatalogHint": "Elija sus servicios de la lista. Si falta alguno, escriba su nombre y añádalo: aparecerá en su página al momento, y en los filtros y la búsqueda del sitio cuando el equipo de Noyan lo revise."
 }

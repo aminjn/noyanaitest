@@ -1,6 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
+import { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
 import {
   Dispatch,
   Fragment,
@@ -71,7 +72,10 @@ const DoctorBooking = ({
     const speciality = searchParams?.get("speciality");
     // an insurer page's "in-network doctors" link
     const insurance = searchParams?.get("insurance");
+    // a doctor page's service chip: the doctors who offer that service
+    const service = searchParams?.get("service");
     return {
+      ...(service ? { service: [{ _id: service, title: name } as IServiceCategory] } : {}),
       ...(insurance ? { insurance: [{ _id: insurance, name }] } : {}),
       ...(disease ? { disease: [{ _id: disease, name } as unknown as IDisease] } : {}),
       ...(speciality ? { speciality: [{ _id: speciality, name } as unknown as ISpeciality] } : {}),

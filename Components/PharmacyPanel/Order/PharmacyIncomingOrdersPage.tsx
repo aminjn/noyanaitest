@@ -17,7 +17,12 @@ import IconLink from "@/Components/Admin/UI/IconLink";
 import EyeIcon from "@/Components/Icons/EyeIcon";
 import FormatDate from "@/Components/UI/FormatDate";
 import { OrderStatus } from "@/Components/Dashboard/Order/orderStatus";
-import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+import {
+  earliestResponseDeadline,
+  IOrderLineResponse,
+  OrderItemStatus,
+} from "@/Components/Dashboard/Order/orderItemStatus";
+import OrderLineDeadline from "@/Components/Dashboard/Order/OrderLineDeadline";
 import { IOrderLinePrescription } from "@/Components/Order/RxPrescription";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import Badge from "@/Components/UI/Badge";
@@ -29,7 +34,7 @@ const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 // each order is already filtered down to just this pharmacy's own
 // products/productPackages line items (an order's items can span several
 // different sellers), plus a "subtotal" computed over only those items.
-export interface IIncomingOrderProductItem {
+export interface IIncomingOrderProductItem extends IOrderLineResponse {
   item: { _id: string; product?: { _id: string; name?: string } };
   qty: number;
   price: number;
@@ -39,7 +44,7 @@ export interface IIncomingOrderProductItem {
   prescription?: IOrderLinePrescription;
 }
 
-export interface IIncomingOrderPackageItem {
+export interface IIncomingOrderPackageItem extends IOrderLineResponse {
   item: { _id: string; name?: string };
   qty: number;
   price: number;
@@ -138,6 +143,25 @@ const PharmacyIncomingOrdersPage = () => {
                       ? getContent("ordersNeedAction", [String(node.pendingLines)])
                       : getContent("ordersAllDone"),
                   filter: "Set",
+                },
+                // the earliest unanswered line's deadline (2026-10): past
+                // it the line is cancelled and the buyer refunded
+                respondBy: {
+                  name: getContent("orderRespondDeadline"),
+                  value: (node) => {
+                    const at = earliestResponseDeadline([
+                      ...(Array.isArray(node.products) ? node.products : []),
+                      ...(Array.isArray(node.productPackages) ? node.productPackages : []),
+                    ]);
+                    return at ? new Date(at) : "";
+                  },
+                  component: (node) => {
+                    const at = earliestResponseDeadline([
+                      ...(Array.isArray(node.products) ? node.products : []),
+                      ...(Array.isArray(node.productPackages) ? node.productPackages : []),
+                    ]);
+                    return at ? <OrderLineDeadline respondBy={at} audience="seller" /> : "-";
+                  },
                 },
                 // prescriptions waiting on this pharmacy's check (2026-10)
                 prescriptions: {

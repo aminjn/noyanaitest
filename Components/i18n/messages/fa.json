@@ -6777,5 +6777,21 @@
  "cdHideDepartment": "پنهان کردن",
  "cdDeleteDepartmentAsk": "این بخش حذف شود؟ پزشکانش عضو مرکز می‌مانند.",
  "cdNoDepartments": "هنوز بخشی تعریف نشده است.",
- "cdSave": "ذخیره"
+ "cdSave": "ذخیره",
+ "addAnotherCentre": "افزودن مرکز دیگر",
+ "centreSwitcherLabel": "مرکز فعال",
+ "centreStaffRole": "کارمند",
+ "centreRequestNeedsPlan": "برای ارسال درخواست عضویت، پلن خود را ارتقا دهید",
+ "orderItemStatusAccepted": "پذیرفته‌شده، در حال انجام",
+ "orderItemStatusAutoCancelled": "لغو خودکار: فروشنده پاسخ نداد",
+ "orderItemStatusAutoCancelledLate": "لغو خودکار: به‌موقع انجام نشد",
+ "orderRespondBySeller": "باید تا ${1} پاسخ داده شود",
+ "orderRespondByBuyer": "فروشنده باید تا ${1} پاسخ دهد؛ وگرنه این قلم خودکار لغو و مبلغش به کیف پول شما برمی‌گردد",
+ "orderAccept": "پذیرش سفارش",
+ "sureAcceptOrderItem": "این قلم را می‌پذیرید؟ پس از پذیرش دیگر خودکار لغو نمی‌شود و باید آن را انجام دهید.",
+ "orderRespondDeadline": "مهلت پاسخ",
+ "serviceCatalogAdd": "+ افزودن «${1}» به فهرست خدمات",
+ "serviceCatalogAddFailed": "افزودن این خدمت ممکن نشد؛ دوباره تلاش کنید",
+ "serviceCatalogPending": "${1} (در انتظار بررسی)",
+ "serviceCatalogHint": "خدمات را از فهرست انتخاب کنید. اگر خدمتی در فهرست نیست، نامش را بنویسید و اضافه کنید: همان لحظه در صفحه‌ی شما دیده می‌شود و پس از بررسی تیم نویان در فیلتر و جست‌وجوی سایت هم می‌آید."
 }

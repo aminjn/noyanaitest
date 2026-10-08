@@ -6755,5 +6755,21 @@
  "cdHideDepartment": "Sembunyikan",
  "cdDeleteDepartmentAsk": "Hapus departemen ini? Dokternya tetap menjadi anggota pusat.",
  "cdNoDepartments": "Belum ada departemen.",
- "cdSave": "Simpan"
+ "cdSave": "Simpan",
+ "addAnotherCentre": "Tambah pusat lain",
+ "centreSwitcherLabel": "Pusat aktif",
+ "centreStaffRole": "Staf",
+ "centreRequestNeedsPlan": "Tingkatkan paket Anda untuk mengirim permintaan bergabung",
+ "orderItemStatusAccepted": "Diterima, sedang diproses",
+ "orderItemStatusAutoCancelled": "Dibatalkan otomatis: penjual tidak merespons",
+ "orderItemStatusAutoCancelledLate": "Dibatalkan otomatis: tidak selesai tepat waktu",
+ "orderRespondBySeller": "Harus dijawab sebelum ${1}",
+ "orderRespondByBuyer": "Penjual harus menjawab sebelum ${1}; jika tidak, item ini dibatalkan otomatis dan dananya dikembalikan ke dompet Anda",
+ "orderAccept": "Terima pesanan",
+ "sureAcceptOrderItem": "Terima item ini? Setelah diterima, item tidak lagi dibatalkan otomatis dan Anda wajib menyelesaikannya.",
+ "orderRespondDeadline": "Batas jawaban",
+ "serviceCatalogAdd": "+ Tambahkan “${1}” ke daftar layanan",
+ "serviceCatalogAddFailed": "Layanan ini tidak dapat ditambahkan; coba lagi",
+ "serviceCatalogPending": "${1} (menunggu tinjauan)",
+ "serviceCatalogHint": "Pilih layanan Anda dari daftar. Jika ada yang belum tersedia, ketik namanya lalu tambahkan: layanan langsung tampil di halaman Anda, dan di filter serta pencarian situs setelah ditinjau tim Noyan."
 }

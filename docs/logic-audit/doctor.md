@@ -41,7 +41,7 @@ Severity: **blocker** (data leak, broken core flow, or money at risk) / **major*
 | 3.2b inactive profile public | fixed |
 | 3.2c `/dr` metadata + JSON-LD | fixed |
 | 3.2d secondary specialities | fixed |
-| 3.2e `services` strings vs Service | open [PD] |
+| 3.2e `services` strings vs Service | fixed (owner decision 2026-10): the profile holds `serviceCategories` (ServiceCategory refs) picked with the creatable NodesSelector; a doctor-added entry is live on their page and pending review (approve / merge in the admin services hub, «پیشنهادهای پزشکان»); old strings converted at boot (`Lib/migrateDoctorServices.ts`); `/book` filter, text query, header search and clinic filter read the same refs |
 | 3.2f admin city column | fixed |
 | 3.2g PhoneConsultSettings | fixed (tab removed); open minor: `allPopulation` still loads it |
 | 3.2h slug unique | fixed (unique sparse index, friendly duplicate error) |
@@ -334,4 +334,4 @@ What NoyanAI copies: a doctor has several specialities and one primary. What it 
 3. **Majors:** in §3.
 4. **Cleanup:** delete the dead cards G-K and `Bitches`, and remove the hardcoded 4.9 / 98% / 20 / 50 values.
 
-Product decisions needed: search card variant (1.2B), `services` strings vs the Service catalog (3.2e), retiring PhoneConsultSettings (3.2g), a single onboarding flow (3.4b), whether the admin may override clinic consent (3.5b), feedback moderation roles (3.6c), doctor-FAQ moderation (3.7a), auto-deactivating doctors without a speciality (§2.5 step 6), access levels for service/serviceCategory/servicePackage (3.8h), and the licence behaviour with no default tier (3.10d).
+Product decisions needed: search card variant (1.2B), retiring PhoneConsultSettings (3.2g), a single onboarding flow (3.4b), whether the admin may override clinic consent (3.5b), feedback moderation roles (3.6c), doctor-FAQ moderation (3.7a), auto-deactivating doctors without a speciality (§2.5 step 6), access levels for service/serviceCategory/servicePackage (3.8h), and the licence behaviour with no default tier (3.10d).

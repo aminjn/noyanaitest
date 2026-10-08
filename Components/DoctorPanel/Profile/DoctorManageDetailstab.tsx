@@ -7,6 +7,8 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { genders, IDoctorProfile } from "../DoctorPanelPage";
 import { ISpeciality } from "@/Components/Admin/Speciality/AdminManageSpecialitiesPage";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import { IServiceCategory } from "@/Components/Admin/ServiceCategory/AdminManageServiceCategoriesPage";
+import { serviceCategoryIds } from "@/Components/helpers/serviceCatalog";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
@@ -94,7 +96,32 @@ const DoctorManageDetailsTab = () => {
               getDefaultValue: (inp) => inp.specialities,
             },
             introduction: { type: "area", title: getContent("introduction") },
-            services: { type: "strings", title: getContent("services") },
+            // from the service catalogue, the list /book filters by
+            // (2026-10): a missing service is added inline, matched by
+            // name first so the same service is never listed twice; it
+            // shows on the doctor's page at once and in the site's search
+            // once the team has reviewed it
+            serviceCategories: {
+              type: "nodes",
+              title: getContent("services"),
+              path: `${API}/doctor/serviceCatalog`,
+              multi: true,
+              creatable: {
+                path: `${API}/doctor/serviceCatalog`,
+                field: "title",
+                formatLabel: (input) => getContent("serviceCatalogAdd", [input]),
+                errorText: getContent("serviceCatalogAddFailed"),
+              },
+              getOptionLabel: (node) => {
+                const n = node as IServiceCategory;
+                return n.pendingReview
+                  ? getContent("serviceCatalogPending", [n.title || ""])
+                  : n.title || "";
+              },
+              getOptionValue: (node) => (node as IServiceCategory)._id,
+              getDefaultValue: (inp) => serviceCategoryIds(inp.serviceCategories),
+              hint: getContent("serviceCatalogHint"),
+            },
             achivements: { type: "strings", title: getContent("achivemets") },
             website: { type: "text", title: getContent("website") },
             landLine: { type: "text", title: getContent("landLine") },

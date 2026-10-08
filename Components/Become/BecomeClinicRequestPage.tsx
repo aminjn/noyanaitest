@@ -6,6 +6,7 @@ import { IBecomeClinicRequest } from "../ClinicPanel/BecomeClinicPage";
 import BecomeOrganizationForm from "./BecomeOrganizationForm";
 import useClinic from "../Hooks/useClinic";
 import BecomeDoneView from "./BecomeDoneView";
+import useAnotherCentre from "./useAnotherCentre";
 
 const org = becomeOrgs.clinic;
 
@@ -43,7 +44,11 @@ const BecomeClinicRequestPage = () => {
 
   const { clinic } = useClinic();
 
-  if (clinic)
+  const another = useAnotherCentre();
+
+  // an owner asking for another clinic sees the form (and then where that
+  // request stands); otherwise an owner is sent to the panel
+  if (clinic && !another && request?.status !== "Pending")
     return <BecomeDoneView title="becomeClinicDone" target={org.panelPath} />;
 
   return (

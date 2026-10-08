@@ -6755,5 +6755,21 @@
  "cdHideDepartment": "إخفاء",
  "cdDeleteDepartmentAsk": "حذف هذا القسم؟ يبقى أطباؤه أعضاء في المركز.",
  "cdNoDepartments": "لا توجد أقسام بعد.",
- "cdSave": "حفظ"
+ "cdSave": "حفظ",
+ "addAnotherCentre": "إضافة مركز آخر",
+ "centreSwitcherLabel": "المركز الحالي",
+ "centreStaffRole": "موظف",
+ "centreRequestNeedsPlan": "رقِّ خطتك لإرسال طلبات الانضمام",
+ "orderItemStatusAccepted": "مقبول، قيد التنفيذ",
+ "orderItemStatusAutoCancelled": "إلغاء تلقائي: لم يرد البائع",
+ "orderItemStatusAutoCancelledLate": "إلغاء تلقائي: لم يُنجز في الوقت المحدد",
+ "orderRespondBySeller": "يجب الرد قبل ${1}",
+ "orderRespondByBuyer": "على البائع الرد قبل ${1}؛ وإلا يُلغى هذا البند تلقائيًا ويُعاد مبلغه إلى محفظتك",
+ "orderAccept": "قبول الطلب",
+ "sureAcceptOrderItem": "هل تقبل هذا البند؟ بعد القبول لن يُلغى تلقائيًا ويجب عليك إنجازه.",
+ "orderRespondDeadline": "مهلة الرد",
+ "serviceCatalogAdd": "+ إضافة «${1}» إلى قائمة الخدمات",
+ "serviceCatalogAddFailed": "تعذّرت إضافة هذه الخدمة؛ حاول مرة أخرى",
+ "serviceCatalogPending": "${1} (بانتظار المراجعة)",
+ "serviceCatalogHint": "اختر خدماتك من القائمة. إذا لم تجد خدمة، فاكتب اسمها وأضفها: تظهر في صفحتك فورًا، وفي فلاتر الموقع وبحثه بعد مراجعة فريق نويان."
 }

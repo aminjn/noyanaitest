@@ -1,0 +1,68 @@
+"use client";
+
+import useSWR from "swr";
+import { API } from "@/Components/config";
+import { fetcher } from "@/Components/helpers/fetcher";
+import HandleLoading from "../UI/HandleLoading";
+import WithTitle from "../UI/WithTitle";
+import CreateForm from "../UI/CreateForm";
+import { IAppConfig } from "../AppConfig/AdminManageAppConfigPage";
+import { ta } from "@/Components/Admin/i18n/adminText";
+
+// Seller response deadlines of cart orders (2026-10 owner decision, backend
+// Lib/orderResponse.ts). Like Digikala's and Halodoc's seller SLA: a
+// pharmacy / lab line nobody answered within these hours of payment is
+// cancelled automatically and refunded to the buyer's wallet; the seller is
+// warned beforehand. Stored on AppConfig; a new value applies to orders
+// paid from then on (each line keeps the deadline it was given).
+const AdminOrderResponseSettingsTab = () => {
+  const { data, error, mutate } = useSWR<IAppConfig>(
+    `${API}/auto/appConfig`,
+    (url: string) => fetcher({ url }).then((res) => res.data.data),
+  );
+
+  return (
+    <HandleLoading data={!!data} error={error}>
+      {!!data && (
+        <WithTitle title={ta("مهلت پاسخ فروشنده به سفارش")}>
+          <CreateForm<IAppConfig>
+            layout="sections"
+            defaultValue={{
+              ...data,
+              orderResponseHoursPharmacy: data.orderResponseHoursPharmacy ?? 24,
+              orderResponseHoursLab: data.orderResponseHoursLab ?? 72,
+              orderResponseWarnHours: data.orderResponseWarnHours ?? 2,
+            }}
+            hookProps={{
+              path: `${API}/auto/appConfig`,
+              method: "POST",
+              successCb: () => mutate(),
+            }}
+            renderer={{
+              orderResponseHoursPharmacy: {
+                title: ta("مهلت پاسخ داروخانه (ساعت، ۱ تا ۷۲۰)"),
+                type: "number",
+                section: ta("لغو خودکار سفارش بی‌پاسخ"),
+                hint: ta("قلمی که داروخانه در این مدت پس از پرداخت نپذیرد، نسخه‌اش را بررسی نکند، ارسال یا آماده نکند، خودکار لغو و مبلغش به کیف پول خریدار برگردانده می‌شود."),
+              },
+              orderResponseHoursLab: {
+                title: ta("مهلت پاسخ آزمایشگاه (ساعت، ۱ تا ۷۲۰)"),
+                type: "number",
+                section: ta("لغو خودکار سفارش بی‌پاسخ"),
+                hint: ta("آزمایشی که آزمایشگاه در این مدت پس از پرداخت نپذیرد یا جوابش را بارگذاری نکند، خودکار لغو و مبلغش به خریدار برگردانده می‌شود."),
+              },
+              orderResponseWarnHours: {
+                title: ta("هشدار به فروشنده پیش از پایان مهلت (ساعت، ۰ یعنی بدون هشدار)"),
+                type: "number",
+                section: ta("لغو خودکار سفارش بی‌پاسخ"),
+                hint: ta("مهلت هر قلم هنگام پرداخت ثبت می‌شود؛ تغییر این اعداد فقط سفارش‌های بعدی را تغییر می‌دهد."),
+              },
+            }}
+          />
+        </WithTitle>
+      )}
+    </HandleLoading>
+  );
+};
+
+export default AdminOrderResponseSettingsTab;

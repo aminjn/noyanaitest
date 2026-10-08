@@ -6755,5 +6755,21 @@
  "cdHideDepartment": "Gizle",
  "cdDeleteDepartmentAsk": "Bu bölüm silinsin mi? Doktorları merkezin üyesi olarak kalır.",
  "cdNoDepartments": "Henüz bölüm yok.",
- "cdSave": "Kaydet"
+ "cdSave": "Kaydet",
+ "addAnotherCentre": "Başka bir merkez ekle",
+ "centreSwitcherLabel": "Etkin merkez",
+ "centreStaffRole": "Personel",
+ "centreRequestNeedsPlan": "Katılım isteği göndermek için planınızı yükseltin",
+ "orderItemStatusAccepted": "Kabul edildi, hazırlanıyor",
+ "orderItemStatusAutoCancelled": "Otomatik iptal: satıcı yanıt vermedi",
+ "orderItemStatusAutoCancelledLate": "Otomatik iptal: zamanında tamamlanmadı",
+ "orderRespondBySeller": "${1} tarihinden önce yanıtlanmalı",
+ "orderRespondByBuyer": "Satıcı ${1} tarihinden önce yanıt vermeli; aksi halde bu kalem otomatik iptal edilir ve tutarı cüzdanınıza iade edilir",
+ "orderAccept": "Siparişi kabul et",
+ "sureAcceptOrderItem": "Bu kalemi kabul ediyor musunuz? Kabul edildikten sonra otomatik iptal edilmez ve tamamlamanız gerekir.",
+ "orderRespondDeadline": "Yanıt süresi",
+ "serviceCatalogAdd": "+ “${1}” hizmetini listeye ekle",
+ "serviceCatalogAddFailed": "Bu hizmet eklenemedi; lütfen tekrar deneyin",
+ "serviceCatalogPending": "${1} (inceleme bekliyor)",
+ "serviceCatalogHint": "Hizmetlerinizi listeden seçin. Listede olmayan bir hizmet varsa adını yazıp ekleyin: hemen sayfanızda görünür, Noyan ekibi inceledikten sonra sitenin filtre ve aramasında da yer alır."
 }

@@ -57,6 +57,11 @@ export interface IAppConfig extends MongoDoc {
   sepTokenExpiryMinutes: number;
   onlinePaymentMinAmount: number;
   withdrawalMinAmount: number;
+  // seller response deadlines of cart orders (2026-10, backend
+  // Lib/orderResponse.ts): hours from payment, and the advance warning
+  orderResponseHoursPharmacy?: number;
+  orderResponseHoursLab?: number;
+  orderResponseWarnHours?: number;
 
   reservationNoShowNudgeMinutesAfterStart: number;
   reservationNoShowNudgeInterval: number;

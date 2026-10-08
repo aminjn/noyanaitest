@@ -2742,6 +2742,7 @@ export const contentNamespaces = {
     "Proccessing",
     "Done",
     "Left",
+    "centreRequestNeedsPlan",
   ],
 
   // app/doctorpanel/hospital/page.tsx (DoctorManageHospitalsPage +
@@ -2787,6 +2788,7 @@ export const contentNamespaces = {
     "Proccessing",
     "Done",
     "Left",
+    "centreRequestNeedsPlan",
   ],
 
   // app/doctorpanel/page.tsx (DoctorPanelPage) — the panel shell/sidebar,
@@ -3158,6 +3160,10 @@ export const contentNamespaces = {
     "ppItemSpeciality",
     "ppItemIntro",
     "ppItemServices",
+    "serviceCatalogAdd",
+    "serviceCatalogAddFailed",
+    "serviceCatalogPending",
+    "serviceCatalogHint",
     "ppItemContact",
     "ppItemLocation",
     "ppItemGallery",
@@ -4203,6 +4209,14 @@ export const contentNamespaces = {
     "rxApprovedDone",
     "rxRejectedDone",
     "rxNeedReview",
+    "orderItemStatusAccepted",
+    "orderItemStatusAutoCancelled",
+    "orderItemStatusAutoCancelledLate",
+    "orderRespondBySeller",
+    "orderRespondByBuyer",
+    "orderAccept",
+    "sureAcceptOrderItem",
+    "orderRespondDeadline",
   ],
 
   // app/doctorpanel/article/page.tsx + [nodeId] (DoctorManageArticlesPage,
@@ -4869,6 +4883,9 @@ export const contentNamespaces = {
     "tabChat",
     "shAvailTitle",
     "piTitle",
+    "addAnotherCentre",
+    "centreSwitcherLabel",
+    "centreStaffRole",
   ],
   // Components/Layout/DoctorPanelLicenseBalanceHeader (doctorpanel clinic/hospital
   // pages and DoctorPanel/_UI/WithBalanceHeader users).
@@ -5407,6 +5424,11 @@ export const contentNamespaces = {
     "orderItemStatusPending",
     "orderItemStatusFulfilled",
     "orderItemStatusCancelled",
+    "orderItemStatusAccepted",
+    "orderItemStatusAutoCancelled",
+    "orderItemStatusAutoCancelledLate",
+    "orderRespondBySeller",
+    "orderRespondByBuyer",
   ],
   // Components/Dashboard/Call/DashboardManageCallsPage.tsx (not routed
   // anywhere currently; its types are imported by admin CallRoom pages).
@@ -5505,6 +5527,14 @@ export const contentNamespaces = {
     "labResultSent",
     "labChooseFiles",
     "labResultFirst",
+    "orderItemStatusAccepted",
+    "orderItemStatusAutoCancelled",
+    "orderItemStatusAutoCancelledLate",
+    "orderRespondBySeller",
+    "orderRespondByBuyer",
+    "orderAccept",
+    "sureAcceptOrderItem",
+    "orderRespondDeadline",
   ],
 
   // app/paraClinicPanel/profile/page.tsx (ParaClinicManageProfilePage,
@@ -5943,6 +5973,11 @@ export const contentNamespaces = {
     "shipSent",
     "labResult",
     "labResultFile",
+    "orderItemStatusAccepted",
+    "orderItemStatusAutoCancelled",
+    "orderItemStatusAutoCancelledLate",
+    "orderRespondBySeller",
+    "orderRespondByBuyer",
   ],
   // Shared cartable node-page pieces (Components/Product/Cartable/*, CartActions, PlusBox, ProductCartInfos, UpgradeProBox) used by /product/[slug], /productPackage/[slug], /service/[slug], /servicePackage/[slug]. Includes the cartTitle keys passed in (seller/provider) and the ProductCartInfos ternary keys.
   productCartable: [

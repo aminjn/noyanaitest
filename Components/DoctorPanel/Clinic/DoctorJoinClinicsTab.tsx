@@ -7,6 +7,7 @@ import TableBox from "@/Components/UI/TableBox";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import Table from "@/Components/Admin/UI/Table";
 import usePopup from "@/Components/Hooks/usePopup";
+import useDoctorLicenseModules from "@/Components/Hooks/useDoctorLicenseModules";
 import Button from "@/Components/UI/Button";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import SubmitAJoinClinicRequestPopup from "./SubmitAJoinClinicRequestPopup";
@@ -95,6 +96,9 @@ const DoctorJoinClinicsTab = () => {
   const getContent = useScopedLocale(NS);
 
   const { setPopup } = usePopup();
+  const { modules } = useDoctorLicenseModules();
+  // fails open while the plan is loading, like DoctorLicenseGate
+  const canRequest = !modules || modules.includes("clinics");
 
   return (
     <HandleLoading data={!!data} error={error}>
@@ -105,17 +109,25 @@ const DoctorJoinClinicsTab = () => {
             {
               id: "Join",
               content: (
-                <Button
-                  leadIcon={<PlusIcon />}
-                  onClick={() =>
-                    setPopup(
-                      "SubmitAJoinClinicRequest",
-                      <SubmitAJoinClinicRequestPopup mutate={mutate} />
-                    )
-                  }
-                >
-                  {getContent("newItem")}
-                </Button>
+                canRequest ? (
+                  <Button
+                    leadIcon={<PlusIcon />}
+                    onClick={() =>
+                      setPopup(
+                        "SubmitAJoinClinicRequest",
+                        <SubmitAJoinClinicRequestPopup mutate={mutate} />
+                      )
+                    }
+                  >
+                    {getContent("newItem")}
+                  </Button>
+                ) : (
+                  // asking to join is the doctor's own request (a plan
+                  // feature); answering an invite is open to every plan
+                  <Button href="/doctorpanel/license" variant="Primary" mode="Outline">
+                    {getContent("centreRequestNeedsPlan")}
+                  </Button>
+                )
               ),
             },
           ]}
@@ -176,7 +188,8 @@ const DoctorJoinClinicsTab = () => {
                 name: getContent("actions"),
                 component: (node) => (
                   <TableActions>
-                    {node.submissionParty === "DoctorProfile" &&
+                    {canRequest &&
+                      node.submissionParty === "DoctorProfile" &&
                       node.status === "Rejected" && (
                         <IconButton
                           onClick={() =>

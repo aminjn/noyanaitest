@@ -6755,5 +6755,21 @@
  "cdHideDepartment": "چھپائیں",
  "cdDeleteDepartmentAsk": "یہ شعبہ حذف کریں؟ اس کے ڈاکٹر مرکز کے رکن رہیں گے۔",
  "cdNoDepartments": "ابھی کوئی شعبہ نہیں بنایا گیا۔",
- "cdSave": "محفوظ کریں"
+ "cdSave": "محفوظ کریں",
+ "addAnotherCentre": "ایک اور مرکز شامل کریں",
+ "centreSwitcherLabel": "فعال مرکز",
+ "centreStaffRole": "عملہ",
+ "centreRequestNeedsPlan": "شمولیت کی درخواست بھیجنے کے لیے اپنا پلان اپ گریڈ کریں",
+ "orderItemStatusAccepted": "قبول شدہ، جاری",
+ "orderItemStatusAutoCancelled": "خودکار منسوخ: فروخت کنندہ نے جواب نہیں دیا",
+ "orderItemStatusAutoCancelledLate": "خودکار منسوخ: وقت پر مکمل نہیں ہوا",
+ "orderRespondBySeller": "${1} سے پہلے جواب دینا ضروری ہے",
+ "orderRespondByBuyer": "فروخت کنندہ کو ${1} سے پہلے جواب دینا ہے؛ ورنہ یہ آئٹم خودکار منسوخ ہو کر رقم آپ کے والیٹ میں واپس آ جائے گی",
+ "orderAccept": "آرڈر قبول کریں",
+ "sureAcceptOrderItem": "کیا آپ یہ آئٹم قبول کرتے ہیں؟ قبول کرنے کے بعد یہ خودکار منسوخ نہیں ہوگی اور آپ کو اسے مکمل کرنا ہوگا۔",
+ "orderRespondDeadline": "جواب کی مہلت",
+ "serviceCatalogAdd": "+ «${1}» کو خدمات کی فہرست میں شامل کریں",
+ "serviceCatalogAddFailed": "یہ خدمت شامل نہیں ہو سکی؛ دوبارہ کوشش کریں",
+ "serviceCatalogPending": "${1} (جائزے کے انتظار میں)",
+ "serviceCatalogHint": "اپنی خدمات فہرست سے منتخب کریں۔ اگر کوئی خدمت فہرست میں نہیں ہے تو اس کا نام لکھ کر شامل کریں: وہ فوراً آپ کے صفحے پر نظر آئے گی، اور نویان ٹیم کے جائزے کے بعد سائٹ کے فلٹر اور تلاش میں بھی۔"
 }

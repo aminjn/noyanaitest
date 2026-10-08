@@ -6755,5 +6755,21 @@
  "cdHideDepartment": "非表示にする",
  "cdDeleteDepartmentAsk": "この診療科を削除しますか？所属医師は施設のメンバーのままです。",
  "cdNoDepartments": "まだ診療科がありません。",
- "cdSave": "保存"
+ "cdSave": "保存",
+ "addAnotherCentre": "別の施設を追加",
+ "centreSwitcherLabel": "現在の施設",
+ "centreStaffRole": "スタッフ",
+ "centreRequestNeedsPlan": "参加申請を送るにはプランをアップグレードしてください",
+ "orderItemStatusAccepted": "受付済み・対応中",
+ "orderItemStatusAutoCancelled": "自動キャンセル：販売者の応答なし",
+ "orderItemStatusAutoCancelledLate": "自動キャンセル：期限内に完了せず",
+ "orderRespondBySeller": "${1} までに回答が必要です",
+ "orderRespondByBuyer": "販売者は ${1} までに回答する必要があります。回答がない場合、この品目は自動的にキャンセルされ、ウォレットに返金されます",
+ "orderAccept": "注文を受け付ける",
+ "sureAcceptOrderItem": "この品目を受け付けますか？受け付けると自動キャンセルされなくなり、対応が必要です。",
+ "orderRespondDeadline": "回答期限",
+ "serviceCatalogAdd": "+「${1}」をサービス一覧に追加",
+ "serviceCatalogAddFailed": "このサービスを追加できませんでした。もう一度お試しください",
+ "serviceCatalogPending": "${1}（審査待ち）",
+ "serviceCatalogHint": "サービスを一覧から選んでください。一覧にない場合は名前を入力して追加できます。すぐにあなたのページに表示され、Noyan チームの審査後はサイトの絞り込みと検索にも表示されます。"
 }

@@ -14,6 +14,9 @@ export interface IServiceCategory<
   isActive: boolean;
   order: number;
   slug?: string;
+  // a doctor's suggestion, waiting for review (ServiceSuggestionsTab)
+  pendingReview?: boolean;
+  suggestedBy?: string | { _id: string; firstName?: string; lastName?: string; slug?: string };
 }
 
 const serviceCategoryFormRenderer: FormRenderer<IServiceCategory> = {

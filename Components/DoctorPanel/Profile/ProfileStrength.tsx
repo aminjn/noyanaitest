@@ -45,7 +45,7 @@ const ProfileStrength = ({ onGo }: { onGo: (tab: string) => void }) => {
       { key: "ppItemAvatar", done: !!doctor.avatar, tab: "Details" },
       { key: "ppItemSpeciality", done: !!doctor.mainSpeciality, tab: "Details" },
       { key: "ppItemIntro", done: (doctor.introduction || "").trim().length >= 80, tab: "Details" },
-      { key: "ppItemServices", done: count(doctor.services) > 0, tab: "Details" },
+      { key: "ppItemServices", done: count(doctor.serviceCategories) > 0, tab: "Details" },
       { key: "ppItemContact", done: (!!doctor.landLine && !!doctor.address) || officeContact, tab: "Details" },
       {
         key: "ppItemLocation",

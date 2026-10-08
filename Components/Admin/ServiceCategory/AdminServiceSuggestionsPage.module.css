@@ -1,0 +1,12 @@
+/* the merge popup: text, target picker and actions stacked */
+.popupBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  inline-size: min(30rem, 80vw);
+}
+
+.popupBody p {
+  margin: 0;
+  line-height: 1.8;
+}

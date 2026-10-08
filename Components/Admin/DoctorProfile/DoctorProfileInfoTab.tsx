@@ -4,6 +4,8 @@ import { API } from "@/Components/config";
 import useForm from "@/Components/Hooks/useForm";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import { ISpeciality } from "../Speciality/AdminManageSpecialitiesPage";
+import { IServiceCategory } from "../ServiceCategory/AdminManageServiceCategoriesPage";
+import { serviceCategoryIds } from "@/Components/helpers/serviceCatalog";
 import { FormRenderer } from "../UI/CreateForm";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
@@ -107,7 +109,26 @@ export const useDoctorProfileInfoRenderer = (
     landLine: { type: "text", title: ta("تلفن ثابت"), section: contact },
     website: { type: "text", title: ta("سایت"), section: contact },
     introduction: { type: "area", title: ta("معرفی"), section: about },
-    services: { type: "strings", title: ta("خدمات"), section: about },
+    // the same catalogue picker as the doctor's own profile (2026-10): a
+    // missing service is added inline, deduplicated by its name
+    serviceCategories: {
+      type: "nodes",
+      title: ta("خدمات"),
+      path: `${API}/auto/serviceCategory`,
+      multi: true,
+      ...(hasAccess("Service", "write")
+        ? { creatable: { path: `${API}/auto/serviceCategory`, field: "title" as const } }
+        : {}),
+      getOptionLabel: (node) => {
+        const n = node as IServiceCategory;
+        return n.pendingReview
+          ? ta("${1} (در انتظار بررسی)", [n.title || ""])
+          : n.title || ta("بدون نام");
+      },
+      getOptionValue: (node) => (node as IServiceCategory)._id,
+      getDefaultValue: (node) => serviceCategoryIds(node.serviceCategories),
+      section: about,
+    },
     achivements: {
       type: "strings",
       title: ta("دستاوردها"),
