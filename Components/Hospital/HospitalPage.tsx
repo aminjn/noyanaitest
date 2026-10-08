@@ -150,6 +150,7 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
           image={data.image}
           province={data.province?.name}
           openStatus={data.openStatus}
+          verified={data.verified}
         />
         <StickyNav map={sections} />
         <MedicalCenterSummary

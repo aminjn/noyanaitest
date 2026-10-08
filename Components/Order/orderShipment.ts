@@ -20,12 +20,25 @@ export interface IOrderShipment {
   deliveredBy?: "buyer" | "auto" | "support" | "migration";
   returnedAt?: string;
   problem?: { reportedAt?: string; note?: string; ticket?: string } | null;
+  // the sending deadline of a prepared parcel (backend
+  // Services/shipmentDeliveryService.ts): send by `sendBy`, else it is closed
+  // as not sent (`unsentCancelledAt`) and its lines refunded
+  sendBy?: string;
+  unsentCancelledAt?: string;
 }
 
-export type ShipmentState = "notSent" | "inTransit" | "delivered" | "returned";
+export type ShipmentState = "notSent" | "inTransit" | "delivered" | "returned" | "unsentCancelled";
 
 export const shipmentStateOf = (s: IOrderShipment): ShipmentState =>
-  s.returnedAt ? "returned" : s.deliveredAt ? "delivered" : s.shippedAt ? "inTransit" : "notSent";
+  s.returnedAt
+    ? "returned"
+    : s.deliveredAt
+      ? "delivered"
+      : s.shippedAt
+        ? "inTransit"
+        : s.unsentCancelledAt
+          ? "unsentCancelled"
+          : "notSent";
 
 const idOf = (value: unknown) =>
   value && typeof value === "object" ? String((value as { _id?: unknown })._id ?? "") : String(value ?? "");
@@ -41,6 +54,6 @@ export const lineShippingOf = (
   const s = (shipments as IOrderShipment[]).find(
     (el) => el && el.method === "tipax" && idOf(el.pharmacy) === id,
   );
-  if (!s || s.deliveredAt || s.returnedAt) return undefined;
+  if (!s || s.deliveredAt || s.returnedAt || s.unsentCancelledAt) return undefined;
   return s.shippedAt ? "inTransit" : "ready";
 };

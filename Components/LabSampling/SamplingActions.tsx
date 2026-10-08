@@ -69,7 +69,11 @@ const SamplingActions = ({
   const canPropose = viewer === "lab" && !!onPropose && !!info.canPropose;
   const buyerProposal = viewer === "buyer" && !!onAnswerProposal && proposal?.status === "open";
   const labProposal = viewer === "lab" && !!proposal;
-  if (!info.canMove && !canCancel && !blockText && !canPropose && !buyerProposal && !labProposal) return null;
+  // the lab used up its proposals on this appointment
+  const proposeLimitText =
+    viewer === "lab" && !!onPropose && info.proposeBlock === "limit" ? t("lsProposalLimit") : "";
+  if (!info.canMove && !canCancel && !blockText && !canPropose && !buyerProposal && !labProposal && !proposeLimitText)
+    return null;
 
   const cancel = async () => {
     if (cancelling || !onCancel) return;
@@ -97,6 +101,7 @@ const SamplingActions = ({
       {!info.canMove && !!blockText && (
         <span className={`${classes.muted} ${t2xsRegular}`}>{blockText}</span>
       )}
+      {!!proposeLimitText && <span className={`${classes.muted} ${t2xsRegular}`}>{proposeLimitText}</span>}
       <div className={classes.actions}>
         {info.canMove && (
           <Button

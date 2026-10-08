@@ -26,6 +26,8 @@ type DeliverySettings = {
   fallbackOriginCity: IAddressCity | null;
   // Tipax delivery confirmation (2026-10, backend Services/shipmentDeliveryService.ts)
   tipaxAutoConfirmDays: number;
+  // a prepared Tipax parcel not sent in this many days is cancelled and refunded
+  tipaxSendDays: number;
   tipaxTrackingUrl: string;
   updatedAt: string | null;
 };
@@ -55,6 +57,9 @@ const AdminDeliverySettingsPage = () => {
                 {ta("مرسوله‌ی تیپاکس فقط وقتی تحویل‌شده حساب می‌شود که خریدار «تحویل گرفتم» را بزند، پشتیبانی آن را ثبت کند، یا ${1} روز پس از ارسال بگذرد و خریدار گزارش «مرسوله نرسیده» نداده باشد. سهم داروخانه و درخواست امتیاز از خریدار از همان لحظه شروع می‌شود.", [String(data.tipaxAutoConfirmDays)])}
               </p>
               <p className={classes.rule}>
+                {ta("داروخانه باید مرسوله‌ی تیپاکس را تا ${1} روز پس از آماده کردن آخرین قلم آن بفرستد. در نیمه‌ی این مهلت به داروخانه هشدار (اعلان و پیامک) داده می‌شود و اگر تا پایان آن ارسال ثبت نشود، اقلام آماده‌شده لغو و مبلغشان به کیف پول خریدار برمی‌گردد.", [String(data.tipaxSendDays ?? 3)])}
+              </p>
+              <p className={classes.rule}>
                 {ta("مبدأ هر سفارش شهر داروخانه است. داروخانه‌ای که شهرش ثبت نشده از «${1}» ارسال می‌کند. هر داروخانه در سبد خرید یک مرسوله‌ی جدا حساب می‌شود.", [addressCityLabel(origin || undefined) || "تهران"])}
               </p>
             </Box>
@@ -62,12 +67,14 @@ const AdminDeliverySettingsPage = () => {
               tapsiFlatFee: number;
               defaultOriginCity?: IAddressCity | string;
               tipaxAutoConfirmDays: number;
+              tipaxSendDays: number;
               tipaxTrackingUrl: string;
             }>
               defaultValue={{
                 tapsiFlatFee: data.tapsiFlatFee,
                 defaultOriginCity: data.defaultOriginCity || undefined,
                 tipaxAutoConfirmDays: data.tipaxAutoConfirmDays,
+                tipaxSendDays: data.tipaxSendDays ?? 3,
                 tipaxTrackingUrl: data.tipaxTrackingUrl,
               }}
               renderer={{
@@ -87,6 +94,11 @@ const AdminDeliverySettingsPage = () => {
                   type: "number",
                   title: ta("تأیید خودکار تحویل تیپاکس (روز پس از ارسال)"),
                   hint: ta("از ۱ تا ۳۰ روز. برای مرسوله‌هایی که از این پس ارسال می‌شوند."),
+                },
+                tipaxSendDays: {
+                  type: "number",
+                  title: ta("مهلت ارسال مرسوله‌ی تیپاکس (روز پس از آماده شدن)"),
+                  hint: ta("از ۱ تا ۱۴ روز، از وقتی آخرین قلم مرسوله آماده یا لغو شد. برای مرسوله‌هایی که از این پس آماده می‌شوند."),
                 },
                 tipaxTrackingUrl: {
                   type: "text",

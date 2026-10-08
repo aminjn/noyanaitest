@@ -11,6 +11,7 @@ const ClinicIntro = ({ node }: { node: ClinicPageNode }) => {
       image={node.image}
       province={node.province?.name}
       openStatus={node.openStatus}
+      verified={node.verified}
     />
   );
 };

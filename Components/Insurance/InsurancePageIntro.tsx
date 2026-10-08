@@ -11,6 +11,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import { tlgMedium, tsmMedium } from "../UI/Typography";
 import { InsurancePageNode } from "./InsurancePage";
 import HostedImage from "../UI/HostedImage";
+import CentreVerifiedTick from "../UI/CentreVerifiedTick";
 
 const NS: ContentNamespace[] = ["common", "insurancePage"];
 const InsurancePageIntro = ({ node }: { node: InsurancePageNode }) => {
@@ -37,7 +38,10 @@ const InsurancePageIntro = ({ node }: { node: InsurancePageNode }) => {
             />
           </div>
           <div className={classes.details}>
-            <h1 className={`${classes.name} ${tlgMedium}`}>{node.name}</h1>
+            <h1 className={`${classes.name} ${tlgMedium}`}>
+              {node.name}
+              <CentreVerifiedTick verified={node.verified} size="1.125rem" className={classes.tick} />
+            </h1>
             <div className={classes.footer}>
               {!!node.category && (
                 <Badge size="S" radius="High" mode="Fill" color="Disabled">

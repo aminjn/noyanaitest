@@ -27,6 +27,8 @@ const statusColor: Record<string, BadgeColor> = {
 const moverKey = (by: LabSamplingActor, viewer: "buyer" | "lab") =>
   by === "admin"
     ? "lsMovedBySupport"
+    : by === "labProposal"
+      ? "lsMovedByProposal"
     : by === "lab"
       ? "lsMovedByLab"
       : viewer === "buyer"

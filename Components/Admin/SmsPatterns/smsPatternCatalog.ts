@@ -62,6 +62,9 @@ export const notificationSmsEvents = [
   "orderDeliveredUser",
   "orderDeliveredSeller",
   "orderDeliveryProblemSeller",
+  "orderSendDueSoonSeller",
+  "orderUnsentCancelledSeller",
+  "orderUnsentCancelledUser",
   "orderItemCancelledUser",
   "prescriptionRejectedUser",
   "labResultReadyUser",
@@ -107,6 +110,8 @@ export const notificationSmsEvents = [
   "licensePurchasedProvider",
   "licenseExpiringProvider",
   "licenseExpiredProvider",
+  "centreLicenceExpiringProvider",
+  "centreLicenceExpiredProvider",
   "proPurchasedUser",
   "proExpiringUser",
   "proExpiredUser",
@@ -191,6 +196,8 @@ const staffSample = (event: UserAlertEvent): string => {
       return ta("بیمار %userPhone% به ویزیت حضوری ثبت‌شده اعتراض کرد. نوبت: %reservationId%");
     case "newSmsCampaign":
       return ta("کمپین پیامکی «%name%» منتظر تأیید است.");
+    case "settlementFailed":
+      return ta("تسویه‌ی سفارش %orderId% پس از %attempts% بار تلاش انجام نشد؛ سفارش را بررسی کنید.");
     case "newClinicAdditionRequest":
     case "newPharmacyAdditionRequest":
     case "newHospitalAdditionRequest":
@@ -217,6 +224,7 @@ const userAlertEventVariables: Record<UserAlertEvent, string[]> = {
   newInsuranceAdditionRequest: ["requestId", "name"],
   newVisitDispute: ["reservationId", "userPhone"],
   newSmsCampaign: ["requestId", "name"],
+  settlementFailed: ["orderId", "attempts"],
 };
 
 // mirrors backend Models/Reservation.ts ReservationSmsVariables
@@ -426,6 +434,25 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("گزارش نرسیدن مرسوله - داروخانه"),
     variables: ["orderId"],
     sample: () => ta("خریدار سفارش %orderId% گزارش داده مرسوله نرسیده است. وضعیت را از تیپاکس پیگیری کنید."),
+  },
+  // Tipax sending deadline (2026-10, backend Services/shipmentDeliveryService.ts)
+  orderSendDueSoonSeller: {
+    audience: "provider",
+    label: () => ta("نزدیک شدن پایان مهلت ارسال مرسوله - داروخانه"),
+    variables: ["orderId", "deadline"],
+    sample: () => ta("مرسوله‌ی تیپاکس سفارش %orderId% آماده است اما ارسال نشده. اگر تا %deadline% ارسال را ثبت نکنید، اقلامش لغو و به خریدار بازپرداخت می‌شود."),
+  },
+  orderUnsentCancelledSeller: {
+    audience: "provider",
+    label: () => ta("لغو مرسوله‌ی ارسال‌نشده - داروخانه"),
+    variables: ["orderId"],
+    sample: () => ta("مرسوله‌ی تیپاکس سفارش %orderId% در مهلت ارسال نشد؛ اقلام آن لغو و مبلغشان به خریدار برگشت. آن را ارسال نکنید."),
+  },
+  orderUnsentCancelledUser: {
+    audience: "patient",
+    label: () => ta("لغو مرسوله‌ی ارسال‌نشده - خریدار"),
+    variables: ["orderId", "sellerName"],
+    sample: () => ta("%sellerName% مرسوله‌ی سفارش %orderId% را در مهلت ارسال نفرستاد؛ مبلغ اقلام آن به کیف پول شما برگشت."),
   },
   orderItemCancelledUser: {
     audience: "patient",
@@ -706,6 +733,20 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("پایان اشتراک - ارائه‌دهنده"),
     variables: ["plan"],
     sample: () => ta("اشتراک «%plan%» به پایان رسید. برای ادامه‌ی دسترسی اشتراک تازه بخرید."),
+  },
+  // a centre's operating licence, the verified tick (2026-10, backend
+  // Services/centreLicenceService.ts): 30 days before and at expiry
+  centreLicenceExpiringProvider: {
+    audience: "provider",
+    label: () => ta("نزدیک شدن انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده"),
+    variables: ["name", "days", "expiresAt"],
+    sample: () => ta("پروانه‌ی فعالیت «%name%» %days% روز دیگر (%expiresAt%) منقضی می‌شود. برای ماندن نشان تأیید، پروانه‌ی تمدیدشده را بفرستید."),
+  },
+  centreLicenceExpiredProvider: {
+    audience: "provider",
+    label: () => ta("انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده"),
+    variables: ["name"],
+    sample: () => ta("پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید."),
   },
   // the patients' «پرو» membership (2026-10, backend Lib/patientPro.ts,
   // Services/patientProService.ts)

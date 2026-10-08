@@ -258,8 +258,9 @@ export const adminNoteActionDict: Record<string, string> = {
   get cancelLine() {
     return ta("لغو قلم");
   },
+  // fulfilled by support: prepared (a Tipax line), delivered (Tapsi) or done
   get fulfillLine() {
-    return ta("ثبت تحویل قلم");
+    return ta("ثبت آماده‌سازی یا تحویل قلم");
   },
   get rescheduleSampling() {
     return ta("جابه‌جایی نوبت نمونه‌گیری");
@@ -311,6 +312,9 @@ export const samplingActorDict: Record<string, string> = {
   },
   get admin() {
     return ta("پشتیبانی");
+  },
+  get labProposal() {
+    return ta("خریدار، با پذیرش پیشنهاد آزمایشگاه");
   },
 };
 

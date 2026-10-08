@@ -38,6 +38,14 @@
 
 .name {
   color: var(--onColor);
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.tick {
+  color: var(--primary4);
 }
 
 .details {

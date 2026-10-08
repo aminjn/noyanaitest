@@ -14,6 +14,7 @@ const NS: ContentNamespace[] = ["common", "dashboardOrderItemStatusBadge"];
 const autoCancelKey: Record<OrderLineAutoCancel, ContentKey> = {
   noResponse: "orderItemStatusAutoCancelled",
   notFulfilled: "orderItemStatusAutoCancelledLate",
+  notSent: "orderItemStatusAutoCancelledNotSent",
 };
 
 // One line's status, shared by the buyer's order page and every seller

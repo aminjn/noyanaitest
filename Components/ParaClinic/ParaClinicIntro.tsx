@@ -20,6 +20,7 @@ import FlaskIcon from "../Icons/FlaskIcon";
 import UserIcon from "../Icons/UserIcon";
 import StarLineIcon from "../Icons/StarLineIcon";
 import ChatBubbleIcon from "../Icons/ChatBubbleIcon";
+import CentreVerifiedTick from "../UI/CentreVerifiedTick";
 import {
   tbaseDemiBold,
   tbaseRegular,
@@ -111,7 +112,10 @@ const ParaClinicIntro = ({ data, takesOrders }: ParaClinicPageProps) => {
             />
           </div>
           <div className={classes.content}>
-            <h1 className={`${classes.h1} ${txlMedium}`}>{data.name}</h1>
+            <h1 className={`${classes.h1} ${txlMedium}`}>
+              {data.name}
+              <CentreVerifiedTick verified={data.verified} size="1.25rem" />
+            </h1>
             <div className={classes.stats}>
               {/* no score until there is an approved review */}
               {Number(data.commentCount) > 0 && (

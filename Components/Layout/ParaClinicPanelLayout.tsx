@@ -1,5 +1,6 @@
 "use client";
 import { OpeningHours, OpenStatus } from "@/Components/OpeningHours/openingHours";
+import { CentreLicenceFields } from "@/Components/helpers/centreLicence";
 import SuspendedProviderBanner, { SuspendableProvider } from "./SuspendedProviderBanner";
 import ActingAsBanner from "./ActingAsBanner";
 
@@ -63,7 +64,7 @@ export type ParaClinicPopulation = Population<{
 
 export interface IParaClinic<
   T extends ParaClinicPopulation = ParaClinicPopulation,
-> extends MongoDoc {
+> extends MongoDoc, CentreLicenceFields {
   user?: T["User"] extends UserPopulation ? IUser<T["User"]> : string;
   name?: string;
   order: number;

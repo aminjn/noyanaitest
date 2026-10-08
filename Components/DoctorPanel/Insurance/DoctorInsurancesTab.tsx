@@ -1,4 +1,5 @@
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
+import { CentreLicenceFields } from "@/Components/helpers/centreLicence";
 import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import { API } from "@/Components/config";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
@@ -26,7 +27,7 @@ export type InsurancePopulation = Population<{
 
 export interface IInsurance<
   T extends InsurancePopulation = InsurancePopulation,
-> extends MongoDoc {
+> extends MongoDoc, CentreLicenceFields {
   name?: string;
   active: boolean;
   order: number;

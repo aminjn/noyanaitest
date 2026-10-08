@@ -52,7 +52,8 @@ import HospitalDoctorsTab from "./HospitalDoctorsTab";
 import HospitalProfileLicenseTab from "./HospitalProfileLicenseTab";
 import HospitalTaxTab from "./HospitalTaxTab";
 import CartIcon from "@/Components/Icons/CartIcon";
-import { CentreSections } from "../Clinic/CentreSections";
+import { CentreSection, CentreSections } from "../Clinic/CentreSections";
+import CentreLicenceSection from "../Clinic/CentreLicenceSection";
 import useProgress from "@/Components/Hooks/useProgress";
 import {
   ProviderStatusBanner,
@@ -247,7 +248,8 @@ export const hospitalInfoRenderer = (
     path: `${API}/auto/hospitalTag`,
     creatable: centreTagCreatable(`${API}/auto/hospitalTag`),
   },
-  code: { type: "text", title: ta("کد") },
+  // the licence number (code) is edited with its verification in the
+  // «مجوز» tab (Components/Admin/Clinic/CentreLicenceSection)
   establishment: { type: "text", title: ta("تاسیس") },
   personelCount: { type: "number", title: ta("تعداد پرسنل") },
   summary: { type: "area", title: ta("خلاصه") },
@@ -447,7 +449,19 @@ const HospitalRecordPage = () => {
                       title: ta("مجوز"),
                       id: "License",
                       icon: <CartIcon />,
-                      content: <HospitalProfileLicenseTab node={data} />,
+                      // the operating licence (the verified tick) and the NoyanAI
+                      // plan, the centre's two licences
+                      content: (
+                        <CentreSections>
+                          <CentreLicenceSection kind="hospital" nodeId={data._id} />
+                          <CentreSection
+                            title={ta("اشتراک نویان")}
+                            hint={ta("ماژول‌های پنل مرکز و تاریخ پایان اشتراک آن.")}
+                          >
+                            <HospitalProfileLicenseTab node={data} />
+                          </CentreSection>
+                        </CentreSections>
+                      ),
                     },
                   ]
                 : []),

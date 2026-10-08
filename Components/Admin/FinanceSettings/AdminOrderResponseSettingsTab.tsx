@@ -33,6 +33,7 @@ const AdminOrderResponseSettingsTab = () => {
               orderResponseHoursLab: data.orderResponseHoursLab ?? 72,
               orderResponseWarnHours: data.orderResponseWarnHours ?? 2,
               labSamplingMaxMoves: data.labSamplingMaxMoves ?? 2,
+              labSamplingMaxLabProposals: data.labSamplingMaxLabProposals ?? 2,
             }}
             hookProps={{
               path: `${API}/auto/appConfig`,
@@ -64,6 +65,12 @@ const AdminOrderResponseSettingsTab = () => {
                 type: "number",
                 section: ta("نوبت نمونه‌گیری آزمایشگاه"),
                 hint: ta("خریدار و آزمایشگاه هر نوبت را حداکثر این تعداد بار، تا پیش از حداقل فاصله‌ی تعیین‌شده‌ی آزمایشگاه و پیش از نمونه‌گیری، جابه‌جا می‌کنند. پشتیبانی محدود به این سقف نیست."),
+              },
+              labSamplingMaxLabProposals: {
+                title: ta("سقف پیشنهاد آزمایشگاه برای هر نوبت نمونه‌گیری (۰ تا ۱۰، ۰ یعنی بدون پیشنهاد)"),
+                type: "number",
+                section: ta("نوبت نمونه‌گیری آزمایشگاه"),
+                hint: ta("آزمایشگاه برای هر نوبت حداکثر این تعداد بار پیشنهاد تغییر به نمونه‌گیری در منزل یا در آزمایشگاه می‌دهد (هر پیشنهاد برای خریدار پیامک می‌شود). جابه‌جایی‌ای که خریدار با پذیرش پیشنهاد انجام می‌دهد از سقف جابه‌جایی او کم نمی‌شود و آزمایشگاه حتی پس از پر شدن آن سقف هم می‌تواند پیشنهاد دهد."),
               },
             }}
           />

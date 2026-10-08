@@ -47,7 +47,8 @@ import CartIcon from "@/Components/Icons/CartIcon";
 import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import DeleteInsurancePopup from "./DeleteInsurancePopup";
-import { CentreSections } from "../Clinic/CentreSections";
+import { CentreSection, CentreSections } from "../Clinic/CentreSections";
+import CentreLicenceSection from "../Clinic/CentreLicenceSection";
 import {
   ProviderStatusBanner,
   ProviderStatusFields,
@@ -255,8 +256,9 @@ export const insuranceInfoRenderer = (): FormRenderer<IInsurance> => ({
     getDefaultValue: (inp) => inp.tags,
   },
   establishment: { type: "text", title: ta("تاسیس") },
-  // from the become-insurer request on approval; shown on the public page
-  licenseNumber: { type: "text", title: ta("شماره‌ی مجوز بیمه مرکزی"), ltr: true },
+  // the Central Insurance licence number (from the become-insurer request
+  // on approval, shown on the public page) is edited with its verification
+  // in the «مجوز» tab (Components/Admin/Clinic/CentreLicenceSection)
   membersCount: { type: "text", title: ta("تعداد اعضا") },
   image: { type: "image", title: ta("تصویر") },
   slug: { type: "text", title: ta("اسلاگ") },
@@ -398,7 +400,19 @@ const InsuranceRecordPage = () => {
                       title: ta("مجوز"),
                       id: "License",
                       icon: <CartIcon />,
-                      content: <InsuranceProfileLicenseTab node={data} />,
+                      // the operating licence (the verified tick) and the NoyanAI
+                      // plan, the centre's two licences
+                      content: (
+                        <CentreSections>
+                          <CentreLicenceSection kind="insurance" nodeId={data._id} />
+                          <CentreSection
+                            title={ta("اشتراک نویان")}
+                            hint={ta("ماژول‌های پنل مرکز و تاریخ پایان اشتراک آن.")}
+                          >
+                            <InsuranceProfileLicenseTab node={data} />
+                          </CentreSection>
+                        </CentreSections>
+                      ),
                     },
                   ]
                 : []),

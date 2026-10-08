@@ -35,7 +35,8 @@ import FormActions from "../UI/FormActions";
 import PageMetaEditor from "../PageMeta/PageMetaEditor";
 import ClinicProfileLicenseTab from "./ClinicProfileLicenseTab";
 import CartIcon from "@/Components/Icons/CartIcon";
-import { CentreSections } from "./CentreSections";
+import { CentreSection, CentreSections } from "./CentreSections";
+import CentreLicenceSection from "./CentreLicenceSection";
 import {
   ProviderStatusBanner,
   ProviderStatusFields,
@@ -171,7 +172,19 @@ const ClinicRecordPage = () => {
                       title: ta("مجوز"),
                       id: "License",
                       icon: <CartIcon />,
-                      content: <ClinicProfileLicenseTab node={data} />,
+                      // the operating licence (the verified tick) and the NoyanAI
+                      // plan, the centre's two licences
+                      content: (
+                        <CentreSections>
+                          <CentreLicenceSection kind="clinic" nodeId={data._id} />
+                          <CentreSection
+                            title={ta("اشتراک نویان")}
+                            hint={ta("ماژول‌های پنل مرکز و تاریخ پایان اشتراک آن.")}
+                          >
+                            <ClinicProfileLicenseTab node={data} />
+                          </CentreSection>
+                        </CentreSections>
+                      ),
                     },
                   ]
                 : []),

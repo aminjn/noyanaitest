@@ -28,6 +28,7 @@ const stateKey: Record<ShipmentState, ContentKey> = {
   inTransit: "shipStateInTransit",
   delivered: "shipStateDelivered",
   returned: "shipStateReturned",
+  unsentCancelled: "shipStateNotSentCancelled",
 };
 
 const stateColor: Record<ShipmentState, BadgeColor> = {
@@ -35,6 +36,7 @@ const stateColor: Record<ShipmentState, BadgeColor> = {
   inTransit: "Info",
   delivered: "Success",
   returned: "Error",
+  unsentCancelled: "Error",
 };
 
 // «مرسوله نرسیده»: an optional note, then a support ticket opens and the

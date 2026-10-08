@@ -32,6 +32,7 @@ import useProgress from "@/Components/Hooks/useProgress";
 import { adminPath } from "@/Components/helpers/adminPath";
 import DeletePharmacyPopup from "./DeletePharmacyPopup";
 import { CentreSection, CentreSections } from "../Clinic/CentreSections";
+import CentreLicenceSection from "../Clinic/CentreLicenceSection";
 import PanelOwnerSection from "../Clinic/PanelOwnerSection";
 import {
   ProviderStatusBanner,
@@ -225,7 +226,19 @@ const PharmacyRecordPage = () => {
                       title: ta("مجوز"),
                       id: "License",
                       icon: <CartIcon />,
-                      content: <PharmacyProfileLicenseTab node={data} />,
+                      // the operating licence (the verified tick) and the NoyanAI
+                      // plan, the centre's two licences
+                      content: (
+                        <CentreSections>
+                          <CentreLicenceSection kind="pharmacy" nodeId={data._id} />
+                          <CentreSection
+                            title={ta("اشتراک نویان")}
+                            hint={ta("ماژول‌های پنل مرکز و تاریخ پایان اشتراک آن.")}
+                          >
+                            <PharmacyProfileLicenseTab node={data} />
+                          </CentreSection>
+                        </CentreSections>
+                      ),
                     },
                   ]
                 : []),

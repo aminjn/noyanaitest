@@ -6,8 +6,10 @@ import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage"
 export type LabSamplingKind = "lab" | "home";
 export type LabSamplingStatus = "active" | "cancelled" | "done";
 
-// who moved an appointment (backend Lib/labSamplingReschedule.ts)
-export type LabSamplingActor = "buyer" | "lab" | "admin";
+// who moved an appointment (backend Lib/labSamplingReschedule.ts):
+// "labProposal" = the buyer accepted the lab's proposal (not counted
+// against the move limit)
+export type LabSamplingActor = "buyer" | "lab" | "admin" | "labProposal";
 
 export type LabSamplingPlace = {
   kind: LabSamplingKind;
@@ -63,6 +65,10 @@ export type SamplingMoveInfo = {
   // make one now
   proposal?: SamplingProposal | null;
   canPropose?: boolean;
+  // why the lab may not propose now; proposals it may still make
+  proposeBlock?: "move" | "tooLate" | "kind" | "open" | "limit";
+  proposalsLeft?: number;
+  maxProposals?: number;
 };
 
 // what a reschedule posts

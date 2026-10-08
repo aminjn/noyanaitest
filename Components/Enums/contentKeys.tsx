@@ -7152,6 +7152,7 @@ const contentKeys = [
   "lsMovedByPatient",
   "lsMovedByLab",
   "lsMovedBySupport",
+  "lsMovedByProposal",
   "lsProposeHome",
   "lsProposeLab",
   "lsProposalHint",
@@ -7164,6 +7165,7 @@ const contentKeys = [
   "lsProposalAccepted",
   "lsProposalDeclined",
   "lsProposalWithdrawn",
+  "lsProposalLimit",
   "lsProposalExpired",
   "lsProposalClosed",
   "lsProposalWithdraw",
@@ -7275,6 +7277,14 @@ const contentKeys = [
   "centreVerified",
   "centreOnlineOrder",
   "centreInStoreOnly",
+  "sureFulfillOrderItemTipax",
+  "sureFulfillOrderItemTapsi",
+  "ioMarkPrepared",
+  "orderItemStatusAutoCancelledNotSent",
+  "shipStateNotSentCancelled",
+  "shipSendBy",
+  "cisColDeducted",
+  "cisDeductionsHint",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
