@@ -14,6 +14,7 @@ import classes from "../Accounting.module.css";
 import fin from "./Finance.module.css";
 import { asArray, isoDay, useBizFormat } from "../bizShared";
 import FinanceShell from "./FinanceShell";
+import CentreSplitCard from "./CentreSplitCard";
 import PaymentForm, { POPUP_KEY as PAY_KEY } from "./PaymentForm";
 import {
   downloadCsv,
@@ -615,6 +616,8 @@ const Body = () => {
             ))}
         </HandleLoading>
       </section>
+      {/* the doctors' share of the insurers' payments to a centre */}
+      <CentreSplitCard />
     </>
   );
 };

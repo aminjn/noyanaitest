@@ -68,3 +68,22 @@ export const roundTheClockWeek = (): HoursDay[] =>
 export const defaultWeek = (): HoursDay[] => WEEK_DAYS.map(() => ({ ranges: [{ start: 8 * 60, end: 20 * 60 }] }));
 
 export const isOvernight = (r: HoursRange) => r.end < r.start;
+
+// "شبانه روزی", "شبانه‌روزی", "24 ساعته", "۲۴ ساعته", "24/7"... - the words
+// that only say "open round the clock" (backend isRoundTheClockText): that
+// is the hours' round-the-clock switch, never a centre tag (2026-10)
+const ROUND_THE_CLOCK_TEXT =
+  /^(شبانه[\s-]*روزی?|24)?\s*(شبانه[\s-]*روزی?|24\s*ساعته|24\s*\/\s*7|24\s*h(ours)?|24\s*ساعت(ه)?|round\s*the\s*clock)$/i;
+export const isRoundTheClockText = (text: unknown) => {
+  if (typeof text !== "string") return false;
+  const s = text
+    .replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
+    .replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d)))
+    .replace(/ي/g, "ی")
+    .replace(/ك/g, "ک")
+    .replace(/[\u200c\u200d]/g, " ")
+    .replace(/^[\s«»"'()[\].،,:#-]+|[\s«»"'()[\].،,:#-]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return !!s && ROUND_THE_CLOCK_TEXT.test(s);
+};

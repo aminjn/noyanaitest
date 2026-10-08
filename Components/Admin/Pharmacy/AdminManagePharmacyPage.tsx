@@ -56,14 +56,12 @@ export const pharmacyInfoRenderer = (): FormRenderer<IPharmacy> => ({
   phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
   businessTime: {
     type: "text",
-    title: ta("ساعات کاری"),
+    title: ta("یادداشت ساعات کاری"),
     section: ta("تماس"),
   },
-  isRoundTheClock: {
-    type: "bool",
-    title: ta("شبانه‌روزی"),
-    section: ta("تماس"),
-  },
+  // the structured week (2026-10, backend Lib/openingHours.ts): its
+  // round-the-clock switch is the centre's isRoundTheClock
+  openingHours: { type: "openingHours", title: ta("ساعات کاری هفتگی") },
   // the insurers with an active contract (2026-10): they change through
   // the contract (the centre's panel and the insurer's), not here
   insurances: {

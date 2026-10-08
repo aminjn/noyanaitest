@@ -49,7 +49,13 @@ const DoctorManageBookingPage = () => {
 
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
-  const breakdownText = useBreakdownTexts();
+  const baseBreakdownText = useBreakdownTexts();
+  // the doctor sees their share of a centre's insurer line (agreed with it)
+  const breakdownText = {
+    ...baseBreakdownText,
+    doctorShare: (percent: number, amount: string) =>
+      getContent("ibDoctorShare", [new Intl.NumberFormat(intlTag).format(percent), amount]),
+  };
   const money = (n: number) => getContent("xToman", [new Intl.NumberFormat(intlTag).format(Math.max(0, Math.round(n)))]);
   const { setPopup } = usePopup();
   const hasAccess = useDoctorAcl();

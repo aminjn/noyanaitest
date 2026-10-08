@@ -267,6 +267,28 @@ export const adminNoteActionDict: Record<string, string> = {
   get cancelSampling() {
     return ta("لغو نوبت نمونه‌گیری");
   },
+  get confirmDelivery() {
+    return ta("ثبت تحویل مرسوله");
+  },
+  get returnShipment() {
+    return ta("ثبت برگشت مرسوله");
+  },
+};
+
+// a Tipax parcel's delivery (2026-10, backend Services/shipmentDeliveryService.ts)
+export const shipmentDeliveredByDict: Record<string, string> = {
+  get buyer() {
+    return ta("خریدار");
+  },
+  get auto() {
+    return ta("خودکار، پس از پایان مهلت");
+  },
+  get support() {
+    return ta("پشتیبانی");
+  },
+  get migration() {
+    return ta("انتقال سفارش‌های قدیمی");
+  },
 };
 
 // lab sampling appointments of an order (2026-10, backend Lib/labSampling.ts
@@ -326,6 +348,28 @@ export const samplingStateDict: Record<string, string> = {
   },
   get awaiting() {
     return ta("در انتظار تأیید آزمایشگاه");
+  },
+};
+
+// the lab's in-lab <-> home proposal (backend Lib/labSamplingProposal.ts)
+export const samplingProposalStateDict: Record<string, string> = {
+  get open() {
+    return ta("در انتظار پاسخ خریدار");
+  },
+  get accepted() {
+    return ta("خریدار پذیرفت");
+  },
+  get declined() {
+    return ta("خریدار نپذیرفت");
+  },
+  get withdrawn() {
+    return ta("آزمایشگاه پس گرفت");
+  },
+  get expired() {
+    return ta("بی‌پاسخ ماند");
+  },
+  get closed() {
+    return ta("بسته شد (نوبت تغییر کرد یا لغو شد)");
   },
 };
 

@@ -38,7 +38,7 @@ import MultiSelectInputServer from "../UI/MultiSelectInputServer";
 import Input from "../UI/Input";
 import BookingResults from "./BookingResults";
 import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
-import PharmacyBookingCard from "./PharmacyBookingCard";
+import CentreCard from "../UI/CentreCard";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDisease } from "../Admin/Disease/AdminManageDiseasesPage";
 import { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
@@ -794,10 +794,11 @@ const PharmacyBooking = ({
           count={data?.count?.[0]?.total ?? 0}
         >
           {data?.rows.map((pharmacy) => (
-            <PharmacyBookingCard
+            <CentreCard
               key={pharmacy._id}
+              kind="pharmacy"
               node={pharmacy}
-              view={common.view}
+              variant={common.view === "Grid" ? "grid" : "row"}
             />
           ))}
         </BookingResults>

@@ -1,0 +1,78 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.title {
+  color: var(--gray9);
+}
+
+.shipment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--gray3);
+  border-radius: 0.75rem;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.tracking {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--gray9);
+}
+
+.code {
+  font-family: monospace;
+  unicode-bidi: isolate;
+  overflow-wrap: anywhere;
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: underline;
+  margin-inline-start: 0.25rem;
+}
+
+.muted {
+  color: var(--gray8);
+}
+
+.warn {
+  color: var(--warning, #b58900);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.actions > * {
+  flex: 1 1 9rem;
+}
+
+.popupBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(28rem, 90dvw);
+}
+
+.popupActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}

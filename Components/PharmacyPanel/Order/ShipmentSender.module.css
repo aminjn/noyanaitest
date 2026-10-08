@@ -37,6 +37,18 @@
   color: var(--success, #16a34a);
 }
 
+.sent.waiting {
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+}
+
+.state {
+  flex-basis: 100%;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--gray10);
+}
+
 .code {
   font-weight: 800;
   word-break: break-all;

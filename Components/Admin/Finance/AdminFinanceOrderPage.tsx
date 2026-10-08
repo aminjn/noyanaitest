@@ -37,9 +37,11 @@ import {
   rxStatusDict,
   samplingActorDict,
   samplingKindDict,
+  samplingProposalStateDict,
   samplingStateDict,
   samplingStateOf,
   samplingWhenLabel,
+  shipmentDeliveredByDict,
   shipmentMethodDict,
   snappStateLabel,
   userLabel,
@@ -101,6 +103,15 @@ interface IShipment {
   originCity: string;
   destinationCity: string;
   ride: IRide | null;
+  // sent -> delivered | returned (2026-10, a Tipax parcel's delivery)
+  trackingCode?: string;
+  trackingLink?: string;
+  shippedAt?: string | null;
+  confirmBy?: string | null;
+  deliveredAt?: string | null;
+  deliveredBy?: string | null;
+  returnedAt?: string | null;
+  problem?: { reportedAt: string; note: string; ticket: string } | null;
 }
 
 interface IOrderDetail {
@@ -334,6 +345,30 @@ const AdminFinanceOrderPage = () => {
         danger
         onSubmit={(reason) =>
           post(`${base}/samplings/${sampling._id}/cancel`, { reason }, ta("نوبت نمونه‌گیری لغو شد"))
+        }
+      />,
+    );
+
+  // a Tipax parcel on its way: support records it delivered (the pharmacy
+  // is paid) or returned / lost (its lines refunded) - each once
+  const shipmentAction = (s: IShipment, action: "delivered" | "returned") =>
+    setPopup(
+      "AdminOrderShipment",
+      <ReasonPopup
+        title={action === "delivered" ? ta("ثبت تحویل مرسوله") : ta("ثبت برگشت مرسوله")}
+        hint={
+          action === "delivered"
+            ? ta("مرسوله‌ی «${1}» تحویل‌شده ثبت می‌شود: سهم داروخانه از اقلام آماده‌شده (پس از کمیسیون) به دوره‌ی تسویه می‌رود و از خریدار خواسته می‌شود امتیاز دهد. فقط وقتی تحویل را تأیید کرده‌اید انجام دهید.", [s.pharmacy?.name || "—"])
+            : ta("مرسوله‌ی «${1}» گم‌شده یا برگشتی ثبت می‌شود: همه‌ی اقلام آن لغو و مبلغشان (با مالیات) به کیف پول خریدار برمی‌گردد. به داروخانه پولی پرداخت نمی‌شود.", [s.pharmacy?.name || "—"])
+        }
+        confirm={action === "delivered" ? ta("ثبت تحویل") : ta("ثبت برگشت")}
+        danger={action === "returned"}
+        onSubmit={(reason) =>
+          post(
+            `${base}/shipments/${s._id}`,
+            { action, reason },
+            action === "delivered" ? ta("تحویل مرسوله ثبت شد") : ta("برگشت مرسوله ثبت شد"),
+          )
         }
       />,
     );
@@ -618,6 +653,28 @@ const AdminFinanceOrderPage = () => {
                             </ul>
                           </div>
                         )}
+                        {!!s.move?.proposal?.ymd && (
+                          <div className={classes.address}>
+                            <span className={classes.label}>{ta("پیشنهاد آزمایشگاه برای تغییر محل نمونه‌گیری")}</span>
+                            <p>
+                              {`${samplingKindDict[s.move.proposal.kind] || s.move.proposal.kind} · ${samplingWhenLabel(s.move.proposal)} · `}
+                              <strong>{samplingProposalStateDict[s.move.proposal.status] || s.move.proposal.status}</strong>
+                            </p>
+                            {!!s.move.proposal.feeDelta && (
+                              <span className={classes.muted}>
+                                {s.move.proposal.feeDelta > 0
+                                  ? ta("با پذیرش، ${1} تومان از خریدار گرفته می‌شود", [currencize(s.move.proposal.feeDelta)])
+                                  : ta("با پذیرش، ${1} تومان به خریدار برمی‌گردد", [currencize(-s.move.proposal.feeDelta)])}
+                              </span>
+                            )}
+                            {!!s.move.proposal.reason && <p className={classes.muted}>{s.move.proposal.reason}</p>}
+                            <span className={classes.muted}>
+                              {s.move.proposal.status === "open"
+                                ? ta("مهلت پاسخ خریدار: ${1}", [fmtDate(s.move.proposal.expiresAt)])
+                                : ta("ثبت: ${1} · پاسخ: ${2}", [fmtDate(s.move.proposal.at), fmtDate(s.move.proposal.answeredAt)])}
+                            </span>
+                          </div>
+                        )}
                         {!s.move?.canMove && s.status === "active" && s.move?.block === "collected" && (
                           <p className={classes.hint}>{ta("نمونه گرفته شده؛ این نوبت دیگر جابه‌جا نمی‌شود.")}</p>
                         )}
@@ -735,6 +792,57 @@ const AdminFinanceOrderPage = () => {
                           <Field label={ta("پیک اسنپ")}>
                             {s.ride ? snappStateLabel(s.ride.stateName, s.ride.state) : ta("درخواست نشده")}
                           </Field>
+                          {s.method === "tipax" && (
+                            <>
+                              <Field label={ta("کد رهگیری")}>
+                                {s.trackingLink ? (
+                                  <a className={classes.link} href={s.trackingLink} target="_blank" rel="noreferrer" dir="ltr">
+                                    {s.trackingCode}
+                                  </a>
+                                ) : (
+                                  s.trackingCode || "—"
+                                )}
+                              </Field>
+                              <Field label={ta("وضعیت مرسوله")}>
+                                {s.returnedAt
+                                  ? ta("برگشتی / گم‌شده")
+                                  : s.deliveredAt
+                                    ? ta("تحویل‌شده")
+                                    : s.shippedAt
+                                      ? s.problem
+                                        ? ta("در راه، خریدار گزارش داده نرسیده")
+                                        : ta("در راه")
+                                      : ta("هنوز ارسال نشده")}
+                              </Field>
+                              <Field label={ta("زمان ارسال")}>{fmtDate(s.shippedAt)}</Field>
+                              {s.deliveredAt ? (
+                                <Field label={ta("تحویل")}>
+                                  {`${fmtDate(s.deliveredAt)} · ${shipmentDeliveredByDict[s.deliveredBy || ""] || s.deliveredBy || "—"}`}
+                                </Field>
+                              ) : s.returnedAt ? (
+                                <Field label={ta("برگشت")}>{fmtDate(s.returnedAt)}</Field>
+                              ) : (
+                                s.shippedAt && (
+                                  <Field label={ta("تأیید خودکار تحویل")}>
+                                    {s.problem ? ta("متوقف (مشکل گزارش شده)") : fmtDate(s.confirmBy)}
+                                  </Field>
+                                )
+                              )}
+                              {s.problem && (
+                                <Field label={ta("گزارش خریدار")}>
+                                  {[fmtDate(s.problem.reportedAt), s.problem.note].filter(Boolean).join(" · ")}
+                                  {s.problem.ticket && (
+                                    <>
+                                      {" "}
+                                      <InlineLink href={adminPath(`/ticket/${s.problem.ticket}`)}>
+                                        {ta("تیکت")}
+                                      </InlineLink>
+                                    </>
+                                  )}
+                                </Field>
+                              )}
+                            </>
+                          )}
                           {s.ride && (
                             <>
                               <Field label={ta("شناسه‌ی سفر")}>{s.ride.hri}</Field>
@@ -750,6 +858,18 @@ const AdminFinanceOrderPage = () => {
                             </>
                           )}
                         </div>
+                        {s.method === "tipax" && s._id && paid && canAct && !s.deliveredAt && !s.returnedAt && (
+                          <div className={classes.shipmentActions}>
+                            {s.shippedAt && (
+                              <Button size="S" onClick={() => shipmentAction(s, "delivered")}>
+                                {ta("ثبت تحویل مرسوله")}
+                              </Button>
+                            )}
+                            <Button size="S" variant="Error" mode="Outline" onClick={() => shipmentAction(s, "returned")}>
+                              {ta("ثبت برگشت مرسوله")}
+                            </Button>
+                          </div>
+                        )}
                         {pharmacyId && (
                           <div className={classes.shipmentActions}>
                             {s.ride ? (

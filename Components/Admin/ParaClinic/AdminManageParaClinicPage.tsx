@@ -59,6 +59,7 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { centreTagCreatable } from "../UI/centreTagCreatable";
 import AdminRecordEditor from "../UI/AdminRecordEditor";
 
 export type ParaClinicTestPopulation = Population<{
@@ -295,7 +296,7 @@ export const paraClinicInfoRenderer = (): FormRenderer<IParaClinic> => ({
     type: "nodes",
     title: ta("تگ ها"),
     path: `${API}/auto/paraClinicTag`,
-    creatable: { path: `${API}/auto/paraClinicTag` },
+    creatable: centreTagCreatable(`${API}/auto/paraClinicTag`),
     getOptionLabel: (node) =>
       (node as IParaClinicTag).name || (node as IParaClinicTag)._id,
     getOptionValue: (node) => (node as IParaClinicTag)._id,
@@ -305,9 +306,12 @@ export const paraClinicInfoRenderer = (): FormRenderer<IParaClinic> => ({
   image: { type: "image", title: ta("تصویر") },
   slug: { type: "text", title: ta("اسلاگ") },
   establishment: { type: "text", title: ta("تاسیس") },
+  // the structured week (2026-10, backend Lib/openingHours.ts): its
+  // round-the-clock switch is the centre's isRoundTheClock
+  openingHours: { type: "openingHours", title: ta("ساعات کاری هفتگی") },
   businessTime: {
     type: "text",
-    title: ta("ساعات کاری"),
+    title: ta("یادداشت ساعات کاری"),
     section: ta("تماس"),
   },
   phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },

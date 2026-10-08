@@ -65,6 +65,8 @@ const breakdownTexts = (): BreakdownTexts => ({
   verified: ta("اعتبار بیمه تأیید شد"),
   onClaim: ta("در لیست بیمه"),
   estimate: ta("سهم بیمه برآورد است و تأیید نهایی با بیمه است."),
+  // the doctor's percentage of a centre's line, agreed on the membership
+  doctorShare: (percent: number, amount: string) => ta("سهم پزشک ${1}٪: ${2}", [String(percent), amount]),
 });
 
 // One reservation (2026-10): who, when, where, the money trail (what the

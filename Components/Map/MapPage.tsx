@@ -1,6 +1,5 @@
 "use client";
 import { ReactNode, useMemo, useRef, useState } from "react";
-import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 import { OpenStatus } from "../OpeningHours/openingHours";
 import useMap from "../Hooks/useMap";
 import classes from "./MapPage.module.css";
@@ -9,8 +8,6 @@ import PillIcon from "../Icons/PillIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
 import FlaskIcon from "../Icons/FlaskIcon";
 import BuildingIcon from "../Icons/BuildingIcon";
-import Link from "@/Components/i18n/Link";
-import HostedImage from "../UI/HostedImage";
 import Button from "../UI/Button";
 import { ContentKey } from "../Enums/contentKeys";
 import useSWR from "swr";
@@ -20,6 +17,7 @@ import { fetcher } from "../helpers/fetcher";
 import { tlgMedium, tsmMedium, tsmRegular } from "../UI/Typography";
 import MapMarkers from "./MapMarkers";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
+import CentreCard, { CentreKind } from "../UI/CentreCard";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import MapTools from "./MapTools";
@@ -74,11 +72,11 @@ export type MapPlace = {
   location?: { coordinates?: [number, number] };
 };
 const placeLayers: MapPlaceLayer[] = ["clinics", "labs", "hospitals", "pharmacies"];
-export const placePath: Record<MapPlaceLayer, string> = {
-  clinics: "/clinic",
-  hospitals: "/hospital",
-  labs: "/paraClinic",
-  pharmacies: "/pharmacy",
+const placeKind: Record<MapPlaceLayer, CentreKind> = {
+  clinics: "clinic",
+  hospitals: "hospital",
+  labs: "paraClinic",
+  pharmacies: "pharmacy",
 };
 const hasPoint = (c: unknown): c is [number, number] =>
   Array.isArray(c) && c.length === 2 && c.every((n) => typeof n === "number" && Number.isFinite(n));
@@ -269,36 +267,19 @@ const MapPage = () => {
                 </div>
               ))}
             {sortedPlaces.map((place) => (
-              <div key={`${place.kind}-${place._id}`} className={classes.resultItem}>
-                {typeof travelTimes?.[place._id] === "number" && (
-                  <span className={`${classes.travelChip} ${tsmMedium}`}>
-                    {getContent("mapTravelTimeByCar", [text.duration(travelTimes?.[place._id])])}
-                  </span>
-                )}
-                <Link
-                  href={`${placePath[place.kind || "clinics"]}/${encodeURIComponent(place.slug || place._id)}`}
-                  className={classes.item}
-                >
-                  <span className={classes.itemImage}>
-                    <HostedImage src={place.image} alt={place.name || ""} fill sizes="3rem" style={{ objectFit: "cover" }} />
-                  </span>
-                  <span className={classes.itemContent}>
-                    <span className={`${classes.itemTitle} ${tsmMedium}`}>{place.name}</span>
-                    <span className={`${classes.itemDescription} ${tsmRegular}`}>
-                      {[getContent(filterContentKeys[place.kind || "clinics"]), place.city?.name || place.province?.name]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </span>
-                    {!!place.address && (
-                      <span className={`${classes.itemDescription} ${tsmRegular}`}>{place.address}</span>
-                    )}
-                    <OpenStatusBadge status={place.openStatus} compact />
-                  </span>
-                  {place.kind === "pharmacies" && !!place.isRoundTheClock && !place.openStatus && (
-                    <span className={`${classes.travelChip} ${tsmMedium}`}>{getContent("roundTheClock")}</span>
-                  )}
-                </Link>
-              </div>
+              // the shared centre card's row, with the drive time from the
+              // visitor when they shared their location
+              <CentreCard
+                key={`${place.kind}-${place._id}`}
+                variant="row"
+                kind={placeKind[place.kind || "clinics"]}
+                node={place}
+                travel={
+                  typeof travelTimes?.[place._id] === "number"
+                    ? text.duration(travelTimes?.[place._id]) || undefined
+                    : undefined
+                }
+              />
             ))}
           </div>
         </div>

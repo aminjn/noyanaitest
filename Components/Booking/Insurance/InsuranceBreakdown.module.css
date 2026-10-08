@@ -122,3 +122,8 @@ html[data-theme="dark"] .st-pending { color: #fbbf24; }
 html[data-theme="dark"] .st-booked,
 html[data-theme="dark"] .verified { color: #34d399; }
 html[data-theme="dark"] .st-desk { color: #a5b4fc; }
+
+.doctorShare {
+  flex-basis: 100%;
+  color: var(--textStrong);
+}

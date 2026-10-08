@@ -16,7 +16,7 @@ import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ProPromotion from "../UI/ProPromotion";
 import classes from "./ParaClinicsListPage.module.css";
 import useDebounce from "../Hooks/useDebounce";
-import ParaClinicCard, { ParaClinicTestOffer } from "./ParaClinicCard";
+import CentreCard, { CentreTestOffer } from "../UI/CentreCard";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
 import { tbaseMedium, tsmRegular } from "../UI/Typography";
@@ -31,7 +31,7 @@ export type ParaClinicsListPageProps = {
   data: (IParaClinic<{
     Tags: Record<never, never>;
     Province: Record<never, never>;
-  }> & { testOffer?: ParaClinicTestOffer })[];
+  }> & { testOffer?: CentreTestOffer })[];
   // the test the list was opened for (a test card links here): each lab
   // then carries its own price for it
   test?: { _id: string; name?: string; slug?: string } | null;
@@ -187,7 +187,7 @@ const ParaClinicsListPage = ({
         }}
       >
         {(Array.isArray(data) ? data : []).map((node) => (
-          <ParaClinicCard key={node._id} node={node} offer={test ? node.testOffer : undefined} />
+          <CentreCard as="li" kind="paraClinic" key={node._id} node={node} offer={test ? node.testOffer : undefined} />
         ))}
       </ListPageList>
     </ListPageLayout>

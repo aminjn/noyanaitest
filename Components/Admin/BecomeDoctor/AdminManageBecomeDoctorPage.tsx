@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import ApproveBecomeRequestButton from "../UI/ApproveBecomeRequestButton";
@@ -27,6 +28,7 @@ import RequestInfoGrid from "../BecomeRequest/RequestInfoGrid";
 import DeleteShitPopup from "../UI/DeleteShitPopup";
 import pageClasses from "../BecomeRequest/BecomeRequestPage.module.css";
 import classes from "./AdminManageBecomeDoctorPage.module.css";
+import CouncilCardChecklist, { CouncilChecklistItem, councilChecklistItems } from "./CouncilCardChecklist";
 
 type DoctorRequest = IBecomeDoctorRequest<{
   SpecialitiesPopulated: true;
@@ -38,6 +40,7 @@ type DoctorRequest = IBecomeDoctorRequest<{
   council?: { title?: string; city?: string; acquiredAt?: string };
   claimProfile?: { _id: string; firstName?: string; lastName?: string; slug?: string; user?: string } | null;
   councilCard?: string;
+  councilCheckedAt?: string;
   licenseDoc?: string;
   officePermit?: string;
 };
@@ -60,6 +63,14 @@ const AdminManageBecomeDoctorPage = () => {
   const { setPopup } = usePopup();
   const push = useProgress();
   const hasAccess = useAccessLevel();
+  // the reviewer's checklist of a request without the council inquiry
+  const [checked, setChecked] = useState<Record<CouncilChecklistItem, boolean>>({
+    name: false,
+    code: false,
+    title: false,
+    speciality: false,
+    authentic: false,
+  });
 
   if (!data) return <HandleLoading data={false} error={error} />;
 
@@ -68,9 +79,25 @@ const AdminManageBecomeDoctorPage = () => {
     Array.isArray(data.specialities) ? data.specialities : []
   ).filter((s) => s && typeof s === "object" && s._id);
   const fullName = [data.firstName, data.lastName].filter(Boolean).join(" ");
+  const manual = data.verification === "manual";
+  const councilChecked = !manual || councilChecklistItems.every((k) => checked[k]);
 
   const info = (
     <div className={pageClasses.body}>
+      {manual && (
+        <CouncilCardChecklist
+          requestId={data._id}
+          status={data.status}
+          fullName={fullName}
+          code={data.medicalSystemCode}
+          title={data.medicalSystemTitle}
+          specialities={specialities.map((sp) => sp.name || "").filter(Boolean)}
+          hasCard={!!data.councilCard}
+          checked={checked}
+          onChange={setChecked}
+          checkedAt={data.councilCheckedAt}
+        />
+      )}
       <RequestInfoGrid
         title={ta("متقاضی")}
         items={[
@@ -241,7 +268,7 @@ const AdminManageBecomeDoctorPage = () => {
           decidedAt={data.decidedAt}
           mutate={mutate}
           approve={
-            <ApproveBecomeRequestButton
+            !councilChecked ? undefined : <ApproveBecomeRequestButton
               requestPath="becomedoctor"
               nodeId={data._id}
               status={data.status}
@@ -249,6 +276,7 @@ const AdminManageBecomeDoctorPage = () => {
               done={ta("پنل پزشک فعال شد؛ صفحه پس از تکمیل اطلاعات نوبت‌دهی خودکار منتشر می‌شود.")}
               target={(id) => `/doctorprofile/${id}`}
               mutate={mutate}
+              payload={manual ? { councilChecked: true } : undefined}
             />
           }
         />
@@ -269,6 +297,8 @@ const AdminManageBecomeDoctorPage = () => {
                 content: <BecomeDoctorProfileSelector
                     req={data}
                     mutateRequest={mutate}
+                    needsCouncilCheck={manual}
+                    councilChecked={councilChecked}
                   />,
               },
             ]}

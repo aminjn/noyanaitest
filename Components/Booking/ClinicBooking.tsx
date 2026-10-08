@@ -39,7 +39,7 @@ import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
 import useSWR from "swr";
 import { fetcher } from "../helpers/fetcher";
 import BookingResults from "./BookingResults";
-import CommonCenterCard from "./CommonCenterCard";
+import CentreCard from "../UI/CentreCard";
 import BookingMeta from "./BookingMeta";
 import classes from "./ClinicBooking.module.css";
 import { tsmRegular } from "../UI/Typography";
@@ -918,18 +918,11 @@ const ClinicBooking = ({
           count={data?.count?.[0]?.total ?? 0}
         >
           {data?.rows.map((clinic) => (
-            <CommonCenterCard
+            <CentreCard
               key={clinic._id}
-              name={clinic.name || ""}
-              nodeName="clinic"
-              slug={clinic.slug || clinic._id}
-              address={clinic.address}
-              avatar={clinic.image}
-              banner={clinic.image}
-              coords={clinic.location?.coordinates}
-              summary={clinic.summary}
-              view={common.view}
-              openStatus={clinic.openStatus}
+              kind="clinic"
+              node={clinic}
+              variant={common.view === "Grid" ? "grid" : "row"}
             />
           ))}
         </BookingResults>

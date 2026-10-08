@@ -315,6 +315,16 @@ const PharmacyIncomingOrderPage = () => {
                       status={node.status}
                       acceptedAt={node.acceptedAt}
                       autoCancel={node.autoCancel}
+                      // every line here ships in this pharmacy's one parcel
+                      shipping={
+                        data?.shipment?.method === "tipax" &&
+                        !data.shipment.deliveredAt &&
+                        !data.shipment.returnedAt
+                          ? data.shipment.shippedAt
+                            ? "inTransit"
+                            : "ready"
+                          : undefined
+                      }
                     />
                     <OrderLineDeadline respondBy={node.respondBy} audience="seller" />
                   </span>

@@ -18,11 +18,12 @@ import useAcl from "@/Components/Hooks/useAcl";
 import ContractList from "@/Components/InsuranceContracts/ContractList";
 import { InviteProviderPopup } from "@/Components/InsuranceContracts/ContractPopups";
 import { asContracts, IInsuranceContract } from "@/Components/InsuranceContracts/insuranceContracts";
+import CentreCard, { CentreKind } from "@/Components/UI/CentreCard";
 import classes from "./InsurerNetworkPage.module.css";
 
 const NS: ContentNamespace[] = ["common", "insurerPanel", "insuranceContracts"];
 
-type Place = { _id: string; name?: string; slug?: string; province?: { name?: string }; city?: { name?: string } };
+type Place = { _id: string; name?: string; slug?: string; image?: string; province?: { name?: string }; city?: { name?: string } };
 // via "centre": the doctor takes it at an office of a clinic or hospital
 // that lists it (the booking quote's rule), not on their own list
 type Doctor = {
@@ -36,11 +37,11 @@ type Doctor = {
 };
 type Network = { doctors: Doctor[]; clinics: Place[]; hospitals: Place[]; labs: Place[]; pharmacies: Place[] };
 
-const sections: { key: Exclude<keyof Network, "doctors">; title: ContentKey; path: string }[] = [
-  { key: "clinics", title: "insNetClinics", path: "/clinic" },
-  { key: "hospitals", title: "insNetHospitals", path: "/hospital" },
-  { key: "labs", title: "insNetLabs", path: "/paraClinic" },
-  { key: "pharmacies", title: "insNetPharmacies", path: "/pharmacy" },
+const sections: { key: Exclude<keyof Network, "doctors">; title: ContentKey; kind: CentreKind }[] = [
+  { key: "clinics", title: "insNetClinics", kind: "clinic" },
+  { key: "hospitals", title: "insNetHospitals", kind: "hospital" },
+  { key: "labs", title: "insNetLabs", kind: "paraClinic" },
+  { key: "pharmacies", title: "insNetPharmacies", kind: "pharmacy" },
 ];
 
 // Who accepts this insurer (2026-10): doctors (their own list, or the
@@ -103,21 +104,12 @@ const NetworkTab = () => {
                   <p className={classes.empty}>{getContent("insNetEmpty")}</p>
                 ) : (
                   <ul className={classes.grid}>
-                    {items.map((p) => (
-                      <li key={p._id} className={classes.card}>
-                        <InitialAvatar name={p.name || "?"} seed={p._id} size="2.5rem" />
-                        <div className={classes.meta}>
-                          {p.slug ? (
-                            <Link href={`${s.path}/${p.slug}`} target="_blank">
-                              <strong>{p.name}</strong>
-                            </Link>
-                          ) : (
-                            <strong>{p.name}</strong>
-                          )}
-                          <span>{[p.province?.name, p.city?.name].filter(Boolean).join("، ")}</span>
-                        </div>
-                      </li>
-                    ))}
+                    {items
+                      .filter((p) => !!p?._id)
+                      .map((p) => (
+                        // the site's one centre card, as on the public lists
+                        <CentreCard key={p._id} as="li" variant="row" kind={s.kind} node={p} newTab />
+                      ))}
                   </ul>
                 )}
               </section>

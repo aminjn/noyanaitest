@@ -10,7 +10,7 @@ import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["testPage", "testCard", "paraClinicCard"];
+const NS: ContentNamespace[] = ["testPage", "testCard", "centreCard"];
 
 type Ctx = {
   params: { slug: string };

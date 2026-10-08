@@ -12,6 +12,7 @@ import useCenterDoctors, { CenterKind, doctorName, doctorSpec, memberDepartmentI
 import CenterDepartments from "./CenterDepartments";
 import CenterJoinInbox from "./CenterJoinInbox";
 import InviteDoctorPopup from "./InviteDoctorPopup";
+import MemberInsurerSplit from "./MemberInsurerSplit";
 import usePopup from "@/Components/Hooks/usePopup";
 
 const NS: ContentNamespace[] = ["common", "centerDoctors"];
@@ -34,6 +35,8 @@ const CenterDoctorsPage = ({ kind, panel }: { kind: CenterKind; panel: string })
     setDepartment,
     saveDepartment,
     removeDepartment,
+    proposeSplit,
+    withdrawSplit,
     refresh,
   } = useCenterDoctors(kind);
   const { setPopup } = usePopup();
@@ -127,6 +130,12 @@ const CenterDoctorsPage = ({ kind, panel }: { kind: CenterKind; panel: string })
                         {getContent("cdRemove")}
                       </button>
                     )}
+                    <MemberInsurerSplit
+                      member={m}
+                      busy={busy === m._id}
+                      propose={proposeSplit}
+                      withdraw={withdrawSplit}
+                    />
                   </li>
                 ))}
                 {outgoing.map((r) => (

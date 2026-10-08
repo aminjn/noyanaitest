@@ -10,6 +10,8 @@ import { ContentKey } from "../Enums/contentKeys";
 import Button from "../UI/Button";
 import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
 import SamplingReschedulePopup from "./SamplingReschedulePopup";
+import SamplingProposalPopup, { SamplingProposalPayload } from "./SamplingProposalPopup";
+import { BuyerProposalCard, LabProposalStatus } from "./SamplingProposalNotice";
 import { ILabSampling, SamplingMoveInfo, SamplingMovePayload } from "./samplingTypes";
 import { t2xsRegular } from "../UI/Typography";
 
@@ -20,6 +22,9 @@ const NS: ContentNamespace[] = ["common", "labSampling"];
 // buyer and the lab; for the buyer also "cancel" (its tests back in full),
 // with a notice when the lab or support moved it. Why a move is not
 // possible (too close to the time, no moves left) is said, not hidden.
+// The lab may also propose the other kind (in-lab <-> home) at a new slot -
+// shown to it with its answer, and to the buyer to accept or decline
+// (backend Lib/labSamplingProposal.ts).
 const SamplingActions = ({
   sampling,
   info,
@@ -28,6 +33,10 @@ const SamplingActions = ({
   tests,
   onMove,
   onCancel,
+  onPropose,
+  onWithdrawProposal,
+  onAnswerProposal,
+  walletBalance,
 }: {
   sampling: ILabSampling;
   info?: SamplingMoveInfo | null;
@@ -36,6 +45,12 @@ const SamplingActions = ({
   tests?: string[];
   onMove: (payload: SamplingMovePayload) => Promise<unknown>;
   onCancel?: () => Promise<unknown>;
+  // the lab: propose / withdraw an in-lab <-> home switch
+  onPropose?: (payload: SamplingProposalPayload) => Promise<unknown>;
+  onWithdrawProposal?: () => Promise<unknown>;
+  // the buyer: answer the lab's open proposal
+  onAnswerProposal?: (answer: "accept" | "decline", address?: string) => Promise<unknown>;
+  walletBalance?: number;
 }) => {
   const getContent = useScopedLocale(NS);
   const t = (key: string, args?: string[]) => getContent(key as ContentKey, args);
@@ -50,7 +65,11 @@ const SamplingActions = ({
         ? t("lsMoveLimit")
         : "";
   const canCancel = viewer === "buyer" && !!onCancel && info.canCancel;
-  if (!info.canMove && !canCancel && !blockText) return null;
+  const proposal = info.proposal && typeof info.proposal === "object" ? info.proposal : null;
+  const canPropose = viewer === "lab" && !!onPropose && !!info.canPropose;
+  const buyerProposal = viewer === "buyer" && !!onAnswerProposal && proposal?.status === "open";
+  const labProposal = viewer === "lab" && !!proposal;
+  if (!info.canMove && !canCancel && !blockText && !canPropose && !buyerProposal && !labProposal) return null;
 
   const cancel = async () => {
     if (cancelling || !onCancel) return;
@@ -68,6 +87,10 @@ const SamplingActions = ({
 
   return (
     <div className={classes.body}>
+      {buyerProposal && (
+        <BuyerProposalCard info={info} walletBalance={walletBalance} onAnswer={onAnswerProposal!} />
+      )}
+      {labProposal && <LabProposalStatus proposal={proposal} onWithdraw={onWithdrawProposal} />}
       {viewer === "buyer" && info.movedByOther && canCancel && (
         <span className={`${classes.fee} ${t2xsRegular}`}>{t("lsMovedNotice")}</span>
       )}
@@ -96,6 +119,21 @@ const SamplingActions = ({
             }
           >
             {t("lsReschedule")}
+          </Button>
+        )}
+        {canPropose && (
+          <Button
+            size="S"
+            mode="Outline"
+            radius="Medium"
+            onClick={() =>
+              setPopup(
+                "ProposeSampling",
+                <SamplingProposalPopup sampling={sampling} info={info} tests={tests} onSubmit={onPropose!} />,
+              )
+            }
+          >
+            {t(sampling.kind === "home" ? "lsProposeLab" : "lsProposeHome")}
           </Button>
         )}
         {canCancel && (

@@ -25,7 +25,7 @@ import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
 import ListPageOpenNowFilter from "../UI/ListPage/ListPageOpenNowFilter";
 import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
-import HospitalCard from "./HospitalCard";
+import CentreCard from "../UI/CentreCard";
 import SmallAd from "../UI/ListPage/SmallAd";
 import HostedImage from "../UI/HostedImage";
 
@@ -216,7 +216,7 @@ const HospitalsPage = ({
         }}
       >
         {data.map((node) => (
-          <HospitalCard key={node._id} node={node} />
+          <CentreCard as="li" kind="hospital" key={node._id} node={node} />
         ))}
       </ListPageList>
       <SmallAd position="hospitals2" />

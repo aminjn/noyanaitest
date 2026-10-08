@@ -60,6 +60,7 @@ import {
   useProviderStatusActions,
 } from "../UI/ProviderStatus";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { centreTagCreatable } from "../UI/centreTagCreatable";
 import AdminRecordEditor from "../UI/AdminRecordEditor";
 
 export type HospitalClinicPopulation = Population<{
@@ -222,7 +223,6 @@ export const hospitalInfoRenderer = (
   order: { type: "number", title: ta("رتبه") },
   slug: { type: "text", title: ta("اسلاگ") },
   bedCount: { type: "number", title: ta("تعداد تخت") },
-  isRoundTheClock: { type: "bool", title: ta("شبانه‌روزی") },
   special: { type: "bool", title: ta("ویژه") },
   category: {
     type: "nodes",
@@ -245,15 +245,18 @@ export const hospitalInfoRenderer = (
     multi: true,
     getDefaultValue: (inp) => inp.tags,
     path: `${API}/auto/hospitalTag`,
-    creatable: { path: `${API}/auto/hospitalTag` },
+    creatable: centreTagCreatable(`${API}/auto/hospitalTag`),
   },
   code: { type: "text", title: ta("کد") },
   establishment: { type: "text", title: ta("تاسیس") },
   personelCount: { type: "number", title: ta("تعداد پرسنل") },
   summary: { type: "area", title: ta("خلاصه") },
+  // the structured week (2026-10, backend Lib/openingHours.ts): its
+  // round-the-clock switch is the centre's isRoundTheClock
+  openingHours: { type: "openingHours", title: ta("ساعات کاری هفتگی") },
   businessTimes: {
     type: "text",
-    title: ta("ساعات کاری"),
+    title: ta("یادداشت ساعات کاری"),
     section: ta("تماس"),
   },
   mail: { type: "text", title: ta("ایمیل"), section: ta("تماس") },

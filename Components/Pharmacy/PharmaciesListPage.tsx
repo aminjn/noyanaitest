@@ -16,7 +16,7 @@ import ListPageOpenNowFilter from "../UI/ListPage/ListPageOpenNowFilter";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
 import { ListPageFilters } from "../UI/ListPage/listFilters";
-import ParaClinicCard from "../ParaClinic/ParaClinicCard";
+import CentreCard from "../UI/CentreCard";
 
 const NS: ContentNamespace[] = ["common", "pharmaciesList"];
 
@@ -45,7 +45,7 @@ const KEPT = ["search", "city", "insurance", "roundTheClock", "openNow"] as cons
 // The pharmacy list (2026-10), like the clinic and lab lists: search, the
 // 24-hour switch, the insurer that pays the prescription and the city, each
 // a link (so every view is a crawlable URL) and a removable chip. The cards
-// are the shared centre card (Components/ParaClinic/ParaClinicCard).
+// are the shared centre card (Components/UI/CentreCard).
 const PharmaciesListPage = ({
   data,
   pagesCount,
@@ -140,7 +140,7 @@ const PharmaciesListPage = ({
         }}
       >
         {list.map((node) => (
-          <ParaClinicCard key={node._id} node={node} kind="pharmacy" />
+          <CentreCard as="li" kind="pharmacy" key={node._id} node={node} />
         ))}
       </ListPageList>
     </ListPageLayout>

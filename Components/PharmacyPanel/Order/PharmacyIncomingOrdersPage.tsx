@@ -27,6 +27,8 @@ import { IOrderLinePrescription } from "@/Components/Order/RxPrescription";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import Badge from "@/Components/UI/Badge";
 
+import type { IOrderShipment } from "@/Components/Order/orderShipment";
+
 const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
 // Shape returned by GET /pharmacy/order (pharmacyController.getMyIncomingOrders)
@@ -60,13 +62,19 @@ export interface IIncomingOrder extends MongoDoc {
   products: IIncomingOrderProductItem[];
   productPackages: IIncomingOrderPackageItem[];
   // this pharmacy's shipment (backend Lib/delivery.ts)
-  shipment?: {
-    method: "tapsi" | "tipax";
-    fee: number;
-    payOnDelivery: boolean;
-    trackingCode?: string;
-    shippedAt?: string;
-  };
+  // (a Tipax parcel's delivery state, backend Services/shipmentDeliveryService.ts)
+  shipment?: Pick<
+    IOrderShipment,
+    | "method"
+    | "fee"
+    | "payOnDelivery"
+    | "trackingCode"
+    | "shippedAt"
+    | "confirmBy"
+    | "deliveredAt"
+    | "returnedAt"
+    | "problem"
+  >;
   // this pharmacy's lines still waiting on it
   pendingLines?: number;
   // Rx lines whose prescription waits on this pharmacy (2026-10)

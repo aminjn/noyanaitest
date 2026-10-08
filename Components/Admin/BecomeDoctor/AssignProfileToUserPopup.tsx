@@ -14,9 +14,12 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 const AssignDoctorProfileToUserPopup = ({
   mutate,
   req,
+  councilChecked,
 }: {
   mutate: () => unknown;
   req: Pick<IBecomeDoctorRequest, "_id">;
+  // a request without the council inquiry: its checklist was completed
+  councilChecked?: boolean;
 }) => {
   const { closePopup } = usePopup();
   return (
@@ -39,7 +42,10 @@ const AssignDoctorProfileToUserPopup = ({
           path: `${API}/admin/becomedoctor/${req._id}/approve`,
           method: "POST",
           hasProblem: (inp) => (!inp.profile ? ta("لطفا پروفایل را انتخاب کنید") : false),
-          mutator: (inp) => ({ profile: Array.isArray(inp.profile) ? inp.profile[0] : inp.profile }),
+          mutator: (inp) => ({
+            profile: Array.isArray(inp.profile) ? inp.profile[0] : inp.profile,
+            ...(councilChecked ? { councilChecked: true } : {}),
+          }),
           successCb: () => {
             mutate();
             closePopup();
