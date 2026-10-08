@@ -75,6 +75,9 @@ const nextConfig = {
   // before every merge, and running them again inside next build adds
   // minutes to each deploy. CHECKS=1 on the deploy turns them back on.
   typescript: { ignoreBuildErrors: process.env.SKIP_BUILD_CHECKS === "1" },
+  // build workers: on a small server (deploy/arvan/setup.sh sets it) fewer
+  // workers keep the build in RAM instead of swapping
+  ...(Number(process.env.NEXT_BUILD_CPUS) > 0 && { experimental: { cpus: Number(process.env.NEXT_BUILD_CPUS) } }),
   eslint: { ignoreDuringBuilds: process.env.SKIP_BUILD_CHECKS === "1" },
   ...(BUILD_SEED && {
     generateBuildId: async () => seededBuildId(),
