@@ -30,6 +30,7 @@ import {
 } from "../UI/Typography";
 import HostedImage from "../UI/HostedImage";
 
+import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 const NS: ContentNamespace[] = ["common", "paraClinicPage"];
 
 const Box = ({
@@ -145,8 +146,12 @@ const ParaClinicIntro = ({ data, takesOrders }: ParaClinicPageProps) => {
                     .join(getContent("addressPartsSeparator"))}
                 />
               )}
-              {!!data.businessTime && (
-                <Detail icon={<ClockIcon />} value={data.businessTime} />
+              {/* open now / closes at (2026-10, backend Lib/openingHours.ts);
+                  the week and its note are in the about section */}
+              {data.openStatus ? (
+                <OpenStatusBadge status={data.openStatus} />
+              ) : (
+                !!data.businessTime && <Detail icon={<ClockIcon />} value={data.businessTime} />
               )}
               {!!data.phone && (
                 <Detail icon={<CallingIcon />} value={data.phone} />

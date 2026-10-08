@@ -10,6 +10,8 @@ const ClinicContact = ({ node }: { node: ClinicPageNode }) => {
     <MedicalCenterContactInfo
       address={node.address}
       businessTimes={node.businessTimes}
+      openingHours={node.openingHours}
+      openStatus={node.openStatus}
       mail={node.mail}
       owner={node.owner ? getDoctorProfileLabel(node.owner) : undefined}
       phone={node.phone}

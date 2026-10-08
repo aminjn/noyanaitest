@@ -10,6 +10,7 @@ const ClinicIntro = ({ node }: { node: ClinicPageNode }) => {
       category={node.category?.name}
       image={node.image}
       province={node.province?.name}
+      openStatus={node.openStatus}
     />
   );
 };

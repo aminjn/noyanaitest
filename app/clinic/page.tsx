@@ -23,6 +23,8 @@ const ClinicsList = async (ctx: {
     page?: string;
     tag?: string;
     insurance?: string;
+    // «الان باز است» (2026-10): open at this minute, Tehran time
+    openNow?: string;
   }>;
 }) => {
   const {
@@ -31,6 +33,7 @@ const ClinicsList = async (ctx: {
     category,
     tag,
     insurance,
+    openNow,
   } = await ctx.searchParams;
 
   const page = Number(_page || 1);
@@ -40,6 +43,7 @@ const ClinicsList = async (ctx: {
   if (search) params.append("query", search);
   if (tag) params.append("tag", tag);
   if (insurance) params.append("insurance", insurance);
+  if (openNow === "1") params.append("openNow", "1");
   if (category)
     for (const cat of Array.isArray(category) ? category : [category])
       params.append("category", cat);

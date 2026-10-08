@@ -63,6 +63,8 @@ export const notificationSmsEvents = [
   "prescriptionRejectedUser",
   "labResultReadyUser",
   "labSamplingReminderUser",
+  "labSamplingRescheduledUser",
+  "labSamplingRescheduledLab",
   "orderCancelledByBuyerSeller",
   "orderResponseDueSoonSeller",
   "orderAutoCancelledSeller",
@@ -83,6 +85,14 @@ export const notificationSmsEvents = [
   "centreInvitationDoctor",
   "centreMembershipEndedDoctor",
   "additionRequestDoneDoctor",
+  "insuranceContractRequestInsurer",
+  "insuranceContractInviteProvider",
+  "insuranceContractActiveProvider",
+  "insuranceContractActiveInsurer",
+  "insuranceContractRejectedProvider",
+  "insuranceContractRejectedInsurer",
+  "insuranceContractEndedProvider",
+  "insuranceContractEndedInsurer",
   "providerSuspendedProvider",
   "providerReinstatedProvider",
   "providerOwnerAssignedProvider",
@@ -415,6 +425,21 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     variables: ["labName", "date", "time"],
     sample: () => ta("یادآوری: نمونه‌گیری شما با %labName% در تاریخ %date% ساعت %time% است."),
   },
+  // a lab sampling appointment was moved (2026-10, backend
+  // Lib/labSamplingReschedule.ts): the buyer, by the lab or support (they
+  // may cancel for a full refund); the lab, by the buyer or support
+  labSamplingRescheduledUser: {
+    audience: "patient",
+    label: () => ta("تغییر زمان نمونه‌گیری - خریدار"),
+    variables: ["labName", "date", "time"],
+    sample: () => ta("زمان نمونه‌گیری شما با %labName% به %date% ساعت %time% تغییر کرد. اگر مناسب نیست، از صفحه‌ی سفارش لغو کنید."),
+  },
+  labSamplingRescheduledLab: {
+    audience: "provider",
+    label: () => ta("جابه‌جایی نوبت نمونه‌گیری - آزمایشگاه"),
+    variables: ["orderId", "date", "time"],
+    sample: () => ta("نوبت نمونه‌گیری سفارش %orderId% به %date% ساعت %time% منتقل شد."),
+  },
   // seller reviews (2026-10, backend Services/orderSettlementService.ts
   // inviteSellerReview): once per order and pharmacy / lab
   orderReviewRequestUser: {
@@ -532,6 +557,54 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("پایان عضویت در مرکز - پزشک"),
     variables: ["centre"],
     sample: () => ta("عضویت شما در %centre% پایان یافت."),
+  },
+  insuranceContractRequestInsurer: {
+    audience: "provider",
+    label: () => ta("درخواست قرارداد از ارائه‌دهنده - بیمه"),
+    variables: ["provider"],
+    sample: () => ta("%provider% درخواست قرارداد با شما را در نویان ثبت کرد. برای پاسخ وارد پنل بیمه شوید."),
+  },
+  insuranceContractInviteProvider: {
+    audience: "provider",
+    label: () => ta("دعوت بیمه به قرارداد - ارائه‌دهنده"),
+    variables: ["insurer"],
+    sample: () => ta("%insurer% شما را به قرارداد در نویان دعوت کرد. برای پاسخ وارد پنل خود شوید."),
+  },
+  insuranceContractActiveProvider: {
+    audience: "provider",
+    label: () => ta("فعال شدن قرارداد بیمه - ارائه‌دهنده"),
+    variables: ["insurer"],
+    sample: () => ta("قرارداد شما با %insurer% تأیید و فعال شد."),
+  },
+  insuranceContractActiveInsurer: {
+    audience: "provider",
+    label: () => ta("فعال شدن قرارداد - بیمه"),
+    variables: ["provider"],
+    sample: () => ta("%provider% دعوت شما به قرارداد را پذیرفت؛ قرارداد فعال است."),
+  },
+  insuranceContractRejectedProvider: {
+    audience: "provider",
+    label: () => ta("رد درخواست قرارداد - ارائه‌دهنده"),
+    variables: ["insurer", "reason"],
+    sample: () => ta("درخواست قرارداد شما با %insurer% رد شد. دلیل: %reason%"),
+  },
+  insuranceContractRejectedInsurer: {
+    audience: "provider",
+    label: () => ta("رد دعوت قرارداد - بیمه"),
+    variables: ["provider", "reason"],
+    sample: () => ta("%provider% دعوت شما به قرارداد را نپذیرفت. دلیل: %reason%"),
+  },
+  insuranceContractEndedProvider: {
+    audience: "provider",
+    label: () => ta("پایان قرارداد بیمه - ارائه‌دهنده"),
+    variables: ["insurer", "reason", "date"],
+    sample: () => ta("قرارداد شما با %insurer% پایان می‌یابد (آخرین روز: %date%). دلیل: %reason%"),
+  },
+  insuranceContractEndedInsurer: {
+    audience: "provider",
+    label: () => ta("پایان قرارداد - بیمه"),
+    variables: ["provider", "reason", "date"],
+    sample: () => ta("قرارداد شما با %provider% پایان می‌یابد (آخرین روز: %date%). دلیل: %reason%"),
   },
   additionRequestDoneDoctor: {
     audience: "provider",

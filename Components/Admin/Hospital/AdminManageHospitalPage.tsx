@@ -264,8 +264,12 @@ export const hospitalInfoRenderer = (
   },
   website: { type: "text", title: ta("سایت"), section: ta("تماس") },
   services: { type: "strings", title: ta("خدمات") },
+  // the insurers with an active contract (2026-10): they change through
+  // the contract (the centre's panel and the insurer's), not here
   insurances: {
     type: "nodes",
+    readOnly: true,
+    hint: ta("از قراردادهای فعال بیمه می‌آید و از اینجا تغییر نمی‌کند"),
     title: ta("بیمه ها"),
     section: ta("بیمه‌ها"),
     getOptionLabel: (node) =>

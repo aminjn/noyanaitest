@@ -76,4 +76,112 @@
   display: flex;
   gap: 1rem;
   width: 100%;
+  align-items: flex-end;
+}
+
+.wrap > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.row > * {
+  min-width: 10rem;
+}
+
+.callout {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+}
+
+.calloutOk {
+  background-color: var(--successT1);
+  border-color: var(--successS1);
+  color: var(--successS2);
+}
+
+.calloutWarn {
+  background-color: var(--warningT1);
+  border-color: var(--warningS1);
+  color: var(--warningS3);
+}
+
+.claim {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px dashed var(--primary);
+  background-color: var(--primary1);
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: underline;
+  width: fit-content;
+}
+
+.docs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+
+.doc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pending,
+.rejected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  margin-block-start: 2.5rem;
+}
+
+.rejected {
+  margin-block-start: 1.5rem;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  border-radius: 50%;
+  width: fit-content;
+}
+
+.title {
+  color: var(--gray13);
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    flex-direction: column;
+  }
+
+  .confirm {
+    padding: 1rem 0;
+  }
+
+  .tabs {
+    gap: 0.5rem;
+  }
+
+  .row > * {
+    flex: 1;
+  }
 }

@@ -10,6 +10,15 @@ export const reviewTagLabel: Record<string, () => string> = {
   punctuality: () => ta("وقت‌شناسی"),
   resultSpeed: () => ta("جواب سریع"),
   clarity: () => ta("جواب واضح و قابل فهم"),
+  // what went wrong (score 1-2): private, seen only here and by the seller
+  lateDelivery: () => ta("ارسال دیرهنگام"),
+  damagedPackaging: () => ta("بسته‌بندی آسیب‌دیده"),
+  wrongItems: () => ta("اقلام اشتباه یا ناقص"),
+  unhelpfulStaff: () => ta("برخورد یا راهنمایی نامناسب کارکنان"),
+  samplingProblem: () => ta("مشکل در نمونه‌گیری"),
+  keptWaiting: () => ta("معطلی و انتظار طولانی"),
+  resultLate: () => ta("جواب دیرهنگام"),
+  resultUnclear: () => ta("جواب نامفهوم"),
 };
 export const tagsLabel = (tags: unknown) =>
   (Array.isArray(tags) ? tags : [])

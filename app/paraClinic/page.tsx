@@ -27,6 +27,8 @@ const ParaClinics = async (ctx: {
     test?: string;
     // "best" = best rated (approved buyer reviews)
     sort?: string;
+    // «الان باز است» (2026-10): open at this minute, Tehran time
+    openNow?: string;
   }>;
 }) => {
   const {
@@ -37,6 +39,7 @@ const ParaClinics = async (ctx: {
     tag,
     insurance,
     sort,
+    openNow,
   } = await ctx.searchParams;
   const page = Number(_page || 1);
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
@@ -45,6 +48,7 @@ const ParaClinics = async (ctx: {
   if (search) params.append("query", search);
   if (tag) params.append("tag", tag);
   if (insurance) params.append("insurance", insurance);
+  if (openNow === "1") params.append("openNow", "1");
   if (test) params.append("test", test);
   if (sort === "best") params.append("sort", "best");
   if (category)

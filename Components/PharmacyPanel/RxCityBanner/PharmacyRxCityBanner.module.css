@@ -1,0 +1,36 @@
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--warningT2, #f5d48a);
+  border-inline-start-width: 4px;
+  border-radius: 0.75rem;
+  background-color: var(--warningT1, #fff6e0);
+  color: var(--gray10, #333);
+  text-align: start;
+}
+
+.text {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.link {
+  flex: 0 0 auto;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .link {
+    white-space: normal;
+  }
+}

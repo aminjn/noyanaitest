@@ -37,6 +37,9 @@ import LabResultPopup from "./LabResultPopup";
 import AttachmentIcon from "@/Components/Icons/AttachmentIcon";
 import labClasses from "./LabResult.module.css";
 import { OrderSamplings } from "@/Components/LabSampling/SamplingInfo";
+import SamplingActions from "@/Components/LabSampling/SamplingActions";
+import { SamplingMoveInfo } from "@/Components/LabSampling/samplingTypes";
+import useAcl from "@/Components/Hooks/useAcl";
 
 const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
@@ -127,6 +130,8 @@ const MutateOrderItemPopup = ({
 
 const ParaClinicIncomingOrderPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
+  // moving a sampling appointment is an order action (mutateOrders)
+  const canMutate = useAcl("paraClinic")("mutateOrders");
   const { data, error, mutate } = useSWR<IIncomingOrder>(
     `${API}/paraClinic/order/${nodeId}`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -166,7 +171,27 @@ const ParaClinicIncomingOrderPage = () => {
           {/* the sampling appointment(s) of these tests (2026-10): when,
               and for a home visit where; confirmed from the agenda or by
               accepting a line */}
-          <OrderSamplings lines={data.tests as never} />
+          <OrderSamplings
+            lines={data.tests as never}
+            viewer="lab"
+            renderActions={(sampling) =>
+              canMutate ? (
+                <SamplingActions
+                  sampling={sampling}
+                  info={(data as IIncomingOrder & { samplingMoves?: Record<string, SamplingMoveInfo> }).samplingMoves?.[sampling._id]}
+                  viewer="lab"
+                  onMove={async (payload) => {
+                    await fetcher({
+                      url: `${API}/paraClinic/sampling/${sampling._id}`,
+                      method: "PATCH",
+                      payload: { action: "reschedule", ymd: payload.ymd, start: payload.start },
+                    });
+                    await mutate();
+                  }}
+                />
+              ) : null
+            }
+          />
           <Table
             name="ParaClinicIncomingOrderItems"
             data={buildItemRows(data)}

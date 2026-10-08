@@ -1,3 +1,4 @@
+import { OpeningHours, OpenStatus } from "@/Components/OpeningHours/openingHours";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
@@ -58,6 +59,9 @@ export interface IPharmacy<
   phone?: string;
   businessTime?: string;
   isRoundTheClock?: boolean;
+  // structured week and its status now (2026-10, Components/OpeningHours)
+  openingHours?: OpeningHours | null;
+  openStatus?: OpenStatus | null;
   insurances?: string[];
 }
 

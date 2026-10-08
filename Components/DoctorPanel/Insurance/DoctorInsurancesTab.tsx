@@ -1,20 +1,7 @@
-import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
-import useSWR from "swr";
 import { DoctorProfilePopulation, IDoctorProfile } from "../DoctorPanelPage";
 import { API } from "@/Components/config";
-import { fetcher } from "@/Components/helpers/fetcher";
-import TableBox from "@/Components/UI/TableBox";
-import useScopedLocale from "@/Components/Hooks/useScopedLocale";
-import Table from "@/Components/Admin/UI/Table";
 import { Population } from "@/Components/Admin/Clinic/AdminManageClinicsPage";
-import TableActions from "@/Components/Admin/UI/TableActions";
-import IconButton from "@/Components/Admin/UI/IconButton";
-import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import usePopup from "@/Components/Hooks/usePopup";
-import AddInsurancePopup from "./AddInsurancePopup";
-import Button from "@/Components/UI/Button";
-import DeleteInsurancePopup from "./DeleteInsurancePopup";
 import {
   IInsuranceCategory,
   InsuranceCategoryPopulation,
@@ -27,9 +14,8 @@ import {
   IInsurancePlan,
   InsurancePlanPopulation,
 } from "@/Components/Admin/Insurance/AdminManageInsurancePage";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
-
-const NS: ContentNamespace[] = ["common", "doctorPanelInsurance"];
+import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
+import ProviderInsurerContracts from "@/Components/InsuranceContracts/ProviderInsurerContracts";
 
 export type InsurancePopulation = Population<{
   Category: InsuranceCategoryPopulation;
@@ -51,6 +37,8 @@ export interface IInsurance<
     ? IInsuranceTag<T["Tags"]>[]
     : string[];
   establishment?: string;
+  // «شماره‌ی مجوز بیمه مرکزی» (2026-10), shown on the public page
+  licenseNumber?: string;
   // a basic (public) insurer; a centre's «بیمه پایه» follows it
   isBasic?: boolean;
   membersCount?: string;
@@ -103,72 +91,16 @@ export interface IDoctorInsurance<
     : string;
 }
 
+// The doctor's insurers (2026-10): contracts the insurer confirms, in the
+// one block every provider panel shares (Components/InsuranceContracts).
+// Adding / removing an insurer one-sidedly is gone.
 const DoctorInsurancesTab = () => {
-  const { data, error, mutate } = useSWR<
-    IDoctorInsurance<{ Insurance: Record<string, never> }>[]
-  >(`${API}/doctor/insurance`, (url: string) =>
-    fetcher({ url }).then((res) => res.data),
-  );
-
-  const getContent = useScopedLocale(NS);
-
-  const { setPopup } = usePopup();
-
+  const hasAccess = useDoctorAcl();
   return (
-    <HandleLoading data={!!data} error={error}>
-      {!!data && (
-        <TableBox
-          title={getContent("insurances")}
-          actions={[
-            {
-              id: "Add",
-              content: (
-                <Button
-                  onClick={() =>
-                    setPopup(
-                      "AddInsurance",
-                      <AddInsurancePopup mutate={mutate} />,
-                    )
-                  }
-                >
-                  {getContent("newItem")}
-                </Button>
-              ),
-            },
-          ]}
-        >
-          <Table
-            name="DoctorManageInsurances"
-            data={data}
-            renderer={{
-              name: {
-                name: getContent("insuranceName"),
-                value: (node) => node.insurance?.name || "",
-                filter: "Text",
-              },
-              actions: {
-                name: getContent("actions"),
-                component: (node) => (
-                  <TableActions>
-                    <IconButton
-                      onClick={() =>
-                        setPopup(
-                          "DeleteInsurance",
-                          <DeleteInsurancePopup mutate={mutate} node={node} />,
-                        )
-                      }
-                      variant="Danger"
-                    >
-                      <GarbageIcon />
-                    </IconButton>
-                  </TableActions>
-                ),
-              },
-            }}
-          />
-        </TableBox>
-      )}
-    </HandleLoading>
+    <ProviderInsurerContracts
+      base={`${API}/doctor/insurer-contract`}
+      canEdit={hasAccess("mutateInsurance")}
+    />
   );
 };
 

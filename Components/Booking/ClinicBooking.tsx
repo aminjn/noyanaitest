@@ -47,10 +47,12 @@ import BookingFiltersMobile from "./BookingFiltersMobile";
 import BookingFilterDrawerField from "./BookingFilterDrawerField";
 import BookingAdvancedSearchPopup, {
   AdvancedSearchLocationField,
+  AdvancedSearchToggleField,
 } from "./BookingAdvancedSearchPopup";
+import ToggleInput from "../UI/ToggleInput";
 import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
-const NS: ContentNamespace[] = ["common", "booking"];
+const NS: ContentNamespace[] = ["common", "booking", "openingHours"];
 
 type ClinicBookingOptions = Partial<{
   query: string;
@@ -65,6 +67,8 @@ type ClinicBookingOptions = Partial<{
   service: IServiceCategory[];
   // centres that list this insurer
   insurance: { _id: string; name?: string }[];
+  // open at this minute, Tehran time (2026-10, backend Lib/openingHours.ts)
+  openNow: boolean;
 }>;
 
 // Builds the {filtered, onClear, top, actives, segments} props BookingFilter
@@ -278,6 +282,11 @@ const useClinicBookingFilterProps = ({
             {insurance.name || getContent("acceptedInsurance")}
           </BookingSelectedFilter>
         ))}
+        {!!options.openNow && (
+          <BookingSelectedFilter onClick={() => setOptions((prev) => ({ ...prev, openNow: false }))}>
+            {getContent("ohOpenNowFilter")}
+          </BookingSelectedFilter>
+        )}
         {!!options.service?.length &&
           options.service.map((service) => (
             <BookingSelectedFilter
@@ -474,6 +483,13 @@ const useClinicBookingFilterProps = ({
               }
             />
           </BookingFilterButton>
+          <div className={classes.toggleRow}>
+            <ToggleInput
+              title={getContent("ohOpenNowFilter")}
+              value={!!options.openNow}
+              onChange={() => setOptions((prev) => ({ ...prev, openNow: !prev.openNow }))}
+            />
+          </div>
           <BookingFilterButton
             title={getContent("service")}
             active={!!options.service?.length}
@@ -572,6 +588,7 @@ const ClinicBooking = ({
     if (options.insurance?.length)
       for (const insurance of options.insurance)
         params.append("insurance", insurance._id);
+    if (options.openNow) params.append("openNow", "1");
     return params;
   }, [common.sort, debouncedOptions]);
 
@@ -648,6 +665,11 @@ const ClinicBooking = ({
         placeholder={getContent("selectInsurances")}
         getOption={(node) => ({ title: node.name || "", value: node._id })}
         onChange={(e) => setOptions((prev) => ({ ...prev, insurance: e }))}
+      />
+      <AdvancedSearchToggleField
+        title={getContent("ohOpenNowFilter")}
+        active={!!options.openNow}
+        onClick={() => setOptions((prev) => ({ ...prev, openNow: !prev.openNow }))}
       />
       <MultiSelectInputServer
         value={options.service || []}
@@ -868,6 +890,19 @@ const ClinicBooking = ({
               </BookingFilterDrawerField>
             ),
           },
+          {
+            active: !!options.openNow,
+            title: "ohOpenNowFilter",
+            drawer: (close) => (
+              <BookingFilterDrawerField
+                type="toggle"
+                close={close}
+                title={getContent("ohOpenNowFilter")}
+                value={!!options.openNow}
+                onChange={() => setOptions((prev) => ({ ...prev, openNow: !prev.openNow }))}
+              />
+            ),
+          },
         ]}
       />
       <BookingLayout>
@@ -894,6 +929,7 @@ const ClinicBooking = ({
               coords={clinic.location?.coordinates}
               summary={clinic.summary}
               view={common.view}
+              openStatus={clinic.openStatus}
             />
           ))}
         </BookingResults>

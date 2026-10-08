@@ -12,6 +12,7 @@ import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import ListPageOpenNowFilter from "../UI/ListPage/ListPageOpenNowFilter";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
 import { ListPageFilters } from "../UI/ListPage/listFilters";
@@ -34,10 +35,12 @@ export type PharmaciesListPageProps = {
   cities?: Named[];
   insurances?: Named[];
   roundTheClockCount?: number;
+  // how many are open right now (the "open now" chip is offered when some are)
+  openNowCount?: number;
 };
 
 // what the list keeps when one filter changes
-const KEPT = ["search", "city", "insurance", "roundTheClock"] as const;
+const KEPT = ["search", "city", "insurance", "roundTheClock", "openNow"] as const;
 
 // The pharmacy list (2026-10), like the clinic and lab lists: search, the
 // 24-hour switch, the insurer that pays the prescription and the city, each
@@ -51,6 +54,7 @@ const PharmaciesListPage = ({
   cities,
   insurances,
   roundTheClockCount,
+  openNowCount,
 }: PharmaciesListPageProps) => {
   const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
@@ -125,6 +129,7 @@ const PharmaciesListPage = ({
           allActive={!searchParams.get("insurance")}
         />
       )}
+      {(Number(openNowCount) > 0 || !!filters?.openNow) && <ListPageOpenNowFilter basePath="/pharmacy" />}
       <ListPageActiveFilters basePath="/pharmacy" filters={filters} />
       <ListPageList
         itemWidth="24.0625rem"

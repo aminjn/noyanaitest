@@ -1,6 +1,10 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import usePopup from "@/Components/Hooks/usePopup";
+import RequestActionsPopup from "./RequestActionsPopup";
+import { ContractApproveButton } from "./RequestApproveButtons";
+import useOpenFromQuery from "./useOpenFromQuery";
 import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
 import classes from "./AdminRequestsPage.module.css";
@@ -120,7 +124,7 @@ const RequestsList = ({
 }) => {
   const query = new URLSearchParams({ group, status });
   if (kind) query.set("kind", kind);
-  const { data, error } = useSWR<IAdminRequestRow[]>(
+  const { data, error, mutate } = useSWR<IAdminRequestRow[]>(
     `${API}/admin/requests?${query.toString()}`,
     (url: string) =>
       fetcher({ url }).then((res) =>
@@ -131,6 +135,32 @@ const RequestsList = ({
           : [],
       ),
   );
+
+  const { setPopup } = usePopup();
+  // an insurer contract has no page of its own: it is decided in a popup
+  // here (the inbox links ?open=<id>)
+  const openContract = useCallback(
+    (row: IAdminRequestRow) =>
+      setPopup(
+        "ContractRequest",
+        <RequestActionsPopup
+          title={row.title || requestKindLabel(row.kind)}
+          group="contract"
+          kind={row.kind}
+          node={row}
+          mutate={() => mutate()}
+          approve={<ContractApproveButton requestId={row._id} mutate={() => mutate()} />}
+        >
+          <p>
+            {ta("${1} درخواست قرارداد با بیمه‌ای داده است که پنل ندارد؛ با تأیید شما قرارداد فعال می‌شود.", [
+              requestKindLabel(row.kind),
+            ])}
+          </p>
+        </RequestActionsPopup>,
+      ),
+    [setPopup, mutate],
+  );
+  useOpenFromQuery(group === "contract" ? data : undefined, openContract);
 
   const pendingOf = (k?: string) =>
     counts
@@ -234,7 +264,13 @@ const RequestsList = ({
                 name: ta("عملیات"),
                 width: 110,
                 component: (row) =>
-                  row.detail ? (
+                  row.group === "contract" ? (
+                    <TableActions>
+                      <Button size="S" onClick={() => openContract(row)}>
+                        {ta("بررسی")}
+                      </Button>
+                    </TableActions>
+                  ) : row.detail ? (
                     <TableActions>
                       <Button size="S" href={adminPath(row.detail)}>
                         {ta("بررسی")}

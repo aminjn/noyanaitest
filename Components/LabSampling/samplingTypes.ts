@@ -6,8 +6,52 @@ import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage"
 export type LabSamplingKind = "lab" | "home";
 export type LabSamplingStatus = "active" | "cancelled" | "done";
 
+// who moved an appointment (backend Lib/labSamplingReschedule.ts)
+export type LabSamplingActor = "buyer" | "lab" | "admin";
+
+export type LabSamplingPlace = {
+  kind: LabSamplingKind;
+  ymd: string;
+  start: number;
+  end: number;
+  startsAt?: string;
+  fee?: number;
+};
+
+export interface ILabSamplingMove {
+  at: string;
+  by: LabSamplingActor;
+  from?: LabSamplingPlace | null;
+  to?: LabSamplingPlace | null;
+  feeDelta?: number;
+}
+
+// what the viewer may do with an appointment now (samplingMoveInfo)
+export type SamplingMoveInfo = {
+  canMove: boolean;
+  block?: "notActive" | "collected" | "notPaid" | "noPendingLine" | "off" | "tooLate" | "limit";
+  movesLeft: number | null;
+  maxMoves: number;
+  leadMinutes: number;
+  canSwitchKind: boolean;
+  home: boolean;
+  homeFee: number;
+  homeCities: string[];
+  canCancel: boolean;
+  movedByOther: boolean;
+};
+
+// what a reschedule posts
+export type SamplingMovePayload = {
+  kind?: LabSamplingKind;
+  ymd: string;
+  start: number;
+  address?: string;
+};
+
 export interface ILabSampling {
   _id: string;
+  paraClinic?: string | { _id: string; name?: string } | null;
   kind: LabSamplingKind;
   // Tehran "YYYY-MM-DD"; start / end are minutes after Tehran midnight
   ymd: string;
@@ -19,7 +63,11 @@ export interface ILabSampling {
   collectedAt?: string;
   fee?: number;
   address?: IUserAddress | string | null;
+  moves?: ILabSamplingMove[];
 }
+
+export const samplingLabId = (s: Pick<ILabSampling, "paraClinic"> | null | undefined) =>
+  !s?.paraClinic ? "" : typeof s.paraClinic === "string" ? s.paraClinic : s.paraClinic._id || "";
 
 // how a test's sample is taken (backend Models/ParaClinicTest.ts)
 export type ParaClinicTestSampling = "lab" | "labOrHome" | "none";

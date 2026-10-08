@@ -8,7 +8,7 @@ import useLocale from "../Hooks/useLocale";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { formatMonthYear, safeFormatDate } from "../helpers/safeFormatDate";
 import { ContentKey } from "../Enums/contentKeys";
-import { knownReviewTags, reviewTagContentKey } from "./reviewTags";
+import { knownReviewTags, negativeReviewTags, reviewTagContentKey } from "./reviewTags";
 
 // Verified reviews (2026-10, Zocdoc / Doctolib / Digikala): the badge on a
 // review backed by a completed visit or a delivered order, with its month,
@@ -79,6 +79,7 @@ export const ReviewTagChips = ({
     <div className={classes.tags}>
       {list.map((tag) => {
         const label = getContent(reviewTagContentKey[tag]);
+        const tone = negativeReviewTags.has(tag) ? classes.tagNegative : "";
         if (onToggle) {
           const on = !!selected?.includes(tag);
           return (
@@ -86,7 +87,7 @@ export const ReviewTagChips = ({
               key={tag}
               type="button"
               aria-pressed={on}
-              className={`${classes.tag} ${classes.tagToggle} ${on ? classes.tagOn : ""}`}
+              className={`${classes.tag} ${classes.tagToggle} ${tone} ${on ? classes.tagOn : ""}`}
               onClick={() => onToggle(tag)}
             >
               {label}
@@ -94,7 +95,7 @@ export const ReviewTagChips = ({
           );
         }
         return (
-          <span key={tag} className={classes.tag}>
+          <span key={tag} className={`${classes.tag} ${tone}`}>
             {label}
             {!!counts && <span className={classes.tagCount}>{num.format(counts[tag] || 0)}</span>}
           </span>

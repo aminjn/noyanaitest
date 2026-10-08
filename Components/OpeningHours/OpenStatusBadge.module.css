@@ -1,0 +1,51 @@
+.main {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  width: fit-content;
+  max-width: 100%;
+  padding-block: 0.125rem;
+  padding-inline: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--badgeBorder);
+  background: var(--badgeBg);
+  color: var(--badgeText);
+}
+
+.open {
+  --badgeText: var(--success);
+  --badgeBg: var(--successT1);
+  --badgeBorder: var(--successT4);
+}
+
+.closed {
+  --badgeText: var(--gray11);
+  --badgeBg: var(--gray2);
+  --badgeBorder: var(--gray4);
+}
+
+.dot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.closed .dot {
+  background: var(--error);
+}
+
+.title {
+  font-weight: 600;
+}
+
+.detail {
+  color: var(--gray11);
+}
+
+.detail::before {
+  content: "·";
+  margin-inline-end: 0.375rem;
+}

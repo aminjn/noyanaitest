@@ -1,7 +1,8 @@
 "use client";
 
 import { OrderSamplings } from "../LabSampling/SamplingInfo";
-import { ILabSampling } from "../LabSampling/samplingTypes";
+import SamplingActions from "../LabSampling/SamplingActions";
+import { ILabSampling, SamplingMoveInfo } from "../LabSampling/samplingTypes";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import classes from "./OrderConfirmationPage.module.css";
@@ -148,6 +149,9 @@ export interface IOrder<
   deliveryFee?: number;
   // home-sampling fees, in `total`
   samplingFee?: number;
+  // what the buyer may do with each sampling appointment, by its id
+  // (2026-10, backend Lib/labSamplingReschedule.ts)
+  samplingMoves?: Record<string, SamplingMoveInfo>;
   paymentMethod: "wallet" | "sep";
   status: OrderStatus;
   address?: IUserAddress;
@@ -187,6 +191,7 @@ type OrderRow = {
   respondBy?: string | null;
   acceptedAt?: string;
   autoCancel?: IOrderLineResponse["autoCancel"];
+  collected?: boolean;
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -275,10 +280,12 @@ const buildRows = (order: OrderNode): OrderRow[] => {
   });
 
   (Array.isArray(order.tests) ? order.tests : []).forEach((line) => {
-    const { item, qty, price, status, result } = line;
+    const { item, qty, price, status, result, sampling } = line;
     if (!item || typeof item === "string") return;
     rows.push({
       ...responseOf(line),
+      // its sample was taken: it stays with the lab (no buyer cancel)
+      collected: !!sampling && typeof sampling === "object" && !!sampling.collectedAt,
       itemId: item._id,
       model: "tests",
       image: item.paraClinic?.image,
@@ -293,6 +300,23 @@ const buildRows = (order: OrderNode): OrderRow[] => {
 
   return rows;
 };
+
+// the lab and the tests of one sampling appointment of the order
+const samplingLines = (order: OrderNode, samplingId: string) =>
+  (Array.isArray(order.tests) ? order.tests : []).filter((l) => {
+    const s = l?.sampling;
+    return !!s && (typeof s === "string" ? s : s._id) === samplingId;
+  });
+const labNameOf = (order: OrderNode, samplingId: string) => {
+  const item = samplingLines(order, samplingId)[0]?.item;
+  return item && typeof item === "object" && item.paraClinic && typeof item.paraClinic === "object"
+    ? item.paraClinic.name
+    : undefined;
+};
+const testNamesOf = (order: OrderNode, samplingId: string) =>
+  samplingLines(order, samplingId)
+    .map((l) => (l.item && typeof l.item === "object" && l.item.test && typeof l.item.test === "object" ? l.item.test.name : ""))
+    .filter((name): name is string => !!name);
 
 const OrderConfirmationPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -334,7 +358,7 @@ const OrderConfirmationPage = () => {
 
   const rows = order ? buildRows(order) : [];
   const canCancel =
-    order?.status === "paid" && rows.some((row) => row.status === "pending");
+    order?.status === "paid" && rows.some((row) => row.status === "pending" && !row.collected);
   // every line cancelled (by the buyer or the sellers): the order reads as
   // cancelled, not "paid"
   const shownStatus: OrderStatus | undefined =
@@ -440,7 +464,35 @@ const OrderConfirmationPage = () => {
               </div>
             ))}
             {/* lab sampling appointments, once per lab (2026-10) */}
-            <OrderSamplings lines={order.tests as never} />
+            <OrderSamplings
+              lines={order.tests as never}
+              viewer="buyer"
+              renderActions={(sampling) => (
+                <SamplingActions
+                  sampling={sampling}
+                  info={order.samplingMoves?.[sampling._id]}
+                  viewer="buyer"
+                  labName={labNameOf(order, sampling._id)}
+                  tests={testNamesOf(order, sampling._id)}
+                  onMove={async (payload) => {
+                    await fetcher({
+                      url: `${API}/user/order/${nodeId}/sampling/${sampling._id}/reschedule`,
+                      method: "POST",
+                      payload,
+                      bodyParser: "JSON",
+                    });
+                    await mutate();
+                  }}
+                  onCancel={async () => {
+                    await fetcher({
+                      url: `${API}/user/order/${nodeId}/sampling/${sampling._id}/cancel`,
+                      method: "POST",
+                    });
+                    await mutate();
+                  }}
+                />
+              )}
+            />
             {!!order.shipments?.length && (
               <div className={classes.addressRow}>
                 <span className={`${classes.subtitle} ${tsmRegular}`}>

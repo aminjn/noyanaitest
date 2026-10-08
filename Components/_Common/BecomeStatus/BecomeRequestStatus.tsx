@@ -12,13 +12,22 @@ const BecomeRequestStatus = ({
   request,
   form,
 }: {
-  request?: { status?: string; rejectReason?: string } | null;
+  // profileMissing: approved, but what it created was deleted since - the
+  // applicant may send it again
+  request?: { status?: string; rejectReason?: string; profileMissing?: boolean } | null;
   form: ReactNode;
 }) => {
   const getContent = useScopedLocale();
   if (!request) return <>{form}</>;
   if (request.status === "Pending")
     return <p className={classes.note}>{getContent("requestBeingProcessedByAdmin")}</p>;
+  if (request.status === "Approved" && request.profileMissing)
+    return (
+      <div className={classes.main}>
+        <p className={classes.note}>{getContent("becomeProfileRemoved")}</p>
+        {form}
+      </div>
+    );
   if (request.status === "Approved")
     return <p className={classes.note}>{getContent("requestApprovedCreatingProfile")}</p>;
   return (

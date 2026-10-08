@@ -1,4 +1,5 @@
 "use client";
+import { OpeningHours, OpenStatus } from "@/Components/OpeningHours/openingHours";
 
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import { Population } from "../Clinic/AdminManageClinicsPage";
@@ -101,6 +102,9 @@ export interface IHospital<
     : never;
   address?: string;
   businessTimes?: string;
+  // structured week and its status now (2026-10, Components/OpeningHours)
+  openingHours?: OpeningHours | null;
+  openStatus?: OpenStatus | null;
   mail?: string;
   owner?: T["Owner"] extends DoctorProfilePopulation
     ? IDoctorProfile<T["Owner"]>

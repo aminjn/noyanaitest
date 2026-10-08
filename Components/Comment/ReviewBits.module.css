@@ -88,3 +88,21 @@
   background-color: var(--primary1);
   color: var(--primary);
 }
+
+/* what went wrong (low score): private to the seller and the admin */
+.tagNegative {
+  background-color: var(--errorT1);
+  color: var(--errorS1);
+}
+
+.tagToggle.tagNegative {
+  border-color: var(--errorT2);
+  background-color: var(--white);
+  color: var(--gray10, #555);
+}
+
+.tagToggle.tagNegative.tagOn {
+  border-color: var(--error);
+  background-color: var(--errorT1);
+  color: var(--errorS1);
+}

@@ -65,10 +65,13 @@ type Tile = {
 const ProviderHome = ({
   kind,
   children,
+  notice,
 }: {
   kind: ProviderKind;
   // Panel-specific widgets below the shared blocks (e.g. the licence card).
   children?: ReactNode;
+  // a warning above everything else (e.g. what the provider must fix)
+  notice?: ReactNode;
 }) => {
   const getContent = useScopedLocale(NS);
   const locale = useIntlLocale();
@@ -241,6 +244,7 @@ const ProviderHome = ({
   const allClear = todos.length === 0 && joinRequests === 0;
   return (
     <div className={classes.main}>
+      {notice}
       {setupLeft > 0 && (
         <section className={classes.setup}>
           <div className={classes.setupHead}>

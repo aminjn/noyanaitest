@@ -26,6 +26,7 @@ type BecomeOrgInput = {
   name: string;
   siamCode: string;
   nationalId: string;
+  licenseNumber: string;
   certificateDate: Date;
   certificateFile?: File;
   description?: string;
@@ -33,8 +34,9 @@ type BecomeOrgInput = {
 
 type BecomeRequest = {
   name: string;
-  siamCode: string;
-  nationalId: string;
+  siamCode?: string;
+  nationalId?: string;
+  licenseNumber?: string;
   certificateDate: Date;
   certificateFile?: string;
   description?: string;
@@ -57,19 +59,19 @@ const BecomeOrganizationForm = ({
   rejectReason?: string;
 }) => {
   const getContent = useScopedLocale(NS);
+  // an insurer names its Central Insurance licence; a centre its siam code
+  // and national id
+  const complete = (input: Partial<BecomeOrgInput>) =>
+    !!input.name &&
+    !!input.certificateDate &&
+    !!input.certificateFile &&
+    (org.licenseNumber ? !!input.licenseNumber?.trim() : !!input.nationalId && !!input.siamCode);
 
   const { input, isLoading, setInput, submit } = useForm<BecomeOrgInput>({
     path: `${API}${org.apiBase}`,
     method: "POST",
     successCb: () => mutate(),
-    hasProblem: (input) =>
-      !input.name ||
-      !input.certificateDate ||
-      !input.certificateFile ||
-      !input.nationalId ||
-      !input.siamCode
-        ? getContent("checkInput")
-        : false,
+    hasProblem: (input) => (!complete(input) ? getContent("checkInput") : false),
   });
 
   // a declined request is resubmitted from its old values: seed them into
@@ -91,15 +93,8 @@ const BecomeOrganizationForm = ({
 
   const { setPopup } = usePopup();
 
-  const isOk = useMemo<boolean>(
-    () =>
-      !!input.name &&
-      !!input.certificateDate &&
-      !!input.certificateFile &&
-      !!input.nationalId &&
-      !!input.siamCode,
-    [input],
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const isOk = useMemo<boolean>(() => complete(input), [input, org.licenseNumber]);
 
   return (
     <div className={classes.container}>
@@ -148,29 +143,43 @@ const BecomeOrganizationForm = ({
             defaultValue={user?.phone}
           />
         </div>
-        <div className={classes.row}>
-          <Input
-            title={getContent("siamCode")}
-            readOnly={!!pending || isLoading}
-            onChange={(e) =>
-              setInput((prev) => ({ ...prev, siamCode: e.target.value }))
-            }
-            required
-            defaultValue={(pending || rejected)?.siamCode}
-          />
-          {/* the organization's national ID, not the applicant's own code
-              (two identical "national code" fields sat side by side, the
-              read-only one always empty) */}
-          <Input
-            title={getContent("orgNationalId")}
-            readOnly={!!pending || isLoading}
-            onChange={(e) =>
-              setInput((prev) => ({ ...prev, nationalId: e.target.value }))
-            }
-            required
-            defaultValue={(pending || rejected)?.nationalId}
-          />
-        </div>
+        {org.licenseNumber ? (
+          <div className={classes.row}>
+            <Input
+              title={getContent("insurerLicenseNumber")}
+              readOnly={!!pending || isLoading}
+              onChange={(e) =>
+                setInput((prev) => ({ ...prev, licenseNumber: e.target.value }))
+              }
+              required
+              defaultValue={(pending || rejected)?.licenseNumber}
+            />
+          </div>
+        ) : (
+          <div className={classes.row}>
+            <Input
+              title={getContent("siamCode")}
+              readOnly={!!pending || isLoading}
+              onChange={(e) =>
+                setInput((prev) => ({ ...prev, siamCode: e.target.value }))
+              }
+              required
+              defaultValue={(pending || rejected)?.siamCode}
+            />
+            {/* the organization's national ID, not the applicant's own code
+                (two identical "national code" fields sat side by side, the
+                read-only one always empty) */}
+            <Input
+              title={getContent("orgNationalId")}
+              readOnly={!!pending || isLoading}
+              onChange={(e) =>
+                setInput((prev) => ({ ...prev, nationalId: e.target.value }))
+              }
+              required
+              defaultValue={(pending || rejected)?.nationalId}
+            />
+          </div>
+        )}
         <div className={classes.row}>
           <Input
             title={getContent("organizationName")}

@@ -4,6 +4,8 @@ import LocationIcon from "../Icons/LocationIcon";
 import IconTitle from "../UI/IconTitle";
 import { tsmRegular, txsDemiBold, txsRegular } from "../UI/Typography";
 import classes from "./MedicalCenterContactInfo.module.css";
+import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
+import { exceptionsOf, OpeningHours, OpenStatus, weekOf } from "../OpeningHours/openingHours";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
@@ -13,12 +15,15 @@ type ContactFields = {
   website?: string;
   mail?: string;
   businessTimes?: string;
+  openingHours?: OpeningHours | null;
 };
+// a structured week (2026-10) shows as the table, its free text as the note
+const hasWeek = (h?: OpeningHours | null) => !!weekOf(h) || !!exceptionsOf(h).length;
 // a centre with nothing to show gets no empty box (nor a nav chip for it)
 export const hasContactInfo = (n: ContactFields & { owner?: unknown }) =>
   [n.address, n.phone, n.website, n.mail, n.businessTimes].some(
     (v) => typeof v === "string" && !!v.trim(),
-  ) || !!n.owner;
+  ) || !!n.owner || hasWeek(n.openingHours);
 const MedicalCenterContactInfo = ({
   address,
   businessTimes,
@@ -26,6 +31,8 @@ const MedicalCenterContactInfo = ({
   owner,
   phone,
   website,
+  openingHours,
+  openStatus,
 }: {
   address?: string;
   phone?: string;
@@ -33,10 +40,12 @@ const MedicalCenterContactInfo = ({
   mail?: string;
   businessTimes?: string;
   owner?: string;
+  openingHours?: OpeningHours | null;
+  openStatus?: OpenStatus | null;
 }) => {
   const getContent = useScopedLocale(NS);
 
-  if (!hasContactInfo({ address, phone, website, mail, businessTimes, owner })) return null;
+  if (!hasContactInfo({ address, phone, website, mail, businessTimes, owner, openingHours })) return null;
   return (
     <div className={classes.main} id="contact">
       <IconTitle icon={<LocationIcon />}>{getContent("contactInfo")}</IconTitle>
@@ -71,7 +80,10 @@ const MedicalCenterContactInfo = ({
             </a>
           </p>
         )}
-        {!!businessTimes?.trim() && (
+        {hasWeek(openingHours) && (
+          <OpeningHoursTable hours={openingHours} status={openStatus} note={businessTimes} />
+        )}
+        {!hasWeek(openingHours) && !!businessTimes?.trim() && (
           <p className={`${classes.gray} ${txsRegular}`}>
             {`${getContent("businessTime")}: ${businessTimes}`}
           </p>

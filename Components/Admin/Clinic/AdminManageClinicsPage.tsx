@@ -1,4 +1,5 @@
 "use client";
+import { OpeningHours, OpenStatus } from "@/Components/OpeningHours/openingHours";
 
 import { IUser, MongoDoc, UserPopulation } from "@/Components/Hooks/useUser";
 import classes from "./AdminManageClinicsPage.module.css";
@@ -117,6 +118,9 @@ export interface IClinic<
   website?: string;
   mail?: string;
   businessTimes?: string;
+  // structured week and its status now (2026-10, Components/OpeningHours)
+  openingHours?: OpeningHours | null;
+  openStatus?: OpenStatus | null;
   services?: string[];
   certificates?: string[];
   averageScore?: number;

@@ -1,5 +1,7 @@
 "use client";
 import { ReactNode, useMemo, useRef, useState } from "react";
+import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
+import { OpenStatus } from "../OpeningHours/openingHours";
 import useMap from "../Hooks/useMap";
 import classes from "./MapPage.module.css";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
@@ -64,6 +66,8 @@ export type MapPlace = {
   image?: string;
   address?: string;
   isRoundTheClock?: boolean;
+  // open now / closes at (2026-10, backend Lib/openingHours.ts)
+  openStatus?: OpenStatus | null;
   kind?: MapPlaceLayer;
   city?: { name?: string } | null;
   province?: { name?: string } | null;
@@ -288,8 +292,9 @@ const MapPage = () => {
                     {!!place.address && (
                       <span className={`${classes.itemDescription} ${tsmRegular}`}>{place.address}</span>
                     )}
+                    <OpenStatusBadge status={place.openStatus} compact />
                   </span>
-                  {place.kind === "pharmacies" && !!place.isRoundTheClock && (
+                  {place.kind === "pharmacies" && !!place.isRoundTheClock && !place.openStatus && (
                     <span className={`${classes.travelChip} ${tsmMedium}`}>{getContent("roundTheClock")}</span>
                   )}
                 </Link>

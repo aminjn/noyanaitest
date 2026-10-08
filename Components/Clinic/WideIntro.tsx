@@ -10,6 +10,8 @@ import LocationIcon from "../Icons/LocationIcon";
 import StarIcon from "../Icons/StarIcon";
 import HostedImage from "../UI/HostedImage";
 import { useIntlLocale } from "../i18n/navigation";
+import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
+import { OpenStatus } from "../OpeningHours/openingHours";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const WideIntro = ({
@@ -19,6 +21,7 @@ const WideIntro = ({
   province,
   commentCount = 0,
   score = 0,
+  openStatus,
 }: {
   name?: string;
   image?: string;
@@ -26,6 +29,8 @@ const WideIntro = ({
   province?: string;
   score?: number;
   commentCount?: number;
+  // open now / closes at (2026-10, backend Lib/openingHours.ts)
+  openStatus?: OpenStatus | null;
 }) => {
   const getContent = useScopedLocale(NS);
   const locale = useIntlLocale();
@@ -66,6 +71,7 @@ const WideIntro = ({
               <span>{`${(Number(score) || 0).toLocaleString(locale, { maximumFractionDigits: 1 })} (${getContent("xComments", [commentCount.toLocaleString(locale)])})`}</span>
             </div>
           )}
+          <OpenStatusBadge status={openStatus} />
         </div>
       </div>
     </div>

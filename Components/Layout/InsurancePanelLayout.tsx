@@ -28,8 +28,12 @@ export interface IBecomeInsuranceRequest<
   status: BecomeANodeStatus;
   rejectReason?: string;
   name: string;
-  siamCode: string;
-  nationalId: string;
+  // «شماره‌ی مجوز بیمه مرکزی» (2026-10); older requests have siamCode only
+  licenseNumber?: string;
+  siamCode?: string;
+  nationalId?: string;
+  // approved, but the insurer made from it was deleted: it may be sent again
+  profileMissing?: boolean;
   certificateDate: Date;
   certificateFile?: string;
   description?: string;

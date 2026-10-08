@@ -6,9 +6,8 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IParaClinicTag } from "@/Components/Admin/ParaClinicTag/AdminManageParaClinicTagsPage";
 import { IParaClinicCategory } from "@/Components/Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
-import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
-const NS: ContentNamespace[] = ["common", "paraClinicPanelProfile"];
+const NS: ContentNamespace[] = ["common", "openingHours", "paraClinicPanelProfile"];
 
 const ParaClinicManageDetailsTab = () => {
   const { paraClinic, mutate } = useParaClinic();
@@ -53,7 +52,9 @@ const ParaClinicManageDetailsTab = () => {
               multi: true,
             },
             establishment: { type: "text", title: getContent("establishment") },
-            businessTime: { type: "text", title: getContent("businessTime") },
+            // the structured week (2026-10); the text is the note under it
+            openingHours: { type: "openingHours", title: getContent("ohEditorTitle") },
+            businessTime: { type: "text", title: getContent("ohNoteField") },
             phone: { type: "text", title: getContent("phone") },
             // «نمونه‌گیری در محل» is no longer typed here (2026-10): it follows
             // the home-sampling switch of «نمونه‌گیری» > settings
@@ -66,16 +67,7 @@ const ParaClinicManageDetailsTab = () => {
             onlineResponse: { type: "bool", title: getContent("onlineResponse") },
             personelCount: { type: "number", title: getContent("personelCount") },
             summary: { type: "area", title: getContent("summary") },
-            insurances: {
-              type: "nodes",
-              title: getContent("insurances"),
-              path: `${API}/public/insurance`,
-              getOptionLabel: (node) =>
-                (node as IInsurance).name || (node as IInsurance)._id,
-              getOptionValue: (node) => (node as IInsurance)._id,
-              getDefaultValue: (inp) => inp.insurances,
-              multi: true,
-            },
+            // the insurers are contracts now: the «بیمه‌ها» tab (2026-10)
           }}
         />
       )}

@@ -1,3 +1,4 @@
+import OpenStatusBadge from "@/Components/OpeningHours/OpenStatusBadge";
 import classes from "./CommonCenterCard.module.css";
 import Ixon from "../UI/Ixon";
 import { t2xsRegular, tsmDemiBold, txsRegular } from "../UI/Typography";
@@ -14,6 +15,7 @@ import Button from "../UI/Button";
 import { BookingView } from "./BookingPage2";
 import HostedImage from "../UI/HostedImage";
 import VerifiedImage from "../UI/VerifiedImage";
+import { OpenStatus } from "../OpeningHours/openingHours";
 
 const NS: ContentNamespace[] = ["common", "booking"];
 const CommonCenterCard = ({
@@ -26,6 +28,7 @@ const CommonCenterCard = ({
   coords,
   banner,
   view,
+  openStatus,
 }: {
   name: string;
   avatar?: string;
@@ -36,6 +39,8 @@ const CommonCenterCard = ({
   coords?: [number, number];
   banner?: string;
   view: BookingView;
+  // open now / closes at (2026-10, backend Lib/openingHours.ts)
+  openStatus?: OpenStatus | null;
 }) => {
   const getContent = useScopedLocale(NS);
 
@@ -57,6 +62,7 @@ const CommonCenterCard = ({
       <div className={classes.detailBox}>
         <div className={classes.details}>
           <span className={`${classes.name} ${tsmDemiBold}`}>{name}</span>
+          <OpenStatusBadge status={openStatus} />
           {!!summary && (
             <span className={`${classes.summary} ${txsRegular}`}>
               {summary}

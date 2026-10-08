@@ -1,3 +1,5 @@
+import OpeningHoursEditor from "@/Components/OpeningHours/OpeningHoursEditor";
+import { OpeningHours as OpeningHoursValue } from "@/Components/OpeningHours/openingHours";
 import useForm, {
   UseFormProps,
   UseFormReturn,
@@ -147,6 +149,12 @@ export type FormRenderer<TInput = Partial<Record<string, unknown>>> = {
         audience: string;
       }
     | {
+        // the weekly opening hours of a centre (2026-10,
+        // Components/OpeningHours/OpeningHoursEditor): its value is
+        // { days, exceptions } or null (cleared)
+        type: "openingHours";
+      }
+    | {
         // a map point: search, map click, "my location", and the point's
         // address under the map
         type: "point";
@@ -190,6 +198,7 @@ const sectionOf = (
     case "licensePricing":
     case "multiselect":
     case "aiPlan":
+    case "openingHours":
       return { id: `field:${key}`, title: segment.title };
     case "area":
     case "rtf":
@@ -223,6 +232,7 @@ const wideFieldTypes: string[] = [
   "range",
   "options",
   "point",
+  "openingHours",
 ];
 
 // a saved point is GeoJSON or a bare [lng, lat] pair (or garbage)
@@ -627,6 +637,20 @@ const CreateForm = <TInput, TResult = unknown>({
             );
             break;
           }
+          case "openingHours":
+            content = (
+              <OpeningHoursEditor
+                title={commons.title}
+                readOnly={commons.readOnly}
+                value={
+                  defaultValue?.[key] && typeof defaultValue[key] === "object"
+                    ? (defaultValue[key] as unknown as OpeningHoursValue)
+                    : null
+                }
+                onChange={(v) => setInput((prev) => ({ ...prev, [key]: v }))}
+              />
+            );
+            break;
           case "point": {
             const addressKey = segment.addressField as keyof TInput | undefined;
             const store = segment.store || "geojson";

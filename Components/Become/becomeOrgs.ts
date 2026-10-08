@@ -9,12 +9,10 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 // instead of hardcoding any of the above a second time.
 //
 // "doctor" is flagged `kind: "medicalCode"` because its become-flow isn't a
-// name-only request form like the other 5 - it looks the user's national
-// medical-system code up against Podium (see doctorController.
-// getMyMedicalSystemInfo) and lets them confirm one of the returned McCodes
-// (Components/DoctorPanel/BecomeADoctorPage.tsx + ConfirmMedicalCodePopup).
-// That existing, working flow is reused as-is at /become/doctor rather than
-// rebuilt as a bare form.
+// name-only request form like the other 5 - it is the one doctor onboarding
+// flow (2026-10, Components/DoctorPanel/BecomeADoctorPage.tsx, backend
+// Controllers/doctorOnboardingController.ts): council inquiry, documents and
+// speciality, then one request in the admin /requests queue.
 export type BecomeOrgSlug =
   | "doctor"
   | "clinic"
@@ -42,6 +40,9 @@ export interface BecomeOrgConfig {
   titleKey?: ContentKey;
   legendKey?: ContentKey;
   namespace?: ContentNamespace;
+  // (2026-10) an insurer gives its «شماره‌ی مجوز بیمه مرکزی» instead of
+  // the centres' siam code and national id
+  licenseNumber?: boolean;
 }
 
 export const becomeOrgs: Record<BecomeOrgSlug, BecomeOrgConfig> = {
@@ -113,6 +114,7 @@ export const becomeOrgs: Record<BecomeOrgSlug, BecomeOrgConfig> = {
     titleKey: "becomeInsurancePageTitle",
     legendKey: "becomeInsurancePageLegend",
     namespace: "becomeInsurance",
+    licenseNumber: true,
   },
 };
 
