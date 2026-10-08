@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "Destek tarafından cüzdan düzeltmesi",
  "pfPaidByOwner": "Sahibin kişisel cüzdanından ödendi",
  "centreWalletBalance": "Bu merkezin cüzdanı: ${1} tomen",
- "centreWalletRule": "Bu merkezin kendi cüzdanından ödenir; yetmezse kişisel cüzdanınızdan.",
+ "centreWalletRule": "Yalnızca bu merkezin cüzdanından ödenir; yetmezse kişisel cüzdanınızdan aktarın.",
  "personalWalletBalance": "Kişisel cüzdanınız: ${1} tomen",
  "labSamplingNav": "Numune alma",
  "lsTitle": "Numune alma randevusu",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "Bu sipariş için bu satıcıyı puanladınız. Teşekkürler!",
  "dpdPlanEndedBanner": "“${1}” planınız sona erdi. Sayfanız ve temel randevu ücretsiz ve açık kalır, hastalar randevu almaya devam eder; ücretli özellikler için planı yenileyin.",
  "dpdPlanEndingBanner": "“${1}” planınız ${2} gün içinde bitiyor. Sonrasında temel randevu ücretsiz devam eder; yalnızca ücretli özellikler durur.",
- "dpdRenewPlan": "Planı yenile"
+ "dpdRenewPlan": "Planı yenile",
+ "cwFundTitle": "Merkez cüzdanına para ekle",
+ "cwFundHint": "Bu merkezin planı ve SMS'leri yalnızca kendi cüzdanından ödenir. Kişisel cüzdanınızdan para aktarın.",
+ "cwPersonal": "Kişisel cüzdanınız",
+ "cwFundSubmit": "Aktar",
+ "cwFundDone": "Tutar merkez cüzdanına aktarıldı"
 }

@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "Correction du portefeuille par le support",
  "pfPaidByOwner": "Payé depuis le portefeuille personnel du propriétaire",
  "centreWalletBalance": "Portefeuille de ce centre : ${1} tomans",
- "centreWalletRule": "Payé depuis le portefeuille de ce centre ; s'il ne suffit pas, depuis votre portefeuille personnel.",
+ "centreWalletRule": "Payé uniquement depuis le portefeuille de ce centre ; s’il ne suffit pas, transférez depuis votre portefeuille personnel.",
  "personalWalletBalance": "Votre portefeuille personnel : ${1} tomans",
  "labSamplingNav": "Prélèvements",
  "lsTitle": "Rendez-vous de prélèvement",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "Vous avez noté ce vendeur pour cette commande. Merci !",
  "dpdPlanEndedBanner": "Votre forfait « ${1} » a pris fin. Votre page et la prise de rendez-vous de base restent gratuites et actives, les patients peuvent toujours réserver ; renouvelez pour retrouver les fonctions payantes.",
  "dpdPlanEndingBanner": "Votre forfait « ${1} » se termine dans ${2} jours. Ensuite la prise de rendez-vous de base continue gratuitement ; seules les fonctions payantes s'arrêtent.",
- "dpdRenewPlan": "Renouveler le forfait"
+ "dpdRenewPlan": "Renouveler le forfait",
+ "cwFundTitle": "Alimenter le portefeuille du centre",
+ "cwFundHint": "L’abonnement et les SMS de ce centre sont payés uniquement depuis son propre portefeuille. Transférez depuis votre portefeuille personnel.",
+ "cwPersonal": "Votre portefeuille personnel",
+ "cwFundSubmit": "Transférer",
+ "cwFundDone": "Le montant a été versé sur le portefeuille du centre"
 }

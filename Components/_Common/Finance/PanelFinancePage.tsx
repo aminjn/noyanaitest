@@ -19,6 +19,7 @@ import ClockIcon from "@/Components/Icons/ClockIcon";
 import MedalIcon from "@/Components/Icons/MedalIcon";
 import { safeFormatDate } from "@/Components/helpers/safeFormatDate";
 import WalletWithdrawal from "./WalletWithdrawal";
+import CentreWalletFund from "./CentreWalletFund";
 
 
 type FinanceTransaction = {
@@ -272,6 +273,10 @@ const PanelFinancePage = ({
           </div>
 
           {data.canWithdraw && <WalletWithdrawal api={withdrawalApi} />}
+          {/* a centre pays its plan and SMS from its own wallet only: the
+              owner fills it from the personal wallet */}
+          {withdrawalApi === "/clinic/withdrawal" && <CentreWalletFund kind="clinic" />}
+          {withdrawalApi === "/hospital/withdrawal" && <CentreWalletFund kind="hospital" />}
 
           <section className={classes.card}>
             <h2 className={classes.cardTitle}>{getContent("dpfMonthlyIncome")}</h2>

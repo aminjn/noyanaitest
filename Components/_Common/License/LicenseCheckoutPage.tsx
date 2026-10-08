@@ -22,6 +22,7 @@ import Ixon from "@/Components/UI/Ixon";
 import WalletIcon from "@/Components/Icons/WalletIcon";
 import CheckIcon from "@/Components/Icons/CheckIcon";
 import LicensePriceDetails from "./LicensePriceDetails";
+import CentreWalletFund from "../Finance/CentreWalletFund";
 import WalletShortfallTopUp from "@/Components/Payment/WalletShortfallTopUp";
 import {
   tbaseDemiBold,
@@ -62,15 +63,15 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
       fetcher({ url }).then((res) => adaptLicenseDetail(res.data)),
   );
 
-  const { data: wallet } = useSWR<IWallet>(
+  const { data: wallet, mutate: refreshWallet } = useSWR<IWallet>(
     `${API}/user/wallet`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
-  // a clinic or hospital pays from its own wallet first (2026-10, one
-  // wallet per centre; backend Lib/walletScope.ts debitSpending), then
-  // from the owner's personal one
+  // a clinic or hospital pays from its own wallet only (2026-10; backend
+  // Lib/walletScope.ts debitSpending) - the owner fills it from the
+  // personal wallet right here when it falls short
   const ownWallet = name === "clinic" || name === "hospital";
-  const { data: centreWallet } = useSWR<{ balance: number }>(
+  const { data: centreWallet, mutate: refreshCentreWallet } = useSWR<{ balance: number }>(
     ownWallet ? `${API}/${name}/wallet` : null,
     (url: string) => fetcher({ url }).then((res) => ({ balance: Number(res?.data?.balance) || 0 })),
   );
@@ -204,9 +205,24 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
           {ownWallet && (
             <span className={classes.balance}>{getContent("centreWalletRule")}</span>
           )}
-          {!!wallet && !(ownWallet && (centreWallet?.balance || 0) >= price) && (
-            <WalletShortfallTopUp balance={wallet.balance} total={price} />
+          {ownWallet && !!centreWallet && centreWallet.balance < price && (
+            <CentreWalletFund
+              kind={name as "clinic" | "hospital"}
+              suggested={price - centreWallet.balance}
+              onDone={() => {
+                refreshCentreWallet();
+                refreshWallet();
+              }}
+            />
           )}
+          {/* the personal wallet can't cover the plan (or the transfer
+              into the centre) -> a SEP top-up of the gap, returning here */}
+          {!!wallet &&
+            (ownWallet
+              ? !!centreWallet && centreWallet.balance < price && (
+                  <WalletShortfallTopUp balance={wallet.balance} total={price - centreWallet.balance} />
+                )
+              : <WalletShortfallTopUp balance={wallet.balance} total={price} />)}
           <div className={classes.totalRow}>
             <span className={tsmRegular}>{getContent("totalPrice")}</span>
             <span className={`${classes.totalPrice} ${tbaseDemiBold}`}>

@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "Corrección del monedero por soporte",
  "pfPaidByOwner": "Pagado desde el monedero personal del titular",
  "centreWalletBalance": "Monedero de este centro: ${1} tomanes",
- "centreWalletRule": "Se paga con el monedero de este centro; si no alcanza, con su monedero personal.",
+ "centreWalletRule": "Se paga solo con la cartera de este centro; si no alcanza, transfiere desde tu cartera personal.",
  "personalWalletBalance": "Su monedero personal: ${1} tomanes",
  "labSamplingNav": "Toma de muestras",
  "lsTitle": "Cita de toma de muestra",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "Ya valoró a este vendedor para este pedido. ¡Gracias!",
  "dpdPlanEndedBanner": "Su plan «${1}» ha terminado. Su página y la reserva básica siguen gratuitas y activas, y los pacientes pueden seguir reservando; renueve para recuperar las funciones de pago.",
  "dpdPlanEndingBanner": "Su plan «${1}» termina en ${2} días. Después la reserva básica continúa gratis; solo se detienen las funciones de pago.",
- "dpdRenewPlan": "Renovar plan"
+ "dpdRenewPlan": "Renovar plan",
+ "cwFundTitle": "Añadir saldo a la cartera del centro",
+ "cwFundHint": "El plan y los SMS de este centro se pagan solo con su propia cartera. Transfiere desde tu cartera personal.",
+ "cwPersonal": "Tu cartera personal",
+ "cwFundSubmit": "Transferir",
+ "cwFundDone": "El importe se añadió a la cartera del centro"
 }
