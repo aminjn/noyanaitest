@@ -6771,5 +6771,7 @@
  "serviceCatalogAdd": "+ Adicionar “${1}” à lista de serviços",
  "serviceCatalogAddFailed": "Não foi possível adicionar este serviço; tente novamente",
  "serviceCatalogPending": "${1} (aguardando revisão)",
- "serviceCatalogHint": "Escolha seus serviços na lista. Se faltar algum, digite o nome e adicione: ele aparece na sua página na hora, e nos filtros e na busca do site depois da revisão da equipe Noyan."
+ "serviceCatalogHint": "Escolha seus serviços na lista. Se faltar algum, digite o nome e adicione: ele aparece na sua página na hora, e nos filtros e na busca do site depois da revisão da equipe Noyan.",
+ "resendCode": "Reenviar código",
+ "codeRecentlySent": "Um código foi enviado há instantes; digite esse código."
 }

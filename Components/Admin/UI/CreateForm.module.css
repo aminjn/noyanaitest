@@ -98,6 +98,7 @@
   z-index: 5;
   margin-inline: calc(-1 * min(1.5rem, 3dvw));
   padding: 0.875rem min(1.5rem, 3dvw);
+  padding-inline-end: max(min(1.5rem, 3dvw), var(--fabClear, 0px));
   background-color: var(--white);
   border-top: 1px solid var(--line, var(--gray3));
 }
@@ -118,7 +119,7 @@
 
   .actions {
     margin-inline: 0;
-    padding-inline: 0;
+    padding-inline: 0 var(--fabClear, 0px);
   }
 }
 

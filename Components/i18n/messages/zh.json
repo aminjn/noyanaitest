@@ -6771,5 +6771,7 @@
  "serviceCatalogAdd": "+ 将“${1}”添加到服务列表",
  "serviceCatalogAddFailed": "无法添加此服务，请重试",
  "serviceCatalogPending": "${1}（待审核）",
- "serviceCatalogHint": "请从列表中选择您的服务。如果没有某项服务，输入名称并添加：它会立即显示在您的页面上，并在 Noyan 团队审核后出现在网站的筛选和搜索中。"
+ "serviceCatalogHint": "请从列表中选择您的服务。如果没有某项服务，输入名称并添加：它会立即显示在您的页面上，并在 Noyan 团队审核后出现在网站的筛选和搜索中。",
+ "resendCode": "重新发送验证码",
+ "codeRecentlySent": "验证码刚刚已发送，请输入该验证码。"
 }

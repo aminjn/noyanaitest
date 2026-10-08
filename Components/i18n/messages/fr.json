@@ -6771,5 +6771,7 @@
  "serviceCatalogAdd": "+ Ajouter « ${1} » à la liste des services",
  "serviceCatalogAddFailed": "Impossible d’ajouter ce service ; réessayez",
  "serviceCatalogPending": "${1} (en attente de vérification)",
- "serviceCatalogHint": "Choisissez vos services dans la liste. S’il en manque un, saisissez son nom et ajoutez-le : il apparaît aussitôt sur votre page, et dans les filtres et la recherche du site après vérification par l’équipe Noyan."
+ "serviceCatalogHint": "Choisissez vos services dans la liste. S’il en manque un, saisissez son nom et ajoutez-le : il apparaît aussitôt sur votre page, et dans les filtres et la recherche du site après vérification par l’équipe Noyan.",
+ "resendCode": "Renvoyer le code",
+ "codeRecentlySent": "Un code vient d’être envoyé ; saisissez ce code."
 }

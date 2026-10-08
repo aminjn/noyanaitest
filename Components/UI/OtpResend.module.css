@@ -1,0 +1,40 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  text-align: start;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--warningS3, var(--textMuted));
+}
+
+.wait {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--textMuted);
+}
+
+.clock {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.resend {
+  align-self: flex-start;
+  padding: 0.25rem 0;
+  border: none;
+  background: none;
+  color: var(--primary, #4f46e5);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resend:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}

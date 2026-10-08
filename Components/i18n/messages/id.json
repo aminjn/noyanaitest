@@ -6771,5 +6771,7 @@
  "serviceCatalogAdd": "+ Tambahkan “${1}” ke daftar layanan",
  "serviceCatalogAddFailed": "Layanan ini tidak dapat ditambahkan; coba lagi",
  "serviceCatalogPending": "${1} (menunggu tinjauan)",
- "serviceCatalogHint": "Pilih layanan Anda dari daftar. Jika ada yang belum tersedia, ketik namanya lalu tambahkan: layanan langsung tampil di halaman Anda, dan di filter serta pencarian situs setelah ditinjau tim Noyan."
+ "serviceCatalogHint": "Pilih layanan Anda dari daftar. Jika ada yang belum tersedia, ketik namanya lalu tambahkan: layanan langsung tampil di halaman Anda, dan di filter serta pencarian situs setelah ditinjau tim Noyan.",
+ "resendCode": "Kirim ulang kode",
+ "codeRecentlySent": "Kode baru saja dikirim; masukkan kode tersebut."
 }

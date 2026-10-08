@@ -6771,5 +6771,7 @@
  "serviceCatalogAdd": "+ “${1}” hizmetini listeye ekle",
  "serviceCatalogAddFailed": "Bu hizmet eklenemedi; lütfen tekrar deneyin",
  "serviceCatalogPending": "${1} (inceleme bekliyor)",
- "serviceCatalogHint": "Hizmetlerinizi listeden seçin. Listede olmayan bir hizmet varsa adını yazıp ekleyin: hemen sayfanızda görünür, Noyan ekibi inceledikten sonra sitenin filtre ve aramasında da yer alır."
+ "serviceCatalogHint": "Hizmetlerinizi listeden seçin. Listede olmayan bir hizmet varsa adını yazıp ekleyin: hemen sayfanızda görünür, Noyan ekibi inceledikten sonra sitenin filtre ve aramasında da yer alır.",
+ "resendCode": "Kodu tekrar gönder",
+ "codeRecentlySent": "Az önce bir kod gönderildi; o kodu girin."
 }

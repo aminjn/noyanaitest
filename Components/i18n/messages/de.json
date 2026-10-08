@@ -6771,5 +6771,7 @@
  "serviceCatalogAdd": "+ „${1}“ zur Leistungsliste hinzufügen",
  "serviceCatalogAddFailed": "Diese Leistung konnte nicht hinzugefügt werden; bitte erneut versuchen",
  "serviceCatalogPending": "${1} (wartet auf Prüfung)",
- "serviceCatalogHint": "Wählen Sie Ihre Leistungen aus der Liste. Fehlt eine, geben Sie ihren Namen ein und fügen Sie sie hinzu: Sie erscheint sofort auf Ihrer Seite und nach Prüfung durch das Noyan-Team auch in den Filtern und der Suche der Website."
+ "serviceCatalogHint": "Wählen Sie Ihre Leistungen aus der Liste. Fehlt eine, geben Sie ihren Namen ein und fügen Sie sie hinzu: Sie erscheint sofort auf Ihrer Seite und nach Prüfung durch das Noyan-Team auch in den Filtern und der Suche der Website.",
+ "resendCode": "Code erneut senden",
+ "codeRecentlySent": "Vor Kurzem wurde ein Code gesendet; geben Sie diesen Code ein."
 }

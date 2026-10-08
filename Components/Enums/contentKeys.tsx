@@ -1797,6 +1797,8 @@ const contentKeys = [
   "enterCodeSentToX",
   "editMobileNumber",
   "untilCodeResend",
+  "codeRecentlySent",
+  "resendCode",
   "verificationCodeWillBeSentToYourNumber",
   "requestBeingProcessedByAdmin",
   "listSeparator",

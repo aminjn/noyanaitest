@@ -22,6 +22,7 @@ import useUser from "../Hooks/useUser";
 import usePopup from "../Hooks/usePopup";
 import SocketContext from "../Store/SocketContext";
 import AuthShell from "./AuthShell";
+import OtpResend, { otpWait, OtpSendReply } from "../UI/OtpResend";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -33,7 +34,19 @@ type AuthStage = (typeof authStages)[number];
 type AuthContext = {
   phone: string;
   stage: AuthStage;
+  // the server's wait before another SMS, counted from `sentAt`
+  wait: number;
+  sentAt: number;
+  // this tap sent nothing: a code went out a moment ago
+  recent: boolean;
 };
+
+const afterSend = (reply: OtpSendReply | undefined) => ({
+  stage: "otp" as const,
+  wait: otpWait(reply),
+  sentAt: Date.now(),
+  recent: reply?.data?.sent === false,
+});
 
 type StageProps = {
   ctx: AuthContext;
@@ -46,6 +59,13 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
   const { closePopup } = usePopup();
   const [code, setCode] = useState<string>("");
   const getContent = useScopedLocale(LOCALE_NS);
+  const resend = useForm<object, OtpSendReply>({
+    path: `${API}/auth`,
+    method: "POST",
+    parser: "JSON",
+    mutator: () => ({ phone: `0${ctx.phone}` }),
+    successCb: (reply) => setCtx((prev) => ({ ...prev, ...afterSend(reply) })),
+  });
   const { isLoading, submit } = useForm({
     path: `${API}/auth`,
     method: "PATCH",
@@ -87,10 +107,13 @@ const OtpStage = ({ ctx, setCtx }: StageProps) => {
         style={{ marginBlock: "1rem" }}
         onChange={(e) => setCode(e)}
       />
-      <div className={classes.resend}>
-        <span>1:00</span>
-        <span>{getContent("untilCodeResend")}</span>
-      </div>
+      <OtpResend
+        wait={ctx.wait}
+        startedAt={ctx.sentAt}
+        recent={ctx.recent}
+        isLoading={resend.isLoading}
+        onResend={() => resend.submit()}
+      />
       <Button
         className={classes.submit}
         variant={isOTP(code) ? "Primary" : "Disable"}
@@ -113,7 +136,7 @@ const InitStage = ({ ctx, setCtx }: StageProps) => {
     mutator: () => ({
       phone: `0${ctx.phone}`,
     }),
-    successCb: () => setCtx((prev) => ({ ...prev, stage: "otp" })),
+    successCb: (reply: OtpSendReply) => setCtx((prev) => ({ ...prev, ...afterSend(reply) })),
   });
   const getContent = useScopedLocale(LOCALE_NS);
 
@@ -157,6 +180,9 @@ const LoginPopup = ({
   const [context, setContext] = useState<AuthContext>({
     phone: "",
     stage: "init",
+    wait: 60,
+    sentAt: 0,
+    recent: false,
   });
 
   const getContent = useScopedLocale(LOCALE_NS);

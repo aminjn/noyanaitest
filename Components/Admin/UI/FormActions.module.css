@@ -11,6 +11,8 @@
   flex-wrap: wrap;
   margin-top: 0.5rem;
   padding: 0.875rem 0;
+  /* the assistant button floats over this corner */
+  padding-inline-end: var(--fabClear, 0px);
   border-top: 1px solid var(--line);
   background: var(--glassStrong);
   backdrop-filter: var(--glassBlur);

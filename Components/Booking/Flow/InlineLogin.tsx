@@ -12,6 +12,7 @@ import MobileInput from "@/Components/UI/MobileInput";
 import CodeInput from "@/Components/UI/CodeInput";
 import Button from "@/Components/UI/Button";
 import Link from "@/Components/i18n/Link";
+import OtpResend, { otpWait, OtpSendReply } from "@/Components/UI/OtpResend";
 import classes from "./InlineLogin.module.css";
 
 const NS: ContentNamespace[] = ["common", "bookingFlow"];
@@ -27,13 +28,17 @@ const InlineLogin = () => {
   const [phone, setPhone] = useState("");
   const [stage, setStage] = useState<"phone" | "code">("phone");
   const [code, setCode] = useState("");
+  const [sent, setSent] = useState({ wait: 60, at: 0, recent: false });
 
-  const send = useForm({
+  const send = useForm<object, OtpSendReply>({
     path: `${API}/auth`,
     method: "POST",
     parser: "JSON",
     mutator: () => ({ phone: `0${phone}` }),
-    successCb: () => setStage("code"),
+    successCb: (reply) => {
+      setSent({ wait: otpWait(reply), at: Date.now(), recent: reply?.data?.sent === false });
+      setStage("code");
+    },
   });
   const verify = useForm({
     path: `${API}/auth`,
@@ -80,10 +85,14 @@ const InlineLogin = () => {
             <button type="button" className={classes.link} onClick={() => setStage("phone")}>
               {getContent("editMobileNumber")}
             </button>
-            <button type="button" className={classes.link} onClick={() => send.submit()} disabled={send.isLoading}>
-              {getContent("bfResendCode")}
-            </button>
           </div>
+          <OtpResend
+            wait={sent.wait}
+            startedAt={sent.at}
+            recent={sent.recent}
+            isLoading={send.isLoading}
+            onResend={() => send.submit()}
+          />
           <Button
             type="submit"
             size="L"
