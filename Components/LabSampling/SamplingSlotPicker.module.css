@@ -1,0 +1,75 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.days {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-block-end: 0.25rem;
+  scrollbar-width: thin;
+}
+
+.chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--gray4);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--gray13);
+  cursor: pointer;
+  text-align: center;
+}
+
+.chip:disabled {
+  cursor: not-allowed;
+  color: var(--gray6);
+  border-style: dashed;
+}
+
+.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--onColor);
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.left {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.navButton {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+
+.navButton:disabled {
+  color: var(--gray6);
+  cursor: default;
+}
+
+.empty {
+  color: var(--gray8);
+}

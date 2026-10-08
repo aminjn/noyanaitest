@@ -8,12 +8,13 @@ import Input from "@/Components/UI/Input";
 import AreaInput from "@/Components/UI/AreaInput";
 import Box from "../UI/Box";
 import FormActions from "../UI/FormActions";
-import { IAdminWithdrawalRow } from "./AdminFinanceWithdrawalsPage";
+import { IAdminWithdrawalRow, withdrawalWalletLabel } from "./AdminFinanceWithdrawalsPage";
 import { userLabel } from "./adminFinance";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
 // Pay (after the bank transfer, with its reference) or reject (the held
-// amount returns to the user's wallet, with the reason shown to them).
+// amount returns to the wallet it was held from - the user's, or the
+// clinic's / hospital's own - with the reason shown to them).
 const DecideWithdrawalPopup = ({
   node,
   mutate,
@@ -28,6 +29,7 @@ const DecideWithdrawalPopup = ({
   return (
     <Box>
       <p>{ta("${1} تومان برای ${2}", [currencize(node.amount), userLabel(node.user)])}</p>
+      <p>{withdrawalWalletLabel(node)}</p>
       <p dir="ltr">{node.iban}</p>
       <p>{ta("به نام: ${1}", [node.holderName])}</p>
       <Input

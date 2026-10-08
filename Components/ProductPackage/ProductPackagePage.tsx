@@ -22,6 +22,7 @@ import { FilePath } from "../config";
 import Ixon from "../UI/Ixon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import ThinOwner from "./ThinOwner";
+import { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
 
 const NS: ContentNamespace[] = ["common", "productPackagePage"];
 
@@ -37,7 +38,12 @@ export type ProductPackagePageProps = {
       Products: Record<never, never>;
       Category: Record<never, never>;
     };
-  }>;
+  }> & {
+    // where its pharmacy ships it, and whether it holds an Rx-only product
+    // (2026-10, backend getProductPackage)
+    deliveryArea?: DeliveryArea;
+    requiresPrescription?: boolean;
+  };
 };
 
 const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
@@ -70,7 +76,9 @@ const ProductPackagePage = ({ data }: ProductPackagePageProps) => {
       discount={data.discount}
       name={data.name}
       price={data.price}
-      owner={<ThinOwner name={data.owner.name} src={data.owner.avatar} />}
+      owner={<ThinOwner name={data.owner?.name} src={data.owner?.avatar} />}
+      deliveryArea={data.deliveryArea}
+      rx={!!data.requiresPrescription}
       tabs={[
         {
           id: "Description",

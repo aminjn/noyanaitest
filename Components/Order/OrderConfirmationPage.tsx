@@ -1,5 +1,7 @@
 "use client";
 
+import { OrderSamplings } from "../LabSampling/SamplingInfo";
+import { ILabSampling } from "../LabSampling/samplingTypes";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import classes from "./OrderConfirmationPage.module.css";
@@ -53,6 +55,7 @@ import usePopup from "../Hooks/usePopup";
 import useNotification from "../Hooks/useNotification";
 import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
 import { useRef, useState } from "react";
+import SubmitCommentForm from "../Comment/SubmitCommentForm";
 import {
   t2xsRegular,
   tlgBold,
@@ -128,6 +131,8 @@ export interface IOrder<
     status?: OrderItemStatus;
     // the lab's answer: private result files and a note (2026-10)
     result?: { files?: string[]; note?: string };
+    // its sampling appointment (2026-10, backend Lib/labSampling.ts)
+    sampling?: ILabSampling | string | null;
   } & IOrderLineResponse)[];
   total: number;
   // one per pharmacy (backend Lib/delivery.ts); Tapsi's fee is in `total`
@@ -141,11 +146,22 @@ export interface IOrder<
     shippedAt?: string;
   }[];
   deliveryFee?: number;
+  // home-sampling fees, in `total`
+  samplingFee?: number;
   paymentMethod: "wallet" | "sep";
   status: OrderStatus;
   address?: IUserAddress;
   submittedAt: string;
   paidAt?: string;
+  // the pharmacies / labs with a fulfilled line here, each rated once for
+  // this order (2026-10, backend userController.getMyOrder)
+  reviewSellers?: {
+    refPath: "Pharmacy" | "ParaClinic";
+    _id: string;
+    name?: string;
+    slug?: string;
+    image?: string;
+  }[];
 }
 
 type OrderNode = IOrder<{
@@ -423,6 +439,8 @@ const OrderConfirmationPage = () => {
                 </div>
               </div>
             ))}
+            {/* lab sampling appointments, once per lab (2026-10) */}
+            <OrderSamplings lines={order.tests as never} />
             {!!order.shipments?.length && (
               <div className={classes.addressRow}>
                 <span className={`${classes.subtitle} ${tsmRegular}`}>
@@ -459,6 +477,14 @@ const OrderConfirmationPage = () => {
                 </span>
               </div>
             )}
+            {!!order.samplingFee && (
+              <div className={classes.totalRow}>
+                <span className={tsmRegular}>{getContent("lsHomeFee")}</span>
+                <span className={tsmRegular}>
+                  {`${currencize(order.samplingFee)} ${getContent("toman")}`}
+                </span>
+              </div>
+            )}
             <div className={classes.totalRow}>
               <span className={tsmRegular}>{getContent("totalPrice")}</span>
               <span className={`${classes.totalPrice} ${tlgBold}`}>
@@ -476,6 +502,33 @@ const OrderConfirmationPage = () => {
               </div>
             )}
           </div>
+          {/* "rate your order" (2026-10, Digikala / Snappfood): one verified
+              review per delivered seller of this order */}
+          {(() => {
+            const sellers = (Array.isArray(order.reviewSellers) ? order.reviewSellers : []).filter(
+              (el) => !!el?._id && (el.refPath === "Pharmacy" || el.refPath === "ParaClinic"),
+            );
+            if (!sellers.length) return null;
+            return (
+              <div className={classes.sections} id="review">
+                <legend className={`${classes.title} ${tmdDemiBold}`}>
+                  {getContent("rateYourOrderTitle")}
+                </legend>
+                <span className={`${classes.subtitle} ${t2xsRegular}`}>
+                  {getContent("rateYourOrderHint")}
+                </span>
+                {sellers.map((el) => (
+                  <SubmitCommentForm
+                    key={`${el.refPath}-${el._id}`}
+                    model={el.refPath}
+                    nodeId={el._id}
+                    order={order._id}
+                    title={el.name || undefined}
+                  />
+                ))}
+              </div>
+            );
+          })()}
           {canCancel && (
             <Button
               variant="Error"

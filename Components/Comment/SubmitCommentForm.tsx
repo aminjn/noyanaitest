@@ -5,7 +5,8 @@ import usePopup from "../Hooks/usePopup";
 import AuthPopup from "../Popups/AuthPopup";
 import { fetcher } from "../helpers/fetcher";
 import { ContentKey } from "../Enums/contentKeys";
-import { ReviewBasisKind, VerifiedBadge } from "./ReviewBits";
+import { ReviewBasisKind, ReviewTagChips, VerifiedBadge } from "./ReviewBits";
+import { knownReviewTags } from "./reviewTags";
 import { API } from "../config";
 import useForm from "../Hooks/useForm";
 import StarIcon from "../Icons/StarIcon";
@@ -25,6 +26,8 @@ type Eligibility = {
   eligible: boolean;
   reason: "noVisit" | "noPurchase" | "alreadyReviewed" | "doctorVisit" | null;
   at?: string | null;
+  // the quick tags this page offers (seller reviews of a pharmacy / lab)
+  tagOptions?: string[];
 };
 
 const closedKey: Record<NonNullable<Eligibility["reason"]>, string> = {
@@ -38,17 +41,27 @@ const closedKey: Record<NonNullable<Eligibility["reason"]>, string> = {
 // (centre, product, service) the stars and text are open only to someone
 // with a completed visit / delivered order there, one review each; the
 // form says why it is closed and points to booking instead of failing on
-// submit. Open Q&A pages (blog...) take text only, no stars.
+// submit. Open Q&A pages (blog...) take text only, no stars. On a rated
+// page the stars are the review: the text is optional. A pharmacy / lab
+// (seller review, 2026-10) also offers quick tags and can be tied to one
+// order (`order`, from the order page).
 const SubmitCommentForm = ({
   model,
   nodeId,
   rated = true,
   basis = null,
+  order,
+  title,
+  onSubmitted,
 }: {
   model: CommentableDocumentPath;
   nodeId: string;
   rated?: boolean;
   basis?: ReviewBasisKind | null;
+  order?: string;
+  // replaces the form's own legend (the order page names the seller)
+  title?: string;
+  onSubmitted?: () => unknown;
 }) => {
   const getContent = useScopedLocale(LOCALE_NS);
   const { user } = useUser();
@@ -60,26 +73,37 @@ const SubmitCommentForm = ({
     isLoading: checking,
     mutate: recheck,
   } = useSWR<Eligibility | null>(
-    rated && user ? `${API}/comment/${model}/${nodeId}/eligibility` : null,
+    rated && user
+      ? `${API}/comment/${model}/${nodeId}/eligibility${order ? `?order=${order}` : ""}`
+      : null,
     (url: string) => fetcher({ url }).then((res) => res?.data ?? null),
   );
 
   const areaRef = useRef<HTMLTextAreaElement>(null);
 
+  const tagOptions = knownReviewTags(eligibility?.tagOptions);
+
   const { input, isLoading, setInput, submit, reset } = useForm<{
     content: string;
     score: number;
+    tags: string[];
   }>({
     path: `${API}/comment/${model}/${nodeId}`,
     method: "POST",
+    parser: "JSON",
     hasProblem: (inp) =>
-      !inp.content?.trim() || (rated && !inp.score)
-        ? getContent("checkInput")
-        : false,
+      rated ? (!inp.score ? getContent("checkInput") : false) : !inp.content?.trim() ? getContent("checkInput") : false,
+    mutator: (inp) => ({
+      content: inp.content?.trim() || "",
+      ...(rated && inp.score ? { score: inp.score } : {}),
+      ...(rated && inp.tags?.length ? { tags: inp.tags } : {}),
+      ...(rated && order ? { order } : {}),
+    }),
     successCb: () => {
       reset();
       if (areaRef.current) areaRef.current.value = "";
       if (rated) recheck();
+      onSubmitted?.();
     },
   });
 
@@ -113,12 +137,14 @@ const SubmitCommentForm = ({
     return (
       <div className={classes.form}>
         <legend className={`${classes.formTitle} ${tsmMedium}`}>
-          {getContent("submitYourComment")}
+          {title || getContent("submitYourComment")}
         </legend>
         <p className={`${classes.closed} ${tsmRegular}`}>
           {getContent(
-            (closedKey[eligibility.reason || (basis === "purchase" ? "noPurchase" : "noVisit")] ||
-              "reviewClosedNoVisit") as ContentKey,
+            (order && eligibility.reason === "alreadyReviewed"
+              ? "reviewDoneForOrder"
+              : closedKey[eligibility.reason || (basis === "purchase" ? "noPurchase" : "noVisit")] ||
+                "reviewClosedNoVisit") as ContentKey,
           )}
         </p>
         {(eligibility.basis ?? basis) === "visit" &&
@@ -133,9 +159,10 @@ const SubmitCommentForm = ({
   return (
     <div className={classes.form}>
       <legend className={`${classes.formTitle} ${tsmMedium}`}>
-        {rated
-          ? getContent("submitYourComment")
-          : getContent("submitYourQuestion")}
+        {title ||
+          (rated
+            ? getContent("submitYourComment")
+            : getContent("submitYourQuestion"))}
       </legend>
       {rated && eligibility?.eligible && (
         <p className={`${classes.verifiedHint} ${tsmRegular}`}>
@@ -160,11 +187,29 @@ const SubmitCommentForm = ({
         ))}
       </div>
       )}
+      {rated && !!tagOptions.length && (
+        <>
+          <span className={`${classes.closed} ${tsmRegular}`}>{getContent("reviewTagsPrompt")}</span>
+          <ReviewTagChips
+            tags={tagOptions}
+            selected={input.tags || []}
+            onToggle={(tag) =>
+              setInput((prev) => {
+                const current = prev.tags || [];
+                return {
+                  ...prev,
+                  tags: current.includes(tag) ? current.filter((t) => t !== tag) : [...current, tag],
+                };
+              })
+            }
+          />
+        </>
+      )}
       <textarea
         onChange={(e) =>
           setInput((prev) => ({ ...prev, content: e.target.value }))
         }
-        placeholder={getContent("shareYourCommentPlaceholder")}
+        placeholder={getContent(rated ? "reviewTextOptional" : "shareYourCommentPlaceholder")}
         className={`${classes.area} ${tsmRegular}`}
         ref={areaRef}
       />

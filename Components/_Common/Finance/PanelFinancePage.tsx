@@ -41,6 +41,11 @@ type FinanceTransaction = {
   // still in its settlement hold until availableAt
   held?: boolean;
   availableAt?: string;
+  // a centre's own wallet moved it (one wallet per clinic / hospital);
+  // a centre's plan without it was paid from the owner's personal wallet
+  centreWallet?: string;
+  withdrawal?: string;
+  adminAction?: string;
 };
 
 type PanelFinance = {
@@ -116,6 +121,9 @@ export type PanelFinanceConfig = {
   // "upcoming": the tile is left out
   upcomingKey?: ContentKey;
   upcomingNoteKey?: ContentKey;
+  // the withdrawal box's API when the panel has its own wallet (a clinic's
+  // or hospital's, "/clinic/withdrawal"); else the user's own
+  withdrawalApi?: string;
 };
 
 const PanelFinancePage = ({
@@ -125,6 +133,7 @@ const PanelFinancePage = ({
   noteKey,
   upcomingKey,
   upcomingNoteKey,
+  withdrawalApi,
 }: PanelFinanceConfig) => {
   const getContent = useScopedLocale(namespaces);
   const intlTag = useIntlLocale();
@@ -197,7 +206,13 @@ const PanelFinancePage = ({
         sub: "",
       };
     if (t.license)
-      return { title: getContent("dpfLicensePurchase", [t.license.displayName || ""]), sub: "" };
+      return {
+        title: getContent("dpfLicensePurchase", [t.license.displayName || ""]),
+        sub: withdrawalApi && !t.centreWallet ? getContent("pfPaidByOwner") : "",
+      };
+    if (t.withdrawal)
+      return { title: getContent(t.amount < 0 ? "pfWithdrawalHold" : "pfWithdrawalBack"), sub: "" };
+    if (t.adminAction === "adjustment") return { title: getContent("pfWalletAdjust"), sub: "" };
     return { title: getContent("dpfOther"), sub: "" };
   };
 
@@ -256,7 +271,7 @@ const PanelFinancePage = ({
             />
           </div>
 
-          {data.canWithdraw && <WalletWithdrawal />}
+          {data.canWithdraw && <WalletWithdrawal api={withdrawalApi} />}
 
           <section className={classes.card}>
             <h2 className={classes.cardTitle}>{getContent("dpfMonthlyIncome")}</h2>

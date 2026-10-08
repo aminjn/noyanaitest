@@ -27,6 +27,7 @@ import ChatBubbleIcon from "@/Components/Icons/ChatBubbleIcon";
 import UserCheckIcon from "@/Components/Icons/UserCheckIcon";
 import FileIcon from "@/Components/Icons/FileIcon";
 import CurrentLicenseWidget from "../CurrentLicenseWidget";
+import LicenseRenewBanner from "../LicenseRenewBanner";
 import VisitQuickActions from "../Desk/VisitQuickActions";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelHome"];
@@ -395,6 +396,8 @@ const DoctorDashboard = () => {
           {!data.doctor.active && data.isOwner && (
             <p className={classes.notice}>{getContent("dpdProfileInactive")}</p>
           )}
+
+          <LicenseRenewBanner />
 
           <div className={classes.rowTop}>
             {/* ---- assistant ---- */}

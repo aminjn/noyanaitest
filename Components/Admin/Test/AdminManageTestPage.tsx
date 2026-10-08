@@ -7,10 +7,10 @@ import TabSystem from "../UI/TabSystem";
 import AdminContentTranslationPage from "@/Components/Admin/ContentTranslation/AdminContentTranslationPage";
 import { ITest, testFormRenderer } from "./AdminManageTestsPage";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import PageMetaEditor from "../PageMeta/PageMetaEditor";
 
-// A test has no public page of its own (it is listed under its category),
-// so its record page is the details plus the translations of its name and
-// summary - no SEO tab.
+// A test's record page: its details, the SEO of its public page
+// (/test/<slug>, 2026-10) and the translations of its texts.
 const AdminManageTestPage = () => {
   return (
     <NodeManager<ITest>
@@ -35,6 +35,11 @@ const AdminManageTestPage = () => {
                   }}
                 />
               ),
+            },
+            {
+              id: "Meta",
+              title: ta("سئو"),
+              content: <PageMetaEditor resourceType="/test/[slug]" slug={node.slug} />,
             },
             {
               id: "translations",

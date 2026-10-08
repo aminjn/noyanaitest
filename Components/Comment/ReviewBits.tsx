@@ -8,6 +8,7 @@ import useLocale from "../Hooks/useLocale";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import { formatMonthYear, safeFormatDate } from "../helpers/safeFormatDate";
 import { ContentKey } from "../Enums/contentKeys";
+import { knownReviewTags, reviewTagContentKey } from "./reviewTags";
 
 // Verified reviews (2026-10, Zocdoc / Doctolib / Digikala): the badge on a
 // review backed by a completed visit or a delivered order, with its month,
@@ -52,6 +53,53 @@ export const ProviderReply = ({ reply }: { reply: ReviewReply }) => {
         <span className={classes.replyDate}>{safeFormatDate(fmt, reply.at, "")}</span>
       </div>
       <p className={classes.replyText}>{reply.content}</p>
+    </div>
+  );
+};
+
+// The quick tags of a seller review (pharmacy / lab): read-only chips on a
+// review, chips with a count in the page summary, or toggles in the form.
+export const ReviewTagChips = ({
+  tags,
+  counts,
+  selected,
+  onToggle,
+}: {
+  tags: unknown;
+  counts?: Record<string, number>;
+  selected?: string[];
+  onToggle?: (tag: string) => void;
+}) => {
+  const getContent = useLocale();
+  const intlTag = useIntlLocale();
+  const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
+  const list = knownReviewTags(tags).filter((t) => !counts || (counts[t] || 0) > 0);
+  if (!list.length) return null;
+  return (
+    <div className={classes.tags}>
+      {list.map((tag) => {
+        const label = getContent(reviewTagContentKey[tag]);
+        if (onToggle) {
+          const on = !!selected?.includes(tag);
+          return (
+            <button
+              key={tag}
+              type="button"
+              aria-pressed={on}
+              className={`${classes.tag} ${classes.tagToggle} ${on ? classes.tagOn : ""}`}
+              onClick={() => onToggle(tag)}
+            >
+              {label}
+            </button>
+          );
+        }
+        return (
+          <span key={tag} className={classes.tag}>
+            {label}
+            {!!counts && <span className={classes.tagCount}>{num.format(counts[tag] || 0)}</span>}
+          </span>
+        );
+      })}
     </div>
   );
 };

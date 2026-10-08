@@ -42,6 +42,9 @@ export interface ITest<
     ? ITestCategory<T["Category"]>
     : string;
   summary?: string;
+  // shown on the public /test/<slug> page
+  description?: string;
+  preparation?: string;
 }
 
 export const testFormRenderer: FormRenderer<ITest> = {
@@ -69,6 +72,17 @@ export const testFormRenderer: FormRenderer<ITest> = {
   },
   summary: { type: "text", get title() {
   return ta("خلاصه");
+} },
+  // the public page (/test/<slug>): its address, what the test is and how
+  // to prepare (fasting, medicines to pause)
+  slug: { type: "text", get title() {
+  return ta("اسلاگ");
+} },
+  description: { type: "area", get title() {
+  return ta("توضیحات");
+} },
+  preparation: { type: "area", get title() {
+  return ta("آمادگی پیش از آزمایش");
 } },
 };
 

@@ -77,6 +77,8 @@ export interface IParaClinicTest<
   readyTime?: string;
   // the lab paused this offer (absent on old rows = on)
   isActive?: boolean;
+  // how its sample is taken (2026-10; absent on old rows = "lab")
+  sampling?: "lab" | "labOrHome" | "none";
 }
 
 const MutateParaClinicTestPopup = ({
@@ -126,6 +128,16 @@ const MutateParaClinicTestPopup = ({
             required: true,
           },
           readyTime: { type: "text", title: ta("زمان آماده سازی") },
+          // how the sample is taken (2026-10, backend Models/ParaClinicTest.ts)
+          sampling: {
+            type: "select",
+            title: ta("نمونه‌گیری"),
+            options: {
+              lab: ta("در آزمایشگاه"),
+              labOrHome: ta("در آزمایشگاه یا منزل"),
+              none: ta("بدون نوبت نمونه‌گیری"),
+            },
+          },
         }}
       />
     </PopupCard>
@@ -300,7 +312,18 @@ export const paraClinicInfoRenderer = (): FormRenderer<IParaClinic> => ({
   },
   phone: { type: "text", title: ta("تلفن"), section: ta("تماس") },
   onlineResponse: { type: "bool", title: ta("پاسخ آنلاین") },
-  onPremises: { type: "bool", title: ta("نمونه گیری در محل") },
+  // follows the lab's own home-sampling setting (2026-10, backend
+  // Controllers/labSamplingController.ts): shown, not typed
+  onPremises: {
+    type: "bool",
+    get title() {
+      return ta("نمونه گیری در محل");
+    },
+    readOnly: true,
+    get hint() {
+      return ta("از تنظیمات نمونه‌گیری خود آزمایشگاه پیروی می‌کند");
+    },
+  },
   personelCount: { type: "number", title: ta("کادر تخصصی") },
   summary: { type: "area", title: ta("خلاصه") },
   insurances: {

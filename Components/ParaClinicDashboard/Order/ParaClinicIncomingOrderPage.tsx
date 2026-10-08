@@ -36,6 +36,7 @@ import { IIncomingOrder, IIncomingOrderItem } from "./ParaClinicIncomingOrdersPa
 import LabResultPopup from "./LabResultPopup";
 import AttachmentIcon from "@/Components/Icons/AttachmentIcon";
 import labClasses from "./LabResult.module.css";
+import { OrderSamplings } from "@/Components/LabSampling/SamplingInfo";
 
 const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
@@ -162,6 +163,10 @@ const ParaClinicIncomingOrderPage = () => {
               value={`${currencize(data.subtotal)} ${getContent("toman")}`}
             />
           </List>
+          {/* the sampling appointment(s) of these tests (2026-10): when,
+              and for a home visit where; confirmed from the agenda or by
+              accepting a line */}
+          <OrderSamplings lines={data.tests as never} />
           <Table
             name="ParaClinicIncomingOrderItems"
             data={buildItemRows(data)}

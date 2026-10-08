@@ -53,6 +53,7 @@ import Badge from "@/Components/UI/Badge";
 import DoctorReviews from "./DoctorReviews";
 import InsuranceCoverage from "./InsuranceCoverage";
 import BookingSidebar from "./BookingSidebar";
+import DoctorContact from "./DoctorContact";
 import Button from "@/Components/UI/Button";
 
 const NS: ContentNamespace[] = ["common", "drProfile"];
@@ -558,7 +559,10 @@ const NewDoctorProfilePage = ({
             title={getContent("address")}
           >
             {!displayAddress && !locationCards.length ? (
-              <EmptyState>{getContent("nothingFound")}</EmptyState>
+              // the contact links below may be all there is
+              !(doctor.website || doctor.landLine || doctor.socials?.length) && (
+                <EmptyState>{getContent("nothingFound")}</EmptyState>
+              )
             ) : locationCards.length ? (
               <div className={classes.locations}>
                 {locationCards.map((card) => (
@@ -578,6 +582,11 @@ const NewDoctorProfilePage = ({
                 <span>{displayAddress}</span>
               </p>
             )}
+            <DoctorContact
+              website={doctor.website}
+              landLine={doctor.landLine}
+              socials={doctor.socials}
+            />
           </SectionCard>
 
           {hasFaqs && (

@@ -175,3 +175,16 @@
   font-size: 0.875rem;
   text-align: start;
 }
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--gray11);
+  align-self: flex-start;
+}
+
+.star {
+  color: var(--yellow);
+}

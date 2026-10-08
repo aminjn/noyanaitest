@@ -9,6 +9,7 @@ import Ixon from "../UI/Ixon";
 import ShareIcon from "../Icons/ShareIcon";
 import VerifyIcon from "../Icons/VerifyIcon";
 import ProductSellers from "./ProductSellers";
+import { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
 import RxBadge from "./RxBadge";
 import ProductTabs, { ProductTab, WhyBox } from "./ProductTabs";
 import ProductSameAs from "./ProductSameAs";
@@ -112,7 +113,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
       score={data.averageScore}
       specs={data.specs}
       totalScore={data.commentCount}
-      beforeTabs={<ProductSellers data={data.sellers} />}
+      beforeTabs={<ProductSellers data={data.sellers} rx={!!data.requiresPrescription} />}
       badges={data.requiresPrescription ? <RxBadge size="L" /> : undefined}
       category={data.category ? { name: data.category.name || "" } : undefined}
       name={data.name}
@@ -133,6 +134,8 @@ const ProductPage = ({ data }: ProductPageProps) => {
       price={currentSeller?.price || 0}
       fastDelivery={!!currentSeller?.fastDelivery}
       freeDelivery={!!currentSeller?.freeDelivery}
+      deliveryArea={(currentSeller as { deliveryArea?: DeliveryArea } | undefined)?.deliveryArea}
+      rx={!!data.requiresPrescription}
       owner={
         <div className={classes.seller}>
           <Ixon className={classes.sellerIcon} width="1.25rem">

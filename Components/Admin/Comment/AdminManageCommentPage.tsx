@@ -24,6 +24,7 @@ import DeleteShitPopup from "../UI/DeleteShitPopup";
 import RequestInfoGrid from "../BecomeRequest/RequestInfoGrid";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import classes from "./AdminManageCommentPage.module.css";
+import { tagsLabel } from "./reviewTagLabels";
 
 // admin route of each commentable model (same map as the comments list)
 const commentTargetPath: Record<string, string> = {
@@ -41,6 +42,7 @@ const commentTargetPath: Record<string, string> = {
   Hospital: "hospital",
   Insurance: "insurance",
   DoctorProfile: "doctorprofile",
+  Pharmacy: "pharmacy",
 };
 
 type AdminComment = IComment<{
@@ -147,6 +149,9 @@ const AdminManageCommentPage = () => {
                     ) : undefined,
                 },
                 { label: ta("امتیاز"), value: data.score },
+                ...(Array.isArray(data.tags) && data.tags.length
+                  ? [{ label: ta("برچسب‌های سریع"), value: tagsLabel(data.tags) }]
+                  : []),
                 {
                   label: ta("تاریخ ثبت"),
                   value: data.createdAt ? (

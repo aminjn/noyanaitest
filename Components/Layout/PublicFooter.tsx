@@ -47,6 +47,9 @@ const linkMap: {
       { title: "symptomsList", target: "/symptom" },
       { title: "diseasesList", target: "/disease" },
       { title: "drugsList", target: "/drug" },
+      // the test and pharmacy directories (2026-10)
+      { title: "tests", target: "/test" },
+      { title: "pharmacies", target: "/pharmacy" },
     ],
   },
 ];

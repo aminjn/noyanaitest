@@ -33,6 +33,17 @@ import CartPrescriptionSection, {
   rxDraftToPayload,
   RxDraft,
 } from "./CartPrescriptionSection";
+// lab sampling appointments (2026-10): its own section and payload part
+import CartSamplingSection, {
+  samplingDraftsToPayload,
+  samplingFeeOf,
+  SamplingDrafts,
+} from "./CartSamplingSection";
+import { CartSamplingGroup } from "../LabSampling/samplingTypes";
+import CartDeliveryProblems, {
+  CartDeliveryProblem,
+  useDeliveryProblemText,
+} from "./CartDeliveryProblems";
 import { ContentKey } from "../Enums/contentKeys";
 import {
   t2xsRegular,
@@ -81,8 +92,12 @@ type CartSummary = {
   deliveryFee?: number;
   shipments?: CartShipment[];
   needsAddress?: boolean;
+  // shipments the pharmacy's delivery area refuses for this address (2026-10)
+  undeliverable?: CartDeliveryProblem[];
   // a prescription-only item is in the cart (2026-10): ask for it
   requiresPrescription?: boolean;
+  // labs whose tests need a sampling time (backend Lib/labSampling.ts)
+  samplings?: CartSamplingGroup[];
   // «پرو»: the member's delivery discount, or what Pro would save
   pro?: { member?: boolean; discount?: number; potential?: number; threshold?: number };
   total: number;
@@ -144,8 +159,16 @@ const CartCheckoutPopup = ({
   const [method, setMethod] = useState<OrderPaymentMethod>("wallet");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rxDraft, setRxDraft] = useState<RxDraft>(emptyRxDraft);
+  // sampling: one appointment per lab; a home visit adds its fee
+  const [samplingDrafts, setSamplingDrafts] = useState<SamplingDrafts>({});
+  const samplingGroups = Array.isArray(summary?.samplings) ? summary!.samplings! : [];
+  const samplingPayload = samplingDraftsToPayload(samplingGroups, samplingDrafts);
+  const samplingFee = samplingFeeOf(samplingGroups, samplingDrafts);
   const needsRx = !!summary?.requiresPrescription;
   const rxPayload = needsRx ? rxDraftToPayload(rxDraft) : null;
+  // the pharmacy's delivery area refuses a shipment (2026-10)
+  const deliveryProblemText = useDeliveryProblemText();
+  const deliveryBlocked = Array.isArray(summary?.undeliverable) && summary.undeliverable.length > 0;
 
   return (
     <PopupCard title={getContent("confirmAndPayOrder")}>
@@ -208,7 +231,17 @@ const CartCheckoutPopup = ({
             {getContent("addNewAddress")}
           </Button>
         </div>
+        {/* delivery area (2026-10): what can't go to this address */}
+        <CartDeliveryProblems problems={summary?.undeliverable} />
         {needsRx && <CartPrescriptionSection value={rxDraft} onChange={setRxDraft} />}
+        {!!samplingGroups.length && (
+          <CartSamplingSection
+            groups={samplingGroups}
+            addresses={addresses}
+            value={samplingDrafts}
+            onChange={setSamplingDrafts}
+          />
+        )}
         <div className={classes.section}>
           <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
             {getContent("paymentMethod")}
@@ -328,10 +361,18 @@ const CartCheckoutPopup = ({
         {!!summary?.pro && !summary.pro.member && !!summary.pro.potential && (
           <ProUpsellCard moment="delivery" amount={summary.pro.potential} />
         )}
+        {samplingFee > 0 && (
+          <div className={classes.totalRow}>
+            <span className={tsmRegular}>{getContent("lsHomeFee")}</span>
+            <span className={tsmRegular}>
+              {`${currencize(samplingFee)} ${getContent("toman")}`}
+            </span>
+          </div>
+        )}
         <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("totalPrice")}</span>
           <span className={`${classes.totalPrice} ${tbaseDemiBold}`}>
-            {`${currencize(summary ? summary.total : total)} ${getContent("toman")}`}
+            {`${currencize((summary ? summary.total : total) + samplingFee)} ${getContent("toman")}`}
           </span>
         </div>
         <Button
@@ -346,8 +387,16 @@ const CartCheckoutPopup = ({
               pushNotification(getContent("selectAddressFirst"), "Warn");
               return;
             }
+            if (deliveryBlocked) {
+              pushNotification(deliveryProblemText(summary!.undeliverable![0]), "Warn");
+              return;
+            }
             if (needsRx && !rxPayload) {
               pushNotification(getContent("rxMissing"), "Warn");
+              return;
+            }
+            if (samplingGroups.length && !samplingPayload) {
+              pushNotification(getContent("lsChooseTime"), "Warn");
               return;
             }
             setIsSubmitting(true);
@@ -363,6 +412,7 @@ const CartCheckoutPopup = ({
           method,
           address: address || undefined,
           ...(rxPayload ? { prescription: rxPayload } : {}),
+          ...(samplingPayload?.length ? { samplings: samplingPayload } : {}),
         }}
         successMessage={
           method === "wallet" ? getContent("orderSubmittedMessage") : undefined
@@ -375,7 +425,13 @@ const CartCheckoutPopup = ({
             return;
           }
           setIsSubmitting(false);
-          if (!status) return;
+          if (!status) {
+            // a sampling slot may have just filled up: show the seats again
+            globalMutate(
+              (key) => typeof key === "string" && key.startsWith(`${API}/cart/sampling/`),
+            );
+            return;
+          }
           // the server emptied the cart and debited the wallet: drop the
           // stale copies (cart page, header badge, balance)
           globalMutate(`${API}/cart`);

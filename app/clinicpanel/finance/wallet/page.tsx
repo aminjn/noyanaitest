@@ -9,6 +9,7 @@ const Finance = async () => {
       <OrgFinancePage
         panel="/clinicpanel"
         api="/clinic/finance"
+        withdrawalApi="/clinic/withdrawal"
         noteKey="ofCenterNote"
       />
     </LocaleScopeProvider>

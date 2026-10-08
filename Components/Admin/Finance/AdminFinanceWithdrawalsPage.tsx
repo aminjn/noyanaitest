@@ -36,7 +36,20 @@ export interface IAdminWithdrawalRow {
   createdAt?: string;
   decidedAt?: string;
   decidedBy?: { phone?: string; username?: string } | null;
+  // a clinic's / hospital's own wallet (one wallet per centre); unset: the
+  // user's personal wallet
+  centreKind?: "clinic" | "hospital";
+  centre?: string;
+  centreName?: string;
 }
+
+// which wallet a request is held from
+export const withdrawalWalletLabel = (node: Pick<IAdminWithdrawalRow, "centreKind" | "centreName">) =>
+  node.centreKind === "clinic"
+    ? ta("کلینیک: ${1}", [node.centreName || "—"])
+    : node.centreKind === "hospital"
+      ? ta("بیمارستان: ${1}", [node.centreName || "—"])
+      : ta("کیف پول شخصی");
 
 const statusDict: Record<IAdminWithdrawalRow["status"], string> = {
   get pending() {
@@ -126,6 +139,11 @@ toolbar={false}
                   ) : (
                     "—"
                   ),
+              },
+              wallet: {
+                name: ta("کیف پول"),
+                value: (node) => withdrawalWalletLabel(node),
+                filter: "Set",
               },
               amount: {
                 name: ta("مبلغ (تومان)"),

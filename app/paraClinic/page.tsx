@@ -25,6 +25,8 @@ const ParaClinics = async (ctx: {
     insurance?: string;
     // labs offering one test (a test card links here)
     test?: string;
+    // "best" = best rated (approved buyer reviews)
+    sort?: string;
   }>;
 }) => {
   const {
@@ -34,6 +36,7 @@ const ParaClinics = async (ctx: {
     test,
     tag,
     insurance,
+    sort,
   } = await ctx.searchParams;
   const page = Number(_page || 1);
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
@@ -43,6 +46,7 @@ const ParaClinics = async (ctx: {
   if (tag) params.append("tag", tag);
   if (insurance) params.append("insurance", insurance);
   if (test) params.append("test", test);
+  if (sort === "best") params.append("sort", "best");
   if (category)
     for (const cat of Array.isArray(category) ? category : [category])
       params.append("category", cat);

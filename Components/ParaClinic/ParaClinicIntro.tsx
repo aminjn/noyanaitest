@@ -112,15 +112,20 @@ const ParaClinicIntro = ({ data, takesOrders }: ParaClinicPageProps) => {
           <div className={classes.content}>
             <h1 className={`${classes.h1} ${txlMedium}`}>{data.name}</h1>
             <div className={classes.stats}>
-              <Ixon className={classes.star} width="1rem">
-                <StarIcon />
-              </Ixon>
-              <span className={`${classes.score} ${tsmBold}`}>
-                {data.averageScore?.toFixed(1)}
-              </span>
-              <span
-                className={`${classes.commentCount} ${tsmRegular}`}
-              >{`(${getContent("nComments", [data.commentCount?.toString() || "0"])})`}</span>
+              {/* no score until there is an approved review */}
+              {Number(data.commentCount) > 0 && (
+                <>
+                  <Ixon className={classes.star} width="1rem">
+                    <StarIcon />
+                  </Ixon>
+                  <span className={`${classes.score} ${tsmBold}`}>
+                    {Number(data.averageScore || 0).toFixed(1)}
+                  </span>
+                  <span
+                    className={`${classes.commentCount} ${tsmRegular}`}
+                  >{`(${getContent("nComments", [String(data.commentCount)])})`}</span>
+                </>
+              )}
               {!!data.establishment && (
                 <span className={`${classes.commentCount} ${txsRegular}`}>
                   {getContent("establishedAtx", [data.establishment])}
@@ -251,11 +256,13 @@ const ParaClinicIntro = ({ data, takesOrders }: ParaClinicPageProps) => {
           title={getContent("specialistPersonel")}
           value={getContent("nPerson", [String(data.personelCount ?? 0)])}
         />
-        <Card
-          icon={<StarLineIcon />}
-          title={getContent("usersScore")}
-          value={data.averageScore?.toFixed(1) || "0"}
-        />
+        {Number(data.commentCount) > 0 && (
+          <Card
+            icon={<StarLineIcon />}
+            title={getContent("usersScore")}
+            value={Number(data.averageScore || 0).toFixed(1)}
+          />
+        )}
         <Card
           icon={<ChatBubbleIcon />}
           title={getContent("submittedCommentsCount")}

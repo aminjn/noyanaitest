@@ -13,6 +13,7 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import { currencize } from "@/Components/helpers/currencize";
 import CartActions from "../CartActions";
 import ProductCartInfos from "../ProductCartInfos";
+import { DeliveryArea } from "../../Pharmacy/DeliveryAreaNote";
 
 const NS: ContentNamespace[] = ["common", "productCartable"];
 const CartablePageCartSection = ({
@@ -26,6 +27,8 @@ const CartablePageCartSection = ({
   service,
   fastDelivery,
   freeDelivery,
+  deliveryArea,
+  rx,
 }: {
   cartTitle: ContentKey;
   cartTitleTail?: ReactNode;
@@ -37,6 +40,8 @@ const CartablePageCartSection = ({
   service?: boolean;
   fastDelivery?: boolean;
   freeDelivery?: boolean;
+  deliveryArea?: DeliveryArea;
+  rx?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
 
@@ -82,6 +87,8 @@ const CartablePageCartSection = ({
           service={service}
           fastDelivery={fastDelivery}
           freeDelivery={freeDelivery}
+          deliveryArea={deliveryArea}
+          rx={rx}
         />
       </div>
     </Fragment>

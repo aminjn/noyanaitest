@@ -66,6 +66,14 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
     `${API}/user/wallet`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
+  // a clinic or hospital pays from its own wallet first (2026-10, one
+  // wallet per centre; backend Lib/walletScope.ts debitSpending), then
+  // from the owner's personal one
+  const ownWallet = name === "clinic" || name === "hospital";
+  const { data: centreWallet } = useSWR<{ balance: number }>(
+    ownWallet ? `${API}/${name}/wallet` : null,
+    (url: string) => fetcher({ url }).then((res) => ({ balance: Number(res?.data?.balance) || 0 })),
+  );
 
   const getContent = useScopedLocale(LOCALE_NS);
   const push = useProgress();
@@ -169,9 +177,16 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
                     {getContent(m)}
                   </span>
                   <div className={classes.methodTail}>
+                    {ownWallet && !!centreWallet && (
+                      <span className={classes.balance}>
+                        {getContent("centreWalletBalance", [currencize(centreWallet.balance)])}
+                      </span>
+                    )}
                     {!!wallet && (
                       <span className={classes.balance}>
-                        {`${getContent("balance")}: ${currencize(wallet.balance)} ${getContent("toman")}`}
+                        {ownWallet
+                          ? getContent("personalWalletBalance", [currencize(wallet.balance)])
+                          : `${getContent("balance")}: ${currencize(wallet.balance)} ${getContent("toman")}`}
                       </span>
                     )}
                     <div className={classes.methodCheck}>
@@ -186,7 +201,10 @@ const LicenseCheckoutPage = ({ name }: { name: LicenseOrg }) => {
           </div>
           {/* wallet can't cover the plan -> offer a SEP top-up of the gap,
               returning here afterwards (2026-09) */}
-          {!!wallet && (
+          {ownWallet && (
+            <span className={classes.balance}>{getContent("centreWalletRule")}</span>
+          )}
+          {!!wallet && !(ownWallet && (centreWallet?.balance || 0) >= price) && (
             <WalletShortfallTopUp balance={wallet.balance} total={price} />
           )}
           <div className={classes.totalRow}>

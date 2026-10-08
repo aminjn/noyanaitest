@@ -7,6 +7,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import PharmacyManageDetailsTab from "./PharmacyManageDetailsTab";
 import PharmacyManageLocationTab from "./PharmacyManageLocationTab";
+import PharmacyManageDeliveryTab from "./PharmacyManageDeliveryTab";
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelProfile"];
 
@@ -32,6 +33,12 @@ const PharmacyManageProfilePage = () => {
             id: "Location",
             title: getContent("location"),
             content: <PharmacyManageLocationTab />,
+          },
+          {
+            // where it ships cart orders (2026-10)
+            id: "Delivery",
+            title: getContent("deliveryArea"),
+            content: <PharmacyManageDeliveryTab />,
           },
         ]}
       />

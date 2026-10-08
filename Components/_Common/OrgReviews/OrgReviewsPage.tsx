@@ -20,6 +20,7 @@ import {
   ProviderReply,
   ReviewBasisKind,
   ReviewReply,
+  ReviewTagChips,
   VerifiedBadge,
 } from "@/Components/Comment/ReviewBits";
 
@@ -35,10 +36,12 @@ type Review = {
   verifiedKind?: ReviewBasisKind;
   verifiedAt?: string | null;
   reply?: ReviewReply;
+  // quick tags of a seller review (pharmacy / lab)
+  tags?: string[];
 };
 type Reviews = { items: Review[]; count: number; average: number; rated?: boolean; canReply?: boolean };
 
-type ReviewKind = "clinic" | "hospital" | "paraClinic" | "insurance" | "doctor";
+type ReviewKind = "clinic" | "hospital" | "paraClinic" | "pharmacy" | "insurance" | "doctor";
 
 // the provider's one public answer to a review (2026-10)
 const ReplyForm = ({ kind, id, onDone }: { kind: ReviewKind; id: string; onDone: () => unknown }) => {
@@ -149,6 +152,7 @@ const OrgReviewsPage = ({ kind, panel }: { kind: ReviewKind; panel: string }) =>
                     {!!r.createdAt && <span className={classes.date}>{safeFormatDate(date, r.createdAt)}</span>}
                   </div>
                   {r.verified && <VerifiedBadge kind={r.verifiedKind} at={r.verifiedAt} />}
+                  {rated && <ReviewTagChips tags={r.tags} />}
                   {!!r.content && <p className={classes.content}>{r.content}</p>}
                   <ProviderReply reply={r.reply} />
                   {!r.reply?.content && data.canReply && (

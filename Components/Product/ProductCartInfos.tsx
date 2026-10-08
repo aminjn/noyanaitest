@@ -7,6 +7,7 @@ import Ixon from "../UI/Ixon";
 import TruckIcon from "../Icons/TruckIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
+import DeliveryAreaNote, { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
 
 const NS: ContentNamespace[] = ["common", "productCartable"];
 
@@ -27,10 +28,17 @@ const ProductCartInfos = ({
   service,
   fastDelivery,
   freeDelivery,
+  deliveryArea,
+  rx,
 }: {
   service?: boolean;
   fastDelivery?: boolean;
   freeDelivery?: boolean;
+  // where the chosen pharmacy ships (2026-10): replaces the old fixed
+  // "nationwide delivery" line, which was false for a city-only pharmacy
+  // and for every prescription-only item
+  deliveryArea?: DeliveryArea;
+  rx?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   return (
@@ -42,10 +50,17 @@ const ProductCartInfos = ({
         </Fragment>
       ) : (
         <Fragment>
-          <Info
-            icon={<TruckIcon />}
-            content={getContent(fastDelivery ? "cartInfoItem0" : "cartInfoItem1")}
-          />
+          {deliveryArea ? (
+            <>
+              <DeliveryAreaNote area={deliveryArea} rx={rx} />
+              {!!fastDelivery && <Info icon={<TruckIcon />} content={getContent("fastDelivery")} />}
+            </>
+          ) : (
+            <Info
+              icon={<TruckIcon />}
+              content={getContent(fastDelivery ? "cartInfoItem0" : "cartInfoItem1")}
+            />
+          )}
           {!!freeDelivery && <Info icon={<LocationIcon />} content={getContent("freeDelivery")} />}
         </Fragment>
       )}

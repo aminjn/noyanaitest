@@ -83,6 +83,8 @@ export type InsuranceNetwork = {
   clinics: number;
   hospitals: number;
   paraClinics: number;
+  // pharmacies that list the insurer (2026-10)
+  pharmacies?: number;
 };
 
 export type DoctorInsurancePopulation = Population<{

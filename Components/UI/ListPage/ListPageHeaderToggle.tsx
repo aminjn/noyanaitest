@@ -9,10 +9,13 @@ const ListPageHeaderToggle = ({
   count,
   active,
   onChange,
+  label,
 }: {
   count: number;
   active: boolean;
   onChange: () => unknown;
+  // what the switch narrows to (default: packages only, the service list)
+  label?: string;
 }) => {
   const getContent = useScopedLocale(LOCALE_NS);
 
@@ -21,7 +24,7 @@ const ListPageHeaderToggle = ({
       <span>{`${getContent("results")} (${count})`}</span>
       <div className={classes.toggle}>
         <ToggleInput value={active} onChange={onChange} />
-        <span className={txsMedium}>{getContent("showPackagesOnly")}</span>
+        <span className={txsMedium}>{label ?? getContent("showPackagesOnly")}</span>
       </div>
     </div>
   );

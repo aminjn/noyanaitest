@@ -24,6 +24,11 @@ import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import { ITest } from "@/Components/Admin/Test/AdminManageTestsPage";
 import { IParaClinicTest } from "@/Components/Admin/ParaClinic/AdminManageParaClinicPage";
+import { ContentKey } from "@/Components/Enums/contentKeys";
+import {
+  ParaClinicTestSampling,
+  paraClinicTestSamplings,
+} from "@/Components/LabSampling/samplingTypes";
 
 const NS: ContentNamespace[] = ["common", "paraClinicPanelTest"];
 
@@ -39,7 +44,19 @@ type AvailableTest = ITest<{ Category: Record<never, never> }>;
 type ParaClinicEditableTestFields = Pick<
   IParaClinicTest,
   "price" | "readyTime" | "isActive"
->;
+> & { sampling?: ParaClinicTestSampling };
+
+// how the sample is taken (2026-10, backend Models/ParaClinicTest.ts): the
+// in-lab / home appointment the patient books at checkout follows it
+const samplingOptionKey: Record<ParaClinicTestSampling, string> = {
+  lab: "lsModeLab",
+  labOrHome: "lsModeLabOrHome",
+  none: "lsModeNone",
+};
+const samplingOptions = (t: (key: string) => string) =>
+  Object.fromEntries(
+    paraClinicTestSamplings.map((m) => [m, t(samplingOptionKey[m])]),
+  ) as Record<string, string>;
 
 const AddMyTestPopup = ({
   test,
@@ -57,6 +74,11 @@ const AddMyTestPopup = ({
         renderer={{
           price: { type: "number", title: getContent("price"), price: true },
           readyTime: { type: "text", title: getContent("readyTime") },
+          sampling: {
+            type: "select",
+            title: getContent("lsTestSampling"),
+            options: samplingOptions((key) => getContent(key as ContentKey)),
+          },
         }}
         hookProps={{
           path: `${API}/paraClinic/myTest`,
@@ -84,11 +106,20 @@ const EditMyTestPopup = ({
   return (
     <PopupCard>
       <CreateForm<ParaClinicEditableTestFields>
-        defaultValue={{ ...node, isActive: node.isActive !== false }}
+        defaultValue={{
+          ...node,
+          isActive: node.isActive !== false,
+          sampling: (node as { sampling?: ParaClinicTestSampling }).sampling || "lab",
+        }}
         onCancel={() => closePopup()}
         renderer={{
           price: { type: "number", title: getContent("price"), price: true },
           readyTime: { type: "text", title: getContent("readyTime") },
+          sampling: {
+            type: "select",
+            title: getContent("lsTestSampling"),
+            options: samplingOptions((key) => getContent(key as ContentKey)),
+          },
           // pause the test (kit out, device down) without deleting it
           isActive: { type: "bool", title: getContent("isActive") },
         }}
@@ -232,6 +263,16 @@ const ParaClinicMyTestsTab = () => {
                 name: getContent("readyTime"),
                 value: (node) => node.readyTime,
                 filter: "Text",
+              },
+              sampling: {
+                name: getContent("lsTestSampling"),
+                value: (node) =>
+                  getContent(
+                    samplingOptionKey[
+                      (node as { sampling?: ParaClinicTestSampling }).sampling || "lab"
+                    ] as ContentKey,
+                  ),
+                filter: "Set",
               },
               status: {
                 name: getContent("status"),

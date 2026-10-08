@@ -10,7 +10,7 @@ import { ListPageFilters } from "./listFilters";
 
 const NS: ContentNamespace[] = ["common"];
 
-// The tag / accepted-insurance filter a list was opened with, as removable
+// The tag / accepted-insurance / city filter a list was opened with, as removable
 // chips - removing one keeps the rest of the query (search, category...).
 const ListPageActiveFilters = ({
   basePath,
@@ -21,7 +21,7 @@ const ListPageActiveFilters = ({
 }) => {
   const getContent = useScopedLocale(NS);
   const searchParams = useSearchParams();
-  if (!filters?.tag && !filters?.insurance) return null;
+  if (!filters?.tag && !filters?.insurance && !filters?.city) return null;
 
   const without = (key: keyof ListPageFilters) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -57,6 +57,19 @@ const ListPageActiveFilters = ({
           ariaLabel={`${getContent("removeFilter")}`}
         >
           {getContent("listFilterInsurance", [filters.insurance.name || ""])}
+        </Button>
+      )}
+      {!!filters.city && (
+        <Button
+          variant="Primary"
+          mode="Outline"
+          size="S"
+          radius="High"
+          href={without("city")}
+          tailIcon={<XMarkIcon />}
+          ariaLabel={`${getContent("removeFilter")}`}
+        >
+          {getContent("listFilterCity", [filters.city.name || ""])}
         </Button>
       )}
     </div>

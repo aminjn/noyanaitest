@@ -1,6 +1,7 @@
 "use client";
 
-import { useListSeparator } from "@/Components/i18n/navigation";
+import { useMemo } from "react";
+import { useIntlLocale, useListSeparator } from "@/Components/i18n/navigation";
 import classes from "./PharmacyPage.module.css";
 import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -12,8 +13,11 @@ import VerifyIcon from "../Icons/VerifyIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import CheckSquareIcon from "../Icons/CheckSquareIcon";
 import LocationSection from "../Clinic/LocationSection";
+import CommentSection from "../Comment/CommentSection";
+import StarIcon from "../Icons/StarIcon";
 import ServiceOrProductCard from "../Service/ServiceOrProductCard";
 import CartActions from "../Product/CartActions";
+import DeliveryAreaNote, { DeliveryArea } from "./DeliveryAreaNote";
 import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
 import {
   IProduct,
@@ -45,19 +49,32 @@ export type PharmacyPageProps = {
       District: Record<never, never>;
     }>,
     "insurances"
-  > & { insurances?: (AcceptedInsurer | string)[] };
+  > & {
+    insurances?: (AcceptedInsurer | string)[];
+    // approved buyer reviews (2026-10)
+    averageScore?: number;
+    commentCount?: number;
+  };
   products?: Offer[];
   productPackages?: Package[];
   // false: the pharmacy's plan has no online orders - a profile to call
   takesOrders?: boolean;
+  // where it ships (2026-10, backend Lib/delivery.ts)
+  deliveryArea?: DeliveryArea;
 };
 
 // Public page of one pharmacy (Halodoc / Vezeeta style): who it is, where it
 // is, and what can be ordered from it right now - each card buys this
 // pharmacy's own offer, not the cheapest one on the product page.
-const PharmacyPage = ({ data, products, productPackages, takesOrders }: PharmacyPageProps) => {
+const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryArea }: PharmacyPageProps) => {
   const getContent = useScopedLocale(NS);
   const listSep = useListSeparator();
+  const intlTag = useIntlLocale();
+  const scoreFmt = useMemo(
+    () => new Intl.NumberFormat(intlTag, { minimumFractionDigits: 1, maximumFractionDigits: 1 }),
+    [intlTag],
+  );
+  const reviewCount = Number(data.commentCount) || 0;
   const offers = (Array.isArray(products) ? products : []).filter((o) => !!o?.product);
   const packages = Array.isArray(productPackages) ? productPackages : [];
   const place = [data.province?.name, data.city?.name, data.district?.name]
@@ -110,6 +127,15 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders }: Pharmacy
                 <VerifyIcon />
               </Ixon>
             </h1>
+            {reviewCount > 0 && (
+              <a className={classes.rating} href="#Comment">
+                <Ixon width=".9rem" className={classes.star}>
+                  <StarIcon />
+                </Ixon>
+                <strong>{scoreFmt.format(Number(data.averageScore) || 0)}</strong>
+                <span>{`(${getContent("nComments", [new Intl.NumberFormat(intlTag).format(reviewCount)])})`}</span>
+              </a>
+            )}
             {(!!place || !!data.address) && (
               <span className={classes.place}>
                 <Ixon width=".9rem">
@@ -118,6 +144,7 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders }: Pharmacy
                 {[place, data.address].filter(Boolean).join(" - ")}
               </span>
             )}
+            {takesOrders !== false && <DeliveryAreaNote area={deliveryArea} rxNote />}
             {(!!facts.isRoundTheClock || !!facts.businessTime || !!facts.phone) && (
               <span className={classes.facts}>
                 {!!facts.isRoundTheClock && <span className={classes.chip}>{getContent("roundTheClock")}</span>}
@@ -223,6 +250,11 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders }: Pharmacy
         name={data.name}
         address={data.address}
       />
+
+      {/* verified buyer reviews (2026-10): score, tags summary, recent reviews */}
+      <section className={classes.section} id="Comment">
+        <CommentSection nodeId={data._id} model="Pharmacy" />
+      </section>
     </div>
   );
 };

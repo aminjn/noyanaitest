@@ -325,6 +325,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   render={(node) => (
                     <ParaClinicCard node={node} kind="pharmacy" />
                   )}
+                  all="/pharmacy"
                   query={trimmed}
                   onNavigate={close}
                 />

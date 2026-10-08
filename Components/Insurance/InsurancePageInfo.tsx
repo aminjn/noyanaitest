@@ -10,6 +10,7 @@ import { useIntlLocale } from "@/Components/i18n/navigation";
 import { InsurancePageNode } from "./InsurancePage";
 import classes from "./InsurancePageInfo.module.css";
 import FlaskIcon from "../Icons/FlaskIcon";
+import PillIcon from "../Icons/PillIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
@@ -89,6 +90,12 @@ const InsurancePageInfo = ({ node }: { node: InsurancePageNode }) => {
       title: "paraClinicsAcceptingInsurance",
       icon: <FlaskIcon />,
       href: `/paraClinic?insurance=${node._id}`,
+    },
+    {
+      key: "pharmacies",
+      title: "pharmaciesAcceptingInsurance",
+      icon: <PillIcon />,
+      href: `/pharmacy?insurance=${node._id}`,
     },
   ];
   const shown = tiles.filter((el) => (network?.[el.key] || 0) > 0);
