@@ -149,6 +149,7 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
           category={data.category?.name}
           image={data.image}
           province={data.province?.name}
+          openStatus={data.openStatus}
         />
         <StickyNav map={sections} />
         <MedicalCenterSummary
@@ -165,6 +166,8 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
         <MedicalCenterContactInfo
           address={data.address}
           businessTimes={data.businessTimes}
+          openingHours={data.openingHours}
+          openStatus={data.openStatus}
           mail={data.mail}
           owner={data.owner ? getDoctorProfileLabel(data.owner) : undefined}
           phone={data.phone}

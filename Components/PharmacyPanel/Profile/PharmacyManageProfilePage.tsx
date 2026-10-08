@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import useAcl from "@/Components/Hooks/useAcl";
+import { API } from "@/Components/config";
+import ProviderInsurerContracts from "@/Components/InsuranceContracts/ProviderInsurerContracts";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import PharmacyManageDetailsTab from "./PharmacyManageDetailsTab";
@@ -11,7 +14,7 @@ import PharmacyManageLocationTab from "./PharmacyManageLocationTab";
 import PharmacyManageDeliveryTab from "./PharmacyManageDeliveryTab";
 import PharmacyRxCityBanner from "../RxCityBanner/PharmacyRxCityBanner";
 
-const TABS = ["Details", "Location", "Delivery"];
+const TABS = ["Details", "Location", "Delivery", "Insurers"];
 const TAB_STORE = "PharmacyManageProfile";
 
 // the last open tab (TabSystem's own memory)
@@ -29,6 +32,7 @@ const NS: ContentNamespace[] = ["common", "pharmacyPanelProfile"];
 
 const PharmacyManageProfilePage = () => {
   const getContent = useScopedLocale(NS);
+  const hasAccess = useAcl("pharmacy");
   const tabState = useState<string>(savedTab);
   const setTab = tabState[1];
   // ?tab=Location (the "no city" banner on the panel home) opens that tab
@@ -66,6 +70,17 @@ const PharmacyManageProfilePage = () => {
             id: "Delivery",
             title: getContent("deliveryArea"),
             content: <PharmacyManageDeliveryTab />,
+          },
+          {
+            // its insurers, as contracts the insurer confirms (2026-10)
+            id: "Insurers",
+            title: getContent("insurances"),
+            content: (
+              <ProviderInsurerContracts
+                base={`${API}/pharmacy/insurer-contract`}
+                canEdit={hasAccess("mutateProfile")}
+              />
+            ),
           },
         ]}
       />

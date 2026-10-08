@@ -36,15 +36,7 @@ const PharmacyManageDetailsTab = () => {
             // the text is the note under it
             openingHours: { type: "openingHours", title: getContent("ohEditorTitle") },
             businessTime: { type: "text", title: getContent("ohNoteField") },
-            insurances: {
-              type: "nodes",
-              title: getContent("insurances"),
-              path: `${API}/public/insurance`,
-              getOptionLabel: (node) => (node as { name?: string; _id: string }).name || (node as { _id: string })._id,
-              getOptionValue: (node) => (node as { _id: string })._id,
-              getDefaultValue: (inp) => inp.insurances,
-              multi: true,
-            },
+            // the insurers are contracts now: the «بیمه‌ها» tab (2026-10)
           }}
         />
       )}

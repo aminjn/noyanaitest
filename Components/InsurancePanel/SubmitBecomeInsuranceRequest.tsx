@@ -16,8 +16,7 @@ const SubmitBecomeInsuranceRequest = ({
     <CreateForm<IBecomeInsuranceRequest>
       renderer={{
         name: { type: "text", title: getContent("name") },
-        siamCode: { type: "text", title: getContent("siamCode") },
-        nationalId: { type: "text", title: getContent("nationalId") },
+        licenseNumber: { type: "text", title: getContent("insurerLicenseNumber"), required: true },
         certificateDate: {
           type: "date",
           title: getContent("certificateDate"),

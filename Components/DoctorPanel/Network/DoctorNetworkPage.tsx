@@ -52,6 +52,8 @@ const DoctorNetworkPage = () => {
   const hospitalJoin = useSWR(hasAccess("readHospitals") ? `${API}/doctor/hospitaljoin` : null, load);
   const pharmacies = useSWR(hasAccess("readPharmacy") ? `${API}/doctor/pharmacy` : null, load);
   const insurances = useSWR(hasAccess("readInsurance") ? `${API}/doctor/insurance` : null, load);
+  // insurer contracts waiting on the doctor (an insurer's invitation)
+  const contracts = useSWR(hasAccess("readInsurance") ? `${API}/doctor/insurer-contract` : null, load);
 
   const joins = [
     ...list<Join>(clinicJoin.data).map((j) => ({ ...j, kind: "clinic" as const, center: j.clinic })),
@@ -115,6 +117,9 @@ const DoctorNetworkPage = () => {
       icon: <ShieldCheckIcon />,
       href: "/doctorpanel/insurance",
       names: list<{ insurance?: Named }>(insurances.data).map((m) => m.insurance?.name || "").filter(Boolean),
+      pending: list<{ status?: string; initiatedBy?: string }>(contracts.data).filter(
+        (c) => c.status === "Pending" && c.initiatedBy === "insurer",
+      ).length,
     },
   ];
 

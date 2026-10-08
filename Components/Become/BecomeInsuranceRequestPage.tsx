@@ -15,23 +15,24 @@ const org = becomeOrgs.insurance;
 // saveUplaodsToBody on noyanai-back).
 type BecomeInsuranceRequestInput = {
   name: string;
-  siamCode: string;
-  nationalId: string;
+  // «شماره‌ی مجوز بیمه مرکزی» (2026-10)
+  licenseNumber: string;
   certificateDate: Date;
   certificateFile?: File;
   description?: string;
 };
 
 // app/become/insurance/page.tsx - the insurance's own become-request form.
-// Models/BecomeInsuranceRequest.ts on noyanai-back takes name/siamCode/
-// nationalId/certificateDate/certificateFile/description (the rest of the
+// Models/BecomeInsuranceRequest.ts on noyanai-back takes name/licenseNumber/
+// certificateDate/certificateFile/description (the rest of the
 // insurance's profile is filled in later, once an admin approves this
 // request).
 const toForm = (r: IBecomeInsuranceRequest) => ({
   certificateDate: r.certificateDate,
   name: r.name,
-  nationalId: r.nationalId,
-  siamCode: r.siamCode,
+  // the backend sends an old request's siam code here when it had no
+  // licence number
+  licenseNumber: r.licenseNumber || r.siamCode,
   certificateFile: r.certificateFile,
   description: r.description,
 });

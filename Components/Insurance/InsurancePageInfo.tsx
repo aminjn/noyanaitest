@@ -141,6 +141,13 @@ const InsurancePageInfo = ({ node }: { node: InsurancePageNode }) => {
           title={getContent("insurerees")}
           value={node.membersCount}
         />
+        {/* its Central Insurance of Iran licence (2026-10), like the
+            licence line on an insurer's own site */}
+        <Count
+          icon={<ShieldIcon />}
+          title={getContent("insurerLicenseNumber")}
+          value={node.licenseNumber?.trim() || undefined}
+        />
       </div>
       {!!shown.length && (
         <section className={classes.network}>

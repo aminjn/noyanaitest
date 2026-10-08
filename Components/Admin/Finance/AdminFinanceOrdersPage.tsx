@@ -120,6 +120,22 @@ toolbar={false}
                     "—"
                   ),
               },
+              samplings: {
+                name: ta("نوبت نمونه‌گیری"),
+                value: (node) =>
+                  (Array.isArray(node.samplings) ? node.samplings : [])
+                    .map((b) =>
+                      [
+                        samplingWhenLabel(b),
+                        samplingKindDict[b.kind] || b.kind,
+                        samplingStateDict[samplingStateOf(b)] || b.status,
+                        b.moves ? ta("${1} بار جابه‌جا شده", [b.moves]) : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" · "),
+                    )
+                    .join(" | ") || "—",
+              },
               total: {
                 name: ta("مبلغ کل (تومان)"),
                 value: (node) => node.total,
@@ -152,22 +168,6 @@ toolbar={false}
                 name: ta("در انتظار فروشنده"),
                 value: (node) => node.pending ?? 0,
                 filter: "Number",
-              },
-              samplings: {
-                name: ta("نوبت نمونه‌گیری"),
-                value: (node) =>
-                  (Array.isArray(node.samplings) ? node.samplings : [])
-                    .map((b) =>
-                      [
-                        samplingWhenLabel(b),
-                        samplingKindDict[b.kind] || b.kind,
-                        samplingStateDict[samplingStateOf(b)] || b.status,
-                        b.moves ? ta("${1} بار جابه‌جا شده", [b.moves]) : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" · "),
-                    )
-                    .join(" | ") || "—",
               },
               submittedAt: {
                 name: ta("تاریخ ثبت"),

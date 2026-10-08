@@ -142,6 +142,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
   hospitalCard: ["/hospital"],
   insuranceCard: ["/insurance"],
   paraClinicCard: ["/paraClinic"],
+  openingHours: ["/pharmacy", "/paraClinic", "/clinic", "/hospital", "/map"],
   clinicsList: ["/clinic"],
   clinicPage: ["/clinic"],
   hospitalsList: ["/hospital"],

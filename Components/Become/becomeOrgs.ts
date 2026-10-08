@@ -40,6 +40,9 @@ export interface BecomeOrgConfig {
   titleKey?: ContentKey;
   legendKey?: ContentKey;
   namespace?: ContentNamespace;
+  // (2026-10) an insurer gives its «شماره‌ی مجوز بیمه مرکزی» instead of
+  // the centres' siam code and national id
+  licenseNumber?: boolean;
 }
 
 export const becomeOrgs: Record<BecomeOrgSlug, BecomeOrgConfig> = {
@@ -111,6 +114,7 @@ export const becomeOrgs: Record<BecomeOrgSlug, BecomeOrgConfig> = {
     titleKey: "becomeInsurancePageTitle",
     legendKey: "becomeInsurancePageLegend",
     namespace: "becomeInsurance",
+    licenseNumber: true,
   },
 };
 

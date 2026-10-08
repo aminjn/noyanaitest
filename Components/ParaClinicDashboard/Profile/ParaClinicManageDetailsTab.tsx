@@ -6,7 +6,6 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IParaClinicTag } from "@/Components/Admin/ParaClinicTag/AdminManageParaClinicTagsPage";
 import { IParaClinicCategory } from "@/Components/Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
-import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 const NS: ContentNamespace[] = ["common", "openingHours", "paraClinicPanelProfile"];
 
@@ -68,16 +67,7 @@ const ParaClinicManageDetailsTab = () => {
             onlineResponse: { type: "bool", title: getContent("onlineResponse") },
             personelCount: { type: "number", title: getContent("personelCount") },
             summary: { type: "area", title: getContent("summary") },
-            insurances: {
-              type: "nodes",
-              title: getContent("insurances"),
-              path: `${API}/public/insurance`,
-              getOptionLabel: (node) =>
-                (node as IInsurance).name || (node as IInsurance)._id,
-              getOptionValue: (node) => (node as IInsurance)._id,
-              getDefaultValue: (inp) => inp.insurances,
-              multi: true,
-            },
+            // the insurers are contracts now: the «بیمه‌ها» tab (2026-10)
           }}
         />
       )}

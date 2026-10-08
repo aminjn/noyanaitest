@@ -17,7 +17,9 @@ import Button from "../UI/Button";
 import FlaskIcon from "../Icons/FlaskIcon";
 import { tbaseMedium, tsmMedium, tsmRegular } from "../UI/Typography";
 
-const NS: ContentNamespace[] = ["common", "paraClinicPage"];
+import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
+import { exceptionsOf, weekOf } from "../OpeningHours/openingHours";
+const NS: ContentNamespace[] = ["common", "paraClinicPage", "openingHours"];
 
 const Feature = ({
   active,
@@ -54,6 +56,8 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
   const tags = Array.isArray(data.tags) ? data.tags : [];
   const insurances = (Array.isArray(data.insurances) ? data.insurances : []).filter((el) => !!el?._id);
   const listSep = useListSeparator();
+  // a structured week shows as the table (its free text as the note)
+  const hasWeek = !!weekOf(data.openingHours) || !!exceptionsOf(data.openingHours).length;
 
   return (
     <div className={classes.main} id="About">
@@ -137,7 +141,11 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
             .join(listSep)}
         />
         <Detail icon={<CallingIcon />} value={data.phone} />
-        <Detail icon={<ClockIcon />} value={data.businessTime} />
+        {hasWeek ? (
+          <OpeningHoursTable hours={data.openingHours} status={data.openStatus} note={data.businessTime} />
+        ) : (
+          <Detail icon={<ClockIcon />} value={data.businessTime} />
+        )}
         <Detail
           icon={<UserIcon />}
           value={getContent("nPesrsonSpecialist", [
@@ -150,6 +158,8 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
           size="M"
           radius="High"
           tailIcon={<FlaskIcon />}
+          // the lab's tests, where one is added to the cart
+          href="#Tests"
         >
           {getContent("reserveTest")}
         </Button>

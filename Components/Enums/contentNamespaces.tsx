@@ -631,6 +631,7 @@ export const contentNamespaces = {
     "doctor",
   ],
   common: [
+    "becomeProfileRemoved",
     "listFilterCity",
     "codeRecentlySent",
     "resendCode",
@@ -2014,6 +2015,7 @@ export const contentNamespaces = {
   // page rendering every Become*Page component inline; each org now has its
   // own namespace below instead).
   becomeSomething: [
+    "insurerLicenseNumber",
     "becomeSomethingPageTitle",
     "becomeSomethingPageLegend",
     "home",
@@ -2105,6 +2107,7 @@ export const contentNamespaces = {
   // Mirrors becomeClinic — Models/BecomeInsuranceRequest.ts has the same
   // fields.
   becomeInsurance: [
+    "insurerLicenseNumber",
     "becomeInsurancePageTitle",
     "becomeInsurancePageLegend",
     "name",
@@ -4361,6 +4364,7 @@ export const contentNamespaces = {
   ],
 
   insurerPanel: [
+    "insurerLicenseNumber",
     "dashboard",
     "actions",
     "cancel",
@@ -5865,6 +5869,7 @@ export const contentNamespaces = {
   // InsurancePageInfo, InsuranceCoverages, InsurancePlans,
   // InsuranceAdvantages, InsuranceContact).
   insurancePage: [
+    "insurerLicenseNumber",
     "backToList",
     "xComment",
     "insuranceCategory",
@@ -6888,6 +6893,70 @@ export const contentNamespaces = {
     "ohClear",
     "ohNoteField",
     "ohOpenDay",
+  ],
+  // Components/InsuranceContracts (2026-10): the insurer contracts of the
+  // provider panels and the insurer's network page
+  insuranceContracts: [
+    "icTitle",
+    "icProviderHint",
+    "icRequest",
+    "icRequestSent",
+    "icInsurer",
+    "icProvider",
+    "icFrom",
+    "icUntil",
+    "icNote",
+    "icAlways",
+    "icRange",
+    "icSince",
+    "icTill",
+    "icWaitingInsurer",
+    "icWaitingNoyan",
+    "icWaitingProvider",
+    "icWaitingYou",
+    "icActive",
+    "icActiveUntil",
+    "icActiveFrom",
+    "icRejected",
+    "icCancelled",
+    "icEnded",
+    "icAccept",
+    "icApprove",
+    "icReject",
+    "icWithdraw",
+    "icEnd",
+    "icReason",
+    "icReasonShort",
+    "icRejectTitle",
+    "icEndTitle",
+    "icEndDate",
+    "icEndDateHint",
+    "icDone",
+    "icEmpty",
+    "icPendingList",
+    "icActiveList",
+    "icHistoryList",
+    "icKindDoctor",
+    "icKindClinic",
+    "icKindHospital",
+    "icKindParaClinic",
+    "icKindPharmacy",
+    "icInvite",
+    "icInviteSent",
+    "icInsurerHint",
+    "icProviderKind",
+    "icSearchHint",
+    "icHasContract",
+    "icIncoming",
+    "icSent",
+    "icTabRequests",
+    "icTabContracts",
+    "icTabNetwork",
+    "icTabHistory",
+    "icNoRequests",
+    "icNoActive",
+    "icNoHistory",
+    "checkInput",
   ],
 } as const satisfies Record<string, readonly ContentKey[]>;
 

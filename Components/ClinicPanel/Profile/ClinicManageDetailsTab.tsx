@@ -5,7 +5,6 @@ import useClinic from "@/Components/Hooks/useClinic";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { IClinicTag } from "@/Components/Admin/ClinicTag/AdminManageClinicTagsPage";
 import { IClinicCategory } from "@/Components/Admin/ClinicCategory/AdminManageClinicCategoriesPage";
-import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["common", "openingHours", "clinicPanelProfile"];
@@ -63,17 +62,7 @@ const ClinicManageDetailsTab = () => {
             personelCount: { type: "number", title: getContent("personelCount") },
             services: { type: "strings", title: getContent("services") },
             certificates: { type: "strings", title: getContent("certificates") },
-            insurances: {
-              type: "nodes",
-              title: getContent("insurances"),
-              // every active insurer (the public list is paged)
-              path: `${API}/public/selectinsurance`,
-              getOptionLabel: (node) =>
-                (node as IInsurance).name || (node as IInsurance)._id,
-              getOptionValue: (node) => (node as IInsurance)._id,
-              getDefaultValue: (inp) => inp.insurances,
-              multi: true,
-            },
+            // the insurers are contracts now: the «بیمه‌ها» tab (2026-10)
           }}
         />
       )}

@@ -6,7 +6,6 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IHospitalTag } from "@/Components/Admin/HospitalTag/AdminManageHospitalTagsPage";
 import { IHospitalCategory } from "@/Components/Admin/HospitalCategory/AdminManageHospitalCategoriesPage";
-import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
 const NS: ContentNamespace[] = ["common", "openingHours", "hospitalPanelProfile"];
 
@@ -63,17 +62,7 @@ const HospitalManageDetailsTab = () => {
             bedCount: { type: "number", title: getContent("mcBeds") },
             services: { type: "strings", title: getContent("services") },
             certificates: { type: "strings", title: getContent("certificates") },
-            insurances: {
-              type: "nodes",
-              title: getContent("insurances"),
-              // every active insurer (the public list is paged)
-              path: `${API}/public/selectinsurance`,
-              getOptionLabel: (node) =>
-                (node as IInsurance).name || (node as IInsurance)._id,
-              getOptionValue: (node) => (node as IInsurance)._id,
-              getDefaultValue: (inp) => inp.insurances,
-              multi: true,
-            },
+            // the insurers are contracts now: the «بیمه‌ها» tab (2026-10)
           }}
         />
       )}
