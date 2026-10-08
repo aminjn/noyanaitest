@@ -43,7 +43,12 @@ import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
 import { IUserAddress } from "../Dashboard/Address/DashboardManageAddressesPage";
 import OrderItemStatusBadge from "../Dashboard/Order/OrderItemStatusBadge";
 import { IOrderLinePrescription, RxPrescriptionDetails } from "./RxPrescription";
-import { OrderItemStatus } from "../Dashboard/Order/orderItemStatus";
+import {
+  IOrderLineResponse,
+  OrderItemStatus,
+  pendingResponseDeadline,
+} from "../Dashboard/Order/orderItemStatus";
+import OrderLineDeadline from "../Dashboard/Order/OrderLineDeadline";
 import usePopup from "../Hooks/usePopup";
 import useNotification from "../Hooks/useNotification";
 import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
@@ -72,7 +77,7 @@ export type OrderPopulation = Population<{
 export interface IOrder<
   T extends OrderPopulation = OrderPopulation,
 > extends MongoDoc {
-  products: {
+  products: ({
     item: T["Products"] extends ProductSellerPopulation
       ? IProductSeller<T["Products"]>
       : string;
@@ -83,8 +88,8 @@ export interface IOrder<
     // prescription-only line and the prescription given (2026-10)
     requiresPrescription?: boolean;
     prescription?: IOrderLinePrescription;
-  }[];
-  productPackages: {
+  } & IOrderLineResponse)[];
+  productPackages: ({
     item: T["ProductPackages"] extends ProductPackagePopulation
       ? IProductPackage<T["ProductPackages"]>
       : string;
@@ -94,8 +99,8 @@ export interface IOrder<
     status?: OrderItemStatus;
     requiresPrescription?: boolean;
     prescription?: IOrderLinePrescription;
-  }[];
-  services: {
+  } & IOrderLineResponse)[];
+  services: ({
     item: T["Services"] extends ServicePopulation
       ? IService<T["Services"]>
       : string;
@@ -103,8 +108,8 @@ export interface IOrder<
     price: number;
     // per-line fulfillment, set by the seller (Models/Order.ts)
     status?: OrderItemStatus;
-  }[];
-  servicePackages: {
+  } & Pick<IOrderLineResponse, "autoCancel">)[];
+  servicePackages: ({
     item: T["ServicePackages"] extends ServicePackagePopulation
       ? IServicePackage<T["ServicePackages"]>
       : string;
@@ -112,8 +117,8 @@ export interface IOrder<
     price: number;
     // per-line fulfillment, set by the seller (Models/Order.ts)
     status?: OrderItemStatus;
-  }[];
-  tests: {
+  } & Pick<IOrderLineResponse, "autoCancel">)[];
+  tests: ({
     item: T["Tests"] extends ParaClinicTestPopulation
       ? IParaClinicTest<T["Tests"]>
       : string;
@@ -123,7 +128,7 @@ export interface IOrder<
     status?: OrderItemStatus;
     // the lab's answer: private result files and a note (2026-10)
     result?: { files?: string[]; note?: string };
-  }[];
+  } & IOrderLineResponse)[];
   total: number;
   // one per pharmacy (backend Lib/delivery.ts); Tapsi's fee is in `total`
   shipments?: {
@@ -162,6 +167,10 @@ type OrderRow = {
   status?: OrderItemStatus;
   result?: { files?: string[]; note?: string };
   prescription?: IOrderLinePrescription;
+  // seller response deadline / auto-cancel (pharmacy and lab lines)
+  respondBy?: string | null;
+  acceptedAt?: string;
+  autoCancel?: IOrderLineResponse["autoCancel"];
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -178,12 +187,21 @@ const statusContent: Record<OrderStatus, ContentKey> = {
   cancelled: "orderStatusCancelled",
 };
 
+// the deadline still running (pending, unanswered) and the line's outcome
+const responseOf = (line: { status?: OrderItemStatus } & IOrderLineResponse) => ({
+  respondBy: pendingResponseDeadline(line),
+  acceptedAt: line.acceptedAt,
+  autoCancel: line.autoCancel,
+});
+
 const buildRows = (order: OrderNode): OrderRow[] => {
   const rows: OrderRow[] = [];
 
-  (Array.isArray(order.products) ? order.products : []).forEach(({ item, qty, price, status, requiresPrescription, prescription }) => {
+  (Array.isArray(order.products) ? order.products : []).forEach((line) => {
+    const { item, qty, price, status, requiresPrescription, prescription } = line;
     if (!item || typeof item === "string") return;
     rows.push({
+      ...responseOf(line),
       itemId: item._id,
       model: "products",
       image: item.product?.image,
@@ -196,9 +214,11 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  (Array.isArray(order.productPackages) ? order.productPackages : []).forEach(({ item, qty, price, status, requiresPrescription, prescription }) => {
+  (Array.isArray(order.productPackages) ? order.productPackages : []).forEach((line) => {
+    const { item, qty, price, status, requiresPrescription, prescription } = line;
     if (!item || typeof item === "string") return;
     rows.push({
+      ...responseOf(line),
       itemId: item._id,
       model: "productPackages",
       image: item.image,
@@ -210,9 +230,10 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  (Array.isArray(order.services) ? order.services : []).forEach(({ item, qty, price, status }) => {
+  (Array.isArray(order.services) ? order.services : []).forEach(({ item, qty, price, status, autoCancel }) => {
     if (!item || typeof item === "string") return;
     rows.push({
+      autoCancel,
       itemId: item._id,
       model: "services",
       image: item.image,
@@ -223,9 +244,10 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  (Array.isArray(order.servicePackages) ? order.servicePackages : []).forEach(({ item, qty, price, status }) => {
+  (Array.isArray(order.servicePackages) ? order.servicePackages : []).forEach(({ item, qty, price, status, autoCancel }) => {
     if (!item || typeof item === "string") return;
     rows.push({
+      autoCancel,
       itemId: item._id,
       model: "servicePackages",
       image: item.image,
@@ -236,9 +258,11 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     });
   });
 
-  (Array.isArray(order.tests) ? order.tests : []).forEach(({ item, qty, price, status, result }) => {
+  (Array.isArray(order.tests) ? order.tests : []).forEach((line) => {
+    const { item, qty, price, status, result } = line;
     if (!item || typeof item === "string") return;
     rows.push({
+      ...responseOf(line),
       itemId: item._id,
       model: "tests",
       image: item.paraClinic?.image,
@@ -365,9 +389,14 @@ const OrderConfirmationPage = () => {
                         )}
                         {!!row.status && (
                           <span className={classes.itemStatus}>
-                            <OrderItemStatusBadge status={row.status} />
+                            <OrderItemStatusBadge
+                              status={row.status}
+                              acceptedAt={row.acceptedAt}
+                              autoCancel={row.autoCancel}
+                            />
                           </span>
                         )}
+                        <OrderLineDeadline respondBy={row.respondBy} audience="buyer" />
                         {!!row.prescription && (
                           <RxPrescriptionDetails prescription={row.prescription} />
                         )}

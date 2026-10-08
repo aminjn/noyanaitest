@@ -14,6 +14,7 @@ import FileDuplicateIcon from "../Icons/FileDuplicateIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
 import CartIcon from "../Icons/CartIcon";
 import useAcl from "../Hooks/useAcl";
+import CentreSwitcher from "./CentreSwitcher";
 
 const HospitalPanelSidebar = () => {
   const hasAccess = useAcl("hospital");
@@ -89,7 +90,7 @@ const HospitalPanelSidebar = () => {
     [hasAccess, joinRequests, kartabl],
   );
 
-  return <PanelSidebar links={links} panel="hospitalpanel" />;
+  return <PanelSidebar links={links} panel="hospitalpanel" header={<CentreSwitcher kind="hospital" />} />;
 };
 
 export default HospitalPanelSidebar;

@@ -8,6 +8,7 @@ import AdminManageGlobalFinanceSettingsPage from "@/Components/Admin/FinanceSett
 import AdminManageGlobalTaxSettingsPage from "@/Components/Admin/TaxSettings/AdminManageGlobalTaxSettingsPage";
 import AdminPaymentSettingsTab from "@/Components/Admin/FinanceSettings/AdminPaymentSettingsTab";
 import AdminPayrollYearsTab from "@/Components/Admin/FinanceSettings/AdminPayrollYearsTab";
+import AdminOrderResponseSettingsTab from "@/Components/Admin/FinanceSettings/AdminOrderResponseSettingsTab";
 
 // تنظیمات مالی: one admin page, its parts as tabs (2026-09 admin audit).
 const FinanceSettingsHub = () => {
@@ -15,7 +16,7 @@ const FinanceSettingsHub = () => {
   return (
     <AdminSectionHub
       title={ta("تنظیمات مالی")}
-      intro={ta("همه‌ی تنظیمات پول در یک جا: کمیسیون، مالیات، درگاه و کیف پول، ارقام قانونی حقوق و دستمزد، و ارسال.")}
+      intro={ta("همه‌ی تنظیمات پول در یک جا: کمیسیون، مالیات، درگاه و کیف پول، ارقام قانونی حقوق و دستمزد، ارسال و مهلت پاسخ به سفارش‌ها.")}
       tabs={[
         {
           id: "commission",
@@ -46,6 +47,14 @@ const FinanceSettingsHub = () => {
           title: ta("ارسال"),
           exclude: !canOpen("admin"),
           content: <AdminDeliverySettingsPage />,
+        },
+        // seller response deadlines: unanswered orders are cancelled and
+        // refunded automatically (2026-10)
+        {
+          id: "orders",
+          title: ta("سفارش‌ها"),
+          exclude: !canOpen("admin"),
+          content: <AdminOrderResponseSettingsTab />,
         },
       ]}
     />

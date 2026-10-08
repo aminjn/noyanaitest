@@ -25,7 +25,13 @@ import CheckIcon from "@/Components/Icons/CheckIcon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import OrderItemStatusBadge from "@/Components/Dashboard/Order/OrderItemStatusBadge";
-import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+import {
+  IOrderLineResponse,
+  OrderItemStatus,
+  pendingResponseDeadline,
+} from "@/Components/Dashboard/Order/orderItemStatus";
+import OrderLineDeadline from "@/Components/Dashboard/Order/OrderLineDeadline";
+import HandThumbUpIcon from "@/Components/Icons/HandThumbUpIcon";
 import { IIncomingOrder } from "./PharmacyIncomingOrdersPage";
 import { localPhone } from "@/Components/Dashboard/Address/DashboardManageAddressesPage";
 import { navigationUrl } from "@/Components/helpers/navigationUrl";
@@ -57,7 +63,21 @@ interface OrderItemRow {
   status: OrderItemStatus;
   // prescription-only (2026-10): fulfilled only once its prescription is approved
   prescription?: IOrderLinePrescription;
+  // response deadline still running, the seller's acceptance, auto-cancel
+  respondBy: string | null;
+  acceptedAt?: string;
+  autoCancel?: IOrderLineResponse["autoCancel"];
 }
+
+// "accepted" answers the line (backend Lib/orderResponse.ts); it stays
+// pending until fulfilled or cancelled
+type OrderItemAction = "accepted" | "fulfilled" | "cancelled";
+
+const confirmKey: Record<OrderItemAction, ContentKey> = {
+  accepted: "sureAcceptOrderItem",
+  fulfilled: "sureFulfillOrderItem",
+  cancelled: "sureCancelOrderItem",
+};
 
 const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
   ...(Array.isArray(order.products) ? order.products : [])
@@ -71,6 +91,9 @@ const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
     price: p.price,
     status: p.status,
     prescription: p.requiresPrescription ? p.prescription || { kind: "erx" as const } : undefined,
+    respondBy: pendingResponseDeadline(p),
+    acceptedAt: p.acceptedAt,
+    autoCancel: p.autoCancel,
   })),
   ...(Array.isArray(order.productPackages) ? order.productPackages : [])
     .filter((p) => p?.item?._id)
@@ -83,6 +106,9 @@ const buildItemRows = (order: IIncomingOrder): OrderItemRow[] => [
     price: p.price,
     status: p.status,
     prescription: p.requiresPrescription ? p.prescription || { kind: "erx" as const } : undefined,
+    respondBy: pendingResponseDeadline(p),
+    acceptedAt: p.acceptedAt,
+    autoCancel: p.autoCancel,
   })),
 ];
 
@@ -97,7 +123,7 @@ const MutateOrderItemPopup = ({
 }: {
   nodeId: string;
   row: OrderItemRow;
-  status: Extract<OrderItemStatus, "fulfilled" | "cancelled">;
+  status: OrderItemAction;
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -107,9 +133,7 @@ const MutateOrderItemPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={getContent(
-          status === "fulfilled" ? "sureFulfillOrderItem" : "sureCancelOrderItem",
-        )}
+        message={getContent(confirmKey[status])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -285,7 +309,16 @@ const PharmacyIncomingOrderPage = () => {
                 name: getContent("status"),
                 value: (node) => node.status,
                 filter: "Set",
-                component: (node) => <OrderItemStatusBadge status={node.status} />,
+                component: (node) => (
+                  <span>
+                    <OrderItemStatusBadge
+                      status={node.status}
+                      acceptedAt={node.acceptedAt}
+                      autoCancel={node.autoCancel}
+                    />
+                    <OrderLineDeadline respondBy={node.respondBy} audience="seller" />
+                  </span>
+                ),
               },
               prescription: {
                 name: t("rxPrescription"),
@@ -319,6 +352,27 @@ const PharmacyIncomingOrderPage = () => {
                     </TableActions>
                   ) : node.status === "pending" ? (
                     <TableActions>
+                      {/* answer the line first (stops the automatic
+                          cancel), or fulfil it straight away */}
+                      {!node.acceptedAt && !node.prescription && (
+                        <IconButton
+                          variant="Info"
+                          title={t("orderAccept")}
+                          onClick={() =>
+                            setPopup(
+                              "AcceptIncomingOrderItem",
+                              <MutateOrderItemPopup
+                                nodeId={nodeId}
+                                row={node}
+                                status="accepted"
+                                mutate={mutate}
+                              />,
+                            )
+                          }
+                        >
+                          <HandThumbUpIcon />
+                        </IconButton>
+                      )}
                       <IconButton
                         variant="Success"
                         title={getContent("fulfill")}

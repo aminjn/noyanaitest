@@ -24,7 +24,14 @@ import CheckIcon from "@/Components/Icons/CheckIcon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import OrderItemStatusBadge from "@/Components/Dashboard/Order/OrderItemStatusBadge";
-import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+import {
+  IOrderLineResponse,
+  OrderItemStatus,
+  pendingResponseDeadline,
+} from "@/Components/Dashboard/Order/orderItemStatus";
+import OrderLineDeadline from "@/Components/Dashboard/Order/OrderLineDeadline";
+import HandThumbUpIcon from "@/Components/Icons/HandThumbUpIcon";
+import { ContentKey } from "@/Components/Enums/contentKeys";
 import { IIncomingOrder, IIncomingOrderItem } from "./ParaClinicIncomingOrdersPage";
 import LabResultPopup from "./LabResultPopup";
 import AttachmentIcon from "@/Components/Icons/AttachmentIcon";
@@ -41,7 +48,21 @@ interface OrderItemRow {
   status: OrderItemStatus;
   lineId?: string;
   result?: IIncomingOrderItem["result"];
+  // response deadline still running, the lab's acceptance, auto-cancel
+  respondBy: string | null;
+  acceptedAt?: string;
+  autoCancel?: IOrderLineResponse["autoCancel"];
 }
+
+// "accepted" answers the line (backend Lib/orderResponse.ts); it stays
+// pending until its result is given and it is marked done
+type OrderItemAction = "accepted" | "fulfilled" | "cancelled";
+
+const confirmKey: Record<OrderItemAction, ContentKey> = {
+  accepted: "sureAcceptOrderItem",
+  fulfilled: "sureFulfillOrderItem",
+  cancelled: "sureCancelOrderItem",
+};
 
 const buildItemRows = (order: IIncomingOrder): OrderItemRow[] =>
   (Array.isArray(order.tests) ? order.tests : [])
@@ -55,6 +76,9 @@ const buildItemRows = (order: IIncomingOrder): OrderItemRow[] =>
     status: t.status,
     lineId: t._id,
     result: t.result,
+    respondBy: pendingResponseDeadline(t),
+    acceptedAt: t.acceptedAt,
+    autoCancel: t.autoCancel,
   }));
 
 const buyerLabel = (order: IIncomingOrder) =>
@@ -71,7 +95,7 @@ const MutateOrderItemPopup = ({
 }: {
   nodeId: string;
   row: OrderItemRow;
-  status: Extract<OrderItemStatus, "fulfilled" | "cancelled">;
+  status: OrderItemAction;
   mutate: () => unknown;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -81,9 +105,7 @@ const MutateOrderItemPopup = ({
   return (
     <Fragment>
       <ConfirmationPopup
-        message={getContent(
-          status === "fulfilled" ? "sureFulfillOrderItem" : "sureCancelOrderItem",
-        )}
+        message={getContent(confirmKey[status])}
         isLoading={isLoading}
         onConfirm={() => setIsLoading(true)}
       />
@@ -172,7 +194,16 @@ const ParaClinicIncomingOrderPage = () => {
                 name: getContent("status"),
                 value: (node) => node.status,
                 filter: "Set",
-                component: (node) => <OrderItemStatusBadge status={node.status} />,
+                component: (node) => (
+                  <span>
+                    <OrderItemStatusBadge
+                      status={node.status}
+                      acceptedAt={node.acceptedAt}
+                      autoCancel={node.autoCancel}
+                    />
+                    <OrderLineDeadline respondBy={node.respondBy} audience="seller" />
+                  </span>
+                ),
               },
               result: {
                 name: getContent("labResult"),
@@ -191,6 +222,27 @@ const ParaClinicIncomingOrderPage = () => {
                 component: (node) =>
                   node.status === "pending" ? (
                     <TableActions>
+                      {/* take the order first (stops the automatic cancel);
+                          a result upload also counts as an answer */}
+                      {!node.acceptedAt && !node.result?.uploadedAt && (
+                        <IconButton
+                          variant="Info"
+                          title={getContent("orderAccept")}
+                          onClick={() =>
+                            setPopup(
+                              "AcceptIncomingOrderItem",
+                              <MutateOrderItemPopup
+                                nodeId={nodeId}
+                                row={node}
+                                status="accepted"
+                                mutate={mutate}
+                              />,
+                            )
+                          }
+                        >
+                          <HandThumbUpIcon />
+                        </IconButton>
+                      )}
                       {!!node.lineId && (
                         <IconButton
                           title={getContent("labUpload")}

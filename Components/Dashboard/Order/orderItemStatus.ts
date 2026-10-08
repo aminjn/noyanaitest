@@ -22,3 +22,47 @@ export const orderItemStatusBadgeColorDict: Record<OrderItemStatus, BadgeColor> 
     fulfilled: "Success",
     cancelled: "Disabled",
   };
+
+// Seller response deadline of a pharmacy / lab line (2026-10, backend
+// Lib/orderResponse.ts): `respondBy` is stamped at payment (24 h pharmacy,
+// 72 h lab by default, super admin setting); the seller's first answer sets
+// `acceptedAt`. A line nobody answered is cancelled and refunded with
+// `autoCancel: "noResponse"`; one answered but never finished in 7 days gets
+// "notFulfilled".
+export type OrderLineAutoCancel = "noResponse" | "notFulfilled";
+
+export interface IOrderLineResponse {
+  respondBy?: string;
+  acceptedAt?: string;
+  autoCancel?: OrderLineAutoCancel;
+  autoCancelledAt?: string;
+}
+
+const validTime = (value: unknown): number | null => {
+  if (value === null || value === undefined || value === "") return null;
+  const t = new Date(value as string).getTime();
+  return Number.isFinite(t) ? t : null;
+};
+
+// the deadline still running for a line: pending, not answered yet, with a
+// valid `respondBy` (null otherwise)
+export const pendingResponseDeadline = (
+  line: ({ status?: string } & IOrderLineResponse) | null | undefined,
+): string | null => {
+  if (!line || line.status !== "pending" || line.acceptedAt) return null;
+  return validTime(line.respondBy) === null ? null : String(line.respondBy);
+};
+
+// the earliest running deadline among lines (an order row in a list)
+export const earliestResponseDeadline = (
+  lines: unknown,
+): string | null => {
+  if (!Array.isArray(lines)) return null;
+  let best: { at: number; value: string } | null = null;
+  for (const line of lines) {
+    const value = pendingResponseDeadline(line as { status?: string } & IOrderLineResponse);
+    const at = validTime(value);
+    if (value && at !== null && (!best || at < best.at)) best = { at, value };
+  }
+  return best?.value ?? null;
+};

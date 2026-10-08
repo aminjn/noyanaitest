@@ -20,6 +20,7 @@ import usePopup from "../Hooks/usePopup";
 import SocketContext from "../Store/SocketContext";
 import AuthShell from "./AuthShell";
 import { tmdMedium } from "../UI/Typography";
+import OtpResend, { otpWait, OtpSendReply } from "../UI/OtpResend";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 
@@ -38,12 +39,14 @@ const SignupPopup = ({
   const { closePopup } = usePopup();
 
   const [isCodeStage, setIsCodeStage] = useState<boolean>(false);
-  const { setInput, isLoading, submit, input } = useForm<SignupInput>({
+  const [sent, setSent] = useState({ wait: 60, at: 0, recent: false });
+  const { setInput, isLoading, submit, input } = useForm<SignupInput, OtpSendReply>({
     path: `${API}/auth/signup`,
     method: "POST",
     //TODO:add validation
     mutator: (inp) => ({ ...inp, phone: `0${inp.phone}` }),
-    successCb: () => {
+    successCb: (reply: OtpSendReply) => {
+      setSent({ wait: otpWait(reply), at: Date.now(), recent: reply?.data?.sent === false });
       setIsCodeStage(true);
     },
   });
@@ -81,6 +84,13 @@ const SignupPopup = ({
           <Fragment>
             <CodeInput
               onChange={(e) => setCodeInput((prev) => ({ ...prev, code: e }))}
+            />
+            <OtpResend
+              wait={sent.wait}
+              startedAt={sent.at}
+              recent={sent.recent}
+              isLoading={isLoading}
+              onResend={() => submit()}
             />
             <Button
               onClick={() => submitCode()}

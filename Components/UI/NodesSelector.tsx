@@ -23,6 +23,10 @@ export type NodesSelectorCreatable = {
   path: string;
   field?: "name" | "title";
   extra?: Record<string, unknown>;
+  // outside the admin panel (a provider's own form) the "+ create" row and
+  // its error come from the site's texts, not the admin dictionary
+  formatLabel?: (input: string) => string;
+  errorText?: string;
 };
 
 // (2026-10) A long list (every doctor's services...) searched on the
@@ -32,6 +36,17 @@ export type NodesSelectorCreatable = {
 export type NodesSelectorSearch = { param?: string; selectedParam?: string };
 
 type NewOption = { label: string; value: string; __isNew__: true };
+
+// Persian and Arabic forms of a name compared as one (ی/ي, ک/ك,
+// half-spaces, spaces, case): typing «بوتاكس» finds «بوتاکس» instead of
+// offering to create a twin (the server dedupes the same way)
+const looseKey = (text: unknown) =>
+  String(text ?? "")
+    .normalize("NFKC")
+    .replace(/[يى]/g, "ی")
+    .replace(/ك/g, "ک")
+    .replace(/[\u0640\u064b-\u065f\u0670\u200b-\u200f\u2060\ufeff\s]/g, "")
+    .toLowerCase();
 const isNewOption = (option: unknown): option is NewOption =>
   !!option && typeof option === "object" && "__isNew__" in option;
 
@@ -150,17 +165,30 @@ const NodesSelector = <TMulti extends boolean = false>({
         payload: { [field]: label, isActive: true, ...creatable.extra },
       });
       const saved = res?.data?.data;
-      if (!saved?._id) throw new Error(ta("ایجاد ممکن نشد"));
+      if (!saved?._id) throw new Error(creatable.errorText || ta("ایجاد ممکن نشد"));
       const node = { ...saved, [field]: saved[field] ?? label };
-      await mutate((prev) => [...(Array.isArray(prev) ? prev : []), node], {
-        revalidate: false,
-      });
-      if (multi)
-        emit([...(Array.isArray(value) ? value : []), node]);
-      else emit(node);
+      // the server may answer with a record already listed (the same name
+      // written differently): it is selected, not added twice
+      const savedId = getOptionValue(node);
+      const known = options.find((el) => getOptionValue(el) === savedId);
+      if (!known)
+        await mutate((prev) => [...(Array.isArray(prev) ? prev : []), node], {
+          revalidate: false,
+        });
+      const picked = known || node;
+      if (multi) {
+        const current = Array.isArray(value) ? value : [];
+        emit(
+          current.some((el) => getOptionValue(el) === savedId)
+            ? current
+            : [...current, picked],
+        );
+      } else emit(picked);
     } catch (err) {
       setCreateError(
-        err instanceof Error && err.message ? err.message : ta("ایجاد ممکن نشد"),
+        err instanceof Error && err.message
+          ? err.message
+          : creatable.errorText || ta("ایجاد ممکن نشد"),
       );
     } finally {
       setCreating(false);
@@ -204,8 +232,22 @@ const NodesSelector = <TMulti extends boolean = false>({
         <CreatableSelect
           {...commonProps}
           onCreateOption={create}
+          {...(!search
+            ? {
+                filterOption: (option: { label: string }, input: string) =>
+                  !input || looseKey(option.label).includes(looseKey(input)),
+              }
+            : {})}
+          isValidNewOption={(input: string) => {
+            const key = looseKey(input);
+            if (!key) return false;
+            const chosen = Array.isArray(value) ? value : value ? [value] : [];
+            return ![...options, ...chosen].some((el) => looseKey(labelOf(el)) === key);
+          }}
           formatCreateLabel={(input: string) =>
-            `+ ${ta("ایجاد «${1}»", [input])}`
+            creatable.formatLabel
+              ? creatable.formatLabel(input)
+              : `+ ${ta("ایجاد «${1}»", [input])}`
           }
         />
       ) : (

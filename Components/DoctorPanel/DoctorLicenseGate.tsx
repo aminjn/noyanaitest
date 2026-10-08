@@ -44,8 +44,9 @@ const pathModuleMap: Record<string, DoctorDashboardModule> = {
   booking: "schedule",
   schedule: "schedule",
   patient: "patients",
-  clinic: "clinics",
-  hospital: "hospitals",
+  // clinic / hospital (2026-10) are not gated as a page: any doctor sees
+  // their centres, answers invites and leaves; the doctor's own join
+  // requests and suggestions are gated inside the page
   pharmacy: "phrmaciesAndLabs",
   insurance: "insurances",
   drug: "drugsAndPrescriptions",

@@ -63,6 +63,9 @@ export const notificationSmsEvents = [
   "prescriptionRejectedUser",
   "labResultReadyUser",
   "orderCancelledByBuyerSeller",
+  "orderResponseDueSoonSeller",
+  "orderAutoCancelledSeller",
+  "orderAutoCancelledUser",
   "walletChargedUser",
   "gatewayPaymentCreditedUser",
   "gatewayPaymentRefundedUser",
@@ -407,6 +410,25 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("لغو سفارش توسط خریدار - فروشنده"),
     variables: ["orderId"],
     sample: () => ta("خریدار بخشی از سفارش %orderId% را لغو کرد؛ آن را ارسال نکنید."),
+  },
+  // seller response deadline (2026-10, backend Lib/orderResponse.ts)
+  orderResponseDueSoonSeller: {
+    audience: "provider",
+    label: () => ta("نزدیک شدن پایان مهلت پاسخ به سفارش - فروشنده"),
+    variables: ["orderId", "deadline"],
+    sample: () => ta("سفارش %orderId% هنوز بی‌پاسخ است. اگر تا %deadline% آن را نپذیرید یا آماده نکنید، خودکار لغو می‌شود."),
+  },
+  orderAutoCancelledSeller: {
+    audience: "provider",
+    label: () => ta("لغو خودکار سفارش بی‌پاسخ - فروشنده"),
+    variables: ["orderId"],
+    sample: () => ta("بخشی از سفارش %orderId% چون در مهلت پاسخ داده نشد خودکار لغو و مبلغش به خریدار برگردانده شد؛ آن را ارسال نکنید."),
+  },
+  orderAutoCancelledUser: {
+    audience: "patient",
+    label: () => ta("لغو خودکار سفارش بی‌پاسخ - خریدار"),
+    variables: ["orderId"],
+    sample: () => ta("فروشنده به بخشی از سفارش %orderId% به‌موقع پاسخ نداد؛ آن قلم خودکار لغو و مبلغش به کیف پول شما برگشت."),
   },
   walletChargedUser: {
     audience: "patient",

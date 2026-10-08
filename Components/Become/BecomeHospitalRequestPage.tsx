@@ -10,6 +10,7 @@ import { IBecomeHospitalRequest } from "../HospitalPanel/BecomeHospitalPage";
 import BecomeOrganizationForm from "./BecomeOrganizationForm";
 import useHospital from "../Hooks/useHospital";
 import BecomeDoneView from "./BecomeDoneView";
+import useAnotherCentre from "./useAnotherCentre";
 
 const org = becomeOrgs.hospital;
 
@@ -47,7 +48,11 @@ const BecomeHospitalRequestPage = () => {
 
   const { hospital } = useHospital();
 
-  if (hospital)
+  const another = useAnotherCentre();
+
+  // an owner asking for another hospital sees the form (and then where that
+  // request stands); otherwise an owner is sent to the panel
+  if (hospital && !another && request?.status !== "Pending")
     return <BecomeDoneView title="becomeHospitalDone" target={org.panelPath} />;
 
   return (

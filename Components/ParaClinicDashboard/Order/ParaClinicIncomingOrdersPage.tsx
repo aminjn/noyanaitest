@@ -17,7 +17,12 @@ import EyeIcon from "@/Components/Icons/EyeIcon";
 import FormatDate from "@/Components/UI/FormatDate";
 import OrderStatusBadge from "@/Components/Dashboard/Order/OrderStatusBadge";
 import { OrderStatus } from "@/Components/Dashboard/Order/orderStatus";
-import { OrderItemStatus } from "@/Components/Dashboard/Order/orderItemStatus";
+import {
+  earliestResponseDeadline,
+  IOrderLineResponse,
+  OrderItemStatus,
+} from "@/Components/Dashboard/Order/orderItemStatus";
+import OrderLineDeadline from "@/Components/Dashboard/Order/OrderLineDeadline";
 
 const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
@@ -26,7 +31,7 @@ const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 // /paraClinic/order/:nodeId (paraClinicController.getMyIncomingOrder) - each
 // order is already filtered down to just this paraClinic's own tests line
 // items, plus a "subtotal" computed over only those items.
-export interface IIncomingOrderItem {
+export interface IIncomingOrderItem extends IOrderLineResponse {
   _id?: string;
   item: { _id: string; test?: { _id: string; name?: string } };
   qty: number;
@@ -100,6 +105,19 @@ const ParaClinicIncomingOrdersPage = () => {
                     ? getContent("ordersNeedAction", [String(node.pendingLines)])
                     : getContent("ordersAllDone"),
                 filter: "Set",
+              },
+              // the earliest unanswered test's deadline (2026-10): past it
+              // the line is cancelled and the buyer refunded
+              respondBy: {
+                name: getContent("orderRespondDeadline"),
+                value: (node) => {
+                  const at = earliestResponseDeadline(node.tests);
+                  return at ? new Date(at) : "";
+                },
+                component: (node) => {
+                  const at = earliestResponseDeadline(node.tests);
+                  return at ? <OrderLineDeadline respondBy={at} audience="seller" /> : "-";
+                },
               },
               actions: {
                 name: getContent("actions"),

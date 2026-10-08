@@ -1,7 +1,8 @@
 /* Save/cancel bar: stays in reach at the bottom of long forms. */
 .main {
   position: sticky;
-  bottom: 0;
+  /* clear the phone tab bar (0 elsewhere and inside popups) */
+  bottom: var(--bottomNavSpace, 0px);
   z-index: 5;
   display: flex;
   align-items: center;
@@ -10,6 +11,8 @@
   flex-wrap: wrap;
   margin-top: 0.5rem;
   padding: 0.875rem 0;
+  /* the assistant button floats over this corner */
+  padding-inline-end: var(--fabClear, 0px);
   border-top: 1px solid var(--line);
   background: var(--glassStrong);
   backdrop-filter: var(--glassBlur);

@@ -1,4 +1,7 @@
 .main {
+  /* a popup covers the tab bar: sticky form actions sit at its bottom */
+  --bottomNavSpace: 0px;
+  --fabClear: 0px;
   background-color: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radiusLg);

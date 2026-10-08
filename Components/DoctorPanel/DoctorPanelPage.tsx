@@ -2,6 +2,7 @@
 
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { Population } from "../Admin/Clinic/AdminManageClinicsPage";
+import type { IServiceCategory } from "../Admin/ServiceCategory/AdminManageServiceCategoriesPage";
 import {
   GalleryItemPopulation,
   IGalleryItem,
@@ -276,7 +277,9 @@ export interface IDoctorProfile<
   medicalSystemTitle?: MedicalSystemTitle;
   medicalSystemCode?: string;
   introduction?: string;
-  services: string[];
+  // catalogue entries (ids, or populated on the public page); an old
+  // profile may still hold free-text strings until the boot migration runs
+  serviceCategories?: (IServiceCategory | string)[];
   achivements: string[];
   website?: string;
   landLine?: string;

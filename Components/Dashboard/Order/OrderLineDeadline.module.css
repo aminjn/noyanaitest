@@ -1,0 +1,11 @@
+.deadline {
+  display: block;
+  color: var(--warningS3);
+  text-align: start;
+  margin-block-start: 0.25rem;
+  white-space: normal;
+}
+
+.overdue {
+  color: var(--error);
+}

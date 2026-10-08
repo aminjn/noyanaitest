@@ -6,6 +6,7 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 import AdminManageServiceCategoriesPage from "@/Components/Admin/ServiceCategory/AdminManageServiceCategoriesPage";
 import AdminManageServicePackagesPage from "@/Components/Admin/ServicePackage/AdminManageServicePackagesPage";
 import AdminManageServicesPage from "@/Components/Admin/Service/AdminManageServicesPage";
+import AdminServiceSuggestionsPage from "@/Components/Admin/ServiceCategory/AdminServiceSuggestionsPage";
 
 // خدمات: one admin page, its parts as tabs (2026-09 admin audit).
 const ServiceHub = () => {
@@ -31,6 +32,14 @@ const ServiceHub = () => {
           title: ta("دسته‌ها"),
           exclude: !canOpen("Service"),
           content: <AdminManageServiceCategoriesPage />,
+        },
+        {
+          // services doctors added from their profile, waiting for review
+          // (approve / merge into an existing entry)
+          id: "suggestions",
+          title: ta("پیشنهادهای پزشکان"),
+          exclude: !canOpen("Service"),
+          content: <AdminServiceSuggestionsPage />,
         },
       ]}
     />

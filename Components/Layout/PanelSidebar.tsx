@@ -162,7 +162,16 @@ const SectionItem = ({ item, panel }: { item: LinkMapItem; panel: string }) => {
   );
 };
 
-const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
+const PanelSidebar = ({
+  links,
+  panel,
+  header,
+}: {
+  links: LinkMap;
+  panel: string;
+  // shown above the menu: the clinic / hospital centre switcher (2026-10)
+  header?: ReactNode;
+}) => {
   const { user } = useUser();
   const getContent = useScopedLocale(LOCALE_NS);
 
@@ -187,6 +196,7 @@ const PanelSidebar = ({ links, panel }: { links: LinkMap; panel: string }) => {
   if (!user) return <Loading />;
   return (
     <div className={classes.main}>
+      {header}
       <CommandPalette items={commands} className={classes.command} />
       <nav className={classes.bar}>
         {links

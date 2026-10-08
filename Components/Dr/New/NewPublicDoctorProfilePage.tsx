@@ -112,6 +112,20 @@ const NewDoctorProfilePage = ({
     );
   })();
 
+  // the catalogue services (populated); an old free-text entry or a broken
+  // reference is skipped, never crashes the page
+  const serviceChips = (
+    (Array.isArray(doctor.serviceCategories)
+      ? doctor.serviceCategories
+      : []) as unknown[]
+  ).filter(
+    (el): el is { _id: string; title: string } =>
+      !!el &&
+      typeof el === "object" &&
+      typeof (el as { _id?: unknown })._id === "string" &&
+      !!(el as { title?: string }).title,
+  );
+
   const fullName = getDoctorProfileLabel(doctor);
   // the council number patients check a doctor by (Paziresh24 / Doctolib
   // show it on the profile), and the tick: an account with that number on
@@ -450,15 +464,26 @@ const NewDoctorProfilePage = ({
                 ))}
               </div>
             )}
-            {!doctor.services?.length ? (
+            {/* the services come from the catalogue (2026-10): each opens
+                the doctors who offer it on /book, as a speciality does */}
+            {!serviceChips.length ? (
               !specialityChips.length && (
                 <EmptyState>{getContent("nothingFound")}</EmptyState>
               )
             ) : (
-              <ul className={classes.list}>
-                {doctor.services.map((service, i) => (
-                  <li key={`${service}${i}`} className={classes.listItem}>
-                    {service}
+              <ul className={classes.serviceChips}>
+                {serviceChips.map((service) => (
+                  <li key={service._id}>
+                    <Link
+                      href={`/book?${new URLSearchParams({
+                        service: service._id,
+                        name: service.title || "",
+                      }).toString()}`}
+                    >
+                      <Badge color="Primarylight" mode="Outline" radius="High">
+                        {service.title}
+                      </Badge>
+                    </Link>
                   </li>
                 ))}
               </ul>
