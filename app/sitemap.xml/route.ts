@@ -16,7 +16,10 @@ import { sitemapNodeTypes } from "@/Components/helpers/sitemapNodeTypes";
 // SITEMAP_PAGE_SIZE (10,000) links per file, so once it has more publicly
 // visible documents than that it gets extra numbered files: doctor.xml,
 // doctor02.xml, doctor03.xml, ...
-export const revalidate = 3600;
+// Rendered on request (not at build time): the build runs on CI, where
+// there is no backend to count documents from. Search engines read it a
+// few times a day, and each read is one count query per type.
+export const dynamic = "force-dynamic";
 
 export const GET = async () => {
   const counts = await Promise.all(
