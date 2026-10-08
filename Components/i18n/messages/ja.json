@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "サポートによるウォレット修正",
  "pfPaidByOwner": "オーナーの個人ウォレットから支払い",
  "centreWalletBalance": "このセンターのウォレット：${1} トマン",
- "centreWalletRule": "このセンターのウォレットから支払われます。足りない場合は個人ウォレットから支払われます。",
+ "centreWalletRule": "このセンターのウォレットからのみ支払われます。不足する場合は個人ウォレットから入金してください。",
  "personalWalletBalance": "あなたの個人ウォレット：${1} トマン",
  "labSamplingNav": "検体採取",
  "lsTitle": "採取予約",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "この注文でこの販売者を評価済みです。ありがとうございます！",
  "dpdPlanEndedBanner": "「${1}」プランが終了しました。ページと基本の予約受付は無料のまま公開され、患者は引き続き予約できます。有料機能を使うには更新してください。",
  "dpdPlanEndingBanner": "「${1}」プランはあと${2}日で終了します。その後も基本の予約受付は無料で続き、有料機能のみ停止します。",
- "dpdRenewPlan": "プランを更新"
+ "dpdRenewPlan": "プランを更新",
+ "cwFundTitle": "センターのウォレットに入金",
+ "cwFundHint": "このセンターのプランとSMSはセンター自身のウォレットからのみ支払われます。個人ウォレットから入金してください。",
+ "cwPersonal": "あなたの個人ウォレット",
+ "cwFundSubmit": "入金する",
+ "cwFundDone": "センターのウォレットに入金しました"
 }

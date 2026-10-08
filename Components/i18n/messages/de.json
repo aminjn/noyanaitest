@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "Wallet-Korrektur durch den Support",
  "pfPaidByOwner": "Aus dem persönlichen Wallet des Inhabers bezahlt",
  "centreWalletBalance": "Wallet dieses Zentrums: ${1} Toman",
- "centreWalletRule": "Wird aus dem Wallet dieses Zentrums bezahlt; reicht es nicht, aus Ihrem persönlichen Wallet.",
+ "centreWalletRule": "Nur aus dem Wallet dieses Zentrums bezahlt; reicht es nicht, überweisen Sie aus Ihrem persönlichen Wallet.",
  "personalWalletBalance": "Ihr persönliches Wallet: ${1} Toman",
  "labSamplingNav": "Probenentnahme",
  "lsTitle": "Entnahmetermin",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "Sie haben diesen Verkäufer für diese Bestellung bewertet. Danke!",
  "dpdPlanEndedBanner": "Ihr Tarif „${1}“ ist abgelaufen. Ihre Seite und die Basis-Terminbuchung bleiben kostenlos und aktiv, Patienten können weiter buchen; verlängern Sie, um die kostenpflichtigen Funktionen wieder zu nutzen.",
  "dpdPlanEndingBanner": "Ihr Tarif „${1}“ endet in ${2} Tagen. Danach läuft die Basis-Terminbuchung kostenlos weiter; nur die kostenpflichtigen Funktionen enden.",
- "dpdRenewPlan": "Tarif verlängern"
+ "dpdRenewPlan": "Tarif verlängern",
+ "cwFundTitle": "Geld auf das Wallet des Zentrums",
+ "cwFundHint": "Tarif und SMS dieses Zentrums werden nur aus seinem eigenen Wallet bezahlt. Überweisen Sie aus Ihrem persönlichen Wallet.",
+ "cwPersonal": "Ihr persönliches Wallet",
+ "cwFundSubmit": "Überweisen",
+ "cwFundDone": "Der Betrag wurde dem Wallet des Zentrums gutgeschrieben"
 }

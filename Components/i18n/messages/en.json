@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "Wallet correction by support",
  "pfPaidByOwner": "Paid from the owner's personal wallet",
  "centreWalletBalance": "This centre's wallet: ${1} tomans",
- "centreWalletRule": "Paid from this centre's own wallet; if it is not enough, from your personal wallet.",
+ "centreWalletRule": "Paid from this centre's wallet only; if it falls short, move money into it from your personal wallet.",
  "personalWalletBalance": "Your personal wallet: ${1} tomans",
  "labSamplingNav": "Sampling",
  "lsTitle": "Sampling appointment",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "You have rated this seller for this order. Thank you!",
  "dpdPlanEndedBanner": "Your “${1}” plan has ended. Your page and basic booking stay free and live, and patients can still book; renew to get the paid features back.",
  "dpdPlanEndingBanner": "Your “${1}” plan ends in ${2} days. After that basic booking continues for free; only the paid features stop.",
- "dpdRenewPlan": "Renew plan"
+ "dpdRenewPlan": "Renew plan",
+ "cwFundTitle": "Add money to the centre's wallet",
+ "cwFundHint": "This centre's plan and SMS are paid from its own wallet only. Move money into it from your personal wallet.",
+ "cwPersonal": "Your personal wallet",
+ "cwFundSubmit": "Transfer",
+ "cwFundDone": "The amount was added to the centre's wallet"
 }

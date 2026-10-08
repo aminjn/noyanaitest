@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "Koreksi dompet oleh dukungan",
  "pfPaidByOwner": "Dibayar dari dompet pribadi pemilik",
  "centreWalletBalance": "Dompet pusat ini: ${1} toman",
- "centreWalletRule": "Dibayar dari dompet pusat ini; jika tidak cukup, dari dompet pribadi Anda.",
+ "centreWalletRule": "Dibayar hanya dari dompet pusat ini; jika kurang, pindahkan dari dompet pribadi Anda.",
  "personalWalletBalance": "Dompet pribadi Anda: ${1} toman",
  "labSamplingNav": "Pengambilan sampel",
  "lsTitle": "Janji pengambilan sampel",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "Anda sudah menilai penjual ini untuk pesanan ini. Terima kasih!",
  "dpdPlanEndedBanner": "Paket “${1}” Anda telah berakhir. Halaman Anda dan pemesanan dasar tetap gratis dan aktif, pasien masih bisa memesan; perpanjang untuk mendapatkan kembali fitur berbayar.",
  "dpdPlanEndingBanner": "Paket “${1}” Anda berakhir dalam ${2} hari. Setelah itu pemesanan dasar tetap gratis; hanya fitur berbayar yang berhenti.",
- "dpdRenewPlan": "Perpanjang paket"
+ "dpdRenewPlan": "Perpanjang paket",
+ "cwFundTitle": "Tambah saldo dompet pusat",
+ "cwFundHint": "Paket dan SMS pusat ini hanya dibayar dari dompetnya sendiri. Pindahkan saldo dari dompet pribadi Anda.",
+ "cwPersonal": "Dompet pribadi Anda",
+ "cwFundSubmit": "Pindahkan",
+ "cwFundDone": "Saldo telah masuk ke dompet pusat"
 }

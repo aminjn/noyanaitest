@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "Correção da carteira pelo suporte",
  "pfPaidByOwner": "Pago com a carteira pessoal do proprietário",
  "centreWalletBalance": "Carteira deste centro: ${1} tomans",
- "centreWalletRule": "Pago com a carteira deste centro; se não bastar, com a sua carteira pessoal.",
+ "centreWalletRule": "Pago apenas pela carteira deste centro; se faltar, transfira da sua carteira pessoal.",
  "personalWalletBalance": "Sua carteira pessoal: ${1} tomans",
  "labSamplingNav": "Colheitas",
  "lsTitle": "Marcação de colheita",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "Já avaliou este vendedor para esta encomenda. Obrigado!",
  "dpdPlanEndedBanner": "O seu plano “${1}” terminou. A sua página e o agendamento básico continuam gratuitos e ativos, e os pacientes ainda podem agendar; renove para recuperar os recursos pagos.",
  "dpdPlanEndingBanner": "O seu plano “${1}” termina em ${2} dias. Depois o agendamento básico continua gratuito; só os recursos pagos param.",
- "dpdRenewPlan": "Renovar plano"
+ "dpdRenewPlan": "Renovar plano",
+ "cwFundTitle": "Adicionar saldo à carteira do centro",
+ "cwFundHint": "O plano e os SMS deste centro são pagos apenas pela carteira dele. Transfira da sua carteira pessoal.",
+ "cwPersonal": "Sua carteira pessoal",
+ "cwFundSubmit": "Transferir",
+ "cwFundDone": "O valor foi adicionado à carteira do centro"
 }

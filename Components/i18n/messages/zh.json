@@ -6823,7 +6823,7 @@
  "pfWalletAdjust": "客服调整钱包",
  "pfPaidByOwner": "由所有者个人钱包支付",
  "centreWalletBalance": "本中心钱包：${1} 托曼",
- "centreWalletRule": "从本中心钱包支付；不足时从您的个人钱包支付。",
+ "centreWalletRule": "仅从本中心钱包支付；不足时请从个人钱包转入。",
  "personalWalletBalance": "您的个人钱包：${1} 托曼",
  "labSamplingNav": "采样",
  "lsTitle": "采样预约",
@@ -6892,5 +6892,10 @@
  "reviewDoneForOrder": "您已为此订单评价过该商家，谢谢！",
  "dpdPlanEndedBanner": "您的“${1}”套餐已到期。您的页面和基础预约仍免费开放，患者仍可预约；续订即可恢复付费功能。",
  "dpdPlanEndingBanner": "您的“${1}”套餐将在 ${2} 天后到期。之后基础预约继续免费，只有付费功能停止。",
- "dpdRenewPlan": "续订套餐"
+ "dpdRenewPlan": "续订套餐",
+ "cwFundTitle": "向中心钱包转入",
+ "cwFundHint": "本中心的套餐和短信只从中心自己的钱包支付。请从您的个人钱包转入。",
+ "cwPersonal": "您的个人钱包",
+ "cwFundSubmit": "转入",
+ "cwFundDone": "金额已转入中心钱包"
 }
