@@ -188,6 +188,22 @@ const ParaClinicIncomingOrderPage = () => {
                     });
                     await mutate();
                   }}
+                  onPropose={async (payload) => {
+                    await fetcher({
+                      url: `${API}/paraClinic/sampling/${sampling._id}`,
+                      method: "PATCH",
+                      payload: { action: "propose", ...payload },
+                    });
+                    await mutate();
+                  }}
+                  onWithdrawProposal={async () => {
+                    await fetcher({
+                      url: `${API}/paraClinic/sampling/${sampling._id}`,
+                      method: "PATCH",
+                      payload: { action: "withdrawProposal" },
+                    });
+                    await mutate();
+                  }}
                 />
               ) : null
             }

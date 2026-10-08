@@ -116,6 +116,13 @@ const SamplingAgendaTab = ({
     await mutate();
   };
 
+  // in-lab <-> home is a proposal the buyer answers (backend
+  // Lib/labSamplingProposal.ts)
+  const patch = async (item: AgendaItem, payload: Record<string, unknown>) => {
+    await fetcher({ url: `${API}/paraClinic/sampling/${item._id}`, method: "PATCH", payload });
+    await mutate();
+  };
+
   const items = Array.isArray(data?.items) ? data!.items : [];
   const slots = Array.isArray(data?.slots) ? data!.slots : [];
 
@@ -242,6 +249,8 @@ const SamplingAgendaTab = ({
                             viewer="lab"
                             tests={(item.tests || []).map((l) => l.name).filter(Boolean)}
                             onMove={(payload) => move(item, payload)}
+                            onPropose={(payload) => patch(item, { action: "propose", ...payload })}
+                            onWithdrawProposal={() => patch(item, { action: "withdrawProposal" })}
                           />
                         )}
                       </div>

@@ -59,12 +59,16 @@ export const notificationSmsEvents = [
   "waitlistEarlierSlotUser",
   "orderShippedUser",
   "orderItemFulfilledUser",
+  "orderDeliveredUser",
+  "orderDeliveredSeller",
+  "orderDeliveryProblemSeller",
   "orderItemCancelledUser",
   "prescriptionRejectedUser",
   "labResultReadyUser",
   "labSamplingReminderUser",
   "labSamplingRescheduledUser",
   "labSamplingRescheduledLab",
+  "labSamplingProposalUser",
   "orderCancelledByBuyerSeller",
   "orderResponseDueSoonSeller",
   "orderAutoCancelledSeller",
@@ -400,6 +404,29 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     variables: ["orderId"],
     sample: () => ta("بخشی از سفارش %orderId% شما آماده و تحویل شد."),
   },
+  // a Tipax parcel's delivery (2026-10, backend Services/shipmentDeliveryService.ts):
+  // the buyer when the auto-confirm or support recorded it, the pharmacy
+  // whose payout hold starts now, and the pharmacy when the buyer reports
+  // the parcel did not arrive
+  orderDeliveredUser: {
+    audience: "patient",
+    label: () => ta("ثبت تحویل مرسوله - خریدار"),
+    variables: ["orderId", "sellerName"],
+    sample: () =>
+      ta("تحویل مرسوله‌ی سفارش %orderId% از %sellerName% ثبت شد. اگر به دستتان نرسیده: noyan.ir/order/%orderId%"),
+  },
+  orderDeliveredSeller: {
+    audience: "provider",
+    label: () => ta("تحویل مرسوله به خریدار - داروخانه"),
+    variables: ["orderId"],
+    sample: () => ta("مرسوله‌ی سفارش %orderId% تحویل خریدار شد؛ مبلغ آن پس از دوره‌ی تسویه قابل برداشت می‌شود."),
+  },
+  orderDeliveryProblemSeller: {
+    audience: "provider",
+    label: () => ta("گزارش نرسیدن مرسوله - داروخانه"),
+    variables: ["orderId"],
+    sample: () => ta("خریدار سفارش %orderId% گزارش داده مرسوله نرسیده است. وضعیت را از تیپاکس پیگیری کنید."),
+  },
   orderItemCancelledUser: {
     audience: "patient",
     label: () => ta("لغو قلم سفارش - خریدار"),
@@ -439,6 +466,14 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("جابه‌جایی نوبت نمونه‌گیری - آزمایشگاه"),
     variables: ["orderId", "date", "time"],
     sample: () => ta("نوبت نمونه‌گیری سفارش %orderId% به %date% ساعت %time% منتقل شد."),
+  },
+  // the lab proposed switching in-lab <-> home at a new time (backend
+  // Lib/labSamplingProposal.ts): the buyer answers on the order page
+  labSamplingProposalUser: {
+    audience: "patient",
+    label: () => ta("پیشنهاد تغییر نوبت نمونه‌گیری - خریدار"),
+    variables: ["labName", "date", "time"],
+    sample: () => ta("%labName% پیشنهاد تغییر نوبت نمونه‌گیری شما به %date% ساعت %time% را داده است. در صفحه‌ی سفارش بپذیرید یا رد کنید."),
   },
   // seller reviews (2026-10, backend Services/orderSettlementService.ts
   // inviteSellerReview): once per order and pharmacy / lab

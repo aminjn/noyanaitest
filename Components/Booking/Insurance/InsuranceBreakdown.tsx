@@ -23,6 +23,10 @@ export type BreakdownLine = {
   status?: BreakdownLineStatus | string;
   holder?: "doctor" | "centre";
   centreName?: string;
+  // (2026-10) a centre's line: the doctor's percentage snapshotted at
+  // booking and, once booked, what the centre owes them
+  doctorPercent?: number | null;
+  doctorShare?: number | null;
   claim?: string | null;
   eligibility?: { status?: string } | null;
 };
@@ -56,6 +60,9 @@ export type BreakdownTexts = {
   verified: string;
   onClaim: string;
   estimate: string;
+  // the doctor's share of a centre's line - only the doctor's visit page and
+  // the admin pass it (the patient does not see the doctor-centre split)
+  doctorShare?: (percent: number, amount: string) => string;
 };
 
 const asList = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
@@ -63,6 +70,15 @@ const knownStatus = (s: unknown): BreakdownLineStatus =>
   (["pending", "booked", "cancelled", "reversed", "desk", "none"] as const).includes(s as BreakdownLineStatus)
     ? (s as BreakdownLineStatus)
     : "none";
+
+// a centre's line: the percentage (none = 100%, the rule before 2026-10)
+// and the doctor's amount - the booked figure, else the estimate
+const doctorShareOf = (l: BreakdownLine, share: number, money: (n: number) => string): [number, string] => {
+  const raw = Number(l.doctorPercent);
+  const percent = l.doctorPercent == null || !Number.isFinite(raw) ? 100 : Math.min(100, Math.max(0, raw));
+  const booked = Number(l.doctorShare);
+  return [percent, money(l.doctorShare != null && Number.isFinite(booked) ? booked : Math.round((share * percent) / 100))];
+};
 
 // a reservation with nothing to split (no insurance picked) shows nothing
 export const hasInsuranceBreakdown = (r?: BreakdownReservation | null) => asList(r?.insuranceQuote?.lines).length > 0;
@@ -114,6 +130,9 @@ const InsuranceBreakdown = ({
                 <span>{l.planName ? `${nameOf(l)} · ${l.planName}` : nameOf(l)}</span>
                 <small>{l.role === "basic" ? text.basic : text.supplementary}</small>
                 {!compact && l.holder === "centre" && !!l.centreName && <small>{text.viaCentre(l.centreName)}</small>}
+                {!compact && l.holder === "centre" && !!text.doctorShare && share > 0 && (
+                  <small className={classes.doctorShare}>{text.doctorShare(...doctorShareOf(l, share, money))}</small>
+                )}
                 {!compact && l.eligibility?.status === "verified" && (
                   <span className={classes.verified}>
                     <Ixon width="0.8rem">

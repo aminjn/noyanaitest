@@ -26,8 +26,14 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 const BecomeDoctorProfileSelector = ({
   req,
   mutateRequest,
+  needsCouncilCheck,
+  councilChecked,
 }: {
   req: IBecomeDoctorRequest<{ UserPopulated: true }>;
+  // no council inquiry: linking approves too, so it waits for the
+  // checklist on the «اطلاعات» tab (CouncilCardChecklist)
+  needsCouncilCheck?: boolean;
+  councilChecked?: boolean;
   // linking approves the request: its page refreshes too
   mutateRequest?: () => unknown;
 }) => {
@@ -81,7 +87,10 @@ const BecomeDoctorProfileSelector = ({
       ) : (
         <List>
           <p>{ta("هنوز پروفایلی برای این کاربر ثبت نشده")}</p>
-          {req.status === "Pending" && hasAccess("DoctorProfile", "update") && (
+          {req.status === "Pending" && hasAccess("DoctorProfile", "update") && needsCouncilCheck && !councilChecked && (
+            <p>{ta("برای تأیید، همه‌ی موارد فهرست بررسی را تیک بزنید.")}</p>
+          )}
+          {req.status === "Pending" && hasAccess("DoctorProfile", "update") && (!needsCouncilCheck || councilChecked) && (
             <FormActions>
               <Button
                 onClick={() =>
@@ -93,6 +102,7 @@ const BecomeDoctorProfileSelector = ({
                         mutateRequest?.();
                       }}
                       req={req}
+                      councilChecked={councilChecked}
                     />,
                   )
                 }

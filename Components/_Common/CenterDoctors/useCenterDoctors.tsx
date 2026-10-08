@@ -23,11 +23,28 @@ export type CenterDepartment = {
   active?: boolean;
   order?: number;
 };
+// the doctor's share of the insurers' payments to the centre (2026-10):
+// agreed, a proposal waiting for the doctor, the doctor's last "no"
+export type InsurerSplit = {
+  doctorPercent?: number;
+  agreedAt?: string;
+  proposal?: { doctorPercent?: number; at?: string } | null;
+  declined?: { doctorPercent?: number; at?: string } | null;
+};
 export type CenterMember = {
   _id: string;
   doctor: Doc;
   department?: { _id: string; name?: string } | string | null;
+  insurerSplit?: InsurerSplit | null;
 };
+const pct = (v: unknown, fallback: number | null) => {
+  const n = Number(v);
+  return v == null || v === "" || !Number.isFinite(n) ? fallback : Math.min(100, Math.max(0, n));
+};
+// none on the membership = 100% (the rule before the split existed)
+export const agreedPercent = (s?: InsurerSplit | null) => pct(s?.doctorPercent, 100) as number;
+export const proposedPercent = (s?: InsurerSplit | null) => (s?.proposal ? pct(s.proposal.doctorPercent, null) : null);
+export const declinedPercent = (s?: InsurerSplit | null) => (s?.declined ? pct(s.declined.doctorPercent, null) : null);
 export const memberDepartmentId = (m: CenterMember) =>
   m.department && typeof m.department === "object" ? m.department._id : m.department || "";
 export type CenterRequest = { _id: string; doctor: Doc; message?: string; submittedAt?: string };
@@ -96,6 +113,15 @@ const useCenterDoctors = (kind: CenterKind) => {
         bodyParser: "JSON",
         payload,
       }),
+    // the centre proposes the doctor's percentage (the doctor accepts it)
+    proposeSplit: (id: string, doctorPercent: number) =>
+      run(id, {
+        url: `${API}/${kind}/doctor/${id}/split`,
+        method: "PUT",
+        bodyParser: "JSON",
+        payload: { doctorPercent },
+      }),
+    withdrawSplit: (id: string) => run(id, { url: `${API}/${kind}/doctor/${id}/split`, method: "DELETE" }),
     removeDepartment: (id: string) =>
       run(id, { url: `${API}/${kind}/department/${id}`, method: "DELETE" }),
   };

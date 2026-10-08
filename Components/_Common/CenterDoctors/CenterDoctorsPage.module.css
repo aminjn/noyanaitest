@@ -224,3 +224,69 @@
 .meta {
   min-width: 8rem;
 }
+
+/* the doctor's share of the insurers' payments, under the department */
+.split {
+  order: 4;
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-block-start: 0.75rem;
+  border-block-start: 1px solid var(--line);
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.splitHead,
+.splitNote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.splitHead strong {
+  font-weight: 900;
+  color: var(--gray13);
+}
+
+.splitNote > span {
+  font-weight: 700;
+  color: var(--aiText);
+}
+
+.splitMuted {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-size: 0.75rem;
+  line-height: 1.8;
+  color: var(--gray9);
+}
+
+.splitForm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.splitField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.splitField input {
+  inline-size: 6rem;
+  min-height: 2.25rem;
+  padding-inline: 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--glassStrong);
+  color: var(--gray12);
+  text-align: center;
+}

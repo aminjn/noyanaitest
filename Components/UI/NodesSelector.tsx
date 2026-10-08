@@ -27,6 +27,9 @@ export type NodesSelectorCreatable = {
   // its error come from the site's texts, not the admin dictionary
   formatLabel?: (input: string) => string;
   errorText?: string;
+  // a value that must not become a record (2026-10: a «شبانه‌روزی» tag is
+  // the opening hours' switch): the text to show instead of creating it
+  refuse?: (input: string) => string | undefined | null | false;
 };
 
 // (2026-10) A long list (every doctor's services...) searched on the
@@ -155,6 +158,11 @@ const NodesSelector = <TMulti extends boolean = false>({
     const label = input.trim();
     if (!label) return;
     const field = creatable.field || "name";
+    const refusal = creatable.refuse?.(label);
+    if (refusal) {
+      setCreateError(refusal);
+      return;
+    }
     setCreating(true);
     setCreateError("");
     try {
@@ -234,8 +242,10 @@ const NodesSelector = <TMulti extends boolean = false>({
           onCreateOption={create}
           {...(!search
             ? {
-                filterOption: (option: { label: string }, input: string) =>
-                  !input || looseKey(option.label).includes(looseKey(input)),
+                // the "+ create" row stays even when its label is not the
+                // typed text (a refusal hint, creatable.refuse)
+                filterOption: (option: { label: string; data: unknown }, input: string) =>
+                  !input || isNewOption(option.data) || looseKey(option.label).includes(looseKey(input)),
               }
             : {})}
           isValidNewOption={(input: string) => {
@@ -245,9 +255,10 @@ const NodesSelector = <TMulti extends boolean = false>({
             return ![...options, ...chosen].some((el) => looseKey(labelOf(el)) === key);
           }}
           formatCreateLabel={(input: string) =>
-            creatable.formatLabel
+            creatable.refuse?.(input) ||
+            (creatable.formatLabel
               ? creatable.formatLabel(input)
-              : `+ ${ta("ایجاد «${1}»", [input])}`
+              : `+ ${ta("ایجاد «${1}»", [input])}`)
           }
         />
       ) : (

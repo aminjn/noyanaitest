@@ -52,6 +52,8 @@ import {
   pendingResponseDeadline,
 } from "../Dashboard/Order/orderItemStatus";
 import OrderLineDeadline from "../Dashboard/Order/OrderLineDeadline";
+import OrderShipments from "./OrderShipments";
+import { IOrderShipment, lineShippingOf } from "./orderShipment";
 import usePopup from "../Hooks/usePopup";
 import useNotification from "../Hooks/useNotification";
 import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
@@ -137,21 +139,16 @@ export interface IOrder<
   } & IOrderLineResponse)[];
   total: number;
   // one per pharmacy (backend Lib/delivery.ts); Tapsi's fee is in `total`
-  shipments?: {
-    _id: string;
-    pharmacy?: { _id: string; name?: string } | string;
-    method: "tapsi" | "tipax";
-    fee: number;
-    payOnDelivery: boolean;
-    trackingCode?: string;
-    shippedAt?: string;
-  }[];
+  shipments?: IOrderShipment[];
   deliveryFee?: number;
   // home-sampling fees, in `total`
   samplingFee?: number;
   // what the buyer may do with each sampling appointment, by its id
   // (2026-10, backend Lib/labSamplingReschedule.ts)
   samplingMoves?: Record<string, SamplingMoveInfo>;
+  // the wallet, sent when a lab's open proposal charges a home fee (the
+  // top-up offer before accepting)
+  walletBalance?: number;
   paymentMethod: "wallet" | "sep";
   status: OrderStatus;
   address?: IUserAddress;
@@ -192,6 +189,8 @@ type OrderRow = {
   acceptedAt?: string;
   autoCancel?: IOrderLineResponse["autoCancel"];
   collected?: boolean;
+  // the pharmacy a product / package line ships from (its parcel's state)
+  pharmacyId?: string;
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -215,6 +214,14 @@ const responseOf = (line: { status?: OrderItemStatus } & IOrderLineResponse) => 
   autoCancel: line.autoCancel,
 });
 
+// a populated ref or a bare id
+const refId = (value: unknown): string | undefined =>
+  value && typeof value === "object"
+    ? String((value as { _id?: unknown })._id ?? "") || undefined
+    : value
+      ? String(value)
+      : undefined;
+
 const buildRows = (order: OrderNode): OrderRow[] => {
   const rows: OrderRow[] = [];
 
@@ -228,6 +235,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       image: item.product?.image,
       title: item.product?.name || "",
       subtitle: item.seller?.name,
+      pharmacyId: refId((item as { seller?: unknown }).seller),
       price,
       qty,
       status,
@@ -244,6 +252,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
       model: "productPackages",
       image: item.image,
       title: item.name || "",
+      pharmacyId: refId((item as { owner?: unknown }).owner),
       price,
       qty,
       status,
@@ -433,6 +442,7 @@ const OrderConfirmationPage = () => {
                               status={row.status}
                               acceptedAt={row.acceptedAt}
                               autoCancel={row.autoCancel}
+                              shipping={lineShippingOf(order.shipments, row.pharmacyId)}
                             />
                           </span>
                         )}
@@ -490,35 +500,31 @@ const OrderConfirmationPage = () => {
                     });
                     await mutate();
                   }}
+                  walletBalance={order.walletBalance}
+                  onAnswerProposal={async (answer, address) => {
+                    await fetcher({
+                      url: `${API}/user/order/${nodeId}/sampling/${sampling._id}/proposal`,
+                      method: "POST",
+                      payload: {
+                        proposal: order.samplingMoves?.[sampling._id]?.proposal?._id,
+                        answer,
+                        ...(address ? { address } : {}),
+                      },
+                      bodyParser: "JSON",
+                    });
+                    await mutate();
+                  }}
                 />
               )}
             />
             {!!order.shipments?.length && (
               <div className={classes.addressRow}>
-                <span className={`${classes.subtitle} ${tsmRegular}`}>
-                  {getContent("shippingMethod")}
-                </span>
-                {order.shipments.map((el) => (
-                  <span key={el._id} className={t2xsRegular}>
-                    {[
-                      getContent(
-                        el.method === "tapsi" ? "shippingTapsi" : "shippingTipax",
-                      ),
-                      typeof el.pharmacy === "object" ? el.pharmacy?.name : "",
-                      el.payOnDelivery
-                        ? getContent("shippingTipaxNote")
-                        : el.fee > 0
-                          ? `${currencize(el.fee)} ${getContent("toman")}`
-                          : getContent("shippingFree"),
-                      // sent by the pharmacy, with its tracking code
-                      el.shippedAt
-                        ? `${getContent("shipSent")}${el.trackingCode ? ` · ${getContent("shipTrackingCode")}: ${el.trackingCode}` : ""}`
-                        : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </span>
-                ))}
+                <OrderShipments
+                  orderId={order._id}
+                  shipments={order.shipments}
+                  canAct={order.status === "paid"}
+                  onChange={() => mutate()}
+                />
               </div>
             )}
             {!!order.deliveryFee && (

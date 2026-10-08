@@ -24,6 +24,9 @@ type DeliverySettings = {
   tapsiFlatFee: number;
   defaultOriginCity: IAddressCity | null;
   fallbackOriginCity: IAddressCity | null;
+  // Tipax delivery confirmation (2026-10, backend Services/shipmentDeliveryService.ts)
+  tipaxAutoConfirmDays: number;
+  tipaxTrackingUrl: string;
   updatedAt: string | null;
 };
 
@@ -49,16 +52,23 @@ const AdminDeliverySettingsPage = () => {
                 {ta("مبدأ و مقصد در دو شهر: تیپاکس به‌صورت پس‌کرایه. در سایت چیزی گرفته نمی‌شود و خریدار هزینه را هنگام تحویل به مأمور تیپاکس می‌پردازد.")}
               </p>
               <p className={classes.rule}>
+                {ta("مرسوله‌ی تیپاکس فقط وقتی تحویل‌شده حساب می‌شود که خریدار «تحویل گرفتم» را بزند، پشتیبانی آن را ثبت کند، یا ${1} روز پس از ارسال بگذرد و خریدار گزارش «مرسوله نرسیده» نداده باشد. سهم داروخانه و درخواست امتیاز از خریدار از همان لحظه شروع می‌شود.", [String(data.tipaxAutoConfirmDays)])}
+              </p>
+              <p className={classes.rule}>
                 {ta("مبدأ هر سفارش شهر داروخانه است. داروخانه‌ای که شهرش ثبت نشده از «${1}» ارسال می‌کند. هر داروخانه در سبد خرید یک مرسوله‌ی جدا حساب می‌شود.", [addressCityLabel(origin || undefined) || "تهران"])}
               </p>
             </Box>
             <CreateForm<{
               tapsiFlatFee: number;
               defaultOriginCity?: IAddressCity | string;
+              tipaxAutoConfirmDays: number;
+              tipaxTrackingUrl: string;
             }>
               defaultValue={{
                 tapsiFlatFee: data.tapsiFlatFee,
                 defaultOriginCity: data.defaultOriginCity || undefined,
+                tipaxAutoConfirmDays: data.tipaxAutoConfirmDays,
+                tipaxTrackingUrl: data.tipaxTrackingUrl,
               }}
               renderer={{
                 tapsiFlatFee: {
@@ -72,6 +82,16 @@ const AdminDeliverySettingsPage = () => {
                     typeof node.defaultOriginCity === "string"
                       ? node.defaultOriginCity
                       : node.defaultOriginCity?._id,
+                },
+                tipaxAutoConfirmDays: {
+                  type: "number",
+                  title: ta("تأیید خودکار تحویل تیپاکس (روز پس از ارسال)"),
+                  hint: ta("از ۱ تا ۳۰ روز. برای مرسوله‌هایی که از این پس ارسال می‌شوند."),
+                },
+                tipaxTrackingUrl: {
+                  type: "text",
+                  title: ta("نشانی رهگیری تیپاکس"),
+                  hint: ta("{code} جای شماره‌ی بارنامه می‌نشیند. خالی بگذارید تا نشانی پیش‌فرض به کار رود."),
                 },
               }}
               hookProps={{

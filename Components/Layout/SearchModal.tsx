@@ -32,9 +32,7 @@ import { InsurancesPageNode } from "../Insurance/InsurancesPage";
 import BlogMainCard from "../Blog/BlogMainCard";
 import ProductCard from "../Product/ProductCard";
 import DiseaseCard from "../Disease/DiseaseCard";
-import ClinicCard from "../Clinic/ClinicCard";
-import ParaClinicCard from "../ParaClinic/ParaClinicCard";
-import HospitalCard from "../Hospital/HospitalCard";
+import CentreCard from "../UI/CentreCard";
 import TestCard from "../Test/TestCard";
 import ServiceCard from "../Service/ServiceCard";
 import SpecialityCard from "../Speciality/SpecialityCard";
@@ -304,7 +302,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   title={getContent("clinics")}
                   nodes={data.clinics}
                   width="24.0625rem"
-                  render={(node) => <ClinicCard node={node} />}
+                  render={(node) => <CentreCard kind="clinic" node={node} />}
                   all="/clinic"
                   query={trimmed}
                   onNavigate={close}
@@ -313,7 +311,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   title={getContent("paraClinics")}
                   nodes={data.paraClinics}
                   width="24.0625rem"
-                  render={(node) => <ParaClinicCard node={node} />}
+                  render={(node) => <CentreCard kind="paraClinic" node={node} />}
                   all="/paraClinic"
                   query={trimmed}
                   onNavigate={close}
@@ -323,7 +321,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   nodes={data.pharmacies || []}
                   width="24.0625rem"
                   render={(node) => (
-                    <ParaClinicCard node={node} kind="pharmacy" />
+                    <CentreCard node={node} kind="pharmacy" />
                   )}
                   all="/pharmacy"
                   query={trimmed}
@@ -333,7 +331,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   title={getContent("hospitals")}
                   nodes={data.hospitals}
                   width="22.8125rem"
-                  render={(node) => <HospitalCard node={node} />}
+                  render={(node) => <CentreCard kind="hospital" node={node} />}
                   all="/hospital"
                   query={trimmed}
                   onNavigate={close}

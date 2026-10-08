@@ -48,7 +48,10 @@ const pathModuleMap: Record<string, DoctorDashboardModule> = {
   // their centres, answers invites and leaves; the doctor's own join
   // requests and suggestions are gated inside the page
   pharmacy: "phrmaciesAndLabs",
-  insurance: "insurances",
+  // insurance (2026-10, owner decision) is not gated as a page: every
+  // doctor manages their insurer contracts (the backend's /insurer-contract
+  // and GET /insurance are open); suggesting a new insurer (its second tab,
+  // /insuranceaddition) stays a plan feature, gated inside the page
   drug: "drugsAndPrescriptions",
   tamin: "drugsAndPrescriptions",
   prescription: "drugsAndPrescriptions",

@@ -6,6 +6,7 @@ import { IClinicCategory } from "../ClinicCategory/AdminManageClinicCategoriesPa
 import { IClinicTag } from "../ClinicTag/AdminManageClinicTagsPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { centreTagCreatable } from "../UI/centreTagCreatable";
 
 // The clinic's record fields: the info tab of a saved clinic and the one
 // form of a new one (AdminManageClinicPage, `/clinic/new`)
@@ -29,7 +30,6 @@ export const clinicInfoRenderer = (): FormRenderer<IClinic> => ({
     path: `${API}/auto/clinicCategory`,
     creatable: { path: `${API}/auto/clinicCategory` },
   },
-  isRoundTheClock: { type: "bool", title: ta("شبانه‌روزی") },
   tags: {
     type: "nodes",
     multi: true,
@@ -38,7 +38,7 @@ export const clinicInfoRenderer = (): FormRenderer<IClinic> => ({
       (node as IClinicTag).name || (node as IClinicTag)._id,
     getOptionValue: (node) => (node as IClinicTag)._id,
     path: `${API}/auto/clinicTag`,
-    creatable: { path: `${API}/auto/clinicTag` },
+    creatable: centreTagCreatable(`${API}/auto/clinicTag`),
     getDefaultValue: (inp) => inp.tags,
   },
   // the insurers with an active contract (2026-10): they change through
@@ -61,9 +61,12 @@ export const clinicInfoRenderer = (): FormRenderer<IClinic> => ({
   establishment: { type: "text", title: ta("تاسیس") },
   website: { type: "text", title: ta("سایت"), section: ta("تماس") },
   mail: { type: "text", title: ta("ایمیل"), section: ta("تماس") },
+  // the structured week (2026-10, backend Lib/openingHours.ts): its
+  // round-the-clock switch is the centre's isRoundTheClock
+  openingHours: { type: "openingHours", title: ta("ساعات کاری هفتگی") },
   businessTimes: {
     type: "text",
-    title: ta("ساعات کاری"),
+    title: ta("یادداشت ساعات کاری"),
     section: ta("تماس"),
   },
   services: { title: ta("خدمات"), type: "strings" },

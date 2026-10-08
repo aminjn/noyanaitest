@@ -115,3 +115,11 @@
     flex: 1 1 auto;
   }
 }
+
+/* a row's title with its markers (e.g. «بررسی دستی») */
+.titleCell {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+}

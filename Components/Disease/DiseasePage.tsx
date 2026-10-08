@@ -25,7 +25,7 @@ import ListPageWithSide from "../UI/ListPage/ListPageWithSide";
 import ListPageSideSection from "../UI/ListPage/ListPageSideSection";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 // the one clinic card of the site
-import ClinicCard from "../Clinic/ClinicCard";
+import CentreCard from "../UI/CentreCard";
 import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
@@ -112,9 +112,10 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
             <ListPageSideSection
               title={getContent("relatedClinics")}
               cards={clinics.map((clinic) => (
-                <ClinicCard
+                <CentreCard
+                  kind="clinic"
                   key={clinic._id}
-                  node={clinic as Parameters<typeof ClinicCard>[0]["node"]}
+                  node={clinic as Parameters<typeof CentreCard>[0]["node"]}
                 />
               ))}
               cardWidth={236}

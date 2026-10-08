@@ -21,6 +21,7 @@ const ApproveBecomeRequestButton = ({
   done,
   target,
   mutate,
+  payload,
 }: {
   // e.g. "becomeclinic" -> POST /admin/becomeclinic/:nodeId/approve
   requestPath: string;
@@ -31,6 +32,9 @@ const ApproveBecomeRequestButton = ({
   // admin page of the created record, e.g. (id) => `/clinic/${id}`
   target: (id: string) => string;
   mutate: () => unknown;
+  // sent with the approval, e.g. { councilChecked: true } for a doctor
+  // request reviewed by hand
+  payload?: Record<string, unknown>;
 }) => {
   const [busy, setBusy] = useState(false);
   const pushNotification = useNotification();
@@ -45,6 +49,7 @@ const ApproveBecomeRequestButton = ({
       const res = await fetcher({
         url: `${API}/admin/${requestPath}/${nodeId}/approve`,
         method: "POST",
+        ...(payload ? { payload } : {}),
       });
       pushNotification(done, "Success");
       await mutate();

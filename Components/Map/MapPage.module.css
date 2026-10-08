@@ -145,45 +145,6 @@
   gap: 0.5rem;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  border-radius: 0.875rem;
-  border: 1px solid var(--primary2);
-  background-color: var(--white);
-  gap: 0.5rem;
-}
-
-.itemScore {
-  flex-shrink: 0;
-}
-
-
-.itemContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 0.25rem;
-}
-
-.itemTitle {
-  color: var(--black);
-}
-
-.itemDescription {
-  color: var(--gray8);
-}
-
-.itemScore {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  color: var(--warning);
-}
-
 .marker {
   display: flex;
   align-items: center;
@@ -294,15 +255,6 @@
 }
 
 /* a centre's row in the results (2026-10) */
-.itemImage {
-  position: relative;
-  width: 3rem;
-  height: 3rem;
-  flex-shrink: 0;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  background-color: var(--gray3);
-}
 
 /* one colour per layer, so doctors, clinics, labs, hospitals and pharmacies
    are told apart at a glance */

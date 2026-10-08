@@ -54,7 +54,13 @@ export interface IAdminRequestRow {
     | null;
   createdAt?: string;
   detail: string;
+  // markers from the backend (adminRequestsController flags): "manualReview"
+  // - a doctor request whose council code the inquiry did not confirm
+  flags?: string[];
 }
+
+const isManualReview = (row: IAdminRequestRow) =>
+  Array.isArray(row.flags) && row.flags.includes("manualReview");
 
 type CountRow = { group: string; kind: string; pending: number };
 
@@ -219,6 +225,18 @@ const RequestsList = ({
                 name: ta("عنوان"),
                 value: (row) => row.title || "—",
                 filter: "Text",
+                // no council inquiry: the reviewer checks the council card
+                // by hand (the detail page's checklist)
+                component: (row) => (
+                  <span className={classes.titleCell}>
+                    <span>{row.title || "—"}</span>
+                    {isManualReview(row) && (
+                      <Badge color="Warning" size="S">
+                        {ta("بررسی دستی")}
+                      </Badge>
+                    )}
+                  </span>
+                ),
               },
               applicant: {
                 name: ta("متقاضی"),

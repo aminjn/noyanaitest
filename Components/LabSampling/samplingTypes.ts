@@ -26,6 +26,26 @@ export interface ILabSamplingMove {
   feeDelta?: number;
 }
 
+// the lab's proposal to switch in-lab <-> home at a new slot (backend
+// Lib/labSamplingProposal.ts): the buyer accepts or declines
+export type SamplingProposalStatus = "open" | "accepted" | "declined" | "withdrawn" | "expired" | "closed";
+export type SamplingProposal = {
+  _id: string;
+  at?: string;
+  kind: LabSamplingKind;
+  ymd: string;
+  start: number;
+  end: number;
+  startsAt?: string;
+  fee: number;
+  // + charged on the buyer's wallet on accept, - refunded
+  feeDelta: number;
+  reason?: string;
+  expiresAt?: string;
+  status: SamplingProposalStatus;
+  answeredAt?: string | null;
+};
+
 // what the viewer may do with an appointment now (samplingMoveInfo)
 export type SamplingMoveInfo = {
   canMove: boolean;
@@ -39,6 +59,10 @@ export type SamplingMoveInfo = {
   homeCities: string[];
   canCancel: boolean;
   movedByOther: boolean;
+  // the latest proposal (open or how it ended), and whether the lab may
+  // make one now
+  proposal?: SamplingProposal | null;
+  canPropose?: boolean;
 };
 
 // what a reschedule posts

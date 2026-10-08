@@ -9,7 +9,7 @@ import { useIntlLocale } from "../i18n/navigation";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
-import ParaClinicCard from "../ParaClinic/ParaClinicCard";
+import CentreCard from "../UI/CentreCard";
 import TestCard from "./TestCard";
 import FlaskIcon from "../Icons/FlaskIcon";
 import Ixon from "../UI/Ixon";
@@ -161,7 +161,9 @@ const TestPage = ({ data, offers, cities, city, sort = "price", rated, related }
         {list.length ? (
           <ListPageList itemWidth="24.0625rem" pagination={{ currentPage: 1, pagesCount: 1, makePath: () => self }}>
             {list.map((offer) => (
-              <ParaClinicCard
+              <CentreCard
+                as="li"
+                kind="paraClinic"
                 key={offer._id}
                 node={offer.paraClinic!}
                 offer={{
@@ -169,10 +171,6 @@ const TestPage = ({ data, offers, cities, city, sort = "price", rated, related }
                   price: offer.price,
                   readyTime: offer.readyTime,
                   takesOrders: offer.takesOrders,
-                  rating: {
-                    score: offer.paraClinic?.averageScore,
-                    count: offer.paraClinic?.reviewCount,
-                  },
                 }}
               />
             ))}
