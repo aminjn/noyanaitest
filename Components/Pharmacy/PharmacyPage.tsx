@@ -19,13 +19,16 @@ import ServiceOrProductCard from "../Service/ServiceOrProductCard";
 import CartActions from "../Product/CartActions";
 import DeliveryAreaNote, { DeliveryArea } from "./DeliveryAreaNote";
 import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
+import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
+import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
+import { exceptionsOf, weekOf } from "../OpeningHours/openingHours";
 import {
   IProduct,
   IProductSeller,
 } from "../Admin/Product/AdminManageProductsPage";
 import { IProductPackage } from "../Admin/ProductPackage/AdminManageProductPackagesPage";
 
-const NS: ContentNamespace[] = ["common", "pharmacyPage", "productServiceCard"];
+const NS: ContentNamespace[] = ["common", "pharmacyPage", "productServiceCard", "openingHours"];
 
 // inStock: false when the pharmacy keeps stock of it and has none left
 type Offer = Omit<IProductSeller, "product"> & {
@@ -82,6 +85,8 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
     .join(listSep);
   // contact and hours (2026-10)
   const facts = data;
+  // a structured week shows as the table (its free text as the note)
+  const hasWeek = !!weekOf(data.openingHours) || !!exceptionsOf(data.openingHours).length;
   const insurers = (Array.isArray(data.insurances) ? data.insurances : []).filter(
     (el): el is AcceptedInsurer => !!el && typeof el === "object" && !!el._id,
   );
@@ -145,10 +150,12 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
               </span>
             )}
             {takesOrders !== false && <DeliveryAreaNote area={deliveryArea} rxNote />}
-            {(!!facts.isRoundTheClock || !!facts.businessTime || !!facts.phone) && (
+            {/* open now / closes at (2026-10, backend Lib/openingHours.ts) */}
+            <OpenStatusBadge status={data.openStatus} />
+            {((!!facts.isRoundTheClock && !hasWeek) || (!!facts.businessTime && !hasWeek) || !!facts.phone) && (
               <span className={classes.facts}>
-                {!!facts.isRoundTheClock && <span className={classes.chip}>{getContent("roundTheClock")}</span>}
-                {!!facts.businessTime && (
+                {!!facts.isRoundTheClock && !hasWeek && <span className={classes.chip}>{getContent("roundTheClock")}</span>}
+                {!!facts.businessTime && !hasWeek && (
                   <span>
                     {getContent("businessTime")}: {facts.businessTime}
                   </span>
@@ -172,6 +179,11 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
                 </Link>
               ))}
             </div>
+          </div>
+        )}
+        {hasWeek && (
+          <div className={classes.about}>
+            <OpeningHoursTable hours={data.openingHours} status={data.openStatus} note={facts.businessTime} />
           </div>
         )}
         {!!data.summary && (

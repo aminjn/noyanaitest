@@ -8,7 +8,9 @@ import { BadgeColor } from "@/Components/UI/Badge";
 // "campaign" (2026-10): a provider's SMS campaign whose text waits to be cleared
 // "smsTemplate" (2026-10): a provider's CRM SMS template, cleared once for
 // its automations and one-off sends
-export const requestGroups = ["become", "addition", "join", "campaign", "smsTemplate"] as const;
+// "contract" (2026-10): a provider's request for a contract with an insurer
+// that has no panel, confirmed here on the insurer's behalf
+export const requestGroups = ["become", "addition", "join", "campaign", "smsTemplate", "contract"] as const;
 export type RequestGroup = (typeof requestGroups)[number];
 
 export const requestKinds: Record<RequestGroup, readonly string[]> = {
@@ -17,6 +19,7 @@ export const requestKinds: Record<RequestGroup, readonly string[]> = {
   join: ["clinic", "hospital"],
   campaign: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
   smsTemplate: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
+  contract: ["doctor", "clinic", "hospital", "paraClinic", "pharmacy"],
 };
 
 export const isRequestGroup = (v: unknown): v is RequestGroup =>
@@ -40,6 +43,9 @@ export const requestGroupLabels: Record<RequestGroup, string> = {
   },
   get smsTemplate() {
     return ta("قالب‌های پیامک");
+  },
+  get contract() {
+    return ta("قرارداد با بیمه‌ها");
   },
 };
 
@@ -82,6 +88,9 @@ const statusLabels: Record<string, () => string> = {
   Sending: () => ta("در حال ارسال"),
   Sent: () => ta("ارسال‌شده"),
   Cancelled: () => ta("لغوشده"),
+  // an insurer contract after approval / after it ended
+  Active: () => ta("فعال"),
+  Ended: () => ta("پایان‌یافته"),
 };
 
 export const requestStatusLabel = (status?: string) =>
@@ -90,7 +99,7 @@ export const requestStatusLabel = (status?: string) =>
 export const requestStatusColor = (status?: string): BadgeColor =>
   status === "Rejected"
     ? "Error"
-    : status === "Approved" || status === "Done" || status === "Sent"
+    : status === "Approved" || status === "Done" || status === "Sent" || status === "Active"
       ? "Success"
       : status === "Proccessing"
         ? "Info"

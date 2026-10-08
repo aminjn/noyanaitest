@@ -23,9 +23,11 @@ const Pharmacies = async (ctx: {
     city?: string;
     insurance?: string;
     roundTheClock?: string;
+    // «الان باز است» (2026-10): open at this minute, Tehran time
+    openNow?: string;
   }>;
 }) => {
-  const { page: _page, search, city, insurance, roundTheClock } = await ctx.searchParams;
+  const { page: _page, search, city, insurance, roundTheClock, openNow } = await ctx.searchParams;
   const page = Number(_page || 1);
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
   const params = new URLSearchParams();
@@ -34,6 +36,7 @@ const Pharmacies = async (ctx: {
   if (city) params.append("city", city);
   if (insurance) params.append("insurance", insurance);
   if (roundTheClock === "1") params.append("roundTheClock", "1");
+  if (openNow === "1") params.append("openNow", "1");
   const [data, textContent] = await Promise.all([
     getPublicData<PharmaciesListPageProps>(`pharmacy?${params.toString()}`),
     getScopedTextContent(NS),

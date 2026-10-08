@@ -255,6 +255,8 @@ export const insuranceInfoRenderer = (): FormRenderer<IInsurance> => ({
     getDefaultValue: (inp) => inp.tags,
   },
   establishment: { type: "text", title: ta("تاسیس") },
+  // from the become-insurer request on approval; shown on the public page
+  licenseNumber: { type: "text", title: ta("شماره‌ی مجوز بیمه مرکزی"), ltr: true },
   membersCount: { type: "text", title: ta("تعداد اعضا") },
   image: { type: "image", title: ta("تصویر") },
   slug: { type: "text", title: ta("اسلاگ") },

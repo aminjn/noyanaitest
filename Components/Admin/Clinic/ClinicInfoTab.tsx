@@ -41,8 +41,12 @@ export const clinicInfoRenderer = (): FormRenderer<IClinic> => ({
     creatable: { path: `${API}/auto/clinicTag` },
     getDefaultValue: (inp) => inp.tags,
   },
+  // the insurers with an active contract (2026-10): they change through
+  // the contract (the centre's panel and the insurer's), not here
   insurances: {
     type: "nodes",
+    readOnly: true,
+    hint: ta("از قراردادهای فعال بیمه می‌آید و از اینجا تغییر نمی‌کند"),
     multi: true,
     title: ta("بیمه ها"),
     section: ta("بیمه‌ها"),

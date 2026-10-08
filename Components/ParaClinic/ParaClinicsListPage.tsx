@@ -10,6 +10,7 @@ import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import ListPageOpenNowFilter from "../UI/ListPage/ListPageOpenNowFilter";
 import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ProPromotion from "../UI/ProPromotion";
@@ -39,6 +40,8 @@ export type ParaClinicsListPageProps = {
   filters?: ListPageFilters | null;
   categories: IParaClinicCategory[];
   specials: IParaClinic<{ Province: Record<never, never> }>[];
+  // how many are open right now (the "open now" chip is offered when some are)
+  openNowCount?: number;
 };
 
 const SpecialItem = ({
@@ -58,6 +61,7 @@ const ParaClinicsListPage = ({
   specials,
   filters,
   test,
+  openNowCount,
 }: ParaClinicsListPageProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -140,6 +144,7 @@ const ParaClinicsListPage = ({
         categories={categories}
         title={getContent("paraClinicKind")}
       />
+      {(Number(openNowCount) > 0 || !!filters?.openNow) && <ListPageOpenNowFilter basePath="/paraClinic" />}
       <ListPageActiveFilters basePath="/paraClinic" filters={filters} />
       <div className={classes.sortBox} role="group" aria-label={getContent("sortBy")}>
         <span className={`${classes.sortLabel} ${tsmRegular}`}>{getContent("sortBy")}</span>

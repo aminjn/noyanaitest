@@ -34,6 +34,8 @@ type OrgRequest = {
   name?: string;
   siamCode?: string;
   nationalId?: string;
+  // an insurer's «شماره‌ی مجوز بیمه مرکزی» (2026-10)
+  licenseNumber?: string;
   certificateDate?: string;
   certificateFile?: string;
   description?: string;
@@ -157,8 +159,14 @@ const BecomeOrgRequestPage = ({ config }: { config: BecomeOrgRequestKind }) => {
               title={ta("اطلاعات مرکز")}
               items={[
                 { label: ta("نام"), value: data.name },
-                { label: ta("کد سیام"), value: data.siamCode },
-                { label: ta("کد ملی"), value: data.nationalId },
+                // an insurer gives its Central Insurance licence (older
+                // insurer requests only had the siam code)
+                ...(config.kind === "insurance"
+                  ? [{ label: ta("شماره‌ی مجوز بیمه مرکزی"), value: data.licenseNumber || data.siamCode }]
+                  : [
+                      { label: ta("کد سیام"), value: data.siamCode },
+                      { label: ta("کد ملی"), value: data.nationalId },
+                    ]),
                 {
                   label: ta("تاریخ گواهی"),
                   value: data.certificateDate ? (

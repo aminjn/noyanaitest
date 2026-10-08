@@ -23,6 +23,7 @@ import useDebounce from "../Hooks/useDebounce";
 import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import ListPageOpenNowFilter from "../UI/ListPage/ListPageOpenNowFilter";
 import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
 import ClinicCard from "./ClinicCard";
 import { useSearchParams } from "next/navigation";
@@ -46,6 +47,8 @@ export type ClinicsListProps = {
   filters?: ListPageFilters | null;
   categories: IClinicCategory[];
   specials: IClinic<{ Province: Record<never, never> }>[];
+  // how many are open right now (the "open now" chip is offered when some are)
+  openNowCount?: number;
 };
 
 const SpecialItem = ({
@@ -91,6 +94,7 @@ const ClinicsListPage = ({
   pagesCount,
   specials,
   filters,
+  openNowCount,
 }: ClinicsListProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -147,6 +151,7 @@ const ClinicsListPage = ({
         categories={categories}
         title={getContent("clinicKind")}
       />
+      {(Number(openNowCount) > 0 || !!filters?.openNow) && <ListPageOpenNowFilter basePath="/clinic" />}
       <ListPageActiveFilters basePath="/clinic" filters={filters} />
       <ListPageList
         itemWidth="24.0625rem"

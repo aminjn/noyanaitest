@@ -82,3 +82,36 @@ export const JoinApproveButton = ({
     </Button>
   );
 };
+
+// confirm a provider's contract request to an insurer that has no panel
+// (2026-10): the contract becomes active and counts everywhere
+export const ContractApproveButton = ({
+  requestId,
+  mutate,
+}: {
+  requestId: string;
+  mutate: () => unknown;
+}) => {
+  const [busy, setBusy] = useState(false);
+  const pushNotification = useNotification();
+  const { closePopup } = usePopup();
+  const approve = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await fetcher({ url: `${API}/admin/insurancecontract/${requestId}/approve`, method: "POST" });
+      pushNotification(ta("قرارداد فعال شد."), "Success");
+      await mutate();
+      closePopup();
+    } catch (e) {
+      pushNotification(e instanceof Error ? e.message : String(e), "Error");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <Button variant="Success" isLoading={busy} onClick={approve}>
+      {ta("تأیید قرارداد")}
+    </Button>
+  );
+};

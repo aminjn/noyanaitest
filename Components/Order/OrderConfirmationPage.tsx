@@ -191,6 +191,7 @@ type OrderRow = {
   respondBy?: string | null;
   acceptedAt?: string;
   autoCancel?: IOrderLineResponse["autoCancel"];
+  collected?: boolean;
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -279,10 +280,12 @@ const buildRows = (order: OrderNode): OrderRow[] => {
   });
 
   (Array.isArray(order.tests) ? order.tests : []).forEach((line) => {
-    const { item, qty, price, status, result } = line;
+    const { item, qty, price, status, result, sampling } = line;
     if (!item || typeof item === "string") return;
     rows.push({
       ...responseOf(line),
+      // its sample was taken: it stays with the lab (no buyer cancel)
+      collected: !!sampling && typeof sampling === "object" && !!sampling.collectedAt,
       itemId: item._id,
       model: "tests",
       image: item.paraClinic?.image,
@@ -355,7 +358,7 @@ const OrderConfirmationPage = () => {
 
   const rows = order ? buildRows(order) : [];
   const canCancel =
-    order?.status === "paid" && rows.some((row) => row.status === "pending");
+    order?.status === "paid" && rows.some((row) => row.status === "pending" && !row.collected);
   // every line cancelled (by the buyer or the sellers): the order reads as
   // cancelled, not "paid"
   const shownStatus: OrderStatus | undefined =

@@ -23,6 +23,7 @@ import useProgress from "../Hooks/useProgress";
 import SearchIcon from "../Icons/SearchIcon";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
+import ListPageOpenNowFilter from "../UI/ListPage/ListPageOpenNowFilter";
 import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
 import HospitalCard from "./HospitalCard";
 import SmallAd from "../UI/ListPage/SmallAd";
@@ -42,6 +43,8 @@ export type HospitalsPageProps = {
   // the tag / insurer the list was opened with (a card chip, an insurer page)
   filters?: ListPageFilters | null;
   specials: IHospital<{ Province: Record<never, never> }>[];
+  // how many are open right now (the "open now" chip is offered when some are)
+  openNowCount?: number;
 };
 
 const SpecialItem = ({
@@ -88,6 +91,7 @@ const HospitalsPage = ({
   specials,
   pagesCount,
   filters,
+  openNowCount,
 }: HospitalsPageProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -191,6 +195,7 @@ const HospitalsPage = ({
           ))}
         </select>
       </div>
+      {(Number(openNowCount) > 0 || !!filters?.openNow) && <ListPageOpenNowFilter basePath="/hospital" />}
       <ListPageActiveFilters basePath="/hospital" filters={filters} />
       <ListPageList
         itemWidth="22.8125rem"
