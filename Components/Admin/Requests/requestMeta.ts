@@ -76,6 +76,8 @@ const statusLabels: Record<string, () => string> = {
   Rejected: () => ta("ردشده"),
   Approved: () => ta("تأییدشده"),
   Done: () => ta("انجام‌شده"),
+  // a doctor's membership that ended after the request was approved
+  Left: () => ta("پایان‌یافته"),
   // an SMS campaign after approval
   Sending: () => ta("در حال ارسال"),
   Sent: () => ta("ارسال‌شده"),

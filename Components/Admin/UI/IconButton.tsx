@@ -15,18 +15,22 @@ const IconButton = ({
   title,
   type,
   variant = "Info",
+  disabled,
 }: WithStyleProps<{
   children: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   title?: string;
   type?: "button" | "submit";
   variant?: IconButtonVariant;
+  // an action not possible yet (its title says why)
+  disabled?: boolean;
 }>) => {
   return (
     <button
       className={`${classes.main} ${classes[variant]} ${className || ""}`}
       onClick={onClick}
       type={type}
+      disabled={disabled}
       title={title}
       aria-label={title}
       style={style}

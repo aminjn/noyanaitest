@@ -45,6 +45,7 @@ const BecomeOrganizationForm = ({
   mutate,
   pending,
   rejected,
+  rejectReason,
 }: {
   org: BecomeOrgConfig;
   mutate: () => unknown;
@@ -52,6 +53,8 @@ const BecomeOrganizationForm = ({
   pending?: BecomeRequest;
   // the last request was declined: the form is editable again, prefilled
   rejected?: BecomeRequest;
+  // why it was declined (the admin writes it in the requests queue)
+  rejectReason?: string;
 }) => {
   const getContent = useScopedLocale(NS);
 
@@ -120,9 +123,15 @@ const BecomeOrganizationForm = ({
           <h2 className={`${classes.title} ${txlBold}`}>
             {getContent("rejectedApplicationTitle")}
           </h2>
-          <p className={classes.legend}>
-            {getContent("rejectedApplicationLegend")}
-          </p>
+          {rejectReason?.trim() ? (
+            <p className={classes.legend}>
+              {getContent("rejectedApplicationReason", [rejectReason.trim()])}
+            </p>
+          ) : (
+            <p className={classes.legend}>
+              {getContent("rejectedApplicationLegend")}
+            </p>
+          )}
         </div>
       )}
       <Form

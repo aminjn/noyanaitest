@@ -21,9 +21,12 @@ export type ParaClinicPageProps = {
     Tests: { Test: { Category: Record<never, never> } };
     Insurances: Record<never, never>;
   }>;
+  // false: the lab's plan has no online orders - its tests are shown with
+  // prices but not sold here (the cart would refuse them)
+  takesOrders?: boolean;
 };
 
-const ParaClinicPage = ({ data }: ParaClinicPageProps) => {
+const ParaClinicPage = ({ data, takesOrders }: ParaClinicPageProps) => {
   const getContent = useScopedLocale();
   return (
     <div className={classes.main}>
@@ -38,9 +41,9 @@ const ParaClinicPage = ({ data }: ParaClinicPageProps) => {
         ]}
         className={classes.crump}
       />
-      <ParaClinicIntro data={data} />
+      <ParaClinicIntro data={data} takesOrders={takesOrders} />
       <ParaClinicNav data={data} />
-      <ParaClinicTests data={data} />
+      <ParaClinicTests data={data} takesOrders={takesOrders} />
       <ParaClinicAbout data={data} />
       <LocationSection
         className={classes.location}

@@ -33,12 +33,14 @@ Severity: **blocker** = money can be created or lost, or the ledger becomes wron
 ## 1. Cart / checkout / order (`Controllers/cartController.ts`, `Models/Cart.ts`, `Models/Order.ts`)
 
 ### C-1 Negative cart quantity creates wallet money — blocker
+**Status (re-checked 2026-10-07): fixed** (quantity never below 1, bounded, bad legacy lines block checkout).
 - **Where:** `Controllers/cartController.ts:125-131` (`mutateCartItem`); `Models/Cart.ts:42,55,68,81,94` (`qty` has no `min`).
 - **Now:** For an existing line, `qty += amount` with any integer `amount`. The line is spliced only when `qty === -amount`, so qty 1 with amount -3 gives qty -2. `computeCartPricing` (`:241-252`) then adds `price * qty`, which is negative, to the subtotal. `Order.total` has `min: 0` (`Models/Order.ts`), so only the *order* total must be at least 0, not each line. Example: line A is 1 × 1,000,000 and line B is -1 × 900,000, so the buyer pays 100,000. The buyer cancels line A (`userController.cancelMyOrder` → `settleOrderLine` cancelled branch, `Services/orderSettlementService.ts:106-126`), which refunds `lineTotal (1,000,000) + taxShare`. Net gain: 900,000 in wallet balance. If a seller fulfils line A instead, the seller is paid 1,000,000 while the buyer paid 100,000.
 - **Why wrong:** Data can be created in an invalid state, and money moves more than once. Every leader (Digikala, Halodoc) clamps quantity to at least 1.
 - **Fix:** In `mutateCartItem`, compute `next = qty + amount`: if `next <= 0`, splice the line, otherwise set it. Add `min: 1` to every `qty` in `Cart` and `Order`. In `computeCartPricing`, reject `entry.qty < 1` or non-integer values. Optionally cap qty, for example at 100 for products and 1 for services.
 
 ### C-2 Catalog `Product.isActive` is not checked at checkout — major
+**Status (2026-10-07): fixed.** The cart refuses offers on inactive catalog products/tests and suspended or inactive sellers; `ParaClinicTest` now has its own `isActive` (lab pause), checked by the public page and the cart.
 - **Where:** `Controllers/cartController.ts:180-186, 236-240` (it checks only `ProductSeller.isActive`).
 - **Now:** The public pharmacy page hides offers on an inactive catalog product (`publicController.ts:1950`), but the cart still sells them. An admin deactivating a recalled drug does not stop sales. The same gap exists for `Test.isActive` behind `ParaClinicTest`, and `ParaClinicTest` has no `isActive` of its own, so a paraclinic cannot pause a test.
 - **Fix:** Populate `products.item.product` and `tests.item.test`, and refuse inactive catalog parents. Add `isActive` to `ParaClinicTest`. Also refuse items whose owning org is suspended or unverified.
@@ -54,11 +56,13 @@ Severity: **blocker** = money can be created or lost, or the ledger becomes wron
 - **Fix:** Derive `completed`/`cancelled` once no line is pending, and report net sales (paid minus refunds).
 
 ### C-5 Price and discount validation gaps — minor
+**Status (pharmacy/lab part): fixed.** `ProductSeller` has `min: 0` and `discountWithinPrice`; lab offers need a price >= 1.
 - **Where:** `pharmacyController.ts:651-652,682-683` (ProductSeller), `paraClinicController.ts:553,580` (ParaClinicTest): `z.coerce.number()` with no bounds. No path checks `discount <= price` (`doctorController.ts:2238-2239,2346-2347`; `pharmacyController.ts:1090-1091`).
 - **Now:** A negative discount *raises* the sale price above the list price, because `price - discount`. A discount larger than the price makes the item free, because `Math.max(0, …)`. The admin auto routes for `service`, `servicePackage` and `productPackage` (`autoRouter.ts:659,966,977`) let an admin create an item with no `owner`. Such a cart line gets 0 tax and no seller can ever fulfil it.
 - **Fix:** Bound price and discount to at least 0, require `discount <= price`, and require `owner` in these models.
 
 ### C-6 Package "savings" compare against the admin base price, not the seller's price — minor
+**Status: fixed.** The "bought separately" price uses the owning pharmacy's own offers.
 - **Where:** `Components/ProductPackage/ProductPackagePageTabs.tsx:59`, `DiffCalc` in `ProductPackagePage.tsx:83`.
 - **Now:** The "separate price" and the savings use `Product.price`, the admin-entered "قیمت پایه" (`Components/Admin/Product/AdminManageProductPage.tsx:81`). They do not use what this pharmacy actually charges (`ProductSeller.price`), so the claimed savings can be invented. `Product.price` is otherwise read by no money flow.
 - **Fix:** Compute the savings from the owning pharmacy's `ProductSeller` prices for the package's products.
@@ -226,6 +230,7 @@ The debit is atomic (`bookingController.ts:189-196`), the cancel is guarded by t
 ## 7. Orders: seller side
 
 ### O-1 Sellers with a lapsed license keep receiving orders they cannot process, and nothing auto-cancels — major
+**Status: half fixed.** Checkout refuses items whose seller lacks `incomingOrders`, and (2026-10-07) the public pharmacy / lab / product pages no longer offer them for sale. **Open [PD]:** a sweep that cancels and refunds lines left pending past an SLA (N hours for pharmacy, longer for labs, where the sample is taken later).
 - **Where:** `pharmacyRouter.ts:207-209`, `doctorRouter.ts:623-625`, `paraClinicRouter.ts:144-146` (`requireLicenseModule("incomingOrders")` on the fulfil and cancel routes); the cart does not check the seller's license or status (`cartController.ts:224-265`).
 - **Now:** When a seller's plan expires or lacks `incomingOrders`, buyers can still pay for that seller's items, but the seller gets `AccessError` when they try to fulfil or cancel. The buyer's money waits until the buyer notices and cancels. No sweep cancels lines left `pending` too long.
 - **Why wrong:** Halodoc and Digikala auto-cancel and refund when a seller does not confirm within an SLA.

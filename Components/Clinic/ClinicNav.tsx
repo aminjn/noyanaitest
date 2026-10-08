@@ -4,24 +4,26 @@ import classes from "./ClinicNav.module.css";
 import { ClinicPageNode } from "./ClinicPage";
 import Button from "../UI/Button";
 import StickyNav, { SectionMap } from "./StickyNav";
+import { hasContactInfo } from "./MedicalCenterContactInfo";
 
 const ClinicNav = ({ node }: { node: ClinicPageNode }) => {
   const sections = useMemo<SectionMap>(() => {
     const result: SectionMap = [
       { title: "introduction", target: "introduction" },
     ];
-    if (node.tags.length)
+    if (node.tags?.length)
       result.push({ title: "features", target: "features" });
-    result.push({ title: "contactInfo", target: "contact" });
-    if (node.departments.length)
+    if (hasContactInfo(node))
+      result.push({ title: "contactInfo", target: "contact" });
+    if (node.departments?.length)
       result.push({ title: "departments", target: "departments" });
-    if (node.specialities)
+    if (node.specialities?.length)
       result.push({ title: "specialities", target: "specialities" });
     if (node.services?.length)
       result.push({ title: "service", target: "services" });
-    if (node.insurances.length)
+    if (node.insurances?.length)
       result.push({ title: "insurances", target: "insurances" });
-    if (node.doctors.length)
+    if (node.doctors?.some((m) => !!m?.doctor))
       result.push({ title: "doctors", target: "doctors" });
     if (node.location) result.push({ title: "location", target: "location" });
     result.push({ title: "comments", target: "comments" });

@@ -7,6 +7,7 @@ const HospitalPageClinics = ({ node }: { node: HospitalPageNode }) => {
   return (
     <MedicalCenterDepartments
       title="hospitalClinics"
+      id="clinics"
       departments={liveHospitalClinics(node.clinics).map((el) => ({
         doctors: el.clinic.doctors
           .map((d) => d.doctor)

@@ -10,7 +10,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import classes from "./HospitalsPage.module.css";
 import MedicalCenterSummary from "../Clinic/MedicalCenterSummary";
 import MedicalCenterTagList from "../Clinic/MedicalCenterTagList";
-import MedicalCenterContactInfo from "../Clinic/MedicalCenterContactInfo";
+import MedicalCenterContactInfo, { hasContactInfo } from "../Clinic/MedicalCenterContactInfo";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import HospitalPageClinics from "./HospitalPageClinics";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
@@ -19,6 +19,7 @@ import MedicalCenterServices from "../Clinic/MedicalCenterServices";
 import MedicalCenterInsurances from "../Clinic/MedicalCenterInsurances";
 import MedicalCenterCertificates from "../Clinic/MedicalCenterCertificates";
 import MedicalCenterDoctors from "../Clinic/MedicalCenterDoctors";
+import MedicalCenterDepartments from "../Clinic/MedicalCenterDepartments";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import LocationSection from "../Clinic/LocationSection";
 import CommentSection from "../Comment/CommentSection";
@@ -26,24 +27,46 @@ import SmallAd from "../UI/ListPage/SmallAd";
 
 const NS: ContentNamespace[] = ["common", "hospitalPage"];
 
-export type HospitalPageNode = IHospital<{
-  Province: Record<never, never>;
-  Category: Record<never, never>;
-  Clinics: {
-    Clinic: {
-      DoctorsPopulated: {
-        DoctorPopulated: { MainSpecialityPopulated: Record<never, never> };
+type PageDoctor = IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>;
+// a member row of the hospital (or of one of its clinics): the doctor is
+// null when the profile is not public
+type PageMember = { _id: string; department?: string | null; doctor?: PageDoctor | null };
+
+export type HospitalPageNode = Omit<
+  IHospital<{
+    Province: Record<never, never>;
+    Category: Record<never, never>;
+    Clinics: {
+      Clinic: {
+        DoctorsPopulated: {
+          DoctorPopulated: { MainSpecialityPopulated: Record<never, never> };
+        };
       };
     };
-  };
-  Tags: Record<never, never>;
-  Owner: Record<never, never>;
-  Insurances: Record<never, never>;
-}>;
+    Tags: Record<never, never>;
+    Owner: Record<never, never>;
+    Insurances: Record<never, never>;
+  }>,
+  "doctors" | "departments"
+> & {
+  // the hospital's own doctors (HospitalDoctor) and departments / wards,
+  // each with its doctors (backend publicController.getHospital)
+  doctors?: PageMember[];
+  departments?: { _id: string; name?: string; summary?: string; phone?: string; doctors?: PageMember[] }[];
+  // what the hospital's doctors (its own and its clinics') practise
+  specialities?: ISpeciality[];
+  // every doctor of the hospital, once
+  doctorsCount?: number;
+};
 
 export type HospitalPageProps = {
   data: HospitalPageNode;
 };
+
+const doctorsOf = (rows: unknown): PageDoctor[] =>
+  (Array.isArray(rows) ? (rows as PageMember[]) : [])
+    .map((m) => m?.doctor)
+    .filter((d): d is PageDoctor => !!d && typeof d === "object");
 
 export const liveHospitalClinics = (list: HospitalPageNode["clinics"]) =>
   (Array.isArray(list) ? list : [])
@@ -63,62 +86,48 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
     () => liveHospitalClinics(data.clinics),
     [data.clinics],
   );
-
-  const specialities = useMemo<ISpeciality[]>(
-    () =>
-      clinics
-        .map((c) => c.clinic.doctors)
-        .reduce(
-          (acc, el) => [...acc, ...el.map((c) => c.doctor?.mainSpeciality)],
-          [] as (ISpeciality | undefined)[],
-        )
-        .filter(Boolean)
-        // one chip per speciality (several doctors share one)
-        .filter(
-          (sp, i, all) =>
-            all.findIndex((o) => o?._id === sp?._id) === i,
-        ) as ISpeciality[],
-    [clinics],
+  const departments = useMemo(
+    () => (Array.isArray(data.departments) ? data.departments : []).filter((d) => !!d?.name),
+    [data.departments],
   );
+  const specialities = useMemo<ISpeciality[]>(
+    () => (Array.isArray(data.specialities) ? data.specialities : []).filter(Boolean),
+    [data.specialities],
+  );
+  const tags = Array.isArray(data.tags) ? data.tags : [];
+  const insurances = Array.isArray(data.insurances) ? data.insurances : [];
 
+  // every doctor of the hospital once: its own, then its clinics'
+  const doctors = useMemo<PageDoctor[]>(() => {
+    const all = [
+      ...doctorsOf(data.doctors),
+      ...clinics.flatMap((c) => doctorsOf(c.clinic.doctors)),
+    ];
+    return all.filter((d, i) => all.findIndex((o) => o._id === d._id) === i);
+  }, [data.doctors, clinics]);
+
+  // only the sections the page actually has
   const sections = useMemo<SectionMap>(() => {
     const result: SectionMap = [
       { title: "introduction", target: "introduction" },
     ];
-    if (data.tags.length)
-      result.push({ title: "features", target: "features" });
-    result.push({ title: "clinics", target: "clinics" });
-    // if (data.clinics.length)
-    //   result.push({ title: "departments", target: "departments" });
-    // if (data.specialities)
-    //   result.push({ title: "specialities", target: "specialities" });
-    // if (node.services?.length)
-    //   result.push({ title: "service", target: "services" });
-    // if (node.insurances.length)
-    //   result.push({ title: "insurances", target: "insurances" });
-    // if (node.doctors.length)
-    //   result.push({ title: "doctors", target: "doctors" });
+    if (tags.length) result.push({ title: "features", target: "features" });
+    if (hasContactInfo(data))
+      result.push({ title: "contactInfo", target: "contact" });
+    if (departments.length)
+      result.push({ title: "departments", target: "departments" });
+    if (clinics.length) result.push({ title: "clinics", target: "clinics" });
+    if (specialities.length)
+      result.push({ title: "specialities", target: "specialities" });
+    if (data.services?.length)
+      result.push({ title: "service", target: "services" });
+    if (insurances.length)
+      result.push({ title: "insurances", target: "insurances" });
+    if (doctors.length) result.push({ title: "doctors", target: "doctors" });
     if (data.location) result.push({ title: "location", target: "location" });
     result.push({ title: "comments", target: "comments" });
     return result;
-  }, [data]);
-
-  const doctors = useMemo<
-    IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[]
-  >(() => {
-    const result = clinics
-      .map((c) => c.clinic)
-      .reduce(
-        (acc, el) => [...acc, ...el.doctors.map((e) => e.doctor)],
-        [] as (IDoctorProfile<{
-          MainSpecialityPopulated: Record<never, never>;
-        }> | null)[],
-      )
-      .filter(Boolean);
-    return result as IDoctorProfile<{
-      MainSpecialityPopulated: Record<never, never>;
-    }>[];
-  }, [clinics]);
+  }, [tags.length, departments.length, clinics.length, specialities.length, data.services, insurances.length, doctors.length, data.location]);
 
   return (
     <div className={classes.main}>
@@ -144,15 +153,15 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
         <StickyNav map={sections} />
         <MedicalCenterSummary
           code={data.code}
-          doctorCount={clinics.reduce(
-            (acc, el) => acc + el.clinic.doctors.length,
-            0,
-          )}
+          doctorCount={data.doctorsCount ?? doctors.length}
           establishment={data.establishment}
           personelCount={data.personelCount}
           summary={data.summary}
+          bedCount={data.bedCount}
+          // a hospital open around the clock is an emergency department
+          emergency={!!data.isRoundTheClock}
         />
-        <MedicalCenterTagList tags={data.tags} basePath="/hospital" />
+        <MedicalCenterTagList tags={tags} basePath="/hospital" />
         <MedicalCenterContactInfo
           address={data.address}
           businessTimes={data.businessTimes}
@@ -161,15 +170,25 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
           phone={data.phone}
           website={data.website}
         />
+        {/* the hospital's own departments / wards, each with its doctors */}
+        <MedicalCenterDepartments
+          title="departments"
+          departments={departments.map((d) => ({
+            name: d.name,
+            summary: d.summary,
+            phone: d.phone,
+            doctors: doctorsOf(d.doctors),
+          }))}
+        />
         <HospitalPageClinics node={data} />
         <MedicalCenterSpecialities nodes={specialities} />
         <MedicalCenterServices nodes={data.services || []} />
         <MedicalCenterInsurances
-          nodes={data.insurances}
+          nodes={insurances}
           title="hospitalInsurances"
         />
         <MedicalCenterCertificates nodes={data.certificates || []} />
-        <MedicalCenterDoctors nodes={doctors} />
+        <MedicalCenterDoctors nodes={doctors} title="doctors" />
         <LocationSection
           coords={data.location?.coordinates}
           name={data.name}

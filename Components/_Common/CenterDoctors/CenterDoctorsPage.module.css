@@ -190,3 +190,37 @@
   border-radius: 1rem;
   background: var(--glassStrong);
 }
+
+.select {
+  min-height: 2.25rem;
+  max-width: 100%;
+  padding-inline: 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--glassStrong);
+  color: var(--gray12);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ghost:disabled,
+.danger:disabled,
+.select:disabled {
+  opacity: 0.6;
+}
+
+/* the department pick sits on its own row, under the doctor's name */
+.select {
+  flex-basis: 100%;
+  order: 3;
+}
+
+.meta {
+  min-width: 8rem;
+}

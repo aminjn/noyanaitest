@@ -49,7 +49,9 @@ import BookingFilterDrawerField from "./BookingFilterDrawerField";
 import MultiSelectInput from "../UI/MultiSelectInput";
 import BookingAdvancedSearchPopup, {
   AdvancedSearchLocationField,
+  AdvancedSearchToggleField,
 } from "./BookingAdvancedSearchPopup";
+import ToggleInput from "../UI/ToggleInput";
 import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
 const NS: ContentNamespace[] = ["common", "booking"];
@@ -62,6 +64,9 @@ export type PharmacyBookingOptions = Partial<{
   city: ICity | null;
   province: IProvince | null;
   category: IProductCategory | null;
+  // open at night (شبانه‌روزی) and the insurer paying the prescription
+  roundTheClock: boolean;
+  insurance: { _id: string; name?: string }[];
 }>;
 
 // Builds the {filtered, onClear, top, actives, segments} props BookingFilter
@@ -149,6 +154,26 @@ const usePharmacyBookingFilterProps = ({
             {options.category.name}
           </BookingSelectedFilter>
         )}
+        {!!options.roundTheClock && (
+          <BookingSelectedFilter
+            onClick={() => setOptions((prev) => ({ ...prev, roundTheClock: false }))}
+          >
+            {getContent("roundTheClock")}
+          </BookingSelectedFilter>
+        )}
+        {options.insurance?.map((insurance) => (
+          <BookingSelectedFilter
+            key={insurance._id}
+            onClick={() =>
+              setOptions((prev) => ({
+                ...prev,
+                insurance: (prev.insurance || []).filter((el) => el._id !== insurance._id),
+              }))
+            }
+          >
+            {insurance.name || getContent("acceptedInsurance")}
+          </BookingSelectedFilter>
+        ))}
       </Fragment>
     ),
     top: (
@@ -290,6 +315,29 @@ const usePharmacyBookingFilterProps = ({
             </BookingFilterButton>
           )}
         </BookingFilterSegment>
+        <BookingFilterSegment title={getContent("pharmacies")}>
+          <div className={classes.toggleRow}>
+            <ToggleInput
+              title={getContent("roundTheClockOnly")}
+              value={!!options.roundTheClock}
+              onChange={() =>
+                setOptions((prev) => ({ ...prev, roundTheClock: !prev.roundTheClock }))
+              }
+            />
+          </div>
+          <BookingFilterButton
+            title={getContent("acceptedInsurance")}
+            active={!!options.insurance?.length}
+          >
+            <MultiSelectInputServer
+              value={options.insurance || []}
+              path={`${API}/public/search/insurance`}
+              placeholder={getContent("selectInsurances")}
+              getOption={(node) => ({ title: node.name || "", value: node._id })}
+              onChange={(e) => setOptions((prev) => ({ ...prev, insurance: e }))}
+            />
+          </BookingFilterButton>
+        </BookingFilterSegment>
         <BookingFilterSegment title={getContent("products")}>
           <input
             className={`${classes.input} ${tsmRegular}`}
@@ -390,6 +438,9 @@ const PharmacyBooking = ({
     if (options.city) params.append("city", options.city._id);
     if (options.province) params.append("province", options.province._id);
     if (options.category) params.append("category", options.category._id);
+    if (options.roundTheClock) params.append("roundTheClock", "1");
+    for (const insurance of options.insurance || [])
+      params.append("insurance", insurance._id);
     return params;
   }, [common.sort, debouncedOptions]);
 
@@ -430,6 +481,18 @@ const PharmacyBooking = ({
             sort: bookingSorts.find((el) => el === e[0]) || prev.sort,
           }))
         }
+      />
+      <AdvancedSearchToggleField
+        title={getContent("roundTheClockOnly")}
+        active={!!options.roundTheClock}
+        onClick={() => setOptions((prev) => ({ ...prev, roundTheClock: !prev.roundTheClock }))}
+      />
+      <MultiSelectInputServer
+        value={options.insurance || []}
+        path={`${API}/public/search/insurance`}
+        placeholder={getContent("selectInsurances")}
+        getOption={(node) => ({ title: node.name || "", value: node._id })}
+        onChange={(e) => setOptions((prev) => ({ ...prev, insurance: e }))}
       />
       <AdvancedSearchLocationField options={options} setOptions={setOptions} />
       <input
@@ -649,6 +712,36 @@ const PharmacyBooking = ({
                   onChange={(e) =>
                     setOptions((prev) => ({ ...prev, category: e[0] || null }))
                   }
+                />
+              </BookingFilterDrawerField>
+            ),
+          },
+          {
+            active: !!options.roundTheClock,
+            title: "roundTheClock",
+            drawer: (close) => (
+              <BookingFilterDrawerField
+                type="toggle"
+                close={close}
+                title={getContent("roundTheClockOnly")}
+                value={!!options.roundTheClock}
+                onChange={() =>
+                  setOptions((prev) => ({ ...prev, roundTheClock: !prev.roundTheClock }))
+                }
+              />
+            ),
+          },
+          {
+            active: !!options.insurance?.length,
+            title: "acceptedInsurance",
+            drawer: (close) => (
+              <BookingFilterDrawerField type="select" close={close}>
+                <MultiSelectInputServer
+                  value={options.insurance || []}
+                  path={`${API}/public/search/insurance`}
+                  placeholder={getContent("selectInsurances")}
+                  getOption={(node) => ({ title: node.name || "", value: node._id })}
+                  onChange={(e) => setOptions((prev) => ({ ...prev, insurance: e }))}
                 />
               </BookingFilterDrawerField>
             ),

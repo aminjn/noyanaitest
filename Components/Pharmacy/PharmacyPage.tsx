@@ -2,6 +2,7 @@
 
 import { useListSeparator } from "@/Components/i18n/navigation";
 import classes from "./PharmacyPage.module.css";
+import Link from "@/Components/i18n/Link";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import BreadCrump from "../UI/BreadCrump";
@@ -22,30 +23,39 @@ import { IProductPackage } from "../Admin/ProductPackage/AdminManageProductPacka
 
 const NS: ContentNamespace[] = ["common", "pharmacyPage", "productServiceCard"];
 
+// inStock: false when the pharmacy keeps stock of it and has none left
 type Offer = Omit<IProductSeller, "product"> & {
   product?: IProduct<{ Category: Record<never, never> }>;
+  inStock?: boolean;
 };
 
 type Package = IProductPackage<{
   Owner: Record<never, never>;
   Products: Record<never, never>;
   Category: Record<never, never>;
-}>;
+}> & { inStock?: boolean };
+
+type AcceptedInsurer = { _id: string; name?: string; slug?: string };
 
 export type PharmacyPageProps = {
-  data: IPharmacy<{
-    Province: Record<never, never>;
-    City: Record<never, never>;
-    District: Record<never, never>;
-  }>;
+  data: Omit<
+    IPharmacy<{
+      Province: Record<never, never>;
+      City: Record<never, never>;
+      District: Record<never, never>;
+    }>,
+    "insurances"
+  > & { insurances?: (AcceptedInsurer | string)[] };
   products?: Offer[];
   productPackages?: Package[];
+  // false: the pharmacy's plan has no online orders - a profile to call
+  takesOrders?: boolean;
 };
 
 // Public page of one pharmacy (Halodoc / Vezeeta style): who it is, where it
 // is, and what can be ordered from it right now - each card buys this
 // pharmacy's own offer, not the cheapest one on the product page.
-const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) => {
+const PharmacyPage = ({ data, products, productPackages, takesOrders }: PharmacyPageProps) => {
   const getContent = useScopedLocale(NS);
   const listSep = useListSeparator();
   const offers = (Array.isArray(products) ? products : []).filter((o) => !!o?.product);
@@ -55,14 +65,22 @@ const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) =>
     .join(listSep);
   // contact and hours (2026-10)
   const facts = data;
-  const inStock = {
-    icon: (
-      <Ixon className={classes.checkIcon} width=".75rem">
-        <CheckSquareIcon />
-      </Ixon>
-    ),
-    title: getContent("availableInStock"),
-  };
+  const insurers = (Array.isArray(data.insurances) ? data.insurances : []).filter(
+    (el): el is AcceptedInsurer => !!el && typeof el === "object" && !!el._id,
+  );
+  const orderable = takesOrders !== false;
+  // "in stock" only when the pharmacy's own inventory does not say otherwise
+  const stockDetail = (available: boolean | undefined) =>
+    available === false
+      ? { icon: null, title: getContent("outOfStock") }
+      : {
+          icon: (
+            <Ixon className={classes.checkIcon} width=".75rem">
+              <CheckSquareIcon />
+            </Ixon>
+          ),
+          title: getContent("availableInStock"),
+        };
 
   return (
     <div className={classes.main}>
@@ -117,6 +135,18 @@ const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) =>
             )}
           </div>
         </div>
+        {!!insurers.length && (
+          <div className={classes.about}>
+            <h2 className={classes.sectionTitle}>{getContent("paraClinicInsurances")}</h2>
+            <div className={classes.facts}>
+              {insurers.map((el) => (
+                <Link key={el._id} className={classes.chip} href={`/insurance/${el.slug || el._id}`}>
+                  {el.name || el._id}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
         {!!data.summary && (
           <div className={classes.about}>
             <h2 className={classes.sectionTitle}>{getContent("about")}</h2>
@@ -129,6 +159,9 @@ const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) =>
         <h2 className={classes.sectionTitle}>{getContent("pharmacyProductsTitle")}</h2>
         {!offers.length && !packages.length && (
           <p className={classes.empty}>{getContent("pharmacyNoProducts")}</p>
+        )}
+        {!orderable && (!!offers.length || !!packages.length) && (
+          <p className={classes.notice}>{getContent("onlineOrderUnavailable")}</p>
         )}
         {!!offers.length && (
           <ul className={classes.grid}>
@@ -143,11 +176,13 @@ const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) =>
                     rating={offer.product?.averageScore || 0}
                     price={offer.price || 0}
                     discount={offer.discount || 0}
-                    detail={inStock}
+                    detail={stockDetail(offer.inStock)}
                     target={`/product/${offer.product?.slug || offer.product?._id}`}
                   />
                 </ul>
-                <CartActions itemId={offer._id} model="products" />
+                {orderable && offer.inStock !== false && (
+                  <CartActions itemId={offer._id} model="products" />
+                )}
               </li>
             ))}
           </ul>
@@ -168,11 +203,13 @@ const PharmacyPage = ({ data, products, productPackages }: PharmacyPageProps) =>
                       price={node.price || 0}
                       discount={node.discount || 0}
                       pack={Array.isArray(node.products) ? node.products.length : undefined}
-                      detail={inStock}
+                      detail={stockDetail(node.inStock)}
                       target={`/productPackage/${node.slug || node._id}`}
                     />
                   </ul>
-                  <CartActions itemId={node._id} model="productPackages" />
+                  {orderable && node.inStock !== false && (
+                    <CartActions itemId={node._id} model="productPackages" />
+                  )}
                 </li>
               ))}
             </ul>

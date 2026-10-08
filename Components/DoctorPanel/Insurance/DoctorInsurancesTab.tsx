@@ -56,6 +56,9 @@ export interface IInsurance<
   membersCount?: string;
   // who accepts it on the site, counted live by the public endpoints
   network?: InsuranceNetwork;
+  // the insurer's public inquiry form (/f/<slug>, its CRM sales pipeline),
+  // where a plan is asked for; null when it has none switched on
+  requestForm?: string | null;
   image?: string;
   slug?: string;
   phone?: string;

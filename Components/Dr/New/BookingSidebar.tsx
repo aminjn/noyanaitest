@@ -47,8 +47,18 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
+  // only what can be booked: a type switched on without hours used to be
+  // offered here and then showed an empty slot picker
   const activeTypes = useMemo(
-    () => (config ? visitTypeOrder.filter((t) => config[t]?.active && !!config[t]?.price) : []),
+    () =>
+      config
+        ? visitTypeOrder.filter(
+            (t) =>
+              config[t]?.active &&
+              !!config[t]?.price &&
+              (!Array.isArray(config.sessionTypes) || config.sessionTypes.includes(t)),
+          )
+        : [],
     [config],
   );
   const [sessionType, setSessionType] = useState<DoctorSessionType | null>(null);

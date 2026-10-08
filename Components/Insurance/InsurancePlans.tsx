@@ -15,8 +15,33 @@ import classes from "./InsurancePlans.module.css";
 
 const NS: ContentNamespace[] = ["common", "insurancePage"];
 
-const PlanCard = ({ node }: { node: IInsurancePlan }) => {
+// Where "ask for this plan" goes: the insurer's own inquiry form (a deal
+// on its sales pipeline, the plan as its subject), else its phone, else
+// its website. No such channel: no button (it used to be a dead "buy
+// online" button - plans are not sold on NoyanAI).
+const requestHref = (insurer: InsurancePageNode, plan: IInsurancePlan) => {
+  if (insurer.requestForm)
+    return `/f/${encodeURIComponent(insurer.requestForm)}?subject=${encodeURIComponent(plan.name || "")}`;
+  const phone = String(insurer.phone || "")
+    .replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
+    .replace(/[٠-٩]/g, (d) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d)))
+    .replace(/[^\d+]/g, "");
+  if (phone) return `tel:${phone}`;
+  const site = String(insurer.website || "").trim();
+  if (/^https?:\/\//i.test(site)) return site;
+  return null;
+};
+
+const PlanCard = ({
+  node,
+  insurer,
+}: {
+  node: IInsurancePlan;
+  insurer: InsurancePageNode;
+}) => {
   const getContent = useScopedLocale(NS);
+  const href = requestHref(insurer, node);
+  const features = Array.isArray(node.features) ? node.features : [];
 
   return (
     <div className={classes.item}>
@@ -32,11 +57,14 @@ const PlanCard = ({ node }: { node: IInsurancePlan }) => {
         </Badge>
       )}
       <IconTitle icon={<ShieldIcon />}>{node.name}</IconTitle>
-      <span
-        className={`${classes.price} ${txlBold}`}
-      >{`${currencize(node.price)} / ${getContent("year")}`}</span>
+      {/* a plan without a premium (a basic insurer's scheme) shows none */}
+      {(node.price || 0) > 0 && (
+        <span
+          className={`${classes.price} ${txlBold}`}
+        >{`${currencize(node.price)} / ${getContent("year")}`}</span>
+      )}
       <div className={classes.features}>
-        {node.features.map((f, i) => (
+        {features.map((f, i) => (
           <div className={classes.feature} key={i}>
             <Ixon width="1rem" className={classes.featureIcon}>
               <CheckIcon />
@@ -45,15 +73,18 @@ const PlanCard = ({ node }: { node: IInsurancePlan }) => {
           </div>
         ))}
       </div>
-      <Button
-        variant="Primary"
-        mode="Fill"
-        size="M"
-        radius="High"
-        className={classes.action}
-      >
-        {getContent("purchaseOnline")}
-      </Button>
+      {!!href && (
+        <Button
+          variant="Primary"
+          mode="Fill"
+          size="M"
+          radius="High"
+          className={classes.action}
+          href={href}
+        >
+          {getContent("insPlanRequest")}
+        </Button>
+      )}
     </div>
   );
 };
@@ -61,15 +92,16 @@ const PlanCard = ({ node }: { node: IInsurancePlan }) => {
 const InsurancePlans = ({ node }: { node: InsurancePageNode }) => {
   const getContent = useScopedLocale(NS);
 
-  if (!node.plans.length) return null;
+  const plans = Array.isArray(node.plans) ? node.plans : [];
+  if (!plans.length) return null;
   return (
     <div className={classes.main}>
       <IconTitle icon={<WalletIcon />}>
         {getContent("plansAndPrices")}
       </IconTitle>
       <div className={classes.list}>
-        {node.plans.map((plan) => (
-          <PlanCard key={plan._id} node={plan} />
+        {plans.map((plan) => (
+          <PlanCard key={plan._id} node={plan} insurer={node} />
         ))}
       </div>
     </div>

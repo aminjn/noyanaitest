@@ -68,7 +68,7 @@ const GoalForm = ({ meta, goal, onDone }: { meta?: SalesMeta; goal?: Goal; onDon
   const { closePopup } = usePopup();
   const { run, busy } = useAction();
   const { data: catalog } = useList<ServiceRow>("/sales/catalog");
-  const services = (catalog || []).filter((c) => c.kind === "service" || c.kind === "package");
+  const services = (catalog || []).filter((c) => c.kind === "service" || c.kind === "package" || c.kind === "insurancePlan");
   const [title, setTitle] = useState(goal?.title || "");
   const pf = useProfile();
   // a staff member ("u:<id>") or one of the centre's doctors ("d:<name>")

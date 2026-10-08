@@ -8,7 +8,8 @@ import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import InitialAvatar from "@/Components/UI/InitialAvatar";
 import Link from "@/Components/i18n/Link";
-import useCenterDoctors, { CenterKind, doctorName, doctorSpec } from "./useCenterDoctors";
+import useCenterDoctors, { CenterKind, doctorName, doctorSpec, memberDepartmentId } from "./useCenterDoctors";
+import CenterDepartments from "./CenterDepartments";
 import CenterJoinInbox from "./CenterJoinInbox";
 import InviteDoctorPopup from "./InviteDoctorPopup";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -19,7 +20,22 @@ const NS: ContentNamespace[] = ["common", "centerDoctors"];
 // who's been invited, and the current members.
 const CenterDoctorsPage = ({ kind, panel }: { kind: CenterKind; panel: string }) => {
   const getContent = useScopedLocale(NS);
-  const { data, error, busy, members, incoming, outgoing, answer, remove, refresh } = useCenterDoctors(kind);
+  const {
+    data,
+    error,
+    busy,
+    members,
+    incoming,
+    outgoing,
+    departments,
+    answer,
+    remove,
+    withdraw,
+    setDepartment,
+    saveDepartment,
+    removeDepartment,
+    refresh,
+  } = useCenterDoctors(kind);
   const { setPopup } = usePopup();
   const [asking, setAsking] = useState<string | null>(null);
   useBreadCrump([
@@ -72,6 +88,23 @@ const CenterDoctorsPage = ({ kind, panel }: { kind: CenterKind; panel: string })
                       )}
                       <span>{doctorSpec(m.doctor)}</span>
                     </div>
+                    {/* the department the doctor works in (listed under it on the public page) */}
+                    {!!departments.length && (
+                      <select
+                        className={classes.select}
+                        aria-label={getContent("cdDepartment")}
+                        value={memberDepartmentId(m)}
+                        disabled={busy === m._id}
+                        onChange={(e) => setDepartment(m._id, e.target.value)}
+                      >
+                        <option value="">{getContent("cdNoDepartment")}</option>
+                        {departments.map((d) => (
+                          <option key={d._id} value={d._id}>
+                            {d.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                     {asking === m._id ? (
                       <div className={classes.ask}>
                         <span>{getContent("cdRemoveAsk")}</span>
@@ -103,11 +136,27 @@ const CenterDoctorsPage = ({ kind, panel }: { kind: CenterKind; panel: string })
                       <strong>{doctorName(r.doctor)}</strong>
                       <span>{getContent("cdInvited")}</span>
                     </div>
+                    <button
+                      type="button"
+                      className={classes.ghost}
+                      disabled={busy === r._id}
+                      onClick={() => withdraw(r._id)}
+                    >
+                      {getContent("cdWithdraw")}
+                    </button>
                   </li>
                 ))}
               </ul>
             )}
           </section>
+
+          <CenterDepartments
+            departments={departments}
+            members={members}
+            busy={busy}
+            save={saveDepartment}
+            remove={removeDepartment}
+          />
         </div>
       )}
     </HandleLoading>

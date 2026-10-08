@@ -52,6 +52,7 @@ const BecomePharmacyRequestPage = () => {
       mutate={mutate}
       pending={request?.status === "Pending" ? toForm(request) : undefined}
       rejected={request?.status === "Rejected" ? toForm(request) : undefined}
+      rejectReason={request?.status === "Rejected" ? request.rejectReason : undefined}
     />
   );
 };

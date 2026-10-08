@@ -62,9 +62,18 @@ const DoctorCardAlt = ({
     Province: Record<never, never>;
   }>;
 }>) => {
-  // an unclaimed profile (imported from the old directory) is shown with
-  // the same card, without the booking action
-  const canBook = bookable ?? (node as { claimed?: boolean }).claimed !== false;
+  // The booking action follows what the server computed for every card
+  // (backend Lib/doctorOffer.ts `bookable`): a claimed, published doctor
+  // who offers at least one visit type a patient can book. An unclaimed
+  // directory profile, or a doctor with no office / hours / visit type yet,
+  // is shown with the same card, without a "book" button that led nowhere.
+  const flags = node as { claimed?: boolean; bookable?: boolean; mcCode?: unknown; medicalSystemCode?: string };
+  const canBook =
+    bookable ?? (typeof flags.bookable === "boolean" ? flags.bookable : flags.claimed !== false);
+  // the tick: a doctor with an account whose council code is on record
+  // (checked by the inquiry or by the staff who approved them) - the same
+  // rule as the profile page
+  const verified = flags.claimed !== false && !!(flags.mcCode || flags.medicalSystemCode);
   const getCompContent = useScopedLocale(LOCALE_NS);
   const getContent = useScopedLocale(LOCALE_NS);
   const profileHref = href || `/dr/${node.slug || node._id}`;
@@ -91,6 +100,7 @@ const DoctorCardAlt = ({
             <VerifiedImage
               src={node.avatar}
               alt={getDoctorProfileLabel(node)}
+              verified={verified}
               style={{ width: "3rem", height: "3rem" }}
             />
             <span className={classes.rowText}>
@@ -155,6 +165,7 @@ const DoctorCardAlt = ({
         style={{ marginInline: "auto", marginBottom: ".5rem" }}
         src={node.avatar}
         alt={getDoctorProfileLabel(node)}
+        verified={verified}
       />
       <div className={classes.identity}>
         <h5 className={`${classes.doctorName} ${tsmDemiBold}`}>

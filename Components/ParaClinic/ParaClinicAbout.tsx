@@ -51,6 +51,8 @@ const Detail = ({ icon, value }: { icon: ReactNode; value?: string }) => {
 
 const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
   const getContent = useScopedLocale(NS);
+  const tags = Array.isArray(data.tags) ? data.tags : [];
+  const insurances = (Array.isArray(data.insurances) ? data.insurances : []).filter((el) => !!el?._id);
   const listSep = useListSeparator();
 
   return (
@@ -62,13 +64,13 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
         {!!data.summary && (
           <p className={`${classes.summary} ${tsmRegular}`}>{data.summary}</p>
         )}
-        {!!data.tags.length && (
+        {!!tags.length && (
           <div className={classes.section}>
             <legend className={`${classes.title} ${tsmMedium}`}>
               {getContent("paraClinicSpecialities")}
             </legend>
             <div className={classes.list}>
-              {data.tags.map((tag) => (
+              {tags.map((tag) => (
                 // a tag is a filter: it opens the list narrowed to it
                 <Link key={tag._id} href={`/paraClinic?tag=${tag._id}`}>
                   <Badge
@@ -105,22 +107,19 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
               title={getContent("basicInsurance")}
             />
           </div>
-          {!!data.insurances.length && (
+          {!!insurances.length && (
             <div className={classes.section}>
               <legend className={`${classes.title} ${tsmMedium}`}>
                 {getContent("paraClinicInsurances")}
               </legend>
               <div className={classes.list}>
-                {data.insurances.map((inc) => (
-                  <Badge
-                    key={inc._id}
-                    color="Black"
-                    mode="Fill"
-                    size="L"
-                    radius="High"
-                  >
-                    {inc.name}
-                  </Badge>
+                {insurances.map((inc) => (
+                  // an accepted insurer opens its page
+                  <Link key={inc._id} href={`/insurance/${inc.slug || inc._id}`}>
+                    <Badge color="Black" mode="Fill" size="L" radius="High">
+                      {inc.name}
+                    </Badge>
+                  </Link>
                 ))}
               </div>
             </div>

@@ -22,6 +22,9 @@ type CoverageItem = {
   plan?: string | null;
   insurerShare?: number;
   patientShare?: number | null;
+  // accepted through the clinic or hospital of the doctor's office
+  via?: "doctor" | "centre";
+  centre?: string;
 };
 type Coverage = { sessionType: DoctorSessionType | null; price?: number | null; hidePrice?: boolean; items: CoverageItem[] };
 
@@ -65,6 +68,9 @@ const InsuranceCoverage = ({ doctorId, fallback }: { doctorId: string; fallback?
                     ? getContent("drInsCovered")
                     : getContent("drInsAtDesk")}
               </span>
+              {i.via === "centre" && !!i.centre && (
+                <span className={classes.hint}>{getContent("insNetViaCentre", [i.centre])}</span>
+              )}
             </span>
           </li>
         ))}

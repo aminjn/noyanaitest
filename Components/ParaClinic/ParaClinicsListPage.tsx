@@ -15,7 +15,7 @@ import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
 import ProPromotion from "../UI/ProPromotion";
 import classes from "./ParaClinicsListPage.module.css";
 import useDebounce from "../Hooks/useDebounce";
-import ParaClinicCard from "./ParaClinicCard";
+import ParaClinicCard, { ParaClinicTestOffer } from "./ParaClinicCard";
 import Ixon from "../UI/Ixon";
 import SearchIcon from "../Icons/SearchIcon";
 import { tbaseMedium, tsmRegular } from "../UI/Typography";
@@ -26,10 +26,13 @@ import SmallAd from "../UI/ListPage/SmallAd";
 const NS: ContentNamespace[] = ["common", "paraClinicsList"];
 
 export type ParaClinicsListPageProps = {
-  data: IParaClinic<{
+  data: (IParaClinic<{
     Tags: Record<never, never>;
     Province: Record<never, never>;
-  }>[];
+  }> & { testOffer?: ParaClinicTestOffer })[];
+  // the test the list was opened for (a test card links here): each lab
+  // then carries its own price for it
+  test?: { _id: string; name?: string; slug?: string } | null;
   pagesCount: number;
   // the tag / insurer the list was opened with (a card chip, an insurer page)
   filters?: ListPageFilters | null;
@@ -53,6 +56,7 @@ const ParaClinicsListPage = ({
   categories,
   specials,
   filters,
+  test,
 }: ParaClinicsListPageProps) => {
   const getContent = useScopedLocale(NS);
 
@@ -69,6 +73,10 @@ const ParaClinicsListPage = ({
     if (query) params.append("search", query);
     const categories = searchParams.getAll("category");
     for (const cat of categories) params.append("category", cat);
+    // the test a test card opened the list for stays (it was dropped, so
+    // "which labs do this test" showed every lab)
+    const test = searchParams.get("test");
+    if (test) params.append("test", test);
     push(`/paraClinic?${keepListFilters(searchParams, params).toString()}`);
   }, [searchParams, query, push]);
 
@@ -99,7 +107,9 @@ const ParaClinicsListPage = ({
       )}
       <div className={classes.header}>
         <span className={`${classes.title} ${tbaseMedium}`}>
-          {getContent("paraClinics")}
+          {test?.name
+            ? getContent("labsOfferingTestX", [test.name])
+            : getContent("paraClinics")}
         </span>
         <div className={classes.searchBox}>
           <input
@@ -129,13 +139,15 @@ const ParaClinicsListPage = ({
             if (query) params.append("search", query);
             const categories = searchParams.getAll("category");
             for (const cat of categories) params.append("category", cat);
+            const test = searchParams.get("test");
+            if (test) params.append("test", test);
             return `/paraClinic?${keepListFilters(searchParams, params).toString()}`;
           },
           pagesCount: pagesCount,
         }}
       >
-        {data.map((node) => (
-          <ParaClinicCard key={node._id} node={node} />
+        {(Array.isArray(data) ? data : []).map((node) => (
+          <ParaClinicCard key={node._id} node={node} offer={test ? node.testOffer : undefined} />
         ))}
       </ListPageList>
     </ListPageLayout>

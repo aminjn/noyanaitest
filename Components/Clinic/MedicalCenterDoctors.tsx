@@ -8,13 +8,17 @@ import IconTitle from "../UI/IconTitle";
 import PeopleIcon from "../Icons/PeopleIcon";
 import FilterCsr from "./FilterCsr";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
+import { ContentKey } from "../Enums/contentKeys";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
 const MedicalCenterDoctors = ({
   nodes,
+  title = "clinicDoctors",
 }: {
   nodes: IDoctorProfile<{ MainSpecialityPopulated: Record<never, never> }>[];
+  // a hospital's page says "doctors", not "the clinic's doctors"
+  title?: ContentKey;
 }) => {
   const getContent = useScopedLocale(NS);
 
@@ -37,10 +41,10 @@ const MedicalCenterDoctors = ({
     [filter, nodes],
   );
 
-  if (!nodes.length) return null;
+  if (!Array.isArray(nodes) || !nodes.length) return null;
   return (
     <div className={classes.main} id="doctors">
-      <IconTitle icon={<PeopleIcon />}>{getContent("clinicDoctors")}</IconTitle>
+      <IconTitle icon={<PeopleIcon />}>{getContent(title)}</IconTitle>
       <FilterCsr
         options={specialities.map((el) => ({
           title: el.name || "",

@@ -16,7 +16,17 @@ import classes from "./InsurerNetworkPage.module.css";
 const NS: ContentNamespace[] = ["common", "insurerPanel"];
 
 type Place = { _id: string; name?: string; slug?: string; province?: { name?: string }; city?: { name?: string } };
-type Doctor = { _id: string; firstName?: string; lastName?: string; slug?: string; mainSpeciality?: { name?: string } };
+// via "centre": the doctor takes it at an office of a clinic or hospital
+// that lists it (the booking quote's rule), not on their own list
+type Doctor = {
+  _id: string;
+  firstName?: string;
+  lastName?: string;
+  slug?: string;
+  mainSpeciality?: { name?: string };
+  via?: "doctor" | "centre";
+  centre?: string;
+};
 type Network = { doctors: Doctor[]; clinics: Place[]; hospitals: Place[]; labs: Place[]; pharmacies: Place[] };
 
 const sections: { key: Exclude<keyof Network, "doctors">; title: ContentKey; path: string }[] = [
@@ -26,8 +36,9 @@ const sections: { key: Exclude<keyof Network, "doctors">; title: ContentKey; pat
   { key: "pharmacies", title: "insNetPharmacies", path: "/pharmacy" },
 ];
 
-// Who accepts this insurer (2026-10): doctors and the centres, labs and
-// pharmacies that list it.
+// Who accepts this insurer (2026-10): doctors (their own list, or the
+// centre of their office) and the centres, labs and pharmacies that list
+// it - the same rule as the booking quote and the public page's counts.
 const InsurerNetworkPage = () => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
@@ -69,6 +80,9 @@ const InsurerNetworkPage = () => {
                           <strong>{name}</strong>
                         )}
                         <span>{d.mainSpeciality?.name || ""}</span>
+                        {d.via === "centre" && !!d.centre && (
+                          <span>{getContent("insNetViaCentre", [d.centre])}</span>
+                        )}
                       </div>
                     </li>
                   );

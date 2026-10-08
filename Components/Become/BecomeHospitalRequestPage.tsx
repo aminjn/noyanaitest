@@ -48,7 +48,7 @@ const BecomeHospitalRequestPage = () => {
   const { hospital } = useHospital();
 
   if (hospital)
-    return <BecomeDoneView title="becomeHospitalDone" target="hospitalPanel" />;
+    return <BecomeDoneView title="becomeHospitalDone" target={org.panelPath} />;
 
   return (
     <BecomeOrganizationForm
@@ -56,6 +56,7 @@ const BecomeHospitalRequestPage = () => {
       mutate={mutate}
       pending={request?.status === "Pending" ? toForm(request) : undefined}
       rejected={request?.status === "Rejected" ? toForm(request) : undefined}
+      rejectReason={request?.status === "Rejected" ? request.rejectReason : undefined}
     />
   );
 };
