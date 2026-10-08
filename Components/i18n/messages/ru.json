@@ -2371,7 +2371,7 @@
  "insNetLabs": "Лаборатории и центры визуализации",
  "insNetPharmacies": "Аптеки",
  "insNetEmpty": "Пока никого",
- "orgReviewsTitle": "Отзывы пациентов",
+ "orgReviewsTitle": "Отзывы и оценки",
  "orgReviewsAverage": "${1} из 5 · отзывов: ${2}",
  "orgReviewsEmpty": "Опубликованных отзывов пока нет",
  "orgReviewsHint": "Отзывы, опубликованные на вашей публичной странице после проверки поддержкой.",

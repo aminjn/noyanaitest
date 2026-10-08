@@ -2371,7 +2371,7 @@
  "insNetLabs": "लैब और इमेजिंग केंद्र",
  "insNetPharmacies": "फ़ार्मेसी",
  "insNetEmpty": "अभी कोई नहीं",
- "orgReviewsTitle": "मरीज़ों की समीक्षाएँ",
+ "orgReviewsTitle": "समीक्षाएँ और रेटिंग",
  "orgReviewsAverage": "5 में से ${1} · ${2} समीक्षाएँ",
  "orgReviewsEmpty": "अभी कोई समीक्षा प्रकाशित नहीं हुई",
  "orgReviewsHint": "सहायता टीम की समीक्षा के बाद आपके सार्वजनिक पेज पर प्रकाशित समीक्षाएँ।",

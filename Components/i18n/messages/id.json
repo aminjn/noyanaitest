@@ -2371,7 +2371,7 @@
  "insNetLabs": "Lab dan pusat pencitraan",
  "insNetPharmacies": "Apotek",
  "insNetEmpty": "Belum ada",
- "orgReviewsTitle": "Ulasan pasien",
+ "orgReviewsTitle": "Ulasan dan penilaian",
  "orgReviewsAverage": "${1} dari 5 · ${2} ulasan",
  "orgReviewsEmpty": "Belum ada ulasan yang diterbitkan",
  "orgReviewsHint": "Ulasan yang diterbitkan di halaman publik Anda setelah ditinjau tim dukungan.",

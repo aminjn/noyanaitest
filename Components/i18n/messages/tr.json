@@ -2371,7 +2371,7 @@
  "insNetLabs": "Laboratuvarlar ve görüntüleme merkezleri",
  "insNetPharmacies": "Eczaneler",
  "insNetEmpty": "Henüz kimse yok",
- "orgReviewsTitle": "Hasta yorumları",
+ "orgReviewsTitle": "Yorumlar ve puanlar",
  "orgReviewsAverage": "5 üzerinden ${1} · ${2} yorum",
  "orgReviewsEmpty": "Henüz yayınlanmış yorum yok",
  "orgReviewsHint": "Destek incelemesinden sonra herkese açık sayfanızda yayınlanan yorumlar.",

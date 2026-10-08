@@ -2371,7 +2371,7 @@
  "insNetLabs": "实验室和影像中心",
  "insNetPharmacies": "药房",
  "insNetEmpty": "暂无",
- "orgReviewsTitle": "患者评价",
+ "orgReviewsTitle": "评价与评分",
  "orgReviewsAverage": "5 分中 ${1} · ${2} 条评价",
  "orgReviewsEmpty": "暂无已发布的评价",
  "orgReviewsHint": "经客服审核后在您的公开页面发布的评价。",

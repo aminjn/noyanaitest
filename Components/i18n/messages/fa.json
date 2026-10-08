@@ -2393,7 +2393,7 @@
  "insNetLabs": "آزمایشگاه‌ها و مراکز تصویربرداری",
  "insNetPharmacies": "داروخانه‌ها",
  "insNetEmpty": "هنوز کسی ثبت نشده است",
- "orgReviewsTitle": "نظرات بیماران",
+ "orgReviewsTitle": "نظرات و امتیازها",
  "orgReviewsAverage": "میانگین ${1} از ۵ · ${2} نظر",
  "orgReviewsEmpty": "هنوز نظری منتشر نشده است",
  "orgReviewsHint": "نظرهایی که پس از بررسی پشتیبانی در صفحه‌ی عمومی شما منتشر شده‌اند.",

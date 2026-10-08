@@ -28,7 +28,8 @@ const ids = (value: unknown): string[] =>
 
 // /public/province and /public/search/city answer with the list in `data`
 const listOf = (res: unknown) => {
-  const list = (res as { data?: unknown })?.data;
+  const body = (res as { data?: unknown })?.data;
+  const list = Array.isArray(body) ? body : (body as { data?: unknown } | undefined)?.data;
   return Array.isArray(list) ? list : [];
 };
 

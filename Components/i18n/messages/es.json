@@ -2371,7 +2371,7 @@
  "insNetLabs": "Laboratorios y centros de imagen",
  "insNetPharmacies": "Farmacias",
  "insNetEmpty": "Nadie todavía",
- "orgReviewsTitle": "Opiniones de pacientes",
+ "orgReviewsTitle": "Opiniones y valoraciones",
  "orgReviewsAverage": "${1} de 5 · ${2} opiniones",
  "orgReviewsEmpty": "Aún no hay opiniones publicadas",
  "orgReviewsHint": "Opiniones publicadas en tu página pública tras la revisión de soporte.",

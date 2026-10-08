@@ -2371,7 +2371,7 @@
  "insNetLabs": "検査・画像診断センター",
  "insNetPharmacies": "薬局",
  "insNetEmpty": "まだいません",
- "orgReviewsTitle": "患者の口コミ",
+ "orgReviewsTitle": "レビューと評価",
  "orgReviewsAverage": "5点中${1} · ${2}件",
  "orgReviewsEmpty": "公開された口コミはまだありません",
  "orgReviewsHint": "サポートの確認後、公開ページに掲載された口コミです。",
