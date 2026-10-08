@@ -130,7 +130,8 @@ export const smsPatternNameForEvent = <E extends string>(
 
 export type SmsAudience = "general" | "patient" | "provider" | "staff";
 
-export const smsAudienceOrder: SmsAudience[] = ["patient", "provider", "staff", "general"];
+// "general" (the login code) first: without it nobody can log in
+export const smsAudienceOrder: SmsAudience[] = ["general", "patient", "provider", "staff"];
 
 export const smsAudienceLabels: Record<SmsAudience, string> = {
   get general() {
