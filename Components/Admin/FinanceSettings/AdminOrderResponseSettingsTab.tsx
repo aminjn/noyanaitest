@@ -32,6 +32,7 @@ const AdminOrderResponseSettingsTab = () => {
               orderResponseHoursPharmacy: data.orderResponseHoursPharmacy ?? 24,
               orderResponseHoursLab: data.orderResponseHoursLab ?? 72,
               orderResponseWarnHours: data.orderResponseWarnHours ?? 2,
+              labSamplingMaxMoves: data.labSamplingMaxMoves ?? 2,
             }}
             hookProps={{
               path: `${API}/auto/appConfig`,
@@ -56,6 +57,13 @@ const AdminOrderResponseSettingsTab = () => {
                 type: "number",
                 section: ta("لغو خودکار سفارش بی‌پاسخ"),
                 hint: ta("مهلت هر قلم هنگام پرداخت ثبت می‌شود؛ تغییر این اعداد فقط سفارش‌های بعدی را تغییر می‌دهد."),
+              },
+              // lab sampling reschedules (2026-10, backend Lib/labSamplingReschedule.ts)
+              labSamplingMaxMoves: {
+                title: ta("سقف جابه‌جایی هر نوبت نمونه‌گیری (۰ تا ۱۰، ۰ یعنی بدون جابه‌جایی)"),
+                type: "number",
+                section: ta("نوبت نمونه‌گیری آزمایشگاه"),
+                hint: ta("خریدار و آزمایشگاه هر نوبت را حداکثر این تعداد بار، تا پیش از حداقل فاصله‌ی تعیین‌شده‌ی آزمایشگاه و پیش از نمونه‌گیری، جابه‌جا می‌کنند. پشتیبانی محدود به این سقف نیست."),
               },
             }}
           />

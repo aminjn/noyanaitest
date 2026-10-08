@@ -1,4 +1,5 @@
 "use client";
+import { OpeningHours, OpenStatus } from "@/Components/OpeningHours/openingHours";
 import SuspendedProviderBanner, { SuspendableProvider } from "./SuspendedProviderBanner";
 import ActingAsBanner from "./ActingAsBanner";
 
@@ -92,6 +93,10 @@ export interface IParaClinic<
     : never;
   establishment?: string;
   businessTime?: string;
+  // structured week and its status now (2026-10, Components/OpeningHours)
+  openingHours?: OpeningHours | null;
+  openStatus?: OpenStatus | null;
+  isRoundTheClock?: boolean;
   phone?: string;
   onPremises: boolean;
   onlineResponse: boolean;

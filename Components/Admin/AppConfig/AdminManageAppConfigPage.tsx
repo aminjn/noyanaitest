@@ -62,6 +62,8 @@ export interface IAppConfig extends MongoDoc {
   orderResponseHoursPharmacy?: number;
   orderResponseHoursLab?: number;
   orderResponseWarnHours?: number;
+  // how many times a lab sampling appointment may be moved (2026-10)
+  labSamplingMaxMoves?: number;
 
   reservationNoShowNudgeMinutesAfterStart: number;
   reservationNoShowNudgeInterval: number;

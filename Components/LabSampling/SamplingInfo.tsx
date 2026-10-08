@@ -1,5 +1,6 @@
 "use client";
 
+import { ReactNode } from "react";
 import classes from "./SamplingInfo.module.css";
 import Badge, { BadgeColor } from "../UI/Badge";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -8,7 +9,7 @@ import { ContentKey } from "../Enums/contentKeys";
 import { currencize } from "../helpers/currencize";
 import { useListSeparator } from "../i18n/navigation";
 import { addressCityLabel, localPhone } from "../Dashboard/Address/DashboardManageAddressesPage";
-import { ILabSampling, samplingStatusKey } from "./samplingTypes";
+import { ILabSampling, LabSamplingActor, samplingStatusKey } from "./samplingTypes";
 import useSamplingFormat from "./useSamplingFormat";
 import { t2xsRegular, tsmDemiBold, tsmRegular } from "../UI/Typography";
 
@@ -22,17 +23,32 @@ const statusColor: Record<string, BadgeColor> = {
   lsStatusCancelled: "Disabled",
 };
 
+// who moved it, as the reader sees it
+const moverKey = (by: LabSamplingActor, viewer: "buyer" | "lab") =>
+  by === "admin"
+    ? "lsMovedBySupport"
+    : by === "lab"
+      ? "lsMovedByLab"
+      : viewer === "buyer"
+        ? "lsMovedByYou"
+        : "lsMovedByPatient";
+
 // One sampling appointment (backend Models/LabSampling.ts): where (the lab,
-// or the home address), when (Tehran time), and how far it got. Shared by
-// the buyer's order page and the lab's incoming order page.
+// or the home address), when (Tehran time), how far it got, and every move
+// (Lib/labSamplingReschedule.ts). Shared by the buyer's order page, the
+// lab's incoming order page and agenda; `actions` are the viewer's buttons.
 const SamplingInfo = ({
   sampling,
   labName,
   tests,
+  viewer = "buyer",
+  actions,
 }: {
   sampling: ILabSampling;
   labName?: string;
   tests?: string[];
+  viewer?: "buyer" | "lab";
+  actions?: ReactNode;
 }) => {
   const getContent = useScopedLocale(NS);
   const t = (key: string, args?: string[]) => getContent(key as ContentKey, args);
@@ -75,7 +91,39 @@ const SamplingInfo = ({
           {`${t("lsHomeFee")}: ${currencize(sampling.fee)} ${t("toman")}`}
         </span>
       )}
+      <SamplingMoves sampling={sampling} viewer={viewer} />
+      {actions}
     </div>
+  );
+};
+
+// "Moved by the lab · Previous time: Fri 9 Oct 07:00–07:30", newest first
+export const SamplingMoves = ({
+  sampling,
+  viewer = "buyer",
+}: {
+  sampling: Pick<ILabSampling, "moves">;
+  viewer?: "buyer" | "lab";
+}) => {
+  const getContent = useScopedLocale(NS);
+  const t = (key: string) => getContent(key as ContentKey);
+  const fmt = useSamplingFormat();
+  const moves = (Array.isArray(sampling?.moves) ? sampling.moves : []).filter((m) => !!m?.from?.ymd);
+  if (!moves.length) return null;
+  return (
+    <ul className={classes.moves}>
+      {[...moves].reverse().map((m, i) => (
+        <li key={`${m.at}-${i}`} className={`${classes.muted} ${t2xsRegular}`}>
+          {[
+            t(moverKey(m.by, viewer)),
+            `${t("lsPrevTime")}: ${fmt.day(m.from!.ymd)} ${fmt.range(m.from!.ymd, m.from!.start, m.from!.end)}`,
+            m.to && m.to.kind !== m.from!.kind ? t(m.from!.kind === "home" ? "lsAtHome" : "lsAtLab") : "",
+          ]
+            .filter(Boolean)
+            .join(" · ")}
+        </li>
+      ))}
+    </ul>
   );
 };
 
@@ -86,7 +134,15 @@ type SampledLine = {
 
 // The appointments of an order's test lines, each once (lines of one lab
 // share it), with the lab and the tests it is for.
-export const OrderSamplings = ({ lines }: { lines?: SampledLine[] }) => {
+export const OrderSamplings = ({
+  lines,
+  viewer = "buyer",
+  renderActions,
+}: {
+  lines?: SampledLine[];
+  viewer?: "buyer" | "lab";
+  renderActions?: (sampling: ILabSampling) => ReactNode;
+}) => {
   const groups = new Map<string, { sampling: ILabSampling; labName?: string; tests: string[] }>();
   for (const line of Array.isArray(lines) ? lines : []) {
     const s = line?.sampling;
@@ -102,7 +158,14 @@ export const OrderSamplings = ({ lines }: { lines?: SampledLine[] }) => {
   return (
     <div className={classes.list}>
       {Array.from(groups.values()).map((g) => (
-        <SamplingInfo key={g.sampling._id} sampling={g.sampling} labName={g.labName} tests={g.tests} />
+        <SamplingInfo
+          key={g.sampling._id}
+          sampling={g.sampling}
+          labName={g.labName}
+          tests={g.tests}
+          viewer={viewer}
+          actions={renderActions?.(g.sampling)}
+        />
       ))}
     </div>
   );

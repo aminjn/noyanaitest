@@ -67,16 +67,24 @@ export const samplingFeeOf = (groups: CartSamplingGroup[] | undefined, drafts: S
     0,
   );
 
+// Also the body of a reschedule (Components/LabSampling/
+// SamplingReschedulePopup.tsx): `bare` drops the checkout title and hint,
+// `lockKind` keeps the appointment's kind and address (the lab moves only
+// the time).
 const CartSamplingSection = ({
   groups,
   addresses,
   value,
   onChange,
+  bare,
+  lockKind,
 }: {
   groups: CartSamplingGroup[];
   addresses?: IUserAddress[];
   value: SamplingDrafts;
   onChange: (next: SamplingDrafts) => void;
+  bare?: boolean;
+  lockKind?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   const t = (key: string) => getContent(key as ContentKey);
@@ -88,11 +96,15 @@ const CartSamplingSection = ({
 
   return (
     <div className={classes.main}>
-      <span className={`${classes.title} ${tsmDemiBold}`}>{t("lsTitle")}</span>
-      <span className={`${classes.hint} ${t2xsRegular}`}>{t("lsCartHint")}</span>
+      {!bare && (
+        <>
+          <span className={`${classes.title} ${tsmDemiBold}`}>{t("lsTitle")}</span>
+          <span className={`${classes.hint} ${t2xsRegular}`}>{t("lsCartHint")}</span>
+        </>
+      )}
       {groups.map((g) => {
         const d = draftOf(value, g.paraClinic);
-        const kinds: LabSamplingKind[] = g.home ? ["lab", "home"] : ["lab"];
+        const kinds: LabSamplingKind[] = lockKind ? [d.kind] : g.home ? ["lab", "home"] : ["lab"];
         const served = list.filter((a) => g.homeCities.includes(cityIdOf(a)));
         return (
           <div key={g.paraClinic} className={classes.group}>
@@ -127,7 +139,7 @@ const CartSamplingSection = ({
                 ))}
               </div>
             )}
-            {d.kind === "home" && (
+            {d.kind === "home" && !lockKind && (
               <div className={classes.addresses}>
                 <span className={`${classes.muted} ${t2xsRegular}`}>{t("lsHomeAddress")}</span>
                 {!served.length && (

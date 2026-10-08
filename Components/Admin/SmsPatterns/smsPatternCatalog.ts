@@ -63,6 +63,8 @@ export const notificationSmsEvents = [
   "prescriptionRejectedUser",
   "labResultReadyUser",
   "labSamplingReminderUser",
+  "labSamplingRescheduledUser",
+  "labSamplingRescheduledLab",
   "orderCancelledByBuyerSeller",
   "orderResponseDueSoonSeller",
   "orderAutoCancelledSeller",
@@ -414,6 +416,21 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     label: () => ta("یادآوری نوبت نمونه‌گیری - خریدار"),
     variables: ["labName", "date", "time"],
     sample: () => ta("یادآوری: نمونه‌گیری شما با %labName% در تاریخ %date% ساعت %time% است."),
+  },
+  // a lab sampling appointment was moved (2026-10, backend
+  // Lib/labSamplingReschedule.ts): the buyer, by the lab or support (they
+  // may cancel for a full refund); the lab, by the buyer or support
+  labSamplingRescheduledUser: {
+    audience: "patient",
+    label: () => ta("تغییر زمان نمونه‌گیری - خریدار"),
+    variables: ["labName", "date", "time"],
+    sample: () => ta("زمان نمونه‌گیری شما با %labName% به %date% ساعت %time% تغییر کرد. اگر مناسب نیست، از صفحه‌ی سفارش لغو کنید."),
+  },
+  labSamplingRescheduledLab: {
+    audience: "provider",
+    label: () => ta("جابه‌جایی نوبت نمونه‌گیری - آزمایشگاه"),
+    variables: ["orderId", "date", "time"],
+    sample: () => ta("نوبت نمونه‌گیری سفارش %orderId% به %date% ساعت %time% منتقل شد."),
   },
   // seller reviews (2026-10, backend Services/orderSettlementService.ts
   // inviteSellerReview): once per order and pharmacy / lab

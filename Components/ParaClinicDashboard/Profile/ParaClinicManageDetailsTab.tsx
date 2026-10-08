@@ -8,7 +8,7 @@ import { IParaClinicTag } from "@/Components/Admin/ParaClinicTag/AdminManagePara
 import { IParaClinicCategory } from "@/Components/Admin/ParaClinicCategory/AdminManageParaClinicCategoriesPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
-const NS: ContentNamespace[] = ["common", "paraClinicPanelProfile"];
+const NS: ContentNamespace[] = ["common", "openingHours", "paraClinicPanelProfile"];
 
 const ParaClinicManageDetailsTab = () => {
   const { paraClinic, mutate } = useParaClinic();
@@ -53,7 +53,9 @@ const ParaClinicManageDetailsTab = () => {
               multi: true,
             },
             establishment: { type: "text", title: getContent("establishment") },
-            businessTime: { type: "text", title: getContent("businessTime") },
+            // the structured week (2026-10); the text is the note under it
+            openingHours: { type: "openingHours", title: getContent("ohEditorTitle") },
+            businessTime: { type: "text", title: getContent("ohNoteField") },
             phone: { type: "text", title: getContent("phone") },
             // «نمونه‌گیری در محل» is no longer typed here (2026-10): it follows
             // the home-sampling switch of «نمونه‌گیری» > settings

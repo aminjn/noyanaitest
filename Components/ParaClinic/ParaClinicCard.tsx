@@ -1,3 +1,4 @@
+import OpenStatusBadge from "@/Components/OpeningHours/OpenStatusBadge";
 import Image from "next/image";
 import { IParaClinic } from "../Layout/ParaClinicPanelLayout";
 import classes from "./ParaClinicCard.module.css";
@@ -136,6 +137,8 @@ const ParaClinicCard = ({
             <span>{node.province.name}</span>
           </div>
         )}
+        {/* open now / closes at (2026-10, backend Lib/openingHours.ts) */}
+        <OpenStatusBadge status={node.openStatus} />
       </div>
       {!!node.tags?.length && (
         <div className={classes.tags}>

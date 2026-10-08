@@ -1,3 +1,4 @@
+import OpenStatusBadge from "@/Components/OpeningHours/OpenStatusBadge";
 import Image from "next/image";
 import { IHospital } from "../Admin/Hospital/AdminManageHospitalsPage";
 import classes from "./HospitalCard.module.css";
@@ -64,6 +65,8 @@ const HospitalCard = ({
             <span>{node.province.name}</span>
           </div>
         )}
+        {/* open now / closes at (2026-10, backend Lib/openingHours.ts) */}
+        <OpenStatusBadge status={node.openStatus} />
         {/* real numbers only: the speciality count used to be a fixed "6" */}
         {!!node.bedCount && (
           <div className={`${classes.counts} ${txsRegular}`}>

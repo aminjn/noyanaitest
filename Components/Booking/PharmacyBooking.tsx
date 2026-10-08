@@ -54,7 +54,7 @@ import BookingAdvancedSearchPopup, {
 import ToggleInput from "../UI/ToggleInput";
 import type { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 
-const NS: ContentNamespace[] = ["common", "booking"];
+const NS: ContentNamespace[] = ["common", "booking", "openingHours"];
 
 export type PharmacyBookingOptions = Partial<{
   query: string;
@@ -66,6 +66,8 @@ export type PharmacyBookingOptions = Partial<{
   category: IProductCategory | null;
   // open at night (شبانه‌روزی) and the insurer paying the prescription
   roundTheClock: boolean;
+  // open at this minute, Tehran time (2026-10, backend Lib/openingHours.ts)
+  openNow: boolean;
   insurance: { _id: string; name?: string }[];
 }>;
 
@@ -159,6 +161,11 @@ const usePharmacyBookingFilterProps = ({
             onClick={() => setOptions((prev) => ({ ...prev, roundTheClock: false }))}
           >
             {getContent("roundTheClock")}
+          </BookingSelectedFilter>
+        )}
+        {!!options.openNow && (
+          <BookingSelectedFilter onClick={() => setOptions((prev) => ({ ...prev, openNow: false }))}>
+            {getContent("ohOpenNowFilter")}
           </BookingSelectedFilter>
         )}
         {options.insurance?.map((insurance) => (
@@ -325,6 +332,13 @@ const usePharmacyBookingFilterProps = ({
               }
             />
           </div>
+          <div className={classes.toggleRow}>
+            <ToggleInput
+              title={getContent("ohOpenNowFilter")}
+              value={!!options.openNow}
+              onChange={() => setOptions((prev) => ({ ...prev, openNow: !prev.openNow }))}
+            />
+          </div>
           <BookingFilterButton
             title={getContent("acceptedInsurance")}
             active={!!options.insurance?.length}
@@ -439,6 +453,7 @@ const PharmacyBooking = ({
     if (options.province) params.append("province", options.province._id);
     if (options.category) params.append("category", options.category._id);
     if (options.roundTheClock) params.append("roundTheClock", "1");
+    if (options.openNow) params.append("openNow", "1");
     for (const insurance of options.insurance || [])
       params.append("insurance", insurance._id);
     return params;
@@ -486,6 +501,11 @@ const PharmacyBooking = ({
         title={getContent("roundTheClockOnly")}
         active={!!options.roundTheClock}
         onClick={() => setOptions((prev) => ({ ...prev, roundTheClock: !prev.roundTheClock }))}
+      />
+      <AdvancedSearchToggleField
+        title={getContent("ohOpenNowFilter")}
+        active={!!options.openNow}
+        onClick={() => setOptions((prev) => ({ ...prev, openNow: !prev.openNow }))}
       />
       <MultiSelectInputServer
         value={options.insurance || []}
@@ -728,6 +748,19 @@ const PharmacyBooking = ({
                 onChange={() =>
                   setOptions((prev) => ({ ...prev, roundTheClock: !prev.roundTheClock }))
                 }
+              />
+            ),
+          },
+          {
+            active: !!options.openNow,
+            title: "ohOpenNowFilter",
+            drawer: (close) => (
+              <BookingFilterDrawerField
+                type="toggle"
+                close={close}
+                title={getContent("ohOpenNowFilter")}
+                value={!!options.openNow}
+                onChange={() => setOptions((prev) => ({ ...prev, openNow: !prev.openNow }))}
               />
             ),
           },

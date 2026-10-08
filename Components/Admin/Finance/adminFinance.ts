@@ -1,4 +1,5 @@
-import { ta } from "@/Components/Admin/i18n/adminText";
+import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
+import { fromTehranWallClock, TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 export interface IFinanceUser {
   _id: string;
   phone?: string;
@@ -260,6 +261,96 @@ export const adminNoteActionDict: Record<string, string> = {
   get fulfillLine() {
     return ta("ثبت تحویل قلم");
   },
+  get rescheduleSampling() {
+    return ta("جابه‌جایی نوبت نمونه‌گیری");
+  },
+  get cancelSampling() {
+    return ta("لغو نوبت نمونه‌گیری");
+  },
+};
+
+// lab sampling appointments of an order (2026-10, backend Lib/labSampling.ts
+// and Lib/labSamplingReschedule.ts)
+export const samplingKindDict: Record<string, string> = {
+  get lab() {
+    return ta("در آزمایشگاه");
+  },
+  get home() {
+    return ta("در منزل");
+  },
+};
+
+export const samplingActorDict: Record<string, string> = {
+  get buyer() {
+    return ta("خریدار");
+  },
+  get lab() {
+    return ta("آزمایشگاه");
+  },
+  get admin() {
+    return ta("پشتیبانی");
+  },
+};
+
+export type SamplingStatusLike = {
+  status?: string;
+  confirmedAt?: string | null;
+  collectedAt?: string | null;
+  collected?: boolean;
+};
+
+// the appointment's state, the same steps the buyer and the lab see
+export const samplingStateOf = (s: SamplingStatusLike) =>
+  s.status === "cancelled"
+    ? "cancelled"
+    : s.status === "done"
+      ? "done"
+      : s.collectedAt || s.collected
+        ? "collected"
+        : s.confirmedAt
+          ? "confirmed"
+          : "awaiting";
+
+export const samplingStateDict: Record<string, string> = {
+  get cancelled() {
+    return ta("لغو شده");
+  },
+  get done() {
+    return ta("انجام شده");
+  },
+  get collected() {
+    return ta("نمونه گرفته شد");
+  },
+  get confirmed() {
+    return ta("تأیید آزمایشگاه");
+  },
+  get awaiting() {
+    return ta("در انتظار تأیید آزمایشگاه");
+  },
+};
+
+// "Sat 18 Oct · 08:30–08:45" on Tehran's clock, in the admin's language
+export const samplingWhenLabel = (s: { ymd?: string; start?: number; end?: number } | null | undefined) => {
+  if (!s?.ymd || !/^\d{4}-\d{2}-\d{2}$/.test(s.ymd)) return "—";
+  try {
+    const day = new Intl.DateTimeFormat(adminIntlTag(), {
+      timeZone: TEHRAN_TZ,
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    }).format(fromTehranWallClock(s.ymd, 12 * 60));
+    const time = new Intl.DateTimeFormat(adminIntlTag(), {
+      timeZone: TEHRAN_TZ,
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    });
+    const from = time.format(fromTehranWallClock(s.ymd, Number(s.start) || 0));
+    const to = time.format(fromTehranWallClock(s.ymd, Number(s.end) || 0));
+    return `${day} · ${from}–${to}`;
+  } catch {
+    return "—";
+  }
 };
 
 // a ledger row's record in the admin panel, when it has a page of its own

@@ -22,6 +22,10 @@ import {
   IFinanceUser,
   orderStatusDict,
   paymentMethodDict,
+  samplingKindDict,
+  samplingStateDict,
+  samplingStateOf,
+  samplingWhenLabel,
   userLabel,
 } from "./adminFinance";
 import { ta } from "@/Components/Admin/i18n/adminText";
@@ -41,6 +45,17 @@ interface IAdminOrderRow {
   pending?: number;
   fulfilled: number;
   cancelled: number;
+  // lab sampling appointments (2026-10)
+  samplings?: {
+    _id: string;
+    kind: string;
+    ymd: string;
+    start: number;
+    end: number;
+    status: string;
+    collected?: boolean;
+    moves?: number;
+  }[];
 }
 
 const ORDERS_PATH = `${API}/admin/finance/orders`;
@@ -137,6 +152,22 @@ toolbar={false}
                 name: ta("در انتظار فروشنده"),
                 value: (node) => node.pending ?? 0,
                 filter: "Number",
+              },
+              samplings: {
+                name: ta("نوبت نمونه‌گیری"),
+                value: (node) =>
+                  (Array.isArray(node.samplings) ? node.samplings : [])
+                    .map((b) =>
+                      [
+                        samplingWhenLabel(b),
+                        samplingKindDict[b.kind] || b.kind,
+                        samplingStateDict[samplingStateOf(b)] || b.status,
+                        b.moves ? ta("${1} بار جابه‌جا شده", [b.moves]) : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" · "),
+                    )
+                    .join(" | ") || "—",
               },
               submittedAt: {
                 name: ta("تاریخ ثبت"),

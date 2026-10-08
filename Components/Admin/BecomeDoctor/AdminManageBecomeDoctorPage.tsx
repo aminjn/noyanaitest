@@ -31,7 +31,20 @@ import classes from "./AdminManageBecomeDoctorPage.module.css";
 type DoctorRequest = IBecomeDoctorRequest<{
   SpecialitiesPopulated: true;
   UserPopulated: true;
-}> & { decidedAt?: string };
+}> & {
+  decidedAt?: string;
+  // the one onboarding flow (2026-10, backend doctorOnboardingController)
+  verification?: "inquiry" | "manual";
+  council?: { title?: string; city?: string; acquiredAt?: string };
+  claimProfile?: { _id: string; firstName?: string; lastName?: string; slug?: string; user?: string } | null;
+  councilCard?: string;
+  licenseDoc?: string;
+  officePermit?: string;
+};
+
+const docFields = ["councilCard", "licenseDoc", "officePermit"] as const;
+const docLabel = (field: (typeof docFields)[number]) =>
+  field === "councilCard" ? ta("کارت نظام پزشکی") : field === "licenseDoc" ? ta("پروانه طبابت") : ta("پروانه مطب");
 
 // A doctor's "become a doctor" request (2026-09): the decision on top (the
 // approve button creates the doctor profile from the stated specialities),
@@ -102,6 +115,37 @@ const AdminManageBecomeDoctorPage = () => {
           },
           { label: ta("کد نظام پزشکی"), value: data.medicalSystemCode },
           {
+            label: ta("نحوه تأیید کد"),
+            wide: true,
+            value:
+              data.verification === "inquiry"
+                ? ta("تأییدشده با استعلام نظام پزشکی")
+                : data.verification === "manual"
+                  ? ta("بدون استعلام؛ کد را با کارت نظام پزشکی بررسی کنید")
+                  : ta("فرم قدیمی"),
+          },
+          ...(data.council?.title
+            ? [
+                { label: ta("عنوان رشته در نظام پزشکی"), value: data.council.title },
+                { label: ta("شهر"), value: data.council.city },
+                { label: ta("تاریخ"), value: data.council.acquiredAt },
+              ]
+            : []),
+          ...(data.claimProfile && typeof data.claimProfile === "object" && data.claimProfile._id
+            ? [
+                {
+                  label: ta("صفحه موجود برای واگذاری"),
+                  wide: true,
+                  value: (
+                    <InlineLink href={adminPath(`/doctorprofile/${data.claimProfile._id}`)}>
+                      {[data.claimProfile.firstName, data.claimProfile.lastName].filter(Boolean).join(" ") ||
+                        data.claimProfile._id}
+                    </InlineLink>
+                  ),
+                },
+              ]
+            : []),
+          {
             label: ta("تخصص ها"),
             wide: true,
             value: specialities.length ? (
@@ -118,6 +162,24 @@ const AdminManageBecomeDoctorPage = () => {
             ) : undefined,
           },
         ]}
+      />
+      <RequestInfoGrid
+        title={ta("مدارک")}
+        items={docFields.map((field) => ({
+          label: docLabel(field),
+          value: data[field] ? (
+            <a
+              href={`${API}/admin/becomedoctor/${data._id}/file/${field}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.file}
+            >
+              {ta("مشاهده فایل")}
+            </a>
+          ) : (
+            ta("بارگذاری نشده")
+          ),
+        }))}
       />
       <RequestInfoGrid
         title={ta("نشانی")}
@@ -184,7 +246,7 @@ const AdminManageBecomeDoctorPage = () => {
               nodeId={data._id}
               status={data.status}
               label={ta("تأیید و ساخت پروفایل پزشک")}
-              done={ta("پروفایل پزشک با تخصص‌های اعلام‌شده ساخته و فعال شد.")}
+              done={ta("پنل پزشک فعال شد؛ صفحه پس از تکمیل اطلاعات نوبت‌دهی خودکار منتشر می‌شود.")}
               target={(id) => `/doctorprofile/${id}`}
               mutate={mutate}
             />

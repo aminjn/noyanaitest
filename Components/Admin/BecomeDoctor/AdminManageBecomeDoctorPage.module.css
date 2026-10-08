@@ -3,3 +3,8 @@
   flex-wrap: wrap;
   gap: 0.25rem 0.75rem;
 }
+
+.file {
+  color: var(--primary);
+  text-decoration: underline;
+}

@@ -6,7 +6,7 @@ import AuthPopup from "../Popups/AuthPopup";
 import { fetcher } from "../helpers/fetcher";
 import { ContentKey } from "../Enums/contentKeys";
 import { ReviewBasisKind, ReviewTagChips, VerifiedBadge } from "./ReviewBits";
-import { knownReviewTags } from "./reviewTags";
+import { knownReviewTags, NEGATIVE_TAG_MAX_SCORE, negativeReviewTags } from "./reviewTags";
 import { API } from "../config";
 import useForm from "../Hooks/useForm";
 import StarIcon from "../Icons/StarIcon";
@@ -28,6 +28,9 @@ type Eligibility = {
   at?: string | null;
   // the quick tags this page offers (seller reviews of a pharmacy / lab)
   tagOptions?: string[];
+  // offered instead at a score <= negativeTagMaxScore (private feedback)
+  negativeTagOptions?: string[];
+  negativeTagMaxScore?: number;
 };
 
 const closedKey: Record<NonNullable<Eligibility["reason"]>, string> = {
@@ -81,7 +84,10 @@ const SubmitCommentForm = ({
 
   const areaRef = useRef<HTMLTextAreaElement>(null);
 
-  const tagOptions = knownReviewTags(eligibility?.tagOptions);
+  const negativeMax =
+    typeof eligibility?.negativeTagMaxScore === "number"
+      ? eligibility.negativeTagMaxScore
+      : NEGATIVE_TAG_MAX_SCORE;
 
   const { input, isLoading, setInput, submit, reset } = useForm<{
     content: string;
@@ -106,6 +112,13 @@ const SubmitCommentForm = ({
       onSubmitted?.();
     },
   });
+
+  // the tags follow the score: what went well, or at a low score what
+  // went wrong (the server checks the same and keeps those private)
+  const negative = !!input.score && input.score <= negativeMax;
+  const tagOptions = knownReviewTags(
+    negative ? eligibility?.negativeTagOptions : eligibility?.tagOptions,
+  );
 
   if (rated && !user)
     return (
@@ -178,7 +191,15 @@ const SubmitCommentForm = ({
             key={score}
             type="button"
             aria-label={String(score)}
-            onClick={() => setInput((prev) => ({ ...prev, score }))}
+            onClick={() =>
+              setInput((prev) => {
+                // switching between a low and a good score drops the tags
+                // of the other kind
+                const low = score <= negativeMax;
+                const tags = (prev.tags || []).filter((t) => negativeReviewTags.has(t) === low);
+                return { ...prev, score, tags };
+              })
+            }
           >
             <Ixon width="1.5rem">
               <StarIcon />
@@ -189,7 +210,9 @@ const SubmitCommentForm = ({
       )}
       {rated && !!tagOptions.length && (
         <>
-          <span className={`${classes.closed} ${tsmRegular}`}>{getContent("reviewTagsPrompt")}</span>
+          <span className={`${classes.closed} ${tsmRegular}`}>
+            {getContent(negative ? "reviewTagsPromptNegative" : "reviewTagsPrompt")}
+          </span>
           <ReviewTagChips
             tags={tagOptions}
             selected={input.tags || []}
@@ -203,6 +226,9 @@ const SubmitCommentForm = ({
               })
             }
           />
+          {negative && (
+            <span className={`${classes.closed} ${tsmRegular}`}>{getContent("reviewTagsNegativePrivate")}</span>
+          )}
         </>
       )}
       <textarea

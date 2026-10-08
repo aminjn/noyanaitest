@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import TabSystem from "@/Components/Admin/UI/TabSystem";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
@@ -8,11 +9,33 @@ import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import PharmacyManageDetailsTab from "./PharmacyManageDetailsTab";
 import PharmacyManageLocationTab from "./PharmacyManageLocationTab";
 import PharmacyManageDeliveryTab from "./PharmacyManageDeliveryTab";
+import PharmacyRxCityBanner from "../RxCityBanner/PharmacyRxCityBanner";
+
+const TABS = ["Details", "Location", "Delivery"];
+const TAB_STORE = "PharmacyManageProfile";
+
+// the last open tab (TabSystem's own memory)
+const savedTab = () => {
+  try {
+    const saved = localStorage.getItem(TAB_STORE);
+    if (saved && TABS.includes(saved)) return saved;
+  } catch {
+    // storage blocked: the first tab
+  }
+  return TABS[0];
+};
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelProfile"];
 
 const PharmacyManageProfilePage = () => {
   const getContent = useScopedLocale(NS);
+  const tabState = useState<string>(savedTab);
+  const setTab = tabState[1];
+  // ?tab=Location (the "no city" banner on the panel home) opens that tab
+  useEffect(() => {
+    const asked = new URLSearchParams(window.location.search).get("tab");
+    if (asked && TABS.includes(asked)) setTab(asked);
+  }, [setTab]);
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/pharmacypanel" },
@@ -21,8 +44,12 @@ const PharmacyManageProfilePage = () => {
 
   return (
     <WithTitle title={getContent("profile")}>
+      {tabState[0] !== "Location" && (
+        <PharmacyRxCityBanner ns="pharmacyPanelProfile" onLocationTab={() => tabState[1]("Location")} />
+      )}
       <TabSystem
-        name="PharmacyManageProfile"
+        name={TAB_STORE}
+        viewState={tabState}
         items={[
           {
             id: "Details",

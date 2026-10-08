@@ -1,3 +1,4 @@
+import OpenStatusBadge from "@/Components/OpeningHours/OpenStatusBadge";
 import Image from "next/image";
 import { IClinic } from "../Admin/Clinic/AdminManageClinicsPage";
 import classes from "./ClinicCard.module.css";
@@ -48,7 +49,7 @@ const ClinicCard = ({
             {node.category.name}
           </Badge>
         )}
-        {!!node.isRoundTheClock && (
+        {!!node.isRoundTheClock && !node.openStatus && (
           <Badge
             color="Success"
             mode="Fill"
@@ -78,6 +79,8 @@ const ClinicCard = ({
             <span>{node.province.name}</span>
           </div>
         )}
+        {/* open now / closes at (2026-10, backend Lib/openingHours.ts) */}
+        <OpenStatusBadge status={node.openStatus} />
         {!!node.tags?.length && (
           <div className={classes.tags}>
             {node.tags.map((tag) => (

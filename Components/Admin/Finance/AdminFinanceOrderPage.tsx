@@ -35,11 +35,20 @@ import {
   rxInsurerDict,
   rxKindDict,
   rxStatusDict,
+  samplingActorDict,
+  samplingKindDict,
+  samplingStateDict,
+  samplingStateOf,
+  samplingWhenLabel,
   shipmentMethodDict,
   snappStateLabel,
   userLabel,
 } from "./adminFinance";
 import classes from "./AdminFinanceOrderPage.module.css";
+import AdminSamplingReschedulePopup, {
+  AdminBuyerAddress,
+  IAdminSampling,
+} from "./AdminSamplingReschedulePopup";
 
 type Seller = { _id: string; name: string; kind?: string } | null;
 
@@ -143,6 +152,10 @@ interface IOrderDetail {
     at?: string;
   }[];
   canCancel: boolean;
+  // lab sampling appointments (2026-10) and the buyer's addresses for a
+  // switch to home
+  samplings?: IAdminSampling[];
+  buyerAddresses?: AdminBuyerAddress[];
 }
 
 const errorText = (err: unknown) => (err as Error)?.message || ta("خطایی رخ داد");
@@ -299,6 +312,32 @@ const AdminFinanceOrderPage = () => {
       />,
     );
 
+  const rescheduleSampling = (sampling: IAdminSampling) =>
+    setPopup(
+      "AdminRescheduleSampling",
+      <AdminSamplingReschedulePopup
+        sampling={sampling}
+        addresses={asArray<AdminBuyerAddress>(data?.buyerAddresses)}
+        onSubmit={(payload) =>
+          post(`${base}/samplings/${sampling._id}/reschedule`, payload, ta("نوبت نمونه‌گیری جابه‌جا شد"))
+        }
+      />,
+    );
+
+  const cancelSampling = (sampling: IAdminSampling) =>
+    setPopup(
+      "AdminCancelSampling",
+      <ReasonPopup
+        title={ta("لغو نوبت نمونه‌گیری")}
+        hint={ta("آزمایش‌های در انتظارِ این نوبت لغو و مبلغشان (با مالیات و هزینه‌ی نمونه‌گیری در منزل) به کیف پول خریدار برمی‌گردد؛ ظرفیت آزمایشگاه آزاد می‌شود و به آزمایشگاه گفته می‌شود.")}
+        confirm={ta("لغو نوبت")}
+        danger
+        onSubmit={(reason) =>
+          post(`${base}/samplings/${sampling._id}/cancel`, { reason }, ta("نوبت نمونه‌گیری لغو شد"))
+        }
+      />,
+    );
+
   const delivery = async (pharmacyId: string, refresh: boolean) => {
     setBusyShipment(pharmacyId);
     try {
@@ -322,6 +361,7 @@ const AdminFinanceOrderPage = () => {
   const paid = data?.status === "paid";
   const lineName = (id: string) => lines.find((l) => l._id === id)?.name || "";
   const rxLines = lines.filter((l) => !!l.requiresPrescription);
+  const samplings = asArray<IAdminSampling>(data?.samplings).filter((s) => !!s?._id && !!s.ymd);
 
   const sellerLink = (seller: Seller) =>
     seller ? (
@@ -490,6 +530,117 @@ const AdminFinanceOrderPage = () => {
                 }}
               />
             </Card>
+
+            {samplings.length > 0 && (
+              <Card title={ta("نوبت‌های نمونه‌گیری")}>
+                <div className={classes.shipments}>
+                  {samplings.map((s) => {
+                    const state = samplingStateOf(s);
+                    const tests = asArray<IAdminSampling["tests"][number]>(s.tests);
+                    const moves = asArray<IAdminSampling["moves"][number]>(s.moves);
+                    const canCancelSampling =
+                      canAct &&
+                      s.status === "active" &&
+                      s.orderStatus === "paid" &&
+                      tests.some((l) => l.status === "pending");
+                    return (
+                      <div key={s._id} className={classes.shipment}>
+                        <div className={classes.shipmentHead}>
+                          {s.paraClinic ? (
+                            <InlineLink href={adminPath(`/paraClinic/${s.paraClinic._id}`)}>
+                              {s.paraClinic.name || "—"}
+                            </InlineLink>
+                          ) : (
+                            "—"
+                          )}
+                          <span className={`${classes.badge} ${classes[`badge_${state === "cancelled" ? "cancelled" : state === "done" || state === "collected" ? "fulfilled" : "pending"}`] || ""}`}>
+                            {samplingStateDict[state] || state}
+                          </span>
+                        </div>
+                        <div className={classes.grid}>
+                          <Field label={ta("زمان")}>{samplingWhenLabel(s)}</Field>
+                          <Field label={ta("محل")}>{samplingKindDict[s.kind] || s.kind}</Field>
+                          <Field label={ta("آزمایش‌ها")}>
+                            {tests.map((l) => l.name).filter(Boolean).join(" · ") || "—"}
+                          </Field>
+                          {s.fee > 0 && (
+                            <Field label={ta("هزینه‌ی نمونه‌گیری در منزل (تومان)")}>{currencize(s.fee)}</Field>
+                          )}
+                          <Field label={ta("تأیید آزمایشگاه")}>{fmtDate(s.confirmedAt)}</Field>
+                          <Field label={ta("نمونه‌گیری انجام شد")}>{fmtDate(s.collectedAt)}</Field>
+                          <Field label={ta("یادآوری ارسال شد")}>{fmtDate(s.remindedAt)}</Field>
+                          {s.status === "cancelled" && (
+                            <Field label={ta("زمان لغو")}>{fmtDate(s.cancelledAt)}</Field>
+                          )}
+                        </div>
+                        {s.kind === "home" && s.address && (
+                          <div className={classes.address}>
+                            <span className={classes.label}>{ta("نشانی نمونه‌گیری")}</span>
+                            <span>
+                              {[s.address.displayName, s.address.city, s.address.district, s.address.address]
+                                .filter(Boolean)
+                                .join(" - ")}
+                            </span>
+                            {!!s.address.receiverPhone && (
+                              <span className={classes.muted}>
+                                {ta("گیرنده: ${1}", [s.address.receiverPhone])}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        {moves.length > 0 && (
+                          <div className={classes.address}>
+                            <span className={classes.label}>{ta("سابقه‌ی جابه‌جایی")}</span>
+                            <ul className={classes.notes}>
+                              {[...moves].reverse().map((m) => (
+                                <li key={m._id}>
+                                  <strong>{samplingActorDict[m.by] || m.by}</strong>
+                                  <span className={classes.muted}>
+                                    {" "}
+                                    {[m.byUser, fmtDate(m.at)].filter(Boolean).join(" · ")}
+                                  </span>
+                                  <p>
+                                    {ta("از ${1} به ${2}", [
+                                      `${samplingWhenLabel(m.from)} (${samplingKindDict[m.from?.kind || ""] || "—"})`,
+                                      `${samplingWhenLabel(m.to)} (${samplingKindDict[m.to?.kind || ""] || "—"})`,
+                                    ])}
+                                    {m.feeDelta
+                                      ? ` · ${
+                                          m.feeDelta > 0
+                                            ? ta("${1} تومان از خریدار گرفته شد", [currencize(m.feeDelta)])
+                                            : ta("${1} تومان به خریدار برگشت", [currencize(-m.feeDelta)])
+                                        }`
+                                      : ""}
+                                  </p>
+                                  {!!m.reason && <p className={classes.muted}>{m.reason}</p>}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {!s.move?.canMove && s.status === "active" && s.move?.block === "collected" && (
+                          <p className={classes.hint}>{ta("نمونه گرفته شده؛ این نوبت دیگر جابه‌جا نمی‌شود.")}</p>
+                        )}
+                        {canAct && (s.move?.canMove || canCancelSampling) && (
+                          <div className={classes.shipmentActions}>
+                            {s.move?.canMove && (
+                              <Button size="S" variant="Neutral" onClick={() => rescheduleSampling(s)}>
+                                {ta("جابه‌جایی نوبت")}
+                              </Button>
+                            )}
+                            {canCancelSampling && (
+                              <Button size="S" variant="Error" mode="Outline" onClick={() => cancelSampling(s)}>
+                                {ta("لغو نوبت")}
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            )}
 
             {rxLines.length > 0 && (
               <Card title={ta("نسخه‌ها")}>
@@ -700,7 +851,12 @@ const AdminFinanceOrderPage = () => {
                   },
                   line: {
                     name: ta("قلم"),
-                    value: (t) => (t.line === "delivery" ? ta("ارسال") : t.line || "—"),
+                    value: (t) =>
+                      t.line === "delivery"
+                        ? ta("ارسال")
+                        : t.line === "sampling"
+                          ? ta("نمونه‌گیری")
+                          : t.line || "—",
                   },
                   commission: {
                     name: ta("کمیسیون (تومان)"),

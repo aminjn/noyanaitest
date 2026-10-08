@@ -8,7 +8,7 @@ import { IHospitalTag } from "@/Components/Admin/HospitalTag/AdminManageHospital
 import { IHospitalCategory } from "@/Components/Admin/HospitalCategory/AdminManageHospitalCategoriesPage";
 import { IInsurance } from "@/Components/DoctorPanel/Insurance/DoctorInsurancesTab";
 
-const NS: ContentNamespace[] = ["common", "hospitalPanelProfile"];
+const NS: ContentNamespace[] = ["common", "openingHours", "hospitalPanelProfile"];
 
 const HospitalManageDetailsTab = () => {
   const { hospital, mutate } = useHospital();
@@ -53,14 +53,12 @@ const HospitalManageDetailsTab = () => {
               multi: true,
             },
             establishment: { type: "text", title: getContent("establishment") },
-            businessTimes: { type: "text", title: getContent("businessTime") },
+            // the structured week (2026-10); the text is the note under it
+            openingHours: { type: "openingHours", title: getContent("ohEditorTitle") },
+            businessTimes: { type: "text", title: getContent("ohNoteField") },
             phone: { type: "text", title: getContent("phone") },
             mail: { type: "text", title: getContent("mail") },
             website: { type: "text", title: getContent("website") },
-            isRoundTheClock: {
-              type: "bool",
-              title: getContent("roundTheClock"),
-            },
             personelCount: { type: "number", title: getContent("personelCount") },
             bedCount: { type: "number", title: getContent("mcBeds") },
             services: { type: "strings", title: getContent("services") },

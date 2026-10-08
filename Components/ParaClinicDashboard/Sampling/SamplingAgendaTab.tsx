@@ -25,7 +25,15 @@ import {
   localPhone,
 } from "@/Components/Dashboard/Address/DashboardManageAddressesPage";
 import useSamplingFormat from "@/Components/LabSampling/useSamplingFormat";
-import { ILabSampling, LabSamplingKind, samplingStatusKey } from "@/Components/LabSampling/samplingTypes";
+import {
+  ILabSampling,
+  LabSamplingKind,
+  SamplingMoveInfo,
+  SamplingMovePayload,
+  samplingStatusKey,
+} from "@/Components/LabSampling/samplingTypes";
+import SamplingActions from "@/Components/LabSampling/SamplingActions";
+import { SamplingMoves } from "@/Components/LabSampling/SamplingInfo";
 import { t2xsRegular, tsmDemiBold, tsmRegular } from "@/Components/UI/Typography";
 
 const NS: ContentNamespace[] = ["common", "labSampling"];
@@ -35,6 +43,8 @@ type AgendaItem = ILabSampling & {
   buyer?: { username?: string; phone?: string };
   address?: IUserAddress | null;
   tests?: { _id: string; name: string; status: string }[];
+  // what the lab may do with it (backend Lib/labSamplingReschedule.ts)
+  move?: SamplingMoveInfo | null;
 };
 
 type Agenda = {
@@ -94,6 +104,16 @@ const SamplingAgendaTab = ({
     } finally {
       setBusy(null);
     }
+  };
+
+  // another slot of the same kind; the buyer is told and may cancel
+  const move = async (item: AgendaItem, payload: SamplingMovePayload) => {
+    await fetcher({
+      url: `${API}/paraClinic/sampling/${item._id}`,
+      method: "PATCH",
+      payload: { action: "reschedule", ymd: payload.ymd, start: payload.start },
+    });
+    await mutate();
   };
 
   const items = Array.isArray(data?.items) ? data!.items : [];
@@ -214,6 +234,16 @@ const SamplingAgendaTab = ({
                             {t("lsViewOrder")}
                           </Link>
                         </div>
+                        <SamplingMoves sampling={item} viewer="lab" />
+                        {canMutate && (
+                          <SamplingActions
+                            sampling={item}
+                            info={item.move}
+                            viewer="lab"
+                            tests={(item.tests || []).map((l) => l.name).filter(Boolean)}
+                            onMove={(payload) => move(item, payload)}
+                          />
+                        )}
                       </div>
                     );
                   })}

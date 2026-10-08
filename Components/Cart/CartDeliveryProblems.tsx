@@ -13,7 +13,9 @@ const NS: ContentNamespace[] = ["common", "cartCheckoutPopup"];
 export type CartDeliveryProblem = {
   pharmacy: string;
   pharmacyName?: string;
-  reason: "rxOwnCity" | "outsideArea" | "unknownCity" | string;
+  // rxNoPharmacyCity: the pharmacy has no city yet, so it sells no
+  // prescription-only item (2026-10)
+  reason: "rxOwnCity" | "outsideArea" | "unknownCity" | "rxNoPharmacyCity" | string;
   originCityName?: string;
   destinationCityName?: string;
   alternatives?: { _id: string; name?: string; slug?: string; items: number; of: number }[];
@@ -22,7 +24,9 @@ export type CartDeliveryProblem = {
 export const useDeliveryProblemText = () => {
   const getContent = useScopedLocale(NS);
   return (el: CartDeliveryProblem) =>
-    el.reason === "unknownCity"
+    el.reason === "rxNoPharmacyCity"
+      ? getContent("deliveryBlockedRxNoCity", [el.pharmacyName || ""])
+      : el.reason === "unknownCity"
       ? getContent("addressCityMissing")
       : el.reason === "rxOwnCity"
         ? getContent("deliveryBlockedRx", [el.pharmacyName || "", el.originCityName || ""])
@@ -45,7 +49,9 @@ const CartDeliveryProblems = ({ problems }: { problems?: CartDeliveryProblem[] }
           <div key={el.pharmacy} className={classes.item}>
             <span className={`${classes.title} ${tsmRegular}`}>{textOf(el)}</span>
             {el.reason !== "unknownCity" && (
-              <span className={t2xsRegular}>{getContent("deliveryBlockedHint")}</span>
+              <span className={t2xsRegular}>
+                {getContent(el.reason === "rxNoPharmacyCity" ? "deliveryBlockedRxNoCityHint" : "deliveryBlockedHint")}
+              </span>
             )}
             {!!alternatives.length && (
               <div className={classes.alternatives}>

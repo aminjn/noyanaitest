@@ -32,6 +32,7 @@ const PharmacyBookingCard = ({
       coords={node.location?.coordinates}
       summary={node.summary}
       view={view}
+      openStatus={node.openStatus}
     />
   );
 };
