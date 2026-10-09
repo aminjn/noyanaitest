@@ -1756,6 +1756,7 @@ export const contentNamespaces = {
     "bfAfternoon",
     "bfEvening",
     "bfFirstAvailable",
+    "bfFreeCount",
     "bfDayAndDate",
     "bfAtTime",
     "bfNoSlotsDay",
@@ -4655,6 +4656,8 @@ export const contentNamespaces = {
     "noOnlineBooking",
     "nComments",
     "dcFirstSlot",
+    "dcAllTimes",
+    "dcNoFreeSoon",
   ],
   // Components/UI/ServiceCard (home, service list/detail, service package, SearchModal).
   uiServiceCard: ["onlyXRemaining", "xComment"],

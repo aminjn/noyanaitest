@@ -89,8 +89,11 @@ const DoctorCardAlt = ({
       : !!node[`${type}Settings`]?.active;
   const score = node.averageScore ? node.averageScore.toFixed(1) : "0";
   // «اولین نوبت» from the list endpoints (backend Lib/nextSlot.ts)
+  // (null from an endpoint that computed it: nothing free in the horizon;
+  // absent: not computed there, so nothing is claimed)
   const firstSlot = canBook ? nextSlotOf(node) : null;
-  const first = firstSlot ? <FirstSlotButton node={node as never} slot={firstSlot} /> : null;
+  const computed = (node as { nextSlot?: unknown }).nextSlot !== undefined;
+  const first = canBook && (firstSlot || computed) ? <FirstSlotButton node={node as never} slot={firstSlot} /> : null;
 
   if (variant === "row")
     return (

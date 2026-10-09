@@ -1,44 +1,107 @@
-/* «اولین نوبت» on the doctor cards */
-.btn {
+/* the booking block of the doctor cards: first free day and its times */
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+  width: 100%;
+  min-width: 0;
+  padding: var(--sp2) var(--sp3) var(--sp3);
+  border-radius: var(--radiusSm);
+  background: var(--hoverTint);
+}
+.head {
   display: flex;
   align-items: center;
   gap: var(--sp2);
-  width: 100%;
-  min-height: 2.75rem;
-  padding: var(--sp1) var(--sp2);
-  border-radius: var(--radiusSm);
-  border: 1px dashed var(--cardLineHover);
-  background: var(--hoverTint);
-  color: var(--textStrong);
-  text-align: start;
-  cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s;
-}
-.btn:hover {
-  background: var(--activeTint);
-  border-style: solid;
-}
-.btn:focus-visible {
-  outline: none;
-  box-shadow: var(--focusRing);
-}
-.icon {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: var(--radiusXs);
-}
-.text {
-  flex: 1;
   min-width: 0;
   font-size: var(--fsXs);
+}
+.dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--toneTealInk);
+  box-shadow: 0 0 0 3px var(--toneTeal);
+}
+.day {
+  flex: 1;
+  min-width: 0;
   font-weight: 600;
-  line-height: 1.45;
+  color: var(--textStrong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .type {
   flex: none;
+  padding: 0 var(--sp2);
+  border-radius: var(--radiusPill);
+  background: var(--cardBg);
   font-size: 0.6875rem;
+  line-height: 1.5rem;
   color: var(--textMuted);
+}
+.times {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp1);
+}
+.time {
+  min-height: 2.5rem;
+  padding: 0 var(--sp1);
+  border: 0;
+  border-radius: var(--radiusXs);
+  background: var(--cardBg);
+  box-shadow: inset 0 0 0 1px var(--cardLine);
+  color: var(--primary7);
+  font-family: inherit;
+  font-size: var(--fsSm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.time:hover {
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  box-shadow: none;
+  color: var(--onColor);
+}
+.time:focus-visible,
+.link:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+.all {
+  grid-column: span 2;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--cardLineHover);
+  font-size: var(--fsXs);
+  font-weight: 600;
+}
+.none {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp1) var(--sp2);
+  width: 100%;
+  padding: var(--sp2) var(--sp3);
+  border-radius: var(--radiusSm);
+  background: var(--hoverTint);
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.link {
+  min-height: 2.25rem;
+  padding: 0 var(--sp3);
+  border: 1px solid var(--cardLineHover);
+  border-radius: var(--radiusPill);
+  background: var(--cardBg);
+  color: var(--primary7);
+  font-family: inherit;
+  font-size: var(--fsXs);
+  font-weight: 600;
+  cursor: pointer;
 }
