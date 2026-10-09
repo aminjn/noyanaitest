@@ -14,6 +14,7 @@ import crm from "./Crm.module.css";
 import { asArray, useBizFormat } from "../bizShared";
 import {
   automationKey,
+  automationKindsOf,
   CrmAutomation,
   CrmAutomationKind,
   CrmContext,
@@ -33,13 +34,24 @@ import CrmRulesForm, { TagPicker, useRulesSummary } from "./CrmRulesForm";
 
 const EDIT = "CrmAutomationEdit";
 const LOG = "CrmAutomationLog";
-const KINDS: CrmAutomationKind[] = ["recall", "thanks", "birthday", "noShow", "winback", "chronic"];
 const HOURS = Array.from({ length: 14 }, (_, i) => 8 + i);
 
 const errorKey: Record<string, string> = {
   template: "crmAutoErrTemplate",
   module: "crmAutoErrModule",
   noCredit: "crmAutoErrCredit",
+  dailyCap: "crmAutoErrCap",
+  profile: "crmAutoErrProfile",
+};
+
+// the delay field's label and the card's summary of a journey
+const delayLabel = (kind: CrmAutomationKind) => {
+  const k = automationKey[kind];
+  return k.delayKey || (k.unit === "hours" ? "crmAutoDelayHours" : kind === "winback" ? "crmAutoDelayLapse" : "crmAutoDelayDays");
+};
+const afterLabel = (kind: CrmAutomationKind) => {
+  const k = automationKey[kind];
+  return k.afterKey || (k.unit === "hours" ? "crmAutoAfterHours" : kind === "winback" ? "crmAutoAfterLapse" : "crmAutoAfterDays");
 };
 
 const Edit = ({ a, onDone }: { a: CrmAutomation; onDone: () => unknown }) => {
@@ -49,7 +61,7 @@ const Edit = ({ a, onDone }: { a: CrmAutomation; onDone: () => unknown }) => {
   const { closePopup } = usePopup();
   const pushNotification = useNotification();
   const { data: templates } = useCrmTemplates();
-  const k = automationKey[a.kind];
+  const k = automationKey[a.kind] || automationKey.recall;
   const [name, setName] = useState(a.name);
   const [template, setTemplate] = useState(a.template?._id || "");
   const [delay, setDelay] = useState(String(a.delay));
@@ -111,7 +123,7 @@ const Edit = ({ a, onDone }: { a: CrmAutomation; onDone: () => unknown }) => {
           </label>
           {a.kind !== "birthday" && (
             <label className={classes.field}>
-              {t(k.unit === "hours" ? "crmAutoDelayHours" : a.kind === "winback" ? "crmAutoDelayLapse" : "crmAutoDelayDays")}
+              {t(delayLabel(a.kind))}
               <input value={delay} onChange={(e) => setDelay(e.target.value)} inputMode="numeric" />
             </label>
           )}
@@ -350,12 +362,12 @@ const CrmAutomations = () => {
   const delayText = (a: CrmAutomation) =>
     a.kind === "birthday"
       ? t("crmAutoOnBirthday")
-      : t(automationKey[a.kind].unit === "hours" ? "crmAutoAfterHours" : a.kind === "winback" ? "crmAutoAfterLapse" : "crmAutoAfterDays", [f.money(a.delay)]);
+      : t(afterLabel(a.kind), [f.money(a.delay)]);
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <div className={crm.autoGrid}>
-          {KINDS.map((kind) => {
+          {automationKindsOf(ctx.node).map((kind) => {
             const k = automationKey[kind];
             const list = rows.filter((a) => a.kind === kind);
             return (

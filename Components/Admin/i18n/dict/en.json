@@ -3409,5 +3409,19 @@
  "تاریخ انقضای پروانه": "Licence expiry date",
  "ثبت نشده؛ هنگام تأیید وارد کنید": "Not given; enter it when approving",
  "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "This request was sent before the expiry date became required. Enter the licence's expiry date from the document; the request can't be approved without it.",
- "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Changing the licence number removes the verified badge; after saving, verify the new licence again with its dates."
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Changing the licence number removes the verified badge; after saving, verify the new licence again with its dates.",
+ "لغو پیامک تبلیغاتی این مرکز": "Opted out of this centre's advertising SMS",
+ "لغو پیامک تبلیغاتی همه‌ی مراکز": "Opted out of advertising SMS from all centres",
+ "قواعد پیامک تبلیغاتی": "Advertising SMS rules",
+ "پیامک‌های تبلیغاتی (کمپین، خودکارسازی و ارسال تکی) فقط در این بازه به وقت تهران فرستاده می‌شوند؛ بیرون از آن تا شروع بازه‌ی بعد صبر می‌کنند. بازه‌ی هر کمپین یا خودکارسازی درون همین بازه است.": "Advertising SMS (campaigns, automations and one-off sends) go out only within this window, Tehran time; outside it they wait for the next window to open. Each campaign's or automation's own window lies inside it.",
+ "شروع ارسال (ساعت تهران)": "Sending starts (Tehran hour)",
+ "پایان ارسال (ساعت تهران)": "Sending ends (Tehran hour)",
+ "سقف روزانه‌ی هر حساب (تعداد پیامک، ۰ = بدون سقف)": "Daily cap per account (SMS count, 0 = no cap)",
+ "کمپینی که از این سقف بزرگ‌تر باشد ارسال نمی‌شود و اگر سهم امروز حساب پر باشد، فردا فرستاده می‌شود. قیمت هر بخش پیامک در تنظیمات مالی تعیین می‌شود.": "A campaign larger than this cap is not sent, and if the account's share for today is used up it goes out tomorrow. The price of one SMS part is set in the finance settings.",
+ "برگشت به کیف پول (تومان)": "Refunded to wallet (toman)",
+ "حالت آزمایشی: پیامک‌های این کمپین واقعاً فرستاده نشدند و فقط در لاگ سرور ثبت شدند.": "Test mode: this campaign's SMS were not really sent, only written to the server log.",
+ "یادآوری تمدید دارو": "Refill reminder",
+ "پیگیری پس از جواب آزمایش": "Follow-up after the result",
+ "یادآوری آزمایش دوره‌ای": "Periodic re-test reminder",
+ "یادآوری تمدید بیمه": "Renewal reminder"
 }

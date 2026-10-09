@@ -12,6 +12,7 @@ import { useRouter } from "@/Components/i18n/navigation";
 import { Badge, ConfirmButton, ContactField, listOf, Ref, TeamOptions, useCall, useCrm, useCrmText, useGet, useWhen } from "./svc";
 import { TIERS, tierKey } from "./CrmClub";
 import { StarterBanner } from "./starters";
+import { FLOW_TRIGGERS, isProfile } from "./profiles";
 
 // «گردش‌کارهای خودکار» (2026-10), nexxacrm's automation engine: a trigger
 // (a visit done or missed, a new patient, a ticket, an invoice, a reward
@@ -33,8 +34,16 @@ export const TRIGGERS = [
   "club.redeemed",
   "sequence.completed",
   "return.created",
+  "order.paid",
+  "result.ready",
 ] as const;
 type Trigger = (typeof TRIGGERS)[number];
+// the triggers this profile has, in the list's order (profiles.ts)
+const useTriggers = () => {
+  const { node } = useCrm();
+  const own = FLOW_TRIGGERS[isProfile(node) ? node : "clinic"];
+  return TRIGGERS.filter((k) => own.includes(k));
+};
 const FIELDS = ["tags", "visits", "orders", "spent", "noShows", "gender", "insurer", "city", "source", "tier", "age"] as const;
 const OPS = ["eq", "neq", "contains", "in", "gt", "lt", "empty", "notempty"] as const;
 const ACTIONS = ["sendSms", "followUp", "task", "note", "addTag", "removeTag", "notify", "enrollSequence", "clubPoints"] as const;
@@ -357,8 +366,9 @@ const FlowEditor = ({ id }: { id: string }) => {
   const seqs = useGet<{ _id: string; name: string }[]>("/sequences", (d) => listOf<{ _id: string; name: string }>(d));
   const projects = useGet<{ _id: string; name: string }[]>("/projects?status=active", (d) => listOf<{ _id: string; name: string }>(d));
   const { data, error, mutate } = useGet<{ flow: Flow; runs: Run[] } | null>(`/flows/${id}`, (d) => (d && typeof d === "object" ? (d as never) : null));
+  const triggers = useTriggers();
   const [name, setName] = useState("");
-  const [trigger, setTrigger] = useState<Trigger>("visit.completed");
+  const [trigger, setTrigger] = useState<Trigger>(triggers[0] || "contact.created");
   const [filters, setFilters] = useState<Cond[]>([]);
   const [steps, setSteps] = useState<FStep[]>([]);
   const [contact, setContact] = useState<Ref>(null);
@@ -416,7 +426,7 @@ const FlowEditor = ({ id }: { id: string }) => {
               <label className={classes.field}>
                 {t("crmeTrigger")}
                 <select value={trigger} disabled={!canWrite} onChange={(e) => setTrigger(e.target.value as Trigger)}>
-                  {TRIGGERS.map((k) => (
+                  {Array.from(new Set([...triggers, trigger])).map((k) => (
                     <option key={k} value={k}>
                       {t(triggerKey(k))}
                     </option>
@@ -531,11 +541,13 @@ const FlowList = () => {
   const { panel, canWrite } = useCrm();
   const call = useCall();
   const router = useRouter();
-  const recipes = useRecipes();
+  const triggers = useTriggers();
+  // only the recipes whose event this profile has
+  const recipes = useRecipes().filter((r) => (triggers as readonly string[]).includes(r.flow().trigger));
   const { data, error, mutate } = useGet<Flow[]>("/flows", (d) => listOf<Flow>(d));
   const legacy = useGet<CrmAutomation[]>("/automations", (d) => listOf<CrmAutomation>(d));
   const [name, setName] = useState("");
-  const [trigger, setTrigger] = useState<Trigger>("visit.completed");
+  const [trigger, setTrigger] = useState<Trigger>(triggers[0] || "contact.created");
   const create = async (body: Record<string, unknown>) => {
     const r = await call<Flow>("POST", "/flows", body);
     if (r?._id) router.push(`${panel}/crm/flows/${r._id}`);
@@ -550,7 +562,7 @@ const FlowList = () => {
             <div className={s.row}>
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("crmeFlowName")} maxLength={80} />
               <select value={trigger} onChange={(e) => setTrigger(e.target.value as Trigger)} aria-label={t("crmeTrigger")}>
-                {TRIGGERS.map((k) => (
+                {triggers.map((k) => (
                   <option key={k} value={k}>
                     {t(triggerKey(k))}
                   </option>
@@ -562,7 +574,7 @@ const FlowList = () => {
             </div>
           )}
         </div>
-        {canWrite && (
+        {canWrite && recipes.length > 0 && (
           <div className={s.stack}>
             <span className={classes.muted}>{t("crmeRecipes")}</span>
             <div className={crm.chips}>

@@ -3409,5 +3409,19 @@
  "تاریخ انقضای پروانه": "Tanggal kedaluwarsa izin",
  "ثبت نشده؛ هنگام تأیید وارد کنید": "Belum diisi; isi saat menyetujui",
  "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Permintaan ini dikirim sebelum tanggal kedaluwarsa diwajibkan. Isi tanggal kedaluwarsa izin dari dokumennya; tanpa itu permintaan tidak dapat disetujui.",
- "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Mengubah nomor izin menghapus lencana terverifikasi; setelah menyimpan, verifikasi ulang izin baru beserta tanggalnya."
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Mengubah nomor izin menghapus lencana terverifikasi; setelah menyimpan, verifikasi ulang izin baru beserta tanggalnya.",
+ "لغو پیامک تبلیغاتی این مرکز": "Berhenti dari SMS promosi pusat ini",
+ "لغو پیامک تبلیغاتی همه‌ی مراکز": "Berhenti dari SMS promosi semua pusat",
+ "قواعد پیامک تبلیغاتی": "Aturan SMS promosi",
+ "پیامک‌های تبلیغاتی (کمپین، خودکارسازی و ارسال تکی) فقط در این بازه به وقت تهران فرستاده می‌شوند؛ بیرون از آن تا شروع بازه‌ی بعد صبر می‌کنند. بازه‌ی هر کمپین یا خودکارسازی درون همین بازه است.": "SMS promosi (kampanye, otomatisasi, dan kiriman tunggal) hanya dikirim dalam rentang ini, waktu Teheran; di luar itu menunggu rentang berikutnya dimulai. Rentang tiap kampanye atau otomatisasi berada di dalamnya.",
+ "شروع ارسال (ساعت تهران)": "Mulai kirim (jam Teheran)",
+ "پایان ارسال (ساعت تهران)": "Selesai kirim (jam Teheran)",
+ "سقف روزانه‌ی هر حساب (تعداد پیامک، ۰ = بدون سقف)": "Batas harian per akun (jumlah SMS, 0 = tanpa batas)",
+ "کمپینی که از این سقف بزرگ‌تر باشد ارسال نمی‌شود و اگر سهم امروز حساب پر باشد، فردا فرستاده می‌شود. قیمت هر بخش پیامک در تنظیمات مالی تعیین می‌شود.": "Kampanye yang lebih besar dari batas ini tidak dikirim, dan jika jatah akun hari ini habis, dikirim besok. Harga satu bagian SMS diatur di pengaturan keuangan.",
+ "برگشت به کیف پول (تومان)": "Dikembalikan ke dompet (toman)",
+ "حالت آزمایشی: پیامک‌های این کمپین واقعاً فرستاده نشدند و فقط در لاگ سرور ثبت شدند.": "Mode uji: SMS kampanye ini tidak benar-benar dikirim, hanya ditulis ke log server.",
+ "یادآوری تمدید دارو": "Pengingat isi ulang obat",
+ "پیگیری پس از جواب آزمایش": "Tindak lanjut setelah hasil",
+ "یادآوری آزمایش دوره‌ای": "Pengingat tes berkala",
+ "یادآوری تمدید بیمه": "Pengingat perpanjangan"
 }

@@ -24,7 +24,7 @@ import classes from "./AdminAuditLogPage.module.css";
 type ConsentRow = {
   _id: string;
   at: string;
-  action: "offered" | "linked" | "declined" | "dismissed-later" | "unlinked" | "withdrawn";
+  action: "offered" | "linked" | "declined" | "dismissed-later" | "unlinked" | "withdrawn" | "smsOptOut" | "smsOptOutAll";
   actor: "patient" | "system";
   source: "manual" | "csv" | "webform" | "visit" | "merge";
   reason?: string;
@@ -57,6 +57,12 @@ const actionLabels: Record<ConsentRow["action"], string> = {
   },
   get withdrawn() {
     return ta("پیشنهاد منقضی شد");
+  },
+  get smsOptOut() {
+    return ta("لغو پیامک تبلیغاتی این مرکز");
+  },
+  get smsOptOutAll() {
+    return ta("لغو پیامک تبلیغاتی همه‌ی مراکز");
   },
 };
 const sourceLabels: Record<ConsentRow["source"], string> = {
