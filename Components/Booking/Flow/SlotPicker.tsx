@@ -10,6 +10,8 @@ import TehranTimeHint from "../TehranTimeHint";
 import Ixon from "@/Components/UI/Ixon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
+import SunIcon from "@/Components/Icons/SunIcon";
+import MoonIcon from "@/Components/Icons/MoonIcon";
 import { clock, DayPeriod, dayPeriods, periodKey, periodOf, useBookableSlots } from "./bookingFlow";
 import WaitlistJoin from "./WaitlistJoin";
 import classes from "./SlotPicker.module.css";
@@ -18,6 +20,8 @@ const NS: ContentNamespace[] = ["common", "bookingFlow"];
 
 // times shown per part of the day before "more"
 const PER_PERIOD = 8;
+
+const periodIcon: Record<DayPeriod, JSX.Element> = { morning: <SunIcon />, afternoon: <SunIcon />, evening: <MoonIcon /> };
 
 export type SlotPick = { ymd: string; start: number; end: number; office: string };
 
@@ -106,6 +110,14 @@ const SlotPicker = ({
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   useEffect(() => setExpanded({}), [day]);
   const stripRef = useRef<HTMLDivElement>(null);
+  // the arrows beside the strip (pointer screens): a page of days forward
+  // or back, whatever the writing direction
+  const scrollStrip = (forward: boolean) => {
+    const el = stripRef.current;
+    if (!el) return;
+    const rtl = getComputedStyle(el).direction === "rtl";
+    el.scrollBy({ left: (forward ? 1 : -1) * (rtl ? -1 : 1) * el.clientWidth * 0.8, behavior: "smooth" });
+  };
   useEffect(() => {
     const el = stripRef.current?.querySelector<HTMLElement>("[data-on='true']");
     el?.scrollIntoView({ block: "nearest", inline: "center" });
@@ -197,6 +209,17 @@ const SlotPicker = ({
       )}
 
       <div className={classes.stripWrap}>
+        <button
+          type="button"
+          className={`${classes.arrow} ${classes.arrowPrev}`}
+          aria-label={getContent("bfPickDay")}
+          tabIndex={-1}
+          onClick={() => scrollStrip(false)}
+        >
+          <Ixon width="1rem" className={classes.back}>
+            <ArrowLeftIcon />
+          </Ixon>
+        </button>
         <div className={classes.strip} ref={stripRef} role="listbox" aria-label={getContent("bfPickDay")}>
           {strip.map((ymd) => {
             const count = (freeOf.get(ymd) || []).length;
@@ -210,22 +233,35 @@ const SlotPicker = ({
                 data-on={on}
                 disabled={!count}
                 className={`${classes.day} ${on ? classes.dayOn : ""}`}
+                aria-label={`${longDay(ymd)}: ${count ? getContent("bfFreeCount", [nf.format(count)]) : getContent("bfNoSlotsDay")}`}
                 onClick={() => setDay(ymd)}
               >
                 <span className={classes.dayName}>{dayLabel(ymd)}</span>
                 <span className={classes.dayNum}>{fmt.day.format(tehranNoon(ymd))}</span>
                 <span className={classes.dayMonth}>{fmt.month.format(tehranNoon(ymd))}</span>
-                <span className={classes.dayCount}>{count ? nf.format(count) : "—"}</span>
+                <span className={classes.dayDot} aria-hidden />
               </button>
             );
           })}
         </div>
+        <button
+          type="button"
+          className={`${classes.arrow} ${classes.arrowNext}`}
+          aria-label={getContent("bfPickDay")}
+          tabIndex={-1}
+          onClick={() => scrollStrip(true)}
+        >
+          <Ixon width="1rem">
+            <ArrowLeftIcon />
+          </Ixon>
+        </button>
       </div>
 
       {!!day && (
         <div className={classes.dayHead}>
           <strong>{longDay(day)}</strong>
-          <TehranTimeHint ns={NS} />
+          {!!free.length && <span className={classes.freeCount}>{getContent("bfFreeCount", [nf.format(free.length)])}</span>}
+          <TehranTimeHint ns={NS} className={classes.hintRow} />
         </div>
       )}
 
@@ -233,6 +269,9 @@ const SlotPicker = ({
         groups.map((g) => (
           <section key={g.period} className={classes.period}>
             <h4 className={classes.periodTitle}>
+              <Ixon width="0.9rem" className={classes.periodIcon}>
+                {periodIcon[g.period]}
+              </Ixon>
               {getContent(periodKey[g.period])}
               <span>{nf.format(g.slots.length)}</span>
             </h4>
@@ -269,7 +308,7 @@ const SlotPicker = ({
           {!!nextAfter && (
             <button type="button" className={classes.nextBtn} onClick={() => setDay(nextAfter)}>
               <span>{getContent("bfNextFree", [longDay(nextAfter)])}</span>
-              <Ixon width="1rem" className={classes.nextChevron}>
+              <Ixon width="1rem">
                 <ArrowLeftIcon />
               </Ixon>
             </button>
