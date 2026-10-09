@@ -20,7 +20,7 @@ const BecomeInsurancePage = () => {
       <BecomeRequestStatus
         request={data}
         form={
-            <SubmitBecomeInsuranceRequest mutate={mutate} />
+            <SubmitBecomeInsuranceRequest mutate={mutate} request={data} />
         }
       />
     </HandleLoading>

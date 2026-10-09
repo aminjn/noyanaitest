@@ -3404,5 +3404,10 @@
  "نزدیک شدن انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Merkez faaliyet ruhsatının bitişi yaklaşıyor - sağlayıcı",
  "پروانه‌ی فعالیت «%name%» %days% روز دیگر (%expiresAt%) منقضی می‌شود. برای ماندن نشان تأیید، پروانه‌ی تمدیدشده را بفرستید.": "“%name%” faaliyet ruhsatı %days% gün sonra (%expiresAt%) sona eriyor. Doğrulama işaretini korumak için yenilenen ruhsatı gönderin.",
  "انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Merkez faaliyet ruhsatının süresi doldu - sağlayıcı",
- "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "“%name%” faaliyet ruhsatının süresi doldu ve doğrulama işareti kaldırıldı. Yenilenen ruhsatı gönderin."
+ "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "“%name%” faaliyet ruhsatının süresi doldu ve doğrulama işareti kaldırıldı. Yenilenen ruhsatı gönderin.",
+ "تاریخ صدور پروانه": "Ruhsat veriliş tarihi",
+ "تاریخ انقضای پروانه": "Ruhsat bitiş tarihi",
+ "ثبت نشده؛ هنگام تأیید وارد کنید": "Girilmemiş; onaylarken girin",
+ "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Bu talep bitiş tarihi zorunlu olmadan önce gönderildi. Ruhsatın bitiş tarihini belgeden girin; o olmadan talep onaylanamaz.",
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Ruhsat numarasını değiştirmek doğrulama rozetini kaldırır; kaydettikten sonra yeni ruhsatı tarihleriyle yeniden doğrulayın."
 }

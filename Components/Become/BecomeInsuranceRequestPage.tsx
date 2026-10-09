@@ -18,6 +18,7 @@ type BecomeInsuranceRequestInput = {
   // «شماره‌ی مجوز بیمه مرکزی» (2026-10)
   licenseNumber: string;
   certificateDate: Date;
+  certificateExpiresAt: Date;
   certificateFile?: File;
   description?: string;
 };
@@ -29,6 +30,8 @@ type BecomeInsuranceRequestInput = {
 // request).
 const toForm = (r: IBecomeInsuranceRequest) => ({
   certificateDate: r.certificateDate,
+  // kept when a declined request is sent again
+  certificateExpiresAt: r.certificateExpiresAt,
   name: r.name,
   // the backend sends an old request's siam code here when it had no
   // licence number

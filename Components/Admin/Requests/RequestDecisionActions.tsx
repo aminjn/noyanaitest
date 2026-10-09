@@ -10,6 +10,7 @@ import Badge from "@/Components/UI/Badge";
 import PopupCard from "@/Components/UI/PopupCard";
 import AreaInput from "@/Components/UI/AreaInput";
 import NodesSelector from "@/Components/UI/NodesSelector";
+import DateInput from "@/Components/UI/DateInput";
 import usePopup from "@/Components/Hooks/usePopup";
 import useNotification from "@/Components/Hooks/useNotification";
 import useProgress from "@/Components/Hooks/useProgress";
@@ -33,6 +34,9 @@ export type LinkExistingConfig = {
   target: (id: string) => string;
   // the applicant's user id: their own centre is not "someone else's"
   applicantUser?: string;
+  // an older centre request with no licence expiry: the admin enters it
+  // here (the backend refuses the approval without one)
+  askLicenceExpiry?: boolean;
 };
 
 const errorText = (e: unknown) => (e instanceof Error ? e.message : String(e));
@@ -121,7 +125,9 @@ const LinkExistingPopup = ({
   const pushNotification = useNotification();
   const push = useProgress();
   const [orgId, setOrgId] = useState<string | null>(null);
+  const [expiresAt, setExpiresAt] = useState<Date | null>(null);
   const [busy, setBusy] = useState(false);
+  const ready = !!orgId && (!config.askLicenceExpiry || !!expiresAt);
 
   const optionLabel = (node: unknown) => {
     const org = (node || {}) as OrgOption;
@@ -134,13 +140,13 @@ const LinkExistingPopup = ({
   };
 
   const submit = async () => {
-    if (busy || !orgId) return;
+    if (busy || !ready) return;
     setBusy(true);
     try {
       const res = await fetcher({
         url: `${API}/admin/${config.requestPath}/${nodeId}/approve`,
         method: "POST",
-        payload: { orgId },
+        payload: { orgId, ...(config.askLicenceExpiry && expiresAt ? { certificateExpiresAt: expiresAt } : {}) },
         bodyParser: "JSON",
       });
       pushNotification(ta("درخواست با اتصال به مرکز موجود تأیید شد."), "Success");
@@ -169,9 +175,12 @@ const LinkExistingPopup = ({
           getOptionValue={(node) => idOf(node)}
           onChange={(v) => setOrgId(v || null)}
         />
+        {!!config.askLicenceExpiry && (
+          <DateInput title={ta("تاریخ انقضای پروانه")} onChange={(d) => setExpiresAt(d)} />
+        )}
         <FormActions>
           <Button
-            variant={orgId ? "Success" : "Disable"}
+            variant={ready ? "Success" : "Disable"}
             isLoading={busy}
             onClick={submit}
           >

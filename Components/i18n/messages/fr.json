@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "Non envoyé à temps ; les articles ont été remboursés sur le portefeuille",
  "shipSendBy": "Envoyez le colis par Tipax et enregistrez l’envoi avant le ${1} ; sinon ses articles sont annulés et remboursés à l’acheteur.",
  "cisColDeducted": "Déductions de l’assureur (part du médecin)",
- "cisDeductionsHint": "La part du médecin se calcule sur ce que l’assureur paie réellement : chaque déduction de l’assureur la réduit du pourcentage du médecin, et le centre supporte le reste."
+ "cisDeductionsHint": "La part du médecin se calcule sur ce que l’assureur paie réellement : chaque déduction de l’assureur la réduit du pourcentage du médecin, et le centre supporte le reste.",
+ "certificateExpiresAt": "Date d'expiration de la licence",
+ "licenceExpiryInPast": "La date d'expiration de la licence doit être postérieure à aujourd'hui.",
+ "licenceIssueInFuture": "La date de délivrance ne peut pas être postérieure à aujourd'hui.",
+ "licenceExpiryBeforeIssue": "La date d'expiration de la licence doit être postérieure à sa date de délivrance."
 }

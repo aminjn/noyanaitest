@@ -3404,5 +3404,10 @@
  "نزدیک شدن انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Izin operasional pusat segera berakhir - penyedia",
  "پروانه‌ی فعالیت «%name%» %days% روز دیگر (%expiresAt%) منقضی می‌شود. برای ماندن نشان تأیید، پروانه‌ی تمدیدشده را بفرستید.": "Izin operasional “%name%” berakhir dalam %days% hari (%expiresAt%). Kirim izin yang diperpanjang agar tanda terverifikasi tetap ada.",
  "انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Izin operasional pusat berakhir - penyedia",
- "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "Izin operasional “%name%” telah berakhir dan tanda terverifikasi dihapus. Kirim izin yang diperpanjang."
+ "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "Izin operasional “%name%” telah berakhir dan tanda terverifikasi dihapus. Kirim izin yang diperpanjang.",
+ "تاریخ صدور پروانه": "Tanggal terbit izin",
+ "تاریخ انقضای پروانه": "Tanggal kedaluwarsa izin",
+ "ثبت نشده؛ هنگام تأیید وارد کنید": "Belum diisi; isi saat menyetujui",
+ "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Permintaan ini dikirim sebelum tanggal kedaluwarsa diwajibkan. Isi tanggal kedaluwarsa izin dari dokumennya; tanpa itu permintaan tidak dapat disetujui.",
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Mengubah nomor izin menghapus lencana terverifikasi; setelah menyimpan, verifikasi ulang izin baru beserta tanggalnya."
 }

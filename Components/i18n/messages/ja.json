@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "期限内に発送されず、商品代金はウォレットに返金されました",
  "shipSendBy": "${1} までに Tipax で荷物を発送し、発送を登録してください。登録がない場合、商品はキャンセルされ購入者に返金されます。",
  "cisColDeducted": "保険会社の減額（医師の負担分）",
- "cisDeductionsHint": "医師の取り分は保険会社が実際に支払う額に基づきます。保険会社の減額ごとに医師の割合分が取り分から差し引かれ、残りは施設が負担します。"
+ "cisDeductionsHint": "医師の取り分は保険会社が実際に支払う額に基づきます。保険会社の減額ごとに医師の割合分が取り分から差し引かれ、残りは施設が負担します。",
+ "certificateExpiresAt": "許可証の有効期限",
+ "licenceExpiryInPast": "許可証の有効期限は今日より後の日付にしてください。",
+ "licenceIssueInFuture": "発行日を今日より後の日付にすることはできません。",
+ "licenceExpiryBeforeIssue": "許可証の有効期限は発行日より後の日付にしてください。"
 }

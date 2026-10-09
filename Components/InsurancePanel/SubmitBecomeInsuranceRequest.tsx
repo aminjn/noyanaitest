@@ -1,41 +1,28 @@
-import CreateForm from "../Admin/UI/CreateForm";
-import { API } from "../config";
-import useScopedLocale from "../Hooks/useScopedLocale";
-import { ContentNamespace } from "../Enums/contentNamespaces";
+import BecomeOrganizationForm, { becomeRequestFormValues } from "../Become/BecomeOrganizationForm";
+import { becomeOrgs } from "../Become/becomeOrgs";
 import { IBecomeInsuranceRequest } from "../Layout/InsurancePanelLayout";
 
-const NS: ContentNamespace[] = ["common", "becomeInsurance"];
+const org = becomeOrgs.insurance;
 
+// The panel's own "become a insurer" form (shown when the account has no
+// insurer yet) is the same form as /become/insurance (2026-10): it used to be a
+// second, generic form that asked fewer things (no licence expiry) and lost
+// a declined request's values. The panel draws the request's status
+// (BecomeRequestStatus); this is the form under it, prefilled from a
+// declined request.
 const SubmitBecomeInsuranceRequest = ({
   mutate,
+  request,
 }: {
   mutate: () => unknown;
-}) => {
-  const getContent = useScopedLocale(NS);
-  return (
-    <CreateForm<IBecomeInsuranceRequest>
-      renderer={{
-        name: { type: "text", title: getContent("name") },
-        licenseNumber: { type: "text", title: getContent("insurerLicenseNumber"), required: true },
-        certificateDate: {
-          type: "date",
-          title: getContent("certificateDate"),
-        },
-        certificateFile: {
-          type: "image",
-          title: getContent("certificateFile"),
-        },
-        description: { type: "text", title: getContent("description") },
-      }}
-      hookProps={{
-        path: `${API}/insurance/`,
-        method: "POST",
-        successCb: () => {
-          mutate();
-        },
-      }}
-    />
-  );
-};
+  request?: IBecomeInsuranceRequest | null;
+}) => (
+  <BecomeOrganizationForm
+    org={org}
+    mutate={mutate}
+    hideStatus
+    rejected={request && request.status !== "Pending" ? becomeRequestFormValues(org, request) : undefined}
+  />
+);
 
 export default SubmitBecomeInsuranceRequest;

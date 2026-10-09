@@ -3404,5 +3404,10 @@
  "نزدیک شدن انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Betriebslizenz des Zentrums läuft bald ab – Anbieter",
  "پروانه‌ی فعالیت «%name%» %days% روز دیگر (%expiresAt%) منقضی می‌شود. برای ماندن نشان تأیید، پروانه‌ی تمدیدشده را بفرستید.": "Die Betriebslizenz von „%name%“ läuft in %days% Tagen (%expiresAt%) ab. Senden Sie die erneuerte Lizenz, um das Verifizierungszeichen zu behalten.",
  "انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Betriebslizenz des Zentrums abgelaufen – Anbieter",
- "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "Die Betriebslizenz von „%name%“ ist abgelaufen und das Verifizierungszeichen wurde entfernt. Senden Sie die erneuerte Lizenz."
+ "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "Die Betriebslizenz von „%name%“ ist abgelaufen und das Verifizierungszeichen wurde entfernt. Senden Sie die erneuerte Lizenz.",
+ "تاریخ صدور پروانه": "Ausstellungsdatum der Lizenz",
+ "تاریخ انقضای پروانه": "Ablaufdatum der Lizenz",
+ "ثبت نشده؛ هنگام تأیید وارد کنید": "Nicht angegeben; bei der Genehmigung eintragen",
+ "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Dieser Antrag wurde gestellt, bevor das Ablaufdatum Pflicht wurde. Tragen Sie das Ablaufdatum der Lizenz aus dem Dokument ein; ohne es kann der Antrag nicht genehmigt werden.",
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Eine neue Lizenznummer entfernt das Verifizierungsabzeichen; bestätigen Sie die neue Lizenz nach dem Speichern erneut mit ihren Daten."
 }

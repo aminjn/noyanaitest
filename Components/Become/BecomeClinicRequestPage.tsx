@@ -19,6 +19,7 @@ type BecomeClinicRequestInput = {
   siamCode: string;
   nationalId: string;
   certificateDate: Date;
+  certificateExpiresAt: Date;
   certificateFile?: File;
   description?: string;
 };
@@ -30,6 +31,8 @@ type BecomeClinicRequestInput = {
 // request).
 const toForm = (r: IBecomeClinicRequest) => ({
   certificateDate: r.certificateDate,
+  // kept when a declined request is sent again
+  certificateExpiresAt: r.certificateExpiresAt,
   name: r.name,
   nationalId: r.nationalId,
   siamCode: r.siamCode,

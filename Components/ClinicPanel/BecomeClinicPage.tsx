@@ -21,6 +21,8 @@ export interface IBecomeClinicRequest<
   siamCode: string;
   nationalId: string;
   certificateDate: Date;
+  // the licence's expiry (2026-10); older requests have none
+  certificateExpiresAt?: Date;
   certificateFile?: string;
   description?: string;
 }
@@ -38,7 +40,7 @@ const BecomeClinicPage = () => {
       <BecomeRequestStatus
         request={data}
         form={
-            <SubmitBecomeClinicRequest mutate={mutate} />
+            <SubmitBecomeClinicRequest mutate={mutate} request={data} />
         }
       />
     </HandleLoading>

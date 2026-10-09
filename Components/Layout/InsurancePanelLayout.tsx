@@ -35,6 +35,8 @@ export interface IBecomeInsuranceRequest<
   // approved, but the insurer made from it was deleted: it may be sent again
   profileMissing?: boolean;
   certificateDate: Date;
+  // the licence's expiry (2026-10); older requests have none
+  certificateExpiresAt?: Date;
   certificateFile?: string;
   description?: string;
 }

@@ -1,39 +1,28 @@
-import CreateForm from "../Admin/UI/CreateForm";
-import { API } from "../config";
-import useScopedLocale from "../Hooks/useScopedLocale";
-import { ContentNamespace } from "../Enums/contentNamespaces";
+import BecomeOrganizationForm, { becomeRequestFormValues } from "../Become/BecomeOrganizationForm";
+import { becomeOrgs } from "../Become/becomeOrgs";
 import { IBecomePharmacyRequest } from "./BecomePharmacyPage";
 
-const NS: ContentNamespace[] = ["common", "becomePharmacy"];
+const org = becomeOrgs.pharmacy;
 
-const SubmitBecomePharmacyRequest = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useScopedLocale(NS);
-
-  return (
-    <CreateForm<IBecomePharmacyRequest>
-      renderer={{
-        name: { type: "text", title: getContent("name") },
-        siamCode: { type: "text", title: getContent("siamCode") },
-        nationalId: { type: "text", title: getContent("nationalId") },
-        certificateDate: {
-          type: "date",
-          title: getContent("certificateDate"),
-        },
-        certificateFile: {
-          type: "image",
-          title: getContent("certificateFile"),
-        },
-        description: { type: "text", title: getContent("description") },
-      }}
-      hookProps={{
-        path: `${API}/pharmacy`,
-        method: "POST",
-        successCb: () => {
-          mutate();
-        },
-      }}
-    />
-  );
-};
+// The panel's own "become a pharmacy" form (shown when the account has no
+// pharmacy yet) is the same form as /become/pharmacy (2026-10): it used to be a
+// second, generic form that asked fewer things (no licence expiry) and lost
+// a declined request's values. The panel draws the request's status
+// (BecomeRequestStatus); this is the form under it, prefilled from a
+// declined request.
+const SubmitBecomePharmacyRequest = ({
+  mutate,
+  request,
+}: {
+  mutate: () => unknown;
+  request?: IBecomePharmacyRequest | null;
+}) => (
+  <BecomeOrganizationForm
+    org={org}
+    mutate={mutate}
+    hideStatus
+    rejected={request && request.status !== "Pending" ? becomeRequestFormValues(org, request) : undefined}
+  />
+);
 
 export default SubmitBecomePharmacyRequest;

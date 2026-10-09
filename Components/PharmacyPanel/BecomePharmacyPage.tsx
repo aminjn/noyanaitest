@@ -22,6 +22,8 @@ export interface IBecomePharmacyRequest<
   siamCode: string;
   nationalId: string;
   certificateDate: Date;
+  // the licence's expiry (2026-10); older requests have none
+  certificateExpiresAt?: Date;
   certificateFile?: string;
   description?: string;
 }
@@ -39,7 +41,7 @@ const BecomePharmacyPage = () => {
       <BecomeRequestStatus
         request={data}
         form={
-            <SubmitBecomePharmacyRequest mutate={mutate} />
+            <SubmitBecomePharmacyRequest mutate={mutate} request={data} />
         }
       />
     </HandleLoading>
