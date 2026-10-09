@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "Tidak dikirim tepat waktu; dana item dikembalikan ke dompet",
  "shipSendBy": "Kirim paket dengan Tipax dan catat pengirimannya sebelum ${1}; jika tidak, itemnya dibatalkan dan dananya dikembalikan ke pembeli.",
  "cisColDeducted": "Potongan asuransi (bagian dokter)",
- "cisDeductionsHint": "Bagian dokter dihitung dari yang benar-benar dibayar asuransi: setiap potongan asuransi mengurangi bagiannya sebesar persentase dokter, sisanya ditanggung pusat."
+ "cisDeductionsHint": "Bagian dokter dihitung dari yang benar-benar dibayar asuransi: setiap potongan asuransi mengurangi bagiannya sebesar persentase dokter, sisanya ditanggung pusat.",
+ "certificateExpiresAt": "Tanggal kedaluwarsa izin",
+ "licenceExpiryInPast": "Tanggal kedaluwarsa izin harus setelah hari ini.",
+ "licenceIssueInFuture": "Tanggal terbit tidak boleh setelah hari ini.",
+ "licenceExpiryBeforeIssue": "Tanggal kedaluwarsa izin harus setelah tanggal terbitnya."
 }

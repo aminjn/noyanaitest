@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "No se envió a tiempo; los artículos se reembolsaron al monedero",
  "shipSendBy": "Envíe el paquete con Tipax y registre el envío antes del ${1}; si no, sus artículos se cancelan y se reembolsan al comprador.",
  "cisColDeducted": "Deducciones de la aseguradora (parte del médico)",
- "cisDeductionsHint": "La parte del médico se calcula sobre lo que la aseguradora paga realmente: cada deducción la reduce en el porcentaje del médico y el centro asume el resto."
+ "cisDeductionsHint": "La parte del médico se calcula sobre lo que la aseguradora paga realmente: cada deducción la reduce en el porcentaje del médico y el centro asume el resto.",
+ "certificateExpiresAt": "Fecha de vencimiento de la licencia",
+ "licenceExpiryInPast": "La fecha de vencimiento de la licencia debe ser posterior a hoy.",
+ "licenceIssueInFuture": "La fecha de expedición no puede ser posterior a hoy.",
+ "licenceExpiryBeforeIssue": "La fecha de vencimiento de la licencia debe ser posterior a su fecha de expedición."
 }

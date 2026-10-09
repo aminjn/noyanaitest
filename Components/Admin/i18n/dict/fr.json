@@ -3404,5 +3404,10 @@
  "نزدیک شدن انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Licence d'exploitation du centre bientôt expirée - prestataire",
  "پروانه‌ی فعالیت «%name%» %days% روز دیگر (%expiresAt%) منقضی می‌شود. برای ماندن نشان تأیید، پروانه‌ی تمدیدشده را بفرستید.": "La licence d'exploitation de « %name% » expire dans %days% jours (%expiresAt%). Envoyez la licence renouvelée pour garder le badge vérifié.",
  "انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Licence d'exploitation du centre expirée - prestataire",
- "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "La licence d'exploitation de « %name% » a expiré et le badge vérifié a été retiré. Envoyez la licence renouvelée."
+ "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "La licence d'exploitation de « %name% » a expiré et le badge vérifié a été retiré. Envoyez la licence renouvelée.",
+ "تاریخ صدور پروانه": "Date de délivrance de la licence",
+ "تاریخ انقضای پروانه": "Date d'expiration de la licence",
+ "ثبت نشده؛ هنگام تأیید وارد کنید": "Non renseignée ; saisissez-la lors de l'approbation",
+ "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Cette demande a été envoyée avant que la date d'expiration ne soit obligatoire. Saisissez la date d'expiration de la licence d'après le document ; sans elle, la demande ne peut pas être approuvée.",
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Changer le numéro de licence retire le badge vérifié ; après l'enregistrement, vérifiez à nouveau la nouvelle licence avec ses dates."
 }

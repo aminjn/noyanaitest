@@ -3404,5 +3404,10 @@
  "نزدیک شدن انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Licença de funcionamento do centro perto do vencimento - prestador",
  "پروانه‌ی فعالیت «%name%» %days% روز دیگر (%expiresAt%) منقضی می‌شود. برای ماندن نشان تأیید، پروانه‌ی تمدیدشده را بفرستید.": "A licença de funcionamento de “%name%” vence em %days% dias (%expiresAt%). Envie a licença renovada para manter o selo de verificado.",
  "انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Licença de funcionamento do centro vencida - prestador",
- "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "A licença de funcionamento de “%name%” venceu e o selo de verificado foi removido. Envie a licença renovada."
+ "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "A licença de funcionamento de “%name%” venceu e o selo de verificado foi removido. Envie a licença renovada.",
+ "تاریخ صدور پروانه": "Data de emissão da licença",
+ "تاریخ انقضای پروانه": "Data de validade da licença",
+ "ثبت نشده؛ هنگام تأیید وارد کنید": "Não informada; preencha ao aprovar",
+ "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Esta solicitação foi enviada antes de a data de validade se tornar obrigatória. Informe a data de validade da licença conforme o documento; sem ela a solicitação não pode ser aprovada.",
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Alterar o número da licença remove o selo de verificação; depois de salvar, verifique a nova licença novamente com suas datas."
 }

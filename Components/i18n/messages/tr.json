@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "Zamanında gönderilmedi; ürünlerin tutarı cüzdana iade edildi",
  "shipSendBy": "Paketi ${1} tarihine kadar Tipax ile gönderip kaydedin; aksi halde ürünleri iptal edilir ve tutarı alıcıya iade edilir.",
  "cisColDeducted": "Sigorta kesintileri (hekim payı)",
- "cisDeductionsHint": "Hekim payı, sigortanın gerçekten ödediği tutara göre hesaplanır: her sigorta kesintisi hekim yüzdesi kadar payından düşülür, kalanını merkez üstlenir."
+ "cisDeductionsHint": "Hekim payı, sigortanın gerçekten ödediği tutara göre hesaplanır: her sigorta kesintisi hekim yüzdesi kadar payından düşülür, kalanını merkez üstlenir.",
+ "certificateExpiresAt": "Ruhsat bitiş tarihi",
+ "licenceExpiryInPast": "Ruhsat bitiş tarihi bugünden sonra olmalıdır.",
+ "licenceIssueInFuture": "Veriliş tarihi bugünden sonra olamaz.",
+ "licenceExpiryBeforeIssue": "Ruhsat bitiş tarihi veriliş tarihinden sonra olmalıdır."
 }

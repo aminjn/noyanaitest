@@ -1,38 +1,28 @@
-import CreateForm from "../Admin/UI/CreateForm";
-import { API } from "../config";
-import useScopedLocale from "../Hooks/useScopedLocale";
+import BecomeOrganizationForm, { becomeRequestFormValues } from "../Become/BecomeOrganizationForm";
+import { becomeOrgs } from "../Become/becomeOrgs";
 import { IBecomeClinicRequest } from "./BecomeClinicPage";
-import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
-const NS: ContentNamespace[] = ["common", "becomeClinic"];
+const org = becomeOrgs.clinic;
 
-const SubmitBecomeClinicRequest = ({ mutate }: { mutate: () => unknown }) => {
-  const getContent = useScopedLocale(NS);
-  return (
-    <CreateForm<IBecomeClinicRequest>
-      renderer={{
-        name: { type: "text", title: getContent("name") },
-        siamCode: { type: "text", title: getContent("siamCode") },
-        nationalId: { type: "text", title: getContent("nationalId") },
-        certificateDate: {
-          type: "date",
-          title: getContent("certificateDate"),
-        },
-        certificateFile: {
-          type: "image",
-          title: getContent("certificateFile"),
-        },
-        description: { type: "text", title: getContent("description") },
-      }}
-      hookProps={{
-        path: `${API}/clinic`,
-        method: "POST",
-        successCb: () => {
-          mutate();
-        },
-      }}
-    />
-  );
-};
+// The panel's own "become a clinic" form (shown when the account has no
+// clinic yet) is the same form as /become/clinic (2026-10): it used to be a
+// second, generic form that asked fewer things (no licence expiry) and lost
+// a declined request's values. The panel draws the request's status
+// (BecomeRequestStatus); this is the form under it, prefilled from a
+// declined request.
+const SubmitBecomeClinicRequest = ({
+  mutate,
+  request,
+}: {
+  mutate: () => unknown;
+  request?: IBecomeClinicRequest | null;
+}) => (
+  <BecomeOrganizationForm
+    org={org}
+    mutate={mutate}
+    hideStatus
+    rejected={request && request.status !== "Pending" ? becomeRequestFormValues(org, request) : undefined}
+  />
+);
 
 export default SubmitBecomeClinicRequest;

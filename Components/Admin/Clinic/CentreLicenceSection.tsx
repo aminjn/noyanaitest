@@ -72,13 +72,19 @@ const CentreLicenceSection = ({ kind, nodeId }: { kind: CentreLicenceKind; nodeI
               <span className={classes.meta}>
                 {ta("برای تأیید، شماره و تاریخ انقضای آینده لازم است. با برداشتن تیک، نشان تأیید فوراً برداشته می‌شود.")}
               </span>
+              <span className={classes.meta}>
+                {ta("تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.")}
+              </span>
               {!!data.verifiedAt && !data.expiresAt && (
                 <span className={classes.warn}>
                   {ta("تاریخ انقضای این پروانه ثبت نشده است؛ آن را وارد کنید.")}
                 </span>
               )}
             </div>
+            {/* redrawn from the saved licence after each save: a new number
+                comes back unverified and its tick must be set again */}
             <CreateForm<LicenceInput>
+              key={`${data.number}|${data.issuedAt || ""}|${data.expiresAt || ""}|${data.verifiedAt || ""}`}
               defaultValue={{
                 number: data.number,
                 issuedAt: data.issuedAt || undefined,

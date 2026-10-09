@@ -21,6 +21,8 @@ export interface IBecomeHospitalRequest<
   siamCode: string;
   nationalId: string;
   certificateDate: Date;
+  // the licence's expiry (2026-10); older requests have none
+  certificateExpiresAt?: Date;
   certificateFile?: string;
   description?: string;
 }
@@ -37,7 +39,7 @@ const BecomeHospitalPage = () => {
       <BecomeRequestStatus
         request={data}
         form={
-            <SubmitBecomeHospitalRequest mutate={mutate} />
+            <SubmitBecomeHospitalRequest mutate={mutate} request={data} />
         }
       />
     </HandleLoading>

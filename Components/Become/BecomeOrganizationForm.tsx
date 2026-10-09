@@ -19,6 +19,7 @@ import Ixon from "../UI/Ixon";
 import ClockIcon from "../Icons/ClockIcon";
 import ClockSolidIcon from "../Icons/ClockSolidIcon";
 import { txlBold } from "../UI/Typography";
+import { tehranYmd } from "../helpers/tehranTime";
 
 const NS: ContentNamespace[] = ["common", "becomeSomething"];
 
@@ -28,18 +29,42 @@ type BecomeOrgInput = {
   nationalId: string;
   licenseNumber: string;
   certificateDate: Date;
+  // the licence's expiry (2026-10): required, a day after today
+  certificateExpiresAt?: Date;
   certificateFile?: File;
   description?: string;
 };
 
-type BecomeRequest = {
+export type BecomeRequest = {
   name: string;
   siamCode?: string;
   nationalId?: string;
   licenseNumber?: string;
   certificateDate: Date;
+  certificateExpiresAt?: Date | string;
   certificateFile?: string;
   description?: string;
+};
+
+// a stored request as the form's values (what the backend's request
+// schema takes - never _id / status / user): a declined request is sent
+// again from them, its licence dates included
+export const becomeRequestFormValues = (
+  org: BecomeOrgConfig,
+  r: Partial<BecomeRequest> | null | undefined,
+): BecomeRequest | undefined => {
+  if (!r || typeof r !== "object") return undefined;
+  return {
+    name: r.name || "",
+    ...(org.licenseNumber
+      ? // an older insurer request only had the siam code
+        { licenseNumber: r.licenseNumber || r.siamCode }
+      : { siamCode: r.siamCode, nationalId: r.nationalId }),
+    certificateDate: r.certificateDate as Date,
+    certificateExpiresAt: r.certificateExpiresAt,
+    certificateFile: r.certificateFile,
+    description: r.description,
+  };
 };
 
 const BecomeOrganizationForm = ({
@@ -48,6 +73,7 @@ const BecomeOrganizationForm = ({
   pending,
   rejected,
   rejectReason,
+  hideStatus,
 }: {
   org: BecomeOrgConfig;
   mutate: () => unknown;
@@ -57,6 +83,9 @@ const BecomeOrganizationForm = ({
   rejected?: BecomeRequest;
   // why it was declined (the admin writes it in the requests queue)
   rejectReason?: string;
+  // the panels draw the request's status themselves
+  // (Components/_Common/BecomeStatus/BecomeRequestStatus.tsx): the form only
+  hideStatus?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   // an insurer names its Central Insurance licence; a centre its siam code
@@ -64,6 +93,7 @@ const BecomeOrganizationForm = ({
   const complete = (input: Partial<BecomeOrgInput>) =>
     !!input.name &&
     !!input.certificateDate &&
+    !!input.certificateExpiresAt &&
     !!input.certificateFile &&
     (org.licenseNumber ? !!input.licenseNumber?.trim() : !!input.nationalId && !!input.siamCode);
 
@@ -71,8 +101,22 @@ const BecomeOrganizationForm = ({
     path: `${API}${org.apiBase}`,
     method: "POST",
     successCb: () => mutate(),
-    hasProblem: (input) => (!complete(input) ? getContent("checkInput") : false),
+    hasProblem: (input) => (!complete(input) ? getContent("checkInput") : datesProblem(input)),
   });
+
+  // the licence's dates as Tehran days, as the backend checks them
+  // (Lib/centreLicenceDates.ts): the expiry after today, the issue date not
+  // after today and before the expiry
+  const datesProblem = (input: Partial<BecomeOrgInput>) => {
+    if (!input.certificateDate || !input.certificateExpiresAt) return false;
+    const today = tehranYmd();
+    const issued = tehranYmd(input.certificateDate);
+    const expires = tehranYmd(input.certificateExpiresAt);
+    if (expires <= today) return getContent("licenceExpiryInPast");
+    if (issued > today) return getContent("licenceIssueInFuture");
+    if (issued >= expires) return getContent("licenceExpiryBeforeIssue");
+    return false;
+  };
 
   // a declined request is resubmitted from its old values: seed them into
   // the form state (the inputs only show them as defaults)
@@ -97,8 +141,8 @@ const BecomeOrganizationForm = ({
   const isOk = useMemo<boolean>(() => complete(input), [input, org.licenseNumber]);
 
   return (
-    <div className={classes.container}>
-      {!!pending && (
+    <div className={`${classes.container || ""} ${hideStatus ? classes.inPanel : ""}`}>
+      {!!pending && !hideStatus && (
         <div className={classes.pending}>
           <div className={`${classes.icon} glassIcon tone-amber`}>
             <Ixon width="1.5rem">
@@ -113,7 +157,7 @@ const BecomeOrganizationForm = ({
           </p>
         </div>
       )}
-      {!pending && !!rejected && (
+      {!pending && !!rejected && !hideStatus && (
         <div className={classes.pending}>
           <h2 className={`${classes.title} ${txlBold}`}>
             {getContent("rejectedApplicationTitle")}
@@ -190,6 +234,10 @@ const BecomeOrganizationForm = ({
             required
             defaultValue={(pending || rejected)?.name}
           />
+        </div>
+        {/* the licence's issue and expiry days (Jalali picker, Tehran day):
+            approving the request copies them onto the centre's licence */}
+        <div className={classes.row}>
           <DateInput
             title={getContent("certificateDate")}
             readOnly={!!pending || isLoading}
@@ -197,6 +245,14 @@ const BecomeOrganizationForm = ({
               setInput((prev) => ({ ...prev, certificateDate: e }))
             }
             defaultValue={(pending || rejected)?.certificateDate}
+          />
+          <DateInput
+            title={getContent("certificateExpiresAt")}
+            readOnly={!!pending || isLoading}
+            onChange={(e) =>
+              setInput((prev) => ({ ...prev, certificateExpiresAt: e }))
+            }
+            defaultValue={(pending || rejected)?.certificateExpiresAt}
           />
         </div>
         <div className={classes.row}>

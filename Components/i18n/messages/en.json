@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "Not sent in time; the items were refunded to the wallet",
  "shipSendBy": "Send the parcel with Tipax and record it by ${1}; otherwise its items are cancelled and refunded to the buyer.",
  "cisColDeducted": "Insurer deductions (doctor's part)",
- "cisDeductionsHint": "The doctor's share is based on what the insurer actually pays: each insurer deduction reduces it by the doctor's percentage, and the centre bears the rest."
+ "cisDeductionsHint": "The doctor's share is based on what the insurer actually pays: each insurer deduction reduces it by the doctor's percentage, and the centre bears the rest.",
+ "certificateExpiresAt": "Licence expiry date",
+ "licenceExpiryInPast": "The licence expiry date must be after today.",
+ "licenceIssueInFuture": "The issue date can't be after today.",
+ "licenceExpiryBeforeIssue": "The licence expiry date must be after its issue date."
 }

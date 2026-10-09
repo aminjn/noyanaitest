@@ -3404,5 +3404,10 @@
  "نزدیک شدن انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Centre operating licence expiring soon - provider",
  "پروانه‌ی فعالیت «%name%» %days% روز دیگر (%expiresAt%) منقضی می‌شود. برای ماندن نشان تأیید، پروانه‌ی تمدیدشده را بفرستید.": "The operating licence of “%name%” expires in %days% days (%expiresAt%). Send the renewed licence to keep the verified tick.",
  "انقضای پروانه‌ی فعالیت مرکز - ارائه‌دهنده": "Centre operating licence expired - provider",
- "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "The operating licence of “%name%” has expired and the verified tick was removed. Send the renewed licence."
+ "پروانه‌ی فعالیت «%name%» منقضی شد و نشان تأیید برداشته شد. پروانه‌ی تمدیدشده را بفرستید.": "The operating licence of “%name%” has expired and the verified tick was removed. Send the renewed licence.",
+ "تاریخ صدور پروانه": "Licence issue date",
+ "تاریخ انقضای پروانه": "Licence expiry date",
+ "ثبت نشده؛ هنگام تأیید وارد کنید": "Not given; enter it when approving",
+ "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "This request was sent before the expiry date became required. Enter the licence's expiry date from the document; the request can't be approved without it.",
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Changing the licence number removes the verified badge; after saving, verify the new licence again with its dates."
 }

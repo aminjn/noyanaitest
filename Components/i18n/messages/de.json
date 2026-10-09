@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "Nicht rechtzeitig versandt; die Artikel wurden ins Wallet erstattet",
  "shipSendBy": "Senden Sie das Paket bis ${1} mit Tipax und erfassen Sie den Versand; sonst werden seine Artikel storniert und dem Käufer erstattet.",
  "cisColDeducted": "Versicherungsabzüge (Anteil Arzt)",
- "cisDeductionsHint": "Der Arztanteil richtet sich nach dem, was der Versicherer tatsächlich zahlt: Jeder Abzug des Versicherers mindert ihn um den Prozentsatz des Arztes, den Rest trägt die Einrichtung."
+ "cisDeductionsHint": "Der Arztanteil richtet sich nach dem, was der Versicherer tatsächlich zahlt: Jeder Abzug des Versicherers mindert ihn um den Prozentsatz des Arztes, den Rest trägt die Einrichtung.",
+ "certificateExpiresAt": "Ablaufdatum der Lizenz",
+ "licenceExpiryInPast": "Das Ablaufdatum der Lizenz muss nach dem heutigen Tag liegen.",
+ "licenceIssueInFuture": "Das Ausstellungsdatum darf nicht nach dem heutigen Tag liegen.",
+ "licenceExpiryBeforeIssue": "Das Ablaufdatum der Lizenz muss nach ihrem Ausstellungsdatum liegen."
 }

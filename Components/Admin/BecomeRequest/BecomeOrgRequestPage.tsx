@@ -37,6 +37,9 @@ type OrgRequest = {
   // an insurer's «شماره‌ی مجوز بیمه مرکزی» (2026-10)
   licenseNumber?: string;
   certificateDate?: string;
+  // the licence's expiry (2026-10); older requests have none - the admin
+  // enters it when approving
+  certificateExpiresAt?: string;
   certificateFile?: string;
   description?: string;
 };
@@ -124,6 +127,7 @@ const BecomeOrgRequestPage = ({ config }: { config: BecomeOrgRequestKind }) => {
                   done={config.approveDone}
                   target={(id) => `/${config.orgPath}/${id}`}
                   mutate={mutate}
+                  askLicenceExpiry={!data.certificateExpiresAt}
                 />
               }
               linkExisting={{
@@ -132,6 +136,7 @@ const BecomeOrgRequestPage = ({ config }: { config: BecomeOrgRequestKind }) => {
                 label: config.selectLabel,
                 target: (id) => `/${config.orgPath}/${id}`,
                 applicantUser: userId,
+                askLicenceExpiry: !data.certificateExpiresAt,
               }}
             />
             <RequestInfoGrid
@@ -167,11 +172,21 @@ const BecomeOrgRequestPage = ({ config }: { config: BecomeOrgRequestKind }) => {
                       { label: ta("کد سیام"), value: data.siamCode },
                       { label: ta("کد ملی"), value: data.nationalId },
                     ]),
+                // the licence's dates: approving copies them onto the
+                // centre's licence (its verified tick)
                 {
-                  label: ta("تاریخ گواهی"),
+                  label: ta("تاریخ صدور پروانه"),
                   value: data.certificateDate ? (
                     <FormatDate value={data.certificateDate} time={false} />
                   ) : undefined,
+                },
+                {
+                  label: ta("تاریخ انقضای پروانه"),
+                  value: data.certificateExpiresAt ? (
+                    <FormatDate value={data.certificateExpiresAt} time={false} />
+                  ) : (
+                    ta("ثبت نشده؛ هنگام تأیید وارد کنید")
+                  ),
                 },
                 { label: ta("توضیحات"), value: data.description, wide: true },
               ]}

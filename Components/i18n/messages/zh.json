@@ -7124,5 +7124,9 @@
  "shipStateNotSentCancelled": "未在期限内寄出；商品金额已退回钱包",
  "shipSendBy": "请在 ${1} 前通过 Tipax 寄出包裹并登记发货；否则其中的商品将被取消并退款给买家。",
  "cisColDeducted": "保险扣减（医生部分）",
- "cisDeductionsHint": "医生分成按保险公司实际支付的金额计算：每笔保险扣减按医生的比例从其分成中扣除，其余由机构承担。"
+ "cisDeductionsHint": "医生分成按保险公司实际支付的金额计算：每笔保险扣减按医生的比例从其分成中扣除，其余由机构承担。",
+ "certificateExpiresAt": "许可证到期日期",
+ "licenceExpiryInPast": "许可证到期日期必须晚于今天。",
+ "licenceIssueInFuture": "签发日期不能晚于今天。",
+ "licenceExpiryBeforeIssue": "许可证到期日期必须晚于签发日期。"
 }

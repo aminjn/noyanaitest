@@ -18,6 +18,7 @@ type BecomeParaClinicRequestInput = {
   siamCode: string;
   nationalId: string;
   certificateDate: Date;
+  certificateExpiresAt: Date;
   certificateFile?: File;
   description?: string;
 };
@@ -29,6 +30,8 @@ type BecomeParaClinicRequestInput = {
 // request).
 const toForm = (r: IBecomeParaClinicRequest) => ({
   certificateDate: r.certificateDate,
+  // kept when a declined request is sent again
+  certificateExpiresAt: r.certificateExpiresAt,
   name: r.name,
   nationalId: r.nationalId,
   siamCode: r.siamCode,
