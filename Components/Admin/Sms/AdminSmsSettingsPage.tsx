@@ -26,6 +26,11 @@ type SmsSettings = {
   fromNumber: string;
   // the advertising line campaign SMS leave from (2026-10)
   marketingFromNumber: string;
+  // advertising SMS rules (backend Lib/smsPolicy.ts): Tehran send window
+  // [from, until) and the daily cap per account (0 = none)
+  campaignWindowFrom: number;
+  campaignWindowUntil: number;
+  campaignDailyCap: number;
   requestUrl: string;
   tokenSet: boolean;
   tokenHint: string;
@@ -62,6 +67,8 @@ const AdminSmsSettingsPage = () => {
   const [requestUrl, setRequestUrl] = useState<string | undefined>();
   const [marketingFromNumber, setMarketingFromNumber] = useState<string | undefined>();
   const [save, setSave] = useState<Record<string, unknown> | null>(null);
+  const [rules, setRules] = useState<{ campaignWindowFrom?: string; campaignWindowUntil?: string; campaignDailyCap?: string }>({});
+  const [saveRules, setSaveRules] = useState<Record<string, unknown> | null>(null);
   const [testPhone, setTestPhone] = useState("");
   const [test, setTest] = useState<Record<string, unknown> | null>(null);
 
@@ -184,6 +191,66 @@ const AdminSmsSettingsPage = () => {
                   setSave(null);
                   if (status) {
                     setToken("");
+                    mutate();
+                  }
+                }}
+              />
+            </Box>
+
+            <Box className={classes.box}>
+              <span className={classes.sectionTitle}>{ta("قواعد پیامک تبلیغاتی")}</span>
+              <p className={classes.note}>
+                {ta("پیامک‌های تبلیغاتی (کمپین، خودکارسازی و ارسال تکی) فقط در این بازه به وقت تهران فرستاده می‌شوند؛ بیرون از آن تا شروع بازه‌ی بعد صبر می‌کنند. بازه‌ی هر کمپین یا خودکارسازی درون همین بازه است.")}
+              </p>
+              <div className={classes.grid}>
+                <Input
+                  title={ta("شروع ارسال (ساعت تهران)")}
+                  type="number"
+                  inputMode="numeric"
+                  defaultValue={String(data.campaignWindowFrom ?? 8)}
+                  onChange={(e) => setRules((r) => ({ ...r, campaignWindowFrom: e.target.value }))}
+                />
+                <Input
+                  title={ta("پایان ارسال (ساعت تهران)")}
+                  type="number"
+                  inputMode="numeric"
+                  defaultValue={String(data.campaignWindowUntil ?? 21)}
+                  onChange={(e) => setRules((r) => ({ ...r, campaignWindowUntil: e.target.value }))}
+                />
+                <Input
+                  title={ta("سقف روزانه‌ی هر حساب (تعداد پیامک، ۰ = بدون سقف)")}
+                  type="number"
+                  inputMode="numeric"
+                  defaultValue={String(data.campaignDailyCap ?? 0)}
+                  onChange={(e) => setRules((r) => ({ ...r, campaignDailyCap: e.target.value }))}
+                />
+              </div>
+              <p className={classes.note}>
+                {ta("کمپینی که از این سقف بزرگ‌تر باشد ارسال نمی‌شود و اگر سهم امروز حساب پر باشد، فردا فرستاده می‌شود. قیمت هر بخش پیامک در تنظیمات مالی تعیین می‌شود.")}
+              </p>
+              <div className={classes.actions}>
+                <Button
+                  isLoading={!!saveRules}
+                  onClick={() =>
+                    setSaveRules({
+                      campaignWindowFrom: Number(rules.campaignWindowFrom ?? data.campaignWindowFrom ?? 8),
+                      campaignWindowUntil: Number(rules.campaignWindowUntil ?? data.campaignWindowUntil ?? 21),
+                      campaignDailyCap: Number(rules.campaignDailyCap ?? data.campaignDailyCap ?? 0),
+                    })
+                  }
+                >
+                  {ta("ذخیره")}
+                </Button>
+              </div>
+              <Act
+                path={saveRules ? `${API}/admin/sms/settings` : null}
+                method="POST"
+                payload={saveRules || undefined}
+                successMessage={ta("تنظیمات پیامک ذخیره شد")}
+                onDone={(status) => {
+                  setSaveRules(null);
+                  if (status) {
+                    setRules({});
                     mutate();
                   }
                 }}

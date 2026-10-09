@@ -19,7 +19,8 @@ import classes from "./AdminSmsCampaignPage.module.css";
 // campaign.ts): who sends it, to how many of their own patients, what it
 // costs and the exact text a recipient gets (with the opt-out link). The
 // admin clears the text against medical advertising rules - approve sends
-// it at the next allowed hour (08:00-21:00), reject tells the provider why.
+// it at the next allowed hour (the send window of the SMS settings), reject
+// tells the provider why.
 
 type Campaign = {
   _id: string;
@@ -35,6 +36,8 @@ type Campaign = {
   sentCount: number;
   failedCount: number;
   charged: number;
+  refunded?: number;
+  simulated?: boolean;
   fromQuota: number;
   fromWallet: number;
   submittedAt?: string;
@@ -131,7 +134,11 @@ const AdminSmsCampaignPage = () => {
                 {e && !e.affordable && <p className={classes.warn}>{ta("موجودی کیف پول ارائه‌دهنده برای این کمپین کافی نیست.")}</p>}
                 {data.status === "Sent" &&
                   row(ta("ارسال‌شده / ناموفق"), `${num.format(data.sentCount)} / ${num.format(data.failedCount)}`)}
-                {data.status === "Sent" && row(ta("هزینه‌ی کسرشده (تومان)"), num.format(data.charged))}
+                {data.status === "Sent" && row(ta("هزینه‌ی کسرشده (تومان)"), num.format(data.charged - (data.refunded || 0)))}
+                {data.status === "Sent" && !!data.refunded && row(ta("برگشت به کیف پول (تومان)"), num.format(data.refunded))}
+                {data.simulated && (
+                  <p className={classes.warn}>{ta("حالت آزمایشی: پیامک‌های این کمپین واقعاً فرستاده نشدند و فقط در لاگ سرور ثبت شدند.")}</p>
+                )}
               </Box>
             </div>
           </div>

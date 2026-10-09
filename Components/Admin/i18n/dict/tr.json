@@ -3409,5 +3409,19 @@
  "تاریخ انقضای پروانه": "Ruhsat bitiş tarihi",
  "ثبت نشده؛ هنگام تأیید وارد کنید": "Girilmemiş; onaylarken girin",
  "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Bu talep bitiş tarihi zorunlu olmadan önce gönderildi. Ruhsatın bitiş tarihini belgeden girin; o olmadan talep onaylanamaz.",
- "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Ruhsat numarasını değiştirmek doğrulama rozetini kaldırır; kaydettikten sonra yeni ruhsatı tarihleriyle yeniden doğrulayın."
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Ruhsat numarasını değiştirmek doğrulama rozetini kaldırır; kaydettikten sonra yeni ruhsatı tarihleriyle yeniden doğrulayın.",
+ "لغو پیامک تبلیغاتی این مرکز": "Bu merkezin reklam SMS'lerinden çıkış",
+ "لغو پیامک تبلیغاتی همه‌ی مراکز": "Tüm merkezlerin reklam SMS'lerinden çıkış",
+ "قواعد پیامک تبلیغاتی": "Reklam SMS kuralları",
+ "پیامک‌های تبلیغاتی (کمپین، خودکارسازی و ارسال تکی) فقط در این بازه به وقت تهران فرستاده می‌شوند؛ بیرون از آن تا شروع بازه‌ی بعد صبر می‌کنند. بازه‌ی هر کمپین یا خودکارسازی درون همین بازه است.": "Reklam SMS'leri (kampanyalar, otomasyonlar ve tekil gönderimler) yalnızca bu aralıkta, Tahran saatiyle gönderilir; dışında bir sonraki aralığın başlamasını bekler. Her kampanyanın veya otomasyonun kendi aralığı bunun içindedir.",
+ "شروع ارسال (ساعت تهران)": "Gönderim başlangıcı (Tahran saati)",
+ "پایان ارسال (ساعت تهران)": "Gönderim bitişi (Tahran saati)",
+ "سقف روزانه‌ی هر حساب (تعداد پیامک، ۰ = بدون سقف)": "Hesap başına günlük sınır (SMS sayısı, 0 = sınırsız)",
+ "کمپینی که از این سقف بزرگ‌تر باشد ارسال نمی‌شود و اگر سهم امروز حساب پر باشد، فردا فرستاده می‌شود. قیمت هر بخش پیامک در تنظیمات مالی تعیین می‌شود.": "Bu sınırdan büyük kampanya gönderilmez; hesabın bugünkü payı dolduysa yarın gönderilir. Bir SMS parçasının fiyatı finans ayarlarında belirlenir.",
+ "برگشت به کیف پول (تومان)": "Cüzdana iade (tümen)",
+ "حالت آزمایشی: پیامک‌های این کمپین واقعاً فرستاده نشدند و فقط در لاگ سرور ثبت شدند.": "Test modu: bu kampanyanın SMS'leri gerçekten gönderilmedi, yalnızca sunucu günlüğüne yazıldı.",
+ "یادآوری تمدید دارو": "İlaç yenileme hatırlatması",
+ "پیگیری پس از جواب آزمایش": "Sonuç sonrası takip",
+ "یادآوری آزمایش دوره‌ای": "Periyodik test hatırlatması",
+ "یادآوری تمدید بیمه": "Sigorta yenileme hatırlatması"
 }

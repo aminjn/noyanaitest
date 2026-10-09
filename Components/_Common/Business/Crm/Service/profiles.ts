@@ -74,7 +74,24 @@ const PEOPLE_KEYS: Partial<Record<CrmProfile, string[]>> = {
     "crmeNavTasksHint",
     "crmeNavChecklistsHint",
     "crmPickContact",
+    "crmNavAutomationsHint",
   ],
-  insurance: ["crmePatient", "crmeAboutPatient", "crmeInternalNote", "crmeReplyPlaceholder", "crmeTkPending", "crmeNavTicketsHint", "crmeNavTasksHint", "crmPickContact"],
+  paraClinic: ["crmNavAutomationsHint"],
+  insurance: ["crmNavAutomationsHint", "crmePatient", "crmeAboutPatient", "crmeInternalNote", "crmeReplyPlaceholder", "crmeTkPending", "crmeNavTicketsHint", "crmeNavTasksHint", "crmPickContact"],
 };
 export const profileKey = (profile: CrmProfile | undefined, key: string) => (profile && PEOPLE_KEYS[profile]?.includes(key) ? `${key}_${profile}` : key);
+
+// The workflow triggers that can happen for each profile (the backend's
+// Lib/business/crmProfiles.ts FLOW_TRIGGERS - keep the two in step): visits
+// are the practices', orders the sellers' (a doctor sells services and
+// packages), a lab result the lab's; the club and returns where they exist.
+const COMMON_TRIGGERS = ["contact.created", "ticket.created", "ticket.resolved", "invoice.issued", "sequence.completed"] as const;
+const VISIT_TRIGGERS = ["visit.completed", "visit.noShow", "visit.cancelled"] as const;
+export const FLOW_TRIGGERS: Record<CrmProfile, readonly string[]> = {
+  doctor: [...VISIT_TRIGGERS, "order.paid", ...COMMON_TRIGGERS, "club.redeemed", "return.created"],
+  clinic: [...VISIT_TRIGGERS, ...COMMON_TRIGGERS, "club.redeemed", "return.created"],
+  hospital: [...VISIT_TRIGGERS, ...COMMON_TRIGGERS, "club.redeemed", "return.created"],
+  pharmacy: ["order.paid", ...COMMON_TRIGGERS, "club.redeemed", "return.created"],
+  paraClinic: ["order.paid", "result.ready", ...COMMON_TRIGGERS, "club.redeemed", "return.created"],
+  insurance: COMMON_TRIGGERS,
+};

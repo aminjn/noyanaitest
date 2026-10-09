@@ -28,7 +28,7 @@ type Msg = {
 type Detail = {
   campaign: CrmCampaign;
   preview: string;
-  stats: { sent: number; failed: number; clicked: number; booked: number };
+  stats: { sent: number; failed: number; clicked: number; booked: number; optedOut?: number };
   messages: Msg[];
   total: number;
   page: number;
@@ -43,9 +43,9 @@ const filterKey: Record<(typeof FILTERS)[number], string> = {
   booked: "crmBooked",
 };
 
-// One campaign's results (2026-10): the funnel (sent, delivered to the
-// gateway, clicked the tracked link, booked within 14 days), the cost, and
-// each recipient's own message status.
+// One campaign's results (2026-10): the funnel (handed to the gateway,
+// clicked the tracked link, booked within 14 days, opted out after it), the
+// net cost, and each recipient's own message status.
 const CrmCampaignDetail = ({ id }: { id: string }) => {
   const t = useCrmText();
   const f = useBizFormat();
@@ -91,6 +91,11 @@ const CrmCampaignDetail = ({ id }: { id: string }) => {
                 <span className={crm.tileSub}>{pct(s.booked, s.sent)}</span>
               </div>
               <div className={classes.tile}>
+                <span className={classes.tileLabel}>{t("crmOptedOutAfter")}</span>
+                <span className={classes.tileValue}>{f.money(s.optedOut || 0)}</span>
+                <span className={crm.tileSub}>{pct(s.optedOut || 0, s.sent)}</span>
+              </div>
+              <div className={classes.tile}>
                 <span className={classes.tileLabel}>{t("crmCharged")}</span>
                 <span className={classes.tileValue}>{f.money(c.charged - c.refunded)}</span>
                 <span className={crm.tileSub}>{t("crmQuotaParts", [f.money(c.fromQuota)])}</span>
@@ -115,6 +120,7 @@ const CrmCampaignDetail = ({ id }: { id: string }) => {
                 </pre>
               </div>
             </div>
+            {c.simulated && <p className={crm.reject}>{t("crmSimulatedNote")}</p>}
             <p className={classes.muted}>{t("crmAttributionHint")}</p>
           </section>
 

@@ -3409,5 +3409,19 @@
  "تاریخ انقضای پروانه": "Ablaufdatum der Lizenz",
  "ثبت نشده؛ هنگام تأیید وارد کنید": "Nicht angegeben; bei der Genehmigung eintragen",
  "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Dieser Antrag wurde gestellt, bevor das Ablaufdatum Pflicht wurde. Tragen Sie das Ablaufdatum der Lizenz aus dem Dokument ein; ohne es kann der Antrag nicht genehmigt werden.",
- "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Eine neue Lizenznummer entfernt das Verifizierungsabzeichen; bestätigen Sie die neue Lizenz nach dem Speichern erneut mit ihren Daten."
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Eine neue Lizenznummer entfernt das Verifizierungsabzeichen; bestätigen Sie die neue Lizenz nach dem Speichern erneut mit ihren Daten.",
+ "لغو پیامک تبلیغاتی این مرکز": "Werbe-SMS dieses Zentrums abbestellt",
+ "لغو پیامک تبلیغاتی همه‌ی مراکز": "Werbe-SMS aller Zentren abbestellt",
+ "قواعد پیامک تبلیغاتی": "Regeln für Werbe-SMS",
+ "پیامک‌های تبلیغاتی (کمپین، خودکارسازی و ارسال تکی) فقط در این بازه به وقت تهران فرستاده می‌شوند؛ بیرون از آن تا شروع بازه‌ی بعد صبر می‌کنند. بازه‌ی هر کمپین یا خودکارسازی درون همین بازه است.": "Werbe-SMS (Kampagnen, Automatisierungen und Einzelversand) gehen nur in diesem Zeitfenster nach Teheraner Zeit raus; außerhalb warten sie auf das nächste Fenster. Das Fenster jeder Kampagne oder Automatisierung liegt darin.",
+ "شروع ارسال (ساعت تهران)": "Versandbeginn (Stunde, Teheran)",
+ "پایان ارسال (ساعت تهران)": "Versandende (Stunde, Teheran)",
+ "سقف روزانه‌ی هر حساب (تعداد پیامک، ۰ = بدون سقف)": "Tageslimit pro Konto (Anzahl SMS, 0 = kein Limit)",
+ "کمپینی که از این سقف بزرگ‌تر باشد ارسال نمی‌شود و اگر سهم امروز حساب پر باشد، فردا فرستاده می‌شود. قیمت هر بخش پیامک در تنظیمات مالی تعیین می‌شود.": "Eine Kampagne über diesem Limit wird nicht versendet; ist das heutige Kontingent des Kontos aufgebraucht, geht sie morgen raus. Der Preis eines SMS-Teils wird in den Finanzeinstellungen festgelegt.",
+ "برگشت به کیف پول (تومان)": "An das Wallet erstattet (Toman)",
+ "حالت آزمایشی: پیامک‌های این کمپین واقعاً فرستاده نشدند و فقط در لاگ سرور ثبت شدند.": "Testmodus: Die SMS dieser Kampagne wurden nicht wirklich versendet, nur ins Serverprotokoll geschrieben.",
+ "یادآوری تمدید دارو": "Erinnerung an Nachkauf",
+ "پیگیری پس از جواب آزمایش": "Nachfassen nach dem Befund",
+ "یادآوری آزمایش دوره‌ای": "Erinnerung an Kontrolltest",
+ "یادآوری تمدید بیمه": "Erinnerung an Verlängerung"
 }

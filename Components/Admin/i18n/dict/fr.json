@@ -3409,5 +3409,19 @@
  "تاریخ انقضای پروانه": "Date d'expiration de la licence",
  "ثبت نشده؛ هنگام تأیید وارد کنید": "Non renseignée ; saisissez-la lors de l'approbation",
  "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Cette demande a été envoyée avant que la date d'expiration ne soit obligatoire. Saisissez la date d'expiration de la licence d'après le document ; sans elle, la demande ne peut pas être approuvée.",
- "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Changer le numéro de licence retire le badge vérifié ; après l'enregistrement, vérifiez à nouveau la nouvelle licence avec ses dates."
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Changer le numéro de licence retire le badge vérifié ; après l'enregistrement, vérifiez à nouveau la nouvelle licence avec ses dates.",
+ "لغو پیامک تبلیغاتی این مرکز": "Désinscription des SMS publicitaires de ce centre",
+ "لغو پیامک تبلیغاتی همه‌ی مراکز": "Désinscription des SMS publicitaires de tous les centres",
+ "قواعد پیامک تبلیغاتی": "Règles des SMS publicitaires",
+ "پیامک‌های تبلیغاتی (کمپین، خودکارسازی و ارسال تکی) فقط در این بازه به وقت تهران فرستاده می‌شوند؛ بیرون از آن تا شروع بازه‌ی بعد صبر می‌کنند. بازه‌ی هر کمپین یا خودکارسازی درون همین بازه است.": "Les SMS publicitaires (campagnes, automatisations et envois unitaires) partent uniquement dans cette plage, heure de Téhéran ; en dehors, ils attendent la plage suivante. La plage de chaque campagne ou automatisation est comprise dans celle-ci.",
+ "شروع ارسال (ساعت تهران)": "Début d'envoi (heure de Téhéran)",
+ "پایان ارسال (ساعت تهران)": "Fin d'envoi (heure de Téhéran)",
+ "سقف روزانه‌ی هر حساب (تعداد پیامک، ۰ = بدون سقف)": "Plafond quotidien par compte (nombre de SMS, 0 = aucun)",
+ "کمپینی که از این سقف بزرگ‌تر باشد ارسال نمی‌شود و اگر سهم امروز حساب پر باشد، فردا فرستاده می‌شود. قیمت هر بخش پیامک در تنظیمات مالی تعیین می‌شود.": "Une campagne dépassant ce plafond n'est pas envoyée ; si la part du jour du compte est épuisée, elle part demain. Le prix d'une partie de SMS se règle dans les paramètres financiers.",
+ "برگشت به کیف پول (تومان)": "Remboursé au portefeuille (tomans)",
+ "حالت آزمایشی: پیامک‌های این کمپین واقعاً فرستاده نشدند و فقط در لاگ سرور ثبت شدند.": "Mode test : les SMS de cette campagne n'ont pas vraiment été envoyés, seulement écrits dans le journal du serveur.",
+ "یادآوری تمدید دارو": "Rappel de renouvellement",
+ "پیگیری پس از جواب آزمایش": "Suivi après le résultat",
+ "یادآوری آزمایش دوره‌ای": "Rappel d'analyse périodique",
+ "یادآوری تمدید بیمه": "Rappel de renouvellement"
 }

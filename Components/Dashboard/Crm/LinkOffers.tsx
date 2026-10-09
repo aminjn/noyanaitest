@@ -43,7 +43,7 @@ type LinkSource = "manual" | "csv" | "webform" | "visit" | "merge";
 type HistoryRow = {
   _id: string;
   at: string;
-  action: "offered" | "linked" | "declined" | "dismissed-later" | "unlinked" | "withdrawn";
+  action: "offered" | "linked" | "declined" | "dismissed-later" | "unlinked" | "withdrawn" | "smsOptOut" | "smsOptOutAll";
   actor: "patient" | "system";
   source: LinkSource;
   centre: string;
@@ -73,6 +73,8 @@ const ACTION_KEY: Record<HistoryRow["action"], string> = {
   "dismissed-later": "clkAct_later",
   unlinked: "clkAct_unlinked",
   withdrawn: "clkAct_withdrawn",
+  smsOptOut: "clkAct_smsOptOut",
+  smsOptOutAll: "clkAct_smsOptOutAll",
 };
 
 export const OFFERS_KEY = `${API}/user/crm/link-offers`;

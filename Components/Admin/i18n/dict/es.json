@@ -3409,5 +3409,19 @@
  "تاریخ انقضای پروانه": "Fecha de vencimiento de la licencia",
  "ثبت نشده؛ هنگام تأیید وارد کنید": "No indicada; ingrésala al aprobar",
  "این درخواست پیش از اجباری شدن تاریخ انقضا ثبت شده است. تاریخ انقضای پروانه را از روی مدرک وارد کنید؛ بدون آن درخواست تأیید نمی‌شود.": "Esta solicitud se envió antes de que la fecha de vencimiento fuera obligatoria. Ingresa la fecha de vencimiento de la licencia según el documento; sin ella no se puede aprobar la solicitud.",
- "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Cambiar el número de licencia quita la insignia de verificación; después de guardar, verifica de nuevo la nueva licencia con sus fechas."
+ "تغییر شماره‌ی پروانه نشان تأیید را برمی‌دارد؛ پس از ذخیره، پروانه‌ی جدید را با تاریخ‌هایش دوباره تأیید کنید.": "Cambiar el número de licencia quita la insignia de verificación; después de guardar, verifica de nuevo la nueva licencia con sus fechas.",
+ "لغو پیامک تبلیغاتی این مرکز": "Baja de los SMS publicitarios de este centro",
+ "لغو پیامک تبلیغاتی همه‌ی مراکز": "Baja de los SMS publicitarios de todos los centros",
+ "قواعد پیامک تبلیغاتی": "Reglas de los SMS publicitarios",
+ "پیامک‌های تبلیغاتی (کمپین، خودکارسازی و ارسال تکی) فقط در این بازه به وقت تهران فرستاده می‌شوند؛ بیرون از آن تا شروع بازه‌ی بعد صبر می‌کنند. بازه‌ی هر کمپین یا خودکارسازی درون همین بازه است.": "Los SMS publicitarios (campañas, automatizaciones y envíos sueltos) solo salen en esta franja, hora de Teherán; fuera de ella esperan a que empiece la siguiente. La franja de cada campaña o automatización está dentro de esta.",
+ "شروع ارسال (ساعت تهران)": "Inicio del envío (hora de Teherán)",
+ "پایان ارسال (ساعت تهران)": "Fin del envío (hora de Teherán)",
+ "سقف روزانه‌ی هر حساب (تعداد پیامک، ۰ = بدون سقف)": "Límite diario por cuenta (número de SMS, 0 = sin límite)",
+ "کمپینی که از این سقف بزرگ‌تر باشد ارسال نمی‌شود و اگر سهم امروز حساب پر باشد، فردا فرستاده می‌شود. قیمت هر بخش پیامک در تنظیمات مالی تعیین می‌شود.": "Una campaña mayor que este límite no se envía y, si la cuota de hoy de la cuenta está agotada, sale mañana. El precio de cada parte de SMS se fija en los ajustes financieros.",
+ "برگشت به کیف پول (تومان)": "Devuelto al monedero (tomanes)",
+ "حالت آزمایشی: پیامک‌های این کمپین واقعاً فرستاده نشدند و فقط در لاگ سرور ثبت شدند.": "Modo de prueba: los SMS de esta campaña no se enviaron de verdad, solo se escribieron en el registro del servidor.",
+ "یادآوری تمدید دارو": "Recordatorio de reposición",
+ "پیگیری پس از جواب آزمایش": "Seguimiento tras el resultado",
+ "یادآوری آزمایش دوره‌ای": "Recordatorio de análisis periódico",
+ "یادآوری تمدید بیمه": "Recordatorio de renovación"
 }

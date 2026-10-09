@@ -1,5 +1,5 @@
 "use client";
-import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
+import { fromTehranWallClock, TEHRAN_TZ } from "@/Components/helpers/tehranTime";
 
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { useIntlLocale } from "@/Components/i18n/navigation";
@@ -11,6 +11,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { NodeWithAcl } from "@/Components/_Common/SecretaryManager/Request/CreateSecretaryRequestPopup";
 import { asArray } from "../bizShared";
+import { CrmProfile, isProfile } from "./Service/profiles";
 
 // Shared bits of the Noyan Business CRM section «ارتباط با بیماران»
 // (2026-10, /<panel>/crm/...): which API it talks to (/<panel>/crm), the
@@ -28,7 +29,7 @@ export const useCrmText = () => {
   return useCallback((key: string, vars?: string[]) => t(key as ContentKey, vars), [t]);
 };
 
-export type CrmSource = "visit" | "order" | "manual" | "import";
+export type CrmSource = "visit" | "order" | "manual" | "import" | "member";
 export type CrmInsurer = "tamin" | "salamat" | "armed" | "other" | "none";
 
 export type CrmContact = {
@@ -54,6 +55,8 @@ export type CrmContact = {
   lastVisitAt?: string;
   lastNoShowAt?: string;
   smsOptOut: boolean;
+  // an insurer's member: their card's last day with this insurer
+  memberUntil?: string;
   isActive: boolean;
   createdAt?: string;
 };
@@ -146,6 +149,8 @@ export type CrmCampaign = {
   fromWallet: number;
   charged: number;
   refunded: number;
+  // development: only written to the server log, charged like a real send
+  simulated?: boolean;
   createdAt: string;
 };
 
@@ -163,6 +168,9 @@ export type CrmEstimate = {
   affordable: boolean;
   preview: string;
   sample: string[];
+  // the super admin's send window (Tehran hours) and daily cap (0 = none)
+  window?: [number, number];
+  dailyCap?: number;
 };
 
 export type CrmTemplateStatus = "Draft" | "Pending" | "Approved" | "Rejected";
@@ -170,14 +178,27 @@ export type CrmTemplate = {
   _id: string;
   name: string;
   text: string;
-  category: "general" | "recall" | "thanks" | "birthday" | "noShow" | "winback" | "chronic";
+  category: "general" | CrmAutomationKind;
   status: CrmTemplateStatus;
   rejectReason?: string;
   automations?: number;
   createdAt: string;
 };
 
-export type CrmAutomationKind = "recall" | "thanks" | "birthday" | "noShow" | "winback" | "chronic";
+export type CrmAutomationKind = "recall" | "thanks" | "birthday" | "noShow" | "winback" | "chronic" | "refill" | "resultFollowUp" | "testRecall" | "renewal";
+
+// The ready-made journeys each profile has (the backend's
+// Lib/business/crmProfiles.ts AUTOMATION_KINDS - keep the two in step): a
+// pharmacy and a lab have orders, not visits, and an insurer has members.
+export const AUTOMATION_KINDS: Record<CrmProfile, CrmAutomationKind[]> = {
+  doctor: ["recall", "thanks", "birthday", "noShow", "winback", "chronic"],
+  clinic: ["recall", "thanks", "birthday", "noShow", "winback", "chronic"],
+  hospital: ["recall", "thanks", "birthday", "noShow", "winback", "chronic"],
+  pharmacy: ["refill", "birthday", "winback"],
+  paraClinic: ["resultFollowUp", "testRecall", "birthday", "winback"],
+  insurance: ["renewal", "birthday"],
+};
+export const automationKindsOf = (node: string) => AUTOMATION_KINDS[isProfile(node) ? node : "clinic"];
 export type CrmAutomation = {
   _id: string;
   kind: CrmAutomationKind;
@@ -235,6 +256,7 @@ export const sourceKey: Record<CrmSource, string> = {
   order: "crmSourceOrder",
   manual: "crmSourceManual",
   import: "crmSourceImport",
+  member: "crmSourceMember",
 };
 
 export const insurerKey: Record<CrmInsurer, string> = {
@@ -262,13 +284,19 @@ export const templateStatusKey: Record<CrmTemplateStatus, string> = {
   Approved: "crmTplApproved",
 };
 
-export const automationKey: Record<CrmAutomationKind, { title: string; hint: string; unit: "days" | "hours" }> = {
+// unit: the delay's; `delayKey` / `afterKey`: the editor's field and the
+// card's summary where the journey is not "after a visit"
+export const automationKey: Record<CrmAutomationKind, { title: string; hint: string; unit: "days" | "hours"; delayKey?: string; afterKey?: string }> = {
   recall: { title: "crmAutoRecall", hint: "crmAutoRecallHint", unit: "days" },
   thanks: { title: "crmAutoThanks", hint: "crmAutoThanksHint", unit: "hours" },
   birthday: { title: "crmAutoBirthday", hint: "crmAutoBirthdayHint", unit: "days" },
   noShow: { title: "crmAutoNoShow", hint: "crmAutoNoShowHint", unit: "hours" },
   winback: { title: "crmAutoWinback", hint: "crmAutoWinbackHint", unit: "days" },
   chronic: { title: "crmAutoChronic", hint: "crmAutoChronicHint", unit: "days" },
+  refill: { title: "crmAutoRefill", hint: "crmAutoRefillHint", unit: "days", delayKey: "crmAutoDelayOrder", afterKey: "crmAutoAfterOrder" },
+  resultFollowUp: { title: "crmAutoResultFollowUp", hint: "crmAutoResultFollowUpHint", unit: "hours", delayKey: "crmAutoDelayResultHours", afterKey: "crmAutoAfterResultHours" },
+  testRecall: { title: "crmAutoTestRecall", hint: "crmAutoTestRecallHint", unit: "days", delayKey: "crmAutoDelayResultDays", afterKey: "crmAutoAfterResultDays" },
+  renewal: { title: "crmAutoRenewal", hint: "crmAutoRenewalHint", unit: "days", delayKey: "crmAutoDelayRenewal", afterKey: "crmAutoBeforeRenewal" },
 };
 
 export const presetKey: Record<string, string> = {
@@ -302,15 +330,33 @@ export const errText = (err: unknown) => (err as Error)?.message || String(err);
 // the variables a template may use, as the panel shows them
 export const smsVars = ["name", "firstName", "org", "link", "review", "lastVisit"] as const;
 
-// characters and SMS parts of a text (Persian: 70 a part, 67 when split;
-// Latin: 160 / 153) - the backend counts the final text the same way
+// characters and SMS parts of a text (Persian: 70 a part, 67 when split,
+// in UTF-16 units - an emoji takes two; Latin: 160 / 153, where
+// ^ { } \ [ ] ~ | € take two) - the backend counts the final text the same
+// way (Lib/business/crmSend.ts smsParts)
 const GSM = /^[\n\r @£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!"#¤%&'()*+,\-./0-9:;<=>?¡A-ZÄÖÑÜ§¿a-zäöñüà^{}\\[~\]|€]*$/;
+const GSM_EXT = /[\^{}\\[\]~|€]/g;
 export const smsCount = (text: string) => {
-  const len = Array.from(text).length;
   const ucs = !GSM.test(text);
+  const len = ucs ? text.length : text.length + (text.match(GSM_EXT)?.length || 0);
   const [one, many] = ucs ? [70, 67] : [160, 153];
   const parts = !len ? 0 : len <= one ? 1 : Math.ceil(len / many);
   return { len, parts, perPart: parts > 1 ? many : one, ucs };
+};
+
+// The super admin's rules for advertising SMS (backend Lib/smsPolicy.ts):
+// the Tehran hours they may leave in and the daily cap per account (0 =
+// none). 08-21 until it loads.
+export type SmsPolicy = { window: [number, number]; dailyCap: number };
+export const useSmsPolicy = (): SmsPolicy => {
+  const { api } = useCrm();
+  const { data } = useSWR<SmsPolicy | null>(`${API}${api}/sms-policy`, (url: string) =>
+    fetcher({ url })
+      .then((res) => (res?.data as SmsPolicy) || null)
+      .catch(() => null),
+  );
+  const w = Array.isArray(data?.window) && data!.window.length === 2 ? data!.window : ([8, 21] as [number, number]);
+  return { window: [Number(w[0]) || 0, Number(w[1]) || 24], dailyCap: Math.max(0, Number(data?.dailyCap) || 0) };
 };
 
 // a rule set has anything in it
@@ -331,7 +377,8 @@ export const usePercent = () => {
 export const useHourLabel = () => {
   const tag = useIntlLocale();
   return useMemo(() => {
+    // an hour of the Tehran day, whatever the browser's own zone
     const fmt = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, hour: "2-digit", minute: "2-digit", hour12: false });
-    return (h: number) => fmt.format(new Date(2000, 0, 1, h, 0));
+    return (h: number) => fmt.format(fromTehranWallClock("2000-01-01", (h % 24) * 60));
   }, [tag]);
 };

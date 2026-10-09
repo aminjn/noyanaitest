@@ -30,12 +30,15 @@ import {
   useCrmTemplates,
   useCrmText,
   useHourLabel,
+  useSmsPolicy,
 } from "./crmShared";
 import CrmRulesForm from "./CrmRulesForm";
 import SmsTextField from "./SmsTextField";
 
 const POPUP = "CrmCampaign";
-const HOURS = Array.from({ length: 14 }, (_, i) => 8 + i);
+// the hours from..until of the super admin's send window
+const hoursOf = ([from, until]: [number, number]) => Array.from({ length: Math.max(1, until - from + 1) }, (_, i) => from + i);
+const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 export const campaignTone = (s: CrmCampaign["status"]) =>
   s === "Sent" || s === "Approved" ? crm.badgeOk : s === "Rejected" ? crm.badgeBad : s === "Pending" ? crm.badgeWarn : "";
@@ -47,7 +50,7 @@ const modeKey: Record<Mode, string> = { segment: "crmNavSegments", rules: "crmAu
 // variables and the tracked link), the audience - a segment, rules or a
 // hand-picked selection, always only this centre's own patients who have
 // not opted out - when to send (now or a chosen day and hour, inside its
-// own window within 08-21), and a live estimate of reach and cost against
+// own window within the super admin's), and a live estimate of reach and cost against
 // the plan's quota and the wallet. Saved as a draft; "send for approval"
 // puts it in the super admin's queue.
 const CampaignForm = ({
@@ -67,6 +70,9 @@ const CampaignForm = ({
   const pushNotification = useNotification();
   const { data: templates } = useCrmTemplates();
   const hourLabel = useHourLabel();
+  const policy = useSmsPolicy();
+  const [w0, w1] = policy.window;
+  const HOURS = hoursOf(policy.window);
   const { data: segs } = useSWR<{ presets: CrmSegment[]; saved: CrmSegment[] }>(`${API}${api}/segments`, (url: string) =>
     fetcher({ url }).then((res) => res.data as { presets: CrmSegment[]; saved: CrmSegment[] }),
   );
@@ -84,11 +90,16 @@ const CampaignForm = ({
     return { ...emptyRules(), ...r };
   });
   const [later, setLater] = useState(!!campaign?.sendAt);
-  // the send day and hour are Tehran's (the send window is 08-21 Tehran)
+  // the send day and hour are Tehran's (the send window is the super
+  // admin's, in Tehran hours)
   const [day, setDay] = useState<Date | null>(campaign?.sendAt ? tehranNoon(tehranYmd(campaign.sendAt)) : null);
   const [hour, setHour] = useState(campaign?.sendAt ? tehranParts(campaign.sendAt).hour : 10);
-  const [wFrom, setWFrom] = useState(campaign?.windowFrom ?? 8);
-  const [wUntil, setWUntil] = useState(campaign?.windowUntil ?? 21);
+  const [wFromRaw, setWFrom] = useState(campaign?.windowFrom ?? 0);
+  const [wUntilRaw, setWUntil] = useState(campaign?.windowUntil ?? 24);
+  // the own window, always inside the platform's (the backend clamps too)
+  const wFrom = clamp(wFromRaw, w0, w1 - 1);
+  const wUntil = clamp(wUntilRaw, w0 + 1, w1);
+  const sendHour = clamp(hour, w0, w1 - 1);
   const [estimate, setEstimate] = useState<CrmEstimate | null>(null);
   const [busy, setBusy] = useState(false);
   // a preset segment is sent as its rules (it is not stored)
@@ -117,9 +128,11 @@ const CampaignForm = ({
   }, [api, key, text]);
   const sendAt = (() => {
     if (!later || !day) return null;
-    return fromTehranWallClock(tehranYmd(day), hour * 60).toISOString();
+    return fromTehranWallClock(tehranYmd(day), sendHour * 60).toISOString();
   })();
   const valid = name.trim().length >= 2 && text.trim().length >= 5 && (mode !== "segment" || !!segment) && wUntil > wFrom && (!later || !!sendAt);
+  // a campaign is never split across days: one above the cap cannot go out
+  const overCap = policy.dailyCap > 0 && (estimate?.recipients || 0) > policy.dailyCap;
   const pickTemplate = (id: string) => {
     setTemplate(id);
     const tx = asArray<{ _id: string; text: string }>(templates).find((x) => x._id === id)?.text;
@@ -228,7 +241,7 @@ const CampaignForm = ({
                     </div>
                     <label className={classes.field}>
                       {t("crmSendHour")}
-                      <select value={hour} onChange={(e) => setHour(Number(e.target.value))}>
+                      <select value={sendHour} onChange={(e) => setHour(Number(e.target.value))}>
                         {HOURS.slice(0, -1).map((h) => (
                           <option key={h} value={h}>
                             {hourLabel(h)}
@@ -259,7 +272,7 @@ const CampaignForm = ({
                   </select>
                 </label>
               </div>
-              <p className={classes.muted}>{t("crmWindowHint")}</p>
+              <p className={classes.muted}>{t("crmWindowHint", [hourLabel(w0), hourLabel(w1)])}</p>
             </section>
           </div>
           <aside className={crm.estimate}>
@@ -287,7 +300,10 @@ const CampaignForm = ({
             )}
             {!!estimate?.sample?.length && <p className={classes.muted}>{t("crmSampleRecipients", [estimate.sample.join("، ")])}</p>}
             {!!estimate && !estimate.affordable && <p className={crm.reject}>{t("crmNotAffordable", [f.money(estimate.balance)])}</p>}
-            <p className={classes.muted}>{t("crmApprovalHint")}</p>
+            {policy.dailyCap > 0 && (
+              <p className={overCap ? crm.reject : classes.muted}>{t("crmDailyCapHint", [f.money(policy.dailyCap)])}</p>
+            )}
+            <p className={classes.muted}>{t("crmApprovalHint", [hourLabel(w0), hourLabel(w1)])}</p>
           </aside>
         </div>
         <div className={classes.actions}>
@@ -301,7 +317,7 @@ const CampaignForm = ({
             <button
               type="button"
               className={classes.primary}
-              disabled={busy || !valid || !estimate?.recipients || !estimate.affordable}
+              disabled={busy || !valid || !estimate?.recipients || !estimate.affordable || overCap}
               onClick={() => save(true)}
             >
               {t("crmSubmit")}
@@ -318,6 +334,8 @@ const CrmCampaigns = () => {
   const f = useBizFormat();
   const ctx = useCrm();
   const search = useSearchParams();
+  const hourLabel = useHourLabel();
+  const policy = useSmsPolicy();
   const { setPopup } = usePopup();
   const pushNotification = useNotification();
   const { data, error, mutate } = useSWR<CrmCampaign[]>(`${API}${ctx.api}/campaigns`, (url: string) =>
@@ -362,7 +380,7 @@ const CrmCampaigns = () => {
           </button>
         )}
       </div>
-      <p className={classes.muted}>{t("crmCampaignsHint")}</p>
+      <p className={classes.muted}>{t("crmCampaignsHint", [hourLabel(policy.window[0]), hourLabel(policy.window[1])])}</p>
       <HandleLoading data={!!data} error={error}>
         {!!data &&
           (rows.length === 0 ? (

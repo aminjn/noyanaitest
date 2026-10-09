@@ -10,14 +10,14 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import classes from "../Accounting.module.css";
 import crm from "./Crm.module.css";
 import { asArray } from "../bizShared";
-import { automationKey, CrmContext, CrmTemplate, errText, templateStatusKey, useCrm, useCrmTemplates, useCrmText } from "./crmShared";
+import { automationKey, automationKindsOf, CrmContext, CrmTemplate, errText, templateStatusKey, useCrm, useCrmTemplates, useCrmText } from "./crmShared";
 import SmsTextField from "./SmsTextField";
 import CrmAiWrite from "./CrmAiWrite";
 
 const POPUP = "CrmTemplate";
-const CATEGORIES: CrmTemplate["category"][] = ["general", "recall", "thanks", "birthday", "noShow", "winback", "chronic"];
-// the starter texts offered for each journey (written in the panel's language)
-const STARTERS: CrmTemplate["category"][] = ["recall", "thanks", "birthday", "noShow", "winback", "chronic"];
+// a template's category is one of the profile's own journeys, or general;
+// the starter texts are offered for each journey (in the panel's language)
+const categoriesOf = (node: string): CrmTemplate["category"][] => ["general", ...automationKindsOf(node)];
 const starterKey: Record<string, string> = {
   recall: "crmStarterRecall",
   thanks: "crmStarterThanks",
@@ -25,10 +25,14 @@ const starterKey: Record<string, string> = {
   noShow: "crmStarterNoShow",
   winback: "crmStarterWinback",
   chronic: "crmStarterChronic",
+  refill: "crmStarterRefill",
+  resultFollowUp: "crmStarterResultFollowUp",
+  testRecall: "crmStarterTestRecall",
+  renewal: "crmStarterRenewal",
 };
 
 // a category's name: a journey's own (the automation of the same kind), or "general"
-const catKey = (c: CrmTemplate["category"]) => (c === "general" ? "crmTplGeneral" : automationKey[c].title);
+const catKey = (c: CrmTemplate["category"]) => (c === "general" ? "crmTplGeneral" : automationKey[c]?.title || "crmTplGeneral");
 
 const tone = (s: CrmTemplate["status"]) => (s === "Approved" ? crm.badgeOk : s === "Rejected" ? crm.badgeBad : s === "Pending" ? crm.badgeWarn : "");
 
@@ -76,7 +80,7 @@ const TemplateForm = ({ template, starter, onDone }: { template?: CrmTemplate; s
           <label className={classes.field}>
             {t("crmTplCategory")}
             <select value={category} onChange={(e) => setCategory(e.target.value as CrmTemplate["category"])}>
-              {CATEGORIES.map((c) => (
+              {Array.from(new Set([...categoriesOf(node), category])).map((c) => (
                 <option key={c} value={c}>
                   {t(catKey(c))}
                 </option>
@@ -89,7 +93,7 @@ const TemplateForm = ({ template, starter, onDone }: { template?: CrmTemplate; s
           onText={(r) => {
             setText(r.text);
             if (!name.trim()) setName(r.name);
-            if (!template && CATEGORIES.includes(r.category as CrmTemplate["category"])) setCategory(r.category as CrmTemplate["category"]);
+            if (!template && categoriesOf(node).includes(r.category as CrmTemplate["category"])) setCategory(r.category as CrmTemplate["category"]);
           }}
         />
         <SmsTextField value={text} onChange={setText} label={t("crmCampaignText")} />
@@ -208,7 +212,7 @@ const CrmTemplates = () => {
           <span className={classes.cardTitle}>{t("crmStarters")}</span>
           <p className={classes.muted}>{t("crmStartersHint")}</p>
           <ul className={crm.segGrid}>
-            {STARTERS.map((c) => (
+            {automationKindsOf(ctx.node).map((c) => (
               <li key={c} className={crm.segCard}>
                 <span className={crm.segName}>{t(catKey(c))}</span>
                 <p className={crm.tplText} dir="auto">

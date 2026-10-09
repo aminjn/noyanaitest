@@ -44,6 +44,10 @@ const kindLabels: Record<string, () => string> = {
   noShow: () => ta("پیگیری نوبت ازدست‌رفته"),
   winback: () => ta("بازگرداندن بیمار غایب"),
   chronic: () => ta("پیگیری بیماران مزمن"),
+  refill: () => ta("یادآوری تمدید دارو"),
+  resultFollowUp: () => ta("پیگیری پس از جواب آزمایش"),
+  testRecall: () => ta("یادآوری آزمایش دوره‌ای"),
+  renewal: () => ta("یادآوری تمدید بیمه"),
 };
 
 const ApproveButton = ({ id, mutate }: { id: string; mutate: () => unknown }) => {

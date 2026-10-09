@@ -28,6 +28,8 @@ import {
   useCrmTeam,
   useCrmTemplates,
   useCrmText,
+  useHourLabel,
+  useSmsPolicy,
 } from "./crmShared";
 import { TagPicker } from "./CrmRulesForm";
 import ContactSalesCard from "../CrmSales/ContactSalesCard";
@@ -61,6 +63,8 @@ export const SendSms = ({ contact, onDone }: { contact: CrmContact; onDone: () =
   const { closePopup } = usePopup();
   const pushNotification = useNotification();
   const { data: templates } = useCrmTemplates();
+  const hourLabel = useHourLabel();
+  const policy = useSmsPolicy();
   const approved = asArray<{ _id: string; name: string; text: string; status: string }>(templates).filter((x) => x.status === "Approved");
   const [tpl, setTpl] = useState("");
   const [preview, setPreview] = useState<{ preview: string; parts: number } | null>(null);
@@ -111,7 +115,7 @@ export const SendSms = ({ contact, onDone }: { contact: CrmContact; onDone: () =
             <span className={classes.muted}>{t("crmPartsN", [f.money(preview.parts)])}</span>
           </div>
         )}
-        <p className={classes.muted}>{t("crmSmsCostHint")}</p>
+        <p className={classes.muted}>{t("crmSmsCostHint", [hourLabel(policy.window[0]), hourLabel(policy.window[1])])}</p>
         <div className={classes.actions}>
           <button type="button" className={classes.ghost} onClick={() => closePopup(SMS_POPUP)}>
             {t("bizCancel")}
@@ -307,6 +311,7 @@ const CrmContactProfile = ({ id }: { id: string }) => {
                 </bdi>
                 <span className={crm.tags}>
                   <span className={classes.badge}>{t(sourceKey[c.source] || "crmSourceManual")}</span>
+                  {!!c.memberUntil && <span className={classes.badge}>{t("crmMemberUntil", [f.date(c.memberUntil)])}</span>}
                   {c.smsOptOut && <span className={`${classes.badge} ${crm.badgeMuted}`}>{t("crmOptedOutBadge")}</span>}
                   {!c.isActive && <span className={`${classes.badge} ${crm.badgeMuted}`}>{t("crmInactive")}</span>}
                   {!!link && link.status !== "none" && (
