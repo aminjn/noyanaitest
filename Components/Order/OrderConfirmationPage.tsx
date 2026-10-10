@@ -347,11 +347,9 @@ const testNamesOf = (order: OrderNode, samplingId: string) =>
 // (2026-10, backend Lib/orderPromoRecheck.ts) a partial cancel that left
 // the rest of the order short of its discount code: what was kept back
 // from the refunds, and why
-type PromoClawbackReason = "minOrder" | "noEligible" | "recomputed";
+type PromoClawbackReason = "minOrder";
 const clawbackKey: Record<PromoClawbackReason, ContentKey> = {
   minOrder: "promoClawbackMinOrder",
-  noEligible: "promoClawbackNoEligible",
-  recomputed: "promoClawbackRecomputed",
 };
 const promoClawbackOf = (order?: OrderNode | null) => {
   let amount = 0;
@@ -367,7 +365,7 @@ const promoClawbackOf = (order?: OrderNode | null) => {
         reason = l.promoClawbackReason as PromoClawbackReason;
     }
   }
-  return { amount, reason: reason || ("recomputed" as PromoClawbackReason) };
+  return { amount, reason: reason || ("minOrder" as PromoClawbackReason) };
 };
 
 type CancelPreview = { refund?: number; clawback?: number; reason?: PromoClawbackReason | null; total?: number; partial?: boolean; promoTitle?: string };
@@ -795,7 +793,7 @@ const OrderConfirmationPage = () => {
                 if (preview && Number(preview.total) > 0)
                   lines.push(getContent("cancelPreviewRefund", [currencize(Number(preview.total))]));
                 if (preview && Number(preview.clawback) > 0) {
-                  const reason = preview.reason && preview.reason in clawbackKey ? preview.reason : "recomputed";
+                  const reason = preview.reason && preview.reason in clawbackKey ? preview.reason : "minOrder";
                   lines.push(
                     getContent(clawbackKey[reason], [
                       preview.promoTitle || order.promo?.code || "",
@@ -805,7 +803,7 @@ const OrderConfirmationPage = () => {
                 }
                 setPopup(
                   "CancelOrder",
-                  <ConfirmationPopup message={lines.join(" ")} isLoading={cancelling} onConfirm={cancelOrder} />,
+                  <ConfirmationPopup message={lines.join("\n\n")} isLoading={cancelling} onConfirm={cancelOrder} />,
                 );
               }}
             >

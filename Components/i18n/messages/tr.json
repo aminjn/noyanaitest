@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "Siparişin bir kısmı iptal edildikten sonra kalan ürünlerden kod indiriminin ${1} tümeni kaldırıldı (kalan kısım artık kodun şartlarını karşılamıyor).",
  "moneyEstimatedNote": "Açık kalemlerin komisyonu ve ödemesi bugünkü orana göre tahminidir; her kalem tamamlandığında kesinleşir.",
  "promoClawbackMinOrder": "Siparişinizin kalanı “${1}” kodunun alt sınırının altında; bu yüzden kalan ürünlerdeki ${2} tümenlik indirimi artık geçerli değil ve iadeden düşülür.",
- "promoClawbackNoEligible": "Siparişinizde “${1}” kodunun kapsadığı ürün kalmadı; bu yüzden ${2} tümenlik indirimi artık geçerli değil ve iadeden düşülür.",
- "promoClawbackRecomputed": "“${1}” kodu siparişinizin kalanında daha az indirim sağlıyor; önceki indirimin ${2} tümeni iadeden düşülür.",
  "cancelPreviewRefund": "${1} tümen cüzdanınıza geri dönecek."
 }

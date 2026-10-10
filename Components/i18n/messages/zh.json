@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "部分订单取消后，剩余商品上的 ${1} 托曼折扣码优惠已被取消（剩余部分不再满足折扣码条件）。",
  "moneyEstimatedNote": "未完成商品的佣金和结算额按今日费率预估，每件商品完成后确定。",
  "promoClawbackMinOrder": "您剩余的订单低于折扣码“${1}”的最低金额，因此剩余商品上 ${2} 托曼的折扣不再适用，将从退款中扣除。",
- "promoClawbackNoEligible": "您的订单中已没有折扣码“${1}”适用的商品，因此 ${2} 托曼的折扣不再适用，将从退款中扣除。",
- "promoClawbackRecomputed": "折扣码“${1}”对您剩余订单的折扣较少；之前折扣中的 ${2} 托曼将从退款中扣除。",
  "cancelPreviewRefund": "${1} 托曼将退回您的钱包。"
 }

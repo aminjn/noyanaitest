@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "Après l'annulation d'une partie de la commande, ${1} tomans de la remise du code ont été retirés des articles restants (le reste ne remplit plus ses conditions).",
  "moneyEstimatedNote": "La commission et le versement des articles en cours sont estimés au taux du jour et deviennent définitifs à la livraison de chaque article.",
  "promoClawbackMinOrder": "Le reste de votre commande est sous le minimum du code « ${1} » : sa remise de ${2} tomans sur les articles restants ne s'applique plus et est déduite du remboursement.",
- "promoClawbackNoEligible": "Il ne reste plus d'article couvert par le code « ${1} » dans votre commande : sa remise de ${2} tomans ne s'applique plus et est déduite du remboursement.",
- "promoClawbackRecomputed": "Le code « ${1} » donne une remise plus faible sur le reste de votre commande ; ${2} tomans de la remise précédente sont déduits du remboursement.",
  "cancelPreviewRefund": "${1} tomans reviendront dans votre portefeuille."
 }

@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "Após o cancelamento de parte do pedido, ${1} tomans do desconto do cupom foram retirados dos itens restantes (o restante não cumpre mais as condições).",
  "moneyEstimatedNote": "A comissão e o repasse dos itens em aberto são estimados pela taxa de hoje e ficam definitivos quando cada item é concluído.",
  "promoClawbackMinOrder": "O restante do seu pedido está abaixo do mínimo do cupom “${1}”, então o desconto de ${2} tomans nos itens restantes deixa de valer e é descontado do reembolso.",
- "promoClawbackNoEligible": "Não resta no seu pedido nenhum item coberto pelo cupom “${1}”, então o desconto de ${2} tomans deixa de valer e é descontado do reembolso.",
- "promoClawbackRecomputed": "O cupom “${1}” dá um desconto menor sobre o restante do seu pedido; ${2} tomans do desconto anterior são descontados do reembolso.",
  "cancelPreviewRefund": "${1} tomans voltarão para sua carteira."
 }

@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "Nach der Teilstornierung wurden ${1} Toman des Code-Rabatts von den übrigen Artikeln entfernt (der Rest erfüllt die Bedingungen des Codes nicht mehr).",
  "moneyEstimatedNote": "Provision und Auszahlung offener Artikel sind zum heutigen Satz geschätzt und werden mit der Erfüllung jedes Artikels endgültig.",
  "promoClawbackMinOrder": "Ihre restliche Bestellung liegt unter dem Mindestwert für den Code „${1}“; sein Rabatt von ${2} Toman auf die übrigen Artikel entfällt und wird von der Erstattung abgezogen.",
- "promoClawbackNoEligible": "In Ihrer Bestellung ist kein Artikel mehr, für den der Code „${1}“ gilt; sein Rabatt von ${2} Toman entfällt und wird von der Erstattung abgezogen.",
- "promoClawbackRecomputed": "Der Code „${1}“ ergibt auf Ihre restliche Bestellung weniger Rabatt; ${2} Toman des bisherigen Rabatts werden von der Erstattung abgezogen.",
  "cancelPreviewRefund": "${1} Toman gehen zurück in Ihr Wallet."
 }

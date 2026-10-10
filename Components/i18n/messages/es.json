@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "Tras cancelar parte del pedido, se retiraron ${1} tomanes del descuento del código en los artículos restantes (el resto ya no cumple sus condiciones).",
  "moneyEstimatedNote": "La comisión y el pago de los artículos abiertos se estiman con la tarifa de hoy y son definitivos al completarse cada artículo.",
  "promoClawbackMinOrder": "El resto de su pedido no alcanza el mínimo del código “${1}”, así que su descuento de ${2} tomanes en los artículos restantes deja de aplicarse y se descuenta del reembolso.",
- "promoClawbackNoEligible": "No queda en su pedido ningún artículo cubierto por el código “${1}”, así que su descuento de ${2} tomanes deja de aplicarse y se descuenta del reembolso.",
- "promoClawbackRecomputed": "El código “${1}” da menos descuento sobre el resto de su pedido; ${2} tomanes del descuento anterior se descuentan del reembolso.",
  "cancelPreviewRefund": "${1} tomanes volverán a su monedero."
 }

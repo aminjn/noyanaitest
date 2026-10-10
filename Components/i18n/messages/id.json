@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "Setelah sebagian pesanan dibatalkan, ${1} toman diskon kode dihapus dari item tersisa (sisanya tidak lagi memenuhi syarat kode).",
  "moneyEstimatedNote": "Komisi dan pembayaran item terbuka diperkirakan dengan tarif hari ini dan menjadi final saat setiap item dipenuhi.",
  "promoClawbackMinOrder": "Sisa pesanan Anda di bawah minimum kode “${1}”, jadi diskon ${2} toman pada item tersisa tidak berlaku lagi dan dipotong dari pengembalian dana.",
- "promoClawbackNoEligible": "Tidak ada lagi item yang dicakup kode “${1}” di pesanan Anda, jadi diskon ${2} toman tidak berlaku lagi dan dipotong dari pengembalian dana.",
- "promoClawbackRecomputed": "Kode “${1}” memberi diskon lebih kecil pada sisa pesanan Anda; ${2} toman dari diskon sebelumnya dipotong dari pengembalian dana.",
  "cancelPreviewRefund": "${1} toman akan kembali ke dompet Anda."
 }

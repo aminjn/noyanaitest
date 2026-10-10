@@ -7397,7 +7397,5 @@
  "moneyPromoReducedNote": "After part of the order was cancelled, ${1} toman of the code discount was removed from the remaining items (the rest no longer met the code's terms).",
  "moneyEstimatedNote": "Commission and payout of open items are estimated at today's rate and become final when each item is fulfilled.",
  "promoClawbackMinOrder": "The rest of your order is below the minimum for code “${1}”, so its ${2} toman discount on the remaining items no longer applies and is deducted from the refund.",
- "promoClawbackNoEligible": "No item covered by code “${1}” is left in your order, so its ${2} toman discount no longer applies and is deducted from the refund.",
- "promoClawbackRecomputed": "Code “${1}” gives a smaller discount on the rest of your order; ${2} toman of the earlier discount is deducted from the refund.",
  "cancelPreviewRefund": "${1} toman will go back to your wallet."
 }
