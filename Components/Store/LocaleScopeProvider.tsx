@@ -2,6 +2,7 @@
 
 import { ReactNode, useContext } from "react";
 import LocaleContext from "./LocaleContext";
+import { readMessages } from "../i18n/messagesStore";
 import { ITextContent } from "../Admin/TextContent/AdminManageTextContentPage";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import { Locale, setSiteDefaultLocale } from "../i18n/locales";
@@ -32,7 +33,13 @@ const LocaleScopeProvider = ({
   return (
     <LocaleContext.Provider
       value={{
-        textContent: initialTextContent || parent.textContent,
+        // the root's texts come from the cached script / the server slot
+        // (Components/i18n/messagesStore.ts), never as a serialized prop
+        textContent:
+          initialTextContent ||
+          (Object.keys(parent.textContent || {}).length
+            ? parent.textContent
+            : (readMessages(locale) as Partial<ITextContent>)),
         locale,
         enabledLocales: enabledLocales || parent.enabledLocales,
         siteDefaultLocale: siteDefaultLocale || parent.siteDefaultLocale,
