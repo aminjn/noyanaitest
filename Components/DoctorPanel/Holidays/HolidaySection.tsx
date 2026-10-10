@@ -11,6 +11,7 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import Link from "@/Components/i18n/Link";
 import useDoctorHolidays, { DoctorHolidays } from "./useDoctorHolidays";
+import HolidayCalendar from "./HolidayCalendar";
 import classes from "./HolidaySection.module.css";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
@@ -28,6 +29,9 @@ const HolidaySection = () => {
   const pushNotification = useNotification();
   const { data, mutate } = useDoctorHolidays();
   const [busy, setBusy] = useState<string | null>(null);
+  // the calendar's month and the holiday tapped on it
+  const [month, setMonth] = useState(0);
+  const [picked, setPicked] = useState<string | null>(null);
   const fmt = useMemo(
     () => ({
       day: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric" }),
@@ -86,19 +90,26 @@ const HolidaySection = () => {
       <p className={classes.hint}>
         {getContent("holHint")} {getContent("holWorksSwitchHint")}
       </p>
-      {!list.length ? (
-        <div className={classes.empty}>
-          <p>{getContent("holEmpty", [data.horizonEnd ? fmt.full.format(tehranNoon(data.horizonEnd)) : "—"])}</p>
-          {!!data.next && (
-            <p className={classes.muted}>{getContent("holNext", [fmt.long.format(tehranNoon(data.next.ymd)), data.next.title])}</p>
-          )}
-        </div>
-      ) : (
-        <ul className={classes.list}>
-          {list.map((h) => {
+      <HolidayCalendar
+        holidays={list}
+        month={month}
+        onMonth={(i) => {
+          setMonth(i);
+          setPicked(null);
+        }}
+        onPick={(ymd) => {
+          setPicked(ymd);
+          document.getElementById(`hol-${ymd}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }}
+      >
+        {(days) =>
+          list.some((h) => days.has(h.ymd)) ? (
+            <ul className={classes.list}>
+          {list.filter((h) => days.has(h.ymd)).map((h) => {
             const at = tehranNoon(h.ymd);
             return (
-              <li key={h.ymd} className={`${classes.item} ${h.closed ? classes.itemClosed : classes.itemOpen}`}>
+              <li key={h.ymd} id={`hol-${h.ymd}`}
+                className={`${classes.item} ${h.closed ? classes.itemClosed : classes.itemOpen} ${picked === h.ymd ? classes.itemPicked : ""}`}>
                 <span className={classes.date} aria-hidden>
                   <b>{fmt.day.format(at)}</b>
                   <small>{fmt.month.format(at)}</small>
@@ -134,7 +145,19 @@ const HolidaySection = () => {
               </li>
             );
           })}
-        </ul>
+            </ul>
+          ) : (
+            <p className={classes.muted}>{getContent("holCalNoneHint")}</p>
+          )
+        }
+      </HolidayCalendar>
+      {!list.length && (
+        <div className={classes.empty}>
+          <p>{getContent("holEmpty", [data.horizonEnd ? fmt.full.format(tehranNoon(data.horizonEnd)) : "—"])}</p>
+          {!!data.next && (
+            <p className={classes.muted}>{getContent("holNext", [fmt.long.format(tehranNoon(data.next.ymd)), data.next.title])}</p>
+          )}
+        </div>
       )}
     </section>
   );

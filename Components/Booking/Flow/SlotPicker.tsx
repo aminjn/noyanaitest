@@ -286,6 +286,9 @@ const SlotPicker = ({
           )}
           {!!free.length && <span className={classes.freeCount}>{getContent("bfFreeCount", [nf.format(free.length)])}</span>}
           <TehranTimeHint ns={NS} className={classes.hintRow} />
+          {/* today's passed times are not offered: say so, the doctor's
+              full day otherwise looks shorter than the panel shows */}
+          {day === today && <small className={classes.hintRow}>{getContent("bfTodayPastHidden")}</small>}
         </div>
       )}
 

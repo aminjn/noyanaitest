@@ -210,6 +210,8 @@
 }
 .hintRow {
   flex-basis: 100%;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
 }
 .freeCount {
   padding: 0 var(--sp2);

@@ -35,6 +35,8 @@ export interface IOffice<
     : string;
   name?: string;
   address?: string;
+  // plaque, floor, unit: what the map pin can't tell
+  addressDetail?: string;
   tel?: string;
   order: number;
   active: boolean;

@@ -21,13 +21,25 @@ const DoctorMutateOfficePopup = ({ mutate }: { mutate: () => unknown }) => {
       <CreateForm<IOffice>
         // new offices are active by default (the backend does the same)
         defaultValue={{ active: true } as IOffice}
+        // the office and its place in one step (Doctolib / Paziresh24 ask
+        // for the address on the map when the practice is added): the pin
+        // fills the address, the doctor adds plaque / floor / unit by hand
         renderer={{
-          name: { type: "text", title: getContent("name") },
-          address: { type: "text", title: getContent("address") },
-          active: { title: getContent("isActive"), type: "bool" },
-          order: { title: getContent("order"), type: "number" },
-          tel: { title: getContent("telephone"), type: "text" },
-          ...centerFields,
+          name: { type: "text", title: getContent("name"), required: true, section: getContent("ofSecInfo") },
+          tel: { title: getContent("telephone"), type: "text", section: getContent("ofSecInfo") },
+          active: { title: getContent("isActive"), type: "bool", section: getContent("ofSecInfo") },
+          ...(Object.fromEntries(
+            Object.entries(centerFields).map(([k, v]) => [k, { ...v, section: getContent("ofSecInfo") }]),
+          ) as typeof centerFields),
+          location: {
+            type: "point",
+            title: getContent("ofMapPoint"),
+            addressField: "address",
+            store: "pair",
+            section: getContent("ofSecLocation"),
+          },
+          address: { type: "area", title: getContent("ofAddressAuto"), section: getContent("ofSecLocation") },
+          addressDetail: { type: "text", title: getContent("ofAddressDetail"), section: getContent("ofSecLocation") },
         }}
         hookProps={{
           method: "POST",

@@ -271,3 +271,116 @@
   background: var(--toneTeal);
   color: var(--toneTealInk);
 }
+
+/* the month calendar of the coming year */
+.cal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.875rem;
+  border-radius: var(--radiusMd);
+  border: 1px solid var(--glassLine);
+  background: var(--surface, var(--cardBg));
+}
+.calHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.calTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--gray13);
+}
+.calTitle small {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray9);
+}
+.calNav {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--glassLine);
+  background: var(--cardBg);
+  color: var(--gray11);
+  cursor: pointer;
+}
+.calNav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+/* ArrowLeftIcon points "forward" in either direction (dirFlip) */
+.calBack {
+  transform: scaleX(-1);
+}
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+  text-align: center;
+}
+.calWd {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gray9);
+  padding-block: 0.25rem;
+}
+.calDay {
+  display: grid;
+  place-items: center;
+  min-height: 2.25rem;
+  border-radius: var(--radiusSm);
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray12);
+}
+button.calDay {
+  cursor: pointer;
+  font-weight: 800;
+}
+.calWeekend {
+  color: var(--toneRoseInk);
+}
+.calPast {
+  opacity: 0.4;
+}
+.calToday {
+  border-color: var(--primary6);
+}
+.calClosed {
+  background: var(--toneRose);
+  color: var(--toneRoseInk);
+}
+.calOpen {
+  background: var(--toneTeal);
+  color: var(--toneTealInk);
+}
+.calLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: var(--gray10);
+}
+.calLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.calLegend i {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.25rem;
+}
+.itemPicked {
+  box-shadow: var(--focusRing);
+}
