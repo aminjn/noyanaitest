@@ -4940,7 +4940,7 @@
  "crmeChoose": "Pilih",
  "crmeCloseRequest": "Tutup permintaan",
  "crmeClosedColumn": "Kolom akhir (selesai)",
- "crmeClubHint": "Pasien mendapat poin dari pembayaran kunjungan dan pesanan di Noyan serta tagihan Anda yang lunas. Tingkat ditentukan dari total bayar.",
+ "crmeClubHint": "Pasien mendapat poin per kunjungan atau pesanan, atau atas yang mereka bayar di Noyan dan pada faktur Anda. Tingkatnya mengikuti dasar yang Anda pilih di bawah.",
  "crmeClubOff": "Klub nonaktif",
  "crmeClubOn": "Klub aktif",
  "crmeClubSettings": "Pengaturan klub",

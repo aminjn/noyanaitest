@@ -4940,7 +4940,7 @@
  "crmeChoose": "请选择",
  "crmeCloseRequest": "关闭请求",
  "crmeClosedColumn": "完成列",
- "crmeClubHint": "患者按其在Noyan支付的就诊、订单及本机构已付账单获得积分，等级按累计支付金额确定。",
+ "crmeClubHint": "患者按每次就诊或订单，或按其在 Noyan 及本机构账单上的付款获得积分。其等级按您在下方选择的依据确定。",
  "crmeClubOff": "会员俱乐部已关闭",
  "crmeClubOn": "会员俱乐部已开启",
  "crmeClubSettings": "俱乐部设置",

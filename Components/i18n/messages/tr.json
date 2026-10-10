@@ -4940,7 +4940,7 @@
  "crmeChoose": "Seçin",
  "crmeCloseRequest": "Talebi kapat",
  "crmeClosedColumn": "Bitiş sütunu (tamam)",
- "crmeClubHint": "Hastalar Noyan’daki ziyaret ve siparişler ile ödenmiş faturalarınız için puan kazanır. Seviye toplam ödemeye göre belirlenir.",
+ "crmeClubHint": "Hastalar her ziyaret veya sipariş için ya da Noyan'da ve faturalarınızda ödedikleri tutar için puan kazanır. Seviyeleri aşağıda seçtiğiniz ölçüte göre belirlenir.",
  "crmeClubOff": "Kulüp kapalı",
  "crmeClubOn": "Kulüp açık",
  "crmeClubSettings": "Kulüp ayarları",

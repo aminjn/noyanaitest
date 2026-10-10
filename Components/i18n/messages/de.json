@@ -4940,7 +4940,7 @@
  "crmeChoose": "Auswählen",
  "crmeCloseRequest": "Anfrage schließen",
  "crmeClosedColumn": "Abschlussspalte (erledigt)",
- "crmeClubHint": "Patienten sammeln Punkte für bezahlte Besuche und Bestellungen bei Noyan und für Ihre bezahlten Rechnungen. Die Stufe richtet sich nach der Gesamtsumme.",
+ "crmeClubHint": "Patienten sammeln Punkte pro Besuch oder Bestellung oder für das, was sie auf Noyan und auf Ihren Rechnungen bezahlt haben. Ihre Stufe folgt der unten gewählten Grundlage.",
  "crmeClubOff": "Club ist aus",
  "crmeClubOn": "Club ist an",
  "crmeClubSettings": "Club-Einstellungen",
