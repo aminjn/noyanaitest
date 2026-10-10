@@ -46,6 +46,13 @@ import CartDeliveryProblems, {
   useDeliveryProblemText,
 } from "./CartDeliveryProblems";
 import { ContentKey } from "../Enums/contentKeys";
+// discount / club codes and the supplementary insurer (2026-10)
+import CartOffersSection, {
+  CartClub,
+  CartCodeResult,
+  CartInsurance,
+  CartPromo,
+} from "./CartOffersSection";
 import {
   t2xsRegular,
   tbaseDemiBold,
@@ -101,6 +108,14 @@ type CartSummary = {
   samplings?: CartSamplingGroup[];
   // «پرو»: the member's delivery discount, or what Pro would save
   pro?: { member?: boolean; discount?: number; potential?: number; threshold?: number };
+  // (2026-10, backend Lib/cartOffers.ts) the codes tried, the discounts
+  // they gave, the clubs of the centres in the cart and the insurer's share
+  codes?: CartCodeResult[];
+  promo?: CartPromo;
+  clubDiscount?: number;
+  promoDiscount?: number;
+  clubs?: CartClub[];
+  insurance?: CartInsurance;
   total: number;
 };
 
@@ -131,14 +146,42 @@ const CartCheckoutPopup = ({
   );
 
   const [address, setAddress] = useState<string | null>(null);
+  // the codes entered and the supplementary insurer picked (2026-10): the
+  // summary prices them, the order sends them again
+  const [codes, setCodes] = useState<string[]>([]);
+  const [insuranceId, setInsuranceId] = useState("");
+  const insurancePicked = useRef(false);
+  const summaryQuery = new URLSearchParams();
+  if (address && requiresAddress) summaryQuery.set("address", address);
+  if (codes.length) summaryQuery.set("codes", codes.join(","));
+  if (insuranceId) summaryQuery.set("insurance", insuranceId);
   // the chosen address decides the courier, so the summary follows it
-  const { data: summary, error: summaryError } = useSWR<CartSummary>(
-    `${API}/cart/summary${address && requiresAddress ? `?address=${address}` : ""}`,
+  const { data: summary, error: summaryError, isValidating: summaryLoading, mutate: mutateSummary } = useSWR<CartSummary>(
+    `${API}/cart/summary${summaryQuery.toString() ? `?${summaryQuery.toString()}` : ""}`,
     // fetcher already returns the response body, so `.data` is the summary
     // itself - this used to read `.data.data` (always undefined), which
     // silently fell back to the pre-tax subtotal as the "total".
     (url: string) => fetcher({ url }).then((res) => res.data),
+    // a new code or insurer keeps the last figures on screen until the new
+    // ones arrive (no flicker of the totals)
+    { keepPreviousData: true },
   );
+  // the buyer's saved supplementary insurer starts picked (like the
+  // booking's insurances), once; they can switch it off
+  useEffect(() => {
+    if (insurancePicked.current) return;
+    const options = Array.isArray(summary?.insurance?.options) ? summary!.insurance!.options : [];
+    if (!summary) return;
+    insurancePicked.current = true;
+    const saved = options.find((o) => o?.saved);
+    if (saved?._id) setInsuranceId(saved._id);
+  }, [summary]);
+  const codeResults = Array.isArray(summary?.codes) ? summary!.codes! : [];
+  // only the codes that apply go with the order (a refused one would fail it)
+  const appliedCodes = codes.filter((c) => codeResults.some((r) => r?.code === c && r.applied));
+  const insurerShare = Math.max(0, Number(summary?.insurance?.insurerShare) || 0);
+  const offerDiscount =
+    Math.max(0, Number(summary?.clubDiscount) || 0) + Math.max(0, Number(summary?.promoDiscount) || 0) + insurerShare;
 
   // "sep" is only offered while online payment is enabled + configured in
   // the admin AppConfig (GET /payment/config).
@@ -270,6 +313,24 @@ const CartCheckoutPopup = ({
               addresses={addresses}
               value={samplingDrafts}
               onChange={setSamplingDrafts}
+            />
+          </div>
+        )}
+        {/* discounts, club and insurance (2026-10): one collapsible part */}
+        {!!summary && (
+          <div id="checkout-offers">
+            <CartOffersSection
+              codes={codes}
+              onCodesChange={setCodes}
+              results={codeResults}
+              promo={summary.promo}
+              clubs={summary.clubs}
+              insurance={summary.insurance}
+              insuranceId={insuranceId}
+              onInsuranceChange={setInsuranceId}
+              discount={offerDiscount}
+              loading={summaryLoading}
+              onRedeemed={() => mutateSummary()}
             />
           </div>
         )}
@@ -408,6 +469,35 @@ const CartCheckoutPopup = ({
             </span>
           </div>
         )}
+        {/* (2026-10) the discount lines: the sellers' club codes, the
+            discount code, and the supplementary insurer's share */}
+        {Number(summary?.clubDiscount) > 0 && (
+          <div className={`${classes.totalRow} ${classes.proSaving}`}>
+            <span className={tsmRegular}>{getContent("clubDiscountRow")}</span>
+            <span className={tsmRegular}>
+              {`− ${currencize(Number(summary!.clubDiscount))} ${getContent("toman")}`}
+            </span>
+          </div>
+        )}
+        {Number(summary?.promoDiscount) > 0 && (
+          <div className={`${classes.totalRow} ${classes.proSaving}`}>
+            <span className={tsmRegular}>{getContent("promoDiscountRow")}</span>
+            <span className={tsmRegular}>
+              {`− ${currencize(Number(summary!.promoDiscount))} ${getContent("toman")}`}
+            </span>
+          </div>
+        )}
+        {insurerShare > 0 && (
+          <div className={`${classes.totalRow} ${classes.proSaving}`}>
+            <span className={tsmRegular}>{getContent("insurerShareRow")}</span>
+            <span className={tsmRegular}>
+              {`− ${currencize(insurerShare)} ${getContent("toman")}`}
+            </span>
+          </div>
+        )}
+        {/* the total and the button stay in view while the buyer scrolls
+            the sections above (a phone checkout is long) */}
+        <div className={classes.stickyTotal}>
         <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("totalPrice")}</span>
           <span className={`${classes.totalPrice} ${tbaseDemiBold}`}>
@@ -465,6 +555,7 @@ const CartCheckoutPopup = ({
         >
           {getContent("confirmAndPayOrder")}
         </Button>
+        </div>
       </div>
       <Act<SubmitCartResponse>
         path={isSubmitting ? `${API}/cart/submit` : null}
@@ -474,6 +565,8 @@ const CartCheckoutPopup = ({
           address: (requiresAddress && address) || undefined,
           ...(rxPayload ? { prescription: rxPayload } : {}),
           ...(samplingPayload?.length ? { samplings: samplingPayload } : {}),
+          ...(appliedCodes.length ? { codes: appliedCodes } : {}),
+          ...(insuranceId ? { insurance: { insurance: insuranceId } } : {}),
         }}
         successMessage={
           method === "wallet" ? getContent("orderSubmittedMessage") : undefined

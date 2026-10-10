@@ -14,6 +14,7 @@ import Button from "@/Components/UI/Button";
 import Badge from "@/Components/UI/Badge";
 import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 import AdminMapBatchGeocode from "./AdminMapBatchGeocode";
+import AdminMapPlacesExport from "./AdminMapPlacesExport";
 import classes from "./AdminMapSettings.module.css";
 
 // «نقشه (نکسا مپ)» in the system settings (2026-10): the one map provider
@@ -21,7 +22,8 @@ import classes from "./AdminMapSettings.module.css";
 // sends a masked preview and keeps the stored key unless a new one is typed
 // (GET/POST /admin/map/settings, super admin only). Below the form: a
 // status card (test call, this server's counters, the account's usage) and
-// the batch geocode of providers that have an address but no map pin.
+// the batch geocode of providers that have an address but no map pin, and
+// the places export for a NexaMap import (AdminMapPlacesExport).
 
 type MapSettings = {
   nexamapEnabled: boolean;
@@ -289,7 +291,7 @@ const AdminMapSettingsTab = () => {
                 nexamapDarkStyle: { title: ta("نام سبک نقشه برای تم تیره (شب)"), type: "text", ltr: true },
                 // "Open in navigation" everywhere on the site goes here
                 nexamapNavUrl: {
-                  title: ta("لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی صفحه‌ی مسیر خود سایت)"),
+                  title: ta("لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی لینک پیش‌فرض nexamap.ir)"),
                   type: "text",
                   ltr: true,
                 },
@@ -298,6 +300,8 @@ const AdminMapSettingsTab = () => {
           </WithTitle>
           <MapStatusCard enabled={!!data.nexamapEnabled && (data.apiKeySet || data.apiKeyFromEnv)} />
           <AdminMapBatchGeocode enabled={!!data.nexamapEnabled && (data.apiKeySet || data.apiKeyFromEnv)} />
+          {/* the public places as a file for a NexaMap import */}
+          <AdminMapPlacesExport />
         </div>
       )}
     </HandleLoading>

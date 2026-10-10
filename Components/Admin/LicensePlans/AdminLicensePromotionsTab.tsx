@@ -26,10 +26,16 @@ import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 // first purchase and optionally only with a code. Every purchase and every
 // pricing page uses the best running one (Lib/licenseQuote.ts); the panels
 // and /pricing show the struck-through price, the badge and a countdown.
+// (2026-10) The same engine prices the cart: a promotion "on" pharmacy or
+// lab orders is a discount code (or an automatic discount) at the cart
+// checkout (noyanai-back Lib/cartOffers.ts), optionally only for chosen
+// sellers or categories, with a minimum, uses per buyer, and who pays it.
 
 const KINDS = ["doctor", "clinic", "hospital", "pharmacy", "paraClinic", "insurance"] as const;
-// the patients' «پرو» membership (2026-10) is priced by the same engine
-type Kind = (typeof KINDS)[number] | "patient";
+// the patients' «پرو» membership (2026-10) is priced by the same engine,
+// and so are cart orders (2026-10)
+type Kind = (typeof KINDS)[number] | "patient" | "pharmacyOrder" | "labOrder";
+const ORDER_KINDS: Kind[] = ["pharmacyOrder", "labOrder"];
 
 const kindLabels: Record<Kind, string> = {
   get doctor() {
@@ -52,6 +58,12 @@ const kindLabels: Record<Kind, string> = {
   },
   get patient() {
     return ta("کاربران (اشتراک پرو)");
+  },
+  get pharmacyOrder() {
+    return ta("سفارش‌های داروخانه (سبد خرید)");
+  },
+  get labOrder() {
+    return ta("سفارش‌های آزمایشگاه (سبد خرید)");
   },
 };
 
@@ -78,7 +90,25 @@ export interface ILicensePromotion extends MongoDoc {
   code: string;
   maxRedemptions: number;
   redemptions: number;
+  // cart orders only (2026-10)
+  pharmacies?: string[];
+  paraClinics?: string[];
+  productCategories?: string[];
+  testCategories?: string[];
+  minOrder?: number;
+  maxPerUser?: number;
+  fundedBy?: "platform" | "seller";
 }
+
+type Named = { _id?: string; name?: string };
+const named = {
+  getOptionLabel: (node: unknown) => (node as Named)?.name || ta("بدون نام"),
+  getOptionValue: (node: unknown) => String((node as Named)?._id || ""),
+  multi: true,
+  clearable: true,
+};
+const idsOf = (v: unknown) =>
+  (Array.isArray(v) ? v : []).map((x) => String((x as Named)?._id ?? x)).filter(Boolean);
 
 // every plan of every kind, as "پزشک · حرفه‌ای" options
 const usePlanOptions = () => {
@@ -180,7 +210,7 @@ const promotionRenderer = (planOptions: Record<string, string>): FormRenderer<IL
   },
   kinds: {
     get title() {
-      return ta("همه‌ی پلن‌های این نوع ارائه‌دهنده‌ها");
+      return ta("روی پلن‌های این ارائه‌دهنده‌ها یا سفارش‌های سبد خرید");
     },
     type: "multiselect",
     options: kindLabels,
@@ -199,7 +229,7 @@ const promotionRenderer = (planOptions: Record<string, string>): FormRenderer<IL
     type: "text",
     ltr: true,
     get hint() {
-      return ta("با کد، تخفیف فقط وقتی اعمال می‌شود که ارائه‌دهنده کد را در صفحه‌ی پرداخت وارد کند");
+      return ta("با کد، تخفیف فقط وقتی اعمال می‌شود که خریدار کد را در صفحه‌ی پرداخت وارد کند");
     },
   },
   maxRedemptions: {
@@ -207,6 +237,94 @@ const promotionRenderer = (planOptions: Record<string, string>): FormRenderer<IL
       return ta("حداکثر دفعات استفاده (۰ = نامحدود)");
     },
     type: "number",
+  },
+  // ---- cart orders only (2026-10, noyanai-back Lib/cartOffers.ts) ----
+  pharmacies: {
+    get title() {
+      return ta("فقط این داروخانه‌ها (خالی = همه)");
+    },
+    get section() {
+      return ta("سفارش‌های داروخانه و آزمایشگاه");
+    },
+    type: "nodes",
+    path: `${API}/auto/pharmacy`,
+    ...named,
+    getDefaultValue: (n: ILicensePromotion) => idsOf(n.pharmacies),
+  },
+  paraClinics: {
+    get title() {
+      return ta("فقط این آزمایشگاه‌ها (خالی = همه)");
+    },
+    get section() {
+      return ta("سفارش‌های داروخانه و آزمایشگاه");
+    },
+    type: "nodes",
+    path: `${API}/auto/paraClinic`,
+    ...named,
+    getDefaultValue: (n: ILicensePromotion) => idsOf(n.paraClinics),
+  },
+  productCategories: {
+    get title() {
+      return ta("فقط کالاهای این دسته‌ها (خالی = همه)");
+    },
+    get section() {
+      return ta("سفارش‌های داروخانه و آزمایشگاه");
+    },
+    type: "nodes",
+    path: `${API}/auto/productCategory`,
+    ...named,
+    getDefaultValue: (n: ILicensePromotion) => idsOf(n.productCategories),
+  },
+  testCategories: {
+    get title() {
+      return ta("فقط آزمایش‌های این دسته‌ها (خالی = همه)");
+    },
+    get section() {
+      return ta("سفارش‌های داروخانه و آزمایشگاه");
+    },
+    type: "nodes",
+    path: `${API}/auto/testCategory`,
+    ...named,
+    getDefaultValue: (n: ILicensePromotion) => idsOf(n.testCategories),
+  },
+  minOrder: {
+    get title() {
+      return ta("حداقل مبلغ اقلام مشمول (تومان، ۰ = بدون حداقل)");
+    },
+    get section() {
+      return ta("سفارش‌های داروخانه و آزمایشگاه");
+    },
+    type: "number",
+    price: true,
+  },
+  maxPerUser: {
+    get title() {
+      return ta("دفعات استفاده‌ی هر خریدار (۰ = نامحدود)");
+    },
+    get section() {
+      return ta("سفارش‌های داروخانه و آزمایشگاه");
+    },
+    type: "number",
+  },
+  fundedBy: {
+    get title() {
+      return ta("هزینه‌ی تخفیف با");
+    },
+    get section() {
+      return ta("سفارش‌های داروخانه و آزمایشگاه");
+    },
+    type: "select",
+    options: {
+      get platform() {
+        return ta("نویان (هزینه‌ی بازاریابی؛ فروشنده مبلغ کامل را می‌گیرد)");
+      },
+      get seller() {
+        return ta("فروشنده (فقط برای داروخانه‌ها یا آزمایشگاه‌های انتخاب‌شده)");
+      },
+    },
+    get hint() {
+      return ta("این بخش فقط برای سفارش‌های سبد خرید است و روی پلن‌ها اثری ندارد");
+    },
   },
 });
 
@@ -280,7 +398,7 @@ const AdminLicensePromotionsTab = () => {
     <NodesManager<ILicensePromotion>
       create={renderer}
       modelName="licensePromotion"
-      title={ta("تخفیف و پیشنهاد ویژه‌ی پلن‌ها")}
+      title={ta("تخفیف و پیشنهاد ویژه")}
       table={({ mutate }) => ({
         title: {
           name: ta("عنوان"),
@@ -304,6 +422,13 @@ const AdminLicensePromotionsTab = () => {
             [
               ...(Array.isArray(node.kinds) ? node.kinds : []).map((k) => kindLabels[k] || k),
               ...(Array.isArray(node.plans) ? node.plans : []).map((id) => planOptions[id] || id),
+              // a cart-order discount: its minimum and who pays it
+              ...((Array.isArray(node.kinds) ? node.kinds : []).some((k) => ORDER_KINDS.includes(k))
+                ? [
+                    ...(Number(node.minOrder) > 0 ? [ta("از ${1} تومان", [currencize(Number(node.minOrder))])] : []),
+                    node.fundedBy === "seller" ? ta("با هزینه‌ی فروشنده") : ta("با هزینه‌ی نویان"),
+                  ]
+                : []),
             ].join("، ") || "—",
         },
         code: {

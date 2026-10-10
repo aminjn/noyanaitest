@@ -158,9 +158,25 @@ const BookingManagePanel = ({
               <CheckIcon />
             </Ixon>
           </span>
-          <div>
+          {/* Doctolib's confirmation: "confirmed", the day and the start
+              time (never a range), where, and the way there */}
+          <div className={classes.heroBody}>
             <h1 className={classes.heroTitle}>{getContent("bfBookedTitle")}</h1>
+            <p className={classes.heroWhen}>
+              <span>{dateText}</span>
+              <span>{getContent("atTimeX", [clock(data.start, nf)])}</span>
+            </p>
+            {inPerson && !!office?.address && (
+              <p className={classes.heroText} dir="auto">
+                {office.address}
+              </p>
+            )}
             <p className={classes.heroText}>{getContent(bookedKey)}</p>
+            {inPerson && !!coords && (
+              <a className={classes.textLink} href="#place">
+                {getContent("navigate")}
+              </a>
+            )}
           </div>
         </div>
       )}
@@ -179,6 +195,7 @@ const BookingManagePanel = ({
                 .filter(Boolean)
                 .join(" · ")}
             </small>
+            {inPerson && !!office?.address && <small dir="auto">{office.address}</small>}
           </div>
         </div>
 
@@ -241,7 +258,9 @@ const BookingManagePanel = ({
       )}
 
       {open && inPerson && !!coords && (
-        <PlaceLocationCard coords={coords} name={office?.name} address={office?.address} />
+        <div id="place" className={classes.place}>
+          <PlaceLocationCard coords={coords} name={office?.name} address={office?.address} />
+        </div>
       )}
 
       {open && (

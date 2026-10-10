@@ -9,6 +9,7 @@ import ClockIcon from "@/Components/Icons/ClockIcon";
 import ErrorIcon from "@/Components/Icons/ErrorIcon";
 import XMarkIcon from "@/Components/Icons/XMarkIcon";
 import {
+  patientReservationStatus,
   ReservationParty,
   ReservationStatus,
   reservationStatusContentKeyDict,
@@ -28,6 +29,10 @@ export type ReservationLifecycleData = {
   finalizedAt?: Date;
   cancelledAt?: Date;
   cancelReason?: string;
+  // read by the patient's wording (patientReservationStatus)
+  sessionType?: string;
+  cancelledBy?: ReservationParty | "admin";
+  dispute?: { at?: unknown } | null;
 };
 
 type StepState = "done" | "pending" | "error" | "skipped";
@@ -55,7 +60,9 @@ const stepTone: Record<StepState, string> = {
   skipped: "tone-muted",
 };
 
-const ReservationTimeline = ({ data }: { data: ReservationLifecycleData }) => {
+// `patient`: the outcome step in the patient's wording (Confirmed /
+// Cancelled by ... / No-show), as the status badge on the same page
+const ReservationTimeline = ({ data, patient = false }: { data: ReservationLifecycleData; patient?: boolean }) => {
   const getContent = useScopedLocale(NS);
 
   const isCancelled = data.status === "cancelled";
@@ -116,7 +123,9 @@ const ReservationTimeline = ({ data }: { data: ReservationLifecycleData }) => {
   steps.push({
     key: "outcome",
     state: outcomeStateDict[data.status],
-    label: getContent(reservationStatusContentKeyDict[data.status]),
+    label: getContent(
+      patient ? patientReservationStatus(data).key : reservationStatusContentKeyDict[data.status],
+    ),
     date: data.finalizedAt ?? (isCancelled ? data.cancelledAt : undefined),
     caption:
       isCancelled && data.cancelReason

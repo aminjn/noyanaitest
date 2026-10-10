@@ -67,7 +67,7 @@ const DashboardManageBookingPage = () => {
             >
               {getContent("backToList")}
             </Button>
-            <ReservationStatusBadge status={data.status} />
+            <ReservationStatusBadge status={data.status} patient={data} />
           </div>
 
           <BookingManagePanel
@@ -205,7 +205,7 @@ const DashboardManageBookingPage = () => {
             <span className={classes.title}>
               {getContent("reservationTimeline")}
             </span>
-            <ReservationTimeline data={data} />
+            <ReservationTimeline data={data} patient />
           </div>
         </div>
       )}
