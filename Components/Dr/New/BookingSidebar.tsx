@@ -1,4 +1,5 @@
 "use client";
+import usePhoneLayout from "@/Components/Hooks/usePhoneLayout";
 import { officeAddressText } from "@/Components/DoctorPanel/Office/officeAddress";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -106,17 +107,24 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
   };
   const whenText = (p: { ymd: string; start: number }) => getContent("bfAtTime", [dayText(p.ymd), clock(p.start, nf)]);
 
-  const go = () => {
-    if (!pick) return;
+  const go = (chosen: typeof pick = pick) => {
+    if (!chosen) return;
     push(
       finalizeHref(doctor._id, {
-        ymd: pick.ymd,
-        start: pick.start,
-        end: pick.end,
+        ymd: chosen.ymd,
+        start: chosen.start,
+        end: chosen.end,
         sessionType,
-        office: pick.office,
+        office: chosen.office,
       }),
     );
+  };
+  // on a phone a tapped time goes straight to the details step (the
+  // sheet's "continue" can sit under an in-app browser's toolbar)
+  const phone = usePhoneLayout();
+  const pickTime = (p: typeof pick) => {
+    setPick(p);
+    if (phone && p) go(p);
   };
 
   const insuranceNames = (config?.insurances || []).map((i) => i?.insurance?.name || "").filter(Boolean);
@@ -159,7 +167,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           sessionType={sessionType}
           office={officeFilter}
           value={pick}
-          onChange={setPick}
+          onChange={pickTime}
           fallback={fallback}
           waitlist
         />
@@ -182,7 +190,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
         radius="High"
         size="L"
         variant={pick ? "Primary" : "Disable"}
-        onClick={go}
+        onClick={() => go()}
       >
         {getContent("bfContinue")}
       </Button>

@@ -1,109 +1,133 @@
-.main {
-  position: absolute;
-  bottom: 0;
-  width: max-content;
-  max-width: 80vw;
-  transition: all var(--transTime);
-  opacity: 1;
-  pointer-events: all;
-  padding-top: 1rem;
-  user-select: none;
+/* one message: a light card with a coloured edge and icon, readable in
+   both themes */
+.card {
+  --tone: var(--info);
+  --toneSoft: var(--toneIndigo, rgba(80, 90, 230, 0.12));
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: min(30rem, 100%);
+  padding: 0.875rem 0.875rem 1rem 1rem;
+  border-radius: var(--radiusMd, 0.875rem);
+  border: 1px solid var(--cardLine);
+  border-inline-start: 4px solid var(--tone);
+  background: var(--menuGlassSolid, var(--cardBg));
+  box-shadow: 0 12px 32px rgba(15, 18, 50, 0.18), 0 2px 6px rgba(15, 18, 50, 0.08);
+  color: var(--textStrong);
+  overflow: hidden;
+  pointer-events: auto;
+  animation: enter 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.Success {
+  --tone: var(--success);
+  --toneSoft: var(--toneTeal);
+}
+.Error {
+  --tone: var(--error);
+  --toneSoft: var(--toneRose);
+}
+.Warn {
+  --tone: var(--warning);
+  --toneSoft: var(--toneAmber);
+}
+.Notify {
+  --tone: var(--info);
+  --toneSoft: var(--toneIndigo, var(--hoverTint));
+}
+.icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.35rem;
+  border-radius: 50%;
+  background: var(--toneSoft);
+  color: var(--tone);
+}
+.icon :global(svg) {
+  width: 100%;
+  height: 100%;
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  align-self: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.45rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--textMuted);
   cursor: pointer;
 }
-
-.hidden {
-  opacity: 0;
-  pointer-events: none;
+.close:hover {
+  background: var(--hoverTint);
 }
-
-.content {
-  font-size: 0.9rem;
-  animation: comeIn var(--transTime) ease-in-out forwards;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  color: var(--onColor);
-  border: 2px solid currentColor;
-  overflow: hidden;
+.close:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
 }
-
-.text {
-  display: -webkit-box;
-  line-clamp: 1;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  direction: rtl;
+.close :global(svg) {
+  width: 100%;
+  height: 100%;
 }
-
-.icon {
-  width: 1.5rem;
-  display: flex;
-  margin-inline-end: 0.5rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.dismissing {
-  animation: goAway var(--transTime) ease-in-out forwards;
-}
-
-.Success {
-  background: var(--success);
-  border-color: var(--successS2);
-}
-
-.Warn {
-  background: var(--warning);
-  border-color: var(--warningS2);
-}
-
-.Error {
-  background: var(--error);
-  border-color: var(--errorS2);
-}
-
-.Notify {
-  background: var(--info);
-  border-color: var(--infoS2);
-}
-
+/* time left */
 .bar {
   position: absolute;
-  bottom: 0;
-  inset-inline-end: 0;
-  inset-inline-start: 0;
+  inset-inline: 0;
+  inset-block-end: 0;
   height: 3px;
+  background: var(--tone);
+  opacity: 0.55;
+  transform-origin: var(--barOrigin, right);
+  animation: shrink linear forwards;
 }
-
-.fill {
-  transition: all 1s ease-in-out;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  inset-inline-end: 0;
-  background-color: var(--white);
+:global([dir="ltr"]) .bar {
+  --barOrigin: left;
 }
-
-@keyframes comeIn {
-  0% {
-    transform: translateY(500%);
-  }
-  100% {
-    transform: translateY(0);
-  }
+.leaving {
+  animation: leave 0.22s ease-in forwards;
 }
-
-@keyframes goAway {
-  0% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(200%);
+@keyframes enter {
+  from {
     opacity: 0;
+    transform: translateY(-0.75rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes leave {
+  to {
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.98);
+  }
+}
+@keyframes shrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .leaving {
+    animation: none;
   }
 }

@@ -61,6 +61,7 @@ import Calendar02Icon from "@/Components/Icons/Calendar02Icon";
 import LocationIcon from "@/Components/Icons/LocationIcon";
 import EditIcon from "@/Components/Icons/EditIcon";
 import SlotPicker, { SlotPick } from "../Flow/SlotPicker";
+import usePhoneLayout from "@/Components/Hooks/usePhoneLayout";
 import BookingSteps from "../Flow/BookingSteps";
 import InlineLogin from "../Flow/InlineLogin";
 import { OfficePicker, visitTypeIcon, visitTypeTone, VisitTypePicker } from "../Flow/BookingChoices";
@@ -266,6 +267,20 @@ const FinalizeBookingPage = () => {
   const [chooseOffice, setChooseOffice] = useState<string | null>(null);
   const [changeOpen, setChangeOpen] = useState(false);
   const pickType = chooseType || sessionType;
+  // on a phone the tapped time is the choice: the details step (or, when
+  // changing the time, the details again) opens at once - the bottom
+  // "continue" bar can hide under an in-app browser's toolbar
+  const phone = usePhoneLayout();
+  const pickTime = useCallback(
+    (p: SlotPick | null) => {
+      setChoice(p);
+      if (!phone || !p) return;
+      setPick(p, pickType);
+      setChangeOpen(false);
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [phone, pickType, setPick],
+  );
   const offices = useMemo(
     () =>
       (Array.isArray(config?.offices) ? config.offices : [])
@@ -361,7 +376,7 @@ const FinalizeBookingPage = () => {
           sessionType={pickType}
           office={pickOffice}
           value={choice}
-          onChange={setChoice}
+          onChange={pickTime}
           fallback={otherDoctors}
           waitlist
         />

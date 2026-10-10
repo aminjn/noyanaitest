@@ -1,85 +1,81 @@
-import { ReactNode, useContext, useEffect, useState } from "react";
+"use client";
+
+import { ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import classes from "./Notification.module.css";
-import { useTimer } from "react-timer-hook";
-import NotificationContext, {
-  INotification,
-  NotificationStatus,
-} from "../Store/NotificationContext";
+import NotificationContext, { INotification, NotificationStatus } from "../Store/NotificationContext";
 import ErrorIcon from "../Icons/ErrorIcon";
 import NotifyIcon from "../Icons/NotifyIcon";
 import SuccessIcon from "../Icons/SuccessIcon";
 import WarningIcon from "../Icons/WarningIcon";
+import CloseIcon from "../Icons/CloseIcon";
+import useScopedLocale from "../Hooks/useScopedLocale";
 
-const NOTIFICATION_TTL = 5000 as const;
+// how long each kind stays (an error needs reading, a success a glance)
+const TTL: Record<NotificationStatus, number> = {
+  Success: 4500,
+  Notify: 6000,
+  Warn: 8000,
+  Error: 9000,
+};
+const LEAVE_MS = 220;
 
-const DISMISS_ANIMATION_DURATION = 300 as const;
-
-const MAX_NOTIFICATIONS = 6 as const;
-
-const iconMap: { [key in NotificationStatus]: ReactNode } = {
+const iconMap: Record<NotificationStatus, ReactNode> = {
   Error: <ErrorIcon />,
   Notify: <NotifyIcon />,
   Success: <SuccessIcon />,
   Warn: <WarningIcon />,
 };
 
-const Notification = (props: {
-  notification: INotification;
-  index: number;
-}) => {
-  const notificationCTX = useContext(NotificationContext);
-  const [isDismissing, setIsDismissing] = useState<boolean>(false);
+// One message card: icon, the whole text (wrapped, never cut to a line),
+// a close button and a bar showing the time left. Hover or touch pauses
+// it; errors are announced at once to screen readers.
+const Notification = ({ notification }: { notification: INotification }) => {
+  const { dismissNotification } = useContext(NotificationContext);
+  const getContent = useScopedLocale(["common"]);
+  const ttl = TTL[notification.status] ?? 6000;
+  const [leaving, setLeaving] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const left = useRef(ttl);
+  const startedAt = useRef(Date.now());
 
-  const { totalSeconds, pause, resume, restart } = useTimer({
-    expiryTimestamp: new Date(),
-    onExpire: () => setTimeout(() => setIsDismissing(true), 1000),
-  });
+  const close = useCallback(() => {
+    setLeaving(true);
+    setTimeout(() => dismissNotification(notification.id), LEAVE_MS);
+  }, [dismissNotification, notification.id]);
 
   useEffect(() => {
-    const then = new Date();
-    then.setMilliseconds(then.getMilliseconds() + NOTIFICATION_TTL + 1);
-    restart(then);
-  }, [restart]);
+    if (paused || leaving) return;
+    startedAt.current = Date.now();
+    const t = setTimeout(close, left.current);
+    return () => {
+      clearTimeout(t);
+      left.current = Math.max(0, left.current - (Date.now() - startedAt.current));
+    };
+  }, [paused, leaving, close]);
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout | undefined;
-    if (isDismissing)
-      setTimeout(
-        () => notificationCTX.dismissNotification(props.notification.id),
-        DISMISS_ANIMATION_DURATION
-      );
-    return () => timer && clearTimeout(timer);
-  }, [isDismissing, notificationCTX, props.notification.id]);
-
+  const urgent = notification.status === "Error" || notification.status === "Warn";
   return (
     <div
-      onMouseEnter={pause}
-      onMouseLeave={resume}
-      className={`${classes.main} ${
-        props.index > MAX_NOTIFICATIONS ? classes.hidden : ""
-      }`}
-      onClick={() => setIsDismissing(true)}
-      style={{ transform: `translateY(${-100 * props.index}%)` }}
-      key={props.notification.id}
+      className={`${classes.card} ${classes[notification.status]} ${leaving ? classes.leaving : ""}`}
+      role={urgent ? "alert" : "status"}
+      aria-live={urgent ? "assertive" : "polite"}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
     >
-      <p
-        className={`${classes.content} ${classes[props.notification.status]} ${
-          isDismissing ? classes.dismissing : ""
-        }`}
-      >
-        <span className={classes.icon}>
-          {iconMap[props.notification.status]}
-        </span>
-        <span className={classes.text}>{props.notification.message}</span>
-        <span className={classes.bar}>
-          <span
-            className={classes.fill}
-            style={{
-              right: `${(totalSeconds * 100000) / NOTIFICATION_TTL}%`,
-            }}
-          />
-        </span>
-      </p>
+      <span className={classes.icon} aria-hidden>
+        {iconMap[notification.status]}
+      </span>
+      <p className={classes.text}>{notification.message}</p>
+      <button type="button" className={classes.close} onClick={close} aria-label={getContent("close")}>
+        <CloseIcon />
+      </button>
+      <span
+        className={classes.bar}
+        style={{ animationDuration: `${ttl}ms`, animationPlayState: paused ? "paused" : "running" }}
+        aria-hidden
+      />
     </div>
   );
 };

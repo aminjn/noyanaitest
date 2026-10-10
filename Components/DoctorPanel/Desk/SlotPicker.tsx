@@ -98,6 +98,11 @@ const SlotPicker = ({
         <p className={classes.warn}>{getContent("deskNoSlots")}</p>
       ) : (
         <>
+          {/* a holiday the doctor is closed on: shut for patients, the desk
+              may still fit someone in (backend doctorDeskController) */}
+          {typeof data?.holiday === "string" && !!data.holiday && (
+            <p className={classes.warn}>{getContent("holDeskOpenWarn", [data.holiday])}</p>
+          )}
           <span className={classes.label}>{getContent("deskPickSlot")}</span>
           <div className={classes.slots} role="listbox">
             {/* past sessions of today are left out, taken ones greyed */}
