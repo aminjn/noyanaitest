@@ -35,7 +35,7 @@ export const tierKey: Record<TierKey, string> = {
   basic: "crmeTierBasic",
 };
 type Tier = { key: TierKey; min: number; discount: number };
-type Settings = { enabled: boolean; pointUnit: number; codeDays: number; tiers: Tier[] };
+type Settings = { enabled: boolean; pointUnit: number; perVisit?: number; codeDays: number; tiers: Tier[] };
 export type Reward = { _id: string; name: string; description?: string; points: number; kind: "percent" | "amount"; value: number; maxDiscount: number; active: boolean };
 type Member = {
   contact: string;
@@ -125,8 +125,13 @@ const SettingsCard = ({ settings, onSaved }: { settings: Settings; onSaved: () =
       <p className={s.hint}>{t("crmeClubHint")}</p>
       <div className={s.stepFields}>
         <label className={classes.field}>
+          {t("crmePerVisit")}
+          <input type="number" min={0} dir="ltr" value={v.perVisit || 0} disabled={!canWrite} onChange={(e) => setV((x) => ({ ...x, perVisit: Math.max(0, Number(e.target.value) || 0) }))} />
+        </label>
+        <label className={classes.field}>
           {t("crmePointUnit")}
-          <input type="number" min={1000} step={1000} dir="ltr" value={v.pointUnit} disabled={!canWrite} onChange={(e) => setV((x) => ({ ...x, pointUnit: Number(e.target.value) || 0 }))} />
+          <input type="number" min={0} step={1000} dir="ltr" value={v.pointUnit} disabled={!canWrite} onChange={(e) => setV((x) => ({ ...x, pointUnit: Math.max(0, Number(e.target.value) || 0) }))} />
+          <span className={s.hint}>{t("crmePointUnitZero")}</span>
         </label>
         <label className={classes.field}>
           {t("crmeCodeDays")}
@@ -212,6 +217,7 @@ const MemberPopup = ({ contactId, onDone }: { contactId: string; onDone: () => u
     onDone();
   };
   const m = data?.member;
+  const drafts = listOf<MemberDetail["drafts"][number]>(data?.drafts);
   return (
     <PopupCard title={data?.contact?.name || t("crmeMember")}>
       <div className={classes.popup}>
@@ -302,11 +308,11 @@ const MemberPopup = ({ contactId, onDone }: { contactId: string; onDone: () => u
                 </div>
               )}
               <h3 className={classes.cardTitle}>{t("crmeCodes")}</h3>
-              {!data.redemptions.length ? (
+              {!listOf<Redemption>(data.redemptions).length ? (
                 <p className={classes.empty}>{t("crmeNoCodes")}</p>
               ) : (
                 <ul className={crm.miniList}>
-                  {data.redemptions.map((r) => (
+                  {listOf<Redemption>(data.redemptions).map((r) => (
                     <li key={r._id} className={s.between}>
                       <span className={s.stack}>
                         <span className={s.row}>
@@ -322,11 +328,11 @@ const MemberPopup = ({ contactId, onDone }: { contactId: string; onDone: () => u
                       </span>
                       {canWrite && (
                         <span className={crm.rowActions}>
-                          {r.status === "issued" && data.drafts.length > 0 && (
+                          {r.status === "issued" && drafts.length > 0 && (
                             <>
                               <select value={draft} onChange={(e) => setDraft(e.target.value)} className={crm.inlineSelect} aria-label={t("crmeDraftInvoice")}>
                                 <option value="">{t("crmeDraftInvoice")}</option>
-                                {data.drafts.map((d) => (
+                                {drafts.map((d) => (
                                   <option key={d._id} value={d._id}>
                                     {t("crmeInvoiceN", [f.year(d.number)])} · {f.money(d.total)}
                                   </option>
@@ -356,12 +362,12 @@ const MemberPopup = ({ contactId, onDone }: { contactId: string; onDone: () => u
                   ))}
                 </ul>
               )}
-              {data.redemptions.some((r) => r.status === "issued") && !data.drafts.length && <p className={s.hint}>{t("crmeNoDraftsHint")}</p>}
-              {data.adjustments.length > 0 && (
+              {listOf<Redemption>(data.redemptions).some((r) => r.status === "issued") && !drafts.length && <p className={s.hint}>{t("crmeNoDraftsHint")}</p>}
+              {listOf<MemberDetail["adjustments"][number]>(data.adjustments).length > 0 && (
                 <>
                   <h3 className={classes.cardTitle}>{t("crmeAdjustments")}</h3>
                   <ul className={crm.miniList}>
-                    {data.adjustments.map((a) => (
+                    {listOf<MemberDetail["adjustments"][number]>(data.adjustments).map((a) => (
                       <li key={a._id} className={s.between}>
                         <span>
                           <bdi dir="ltr" className={s.strong}>
@@ -412,21 +418,21 @@ const CrmClub = () => {
           <div className={classes.tiles}>
             <div className={classes.tile}>
               <span className={classes.tileLabel}>{t("crmeMembers")}</span>
-              <span className={classes.tileValue}>{f.money(c.stats.members)}</span>
+              <span className={classes.tileValue}>{f.money(c.stats?.members || 0)}</span>
             </div>
             {TIERS.filter((k) => k !== "basic").map((k) => (
               <div key={k} className={classes.tile}>
                 <span className={classes.tileLabel}>{t(tierKey[k])}</span>
-                <span className={classes.tileValue}>{f.money(c.stats.byTier?.[k] || 0)}</span>
+                <span className={classes.tileValue}>{f.money(c.stats?.byTier?.[k] || 0)}</span>
               </div>
             ))}
             <div className={classes.tile}>
               <span className={classes.tileLabel}>{t("crmePointsOut")}</span>
-              <span className={classes.tileValue}>{f.money(c.stats.points)}</span>
+              <span className={classes.tileValue}>{f.money(c.stats?.points || 0)}</span>
             </div>
             <div className={classes.tile}>
               <span className={classes.tileLabel}>{t("crmeDiscountGiven")}</span>
-              <span className={classes.tileValue}>{f.money(c.stats.redemptions?.used?.amount || 0)}</span>
+              <span className={classes.tileValue}>{f.money(c.stats?.redemptions?.used?.amount || 0)}</span>
             </div>
           </div>
           <div className={s.grid2}>
@@ -441,7 +447,7 @@ const CrmClub = () => {
                 )}
               </div>
               <p className={s.hint}>{t("crmeRewardsHint")}</p>
-              {!c.rewards.length ? (
+              {!listOf<Reward>(c.rewards).length ? (
                 <p className={classes.empty}>{t("crmeNoRewards")}</p>
               ) : (
                 <ul className={crm.miniList}>
@@ -481,7 +487,7 @@ const CrmClub = () => {
                 renderer={{
                   name: { name: t("crmName"), value: (m) => m.name || "", filter: "Text" },
                   phone: { name: t("crmPhone"), value: (m) => m.phone || "", component: (m) => <bdi dir="ltr">{phoneText(m.phone || "")}</bdi> },
-                  tier: { name: t("crmeTier"), value: (m) => t(tierKey[m.tier]), filter: "Set" },
+                  tier: { name: t("crmeTier"), value: (m) => t(tierKey[m.tier] || tierKey.basic), filter: "Set" },
                   total: { name: t("crmePaidTotal"), value: (m) => m.total, filter: "Number", component: (m) => f.money(m.total) },
                   balance: { name: t("crmePointsBalance"), value: (m) => m.balance, filter: "Number", component: (m) => f.money(m.balance) },
                   actions: {

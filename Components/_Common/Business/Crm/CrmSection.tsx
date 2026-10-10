@@ -131,8 +131,12 @@ const CrmSection = ({
     canWrite: hasAccess("manageCrm"),
     canSend: hasAccess("sendCampaigns"),
   };
-  const body =
-    page === "dashboard" ? (
+  // a part this profile doesn't have (an insurer's club, say), reached by
+  // an old link: said so, instead of the page failing on the API's refusal
+  const off = !!own.service && !!profile && !partOn(profile, own.service, true);
+  const body = off ? (
+    <p className={classes.empty}>{t("crmePartOff")}</p>
+  ) : page === "dashboard" ? (
       <CrmDashboard />
     ) : page === "contacts" ? (
       <CrmContacts />

@@ -15,6 +15,7 @@ import s from "@/Components/_Common/Business/Crm/Service/Service.module.css";
 import { asArray, useBizFormat } from "@/Components/_Common/Business/bizShared";
 import { LinkOffers } from "./LinkOffers";
 import { tierKey, TierKey, redemptionStatusKey } from "@/Components/_Common/Business/Crm/Service/CrmClub";
+import { isProfile, profileKey } from "@/Components/_Common/Business/Crm/Service/profiles";
 
 // «باشگاه‌های من» (2026-10): the patient's points in every centre whose
 // loyalty club they are in (they visited or bought there) - tier, progress,
@@ -27,6 +28,8 @@ type Club = {
   ownerKind: string;
   ownerId: string;
   name: string;
+  pointUnit?: number;
+  perVisit?: number;
   member: { balance: number; earned: number; total: number; tier: TierKey; next: TierKey | null; progress: number; discount: number };
   rewards: { _id: string; name: string; description?: string; points: number; kind: string; value: number; maxDiscount: number }[];
   codes: { _id: string; name: string; kind: string; code: string; status: "issued" | "applied" | "used"; expiresAt?: string; discountAmount: number }[];
@@ -51,6 +54,19 @@ const MyClubsPage = () => {
       push((err as Error)?.message || String(err), "Error");
     }
   };
+  // how this centre's club gives points: per visit / order (in the
+  // profile's words) and per amount paid
+  const earnText = (c: Club) =>
+    [
+      c.perVisit ? t(profileKey(isProfile(c.ownerKind) ? c.ownerKind : undefined, "crmeEarnByVisit"), [f.money(c.perVisit)]) : "",
+      c.pointUnit ? t("crmeEarnByAmount", [f.money(c.pointUnit)]) : "",
+    ]
+      .filter(Boolean)
+      .join(" · ");
+  // a club row missing its parts is skipped, not a crash
+  const clubs = asArray<Club>(data)
+    .filter((c) => c && c.member)
+    .map((c) => ({ ...c, codes: asArray<Club["codes"][number]>(c.codes), rewards: asArray<Club["rewards"][number]>(c.rewards) }));
   const rewardText = (r: { kind: string; value: number; maxDiscount?: number }) =>
     r.kind === "amount" ? t("crmeRewardAmount", [f.money(r.value)]) : r.maxDiscount ? t("crmeRewardPercentCap", [f.money(r.value), f.money(r.maxDiscount)]) : t("crmeRewardPercent", [f.money(r.value)]);
   return (
@@ -63,15 +79,16 @@ const MyClubsPage = () => {
       <LinkOffers onChanged={() => mutate()} />
       <HandleLoading data={!!data} error={error}>
         {!!data &&
-          (!data.length ? (
+          (!clubs.length ? (
             <p className={classes.empty}>{t("crmeNoClubs")}</p>
           ) : (
-            data.map((c) => (
+            clubs.map((c) => (
               <section key={`${c.ownerKind}:${c.ownerId}`} className={classes.card}>
                 <div className={classes.cardHead}>
                   <h2 className={classes.cardTitle}>{c.name}</h2>
-                  <span className={classes.badge}>{t(tierKey[c.member.tier])}</span>
+                  <span className={classes.badge}>{t(tierKey[c.member.tier] || tierKey.basic)}</span>
                 </div>
+                {!!earnText(c) && <p className={s.hint}>{t("crmeHowToEarn", [earnText(c)])}</p>}
                 <div className={s.tiers}>
                   <div className={s.tier}>
                     <span className={classes.muted}>{t("crmePointsBalance")}</span>
@@ -79,7 +96,7 @@ const MyClubsPage = () => {
                   </div>
                   <div className={s.tier}>
                     <span className={classes.muted}>{t("crmeTier")}</span>
-                    <span className={s.tierName}>{t(tierKey[c.member.tier])}</span>
+                    <span className={s.tierName}>{t(tierKey[c.member.tier] || tierKey.basic)}</span>
                     {c.member.discount > 0 && <span className={classes.muted}>{t("crmeTierDiscountN", [f.money(c.member.discount)])}</span>}
                   </div>
                   {c.member.next && (
@@ -100,7 +117,7 @@ const MyClubsPage = () => {
                         <span className={s.row}>
                           <span className={s.code}>{x.code}</span>
                           <span>{x.kind === "tier" ? t("crmeTierCodeName", [t(tierKey[x.name as TierKey] || x.name)]) : x.name}</span>
-                          <span className={classes.badge}>{t(redemptionStatusKey[x.status])}</span>
+                          <span className={classes.badge}>{t(redemptionStatusKey[x.status] || "crmeRedIssued")}</span>
                           {x.status === "issued" && x.expiresAt && <span className={classes.muted}>{t("crmeUntil", [f.date(x.expiresAt)])}</span>}
                         </span>
                         {x.status === "issued" && (

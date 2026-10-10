@@ -54,6 +54,14 @@ export const categoryKey: Record<Category, string> = {
   prescription: "crmeCatPrescription",
   other: "crmeCatOther",
 };
+// the moves a status may make (backend Lib/business/crmService/tickets.ts
+// TICKET_MOVES): closed is final
+export const TICKET_MOVES: Record<Status, Status[]> = {
+  open: ["pending", "resolved", "closed"],
+  pending: ["open", "resolved", "closed"],
+  resolved: ["open", "closed"],
+  closed: [],
+};
 const statusTone = (st: Status) => (st === "open" ? "warn" : st === "pending" ? undefined : st === "resolved" ? "ok" : "muted");
 
 const NewTicket = ({ onDone }: { onDone: (id?: string) => unknown }) => {
@@ -215,6 +223,7 @@ const TicketDetail = ({ id }: { id: string }) => {
   const [body, setBody] = useState("");
   const [internal, setInternal] = useState(false);
   const patch = async (payload: Record<string, unknown>) => (await call("PATCH", `/tickets/${id}`, payload)) && mutate();
+  const closed = data?.status === "closed";
   const reply = async () => {
     if (await call("POST", `/tickets/${id}/reply`, { body, internal })) {
       setBody("");
@@ -272,17 +281,18 @@ const TicketDetail = ({ id }: { id: string }) => {
               )}
               <label className={classes.field}>
                 {t("crmeStatus")}
-                <select value={data.status} onChange={(e) => patch({ status: e.target.value })}>
-                  {TICKET_STATUSES.map((st) => (
+                <select value={data.status} disabled={closed} onChange={(e) => patch({ status: e.target.value })}>
+                  {TICKET_STATUSES.filter((st) => st === data.status || (TICKET_MOVES[data.status] || []).includes(st)).map((st) => (
                     <option key={st} value={st}>
                       {t(ticketStatusKey[st])}
                     </option>
                   ))}
                 </select>
               </label>
+              {closed && <p className={s.hint}>{t("crmeTkClosedHint")}</p>}
               <label className={classes.field}>
                 {t("crmePriority")}
-                <select value={data.priority} onChange={(e) => patch({ priority: e.target.value })}>
+                <select value={data.priority} disabled={closed} onChange={(e) => patch({ priority: e.target.value })}>
                   {PRIORITIES.map((p) => (
                     <option key={p} value={p}>
                       {t(priorityKey[p])}
@@ -292,7 +302,7 @@ const TicketDetail = ({ id }: { id: string }) => {
               </label>
               <label className={classes.field}>
                 {t("crmeCategory")}
-                <select value={data.category} onChange={(e) => patch({ category: e.target.value })}>
+                <select value={data.category} disabled={closed} onChange={(e) => patch({ category: e.target.value })}>
                   {CATEGORIES.map((c) => (
                     <option key={c} value={c}>
                       {t(categoryKey[c])}
@@ -302,7 +312,7 @@ const TicketDetail = ({ id }: { id: string }) => {
               </label>
               <label className={classes.field}>
                 {t("crmAssignee")}
-                <select value={data.assignee || ""} onChange={(e) => patch({ assignee: e.target.value || null })}>
+                <select value={data.assignee || ""} disabled={closed} onChange={(e) => patch({ assignee: e.target.value || null })}>
                   <TeamOptions none="crmAssigneeNone" />
                 </select>
               </label>
@@ -310,6 +320,7 @@ const TicketDetail = ({ id }: { id: string }) => {
                 <span className={classes.muted}>{t("crmeSlaResponseDue", [w.at(data.responseDueAt)])}</span>
                 <span className={classes.muted}>{t("crmeSlaResolveDue", [w.at(data.resolveDueAt)])}</span>
                 {data.firstResponseAt && <span className={classes.muted}>{t("crmeFirstResponse", [w.at(data.firstResponseAt)])}</span>}
+                {!closed && <span className={s.hint}>{t("crmeSlaPriorityHint")}</span>}
                 {data.breach !== "none" && <Badge tone="bad">{t(data.breach === "resolve" ? "crmeSlaResolve" : "crmeSlaResponse")}</Badge>}
               </div>
               {canWrite && <ConfirmButton onConfirm={async () => (await call("DELETE", `/tickets/${id}`)) && router.push(`${panel}/crm/tickets`)}>{t("bizDelete")}</ConfirmButton>}

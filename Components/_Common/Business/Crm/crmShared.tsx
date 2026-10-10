@@ -208,6 +208,8 @@ export type CrmAutomation = {
   delay: number;
   sessionTypes: string[];
   audience: CrmRules;
+  // a saved segment it targets (its id, or the segment with its name in a list)
+  segment?: string | { _id: string; name?: string } | null;
   windowFrom: number;
   windowUntil: number;
   gapDays: number;

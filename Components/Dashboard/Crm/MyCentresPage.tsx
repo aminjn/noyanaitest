@@ -15,7 +15,7 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import classes from "@/Components/_Common/Business/Accounting.module.css";
 import s from "@/Components/_Common/Business/Crm/Service/Service.module.css";
 import { asArray } from "@/Components/_Common/Business/bizShared";
-import { CATEGORIES, categoryKey, ticketStatusKey } from "@/Components/_Common/Business/Crm/Service/CrmTickets";
+import { CATEGORIES, categoryKey } from "@/Components/_Common/Business/Crm/Service/CrmTickets";
 import { MY_CRM_NS } from "./MyClubsPage";
 import { LINKS_KEY, LinkOffers, MyConsentHistory, MyLinks } from "./LinkOffers";
 
@@ -36,6 +36,11 @@ type Ticket = {
   messages?: { _id: string; body: string; fromPatient: boolean; at: string }[];
 };
 
+// the status in the patient's words: the team's "waiting on the patient"
+// is, to them, "answered"
+const myStatusKey: Record<Ticket["status"], string> = { open: "crmeMyTkOpen", pending: "crmeMyTkPending", resolved: "crmeTkResolved", closed: "crmeTkClosed" };
+const statusText = (st: string) => myStatusKey[st as Ticket["status"]] || "crmeMyTkOpen";
+
 const useT = () => {
   const getContent = useScopedLocale(MY_CRM_NS);
   return useCallback((k: string, v?: string[]) => getContent(k as ContentKey, v), [getContent]);
@@ -43,6 +48,12 @@ const useT = () => {
 const useAt = () => {
   const tag = useIntlLocale();
   return (v?: string) => (v ? new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, dateStyle: "medium", timeStyle: "short" }).format(new Date(v)) : "");
+};
+
+// a request number in the reader's digits
+const useNum = () => {
+  const tag = useIntlLocale();
+  return (v?: number) => (typeof v === "number" ? new Intl.NumberFormat(tag, { useGrouping: false }).format(v) : "");
 };
 
 const post = async (url: string, payload: Record<string, unknown>) => fetcher({ url: `${API}${url}`, method: "POST", bodyParser: "JSON", payload });
@@ -115,6 +126,7 @@ const NewRequest = ({ onDone }: { onDone: (id: string) => void }) => {
 const Thread = ({ id }: { id: string }) => {
   const t = useT();
   const at = useAt();
+  const num = useNum();
   const push = useNotification();
   const { data, error, mutate } = useSWR<Ticket | null>(`${API}/user/crm/tickets/${id}`, (url: string) => fetcher({ url }).then((r) => (r?.data && typeof r.data === "object" ? (r.data as Ticket) : null)));
   const [body, setBody] = useState("");
@@ -134,9 +146,11 @@ const Thread = ({ id }: { id: string }) => {
           <div className={classes.cardHead}>
             <div className={s.stack}>
               <Link href="/dashboard/centres">{t("back")}</Link>
-              <h2 className={classes.cardTitle}>{data.subject}</h2>
+              <h2 className={classes.cardTitle}>
+                <bdi>#{num(data.number)}</bdi> · {data.subject}
+              </h2>
               <span className={classes.muted}>
-                {data.centre} · {t(ticketStatusKey[data.status])}
+                {data.centre} · {t(statusText(data.status))}
               </span>
             </div>
             {data.status !== "closed" && (
@@ -174,6 +188,7 @@ const Thread = ({ id }: { id: string }) => {
 const MyCentresPage = ({ id }: { id?: string }) => {
   const t = useT();
   const at = useAt();
+  const num = useNum();
   const router = useRouter();
   const { mutate: globalMutate } = useSWRConfig();
   useBreadCrump([
@@ -216,10 +231,10 @@ const MyCentresPage = ({ id }: { id?: string }) => {
                   {asArray<Ticket & { lastFromPatient?: boolean }>(data).map((k) => (
                     <li key={k._id} className={s.item}>
                       <Link href={`/dashboard/centres/${k._id}`} className={s.itemTitle}>
-                        {k.subject}
+                        <bdi>#{num(k.number)}</bdi> · {k.subject}
                       </Link>
                       <span className={classes.muted}>{k.centre}</span>
-                      <span className={classes.badge}>{t(ticketStatusKey[k.status])}</span>
+                      <span className={classes.badge}>{t(statusText(k.status))}</span>
                       {!k.lastFromPatient && k.status !== "closed" && <span className={classes.badge}>{t("crmeNewAnswer")}</span>}
                       <span className={classes.muted}>{at(k.lastMessageAt)}</span>
                     </li>
