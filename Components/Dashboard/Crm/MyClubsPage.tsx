@@ -14,7 +14,7 @@ import classes from "@/Components/_Common/Business/Accounting.module.css";
 import s from "@/Components/_Common/Business/Crm/Service/Service.module.css";
 import { asArray, useBizFormat } from "@/Components/_Common/Business/bizShared";
 import { LinkOffers } from "./LinkOffers";
-import { tierKey, TierKey, redemptionStatusKey } from "@/Components/_Common/Business/Crm/Service/CrmClub";
+import { basisOfClub, tierKey, TierKey, TierBasis, redemptionStatusKey } from "@/Components/_Common/Business/Crm/Service/CrmClub";
 import { isProfile, profileKey } from "@/Components/_Common/Business/Crm/Service/profiles";
 
 // «باشگاه‌های من» (2026-10): the patient's points in every centre whose
@@ -30,7 +30,10 @@ type Club = {
   name: string;
   pointUnit?: number;
   perVisit?: number;
-  member: { balance: number; earned: number; total: number; tier: TierKey; next: TierKey | null; progress: number; discount: number };
+  tierBasis?: TierBasis;
+  // count: attended visits + delivered orders; toNext: what is left to the
+  // next tier, in the club's basis (toman or visits / orders)
+  member: { balance: number; earned: number; total: number; count?: number; basis?: TierBasis; toNext?: number; tier: TierKey; next: TierKey | null; progress: number; discount: number };
   rewards: { _id: string; name: string; description?: string; points: number; kind: string; value: number; maxDiscount: number }[];
   codes: { _id: string; name: string; kind: string; code: string; status: "issued" | "applied" | "used"; expiresAt?: string; discountAmount: number }[];
 };
@@ -102,6 +105,10 @@ const MyClubsPage = () => {
                   {c.member.next && (
                     <div className={s.tier}>
                       <span className={classes.muted}>{t("crmeToNext", [t(tierKey[c.member.next])])}</span>
+                      {/* a club ranked by visits / orders says how many are left, in the profile's words */}
+                      {basisOfClub({ tierBasis: c.member.basis || c.tierBasis }) === "visits" && (
+                        <span className={s.strong}>{t(profileKey(isProfile(c.ownerKind) ? c.ownerKind : undefined, "crmeToNextVisits"), [f.money(Math.max(0, Number(c.member.toNext) || 0))])}</span>
+                      )}
                       <span className={s.progress}>
                         <span style={{ width: `${c.member.progress}%` }} />
                       </span>

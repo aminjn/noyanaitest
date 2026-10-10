@@ -35,7 +35,16 @@ export const tierKey: Record<TierKey, string> = {
   basic: "crmeTierBasic",
 };
 type Tier = { key: TierKey; min: number; discount: number };
-type Settings = { enabled: boolean; pointUnit: number; perVisit?: number; codeDays: number; tiers: Tier[] };
+// what the tiers count: the total paid (toman), or attended visits /
+// delivered orders (backend Models/BizClubSettings.ts tierBasis)
+export type TierBasis = "amount" | "visits";
+type Settings = { enabled: boolean; pointUnit: number; perVisit?: number; codeDays: number; tierBasis?: TierBasis; tiers: Tier[] };
+// the thresholds a basis starts from (backend defaultClubTiers / defaultVisitTiers)
+const DEFAULT_MIN: Record<TierBasis, Record<TierKey, number>> = {
+  amount: { platinum: 100_000_000, gold: 50_000_000, silver: 20_000_000, bronze: 5_000_000, basic: 0 },
+  visits: { platinum: 50, gold: 25, silver: 10, bronze: 3, basic: 0 },
+};
+export const basisOfClub = (v: { tierBasis?: string } | null | undefined): TierBasis => (v?.tierBasis === "visits" ? "visits" : "amount");
 export type Reward = { _id: string; name: string; description?: string; points: number; kind: "percent" | "amount"; value: number; maxDiscount: number; active: boolean };
 type Member = {
   contact: string;
@@ -50,6 +59,10 @@ type Member = {
   next: TierKey | null;
   progress: number;
   discount: number;
+  // attended visits + delivered orders, what the tier reads, what is left
+  count?: number;
+  basis?: TierBasis;
+  toNext?: number;
 };
 type RedemptionStatus = "issued" | "applied" | "used" | "cancelled" | "expired";
 type Redemption = {
@@ -107,9 +120,13 @@ const SettingsCard = ({ settings, onSaved }: { settings: Settings; onSaved: () =
   const [busy, setBusy] = useState(false);
   useEffect(() => setV(settings), [settings]);
   const setTier = (key: TierKey, patch: Partial<Tier>) => setV((x) => ({ ...x, tiers: x.tiers.map((tr) => (tr.key === key ? { ...tr, ...patch } : tr)) }));
+  const basis = basisOfClub(v);
+  // a new basis: its own thresholds, the discounts kept
+  const setBasis = (b: TierBasis) =>
+    setV((x) => (basisOfClub(x) === b ? x : { ...x, tierBasis: b, tiers: TIERS.map((k) => ({ key: k, min: DEFAULT_MIN[b][k], discount: x.tiers.find((tr) => tr.key === k)?.discount ?? 0 })) }));
   const save = async () => {
     setBusy(true);
-    const ok = await call("PUT", "/club/settings", v as unknown as Record<string, unknown>);
+    const ok = await call("PUT", "/club/settings", { ...v, tierBasis: basis } as unknown as Record<string, unknown>);
     setBusy(false);
     if (ok) onSaved();
   };
@@ -138,10 +155,18 @@ const SettingsCard = ({ settings, onSaved }: { settings: Settings; onSaved: () =
           <input type="number" min={1} max={365} dir="ltr" value={v.codeDays} disabled={!canWrite} onChange={(e) => setV((x) => ({ ...x, codeDays: Number(e.target.value) || 0 }))} />
         </label>
       </div>
+      <label className={classes.field}>
+        {t("crmeTierBasis")}
+        <select value={basis} disabled={!canWrite} onChange={(e) => setBasis(e.target.value === "visits" ? "visits" : "amount")}>
+          <option value="amount">{t("crmeTierBasisAmount")}</option>
+          <option value="visits">{t("crmeTierBasisVisits")}</option>
+        </select>
+        <span className={s.hint}>{t("crmeTierBasisHint")}</span>
+      </label>
       <div className={s.stack}>
         <div className={s.tierEdit}>
           <span className={classes.muted}>{t("crmeTier")}</span>
-          <span className={classes.muted}>{t("crmeTierMin")}</span>
+          <span className={classes.muted}>{t(basis === "visits" ? "crmeTierMinVisits" : "crmeTierMin")}</span>
           <span className={classes.muted}>{t("crmeTierDiscount")}</span>
         </div>
         {TIERS.map((k) => {
@@ -149,7 +174,16 @@ const SettingsCard = ({ settings, onSaved }: { settings: Settings; onSaved: () =
           return (
             <div key={k} className={s.tierEdit}>
               <span className={s.tierName}>{t(tierKey[k])}</span>
-              <input type="number" min={0} dir="ltr" value={tr.min} disabled={!canWrite || k === "basic"} onChange={(e) => setTier(k, { min: Number(e.target.value) || 0 })} aria-label={t("crmeTierMin")} />
+              <input
+                type="number"
+                min={0}
+                step={basis === "visits" ? 1 : 1000}
+                dir="ltr"
+                value={tr.min}
+                disabled={!canWrite || k === "basic"}
+                onChange={(e) => setTier(k, { min: Math.max(0, basis === "visits" ? Math.round(Number(e.target.value) || 0) : Number(e.target.value) || 0) })}
+                aria-label={t(basis === "visits" ? "crmeTierMinVisits" : "crmeTierMin")}
+              />
               <input type="number" min={0} max={100} dir="ltr" value={tr.discount} disabled={!canWrite} onChange={(e) => setTier(k, { discount: Number(e.target.value) || 0 })} aria-label={t("crmeTierDiscount")} />
             </div>
           );
@@ -236,9 +270,10 @@ const MemberPopup = ({ contactId, onDone }: { contactId: string; onDone: () => u
                   <span className={classes.muted}>{t("crmePointsBreakdown", [f.money(m.earned), f.money(m.adjusted), f.money(m.held)])}</span>
                 </div>
                 <div className={s.tier}>
-                  <span className={classes.muted}>{t("crmePaidTotal")}</span>
-                  <span className={s.tierName}>{f.money(m.total)}</span>
+                  <span className={classes.muted}>{t(m.basis === "visits" ? "crmeVisitCount" : "crmePaidTotal")}</span>
+                  <span className={s.tierName}>{f.money(m.basis === "visits" ? m.count || 0 : m.total)}</span>
                   {m.next && <span className={classes.muted}>{t("crmeToNext", [t(tierKey[m.next])])}</span>}
+                  {m.next && m.basis === "visits" && <span className={classes.muted}>{t("crmeToNextVisits", [f.money(m.toNext || 0)])}</span>}
                   <span className={s.progress}>
                     <span style={{ width: `${m.progress}%` }} />
                   </span>
@@ -488,6 +523,7 @@ const CrmClub = () => {
                   name: { name: t("crmName"), value: (m) => m.name || "", filter: "Text" },
                   phone: { name: t("crmPhone"), value: (m) => m.phone || "", component: (m) => <bdi dir="ltr">{phoneText(m.phone || "")}</bdi> },
                   tier: { name: t("crmeTier"), value: (m) => t(tierKey[m.tier] || tierKey.basic), filter: "Set" },
+                  count: { name: t("crmeVisitCount"), value: (m) => m.count || 0, filter: "Number", component: (m) => f.money(m.count || 0) },
                   total: { name: t("crmePaidTotal"), value: (m) => m.total, filter: "Number", component: (m) => f.money(m.total) },
                   balance: { name: t("crmePointsBalance"), value: (m) => m.balance, filter: "Number", component: (m) => f.money(m.balance) },
                   actions: {

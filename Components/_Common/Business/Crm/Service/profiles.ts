@@ -77,8 +77,12 @@ const PEOPLE_KEYS: Partial<Record<CrmProfile, string[]>> = {
     "crmNavAutomationsHint",
     "crmePerVisit",
     "crmeEarnByVisit",
+    "crmeTierBasisVisits",
+    "crmeTierMinVisits",
+    "crmeVisitCount",
+    "crmeToNextVisits",
   ],
-  paraClinic: ["crmNavAutomationsHint", "crmePerVisit", "crmeEarnByVisit"],
+  paraClinic: ["crmNavAutomationsHint", "crmePerVisit", "crmeEarnByVisit", "crmeTierBasisVisits", "crmeTierMinVisits", "crmeVisitCount", "crmeToNextVisits"],
   insurance: ["crmNavAutomationsHint", "crmePatient", "crmeAboutPatient", "crmeInternalNote", "crmeReplyPlaceholder", "crmeTkPending", "crmeNavTicketsHint", "crmeNavTasksHint", "crmPickContact"],
 };
 export const profileKey = (profile: CrmProfile | undefined, key: string) => (profile && PEOPLE_KEYS[profile]?.includes(key) ? `${key}_${profile}` : key);
