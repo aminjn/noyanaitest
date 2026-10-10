@@ -10,6 +10,8 @@ import {
 import { useCallback, useState } from "react";
 import { fetcher } from "../helpers/fetcher";
 import useNotification from "./useNotification";
+import usePopup from "./usePopup";
+import AuthPopup from "../Popups/AuthPopup";
 import {
   IProductPackage,
   ProductPackagePopulation,
@@ -99,8 +101,19 @@ export type UseCartNode = ICart<{
 }>;
 
 const useCart = () => {
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const pushNotification = useNotification();
+  const { setPopup } = usePopup();
+  // a visitor who taps "add" is asked to log in, never left with a tap that
+  // does nothing (the request would only be refused)
+  const askLogin = useCallback(() => setPopup("Auth", <AuthPopup />), [setPopup]);
+  const showError = useCallback(
+    (err: unknown) => {
+      const message = (err as { message?: unknown } | undefined)?.message;
+      pushNotification(typeof message === "string" && message ? message : "", "Error");
+    },
+    [pushNotification],
+  );
 
   const {
     data: cart,
@@ -128,15 +141,21 @@ const useCart = () => {
           ?.delivery?.message;
         if (typeof hint === "string" && hint) pushNotification(hint, "Warn");
       },
+      onError: showError,
+      throwOnError: false,
     },
   );
 
   const mutateCartItem = useCallback(
     (payload: MutateCartItemPayload) => {
       if (isMutating) return;
+      if (!user) {
+        if (!isUserLoading) askLogin();
+        return;
+      }
       _mutateCartItem(payload);
     },
-    [_mutateCartItem, isMutating],
+    [_mutateCartItem, isMutating, user, isUserLoading, askLogin],
   );
 
   const { trigger: _removeCartItem, isMutating: isRemoving } = useSWRMutation<
@@ -152,6 +171,8 @@ const useCart = () => {
         mutate();
         globalMutate(`${API}/cart/size`);
       },
+      onError: showError,
+      throwOnError: false,
     },
   );
 
@@ -171,12 +192,14 @@ const useCart = () => {
         mutate();
         globalMutate(`${API}/cart/size`);
       },
+      onError: showError,
+      throwOnError: false,
     },
   );
 
   const getItemQty = useCallback(
     ({ itemId, model }: { itemId: string; model: CartModel }) =>
-      cart?.[model].find((el) => el.item._id === itemId)?.qty || 0,
+      (Array.isArray(cart?.[model]) ? cart![model] : []).find((el) => el?.item?._id === itemId)?.qty || 0,
     [cart],
   );
 

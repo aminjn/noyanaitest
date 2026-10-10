@@ -1,6 +1,7 @@
 import PopupCard from "@/Components/UI/PopupCard";
 import usePopup from "@/Components/Hooks/usePopup";
 import AddressForm from "./AddressForm";
+import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 
 // popupName must match the name the opener passed to setPopup (the cart
 // opens it as "CartAddAddress", the addresses page as
@@ -13,8 +14,9 @@ const DashboardMutateAddressPopup = ({
   popupName?: string;
 }) => {
   const { closePopup } = usePopup();
+  const getContent = useScopedLocale(["common", "dashboardAddress"]);
   return (
-    <PopupCard>
+    <PopupCard title={getContent("addNewAddress")}>
       <AddressForm
         onSaved={() => {
           mutate();

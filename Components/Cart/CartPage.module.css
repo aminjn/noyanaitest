@@ -79,6 +79,40 @@
   border-top: 1px solid var(--gray4);
 }
 
+/* phone: the name gets the full width; price, quantity and remove go on a
+   second line (five columns left the name 0px wide and the seller's name
+   on top of the price) */
+@media (max-width: 40rem) {
+  .row {
+    grid-template-columns: 4.5rem 1fr auto;
+    grid-template-areas:
+      "img info remove"
+      "img price qty";
+    row-gap: 0.5rem;
+  }
+  .imageBox {
+    grid-area: img;
+    align-self: start;
+  }
+  .info {
+    grid-area: info;
+  }
+  .itemTitle {
+    white-space: normal;
+  }
+  .priceBox {
+    grid-area: price;
+    align-items: flex-start;
+  }
+  .row > :nth-child(4) {
+    grid-area: qty;
+  }
+  .removeBtn {
+    grid-area: remove;
+    align-self: start;
+  }
+}
+
 .rows > .row:first-child {
   border-top: none;
   padding-top: 0;
@@ -132,8 +166,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 0.5rem;
   color: var(--error);
 }

@@ -20,7 +20,8 @@ const PopupCard = ({
   // "wide" for a long form (tabs, a pricing editor) - room for two columns
   size?: "normal" | "wide";
 }>) => {
-  const { closePopup } = usePopup();
+  // its own X closes this popup only (the one on top), not its parent
+  const { closeTopPopup } = usePopup();
   return (
     <div
       className={`${classes.main} ${size === "wide" ? classes.wide : ""} ${className || ""}`}
@@ -40,7 +41,7 @@ const PopupCard = ({
         <button
           className={classes.close}
           type="button"
-          onClick={() => closePopup()}
+          onClick={() => closeTopPopup()}
         >
           <Ixon width=".875rem">
             <CloseIcon />

@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
-import { useIntlLocale } from "@/Components/i18n/navigation";
+import { useIntlLocale, usePathname } from "@/Components/i18n/navigation";
+import useProgressBusy from "@/Components/Hooks/useProgressBusy";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -71,9 +72,18 @@ const BookingSessionSelectorPopup = ({
   };
 
   const close = () => (onClose ? onClose() : closePopup());
+  // the sheet stays up, its time busy, until the details step is on
+  // screen (closing it first left the patient looking at the list with
+  // no sign the tap had worked)
+  const busy = useProgressBusy();
+  const pathname = usePathname();
+  const openedOn = useRef(pathname);
+  useEffect(() => {
+    if (pathname !== openedOn.current) close();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
   const go = (chosen: SlotPick | null = pick) => {
-    if (!chosen) return;
-    close();
+    if (!chosen || busy) return;
     push(finalizeHref(node._id, { ...chosen, sessionType: type }));
   };
   // on a phone a tapped time goes straight to the details step
@@ -108,7 +118,7 @@ const BookingSessionSelectorPopup = ({
       >
         {getContent("seeDoctorProfile")}
       </Button>
-      <Button variant={pick ? "Primary" : "Disable"} size="M" radius="High" onClick={() => go()}>
+      <Button variant={pick ? "Primary" : "Disable"} size="M" radius="High" isLoading={!!pick && busy} onClick={() => go()}>
         {pick ? `${getContent("bfContinue")} · ${clock(pick.start, nf)}` : getContent("bfPickATime")}
       </Button>
     </div>

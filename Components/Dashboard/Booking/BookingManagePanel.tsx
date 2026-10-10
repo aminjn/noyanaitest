@@ -191,14 +191,14 @@ const BookingManagePanel = ({
             {data.status === "active" && (!!data.chat || !!data.callRoom) && (
               <ReservationJoinButton chat={data.chat} callRoom={data.callRoom} sessionType={data.sessionType} />
             )}
-            <Button size="S" mode="Outline" radius="High" leadIcon={<DownloadIcon />} onClick={downloadIcs}>
+            <Button size="M" mode="Outline" radius="High" leadIcon={<DownloadIcon />} onClick={downloadIcs}>
               {getContent("bfAddToCalendar")}
             </Button>
             <a className={classes.textLink} href={googleUrl} target="_blank" rel="noopener noreferrer">
               {getContent("bfGoogleCalendar")}
             </a>
             {canChange(data) && (
-              <Button size="S" mode="Outline" radius="High" leadIcon={<EditIcon />} onClick={() => setMoving(true)}>
+              <Button size="M" mode="Outline" radius="High" leadIcon={<EditIcon />} onClick={() => setMoving(true)}>
                 {getContent("bfReschedule")}
               </Button>
             )}

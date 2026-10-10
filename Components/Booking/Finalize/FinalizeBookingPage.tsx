@@ -348,7 +348,7 @@ const FinalizeBookingPage = () => {
   );
 
   const otherDoctors = !!speciality?.name && (
-    <Button href={`/speciality/${speciality.slug || speciality._id}`} variant="Primary" mode="Outline" size="S" radius="High">
+    <Button href={`/speciality/${speciality.slug || speciality._id}`} variant="Primary" mode="Outline" size="M" radius="High">
       {getContent("bfOtherDoctors", [speciality.name])}
     </Button>
   );
@@ -442,7 +442,7 @@ const FinalizeBookingPage = () => {
         <strong>{getContent("bfSlotTaken")}</strong>
         <p>{getContent("bfSlotTakenText")}</p>
       </div>
-      <Button size="S" radius="High" onClick={() => setChangeOpen(true)}>
+      <Button size="M" radius="High" onClick={() => setChangeOpen(true)}>
         {getContent("bfPickAnother")}
       </Button>
     </div>

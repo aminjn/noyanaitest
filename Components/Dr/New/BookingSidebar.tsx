@@ -139,7 +139,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
           href={`/speciality/${speciality.slug || speciality._id}`}
           variant="Primary"
           mode="Outline"
-          size="S"
+          size="M"
           radius="High"
         >
           {getContent("bfOtherDoctors", [speciality.name])}

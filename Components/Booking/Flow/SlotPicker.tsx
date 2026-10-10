@@ -12,6 +12,8 @@ import ClockIcon from "@/Components/Icons/ClockIcon";
 import ArrowLeftIcon from "@/Components/Icons/ArrowLeftIcon";
 import SunIcon from "@/Components/Icons/SunIcon";
 import MoonIcon from "@/Components/Icons/MoonIcon";
+import LoadingIcon from "@/Components/Icons/LoadingIcon";
+import useProgressBusy from "@/Components/Hooks/useProgressBusy";
 import { clock, DayPeriod, dayPeriods, periodKey, periodOf, useBookableSlots } from "./bookingFlow";
 import WaitlistJoin from "./WaitlistJoin";
 import classes from "./SlotPicker.module.css";
@@ -69,6 +71,9 @@ const SlotPicker = ({
     [intlTag],
   );
   const { data, error, isLoading, mutate } = useBookableSlots(doctorId, sessionType, office);
+  // a tapped time that opens the next page: it shows it is working, and
+  // further taps wait (no double navigation)
+  const navigating = useProgressBusy();
 
   const today = tehranTodayYmd();
   const horizon = Math.min(maxDays || data?.horizon || 30, 60);
@@ -197,7 +202,9 @@ const SlotPicker = ({
         <button
           type="button"
           className={`${classes.first} ${isFirstPicked ? classes.firstOn : ""}`}
+          aria-busy={isFirstPicked && navigating}
           onClick={() => {
+            if (navigating) return;
             setDay(firstFree);
             onChange({ ymd: firstFree, ...first });
           }}
@@ -211,6 +218,11 @@ const SlotPicker = ({
             <small>{getContent("bfFirstAvailable")}</small>
             <b>{`${longDay(firstFree)} · ${clock(first.start, nf)}`}</b>
           </span>
+          {isFirstPicked && navigating && (
+            <Ixon width="1.25rem" className={classes.spin}>
+              <LoadingIcon />
+            </Ixon>
+          )}
         </button>
       )}
 
@@ -310,10 +322,20 @@ const SlotPicker = ({
                     key={`${b.start}-${b.end}`}
                     type="button"
                     aria-pressed={on}
+                    aria-busy={on && navigating}
                     className={`${classes.slot} ${on ? classes.slotOn : ""}`}
-                    onClick={() => day && onChange(on ? null : { ymd: day, ...b })}
+                    onClick={() => !navigating && day && onChange(on ? null : { ymd: day, ...b })}
                   >
-                    {clock(b.start, nf)}
+                    {on && navigating ? (
+                      <span className={classes.slotBusy}>
+                        <Ixon width="1rem">
+                          <LoadingIcon />
+                        </Ixon>
+                        {clock(b.start, nf)}
+                      </span>
+                    ) : (
+                      clock(b.start, nf)
+                    )}
                   </button>
                 );
               })}

@@ -24,7 +24,11 @@ const BreadCrump = ({
   const intlTag = useIntlLocale();
   const getContent = useScopedLocale(LOCALE_NS);
 
-  const { hours, minutes } = useTime();
+  // re-render every second; the clock itself is Tehran time in the page's
+  // locale (the device / server zone would differ from the site's, and the
+  // server-rendered minute can't match the client's: no hydration warning)
+  useTime();
+  const now = new Date();
   return (
     <div className={`${classes.main} ${className}`} style={style}>
       <nav className={classes.nav}>
@@ -42,10 +46,12 @@ const BreadCrump = ({
         ))}
       </nav>
       <div className={classes.rest}>
-        <span className={classes.time}>
+        <span className={classes.time} suppressHydrationWarning>
           {/* Isolated LTR so hours:minutes reads the same in RTL locales. */}
-          <bdi dir="ltr">{`${hours} : ${minutes}`}</bdi>
-          {` - ${new Date().toLocaleDateString(intlTag, {
+          <bdi dir="ltr" suppressHydrationWarning>
+            {now.toLocaleTimeString(intlTag, { timeZone: TEHRAN_TZ, hour: "2-digit", minute: "2-digit", hour12: false })}
+          </bdi>
+          {` - ${now.toLocaleDateString(intlTag, {
             timeZone: TEHRAN_TZ,
             month: "long",
             day: "numeric",

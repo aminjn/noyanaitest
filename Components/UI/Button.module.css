@@ -445,6 +445,14 @@
   padding-inline: 0.75rem;
 }
 
+/* touch screens: a medium button is a full 44px tap target (WCAG 2.5.5,
+   Apple HIG); the small one keeps its look where rows are dense */
+@media (pointer: coarse) {
+  .M {
+    height: 2.75rem;
+  }
+}
+
 .XL:not(.Disable):hover,
 .L:not(.Disable):hover,
 .M:not(.Disable):hover,

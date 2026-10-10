@@ -9,6 +9,11 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import classes from "./ProgressContext.module.css";
+
+// a navigation that never lands (offline, a server error) must not leave
+// the bar and the busy buttons on for ever
+const STUCK_MS = 20000;
 
 const ProgressContext = React.createContext<{
   push: (target: string) => void;
@@ -41,6 +46,11 @@ export const ProgressContextProvider = (props: { children: ReactNode }) => {
   const pathname = usePathname();
 
   const resetLoading = useCallback(() => setIsLoading(false), []);
+  useEffect(() => {
+    if (!isLoading) return;
+    const t = setTimeout(() => setIsLoading(false), STUCK_MS);
+    return () => clearTimeout(t);
+  }, [isLoading]);
 
   const push = useCallback(
     (target: string) => {
@@ -61,6 +71,10 @@ export const ProgressContextProvider = (props: { children: ReactNode }) => {
         <RouteChangeWatcher onChange={resetLoading} />
       </Suspense>
       {props.children}
+      {/* the tap's feedback while the next page loads (an App Router push
+          shows nothing until the server answers - on a phone network the
+          tap seemed to do nothing) */}
+      {isLoading && <div className={classes.bar} aria-hidden="true" />}
     </ProgressContext.Provider>
   );
 };

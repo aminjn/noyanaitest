@@ -160,7 +160,7 @@ const ReservationCancel = ({
     <Button
       variant="Error"
       mode="Outline"
-      size="S"
+      size="M"
       onClick={() =>
         setPopup(
           "CancelReservation",

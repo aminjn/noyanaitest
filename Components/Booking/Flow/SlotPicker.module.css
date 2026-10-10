@@ -359,3 +359,15 @@
   font-weight: 600;
   font-size: var(--fsXs);
 }
+
+/* the tapped time while the next step opens */
+.slotBusy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp1);
+}
+.spin {
+  margin-inline-start: auto;
+  color: var(--primary6);
+}

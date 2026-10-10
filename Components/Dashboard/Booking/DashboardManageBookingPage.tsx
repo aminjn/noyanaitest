@@ -62,7 +62,7 @@ const DashboardManageBookingPage = () => {
             <Button
               href="/dashboard/booking"
               mode="Inline"
-              size="S"
+              size="M"
               leadIcon={<ArrowLeftIcon />}
             >
               {getContent("backToList")}
