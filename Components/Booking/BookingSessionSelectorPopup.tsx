@@ -17,6 +17,7 @@ import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import { DoctorSessionType } from "../DoctorPanel/Calendar/DoctorCalendarDay";
 import { DoctorConfig } from "../Dr/PublicDrSessions";
 import SlotPicker, { SlotPick } from "./Flow/SlotPicker";
+import usePhoneLayout from "@/Components/Hooks/usePhoneLayout";
 import { VisitTypePicker } from "./Flow/BookingChoices";
 import { clock, finalizeHref, visitTypeOrder } from "./Flow/bookingFlow";
 import { tehranYmd } from "@/Components/helpers/tehranTime";
@@ -70,10 +71,16 @@ const BookingSessionSelectorPopup = ({
   };
 
   const close = () => (onClose ? onClose() : closePopup());
-  const go = () => {
-    if (!pick) return;
+  const go = (chosen: SlotPick | null = pick) => {
+    if (!chosen) return;
     close();
-    push(finalizeHref(node._id, { ...pick, sessionType: type }));
+    push(finalizeHref(node._id, { ...chosen, sessionType: type }));
+  };
+  // on a phone a tapped time goes straight to the details step
+  const phone = usePhoneLayout();
+  const pickTime = (p: SlotPick | null) => {
+    setPick(p);
+    if (phone && p) go(p);
   };
 
   const body = (
@@ -83,7 +90,7 @@ const BookingSessionSelectorPopup = ({
         doctorId={node._id}
         sessionType={type}
         value={pick}
-        onChange={setPick}
+        onChange={pickTime}
         initialDay={initialDate ? tehranYmd(initialDate) : undefined}
         waitlist
       />
@@ -101,7 +108,7 @@ const BookingSessionSelectorPopup = ({
       >
         {getContent("seeDoctorProfile")}
       </Button>
-      <Button variant={pick ? "Primary" : "Disable"} size="M" radius="High" onClick={go}>
+      <Button variant={pick ? "Primary" : "Disable"} size="M" radius="High" onClick={() => go()}>
         {pick ? `${getContent("bfContinue")} · ${clock(pick.start, nf)}` : getContent("bfPickATime")}
       </Button>
     </div>
