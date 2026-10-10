@@ -1,0 +1,11 @@
+.main {
+  width: 100%;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding: var(--sp4) 1rem var(--sp8);
+}
+/* a tall map on the route page */
+.card [class*="PlaceLocationCard_map"] {
+  height: 60vh;
+  min-height: 20rem;
+}

@@ -137,6 +137,7 @@ const PlaceLocationCard = ({
   className = "",
   style,
   id,
+  autoRoute = false,
 }: WithStyleProps<{
   // GeoJSON [lng, lat], as stored on our models
   coords?: number[] | null;
@@ -145,6 +146,9 @@ const PlaceLocationCard = ({
   // section title (defaults to "How to get there")
   title?: string;
   id?: string;
+  // the route page (/map/route): the route from the visitor is asked for
+  // at once, and the "open" button is not shown (we are there)
+  autoRoute?: boolean;
 }>) => {
   const getContent = useScopedLocale(NS);
   const text = useTravelText();
@@ -161,7 +165,30 @@ const PlaceLocationCard = ({
     { revalidateOnFocus: false, shouldRetryOnError: false },
   );
 
-  const [interactive, setInteractive] = useState(false);
+  // the live map loads as soon as the card comes into view (the owner's
+  // rule: a map, not a picture to tap); the static image only holds the
+  // place until then
+  const [interactive, setInteractive] = useState(autoRoute);
+  const sectionRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (interactive) return;
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInteractive(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setInteractive(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [interactive]);
   const staticAllowed = config ? config.enabled && config.features?.staticMap !== false : true;
   const showInteractive = interactive || (!!config && !staticAllowed);
 
@@ -213,6 +240,16 @@ const PlaceLocationCard = ({
     }
   };
 
+  // the route page asks for the way there at once (the browser asks the
+  // visitor for their location once)
+  const autoAsked = useRef(false);
+  useEffect(() => {
+    if (!autoRoute || !center || autoAsked.current || !routeAllowed) return;
+    autoAsked.current = true;
+    loadRoute("car");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRoute, center, routeAllowed]);
+
   const active = routes[mode] || null;
   const routeLine = useMemo(() => {
     if (!active?.geometry) return null;
@@ -256,7 +293,7 @@ const PlaceLocationCard = ({
     }
   };
 
-  const navUrl = navigationUrl(coords || undefined);
+  const navUrl = autoRoute ? undefined : navigationUrl(coords || undefined, name);
   const shownAddress = address || info?.address || "";
   const parkingInfo = info?.parking && info.parking.count > 0 ? info.parking : null;
   const nearestParking = useMemo(() => {
@@ -278,7 +315,7 @@ const PlaceLocationCard = ({
   const fuelIrr = summary?.fuel_cost_irr || fuel[mode];
 
   return (
-    <section className={`${classes.main} ${className}`} style={style} id={id}>
+    <section ref={sectionRef} className={`${classes.main} ${className}`} style={style} id={id}>
       <div className={classes.header}>
         <div className={`${classes.iconBox} glassIcon tone-rose`}>
           <Ixon width="1rem">
@@ -299,6 +336,7 @@ const PlaceLocationCard = ({
             size="S"
             radius="High"
             onClick={() => window.open(navUrl, "_blank", "noopener")}
+            // our route page on NexaMap (Components/Map/RoutePage.tsx)
           >
             {getContent("mapOpenInNavApp")}
           </Button>

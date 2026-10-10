@@ -1,10 +1,6 @@
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import classes from "./DayShifts.module.css";
-import {
-  daysOfWeekContentKeys,
-  DoctorShiftDay,
-  ShiftContext,
-} from "./DoctorManageShiftsPage";
+import { daysOfWeekContentKeys, DoctorShiftDay, ShiftContext } from "./DoctorManageShiftsPage";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import ToggleInput from "@/Components/UI/ToggleInput";
 import PlusIcon from "@/Components/Icons/PlusIcon";
@@ -13,7 +9,6 @@ import Ixon from "@/Components/UI/Ixon";
 import { nanoid } from "nanoid";
 import Replicator from "./Replicator";
 import ShiftItem from "./ShiftItem";
-import DayTrack, { HourAxis } from "./WeekOverview";
 import useShiftUtils from "./useShiftUtils";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { IOffice } from "../Office/DoctorManageOfficesPage";
@@ -24,8 +19,8 @@ const NS: ContentNamespace[] = ["common", "doctorPanelShift"];
 const newId = () => `${nanoid()}${Date.now()}`;
 
 // One weekday of the weekly hours (Doctolib "horaires" / Google Calendar
-// "weekly hours" row): on/off switch, its time ranges inline, add a range,
-// copy the day to other days, and the day's bar on the week's hour axis.
+// "weekly hours" row), compact: the day's switch, its ranges as short chips
+// (tap one to edit it), add a range and copy the day to other days.
 const DayShifts = ({
   day,
   data,
@@ -34,9 +29,10 @@ const DayShifts = ({
   setOffDays,
   offices,
   overlaps,
-  axis,
   toneOf,
   canEdit,
+  editing,
+  setEditing,
 }: {
   day: DoctorShiftDay;
   data: ShiftContext;
@@ -45,9 +41,10 @@ const DayShifts = ({
   setOffDays: Dispatch<SetStateAction<DoctorShiftDay[]>>;
   offices: IOffice[];
   overlaps: Set<string>;
-  axis: HourAxis;
   toneOf: (officeId?: string) => string;
   canEdit: boolean;
+  editing: string | null;
+  setEditing: (id: string | null) => void;
 }) => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
@@ -70,14 +67,15 @@ const DayShifts = ({
     [...data].reverse().find((shift) => shift.office)?.office ||
     (offices.find((el) => el?.active) || offices[0])?._id;
 
-  const addRange = () => {
+  const addRange = (openIt = true) => {
     const last = todaysShifts[todaysShifts.length - 1];
     const start = last ? Math.min(last.end + 60, 23 * 60) : 9 * 60;
     const end = Math.min(start + 4 * 60, 24 * 60);
+    const id = newId();
     setData((prev) => [
       ...prev,
       {
-        _id: newId(),
+        _id: id,
         day,
         office: last?.office || defaultOffice,
         start,
@@ -91,6 +89,7 @@ const DayShifts = ({
         name: "",
       },
     ]);
+    if (openIt) setEditing(id);
   };
 
   const toggle = () => {
@@ -102,14 +101,9 @@ const DayShifts = ({
     // switching on an empty day: the hours of the nearest earlier day that
     // has some (most practices repeat the same day), else one range
     const order = [1, 2, 3, 4, 5, 6].map((i) => ((day - i + 7) % 7) as DoctorShiftDay);
-    const source = order.find(
-      (d) => !offDays.includes(d) && data.some((s) => s.day === d),
-    );
-    if (source === undefined) return addRange();
-    setData((prev) => [
-      ...prev,
-      ...prev.filter((s) => s.day === source).map((s) => ({ ...s, _id: newId(), day })),
-    ]);
+    const source = order.find((d) => !offDays.includes(d) && data.some((s) => s.day === d));
+    if (source === undefined) return addRange(false);
+    setData((prev) => [...prev, ...prev.filter((s) => s.day === source).map((s) => ({ ...s, _id: newId(), day }))]);
   };
 
   const dayName = getContent(daysOfWeekContentKeys[day]);
@@ -117,20 +111,14 @@ const DayShifts = ({
   return (
     <div id={`shift-day-${day}`} className={`${classes.row} ${on ? "" : classes.rowOff}`}>
       <div className={classes.dayCol}>
-        <ToggleInput
-          title={dayName}
-          value={on}
-          readOnly={!canEdit}
-          onChange={toggle}
-          className={classes.dayToggle}
-        />
+        <ToggleInput title={dayName} value={on} readOnly={!canEdit} onChange={toggle} className={classes.dayToggle} />
         {on && <small className={classes.dayMeta}>{getContent("xSessions", [num.format(sessions)])}</small>}
       </div>
 
       <div className={classes.body}>
-        {on ? (
-          <div className={classes.ranges}>
-            {todaysShifts.map((shift) => (
+        <div className={classes.line}>
+          {on ? (
+            todaysShifts.map((shift) => (
               <ShiftItem
                 key={shift._id}
                 setData={setData}
@@ -139,37 +127,42 @@ const DayShifts = ({
                 overlap={overlaps.has(shift._id)}
                 tone={toneOf(shift.office)}
                 canEdit={canEdit}
+                open={editing === shift._id}
+                onOpen={() => setEditing(shift._id)}
+                onClose={() => setEditing(null)}
               />
-            ))}
-          </div>
-        ) : (
-          <p className={classes.offText}>
-            {switchedOff ? getContent("shOffPending") : getContent("offDay")}
-          </p>
-        )}
-
-        <div className={classes.footer}>
-          <DayTrack shifts={todaysShifts} axis={axis} toneOf={toneOf} off={!on} />
+            ))
+          ) : (
+            <span className={classes.offText}>{switchedOff ? getContent("shOffPending") : getContent("offDay")}</span>
+          )}
           {canEdit && on && (
-            <div className={classes.dayActions}>
-              <button type="button" className={classes.linkButton} onClick={addRange}>
+            <span className={classes.dayActions}>
+              <button
+                type="button"
+                className={classes.iconBtn}
+                onClick={() => addRange()}
+                aria-label={`${getContent("shAddRange")} · ${dayName}`}
+                title={getContent("shAddRange")}
+              >
                 <Ixon width="1rem">
                   <PlusIcon />
                 </Ixon>
-                {getContent("shAddRange")}
+                <span className={classes.btnText}>{getContent("shAddRange")}</span>
               </button>
               <button
                 type="button"
-                className={classes.linkButton}
+                className={classes.iconBtn}
                 aria-expanded={copyOpen}
+                aria-label={`${getContent("shCopyTo")} · ${dayName}`}
+                title={getContent("shCopyTo")}
                 onClick={() => setCopyOpen((v) => !v)}
               >
                 <Ixon width="1rem">
                   <CopyIcon />
                 </Ixon>
-                {getContent("shCopyTo")}
+                <span className={classes.btnText}>{getContent("shCopyTo")}</span>
               </button>
-            </div>
+            </span>
           )}
         </div>
         {copyOpen && on && (

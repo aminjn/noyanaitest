@@ -1,0 +1,289 @@
+/* One day of the hours calendar (2026-10). Logical properties only. */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp4);
+  min-width: 0;
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+}
+
+.facts:empty {
+  display: none;
+}
+
+.fact {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radiusPill);
+  background: var(--glassChip, var(--glassStrong));
+  border: 1px solid var(--glassLine);
+  font-size: var(--fsXs);
+  font-weight: 800;
+  color: var(--textBody);
+}
+
+.factHol {
+  background: var(--toneRose);
+  border-color: transparent;
+  color: var(--toneRoseInk);
+}
+
+.factOpen {
+  background: var(--toneTeal);
+  border-color: transparent;
+  color: var(--toneTealInk);
+}
+
+.factOff {
+  background: var(--toneAmber);
+  border-color: transparent;
+  color: var(--toneAmberInk);
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+}
+
+.blockHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp2);
+}
+
+.blockHead strong {
+  flex: 1;
+  font-size: var(--fsSm);
+  font-weight: 900;
+  color: var(--textStrong);
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: 0.375rem;
+  border-radius: var(--radiusPill);
+  background: var(--primary6);
+  color: var(--onColor, #fff);
+  font-size: var(--fsXs);
+  font-weight: 800;
+}
+
+.muted {
+  margin: 0;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+
+.warn {
+  margin: 0;
+  font-size: var(--fsXs);
+  color: var(--toneAmberInk);
+}
+
+.linkBtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary6);
+  font: inherit;
+  font-size: var(--fsXs);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.choice {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.2rem;
+  border-radius: var(--radiusPill);
+  background: var(--glassStrong);
+  border: 1px solid var(--glassLine);
+}
+
+.opt {
+  min-height: 2.25rem;
+  padding-inline: var(--sp4);
+  border: 0;
+  border-radius: var(--radiusPill);
+  background: transparent;
+  color: var(--textBody);
+  font: inherit;
+  font-size: var(--fsSm);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.optClosed {
+  background: var(--toneRose);
+  color: var(--toneRoseInk);
+}
+
+.optOpen {
+  background: var(--toneTeal);
+  color: var(--toneTealInk);
+}
+
+.visits,
+.ranges,
+.offs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.visit {
+  display: flex;
+  align-items: center;
+  gap: var(--sp3);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radiusSm);
+  background: var(--glassStrong);
+  border: 1px solid var(--glassLine);
+  color: inherit;
+  text-decoration: none;
+}
+
+.visit:hover {
+  border-color: var(--primary6);
+}
+
+.visitTime {
+  font-size: var(--fsSm);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--textStrong);
+}
+
+.visitMain {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.visitMain strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fsSm);
+  font-weight: 800;
+  color: var(--textStrong);
+}
+
+.visitMain small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+
+.range {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem var(--sp2);
+  font-size: var(--fsSm);
+  color: var(--textBody);
+}
+
+.dot {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--tint) !important;
+  border: none !important;
+}
+
+.rangeOffice {
+  font-weight: 800;
+  color: var(--textStrong);
+}
+
+.rangeTime {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.inactive {
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radiusPill);
+  background: var(--toneAmber);
+  color: var(--toneAmberInk);
+  font-size: 0.6875rem;
+  font-weight: 800;
+}
+
+.off {
+  display: flex;
+  align-items: center;
+  gap: var(--sp3);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radiusSm);
+  background: var(--toneAmber);
+}
+
+.offText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  color: var(--toneAmberInk);
+}
+
+.offText strong {
+  font-size: var(--fsSm);
+}
+
+.offText small {
+  font-size: var(--fsXs);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+}
+
+.hoursForm {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--sp2);
+}
+
+.hoursForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+
+.hoursForm select {
+  min-height: 2.25rem;
+  padding-inline: 0.5rem;
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--glassLine);
+  background: var(--glassStrong);
+  color: var(--textStrong);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.fullLink {
+  align-self: flex-start;
+  font-size: var(--fsSm);
+  font-weight: 800;
+  color: var(--primary6);
+}

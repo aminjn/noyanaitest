@@ -1,0 +1,41 @@
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp2) var(--sp4);
+  padding: var(--sp3) var(--sp4);
+  border-radius: var(--radiusMd);
+  border: 1px solid var(--glassLine);
+  background: var(--glass);
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 12rem;
+  flex: 1;
+}
+.text strong {
+  font-size: var(--fsSm);
+  color: var(--textStrong);
+}
+.text small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+.select {
+  min-height: 2.5rem;
+  min-width: 12rem;
+  padding: 0 var(--sp3);
+  border-radius: var(--radiusSm);
+  border: 1px solid var(--cardLineHover);
+  background: var(--cardBg);
+  color: var(--textStrong);
+  font-family: inherit;
+  font-size: var(--fsSm);
+}
+.select:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}

@@ -10,8 +10,6 @@ import HandleLoading from "@/Components/Admin/UI/HandleLoading";
 import CreateForm from "@/Components/Admin/UI/CreateForm";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
-import ClientTabSystem from "@/Components/UI/ClientTabSystem";
-import DoctorManageOfficeLocationTab from "./DoctorManageOfficeLocationTab";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import useOfficeCenterFields from "./useOfficeCenterFields";
 
@@ -35,42 +33,36 @@ const DoctorManageOfficePage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <ClientTabSystem
-          items={[
-            {
-              id: "Details",
-              title: getContent("details"),
-              content: (
-                <CreateForm
-                  style={{ width: "100%" }}
-                  defaultValue={data}
-                  renderer={{
-                    name: { title: getContent("name"), type: "text" },
-                    address: { title: getContent("address"), type: "text" },
-                    addressDetail: { title: getContent("ofAddressDetail"), type: "text" },
-                    tel: { title: getContent("telephone"), type: "text" },
-                    order: { title: getContent("order"), type: "number" },
-                    active: { title: getContent("isActive"), type: "bool" },
-                    ...centerFields,
-                  }}
-                  hookProps={{
-                    path: `${API}/doctor/office/${data._id}`,
-                    method: "POST",
-                    successCb: () => {
-                      mutate();
-                    },
-                  }}
-                />
-              ),
+        // one page, details and map together (fewer clicks): the pin fills
+        // the address, plaque / floor / unit are typed
+        <CreateForm
+          style={{ width: "100%" }}
+          defaultValue={data}
+          renderer={{
+            name: { title: getContent("name"), type: "text", required: true, section: getContent("ofSecInfo") },
+            tel: { title: getContent("telephone"), type: "text", section: getContent("ofSecInfo") },
+            active: { title: getContent("isActive"), type: "bool", section: getContent("ofSecInfo") },
+            order: { title: getContent("order"), type: "number", section: getContent("ofSecInfo") },
+            ...(Object.fromEntries(
+              Object.entries(centerFields).map(([k, v]) => [k, { ...v, section: getContent("ofSecInfo") }]),
+            ) as typeof centerFields),
+            location: {
+              type: "point",
+              title: getContent("ofMapPoint"),
+              addressField: "address",
+              store: "pair",
+              section: getContent("ofSecLocation"),
             },
-            {
-              id: "Location",
-              title: getContent("location"),
-              content: (
-                <DoctorManageOfficeLocationTab mutate={mutate} office={data} />
-              ),
+            address: { title: getContent("ofAddressAuto"), type: "area", section: getContent("ofSecLocation") },
+            addressDetail: { title: getContent("ofAddressDetail"), type: "text", section: getContent("ofSecLocation") },
+          }}
+          hookProps={{
+            path: `${API}/doctor/office/${data._id}`,
+            method: "POST",
+            successCb: () => {
+              mutate();
             },
-          ]}
+          }}
         />
       )}
     </HandleLoading>
