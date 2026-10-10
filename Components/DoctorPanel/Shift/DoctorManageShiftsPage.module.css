@@ -51,16 +51,6 @@
   white-space: nowrap;
 }
 
-.holChip {
-  padding: 0.375rem 0.875rem;
-  border-radius: var(--radiusPill);
-  background: var(--toneRose);
-  color: var(--toneRoseInk);
-  font-size: var(--fsXs);
-  font-weight: 800;
-  white-space: nowrap;
-  text-decoration: none;
-}
 
 /* ---- the week ---- */
 .week {
@@ -81,6 +71,11 @@
   flex-wrap: wrap;
   gap: var(--sp2) var(--sp4);
   padding-block: var(--sp3) var(--sp1);
+}
+
+.weekHead > div {
+  flex: 1 1 18rem;
+  min-width: 0;
 }
 
 .weekHead strong {
@@ -114,29 +109,148 @@
   border: none !important;
 }
 
-/* hour labels over the day bars; same columns as a day row */
-.axisRow {
-  display: grid;
-  grid-template-columns: var(--shiftDayCol, 10rem) minmax(0, 1fr);
-  gap: var(--sp4);
-  padding-top: var(--sp2);
-}
 
-.axis {
-  position: relative;
-  height: 1rem;
-  font-size: 0.6875rem;
+.legendOff {
   color: var(--textMuted);
 }
 
-.axis span {
-  position: absolute;
-  top: 0;
-  transform: translateX(50%);
+.legend em {
+  padding: 0 0.4rem;
+  border-radius: var(--radiusPill);
+  background: var(--toneAmber);
+  color: var(--toneAmberInk);
+  font-style: normal;
+  font-size: 0.6875rem;
+  font-weight: 800;
 }
 
-:global(html[dir="ltr"]) .axis span {
-  transform: translateX(-50%);
+.muted {
+  margin: var(--sp1) 0 0;
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+
+/* a weekday row the day panel sent the doctor to */
+.flash {
+  border-radius: var(--radiusSm);
+  box-shadow: 0 0 0 2px var(--primary6);
+  transition: box-shadow 0.3s;
+}
+
+/* ---- settings strip ---- */
+.strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--sp3);
+}
+
+.stripItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp1);
+  flex: 1 1 20rem;
+  min-width: 0;
+  padding: var(--sp3) var(--sp4);
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+}
+
+.stripItem > small {
+  font-size: var(--fsXs);
+  color: var(--textMuted);
+}
+
+/* ---- the month calendar and the day panel beside it ---- */
+.calendar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp4);
+  padding: var(--sp4);
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+  scroll-margin-block-start: 5rem;
+}
+
+.calMain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+  min-width: 0;
+}
+
+.calSide {
+  position: sticky;
+  inset-block-start: 5rem;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp3);
+  max-height: calc(100dvh - 7rem);
+  overflow-y: auto;
+  padding-inline-start: var(--sp4);
+  border-inline-start: 1px solid var(--glassLine);
+}
+
+.sideTitle small {
+  display: block;
+  font-size: var(--fsXs);
+  font-weight: 700;
+  color: var(--textMuted);
+}
+
+.sideTitle {
+  margin: 0;
+  font-size: var(--fsBody);
+  font-weight: 900;
+  color: var(--textStrong);
+}
+
+.calError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp2);
+  padding: var(--sp6) var(--sp3);
+  text-align: center;
+  color: var(--textMuted);
+  font-size: var(--fsSm);
+}
+
+.calError p {
+  margin: 0;
+}
+
+@media (min-width: 68rem) {
+  .calendar {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+  }
+}
+
+/* ---- several days off (disclosure) ---- */
+.more {
+  padding: var(--sp3) var(--sp4);
+  border-radius: var(--radiusLg);
+  background: var(--glass);
+  border: 1px solid var(--glassLine);
+  box-shadow: var(--glassShadow);
+}
+
+.more > summary {
+  cursor: pointer;
+  font-size: var(--fsSm);
+  font-weight: 800;
+  color: var(--textStrong);
+  padding-block: var(--sp1);
+}
+
+.more[open] > summary {
+  margin-block-end: var(--sp3);
 }
 
 /* ---- no office yet ---- */
@@ -187,9 +301,9 @@
 }
 
 /* ---- save bar: sticks to the bottom while there is something to save ---- */
+/* sticks to the bottom only while there is something to save */
 .saveBar {
-  position: sticky;
-  bottom: calc(var(--sp3) + var(--bottomNavSpace));
+  position: relative;
   z-index: 15;
   margin-inline-end: var(--fabClear);
   display: flex;
@@ -222,6 +336,11 @@
   color: var(--textMuted);
 }
 
+.saveBarDirty {
+  position: sticky;
+  bottom: calc(var(--sp3) + var(--bottomNavSpace));
+}
+
 .saveBarDirty .saveText {
   color: var(--textStrong);
 }
@@ -244,12 +363,12 @@
 }
 
 @media (max-width: 48rem) {
-  .week {
-    padding: var(--sp1) var(--sp3) var(--sp2);
+  .calendar {
+    padding: var(--sp3) var(--sp2);
   }
 
-  .axisRow {
-    display: none;
+  .week {
+    padding: var(--sp1) var(--sp3) var(--sp2);
   }
 
   .saveBar {

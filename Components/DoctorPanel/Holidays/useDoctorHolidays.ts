@@ -7,7 +7,8 @@ import { fetcher } from "@/Components/helpers/fetcher";
 // 2026-10): the holidays of the booking horizon, the doctor's choice for
 // each and the visits already booked on it. One SWR key, shared by the hours
 // page section and the agenda's day marks.
-export type DoctorHoliday = { ymd: string; title: string; closed: boolean; booked: number };
+// `estimated`: a lunar date not yet fixed by the calendar authority («تاریخ تقریبی»)
+export type DoctorHoliday = { ymd: string; title: string; closed: boolean; booked: number; estimated?: boolean };
 export type DoctorHolidays = {
   works: boolean;
   horizonEnd: string;
@@ -25,7 +26,7 @@ const clean = (raw: unknown): DoctorHolidays => {
     horizonEnd: typeof d.horizonEnd === "string" ? d.horizonEnd : "",
     holidays: (Array.isArray(d.holidays) ? d.holidays : [])
       .filter((h) => !!h && typeof h.ymd === "string" && YMD.test(h.ymd))
-      .map((h) => ({ ymd: h.ymd, title: String(h.title || ""), closed: h.closed !== false, booked: Number(h.booked) || 0 })),
+      .map((h) => ({ ymd: h.ymd, title: String(h.title || ""), closed: h.closed !== false, booked: Number(h.booked) || 0, estimated: h.estimated === true })),
     next: d.next && typeof d.next.ymd === "string" && YMD.test(d.next.ymd) ? { ymd: d.next.ymd, title: String(d.next.title || "") } : null,
   };
 };

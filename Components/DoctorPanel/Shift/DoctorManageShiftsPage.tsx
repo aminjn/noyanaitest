@@ -17,12 +17,16 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useBreadCrump from "@/Components/Hooks/useBreadCrump";
 import DayShifts from "./DayShifts";
-import { useHourAxis } from "./WeekOverview";
 import useShiftUtils from "./useShiftUtils";
+import HoursCalendar, { CalendarLegend, MonthNav, useCalendarMonths } from "./HoursCalendar";
+import HoursDayPanel from "./HoursDayPanel";
+import HoursSettingsStrip from "./HoursSettingsStrip";
+import useHoursSummary, { useRefreshHours } from "./useHoursSummary";
+import BottomSheet from "@/Components/UI/BottomSheet";
+import { TEHRAN_TZ, tehranNoon, tehranTodayYmd } from "@/Components/helpers/tehranTime";
 import Button from "@/Components/UI/Button";
 import useNotification from "@/Components/Hooks/useNotification";
 import TimeOffSection from "../Desk/TimeOffSection";
-import HolidaySection from "../Holidays/HolidaySection";
 import BookingStatusCard from "../BookingStatus/BookingStatusCard";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { useIntlLocale } from "@/Components/i18n/navigation";
@@ -108,6 +112,19 @@ export const overlappingIds = (value: ShiftContext): Set<string> => {
   return out;
 };
 
+// is the screen wide enough for the day panel beside the calendar
+const useWide = () => {
+  const [wide, setWide] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 68rem)");
+    const on = () => setWide(mq.matches);
+    on();
+    mq.addEventListener?.("change", on);
+    return () => mq.removeEventListener?.("change", on);
+  }, []);
+  return wide;
+};
+
 const Inner = ({
   defaultValue,
   offices,
@@ -124,6 +141,8 @@ const Inner = ({
   const canEdit = hasAccess("mutateCalendar");
   const pushNotification = useNotification();
   const { shiftHasProblem, getShiftSessions } = useShiftUtils();
+  const refreshHours = useRefreshHours();
+  const wide = useWide();
 
   const [value, setValue] = useState<ShiftContext>(defaultValue);
   // a day switched off keeps its ranges (greyed) until saving, so a
@@ -133,6 +152,8 @@ const Inner = ({
   const [baseline, setBaseline] = useState<ShiftContext>(defaultValue);
   const saved = useMemo(() => JSON.stringify(toPayload(baseline, [])), [baseline]);
   const [busy, setBusy] = useState(false);
+  // the range whose editor is open
+  const [editing, setEditing] = useState<string | null>(null);
 
   const payload = useMemo(() => toPayload(value, offDays), [value, offDays]);
   const dirty = JSON.stringify(payload) !== saved;
@@ -150,7 +171,6 @@ const Inner = ({
 
   const live = useMemo(() => value.filter((s) => !offDays.includes(s.day)), [value, offDays]);
   const overlaps = useMemo(() => overlappingIds(live), [live]);
-  const axis = useHourAxis(live);
 
   const stats = useMemo(
     () => ({
@@ -169,6 +189,46 @@ const Inner = ({
     [offices],
   );
 
+  // ---- the month calendar: one request per shown month
+  const today = tehranTodayYmd();
+  const { months, todayIndex, week, weekdays } = useCalendarMonths(today);
+  const [monthIndex, setMonthIndex] = useState(todayIndex);
+  const month = months[Math.min(Math.max(0, monthIndex), months.length - 1)];
+  const range = month ? { from: month.days[0], to: month.days[month.days.length - 1] } : null;
+  const { data: summary, error: summaryError, isLoading, isValidating, mutate: mutateSummary } = useHoursSummary(range);
+  const byDay = useMemo(() => new Map((summary?.days || []).map((d) => [d.ymd, d])), [summary]);
+  // the shown summary is this month's (not the previous one kept on screen)
+  const fresh = !!summary && !!range && summary.from === range.from;
+  const [picked, setPicked] = useState<string | null>(today);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const monthTotals = useMemo(() => {
+    const list = fresh ? summary?.days || [] : [];
+    return {
+      booked: list.reduce((a, d) => a + d.booked, 0),
+      free: list.reduce((a, d) => a + (d.free || 0), 0),
+      holidays: list.filter((d) => !!d.holiday).length,
+    };
+  }, [fresh, summary]);
+
+  const pickDay = (ymd: string) => {
+    setPicked(ymd);
+    if (!wide) setSheetOpen(true);
+  };
+  const goMonth = (i: number) => {
+    const next = Math.min(Math.max(0, i), months.length - 1);
+    setMonthIndex(next);
+    // the panel follows: today in the current month, else the month's first day
+    const m = months[next];
+    if (m) setPicked(m.days.includes(today) ? today : m.days[0]);
+  };
+  const editWeekday = (day: DoctorShiftDay) => {
+    setSheetOpen(false);
+    const el = document.getElementById(`shift-day-${day}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    el?.classList.add(classes.flash);
+    window.setTimeout(() => el?.classList.remove(classes.flash), 1600);
+  };
+
   const save = useCallback(async () => {
     if (busy) return;
     if (live.some((shift) => !!shiftHasProblem(shift).length))
@@ -184,17 +244,46 @@ const Inner = ({
       setOffDays([]);
       pushNotification(getContent("shSavedToast"), "Success");
       mutate();
+      refreshHours();
     } catch (err) {
       pushNotification((err as Error)?.message || getContent("checkInput"), "Error");
     } finally {
       setBusy(false);
     }
-  }, [busy, getContent, live, mutate, offDays, overlaps.size, payload, pushNotification, shiftHasProblem, value]);
+  }, [busy, getContent, live, mutate, offDays, overlaps.size, payload, pushNotification, refreshHours, shiftHasProblem, value]);
 
   const discard = () => {
     setValue(baseline);
     setOffDays([]);
   };
+
+  // the date ("۱۸ مهر ۱۴۰۵") and its weekday apart, so every locale reads naturally
+  const dayFmt = useMemo(
+    () => ({
+      wd: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, weekday: "long" }),
+      date: new Intl.DateTimeFormat(intlTag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" }),
+    }),
+    [intlTag],
+  );
+  const dayTitle = (ymd: string) => dayFmt.date.format(tehranNoon(ymd));
+  const dayWeekday = (ymd: string) => dayFmt.wd.format(tehranNoon(ymd));
+
+  const panel = picked ? (
+    <HoursDayPanel
+      key={picked}
+      ymd={picked}
+      day={byDay.get(picked)}
+      today={summary?.today || today}
+      horizonEnd={summary?.horizonEnd ?? null}
+      canSeeVisits={!!summary?.visits}
+      canEdit={canEdit}
+      shifts={baseline}
+      offices={offices}
+      toneOf={toneOf}
+      onChanged={refreshHours}
+      onEditWeekday={editWeekday}
+    />
+  ) : null;
 
   return (
     <div className={classes.main}>
@@ -207,16 +296,86 @@ const Inner = ({
           <span>{getContent("shWeekSessions", [num.format(stats.sessions)])}</span>
           <span>{getContent("shWorkDays", [num.format(stats.days)])}</span>
           <span>{getContent("shWeekHours", [num.format(stats.hours)])}</span>
-          <a href="#holidays" className={classes.holChip}>
-            {getContent("holChip")}
-          </a>
         </div>
       </header>
 
       <BookingStatusCard />
 
-      {/* the holiday calendar, where the doctor looks first */}
-      <HolidaySection />
+      {/* the calendar, where the doctor looks first; #holidays is the agenda's link */}
+      <section id="holidays" className={classes.calendar} aria-label={getContent("hcCalTitle")}>
+        <div className={classes.calMain}>
+          {month && (
+            <MonthNav
+              label={month.label}
+              canPrev={monthIndex > 0}
+              canNext={monthIndex < months.length - 1}
+              onPrev={() => goMonth(monthIndex - 1)}
+              onNext={() => goMonth(monthIndex + 1)}
+              onToday={() => goMonth(todayIndex)}
+              isCurrent={monthIndex === todayIndex}
+            >
+              <small>
+                {fresh
+                  ? [
+                      getContent("hcMonthBooked", [num.format(monthTotals.booked)]),
+                      monthTotals.free ? getContent("hcMonthFree", [num.format(monthTotals.free)]) : "",
+                      monthTotals.holidays ? getContent("holCalCount", [num.format(monthTotals.holidays)]) : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")
+                  : getContent("loading")}
+              </small>
+            </MonthNav>
+          )}
+          {summaryError && !summary ? (
+            <div className={classes.calError}>
+              <p>{getContent("hcLoadError")}</p>
+              <Button type="button" size="S" variant="Neutral" mode="Outline" onClick={() => mutateSummary()}>
+                {getContent("tryAgain")}
+              </Button>
+            </div>
+          ) : (
+            month && (
+              <HoursCalendar
+                month={month}
+                days={fresh ? byDay : new Map()}
+                today={today}
+                horizonEnd={summary?.horizonEnd ?? null}
+                selected={picked}
+                onPick={pickDay}
+                week={week}
+                weekdays={weekdays}
+                loading={isLoading || (isValidating && !fresh)}
+              />
+            )
+          )}
+          <CalendarLegend />
+        </div>
+
+        {wide && (
+          <aside className={classes.calSide} aria-label={picked ? dayTitle(picked) : getContent("hcCalTitle")}>
+            {picked ? (
+              <>
+                <h2 className={classes.sideTitle}>
+                  {dayTitle(picked)}
+                  <small>{dayWeekday(picked)}</small>
+                </h2>
+                {fresh || byDay.has(picked) ? panel : <p className={classes.muted}>{getContent("loading")}</p>}
+              </>
+            ) : (
+              <p className={classes.muted}>{getContent("hcPickDay")}</p>
+            )}
+          </aside>
+        )}
+      </section>
+
+      {!wide && picked && (
+        <BottomSheet open={sheetOpen} onClose={() => setSheetOpen(false)} closeLabel={getContent("close")} title={dayTitle(picked)} subtitle={dayWeekday(picked)}>
+          {panel}
+        </BottomSheet>
+      )}
+
+      <HoursSettingsStrip works={summary ? summary.works : null} canEdit={canEdit} onChanged={refreshHours} />
 
       {!offices.length ? (
         <div className={classes.empty}>
@@ -234,29 +393,21 @@ const Inner = ({
           </Link>
         </div>
       ) : (
-        <section className={classes.week} aria-label={getContent("shWeekTitle")}>
+        <section className={classes.week} aria-labelledby="week-title">
           <div className={classes.weekHead}>
-            <strong>{getContent("shWeekTitle")}</strong>
-            {offices.length > 1 && (
-              <ul className={classes.legend}>
-                {offices.map((o) => (
-                  <li key={o._id}>
-                    <span className={`${classes.dot} ${toneOf(o._id)}`} />
-                    {o.name || "—"}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className={classes.axisRow} aria-hidden>
-            <span />
-            <span className={classes.axis}>
-              {axis.hours.map((h) => (
-                <span key={h} style={{ insetInlineStart: axis.pct(h * 60) }}>
-                  {num.format(h)}
-                </span>
+            <div>
+              <strong id="week-title">{getContent("hcWeekTitle")}</strong>
+              <p className={classes.muted}>{getContent("hcWeekHint")}</p>
+            </div>
+            <ul className={classes.legend}>
+              {offices.map((o) => (
+                <li key={o._id} className={o.active === false ? classes.legendOff : ""}>
+                  <span className={`${classes.dot} ${toneOf(o._id)}`} />
+                  {o.name || "—"}
+                  {o.active === false && <em>{getContent("inactive")}</em>}
+                </li>
               ))}
-            </span>
+            </ul>
           </div>
           {doctorShiftDays.map((day) => (
             <DayShifts
@@ -268,16 +419,20 @@ const Inner = ({
               setOffDays={setOffDays}
               offices={offices}
               overlaps={overlaps}
-              axis={axis}
               toneOf={toneOf}
               canEdit={canEdit}
+              editing={editing}
+              setEditing={setEditing}
             />
           ))}
         </section>
       )}
 
-      <TimeOffSection />
-
+      {/* several days off at once (travel, leave); one day is closed from the calendar */}
+      <details className={classes.more}>
+        <summary>{getContent("timeOffTitle")}</summary>
+        <TimeOffSection embedded onChange={refreshHours} />
+      </details>
 
       {canEdit && !!offices.length && (
         <div className={`${classes.saveBar} ${dirty ? classes.saveBarDirty : ""}`} role="status">

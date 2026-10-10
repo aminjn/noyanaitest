@@ -120,6 +120,13 @@
   box-shadow: var(--glassShadow);
 }
 
+/* the same, inside a host's own card (the hours page's disclosure) */
+.sectionBare {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
 .sectionHead {
   display: flex;
   align-items: center;

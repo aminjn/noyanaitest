@@ -28,8 +28,9 @@ const quarterHours = Array.from({ length: 97 }, (_, i) => i * 15);
 
 // Days off on the shifts page (2026-10): leave, travel, holidays. No slot
 // is offered on them; visits already booked are counted so the desk can
-// move them.
-const TimeOffSection = () => {
+// move them. On the hours page it sits under the calendar (`embedded`: no
+// head of its own) and tells the calendar when the days off change.
+const TimeOffSection = ({ embedded, onChange }: { embedded?: boolean; onChange?: () => unknown } = {}) => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
   const hasAccess = useDoctorAcl();
@@ -76,6 +77,7 @@ const TimeOffSection = () => {
       setNote("");
       setFormKey((k) => k + 1);
       mutate();
+      onChange?.();
     } catch (err) {
       pushNotification((err as Error)?.message || "", "Error");
     } finally {
@@ -87,6 +89,7 @@ const TimeOffSection = () => {
     try {
       await fetcher({ url: `${API}/doctor/timeoff/${id}`, method: "DELETE" });
       mutate();
+      onChange?.();
     } catch (err) {
       pushNotification((err as Error)?.message || "", "Error");
     }
@@ -95,10 +98,12 @@ const TimeOffSection = () => {
   const list = Array.isArray(data) ? data : [];
 
   return (
-    <section className={classes.section}>
-      <div className={classes.sectionHead}>
-        <span className={classes.sectionTitle}>{getContent("timeOffTitle")}</span>
-      </div>
+    <section className={embedded ? classes.sectionBare : classes.section}>
+      {!embedded && (
+        <div className={classes.sectionHead}>
+          <span className={classes.sectionTitle}>{getContent("timeOffTitle")}</span>
+        </div>
+      )}
       <p className={classes.hint}>{getContent("timeOffHint")}</p>
       {canEdit && (
         <div className={classes.chips} role="radiogroup" aria-label={getContent("timeOffTitle")}>

@@ -1,15 +1,13 @@
 import { ShiftContext } from "./DoctorManageShiftsPage";
 import classes from "./ShiftItem.module.css";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { numberToTime } from "../Calendar/AddSessionsAgent";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import { IOffice } from "../Office/DoctorManageOfficesPage";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { doctorSessionTypes, patientStatuses } from "../Calendar/DoctorCalendarDay";
 import ShiftsPreview from "./ShiftsPreview";
 import useShiftUtils from "./useShiftUtils";
-import Ixon from "@/Components/UI/Ixon";
-import GarbageIcon from "@/Components/Icons/GarbageIcon";
-import AdjustmentHorizontalIcon from "@/Components/Icons/AdjustmentHorizontalIcon";
+import BottomSheet from "@/Components/UI/BottomSheet";
+import Button from "@/Components/UI/Button";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
@@ -30,9 +28,35 @@ const times = (current: number, max = 24 * 60) => {
 const withCurrent = (list: number[], current: number) =>
   (list.includes(current) ? list : [...list, current]).sort((a, b) => a - b);
 
-// One time range of a day: office, from-to, visit length and the number of
-// visits it makes, in one line; name, gap, visit and patient types and the
-// visit times behind "more".
+// "9:00" in the reader's digits
+export const useClock = () => {
+  const intlTag = useIntlLocale();
+  return useMemo(() => {
+    const num = new Intl.NumberFormat(intlTag);
+    const zero = num.format(0);
+    return (m: number) => `${num.format(Math.floor(m / 60))}:${num.format(m % 60).padStart(2, zero)}`;
+  }, [intlTag]);
+};
+
+// What is wrong with a range (the same checks as saving), the inactive
+// office included: a range there takes no bookings (Lib/doctorOffer.ts).
+const useProblems = (shift: ShiftContext[number], offices: IOffice[], overlap: boolean) => {
+  const getContent = useScopedLocale(NS);
+  const { shiftHasProblem } = useShiftUtils();
+  return useMemo<string[]>(() => {
+    const list = shiftHasProblem(shift);
+    if (overlap) list.push(getContent("shOverlapRow"));
+    const at = offices.find((o) => o._id === shift.office);
+    if (at && at.active === false) list.push(getContent("shInactiveOfficeRow"));
+    return list;
+  }, [getContent, offices, overlap, shift, shiftHasProblem]);
+};
+
+// One time range of a weekday as a short chip - «سعادت · ۹:۰۰–۱۳:۰۰ ·
+// ۲۰ دقیقه · حضوری» - with its office's colour dot; tapping it opens the
+// range's editor (a sheet on a phone, a dialog on a desktop) with every
+// setting: office, from-to, visit length, gap, visit and patient types, the
+// visit times it makes, and delete.
 const ShiftItem = ({
   shift,
   setData,
@@ -40,6 +64,9 @@ const ShiftItem = ({
   overlap,
   tone,
   canEdit,
+  open,
+  onOpen,
+  onClose,
 }: {
   shift: ShiftContext[number];
   setData: Dispatch<SetStateAction<ShiftContext>>;
@@ -47,21 +74,16 @@ const ShiftItem = ({
   overlap: boolean;
   tone: string;
   canEdit: boolean;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }) => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
   const num = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
-  const { shiftHasProblem, getShiftSessions } = useShiftUtils();
-  const [open, setOpen] = useState(false);
-
-  const problems = useMemo<string[]>(() => {
-    const list = shiftHasProblem(shift);
-    if (overlap) list.push(getContent("shOverlapRow"));
-    // a range at a switched-off office takes no bookings (Lib/doctorOffer.ts)
-    const at = offices.find((o) => o._id === shift.office);
-    if (at && at.active === false) list.push(getContent("shInactiveOfficeRow"));
-    return list;
-  }, [getContent, offices, overlap, shift, shiftHasProblem]);
+  const clock = useClock();
+  const { getShiftSessions } = useShiftUtils();
+  const problems = useProblems(shift, offices, overlap);
   const sessions = getShiftSessions(shift).length;
 
   const patch = (change: Partial<ShiftContext[number]>) =>
@@ -72,132 +94,139 @@ const ShiftItem = ({
 
   const startTimes = useMemo(() => times(shift.start, 24 * 60 - 5), [shift.start]);
   const endTimes = useMemo(() => times(shift.end), [shift.end]);
-  const officeName = offices.find((o) => o._id === shift.office)?.name;
+  const office = offices.find((o) => o._id === shift.office);
+  const inactive = office?.active === false;
+  const types = doctorSessionTypes.filter((t) => shift.sessionTypes.includes(t));
+  // the visit types in short: one named, the rest counted
+  const typeText = !types.length
+    ? ""
+    : types.length === doctorSessionTypes.length
+      ? getContent("hcAllTypes")
+      : `${getContent(types.includes("inPerson") ? "inPerson" : types[0])}${types.length > 1 ? ` +${num.format(types.length - 1)}` : ""}`;
+
+  // each part isolated (a Persian office name in an English page, a time
+  // in an RTL one), the time always left to right
+  const parts = [
+    office?.name || getContent("office"),
+    `\u2066${clock(shift.start)}–${clock(shift.end)}\u2069`,
+    getContent("xMinutes", [num.format(shift.duration)]),
+    typeText,
+  ].filter(Boolean);
+  const label = parts.map((p) => `\u2068${p}\u2069`).join(" · ");
 
   return (
-    <div className={`${classes.shift} ${problems.length ? classes.withProblem : ""}`}>
-      <div className={classes.line}>
+    <>
+      <button
+        type="button"
+        className={`${classes.chip} ${problems.length ? classes.chipProblem : ""} ${inactive ? classes.chipInactive : ""}`}
+        onClick={onOpen}
+        aria-haspopup="dialog"
+        title={[label, ...problems].join("\n")}
+      >
         <span className={`${classes.officeDot} ${tone}`} aria-hidden />
-        {/* which office these hours are at: one range per office and time */}
-        <span className={classes.officeLabel}>{getContent("office")}</span>
-        {offices.length > 1 ? (
-          <select
-            className={`${classes.select} ${classes.office}`}
-            aria-label={getContent("office")}
-            disabled={!canEdit}
-            value={shift.office || ""}
-            onChange={(e) => patch({ office: e.target.value })}
-          >
-            {!shift.office && <option value="">{getContent("office")}</option>}
-            {offices.map((o) => (
-              <option key={o._id} value={o._id}>
-                {o.active === false ? `${o.name || o._id} (${getContent("inactive")})` : o.name || o._id}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <span className={classes.officeName}>{officeName || getContent("office")}</span>
+        <span className={classes.chipText}>{label}</span>
+        {inactive && <span className={classes.chipFlag}>{getContent("inactive")}</span>}
+        {!!problems.length && !inactive && (
+          <span className={classes.chipAlert} aria-label={problems[0]}>
+            !
+          </span>
         )}
+      </button>
 
-        <span className={classes.times}>
-          <select
-            className={classes.select}
-            aria-label={getContent("startTime")}
-            disabled={!canEdit}
-            value={shift.start}
-            onChange={(e) => patch({ start: Number(e.target.value) })}
-          >
-            {startTimes.map((m) => (
-              <option key={m} value={m}>
-                {numberToTime(m)}
-              </option>
-            ))}
-          </select>
-          <span className={classes.dash}>–</span>
-          <select
-            className={classes.select}
-            aria-label={getContent("endTime")}
-            disabled={!canEdit}
-            value={shift.end}
-            onChange={(e) => patch({ end: Number(e.target.value) })}
-          >
-            {endTimes.map((m) => (
-              <option key={m} value={m}>
-                {numberToTime(m)}
-              </option>
-            ))}
-          </select>
-        </span>
-
-        <select
-          className={classes.select}
-          aria-label={getContent("sessionDuration")}
-          title={getContent("sessionDuration")}
-          disabled={!canEdit}
-          value={shift.duration}
-          onChange={(e) => patch({ duration: Number(e.target.value) })}
-        >
-          {withCurrent(sessionDurations, shift.duration).map((d) => (
-            <option key={d} value={d}>
-              {getContent("xMinutes", [num.format(d)])}
-            </option>
-          ))}
-        </select>
-
-        <span className={classes.count}>{getContent("xSessions", [num.format(sessions)])}</span>
-
-        <span className={classes.tools}>
-          <button
-            type="button"
-            className={`${classes.iconButton} ${open ? classes.iconButtonOn : ""}`}
-            aria-expanded={open}
-            aria-label={getContent("shMore")}
-            title={getContent("shMore")}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <Ixon width="1.125rem">
-              <AdjustmentHorizontalIcon />
-            </Ixon>
-          </button>
-          {canEdit && (
-            <button
-              type="button"
-              className={`${classes.iconButton} ${classes.danger}`}
-              aria-label={getContent("deleteShift")}
-              title={getContent("deleteShift")}
-              onClick={() => setData((prev) => prev.filter((el) => el._id !== shift._id))}
-            >
-              <Ixon width="1.125rem">
-                <GarbageIcon />
-              </Ixon>
-            </button>
-          )}
-        </span>
-      </div>
-
-      {!open && !!shift.name && <span className={classes.name}>{shift.name}</span>}
-
-      {!!problems.length && (
-        <ul className={classes.problems}>
-          {problems.map((p) => (
-            <li key={p}>{p}</li>
-          ))}
-        </ul>
-      )}
-
-      {open && (
-        <div className={classes.more}>
-          <div className={classes.moreGrid}>
-            <label className={classes.field}>
-              <span>{getContent("shRangeName")}</span>
-              <input
-                className={classes.input}
-                value={shift.name || ""}
-                maxLength={120}
+      <BottomSheet
+        open={open}
+        onClose={onClose}
+        closeLabel={getContent("close")}
+        title={getContent("hcEditRange")}
+        subtitle={`${label} · ${getContent("xSessions", [num.format(sessions)])}`}
+        footer={
+          <div className={classes.footer}>
+            {canEdit && (
+              <Button
+                type="button"
+                variant="Error"
+                mode="Outline"
+                size="M"
+                onClick={() => {
+                  onClose();
+                  setData((prev) => prev.filter((el) => el._id !== shift._id));
+                }}
+              >
+                {getContent("deleteShift")}
+              </Button>
+            )}
+            <Button type="button" size="M" onClick={onClose}>
+              {getContent("hcRangeDone")}
+            </Button>
+          </div>
+        }
+      >
+        <div className={classes.editor}>
+          <label className={classes.field}>
+            <span>{getContent("office")}</span>
+            <span className={classes.officeRow}>
+              <span className={`${classes.officeDot} ${tone}`} aria-hidden />
+              <select
+                className={classes.select}
                 disabled={!canEdit}
-                placeholder={getContent("newShift")}
-                onChange={(e) => patch({ name: e.target.value })}
-              />
+                value={shift.office || ""}
+                onChange={(e) => patch({ office: e.target.value })}
+              >
+                {!shift.office && <option value="">{getContent("office")}</option>}
+                {offices.map((o) => (
+                  <option key={o._id} value={o._id}>
+                    {o.active === false ? `${o.name || o._id} (${getContent("inactive")})` : o.name || o._id}
+                  </option>
+                ))}
+              </select>
+            </span>
+          </label>
+
+          <div className={classes.grid}>
+            <label className={classes.field}>
+              <span>{getContent("startTime")}</span>
+              <select
+                className={classes.select}
+                disabled={!canEdit}
+                value={shift.start}
+                onChange={(e) => patch({ start: Number(e.target.value) })}
+              >
+                {startTimes.map((m) => (
+                  <option key={m} value={m}>
+                    {clock(m)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={classes.field}>
+              <span>{getContent("endTime")}</span>
+              <select
+                className={classes.select}
+                disabled={!canEdit}
+                value={shift.end}
+                onChange={(e) => patch({ end: Number(e.target.value) })}
+              >
+                {endTimes.map((m) => (
+                  <option key={m} value={m}>
+                    {clock(m)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={classes.field}>
+              <span>{getContent("sessionDuration")}</span>
+              <select
+                className={classes.select}
+                disabled={!canEdit}
+                value={shift.duration}
+                onChange={(e) => patch({ duration: Number(e.target.value) })}
+              >
+                {withCurrent(sessionDurations, shift.duration).map((d) => (
+                  <option key={d} value={d}>
+                    {getContent("xMinutes", [num.format(d)])}
+                  </option>
+                ))}
+              </select>
             </label>
             <label className={classes.field}>
               <span>{getContent("sessionsGap")}</span>
@@ -215,6 +244,7 @@ const ShiftItem = ({
               </select>
             </label>
           </div>
+
           <div className={classes.field}>
             <span>{getContent("sessionType")}</span>
             <div className={classes.chips}>
@@ -224,7 +254,7 @@ const ShiftItem = ({
                   type="button"
                   disabled={!canEdit}
                   aria-pressed={shift.sessionTypes.includes(t)}
-                  className={`${classes.chip} ${shift.sessionTypes.includes(t) ? classes.chipOn : ""}`}
+                  className={`${classes.opt} ${shift.sessionTypes.includes(t) ? classes.optOn : ""}`}
                   onClick={() => patch({ sessionTypes: toggleIn(doctorSessionTypes, shift.sessionTypes, t) })}
                 >
                   {getContent(t)}
@@ -241,7 +271,7 @@ const ShiftItem = ({
                   type="button"
                   disabled={!canEdit}
                   aria-pressed={shift.patientTypes.includes(t)}
-                  className={`${classes.chip} ${shift.patientTypes.includes(t) ? classes.chipOn : ""}`}
+                  className={`${classes.opt} ${shift.patientTypes.includes(t) ? classes.optOn : ""}`}
                   onClick={() => patch({ patientTypes: toggleIn(patientStatuses, shift.patientTypes, t) })}
                 >
                   {getContent(t)}
@@ -249,10 +279,31 @@ const ShiftItem = ({
               ))}
             </div>
           </div>
+
+          <label className={classes.field}>
+            <span>{getContent("shRangeName")}</span>
+            <input
+              className={classes.input}
+              value={shift.name || ""}
+              maxLength={120}
+              disabled={!canEdit}
+              placeholder={getContent("newShift")}
+              onChange={(e) => patch({ name: e.target.value })}
+            />
+          </label>
+
+          {!!problems.length && (
+            <ul className={classes.problems}>
+              {problems.map((p) => (
+                <li key={p}>{p}</li>
+              ))}
+            </ul>
+          )}
+
           <ShiftsPreview shift={shift} />
         </div>
-      )}
-    </div>
+      </BottomSheet>
+    </>
   );
 };
 

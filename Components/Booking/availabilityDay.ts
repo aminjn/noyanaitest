@@ -14,12 +14,14 @@ export const availabilityOfDay = <T extends AvailabilityLike>(list: T[] | null |
   return (Array.isArray(list) ? list : []).find((el) => !!el?.date && tehranYmd(el.date) === ymd);
 };
 
-// the bounds still bookable on that day: today only from the next hour on,
-// in Tehran (the booking API refuses a slot whose hour has started)
+// the bounds still bookable on that day. The server already applies the
+// doctor's minimum notice (backend Lib/bookingNotice.ts); here only a time
+// that has started while the page stayed open is dropped (Tehran time)
 export const bookableBounds = (availability: AvailabilityLike | undefined): [number, number][] => {
   const bounds = Array.isArray(availability?.bounds) ? availability.bounds : [];
   if (!availability) return [];
   const isToday = tehranYmd(availability.date) === tehranTodayYmd();
-  const from = isToday ? (tehranParts().hour + 1) * 60 : 0;
+  const now = tehranParts();
+  const from = isToday ? now.hour * 60 + now.minute + 1 : 0;
   return bounds.filter(({ start }) => start >= from).map(({ start, end }) => [start, end]);
 };

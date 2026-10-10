@@ -41,6 +41,7 @@ export const HolidayAgendaNotice = ({ holidays, manage }: { holidays: DoctorHoli
               fmt.format(tehranNoon(h.ymd)),
               getContent(h.closed ? "holClosed" : "holOpen"),
               h.booked > 0 ? getContent("holBooked", [num.format(h.booked)]) : "",
+              h.estimated ? getContent("hcEstimated") : "",
             ]
               .filter(Boolean)
               .join(" · ")}
@@ -56,7 +57,9 @@ export const HolidayDayMark = ({ holiday }: { holiday?: DoctorHoliday | null }) 
   if (!holiday) return null;
   return (
     <span className={`${classes.dayMark} ${holiday.closed ? "" : classes.dayMarkOpen}`}>
-      {`${getContent("holDayLabel", [holiday.title])} · ${getContent(holiday.closed ? "holClosed" : "holOpen")}`}
+      {[getContent("holDayLabel", [holiday.title]), getContent(holiday.closed ? "holClosed" : "holOpen"), holiday.estimated ? getContent("hcEstimated") : ""]
+        .filter(Boolean)
+        .join(" · ")}
     </span>
   );
 };
