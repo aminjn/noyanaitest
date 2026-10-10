@@ -99,7 +99,7 @@
 .textLink {
   display: inline-flex;
   align-items: center;
-  min-height: 2.5rem;
+  min-height: 2.75rem;
   font-size: var(--fsSm);
   font-weight: 600;
   color: var(--primary7);

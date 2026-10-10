@@ -20,6 +20,9 @@
   align-items: center;
   gap: 0.125rem;
   padding: 0.5rem 0.75rem;
+  /* a finger-sized target */
+  min-height: 2.75rem;
+  justify-content: center;
   border: 1px solid var(--gray4);
   border-radius: 0.5rem;
   background: transparent;
@@ -63,6 +66,7 @@
   color: var(--primary);
   cursor: pointer;
   padding: 0.25rem 0;
+  min-height: 2.75rem;
 }
 
 .navButton:disabled {

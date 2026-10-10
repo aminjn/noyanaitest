@@ -519,3 +519,18 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* phone: the call to action goes under the text, which keeps the width
+   (squeezed between the icon and the CTA it wrapped every two words) */
+@media (max-width: 40rem) {
+  .upsell {
+    flex-wrap: wrap;
+  }
+  .upsellText {
+    flex: 1 1 calc(100% - 3.5rem);
+  }
+  .upsellCta {
+    margin-inline-start: 3.375rem;
+    min-height: 2.75rem;
+  }
+}

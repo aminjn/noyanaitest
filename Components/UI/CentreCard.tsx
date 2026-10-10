@@ -113,7 +113,7 @@ const MAX_INSURERS = 3;
 
 const OfferRow = ({ offer }: { offer: CentreTestOffer }) => {
   const getContent = useScopedLocale(NS);
-  const { cart, mutateCartItem, removeCartItem } = useCart();
+  const { cart, mutateCartItem, removeCartItem, isMutating, isRemoving } = useCart();
   const id = offer._id || "";
   const tests = Array.isArray(cart?.tests) ? cart.tests : [];
   const inCart = !!tests.find((el) => el?.item?._id === id)?.qty;
@@ -138,7 +138,9 @@ const OfferRow = ({ offer }: { offer: CentreTestOffer }) => {
           variant={inCart ? "Error" : "Primary"}
           mode="Fill"
           radius="High"
-          size="S"
+          // a finger-sized target with a loading state: the tap is answered
+          size="M"
+          isLoading={isMutating || isRemoving}
           onClick={() =>
             inCart
               ? removeCartItem({ item: id, model: "tests" })

@@ -133,6 +133,23 @@ const SlotPicker = ({
     const el = stripRef.current?.querySelector<HTMLElement>("[data-on='true']");
     el?.scrollIntoView({ block: "nearest", inline: "center" });
   }, [day]);
+  // a day tapped with its times below the fold (a phone sheet with several
+  // visit types above it): the strip moves up so the times show - the tap
+  // otherwise seemed to do nothing
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const dayTapped = useRef(false);
+  useEffect(() => {
+    if (!dayTapped.current) return;
+    dayTapped.current = false;
+    const frame = requestAnimationFrame(() => {
+      const first = wrapRef.current?.parentElement?.querySelector<HTMLElement>(`.${classes.period}, .${classes.state}`);
+      const view = window.visualViewport?.height || window.innerHeight;
+      // the sheet's / page's bottom bar covers about the last 8rem
+      if (first && first.getBoundingClientRect().top > view - 160)
+        wrapRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [day]);
 
   const dayLabel = (ymd: string) => {
     const diff = diffDaysYmd(today, ymd);
@@ -226,7 +243,7 @@ const SlotPicker = ({
         </button>
       )}
 
-      <div className={classes.stripWrap}>
+      <div className={classes.stripWrap} ref={wrapRef}>
         <button
           type="button"
           className={`${classes.arrow} ${classes.arrowPrev}`}
@@ -261,7 +278,10 @@ const SlotPicker = ({
                       ? getContent("bfFreeCount", [nf.format(count)])
                       : getContent("bfNoSlotsDay")
                 }`}
-                onClick={() => setDay(ymd)}
+                onClick={() => {
+                  dayTapped.current = true;
+                  setDay(ymd);
+                }}
               >
                 <span className={classes.dayName}>{dayLabel(ymd)}</span>
                 <span className={classes.dayNum}>{fmt.day.format(tehranNoon(ymd))}</span>

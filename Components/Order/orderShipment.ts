@@ -10,6 +10,9 @@ export interface IOrderShipment {
   pharmacy?: { _id: string; name?: string } | string | null;
   method: "tapsi" | "tipax";
   fee: number;
+  // the part of `fee` the platform paid for a «پرو» member (backend
+  // Lib/patientPro.ts): the buyer paid fee - proDiscount
+  proDiscount?: number;
   payOnDelivery: boolean;
   trackingCode?: string;
   // a courier link as given, a Tipax waybill through the admin's tracking URL

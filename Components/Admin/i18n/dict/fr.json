@@ -3435,5 +3435,6 @@
  "پزشک در روز تعطیل رسمی فعال نوبت نمی‌دهد، مگر خودش «ویزیت دارم» را انتخاب کند. تعطیلات قمری هر سال را پس از انتشار تقویم رسمی (مؤسسه ژئوفیزیک دانشگاه تهران) اضافه کنید.": "Le médecin ne prend pas de rendez-vous un jour férié actif, sauf s'il choisit « Je consulte ». Ajoutez les fêtes lunaires de chaque année dès la publication du calendrier officiel (Institut de géophysique de l'Université de Téhéran).",
  "ساعت‌ها فقط درون ۸ تا ۲۱ (قانون اپراتورها برای پیامک تبلیغاتی) قابل تنظیم‌اند؛ می‌توانید بازه را تنگ‌تر کنید، نه بازتر.": "Les heures ne peuvent être réglées qu'entre 8 h et 21 h (règle des opérateurs pour les SMS publicitaires) ; vous pouvez réduire la plage, pas l'élargir.",
  "ارسال‌نشده": "Non envoyée",
- "فیلدها:": "Champs :"
+ "فیلدها:": "Champs :",
+ "لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی صفحه‌ی مسیر خود سایت)": "Lien d'itinéraire sur le site NexaMap (avec {lat} et {lng} ; vide = page d'itinéraire du site)"
 }

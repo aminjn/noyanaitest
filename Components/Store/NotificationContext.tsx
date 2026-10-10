@@ -34,7 +34,9 @@ export const NotificationContextProvider = (props: { children: ReactNode }) => {
     (message: string, status: NotificationStatus = "Notify") =>
       setNotifications((prev) =>
         [
-          ...prev,
+          // the same message again (a repeated tap) replaces the one shown
+          // and restarts its timer, instead of stacking copies over the page
+          ...prev.filter((n) => n.message !== message || n.status !== status),
           { id: `${new Date().getTime()}${Math.random()}`, message, status },
         ].slice(-6)
       ),

@@ -3,6 +3,7 @@ import { ReactNode, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import useSiteSettings from "@/Components/Hooks/useSiteSettings";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import { doctorSessionTypeContentKeyDict } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
@@ -72,6 +73,13 @@ const BookingManagePanel = ({
   onChanged: () => unknown;
 }) => {
   const getContent = useScopedLocale(NS);
+  // the reminders the admin has on (booking settings): the page promises
+  // only those
+  const { reminder24h, reminder2h } = useSiteSettings();
+  const remindersKey: ContentKey | null =
+    reminder24h && reminder2h ? "bfNextReminders" : reminder24h ? "bfNextReminders24" : reminder2h ? "bfNextReminders2" : null;
+  const bookedKey: ContentKey =
+    reminder24h && reminder2h ? "bfBookedText" : reminder24h ? "bfBookedText24" : reminder2h ? "bfBookedText2" : "bfBookedTextSms";
   const intlTag = useIntlLocale();
   const nf = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const { hoursText, canChange } = useChangeWindow();
@@ -85,6 +93,7 @@ const BookingManagePanel = ({
   const office = data.office as unknown as { name?: string; address?: string; location?: { coordinates?: number[] } } | null;
   const inPerson = data.sessionType === "inPerson";
   const coords = office?.location?.coordinates;
+  const officeTel = inPerson ? String((office as { tel?: string } | null)?.tel || "").replace(/[^\d+]/g, "") : "";
   const dateText = startsAt.toLocaleDateString(intlTag, {
     timeZone: TEHRAN_TZ,
     weekday: "long",
@@ -135,7 +144,7 @@ const BookingManagePanel = ({
 
   const steps: { icon: ReactNode; key: ContentKey; done?: boolean; href?: string }[] = [
     { icon: <MedicalRecordIcon />, key: data.intakeFilled ? "bfNextIntakeDone" : "bfNextIntake", done: !!data.intakeFilled, href: "#intake" },
-    { icon: <Bell01Icon />, key: "bfNextReminders" },
+    ...(remindersKey ? [{ icon: <Bell01Icon />, key: remindersKey }] : []),
     { icon: inPerson ? <Calendar02Icon /> : visitTypeIcon[data.sessionType], key: inPerson ? "bfNextArrive" : "bfNextJoin" },
     { icon: <StarIcon />, key: "bfNextAfter" },
   ];
@@ -151,7 +160,7 @@ const BookingManagePanel = ({
           </span>
           <div>
             <h1 className={classes.heroTitle}>{getContent("bfBookedTitle")}</h1>
-            <p className={classes.heroText}>{getContent("bfBookedText")}</p>
+            <p className={classes.heroText}>{getContent(bookedKey)}</p>
           </div>
         </div>
       )}
@@ -163,7 +172,8 @@ const BookingManagePanel = ({
           </span>
           <div className={classes.whenText}>
             <span>{dateText}</span>
-            <strong>{getContent("fromTimeXtoTimeY", [clock(data.start, nf), clock(data.end, nf)])}</strong>
+            {/* start only: a range reads as "come any time in between" */}
+            <strong>{getContent("atTimeX", [clock(data.start, nf)])}</strong>
             <small>
               {[getContent(doctorSessionTypeContentKeyDict[data.sessionType]), doctorName, inPerson ? office?.name : ""]
                 .filter(Boolean)
@@ -213,7 +223,15 @@ const BookingManagePanel = ({
           </div>
         )}
         {open && data.status === "pending" && !canChange(data) && (
-          <p className={classes.muted}>{getContent("bfChangeClosed", [hoursText])}</p>
+          <>
+            <p className={classes.muted}>{getContent("bfChangeClosed", [hoursText])}</p>
+            {/* the next step the text asks for, one tap away */}
+            {!!officeTel && (
+              <a className={classes.textLink} href={`tel:${officeTel}`}>
+                {getContent("bfCallOffice")}
+              </a>
+            )}
+          </>
         )}
       </div>
 
@@ -280,6 +298,7 @@ const BookingManagePanel = ({
           reservationId={data._id}
           doctorId={doctor._id}
           sessionType={data.sessionType}
+          office={(office as { _id?: string } | null)?._id || (typeof data.office === "string" ? data.office : null)}
           hoursText={hoursText}
           onDone={onChanged}
         />

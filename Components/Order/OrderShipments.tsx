@@ -88,11 +88,14 @@ const OrderShipments = ({
   shipments,
   canAct,
   onChange,
+  closedPharmacies,
 }: {
   orderId: string;
   shipments: unknown;
   canAct: boolean;
   onChange: () => unknown;
+  // pharmacies whose every line here was cancelled: the parcel won't ship
+  closedPharmacies?: string[];
 }) => {
   const getContent = useScopedLocale(NS);
   const intlTag = useIntlLocale();
@@ -150,8 +153,14 @@ const OrderShipments = ({
     <div className={classes.main}>
       <span className={`${classes.title} ${tsmRegular}`}>{getContent("shippingMethod")}</span>
       {list.map((s) => {
+        const pharmacyId = s.pharmacy && typeof s.pharmacy === "object" ? s.pharmacy._id : s.pharmacy || "";
+        // every line of this parcel was cancelled before it was sent: it is
+        // closed, not "being prepared"
+        const closed = !s.shippedAt && !!pharmacyId && (closedPharmacies || []).includes(String(pharmacyId));
         const state = shipmentStateOf(s);
         const tipax = s.method === "tipax";
+        // a courier link pasted as the "code" is shown as the link only
+        const codeIsLink = /^https?:\/\//i.test(String(s.trackingCode || ""));
         const pharmacyName = s.pharmacy && typeof s.pharmacy === "object" ? s.pharmacy.name : "";
         const reported = !!s.problem?.reportedAt;
         return (
@@ -161,17 +170,31 @@ const OrderShipments = ({
                 {[
                   getContent(tipax ? "shippingTipax" : "shippingTapsi"),
                   pharmacyName,
+                  // what the buyer paid, as at checkout (a «پرو» member's
+                  // discounted or free courier)
                   s.payOnDelivery
                     ? getContent("shippingTipaxNote")
-                    : s.fee > 0
-                      ? `${currencize(s.fee)} ${getContent("toman")}`
-                      : getContent("shippingFree"),
+                    : s.fee > 0 && Math.max(0, Number(s.proDiscount) || 0) >= s.fee
+                      ? getContent("proDeliveryFree")
+                      : s.fee > 0
+                        ? `${currencize(s.fee - Math.max(0, Number(s.proDiscount) || 0))} ${getContent("toman")}`
+                        : getContent("shippingFree"),
                 ]
                   .filter(Boolean)
-                  .join(" · ")}
+                  // each part isolated: a Persian pharmacy name inside an
+                  // English line no longer reorders the amount around it
+                  .map((part, i) => (
+                    <span key={i}>
+                      {i > 0 && " · "}
+                      <bdi>{part}</bdi>
+                    </span>
+                  ))}
               </span>
-              {/* a Tapsi parcel has no delivery step: only "sent" */}
-              {(tipax || state !== "notSent") && (
+              {closed ? (
+                <Badge color="Error" mode="Outline">
+                  {getContent("shipLinesCancelled")}
+                </Badge>
+              ) : /* a Tapsi parcel has no delivery step: only "sent" */ (tipax || state !== "notSent") && (
                 <Badge color={tipax ? stateColor[state] : "Info"} mode="Outline">
                   {getContent(tipax ? stateKey[state] : "shipSent")}
                 </Badge>
@@ -179,10 +202,14 @@ const OrderShipments = ({
             </div>
             {!!s.trackingCode && (
               <div className={`${classes.tracking} ${t2xsRegular}`}>
-                <span>{getContent("shipTrackingCode")}:</span>
-                <span className={classes.code} dir="ltr">
-                  {s.trackingCode}
-                </span>
+                {!codeIsLink && (
+                  <>
+                    <span>{getContent("shipTrackingCode")}:</span>
+                    <span className={classes.code} dir="ltr">
+                      {s.trackingCode}
+                    </span>
+                  </>
+                )}
                 {!!s.trackingLink && (
                   <a href={s.trackingLink} target="_blank" rel="noreferrer" className={classes.link}>
                     {getContent("shipTrack")}

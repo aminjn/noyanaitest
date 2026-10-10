@@ -99,6 +99,9 @@
 }
 .profileLink {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   font-size: var(--fsXs);
   font-weight: 600;
   color: var(--primary7);
@@ -341,7 +344,7 @@
   gap: var(--sp2);
 }
 .pill {
-  min-height: 2.5rem;
+  min-height: 2.75rem;
   padding: 0 var(--sp4);
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLine);
@@ -556,9 +559,6 @@
   .card {
     padding: var(--sp4);
   }
-  .submitRow > :first-child {
-    display: none;
-  }
   .mobileBar {
     position: fixed;
     inset-inline: 0;
@@ -596,6 +596,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  /* the in-flow button is on screen: the bar would only repeat it */
+  .mobileBar.mobileBarOff {
+    display: none;
   }
   :global(body):has(.mobileBar) {
     padding-bottom: 4.75rem;
@@ -689,6 +693,9 @@ html[data-theme="dark"] .insVerified {
 }
 .insManage {
   align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   font-size: var(--fsSm);
   color: var(--primary6);
   text-decoration: underline;
@@ -696,4 +703,16 @@ html[data-theme="dark"] .insVerified {
 }
 .insLines li {
   flex-wrap: wrap;
+}
+
+/* step 1 on a phone / tablet: the chosen time and «ادامه» in the flow
+   too (the side column is hidden there; a fixed bar alone can sit under
+   an in-app browser's toolbar) */
+.inlineContinue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp2);
+  margin-block-start: var(--sp4);
+  padding-block-start: var(--sp4);
+  border-block-start: 1px solid var(--line);
 }

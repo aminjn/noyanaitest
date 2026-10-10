@@ -1,6 +1,12 @@
 .main {
   position: relative;
 }
+/* a 44px tap target around the 24px icon, without taking header room */
+.main::after {
+  content: "";
+  position: absolute;
+  inset: -0.625rem;
+}
 
 .count {
   top: 0;

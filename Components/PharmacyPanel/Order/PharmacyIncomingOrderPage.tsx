@@ -34,7 +34,7 @@ import OrderLineDeadline from "@/Components/Dashboard/Order/OrderLineDeadline";
 import HandThumbUpIcon from "@/Components/Icons/HandThumbUpIcon";
 import { IIncomingOrder } from "./PharmacyIncomingOrdersPage";
 import { localPhone } from "@/Components/Dashboard/Address/DashboardManageAddressesPage";
-import { navigationUrl } from "@/Components/helpers/navigationUrl";
+import useNavigationUrl from "@/Components/Hooks/useNavigationUrl";
 import ShipmentSender from "./ShipmentSender";
 import RxReviewPopup from "./RxReviewPopup";
 import {
@@ -182,6 +182,8 @@ const PharmacyIncomingOrderPage = () => {
 
   const { setPopup } = usePopup();
   const getContent = useScopedLocale(NS);
+  // NexaMap (the super admin's link format) or our route page
+  const { href: navHref } = useNavigationUrl(data?.address?.location?.coordinates);
   const t = (key: string) => getContent(key as ContentKey);
   const rows = data ? buildItemRows(data) : [];
   const rxRows = rows.filter((row) => !!row.prescription);
@@ -272,12 +274,12 @@ const PharmacyIncomingOrderPage = () => {
               {!!data.address.postalCode && (
                 <DataPair title={getContent("postalCode")} value={data.address.postalCode} />
               )}
-              {!!navigationUrl(data.address.location?.coordinates) && (
+              {!!navHref && (
                 <DataPair
                   title={getContent("locationOnMap")}
                   value={
                     <a
-                      href={navigationUrl(data.address.location?.coordinates)}
+                      href={navHref}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

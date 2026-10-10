@@ -84,3 +84,29 @@
   height: 1.5rem;
   border-radius: 0.4rem;
 }
+
+/* a phone with three or more visit types: two columns of compact cards
+   (name and price), so the days and times are not pushed off the sheet */
+@media (max-width: 48rem) {
+  .typesMany {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .typesMany .type {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--sp2);
+    row-gap: 0;
+    padding: var(--sp2);
+  }
+  .typesMany .icon {
+    grid-row: span 2;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .typesMany .typeText small {
+    display: none;
+  }
+  .typesMany .price {
+    font-size: var(--fsXs);
+  }
+}

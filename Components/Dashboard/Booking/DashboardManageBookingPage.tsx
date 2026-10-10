@@ -114,7 +114,7 @@ const DashboardManageBookingPage = () => {
                   {getContent("sessionStart")}
                 </span>
                 <span className={classes.infoValue}>
-                  {numberToTime(data.start)} - {numberToTime(data.end)}
+                  {numberToTime(data.start)}
                 </span>
               </div>
 

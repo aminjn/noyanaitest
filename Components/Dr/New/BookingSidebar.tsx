@@ -44,7 +44,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
   const getContent = useScopedLocale(NS);
   const push = useProgress();
 
-  const { data: config, error: configError } = useSWR<DoctorConfig>(
+  const { data: config, error: configError, mutate: retryConfig } = useSWR<DoctorConfig>(
     `${API}/public/doctor/${doctor._id}/config`,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
@@ -200,7 +200,12 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
   if (configError)
     return (
       <div className={classes.panel}>
-        <p className={classes.muted}>{getContent("bfSlotsError")}</p>
+        <p className={classes.muted} role="alert">
+          {getContent("bfSlotsError")}
+        </p>
+        <Button size="M" radius="High" mode="Outline" onClick={() => retryConfig()}>
+          {getContent("bfRetry")}
+        </Button>
       </div>
     );
 

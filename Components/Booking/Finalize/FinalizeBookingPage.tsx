@@ -237,7 +237,7 @@ const FinalizeBookingPage = () => {
   const push = useProgress();
 
   // ---- slot: still free?
-  const { data: slots } = useBookableSlots(nodeId, sessionType, null);
+  const { data: slots, mutate: mutateSlots } = useBookableSlots(nodeId, sessionType, null);
   const freeSlot = useMemo(() => {
     if (!linkPick || !slots) return undefined;
     const day = slots.days.find((d) => d.ymd === linkPick.ymd);
@@ -277,7 +277,11 @@ const FinalizeBookingPage = () => {
       if (!phone || !p) return;
       setPick(p, pickType);
       setChangeOpen(false);
-      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+      // the page scrolls inside <body> (globals.css), elsewhere the window
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.body.scrollTo?.({ top: 0, behavior: "smooth" });
+      }
     },
     [phone, pickType, setPick],
   );
@@ -399,7 +403,23 @@ const FinalizeBookingPage = () => {
                   {otherDoctors}
                 </div>
               ) : (
-                chooser
+                <>
+                  {chooser}
+                  <div className={`${classes.mobileOnly} ${classes.inlineContinue}`}>
+                    <p className={classes.muted}>
+                      {choice ? `${dayText(choice.ymd)} · ${clock(choice.start, nf)}` : getContent("bfPickATime")}
+                    </p>
+                    <Button
+                      size="L"
+                      radius="High"
+                      variant={choice ? "Primary" : "Disable"}
+                      className={classes.wide}
+                      onClick={() => choice && setPick(choice, pickType)}
+                    >
+                      {getContent("bfContinue")}
+                    </Button>
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -467,7 +487,9 @@ const FinalizeBookingPage = () => {
           <span>
             <b>{dayText(linkPick.ymd)}</b>
             <br />
-            {getContent("fromTimeXtoTimeY", [clock(linkPick.start, nf), clock(linkPick.end, nf)])}
+            {/* the patient sees the start only (Doctolib, Paziresh24): a range
+                reads as "come any time in between" */}
+            {getContent("atTimeX", [clock(linkPick.start, nf)])}
           </span>
         </li>
         {sessionType === "inPerson" && !!officeDoc && (
@@ -557,6 +579,14 @@ const FinalizeBookingPage = () => {
               resumed={resumed}
               money={money}
               onBooked={(id) => push(`/dashboard/booking/${id}?new=1`)}
+              onSlotCheck={async () => {
+                // the booking failed or the slot was already gone: fresh
+                // times, and the picker opens when this one was taken
+                const fresh = await mutateSlots().catch(() => undefined);
+                const day = fresh?.days?.find((d) => d.ymd === linkPick.ymd);
+                const still = day?.bounds?.some((b) => b.start === linkPick.start && b.end === linkPick.end);
+                if (fresh && !still) setChangeOpen(true);
+              }}
               notify={pushNotification}
             />
           ) : (
@@ -583,6 +613,7 @@ const Details = ({
   resumed,
   money,
   onBooked,
+  onSlotCheck,
   notify,
 }: {
   doctor: FinalizeBookingDoctor;
@@ -593,10 +624,11 @@ const Details = ({
   resumed: boolean;
   money: (n: number) => string;
   onBooked: (id: string) => void;
+  onSlotCheck: () => unknown;
   notify: ReturnType<typeof useNotification>;
 }) => {
   const getContent = useScopedLocale(NS);
-  const { user } = useUser();
+  const { user, refreshUser } = useUser();
   const { freeCancelHoursText, emergencyNumberText } = useSiteSettings();
   const { data: payment } = usePaymentConfig();
 
@@ -611,6 +643,12 @@ const Details = ({
 
   const [draft, setDraft] = useState<Draft>(() => (typeof window === "undefined" ? {} : readDraft(doctor._id)));
   const update = (patch: Partial<Draft>) => setDraft((prev) => ({ ...prev, ...patch }));
+  // kept as it is typed: back / forward, a lapsed sign-in or the gateway
+  // bring the patient back to the same answers (cleared once booked)
+  const booked = useRef(false);
+  useEffect(() => {
+    if (!booked.current) writeDraft(doctor._id, draft);
+  }, [doctor._id, draft]);
   // a waitlist offer made for a family member books for them (?p=)
   const linkPatient = useSearchParams().get("p");
   useEffect(() => {
@@ -626,6 +664,16 @@ const Details = ({
   const [addOpen, setAddOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [charge, setCharge] = useState<{ amount: number; returnPath: string } | null>(null);
+  // the fixed bar steps aside while the in-flow confirm button is visible
+  const submitRef = useRef<HTMLDivElement>(null);
+  const [submitInView, setSubmitInView] = useState(false);
+  useEffect(() => {
+    const el = submitRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setSubmitInView(e.isIntersecting), { threshold: 0.6 });
+    io.observe(el);
+    return () => io.disconnect();
+  });
 
   // the insurances picked (an older draft kept one)
   const picks: InsurancePick[] = useMemo(
@@ -742,7 +790,10 @@ const Details = ({
   const canSubmit = !!quote && !!patientId && !blocked && !busy && !(method === "wallet" && shortfall > 0);
 
   const submit = async () => {
-    if (!quote || !patientId || busy || blocked) return;
+    if (busy) return;
+    // the time was taken meanwhile: straight to fresh times
+    if (blocked) return void onSlotCheck();
+    if (!quote || !patientId) return;
     if (method === "gateway") {
       // top up what the wallet lacks, come back here to confirm
       const need = Math.max(0, quote.total - quote.balance);
@@ -772,21 +823,26 @@ const Details = ({
           ...(picks.length ? { insurances: picks } : {}),
         },
       });
-      const booked = res?.data as IReservation | undefined;
-      if (!booked?._id) throw new Error(getContent("bfBookFailed"));
+      const bookedRes = res?.data as IReservation | undefined;
+      if (!bookedRes?._id) throw new Error(getContent("bfBookFailed"));
       // the reason for the visit goes to the doctor's questionnaire
       const complaint = (draft.complaint || "").trim();
       if (complaint.length >= 2)
         await fetcher({
-          url: `${API}/user/reservation/${booked._id}/intake`,
+          url: `${API}/user/reservation/${bookedRes._id}/intake`,
           method: "PUT",
           payload: { complaint, ...(draft.onset ? { onset: draft.onset } : {}) },
         }).catch(() => undefined);
+      booked.current = true;
       writeDraft(doctor._id, null);
-      onBooked(booked._id);
+      onBooked(bookedRes._id);
     } catch (err) {
       notify(err instanceof FetchError || err instanceof Error ? err.message : getContent("bfBookFailed"), "Error");
       setBusy(false);
+      // the sign-in lapsed: the page asks for it in place (the slot is in
+      // the link, the answers in the draft)
+      if (err instanceof FetchError && err.status === 401) return void refreshUser(undefined, { revalidate: false });
+      onSlotCheck();
     }
   };
 
@@ -825,7 +881,9 @@ const Details = ({
 
   return (
     <div className={classes.details}>
-      {resumed && (
+      {/* back from the gateway with the money in the wallet (a failed or
+          cancelled payment comes back without it: no "done" then) */}
+      {resumed && !!quote && quote.balance >= quote.total && (
         <div className={classes.resumed} role="status">
           <Ixon width="1rem">
             <CheckIcon />
@@ -1157,12 +1215,12 @@ const Details = ({
               : getContent("bfPolicyOnline", [freeCancelHoursText])}
           </p>
         </div>
-        <div className={classes.submitRow}>
+        <div className={classes.submitRow} ref={submitRef}>
           <Button
             size="L"
             radius="High"
             className={classes.wide}
-            variant={canSubmit || method === "gateway" ? "Primary" : "Disable"}
+            variant={canSubmit || busy || method === "gateway" ? "Primary" : "Disable"}
             isLoading={busy || !!charge}
             onClick={submit}
           >
@@ -1176,7 +1234,7 @@ const Details = ({
       </div>
 
       {/* phone: the total and the action stay under the thumb */}
-      <div className={classes.mobileBar}>
+      <div className={`${classes.mobileBar} ${submitInView ? classes.mobileBarOff : ""}`}>
         <div className={classes.mobileBarText}>
           <small>{method === "desk" ? getContent("bfPayAtVisit") : getContent("bfPayNow")}</small>
           <b>{quote ? money(method === "desk" ? quote.deskTotal : quote.total) : "…"}</b>
@@ -1184,7 +1242,7 @@ const Details = ({
         <Button
           size="M"
           radius="High"
-          variant={canSubmit || method === "gateway" ? "Primary" : "Disable"}
+          variant={canSubmit || busy || method === "gateway" ? "Primary" : "Disable"}
           isLoading={busy || !!charge}
           onClick={submit}
         >

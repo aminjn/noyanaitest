@@ -49,6 +49,9 @@ const post = async <T>(path: string, payload: object): Promise<T> => {
 export type MapConfig = {
   enabled: boolean;
   provider: "nexamap";
+  // "Open in navigation" on NexaMap's own site/app ({lat} {lng} {name},
+  // super admin map settings); null = our route page
+  navUrl?: string | null;
   styles: { light: string; dark: string } | null;
   features: Record<
     "search" | "reverse" | "route" | "isochrone" | "traffic" | "parking" | "airQuality" | "staticMap",

@@ -74,7 +74,7 @@ export const LabProposalStatus = ({
       </span>
       {proposal.status === "open" && !!onWithdraw && (
         <div className={classes.actions}>
-          <Button size="S" mode="Outline" variant="Neutral" radius="Medium" isLoading={busy} onClick={withdraw}>
+          <Button size="M" mode="Outline" variant="Neutral" radius="Medium" isLoading={busy} onClick={withdraw}>
             {t("lsProposalWithdraw")}
           </Button>
         </div>
@@ -185,7 +185,7 @@ export const BuyerProposalCard = ({
       {!!expires && <span className={`${classes.muted} ${t2xsRegular}`}>{t("lsProposalExpiresHint", [expires])}</span>}
       <div className={classes.actions}>
         <Button
-          size="S"
+          size="M"
           radius="Medium"
           variant={ready ? "Primary" : "Disable"}
           isLoading={busy === "accept"}
@@ -194,7 +194,7 @@ export const BuyerProposalCard = ({
           {t("lsProposalAccept")}
         </Button>
         <Button
-          size="S"
+          size="M"
           mode="Outline"
           variant="Neutral"
           radius="Medium"

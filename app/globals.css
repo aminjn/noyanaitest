@@ -361,6 +361,10 @@ body {
 body {
   overflow-y: visible;
   max-height: 100dvh;
+  /* <body> is the page's scroller: a route change (Next scrolls the new
+     page into view) or an anchor jump lands below the sticky header, not
+     under it (the booking steps were hidden there on a phone) */
+  scroll-padding-block-start: var(--headerH);
   font-family:
     var(--fontFa),
     -apple-system,

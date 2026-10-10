@@ -52,3 +52,19 @@
 .sellerName {
   color: var(--gray13);
 }
+
+/* no pharmacy sells it online right now */
+.noOffer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background-color: var(--white);
+  border: 1px dashed var(--gray5);
+  color: var(--gray10);
+}
+
+.noOffer strong {
+  color: var(--gray13);
+}

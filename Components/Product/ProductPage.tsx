@@ -18,7 +18,7 @@ import CartableNodePage from "./Cartable/CartabaleNodePage";
 import Image from "next/image";
 import { FilePath } from "../config";
 import Link from "@/Components/i18n/Link";
-import { t2xsRegular, txsDemiBold, txsMedium } from "../UI/Typography";
+import { t2xsRegular, tmdDemiBold, tsmRegular, txsDemiBold, txsMedium } from "../UI/Typography";
 import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
@@ -87,11 +87,20 @@ const ProductPage = ({ data }: ProductPageProps) => {
   const currentSeller = useMemo<
     IProductSeller<{ Seller: Record<never, never> }> | undefined
   >(() => {
-    return (
-      cart?.products.find((el) => el.item._id === data._id)?.item ||
-      data.sellers?.[0]
-    );
-  }, [cart?.products, data._id, data.sellers]);
+    // the pharmacy whose offer of THIS product is in the cart (a cart line
+    // holds the offer, whose `product` is this page's product - it used to be
+    // compared with the offer's own id, so a chosen pharmacy never showed)
+    const lines = Array.isArray(cart?.products) ? cart!.products : [];
+    const inCart = lines.find((el) => {
+      const product = (el?.item as { product?: unknown } | undefined)?.product;
+      const id = product && typeof product === "object" ? (product as { _id?: string })._id : product;
+      return !!id && id === data._id;
+    })?.item;
+    return inCart || (Array.isArray(data.sellers) ? data.sellers[0] : undefined);
+  }, [cart, data._id, data.sellers]);
+  // no pharmacy sells it online right now (out of stock everywhere, or no
+  // offer): say so instead of an empty seller, "0 Toman" and a dead button
+  const noOffer = !currentSeller;
 
   return (
     <CartableNodePage
@@ -113,7 +122,16 @@ const ProductPage = ({ data }: ProductPageProps) => {
       score={data.averageScore}
       specs={data.specs}
       totalScore={data.commentCount}
-      beforeTabs={<ProductSellers data={data.sellers} rx={!!data.requiresPrescription} />}
+      beforeTabs={
+        noOffer ? (
+          <div className={classes.noOffer} role="status">
+            <strong className={tmdDemiBold}>{getContent("outOfStock")}</strong>
+            <span className={tsmRegular}>{getContent("productNotSoldOnline")}</span>
+          </div>
+        ) : (
+          <ProductSellers data={data.sellers} rx={!!data.requiresPrescription} />
+        )
+      }
       badges={data.requiresPrescription ? <RxBadge size="L" /> : undefined}
       category={data.category ? { name: data.category.name || "" } : undefined}
       name={data.name}
@@ -137,6 +155,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
       deliveryArea={(currentSeller as { deliveryArea?: DeliveryArea } | undefined)?.deliveryArea}
       rx={!!data.requiresPrescription}
       owner={
+        noOffer ? undefined : (
         <div className={classes.seller}>
           <Ixon className={classes.sellerIcon} width="1.25rem">
             <VolleyBallIcon />
@@ -152,6 +171,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
             ) : null}
           </div>
         </div>
+        )
       }
       tabs={[
         {

@@ -1,3 +1,13 @@
+/* the same block inline on the order page: no inner scroller (it clipped
+   the buttons' edges and could trap the scroll on a phone) */
+.inline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: start;
+  min-width: 0;
+}
+
 .body {
   display: flex;
   flex-direction: column;

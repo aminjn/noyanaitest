@@ -62,7 +62,11 @@ export const VisitTypePicker = ({
   const types = visitTypeOrder.filter((t) => settings?.[t]?.active && !!settings?.[t]?.price);
   if (!types.length) return null;
   return (
-    <div className={classes.types} role="radiogroup" aria-label={getContent("bfVisitType")}>
+    <div
+      className={`${classes.types} ${types.length > 2 ? classes.typesMany : ""}`}
+      role="radiogroup"
+      aria-label={getContent("bfVisitType")}
+    >
       {types.map((t) => {
         const s = settings?.[t];
         const on = value === t;

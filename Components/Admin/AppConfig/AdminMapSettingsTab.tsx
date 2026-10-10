@@ -28,6 +28,7 @@ type MapSettings = {
   nexamapBaseUrl: string;
   nexamapDefaultStyle: string;
   nexamapDarkStyle: string;
+  nexamapNavUrl?: string;
   apiKeySet: boolean;
   apiKeyPreview: string;
   apiKeyFromEnv: boolean;
@@ -40,6 +41,7 @@ type MapSettingsInput = {
   nexamapApiKey: string;
   nexamapDefaultStyle: string;
   nexamapDarkStyle: string;
+  nexamapNavUrl: string;
 };
 
 type MapStatus = {
@@ -257,7 +259,7 @@ const AdminMapSettingsTab = () => {
               </p>
             )}
             <CreateForm<MapSettingsInput>
-              key={`${data.apiKeyPreview}|${data.nexamapBaseUrl}|${data.nexamapEnabled}`}
+              key={`${data.apiKeyPreview}|${data.nexamapBaseUrl}|${data.nexamapEnabled}|${data.nexamapNavUrl}`}
               layout="flat"
               defaultValue={{
                 nexamapEnabled: !!data.nexamapEnabled,
@@ -266,6 +268,7 @@ const AdminMapSettingsTab = () => {
                 nexamapApiKey: "",
                 nexamapDefaultStyle: data.nexamapDefaultStyle || "",
                 nexamapDarkStyle: data.nexamapDarkStyle || "",
+                nexamapNavUrl: data.nexamapNavUrl || "",
               }}
               hookProps={{
                 path: `${API}/admin/map/settings`,
@@ -284,6 +287,12 @@ const AdminMapSettingsTab = () => {
                 },
                 nexamapDefaultStyle: { title: ta("نام سبک نقشه برای تم روشن (روز)"), type: "text", ltr: true },
                 nexamapDarkStyle: { title: ta("نام سبک نقشه برای تم تیره (شب)"), type: "text", ltr: true },
+                // "Open in navigation" everywhere on the site goes here
+                nexamapNavUrl: {
+                  title: ta("لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی صفحه‌ی مسیر خود سایت)"),
+                  type: "text",
+                  ltr: true,
+                },
               }}
             />
           </WithTitle>

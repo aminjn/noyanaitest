@@ -19,6 +19,12 @@ import HostedImage from "../UI/HostedImage";
 import Ixon from "../UI/Ixon";
 import Button from "../UI/Button";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
+import AlertCircleIcon from "../Icons/AlertCircleIcon";
+import ClockIcon from "../Icons/ClockIcon";
+import DownloadIcon from "../Icons/DownloadIcon";
+import Badge from "../UI/Badge";
+import { mutate as globalMutate } from "swr";
+import { useIntlLocale } from "../i18n/navigation";
 import { ContentKey } from "../Enums/contentKeys";
 import { CartModel, cartModels } from "../Hooks/useCart";
 import { MongoDoc } from "../Hooks/useUser";
@@ -150,6 +156,9 @@ export interface IOrder<
   // top-up offer before accepting)
   walletBalance?: number;
   paymentMethod: "wallet" | "sep";
+  // what went back to the wallet for this order (backend getMyOrder, the
+  // buyer's own refund rows in the ledger)
+  refunded?: number;
   status: OrderStatus;
   address?: IUserAddress;
   submittedAt: string;
@@ -343,6 +352,8 @@ const OrderConfirmationPage = () => {
   const notify = useNotification();
   const [cancelling, setCancelling] = useState(false);
   const cancelBusy = useRef(false);
+  const intlTag = useIntlLocale();
+  const num = new Intl.NumberFormat(intlTag);
 
   // Cancel before the seller prepares it (Digikala / Halodoc): only lines
   // still pending are cancelled, and each is refunded to the wallet.
@@ -363,11 +374,58 @@ const OrderConfirmationPage = () => {
     }
   };
 
+  // «خرید دوباره» (Digikala / Halodoc / Snapp Pharmacy): the order's lines
+  // back into the cart at today's price, then the cart
+  const [reordering, setReordering] = useState(false);
+  const reorder = async () => {
+    if (reordering || !order) return;
+    setReordering(true);
+    try {
+      const res = (await fetcher({
+        url: `${API}/cart/reorder`,
+        method: "POST",
+        bodyParser: "JSON",
+        payload: { order: order._id },
+      })) as { data?: { added?: number; skipped?: number } };
+      const added = Number(res?.data?.added) || 0;
+      const skipped = Number(res?.data?.skipped) || 0;
+      globalMutate(`${API}/cart`);
+      globalMutate(`${API}/cart/size`);
+      if (!added) {
+        notify(getContent(skipped ? "reorderNothing" : "reorderAlreadyInCart"), skipped ? "Warn" : "Success");
+        if (!skipped) push("/cart");
+        return;
+      }
+      notify(
+        [getContent("reorderDone", [num.format(added)]), skipped ? getContent("reorderSkipped", [num.format(skipped)]) : ""]
+          .filter(Boolean)
+          .join(" "),
+        skipped ? "Warn" : "Success",
+      );
+      push("/cart");
+    } catch (err) {
+      notify((err as Error).message, "Error");
+    } finally {
+      setReordering(false);
+    }
+  };
+
   if (!isUserLoading && !user) return <LoginRequired />;
 
   const rows = order ? buildRows(order) : [];
+  // what the buyer may still cancel: a pending line whose parcel has not
+  // left the pharmacy (backend userController.cancelMyOrder) and whose
+  // sample has not been taken
+  const shippedPharmacies = new Set(
+    (Array.isArray(order?.shipments) ? order!.shipments! : [])
+      .filter((s) => !!s?.shippedAt)
+      .map((s) => String(s.pharmacy && typeof s.pharmacy === "object" ? s.pharmacy._id : s.pharmacy || "")),
+  );
   const canCancel =
-    order?.status === "paid" && rows.some((row) => row.status === "pending" && !row.collected);
+    order?.status === "paid" &&
+    rows.some(
+      (row) => row.status === "pending" && !row.collected && !(row.pharmacyId && shippedPharmacies.has(row.pharmacyId)),
+    );
   // every line cancelled (by the buyer or the sellers): the order reads as
   // cancelled, not "paid"
   const shownStatus: OrderStatus | undefined =
@@ -381,21 +439,43 @@ const OrderConfirmationPage = () => {
       rows: rows.filter((row) => row.model === model),
     }))
     .filter((group) => group.rows.length > 0);
+  // the hero follows the order: placed, waiting for the bank, or cancelled
+  // (it used to say "your order was placed" with a green tick in every case)
+  const heroStatus: OrderStatus = shownStatus || order?.status || "paid";
+  const heroTitle: ContentKey =
+    heroStatus === "cancelled"
+      ? "orderCancelledTitle"
+      : heroStatus === "pending"
+        ? "orderAwaitingPaymentTitle"
+        : "orderConfirmedTitle";
+  // pharmacies none of whose lines go ahead: their parcel will never ship
+  const closedPharmacies = Array.from(
+    new Set(rows.map((row) => row.pharmacyId).filter((id): id is string => !!id)),
+  ).filter((id) => rows.filter((row) => row.pharmacyId === id).every((row) => row.status === "cancelled"));
+  // a paid order with something still to buy again (not only services)
+  const canReorder = !!order && order.status !== "pending" && rows.some((row) => row.model !== "services" && row.model !== "servicePackages");
 
   return (
     <HandleLoading data={!!order} error={error}>
       {!!order && (
         <div className={classes.page}>
           <div className={classes.header}>
-            <Ixon width="3.875rem" className={classes.icon}>
-              <CheckCircleIcon />
+            <Ixon
+              width="3.875rem"
+              className={`${classes.icon} ${heroStatus !== "paid" ? classes[`icon_${heroStatus}`] : ""}`}
+            >
+              {heroStatus === "cancelled" ? <AlertCircleIcon /> : heroStatus === "pending" ? <ClockIcon /> : <CheckCircleIcon />}
             </Ixon>
-            <legend className={`${classes.legend} ${tmdDemiBold}`}>
-              {getContent("orderConfirmedTitle")}
+            <legend className={`${classes.legend} ${heroStatus !== "paid" ? classes[`legend_${heroStatus}`] : ""} ${tmdDemiBold}`}>
+              {getContent(heroTitle)}
             </legend>
             <div className={classes.orderNumber}>
               <span className={t2xsRegular}>{getContent("orderNumber")}</span>
-              <span className={tsmRegular}>{order._id}</span>
+              {/* a short, readable reference (the last 8 of the id), the way
+                  support asks for it; Latin and left-to-right in every language */}
+              <bdi dir="ltr" className={`${classes.orderCode} ${tsmRegular}`} title={order._id}>
+                {`#${String(order._id).slice(-8).toUpperCase()}`}
+              </bdi>
             </div>
             <span className={`${classes.status} ${classes[shownStatus || order.status]}`}>
               {getContent(statusContent[shownStatus || order.status])}
@@ -436,7 +516,15 @@ const OrderConfirmationPage = () => {
                             {row.subtitle}
                           </span>
                         )}
-                        {!!row.status && (
+                        {/* a lab line whose result is uploaded reads "result
+                            ready" (Halodoc), not "accepted, in progress" */}
+                        {row.model === "tests" && row.status === "pending" && !!row.result?.files?.length ? (
+                          <span className={classes.itemStatus}>
+                            <Badge color="Success" mode="Outline">
+                              {getContent("copResultReady")}
+                            </Badge>
+                          </span>
+                        ) : !!row.status && (
                           <span className={classes.itemStatus}>
                             <OrderItemStatusBadge
                               status={row.status}
@@ -451,15 +539,31 @@ const OrderConfirmationPage = () => {
                           <RxPrescriptionDetails prescription={row.prescription} />
                         )}
                         {(!!row.result?.files?.length || !!row.result?.note) && (
-                          <span className={`${classes.itemSubtitle} ${t2xsRegular}`}>
-                            {getContent("labResult")}:{" "}
-                            {(row.result?.files || []).map((id, i) => (
-                              <a key={id} href={`/api/v1/notpublic/${id}`} target="_blank" rel="noreferrer">
-                                {getContent("labResultFile", [String(i + 1)])}{" "}
-                              </a>
-                            ))}
-                            {row.result?.note}
-                          </span>
+                          <div className={classes.result}>
+                            <span className={`${classes.itemSubtitle} ${t2xsRegular}`}>
+                              {getContent("labResult")}
+                              {row.result?.note ? `: ${row.result.note}` : ""}
+                            </span>
+                            {/* each file as a finger-sized button that opens
+                                (and on a phone, saves) the private result */}
+                            <div className={classes.resultFiles}>
+                              {(row.result?.files || []).filter(Boolean).map((id, i) => (
+                                <a
+                                  key={id}
+                                  className={`${classes.resultFile} ${t2xsRegular}`}
+                                  href={`${API}/notpublic/${id}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  download
+                                >
+                                  <Ixon width="1rem">
+                                    <DownloadIcon />
+                                  </Ixon>
+                                  {getContent("labResultFile", [num.format(i + 1)])}
+                                </a>
+                              ))}
+                            </div>
+                          </div>
                         )}
                       </div>
                       <span className={`${classes.qty} ${t2xsRegular}`}>
@@ -522,6 +626,7 @@ const OrderConfirmationPage = () => {
                 <OrderShipments
                   orderId={order._id}
                   shipments={order.shipments}
+                  closedPharmacies={closedPharmacies}
                   canAct={order.status === "paid"}
                   onChange={() => mutate()}
                 />
@@ -549,6 +654,14 @@ const OrderConfirmationPage = () => {
                 {`${currencize(order.total)} ${getContent("toman")}`}
               </span>
             </div>
+            {Number(order.refunded) > 0 && (
+              <div className={classes.totalRow}>
+                <span className={tsmRegular}>{getContent("orderRefundedToWallet")}</span>
+                <span className={tsmRegular}>
+                  {`${currencize(Number(order.refunded))} ${getContent("toman")}`}
+                </span>
+              </div>
+            )}
             {!!order.address && (
               <div className={classes.addressRow}>
                 <span className={`${classes.subtitle} ${tsmRegular}`}>
@@ -607,8 +720,13 @@ const OrderConfirmationPage = () => {
               {getContent("cancelOrder")}
             </Button>
           )}
-          <Button onClick={() => push("/dashboard")} className={classes.action}>
-            {getContent("dashboard")}
+          {canReorder && (
+            <Button variant="Primary" mode="Outline" className={classes.action} isLoading={reordering} onClick={reorder}>
+              {getContent("reorder")}
+            </Button>
+          )}
+          <Button onClick={() => push("/dashboard/order")} className={classes.action}>
+            {getContent("orders")}
           </Button>
           <Button
             variant="Neutral"

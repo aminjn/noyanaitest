@@ -23,6 +23,7 @@ const RescheduleSheet = ({
   reservationId,
   doctorId,
   sessionType,
+  office,
   hoursText,
   onDone,
 }: {
@@ -31,6 +32,8 @@ const RescheduleSheet = ({
   reservationId: string;
   doctorId: string;
   sessionType: DoctorSessionType;
+  // an in-person visit moves within its office (the API keeps it too)
+  office?: string | null;
   hoursText: string;
   onDone: () => unknown;
 }) => {
@@ -80,7 +83,13 @@ const RescheduleSheet = ({
       }
     >
       {open && (
-        <SlotPicker doctorId={doctorId} sessionType={sessionType} value={pick} onChange={setPick} />
+        <SlotPicker
+          doctorId={doctorId}
+          sessionType={sessionType}
+          office={sessionType === "inPerson" ? office : null}
+          value={pick}
+          onChange={setPick}
+        />
       )}
     </BottomSheet>
   );

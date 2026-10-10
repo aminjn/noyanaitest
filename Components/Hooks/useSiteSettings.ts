@@ -19,12 +19,17 @@ export type SiteSettings = {
   emergencyNumber: string;
   emergencyNoteEnabled: boolean;
   patientFreeCancelHours: number;
+  // the patient's SMS reminders before a visit (booking settings)
+  reminder24h: boolean;
+  reminder2h: boolean;
 };
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   emergencyNumber: "115",
   emergencyNoteEnabled: true,
   patientFreeCancelHours: 24,
+  reminder24h: true,
+  reminder2h: true,
 };
 
 const parse = (raw: unknown): SiteSettings => {
@@ -45,6 +50,8 @@ const parse = (raw: unknown): SiteSettings => {
       Number.isFinite(hours) && hours >= 0 && hours <= 168
         ? hours
         : DEFAULT_SITE_SETTINGS.patientFreeCancelHours,
+    reminder24h: site.reminder24h !== false,
+    reminder2h: site.reminder2h !== false,
   };
 };
 
