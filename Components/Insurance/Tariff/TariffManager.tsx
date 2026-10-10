@@ -23,6 +23,8 @@ import {
   tariffLimitPeriods,
   TariffMethod,
   tariffMethods,
+  TariffTarget,
+  tariffTargets,
   TariffVisitKind,
   tariffVisitKinds,
 } from "./tariffTypes";
@@ -40,6 +42,13 @@ export type TariffTexts = {
   plan: string;
   allPlans: string;
   ruleTitle: string;
+  // (2026-10) what the rule covers: a visit, or a cart order's drugs / tests
+  target: string;
+  targets: Record<TariffTarget, string>;
+  hintTarget: string;
+  productCategory: string;
+  testCategory: string;
+  rxOnly: string;
   visitKind: string;
   visitKinds: Record<TariffVisitKind, string>;
   level: string;
@@ -152,6 +161,26 @@ const TariffPopup = ({
       getDefaultValue: (n: InsuranceTariff) => idOf(n.plan) || undefined,
     },
     title: { type: "text", title: text.ruleTitle },
+    target: { type: "select", title: text.target, hint: text.hintTarget, options: options(tariffTargets, text.targets) },
+    // a drug rule may be limited to a product category and to
+    // prescription-only items, a lab rule to a test category
+    productCategory: {
+      type: "nodes",
+      title: text.productCategory,
+      path: `${API}/public/productCategory`,
+      dataParser: asList,
+      ...pick(),
+      getDefaultValue: (n: InsuranceTariff) => idOf(n.productCategory) || undefined,
+    },
+    rxOnly: { type: "bool", title: text.rxOnly },
+    testCategory: {
+      type: "nodes",
+      title: text.testCategory,
+      path: `${API}/public/testCategory`,
+      dataParser: asList,
+      ...pick(),
+      getDefaultValue: (n: InsuranceTariff) => idOf(n.testCategory) || undefined,
+    },
     visitKind: { type: "select", title: text.visitKind, options: options(tariffVisitKinds, text.visitKinds) },
     level: { type: "select", title: text.level, options: options(tariffLevels, text.levels) },
     speciality: {
@@ -204,7 +233,7 @@ const TariffPopup = ({
     <PopupCard title={node ? text.editTariff : text.newTariff}>
       <CreateForm<InsuranceTariff>
         defaultValue={
-          (node || { method: "percent", visitKind: "any", level: "any", limitPeriod: "none", active: true }) as InsuranceTariff
+          (node || { method: "percent", target: "visit", visitKind: "any", level: "any", limitPeriod: "none", active: true }) as InsuranceTariff
         }
         renderer={renderer}
         onCancel={() => closePopup()}
@@ -276,13 +305,21 @@ const TariffManager = ({
     return main;
   };
   const applies = (n: InsuranceTariff) =>
-    [
-      nameOf(n.plan) || text.allPlans,
-      text.visitKinds[(n.visitKind || "any") as TariffVisitKind],
-      nameOf(n.speciality) || (n.level && n.level !== "any" ? text.levels[n.level as TariffLevel] : ""),
-      nameOf(n.service),
-      nameOf(n.servicePackage),
-    ]
+    (n.target === "drug" || n.target === "lab"
+      ? [
+          nameOf(n.plan) || text.allPlans,
+          text.targets[n.target],
+          n.target === "drug" ? nameOf(n.productCategory) : nameOf(n.testCategory),
+          n.target === "drug" && n.rxOnly ? text.rxOnly : "",
+        ]
+      : [
+          nameOf(n.plan) || text.allPlans,
+          text.visitKinds[(n.visitKind || "any") as TariffVisitKind],
+          nameOf(n.speciality) || (n.level && n.level !== "any" ? text.levels[n.level as TariffLevel] : ""),
+          nameOf(n.service),
+          nameOf(n.servicePackage),
+        ]
+    )
       .filter(Boolean)
       .join(" · ");
   const limit = (n: InsuranceTariff) =>

@@ -6,6 +6,9 @@ export type TariffLevel = (typeof tariffLevels)[number];
 export const tariffMethods = ["percent", "govTariff", "fixed"] as const;
 export type TariffMethod = (typeof tariffMethods)[number];
 export const tariffLimitPeriods = ["none", "month", "year"] as const;
+// (2026-10) a visit rule, or a cart order's drugs / lab tests
+export const tariffTargets = ["visit", "drug", "lab"] as const;
+export type TariffTarget = (typeof tariffTargets)[number];
 export type TariffLimitPeriod = (typeof tariffLimitPeriods)[number];
 
 type Ref = string | { _id: string; name?: string } | null;
@@ -14,6 +17,11 @@ export type InsuranceTariff = {
   _id: string;
   insurance?: Ref;
   plan?: Ref;
+  // absent on older rules = "visit"
+  target?: TariffTarget;
+  productCategory?: Ref;
+  testCategory?: Ref;
+  rxOnly?: boolean;
   title?: string;
   visitKind?: TariffVisitKind;
   level?: TariffLevel;

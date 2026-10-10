@@ -126,6 +126,12 @@ interface IOrderDetail {
   subtotal: number;
   tax: number;
   deliveryFee: number;
+  // (2026-10) the checkout's discounts and the supplementary insurer's share
+  clubDiscount?: number;
+  promoDiscount?: number;
+  insurerShare?: number;
+  promo?: { code?: string; title?: string; fundedBy?: "platform" | "seller" } | null;
+  insurance?: { name?: string; reimburse?: boolean } | null;
   total: number;
   submittedAt?: string;
   paidAt?: string | null;
@@ -507,6 +513,25 @@ const AdminFinanceOrderPage = () => {
                 <Field label={ta("جمع اقلام (تومان)")}>{currencize(data.subtotal || 0)}</Field>
                 <Field label={ta("مالیات (تومان)")}>{currencize(data.tax || 0)}</Field>
                 <Field label={ta("هزینه‌ی ارسال (تومان)")}>{currencize(data.deliveryFee || 0)}</Field>
+                {Number(data.clubDiscount) > 0 && (
+                  <Field label={ta("تخفیف باشگاه فروشنده (تومان)")}>{currencize(Number(data.clubDiscount))}</Field>
+                )}
+                {Number(data.promoDiscount) > 0 && (
+                  <Field label={ta("کد تخفیف (تومان)")}>
+                    {[
+                      currencize(Number(data.promoDiscount)),
+                      data.promo?.code || data.promo?.title || "",
+                      data.promo?.fundedBy === "seller" ? ta("با هزینه‌ی فروشنده") : ta("با هزینه‌ی نویان"),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </Field>
+                )}
+                {Number(data.insurerShare) > 0 && (
+                  <Field label={ta("سهم بیمه‌ی تکمیلی (تومان)")}>
+                    {[currencize(Number(data.insurerShare)), data.insurance?.name || ""].filter(Boolean).join(" · ")}
+                  </Field>
+                )}
                 <Field label={ta("مبلغ کل (تومان)")}>
                   <strong>{currencize(data.total || 0)}</strong>
                 </Field>

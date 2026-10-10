@@ -69,6 +69,8 @@ const Button = ({
   isLoading,
   href,
   ariaLabel,
+  disabled,
+  title,
 }: WithStyleProps<{
   children?: ReactNode;
   leadIcon?: ReactNode;
@@ -84,6 +86,10 @@ const Button = ({
   href?: string;
   // for a button whose text alone doesn't say what it does (e.g. an x chip)
   ariaLabel?: string;
+  // (2026-10) a choice that can't be taken now (e.g. a club reward the
+  // points don't cover yet), with the reason as its tooltip
+  disabled?: boolean;
+  title?: string;
 }>) => {
   const content = useMemo(
     () => (
@@ -121,8 +127,12 @@ const Button = ({
   );
 
   const styles = useMemo(
-    () => ({ ...style, cursor: isLoading ? "progress" : undefined }),
-    [style, isLoading],
+    () => ({
+      ...style,
+      cursor: isLoading ? "progress" : disabled ? "not-allowed" : undefined,
+      ...(disabled ? { opacity: 0.5 } : {}),
+    }),
+    [style, isLoading, disabled],
   );
 
   if (href)
@@ -149,8 +159,10 @@ const Button = ({
       aria-label={ariaLabel}
       className={classNames}
       style={styles}
+      disabled={disabled}
+      title={title}
       onClick={(e) => {
-        if (isLoading) return;
+        if (isLoading || disabled) return;
         onClick?.(e);
       }}
       type={type}

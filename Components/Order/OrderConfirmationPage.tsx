@@ -149,6 +149,12 @@ export interface IOrder<
   deliveryFee?: number;
   // home-sampling fees, in `total`
   samplingFee?: number;
+  // the checkout's discounts and supplementary insurance (2026-10, backend
+  // Lib/cartOffers.ts): already taken off `total`
+  clubDiscount?: number;
+  promoDiscount?: number;
+  insurerShare?: number;
+  insurance?: { name?: string; insurerShare?: number; reimburse?: boolean };
   // what the buyer may do with each sampling appointment, by its id
   // (2026-10, backend Lib/labSamplingReschedule.ts)
   samplingMoves?: Record<string, SamplingMoveInfo>;
@@ -648,12 +654,36 @@ const OrderConfirmationPage = () => {
                 </span>
               </div>
             )}
+            {/* (2026-10) the discounts and the insurer's share of the order */}
+            {(
+              [
+                ["clubDiscountRow", order.clubDiscount],
+                ["promoDiscountRow", order.promoDiscount],
+                ["insurerShareRow", order.insurerShare],
+              ] as const
+            )
+              .filter(([, amount]) => Number(amount) > 0)
+              .map(([key, amount]) => (
+                <div key={key} className={classes.totalRow}>
+                  <span className={tsmRegular}>{getContent(key)}</span>
+                  <span className={tsmRegular}>
+                    {`− ${currencize(Number(amount))} ${getContent("toman")}`}
+                  </span>
+                </div>
+              ))}
             <div className={classes.totalRow}>
               <span className={tsmRegular}>{getContent("totalPrice")}</span>
               <span className={`${classes.totalPrice} ${tlgBold}`}>
                 {`${currencize(order.total)} ${getContent("toman")}`}
               </span>
             </div>
+            {!!order.insurance?.reimburse && !!order.insurance.name && (
+              <div className={classes.addressRow}>
+                <span className={t2xsRegular}>
+                  {getContent("orderInsuranceReimburseNote", [order.insurance.name])}
+                </span>
+              </div>
+            )}
             {Number(order.refunded) > 0 && (
               <div className={classes.totalRow}>
                 <span className={tsmRegular}>{getContent("orderRefundedToWallet")}</span>
