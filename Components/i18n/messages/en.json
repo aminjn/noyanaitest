@@ -2789,6 +2789,7 @@
  "crmStDraft": "Draft",
  "crmStPending": "Awaiting approval",
  "crmStRejected": "Rejected",
+ "crmStFailed": "Failed",
  "crmStApproved": "Approved, queued to send",
  "crmStSending": "Sending",
  "crmStSent": "Sent",

@@ -2789,6 +2789,7 @@
  "crmStDraft": "Brouillon",
  "crmStPending": "En attente de validation",
  "crmStRejected": "Refusée",
+ "crmStFailed": "Échec",
  "crmStApproved": "Validée, en file d'envoi",
  "crmStSending": "En cours d'envoi",
  "crmStSent": "Envoyée",

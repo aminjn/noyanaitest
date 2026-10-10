@@ -2789,6 +2789,7 @@
  "crmStDraft": "مسودة",
  "crmStPending": "بانتظار الموافقة",
  "crmStRejected": "مرفوضة",
+ "crmStFailed": "فشل الإرسال",
  "crmStApproved": "مقبولة، بانتظار الإرسال",
  "crmStSending": "قيد الإرسال",
  "crmStSent": "مرسلة",

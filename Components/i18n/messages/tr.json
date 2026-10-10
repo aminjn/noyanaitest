@@ -2789,6 +2789,7 @@
  "crmStDraft": "Taslak",
  "crmStPending": "Onay bekliyor",
  "crmStRejected": "Reddedildi",
+ "crmStFailed": "Gönderilemedi",
  "crmStApproved": "Onaylandı, gönderim sırasında",
  "crmStSending": "Gönderiliyor",
  "crmStSent": "Gönderildi",

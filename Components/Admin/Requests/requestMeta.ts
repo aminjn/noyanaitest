@@ -87,6 +87,8 @@ const statusLabels: Record<string, () => string> = {
   // an SMS campaign after approval
   Sending: () => ta("در حال ارسال"),
   Sent: () => ta("ارسال‌شده"),
+  // approved but could not go out (no gateway / credit); all given back
+  Failed: () => ta("ارسال‌نشده"),
   Cancelled: () => ta("لغوشده"),
   // an insurer contract after approval / after it ended
   Active: () => ta("فعال"),
@@ -97,7 +99,7 @@ export const requestStatusLabel = (status?: string) =>
   (status && statusLabels[status]?.()) || status || "—";
 
 export const requestStatusColor = (status?: string): BadgeColor =>
-  status === "Rejected"
+  status === "Rejected" || status === "Failed"
     ? "Error"
     : status === "Approved" || status === "Done" || status === "Sent" || status === "Active"
       ? "Success"

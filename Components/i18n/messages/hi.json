@@ -2789,6 +2789,7 @@
  "crmStDraft": "ड्राफ़्ट",
  "crmStPending": "स्वीकृति लंबित",
  "crmStRejected": "अस्वीकृत",
+ "crmStFailed": "विफल",
  "crmStApproved": "स्वीकृत, भेजने की कतार में",
  "crmStSending": "भेजा जा रहा है",
  "crmStSent": "भेजा गया",

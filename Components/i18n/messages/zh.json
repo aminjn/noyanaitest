@@ -2789,6 +2789,7 @@
  "crmStDraft": "草稿",
  "crmStPending": "待审核",
  "crmStRejected": "已拒绝",
+ "crmStFailed": "发送失败",
  "crmStApproved": "已批准，待发送",
  "crmStSending": "发送中",
  "crmStSent": "已发送",

@@ -2789,6 +2789,7 @@
  "crmStDraft": "Borrador",
  "crmStPending": "Pendiente de aprobación",
  "crmStRejected": "Rechazada",
+ "crmStFailed": "Fallida",
  "crmStApproved": "Aprobada, en cola",
  "crmStSending": "Enviando",
  "crmStSent": "Enviada",

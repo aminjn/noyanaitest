@@ -124,7 +124,7 @@ export type CrmSegment = {
   reachable: number;
 };
 
-export type CrmCampaignStatus = "Draft" | "Pending" | "Rejected" | "Approved" | "Sending" | "Sent" | "Cancelled";
+export type CrmCampaignStatus = "Draft" | "Pending" | "Rejected" | "Approved" | "Sending" | "Sent" | "Failed" | "Cancelled";
 export type CrmCampaign = {
   _id: string;
   name: string;
@@ -274,6 +274,7 @@ export const statusKey: Record<CrmCampaignStatus, string> = {
   Approved: "crmStApproved",
   Sending: "crmStSending",
   Sent: "crmStSent",
+  Failed: "crmStFailed",
   Cancelled: "crmStCancelled",
 };
 

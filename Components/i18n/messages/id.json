@@ -2789,6 +2789,7 @@
  "crmStDraft": "Draf",
  "crmStPending": "Menunggu persetujuan",
  "crmStRejected": "Ditolak",
+ "crmStFailed": "Gagal",
  "crmStApproved": "Disetujui, antre kirim",
  "crmStSending": "Mengirim",
  "crmStSent": "Terkirim",

@@ -2789,6 +2789,7 @@
  "crmStDraft": "下書き",
  "crmStPending": "承認待ち",
  "crmStRejected": "却下",
+ "crmStFailed": "送信失敗",
  "crmStApproved": "承認済み・送信待ち",
  "crmStSending": "送信中",
  "crmStSent": "送信済み",

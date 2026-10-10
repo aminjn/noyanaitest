@@ -2811,6 +2811,7 @@
  "crmStDraft": "پیش‌نویس",
  "crmStPending": "در انتظار تأیید",
  "crmStRejected": "ردشده",
+ "crmStFailed": "ارسال نشد",
  "crmStApproved": "تأییدشده، در نوبت ارسال",
  "crmStSending": "در حال ارسال",
  "crmStSent": "ارسال‌شده",

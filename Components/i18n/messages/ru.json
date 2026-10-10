@@ -2789,6 +2789,7 @@
  "crmStDraft": "Черновик",
  "crmStPending": "Ждёт одобрения",
  "crmStRejected": "Отклонена",
+ "crmStFailed": "Не отправлена",
  "crmStApproved": "Одобрена, в очереди",
  "crmStSending": "Отправляется",
  "crmStSent": "Отправлена",

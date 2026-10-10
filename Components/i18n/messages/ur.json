@@ -2789,6 +2789,7 @@
  "crmStDraft": "مسودہ",
  "crmStPending": "منظوری کا منتظر",
  "crmStRejected": "مسترد",
+ "crmStFailed": "ارسال ناکام",
  "crmStApproved": "منظور، بھیجنے کی قطار میں",
  "crmStSending": "بھیجی جا رہی",
  "crmStSent": "بھیجی گئی",
