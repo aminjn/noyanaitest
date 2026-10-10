@@ -175,6 +175,8 @@ const CartOffersSection = ({
                 className={`${classes.codeInput} ${tsmRegular}`}
                 value={input}
                 dir="ltr"
+                // a code is Latin letters and digits (globals.css LatinDigits)
+                lang="en"
                 maxLength={40}
                 autoComplete="off"
                 aria-label={getContent("offersCodePlaceholder")}
@@ -201,7 +203,7 @@ const CartOffersSection = ({
               const r = resultList.find((x) => x.code === code);
               return (
                 <div key={code} className={classes.chip}>
-                  <span className={`${classes.chipCode} ${tsmRegular}`} dir="ltr">
+                  <span className={`${classes.chipCode} ${tsmRegular}`} dir="ltr" lang="en">
                     {code}
                   </span>
                   <span className={`${r?.applied ? classes.ok : r ? classes.bad : classes.muted} ${t2xsRegular}`} role={r && !r.applied ? "alert" : undefined}>
