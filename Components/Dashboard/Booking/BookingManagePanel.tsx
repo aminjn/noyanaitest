@@ -163,7 +163,8 @@ const BookingManagePanel = ({
           <div className={classes.heroBody}>
             <h1 className={classes.heroTitle}>{getContent("bfBookedTitle")}</h1>
             <p className={classes.heroWhen}>
-              {dateText} · {getContent("atTimeX", [clock(data.start, nf)])}
+              <span>{dateText}</span>
+              <span>{getContent("atTimeX", [clock(data.start, nf)])}</span>
             </p>
             {inPerson && !!office?.address && (
               <p className={classes.heroText} dir="auto">

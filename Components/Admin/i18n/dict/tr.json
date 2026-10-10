@@ -3436,5 +3436,15 @@
  "ساعت‌ها فقط درون ۸ تا ۲۱ (قانون اپراتورها برای پیامک تبلیغاتی) قابل تنظیم‌اند؛ می‌توانید بازه را تنگ‌تر کنید، نه بازتر.": "Saatler yalnızca 8:00–21:00 arasında ayarlanabilir (reklam SMS'leri için operatör kuralı); aralığı daraltabilir, genişletemezsiniz.",
  "ارسال‌نشده": "Gönderilmedi",
  "فیلدها:": "Alanlar:",
- "لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی لینک پیش‌فرض nexamap.ir)": "NexaMap sitesinde yol tarifi bağlantısı ({lat} ve {lng} ile; boş, varsayılan nexamap.ir bağlantısı demektir)"
+ "لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی لینک پیش‌فرض nexamap.ir)": "NexaMap sitesinde yol tarifi bağlantısı ({lat} ve {lng} ile; boş, varsayılan nexamap.ir bağlantısı demektir)",
+ "خروجی مکان‌ها برای نکسا مپ": "NexaMap için yer dışa aktarımı",
+ "یک فایل JSONL با یک خط برای هر مکان عمومی که موقعیتش در نویان ثبت شده است (مطب پزشکان، کلینیک‌ها، بیمارستان‌ها، پاراکلینیک‌ها، داروخانه‌ها و بیمه‌ها): موقعیت و نشانی، ساعت کاری، تلفن عمومی، لینک صفحه، امتیاز و نظرهای تأییدشده. فقط مراکز فعال و منتشرشده در فایل می‌آیند و از بیماران فقط نامی که سایت کنار نظرشان نشان می‌دهد، نه تلفن یا کد ملی.": "Konumu Noyan’da kayıtlı her herkese açık yer için bir satır içeren JSONL dosyası (doktor muayenehaneleri, klinikler, hastaneler, paraklinikler, eczaneler ve sigortalar): konum ve adres, çalışma saatleri, genel telefon, sayfa bağlantısı, puan ve onaylı yorumlar. Yalnızca aktif ve yayımlanmış sağlayıcılar yer alır; hastalardan yalnızca sitenin yorumlarının yanında gösterdiği ad bulunur, telefon veya kimlik numarası asla.",
+ "نوع مکان": "Yer türü",
+ "فقط تغییرکرده از تاریخ (اختیاری)": "Yalnızca şu tarihten beri değişenler (isteğe bağlı)",
+ "همه‌ی تاریخ‌ها": "Tüm tarihler",
+ "هر خط یک GeoJSON Feature باشد (به‌جای شیء ساده با lat و lng)": "Her satır bir GeoJSON Feature olsun (lat ve lng içeren düz nesne yerine)",
+ "دست‌کم یک نوع مکان را انتخاب کنید.": "En az bir yer türü seçin.",
+ "نشانی سایت در تنظیمات کلی ثبت نشده است؛ لینک صفحه‌ی هر مکان در فایل بدون دامنه نوشته می‌شود.": "Genel ayarlarda site adresi tanımlı değil; her yerin sayfa bağlantısı alan adı olmadan yazılır.",
+ "دریافت فایل (${1} مکان)": "Dosyayı indir (${1} yer)",
+ "مکانی برای خروجی نیست": "Dışa aktarılacak yer yok"
 }

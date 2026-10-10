@@ -16,7 +16,8 @@ import classes from "./AdminMapSettings.module.css";
 // «خروجی مکان‌ها برای نکسا مپ» (2026-10, owner's decision): every public
 // provider place with a map pin (doctor offices, clinics, hospitals,
 // paraclinics, pharmacies, insurers) as a JSON-lines file the owner
-// bulk-imports into NexaMap. Filters: kinds and "changed since"; the count
+// hands to NexaMap as is: location, working hours, public phone, page
+// link, rating and approved reviews. Filters: kinds and "changed since"; the count
 // is previewed before the download. Backend: GET /admin/map/places/count
 // and GET /admin/map/places.jsonl (Lib/mapPlacesExport.ts), streamed, so
 // the browser saves it straight to disk.
@@ -91,7 +92,7 @@ const AdminMapPlacesExport = () => {
     <Box className={classes.box}>
       <h3 className={classes.sectionTitle}>{ta("خروجی مکان‌ها برای نکسا مپ")}</h3>
       <p className={classes.note}>
-        {ta("یک فایل JSONL با یک خط برای هر مکان عمومی که موقعیتش در نویان ثبت شده است: مطب پزشکان، کلینیک‌ها، بیمارستان‌ها، پاراکلینیک‌ها، داروخانه‌ها و بیمه‌ها. فقط مراکز فعال و منتشرشده با صفحه‌ی عمومی، و فقط تلفنی که در صفحه‌ی عمومی نشان داده می‌شود؛ هیچ اطلاعاتی از بیماران در فایل نیست.")}
+        {ta("یک فایل JSONL با یک خط برای هر مکان عمومی که موقعیتش در نویان ثبت شده است (مطب پزشکان، کلینیک‌ها، بیمارستان‌ها، پاراکلینیک‌ها، داروخانه‌ها و بیمه‌ها): موقعیت و نشانی، ساعت کاری، تلفن عمومی، لینک صفحه، امتیاز و نظرهای تأییدشده. فقط مراکز فعال و منتشرشده در فایل می‌آیند و از بیماران فقط نامی که سایت کنار نظرشان نشان می‌دهد، نه تلفن یا کد ملی.")}
       </p>
       <CheckboxGroupInput
         title={ta("نوع مکان")}

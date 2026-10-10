@@ -3436,5 +3436,15 @@
  "ساعت‌ها فقط درون ۸ تا ۲۱ (قانون اپراتورها برای پیامک تبلیغاتی) قابل تنظیم‌اند؛ می‌توانید بازه را تنگ‌تر کنید، نه بازتر.": "Die Zeiten sind nur zwischen 8 und 21 Uhr einstellbar (Betreiberregel für Werbe-SMS); das Fenster kann nur verkleinert werden.",
  "ارسال‌نشده": "Nicht gesendet",
  "فیلدها:": "Felder:",
- "لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی لینک پیش‌فرض nexamap.ir)": "Routenlink auf der NexaMap-Website (mit {lat} und {lng}; leer = Standardlink von nexamap.ir)"
+ "لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی لینک پیش‌فرض nexamap.ir)": "Routenlink auf der NexaMap-Website (mit {lat} und {lng}; leer = Standardlink von nexamap.ir)",
+ "خروجی مکان‌ها برای نکسا مپ": "Orte-Export für NexaMap",
+ "یک فایل JSONL با یک خط برای هر مکان عمومی که موقعیتش در نویان ثبت شده است (مطب پزشکان، کلینیک‌ها، بیمارستان‌ها، پاراکلینیک‌ها، داروخانه‌ها و بیمه‌ها): موقعیت و نشانی، ساعت کاری، تلفن عمومی، لینک صفحه، امتیاز و نظرهای تأییدشده. فقط مراکز فعال و منتشرشده در فایل می‌آیند و از بیماران فقط نامی که سایت کنار نظرشان نشان می‌دهد، نه تلفن یا کد ملی.": "Eine JSONL-Datei mit einer Zeile je öffentlichem Ort, dessen Standort in Noyan gespeichert ist (Arztpraxen, Kliniken, Krankenhäuser, Paramedizin, Apotheken und Versicherer): Standort und Adresse, Öffnungszeiten, öffentliche Telefonnummer, Seitenlink, Bewertung und freigegebene Rezensionen. Nur aktive, veröffentlichte Anbieter; von Patienten nur der Name, den die Seite neben ihrer Rezension zeigt – nie Telefon oder Ausweisnummer.",
+ "نوع مکان": "Ortstyp",
+ "فقط تغییرکرده از تاریخ (اختیاری)": "Nur geändert seit (optional)",
+ "همه‌ی تاریخ‌ها": "Alle Daten",
+ "هر خط یک GeoJSON Feature باشد (به‌جای شیء ساده با lat و lng)": "Jede Zeile als GeoJSON-Feature (statt eines einfachen Objekts mit lat und lng)",
+ "دست‌کم یک نوع مکان را انتخاب کنید.": "Wählen Sie mindestens einen Ortstyp.",
+ "نشانی سایت در تنظیمات کلی ثبت نشده است؛ لینک صفحه‌ی هر مکان در فایل بدون دامنه نوشته می‌شود.": "Die Seitenadresse ist in den allgemeinen Einstellungen nicht gesetzt; der Seitenlink jedes Ortes wird ohne Domain geschrieben.",
+ "دریافت فایل (${1} مکان)": "Datei herunterladen (${1} Orte)",
+ "مکانی برای خروجی نیست": "Keine Orte zum Exportieren"
 }

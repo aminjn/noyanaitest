@@ -37,6 +37,9 @@
   min-width: 0;
 }
 .heroWhen {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--sp3);
   margin: var(--sp1) 0 0;
   font-size: var(--fsLead);
   font-weight: 700;
