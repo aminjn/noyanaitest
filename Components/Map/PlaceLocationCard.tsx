@@ -18,7 +18,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ContentKey } from "../Enums/contentKeys";
 import { WithStyleProps } from "../Layout/Layout";
 import { tbaseBold, tsmMedium, tsmRegular, txsMedium, txsRegular } from "../UI/Typography";
-import { navigationUrl } from "../helpers/navigationUrl";
+import useNavigationUrl from "../Hooks/useNavigationUrl";
 import {
   AirQuality,
   decodePolyline,
@@ -293,7 +293,10 @@ const PlaceLocationCard = ({
     }
   };
 
-  const navUrl = autoRoute ? undefined : navigationUrl(coords || undefined, name);
+  // NexaMap's own site/app once the super admin set its link format; until
+  // then our route page (hidden on that page itself)
+  const nav = useNavigationUrl(coords || undefined, name);
+  const navUrl = autoRoute && !nav.external ? undefined : nav.href;
   const shownAddress = address || info?.address || "";
   const parkingInfo = info?.parking && info.parking.count > 0 ? info.parking : null;
   const nearestParking = useMemo(() => {
@@ -333,10 +336,11 @@ const PlaceLocationCard = ({
             tailIcon={<SendIcon />}
             variant="Primary"
             mode="Fill"
-            size="S"
+            size="M"
             radius="High"
-            onClick={() => window.open(navUrl, "_blank", "noopener")}
-            // our route page on NexaMap (Components/Map/RoutePage.tsx)
+            // NexaMap, or our route page (Components/Map/RoutePage.tsx), in
+            // the same tab: a new window is blocked by in-app browsers
+            href={navUrl}
           >
             {getContent("mapOpenInNavApp")}
           </Button>

@@ -112,7 +112,7 @@ const ReservationDispute = ({
       <Button
         variant="Error"
         mode="Outline"
-        size="S"
+        size="M"
         onClick={() =>
           setPopup(
             "DisputeReservation",

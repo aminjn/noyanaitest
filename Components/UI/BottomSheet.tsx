@@ -3,6 +3,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Ixon from "./Ixon";
 import XMarkIcon from "../Icons/XMarkIcon";
+import { closeInstallSheet } from "../Pwa/usePwaInstall";
 import classes from "./BottomSheet.module.css";
 
 // A phone-first sheet (2026-10, the booking flow): slides up from the
@@ -31,6 +32,8 @@ const BottomSheet = ({
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     if (!open) return;
+    // the "install the app" card must not sit over the sheet
+    closeInstallSheet();
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();

@@ -48,7 +48,11 @@
   gap: var(--sp1);
 }
 .time {
-  min-height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp1);
+  min-height: 2.75rem;
   padding: 0 var(--sp1);
   border: 0;
   border-radius: var(--radiusXs);
@@ -94,7 +98,7 @@
   color: var(--textMuted);
 }
 .link {
-  min-height: 2.25rem;
+  min-height: 2.75rem;
   padding: 0 var(--sp3);
   border: 1px solid var(--cardLineHover);
   border-radius: var(--radiusPill);
@@ -104,4 +108,14 @@
   font-size: var(--fsXs);
   font-weight: 600;
   cursor: pointer;
+}
+
+/* the tapped time while the details step opens */
+.timeBusy,
+.timeBusy:hover {
+  background-color: var(--gradAccentSolid);
+  background-image: var(--gradAccent);
+  box-shadow: none;
+  color: var(--onColor);
+  cursor: progress;
 }

@@ -138,7 +138,7 @@
 }
 .typeChip {
   flex: none;
-  min-height: 2.5rem;
+  min-height: 2.75rem;
   padding: 0 var(--sp4);
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLine);

@@ -3,6 +3,9 @@ import { useMemo, useState } from "react";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import useProgress from "@/Components/Hooks/useProgress";
+import useProgressBusy from "@/Components/Hooks/useProgressBusy";
+import Ixon from "@/Components/UI/Ixon";
+import LoadingIcon from "@/Components/Icons/LoadingIcon";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { DoctorSessionType, doctorSessionTypeContentKeyDict } from "@/Components/DoctorPanel/Calendar/DoctorCalendarDay";
 import { IDoctorProfile } from "@/Components/DoctorPanel/DoctorPanelPage";
@@ -40,6 +43,9 @@ const FirstSlotButton = ({ node, slot }: { node: IDoctorProfile; slot: NextSlot 
   const nf = useMemo(() => new Intl.NumberFormat(intlTag), [intlTag]);
   const push = useProgress();
   const [open, setOpen] = useState(false);
+  // the time tapped, busy until the details step is on screen
+  const busy = useProgressBusy();
+  const [going, setGoing] = useState<number | null>(null);
   const sheet = open && (
     <BookingSessionSelectorPopup
       node={node}
@@ -88,8 +94,11 @@ const FirstSlotButton = ({ node, slot }: { node: IDoctorProfile; slot: NextSlot 
           <button
             key={t.start}
             type="button"
-            className={classes.time}
-            onClick={() =>
+            className={`${classes.time} ${busy && going === t.start ? classes.timeBusy : ""}`}
+            aria-busy={busy && going === t.start}
+            onClick={() => {
+              if (busy) return;
+              setGoing(t.start);
               push(
                 finalizeHref(node._id, {
                   ymd: slot.ymd,
@@ -98,9 +107,14 @@ const FirstSlotButton = ({ node, slot }: { node: IDoctorProfile; slot: NextSlot 
                   office: t.office || slot.office || null,
                   sessionType: slot.sessionType,
                 }),
-              )
-            }
+              );
+            }}
           >
+            {busy && going === t.start && (
+              <Ixon width="1rem">
+                <LoadingIcon />
+              </Ixon>
+            )}
             {clock(t.start, nf)}
           </button>
         ))}

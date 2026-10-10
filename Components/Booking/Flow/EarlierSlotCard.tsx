@@ -90,16 +90,16 @@ const EarlierSlotCard = ({
       </div>
       <div className={classes.actions}>
         {offer && (
-          <Button size="S" radius="High" variant="Primary" isLoading={busy === "move"} onClick={() => run("move")}>
+          <Button size="M" radius="High" variant="Primary" isLoading={busy === "move"} onClick={() => run("move")}>
             {getContent("wlEarlierMove")}
           </Button>
         )}
         {entry ? (
-          <Button size="S" radius="High" mode="Outline" variant="Neutral" isLoading={busy === "off"} onClick={() => run("off")}>
+          <Button size="M" radius="High" mode="Outline" variant="Neutral" isLoading={busy === "off"} onClick={() => run("off")}>
             {getContent("wlEarlierStop")}
           </Button>
         ) : (
-          <Button size="S" radius="High" mode="Outline" isLoading={busy === "on"} onClick={() => run("on")}>
+          <Button size="M" radius="High" mode="Outline" isLoading={busy === "on"} onClick={() => run("on")}>
             {getContent("wlEarlierStart")}
           </Button>
         )}

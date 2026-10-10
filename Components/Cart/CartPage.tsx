@@ -32,6 +32,9 @@ import {
 } from "../UI/Typography";
 import CartItemActions from "./CartItemActions";
 import RxBadge from "../Product/RxBadge";
+import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
+import { mutate as globalMutate } from "swr";
+import useNotification from "../Hooks/useNotification";
 
 const NS: ContentNamespace[] = ["common", "cartPage"];
 
@@ -50,7 +53,11 @@ export type CartRow = {
   qty: number;
   // prescription-only (2026-10): checkout asks for a prescription
   requiresPrescription?: boolean;
+  // can't be bought right now (backend cartController.getMyCart issues)
+  issue?: CartLineIssue;
 };
+
+export type CartLineIssue = "unavailable" | "outOfStock" | "badQty";
 
 const sectionTitle: Record<CartModel, ContentKey> = {
   products: "products",
@@ -62,6 +69,12 @@ const sectionTitle: Record<CartModel, ContentKey> = {
 
 export const buildCartRows = (cart: UseCartNode): CartRow[] => {
   const rows: CartRow[] = [];
+  const issues = new Map(
+    (Array.isArray((cart as { issues?: unknown }).issues)
+      ? ((cart as unknown as { issues: { model?: string; item?: string; issue?: CartLineIssue }[] }).issues)
+      : []
+    ).map((el) => [`${el?.model}:${el?.item}`, el?.issue]),
+  );
 
   (Array.isArray(cart.products) ? cart.products : []).forEach(({ item, qty }) => {
     if (!item) return;
@@ -131,7 +144,7 @@ export const buildCartRows = (cart: UseCartNode): CartRow[] => {
     });
   });
 
-  return rows;
+  return rows.map((row) => ({ ...row, issue: issues.get(`${row.model}:${row.itemId}`) || undefined }));
 };
 
 const CartRowItem = ({
@@ -147,7 +160,7 @@ const CartRowItem = ({
   const finalPrice = (row.price || 0) - (row.discount || 0);
 
   return (
-    <div className={classes.row}>
+    <div className={`${classes.row} ${row.issue ? classes.rowIssue : ""}`}>
       <div className={classes.imageBox}>
         <HostedImage
           alt={row.title}
@@ -167,6 +180,11 @@ const CartRowItem = ({
           </span>
         )}
         {!!row.requiresPrescription && <RxBadge className={classes.rx} />}
+        {!!row.issue && (
+          <span className={`${classes.issue} ${t2xsRegular}`}>
+            {getContent(row.issue === "outOfStock" ? "outOfStock" : "cartLineUnavailable")}
+          </span>
+        )}
       </div>
       <div className={classes.priceBox}>
         {!!row.discount && (
@@ -200,16 +218,22 @@ const CheckoutSection = ({
   isLoading,
   clearCart,
   requiresAddress,
+  issueRows,
+  onRemoveIssues,
 }: {
   total: number;
   totalCount: number;
   isLoading: boolean;
   clearCart: () => void;
   requiresAddress: boolean;
+  // lines that can't be bought now: checkout waits until they are removed
+  issueRows: CartRow[];
+  onRemoveIssues: () => void;
 }) => {
   const getContent = useScopedLocale(NS);
 
-  const { setPopup } = usePopup();
+  const { setPopup, closePopup } = usePopup();
+  const pushNotification = useNotification();
 
   const { data: wallet } = useSWR<IWallet>(
     `${API}/user/wallet`,
@@ -232,11 +256,6 @@ const CheckoutSection = ({
           {`${currencize(total)} ${getContent("toman")}`}
         </span>
       </div>
-      <div className={classes.summaryDivider} />
-      <div className={classes.summaryRow}>
-        <span className={t2xsRegular}>{getContent("paymentMethod")}</span>
-        <span className={tsmRegular}>{getContent("wallet")}</span>
-      </div>
       {!!wallet && (
         <div className={classes.summaryRow}>
           <span className={`${classes.walletLabel} ${t2xsRegular}`}>
@@ -250,6 +269,21 @@ const CheckoutSection = ({
           </span>
         </div>
       )}
+      {!!issueRows.length && (
+        <div className={classes.issueBox} role="alert">
+          <span className={t2xsRegular}>{getContent("cartHasIssues")}</span>
+          <Button
+            variant="Error"
+            mode="Outline"
+            size="S"
+            radius="Medium"
+            isLoading={isLoading}
+            onClick={onRemoveIssues}
+          >
+            {getContent("cartRemoveIssues")}
+          </Button>
+        </div>
+      )}
       <Button
         variant="Primary"
         mode="Fill"
@@ -258,6 +292,10 @@ const CheckoutSection = ({
         isLoading={isLoading}
         onClick={() => {
           if (isLoading) return;
+          if (issueRows.length) {
+            pushNotification(getContent("cartHasIssues"), "Warn");
+            return;
+          }
           setPopup(
             "CartCheckout",
             <CartCheckoutPopup
@@ -275,7 +313,18 @@ const CheckoutSection = ({
         size="M"
         radius="Medium"
         isLoading={isLoading}
-        onClick={() => clearCart()}
+        onClick={() =>
+          setPopup(
+            "ClearCart",
+            <ConfirmationPopup
+              message={getContent("clearCartConfirm")}
+              onConfirm={() => {
+                clearCart();
+                closePopup("ClearCart");
+              }}
+            />,
+          )
+        }
       >
         {getContent("removeAll")}
       </Button>
@@ -287,8 +336,8 @@ const CartPage = () => {
   const { user } = useUser();
   const {
     cart,
-    mutateCartItem,
     removeCartItem,
+    refreshCart: mutateCart,
     clearCart,
     isLoading,
     isCartLoading,
@@ -301,15 +350,19 @@ const CartPage = () => {
   const rows = cart ? buildCartRows(cart) : [];
   const isEmpty = !isCartLoading && rows.length === 0;
 
-  const totalPrice = rows.reduce(
+  // what can be bought: an unavailable line is shown but not counted
+  const buyable = rows.filter((row) => !row.issue);
+  const totalPrice = buyable.reduce(
     (sum, row) => sum + ((row.price || 0) - (row.discount || 0)) * row.qty,
     0,
   );
-  const totalCount = rows.reduce((sum, row) => sum + row.qty, 0);
+  const totalCount = buyable.reduce((sum, row) => sum + row.qty, 0);
 
   const requiresAddress = rows.some((row) =>
     physicalCartModels.includes(row.model),
   );
+
+  const issueRows = rows.filter((row) => !!row.issue);
 
   const grouped = cartModels
     .map((model) => ({
@@ -369,6 +422,13 @@ const CartPage = () => {
               isLoading={isLoading}
               clearCart={clearCart}
               requiresAddress={requiresAddress}
+              issueRows={issueRows}
+              onRemoveIssues={async () => {
+                for (const row of issueRows)
+                  await fetcher({ url: `${API}/cart/item`, method: "PUT", payload: { item: row.itemId, model: row.model } }).catch(() => null);
+                mutateCart();
+                globalMutate(`${API}/cart/size`);
+              }}
             />
           )}
         </div>

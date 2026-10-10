@@ -66,7 +66,7 @@ const ConfirmCancelPopup = ({
         method: side === "patient" ? "POST" : "PATCH",
         payload: reason.trim() ? { reason: reason.trim() } : {},
       });
-      pushNotification(getContent(reservation.total || side === "doctor" ? "cancelledRefunded" : "bfCancelled"), "Success");
+      pushNotification(getContent(side === "doctor" ? "cancelledRefunded" : reservation.total ? "bfCancelledRefundedYou" : "bfCancelled"), "Success");
       closePopup();
       onDone();
     } catch (err) {
@@ -142,7 +142,7 @@ const ReservationCancel = ({
   if (reservation.status === "cancelled")
     return (
       <p className={classes.done}>
-        {getContent(reservation.total || side === "doctor" ? "cancelledRefunded" : "bfCancelled")}
+        {getContent(side === "doctor" ? "cancelledRefunded" : reservation.total ? "bfCancelledRefundedYou" : "bfCancelled")}
       </p>
     );
   if (reservation.status !== "pending") return null;
@@ -160,7 +160,7 @@ const ReservationCancel = ({
     <Button
       variant="Error"
       mode="Outline"
-      size="S"
+      size="M"
       onClick={() =>
         setPopup(
           "CancelReservation",

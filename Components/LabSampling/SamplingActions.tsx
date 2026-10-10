@@ -90,7 +90,7 @@ const SamplingActions = ({
   };
 
   return (
-    <div className={classes.body}>
+    <div className={classes.inline}>
       {buyerProposal && (
         <BuyerProposalCard info={info} walletBalance={walletBalance} onAnswer={onAnswerProposal!} />
       )}
@@ -105,7 +105,7 @@ const SamplingActions = ({
       <div className={classes.actions}>
         {info.canMove && (
           <Button
-            size="S"
+            size="M"
             mode="Outline"
             radius="Medium"
             onClick={() =>
@@ -128,7 +128,7 @@ const SamplingActions = ({
         )}
         {canPropose && (
           <Button
-            size="S"
+            size="M"
             mode="Outline"
             radius="Medium"
             onClick={() =>
@@ -143,7 +143,7 @@ const SamplingActions = ({
         )}
         {canCancel && (
           <Button
-            size="S"
+            size="M"
             mode="Outline"
             variant="Error"
             radius="Medium"

@@ -17,10 +17,22 @@ const FailPayment = ({ payment }: { payment: IGatewayPayment }) => {
   const getContent = useScopedLocale(NS);
   const push = useProgress();
 
+  // the checkout it came from, without its "came back topped up" flag
+  // (a booking's ?resume=1 said «the top-up is in your wallet» after a
+  // failed payment)
+  const withoutResume = (path: string) => {
+    const [base, query = ""] = path.split("?");
+    const q = new URLSearchParams(query);
+    q.delete("resume");
+    const rest = q.toString();
+    return rest ? `${base}?${rest}` : base;
+  };
   const retryHref =
     payment.purpose === "order"
       ? "/cart"
-      : payment.returnPath || "/dashboard/transaction";
+      : payment.returnPath
+        ? withoutResume(payment.returnPath)
+        : "/dashboard/transaction";
 
   return (
     <div className={classes.main}>
@@ -35,7 +47,7 @@ const FailPayment = ({ payment }: { payment: IGatewayPayment }) => {
           ? getContent("paymentCanceledByUser")
           : getContent("paymentFailedText")}
       </p>
-      <p className={classes.message}>{getContent("paymentRefundNote")}</p>
+      {/* the refund note is already in the headline (paymentFailedMessage) */}
       <Button className={classes.action} onClick={() => push(retryHref)}>
         {getContent("tryAgain")}
       </Button>

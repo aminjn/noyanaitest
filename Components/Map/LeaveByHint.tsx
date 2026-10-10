@@ -3,13 +3,14 @@ import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import classes from "./LeaveByHint.module.css";
 import Ixon from "../UI/Ixon";
+import Link from "@/Components/i18n/Link";
 import ClockIcon from "../Icons/ClockIcon";
 import WarningIcon from "../Icons/WarningIcon";
 import SendIcon from "../Icons/SendIcon";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import { tsmMedium, txsMedium, txsRegular } from "../UI/Typography";
-import { navigationUrl } from "../helpers/navigationUrl";
+import useNavigationUrl from "../Hooks/useNavigationUrl";
 import { getMapConfig, LatLng, placeInfo, route, toLatLng, trafficZones } from "./nexamap";
 import { useTravelText, useUserLocation } from "./mapHooks";
 import { sameTehranDay, tehranInstantOf, tehranMinutesOfDay, tehranWeekday } from "@/Components/helpers/tehranTime";
@@ -132,8 +133,8 @@ const LeaveByHint = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me.status, upcoming, office, enabled]);
 
+  const { href: navUrl } = useNavigationUrl(coords || undefined);
   if (!office || !upcoming || !enabled) return null;
-  const navUrl = navigationUrl(coords || undefined);
   const late = !!leave && leave.at.getTime() < Date.now();
 
   return (
@@ -180,16 +181,14 @@ const LeaveByHint = ({
         </div>
       )}
       {!!navUrl && (
-        <button
-          type="button"
-          className={`${classes.link} ${txsMedium}`}
-          onClick={() => window.open(navUrl, "_blank", "noopener")}
-        >
+        // a link in the same tab, in the reader's language: a new window
+        // is blocked by in-app browsers (the tap did nothing there)
+        <Link href={navUrl} className={`${classes.link} ${txsMedium}`}>
           <Ixon width="1rem">
             <SendIcon />
           </Ixon>
           {getContent("mapOpenInNavApp")}
-        </button>
+        </Link>
       )}
     </div>
   );

@@ -166,3 +166,44 @@
   display: flex;
   margin-block-start: 0.25rem;
 }
+
+/* the hero follows the order's state */
+.icon_cancelled,
+.legend_cancelled {
+  color: var(--error);
+}
+
+.icon_pending,
+.legend_pending {
+  color: var(--warning, var(--gray10));
+}
+
+.orderCode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.04em;
+  color: var(--gray12);
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.resultFiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resultFile {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.75rem;
+  padding-inline: 0.875rem;
+  border: 1px solid var(--primary);
+  border-radius: 0.75rem;
+  color: var(--primary);
+  text-decoration: none;
+}

@@ -29,11 +29,11 @@ const TestItem = ({
   orderable: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
-  const { cart, mutateCartItem, removeCartItem } = useCart();
+  const { cart, mutateCartItem, removeCartItem, isLoading } = useCart();
 
   const inCart = useMemo<boolean>(
-    () => !!cart?.tests.find((el) => el.item._id === node._id)?.qty,
-    [cart?.tests, node._id],
+    () => !!(Array.isArray(cart?.tests) ? cart!.tests : []).find((el) => el?.item?._id === node._id)?.qty,
+    [cart, node._id],
   );
 
   return (
@@ -73,6 +73,7 @@ const TestItem = ({
           mode="Fill"
           radius="High"
           size="M"
+          isLoading={isLoading}
           onClick={() =>
             inCart
               ? removeCartItem({ item: node._id, model: "tests" })

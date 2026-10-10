@@ -15,8 +15,12 @@ const PopupContext = createContext<{
   popups: PopupMap;
   setPopup: SetPopup;
   closePopup: ClosePopup;
+  // closes only the popup on top (a popup's own X): a nested popup (add an
+  // address from the checkout) must not take its parent with it
+  closeTopPopup: () => void;
 }>({
   closePopup: () => {},
+  closeTopPopup: () => {},
   popups: {},
   setPopup: () => {},
 });
@@ -33,6 +37,15 @@ export const PopupContextProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setPopups({});
     }
+  }, []);
+
+  const closeTopPopup = useCallback(() => {
+    setPopups((prev) => {
+      const keys = Object.keys(prev);
+      if (!keys.length) return prev;
+      const { [keys[keys.length - 1]]: _, ...rest } = prev;
+      return rest;
+    });
   }, []);
 
   const setPopup = useCallback((key: string, popup: ReactNode) => {
@@ -58,6 +71,7 @@ export const PopupContextProvider = ({ children }: { children: ReactNode }) => {
         popups,
         setPopup,
         closePopup,
+        closeTopPopup,
       }}
     >
       {children}

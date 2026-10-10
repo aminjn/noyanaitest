@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import classes from "./PwaInstallPrompt.module.css";
 import usePwaInstall, {
   closeInstallSheet,
@@ -22,6 +23,16 @@ const VISIT_SESSION_KEY = "noyan-visit-counted";
 const DISMISSED_KEY = "noyan-pwa-dismissed";
 const DISMISS_DAYS = 14;
 const SHOW_DELAY_MS = 3500;
+
+// focused flows the sheet never interrupts on its own (booking, checkout,
+// payment, a call, directions): it covered the booking sheet and the
+// finalize form on a phone. Doctolib / Zocdoc keep their app banner off
+// the booking funnel too. Any language prefix is skipped first.
+const FOCUSED_FLOW =
+  /^\/(?:[a-z]{2}\/)?(?:book|dr|payment|cart|call|newCall|order|map\/route|dashboard\/booking)(?:\/|$)/;
+// a modal (booking sheet, popup) is open: the sheet waits for another page
+const modalOpen = () =>
+  !!document.querySelector('[role="dialog"][aria-modal="true"]');
 
 // storage may be blocked (private mode, previews): every access is guarded
 const read = (store: () => Storage, key: string) => {
@@ -76,6 +87,7 @@ const PwaInstallPrompt = () => {
   const getContent = useScopedLocale(LOCALE_NS);
   const { user } = useUser();
   const { ready, canPrompt, isIos, isStandalone, sheet } = usePwaInstall();
+  const pathname = usePathname() || "/";
   const shownOnce = useRef(false);
   const visits = useRef(0);
 
@@ -102,12 +114,14 @@ const PwaInstallPrompt = () => {
     if (!canPrompt && !isIos) return;
     if (dismissedRecently()) return;
     if (visits.current < 2 && !user) return;
+    if (FOCUSED_FLOW.test(pathname)) return;
     const timer = setTimeout(() => {
+      if (modalOpen()) return;
       shownOnce.current = true;
       openInstallSheet();
     }, SHOW_DELAY_MS);
     return () => clearTimeout(timer);
-  }, [ready, canPrompt, isIos, isStandalone, user, sheet]);
+  }, [ready, canPrompt, isIos, isStandalone, user, sheet, pathname]);
 
   useEffect(() => {
     if (!sheet) return;

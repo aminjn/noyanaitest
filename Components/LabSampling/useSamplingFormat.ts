@@ -15,6 +15,14 @@ const useSamplingFormat = () => {
     [intl],
   );
   const weekdayFmt = useMemo(() => tehranDateFormat(intl, { weekday: "long" }), [intl]);
+  // ICU's Persian pattern for a weekday with a full date comes out as
+  // "۱۴۰۵ مهر ۱۹, یکشنبه" (year first, a Latin comma): Persian gets
+  // "یکشنبه، ۱۹ مهر ۱۴۰۵", built from the weekday and the plain date
+  const persian = String(intl || "").toLowerCase().startsWith("fa");
+  const plainDateFmt = useMemo(
+    () => tehranDateFormat(intl, { day: "numeric", month: "long", year: "numeric" }),
+    [intl],
+  );
   const timeFmt = useMemo(
     () => tehranDateFormat(intl, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }),
     [intl],
@@ -27,7 +35,15 @@ const useSamplingFormat = () => {
     }
   };
   const day = useCallback((ymd: string) => safe(() => dayFmt.format(tehranNoon(ymd))), [dayFmt]);
-  const longDay = useCallback((ymd: string) => safe(() => longDayFmt.format(tehranNoon(ymd))), [longDayFmt]);
+  const longDay = useCallback(
+    (ymd: string) =>
+      safe(() =>
+        persian
+          ? `${weekdayFmt.format(tehranNoon(ymd))}، ${plainDateFmt.format(tehranNoon(ymd))}`
+          : longDayFmt.format(tehranNoon(ymd)),
+      ),
+    [longDayFmt, persian, weekdayFmt, plainDateFmt],
+  );
   const time = useCallback(
     (ymd: string, minutes: number) => safe(() => timeFmt.format(fromTehranWallClock(ymd, minutes))),
     [timeFmt],

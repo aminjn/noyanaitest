@@ -7,9 +7,12 @@ import {
   IProductSeller,
   ProductSellerPopulation,
 } from "../Admin/Product/AdminManageProductsPage";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { fetcher } from "../helpers/fetcher";
 import useNotification from "./useNotification";
+import usePopup from "./usePopup";
+import AuthPopup from "../Popups/AuthPopup";
+import useLocale from "./useLocale";
 import {
   IProductPackage,
   ProductPackagePopulation,
@@ -99,8 +102,23 @@ export type UseCartNode = ICart<{
 }>;
 
 const useCart = () => {
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const pushNotification = useNotification();
+  const { setPopup } = usePopup();
+  const getContent = useLocale();
+  // a visitor who taps "add" is asked to log in, never left with a tap that
+  // does nothing (the request would only be refused)
+  const askLogin = useCallback(() => setPopup("Auth", <AuthPopup />), [setPopup]);
+  const showError = useCallback(
+    (err: unknown) => {
+      const message = (err as { message?: unknown } | undefined)?.message;
+      pushNotification(
+        typeof message === "string" && message ? message : getContent("unexpectedErrorOccured"),
+        "Error",
+      );
+    },
+    [pushNotification, getContent],
+  );
 
   const {
     data: cart,
@@ -128,15 +146,34 @@ const useCart = () => {
           ?.delivery?.message;
         if (typeof hint === "string" && hint) pushNotification(hint, "Warn");
       },
+      onError: showError,
+      throwOnError: false,
     },
   );
 
+  // a second tap before the first answer (slow network) is ignored at once:
+  // `isMutating` only flips on the next render
+  const busy = useRef(false);
+  const [syncing, setSyncing] = useState(false);
   const mutateCartItem = useCallback(
     (payload: MutateCartItemPayload) => {
-      if (isMutating) return;
-      _mutateCartItem(payload);
+      if (isMutating || busy.current) return;
+      if (!user) {
+        if (!isUserLoading) askLogin();
+        return;
+      }
+      busy.current = true;
+      setSyncing(true);
+      // busy until the cart is read again: on a slow line the button would
+      // otherwise read "add" again between the answer and the new cart
+      Promise.resolve(_mutateCartItem(payload))
+        .then(() => mutate())
+        .finally(() => {
+          busy.current = false;
+          setSyncing(false);
+        });
     },
-    [_mutateCartItem, isMutating],
+    [_mutateCartItem, isMutating, user, isUserLoading, askLogin],
   );
 
   const { trigger: _removeCartItem, isMutating: isRemoving } = useSWRMutation<
@@ -152,13 +189,23 @@ const useCart = () => {
         mutate();
         globalMutate(`${API}/cart/size`);
       },
+      onError: showError,
+      throwOnError: false,
     },
   );
 
+  const removing = useRef(false);
   const removeCartItem = useCallback(
     (payload: RemoveCartItemPayload) => {
-      if (isRemoving) return;
-      _removeCartItem(payload);
+      if (isRemoving || removing.current) return;
+      removing.current = true;
+      setSyncing(true);
+      Promise.resolve(_removeCartItem(payload))
+        .then(() => mutate())
+        .finally(() => {
+          removing.current = false;
+          setSyncing(false);
+        });
     },
     [_removeCartItem, isRemoving],
   );
@@ -171,26 +218,30 @@ const useCart = () => {
         mutate();
         globalMutate(`${API}/cart/size`);
       },
+      onError: showError,
+      throwOnError: false,
     },
   );
 
   const getItemQty = useCallback(
     ({ itemId, model }: { itemId: string; model: CartModel }) =>
-      cart?.[model].find((el) => el.item._id === itemId)?.qty || 0,
+      (Array.isArray(cart?.[model]) ? cart![model] : []).find((el) => el?.item?._id === itemId)?.qty || 0,
     [cart],
   );
 
   return {
     cart,
     isCartLoading: isLoading,
-    isMutating,
-    isRemoving,
+    isMutating: isMutating || syncing,
+    isRemoving: isRemoving || syncing,
     isClearing,
-    isLoading: isLoading || isMutating || isRemoving || isClearing,
+    isLoading: isLoading || isMutating || isRemoving || isClearing || syncing,
     mutateCartItem,
     removeCartItem,
     clearCart,
     getItemQty,
+    // re-read the cart (e.g. after removing several lines in one go)
+    refreshCart: mutate,
   };
 };
 

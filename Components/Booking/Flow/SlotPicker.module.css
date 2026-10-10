@@ -55,6 +55,8 @@
 /* day strip */
 .stripWrap {
   position: relative;
+  /* below a sticky page header when scrolled to */
+  scroll-margin-block-start: var(--sp2);
   display: flex;
   align-items: center;
   gap: var(--sp1);
@@ -109,9 +111,10 @@
   display: grid;
   justify-items: center;
   gap: 1px;
-  width: 3.75rem;
+  /* grows for a long name («Tomorrow», «Morgen») */
+  min-width: 3.75rem;
   min-height: 4.75rem;
-  padding: var(--sp2) var(--sp1) var(--sp1);
+  padding: var(--sp2) var(--sp2) var(--sp1);
   border-radius: var(--radiusSm);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
@@ -358,4 +361,16 @@
   color: var(--textMuted);
   font-weight: 600;
   font-size: var(--fsXs);
+}
+
+/* the tapped time while the next step opens */
+.slotBusy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp1);
+}
+.spin {
+  margin-inline-start: auto;
+  color: var(--primary6);
 }

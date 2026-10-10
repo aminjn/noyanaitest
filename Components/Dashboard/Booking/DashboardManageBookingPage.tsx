@@ -62,7 +62,7 @@ const DashboardManageBookingPage = () => {
             <Button
               href="/dashboard/booking"
               mode="Inline"
-              size="S"
+              size="M"
               leadIcon={<ArrowLeftIcon />}
             >
               {getContent("backToList")}
@@ -114,7 +114,7 @@ const DashboardManageBookingPage = () => {
                   {getContent("sessionStart")}
                 </span>
                 <span className={classes.infoValue}>
-                  {numberToTime(data.start)} - {numberToTime(data.end)}
+                  {numberToTime(data.start)}
                 </span>
               </div>
 

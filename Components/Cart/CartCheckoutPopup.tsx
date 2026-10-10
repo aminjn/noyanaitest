@@ -2,7 +2,8 @@
 import ProUpsellCard from "../Pro/ProUpsellCard";
 import { useListSeparator } from "@/Components/i18n/navigation";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import WalletShortfallTopUp from "../Payment/WalletShortfallTopUp";
 import useSWR, { mutate as globalMutate } from "swr";
 import classes from "./CartCheckoutPopup.module.css";
 import PopupCard from "../UI/PopupCard";
@@ -131,8 +132,8 @@ const CartCheckoutPopup = ({
 
   const [address, setAddress] = useState<string | null>(null);
   // the chosen address decides the courier, so the summary follows it
-  const { data: summary } = useSWR<CartSummary>(
-    `${API}/cart/summary${address ? `?address=${address}` : ""}`,
+  const { data: summary, error: summaryError } = useSWR<CartSummary>(
+    `${API}/cart/summary${address && requiresAddress ? `?address=${address}` : ""}`,
     // fetcher already returns the response body, so `.data` is the summary
     // itself - this used to read `.data.data` (always undefined), which
     // silently fell back to the pre-tax subtotal as the "total".
@@ -148,15 +149,27 @@ const CartCheckoutPopup = ({
 
   // preselect the newest saved address (usually the only one) so the buyer
   // does not have to tap it every time
+  // - the newest one with a city (an address without one can't get the
+  // same-city courier nor a prescription item), else simply the newest
   useEffect(() => {
     if (!Array.isArray(addresses) || !addresses.length) return;
-    if (!address || !addresses.some((a) => a._id === address))
-      setAddress(addresses[addresses.length - 1]._id);
+    if (!address || !addresses.some((a) => a._id === address)) {
+      const withCity = [...addresses].reverse().find((a) => !!a?.city);
+      setAddress((withCity || addresses[addresses.length - 1])._id);
+    }
   }, [addresses, address]);
   const selectedAddress = Array.isArray(addresses)
     ? addresses.find((a) => a._id === address)
     : undefined;
   const [method, setMethod] = useState<OrderPaymentMethod>("wallet");
+  // the buyer's own choice wins; until then a wallet that can't cover the
+  // order starts on the online gateway (Digikala / Snapp: the method that
+  // can actually pay is the one preselected)
+  const methodPicked = useRef(false);
+  const pickMethod = (m: OrderPaymentMethod) => {
+    methodPicked.current = true;
+    setMethod(m);
+  };
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rxDraft, setRxDraft] = useState<RxDraft>(emptyRxDraft);
   // sampling: one appointment per lab; a home visit adds its fee
@@ -169,10 +182,19 @@ const CartCheckoutPopup = ({
   // the pharmacy's delivery area refuses a shipment (2026-10)
   const deliveryProblemText = useDeliveryProblemText();
   const deliveryBlocked = Array.isArray(summary?.undeliverable) && summary.undeliverable.length > 0;
+  const grandTotal = (summary ? summary.total : total) + samplingFee;
+  const walletShort = !!wallet && Number(wallet.balance || 0) < grandTotal;
+  useEffect(() => {
+    if (methodPicked.current || !summary || !wallet) return;
+    setMethod(walletShort && paymentConfig?.sepEnabled ? "sep" : "wallet");
+  }, [walletShort, summary, wallet, paymentConfig?.sepEnabled]);
 
   return (
     <PopupCard title={getContent("confirmAndPayOrder")}>
       <div className={classes.main}>
+        {/* a delivery address only for goods that ship (a lab-only cart
+            picks its home-sampling address in the sampling section) */}
+        {requiresAddress && (
         <div className={classes.section}>
           <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
             {getContent("selectDeliveryAddress")}
@@ -231,50 +253,26 @@ const CartCheckoutPopup = ({
             {getContent("addNewAddress")}
           </Button>
         </div>
-        {/* delivery area (2026-10): what can't go to this address */}
-        <CartDeliveryProblems problems={summary?.undeliverable} />
-        {needsRx && <CartPrescriptionSection value={rxDraft} onChange={setRxDraft} />}
-        {!!samplingGroups.length && (
-          <CartSamplingSection
-            groups={samplingGroups}
-            addresses={addresses}
-            value={samplingDrafts}
-            onChange={setSamplingDrafts}
-          />
         )}
-        <div className={classes.section}>
-          <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
-            {getContent("paymentMethod")}
-          </span>
-          <div className={classes.methods}>
-            {checkoutMethods.map((m) => (
-              <div
-                key={m}
-                className={`${classes.method} ${method === m ? classes.activeMethod : ""}`}
-                onClick={() => setMethod(m)}
-              >
-                <div className={classes.methodIcon}>
-                  <Ixon width="1.5rem">{methodIcons[m]}</Ixon>
-                </div>
-                <span className={`${classes.methodName} ${tsmRegular}`}>
-                  {getContent(m)}
-                </span>
-                <div className={classes.methodTail}>
-                  {m === "wallet" && !!wallet && (
-                    <span className={`${classes.balance} ${t2xsRegular}`}>
-                      {`${getContent("balance")}: ${currencize(wallet.balance)} ${getContent("toman")}`}
-                    </span>
-                  )}
-                  <div className={classes.methodCheck}>
-                    <Ixon width="1rem">
-                      <CheckIcon />
-                    </Ixon>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* delivery area (2026-10): what can't go to this address */}
+        <div id="checkout-delivery">
+          <CartDeliveryProblems problems={summary?.undeliverable} />
         </div>
+        {needsRx && (
+          <div id="checkout-rx">
+            <CartPrescriptionSection value={rxDraft} onChange={setRxDraft} />
+          </div>
+        )}
+        {!!samplingGroups.length && (
+          <div id="checkout-sampling">
+            <CartSamplingSection
+              groups={samplingGroups}
+              addresses={addresses}
+              value={samplingDrafts}
+              onChange={setSamplingDrafts}
+            />
+          </div>
+        )}
         {!!summary?.shipments?.length && (
           <div className={classes.section}>
             <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
@@ -325,6 +323,47 @@ const CartCheckoutPopup = ({
             )}
           </div>
         )}
+        <div className={classes.section}>
+          <span className={`${classes.sectionTitle} ${tsmDemiBold}`}>
+            {getContent("paymentMethod")}
+          </span>
+          <div className={classes.methods}>
+            {checkoutMethods.map((m) => (
+              <div
+                key={m}
+                className={`${classes.method} ${method === m ? classes.activeMethod : ""}`}
+                onClick={() => pickMethod(m)}
+              >
+                <div className={classes.methodIcon}>
+                  <Ixon width="1.5rem">{methodIcons[m]}</Ixon>
+                </div>
+                <span className={`${classes.methodName} ${tsmRegular}`}>
+                  {getContent(m)}
+                </span>
+                <div className={classes.methodTail}>
+                  {m === "wallet" && !!wallet && (
+                    <span className={`${classes.balance} ${t2xsRegular}`}>
+                      {`${getContent("balance")}: ${currencize(wallet.balance)} ${getContent("toman")}`}
+                    </span>
+                  )}
+                  <div className={classes.methodCheck}>
+                    <Ixon width="1rem">
+                      <CheckIcon />
+                    </Ixon>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {method === "wallet" && walletShort && (
+            <>
+              <span className={`${classes.warn} ${t2xsRegular}`}>
+                {getContent(checkoutMethods.includes("sep") ? "cartWalletNotEnoughOnline" : "cartWalletNotEnough")}
+              </span>
+              <WalletShortfallTopUp balance={Number(wallet?.balance || 0)} total={grandTotal} />
+            </>
+          )}
+        </div>
         <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("subtotal")}</span>
           <span className={tsmRegular}>
@@ -372,9 +411,16 @@ const CartCheckoutPopup = ({
         <div className={classes.totalRow}>
           <span className={tsmRegular}>{getContent("totalPrice")}</span>
           <span className={`${classes.totalPrice} ${tbaseDemiBold}`}>
-            {`${currencize((summary ? summary.total : total) + samplingFee)} ${getContent("toman")}`}
+            {`${currencize(grandTotal)} ${getContent("toman")}`}
           </span>
         </div>
+        {/* the server refused the cart (an item became unavailable): say so
+            here, next to the button, not only after a tap */}
+        {!!summaryError && (
+          <span className={`${classes.warn} ${t2xsRegular}`} role="alert">
+            {(summaryError as Error)?.message}
+          </span>
+        )}
         <Button
           variant="Primary"
           mode="Fill"
@@ -383,20 +429,35 @@ const CartCheckoutPopup = ({
           isLoading={isSubmitting}
           onClick={() => {
             if (isSubmitting) return;
+            // the toast says what is missing; the section itself is
+            // brought into view (on a phone it is usually scrolled away)
+            const reveal = (id: string) =>
+              document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
             if (requiresAddress && !address) {
               pushNotification(getContent("selectAddressFirst"), "Warn");
+              reveal("checkout-address");
               return;
             }
             if (deliveryBlocked) {
               pushNotification(deliveryProblemText(summary!.undeliverable![0]), "Warn");
+              reveal("checkout-delivery");
               return;
             }
             if (needsRx && !rxPayload) {
               pushNotification(getContent("rxMissing"), "Warn");
+              reveal("checkout-rx");
               return;
             }
             if (samplingGroups.length && !samplingPayload) {
               pushNotification(getContent("lsChooseTime"), "Warn");
+              reveal("checkout-sampling");
+              return;
+            }
+            if (method === "wallet" && walletShort) {
+              pushNotification(
+                getContent(checkoutMethods.includes("sep") ? "cartWalletNotEnoughOnline" : "cartWalletNotEnough"),
+                "Warn",
+              );
               return;
             }
             setIsSubmitting(true);
@@ -410,7 +471,7 @@ const CartCheckoutPopup = ({
         method="POST"
         payload={{
           method,
-          address: address || undefined,
+          address: (requiresAddress && address) || undefined,
           ...(rxPayload ? { prescription: rxPayload } : {}),
           ...(samplingPayload?.length ? { samplings: samplingPayload } : {}),
         }}
@@ -429,6 +490,11 @@ const CartCheckoutPopup = ({
             // a sampling slot may have just filled up: show the seats again
             globalMutate(
               (key) => typeof key === "string" && key.startsWith(`${API}/cart/sampling/`),
+            );
+            // an item may have just gone out of stock: the cart page marks it
+            globalMutate(`${API}/cart`);
+            globalMutate(
+              (key) => typeof key === "string" && key.startsWith(`${API}/cart/summary`),
             );
             return;
           }
