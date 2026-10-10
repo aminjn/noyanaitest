@@ -251,6 +251,25 @@
   display: none;
 }
 
+/* laptops (1312-1520px): the full menu only fits tighter; without this it
+   spilled over the search button at 1366px */
+@media (max-width: 95rem) {
+  .inner {
+    gap: 0.5rem;
+  }
+
+  .link {
+    padding-inline: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .accent,
+  .accent:hover {
+    margin-inline-start: 0.25rem;
+    padding-inline: 0.75rem;
+  }
+}
+
 @media (max-width: 82rem) {
   .nav {
     display: none;
