@@ -1,0 +1,54 @@
+.hint,
+.popupHint {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--gray10);
+}
+
+.years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-end: 0.75rem;
+}
+
+.year {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border-radius: 999px;
+  border: 1px solid var(--glassLine);
+  background: var(--glass);
+  color: var(--gray11);
+  font-size: 0.875rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.year span {
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--gray3, rgba(0, 0, 0, 0.06));
+  font-size: 0.75rem;
+}
+
+.yearOn {
+  background: var(--primary1);
+  border-color: var(--primary5);
+  color: var(--primary8);
+}
+
+.past {
+  color: var(--gray9);
+}
+
+.empty {
+  padding: 1rem;
+  border: 1px dashed var(--glassLine);
+  border-radius: var(--radiusSm);
+  color: var(--gray10);
+  text-align: start;
+}

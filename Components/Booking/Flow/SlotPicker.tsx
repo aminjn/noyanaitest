@@ -92,6 +92,12 @@ const SlotPicker = ({
     return map;
   }, [data?.days, strip]);
 
+  // the official holidays of the horizon (closed: no visits that day)
+  const holidayOf = useMemo(
+    () => new Map((data?.holidays || []).map((h) => [h.ymd, h])),
+    [data?.holidays],
+  );
+
   const firstFree = useMemo(() => strip.find((ymd) => (freeOf.get(ymd) || []).length), [freeOf, strip]);
   const [day, setDay] = useState<string | null>(value?.ymd || initialDay || null);
   // the day opens on the picked slot, else the first free day
@@ -224,6 +230,8 @@ const SlotPicker = ({
           {strip.map((ymd) => {
             const count = (freeOf.get(ymd) || []).length;
             const on = ymd === day;
+            const holiday = holidayOf.get(ymd);
+            const closedHoliday = !!holiday?.closed;
             return (
               <button
                 key={ymd}
@@ -232,13 +240,24 @@ const SlotPicker = ({
                 aria-selected={on}
                 data-on={on}
                 disabled={!count}
-                className={`${classes.day} ${on ? classes.dayOn : ""}`}
-                aria-label={`${longDay(ymd)}: ${count ? getContent("bfFreeCount", [nf.format(count)]) : getContent("bfNoSlotsDay")}`}
+                className={`${classes.day} ${on ? classes.dayOn : ""} ${closedHoliday ? classes.dayHoliday : ""}`}
+                title={holiday ? getContent("holDayLabel", [holiday.title]) : undefined}
+                aria-label={`${longDay(ymd)}: ${
+                  closedHoliday
+                    ? getContent("holDayLabel", [holiday?.title || ""])
+                    : count
+                      ? getContent("bfFreeCount", [nf.format(count)])
+                      : getContent("bfNoSlotsDay")
+                }`}
                 onClick={() => setDay(ymd)}
               >
                 <span className={classes.dayName}>{dayLabel(ymd)}</span>
                 <span className={classes.dayNum}>{fmt.day.format(tehranNoon(ymd))}</span>
-                <span className={classes.dayMonth}>{fmt.month.format(tehranNoon(ymd))}</span>
+                {closedHoliday ? (
+                  <span className={classes.dayHolidayTag}>{getContent("bfHolidayShort")}</span>
+                ) : (
+                  <span className={classes.dayMonth}>{fmt.month.format(tehranNoon(ymd))}</span>
+                )}
                 <span className={classes.dayDot} aria-hidden />
               </button>
             );
@@ -260,6 +279,11 @@ const SlotPicker = ({
       {!!day && (
         <div className={classes.dayHead}>
           <strong>{longDay(day)}</strong>
+          {!!holidayOf.get(day) && (
+            <span className={`${classes.holidayLine} ${holidayOf.get(day)?.closed ? "" : classes.holidayLineOpen}`}>
+              {getContent("holDayLabel", [holidayOf.get(day)?.title || ""])}
+            </span>
+          )}
           {!!free.length && <span className={classes.freeCount}>{getContent("bfFreeCount", [nf.format(free.length)])}</span>}
           <TehranTimeHint ns={NS} className={classes.hintRow} />
         </div>
@@ -304,7 +328,7 @@ const SlotPicker = ({
         ))
       ) : (
         <div className={classes.state}>
-          <p>{getContent("bfNoSlotsDay")}</p>
+          <p>{day && holidayOf.get(day)?.closed ? getContent("bfHolidayClosedText") : getContent("bfNoSlotsDay")}</p>
           {!!nextAfter && (
             <button type="button" className={classes.nextBtn} onClick={() => setDay(nextAfter)}>
               <span>{getContent("bfNextFree", [longDay(nextAfter)])}</span>

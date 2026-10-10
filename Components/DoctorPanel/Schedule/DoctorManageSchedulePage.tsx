@@ -30,6 +30,8 @@ import VisitQuickActions, { visitActions } from "../Desk/VisitQuickActions";
 import PlusIcon from "@/Components/Icons/PlusIcon";
 import ClockIcon from "@/Components/Icons/ClockIcon";
 import { formatPhone } from "../Desk/deskShared";
+import useDoctorHolidays from "../Holidays/useDoctorHolidays";
+import { HolidayAgendaNotice, HolidayDayMark } from "../Holidays/HolidayAgenda";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelSchedule"];
 
@@ -94,6 +96,12 @@ const DoctorManageSchedulePage = () => {
   }>(`${API}/doctor/schedule`, (url: string) => fetcher({ url }).then((res) => res.data));
   const { setPopup } = usePopup();
   const hasAccess = useDoctorAcl();
+  // the official holidays of the booking horizon (marked on their days)
+  const { data: holidayData } = useDoctorHolidays(hasAccess("readShifts"));
+  const holidayOf = useMemo(
+    () => new Map((holidayData?.holidays || []).map((h) => [h.ymd, h])),
+    [holidayData],
+  );
 
   const getContent = useScopedLocale(NS);
   const [tab, setTab] = useState<Tab>("upcoming");
@@ -347,6 +355,10 @@ const DoctorManageSchedulePage = () => {
             </section>
           )}
 
+          {(tab === "today" || tab === "upcoming") && !filter && (
+            <HolidayAgendaNotice holidays={holidayData?.holidays || []} manage={hasAccess("readShifts")} />
+          )}
+
           <AssistantStrip
             title={getContent("schAssistant")}
             clearLabel={getContent("schClearFilter")}
@@ -386,6 +398,7 @@ const DoctorManageSchedulePage = () => {
               <div className={classes.dayHead}>
                 <span className={`${classes.dayName} ${day.isToday ? classes.today : ""}`}>{day.weekday}</span>
                 <span className={classes.dayDate}>{day.date}</span>
+                <HolidayDayMark holiday={holidayOf.get(day.key)} />
                 {!!waitByDay[day.key] && (
                   <span className={classes.waitChip}>{getContent("schWaitlist", [num.format(waitByDay[day.key])])}</span>
                 )}

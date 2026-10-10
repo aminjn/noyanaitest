@@ -3423,5 +3423,14 @@
  "یادآوری تمدید دارو": "Refill reminder",
  "پیگیری پس از جواب آزمایش": "Follow-up after the result",
  "یادآوری آزمایش دوره‌ای": "Periodic re-test reminder",
- "یادآوری تمدید بیمه": "Renewal reminder"
+ "یادآوری تمدید بیمه": "Renewal reminder",
+ "برای این سال تعطیلی ثبت نشده است.": "No holiday is set for this year.",
+ "تعطیل رسمی جدید": "New official holiday",
+ "تعطیلات رسمی": "Official holidays",
+ "خورشیدی (ثابت)": "Solar (fixed)",
+ "سال": "Year",
+ "قمری": "Lunar",
+ "ویرایش تعطیل رسمی": "Edit official holiday",
+ "یک روز تقویم تهران؛ برای روزی با دو مناسبت، هر دو را در عنوان بنویسید.": "One Tehran calendar day; for a day with two occasions, put both in the title.",
+ "پزشک در روز تعطیل رسمی فعال نوبت نمی‌دهد، مگر خودش «ویزیت دارم» را انتخاب کند. تعطیلات قمری هر سال را پس از انتشار تقویم رسمی (مؤسسه ژئوفیزیک دانشگاه تهران) اضافه کنید.": "Doctors take no appointments on an active official holiday unless they choose “I have visits”. Add each year's lunar holidays once the official calendar (University of Tehran Geophysics Institute) is published."
 }

@@ -3423,5 +3423,14 @@
  "یادآوری تمدید دارو": "İlaç yenileme hatırlatması",
  "پیگیری پس از جواب آزمایش": "Sonuç sonrası takip",
  "یادآوری آزمایش دوره‌ای": "Periyodik test hatırlatması",
- "یادآوری تمدید بیمه": "Sigorta yenileme hatırlatması"
+ "یادآوری تمدید بیمه": "Sigorta yenileme hatırlatması",
+ "برای این سال تعطیلی ثبت نشده است.": "Bu yıl için kayıtlı tatil yok.",
+ "تعطیل رسمی جدید": "Yeni resmi tatil",
+ "تعطیلات رسمی": "Resmi tatiller",
+ "خورشیدی (ثابت)": "Güneş takvimi (sabit)",
+ "سال": "Yıl",
+ "قمری": "Ay takvimi",
+ "ویرایش تعطیل رسمی": "Resmi tatili düzenle",
+ "یک روز تقویم تهران؛ برای روزی با دو مناسبت، هر دو را در عنوان بنویسید.": "Tahran takviminde bir gün; iki vesileli bir gün için ikisini de başlığa yazın.",
+ "پزشک در روز تعطیل رسمی فعال نوبت نمی‌دهد، مگر خودش «ویزیت دارم» را انتخاب کند. تعطیلات قمری هر سال را پس از انتشار تقویم رسمی (مؤسسه ژئوفیزیک دانشگاه تهران) اضافه کنید.": "Doktor, «Muayenem var» seçmedikçe etkin resmi tatilde randevu vermez. Her yılın ay takvimi tatillerini resmi takvim (Tahran Üniversitesi Jeofizik Enstitüsü) yayımlandıktan sonra ekleyin."
 }
