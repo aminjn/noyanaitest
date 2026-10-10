@@ -139,8 +139,8 @@ const PublicHeader = () => {
 
   const [openModel, setOpenModel] = useState<Modal | null>(null);
 
-  // the page scrolls inside <body>, so watch a sentinel instead of window
-  // scroll events: the bar gets its shadow once the page leaves the top
+  // a sentinel at the top instead of a scroll listener: the bar gets its
+  // glass once the page leaves the top
   const sentinelRef = useRef<HTMLSpanElement>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   useEffect(() => {
@@ -221,8 +221,13 @@ const PublicHeader = () => {
                   close={() => setOpenModel(null)}
                 />
               </span>
-              <ThemeToggle compact className={classes.theme} />
-              <LanguageSwitcher />
+              {/* phones: these two live in the burger menu */}
+              <span className={classes.wideOnly}>
+                <ThemeToggle compact />
+              </span>
+              <span className={classes.wideOnly}>
+                <LanguageSwitcher />
+              </span>
               <UserButton />
             </div>
             {!!openModel && (

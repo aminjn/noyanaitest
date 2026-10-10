@@ -23,6 +23,7 @@ import {
   OrderItemStatus,
 } from "@/Components/Dashboard/Order/orderItemStatus";
 import OrderLineDeadline from "@/Components/Dashboard/Order/OrderLineDeadline";
+import type { ISellerOrderMoney } from "@/Components/Order/SellerOrderMoney";
 
 const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
@@ -47,6 +48,9 @@ export interface IIncomingOrder extends MongoDoc {
   tests: IIncomingOrderItem[];
   subtotal: number;
   pendingLines?: number;
+  // this lab's money on the order (2026-10, backend Lib/orderSellerMoney.ts):
+  // the list has the totals, the detail each line
+  money?: ISellerOrderMoney;
 }
 
 const buyerLabel = (order: IIncomingOrder) =>
@@ -96,6 +100,22 @@ const ParaClinicIncomingOrdersPage = () => {
                 value: (node) => node.subtotal,
                 component: (node) =>
                   `${currencize(node.subtotal)} ${getContent("toman")}`,
+                filter: "Number",
+              },
+              // (2026-10) what the buyer paid and what this lab is paid for
+              // its lines, after discounts, insurer and commission
+              buyerPaid: {
+                name: getContent("moneyBuyerPaid"),
+                value: (node) => Number(node.money?.totals?.buyerPaid) || 0,
+                component: (node) =>
+                  node.money?.totals ? `${currencize(Number(node.money.totals.buyerPaid) || 0)} ${getContent("toman")}` : "-",
+                filter: "Number",
+              },
+              payout: {
+                name: getContent("moneyPayout"),
+                value: (node) => Number(node.money?.totals?.payout) || 0,
+                component: (node) =>
+                  node.money?.totals ? `${currencize(Number(node.money.totals.payout) || 0)} ${getContent("toman")}` : "-",
                 filter: "Number",
               },
               status: {

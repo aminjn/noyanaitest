@@ -40,6 +40,7 @@ import { OrderSamplings } from "@/Components/LabSampling/SamplingInfo";
 import SamplingActions from "@/Components/LabSampling/SamplingActions";
 import { SamplingMoveInfo } from "@/Components/LabSampling/samplingTypes";
 import useAcl from "@/Components/Hooks/useAcl";
+import SellerOrderMoney from "@/Components/Order/SellerOrderMoney";
 
 const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
 
@@ -357,6 +358,16 @@ const ParaClinicIncomingOrderPage = () => {
                   ) : null,
               },
             }}
+          />
+          {/* (2026-10) the money of each line and of the order */}
+          <SellerOrderMoney
+            money={data.money}
+            names={Object.fromEntries(
+              (Array.isArray(data.tests) ? data.tests : [])
+                .map((t) => [t?._id || "", t?.item?.test?.name || ""] as [string, string])
+                .filter(([id]) => !!id),
+            )}
+            tableName="ParaClinicIncomingOrderMoney"
           />
         </WithTitle>
       )}

@@ -5,6 +5,7 @@ import Ixon from "./Ixon";
 import XMarkIcon from "../Icons/XMarkIcon";
 import { closeInstallSheet } from "../Pwa/usePwaInstall";
 import classes from "./BottomSheet.module.css";
+import { lockScroll } from "../helpers/scrollLock";
 
 // A phone-first sheet (2026-10, the booking flow): slides up from the
 // bottom on a phone, a centred dialog from 768px on. A sticky footer holds
@@ -34,13 +35,12 @@ const BottomSheet = ({
     if (!open) return;
     // the "install the app" card must not sit over the sheet
     closeInstallSheet();
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
     panelRef.current?.focus();
     return () => {
-      document.body.style.overflow = prev;
+      unlock();
       window.removeEventListener("keydown", onKey);
     };
   }, [open, onClose]);

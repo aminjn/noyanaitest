@@ -89,7 +89,10 @@ const LogoLong = ({
           fontWeight="800"
           textLength="72"
           lengthAdjust="spacingAndGlyphs"
-          style={{ fontFamily: "inherit" }}
+          // on RTL pages (ar, ur) an inherited rtl direction anchors the text at
+          // its end, pushing the Latin name out of the viewBox
+          direction="ltr"
+          style={{ fontFamily: "inherit", direction: "ltr", unicodeBidi: "isolate" }}
         >
           NoyanAI
         </text>

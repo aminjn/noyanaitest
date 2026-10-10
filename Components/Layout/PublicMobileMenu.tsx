@@ -7,6 +7,7 @@ import Ixon from "../UI/Ixon";
 import Button from "../UI/Button";
 import LogoLong from "../UI/LogoLong";
 import ThemeToggle from "../UI/Theme/ThemeToggle";
+import LanguageSwitcher from "../i18n/LanguageSwitcher";
 import AuthPopup from "../Popups/AuthPopup";
 import { ContentKey } from "../Enums/contentKeys";
 import { categoryTabs } from "./headerCategories";
@@ -30,6 +31,7 @@ import usePwaInstall, { openInstallSheet } from "../Pwa/usePwaInstall";
 import { t2xsRegular, tbaseMedium, tsmMedium } from "../UI/Typography";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { lockScroll } from "../helpers/scrollLock";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -66,7 +68,7 @@ const PublicMobileMenu = ({
   useEffect(() => {
     if (!isOpen) return;
 
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
     // move focus into the drawer for keyboard and screen-reader users
     requestAnimationFrame(() =>
       panelRef.current?.querySelector<HTMLElement>("button, a")?.focus(),
@@ -78,7 +80,7 @@ const PublicMobileMenu = ({
     document.addEventListener("keyup", listener, false);
 
     return () => {
-      document.body.style.overflow = "";
+      unlock();
       document.removeEventListener("keyup", listener, false);
     };
   }, [isOpen, onClose]);
@@ -114,10 +116,14 @@ const PublicMobileMenu = ({
           <Link href="/" className={classes.logo} onClick={onClose}>
             <LogoLong width={104} height={36} />
           </Link>
-          <ThemeToggle className={classes.theme} />
         </div>
 
         <div className={classes.scroll}>
+          {/* the display mode and the language (off the phone header bar) */}
+          <div className={classes.tools}>
+            <ThemeToggle />
+            <LanguageSwitcher />
+          </div>
           {user ? (
             <Link
               href="/dashboard"

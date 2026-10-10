@@ -277,7 +277,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
         {!!config?.insurances?.length && <InsuranceNote names={insuranceNames} />}
       </div>
 
-      <div className={classes.stickyBar}>
+      <div className={classes.stickyBar} data-fixed-bar>
         <div className={classes.stickyText}>
           <b>{pick ? whenText(pick) : next ? whenText(next) : getContent("reserveYourSpot")}</b>
           <small>{sessionType ? `${getContent(doctorSessionTypeContentKeyDict[sessionType])} · ${priceText}` : ""}</small>

@@ -7,6 +7,7 @@ import LoginRequired from "../UI/LoginRequired";
 import classes from "./ChatLayout.module.css";
 import ChatSidebar from "./ChatSidebar";
 import CurrentChat from "./CurrentChat";
+import { lockScroll } from "../helpers/scrollLock";
 
 const ChatLayout = () => {
   const { user } = useUser();
@@ -21,7 +22,7 @@ const ChatLayout = () => {
   useEffect(() => {
     if (!isSidebarOpen) return;
 
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
 
     const listener = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsSidebarOpen(false);
@@ -29,7 +30,7 @@ const ChatLayout = () => {
     document.addEventListener("keyup", listener, false);
 
     return () => {
-      document.body.style.overflow = "";
+      unlock();
       document.removeEventListener("keyup", listener, false);
     };
   }, [isSidebarOpen]);

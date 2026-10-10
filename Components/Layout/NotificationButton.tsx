@@ -8,6 +8,10 @@ import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import { t2xsRegular } from "../UI/Typography";
 import IconWithCountButton from "../UI/IconWithCountButton";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 import { Dispatch, SetStateAction, useState } from "react";
 import NotificationModal from "./NotificationModal";
 const NotificationButton = ({
@@ -20,6 +24,7 @@ const NotificationButton = ({
   close: () => void;
 }) => {
   const { user } = useUser();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { data } = useSWR<number>(
     `${API}/user/notification/unread-count`,
@@ -29,7 +34,7 @@ const NotificationButton = ({
   if (!user) return null;
   return (
     <div className={classes.main}>
-      <IconWithCountButton count={data} onClick={() => open()}>
+      <IconWithCountButton count={data} onClick={() => open()} label={getContent("notifications")}>
         <Bell01Icon />
       </IconWithCountButton>
       {isOpen && <NotificationModal close={close} />}

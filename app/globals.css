@@ -351,20 +351,32 @@ html[data-theme="dark"] {
   font-family: inherit;
 }
 
-html,
-body {
-  max-width: 100vw;
+/* The page scrolls on the document (the window), not inside <body>: iOS
+   then collapses its address bar, and window.scrollTo / scroll restoration
+   / anchor jumps work. Sideways overflow is clipped without making <html>
+   or <body> a scroll container (that is what used to turn <body> into the
+   scroller and broke all of the above), so the sticky header still sticks
+   to the screen. A route change or an anchor jump lands below the sticky
+   header, not under it. */
+html {
   overflow-x: hidden;
-  /* filter: brightness(0.8); */
+  scroll-padding-block-start: var(--headerH);
+}
+
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
+
+/* drawers, sheets and popups lock the page (Components/helpers/scrollLock) */
+html.scrollLocked {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
-  overflow-y: visible;
-  max-height: 100dvh;
-  /* <body> is the page's scroller: a route change (Next scrolls the new
-     page into view) or an anchor jump lands below the sticky header, not
-     under it (the booking steps were hidden there on a phone) */
-  scroll-padding-block-start: var(--headerH);
   font-family:
     var(--fontFa),
     -apple-system,
@@ -668,9 +680,11 @@ h6 {
      floating «دستیار نویان» button (Components/Ai/Copilot) */
   --fabClear: 11rem;
 }
-@media (max-width: 640px) {
+/* phones: the assistant button rises above a bottom bar instead
+   (Components/Ai/Copilot, [data-fixed-bar]), so bars use the full width */
+@media (max-width: 48rem) {
   :root {
-    --fabClear: 3.75rem;
+    --fabClear: 0px;
   }
 }
 @media (max-width: 48rem) {

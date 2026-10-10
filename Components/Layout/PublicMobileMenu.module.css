@@ -72,8 +72,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   color: var(--textStrong);
   border-radius: var(--radiusPill);
   background-color: var(--hoverTint);
@@ -88,8 +88,20 @@
   align-items: center;
 }
 
-.theme {
-  margin-inline-start: auto;
+.tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  /* the language list opens over the rows below */
+  position: relative;
+  z-index: 2;
+}
+
+/* the language list over the drawer's own glass: a solid sheet (a frosted
+   layer inside a frosted layer does not blur and reads poorly) */
+.tools :global([role="listbox"]) {
+  background: var(--menuGlassSolid);
 }
 
 .scroll {

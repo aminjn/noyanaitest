@@ -22,4 +22,8 @@
   color: var(--gray12);
   font-size: 1rem;
   font-weight: 500;
+  /* a message may carry its details on lines of their own */
+  white-space: pre-line;
+  max-width: 32rem;
+  line-height: 1.7;
 }

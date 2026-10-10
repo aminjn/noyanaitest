@@ -69,6 +69,20 @@
   display: none;
 }
 
+/* the drawer's display-mode / language row (phones only, see below) */
+.drawerTools {
+  display: none;
+}
+
+.wideOnly {
+  display: contents;
+}
+
+/* the language list over the drawer's glass: a solid sheet */
+.drawerTools :global([role="listbox"]) {
+  background: var(--menuGlassSolid);
+}
+
 /* ---- main column ---- */
 .main {
   flex: 1;
@@ -290,6 +304,44 @@
 
   .content {
     padding: 1rem 0 calc(4.5rem + var(--bottomNavSpace));
+  }
+}
+
+/* phones: the top bar keeps the menu, the logo, the bell and the account,
+   each a 44px target; the display mode and the language move into the
+   drawer (as the public header's burger menu does) */
+@media (max-width: 750px) {
+  .wideOnly {
+    display: none;
+  }
+
+  .drawerTools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: 0 1.25rem 0.75rem;
+  }
+
+  .burger,
+  .sidebarClose {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .topbarLogo {
+    align-items: center;
+    height: 2.75rem;
+    min-width: 0;
+  }
+
+  .topbarLogo svg {
+    height: 1.875rem;
+    max-width: 100%;
+  }
+
+  .topbarActions {
+    gap: 0.5rem;
   }
 }
 

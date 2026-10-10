@@ -155,6 +155,8 @@ export interface IOrder<
   promoDiscount?: number;
   insurerShare?: number;
   insurance?: { name?: string; insurerShare?: number; reimburse?: boolean };
+  // the discount code (backend Models/Order.ts promo)
+  promo?: { code?: string; title?: string; fundedBy?: "platform" | "seller"; amount?: number };
   // what the buyer may do with each sampling appointment, by its id
   // (2026-10, backend Lib/labSamplingReschedule.ts)
   samplingMoves?: Record<string, SamplingMoveInfo>;
@@ -341,6 +343,32 @@ const testNamesOf = (order: OrderNode, samplingId: string) =>
   samplingLines(order, samplingId)
     .map((l) => (l.item && typeof l.item === "object" && l.item.test && typeof l.item.test === "object" ? l.item.test.name : ""))
     .filter((name): name is string => !!name);
+
+// (2026-10, backend Lib/orderPromoRecheck.ts) a partial cancel that left
+// the rest of the order short of its discount code: what was kept back
+// from the refunds, and why
+type PromoClawbackReason = "minOrder";
+const clawbackKey: Record<PromoClawbackReason, ContentKey> = {
+  minOrder: "promoClawbackMinOrder",
+};
+const promoClawbackOf = (order?: OrderNode | null) => {
+  let amount = 0;
+  let reason: PromoClawbackReason | null = null;
+  for (const model of ["products", "productPackages", "services", "servicePackages", "tests"] as const) {
+    const lines = order && Array.isArray(order[model]) ? (order[model] as unknown[]) : [];
+    for (const raw of lines) {
+      const l = (raw || {}) as { promoClawback?: unknown; promoClawbackReason?: unknown };
+      const v = typeof l.promoClawback === "number" && l.promoClawback > 0 ? l.promoClawback : 0;
+      if (!v) continue;
+      amount += v;
+      if (!reason && typeof l.promoClawbackReason === "string" && l.promoClawbackReason in clawbackKey)
+        reason = l.promoClawbackReason as PromoClawbackReason;
+    }
+  }
+  return { amount, reason: reason || ("minOrder" as PromoClawbackReason) };
+};
+
+type CancelPreview = { refund?: number; clawback?: number; reason?: PromoClawbackReason | null; total?: number; partial?: boolean; promoTitle?: string };
 
 const OrderConfirmationPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -692,6 +720,20 @@ const OrderConfirmationPage = () => {
                 </span>
               </div>
             )}
+            {(() => {
+              const claw = promoClawbackOf(order);
+              if (!claw.amount) return null;
+              return (
+                <div className={classes.addressRow}>
+                  <span className={t2xsRegular}>
+                    {getContent(clawbackKey[claw.reason], [
+                      order.promo?.code || order.promo?.title || "",
+                      currencize(claw.amount),
+                    ])}
+                  </span>
+                </div>
+              );
+            })()}
             {!!order.address && (
               <div className={classes.addressRow}>
                 <span className={`${classes.subtitle} ${tsmRegular}`}>
@@ -736,16 +778,34 @@ const OrderConfirmationPage = () => {
               mode="Outline"
               className={classes.action}
               isLoading={cancelling}
-              onClick={() =>
+              onClick={async () => {
+                // (2026-10) the confirmation says what comes back, and what
+                // of a discount code is kept back when the rest of the order
+                // no longer earns it (GET /user/order/:id/cancel)
+                let preview: CancelPreview | null = null;
+                try {
+                  const res = (await fetcher({ url: `${API}/user/order/${nodeId}/cancel` })) as { data?: CancelPreview };
+                  preview = res?.data && typeof res.data === "object" ? res.data : null;
+                } catch {
+                  preview = null;
+                }
+                const lines = [getContent("cancelOrderConfirm")];
+                if (preview && Number(preview.total) > 0)
+                  lines.push(getContent("cancelPreviewRefund", [currencize(Number(preview.total))]));
+                if (preview && Number(preview.clawback) > 0) {
+                  const reason = preview.reason && preview.reason in clawbackKey ? preview.reason : "minOrder";
+                  lines.push(
+                    getContent(clawbackKey[reason], [
+                      preview.promoTitle || order.promo?.code || "",
+                      currencize(Number(preview.clawback)),
+                    ]),
+                  );
+                }
                 setPopup(
                   "CancelOrder",
-                  <ConfirmationPopup
-                    message={getContent("cancelOrderConfirm")}
-                    isLoading={cancelling}
-                    onConfirm={cancelOrder}
-                  />,
-                )
-              }
+                  <ConfirmationPopup message={lines.join("\n\n")} isLoading={cancelling} onConfirm={cancelOrder} />,
+                );
+              }}
             >
               {getContent("cancelOrder")}
             </Button>
