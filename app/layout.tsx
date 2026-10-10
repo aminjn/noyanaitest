@@ -8,6 +8,8 @@ import { ProgressContextProvider } from "@/Components/Store/ProgressContext";
 import { BreadCrumpContextProvider } from "@/Components/Store/BreadCrumpStore";
 import { SockectContextProvider } from "@/Components/Store/SocketContext";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
+import { putServerMessages } from "@/Components/i18n/messagesStore";
+import { createHash } from "crypto";
 import { getMessages } from "@/Components/i18n/getMessages";
 import { getSiteLocales } from "@/Components/i18n/getEnabledLocales";
 import AdminTextProvider from "@/Components/Admin/i18n/AdminTextProvider";
@@ -100,6 +102,10 @@ export default async function RootLayout({
   ]);
   setSiteDefaultLocale(site.default);
   setAdminDictionary(adminDict);
+  // the texts reach the browser as one cached script, not inside every
+  // page (Components/i18n/messagesStore.ts); server rendering reads them here
+  putServerMessages(locale, messages);
+  const messagesVersion = createHash("sha1").update(JSON.stringify(messages)).digest("hex").slice(0, 12);
 
   // No <Suspense> around the tree: it used to be here only because
   // ProgressContextProvider called useSearchParams(), and its fallback
@@ -112,10 +118,12 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {/* Tehran time for every formatted date, before any bundle runs */}
         <script dangerouslySetInnerHTML={{ __html: tehranTimeZoneInitScript }} />
+        {/* parser-blocking on purpose: the texts are there before hydration */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src={`/i18n/${locale}.${messagesVersion}.js`} />
       </head>
       <body className={font.variable}>
         <LocaleScopeProvider
-          initialTextContent={messages}
           locale={locale}
           enabledLocales={site.enabled}
           siteDefaultLocale={site.default}
