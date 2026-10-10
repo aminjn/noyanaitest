@@ -21,6 +21,17 @@
   font-size: 0.875rem;
   font-weight: 800;
   cursor: pointer;
+  transition:
+    transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 200ms,
+    inset-block-end 200ms;
+}
+
+/* a drawer, sheet or popup is open (Components/helpers/scrollLock): the
+   button steps aside instead of floating over it */
+:global(html.scrollLocked) .fab {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .fabLabel {
@@ -324,8 +335,6 @@
 
 @media (max-width: 640px) {
   .fab {
-    inset-block-end: calc(0.875rem + var(--bottomNavSpace, 0px));
-    inset-inline-end: 0.875rem;
     padding: 0.25rem;
   }
 
@@ -346,6 +355,30 @@
 
   .line > span:last-child {
     display: none;
+  }
+}
+
+/* phones: above the tab bar and above any fixed action bar (--fabLift,
+   measured by CopilotFab), plus however far the user dragged it (--fabUp);
+   pages with a bottom bar no longer keep a corner of it free (--fabClear) */
+@media (max-width: 48rem) {
+  .fab {
+    inset-block-end: calc(0.875rem + max(var(--bottomNavSpace, 0px), var(--fabLift, 0px)) + var(--fabUp, 0px));
+    inset-inline-end: 0.875rem;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .fabStart {
+    inset-inline-end: auto;
+    inset-inline-start: 0.875rem;
+  }
+
+  /* scrolling down: out of the way, back on scroll up */
+  .fabAway {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.6);
   }
 }
 

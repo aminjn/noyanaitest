@@ -28,6 +28,7 @@ import { ContentKey } from "@/Components/Enums/contentKeys";
 import Badge from "@/Components/UI/Badge";
 
 import type { IOrderShipment } from "@/Components/Order/orderShipment";
+import type { ISellerOrderMoney } from "@/Components/Order/SellerOrderMoney";
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
@@ -37,6 +38,7 @@ const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 // products/productPackages line items (an order's items can span several
 // different sellers), plus a "subtotal" computed over only those items.
 export interface IIncomingOrderProductItem extends IOrderLineResponse {
+  _id?: string;
   item: { _id: string; product?: { _id: string; name?: string } };
   qty: number;
   price: number;
@@ -47,6 +49,7 @@ export interface IIncomingOrderProductItem extends IOrderLineResponse {
 }
 
 export interface IIncomingOrderPackageItem extends IOrderLineResponse {
+  _id?: string;
   item: { _id: string; name?: string };
   qty: number;
   price: number;
@@ -80,6 +83,9 @@ export interface IIncomingOrder extends MongoDoc {
   // Rx lines whose prescription waits on this pharmacy (2026-10)
   pendingPrescriptions?: number;
   subtotal: number;
+  // this pharmacy's money on the order (2026-10, backend
+  // Lib/orderSellerMoney.ts): the list has the totals, the detail each line
+  money?: ISellerOrderMoney;
   // where to deliver (only the delivery fields of the buyer's address)
   address?: {
     displayName?: string;
@@ -142,6 +148,22 @@ const PharmacyIncomingOrdersPage = () => {
                   value: (node) => node.subtotal,
                   component: (node) =>
                     `${currencize(node.subtotal)} ${getContent("toman")}`,
+                  filter: "Number",
+                },
+                // (2026-10) what the buyer paid and what this pharmacy is
+                // paid for its lines, after discounts, insurer and commission
+                buyerPaid: {
+                  name: getContent("moneyBuyerPaid"),
+                  value: (node) => Number(node.money?.totals?.buyerPaid) || 0,
+                  component: (node) =>
+                    node.money?.totals ? `${currencize(Number(node.money.totals.buyerPaid) || 0)} ${getContent("toman")}` : "-",
+                  filter: "Number",
+                },
+                payout: {
+                  name: getContent("moneyPayout"),
+                  value: (node) => Number(node.money?.totals?.payout) || 0,
+                  component: (node) =>
+                    node.money?.totals ? `${currencize(Number(node.money.totals.payout) || 0)} ${getContent("toman")}` : "-",
                   filter: "Number",
                 },
                 status: {

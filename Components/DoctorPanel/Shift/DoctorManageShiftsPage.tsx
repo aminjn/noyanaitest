@@ -435,7 +435,7 @@ const Inner = ({
       </details>
 
       {canEdit && !!offices.length && (
-        <div className={`${classes.saveBar} ${dirty ? classes.saveBarDirty : ""}`} role="status">
+        <div className={`${classes.saveBar} ${dirty ? classes.saveBarDirty : ""}`} role="status" data-fixed-bar>
           <span className={classes.saveText}>
             <span className={`${classes.saveDot} ${dirty ? classes.saveDotDirty : ""}`} />
             {dirty ? getContent("shUnsaved") : getContent("shSaved")}

@@ -277,11 +277,8 @@ const FinalizeBookingPage = () => {
       if (!phone || !p) return;
       setPick(p, pickType);
       setChangeOpen(false);
-      // the page scrolls inside <body> (globals.css), elsewhere the window
-      if (typeof window !== "undefined") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        document.body.scrollTo?.({ top: 0, behavior: "smooth" });
-      }
+      // the page scrolls on the window (globals.css)
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
     },
     [phone, pickType, setPick],
   );
@@ -440,7 +437,7 @@ const FinalizeBookingPage = () => {
             </div>
           </aside>
         </div>
-        <div className={classes.mobileBar}>
+        <div className={classes.mobileBar} data-fixed-bar>
           <div className={classes.mobileBarText}>
             <b>{choice ? `${dayText(choice.ymd)} · ${clock(choice.start, nf)}` : getContent("bfPickATime")}</b>
           </div>
@@ -1234,7 +1231,7 @@ const Details = ({
       </div>
 
       {/* phone: the total and the action stay under the thumb */}
-      <div className={`${classes.mobileBar} ${submitInView ? classes.mobileBarOff : ""}`}>
+      <div className={`${classes.mobileBar} ${submitInView ? classes.mobileBarOff : ""}`} data-fixed-bar>
         <div className={classes.mobileBarText}>
           <small>{method === "desk" ? getContent("bfPayAtVisit") : getContent("bfPayNow")}</small>
           <b>{quote ? money(method === "desk" ? quote.deskTotal : quote.total) : "…"}</b>

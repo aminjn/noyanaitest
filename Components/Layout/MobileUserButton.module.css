@@ -6,8 +6,9 @@
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
   border-radius: var(--radiusPill);
   background-color: var(--activeTint);
   display: flex;
@@ -88,7 +89,8 @@
     display: flex;
   }
 
-  body:has(.menu) {
-    overflow-y: hidden;
+  /* the page scrolls on <html> (globals.css): lock it there */
+  :global(html):has(.menu) {
+    overflow: hidden;
   }
 }

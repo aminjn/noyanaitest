@@ -1,10 +1,11 @@
 import Link from "@/Components/i18n/Link";
 import { createPortal } from "react-dom";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import classes from "./BottomNav.module.css";
 import { usePathname } from "@/Components/i18n/navigation";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import useUser from "../Hooks/useUser";
+import useHideOnScroll from "../Hooks/useHideOnScroll";
 import usePopup from "../Hooks/usePopup";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import { ContentKey } from "../Enums/contentKeys";
@@ -47,43 +48,13 @@ export type TabItem = {
 // Hides the bar while scrolling down, shows it on scroll up; sets
 // `hasBottomNav` on <body> while shown on the page (see --bottomNavSpace).
 const useTabBarScroll = (off: boolean, pathname: string) => {
-  const [hidden, setHidden] = useState<boolean>(false);
-  const last = useRef(0);
-
   useEffect(() => {
     if (off) return;
     document.body.classList.add("hasBottomNav");
     return () => document.body.classList.remove("hasBottomNav");
   }, [off]);
-
-  useEffect(() => {
-    if (off) return;
-    // the page scrolls inside <body> (see globals.css), elsewhere the window
-    const y = () => Math.max(document.body.scrollTop, window.scrollY);
-    last.current = y();
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const now = y();
-        const delta = now - last.current;
-        if (Math.abs(delta) < 8) return;
-        setHidden(delta > 0 && now > 96);
-        last.current = now;
-      });
-    };
-    document.body.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      document.body.removeEventListener("scroll", onScroll);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, [off]);
-
   // a new page starts with the bar shown
-  useEffect(() => setHidden(false), [pathname]);
-  return hidden;
+  return useHideOnScroll(off, pathname);
 };
 
 // The frosted phone tab bar itself (<= 768px), shared by the public site,

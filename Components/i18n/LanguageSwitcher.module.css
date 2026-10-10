@@ -20,6 +20,14 @@
   background: var(--hoverTint);
 }
 
+/* phones and touch screens: a 44px target */
+@media (max-width: 750px), (pointer: coarse) {
+  .trigger {
+    min-width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
 .code {
   font-size: 0.6875rem;
   font-weight: 700;

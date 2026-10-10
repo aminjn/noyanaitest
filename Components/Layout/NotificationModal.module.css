@@ -98,7 +98,8 @@
     margin-top: auto;
   }
 
-  body:has(.main) {
-    overflow-y: hidden;
+  /* the page scrolls on <html> (globals.css): lock it there */
+  :global(html):has(.main) {
+    overflow: hidden;
   }
 }

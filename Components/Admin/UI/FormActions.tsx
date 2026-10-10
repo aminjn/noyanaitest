@@ -8,7 +8,7 @@ const FormActions = ({
   style,
 }: WithStyleProps<{ children: ReactNode }>) => {
   return (
-    <div className={`${classes.main} ${className}`} style={style}>
+    <div className={`${classes.main} ${className}`} style={style} data-fixed-bar>
       {children}
     </div>
   );

@@ -20,6 +20,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Copilot from "../Ai/Copilot/Copilot";
 import { TabBar, TabItem } from "./BottomNav";
+import { lockScroll } from "../helpers/scrollLock";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "layoutPanel"];
 
@@ -87,13 +88,13 @@ const PanelLayout = ({
 
   useEffect(() => {
     if (!isSidebarOpen) return;
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
     const listener = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsSidebarOpen(false);
     };
     document.addEventListener("keyup", listener, false);
     return () => {
-      document.body.style.overflow = "";
+      unlock();
       document.removeEventListener("keyup", listener, false);
     };
   }, [isSidebarOpen]);
@@ -143,6 +144,12 @@ const PanelLayout = ({
         {panelTitles[panel] && (
           <span className={classes.panelName}>{getContent(panelTitles[panel])}</span>
         )}
+        {/* phones: the display mode and the language live here, so the top
+            bar keeps 44px targets for the bell and the account */}
+        <div className={classes.drawerTools}>
+          <ThemeToggle />
+          <LanguageSwitcher />
+        </div>
         <div className={classes.sidebarBody}>{sidebar}</div>
       </aside>
 
@@ -166,8 +173,12 @@ const PanelLayout = ({
             <Link href="/" className={classes.siteLink}>
               {getContent("viewSite")}
             </Link>
-            <ThemeToggle />
-            <LanguageSwitcher />
+            <span className={classes.wideOnly}>
+              <ThemeToggle />
+            </span>
+            <span className={classes.wideOnly}>
+              <LanguageSwitcher />
+            </span>
             <NotificationButton
               isOpen={notificationsOpen}
               open={() => setNotificationsOpen(true)}

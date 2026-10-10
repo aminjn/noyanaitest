@@ -12,6 +12,7 @@ import CloseIcon from "../Icons/CloseIcon";
 import LogoLong from "../UI/LogoLong";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import Copilot from "../Ai/Copilot/Copilot";
+import { lockScroll } from "../helpers/scrollLock";
 
 const hasAccessToAdmin: UserRole[] = ["admin", "notadmin"];
 
@@ -29,10 +30,10 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
     document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+      unlock();
     };
   }, [menuOpen]);
 

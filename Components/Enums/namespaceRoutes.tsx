@@ -132,6 +132,7 @@ export const namespaceRoutes: Partial<Record<ContentNamespace, string[]>> = {
   paraClinicPanelLicense: ["/paraClinicPanel/license"],
   paraClinicPanelArticle: ["/paraClinicPanel/article"],
   paraClinicPanelOrder: ["/paraClinicPanel/order"],
+  sellerOrderMoney: ["/pharmacypanel/order", "/paraClinicPanel/order"],
   paraClinicPanelProfile: ["/paraClinicPanel/profile"],
   paraClinicPanelTamin: ["/paraClinicPanel/tamin"],
   paraClinicPanelTest: ["/paraClinicPanel/test"],

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useProgress from "@/Components/Hooks/useProgress";
 import { useIntlLocale, usePathname } from "@/Components/i18n/navigation";
@@ -17,6 +17,7 @@ import { aiBase, AiProfile, copilotFeatureOf, T, useAiProfile, useAiStatus, useA
 import AiLocked, { aiGateOf, AiGateInfo, AiQuota } from "../AiLocked";
 import { CHIP_LIMIT, chipsFor, COPILOT_PROFILES } from "./copilotProfiles";
 import CopilotCard, { CopilotCardData } from "./CopilotCard";
+import useHideOnScroll from "@/Components/Hooks/useHideOnScroll";
 import ai from "../Ai.module.css";
 import classes from "./Copilot.module.css";
 
@@ -215,6 +216,165 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
   );
 };
 
+// Where the phone FAB sits: the side of the screen and how far the user
+// dragged it up (px above its resting place). Kept per device.
+type FabSpot = { side: "start" | "end"; up: number };
+const FAB_KEY = "noyan-copilot-fab";
+const PHONE = "(max-width: 48rem)";
+const readSpot = (): FabSpot => {
+  try {
+    const v = JSON.parse(localStorage.getItem(FAB_KEY) || "null");
+    if (v && (v.side === "start" || v.side === "end") && Number.isFinite(v.up)) return { side: v.side, up: Math.max(0, v.up) };
+  } catch {
+    // blocked storage / bad value: the default spot
+  }
+  return { side: "end", up: 0 };
+};
+
+// The floating «دستیار نویان» button. On a phone it never sits on what the
+// page needs (Doctolib / Zocdoc keep their mobile web free of floating
+// chat bubbles over actions):
+// - it rides above the tab bar and above any fixed action bar
+//   ([data-fixed-bar]: finalize / pay bars, form save bars),
+// - it steps out while the page scrolls down (with the tab bar) and while a
+//   drawer, sheet or popup is open (html.scrollLocked, globals.css),
+// - it can be dragged up or to the other edge if it still covers something.
+const CopilotFab = ({ label, title, onOpen }: { label: string; title: string; onOpen: () => void }) => {
+  const pathname = usePathname();
+  const ref = useRef<HTMLButtonElement>(null);
+  const [phone, setPhone] = useState(false);
+  const [lift, setLift] = useState(0);
+  const [spot, setSpot] = useState<FabSpot>({ side: "end", up: 0 });
+  const drag = useRef<{ x: number; y: number; moved: boolean; id: number } | null>(null);
+  const dragged = useRef(false);
+  const [delta, setDelta] = useState<{ x: number; y: number } | null>(null);
+  const scrolledAway = useHideOnScroll(!phone, pathname);
+
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE);
+    const on = () => setPhone(mq.matches);
+    on();
+    setSpot(readSpot());
+    mq.addEventListener?.("change", on);
+    return () => mq.removeEventListener?.("change", on);
+  }, []);
+
+  // the height of a fixed / stuck action bar at the bottom of the screen
+  useEffect(() => {
+    if (!phone) {
+      setLift(0);
+      return;
+    }
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const h = window.innerHeight;
+        let top = h;
+        document.querySelectorAll<HTMLElement>("[data-fixed-bar]").forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (!r.height || getComputedStyle(el).display === "none") return;
+          // on screen, in the lower half, resting on the bottom edge or on
+          // the tab bar (a sticky save bar that is stuck)
+          if (r.top < h && r.top > h / 2 && r.bottom > h - 100) top = Math.min(top, r.top);
+        });
+        setLift(top < h ? Math.round(h - top) : 0);
+      });
+    };
+    measure();
+    const mo = new MutationObserver(measure);
+    mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+    window.addEventListener("scroll", measure, { passive: true });
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelAnimationFrame(frame);
+      mo.disconnect();
+      window.removeEventListener("scroll", measure);
+      window.removeEventListener("resize", measure);
+    };
+  }, [phone, pathname]);
+
+  const onPointerDown = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    dragged.current = false;
+    if (!phone) return;
+    drag.current = { x: e.clientX, y: e.clientY, moved: false, id: e.pointerId };
+  };
+  const onPointerMove = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    const d = drag.current;
+    if (!d || d.id !== e.pointerId) return;
+    const dx = e.clientX - d.x;
+    const dy = e.clientY - d.y;
+    if (!d.moved && Math.hypot(dx, dy) < 8) return;
+    if (!d.moved) {
+      d.moved = true;
+      ref.current?.setPointerCapture?.(e.pointerId);
+    }
+    setDelta({ x: dx, y: dy });
+  };
+  const onPointerUp = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d || !d.moved) return;
+    dragged.current = true;
+    const rect = ref.current?.getBoundingClientRect();
+    setDelta(null);
+    if (!rect) return;
+    const dy = e.clientY - d.y;
+    const rtl = document.documentElement.dir === "rtl";
+    const left = rect.left + rect.width / 2 < window.innerWidth / 2;
+    const side: FabSpot["side"] = left === rtl ? "end" : "start";
+    // between its resting place and the sticky header (4.5rem + a gap)
+    const rest = rect.bottom - dy + spot.up;
+    const max = Math.max(0, rest - rect.height - 80);
+    const next = { side, up: Math.min(max, Math.max(0, spot.up - dy)) };
+    setSpot(next);
+    try {
+      localStorage.setItem(FAB_KEY, JSON.stringify(next));
+    } catch {
+      // blocked storage: the spot lasts for this page only
+    }
+  };
+
+  const style = phone
+    ? ({
+        "--fabLift": `${lift}px`,
+        "--fabUp": `${spot.up}px`,
+        transform: delta ? `translate(${delta.x}px, ${delta.y}px)` : undefined,
+        transition: delta ? "none" : undefined,
+      } as CSSProperties)
+    : undefined;
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      className={`${classes.fab} ${phone && spot.side === "start" ? classes.fabStart : ""} ${scrolledAway && !delta ? classes.fabAway : ""}`}
+      style={style}
+      data-copilot-fab
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={() => {
+        drag.current = null;
+        setDelta(null);
+      }}
+      onClick={() => {
+        // the end of a drag is not a tap
+        if (dragged.current) {
+          dragged.current = false;
+          return;
+        }
+        onOpen();
+      }}
+      aria-label={title}
+      title={title}
+    >
+      <AiOrb size="2.25rem" />
+      <span className={classes.fabLabel}>{label}</span>
+    </button>
+  );
+};
+
 const Copilot = ({ profile: fixed }: { profile?: AiProfile }) => {
   const detected = useAiProfile();
   const profile = fixed || detected;
@@ -237,17 +397,11 @@ const Copilot = ({ profile: fixed }: { profile?: AiProfile }) => {
     <>
       {open && <CopilotPanel profile={profile} onClose={() => setOpen(false)} />}
       {!open && (
-        <button
-          type="button"
-          className={classes.fab}
-          data-copilot-fab
-          onClick={() => setOpen(true)}
-          aria-label={t(COPILOT_PROFILES[profile].title)}
+        <CopilotFab
+          label={t(T("copFab", "دستیار نویان"))}
           title={`${t(COPILOT_PROFILES[profile].title)} (Ctrl+J)`}
-        >
-          <AiOrb size="2.25rem" />
-          <span className={classes.fabLabel}>{t(T("copFab", "دستیار نویان"))}</span>
-        </button>
+          onOpen={() => setOpen(true)}
+        />
       )}
     </>
   );

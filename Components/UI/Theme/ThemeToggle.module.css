@@ -44,3 +44,12 @@
 .compact:hover {
   background: var(--gray3);
 }
+
+/* phones and touch screens: each side is a 44px target */
+@media (max-width: 750px), (pointer: coarse) {
+  .option,
+  .compact {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}

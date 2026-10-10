@@ -45,6 +45,7 @@ import {
 } from "@/Components/Order/RxPrescription";
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import DocumentIcon from "@/Components/Icons/DocumentIcon";
+import SellerOrderMoney from "@/Components/Order/SellerOrderMoney";
 
 const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
 
@@ -446,6 +447,21 @@ const PharmacyIncomingOrderPage = () => {
                   ) : null,
               },
             }}
+          />
+          {/* (2026-10) the money of each line and of the order */}
+          <SellerOrderMoney
+            money={data.money}
+            names={Object.fromEntries(
+              [
+                ...(Array.isArray(data.products) ? data.products : []).map(
+                  (p) => [p?._id || "", p?.item?.product?.name || ""] as [string, string],
+                ),
+                ...(Array.isArray(data.productPackages) ? data.productPackages : []).map(
+                  (p) => [p?._id || "", p?.item?.name || ""] as [string, string],
+                ),
+              ].filter(([id]) => !!id),
+            )}
+            tableName="PharmacyIncomingOrderMoney"
           />
         </WithTitle>
       )}

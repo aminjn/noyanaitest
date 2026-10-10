@@ -3,6 +3,10 @@ import useProgress from "../Hooks/useProgress";
 import useUser from "../Hooks/useUser";
 import LineBagIcon from "../Icons/LinebagIcon";
 import IconWithCountButton from "../UI/IconWithCountButton";
+import useScopedLocale from "../Hooks/useScopedLocale";
+import { ContentNamespace } from "../Enums/contentNamespaces";
+
+const LOCALE_NS: ContentNamespace[] = ["common"];
 import Ixon from "../UI/Ixon";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
@@ -24,6 +28,7 @@ const CartButton = ({
   close: () => void;
 }) => {
   const { user } = useUser();
+  const getContent = useScopedLocale(LOCALE_NS);
 
   const { data } = useSWR<number>(`${API}/cart/size`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
@@ -32,7 +37,7 @@ const CartButton = ({
   if (!user) return null;
   return (
     <div className={classes.main}>
-      <IconWithCountButton count={data} onClick={() => open()}>
+      <IconWithCountButton count={data} onClick={() => open()} label={getContent("cart")}>
         <LineBagIcon />
       </IconWithCountButton>
       {isOpen && <CartModal close={close} />}

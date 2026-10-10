@@ -43,6 +43,7 @@ import DrugCard from "../Drug/DrugCard";
 import { tbaseMedium, tsmDemiBold } from "../UI/Typography";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { lockScroll } from "../helpers/scrollLock";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -202,14 +203,9 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
     return () => window.removeEventListener("click", listener, false);
   }, [close]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = overflow;
-    };
-  }, []);
+  // the sheet sits under the sticky header: lock the page behind it where
+  // it is (no jump back to the top)
+  useEffect(() => lockScroll(), []);
 
   const products = [
     ...(data?.products || []),
