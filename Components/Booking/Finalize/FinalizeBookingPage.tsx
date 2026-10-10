@@ -1,4 +1,5 @@
 "use client";
+import { officeAddressText } from "@/Components/DoctorPanel/Office/officeAddress";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import useSWR from "swr";
@@ -269,7 +270,7 @@ const FinalizeBookingPage = () => {
     () =>
       (Array.isArray(config?.offices) ? config.offices : [])
         .filter((o) => o && o.active !== false)
-        .map((o) => ({ _id: o._id, name: o.name, address: (o as { address?: string }).address })),
+        .map((o) => ({ _id: o._id, name: o.name, address: officeAddressText(o as { address?: string }) })),
     [config],
   );
   const pickOffice = pickType === "inPerson" && offices.length > 1 ? chooseOffice || offices[0]._id : null;
@@ -463,10 +464,10 @@ const FinalizeBookingPage = () => {
             </span>
             <span>
               <b>{officeDoc.name}</b>
-              {!!(officeDoc as { address?: string }).address && (
+              {!!officeAddressText(officeDoc as { address?: string }) && (
                 <>
                   <br />
-                  {(officeDoc as { address?: string }).address}
+                  {officeAddressText(officeDoc as { address?: string })}
                 </>
               )}
             </span>

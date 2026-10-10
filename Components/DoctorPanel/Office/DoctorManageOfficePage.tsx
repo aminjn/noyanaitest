@@ -47,6 +47,7 @@ const DoctorManageOfficePage = () => {
                   renderer={{
                     name: { title: getContent("name"), type: "text" },
                     address: { title: getContent("address"), type: "text" },
+                    addressDetail: { title: getContent("ofAddressDetail"), type: "text" },
                     tel: { title: getContent("telephone"), type: "text" },
                     order: { title: getContent("order"), type: "number" },
                     active: { title: getContent("isActive"), type: "bool" },

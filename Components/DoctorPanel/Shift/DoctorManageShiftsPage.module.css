@@ -51,6 +51,17 @@
   white-space: nowrap;
 }
 
+.holChip {
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--radiusPill);
+  background: var(--toneRose);
+  color: var(--toneRoseInk);
+  font-size: var(--fsXs);
+  font-weight: 800;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
 /* ---- the week ---- */
 .week {
   display: flex;

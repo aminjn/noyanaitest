@@ -1,4 +1,5 @@
 "use client";
+import { officeAddressText } from "@/Components/DoctorPanel/Office/officeAddress";
 import {
   Fragment,
   ReactNode,
@@ -243,7 +244,7 @@ const NewDoctorProfilePage = ({
         key: o._id,
         coords: o.location?.coordinates as number[],
         name: o.name,
-        address: o.address,
+        address: officeAddressText(o as { address?: string }),
       }));
     if (offices.length) return offices;
     return toLatLng(mapCoords)

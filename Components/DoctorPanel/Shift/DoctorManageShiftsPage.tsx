@@ -207,10 +207,16 @@ const Inner = ({
           <span>{getContent("shWeekSessions", [num.format(stats.sessions)])}</span>
           <span>{getContent("shWorkDays", [num.format(stats.days)])}</span>
           <span>{getContent("shWeekHours", [num.format(stats.hours)])}</span>
+          <a href="#holidays" className={classes.holChip}>
+            {getContent("holChip")}
+          </a>
         </div>
       </header>
 
       <BookingStatusCard />
+
+      {/* the holiday calendar, where the doctor looks first */}
+      <HolidaySection />
 
       {!offices.length ? (
         <div className={classes.empty}>
@@ -272,7 +278,6 @@ const Inner = ({
 
       <TimeOffSection />
 
-      <HolidaySection />
 
       {canEdit && !!offices.length && (
         <div className={`${classes.saveBar} ${dirty ? classes.saveBarDirty : ""}`} role="status">

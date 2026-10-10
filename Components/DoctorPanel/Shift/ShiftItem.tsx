@@ -57,8 +57,11 @@ const ShiftItem = ({
   const problems = useMemo<string[]>(() => {
     const list = shiftHasProblem(shift);
     if (overlap) list.push(getContent("shOverlapRow"));
+    // a range at a switched-off office takes no bookings (Lib/doctorOffer.ts)
+    const at = offices.find((o) => o._id === shift.office);
+    if (at && at.active === false) list.push(getContent("shInactiveOfficeRow"));
     return list;
-  }, [getContent, overlap, shift, shiftHasProblem]);
+  }, [getContent, offices, overlap, shift, shiftHasProblem]);
   const sessions = getShiftSessions(shift).length;
 
   const patch = (change: Partial<ShiftContext[number]>) =>
@@ -75,6 +78,8 @@ const ShiftItem = ({
     <div className={`${classes.shift} ${problems.length ? classes.withProblem : ""}`}>
       <div className={classes.line}>
         <span className={`${classes.officeDot} ${tone}`} aria-hidden />
+        {/* which office these hours are at: one range per office and time */}
+        <span className={classes.officeLabel}>{getContent("office")}</span>
         {offices.length > 1 ? (
           <select
             className={`${classes.select} ${classes.office}`}
@@ -86,7 +91,7 @@ const ShiftItem = ({
             {!shift.office && <option value="">{getContent("office")}</option>}
             {offices.map((o) => (
               <option key={o._id} value={o._id}>
-                {o.name || o._id}
+                {o.active === false ? `${o.name || o._id} (${getContent("inactive")})` : o.name || o._id}
               </option>
             ))}
           </select>

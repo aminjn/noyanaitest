@@ -1,4 +1,5 @@
 "use client";
+import { officeAddressText } from "@/Components/DoctorPanel/Office/officeAddress";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { useIntlLocale } from "@/Components/i18n/navigation";
@@ -71,7 +72,7 @@ const BookingSidebar = ({ doctor }: { doctor: DoctorType }) => {
     () =>
       (Array.isArray(config?.offices) ? config.offices : [])
         .filter((o) => o && o.active !== false)
-        .map((o) => ({ _id: o._id, name: o.name, address: (o as { address?: string }).address })),
+        .map((o) => ({ _id: o._id, name: o.name, address: officeAddressText(o as { address?: string }) })),
     [config],
   );
   const [office, setOffice] = useState<string | null>(null);

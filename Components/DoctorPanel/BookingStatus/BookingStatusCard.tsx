@@ -24,6 +24,7 @@ type Blocker =
   | "noPricedType"
   | "noShift"
   | "hiddenByAdmin"
+  | "notPublished"
   | "noFreeTime";
 
 type Status = {
@@ -47,6 +48,7 @@ const STEPS: Record<Blocker, { label: ContentKey; href?: string }> = {
   noPricedType: { label: "bsNoPricedType", href: "/doctorpanel/settings" },
   noShift: { label: "bsNoShift", href: "/doctorpanel/shift" },
   hiddenByAdmin: { label: "bsHiddenByAdmin" },
+  notPublished: { label: "bsNotPublished" },
   noFreeTime: { label: "bsNoFreeTime", href: "/doctorpanel/shift" },
 };
 
