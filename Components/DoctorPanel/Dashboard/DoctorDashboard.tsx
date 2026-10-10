@@ -27,6 +27,7 @@ import ChatBubbleIcon from "@/Components/Icons/ChatBubbleIcon";
 import UserCheckIcon from "@/Components/Icons/UserCheckIcon";
 import FileIcon from "@/Components/Icons/FileIcon";
 import CurrentLicenseWidget from "../CurrentLicenseWidget";
+import BookingStatusCard from "../BookingStatus/BookingStatusCard";
 import LicenseRenewBanner from "../LicenseRenewBanner";
 import VisitQuickActions from "../Desk/VisitQuickActions";
 
@@ -102,6 +103,8 @@ const statusKeys: Record<string, ContentKey> = {
 
 const setupSteps: Record<string, { label: ContentKey; href: string }> = {
   profile: { label: "dpdSetupProfile", href: "/doctorpanel/profile" },
+  // recommended, never required to go live
+  avatar: { label: "bsNoAvatar", href: "/doctorpanel/profile" },
   introduction: { label: "dpdSetupIntroduction", href: "/doctorpanel/profile" },
   office: { label: "dpdSetupOffice", href: "/doctorpanel/office" },
   settings: { label: "dpdSetupSettings", href: "/doctorpanel/settings" },
@@ -393,9 +396,8 @@ const DoctorDashboard = () => {
             </div>
           </header>
 
-          {!data.doctor.active && data.isOwner && (
-            <p className={classes.notice}>{getContent("dpdProfileInactive")}</p>
-          )}
+          {/* can patients book now, and what is missing (shown until live) */}
+          {data.isOwner && <BookingStatusCard hideWhenLive />}
 
           <LicenseRenewBanner />
 

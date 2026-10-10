@@ -3423,5 +3423,14 @@
  "یادآوری تمدید دارو": "Erinnerung an Nachkauf",
  "پیگیری پس از جواب آزمایش": "Nachfassen nach dem Befund",
  "یادآوری آزمایش دوره‌ای": "Erinnerung an Kontrolltest",
- "یادآوری تمدید بیمه": "Erinnerung an Verlängerung"
+ "یادآوری تمدید بیمه": "Erinnerung an Verlängerung",
+ "برای این سال تعطیلی ثبت نشده است.": "Für dieses Jahr ist kein Feiertag eingetragen.",
+ "تعطیل رسمی جدید": "Neuer gesetzlicher Feiertag",
+ "تعطیلات رسمی": "Gesetzliche Feiertage",
+ "خورشیدی (ثابت)": "Sonnenkalender (fest)",
+ "سال": "Jahr",
+ "قمری": "Mondkalender",
+ "ویرایش تعطیل رسمی": "Feiertag bearbeiten",
+ "یک روز تقویم تهران؛ برای روزی با دو مناسبت، هر دو را در عنوان بنویسید.": "Ein Tag nach Teheraner Kalender; bei zwei Anlässen an einem Tag beide in den Titel schreiben.",
+ "پزشک در روز تعطیل رسمی فعال نوبت نمی‌دهد، مگر خودش «ویزیت دارم» را انتخاب کند. تعطیلات قمری هر سال را پس از انتشار تقویم رسمی (مؤسسه ژئوفیزیک دانشگاه تهران) اضافه کنید.": "An einem aktiven Feiertag vergeben Ärzte keine Termine, außer sie wählen „Ich habe Sprechstunde“. Fügen Sie die Mondfeiertage jedes Jahres hinzu, sobald der offizielle Kalender (Geophysik-Institut der Universität Teheran) erschienen ist."
 }

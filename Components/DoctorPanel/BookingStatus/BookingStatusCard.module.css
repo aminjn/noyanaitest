@@ -1,0 +1,97 @@
+/* the doctor's page state: live (with the first free time) or what's missing */
+.card {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--sp3);
+  padding: var(--sp4) var(--sp5);
+  border-radius: var(--radiusLg);
+  border: 1px solid var(--glassLine);
+  background: var(--glass);
+  box-shadow: var(--glassShadow);
+  color: var(--textBody);
+  font-size: var(--fsSm);
+}
+.dot {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-block-start: 0.4rem;
+  border-radius: 50%;
+}
+.ok .dot {
+  background: var(--toneTealInk);
+  box-shadow: 0 0 0 4px var(--toneTeal);
+}
+.off {
+  background: var(--toneAmber);
+}
+.off .dot {
+  background: var(--toneAmberInk);
+  box-shadow: 0 0 0 4px var(--cardBg);
+}
+.body {
+  flex: 1;
+  min-width: 14rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp1);
+}
+.body strong {
+  font-size: var(--fsMd, 1rem);
+  color: var(--textStrong);
+}
+.body p {
+  margin: 0;
+}
+.tip {
+  color: var(--textMuted);
+}
+.tip a {
+  color: var(--primary7);
+  font-weight: 600;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp1);
+  margin: var(--sp1) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp2);
+  padding: var(--sp2) var(--sp3);
+  border-radius: var(--radiusSm);
+  background: var(--cardBg);
+  color: var(--textStrong);
+}
+.fix {
+  flex: none;
+  color: var(--primary7);
+  font-weight: 600;
+  font-size: var(--fsXs);
+}
+.action {
+  flex: none;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 var(--sp4);
+  border-radius: var(--radiusPill);
+  border: 1px solid var(--cardLineHover);
+  background: var(--cardBg);
+  color: var(--primary7);
+  font-weight: 600;
+  font-size: var(--fsXs);
+  white-space: nowrap;
+}
+.action:focus-visible,
+.fix:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}

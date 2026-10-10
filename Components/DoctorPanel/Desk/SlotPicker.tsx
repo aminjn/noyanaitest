@@ -43,7 +43,7 @@ const SlotPicker = ({
   if (day) query.set("date", day);
   if (sessionType) query.set("sessionType", sessionType);
   if (except) query.set("except", except);
-  const { data, isLoading } = useSWR<{ dayOff: boolean; slots: DeskSlot[] }>(
+  const { data, isLoading } = useSWR<{ dayOff: boolean; holiday?: string | null; slots: DeskSlot[] }>(
     day ? `${API}/doctor/desk/slots?${query.toString()}` : null,
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
@@ -88,7 +88,12 @@ const SlotPicker = ({
       ) : isLoading ? (
         <p className={classes.muted}>…</p>
       ) : data?.dayOff ? (
-        <p className={classes.warn}>{getContent("deskDayOff")}</p>
+        <p className={classes.warn}>
+          {/* a closed official holiday (backend Lib/publicHolidays.ts) */}
+          {typeof data.holiday === "string" && data.holiday
+            ? getContent("holDeskClosed", [data.holiday])
+            : getContent("deskDayOff")}
+        </p>
       ) : !free.length ? (
         <p className={classes.warn}>{getContent("deskNoSlots")}</p>
       ) : (

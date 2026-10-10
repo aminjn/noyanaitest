@@ -15,10 +15,14 @@ import { tehranYmd } from "@/Components/helpers/tehranTime";
 
 export type BookableSlot = { start: number; end: number; office: string };
 export type BookableDay = { date: string; ymd: string; bounds: BookableSlot[] };
+// an official holiday in the horizon; `closed`: the doctor takes no visits
+// that day (backend Lib/publicHolidays.ts) - its day is greyed, «تعطیل»
+export type HorizonHoliday = { ymd: string; title: string; closed: boolean };
 export type BookableSlots = {
   days: BookableDay[];
   horizon: number;
   nextAvailable: (BookableSlot & { date: string; ymd: string }) | null;
+  holidays: HorizonHoliday[];
 };
 
 export const useBookableSlots = (
@@ -41,6 +45,9 @@ export const useBookableSlots = (
           ),
           horizon: Number(d.horizon) || 30,
           nextAvailable: d.nextAvailable?.ymd ? d.nextAvailable : null,
+          holidays: (Array.isArray(d.holidays) ? d.holidays : [])
+            .filter((h: HorizonHoliday) => !!h && typeof h.ymd === "string")
+            .map((h: HorizonHoliday) => ({ ymd: h.ymd, title: String(h.title || ""), closed: h.closed !== false })),
         } as BookableSlots;
       }),
     { revalidateOnFocus: true, keepPreviousData: true },

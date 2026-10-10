@@ -22,6 +22,8 @@ import useShiftUtils from "./useShiftUtils";
 import Button from "@/Components/UI/Button";
 import useNotification from "@/Components/Hooks/useNotification";
 import TimeOffSection from "../Desk/TimeOffSection";
+import HolidaySection from "../Holidays/HolidaySection";
+import BookingStatusCard from "../BookingStatus/BookingStatusCard";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 import useDoctorAcl from "@/Components/Hooks/useDoctorAcl";
@@ -208,6 +210,8 @@ const Inner = ({
         </div>
       </header>
 
+      <BookingStatusCard />
+
       {!offices.length ? (
         <div className={classes.empty}>
           <span className={`glassIcon tone-indigo ${classes.emptyIcon}`}>
@@ -267,6 +271,8 @@ const Inner = ({
       )}
 
       <TimeOffSection />
+
+      <HolidaySection />
 
       {canEdit && !!offices.length && (
         <div className={`${classes.saveBar} ${dirty ? classes.saveBarDirty : ""}`} role="status">
