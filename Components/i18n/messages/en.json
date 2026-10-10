@@ -4940,7 +4940,7 @@
  "crmeChoose": "Choose",
  "crmeCloseRequest": "Close request",
  "crmeClosedColumn": "Closing column (done)",
- "crmeClubHint": "Patients earn points for what they pay for visits and orders on Noyan and on your paid invoices. The tier comes from the total paid.",
+ "crmeClubHint": "Patients earn points per visit or order, or for what they paid on Noyan and on your invoices. Their tier follows the basis you choose below.",
  "crmeClubOff": "Club is off",
  "crmeClubOn": "Club is on",
  "crmeClubSettings": "Club settings",

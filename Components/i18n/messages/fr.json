@@ -4940,7 +4940,7 @@
  "crmeChoose": "Choisir",
  "crmeCloseRequest": "Clore la demande",
  "crmeClosedColumn": "Colonne de fin (terminé)",
- "crmeClubHint": "Les patients gagnent des points sur leurs consultations et commandes payées sur Noyan et sur vos factures réglées. Le niveau dépend du total payé.",
+ "crmeClubHint": "Les patients gagnent des points par visite ou commande, ou selon ce qu’ils ont payé sur Noyan et sur vos factures. Leur niveau suit la base choisie ci-dessous.",
  "crmeClubOff": "Le club est désactivé",
  "crmeClubOn": "Le club est actif",
  "crmeClubSettings": "Réglages du club",

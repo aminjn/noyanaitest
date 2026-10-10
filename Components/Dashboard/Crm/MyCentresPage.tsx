@@ -33,6 +33,8 @@ type Ticket = {
   status: "open" | "pending" | "resolved" | "closed";
   centre: string;
   lastMessageAt: string;
+  // the centre archived it: still the patient's, read-only
+  archived?: boolean;
   messages?: { _id: string; body: string; fromPatient: boolean; at: string }[];
 };
 
@@ -152,8 +154,14 @@ const Thread = ({ id }: { id: string }) => {
               <span className={classes.muted}>
                 {data.centre} · {t(statusText(data.status))}
               </span>
+              {data.archived && (
+                <span className={s.row}>
+                  <span className={classes.badge}>{t("crmeArchived")}</span>
+                  <span className={s.hint}>{t("crmeMyTkArchivedHint")}</span>
+                </span>
+              )}
             </div>
-            {data.status !== "closed" && (
+            {data.status !== "closed" && !data.archived && (
               <button type="button" className={classes.ghost} onClick={() => act(`/user/crm/tickets/${id}/close`, {})}>
                 {t("crmeCloseRequest")}
               </button>
@@ -169,7 +177,7 @@ const Thread = ({ id }: { id: string }) => {
               </div>
             ))}
           </div>
-          {data.status !== "closed" && (
+          {data.status !== "closed" && !data.archived && (
             <div className={s.stack}>
               <textarea rows={3} value={body} onChange={(e) => setBody(e.target.value)} maxLength={5000} placeholder={t("crmeReplyPlaceholder")} />
               <div className={s.row}>
@@ -235,7 +243,8 @@ const MyCentresPage = ({ id }: { id?: string }) => {
                       </Link>
                       <span className={classes.muted}>{k.centre}</span>
                       <span className={classes.badge}>{t(statusText(k.status))}</span>
-                      {!k.lastFromPatient && k.status !== "closed" && <span className={classes.badge}>{t("crmeNewAnswer")}</span>}
+                      {k.archived && <span className={classes.badge}>{t("crmeArchived")}</span>}
+                      {!k.lastFromPatient && k.status !== "closed" && !k.archived && <span className={classes.badge}>{t("crmeNewAnswer")}</span>}
                       <span className={classes.muted}>{at(k.lastMessageAt)}</span>
                     </li>
                   ))}

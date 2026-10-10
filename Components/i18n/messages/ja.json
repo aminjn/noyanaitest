@@ -4940,7 +4940,7 @@
  "crmeChoose": "選択",
  "crmeCloseRequest": "依頼を閉じる",
  "crmeClosedColumn": "完了列",
- "crmeClubHint": "患者はNoyanでの受診・注文の支払いと支払い済み請求書でポイントを獲得します。ランクは累計支払額で決まります。",
+ "crmeClubHint": "患者は受診や注文ごとに、または Noyan と施設の請求書での支払額に応じてポイントを獲得します。ランクは下で選んだ基準で決まります。",
  "crmeClubOff": "クラブは停止中",
  "crmeClubOn": "クラブは稼働中",
  "crmeClubSettings": "クラブ設定",

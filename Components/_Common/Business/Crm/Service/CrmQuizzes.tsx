@@ -30,6 +30,8 @@ type MyQuiz = {
   attempts: number;
   bestScore: number | null;
   passedAttempt: string | null;
+  // archived after it was passed: the certificate stays, the quiz is not taken again
+  archived?: boolean;
 };
 type TakeQuiz = { _id: string; title: string; description?: string; passScore: number; questions: { _id: string; text: string; options: string[]; multi: boolean }[] };
 type Question = { text: string; options: string[]; correct: number[] };
@@ -44,9 +46,10 @@ type Quiz = {
   assignments?: number;
   attempts?: number;
   passes?: number;
+  archived?: boolean;
 };
 type Status = { userId: string; name: string; status: "passed" | "attempted" | "pending"; bestScore: number | null; dueDate: string | null };
-type Certificate = { quiz: string; name: string; score: number; passScore: number; org: string; at: string; code: string };
+type Certificate = { quiz: string; name: string; score: number; passScore: number; org: string; at: string; code: string; archived?: boolean };
 
 const statusKey = { passed: "crmeQzPassed", attempted: "crmeQzAttempted", pending: "crmeQzPending" } as const;
 
@@ -70,6 +73,7 @@ export const CertificatePopup = ({ attemptId, manage }: { attemptId: string; man
                   {f.date(data.at)} · <bdi dir="ltr">{data.code}</bdi>
                 </span>
               </div>
+              {data.archived && <p className={`${s.hint} ${s.noPrint}`}>{t("crmeCertArchived")}</p>}
               <div className={`${classes.actions} ${s.noPrint}`}>
                 <button type="button" className={classes.primary} onClick={() => window.print()}>
                   {t("crmePrint")}
@@ -391,7 +395,9 @@ const QuizList = () => {
   const { setPopup } = usePopup();
   const { mutate: mutateMine } = useMine();
   const mine = useGet<MyQuiz[]>("/quizzes/mine", (d) => listOf<MyQuiz>(d));
-  const all = useGet<Quiz[]>(canWrite ? "/quizzes" : null, (d) => listOf<Quiz>(d));
+  // the archived ones under their own filter
+  const [archived, setArchived] = useState(false);
+  const all = useGet<Quiz[]>(canWrite ? `/quizzes${archived ? "?archived=1" : ""}` : null, (d) => listOf<Quiz>(d));
   const refresh = () => {
     mine.mutate();
     all.mutate();
@@ -419,15 +425,18 @@ const QuizList = () => {
                       </span>
                     </span>
                     <span className={s.row}>
-                      {q.assigned && !q.passedAttempt && <Badge tone="warn">{t("crmeQzPending")}</Badge>}
+                      {q.archived && <Badge tone="muted">{t("crmeArchived")}</Badge>}
+                      {q.assigned && !q.passedAttempt && !q.archived && <Badge tone="warn">{t("crmeQzPending")}</Badge>}
                       {q.passedAttempt ? (
                         <button type="button" className={classes.ghost} onClick={() => setPopup("CrmeCert", wrap(<CertificatePopup attemptId={q.passedAttempt!} />))}>
                           {t("crmeCertificate")}
                         </button>
                       ) : null}
-                      <Link href={`${panel}/crm/quizzes/${q._id}`} className={classes.primary}>
-                        {t("crmeTakeQuiz")}
-                      </Link>
+                      {!q.archived && (
+                        <Link href={`${panel}/crm/quizzes/${q._id}`} className={classes.primary}>
+                          {t("crmeTakeQuiz")}
+                        </Link>
+                      )}
                     </span>
                   </li>
                 ))}
@@ -439,6 +448,13 @@ const QuizList = () => {
         <section className={classes.card}>
           <div className={classes.cardHead}>
             <h2 className={classes.cardTitle}>{t("crmeManageQuizzes")}</h2>
+            <div className={classes.segmented} role="tablist">
+              {[false, true].map((a) => (
+                <button key={String(a)} type="button" role="tab" aria-selected={archived === a} className={archived === a ? classes.on : ""} onClick={() => setArchived(a)}>
+                  {t(a ? "crmeArchived" : "crmeCurrent")}
+                </button>
+              ))}
+            </div>
             <button type="button" className={classes.primary} onClick={() => setPopup("CrmeQuiz", wrap(<QuizEditor onDone={refresh} />))}>
               {t("crmeNewQuiz")}
             </button>
@@ -450,19 +466,29 @@ const QuizList = () => {
               renderer={{
                 title: { name: t("crmeQuizTitle"), value: (q) => q.title, filter: "Text" },
                 questions: { name: t("crmeQuestions"), value: (q) => q.questions?.length || 0, filter: "Number" },
-                active: { name: t("crmeStatus"), value: (q) => t(q.active ? "crmeActive" : "crmInactive"), filter: "Set", component: (q) => <Badge tone={q.active ? "ok" : "muted"}>{t(q.active ? "crmeActive" : "crmInactive")}</Badge> },
+                active: {
+                  name: t("crmeStatus"),
+                  value: (q) => t(q.archived ? "crmeArchived" : q.active ? "crmeActive" : "crmInactive"),
+                  filter: "Set",
+                  component: (q) => <Badge tone={q.active && !q.archived ? "ok" : "muted"}>{t(q.archived ? "crmeArchived" : q.active ? "crmeActive" : "crmInactive")}</Badge>,
+                },
                 assignments: { name: t("crmeAssignments"), value: (q) => q.assignments || 0, filter: "Number" },
                 passes: { name: t("crmeQzPassed"), value: (q) => `${q.passes || 0} / ${q.attempts || 0}` },
                 actions: {
                   name: t("crmeActions"),
-                  component: (q) => (
-                    <span className={s.row}>
-                      <button type="button" className={classes.ghost} onClick={() => setPopup("CrmeQuizManage", wrap(<QuizManage quizId={q._id} onDone={refresh} />))}>
-                        {t("crmeManage")}
+                  component: (q) =>
+                    q.archived ? (
+                      <button type="button" className={classes.ghost} onClick={async () => (await call("POST", `/quizzes/${q._id}/restore`)) && refresh()}>
+                        {t("crmeRestore")}
                       </button>
-                      <ConfirmButton onConfirm={async () => (await call("DELETE", `/quizzes/${q._id}`)) && refresh()}>{t("bizDelete")}</ConfirmButton>
-                    </span>
-                  ),
+                    ) : (
+                      <span className={s.row}>
+                        <button type="button" className={classes.ghost} onClick={() => setPopup("CrmeQuizManage", wrap(<QuizManage quizId={q._id} onDone={refresh} />))}>
+                          {t("crmeManage")}
+                        </button>
+                        <ConfirmButton onConfirm={async () => (await call("DELETE", `/quizzes/${q._id}`)) && refresh()}>{t("crmeArchive")}</ConfirmButton>
+                      </span>
+                    ),
                 },
               }}
             />

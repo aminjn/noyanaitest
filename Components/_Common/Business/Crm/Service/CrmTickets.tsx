@@ -42,6 +42,8 @@ type Ticket = {
   lastMessageAt: string;
   messages?: Message[];
   breach: "none" | "response" | "resolve";
+  // archived (kept for the patient's history): read-only until restored
+  archived?: boolean;
 };
 
 export const ticketStatusKey: Record<Status, string> = { open: "crmeTkOpen", pending: "crmeTkPending", resolved: "crmeTkResolved", closed: "crmeTkClosed" };
@@ -155,9 +157,9 @@ const TicketList = () => {
       <div className={classes.cardHead}>
         <div className={classes.filters}>
           <div className={classes.segmented} role="tablist">
-            {["active", ...TICKET_STATUSES, "all"].map((st) => (
+            {["active", ...TICKET_STATUSES, "all", "archived"].map((st) => (
               <button key={st} type="button" role="tab" aria-selected={status === st} className={status === st ? classes.on : ""} onClick={() => setStatus(st)}>
-                {t(st === "active" ? "crmeTkActive" : st === "all" ? "all" : ticketStatusKey[st as Status])}
+                {t(st === "active" ? "crmeTkActive" : st === "all" ? "all" : st === "archived" ? "crmeArchived" : ticketStatusKey[st as Status])}
               </button>
             ))}
           </div>
@@ -198,6 +200,7 @@ const TicketList = () => {
                   component: (k) => (
                     <span className={s.row}>
                       <Badge tone={statusTone(k.status)}>{t(ticketStatusKey[k.status])}</Badge>
+                      {k.archived && <Badge tone="muted">{t("crmeArchived")}</Badge>}
                       {k.breach !== "none" && <Badge tone="bad">{t(k.breach === "resolve" ? "crmeSlaResolve" : "crmeSlaResponse")}</Badge>}
                     </span>
                   ),
@@ -223,7 +226,9 @@ const TicketDetail = ({ id }: { id: string }) => {
   const [body, setBody] = useState("");
   const [internal, setInternal] = useState(false);
   const patch = async (payload: Record<string, unknown>) => (await call("PATCH", `/tickets/${id}`, payload)) && mutate();
-  const closed = data?.status === "closed";
+  const archived = !!data?.archived;
+  // an archived ticket is read-only, like a closed one
+  const closed = data?.status === "closed" || archived;
   const reply = async () => {
     if (await call("POST", `/tickets/${id}/reply`, { body, internal })) {
       setBody("");
@@ -242,6 +247,12 @@ const TicketDetail = ({ id }: { id: string }) => {
               <h2 className={classes.cardTitle}>
                 #{data.number} · {data.subject}
               </h2>
+              {archived && (
+                <span className={s.row}>
+                  <Badge tone="muted">{t("crmeArchived")}</Badge>
+                  <span className={s.hint}>{t("crmeArchivedTicketHint")}</span>
+                </span>
+              )}
             </div>
             <div className={s.thread}>
               {listOf<Message>(data.messages).map((m) => (
@@ -254,7 +265,7 @@ const TicketDetail = ({ id }: { id: string }) => {
                 </div>
               ))}
             </div>
-            {data.status !== "closed" && (
+            {!closed && (
               <div className={s.stack}>
                 <textarea rows={3} value={body} onChange={(e) => setBody(e.target.value)} maxLength={5000} placeholder={t(internal ? "crmeNotePlaceholder" : "crmeReplyPlaceholder")} />
                 <div className={s.between}>
@@ -289,7 +300,7 @@ const TicketDetail = ({ id }: { id: string }) => {
                   ))}
                 </select>
               </label>
-              {closed && <p className={s.hint}>{t("crmeTkClosedHint")}</p>}
+              {data.status === "closed" && <p className={s.hint}>{t("crmeTkClosedHint")}</p>}
               <label className={classes.field}>
                 {t("crmePriority")}
                 <select value={data.priority} disabled={closed} onChange={(e) => patch({ priority: e.target.value })}>
@@ -323,7 +334,14 @@ const TicketDetail = ({ id }: { id: string }) => {
                 {!closed && <span className={s.hint}>{t("crmeSlaPriorityHint")}</span>}
                 {data.breach !== "none" && <Badge tone="bad">{t(data.breach === "resolve" ? "crmeSlaResolve" : "crmeSlaResponse")}</Badge>}
               </div>
-              {canWrite && <ConfirmButton onConfirm={async () => (await call("DELETE", `/tickets/${id}`)) && router.push(`${panel}/crm/tickets`)}>{t("bizDelete")}</ConfirmButton>}
+              {canWrite &&
+                (archived ? (
+                  <button type="button" className={classes.ghost} onClick={async () => (await call("POST", `/tickets/${id}/restore`)) && mutate()}>
+                    {t("crmeRestore")}
+                  </button>
+                ) : (
+                  <ConfirmButton onConfirm={async () => (await call("DELETE", `/tickets/${id}`)) && router.push(`${panel}/crm/tickets`)}>{t("crmeArchive")}</ConfirmButton>
+                ))}
             </div>
           </aside>
         </div>
