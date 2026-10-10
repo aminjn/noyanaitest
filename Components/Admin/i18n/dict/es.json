@@ -3436,5 +3436,5 @@
  "ساعت‌ها فقط درون ۸ تا ۲۱ (قانون اپراتورها برای پیامک تبلیغاتی) قابل تنظیم‌اند؛ می‌توانید بازه را تنگ‌تر کنید، نه بازتر.": "Las horas solo pueden fijarse entre las 8 y las 21 (regla de los operadores para SMS publicitarios); puedes acortar la franja, no ampliarla.",
  "ارسال‌نشده": "No enviada",
  "فیلدها:": "Campos:",
- "لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی صفحه‌ی مسیر خود سایت)": "Enlace de indicaciones en el sitio de NexaMap (con {lat} y {lng}; vacío = página de ruta del propio sitio)"
+ "لینک مسیریابی در سایت نکسا مپ (با {lat} و {lng}؛ خالی یعنی لینک پیش‌فرض nexamap.ir)": "Enlace de indicaciones en el sitio de NexaMap (con {lat} y {lng}; vacío = enlace predeterminado de nexamap.ir)"
 }

@@ -132,7 +132,7 @@ export interface IReservation<
   tax?: number;
   total?: number;
   cancelledAt?: Date;
-  cancelledBy?: ReservationParty;
+  cancelledBy?: ReservationParty | "admin";
   cancelReason?: string;
   // (2026-10) paid at the desk, and the insurers' split
   // (Components/Booking/Insurance/InsuranceBreakdown.tsx)
@@ -289,7 +289,7 @@ const DashboardManageBookingsPage = () => {
                         <strong>{name}</strong>
                         {!!speciality && <span>{speciality}</span>}
                       </div>
-                      <ReservationStatusBadge status={r.status} />
+                      <ReservationStatusBadge status={r.status} patient={r} />
                     </div>
                     <div className={classes.when}>
                       <div>
