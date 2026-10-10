@@ -1,4 +1,5 @@
 "use client";
+import { flowArrow } from "@/Components/helpers/flowArrow";
 
 import { useRef, useState } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
@@ -457,7 +458,7 @@ const EventsTable = ({ events, onChanged, showAsset }: { events: Event[]; onChan
   const call = useAccCall();
   const detail = (e: Event) =>
     e.kind === "transfer"
-      ? `${[e.fromLocation, e.fromCustodian].filter(Boolean).join(" · ") || "—"} ← ${[e.toLocation, e.toCustodian].filter(Boolean).join(" · ") || "—"}`
+      ? `${[e.fromLocation, e.fromCustodian].filter(Boolean).join(" · ") || "—"}${flowArrow()}${[e.toLocation, e.toCustodian].filter(Boolean).join(" · ") || "—"}`
       : e.kind === "maintenance"
         ? `${t(`accMnt_${e.maintenanceKind || "repair"}`)} · ${f.money(e.cost)}${e.vendor ? ` · ${e.vendor}` : ""}${e.nextDueDate ? ` · ${t("accNextDue")} ${f.date(e.nextDueDate)}` : ""}`
         : `${f.money(e.oldNbv)} → ${f.money(e.fairValue)} (${f.signed(e.surplus)})`;

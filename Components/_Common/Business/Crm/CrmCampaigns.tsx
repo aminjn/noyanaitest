@@ -41,7 +41,7 @@ const hoursOf = ([from, until]: [number, number]) => Array.from({ length: Math.m
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 export const campaignTone = (s: CrmCampaign["status"]) =>
-  s === "Sent" || s === "Approved" ? crm.badgeOk : s === "Rejected" ? crm.badgeBad : s === "Pending" ? crm.badgeWarn : "";
+  s === "Sent" || s === "Approved" ? crm.badgeOk : s === "Rejected" || s === "Failed" ? crm.badgeBad : s === "Pending" ? crm.badgeWarn : "";
 
 type Mode = "segment" | "rules" | "selection";
 const modeKey: Record<Mode, string> = { segment: "crmNavSegments", rules: "crmAudRules", selection: "crmAudSelection" };
@@ -163,7 +163,7 @@ const CampaignForm = ({
   return (
     <PopupCard size="wide" title={campaign ? campaign.name : t("crmNewCampaign")}>
       <div className={classes.popup}>
-        {campaign?.status === "Rejected" && campaign.rejectReason && (
+        {(campaign?.status === "Rejected" || campaign?.status === "Failed") && campaign.rejectReason && (
           <p className={crm.reject}>
             {t("crmRejectReason")}: {campaign.rejectReason}
           </p>
@@ -403,8 +403,8 @@ const CrmCampaigns = () => {
                 </thead>
                 <tbody>
                   {rows.map((c) => {
-                    const editable = ctx.canWrite && (c.status === "Draft" || c.status === "Rejected");
-                    const cancellable = ctx.canWrite && ["Draft", "Pending", "Rejected", "Approved"].includes(c.status);
+                    const editable = ctx.canWrite && (c.status === "Draft" || c.status === "Rejected" || c.status === "Failed");
+                    const cancellable = ctx.canWrite && ["Draft", "Pending", "Rejected", "Failed", "Approved"].includes(c.status);
                     const done = c.status === "Sent" || c.status === "Sending";
                     return (
                       <tr key={c._id}>
@@ -412,7 +412,7 @@ const CrmCampaigns = () => {
                           <Link href={`${ctx.panel}/crm/campaigns/${c._id}`} className={crm.linkButton}>
                             {c.name}
                           </Link>
-                          {c.status === "Rejected" && c.rejectReason ? <span className={crm.rejectInline}> · {c.rejectReason}</span> : null}
+                          {(c.status === "Rejected" || c.status === "Failed") && c.rejectReason ? <span className={crm.rejectInline}> · {c.rejectReason}</span> : null}
                         </td>
                         <td>
                           <span className={`${classes.badge} ${campaignTone(c.status)}`}>{t(statusKey[c.status] || "crmStDraft")}</span>

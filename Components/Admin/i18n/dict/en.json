@@ -3432,5 +3432,8 @@
  "قمری": "Lunar",
  "ویرایش تعطیل رسمی": "Edit official holiday",
  "یک روز تقویم تهران؛ برای روزی با دو مناسبت، هر دو را در عنوان بنویسید.": "One Tehran calendar day; for a day with two occasions, put both in the title.",
- "پزشک در روز تعطیل رسمی فعال نوبت نمی‌دهد، مگر خودش «ویزیت دارم» را انتخاب کند. تعطیلات قمری هر سال را پس از انتشار تقویم رسمی (مؤسسه ژئوفیزیک دانشگاه تهران) اضافه کنید.": "Doctors take no appointments on an active official holiday unless they choose “I have visits”. Add each year's lunar holidays once the official calendar (University of Tehran Geophysics Institute) is published."
+ "پزشک در روز تعطیل رسمی فعال نوبت نمی‌دهد، مگر خودش «ویزیت دارم» را انتخاب کند. تعطیلات قمری هر سال را پس از انتشار تقویم رسمی (مؤسسه ژئوفیزیک دانشگاه تهران) اضافه کنید.": "Doctors take no appointments on an active official holiday unless they choose “I have visits”. Add each year's lunar holidays once the official calendar (University of Tehran Geophysics Institute) is published.",
+ "ساعت‌ها فقط درون ۸ تا ۲۱ (قانون اپراتورها برای پیامک تبلیغاتی) قابل تنظیم‌اند؛ می‌توانید بازه را تنگ‌تر کنید، نه بازتر.": "Hours can only be set within 8:00–21:00 (the operators' rule for advertising SMS); you can narrow the window, not widen it.",
+ "ارسال‌نشده": "Not sent",
+ "فیلدها:": "Fields:"
 }

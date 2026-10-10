@@ -124,7 +124,7 @@ export type CrmSegment = {
   reachable: number;
 };
 
-export type CrmCampaignStatus = "Draft" | "Pending" | "Rejected" | "Approved" | "Sending" | "Sent" | "Cancelled";
+export type CrmCampaignStatus = "Draft" | "Pending" | "Rejected" | "Approved" | "Sending" | "Sent" | "Failed" | "Cancelled";
 export type CrmCampaign = {
   _id: string;
   name: string;
@@ -208,6 +208,8 @@ export type CrmAutomation = {
   delay: number;
   sessionTypes: string[];
   audience: CrmRules;
+  // a saved segment it targets (its id, or the segment with its name in a list)
+  segment?: string | { _id: string; name?: string } | null;
   windowFrom: number;
   windowUntil: number;
   gapDays: number;
@@ -274,6 +276,7 @@ export const statusKey: Record<CrmCampaignStatus, string> = {
   Approved: "crmStApproved",
   Sending: "crmStSending",
   Sent: "crmStSent",
+  Failed: "crmStFailed",
   Cancelled: "crmStCancelled",
 };
 

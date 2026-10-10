@@ -1,4 +1,5 @@
 "use client";
+import { flowArrow } from "@/Components/helpers/flowArrow";
 
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
@@ -76,6 +77,13 @@ type Data = {
 
 const ALL_KINDS: Kind[] = [...FINANCE_KINDS, "plan", "discount", "credit", "flow"];
 const SALES_KINDS: Kind[] = ["plan", "discount", "credit"];
+// the kinds this profile can have: the filter offers only those (an insurer
+// files no returns; each profile's own sales approvals)
+const kindsFor = (profile: string) =>
+  ALL_KINDS.filter(
+    (k) =>
+      !SALES_KINDS.includes(k) || ((PROFILES as Record<string, { approvals: readonly string[] }>)[profile]?.approvals || SALES_KINDS).includes(k),
+  ).filter((k) => !(profile === "insurance" && k === "return"));
 const STATUSES: Status[] = ["pending", "approved", "done", "rejected", "cancelled"];
 export const kindKey = (k: Kind) => (SALES_KINDS.includes(k) ? `crmsApKind_${k}` : k === "flow" ? "kartablKind_flow" : `accReq_${k}`);
 const tone = (s: Status) => ({ pending: fin.toneInfo, approved: fin.toneWarn, done: fin.toneOk, rejected: fin.toneBad, cancelled: fin.toneMuted })[s] || fin.toneMuted;
@@ -84,7 +92,8 @@ const POPUP = "KartablDecide";
 const pick = (d: unknown): Data => {
   const x = (d || {}) as Partial<Data>;
   return {
-    items: asArray<Item>(x.items),
+    // an item missing its chain is shown with none, not a crash
+    items: asArray<Item>(x.items).map((r) => ({ ...r, chain: asArray<string>(r.chain), chainNames: asArray<string>(r.chainNames) })),
     counts: asArray<Data["counts"][number]>(x.counts),
     team: asArray<Data["team"][number]>(x.team),
     me: String(x.me || ""),
@@ -272,7 +281,7 @@ const Kartabl = ({ node, panel }: { node: NodeWithAcl; panel: string }) => {
           <div className={classes.filters}>
             <select value={kind} onChange={(e) => setKind(e.target.value as Kind)} aria-label={t("accRequestKind")}>
               <option value="">{t("kartablAllKinds")}</option>
-              {ALL_KINDS.map((k) => (
+              {kindsFor(profile).map((k) => (
                 <option key={k} value={k}>
                   {t(kindKey(k))}
                 </option>
@@ -303,8 +312,8 @@ const Kartabl = ({ node, panel }: { node: NodeWithAcl; panel: string }) => {
                 requester: { name: t("accRequester"), filter: "Set", value: (r) => data?.team.find((m) => m._id === r.requester)?.name || r.requesterName || "—" },
                 chain: {
                   name: t("accApprovers"),
-                  value: (r) => r.chain.map((_, i) => nameOf(r, i)).join(" ← ") || t("accNoApprovers"),
-                  component: (r) => <>{r.chain.map((_, i) => (i === r.level && r.status === "pending" ? `▸${nameOf(r, i)}` : nameOf(r, i))).join(" ← ") || t("accNoApprovers")}</>,
+                  value: (r) => r.chain.map((_, i) => nameOf(r, i)).join(flowArrow()) || t("accNoApprovers"),
+                  component: (r) => <>{r.chain.map((_, i) => (i === r.level && r.status === "pending" ? `▸${nameOf(r, i)}` : nameOf(r, i))).join(flowArrow()) || t("accNoApprovers")}</>,
                 },
                 status: {
                   name: t("accState"),

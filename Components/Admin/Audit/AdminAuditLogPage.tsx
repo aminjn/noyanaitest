@@ -235,7 +235,19 @@ const AdminAuditLogPage = () => {
                         {log.action === "role" && typeof log.details?.role === "string"
                           ? ta("نقش جدید: ${1}", [roleLabels[log.details.role] || log.details.role])
                           : log.fields.length
-                            ? ta("فیلدها: ${1}${2}", [log.fields.slice(0, 6).join("، "), log.fields.length > 6 ? ` و ${num.format(log.fields.length - 6)} مورد دیگر` : ""])
+                            ? (
+                                // the record's field names as stored: technical, so shown as
+                                // left-to-right code chips, not as prose
+                                <span className={classes.fields}>
+                                  <span>{ta("فیلدها:")}</span>
+                                  {log.fields.slice(0, 6).map((f) => (
+                                    <code key={f} dir="ltr" className={classes.field}>
+                                      {f}
+                                    </code>
+                                  ))}
+                                  {log.fields.length > 6 && <span>{ta("و ${1} مورد دیگر", [num.format(log.fields.length - 6)])}</span>}
+                                </span>
+                              )
                             : "—"}
                       </td>
                       <td className={classes.ip}>{log.ip || "—"}</td>

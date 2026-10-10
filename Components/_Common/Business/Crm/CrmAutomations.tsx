@@ -19,6 +19,7 @@ import {
   CrmAutomationKind,
   CrmContext,
   CrmRules,
+  CrmSegment,
   emptyRules,
   errText,
   phoneText,
@@ -54,6 +55,9 @@ const afterLabel = (kind: CrmAutomationKind) => {
   return k.afterKey || (k.unit === "hours" ? "crmAutoAfterHours" : kind === "winback" ? "crmAutoAfterLapse" : "crmAutoAfterDays");
 };
 
+// the id of the segment an automation targets (a list gives it populated)
+const segmentIdOf = (v: CrmAutomation["segment"]) => (!v ? "" : typeof v === "string" ? v : v._id || "");
+
 const Edit = ({ a, onDone }: { a: CrmAutomation; onDone: () => unknown }) => {
   const t = useCrmText();
   const { api, panel } = useCrm();
@@ -67,6 +71,11 @@ const Edit = ({ a, onDone }: { a: CrmAutomation; onDone: () => unknown }) => {
   const [delay, setDelay] = useState(String(a.delay));
   const [types, setTypes] = useState<string[]>(a.sessionTypes || []);
   const [rules, setRules] = useState<CrmRules>({ ...emptyRules(), ...(a.audience || {}) });
+  // a saved segment the patients must be in (the rules below narrow it)
+  const [segment, setSegment] = useState(segmentIdOf(a.segment));
+  const { data: segs } = useSWR<CrmSegment[]>(`${API}${api}/segments`, (url: string) =>
+    fetcher({ url }).then((r) => asArray<CrmSegment>((r?.data as { saved?: unknown } | undefined)?.saved)),
+  );
   const [wFrom, setWFrom] = useState(a.windowFrom);
   const [wUntil, setWUntil] = useState(a.windowUntil);
   const [gap, setGap] = useState(String(a.gapDays));
@@ -85,6 +94,7 @@ const Edit = ({ a, onDone }: { a: CrmAutomation; onDone: () => unknown }) => {
           delay: num(delay),
           sessionTypes: types,
           audience: rules,
+          segment: segment || null,
           windowFrom: wFrom,
           windowUntil: wUntil,
           gapDays: num(gap),
@@ -182,6 +192,18 @@ const Edit = ({ a, onDone }: { a: CrmAutomation; onDone: () => unknown }) => {
         ) : null}
         <section className={crm.subCard}>
           <span className={classes.cardTitle}>{t("crmAutoAudience")}</span>
+          <label className={classes.field}>
+            {t("crmAutoSegment")}
+            <select value={segment} onChange={(e) => setSegment(e.target.value)}>
+              <option value="">{t("crmAutoSegmentNone")}</option>
+              {asArray<CrmSegment>(segs).map((g) => (
+                <option key={g._id} value={g._id}>
+                  {g.name || "—"}
+                </option>
+              ))}
+            </select>
+          </label>
+          {!!segment && <p className={classes.muted}>{t("crmAutoSegmentHint")}</p>}
           <CrmRulesForm rules={rules} onChange={setRules} compact hideTags={a.kind === "chronic"} />
         </section>
         {(a.kind === "birthday" || a.kind === "winback" || a.kind === "chronic") && (
@@ -399,8 +421,9 @@ const CrmAutomations = () => {
                     </div>
                     <span className={classes.muted}>
                       {delayText(a)} · {t("crmAutoWindow", [hourLabel(a.windowFrom), hourLabel(a.windowUntil)])}
-                      {a.sessionTypes?.length ? ` · ${a.sessionTypes.map((s) => t(sessionTypeKey[s] || s)).join("، ")}` : ""}
+                      {a.sessionTypes?.length ? ` · ${a.sessionTypes.map((s) => t(sessionTypeKey[s] || s)).join(" · ")}` : ""}
                     </span>
+                    {a.segment && typeof a.segment === "object" && <span className={classes.muted}>{t("crmAutoSegmentOn", [a.segment.name || "—"])}</span>}
                     {summary(a.audience).length > 0 && <span className={classes.muted}>{summary(a.audience).join(" · ")}</span>}
                     <span className={crm.tags}>
                       {a.template ? (
