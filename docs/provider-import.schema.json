@@ -1,0 +1,2623 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://noyanai.com/samples/noyan-providers.schema.json",
+  "title": "NoyanAI bulk provider import, format version 1",
+  "type": "object",
+  "required": [
+    "version"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "doctors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/doctor"
+      }
+    },
+    "offices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/office"
+      }
+    },
+    "clinics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/clinic"
+      }
+    },
+    "hospitals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/hospital"
+      }
+    },
+    "pharmacies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pharmacy"
+      }
+    },
+    "paraclinics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lab"
+      }
+    },
+    "labs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lab"
+      }
+    },
+    "insurances": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/insurer"
+      }
+    },
+    "insurers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/insurer"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "doctor": {
+      "type": "object",
+      "required": [
+        "externalId",
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "externalId": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001"
+          ]
+        },
+        "firstName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "علی"
+          ]
+        },
+        "lastName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "رضایی"
+          ]
+        },
+        "fullName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "دکتر علی رضایی"
+          ]
+        },
+        "medicalCode": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "123456"
+          ]
+        },
+        "medicalTitle": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "پزشکی"
+          ]
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "male",
+            "female"
+          ],
+          "examples": [
+            "male"
+          ]
+        },
+        "mainSpeciality": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "قلب و عروق"
+          ]
+        },
+        "specialities": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "قلب و عروق",
+              "داخلی"
+            ]
+          ]
+        },
+        "bio": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "education": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "دکترای پزشکی، دانشگاه تهران"
+            ]
+          ]
+        },
+        "photo": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com/photo.jpg"
+          ]
+        },
+        "website": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com"
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "02188776655"
+          ]
+        },
+        "privatePhones": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "09121234567"
+            ]
+          ]
+        },
+        "insurances": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "تأمین اجتماعی",
+              "بیمه سلامت"
+            ]
+          ]
+        },
+        "services": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            []
+          ]
+        },
+        "memberships": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "clinic-1"
+            ]
+          ]
+        },
+        "address": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "تهران، خیابان ولیعصر، پلاک ۱۲"
+          ]
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            35.7448
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            51.3753
+          ]
+        },
+        "point": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "\"lat,lng\""
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ],
+          "examples": [
+            "35.7448,51.3753"
+          ]
+        },
+        "province": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "city": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "slug": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-ali-rezaei"
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "offices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/office"
+          }
+        },
+        "visitTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/visitType"
+          }
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "office": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "externalId": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001-office-1"
+          ]
+        },
+        "doctor": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001"
+          ]
+        },
+        "name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "مطب ولیعصر"
+          ]
+        },
+        "address": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "تهران، خیابان ولیعصر، پلاک ۱۲"
+          ]
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            35.7448
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            51.3753
+          ]
+        },
+        "point": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "\"lat,lng\""
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ],
+          "examples": [
+            "35.7448,51.3753"
+          ]
+        },
+        "province": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "city": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "addressDetail": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "طبقه ۳، واحد ۷"
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "02188776655"
+          ]
+        },
+        "centre": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "clinic-1"
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hours"
+          }
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "hours": {
+      "type": "object",
+      "required": [
+        "day"
+      ],
+      "properties": {
+        "day": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "saturday ... friday, or شنبه ... جمعه"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6,
+              "description": "0 = Saturday (Iranian week)"
+            },
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 6
+                  }
+                ]
+              }
+            }
+          ],
+          "examples": [
+            "saturday"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^\\d{1,2}(:\\d{2})?$",
+          "description": "HH:MM, Tehran time",
+          "examples": [
+            "09:00"
+          ]
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^\\d{1,2}(:\\d{2})?$",
+          "description": "HH:MM, Tehran time",
+          "examples": [
+            "13:00"
+          ]
+        },
+        "range": {
+          "type": "string",
+          "description": "\"09:00-13:00\", several separated by commas",
+          "examples": [
+            "09:00-13:00"
+          ]
+        },
+        "slotMinutes": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            15
+          ]
+        },
+        "visitTypes": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "inPerson"
+            ]
+          ]
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "visitType": {
+      "type": "object",
+      "required": [
+        "type",
+        "price"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "inPerson",
+            "videoCall",
+            "textChat",
+            "voiceCall"
+          ],
+          "examples": [
+            "inPerson"
+          ]
+        },
+        "price": {
+          "oneOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "toman",
+          "examples": [
+            500000
+          ]
+        },
+        "duration": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            15
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "clinic": {
+      "type": "object",
+      "required": [
+        "externalId",
+        "name"
+      ],
+      "properties": {
+        "externalId": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001"
+          ]
+        },
+        "name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "کلینیک نمونه"
+          ]
+        },
+        "slug": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-ali-rezaei"
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "category": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "address": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "تهران، خیابان ولیعصر، پلاک ۱۲"
+          ]
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            35.7448
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            51.3753
+          ]
+        },
+        "point": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "\"lat,lng\""
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ],
+          "examples": [
+            "35.7448,51.3753"
+          ]
+        },
+        "province": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "city": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "02188776655"
+          ]
+        },
+        "privatePhones": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "09121234567"
+            ]
+          ]
+        },
+        "website": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com"
+          ]
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "info@example.com"
+          ]
+        },
+        "logo": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com/photo.jpg"
+          ]
+        },
+        "roundTheClock": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            false
+          ]
+        },
+        "insurances": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "تأمین اجتماعی",
+              "بیمه سلامت"
+            ]
+          ]
+        },
+        "services": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "ویزیت عمومی",
+              "تزریقات"
+            ]
+          ]
+        },
+        "licenseNumber": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "personnelCount": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            12
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hours"
+          }
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "hospital": {
+      "type": "object",
+      "required": [
+        "externalId",
+        "name"
+      ],
+      "properties": {
+        "externalId": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001"
+          ]
+        },
+        "name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "کلینیک نمونه"
+          ]
+        },
+        "slug": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-ali-rezaei"
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "category": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "address": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "تهران، خیابان ولیعصر، پلاک ۱۲"
+          ]
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            35.7448
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            51.3753
+          ]
+        },
+        "point": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "\"lat,lng\""
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ],
+          "examples": [
+            "35.7448,51.3753"
+          ]
+        },
+        "province": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "city": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "02188776655"
+          ]
+        },
+        "privatePhones": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "09121234567"
+            ]
+          ]
+        },
+        "website": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com"
+          ]
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "info@example.com"
+          ]
+        },
+        "logo": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com/photo.jpg"
+          ]
+        },
+        "roundTheClock": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            false
+          ]
+        },
+        "insurances": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "تأمین اجتماعی",
+              "بیمه سلامت"
+            ]
+          ]
+        },
+        "services": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "اورژانس",
+              "آزمایشگاه"
+            ]
+          ]
+        },
+        "licenseNumber": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "beds": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            120
+          ]
+        },
+        "personnelCount": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            300
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hours"
+          }
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "pharmacy": {
+      "type": "object",
+      "required": [
+        "externalId",
+        "name"
+      ],
+      "properties": {
+        "externalId": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001"
+          ]
+        },
+        "name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "کلینیک نمونه"
+          ]
+        },
+        "slug": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-ali-rezaei"
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "address": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "تهران، خیابان ولیعصر، پلاک ۱۲"
+          ]
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            35.7448
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            51.3753
+          ]
+        },
+        "point": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "\"lat,lng\""
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ],
+          "examples": [
+            "35.7448,51.3753"
+          ]
+        },
+        "province": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "city": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "02188776655"
+          ]
+        },
+        "privatePhones": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "09121234567"
+            ]
+          ]
+        },
+        "logo": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com/photo.jpg"
+          ]
+        },
+        "roundTheClock": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            false
+          ]
+        },
+        "insurances": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "تأمین اجتماعی",
+              "بیمه سلامت"
+            ]
+          ]
+        },
+        "licenseNumber": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hours"
+          }
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "lab": {
+      "type": "object",
+      "required": [
+        "externalId",
+        "name"
+      ],
+      "properties": {
+        "externalId": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001"
+          ]
+        },
+        "name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "کلینیک نمونه"
+          ]
+        },
+        "slug": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-ali-rezaei"
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "category": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "address": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "تهران، خیابان ولیعصر، پلاک ۱۲"
+          ]
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            35.7448
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            51.3753
+          ]
+        },
+        "point": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "\"lat,lng\""
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ],
+          "examples": [
+            "35.7448,51.3753"
+          ]
+        },
+        "province": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "city": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "تهران"
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "02188776655"
+          ]
+        },
+        "privatePhones": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "09121234567"
+            ]
+          ]
+        },
+        "logo": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com/photo.jpg"
+          ]
+        },
+        "roundTheClock": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            false
+          ]
+        },
+        "insurances": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "تأمین اجتماعی",
+              "بیمه سلامت"
+            ]
+          ]
+        },
+        "licenseNumber": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "onlineResults": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "personnelCount": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            10
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hours"
+          }
+        },
+        "tests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/labTest"
+          }
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "labTest": {
+      "type": "object",
+      "required": [
+        "name",
+        "price"
+      ],
+      "properties": {
+        "name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "قند خون ناشتا"
+          ]
+        },
+        "price": {
+          "oneOf": [
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "toman",
+          "examples": [
+            150000
+          ]
+        },
+        "readyTime": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "۱ روز"
+          ]
+        },
+        "sampling": {
+          "type": "string",
+          "enum": [
+            "lab",
+            "labOrHome",
+            "none"
+          ],
+          "examples": [
+            "lab"
+          ]
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "insurer": {
+      "type": "object",
+      "required": [
+        "externalId",
+        "name"
+      ],
+      "properties": {
+        "externalId": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-1001"
+          ]
+        },
+        "name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "کلینیک نمونه"
+          ]
+        },
+        "slug": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "dr-ali-rezaei"
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "category": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "basic": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "02188776655"
+          ]
+        },
+        "website": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com"
+          ]
+        },
+        "address": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "description": "fa (stored text) plus optional translations: en, ar, zh, hi, es, fr, ru, pt, de, tr, ur, bn, id, ja",
+              "properties": {
+                "fa": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          ],
+          "examples": [
+            "تهران، خیابان ولیعصر، پلاک ۱۲"
+          ]
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            35.7448
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            51.3753
+          ]
+        },
+        "point": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "\"lat,lng\""
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ],
+          "examples": [
+            "35.7448,51.3753"
+          ]
+        },
+        "logo": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "examples": [
+            "https://example.com/photo.jpg"
+          ]
+        },
+        "licenseNumber": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "coverages": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            [
+              "بستری",
+              "دندانپزشکی"
+            ]
+          ]
+        },
+        "advantages": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string",
+              "description": "comma separated"
+            }
+          ],
+          "examples": [
+            []
+          ]
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "examples": [
+            true
+          ]
+        },
+        "translations": {
+          "type": "object",
+          "description": "per locale: { en: { firstName: \"...\" } }",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -394,6 +394,21 @@ export const adminHubs: AdminHub[] = [
     ],
   },
   {
+    hub: "doctorprofile",
+    sections: [
+      {
+        id: "doctorImport",
+        get title() { return ta("پزشکان"); },
+        icon: <FolderIcon />,
+        // the bulk import writes every provider type: super admin only
+        super: true,
+        items: [
+      { get title() { return ta("ورود گروهی (JSON)"); }, href: "doctorprofile?tab=import" },
+        ],
+      },
+    ],
+  },
+  {
     hub: "clinic",
     sections: [
       {
