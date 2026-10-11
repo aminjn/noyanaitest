@@ -15,6 +15,7 @@ import Ixon from "../UI/Ixon";
 import XMarkIcon from "../Icons/XMarkIcon";
 import PlusSquareIcon from "../Icons/PlusSquareIcon";
 import CheckCircleIcon from "../Icons/CheckCircleIcon";
+import { shownOverlay } from "../Ai/aiDiscovery";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -30,9 +31,10 @@ const SHOW_DELAY_MS = 3500;
 // the booking funnel too. Any language prefix is skipped first.
 const FOCUSED_FLOW =
   /^\/(?:[a-z]{2}\/)?(?:book|dr|payment|cart|call|newCall|order|map\/route|dashboard\/booking)(?:\/|$)/;
-// a modal (booking sheet, popup) is open: the sheet waits for another page
-const modalOpen = () =>
-  !!document.querySelector('[role="dialog"][aria-modal="true"]');
+// a modal (booking sheet, popup) or the AI coach mark is up: the sheet
+// waits for another page (the closed phone menu, always in the page with
+// aria-modal, does not count)
+const modalOpen = () => shownOverlay('[role="dialog"][aria-modal="true"], [data-ai-coach]');
 
 // storage may be blocked (private mode, previews): every access is guarded
 const read = (store: () => Storage, key: string) => {

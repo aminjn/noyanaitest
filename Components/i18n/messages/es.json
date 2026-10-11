@@ -7397,5 +7397,11 @@
  "moneyPromoReducedNote": "Tras cancelar parte del pedido, se retiraron ${1} tomanes del descuento del código en los artículos restantes (el resto ya no cumple sus condiciones).",
  "moneyEstimatedNote": "La comisión y el pago de los artículos abiertos se estiman con la tarifa de hoy y son definitivos al completarse cada artículo.",
  "promoClawbackMinOrder": "El resto de su pedido no alcanza el mínimo del código “${1}”, así que su descuento de ${2} tomanes en los artículos restantes deja de aplicarse y se descuenta del reembolso.",
- "cancelPreviewRefund": "${1} tomanes volverán a su monedero."
+ "cancelPreviewRefund": "${1} tomanes volverán a su monedero.",
+ "aiCoachPatient": "Describe tus síntomas, encuentra al médico adecuado o pregunta por tu consulta.",
+ "aiCoachProvider": "Escribe o di lo que necesitas hacer en tu panel; cada cambio espera tu confirmación.",
+ "aiEntryNew": "nuevo",
+ "promoClawbackDelivered": "Esto incluye el descuento de los artículos que ya recibió.",
+ "moneyPromoAdjust": "Ajuste de liquidación (descuento retirado)",
+ "moneyPromoAdjustNote": "Tras cancelar parte del pedido, el descuento del código también se retiró de los artículos ya liquidados: su venta subió y se añadieron ${1} tomanes (IVA incluido) a su liquidación, que podrá retirar en el próximo ciclo de liquidación."
 }

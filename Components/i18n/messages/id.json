@@ -7397,5 +7397,11 @@
  "moneyPromoReducedNote": "Setelah sebagian pesanan dibatalkan, ${1} toman diskon kode dihapus dari item tersisa (sisanya tidak lagi memenuhi syarat kode).",
  "moneyEstimatedNote": "Komisi dan pembayaran item terbuka diperkirakan dengan tarif hari ini dan menjadi final saat setiap item dipenuhi.",
  "promoClawbackMinOrder": "Sisa pesanan Anda di bawah minimum kode “${1}”, jadi diskon ${2} toman pada item tersisa tidak berlaku lagi dan dipotong dari pengembalian dana.",
- "cancelPreviewRefund": "${1} toman akan kembali ke dompet Anda."
+ "cancelPreviewRefund": "${1} toman akan kembali ke dompet Anda.",
+ "aiCoachPatient": "Ceritakan gejala Anda, temukan dokter yang tepat, atau tanyakan tentang kunjungan Anda.",
+ "aiCoachProvider": "Tulis atau ucapkan apa yang perlu dilakukan di panel; setiap perubahan menunggu konfirmasi Anda.",
+ "aiEntryNew": "baru",
+ "promoClawbackDelivered": "Ini termasuk diskon untuk barang yang sudah Anda terima.",
+ "moneyPromoAdjust": "Penyesuaian penyelesaian (diskon dicabut)",
+ "moneyPromoAdjustNote": "Setelah sebagian pesanan dibatalkan, diskon kode juga dicabut dari item yang sudah diselesaikan: penjualannya naik dan ${1} toman (termasuk PPN) ditambahkan ke penyelesaian Anda, dapat ditarik pada siklus penyelesaian berikutnya."
 }

@@ -246,6 +246,11 @@ export const orderLedgerKindDict: Record<string, string> = {
   get deliveryFee() {
     return ta("هزینه‌ی ارسال به داروخانه");
   },
+  // (2026-10, backend Lib/orderPromoAdjust.ts) a settled line adjusted after
+  // a partial cancel took the discount code back from it
+  get promoAdjust() {
+    return ta("اصلاح تسویه پس از بازپس‌گیری تخفیف");
+  },
   get other() {
     return ta("سایر");
   },

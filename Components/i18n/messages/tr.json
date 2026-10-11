@@ -7397,5 +7397,11 @@
  "moneyPromoReducedNote": "Siparişin bir kısmı iptal edildikten sonra kalan ürünlerden kod indiriminin ${1} tümeni kaldırıldı (kalan kısım artık kodun şartlarını karşılamıyor).",
  "moneyEstimatedNote": "Açık kalemlerin komisyonu ve ödemesi bugünkü orana göre tahminidir; her kalem tamamlandığında kesinleşir.",
  "promoClawbackMinOrder": "Siparişinizin kalanı “${1}” kodunun alt sınırının altında; bu yüzden kalan ürünlerdeki ${2} tümenlik indirimi artık geçerli değil ve iadeden düşülür.",
- "cancelPreviewRefund": "${1} tümen cüzdanınıza geri dönecek."
+ "cancelPreviewRefund": "${1} tümen cüzdanınıza geri dönecek.",
+ "aiCoachPatient": "Belirtilerinizi anlatın, doğru doktoru bulun ya da randevunuz hakkında soru sorun.",
+ "aiCoachProvider": "Panelde yapılacak işi yazın ya da söyleyin; her değişiklik kaydedilmeden önce onayınızı bekler.",
+ "aiEntryNew": "yeni",
+ "promoClawbackDelivered": "Buna daha önce teslim aldığınız ürünlerdeki indirim de dahildir.",
+ "moneyPromoAdjust": "İndirim geri alındıktan sonra mutabakat düzeltmesi",
+ "moneyPromoAdjustNote": "Siparişin bir kısmı iptal edildikten sonra kod indirimi, mutabakatı yapılmış ürünlerden de kaldırıldı: satış tutarları arttı ve ${1} tümen (KDV dahil) mutabakatınıza eklendi; bir sonraki mutabakat döneminde çekilebilir olur."
 }
