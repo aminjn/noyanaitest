@@ -13,7 +13,6 @@ import { DeliveryArea } from "../Pharmacy/DeliveryAreaNote";
 import RxBadge from "./RxBadge";
 import ProductTabs, { ProductTab, WhyBox } from "./ProductTabs";
 import ProductSameAs from "./ProductSameAs";
-import ProductCart from "./ProductCart";
 import CartableNodePage from "./Cartable/CartabaleNodePage";
 import Image from "next/image";
 import { FilePath } from "../config";

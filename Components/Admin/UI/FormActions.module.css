@@ -2,7 +2,7 @@
 .main {
   position: sticky;
   /* clear the phone tab bar (0 elsewhere and inside popups) */
-  bottom: var(--bottomNavSpace, 0px);
+  bottom: var(--bottomNavLive, var(--bottomNavSpace, 0px));
   z-index: 5;
   display: flex;
   align-items: center;

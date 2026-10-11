@@ -95,10 +95,15 @@ const AdminPublicHolidaysTab = () => {
   const { setPopup } = usePopup();
   const pushNotification = useNotification();
   const tag = adminIntlTag();
-  const fmt = useMemo(
-    () => new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" }),
-    [tag],
-  );
+  // ICU's Persian pattern for weekday + full date reads "۱۴۰۵ مهر ۱۹, یکشنبه";
+  // Persian gets "یکشنبه، ۱۹ مهر ۱۴۰۵" from the two parts (as useSamplingFormat)
+  const fmt = useMemo(() => {
+    const full = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    if (!tag.startsWith("fa")) return full;
+    const wd = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, weekday: "long" });
+    const day = new Intl.DateTimeFormat(tag, { timeZone: TEHRAN_TZ, day: "numeric", month: "long", year: "numeric" });
+    return { format: (d: Date) => `${wd.format(d)}، ${day.format(d)}` };
+  }, [tag]);
   const num = useMemo(() => new Intl.NumberFormat(tag, { useGrouping: false }), [tag]);
 
   const list = useMemo(() => [...(data || [])].sort((a, b) => a.ymd.localeCompare(b.ymd)), [data]);

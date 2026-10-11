@@ -692,3 +692,13 @@ h6 {
     --bottomNavSpace: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
+/* where a fixed bottom action bar sits right now: on the tab bar while it
+   shows, at the screen's bottom while it is hidden on scroll-down
+   (Components/Layout/BottomNav); page paddings keep --bottomNavSpace */
+/* declared on body, where --bottomNavSpace is set, so it resolves there */
+body {
+  --bottomNavLive: var(--bottomNavSpace, 0px);
+}
+body.bottomNavHidden {
+  --bottomNavLive: env(safe-area-inset-bottom, 0px);
+}

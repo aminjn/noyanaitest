@@ -338,7 +338,7 @@
 
 .saveBarDirty {
   position: sticky;
-  bottom: calc(var(--sp3) + var(--bottomNavSpace));
+  bottom: calc(var(--sp3) + var(--bottomNavLive, var(--bottomNavSpace)));
 }
 
 .saveBarDirty .saveText {
