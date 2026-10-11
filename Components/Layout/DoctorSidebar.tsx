@@ -212,12 +212,9 @@ const DoctorSidebar = () => {
         title: "drugsAndPrescriptions",
         icon: <PillIcon />,
         target: "drug",
-        // Tamin end-user lockout (2026-09) - hard-hidden regardless of ACL
-        // while Tamin only talks to its sandbox API; see
-        // Components/DoctorPanel/DoctorLicenseGate.tsx's lockedSegments and
-        // Controllers/featureGateController.ts on noyanai-back. Restore
-        // `hasAccess("readDrugs")` once Tamin goes live.
-        show: false,
+        // 2026-10: open again - the doctor e-prescription talks to Tamin's
+        // production API (backend Lib/taminEp.ts)
+        show: hasAccess("readDrugs"),
       },
       {
         title: "logout",

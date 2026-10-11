@@ -14,6 +14,8 @@ const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelTamin"];
 
 const TaminCbPage = () => {
   const [code, setCode] = useState<string | null>(null);
+  // PKCE `state` the backend checks against the login it started
+  const [state, setState] = useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -33,6 +35,7 @@ const TaminCbPage = () => {
       const incoming = searchParams.get("code");
       if (!incoming) return push("/");
       setCode(incoming);
+      setState(searchParams.get("state"));
       setIsLoading(true);
     }
   }, [code, push, searchParams]);
@@ -43,10 +46,10 @@ const TaminCbPage = () => {
       <Act
         path={!!code && isLoading ? `${API}/doctor/tamin` : null}
         method="POST"
-        payload={{ code }}
-        onDone={(status) => {
+        payload={{ code, state: state || undefined }}
+        onDone={() => {
           setIsLoading(false);
-          if (!status) return push("/");
+          // the prescriptions page shows the connection state either way
           return push("/doctorpanel/drug");
         }}
       />

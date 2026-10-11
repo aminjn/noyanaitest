@@ -8,13 +8,11 @@ import TemporarilyDisabledNotice from "../UI/TemporarilyDisabledNotice";
 import { DoctorDashboardModule } from "../Admin/BaseDoctorLicense/AdminManageBaseDoctorLicensesPage";
 
 // Tamin end-user lockout (2026-09) - segments under /doctorpanel/* whose
-// entire feature is disabled for real doctors while Tamin only talks to its
-// sandbox API (see Controllers/featureGateController.ts on noyanai-back,
-// which 403s the underlying routes regardless of this list). Checked before
-// the license-modules lookup below so it also applies to a doctor whose
-// license *does* include "drugsAndPrescriptions". Remove this list (and the
-// check that uses it) together with the backend gate once Tamin goes live.
-const lockedSegments = new Set(["drug", "prescription", "tamin"]);
+// entire feature is disabled for real doctors. Emptied 2026-10: the doctor
+// e-prescription (drug, prescription, tamin) talks to Tamin's production
+// API (Lib/taminEp.ts on the backend, whose TAMIN_DOCTOR_EP_LOCKOUT is the
+// matching switch). Kept as a switch for future lockouts.
+const lockedSegments = new Set<string>([]);
 
 // Maps the first path segment under /doctorpanel/* to the
 // DoctorDashboardModule that noyanai-back's doctorRouter actually gates with

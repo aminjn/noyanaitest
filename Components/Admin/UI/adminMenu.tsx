@@ -197,7 +197,7 @@ export const adminMenu: AdminMenuGroup[] = [
     icon: <MedicalReportIcon />,
     super: true,
     items: [
-      { get title() { return ta("کاتالوگ‌های تامین اجتماعی"); }, href: "tamin" },
+      { get title() { return ta("اتصال و کاتالوگ‌های تامین"); }, href: "tamin" },
     ],
   },
 ];

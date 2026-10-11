@@ -4,7 +4,7 @@ import classes from "./DoctorManagePrescriptionsPage.module.css";
 import { Fragment, useState } from "react";
 import Act from "@/Components/UI/Act";
 import { API } from "@/Components/config";
-import DoctorTaminTokenManager from "./DoctorTaminTokenManager";
+import DoctorTaminConnectionCard from "./DoctorTaminConnectionCard";
 import WithTitle from "@/Components/Admin/UI/WithTitle";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -104,7 +104,7 @@ const NormalPrescriptions = () => {
 
   return (
     <div>
-      <DoctorTaminTokenManager />
+      <DoctorTaminConnectionCard />
       <HandleLoading data={!!data} error={error}>
         {!!data && (
           <WithTitle
