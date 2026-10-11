@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "insurances": [
+    {
+      "externalId": "ins-dana",
+      "name": { "fa": "بیمه دانا", "en": "Dana Insurance" },
+      "basic": false,
+      "summary": "بیمه‌ی تکمیلی درمان برای افراد و سازمان‌ها",
+      "phone": "02188776655",
+      "website": "https://www.dana-insurance.com",
+      "address": "تهران، خیابان ولیعصر، بالاتر از پارک ساعی",
+      "lat": 35.7563,
+      "lng": 51.4103,
+      "logo": "https://noyanai.com/files/samples/dana-logo.png",
+      "coverages": ["بستری", "جراحی", "دندانپزشکی"],
+      "advantages": ["پرداخت آنلاین خسارت"]
+    }
+  ],
+  "clinics": [
+    {
+      "externalId": "clinic-milad",
+      "name": { "fa": "کلینیک تخصصی میلاد", "en": "Milad Specialty Clinic" },
+      "slug": "milad-specialty-clinic",
+      "summary": "کلینیک تخصصی قلب، داخلی و پوست",
+      "category": "کلینیک تخصصی",
+      "address": "تهران، خیابان شریعتی، نرسیده به میرداماد، پلاک ۴۵",
+      "point": "35.7601,51.4430",
+      "phone": "021-22223333",
+      "privatePhones": ["09121112233"],
+      "website": "https://milad-clinic.example.ir",
+      "email": "info@milad-clinic.example.ir",
+      "insurances": ["تأمین اجتماعی", "بیمه سلامت", "بیمه دانا"],
+      "services": ["ویزیت تخصصی", "نوار قلب", "اکوکاردیوگرافی"],
+      "personnelCount": 25,
+      "hours": [
+        { "day": ["saturday", "sunday", "monday", "tuesday", "wednesday"], "range": "08:00-20:00" },
+        { "day": "thursday", "from": "08:00", "to": "13:00" }
+      ]
+    }
+  ],
+  "hospitals": [
+    {
+      "externalId": "hospital-sina",
+      "name": "بیمارستان سینا",
+      "summary": "بیمارستان عمومی با بخش اورژانس شبانه‌روزی",
+      "address": "تهران، میدان حسن‌آباد، خیابان امام خمینی",
+      "lat": 35.6866,
+      "lng": 51.4062,
+      "phone": "02163120000",
+      "roundTheClock": true,
+      "beds": 400,
+      "insurances": ["تأمین اجتماعی", "بیمه سلامت"],
+      "services": ["اورژانس", "آنژیوگرافی", "دیالیز"]
+    }
+  ],
+  "pharmacies": [
+    {
+      "externalId": "pharmacy-shafa",
+      "name": "داروخانه شفا",
+      "address": "تهران، خیابان انقلاب، روبه‌روی دانشگاه",
+      "lat": 35.7019,
+      "lng": 51.3961,
+      "phone": "02166400000",
+      "insurances": ["تأمین اجتماعی"],
+      "hours": [
+        { "day": ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday"], "range": "08:00-23:00" },
+        { "day": "friday", "range": "10:00-14:00" }
+      ]
+    }
+  ],
+  "paraclinics": [
+    {
+      "externalId": "lab-pasteur",
+      "name": "آزمایشگاه پاستور",
+      "category": "آزمایشگاه تشخیص طبی",
+      "address": "تهران، خیابان کریمخان، پلاک ۱۰",
+      "point": "35.7128,51.4189",
+      "phone": "02188900000",
+      "onlineResults": true,
+      "insurances": ["تأمین اجتماعی", "بیمه دانا"],
+      "hours": [{ "day": ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday"], "range": "06:30-19:00" }],
+      "tests": [
+        { "name": "قند خون ناشتا", "price": 120000, "readyTime": "همان روز", "sampling": "labOrHome" },
+        { "name": "شمارش کامل خون (CBC)", "price": 180000, "readyTime": "۱ روز", "sampling": "lab" }
+      ]
+    }
+  ],
+  "doctors": [
+    {
+      "externalId": "dr-1001",
+      "firstName": { "fa": "علی", "en": "Ali" },
+      "lastName": { "fa": "رضایی", "en": "Rezaei" },
+      "medicalCode": "۳۱۲۴۵۷",
+      "medicalTitle": "پزشکی",
+      "gender": "male",
+      "mainSpeciality": "قلب و عروق",
+      "specialities": ["داخلی"],
+      "bio": "متخصص قلب و عروق با ۱۵ سال تجربه در درمان بیماری‌های قلبی",
+      "education": ["دکترای پزشکی عمومی، دانشگاه علوم پزشکی تهران", "تخصص قلب و عروق، دانشگاه شهید بهشتی"],
+      "photo": "https://noyanai.com/files/samples/dr-1001.jpg",
+      "phone": "02122223334",
+      "privatePhones": ["09121234567"],
+      "insurances": ["تأمین اجتماعی", "بیمه دانا"],
+      "memberships": ["clinic-milad", "hospital-sina"],
+      "visitTypes": [
+        { "type": "inPerson", "price": 450000, "duration": 15 },
+        { "type": "videoCall", "price": 350000, "duration": 20 }
+      ],
+      "offices": [
+        {
+          "externalId": "dr-1001-milad",
+          "name": "کلینیک میلاد",
+          "centre": "clinic-milad",
+          "address": "تهران، خیابان شریعتی، نرسیده به میرداماد، پلاک ۴۵",
+          "addressDetail": "طبقه‌ی دوم، اتاق ۲۰۴",
+          "lat": 35.7601,
+          "lng": 51.443,
+          "phone": "02122223333",
+          "hours": [
+            { "day": ["saturday", "monday"], "from": "16:00", "to": "20:00", "visitTypes": ["inPerson"] }
+          ]
+        },
+        {
+          "externalId": "dr-1001-private",
+          "name": "مطب شخصی",
+          "address": "تهران، خیابان ولیعصر، بالاتر از ونک، ساختمان پزشکان ۱۲",
+          "lat": 35.7577,
+          "lng": 51.4097,
+          "hours": [
+            { "day": "sunday", "range": "09:00-12:00, 17:00-20:00", "visitTypes": ["inPerson", "videoCall"] },
+            { "day": "wednesday", "from": "09:00", "to": "13:00" }
+          ]
+        }
+      ]
+    },
+    {
+      "externalId": "dr-1002",
+      "firstName": "مریم",
+      "lastName": "احمدی",
+      "medicalCode": "312458",
+      "gender": "female",
+      "mainSpeciality": "پوست و مو",
+      "bio": "متخصص پوست، مو و زیبایی",
+      "insurances": ["بیمه سلامت"],
+      "visitTypes": [
+        { "type": "inPerson", "price": 400000, "duration": 15 },
+        { "type": "textChat", "price": 150000 }
+      ],
+      "offices": [
+        {
+          "name": "مطب دکتر احمدی",
+          "address": "اصفهان، خیابان چهارباغ بالا، ساختمان آفتاب",
+          "province": "اصفهان",
+          "city": "اصفهان",
+          "phone": "03136200000",
+          "hours": [{ "day": ["saturday", "tuesday"], "range": "15:00-19:00" }]
+        }
+      ]
+    }
+  ]
+}
