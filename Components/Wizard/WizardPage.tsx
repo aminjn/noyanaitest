@@ -25,6 +25,7 @@ import ProUpsellCard from "../Pro/ProUpsellCard";
 import { PRO_ME_URL, useMyPro } from "../Pro/useProData";
 import { ContentKey } from "../Enums/contentKeys";
 import { useIntlLocale } from "../i18n/navigation";
+import { markAiUsed } from "../Ai/aiDiscovery";
 
 const NS: ContentNamespace[] = ["common", "wizardPage"];
 
@@ -96,6 +97,9 @@ const WizardPage = () => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // the assistant was reached: the AI entry drops its "new" dot
+  useEffect(() => markAiUsed(), []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ block: "end" });

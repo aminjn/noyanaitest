@@ -7397,5 +7397,11 @@
  "moneyPromoReducedNote": "Após o cancelamento de parte do pedido, ${1} tomans do desconto do cupom foram retirados dos itens restantes (o restante não cumpre mais as condições).",
  "moneyEstimatedNote": "A comissão e o repasse dos itens em aberto são estimados pela taxa de hoje e ficam definitivos quando cada item é concluído.",
  "promoClawbackMinOrder": "O restante do seu pedido está abaixo do mínimo do cupom “${1}”, então o desconto de ${2} tomans nos itens restantes deixa de valer e é descontado do reembolso.",
- "cancelPreviewRefund": "${1} tomans voltarão para sua carteira."
+ "cancelPreviewRefund": "${1} tomans voltarão para sua carteira.",
+ "aiCoachPatient": "Descreva seus sintomas, encontre o médico certo ou pergunte sobre sua consulta.",
+ "aiCoachProvider": "Escreva ou diga o que precisa fazer no painel; cada alteração aguarda sua confirmação.",
+ "aiEntryNew": "novo",
+ "promoClawbackDelivered": "Isso inclui o desconto dos itens que você já recebeu.",
+ "moneyPromoAdjust": "Ajuste de repasse (desconto retirado)",
+ "moneyPromoAdjustNote": "Após o cancelamento de parte do pedido, o desconto do cupom também foi retirado dos itens já liquidados: a venda deles subiu e ${1} tomans (com IVA) foram somados ao seu repasse, que poderá ser sacado no próximo ciclo de liquidação."
 }

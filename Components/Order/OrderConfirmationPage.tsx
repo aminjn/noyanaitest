@@ -354,10 +354,13 @@ const clawbackKey: Record<PromoClawbackReason, ContentKey> = {
 const promoClawbackOf = (order?: OrderNode | null) => {
   let amount = 0;
   let reason: PromoClawbackReason | null = null;
+  // some of it was taken back from items already delivered (2026-10)
+  let delivered = false;
   for (const model of ["products", "productPackages", "services", "servicePackages", "tests"] as const) {
     const lines = order && Array.isArray(order[model]) ? (order[model] as unknown[]) : [];
     for (const raw of lines) {
-      const l = (raw || {}) as { promoClawback?: unknown; promoClawbackReason?: unknown };
+      const l = (raw || {}) as { promoClawback?: unknown; promoClawbackReason?: unknown; promoReduced?: unknown; status?: unknown };
+      if (l.status === "fulfilled" && typeof l.promoReduced === "number" && l.promoReduced > 0) delivered = true;
       const v = typeof l.promoClawback === "number" && l.promoClawback > 0 ? l.promoClawback : 0;
       if (!v) continue;
       amount += v;
@@ -365,10 +368,10 @@ const promoClawbackOf = (order?: OrderNode | null) => {
         reason = l.promoClawbackReason as PromoClawbackReason;
     }
   }
-  return { amount, reason: reason || ("minOrder" as PromoClawbackReason) };
+  return { amount, reason: reason || ("minOrder" as PromoClawbackReason), delivered };
 };
 
-type CancelPreview = { refund?: number; clawback?: number; reason?: PromoClawbackReason | null; total?: number; partial?: boolean; promoTitle?: string };
+type CancelPreview = { refund?: number; clawback?: number; fulfilledClawback?: number; reason?: PromoClawbackReason | null; total?: number; partial?: boolean; promoTitle?: string };
 
 const OrderConfirmationPage = () => {
   const { nodeId } = useParams<{ nodeId: string }>();
@@ -730,6 +733,7 @@ const OrderConfirmationPage = () => {
                       order.promo?.code || order.promo?.title || "",
                       currencize(claw.amount),
                     ])}
+                    {claw.delivered && ` ${getContent("promoClawbackDelivered")}`}
                   </span>
                 </div>
               );
@@ -798,7 +802,7 @@ const OrderConfirmationPage = () => {
                     getContent(clawbackKey[reason], [
                       preview.promoTitle || order.promo?.code || "",
                       currencize(Number(preview.clawback)),
-                    ]),
+                    ]) + (Number(preview.fulfilledClawback) > 0 ? ` ${getContent("promoClawbackDelivered")}` : ""),
                   );
                 }
                 setPopup(

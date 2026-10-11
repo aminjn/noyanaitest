@@ -3475,5 +3475,7 @@
  "فقط داروی نسخه‌ای": "Solo medicamentos con receta",
  "تخفیف باشگاه فروشنده (تومان)": "Descuento del club del vendedor (tomanes)",
  "کد تخفیف (تومان)": "Código de descuento (tomanes)",
- "سهم بیمه‌ی تکمیلی (تومان)": "Parte del seguro complementario (tomanes)"
+ "سهم بیمه‌ی تکمیلی (تومان)": "Parte del seguro complementario (tomanes)",
+ "دستیار هوشمند": "Asistente de IA",
+ "اصلاح تسویه پس از بازپس‌گیری تخفیف": "Ajuste de liquidación (descuento retirado)"
 }

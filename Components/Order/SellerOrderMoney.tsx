@@ -31,6 +31,9 @@ export interface ISellerLineMoney {
   sellerPromo: number;
   platformPromo: number;
   promoReduced: number;
+  // a settled line's later adjustment once the discount code was taken
+  // back from it (backend Lib/orderPromoAdjust.ts) - already in `payout`
+  promoAdjust?: number;
   sale: number;
   tax: number;
   insurerShare: number;
@@ -50,6 +53,7 @@ export interface ISellerMoneyTotals {
   sellerPromo: number;
   platformPromo: number;
   promoReduced: number;
+  promoAdjust?: number;
   sale: number;
   tax: number;
   insurerShare: number;
@@ -167,6 +171,9 @@ const SellerOrderMoney = ({
     component: (node) => (
       <span className={classes.cell}>
         <strong>{node.status === "cancelled" ? "-" : toman(node.payout)}</strong>
+        {node.status !== "cancelled" && n(node.promoAdjust) > 0 && (
+          <small className={classes.note} title={getContent("moneyPromoAdjust")}>{`(+ ${toman(node.promoAdjust)})`}</small>
+        )}
         {node.status !== "cancelled" && (node.estimated || node.held) && (
           <Badge color={node.estimated ? "Disabled" : "Info"} size="S">
             {getContent(node.estimated ? "moneyEstimated" : "moneyHeld")}
@@ -202,6 +209,8 @@ const SellerOrderMoney = ({
       ]);
     pairs.push(["moneyBuyerPaid", toman(totals.buyerPaid)]);
     pairs.push(["moneyCommission", minus(totals.commission)]);
+    // in the payout below: the line's settlement adjusted after the fact
+    if (n(totals.promoAdjust) > 0) pairs.push(["moneyPromoAdjust", `+ ${toman(totals.promoAdjust)}`]);
     pairs.push(["moneyPayout", <strong key="po">{toman(totals.payout)}</strong>]);
     if (n(totals.insurerReceivable) > 0) pairs.push(["moneyInsurerReceivable", toman(totals.insurerReceivable)]);
     if (n(totals.refunded) > 0) pairs.push(["moneyRefunded", toman(totals.refunded)]);
@@ -217,6 +226,9 @@ const SellerOrderMoney = ({
       )}
       {n(totals?.promoReduced) > 0 && (
         <p className={classes.hint}>{getContent("moneyPromoReducedNote", [currencize(n(totals?.promoReduced))])}</p>
+      )}
+      {n(totals?.promoAdjust) > 0 && (
+        <p className={classes.hint}>{getContent("moneyPromoAdjustNote", [currencize(n(totals?.promoAdjust))])}</p>
       )}
       <Table name={tableName} data={lines} renderer={renderer} />
       {!!pairs.length && (

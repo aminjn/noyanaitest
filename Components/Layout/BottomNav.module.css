@@ -102,6 +102,78 @@
   font-weight: 800;
 }
 
+/* «دستیار هوشمند»: the one AI entry of the bar - the assistant's orb (the
+   same avatar as the floating button and the chat), raised out of the bar
+   on a ring of the bar's own glass, a labelled tab and a "new" dot until it
+   is first used */
+.ai {
+  color: var(--aiText);
+  font-weight: 800;
+}
+
+.aiTile {
+  position: relative;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-top: -1.625rem;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 0.25rem var(--menuGlassSolid),
+    0 0.5rem 1.25rem rgba(109, 74, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.aiTile > span:first-child {
+  display: block;
+}
+
+.ai.active .label {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25rem;
+}
+
+.ai:focus-visible {
+  outline: none;
+}
+
+.ai:focus-visible .aiTile {
+  outline: 2px solid var(--ai);
+  outline-offset: 0.3rem;
+}
+
+.dot {
+  position: absolute;
+  top: 0.0625rem;
+  inset-inline-end: 0.0625rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--errorS1, #d92d20);
+  box-shadow: 0 0 0 2px var(--menuGlassSolid);
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 
 /* count pill on a tab's icon (unread chats) */
 .badge {
@@ -123,9 +195,10 @@
   box-shadow: 0 0 0 2px var(--menuGlassSolid);
 }
 
+/* the menu / sign-in tabs are buttons: same type as the link tabs */
 button.item {
   border: none;
   background: none;
-  font: inherit;
+  font-family: inherit;
   cursor: pointer;
 }

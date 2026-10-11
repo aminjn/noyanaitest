@@ -7397,5 +7397,11 @@
  "moneyPromoReducedNote": "Après l'annulation d'une partie de la commande, ${1} tomans de la remise du code ont été retirés des articles restants (le reste ne remplit plus ses conditions).",
  "moneyEstimatedNote": "La commission et le versement des articles en cours sont estimés au taux du jour et deviennent définitifs à la livraison de chaque article.",
  "promoClawbackMinOrder": "Le reste de votre commande est sous le minimum du code « ${1} » : sa remise de ${2} tomans sur les articles restants ne s'applique plus et est déduite du remboursement.",
- "cancelPreviewRefund": "${1} tomans reviendront dans votre portefeuille."
+ "cancelPreviewRefund": "${1} tomans reviendront dans votre portefeuille.",
+ "aiCoachPatient": "Décrivez vos symptômes, trouvez le bon médecin ou posez une question sur votre consultation.",
+ "aiCoachProvider": "Écrivez ou dites ce qu'il faut faire dans votre espace ; chaque modification attend votre confirmation.",
+ "aiEntryNew": "nouveau",
+ "promoClawbackDelivered": "Cela inclut la remise sur les articles que vous avez déjà reçus.",
+ "moneyPromoAdjust": "Ajustement du règlement (remise reprise)",
+ "moneyPromoAdjustNote": "Après l'annulation d'une partie de la commande, la remise du code a aussi été retirée des articles déjà réglés : leur prix de vente a augmenté et ${1} tomans (TVA comprise) ont été ajoutés à votre règlement, retirables au prochain cycle de règlement."
 }

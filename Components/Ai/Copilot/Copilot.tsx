@@ -18,6 +18,8 @@ import AiLocked, { aiGateOf, AiGateInfo, AiQuota } from "../AiLocked";
 import { CHIP_LIMIT, chipsFor, COPILOT_PROFILES } from "./copilotProfiles";
 import CopilotCard, { CopilotCardData } from "./CopilotCard";
 import useHideOnScroll from "@/Components/Hooks/useHideOnScroll";
+import AiCoachMark from "../AiCoachMark";
+import { markAiUsed, onOpenCopilot, registerCopilotHost, useAiDiscovery } from "../aiDiscovery";
 import ai from "../Ai.module.css";
 import classes from "./Copilot.module.css";
 
@@ -114,7 +116,7 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
   const hidden = allowed.length - CHIP_LIMIT;
 
   return (
-    <div className={classes.panel} role="dialog" aria-modal="false" aria-label={t(ui.title)}>
+    <div className={classes.panel} role="dialog" aria-modal="false" aria-label={t(ui.title)} data-copilot-panel>
       <header className={classes.head}>
         <AiOrb size="2rem" />
         <span className={classes.title}>{t(ui.title)}</span>
@@ -239,7 +241,23 @@ const readSpot = (): FabSpot => {
 // - it steps out while the page scrolls down (with the tab bar) and while a
 //   drawer, sheet or popup is open (html.scrollLocked, globals.css),
 // - it can be dragged up or to the other edge if it still covers something.
-const CopilotFab = ({ label, title, onOpen }: { label: string; title: string; onOpen: () => void }) => {
+// It is a labelled pill (orb + «دستیار هوشمند») while the page rests at the
+// top, shrinks to the orb once the page is scrolled and opens up again when
+// back at the top; a "new" dot until first used, and a one-time coach mark
+// (`coach`) on phones.
+const CopilotFab = ({
+  label,
+  title,
+  onOpen,
+  coach,
+  isNew,
+}: {
+  label: string;
+  title: string;
+  onOpen: () => void;
+  coach?: { title: string; text: string; gotIt: string; closeLabel: string };
+  isNew: string;
+}) => {
   const pathname = usePathname();
   const ref = useRef<HTMLButtonElement>(null);
   const [phone, setPhone] = useState(false);
@@ -249,6 +267,27 @@ const CopilotFab = ({ label, title, onOpen }: { label: string; title: string; on
   const dragged = useRef(false);
   const [delta, setDelta] = useState<{ x: number; y: number } | null>(null);
   const scrolledAway = useHideOnScroll(!phone, pathname);
+  const { used } = useAiDiscovery();
+  // phones: the label shows at the top of the page, the orb alone below it
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    if (!phone) {
+      setCompact(false);
+      return;
+    }
+    let idle = 0;
+    const onScroll = () => {
+      if (window.scrollY > 24) setCompact(true);
+      window.clearTimeout(idle);
+      idle = window.setTimeout(() => window.scrollY <= 24 && setCompact(false), 300);
+    };
+    setCompact(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.clearTimeout(idle);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [phone, pathname]);
 
   useEffect(() => {
     const mq = window.matchMedia(PHONE);
@@ -345,10 +384,11 @@ const CopilotFab = ({ label, title, onOpen }: { label: string; title: string; on
     : undefined;
 
   return (
+    <>
     <button
       ref={ref}
       type="button"
-      className={`${classes.fab} ${phone && spot.side === "start" ? classes.fabStart : ""} ${scrolledAway && !delta ? classes.fabAway : ""}`}
+      className={`${classes.fab} ${phone && spot.side === "start" ? classes.fabStart : ""} ${scrolledAway && !delta ? classes.fabAway : ""} ${phone && compact ? classes.fabCompact : ""}`}
       style={style}
       data-copilot-fab
       onPointerDown={onPointerDown}
@@ -366,13 +406,34 @@ const CopilotFab = ({ label, title, onOpen }: { label: string; title: string; on
         }
         onOpen();
       }}
-      aria-label={title}
+      aria-label={used ? label : `${label} (${isNew})`}
+      aria-haspopup="dialog"
       title={title}
     >
-      <AiOrb size="2.25rem" />
+      <span className={classes.fabOrb}>
+        <AiOrb size="2.25rem" />
+        {!used && <span className={classes.fabDot} aria-hidden="true" />}
+      </span>
       <span className={classes.fabLabel}>{label}</span>
     </button>
+    {phone && !!coach && (
+      <AiCoachMark anchor={ref} title={coach.title} text={coach.text} gotIt={coach.gotIt} closeLabel={coach.closeLabel} />
+    )}
+    </>
   );
+};
+
+const PHONE_MQ = "(max-width: 48rem)";
+const usePhone = () => {
+  const [phone, setPhone] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE_MQ);
+    const on = () => setPhone(mq.matches);
+    on();
+    mq.addEventListener?.("change", on);
+    return () => mq.removeEventListener?.("change", on);
+  }, []);
+  return phone;
 };
 
 const Copilot = ({ profile: fixed }: { profile?: AiProfile }) => {
@@ -380,6 +441,19 @@ const Copilot = ({ profile: fixed }: { profile?: AiProfile }) => {
   const profile = fixed || detected;
   const t = useAiText(profile);
   const [open, setOpen] = useState(false);
+  const phone = usePhone();
+  // the patient dashboard: on phones its tab bar's AI tab is the one entry
+  // (BottomNav); it opens this assistant while it is available, else the
+  // health assistant (/wizard). The floating button stays off there.
+  const inTabBar = profile === "user";
+  const { status, ok: setUp } = useAiStatus(inTabBar ? profile : null);
+  const own = status?.features?.[copilotFeatureOf("user")];
+  const hostOk = inTabBar && setUp && (!own || own.state === "ok");
+  useEffect(() => (hostOk ? registerCopilotHost() : undefined), [hostOk]);
+  useEffect(() => (hostOk ? onOpenCopilot(() => setOpen(true)) : undefined), [hostOk]);
+  useEffect(() => {
+    if (open) markAiUsed();
+  }, [open]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -396,11 +470,22 @@ const Copilot = ({ profile: fixed }: { profile?: AiProfile }) => {
   return (
     <>
       {open && <CopilotPanel profile={profile} onClose={() => setOpen(false)} />}
-      {!open && (
+      {!open && !(inTabBar && phone) && (
         <CopilotFab
-          label={t(T("copFab", "دستیار نویان"))}
+          label={t(T("aiAssistant", "دستیار هوشمند"))}
           title={`${t(COPILOT_PROFILES[profile].title)} (Ctrl+J)`}
+          isNew={t(T("aiEntryNew", "جدید"))}
           onOpen={() => setOpen(true)}
+          coach={
+            profile === "admin" || inTabBar
+              ? undefined
+              : {
+                  title: t(T("aiAssistant", "دستیار هوشمند")),
+                  text: t(T("aiCoachProvider", "کارهای پنل را بنویسید یا بگویید؛ هر تغییری پیش از ثبت به تأیید شما می‌رسد.")),
+                  gotIt: t(T("understood", "متوجه شدم")),
+                  closeLabel: t(T("copClose", "بستن")),
+                }
+          }
         />
       )}
     </>
