@@ -98,7 +98,7 @@ const AdminManageServicePackagesPage = () => {
             node.owner ? getDoctorProfileLabel(node.owner) : ta("حذف شده"),
           component: (node) =>
             node.owner ? (
-              <InlineLink href={adminPath(`/doctorProfile/${node.owner._id}`)}>
+              <InlineLink href={adminPath(`/doctorprofile/${node.owner._id}`)}>
                 {getDoctorProfileLabel(node.owner)}
               </InlineLink>
             ) : (
