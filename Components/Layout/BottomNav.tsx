@@ -61,7 +61,15 @@ const useTabBarScroll = (off: boolean, pathname: string) => {
     return () => document.body.classList.remove("hasBottomNav");
   }, [off]);
   // a new page starts with the bar shown
-  return useHideOnScroll(off, pathname);
+  const hidden = useHideOnScroll(off, pathname);
+  // fixed action bars follow the bar down while it is hidden
+  // (--bottomNavLive in app/globals.css), no empty strip under them
+  useEffect(() => {
+    if (off) return;
+    document.body.classList.toggle("bottomNavHidden", hidden);
+    return () => document.body.classList.remove("bottomNavHidden");
+  }, [off, hidden]);
+  return hidden;
 };
 
 // The frosted phone tab bar itself (<= 768px), shared by the public site,

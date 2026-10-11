@@ -50,7 +50,9 @@ export interface IOrderReturn {
   rejectReason?: string;
   shipping?: { method: "tapsi" | "tipax" | "inPerson"; fee?: number; paidBy: "seller" | "buyer"; trackingCode?: string; shippedAt?: string | null } | null;
   condition?: "resellable" | "damaged" | null;
-  money?: { refund: number; shippingDeduction: number; promoClawback: number; sellerReversal: number } | null;
+  // deliveryRefund (2026-10): the parcel's delivery fee given back when a
+  // seller-error return left the buyer nothing of it
+  money?: { refund: number; shippingDeduction: number; promoClawback: number; sellerReversal: number; deliveryRefund?: number } | null;
   refundedAt?: string | null;
   createdAt?: string;
   escalation?: { status?: string; rejectReason?: string } | null;
@@ -180,6 +182,7 @@ const ReturnCard = ({
           <strong className={`${classes.refund} ${tsmRegular}`}>{t("retRefundAmount", [currencize(n(ret.money.refund))])}</strong>
           {n(ret.money.shippingDeduction) > 0 && <span>{t("retDeductShipping", [currencize(n(ret.money.shippingDeduction))])}</span>}
           {n(ret.money.promoClawback) > 0 && <span>{t("retDeductPromo", [currencize(n(ret.money.promoClawback))])}</span>}
+          {n(ret.money.deliveryRefund) > 0 && <span>{t("retDeliveryRefund", [currencize(n(ret.money.deliveryRefund))])}</span>}
           {viewer === "seller" && n(ret.money.sellerReversal) > 0 && (
             <span>{t("retSellerReversal", [currencize(n(ret.money.sellerReversal))])}</span>
           )}

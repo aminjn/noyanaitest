@@ -17,6 +17,7 @@ import FinanceShell from "./FinanceShell";
 import CentreSplitCard from "./CentreSplitCard";
 import PaymentForm, { POPUP_KEY as PAY_KEY } from "./PaymentForm";
 import {
+  ClaimCredits,
   downloadCsv,
   FinClaim,
   InsurerKind,
@@ -290,7 +291,9 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
       setBusy(false);
     }
   };
-  const openAmount = data ? Math.max(0, data.claimed - data.paid - data.deducted) : 0;
+  // (2026-10) a return's credit is no longer owed by the insurer
+  const credited = Number(data?.credited) || 0;
+  const openAmount = data ? Math.max(0, data.claimed - credited - data.paid - data.deducted) : 0;
   // (2026-10) reviewed and paid by the insurer on Noyan: its decisions are
   // the deductions and its payments the receipts
   const byInsurer = !!(data?.insurerProfile && data?.review);
@@ -327,7 +330,7 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
               {!!data.insurerProfile && data.status === "draft" && <p className={fin.notice}>{t("finNoyanInsurerHint")}</p>}
               {byInsurer && (
                 <p className={fin.notice}>
-                  {t("finByInsurerNotice")} <Pill status={reviewTone(data.review)}>{t(reviewKey(data.review))}</Pill>
+                  {t("finByInsurerNotice")} <Pill status={reviewTone(data.review, openAmount)}>{t(reviewKey(data.review, openAmount))}</Pill>
                   {data.review?.decidedAt ? ` · ${t("finDecidedOn")}: ${f.date(data.review.decidedAt)}` : ""}
                 </p>
               )}
@@ -344,6 +347,12 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
                   <span className={classes.tileLabel}>{t("finDeducted")}</span>
                   <span className={`${classes.tileValue} ${data.deducted > 0 ? classes.negative : ""}`}>{f.money(data.deducted)}</span>
                 </div>
+                {credited > 0 && (
+                  <div className={classes.tile}>
+                    <span className={classes.tileLabel}>{t("finCredited")}</span>
+                    <span className={`${classes.tileValue} ${classes.negative}`}>{f.money(credited)}</span>
+                  </div>
+                )}
                 <div className={classes.tile}>
                   <span className={classes.tileLabel}>{t("invDue")}</span>
                   <span className={classes.tileValue}>{f.money(openAmount)}</span>
@@ -392,6 +401,7 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
                   </tbody>
                 </table>
               </div>
+              <ClaimCredits claim={data} money={f.money} date={f.date} />
               {(asArray<NonNullable<FinClaim["payments"]>[number]>(data.payments).length > 0 || asArray(data.deductions).length > 0) && (
                 <dl className={fin.kv}>
                   {asArray<NonNullable<FinClaim["payments"]>[number]>(data.payments).map((p) => (
@@ -585,6 +595,7 @@ const Body = () => {
                       <th className={classes.num}>{t("finClaimed")}</th>
                       <th className={classes.num}>{t("finReceivedAmount")}</th>
                       <th className={classes.num}>{t("finDeducted")}</th>
+                      <th className={classes.num}>{t("finCredited")}</th>
                       <th>{t("status")}</th>
                     </tr>
                   </thead>
@@ -599,6 +610,9 @@ const Body = () => {
                         <td className={classes.num}>{f.money(c.claimed)}</td>
                         <td className={classes.num}>{f.money(c.paid)}</td>
                         <td className={`${classes.num} ${c.deducted > 0 ? classes.negative : ""}`}>{f.money(c.deducted)}</td>
+                        <td className={`${classes.num} ${(Number(c.credited) || 0) > 0 ? classes.negative : ""}`}>
+                          {(Number(c.credited) || 0) > 0 ? f.money(c.credited) : "—"}
+                        </td>
                         <td>
                           <Pill status={c.status}>{t(statusKey(c.status))}</Pill>
                           {c.review && (

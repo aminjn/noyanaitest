@@ -94,7 +94,7 @@
 .actions {
   position: sticky;
   /* clear the phone tab bar (0 elsewhere and inside popups) */
-  bottom: var(--bottomNavSpace, 0px);
+  bottom: var(--bottomNavLive, var(--bottomNavSpace, 0px));
   z-index: 5;
   margin-inline: calc(-1 * min(1.5rem, 3dvw));
   padding: 0.875rem min(1.5rem, 3dvw);

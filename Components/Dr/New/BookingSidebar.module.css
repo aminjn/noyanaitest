@@ -209,7 +209,8 @@
   .stickyBar {
     position: fixed;
     inset-inline: 0;
-    bottom: var(--bottomNavSpace);
+    bottom: var(--bottomNavLive, var(--bottomNavSpace));
+    transition: bottom var(--transTime);
     z-index: 900;
     display: flex;
     align-items: center;

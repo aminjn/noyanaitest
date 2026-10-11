@@ -15,6 +15,7 @@ import fin from "./Finance.module.css";
 import { asArray, isoDay, useBizFormat } from "../bizShared";
 import FinanceShell from "./FinanceShell";
 import {
+  ClaimCredits,
   ClaimLineDecision,
   decisionKey,
   downloadCsv,
@@ -225,7 +226,7 @@ const ReviewView = ({ id, onChanged }: { id: string; onChanged: () => unknown })
                       .join(" · ")}
                   </span>
                 </div>
-                <Pill status={reviewTone(review)}>{t(reviewKey(review))}</Pill>
+                <Pill status={reviewTone(review, data?.open)}>{t(reviewKey(review, data?.open))}</Pill>
               </div>
               <div className={classes.tiles}>
                 <div className={classes.tile}>
@@ -242,11 +243,18 @@ const ReviewView = ({ id, onChanged }: { id: string; onChanged: () => unknown })
                     {f.money(pending ? sums.deducted : review?.deducted)}
                   </span>
                 </div>
+                {(Number(data.credited) || 0) > 0 && (
+                  <div className={classes.tile}>
+                    <span className={classes.tileLabel}>{t("finCredited")}</span>
+                    <span className={`${classes.tileValue} ${classes.negative}`}>{f.money(data.credited)}</span>
+                  </div>
+                )}
                 <div className={classes.tile}>
                   <span className={classes.tileLabel}>{t("finClaimInOpen")}</span>
                   <span className={classes.tileValue}>{f.money(data.open)}</span>
                 </div>
               </div>
+              <ClaimCredits claim={data} money={f.money} date={f.date} />
               {pending && canWrite && <p className={classes.muted}>{t("finClaimInReviewHint")}</p>}
               <datalist id="fin-ded-reasons">
                 {REASONS.map((r) => (
@@ -454,6 +462,7 @@ const Body = () => {
                       <th className={classes.num}>{t("finClaimed")}</th>
                       <th className={classes.num}>{t("finApproved")}</th>
                       <th className={classes.num}>{t("finDeducted")}</th>
+                      <th className={classes.num}>{t("finCredited")}</th>
                       <th className={classes.num}>{t("finClaimInOpen")}</th>
                       <th>{t("status")}</th>
                     </tr>
@@ -471,9 +480,12 @@ const Body = () => {
                         <td className={classes.num}>{f.money(c.claimed)}</td>
                         <td className={classes.num}>{c.review?.status === "pending" ? "—" : f.money(c.review?.approved)}</td>
                         <td className={`${classes.num} ${(c.review?.deducted || 0) > 0 ? classes.negative : ""}`}>{c.review?.status === "pending" ? "—" : f.money(c.review?.deducted)}</td>
+                        <td className={`${classes.num} ${(Number(c.credited) || 0) > 0 ? classes.negative : ""}`}>
+                          {(Number(c.credited) || 0) > 0 ? f.money(c.credited) : "—"}
+                        </td>
                         <td className={classes.num}>{f.money(c.open)}</td>
                         <td>
-                          <Pill status={reviewTone(c.review)}>{t(reviewKey(c.review))}</Pill>
+                          <Pill status={reviewTone(c.review, c.open)}>{t(reviewKey(c.review, c.open))}</Pill>
                         </td>
                       </tr>
                     ))}

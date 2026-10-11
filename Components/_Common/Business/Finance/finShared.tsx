@@ -193,6 +193,68 @@ export type FinClaim = {
   centreName?: string;
   ownerKind?: string;
   review?: ClaimReview;
+  // (2026-10, backend Services/orderReturnService.ts) a line of the list
+  // already sent whose goods came back: its insurer share is credited back
+  // (the insurer owes that much less); net = claimed - credited
+  credits?: ClaimCredit[];
+  credited?: number;
+  net?: number;
+};
+
+export type ClaimCredit = { order?: string; orderLine?: string; amount: number; ref?: string; at: string; reason?: string; service?: string };
+
+// the return's reason as the order pages name it (Models/OrderReturn.ts)
+const CREDIT_REASON: Record<string, string> = {
+  wrongItem: "retReasonWrongItem",
+  damaged: "retReasonDamaged",
+  expired: "retReasonExpired",
+  notAsDescribed: "retReasonNotAsDescribed",
+  changedMind: "retReasonChangedMind",
+  serviceIssue: "retReasonServiceIssue",
+  sellerError: "retReasonSellerError",
+  goodwill: "retReasonGoodwill",
+  other: "retReasonOther",
+};
+
+// (2026-10) The credits a list carries, on the centre's claim and on the
+// insurer's received list alike: each credited line (its service, the
+// return's reason, the date) and its amount, then the list's net total.
+export const ClaimCredits = ({
+  claim,
+  money,
+  date,
+}: {
+  claim: Pick<FinClaim, "credits" | "claimed" | "net" | "credited">;
+  money: (n?: number) => string;
+  date: (d?: string) => string;
+}) => {
+  const t = useFinText();
+  const credits = asArray<ClaimCredit>(claim.credits).filter((c) => c && Number(c.amount) > 0);
+  if (!credits.length) return null;
+  const credited = Number(claim.credited) || credits.reduce((s, c) => s + (Number(c.amount) || 0), 0);
+  const net = typeof claim.net === "number" ? claim.net : Math.max(0, (Number(claim.claimed) || 0) - credited);
+  return (
+    <section className={fin.credits}>
+      <h4 className={fin.creditsTitle}>{t("finCreditsTitle")}</h4>
+      <p className={fin.small}>{t("finCreditsHint")}</p>
+      <dl className={fin.kv}>
+        {credits.map((c, n) => (
+          <div key={c.ref || n}>
+            <dt>
+              {[date(c.at), c.service || "", c.reason ? t(CREDIT_REASON[c.reason] || "retReasonOther") : ""].filter(Boolean).join(" · ")}
+            </dt>
+            <dd className={fin.negativeAmount}>
+              <bdi dir="ltr">−{money(c.amount)}</bdi>
+            </dd>
+          </div>
+        ))}
+        <div className={fin.kvTotal}>
+          <dt>{t("finClaimNet")}</dt>
+          <dd>{money(net)}</dd>
+        </div>
+      </dl>
+    </section>
+  );
 };
 
 export type ClaimLineDecision = "accepted" | "deducted" | "rejected";
@@ -208,10 +270,14 @@ export type ClaimReview = {
 };
 
 // the insurer's review status, as both sides read it
-export const reviewKey = (r?: Pick<ClaimReview, "status" | "approved">) =>
-  !r ? "" : r.status === "pending" ? "finRevPending" : r.status === "paid" ? "finRevPaid" : r.approved > 0 ? "finRevDecided" : "finRevRejected";
-export const reviewTone = (r?: Pick<ClaimReview, "status" | "approved">) =>
-  !r ? "draft" : r.status === "pending" ? "submitted" : r.status === "paid" ? "paid" : r.approved > 0 ? "partial" : "rejected";
+// `open`: what is still owed; a decided list that returns credits fully
+// cleared reads as settled, not "awaiting payment"
+const settled = (r: Pick<ClaimReview, "status" | "approved">, open?: number) =>
+  r.status === "paid" || (r.status === "decided" && r.approved > 0 && typeof open === "number" && open <= 0);
+export const reviewKey = (r?: Pick<ClaimReview, "status" | "approved">, open?: number) =>
+  !r ? "" : r.status === "pending" ? "finRevPending" : settled(r, open) ? "finRevPaid" : r.approved > 0 ? "finRevDecided" : "finRevRejected";
+export const reviewTone = (r?: Pick<ClaimReview, "status" | "approved">, open?: number) =>
+  !r ? "draft" : r.status === "pending" ? "submitted" : settled(r, open) ? "paid" : r.approved > 0 ? "partial" : "rejected";
 export const decisionKey = (d?: ClaimLineDecision) =>
   d === "deducted" ? "finDecDeducted" : d === "rejected" ? "finDecRejected" : "finDecAccepted";
 

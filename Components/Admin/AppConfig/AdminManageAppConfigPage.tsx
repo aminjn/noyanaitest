@@ -69,7 +69,6 @@ export interface IAppConfig extends MongoDoc {
   returnWindowDays?: number;
   returnChangedMindAllowed?: boolean;
   returnNonReturnableCategories?: string[];
-  returnSellerDebtLimit?: number;
   returnSellerResponseHours?: number;
   returnReceiveDays?: number;
 

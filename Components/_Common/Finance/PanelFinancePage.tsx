@@ -39,9 +39,20 @@ type FinanceTransaction = {
   license?: { displayName?: string } | null;
   // a sold order line (pharmacy / doctor service / paraclinic payout)
   order?: { submittedAt?: string } | null;
-  // still in its settlement hold until availableAt
+  // still in its settlement hold until availableAt; holdReason (2026-10,
+  // backend Lib/payoutHold.ts): a pharmacy line waits for its return
+  // window, or while a return of it is open - a seller is never in debt
   held?: boolean;
   availableAt?: string;
+  holdReason?: "returnWindow" | "returnOpen";
+  // what a return took back from it while it was held
+  heldTaken?: number;
+  // a return's reversal of an earning (from the held earnings, the rest
+  // covered by NoyanAI), a seller-error parcel's delivery fee taken back,
+  // a buyer-fault return's courier fee
+  returnPart?: "refund" | "reversal" | "shipping" | "deliveryRefund" | "deliveryReversal";
+  fromPending?: number;
+  platformCovered?: number;
   // a centre's own wallet moved it (one wallet per clinic / hospital);
   // a centre's plan without it was paid from the owner's personal wallet
   centreWallet?: string;
@@ -201,10 +212,26 @@ const PanelFinancePage = ({
           .join(" · "),
       };
     }
+    if (t.order && (t.returnPart === "reversal" || t.returnPart === "deliveryReversal")) {
+      const covered = Number(t.platformCovered) || 0;
+      return {
+        title: getContent(t.returnPart === "reversal" ? "pfReturnReversal" : "pfDeliveryReversal", [
+          safeFormatDate(shortDate, t.order.submittedAt || t.createdAt),
+        ]),
+        sub: [
+          (Number(t.fromPending) || 0) > 0 ? getContent("pfFromHeld") : "",
+          covered > 0 ? getContent("pfPlatformCovered", [num.format(covered)]) : "",
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      };
+    }
+    if (t.order && t.returnPart === "shipping")
+      return { title: getContent("pfReturnCourier", [safeFormatDate(shortDate, t.order.submittedAt || t.createdAt)]), sub: "" };
     if (t.order)
       return {
         title: getContent("pfOrderPayout", [safeFormatDate(shortDate, t.order.submittedAt || t.createdAt)]),
-        sub: "",
+        sub: (Number(t.heldTaken) || 0) > 0 ? getContent("pfHeldTaken", [num.format(Number(t.heldTaken) || 0)]) : "",
       };
     if (t.license)
       return {
@@ -326,10 +353,17 @@ const PanelFinancePage = ({
                           <td>
                             <span className={classes.desc}>{d.title}</span>
                             {d.sub && <span className={classes.descSub}>{d.sub}</span>}
-                            {t.held && t.availableAt && (
-                              <span className={classes.descSub}>
-                                {getContent("pfHeldUntil", [safeFormatDate(shortDate, t.availableAt)])}
-                              </span>
+                            {t.held && t.holdReason === "returnOpen" ? (
+                              <span className={classes.descSub}>{getContent("pfHeldReturnOpen")}</span>
+                            ) : (
+                              t.held &&
+                              t.availableAt && (
+                                <span className={classes.descSub}>
+                                  {getContent(t.holdReason === "returnWindow" ? "pfHeldUntilReturn" : "pfHeldUntil", [
+                                    safeFormatDate(shortDate, t.availableAt),
+                                  ])}
+                                </span>
+                              )
                             )}
                             {!!t.commission && (
                               <span className={classes.descSub}>

@@ -122,6 +122,28 @@
   color: var(--gray13);
 }
 
+/* (2026-10) a list's credits for goods returned after it was sent */
+.credits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--glass);
+}
+
+.creditsTitle {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--gray13);
+}
+
+.negativeAmount.negativeAmount {
+  color: var(--error);
+}
+
 .link {
   color: var(--primary7);
   font-weight: 700;

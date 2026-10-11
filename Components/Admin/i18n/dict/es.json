@@ -3542,7 +3542,6 @@
  "فروشنده و پشتیبانی": "Vendedor y soporte",
  "مرجوعی کالا": "Devoluciones de productos",
  "مهلت مرجوعی پس از تحویل (روز، ۰ تا ۶۰، ۰ یعنی خریدار مرجوع نمی‌کند)": "Plazo de devolución tras la entrega (días, 0-60; 0 = sin devoluciones)",
- "از لحظه‌ی تحویل هر قلم (تحویل پیک یا تأیید تحویل تیپاکس) شمرده می‌شود. بازپرداخت پشتیبانی یا آزمایشگاه محدود به این مهلت نیست.": "Se cuenta desde la entrega de cada artículo (entrega del mensajero o Tipax confirmada). El reembolso de soporte o del laboratorio no está limitado.",
  "انصراف از خرید برای کالای باز نشده": "Desistimiento para artículos sin abrir",
  "فقط برای کالای بدون نسخه و خارج از دسته‌های غیرقابل مرجوع؛ هزینه‌ی برگشت با خریدار است و از مبلغ برگشتی کم می‌شود.": "Solo para artículos sin receta fuera de las categorías no retornables; el comprador paga el envío, descontado del reembolso.",
  "دسته‌های غیرقابل مرجوع (جز در خطای فروشنده)": "Categorías no retornables (salvo error del vendedor)",
@@ -3551,8 +3550,6 @@
  "درخواستی که فروشنده در این مدت تأیید یا رد نکند، خودکار به صف درخواست‌ها (مرجوعی‌های در داوری) می‌رود.": "Una solicitud que el vendedor no aprueba ni rechaza en este plazo pasa sola a la cola de solicitudes.",
  "مهلت رسیدن و تأیید دریافت کالای مرجوعی (روز)": "Plazo para que llegue y se confirme la devolución (días)",
  "کالای ارسال‌شده‌ای که فروشنده در این مدت دریافتش را تأیید نکند به داوری پشتیبانی می‌رود؛ مرجوعیِ تأییدشده‌ای که خریدار نفرستد بسته می‌شود.": "Un artículo enviado cuya recepción el vendedor no confirma en este plazo pasa a soporte; una devolución aprobada que el comprador no envía se cierra.",
- "سقف بدهی فروشنده پس از مرجوعی (تومان، ۰ یعنی بدون سقف)": "Límite de deuda del vendedor tras devoluciones (tomanes, 0 = sin límite)",
- "اگر برگشت درآمد، موجودی فروشنده‌ای را که تسویه گرفته منفی کند، از تسویه‌های بعدی کم می‌شود و تا آن زمان برداشت ممکن نیست؛ اگر بدهی از این سقف بگذرد به پشتیبانی هشدار داده می‌شود.": "Si revertir un ingreso deja en negativo a un vendedor ya pagado, se descuenta de liquidaciones posteriores y no puede retirar; por encima de este límite se avisa a soporte.",
  "همه‌ی تنظیمات پول در یک جا: کمیسیون، مالیات، درگاه و کیف پول، ارقام قانونی حقوق و دستمزد، ارسال، مهلت پاسخ به سفارش‌ها و مرجوعی.": "Todos los ajustes de dinero en un lugar: comisión, impuestos, pasarela y monedero, nómina, envío, plazos de respuesta y devoluciones.",
  "مرجوعی سفارش %orderId% منتظر داوری پشتیبانی است.": "La devolución del pedido %orderId% espera la decisión de soporte.",
  "درخواست مرجوعی تازه - فروشنده": "Nueva solicitud de devolución - vendedor",
@@ -3563,5 +3560,11 @@
  "درخواست مرجوعی سفارش %orderId% پذیرفته نشد. دلیل: %reason%. می‌توانید از صفحه‌ی سفارش آن را به پشتیبانی بفرستید.": "La solicitud de devolución del pedido %orderId% no fue aceptada. Motivo: %reason%. Puede enviarla a soporte desde la página del pedido.",
  "بازپرداخت مرجوعی - خریدار": "Devolución reembolsada - comprador",
  "%amount% تومان بابت مرجوعی سفارش %orderId% به کیف پول شما برگشت.": "%amount% tomanes por la devolución del pedido %orderId% volvieron a su monedero.",
- "مرجوعی برای داوری پشتیبانی": "Devolución pendiente de soporte"
+ "مرجوعی برای داوری پشتیبانی": "Devolución pendiente de soporte",
+ "از لحظه‌ی تحویل هر قلم (تحویل پیک یا تأیید تحویل تیپاکس) شمرده می‌شود. فروشنده هیچ‌وقت بدهکار نمی‌شود: درآمد هر قلم داروخانه و هزینه‌ی ارسال بسته تا پایان این مهلت به‌علاوه‌ی مهلت پاسخ فروشنده و مهلت دریافت کالا (اگر دیرتر از دوره‌ی تسویه باشد) و تا بسته شدن مرجوعی باز آن نگه داشته می‌شود. بازپرداخت پشتیبانی یا آزمایشگاه به این مهلت محدود نیست؛ اگر پس از تسویه باشد از درآمدهای در انتظار فروشنده و در غیر این صورت از حساب نویان پرداخت و به مدیر کل خبر داده می‌شود.": "Se cuenta desde la entrega de cada artículo (entrega del mensajero o entrega Tipax confirmada). Un vendedor nunca queda en deuda: el ingreso de cada artículo de farmacia y el envío del paquete se retienen hasta que pasen este plazo, el plazo de respuesta del vendedor y el de recepción de la devolución (si es posterior al periodo de liquidación), y mientras haya una devolución abierta. Un reembolso de soporte o del laboratorio no se limita a este plazo; tras el pago se toma de los ingresos retenidos del vendedor; si no, lo paga NoyanAI y se avisa al superadministrador.",
+ "بازپرداختی که نویان جبران کرد": "Reembolso cubierto por NoyanAI",
+ "%amount% تومان از بازپرداخت سفارش %orderId% را نویان جبران کرد؛ مالی آن را بررسی کند.": "NoyanAI cubrió %amount% tomanes del reembolso del pedido %orderId%; finanzas debe revisarlo.",
+ "+ هزینه‌ی ارسال ${1}": "+ gastos de envío ${1}",
+ "از درآمد نگه‌داشته ${1}": "de ingresos retenidos ${1}",
+ "جبران نویان ${1}": "cubierto por NoyanAI ${1}"
 }

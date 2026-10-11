@@ -203,6 +203,8 @@ const staffSample = (event: UserAlertEvent): string => {
       return ta("کمپین پیامکی «%name%» منتظر تأیید است.");
     case "newReturnEscalation":
       return ta("مرجوعی سفارش %orderId% منتظر داوری پشتیبانی است.");
+    case "refundPlatformCovered":
+      return ta("%amount% تومان از بازپرداخت سفارش %orderId% را نویان جبران کرد؛ مالی آن را بررسی کند.");
     case "settlementFailed":
       return ta("تسویه‌ی سفارش %orderId% پس از %attempts% بار تلاش انجام نشد؛ سفارش را بررسی کنید.");
     case "newClinicAdditionRequest":
@@ -233,6 +235,7 @@ const userAlertEventVariables: Record<UserAlertEvent, string[]> = {
   newSmsCampaign: ["requestId", "name"],
   settlementFailed: ["orderId", "attempts"],
   newReturnEscalation: ["requestId", "orderId"],
+  refundPlatformCovered: ["orderId", "amount"],
 };
 
 // mirrors backend Models/Reservation.ts ReservationSmsVariables

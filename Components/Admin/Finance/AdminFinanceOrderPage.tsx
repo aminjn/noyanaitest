@@ -24,6 +24,7 @@ import Table from "../UI/Table";
 import InlineLink from "../UI/InlineLink";
 import TableActions from "../UI/TableActions";
 import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
+import { orderRef } from "@/Components/helpers/orderRef";
 import {
   IFinanceUser,
   adminNoteActionDict,
@@ -221,7 +222,19 @@ interface IAdminReturn {
   rejectReason?: string;
   shipping?: { method: string; paidBy: string; fee?: number; trackingCode?: string } | null;
   condition?: string | null;
-  money?: { refund: number; shippingDeduction: number; promoClawback: number; sellerReversal: number } | null;
+  // deliveryRefund: the parcel's delivery fee given back (a seller-error
+  // return of all of it); sellerFromHeld / platformCovered (2026-10, a
+  // seller is never in debt): where the seller's part came from - its held
+  // earnings, and what NoyanAI absorbed (a refund after the payout)
+  money?: {
+    refund: number;
+    shippingDeduction: number;
+    promoClawback: number;
+    sellerReversal: number;
+    deliveryRefund?: number;
+    sellerFromHeld?: number;
+    platformCovered?: number;
+  } | null;
   createdAt?: string;
   escalation?: { _id: string; status: string; rejectReason?: string } | null;
 }
@@ -666,7 +679,7 @@ const AdminFinanceOrderPage = () => {
       {data === null && <p className={classes.hint}>{ta("سفارش پیدا نشد")}</p>}
       {!!data && (
         <WithTitle
-          title={ta("سفارش ${1}", [data._id.slice(-8)])}
+          title={ta("سفارش ${1}", [orderRef(data._id)])}
           actions={
             data.canCancel && canAct
               ? [
@@ -1252,11 +1265,12 @@ const AdminFinanceOrderPage = () => {
                         r.money ? (
                           <span>
                             {currencize(r.money.refund || 0)}
-                            {(r.money.shippingDeduction > 0 || r.money.promoClawback > 0) && (
+                            {(r.money.shippingDeduction > 0 || r.money.promoClawback > 0 || (r.money.deliveryRefund || 0) > 0) && (
                               <span className={classes.muted}>
                                 {` (${[
                                   r.money.shippingDeduction > 0 ? ta("پیک ${1}", [currencize(r.money.shippingDeduction)]) : "",
                                   r.money.promoClawback > 0 ? ta("تخفیف ${1}", [currencize(r.money.promoClawback)]) : "",
+                                  (r.money.deliveryRefund || 0) > 0 ? ta("+ هزینه‌ی ارسال ${1}", [currencize(r.money.deliveryRefund || 0)]) : "",
                                 ]
                                   .filter(Boolean)
                                   .join("، ")})`}
@@ -1270,7 +1284,23 @@ const AdminFinanceOrderPage = () => {
                     reversal: {
                       name: ta("برگشت از فروشنده (تومان)"),
                       value: (r) => r.money?.sellerReversal || 0,
-                      component: (r) => (r.money ? currencize(r.money.sellerReversal || 0) : "—"),
+                      component: (r) =>
+                        r.money ? (
+                          <span>
+                            {/* the seller's earning and, for a parcel sent back whole, its delivery fee */}
+                            {currencize((r.money.sellerFromHeld || 0) + (r.money.platformCovered || 0) || r.money.sellerReversal || 0)}
+                            {(r.money.sellerFromHeld || 0) > 0 && (
+                              <span className={classes.muted}>{` · ${ta("از درآمد نگه‌داشته ${1}", [currencize(r.money.sellerFromHeld || 0)])}`}</span>
+                            )}
+                            {(r.money.platformCovered || 0) > 0 && (
+                              <span className={`${classes.badge} ${classes.badge_pending || ""}`}>
+                                {ta("جبران نویان ${1}", [currencize(r.money.platformCovered || 0)])}
+                              </span>
+                            )}
+                          </span>
+                        ) : (
+                          "—"
+                        ),
                     },
                     createdAt: { name: ta("تاریخ"), value: (r) => (r.createdAt ? new Date(r.createdAt) : undefined) },
                     actions: {
