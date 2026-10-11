@@ -46,8 +46,10 @@ import {
 import { ContentKey } from "@/Components/Enums/contentKeys";
 import DocumentIcon from "@/Components/Icons/DocumentIcon";
 import SellerOrderMoney from "@/Components/Order/SellerOrderMoney";
+import useAcl from "@/Components/Hooks/useAcl";
+import { SellerReturns } from "@/Components/Order/Returns/OrderReturns";
 
-const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder"];
+const NS: ContentNamespace[] = ["common", "pharmacyPanelOrder", "orderReturns"];
 
 // Models this pharmacy can fulfill/cancel items in - mirrors the "model"
 // enum accepted by PATCH /pharmacy/order/:nodeId
@@ -183,11 +185,23 @@ const PharmacyIncomingOrderPage = () => {
 
   const { setPopup } = usePopup();
   const getContent = useScopedLocale(NS);
+  const canMutate = useAcl("pharmacy")("mutateOrders");
   // NexaMap (the super admin's link format) or our route page
   const { href: navHref } = useNavigationUrl(data?.address?.location?.coordinates);
   const t = (key: string) => getContent(key as ContentKey);
   const rows = data ? buildItemRows(data) : [];
   const rxRows = rows.filter((row) => !!row.prescription);
+  // the order line's name by its id (money and returns)
+  const lineNames: Record<string, string> = Object.fromEntries(
+    [
+      ...(Array.isArray(data?.products) ? data!.products : []).map(
+        (p) => [p?._id || "", p?.item?.product?.name || ""] as [string, string],
+      ),
+      ...(Array.isArray(data?.productPackages) ? data!.productPackages : []).map(
+        (p) => [p?._id || "", p?.item?.name || ""] as [string, string],
+      ),
+    ].filter(([id]) => !!id),
+  );
   const shipping = shippingOf(data);
   const openRx = (row: OrderItemRow, decision: "approve" | "reject") =>
     setPopup(
@@ -448,21 +462,11 @@ const PharmacyIncomingOrderPage = () => {
               },
             }}
           />
+          {/* (2026-10) returns of the delivered lines: approve, collect,
+              confirm receipt (the refund is made then) */}
+          <SellerReturns base="/pharmacy" returns={data.returns} names={lineNames} onChange={() => mutate()} canAct={canMutate} />
           {/* (2026-10) the money of each line and of the order */}
-          <SellerOrderMoney
-            money={data.money}
-            names={Object.fromEntries(
-              [
-                ...(Array.isArray(data.products) ? data.products : []).map(
-                  (p) => [p?._id || "", p?.item?.product?.name || ""] as [string, string],
-                ),
-                ...(Array.isArray(data.productPackages) ? data.productPackages : []).map(
-                  (p) => [p?._id || "", p?.item?.name || ""] as [string, string],
-                ),
-              ].filter(([id]) => !!id),
-            )}
-            tableName="PharmacyIncomingOrderMoney"
-          />
+          <SellerOrderMoney money={data.money} names={lineNames} tableName="PharmacyIncomingOrderMoney" />
         </WithTitle>
       )}
     </HandleLoading>

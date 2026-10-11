@@ -251,6 +251,17 @@ export const orderLedgerKindDict: Record<string, string> = {
   get promoAdjust() {
     return ta("اصلاح تسویه پس از بازپس‌گیری تخفیف");
   },
+  // (2026-10, backend Services/orderReturnService.ts) a return / refund of
+  // a delivered line
+  get returnRefund() {
+    return ta("بازپرداخت مرجوعی به خریدار");
+  },
+  get returnReversal() {
+    return ta("برگشت تسویه‌ی فروشنده (مرجوعی)");
+  },
+  get returnShipping() {
+    return ta("هزینه‌ی پیک مرجوعی به داروخانه");
+  },
   get other() {
     return ta("سایر");
   },
@@ -448,5 +459,107 @@ export const rxInsurerDict: Record<string, string> = {
   },
   get other() {
     return ta("سایر");
+  },
+};
+
+// (2026-10, backend Models/OrderReturn.ts) returns of delivered goods and
+// refunds of done services
+export const returnStatusDict: Record<string, string> = {
+  get requested() {
+    return ta("در انتظار بررسی فروشنده");
+  },
+  get approved() {
+    return ta("تأییدشده؛ منتظر کالا");
+  },
+  get rejected() {
+    return ta("رد شده توسط فروشنده");
+  },
+  get escalated() {
+    return ta("در صف داوری پشتیبانی");
+  },
+  get declined() {
+    return ta("رد نهایی پشتیبانی");
+  },
+  get shipped() {
+    return ta("کالا در راه بازگشت");
+  },
+  get refunded() {
+    return ta("بازپرداخت‌شده");
+  },
+  get cancelled() {
+    return ta("لغوشده");
+  },
+};
+
+export const returnReasonDict: Record<string, string> = {
+  get wrongItem() {
+    return ta("کالای اشتباه");
+  },
+  get damaged() {
+    return ta("آسیب‌دیده یا معیوب");
+  },
+  get expired() {
+    return ta("تاریخ‌گذشته");
+  },
+  get notAsDescribed() {
+    return ta("مغایر با توضیحات");
+  },
+  get changedMind() {
+    return ta("انصراف خریدار (باز نشده)");
+  },
+  get serviceIssue() {
+    return ta("مشکل در انجام خدمت");
+  },
+  get sellerError() {
+    return ta("خطای فروشنده");
+  },
+  get goodwill() {
+    return ta("رضایت مشتری");
+  },
+  get other() {
+    return ta("دلیل دیگر");
+  },
+};
+
+export const returnKindDict: Record<string, string> = {
+  get return() {
+    return ta("مرجوعی");
+  },
+  get refund() {
+    return ta("بازپرداخت");
+  },
+};
+
+// the Moadian invoices of an order (backend Lib/moadian/issue.ts)
+export const moadianSubjectDict: Record<number, string> = {
+  get 1() {
+    return ta("اصلی");
+  },
+  get 2() {
+    return ta("اصلاحی");
+  },
+  get 3() {
+    return ta("ابطالی");
+  },
+  get 4() {
+    return ta("برگشت از فروش");
+  },
+};
+
+export const moadianStatusDict: Record<string, string> = {
+  get Queued() {
+    return ta("در صف ارسال");
+  },
+  get Sent() {
+    return ta("ارسال‌شده، در انتظار پاسخ");
+  },
+  get Accepted() {
+    return ta("پذیرفته‌شده");
+  },
+  get Rejected() {
+    return ta("ردشده");
+  },
+  get Dropped() {
+    return ta("ارسال‌نشده");
   },
 };

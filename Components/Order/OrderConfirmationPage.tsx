@@ -65,6 +65,7 @@ import useNotification from "../Hooks/useNotification";
 import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
 import { useRef, useState } from "react";
 import SubmitCommentForm from "../Comment/SubmitCommentForm";
+import { BuyerReturns, IOrderReturn, IReturnOption } from "./Returns/OrderReturns";
 import {
   t2xsRegular,
   tlgBold,
@@ -72,7 +73,7 @@ import {
   tsmRegular,
 } from "../UI/Typography";
 
-const NS: ContentNamespace[] = ["common", "orderConfirmation", "dashboardOrderItemStatusBadge"];
+const NS: ContentNamespace[] = ["common", "orderConfirmation", "dashboardOrderItemStatusBadge", "orderReturns"];
 
 export const orderStatuses = ["pending", "paid", "cancelled"] as const;
 
@@ -173,6 +174,11 @@ export interface IOrder<
   paidAt?: string;
   // the pharmacies / labs with a fulfilled line here, each rated once for
   // this order (2026-10, backend userController.getMyOrder)
+  // returns of delivered goods (2026-10, backend Services/
+  // orderReturnService.ts): the requests and what may still go back
+  returns?: IOrderReturn[];
+  returnOptions?: IReturnOption[];
+  returnWindowDays?: number;
   reviewSellers?: {
     refPath: "Pharmacy" | "ParaClinic";
     _id: string;
@@ -208,6 +214,16 @@ type OrderRow = {
   collected?: boolean;
   // the pharmacy a product / package line ships from (its parcel's state)
   pharmacyId?: string;
+  // the order line's own id and its units returned after delivery
+  lineId?: string;
+  returnedQty?: number;
+};
+
+// a line's own id and its returned units (backend Models/Order.ts returned)
+const lineReturn = (line: unknown) => {
+  const l = (line || {}) as { _id?: unknown; returned?: { qty?: unknown } };
+  const qty = Number(l.returned?.qty);
+  return { lineId: l._id ? String(l._id) : undefined, returnedQty: Number.isFinite(qty) && qty > 0 ? qty : 0 };
 };
 
 const sectionTitle: Record<CartModel, ContentKey> = {
@@ -247,6 +263,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     if (!item || typeof item === "string") return;
     rows.push({
       ...responseOf(line),
+      ...lineReturn(line),
       itemId: item._id,
       model: "products",
       image: item.product?.image,
@@ -265,6 +282,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     if (!item || typeof item === "string") return;
     rows.push({
       ...responseOf(line),
+      ...lineReturn(line),
       itemId: item._id,
       model: "productPackages",
       image: item.image,
@@ -310,6 +328,7 @@ const buildRows = (order: OrderNode): OrderRow[] => {
     if (!item || typeof item === "string") return;
     rows.push({
       ...responseOf(line),
+      ...lineReturn(line),
       // its sample was taken: it stays with the lab (no buyer cancel)
       collected: !!sampling && typeof sampling === "object" && !!sampling.collectedAt,
       itemId: item._id,
@@ -572,6 +591,11 @@ const OrderConfirmationPage = () => {
                           </span>
                         )}
                         <OrderLineDeadline respondBy={row.respondBy} audience="buyer" />
+                        {!!row.returnedQty && (
+                          <span className={`${classes.itemSubtitle} ${t2xsRegular}`}>
+                            {getContent("retReturnedBadge", [num.format(row.returnedQty)])}
+                          </span>
+                        )}
                         {!!row.prescription && (
                           <RxPrescriptionDetails prescription={row.prescription} />
                         )}
@@ -614,6 +638,19 @@ const OrderConfirmationPage = () => {
                 </div>
               </div>
             ))}
+            {/* returns of delivered goods (2026-10) */}
+            {order.status === "paid" && (
+              <BuyerReturns
+                orderId={order._id}
+                returns={order.returns}
+                options={order.returnOptions}
+                windowDays={order.returnWindowDays}
+                names={Object.fromEntries(
+                  rows.filter((row) => !!row.lineId).map((row) => [row.lineId as string, row.title]),
+                )}
+                onChange={() => mutate()}
+              />
+            )}
             {/* lab sampling appointments, once per lab (2026-10) */}
             <OrderSamplings
               lines={order.tests as never}

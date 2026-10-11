@@ -48,6 +48,9 @@ export const userAlertEvents = [
   // an order's payout / refund still failing after retries (2026-10,
   // backend Services/settlementRetryService.ts)
   "settlementFailed",
+  // a return the buyer took to support, or one its seller never answered
+  // (2026-10, backend Services/orderReturnService.ts)
+  "newReturnEscalation",
 ] as const;
 
 export type UserAlertEvent = (typeof userAlertEvents)[number];
@@ -97,6 +100,9 @@ export const userAlertEventLabels: Record<UserAlertEvent, string> = {
 },
   get settlementFailed() {
   return ta("تسویه‌ی ناموفق سفارش");
+},
+  get newReturnEscalation() {
+  return ta("مرجوعی برای داوری پشتیبانی");
 },
 };
 

@@ -10,7 +10,11 @@ import { BadgeColor } from "@/Components/UI/Badge";
 // its automations and one-off sends
 // "contract" (2026-10): a provider's request for a contract with an insurer
 // that has no panel, confirmed here on the insurer's behalf
-export const requestGroups = ["become", "addition", "join", "campaign", "smsTemplate", "contract"] as const;
+// "return" (2026-10): a return of delivered goods the seller turned down (or
+// never answered) that the buyer took to support (backend Models/
+// ReturnEscalation.ts) - approve lets it go ahead (or refunds it when the
+// goods are already back), reject declines it with a reason for the buyer
+export const requestGroups = ["become", "addition", "join", "campaign", "smsTemplate", "contract", "return"] as const;
 export type RequestGroup = (typeof requestGroups)[number];
 
 export const requestKinds: Record<RequestGroup, readonly string[]> = {
@@ -20,6 +24,7 @@ export const requestKinds: Record<RequestGroup, readonly string[]> = {
   campaign: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
   smsTemplate: ["doctor", "pharmacy", "clinic", "hospital", "paraClinic", "insurance"],
   contract: ["doctor", "clinic", "hospital", "paraClinic", "pharmacy"],
+  return: ["pharmacy"],
 };
 
 export const isRequestGroup = (v: unknown): v is RequestGroup =>
@@ -46,6 +51,9 @@ export const requestGroupLabels: Record<RequestGroup, string> = {
   },
   get contract() {
     return ta("قرارداد با بیمه‌ها");
+  },
+  get return() {
+    return ta("مرجوعی‌های در داوری");
   },
 };
 

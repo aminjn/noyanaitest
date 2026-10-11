@@ -65,6 +65,13 @@ export interface IAppConfig extends MongoDoc {
   // how many times a lab sampling appointment may be moved (2026-10)
   labSamplingMaxMoves?: number;
   labSamplingMaxLabProposals?: number;
+  // returns of delivered goods (2026-10, backend Services/orderReturnService.ts)
+  returnWindowDays?: number;
+  returnChangedMindAllowed?: boolean;
+  returnNonReturnableCategories?: string[];
+  returnSellerDebtLimit?: number;
+  returnSellerResponseHours?: number;
+  returnReceiveDays?: number;
 
   reservationNoShowNudgeMinutesAfterStart: number;
   reservationNoShowNudgeInterval: number;

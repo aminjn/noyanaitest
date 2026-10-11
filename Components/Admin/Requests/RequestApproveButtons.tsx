@@ -115,3 +115,38 @@ export const ContractApproveButton = ({
     </Button>
   );
 };
+
+// let a return the buyer took to support go ahead (2026-10, backend
+// Services/orderReturnService.ts approveEscalation): it is approved for
+// the seller to take back, or - when the goods are already back with the
+// seller - refunded now
+export const ReturnApproveButton = ({
+  requestId,
+  mutate,
+}: {
+  requestId: string;
+  mutate: () => unknown;
+}) => {
+  const [busy, setBusy] = useState(false);
+  const pushNotification = useNotification();
+  const { closePopup } = usePopup();
+  const approve = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await fetcher({ url: `${API}/admin/requests/return/pharmacy/${requestId}/approve`, method: "POST" });
+      pushNotification(ta("مرجوعی تأیید شد و به خریدار و فروشنده اطلاع داده شد."), "Success");
+      await mutate();
+      closePopup();
+    } catch (e) {
+      pushNotification(e instanceof Error ? e.message : String(e), "Error");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <Button variant="Success" isLoading={busy} onClick={approve}>
+      {ta("تأیید مرجوعی")}
+    </Button>
+  );
+};

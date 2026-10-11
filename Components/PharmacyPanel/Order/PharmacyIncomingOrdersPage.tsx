@@ -1,5 +1,6 @@
 "use client";
 
+import { IOrderReturn } from "@/Components/Order/Returns/OrderReturns";
 import useSWR from "swr";
 import classes from "./PharmacyIncomingOrdersPage.module.css";
 import { API } from "@/Components/config";
@@ -86,6 +87,8 @@ export interface IIncomingOrder extends MongoDoc {
   // this pharmacy's money on the order (2026-10, backend
   // Lib/orderSellerMoney.ts): the list has the totals, the detail each line
   money?: ISellerOrderMoney;
+  // returns of this pharmacy's delivered lines (2026-10, the detail only)
+  returns?: IOrderReturn[];
   // where to deliver (only the delivery fields of the buyer's address)
   address?: {
     displayName?: string;

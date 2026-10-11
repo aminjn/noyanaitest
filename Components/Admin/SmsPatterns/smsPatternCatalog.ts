@@ -77,6 +77,11 @@ export const notificationSmsEvents = [
   "orderAutoCancelledSeller",
   "orderAutoCancelledUser",
   "orderReviewRequestUser",
+  // returns of delivered goods (2026-10, backend Services/orderReturnService.ts)
+  "returnRequestedSeller",
+  "returnApprovedUser",
+  "returnRejectedUser",
+  "returnRefundedUser",
   "walletChargedUser",
   "gatewayPaymentCreditedUser",
   "gatewayPaymentRefundedUser",
@@ -196,6 +201,8 @@ const staffSample = (event: UserAlertEvent): string => {
       return ta("بیمار %userPhone% به ویزیت حضوری ثبت‌شده اعتراض کرد. نوبت: %reservationId%");
     case "newSmsCampaign":
       return ta("کمپین پیامکی «%name%» منتظر تأیید است.");
+    case "newReturnEscalation":
+      return ta("مرجوعی سفارش %orderId% منتظر داوری پشتیبانی است.");
     case "settlementFailed":
       return ta("تسویه‌ی سفارش %orderId% پس از %attempts% بار تلاش انجام نشد؛ سفارش را بررسی کنید.");
     case "newClinicAdditionRequest":
@@ -225,6 +232,7 @@ const userAlertEventVariables: Record<UserAlertEvent, string[]> = {
   newVisitDispute: ["reservationId", "userPhone"],
   newSmsCampaign: ["requestId", "name"],
   settlementFailed: ["orderId", "attempts"],
+  newReturnEscalation: ["requestId", "orderId"],
 };
 
 // mirrors backend Models/Reservation.ts ReservationSmsVariables
@@ -510,6 +518,30 @@ const notificationMeta: Record<NotificationSmsEvent, EventMeta> = {
     variables: ["orderId", "sellerName"],
     sample: () =>
       ta("سفارش %orderId% از %sellerName% انجام شد. با ثبت امتیاز و نظر به دیگران کمک کنید: noyan.ir/order/%orderId%"),
+  },
+  returnRequestedSeller: {
+    audience: "provider",
+    label: () => ta("درخواست مرجوعی تازه - فروشنده"),
+    variables: ["orderId"],
+    sample: () => ta("خریدار برای سفارش %orderId% درخواست مرجوعی داد؛ آن را در پنل بررسی و تأیید یا رد کنید."),
+  },
+  returnApprovedUser: {
+    audience: "patient",
+    label: () => ta("تأیید مرجوعی - خریدار"),
+    variables: ["orderId", "sellerName"],
+    sample: () => ta("%sellerName% مرجوعی سفارش %orderId% را پذیرفت؛ روش برگرداندن کالا در صفحه‌ی سفارش آمده است."),
+  },
+  returnRejectedUser: {
+    audience: "patient",
+    label: () => ta("رد مرجوعی - خریدار"),
+    variables: ["orderId", "reason"],
+    sample: () => ta("درخواست مرجوعی سفارش %orderId% پذیرفته نشد. دلیل: %reason%. می‌توانید از صفحه‌ی سفارش آن را به پشتیبانی بفرستید."),
+  },
+  returnRefundedUser: {
+    audience: "patient",
+    label: () => ta("بازپرداخت مرجوعی - خریدار"),
+    variables: ["orderId", "amount"],
+    sample: () => ta("%amount% تومان بابت مرجوعی سفارش %orderId% به کیف پول شما برگشت."),
   },
   orderCancelledByBuyerSeller: {
     audience: "provider",
