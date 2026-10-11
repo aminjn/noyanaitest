@@ -243,7 +243,9 @@ export const ClaimCredits = ({
             <dt>
               {[date(c.at), c.service || "", c.reason ? t(CREDIT_REASON[c.reason] || "retReasonOther") : ""].filter(Boolean).join(" · ")}
             </dt>
-            <dd className={fin.negativeAmount}>−{money(c.amount)}</dd>
+            <dd className={fin.negativeAmount}>
+              <bdi dir="ltr">−{money(c.amount)}</bdi>
+            </dd>
           </div>
         ))}
         <div className={fin.kvTotal}>
@@ -268,10 +270,14 @@ export type ClaimReview = {
 };
 
 // the insurer's review status, as both sides read it
-export const reviewKey = (r?: Pick<ClaimReview, "status" | "approved">) =>
-  !r ? "" : r.status === "pending" ? "finRevPending" : r.status === "paid" ? "finRevPaid" : r.approved > 0 ? "finRevDecided" : "finRevRejected";
-export const reviewTone = (r?: Pick<ClaimReview, "status" | "approved">) =>
-  !r ? "draft" : r.status === "pending" ? "submitted" : r.status === "paid" ? "paid" : r.approved > 0 ? "partial" : "rejected";
+// `open`: what is still owed; a decided list that returns credits fully
+// cleared reads as settled, not "awaiting payment"
+const settled = (r: Pick<ClaimReview, "status" | "approved">, open?: number) =>
+  r.status === "paid" || (r.status === "decided" && r.approved > 0 && typeof open === "number" && open <= 0);
+export const reviewKey = (r?: Pick<ClaimReview, "status" | "approved">, open?: number) =>
+  !r ? "" : r.status === "pending" ? "finRevPending" : settled(r, open) ? "finRevPaid" : r.approved > 0 ? "finRevDecided" : "finRevRejected";
+export const reviewTone = (r?: Pick<ClaimReview, "status" | "approved">, open?: number) =>
+  !r ? "draft" : r.status === "pending" ? "submitted" : settled(r, open) ? "paid" : r.approved > 0 ? "partial" : "rejected";
 export const decisionKey = (d?: ClaimLineDecision) =>
   d === "deducted" ? "finDecDeducted" : d === "rejected" ? "finDecRejected" : "finDecAccepted";
 

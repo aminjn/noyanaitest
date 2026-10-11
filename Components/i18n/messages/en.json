@@ -2410,7 +2410,7 @@
  "pfFromHeld": "Taken from earnings still held",
  "pfPlatformCovered": "NoyanAI covered ${1} toman",
  "pfHeldTaken": "${1} toman of it went back for a return",
- "wdPendingNote": "Another ${1} toman is in settlement and is added to your withdrawable balance ${2} days after the work is done.",
+ "wdPendingNote": "Another ${1} toman is in settlement and is added to your withdrawable balance ${2} days after the work is done. Pharmacy goods are released after their return window closes, if that is later.",
  "visitDisputeHint": "This in-person visit was recorded as done without a check-in. If you were not seen, file an objection.",
  "visitDisputeButton": "I wasn't seen",
  "visitDisputeTitle": "Object to the visit",

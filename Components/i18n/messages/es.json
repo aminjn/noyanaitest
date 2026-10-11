@@ -2410,7 +2410,7 @@
  "pfFromHeld": "Descontado de los ingresos aún retenidos",
  "pfPlatformCovered": "NoyanAI cubrió ${1} tomanes",
  "pfHeldTaken": "${1} tomanes se devolvieron por una devolución",
- "wdPendingNote": "Otros ${1} tomanes están en liquidación y se suman a tu saldo disponible ${2} días después de realizado el trabajo.",
+ "wdPendingNote": "Otros ${1} tomanes están en liquidación y se suman a tu saldo disponible ${2} días después de realizado el trabajo. En productos de farmacia, el importe se libera al cerrar el plazo de devolución, si es posterior.",
  "visitDisputeHint": "Esta visita presencial se registró como realizada sin registro de llegada. Si no te atendieron, presenta una objeción.",
  "visitDisputeButton": "No me atendieron",
  "visitDisputeTitle": "Objetar la visita",

@@ -2410,7 +2410,7 @@
  "pfFromHeld": "Dipotong dari pendapatan yang masih ditahan",
  "pfPlatformCovered": "NoyanAI menanggung ${1} toman",
  "pfHeldTaken": "${1} toman darinya dikembalikan untuk retur",
- "wdPendingNote": "${1} toman lainnya masih dalam penyelesaian dan masuk ke saldo yang dapat ditarik ${2} hari setelah layanan selesai.",
+ "wdPendingNote": "${1} toman lainnya masih dalam penyelesaian dan masuk ke saldo yang dapat ditarik ${2} hari setelah layanan selesai. Untuk barang apotek, dana dilepas setelah masa pengembalian berakhir, jika itu lebih lambat.",
  "visitDisputeHint": "Kunjungan tatap muka ini dicatat selesai tanpa check-in. Jika Anda tidak diperiksa, ajukan keberatan.",
  "visitDisputeButton": "Saya tidak diperiksa",
  "visitDisputeTitle": "Keberatan atas kunjungan",

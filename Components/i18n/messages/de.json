@@ -2410,7 +2410,7 @@
  "pfFromHeld": "Von noch einbehaltenen Einnahmen abgezogen",
  "pfPlatformCovered": "NoyanAI hat ${1} Toman übernommen",
  "pfHeldTaken": "${1} Toman davon gingen für eine Rückgabe zurück",
- "wdPendingNote": "Weitere ${1} Toman sind in Abrechnung und werden ${2} Tage nach der Leistung auszahlbar.",
+ "wdPendingNote": "Weitere ${1} Toman sind in Abrechnung und werden ${2} Tage nach der Leistung auszahlbar. Bei Apothekenwaren wird der Betrag nach Ablauf der Rückgabefrist freigegeben, falls diese später endet.",
  "visitDisputeHint": "Dieser Präsenztermin wurde ohne Check-in als erledigt erfasst. Wurden Sie nicht behandelt, legen Sie Einspruch ein.",
  "visitDisputeButton": "Ich wurde nicht behandelt",
  "visitDisputeTitle": "Einspruch gegen den Termin",

@@ -2410,7 +2410,7 @@
  "pfFromHeld": "Descontado dos ganhos ainda retidos",
  "pfPlatformCovered": "A NoyanAI cobriu ${1} tomans",
  "pfHeldTaken": "${1} tomans foram devolvidos por uma devolução",
- "wdPendingNote": "Mais ${1} tomans estão em liquidação e entram no saldo disponível ${2} dias após o serviço.",
+ "wdPendingNote": "Mais ${1} tomans estão em liquidação e entram no saldo disponível ${2} dias após o serviço. Para produtos de farmácia, o valor é liberado após o fim do prazo de devolução, se for posterior.",
  "visitDisputeHint": "Esta consulta presencial foi registrada como realizada sem check-in. Se você não foi atendido, conteste.",
  "visitDisputeButton": "Não fui atendido",
  "visitDisputeTitle": "Contestar a consulta",

@@ -226,7 +226,7 @@ const ReviewView = ({ id, onChanged }: { id: string; onChanged: () => unknown })
                       .join(" · ")}
                   </span>
                 </div>
-                <Pill status={reviewTone(review)}>{t(reviewKey(review))}</Pill>
+                <Pill status={reviewTone(review, data?.open)}>{t(reviewKey(review, data?.open))}</Pill>
               </div>
               <div className={classes.tiles}>
                 <div className={classes.tile}>
@@ -485,7 +485,7 @@ const Body = () => {
                         </td>
                         <td className={classes.num}>{f.money(c.open)}</td>
                         <td>
-                          <Pill status={reviewTone(c.review)}>{t(reviewKey(c.review))}</Pill>
+                          <Pill status={reviewTone(c.review, c.open)}>{t(reviewKey(c.review, c.open))}</Pill>
                         </td>
                       </tr>
                     ))}

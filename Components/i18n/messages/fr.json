@@ -2410,7 +2410,7 @@
  "pfFromHeld": "Prélevé sur les gains encore retenus",
  "pfPlatformCovered": "NoyanAI a couvert ${1} tomans",
  "pfHeldTaken": "${1} tomans repris pour un retour",
- "wdPendingNote": "${1} tomans supplémentaires sont en cours de règlement et s'ajoutent à votre solde retirable ${2} jours après la prestation.",
+ "wdPendingNote": "${1} tomans supplémentaires sont en cours de règlement et s'ajoutent à votre solde retirable ${2} jours après la prestation. Pour les produits de pharmacie, le montant est libéré après la fin du délai de retour, s'il est plus tardif.",
  "visitDisputeHint": "Cette consultation sur place a été enregistrée comme effectuée sans pointage. Si vous n'avez pas été reçu, contestez-la.",
  "visitDisputeButton": "Je n'ai pas été reçu",
  "visitDisputeTitle": "Contester la consultation",

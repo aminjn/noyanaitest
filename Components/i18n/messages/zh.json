@@ -2410,7 +2410,7 @@
  "pfFromHeld": "从暂扣收入中扣除",
  "pfPlatformCovered": "NoyanAI 承担了 ${1} 托曼",
  "pfHeldTaken": "其中 ${1} 托曼因退货退回",
- "wdPendingNote": "另有 ${1} 托曼正在结算中，将在服务完成 ${2} 天后计入可提现余额。",
+ "wdPendingNote": "另有 ${1} 托曼正在结算中，将在服务完成 ${2} 天后计入可提现余额。 药房商品的款项在退货期结束后释放（如退货期更晚）。",
  "visitDisputeHint": "此次到诊未签到即被记为已完成。如果您未就诊，请提出异议。",
  "visitDisputeButton": "我未就诊",
  "visitDisputeTitle": "对就诊提出异议",

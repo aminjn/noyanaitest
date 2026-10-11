@@ -2410,7 +2410,7 @@
  "pfFromHeld": "Bekletilen kazançtan düşüldü",
  "pfPlatformCovered": "${1} tümeni NoyanAI karşıladı",
  "pfHeldTaken": "Bunun ${1} tümeni bir iade için geri alındı",
- "wdPendingNote": "${1} toman daha ödeme sürecinde; iş tamamlandıktan ${2} gün sonra çekilebilir bakiyenize eklenir.",
+ "wdPendingNote": "${1} toman daha ödeme sürecinde; iş tamamlandıktan ${2} gün sonra çekilebilir bakiyenize eklenir. Eczane ürünlerinde tutar, daha geç ise iade süresi bittikten sonra serbest kalır.",
  "visitDisputeHint": "Bu yüz yüze muayene giriş kaydı olmadan tamamlandı olarak işlendi. Muayene olmadıysanız itiraz edin.",
  "visitDisputeButton": "Muayene olmadım",
  "visitDisputeTitle": "Muayeneye itiraz",

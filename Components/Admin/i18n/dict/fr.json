@@ -3563,5 +3563,8 @@
  "مرجوعی برای داوری پشتیبانی": "Retour en attente du support",
  "از لحظه‌ی تحویل هر قلم (تحویل پیک یا تأیید تحویل تیپاکس) شمرده می‌شود. فروشنده هیچ‌وقت بدهکار نمی‌شود: درآمد هر قلم داروخانه و هزینه‌ی ارسال بسته تا پایان این مهلت به‌علاوه‌ی مهلت پاسخ فروشنده و مهلت دریافت کالا (اگر دیرتر از دوره‌ی تسویه باشد) و تا بسته شدن مرجوعی باز آن نگه داشته می‌شود. بازپرداخت پشتیبانی یا آزمایشگاه به این مهلت محدود نیست؛ اگر پس از تسویه باشد از درآمدهای در انتظار فروشنده و در غیر این صورت از حساب نویان پرداخت و به مدیر کل خبر داده می‌شود.": "Compté à partir de la livraison de chaque article (remise par le coursier ou livraison Tipax confirmée). Un vendeur n'est jamais débiteur : le gain de chaque article de pharmacie et les frais de livraison du colis sont retenus jusqu'à la fin de ce délai plus le délai de réponse du vendeur et le délai de réception du retour (si c'est plus tard que la période de règlement), et tant qu'un retour est ouvert. Un remboursement du support ou du laboratoire n'est pas limité à ce délai ; après le versement, il est pris sur les gains retenus du vendeur, sinon payé par NoyanAI et signalé au super administrateur.",
  "بازپرداختی که نویان جبران کرد": "Remboursement pris en charge par NoyanAI",
- "%amount% تومان از بازپرداخت سفارش %orderId% را نویان جبران کرد؛ مالی آن را بررسی کند.": "NoyanAI a couvert %amount% tomans du remboursement de la commande %orderId% ; la finance doit le vérifier."
+ "%amount% تومان از بازپرداخت سفارش %orderId% را نویان جبران کرد؛ مالی آن را بررسی کند.": "NoyanAI a couvert %amount% tomans du remboursement de la commande %orderId% ; la finance doit le vérifier.",
+ "+ هزینه‌ی ارسال ${1}": "+ frais de livraison ${1}",
+ "از درآمد نگه‌داشته ${1}": "sur les gains retenus ${1}",
+ "جبران نویان ${1}": "pris en charge par NoyanAI ${1}"
 }

@@ -330,7 +330,7 @@ const ClaimView = ({ id, onChanged }: { id: string; onChanged: () => unknown }) 
               {!!data.insurerProfile && data.status === "draft" && <p className={fin.notice}>{t("finNoyanInsurerHint")}</p>}
               {byInsurer && (
                 <p className={fin.notice}>
-                  {t("finByInsurerNotice")} <Pill status={reviewTone(data.review)}>{t(reviewKey(data.review))}</Pill>
+                  {t("finByInsurerNotice")} <Pill status={reviewTone(data.review, openAmount)}>{t(reviewKey(data.review, openAmount))}</Pill>
                   {data.review?.decidedAt ? ` · ${t("finDecidedOn")}: ${f.date(data.review.decidedAt)}` : ""}
                 </p>
               )}
