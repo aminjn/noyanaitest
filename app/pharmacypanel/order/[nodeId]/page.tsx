@@ -7,11 +7,11 @@ const PharmacyOrderDetail = async () => {
     "pharmacyPanelOrder",
     "dashboardOrderStatusBadge",
     "dashboardOrderItemStatusBadge",
-    "sellerOrderMoney",
+    "sellerOrderMoney", "orderReturns",
   ]);
   return (
     <LocaleScopeProvider
-      namespaces={["pharmacyPanelOrder", "dashboardOrderStatusBadge", "dashboardOrderItemStatusBadge", "sellerOrderMoney"]}
+      namespaces={["pharmacyPanelOrder", "dashboardOrderStatusBadge", "dashboardOrderItemStatusBadge", "sellerOrderMoney", "orderReturns"]}
       initialTextContent={textContent}
     >
       <PharmacyIncomingOrderPage />

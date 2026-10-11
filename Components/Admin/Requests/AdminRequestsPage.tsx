@@ -3,7 +3,7 @@
 import { useCallback, useMemo } from "react";
 import usePopup from "@/Components/Hooks/usePopup";
 import RequestActionsPopup from "./RequestActionsPopup";
-import { ContractApproveButton } from "./RequestApproveButtons";
+import { ContractApproveButton, ReturnApproveButton } from "./RequestApproveButtons";
 import useOpenFromQuery from "./useOpenFromQuery";
 import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
@@ -55,12 +55,19 @@ export interface IAdminRequestRow {
   createdAt?: string;
   detail: string;
   // markers from the backend (adminRequestsController flags): "manualReview"
-  // - a doctor request whose council code the inquiry did not confirm
+  // - a doctor request whose council code the inquiry did not confirm;
+  // "noResponse" - a return its seller never answered
   flags?: string[];
+  // a return in the queue (2026-10): its order and the buyer's note
+  order?: string;
+  note?: string;
 }
 
 const isManualReview = (row: IAdminRequestRow) =>
   Array.isArray(row.flags) && row.flags.includes("manualReview");
+
+const isNoResponse = (row: IAdminRequestRow) =>
+  Array.isArray(row.flags) && row.flags.includes("noResponse");
 
 type CountRow = { group: string; kind: string; pending: number };
 
@@ -168,6 +175,37 @@ const RequestsList = ({
   );
   useOpenFromQuery(group === "contract" ? data : undefined, openContract);
 
+  // a return the buyer took to support (2026-10): decided in a popup, its
+  // details on the order page
+  const openReturn = useCallback(
+    (row: IAdminRequestRow) =>
+      setPopup(
+        "ReturnRequest",
+        <RequestActionsPopup
+          title={ta("مرجوعی سفارش ${1}", [row.title])}
+          group="return"
+          kind={row.kind}
+          node={row}
+          mutate={() => mutate()}
+          approve={<ReturnApproveButton requestId={row._id} mutate={() => mutate()} />}
+        >
+          <p>
+            {isNoResponse(row)
+              ? ta("فروشنده به‌موقع به این مرجوعی پاسخ نداد. با تأیید، مرجوعی پذیرفته می‌شود (یا اگر کالا به فروشنده رسیده، مبلغ به خریدار برمی‌گردد)؛ با رد، درخواست با دلیل شما بسته می‌شود.")
+              : ta("فروشنده این مرجوعی را رد کرده و خریدار آن را به پشتیبانی فرستاده است. با تأیید، مرجوعی پذیرفته می‌شود (یا اگر کالا به فروشنده رسیده، مبلغ به خریدار برمی‌گردد)؛ با رد، درخواست با دلیل شما بسته می‌شود.")}
+          </p>
+          {!!row.note && row.note !== "noResponse" && <p>{ta("توضیح خریدار: ${1}", [row.note])}</p>}
+          {!!row.order && (
+            <p>
+              <InlineLink href={adminPath(`/finance/orders/${row.order}`)}>{ta("جزئیات سفارش و مرجوعی")}</InlineLink>
+            </p>
+          )}
+        </RequestActionsPopup>,
+      ),
+    [setPopup, mutate],
+  );
+  useOpenFromQuery(group === "return" ? data : undefined, openReturn);
+
   const pendingOf = (k?: string) =>
     counts
       .filter((c) => c.group === group && (!k || c.kind === k))
@@ -235,6 +273,11 @@ const RequestsList = ({
                         {ta("بررسی دستی")}
                       </Badge>
                     )}
+                    {isNoResponse(row) && (
+                      <Badge color="Warning" size="S">
+                        {ta("بی‌پاسخ از فروشنده")}
+                      </Badge>
+                    )}
                   </span>
                 ),
               },
@@ -282,9 +325,9 @@ const RequestsList = ({
                 name: ta("عملیات"),
                 width: 110,
                 component: (row) =>
-                  row.group === "contract" ? (
+                  row.group === "contract" || row.group === "return" ? (
                     <TableActions>
-                      <Button size="S" onClick={() => openContract(row)}>
+                      <Button size="S" onClick={() => (row.group === "return" ? openReturn(row) : openContract(row))}>
                         {ta("بررسی")}
                       </Button>
                     </TableActions>

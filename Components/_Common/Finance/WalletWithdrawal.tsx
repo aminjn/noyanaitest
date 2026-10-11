@@ -35,6 +35,9 @@ type WithdrawalData = {
   // earnings in their settlement hold, not withdrawable yet
   pending?: number;
   holdDays?: number;
+  // (2026-10) a return's reversal took the balance below zero: later
+  // earnings fill it, withdrawals wait (backend withdrawalController)
+  debt?: number;
   minAmount: number;
   // false: a centre's team member - sees the wallet, the owner asks
   canWithdraw?: boolean;
@@ -113,6 +116,11 @@ const WalletWithdrawal = ({ api = "/user/withdrawal" }: { api?: string }) => {
       <p className={classes.hint}>
         {getContent("wdHint", [num.format(data.minAmount || 0)])}
       </p>
+      {(Number(data.debt) || 0) > 0 && (
+        <p className={classes.hint} role="alert">
+          {getContent("wdDebtNote", [num.format(Number(data.debt) || 0)])}
+        </p>
+      )}
       {(Number(data.pending) || 0) > 0 && (
         <p className={classes.hint}>
           {getContent("wdPendingNote", [
@@ -121,7 +129,7 @@ const WalletWithdrawal = ({ api = "/user/withdrawal" }: { api?: string }) => {
           ])}
         </p>
       )}
-      {!hasPending && data.canWithdraw !== false && (
+      {!hasPending && data.canWithdraw !== false && !((Number(data.debt) || 0) > 0) && (
         <div className={classes.form}>
           <Input
             title={getContent("wdAmount")}

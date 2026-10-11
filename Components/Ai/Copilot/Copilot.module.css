@@ -425,3 +425,53 @@
     transition: none;
   }
 }
+
+/* the patient's symptom-check entry at the top of an empty chat */
+.symptomCta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  inline-size: 100%;
+  min-block-size: 3.5rem;
+  margin-block-end: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--radiusLg, 1rem);
+  text-align: start;
+  color: var(--textStrong);
+  background: var(--aiSoft);
+  box-shadow: inset 0 0 0 1px var(--aiLine);
+  transition: background-color var(--transTime);
+}
+
+.symptomCta:hover,
+.symptomCta:focus-visible {
+  background: var(--activeTint);
+}
+
+.symptomIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: var(--radiusPill);
+  color: var(--aiText);
+  background: var(--surface, transparent);
+}
+
+.symptomText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-inline-size: 0;
+}
+
+.symptomText strong {
+  font-size: 0.9375rem;
+}
+
+.symptomText span {
+  font-size: 0.8125rem;
+  color: var(--textBody);
+}

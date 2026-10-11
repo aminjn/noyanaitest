@@ -14,6 +14,8 @@ import useUser from "@/Components/Hooks/useUser";
 import useAccessLevel from "@/Components/Hooks/useAccessLevel";
 import PopupCard from "@/Components/UI/PopupCard";
 import AreaInput from "@/Components/UI/AreaInput";
+import Input from "@/Components/UI/Input";
+import SelectInput from "@/Components/UI/SelectInput";
 import Button from "@/Components/UI/Button";
 import CloseIcon from "@/Components/Icons/CloseIcon";
 import HandleLoading from "../UI/HandleLoading";
@@ -32,6 +34,11 @@ import {
   paymentMethodDict,
   paymentStatusDict,
   failureReasonLabel,
+  moadianStatusDict,
+  moadianSubjectDict,
+  returnKindDict,
+  returnReasonDict,
+  returnStatusDict,
   rxInsurerDict,
   rxKindDict,
   rxStatusDict,
@@ -65,6 +72,10 @@ interface IOrderLine {
   lineTotal: number;
   status: "pending" | "fulfilled" | "cancelled";
   seller: Seller;
+  // units returned / refunded after delivery, and those held by open
+  // return requests (2026-10, backend Services/orderReturnService.ts)
+  returnedQty?: number;
+  returnHeldQty?: number;
   // prescription-only line (2026-10)
   requiresPrescription?: boolean;
   prescription?: {
@@ -177,6 +188,42 @@ interface IOrderDetail {
   // switch to home
   samplings?: IAdminSampling[];
   buyerAddresses?: AdminBuyerAddress[];
+  // returns and refunds after delivery (2026-10)
+  returns?: IAdminReturn[];
+  // the sellers' Moadian invoices of the order, corrections included
+  moadian?: {
+    _id: string;
+    ownerKind: string;
+    subject: 1 | 2 | 3 | 4;
+    type: 1 | 2;
+    source: string;
+    taxId: string;
+    refTaxId: string;
+    status: string;
+    issuedAt?: string;
+    line: string;
+    total: number;
+  }[];
+}
+
+interface IAdminReturn {
+  _id: string;
+  model: string;
+  line: string;
+  qty: number;
+  kind: "return" | "refund";
+  initiatedBy?: string;
+  reason: string;
+  note?: string;
+  photos?: string[];
+  sellerFault?: boolean;
+  status: string;
+  rejectReason?: string;
+  shipping?: { method: string; paidBy: string; fee?: number; trackingCode?: string } | null;
+  condition?: string | null;
+  money?: { refund: number; shippingDeduction: number; promoClawback: number; sellerReversal: number } | null;
+  createdAt?: string;
+  escalation?: { _id: string; status: string; rejectReason?: string } | null;
 }
 
 const errorText = (err: unknown) => (err as Error)?.message || ta("خطایی رخ داد");
@@ -229,6 +276,123 @@ const ReasonPopup = ({
             }}
           >
             {confirm}
+          </Button>
+          <Button variant="Neutral" onClick={() => closePopup()}>
+            {ta("انصراف")}
+          </Button>
+        </div>
+      </div>
+    </PopupCard>
+  );
+};
+
+// (2026-10, backend Services/orderReturnService.ts) support refunds units
+// of a delivered line (the goods are not sent back) or a performed test:
+// the buyer gets what they paid for them, the seller's earning on them is
+// reversed (commission and VAT included), the insurer's share and the
+// seller's Moadian invoice follow
+const RefundLinePopup = ({
+  line,
+  free,
+  onSubmit,
+}: {
+  line: { name: string };
+  free: number;
+  onSubmit: (payload: { qty: number; reason: string; note: string }) => Promise<unknown>;
+}) => {
+  const { closePopup } = usePopup();
+  const [qty, setQty] = useState(1);
+  const [reason, setReason] = useState("goodwill");
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const ok = note.trim().length >= 3 && qty >= 1 && qty <= free;
+  return (
+    <PopupCard title={ta("بازپرداخت قلم تحویل‌شده")}>
+      <div className={classes.popupBody}>
+        <p className={classes.hint}>
+          {ta("«${1}» بدون برگشت کالا بازپرداخت می‌شود: مبلغی که خریدار برای این تعداد پرداخته به کیف پولش برمی‌گردد و درآمد فروشنده از آن (با کمیسیون و مالیات) برمی‌گردد؛ اگر تسویه شده باشد از تسویه‌ی بعدی او کم می‌شود. سهم بیمه و صورتحساب مودیان هم اصلاح می‌شود.", [line.name || "—"])}
+        </p>
+        <Input
+          title={ta("تعداد (حداکثر ${1})", [currencize(free)])}
+          type="number"
+          min={1}
+          max={free}
+          defaultValue="1"
+          onChange={(e) => setQty(Math.max(1, Math.min(free, Math.round(Number(e.target.value) || 1))))}
+        />
+        <SelectInput
+          title={ta("نوع دلیل")}
+          defaultValue={reason}
+          options={{
+            goodwill: returnReasonDict.goodwill,
+            sellerError: returnReasonDict.sellerError,
+            serviceIssue: returnReasonDict.serviceIssue,
+            other: returnReasonDict.other,
+          }}
+          onChange={(e) => setReason(e.target.value || "goodwill")}
+        />
+        <AreaInput
+          title={ta("دلیل (الزامی، روی سفارش و در لاگ ثبت می‌شود)")}
+          required
+          onChange={(e) => setNote(e.target.value)}
+        />
+        <div className={classes.popupActions}>
+          <Button
+            variant={ok ? "Error" : "Disable"}
+            isLoading={busy}
+            onClick={async () => {
+              if (!ok || busy) return;
+              setBusy(true);
+              try {
+                await onSubmit({ qty, reason, note: note.trim() });
+                closePopup();
+              } catch {
+                // the caller already showed the error
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
+            {ta("بازپرداخت")}
+          </Button>
+          <Button variant="Neutral" onClick={() => closePopup()}>
+            {ta("انصراف")}
+          </Button>
+        </div>
+      </div>
+    </PopupCard>
+  );
+};
+
+// support records a returned item back with the seller (the seller does not
+// answer): the refund is made, the stock batch back or written off
+const ReceiveReturnPopup = ({ onSubmit }: { onSubmit: (condition: "resellable" | "damaged") => Promise<unknown> }) => {
+  const { closePopup } = usePopup();
+  const [busy, setBusy] = useState("");
+  const go = async (condition: "resellable" | "damaged") => {
+    if (busy) return;
+    setBusy(condition);
+    try {
+      await onSubmit(condition);
+      closePopup();
+    } catch {
+      // the caller already showed the error
+    } finally {
+      setBusy("");
+    }
+  };
+  return (
+    <PopupCard title={ta("ثبت دریافت کالای مرجوعی")}>
+      <div className={classes.popupBody}>
+        <p className={classes.hint}>
+          {ta("فقط وقتی فروشنده کالا را دریافت کرده اما تأیید نمی‌کند این کار را بکنید: مبلغ به خریدار برمی‌گردد و درآمد فروشنده از آن برمی‌گردد.")}
+        </p>
+        <div className={classes.popupActions}>
+          <Button isLoading={busy === "resellable"} onClick={() => go("resellable")}>
+            {ta("سالم؛ به انبار فروشنده برگردد")}
+          </Button>
+          <Button variant="Error" mode="Outline" isLoading={busy === "damaged"} onClick={() => go("damaged")}>
+            {ta("آسیب‌دیده؛ ضایعات")}
           </Button>
           <Button variant="Neutral" onClick={() => closePopup()}>
             {ta("انصراف")}
@@ -441,6 +605,34 @@ const AdminFinanceOrderPage = () => {
     }
   };
 
+  // units of a delivered line support may still refund (pharmacy / lab)
+  const refundable = (line: IOrderLine) =>
+    line.model === "products" || line.model === "productPackages" || line.model === "tests"
+      ? Math.max(0, (Number(line.qty) || 0) - (Number(line.returnHeldQty) || 0))
+      : 0;
+  const refundLine = (line: IOrderLine) =>
+    setPopup(
+      "AdminRefundLine",
+      <RefundLinePopup
+        line={line}
+        free={refundable(line)}
+        onSubmit={(payload) =>
+          post(`${base}/refund`, { model: line.model, line: line._id, ...payload }, ta("بازپرداخت انجام شد"))
+        }
+      />,
+    );
+  const receiveReturn = (ret: IAdminReturn) =>
+    setPopup(
+      "AdminReceiveReturn",
+      <ReceiveReturnPopup
+        onSubmit={(condition) =>
+          post(`${API}/admin/finance/returns/${ret._id}/receive`, { condition }, ta("دریافت ثبت شد و مبلغ به خریدار برگشت"))
+        }
+      />,
+    );
+  const returns = asArray<IAdminReturn>(data?.returns).filter((r) => !!r?._id);
+  const invoices = asArray<NonNullable<IOrderDetail["moadian"]>[number]>(data?.moadian).filter((i) => !!i?._id);
+
   const lines = asArray<IOrderLine>(data?.lines);
   const shipments = asArray<IShipment>(data?.shipments);
   // a fulfilled line in a Tipax parcel on its way is prepared, not delivered
@@ -624,6 +816,11 @@ const AdminFinanceOrderPage = () => {
                         "—"
                       ),
                   },
+                  returned: {
+                    name: ta("مرجوع / بازپرداخت"),
+                    value: (line) => Number(line.returnedQty) || 0,
+                    component: (line) => (Number(line.returnedQty) > 0 ? currencize(Number(line.returnedQty)) : "—"),
+                  },
                   actions: {
                     name: ta("عملیات"),
                     width: 210,
@@ -635,6 +832,12 @@ const AdminFinanceOrderPage = () => {
                           </Button>
                           <Button size="S" variant="Error" mode="Outline" onClick={() => lineAction(line, "cancelled")}>
                             {ta("لغو")}
+                          </Button>
+                        </TableActions>
+                      ) : canAct && paid && line.status === "fulfilled" && refundable(line) > 0 ? (
+                        <TableActions>
+                          <Button size="S" variant="Error" mode="Outline" onClick={() => refundLine(line)}>
+                            {ta("بازپرداخت")}
                           </Button>
                         </TableActions>
                       ) : null,
@@ -1002,6 +1205,121 @@ const AdminFinanceOrderPage = () => {
                     );
                   })}
                 </div>
+              </Card>
+            )}
+
+            {returns.length > 0 && (
+              <Card title={ta("مرجوعی و بازپرداخت پس از تحویل")}>
+                <Table
+                  name="AdminFinanceOrderReturns"
+                  data={returns}
+                  renderer={{
+                    line: { name: ta("قلم"), value: (r) => lineName(r.line) || "—" },
+                    kind: { name: ta("نوع"), value: (r) => returnKindDict[r.kind] || r.kind },
+                    qty: { name: ta("تعداد"), value: (r) => r.qty },
+                    reason: {
+                      name: ta("دلیل"),
+                      value: (r) => returnReasonDict[r.reason] || r.reason,
+                      component: (r) => (
+                        <span>
+                          {returnReasonDict[r.reason] || r.reason}
+                          {!!r.note && <span className={classes.muted}>{` · ${r.note}`}</span>}
+                          {asArray<string>(r.photos).map((id, i) => (
+                            <span key={id}>
+                              {" · "}
+                              <InlineLink href={`${API}/notpublic/${id}`}>{ta("عکس ${1}", [currencize(i + 1)])}</InlineLink>
+                            </span>
+                          ))}
+                        </span>
+                      ),
+                    },
+                    status: {
+                      name: ta("وضعیت"),
+                      value: (r) => returnStatusDict[r.status] || r.status,
+                      component: (r) => (
+                        <span>
+                          <span className={`${classes.badge} ${classes[`badge_${r.status === "refunded" ? "fulfilled" : r.status === "rejected" || r.status === "declined" || r.status === "cancelled" ? "cancelled" : "pending"}`] || ""}`}>
+                            {returnStatusDict[r.status] || r.status}
+                          </span>
+                          {!!r.rejectReason && <span className={classes.muted}>{` · ${r.rejectReason}`}</span>}
+                        </span>
+                      ),
+                    },
+                    money: {
+                      name: ta("برگشت به خریدار (تومان)"),
+                      value: (r) => r.money?.refund || 0,
+                      component: (r) =>
+                        r.money ? (
+                          <span>
+                            {currencize(r.money.refund || 0)}
+                            {(r.money.shippingDeduction > 0 || r.money.promoClawback > 0) && (
+                              <span className={classes.muted}>
+                                {` (${[
+                                  r.money.shippingDeduction > 0 ? ta("پیک ${1}", [currencize(r.money.shippingDeduction)]) : "",
+                                  r.money.promoClawback > 0 ? ta("تخفیف ${1}", [currencize(r.money.promoClawback)]) : "",
+                                ]
+                                  .filter(Boolean)
+                                  .join("، ")})`}
+                              </span>
+                            )}
+                          </span>
+                        ) : (
+                          "—"
+                        ),
+                    },
+                    reversal: {
+                      name: ta("برگشت از فروشنده (تومان)"),
+                      value: (r) => r.money?.sellerReversal || 0,
+                      component: (r) => (r.money ? currencize(r.money.sellerReversal || 0) : "—"),
+                    },
+                    createdAt: { name: ta("تاریخ"), value: (r) => (r.createdAt ? new Date(r.createdAt) : undefined) },
+                    actions: {
+                      name: ta("عملیات"),
+                      width: 180,
+                      component: (r) =>
+                        r.status === "escalated" && r.escalation?._id ? (
+                          <TableActions>
+                            <Button size="S" href={adminPath(`/requests?group=return&kind=pharmacy&open=${r.escalation._id}`)}>
+                              {ta("داوری در صف درخواست‌ها")}
+                            </Button>
+                          </TableActions>
+                        ) : canAct && r.kind === "return" && (r.status === "approved" || r.status === "shipped") ? (
+                          <TableActions>
+                            <Button size="S" variant="Neutral" onClick={() => receiveReturn(r)}>
+                              {ta("ثبت دریافت کالا")}
+                            </Button>
+                          </TableActions>
+                        ) : null,
+                    },
+                  }}
+                />
+              </Card>
+            )}
+
+            {invoices.length > 0 && (
+              <Card title={ta("صورتحساب‌های مودیان این سفارش")}>
+                <Table
+                  name="AdminFinanceOrderMoadian"
+                  data={invoices}
+                  renderer={{
+                    subject: { name: ta("موضوع"), value: (i) => moadianSubjectDict[i.subject] || String(i.subject) },
+                    line: { name: ta("قلم"), value: (i) => lineName(i.line) || (i.source === "shipping" ? ta("ارسال") : "—") },
+                    taxId: {
+                      name: ta("شماره‌ی مالیاتی"),
+                      value: (i) => i.taxId,
+                      component: (i) => <bdi dir="ltr">{i.taxId}</bdi>,
+                    },
+                    refTaxId: {
+                      name: ta("مرجع"),
+                      value: (i) => i.refTaxId || "",
+                      component: (i) => (i.refTaxId ? <bdi dir="ltr">{i.refTaxId}</bdi> : "—"),
+                    },
+                    type: { name: ta("نوع"), value: (i) => (i.type === 1 ? ta("نوع اول") : ta("نوع دوم")) },
+                    status: { name: ta("وضعیت"), value: (i) => moadianStatusDict[i.status] || i.status },
+                    total: { name: ta("مبلغ (تومان)"), value: (i) => i.total, component: (i) => currencize(i.total || 0) },
+                    issuedAt: { name: ta("تاریخ"), value: (i) => (i.issuedAt ? new Date(i.issuedAt) : undefined) },
+                  }}
+                />
               </Card>
             )}
 

@@ -41,8 +41,9 @@ import SamplingActions from "@/Components/LabSampling/SamplingActions";
 import { SamplingMoveInfo } from "@/Components/LabSampling/samplingTypes";
 import useAcl from "@/Components/Hooks/useAcl";
 import SellerOrderMoney from "@/Components/Order/SellerOrderMoney";
+import { IOrderReturn, LabRefundButton, SellerReturns } from "@/Components/Order/Returns/OrderReturns";
 
-const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder"];
+const NS: ContentNamespace[] = ["common", "paraClinicPanelOrder", "orderReturns"];
 
 interface OrderItemRow {
   key: string;
@@ -140,6 +141,12 @@ const ParaClinicIncomingOrderPage = () => {
 
   const { setPopup } = usePopup();
   const getContent = useScopedLocale(NS);
+  // the test line's name by its id (money and refunds)
+  const testNames: Record<string, string> = Object.fromEntries(
+    (Array.isArray(data?.tests) ? data!.tests : [])
+      .map((t) => [t?._id || "", t?.item?.test?.name || ""] as [string, string])
+      .filter(([id]) => !!id),
+  );
 
   useBreadCrump([
     { title: getContent("dashboard"), target: "/paraClinicPanel" },
@@ -359,16 +366,29 @@ const ParaClinicIncomingOrderPage = () => {
               },
             }}
           />
-          {/* (2026-10) the money of each line and of the order */}
-          <SellerOrderMoney
-            money={data.money}
-            names={Object.fromEntries(
-              (Array.isArray(data.tests) ? data.tests : [])
-                .map((t) => [t?._id || "", t?.item?.test?.name || ""] as [string, string])
-                .filter(([id]) => !!id),
-            )}
-            tableName="ParaClinicIncomingOrderMoney"
+          {/* (2026-10) a performed test is never sent back: the lab
+              refunds it (part or all), and its refunds show here */}
+          {canMutate && (
+          <LabRefundButton
+            orderId={data._id}
+            lines={(Array.isArray(data.tests) ? data.tests : [])
+              .filter((t) => !!t?._id && t.status === "fulfilled")
+              .map((t) => {
+                const held = Number((t as { returnHeldQty?: unknown }).returnHeldQty) || 0;
+                return { line: String(t._id), name: t?.item?.test?.name || "", free: Math.max(0, (Number(t.qty) || 0) - held) };
+              })}
+            onDone={() => mutate()}
           />
+          )}
+          <SellerReturns
+            base="/paraClinic"
+            returns={(data as { returns?: IOrderReturn[] }).returns}
+            names={testNames}
+            onChange={() => mutate()}
+            canAct={canMutate}
+          />
+          {/* (2026-10) the money of each line and of the order */}
+          <SellerOrderMoney money={data.money} names={testNames} tableName="ParaClinicIncomingOrderMoney" />
         </WithTitle>
       )}
     </HandleLoading>

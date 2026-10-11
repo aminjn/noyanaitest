@@ -43,6 +43,12 @@ export interface ISellerLineMoney {
   commission: number;
   commissionPercent: number;
   payout: number;
+  // units returned / refunded after delivery (2026-10, backend
+  // Services/orderReturnService.ts): back to the buyer, and taken back from
+  // the payout (already out of `payout`)
+  returnedQty?: number;
+  returnRefunded?: number;
+  returnReversed?: number;
   held: boolean;
   estimated: boolean;
 }
@@ -61,6 +67,8 @@ export interface ISellerMoneyTotals {
   refunded: number;
   commission: number;
   payout: number;
+  returnRefunded?: number;
+  returnReversed?: number;
   insurerReceivable: number;
 }
 
@@ -158,6 +166,15 @@ const SellerOrderMoney = ({
       component: (node) => (node.status === "cancelled" ? toman(node.refunded) : "-"),
       filter: "Number",
     };
+  // returned after delivery: how many, and what went back to the buyer
+  if (any("returnedQty"))
+    renderer.returned = {
+      name: getContent("moneyReturned"),
+      value: (node) => n(node.returnRefunded),
+      component: (node) =>
+        n(node.returnedQty) > 0 ? `${currencize(n(node.returnedQty))} × · ${toman(node.returnRefunded)}` : "-",
+      filter: "Number",
+    };
   renderer.commission = {
     name: getContent("moneyCommission"),
     value: (node) => node.commission,
@@ -211,9 +228,12 @@ const SellerOrderMoney = ({
     pairs.push(["moneyCommission", minus(totals.commission)]);
     // in the payout below: the line's settlement adjusted after the fact
     if (n(totals.promoAdjust) > 0) pairs.push(["moneyPromoAdjust", `+ ${toman(totals.promoAdjust)}`]);
+    // a return's reversal is already out of the payout below
+    if (n(totals.returnReversed) > 0) pairs.push(["moneyReturnReversed", minus(totals.returnReversed)]);
     pairs.push(["moneyPayout", <strong key="po">{toman(totals.payout)}</strong>]);
     if (n(totals.insurerReceivable) > 0) pairs.push(["moneyInsurerReceivable", toman(totals.insurerReceivable)]);
     if (n(totals.refunded) > 0) pairs.push(["moneyRefunded", toman(totals.refunded)]);
+    if (n(totals.returnRefunded) > 0) pairs.push(["moneyReturnRefunded", toman(totals.returnRefunded)]);
   }
 
   return (
