@@ -7403,5 +7403,7 @@
  "aiEntryNew": "nuevo",
  "promoClawbackDelivered": "Esto incluye el descuento de los artículos que ya recibió.",
  "moneyPromoAdjust": "Ajuste de liquidación (descuento retirado)",
- "moneyPromoAdjustNote": "Tras cancelar parte del pedido, el descuento del código también se retiró de los artículos ya liquidados: su venta subió y se añadieron ${1} tomanes (IVA incluido) a su liquidación, que podrá retirar en el próximo ciclo de liquidación."
+ "moneyPromoAdjustNote": "Tras cancelar parte del pedido, el descuento del código también se retiró de los artículos ya liquidados: su venta subió y se añadieron ${1} tomanes (IVA incluido) a su liquidación, que podrá retirar en el próximo ciclo de liquidación.",
+ "copSymptomCta": "Revisa tus síntomas con el asistente de salud",
+ "copSymptomCtaSub": "Describe tus síntomas y te sugeriremos la especialidad y el médico adecuados"
 }

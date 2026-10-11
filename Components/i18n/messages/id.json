@@ -7403,5 +7403,7 @@
  "aiEntryNew": "baru",
  "promoClawbackDelivered": "Ini termasuk diskon untuk barang yang sudah Anda terima.",
  "moneyPromoAdjust": "Penyesuaian penyelesaian (diskon dicabut)",
- "moneyPromoAdjustNote": "Setelah sebagian pesanan dibatalkan, diskon kode juga dicabut dari item yang sudah diselesaikan: penjualannya naik dan ${1} toman (termasuk PPN) ditambahkan ke penyelesaian Anda, dapat ditarik pada siklus penyelesaian berikutnya."
+ "moneyPromoAdjustNote": "Setelah sebagian pesanan dibatalkan, diskon kode juga dicabut dari item yang sudah diselesaikan: penjualannya naik dan ${1} toman (termasuk PPN) ditambahkan ke penyelesaian Anda, dapat ditarik pada siklus penyelesaian berikutnya.",
+ "copSymptomCta": "Periksa gejala dengan asisten kesehatan",
+ "copSymptomCtaSub": "Ceritakan gejala Anda, kami sarankan spesialisasi dan dokter yang tepat"
 }

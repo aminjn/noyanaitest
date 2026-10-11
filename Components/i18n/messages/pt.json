@@ -7403,5 +7403,7 @@
  "aiEntryNew": "novo",
  "promoClawbackDelivered": "Isso inclui o desconto dos itens que você já recebeu.",
  "moneyPromoAdjust": "Ajuste de repasse (desconto retirado)",
- "moneyPromoAdjustNote": "Após o cancelamento de parte do pedido, o desconto do cupom também foi retirado dos itens já liquidados: a venda deles subiu e ${1} tomans (com IVA) foram somados ao seu repasse, que poderá ser sacado no próximo ciclo de liquidação."
+ "moneyPromoAdjustNote": "Após o cancelamento de parte do pedido, o desconto do cupom também foi retirado dos itens já liquidados: a venda deles subiu e ${1} tomans (com IVA) foram somados ao seu repasse, que poderá ser sacado no próximo ciclo de liquidação.",
+ "copSymptomCta": "Verifique seus sintomas com o assistente de saúde",
+ "copSymptomCtaSub": "Descreva seus sintomas e sugerimos a especialidade e o médico certos"
 }

@@ -7403,5 +7403,7 @@
  "aiEntryNew": "neu",
  "promoClawbackDelivered": "Darin ist auch der Rabatt auf bereits erhaltene Artikel enthalten.",
  "moneyPromoAdjust": "Abrechnungskorrektur (Rabatt zurückgenommen)",
- "moneyPromoAdjustNote": "Nach der Teilstornierung wurde der Code-Rabatt auch von bereits abgerechneten Artikeln entfernt: Ihr Verkaufspreis stieg, und ${1} Toman (inkl. MwSt.) wurden Ihrer Abrechnung hinzugefügt. Der Betrag wird mit dem nächsten Abrechnungszyklus auszahlbar."
+ "moneyPromoAdjustNote": "Nach der Teilstornierung wurde der Code-Rabatt auch von bereits abgerechneten Artikeln entfernt: Ihr Verkaufspreis stieg, und ${1} Toman (inkl. MwSt.) wurden Ihrer Abrechnung hinzugefügt. Der Betrag wird mit dem nächsten Abrechnungszyklus auszahlbar.",
+ "copSymptomCta": "Symptome mit dem Gesundheitsassistenten prüfen",
+ "copSymptomCtaSub": "Beschreiben Sie Ihre Symptome, wir schlagen Fachrichtung und Arzt vor"
 }

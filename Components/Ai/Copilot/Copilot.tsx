@@ -135,6 +135,28 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
         <AiSetupNotice profile={profile} status={status} />
         {!msgs.length && (
           <div className={classes.empty}>
+            {/* the patient's most common ask first, one tap (Ada / K Health):
+                the symptom checker; the rest stays below as chips */}
+            {profile === "user" && (
+              <button
+                type="button"
+                className={classes.symptomCta}
+                onClick={() => {
+                  onClose();
+                  push("/wizard");
+                }}
+              >
+                <span className={classes.symptomIcon} aria-hidden="true">
+                  <Ixon width="1.25rem">
+                    <SparkIcon />
+                  </Ixon>
+                </span>
+                <span className={classes.symptomText}>
+                  <strong>{t(T("copSymptomCta", "بررسی علائم با دستیار سلامت"))}</strong>
+                  <span>{t(T("copSymptomCtaSub", "علائمتان را بگویید تا تخصص و پزشک مناسب را پیشنهاد کنیم"))}</span>
+                </span>
+              </button>
+            )}
             <p className={ai.text}>{t(ui.intro)}</p>
             {ok && !!chips.length && (
               <div className={ai.chips}>

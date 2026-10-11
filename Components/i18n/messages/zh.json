@@ -7403,5 +7403,7 @@
  "aiEntryNew": "新",
  "promoClawbackDelivered": "其中包括您已收到商品的折扣。",
  "moneyPromoAdjust": "结算调整（折扣已收回）",
- "moneyPromoAdjustNote": "部分订单取消后，已结算商品上的折扣码优惠也被收回：其售价提高，${1} 托曼（含增值税）已计入您的结算，将在下一个结算周期可提现。"
+ "moneyPromoAdjustNote": "部分订单取消后，已结算商品上的折扣码优惠也被收回：其售价提高，${1} 托曼（含增值税）已计入您的结算，将在下一个结算周期可提现。",
+ "copSymptomCta": "用健康助手检查症状",
+ "copSymptomCtaSub": "描述您的症状，我们为您推荐合适的科室和医生"
 }

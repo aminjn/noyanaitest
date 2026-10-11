@@ -7403,5 +7403,7 @@
  "aiEntryNew": "nouveau",
  "promoClawbackDelivered": "Cela inclut la remise sur les articles que vous avez déjà reçus.",
  "moneyPromoAdjust": "Ajustement du règlement (remise reprise)",
- "moneyPromoAdjustNote": "Après l'annulation d'une partie de la commande, la remise du code a aussi été retirée des articles déjà réglés : leur prix de vente a augmenté et ${1} tomans (TVA comprise) ont été ajoutés à votre règlement, retirables au prochain cycle de règlement."
+ "moneyPromoAdjustNote": "Après l'annulation d'une partie de la commande, la remise du code a aussi été retirée des articles déjà réglés : leur prix de vente a augmenté et ${1} tomans (TVA comprise) ont été ajoutés à votre règlement, retirables au prochain cycle de règlement.",
+ "copSymptomCta": "Vérifiez vos symptômes avec l'assistant santé",
+ "copSymptomCtaSub": "Décrivez vos symptômes, nous vous proposerons la spécialité et le médecin adaptés"
 }

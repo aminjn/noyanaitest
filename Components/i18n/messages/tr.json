@@ -7403,5 +7403,7 @@
  "aiEntryNew": "yeni",
  "promoClawbackDelivered": "Buna daha önce teslim aldığınız ürünlerdeki indirim de dahildir.",
  "moneyPromoAdjust": "İndirim geri alındıktan sonra mutabakat düzeltmesi",
- "moneyPromoAdjustNote": "Siparişin bir kısmı iptal edildikten sonra kod indirimi, mutabakatı yapılmış ürünlerden de kaldırıldı: satış tutarları arttı ve ${1} tümen (KDV dahil) mutabakatınıza eklendi; bir sonraki mutabakat döneminde çekilebilir olur."
+ "moneyPromoAdjustNote": "Siparişin bir kısmı iptal edildikten sonra kod indirimi, mutabakatı yapılmış ürünlerden de kaldırıldı: satış tutarları arttı ve ${1} tümen (KDV dahil) mutabakatınıza eklendi; bir sonraki mutabakat döneminde çekilebilir olur.",
+ "copSymptomCta": "Belirtilerinizi sağlık asistanıyla kontrol edin",
+ "copSymptomCtaSub": "Belirtilerinizi anlatın, doğru branşı ve doktoru önerelim"
 }

@@ -7403,5 +7403,7 @@
  "aiEntryNew": "new",
  "promoClawbackDelivered": "This includes the discount on items you have already received.",
  "moneyPromoAdjust": "Settlement adjustment (discount taken back)",
- "moneyPromoAdjustNote": "After part of the order was cancelled, the code discount was also taken off items already settled: their sale rose and ${1} toman (VAT included) was added to your settlement. It becomes withdrawable with your next settlement cycle."
+ "moneyPromoAdjustNote": "After part of the order was cancelled, the code discount was also taken off items already settled: their sale rose and ${1} toman (VAT included) was added to your settlement. It becomes withdrawable with your next settlement cycle.",
+ "copSymptomCta": "Check your symptoms with the health assistant",
+ "copSymptomCtaSub": "Describe your symptoms and we'll suggest the right specialty and doctor"
 }
