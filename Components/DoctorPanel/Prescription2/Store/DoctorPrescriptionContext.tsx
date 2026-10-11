@@ -62,6 +62,9 @@ export interface IPrescription2Item<
   drugInstruction?: T["DrugInstruction"] extends TaminDrugInstructionPopulation
     ? ITaminDrugInstruction<T["DrugInstruction"]>
     : string;
+  // Physiotherapy (srvType 13): comma-separated Tamin ph-illness/ph-plan ids.
+  illnessId?: string;
+  planId?: string;
 }
 
 export const newPrescription2ItemId = () =>

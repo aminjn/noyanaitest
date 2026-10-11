@@ -53,6 +53,8 @@ const Submitter = () => {
         instruction: el.drugInstruction?._id,
         dose: el.dose,
         dateDo: el.dateDo,
+        illnessId: el.illnessId,
+        planId: el.planId,
       })),
     });
   }, [isDrafting, isCommiting, patient, pushNotification, getContent, items, unreviewed, rx]);
@@ -124,6 +126,8 @@ const Drafter = () => {
         instruction: el.drugInstruction?._id,
         dose: el.dose,
         dateDo: el.dateDo,
+        illnessId: el.illnessId,
+        planId: el.planId,
       })),
     });
   }, [isLoading, patient, pushNotification, getContent, items, unreviewed, rx]);
@@ -180,6 +184,8 @@ const Editor = () => {
         instruction: el.drugInstruction?._id,
         dose: el.dose,
         dateDo: el.dateDo,
+        illnessId: el.illnessId,
+        planId: el.planId,
       })),
     });
   }, [isLoading, items, getContent, pushNotification, unreviewed, rx]);

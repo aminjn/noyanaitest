@@ -23,6 +23,7 @@ import AmountGetter from "../../Prescription/Create/Items/Drug/AmountGetter";
 import DateInput from "@/Components/UI/DateInput";
 import AreaInput from "@/Components/UI/AreaInput";
 import Button from "@/Components/UI/Button";
+import MultiSelectInput from "@/Components/UI/MultiSelectInput";
 import useNotification from "@/Components/Hooks/useNotification";
 import {
   newPrescription2ItemId,
@@ -118,6 +119,70 @@ const ItemGetter = ({ srvType }: { srvType: number }) => {
   );
 };
 
+type PhysioBase = {
+  illnesses?: { _id: string; illnessId?: string; illnessDesc?: string }[];
+  plans?: { _id: string; planId?: string; planDesc?: string }[];
+};
+
+const splitIds = (value?: string) =>
+  value ? value.split(",").filter(Boolean) : [];
+
+// Physiotherapy items carry Tamin illness/plan ids, several allowed
+// (comma-separated - guide 3, note 9).
+const PhysioFields = () => {
+  const getContent = useScopedLocale(LOCALE_NS);
+  const { working, setWorking } = usePrescription();
+  const { data } = useSWR<PhysioBase>(
+    `${API}/doctor/presc2/physio/base`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+  );
+  if (!data) return null;
+  const illnesses = Array.isArray(data.illnesses) ? data.illnesses : [];
+  const plans = Array.isArray(data.plans) ? data.plans : [];
+  return (
+    <Fragment>
+      <MultiSelectInput
+        multi
+        title={getContent("physioIllness")}
+        placeholder={getContent("physioIllness")}
+        options={illnesses
+          .filter((el) => el.illnessId)
+          .map((el) => ({
+            title: el.illnessDesc || el.illnessId || "",
+            value: el.illnessId as string,
+          }))}
+        value={splitIds(working.illnessId)}
+        onChange={(selected) =>
+          setWorking((prev) => ({
+            ...prev,
+            illnessId: selected.join(",") || undefined,
+          }))
+        }
+      />
+      <MultiSelectInput
+        multi
+        title={getContent("physioPlan")}
+        placeholder={getContent("physioPlan")}
+        options={plans
+          .filter((el) => el.planId)
+          .map((el) => ({
+            title: el.planDesc || el.planId || "",
+            value: el.planId as string,
+          }))}
+        value={splitIds(working.planId)}
+        onChange={(selected) =>
+          setWorking((prev) => ({
+            ...prev,
+            planId: selected.join(",") || undefined,
+          }))
+        }
+      />
+    </Fragment>
+  );
+};
+
+const PHYSIO_ID = [13];
+
 const DRUG_ID = [1];
 
 const WITH_DATE_DO = [2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 20, 99];
@@ -180,6 +245,7 @@ const Tab = ({ node }: { node: ITaminServiceType }) => {
             <AmountGetter />
           </Fragment>
         )}
+        {!!PHYSIO_ID.includes(Number(node.srvType) || 0) && <PhysioFields />}
         {!!WITH_DATE_DO.includes(node.srvType || 0) && (
           <DateInput
             title={getContent("testDoDate")}

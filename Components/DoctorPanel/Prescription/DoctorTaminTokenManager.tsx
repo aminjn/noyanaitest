@@ -7,6 +7,8 @@ import Button from "@/Components/UI/Button";
 import { Fragment, useState } from "react";
 import useSWR from "swr";
 
+// Minimal Tamin login button, still used by the (locked) pharmacy panel.
+// The doctor panel uses DoctorTaminConnectionCard instead.
 const DoctorTaminTokenManager = () => {
   const intlTag = useIntlLocale();
   const { data, error } = useSWR<Date>(
@@ -34,12 +36,14 @@ const DoctorTaminTokenManager = () => {
             })
           : "get Token"}
       </Button>
-      <Act<{ data: { challenge: string } }>
+      <Act<{ data: { authorizeUrl?: string } }>
         path={isGettingToken ? `${API}/doctor/tamin` : null}
         onDone={(status, result) => {
           setIsGettingToken(false);
-          if (!status || !result) return;
-          window.location.href = `${process.env.TAMIN_DOMAIN}/auth/server/authorize?redirect_uri=${process.env.DOMAIN}/doctorpanel/tamin&code_challenge=${result.data.challenge}&client_id=portal-js&response_type=code&code_challenge_method=S256`;
+          // the backend builds the authorize URL (environment, client id,
+          // registered redirect address, PKCE + state)
+          if (!status || !result?.data?.authorizeUrl) return;
+          window.location.href = result.data.authorizeUrl;
         }}
       />
     </Fragment>

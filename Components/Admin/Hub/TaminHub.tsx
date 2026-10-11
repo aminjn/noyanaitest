@@ -14,14 +14,17 @@ import AdminManageTaminPhIllnessesPage from "@/Components/Admin/Tamin/PhIllness/
 import AdminManageTaminIcidsPage from "@/Components/Admin/Tamin/Icid/AdminManageTaminIcidsPage";
 import AdminManageTaminComplaintsPage from "@/Components/Admin/Tamin/TaminComplaint/AdminManageTaminComplaintPage";
 import AdminManageTaminSpecsPage from "@/Components/Admin/Tamin/Spec/AdminManageTaminSpecsPage";
+import AdminTaminEpSettingsTab from "@/Components/Admin/Tamin/AdminTaminEpSettingsTab";
 
 // تامین اجتماعی (2026-10 audit): the Tamin e-prescription catalogs were
-// twelve menu items; one page, a tab per catalog.
+// twelve menu items; one page, a tab per catalog. 2026-10: the doctor
+// e-prescription connection (client id, redirect address) is its first tab.
 const TaminHub = () => (
   <AdminSectionHub
-    title={ta("کاتالوگ‌های تامین اجتماعی")}
-    intro={ta("فهرست‌هایی که نسخه‌ی الکترونیک تامین از آن‌ها استفاده می‌کند.")}
+    title={ta("تامین اجتماعی")}
+    intro={ta("اتصال نسخه‌نویسی پزشکان به تامین و فهرست‌هایی که نسخه‌ی الکترونیک تامین از آن‌ها استفاده می‌کند.")}
     tabs={[
+      { id: "connection", title: ta("اتصال نسخه‌نویسی"), content: <AdminTaminEpSettingsTab /> },
       { id: "prescriptionType", title: ta("انواع نسخه"), content: <AdminManageTaminPrescriptionTypesPage /> },
       { id: "serviceType", title: ta("انواع سرویس"), content: <AdminManageTaminServiceTypesPage /> },
       { id: "service", title: ta("سرویس‌ها"), content: <AdminManageTaminServicesPage /> },

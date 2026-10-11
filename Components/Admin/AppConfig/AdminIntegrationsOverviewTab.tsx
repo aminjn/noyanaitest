@@ -55,6 +55,11 @@ const AdminIntegrationsOverviewTab = () => {
     get,
     opts,
   );
+  const { data: tamin } = useSWR<{ clientId?: string; redirectUri?: string; environment?: string }>(
+    `${API}/admin/tamin/ep-settings`,
+    get,
+    opts,
+  );
   const { data: ai } = useSWR<{ status?: Record<string, { on?: boolean }> }>(`${API}/admin/ai/settings`, get, opts);
   const { data: config } = useSWR<Record<string, unknown>>(
     `${API}/auto/appConfig`,
@@ -103,6 +108,12 @@ const AdminIntegrationsOverviewTab = () => {
           state={config?.sepEnabled ? "on" : filled("sepTerminalId") ? "partial" : "off"}
           detail={ta("درگاه پرداخت نوبت، داروخانه و پلن‌ها.")}
           href="/financeSettings?tab=payments"
+        />
+        <Card
+          title={ta("نسخه‌نویسی الکترونیک تامین")}
+          state={tamin?.clientId && tamin?.redirectUri ? "on" : tamin?.clientId || tamin?.redirectUri ? "partial" : "off"}
+          detail={ta("ورود پزشک به تامین و ثبت نسخه، ارجاع و ویزیت در سامانه‌ی تامین.")}
+          href="/tamin?tab=connection"
         />
         <Card
           title={ta("استعلام هویت و نظام پزشکی")}

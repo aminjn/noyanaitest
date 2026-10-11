@@ -25,6 +25,10 @@ import { IUserIdentity } from "@/Components/Dashboard/DashboardPage";
 
 const LOCALE_NS: ContentNamespace[] = ["common", "doctorPanelPrescriptionCreate"];
 
+// Tamin accepts at most 3 referrals per referral prescription (guide 3,
+// note 6).
+const MAX_REFERRAL_QUANTITY = 3;
+
 type ReferralPrescriptionInput = Partial<{
   spec: string | null;
   complaints: string[] | null;
@@ -108,14 +112,19 @@ const ReferralPrescriptionPopup = ({ patient }: { patient: IUserIdentity }) => {
         <Counter
           title={getContent("quantity")}
           value={input.quantity || 0}
-          onChange={(e) => setInput((prev) => ({ ...prev, quantity: e }))}
+          onChange={(e) =>
+            setInput((prev) => ({
+              ...prev,
+              quantity: clamp(1, e, MAX_REFERRAL_QUANTITY),
+            }))
+          }
           onTick={(tick) =>
             setInput((prev) => ({
               ...prev,
               quantity: clamp(
                 1,
                 (prev.quantity || 0) + tick,
-                Number.MAX_SAFE_INTEGER,
+                MAX_REFERRAL_QUANTITY,
               ),
             }))
           }
