@@ -14,8 +14,11 @@ import { ta } from "@/Components/Admin/i18n/adminText";
 // the Digikala «مرجوعی» rules). How long after delivery a buyer may ask,
 // whether "changed my mind" is offered, which categories come back only for
 // the seller's error (cold chain, opened hygiene items), how long the
-// seller has to answer before support decides, and the debt a seller's
-// wallet may carry after a return before support is told. Stored on
+// seller has to answer before support decides, and how long a returned
+// parcel may take to come back. A seller is never in debt (2026-10 owner
+// decision, Digikala's model): a pharmacy line's earning stays held until
+// the window and both deadlines have passed (backend Lib/payoutHold.ts), so
+// a refund always comes out of money NoyanAI still holds. Stored on
 // AppConfig; a request is judged by the values of the day it is made.
 const AdminReturnSettingsTab = () => {
   const { data, error, mutate } = useSWR<IAppConfig>(`${API}/auto/appConfig`, (url: string) =>
@@ -34,7 +37,6 @@ const AdminReturnSettingsTab = () => {
               returnWindowDays: data.returnWindowDays ?? 7,
               returnChangedMindAllowed: data.returnChangedMindAllowed ?? true,
               returnNonReturnableCategories: data.returnNonReturnableCategories ?? [],
-              returnSellerDebtLimit: data.returnSellerDebtLimit ?? 5_000_000,
               returnSellerResponseHours: data.returnSellerResponseHours ?? 48,
               returnReceiveDays: data.returnReceiveDays ?? 10,
             }}
@@ -44,7 +46,7 @@ const AdminReturnSettingsTab = () => {
                 title: ta("مهلت مرجوعی پس از تحویل (روز، ۰ تا ۶۰، ۰ یعنی خریدار مرجوع نمی‌کند)"),
                 type: "number",
                 section: rules,
-                hint: ta("از لحظه‌ی تحویل هر قلم (تحویل پیک یا تأیید تحویل تیپاکس) شمرده می‌شود. بازپرداخت پشتیبانی یا آزمایشگاه محدود به این مهلت نیست."),
+                hint: ta("از لحظه‌ی تحویل هر قلم (تحویل پیک یا تأیید تحویل تیپاکس) شمرده می‌شود. فروشنده هیچ‌وقت بدهکار نمی‌شود: درآمد هر قلم داروخانه و هزینه‌ی ارسال بسته تا پایان این مهلت به‌علاوه‌ی مهلت پاسخ فروشنده و مهلت دریافت کالا (اگر دیرتر از دوره‌ی تسویه باشد) و تا بسته شدن مرجوعی باز آن نگه داشته می‌شود. بازپرداخت پشتیبانی یا آزمایشگاه به این مهلت محدود نیست؛ اگر پس از تسویه باشد از درآمدهای در انتظار فروشنده و در غیر این صورت از حساب نویان پرداخت و به مدیر کل خبر داده می‌شود."),
               },
               returnChangedMindAllowed: {
                 title: ta("انصراف از خرید برای کالای باز نشده"),
@@ -75,13 +77,6 @@ const AdminReturnSettingsTab = () => {
                 type: "number",
                 section: seller,
                 hint: ta("کالای ارسال‌شده‌ای که فروشنده در این مدت دریافتش را تأیید نکند به داوری پشتیبانی می‌رود؛ مرجوعیِ تأییدشده‌ای که خریدار نفرستد بسته می‌شود."),
-              },
-              returnSellerDebtLimit: {
-                title: ta("سقف بدهی فروشنده پس از مرجوعی (تومان، ۰ یعنی بدون سقف)"),
-                type: "number",
-                price: true,
-                section: seller,
-                hint: ta("اگر برگشت درآمد، موجودی فروشنده‌ای را که تسویه گرفته منفی کند، از تسویه‌های بعدی کم می‌شود و تا آن زمان برداشت ممکن نیست؛ اگر بدهی از این سقف بگذرد به پشتیبانی هشدار داده می‌شود."),
               },
             }}
           />

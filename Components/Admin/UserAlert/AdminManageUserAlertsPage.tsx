@@ -51,6 +51,10 @@ export const userAlertEvents = [
   // a return the buyer took to support, or one its seller never answered
   // (2026-10, backend Services/orderReturnService.ts)
   "newReturnEscalation",
+  // a refund the seller's held earnings could not cover, absorbed by the
+  // platform - a seller is never put in debt (2026-10, backend
+  // Services/orderReturnService.ts)
+  "refundPlatformCovered",
 ] as const;
 
 export type UserAlertEvent = (typeof userAlertEvents)[number];
@@ -103,6 +107,9 @@ export const userAlertEventLabels: Record<UserAlertEvent, string> = {
 },
   get newReturnEscalation() {
   return ta("مرجوعی برای داوری پشتیبانی");
+},
+  get refundPlatformCovered() {
+  return ta("بازپرداختی که نویان جبران کرد");
 },
 };
 

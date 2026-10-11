@@ -11,6 +11,7 @@ import classes from "./AdminRequestsPage.module.css";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import { adminPath } from "@/Components/helpers/adminPath";
+import { ltrIsolate } from "@/Components/helpers/orderRef";
 import { useRouter } from "@/Components/i18n/navigation";
 import ClientTabSystem from "@/Components/UI/ClientTabSystem";
 import Badge from "@/Components/UI/Badge";
@@ -182,7 +183,7 @@ const RequestsList = ({
       setPopup(
         "ReturnRequest",
         <RequestActionsPopup
-          title={ta("مرجوعی سفارش ${1}", [row.title])}
+          title={ta("مرجوعی سفارش ${1}", [ltrIsolate(row.title || "")])}
           group="return"
           kind={row.kind}
           node={row}
@@ -261,13 +262,16 @@ const RequestsList = ({
               },
               title: {
                 name: ta("عنوان"),
-                value: (row) => row.title || "—",
+                value: (row) => (row.group === "return" && row.title ? ta("سفارش ${1}", [ltrIsolate(row.title)]) : row.title || "—"),
                 filter: "Text",
                 // no council inquiry: the reviewer checks the council card
                 // by hand (the detail page's checklist)
                 component: (row) => (
                   <span className={classes.titleCell}>
-                    <span>{row.title || "—"}</span>
+                    <span>
+                      {/* a return's title is its order's short reference */}
+                      {row.group === "return" && row.title ? ta("سفارش ${1}", [ltrIsolate(row.title)]) : row.title || "—"}
+                    </span>
                     {isManualReview(row) && (
                       <Badge color="Warning" size="S">
                         {ta("بررسی دستی")}
