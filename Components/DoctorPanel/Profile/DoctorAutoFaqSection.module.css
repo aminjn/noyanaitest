@@ -92,13 +92,9 @@
   gap: 0.5rem;
 }
 
-/* the chevron points to the inline end; up / down are quarter turns */
+/* the shared chevron points down: "move up" turns it over */
 .up svg {
-  transform: rotate(-90deg);
-}
-
-.down svg {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
 }
 
 .pageLink {

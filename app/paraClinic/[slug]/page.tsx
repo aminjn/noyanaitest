@@ -11,6 +11,7 @@ import {
 import { centrePageFaq, withFaqPage } from "@/Components/Seo/autoFaq";
 import { getServerFaqContext } from "@/Components/Seo/serverFaqContext";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
+import { DOMAIN } from "@/Components/config";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
@@ -37,7 +38,13 @@ const ParaClinic = async (ctx: { params: { slug: string } }) => {
     : [];
   return (
     <>
-      <JsonLdSchema schema={withFaqPage(webSchema, faqItems)} />
+      <JsonLdSchema
+        schema={withFaqPage(
+          webSchema,
+          faqItems,
+          `${DOMAIN.replace(/\/$/, "")}/paraClinic/${data.data.slug || data.data._id}`,
+        )}
+      />
       <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
         <ParaClinicPage {...data} faqItems={faqItems} />
       </LocaleScopeProvider>

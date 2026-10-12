@@ -99,6 +99,8 @@ const names = (list: unknown) =>
 const uniq = (list: string[]) => list.filter((v, i) => list.indexOf(v) === i);
 
 const listOf = (ctx: FaqContext, items: string[]) => uniq(items.filter(Boolean)).join(ctx.sep);
+// between items that have commas of their own (addresses): the semicolon
+const blockSep = (ctx: FaqContext) => (ctx.sep === "، " ? "؛ " : ctx.sep === "、" ? "；" : "; ");
 
 const numberOf = (ctx: FaqContext, n: number, digits = 0) => {
   try {
@@ -231,7 +233,9 @@ export const buildDoctorFaq = (
     out.push({
       key: "fee",
       question: t("afqFeeQ", [dr]),
-      answer: t("afqFeeA", [listOf(ctx, prices.map((p) => t("afqFeeItem", [typeLabel(p.type), tomanOf(ctx, Number(p.price))])))]),
+      answer: t("afqFeeA", [
+        uniq(prices.map((p) => t("afqFeeItem", [typeLabel(p.type), tomanOf(ctx, Number(p.price))]))).join(blockSep(ctx)),
+      ]),
       ...(facts.booking?.bookable && { link: { href: "#dr-booking", label: t("afqLinkBook") } }),
     });
 
@@ -247,7 +251,7 @@ export const buildDoctorFaq = (
       key: "address",
       question: t("afqAddressQ", [dr]),
       answer: sentences(
-        offices.length > 1 ? t("afqAddressManyA", [dr, lines.join(ctx.sep)]) : t("afqAddressA", [dr, lines[0]]),
+        offices.length > 1 ? t("afqAddressManyA", [dr, lines.join(blockSep(ctx))]) : t("afqAddressA", [dr, lines[0]]),
         !!city && !mentionsCity && t("afqCityA", [city]),
       ),
       link: { href: "#dr-address", label: t("afqLinkMap") },
@@ -415,7 +419,7 @@ export const buildCentreFaq = (kind: CentreKind, data: CentreFaqData | null | un
         question: t("afqCTestsQ", [name]),
         answer: t("afqCTestsA", [
           name,
-          listOf(ctx, tests.map((o) => t("afqFeeItem", [str(o.test?.name), tomanOf(ctx, Number(o.price))]))),
+          uniq(tests.map((o) => t("afqFeeItem", [str(o.test?.name), tomanOf(ctx, Number(o.price))]))).join(blockSep(ctx)),
         ]),
         link: { href: "#Tests", label: t("afqLinkTests") },
       });

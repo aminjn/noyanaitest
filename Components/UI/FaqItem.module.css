@@ -44,9 +44,9 @@
   transition: transform var(--transTime);
 }
 
-/* the chevron points to the reading direction's end, down when open */
+/* the chevron points down when closed, up when open */
 .chevronOpen {
-  transform: rotateZ(90deg);
+  transform: rotateZ(180deg);
 }
 
 /* height animates through the grid row (any answer length fits) */
