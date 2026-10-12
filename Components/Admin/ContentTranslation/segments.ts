@@ -224,6 +224,18 @@ export const segmentTitle = (segment: string) => {
   return segment;
 };
 
+// translated models with no admin segment of their own (the queue still
+// translates them; backend Services/autoTranslate.ts), by model name
+const modelTitles: Record<string, () => string> = {
+  Office: () => ta("مطب‌ها"),
+  GalleryItem: () => ta("گالری"),
+  SeoTemplate: () => ta("سئوی خودکار"),
+  HomeIntroduction: () => ta("معرفی صفحه اصلی"),
+  PatientProPlan: () => ta("اشتراک پرو"),
+  AutoFaqOverride: () => ta("سوالات خودکار"),
+};
+export const modelTitle = (model: string) => modelTitles[model]?.() || model;
+
 export const fieldTitles: Record<string, string> = {
   get name() {
   return ta("نام");

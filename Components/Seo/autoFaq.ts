@@ -45,6 +45,8 @@ export type FaqContext = {
 // ------------------------------------------------------------ facts
 
 type Named = { name?: string; slug?: string };
+// a public number with the place it belongs to (an office, a department)
+export type PublicPhone = { name?: string; phone?: string };
 type VisitType = "inPerson" | "textChat" | "voiceCall" | "sipCall" | "videoCall";
 
 // what GET /public/dr/:slug (and the panel's /doctor/faq/auto) send as
@@ -55,7 +57,9 @@ export type DoctorFaqFacts = {
   services?: { services?: { title?: string }[]; diseases?: Named[] };
   fee?: { prices?: { type: VisitType; price: number }[] };
   address?: { offices?: { name?: string; address?: string }[]; city?: Named };
-  phone?: { phone?: string };
+  // each office's phone (with its name) and the profile's land line;
+  // `phone` is the older single-number shape
+  phone?: { phones?: PublicPhone[]; phone?: string };
   workplaces?: { items?: (Named & { kind?: "clinic" | "hospital" })[] };
   online?: { types?: VisitType[] };
   nextSlot?: { ymd?: string; start?: number; type?: VisitType; none?: boolean; days?: number };
@@ -91,6 +95,8 @@ const visitTypes = Object.keys(visitTypeKey) as VisitType[];
 const isVisitType = (v: unknown): v is VisitType => visitTypes.includes(v as VisitType);
 
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
+// a value set inside a sentence: its own closing punctuation would double up
+const clause = (v: unknown) => str(v).replace(/[\s.،,;:؛!?؟]+$/, "");
 const arr = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
 const names = (list: unknown) =>
   arr<Named>(list)
@@ -101,6 +107,25 @@ const uniq = (list: string[]) => list.filter((v, i) => list.indexOf(v) === i);
 const listOf = (ctx: FaqContext, items: string[]) => uniq(items.filter(Boolean)).join(ctx.sep);
 // between items that have commas of their own (addresses): the semicolon
 const blockSep = (ctx: FaqContext) => (ctx.sep === "، " ? "؛ " : ctx.sep === "、" ? "；" : "; ");
+
+// the public numbers, each once; `fallback` is the lone number of an older
+// response with no list (an empty list means none is public)
+const phonesOf = (list: unknown, fallback?: unknown): { name: string; phone: string }[] => {
+  const lone = str(fallback);
+  const all = Array.isArray(list)
+    ? arr<PublicPhone>(list)
+        .map((p) => ({ name: str(p?.name), phone: str(p?.phone) }))
+        .filter((p) => p.phone)
+    : lone
+      ? [{ name: "", phone: lone }]
+      : [];
+  return all.filter((p, i) => all.findIndex((o) => o.phone === p.phone) === i);
+};
+// "Office A: 021…; Office B: 021…" (a number with no place stays bare)
+const phonesText = (ctx: FaqContext, phones: { name: string; phone: string }[]) =>
+  phones
+    .map((p) => (p.name ? ctx.t("afqAddressItem", [p.name, p.phone]) : p.phone))
+    .join(blockSep(ctx));
 
 const numberOf = (ctx: FaqContext, n: number, digits = 0) => {
   try {
@@ -164,7 +189,8 @@ export const buildDoctorFaq = (
   if (!dr) return [];
   const out: Draft[] = [];
   const typeLabel = (type: VisitType) => t(visitTypeKey[type]);
-  const phone = str(facts.phone?.phone);
+  const phones = phonesOf(facts.phone?.phones, facts.phone?.phone);
+  const phone = phones[0]?.phone || "";
 
   // how to book
   const booking = facts.booking;
@@ -244,7 +270,7 @@ export const buildDoctorFaq = (
   if (offices.length) {
     const city = str(facts.address?.city?.name);
     const lines = offices.map((o) =>
-      str(o.name) ? t("afqAddressItem", [str(o.name), str(o.address)]) : str(o.address),
+      str(o.name) ? t("afqAddressItem", [str(o.name), clause(o.address)]) : clause(o.address),
     );
     const mentionsCity = !!city && lines.some((l) => l.includes(city));
     out.push({
@@ -258,12 +284,13 @@ export const buildDoctorFaq = (
     });
   }
 
-  // public phone (the profile's contact phone; never an account's mobile)
-  if (phone)
+  // public phones: each office's (with its name) and the profile's land
+  // line - never an account's mobile (the backend leaves it out)
+  if (phones.length)
     out.push({
       key: "phone",
       question: t("afqPhoneQ", [dr]),
-      answer: t("afqPhoneA", [dr, phone]),
+      answer: t("afqPhoneA", [dr, phonesText(ctx, phones)]),
       link: { href: "#dr-address", label: t("afqLinkContact") },
     });
 
@@ -335,6 +362,9 @@ export type CentreFaqData = {
   name?: string;
   address?: string;
   phone?: string;
+  // its own line and each department's, with the department's name
+  // (never the panel account's mobile) - see the backend's centrePhones
+  publicPhones?: PublicPhone[];
   location?: { coordinates?: number[] } | null;
   city?: Named | string | null;
   province?: Named | string | null;
@@ -372,7 +402,7 @@ export const buildCentreFaq = (kind: CentreKind, data: CentreFaqData | null | un
   const out: Draft[] = [];
 
   // address
-  const address = str(data.address);
+  const address = clause(data.address);
   if (address) {
     const city = nameOfRef(data.city) || nameOfRef(data.province);
     out.push({
@@ -384,9 +414,10 @@ export const buildCentreFaq = (kind: CentreKind, data: CentreFaqData | null | un
     });
   }
 
-  // phone (the centre's public phone, shown in its contact block)
-  const phone = str(data.phone);
-  if (phone) out.push({ key: "phone", question: t("afqCPhoneQ", [name]), answer: t("afqPhoneA", [name, phone]) });
+  // phones (the centre's own line and its departments', as its page shows)
+  const phones = phonesOf(data.publicPhones, data.phone);
+  if (phones.length)
+    out.push({ key: "phone", question: t("afqCPhoneQ", [name]), answer: t("afqPhoneA", [name, phonesText(ctx, phones)]) });
 
   // hours today
   const week = weekOf(data.openingHours);

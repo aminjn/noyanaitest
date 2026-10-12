@@ -347,7 +347,7 @@ export const adminHubs: AdminHub[] = [
         items: [
       { get title() { return ta("سوال‌ها"); }, href: "faq?tab=questions", access: "Faq" },
       { get title() { return ta("دسته‌بندی سوالات متداول"); }, href: "faqCategory", access: "Faq" },
-      { get title() { return ta("سوالات مشترک صفحه‌ی پزشکان"); }, href: "doctorfaq", access: "DoctorFaq" },
+      { get title() { return ta("سوالات پزشکان"); }, href: "faq?tab=doctors", access: "DoctorFaq" },
         ],
       },
     ],

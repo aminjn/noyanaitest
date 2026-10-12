@@ -13,7 +13,6 @@ import HandleLoading from "../UI/HandleLoading";
 import WithTitle from "../UI/WithTitle";
 import Table from "../UI/Table";
 import usePopup from "@/Components/Hooks/usePopup";
-import CreateFaqPopup from "./CreateDoctorFaqPopup";
 import BooleanToIcon, { booleanToValue } from "@/Components/UI/BooleanToIcon";
 import { getDoctorProfileLabel } from "../Lib/LabelGetters";
 import InlineLink from "../UI/InlineLink";
@@ -28,11 +27,18 @@ import { IDoctorFaq } from "@/Components/DoctorPanel/Profile/DoctorManageFaqTab"
 import OrderEditor from "../UI/OrderEditor";
 import { ta } from "@/Components/Admin/i18n/adminText";
 
+// Each doctor's own questions (written in their panel), for moderation.
+// The questions "for every doctor" (no doctor) were a mistake the automatic
+// FAQ replaces (2026-10): they are archived, not listed, and can't be added.
 const AdminManageDoctorFaqsPage = () => {
   const { data, error, mutate } = useSWR<
     IDoctorFaq<{ Doctor: Record<never, never> }>[]
   >(`${API}/auto/doctorfaq`, (url: string) =>
-    fetcher({ url }).then((res) => res.data.data),
+    fetcher({ url }).then((res) =>
+      (Array.isArray(res?.data?.data) ? res.data.data : []).filter(
+        (node: IDoctorFaq<{ Doctor: Record<never, never> }>) => !!node?.doctor && !node.archived,
+      ),
+    ),
   );
 
   const { setPopup } = usePopup();
@@ -40,16 +46,7 @@ const AdminManageDoctorFaqsPage = () => {
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <WithTitle
-          title={ta("سوالات متداول")}
-          actions={[
-            {
-              title: ta("جدید"),
-              action: () =>
-                setPopup("CreateFaq", <CreateFaqPopup mutate={mutate} />),
-            },
-          ]}
-        >
+        <WithTitle title={ta("سوالات پزشکان")}>
           <Table
             data={data}
             name="AdminManageDoctorFaqs"

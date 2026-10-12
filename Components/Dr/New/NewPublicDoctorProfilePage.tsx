@@ -174,7 +174,11 @@ const NewDoctorProfilePage = ({
   const hasRecords = !!doctor.achivements?.length;
   const hasGallery = !!doctor.gallery?.some((el) => !!el?.image);
   const faqList: { id?: string; _id?: string; question: string; answer: string }[] =
-    Array.isArray(faqItems) ? faqItems : Array.isArray(faqs) ? faqs : [];
+    Array.isArray(faqItems)
+      ? faqItems
+      : Array.isArray(faqs)
+        ? faqs.filter((f) => !!f?.doctor && !f.archived)
+        : [];
   const hasFaqs = faqList.length > 0;
   // «سوالات متداول درباره‌ی دکتر …»
   const faqTitle = getContent("afqTitle", [

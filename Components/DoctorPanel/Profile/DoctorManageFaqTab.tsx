@@ -33,6 +33,9 @@ export interface IDoctorFaq<T extends DoctorFaqPopulation = DoctorFaqPopulation>
   answer: string;
   active: boolean;
   order: number;
+  // a question once shared by every doctor page (no doctor): kept, never
+  // shown - the automatic FAQ replaced them (2026-10)
+  archived?: boolean;
 }
 
 const DoctorManageFaqTab = () => {

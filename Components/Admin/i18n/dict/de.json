@@ -3782,5 +3782,21 @@
  "اتصال و کاتالوگ‌های تامین": "Tamin-Anbindung und Kataloge",
  "نشانی بازگشت (redirect_uri)": "Rückleitungsadresse (redirect_uri)",
  "نشانی سایت (siteBaseUrl)": "Website-Adresse (siteBaseUrl)",
- "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Automatische FAQ (aus den Daten der Seite) und ihre strukturierten FAQPage-Daten anzeigen"
+ "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Automatische FAQ (aus den Daten der Seite) und ihre strukturierten FAQPage-Daten anzeigen",
+ "هر رکورد تازه یا ویرایش‌شده (از فرم‌ها، ساخت سریع در فیلدها، ورود گروهی یا انتقال از سایت قدیم) خودکار به زبان‌های فعال سایت ترجمه می‌شود. ترجمه‌هایی که دستی نوشته شده‌اند هرگز جایگزین نمی‌شوند.": "Jeder neue oder bearbeitete Datensatz (aus Formularen, Schnellanlage in Feldern, Massenimport oder der Übernahme der alten Website) wird automatisch in die aktiven Sprachen der Website übersetzt. Von Hand geschriebene Übersetzungen werden nie ersetzt.",
+ "بررسی و ترجمه‌ی موارد ناقص": "Fehlendes prüfen und übersetzen",
+ "ترجمه‌ی خودکار تنظیم نشده است: ${1} رکورد ترجمه‌ی ناقص دارند و تا آن زمان به فارسی نمایش داده می‌شوند. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید؛ صف خودکار شروع می‌شود.": "Die automatische Übersetzung ist nicht eingerichtet: ${1} Datensätze haben fehlende Übersetzungen und werden bis dahin auf Persisch angezeigt. Wählen Sie unter „Systemeinstellungen → KI“ einen Anbieter und aktivieren Sie „Automatische Inhaltsübersetzung“; die Warteschlange startet dann von selbst.",
+ "ترجمه‌ی خودکار تنظیم نشده است. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید.": "Die automatische Übersetzung ist nicht eingerichtet. Wählen Sie unter „Systemeinstellungen → KI“ einen Anbieter und aktivieren Sie „Automatische Inhaltsübersetzung“.",
+ "در صف: ${1}": "In der Warteschlange: ${1}",
+ "ناموفق: ${1}": "Fehlgeschlagen: ${1}",
+ "ترجمه‌شده از آخرین راه‌اندازی: ${1}": "Seit dem letzten Start übersetzt: ${1}",
+ "متوقف شده": "Angehalten",
+ "در حال بررسی همه‌ی رکوردها…": "Alle Datensätze werden geprüft…",
+ "آخرین بررسی: ${1} — ${2} رکورد ترجمه‌ی ناقص داشتند": "Letzte Prüfung: ${1} — ${2} Datensätze hatten fehlende Übersetzungen",
+ "هنوز بررسی نشده است": "Noch nicht geprüft",
+ "ناقص به تفکیک بخش": "Fehlend nach Bereich",
+ "ترجمه‌های ناموفق (${1})": "Fehlgeschlagene Übersetzungen (${1})",
+ "متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به زبان‌های فعال سایت. هر فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.": "Datenbanktexte (Artikel, Krankheiten, Medikamente, Ärzte, Zentren…) in den aktiven Sprachen der Website. Ein Feld ohne Übersetzung wird in dieser Sprache auf Persisch angezeigt.",
+ "سوالات خودکار": "Automatische FAQ",
+ "ارائه‌دهنده‌ی هوش مصنوعی پاسخ نداد؛ صف تا ${1} صبر می‌کند و خودکار ادامه می‌دهد.": "Der KI-Anbieter hat nicht geantwortet; die Warteschlange wartet bis ${1} und läuft dann von selbst weiter."
 }

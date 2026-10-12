@@ -3782,5 +3782,21 @@
  "اتصال و کاتالوگ‌های تامین": "Tamin connection and catalogs",
  "نشانی بازگشت (redirect_uri)": "Redirect address (redirect_uri)",
  "نشانی سایت (siteBaseUrl)": "Site address (siteBaseUrl)",
- "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Show the automatic FAQ (built from each page's own data) and its FAQPage structured data"
+ "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Show the automatic FAQ (built from each page's own data) and its FAQPage structured data",
+ "هر رکورد تازه یا ویرایش‌شده (از فرم‌ها، ساخت سریع در فیلدها، ورود گروهی یا انتقال از سایت قدیم) خودکار به زبان‌های فعال سایت ترجمه می‌شود. ترجمه‌هایی که دستی نوشته شده‌اند هرگز جایگزین نمی‌شوند.": "Every new or edited record (from forms, quick create in fields, bulk import or the old-site migration) is translated automatically into the site's enabled languages. Translations written by hand are never replaced.",
+ "بررسی و ترجمه‌ی موارد ناقص": "Check and translate what is missing",
+ "ترجمه‌ی خودکار تنظیم نشده است: ${1} رکورد ترجمه‌ی ناقص دارند و تا آن زمان به فارسی نمایش داده می‌شوند. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید؛ صف خودکار شروع می‌شود.": "Automatic translation is not set up: ${1} records have missing translations and are shown in Persian until then. In \"System settings → AI\", set a provider and turn on \"Automatic content translation\"; the queue then starts by itself.",
+ "ترجمه‌ی خودکار تنظیم نشده است. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید.": "Automatic translation is not set up. In \"System settings → AI\", set a provider and turn on \"Automatic content translation\".",
+ "در صف: ${1}": "Queued: ${1}",
+ "ناموفق: ${1}": "Failed: ${1}",
+ "ترجمه‌شده از آخرین راه‌اندازی: ${1}": "Translated since last restart: ${1}",
+ "متوقف شده": "Paused",
+ "در حال بررسی همه‌ی رکوردها…": "Checking all records…",
+ "آخرین بررسی: ${1} — ${2} رکورد ترجمه‌ی ناقص داشتند": "Last check: ${1} — ${2} records had missing translations",
+ "هنوز بررسی نشده است": "Not checked yet",
+ "ناقص به تفکیک بخش": "Missing by section",
+ "ترجمه‌های ناموفق (${1})": "Failed translations (${1})",
+ "متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به زبان‌های فعال سایت. هر فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.": "Database texts (articles, diseases, drugs, doctors, centres…) in the site's enabled languages. Any field without a translation is shown in Persian in that language.",
+ "سوالات خودکار": "Automatic FAQ",
+ "ارائه‌دهنده‌ی هوش مصنوعی پاسخ نداد؛ صف تا ${1} صبر می‌کند و خودکار ادامه می‌دهد.": "The AI provider did not respond; the queue waits until ${1} and then continues by itself."
 }
