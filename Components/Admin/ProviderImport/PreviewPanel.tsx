@@ -80,7 +80,7 @@ const titleOf = (r: PreviewRecord) =>
 
 const SKIP = new Set(["firstName", "lastName", "name", "externalId", "ranges", "day", "visitTypes", "hoursRows"]);
 // shown resolved against the catalogues instead of as written
-const RESOLVED = new Set(["mainSpeciality", "specialities", "services", "diseases", "insurances"]);
+const RESOLVED = new Set(["mainSpeciality", "specialities", "services", "diseases"]);
 
 // the hours read out of the text (backend parseHoursText)
 const TextHours = ({ rows }: { rows?: unknown }) =>
@@ -114,7 +114,6 @@ const Resolved = ({ record }: { record: PreviewRecord }) => {
       <Line label={fieldLabel("specialities")} value={r.specialities} />
       <Line label={fieldLabel("diseases")} value={list(r.diseases)} />
       <Line label={fieldLabel("services")} value={list(r.services)} />
-      <Line label={fieldLabel("insurances")} value={r.insurances} />
     </>
   );
 };

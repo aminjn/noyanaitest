@@ -1,5 +1,5 @@
 import { ta } from "@/Components/Admin/i18n/adminText";
-import { AnyKind, Extract, FieldType, ImportStatus, ReportRecord, Transform } from "./types";
+import { AnyKind, Extract, FieldType, ImportStatus, PartnerDestination, ReportRecord, Transform } from "./types";
 
 // Persian admin texts of the bulk provider import (translated by ta(),
 // Components/Admin/i18n/dict/*.json). Getters: ta() at module level would
@@ -38,11 +38,8 @@ const fieldLabels: Record<string, () => string> = {
   insurances: () => ta("بیمه‌های طرف قرارداد"),
   services: () => ta("خدمات"),
   diseases: () => ta("بیماری‌هایی که درمان می‌کند"),
-  specialityHint: () => ta("راهنمای تخصص (نامک دسته‌ی منبع)"),
   instagram: () => ta("اینستاگرام"),
   officeHours: () => ta("ساعت کاری (متن)"),
-  sourceUrl: () => ta("نشانی پروفایل در منبع (فقط برای پیگیری)"),
-  cityHint: () => ta("متنی که به نام شهر ختم می‌شود (آخرین راه یافتن شهر)"),
   memberships: () => ta("عضویت در مراکز (شناسه‌ی مرکز)"),
   address: () => ta("نشانی"),
   lat: () => ta("عرض جغرافیایی"),
@@ -131,12 +128,8 @@ export const transformLabel = (t: Transform) => transformLabels[t]();
 const extractLabels: Record<Extract, () => string> = {
   urlId: () => ta("شناسه از نشانی پروفایل"),
   imageUrl: () => ta("نشانی اصلی تصویر (از پیوند پیش‌نمایش)"),
-  councilNumber: () => ta("شماره نظام پزشکی از متن"),
-  instagram: () => ta("اینستاگرام از متن"),
-  hoursText: () => ta("ساعت کاری از متن"),
-  cleanBio: () => ta("پاک‌سازی معرفی (حذف تبلیغ و تکرار)"),
   joinedList: () => ta("جدا کردن نام‌های چسبیده با کاتالوگ"),
-  insurersInText: () => ta("بیمه‌های کاتالوگ در متن"),
+  hashId: () => ta("شناسه‌ی ثابت از مقدارها (نام و تلفن)"),
 };
 export const extracts = Object.keys(extractLabels) as Extract[];
 export const extractLabel = (e: Extract) => extractLabels[e]?.() || e;
@@ -144,9 +137,23 @@ export const extractLabel = (e: Extract) => extractLabels[e]?.() || e;
 const placeByLabels: Record<string, () => string> = {
   point: () => ta("از موقعیت نقشه"),
   address: () => ta("از نشانی"),
-  section: () => ta("از عنوان فایل"),
 };
 export const placeByLabel = (by?: string) => (by ? placeByLabels[by]?.() || by : "");
+
+// the read-only table of a partner file: where each field goes
+const destinationLabels: Record<PartnerDestination, () => string> = {
+  name: () => ta("نام و نام خانوادگی پزشک («دکتر» از ابتدا حذف می‌شود)"),
+  speciality: () => ta("تخصص پزشک (از فهرست تخصص‌ها؛ فلوشیپ و فوق تخصص تخصص دیگر او؛ تخصص تازه ساخته می‌شود)"),
+  phone: () => ta("تلفن مطب (عمومی)"),
+  bio: () => ta("معرفی پزشک، همان‌طور که هست"),
+  diseases: () => ta("بیماری‌هایی که درمان می‌کند (بیماری تازه به‌صورت پیش‌نویس ساخته می‌شود)"),
+  services: () => ta("خدمات پزشک (خدمت تازه به کاتالوگ خدمات افزوده می‌شود)"),
+  location: () => ta("موقعیت مطب روی نقشه (استان و شهر از روی آن)"),
+  address: () => ta("نشانی مطب"),
+  photo: () => ta("عکس پزشک (دریافت و روی سرور نویان ذخیره می‌شود)"),
+  ignored: () => ta("نادیده گرفته می‌شود؛ هیچ‌جا ذخیره نمی‌شود"),
+};
+export const destinationLabel = (to: string) => destinationLabels[to as PartnerDestination]?.() || to;
 
 const enumLabels: Record<string, () => string> = {
   male: () => ta("مرد"),
