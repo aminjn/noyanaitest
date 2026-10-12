@@ -27,25 +27,14 @@ export type Rule = {
   split?: { by: string; index?: number; rest?: boolean };
   transforms?: Transform[];
   valueMap?: Record<string, string>;
-  // a fact read out of free text (backend Lib/providerImport/textExtract.ts)
+  // how the value is read (backend Lib/providerImport/mapping.ts ruleExtracts)
   extract?: Extract;
   // put before the value (an id namespace: "drdr:")
   prefix?: string;
 };
-export type Extract =
-  | "urlId"
-  | "imageUrl"
-  | "councilNumber"
-  | "instagram"
-  | "hoursText"
-  | "cleanBio"
-  | "joinedList"
-  | "insurersInText";
-export type MappingOptions = {
-  source?: { key: string; label?: string; refPath?: string; generatedAtPath?: string };
-  bio?: { dropPhrases?: string[]; dropSections?: string[]; keepSections?: string[] };
-  specialityHints?: Record<string, string>;
-};
+export type Extract = "urlId" | "imageUrl" | "joinedList" | "hashId";
+// a built-in partner template: missing catalogue names are created at once
+export type MappingOptions = { autoCreate?: boolean };
 export type ListMapping = { path: string; kind: AnyKind; fields: Record<string, Rule>; children?: ListMapping[] };
 export type Mapping = { version: 1; lists: ListMapping[]; options?: MappingOptions };
 
@@ -66,27 +55,18 @@ export type ReportRecord = {
   claimed?: boolean;
   matchedBy?: string;
   issues: Issue[];
-  place?: { province?: string; city?: string; by?: "point" | "address" | "section" };
+  place?: { province?: string; city?: string; by?: "point" | "address" };
 };
 export type ExtractionStats = {
   doctors: number;
-  medicalCode: number;
-  hours: number;
-  hoursUnread: number;
-  insurers: number;
-  insurerLinks: number;
-  instagram: number;
   photo: number;
   specialityMain: number;
-  specialityByHint: number;
   specialitySuggested: number;
   specialityNew: number;
   fellowships: number;
   diseases: { records: number; matched: number; created: number; leftovers: number };
   services: { records: number; matched: number; created: number; leftovers: number };
-  place: { point: number; address: number; section: number; none: number; conflicts: number };
-  bio: { records: number; charsBefore: number; charsAfter: number };
-  section?: { city?: string; matching: number; elsewhere: number };
+  place: { point: number; address: number; none: number; conflicts: number };
 };
 export type ImportReport = {
   mode: "validate" | "apply";
@@ -96,7 +76,6 @@ export type ImportReport = {
   created: { specialities: string[]; tests: string[]; categories: string[]; diseases?: string[]; services?: string[] };
   translationsPending: number;
   extraction?: ExtractionStats;
-  source?: { key: string; contractRef?: string; generatedAt?: string };
   startedAt: string;
   finishedAt?: string;
 };
@@ -117,7 +96,6 @@ export type ImportRow = {
   finishedAt?: string;
   createdBy?: { firstName?: string; lastName?: string; phone?: string };
   mapping?: Mapping;
-  partner?: { key?: string; contractRef?: string; generatedAt?: string; detectedTemplate?: string };
 };
 export type UploadResult = {
   import: ImportRow;
@@ -141,7 +119,6 @@ export type PreviewRecord = {
     specialities?: string[];
     services?: { matched: string[]; create: string[]; unknown: string[] };
     diseases?: { matched: string[]; create: string[]; unknown: string[] };
-    insurances?: string[];
   };
 };
 export type NameRow = {
@@ -160,4 +137,8 @@ export type Preview = {
   // an AI provider is configured (the joined-names split)
   ai?: boolean;
 };
-export type Template = { _id: string; name: string; mapping: Mapping; updatedAt: string; builtin?: string };
+// where each field of a partner's record goes on the profile (built-in
+// templates; backend Lib/providerImport/partners.ts)
+export type PartnerDestination = "name" | "speciality" | "phone" | "bio" | "diseases" | "services" | "location" | "address" | "photo" | "ignored";
+export type PartnerField = { source: string; to: PartnerDestination };
+export type Template = { _id: string; name: string; mapping: Mapping; updatedAt: string; builtin?: string; fields?: PartnerField[] };

@@ -394,7 +394,7 @@ export const ListEditor = ({
                     kind === "doctor" &&
                     RESOLVED_FIELDS.has(field.key) &&
                     !(field.key === "mainSpeciality" && mapping.fields.specialities) &&
-                    !(field.key === "insurances" && mapping.fields.insurances?.extract !== "insurersInText")
+                    field.key !== "insurances"
                       ? preview?.names[`${valueKey}:${field.key}`]
                       : undefined
                   }

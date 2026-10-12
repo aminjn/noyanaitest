@@ -5,8 +5,7 @@ import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
-import { adminIntlTag, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
-import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
+import { adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 import Button from "@/Components/UI/Button";
 import Badge from "@/Components/UI/Badge";
 import Box from "@/Components/Admin/UI/Box";
@@ -14,7 +13,7 @@ import Table from "@/Components/Admin/UI/Table";
 import MapJobProgress from "@/Components/Admin/AppConfig/MapJobProgress";
 import { ListEditor } from "./MappingEditor";
 import PreviewPanel from "./PreviewPanel";
-import PartnerOptionsEditor from "./PartnerOptionsEditor";
+import PartnerImport from "./PartnerImport";
 import ImportReportView, { downloadJson } from "./ImportReportView";
 import { kindLabel, statusLabel } from "./labels";
 import { Catalog, ImportKind, ImportRow, ListMapping, Mapping, Preview, Template, UploadResult } from "./types";
@@ -43,9 +42,6 @@ const useCatalog = () =>
 
 const isMapping = (v: unknown): v is Mapping =>
   !!v && typeof v === "object" && Array.isArray((v as Mapping).lists) && (v as Mapping).lists.every((l) => l && typeof l.path === "string" && typeof l.kind === "string");
-
-const formatDate = (v?: string) =>
-  v ? new Date(v).toLocaleString(adminIntlTag(), { timeZone: TEHRAN_TZ, dateStyle: "medium", timeStyle: "short" }) : "";
 
 const History = ({ onOpen, refreshKey }: { onOpen: (row: ImportRow) => void; refreshKey: number }) => {
   const { data, mutate } = useSWR<ImportRow[]>(`${BASE}/providers`, (url: string) =>
@@ -126,13 +122,17 @@ const ProviderImportPage = () => {
   const [starting, setStarting] = useState(false);
   const [templateName, setTemplateName] = useState("");
   const [templateUsed, setTemplateUsed] = useState<string>();
-  // the built-in template picked by itself for a recognised partner file
+  // the built-in template picked by itself for a recognised partner file:
+  // its simple screen, unless the admin opens the advanced mapper
   const [detected, setDetected] = useState<string>();
+  const [partner, setPartner] = useState<Template>();
+  const [advanced, setAdvanced] = useState(false);
   const [validatedFor, setValidatedFor] = useState<string>();
   const [historyKey, setHistoryKey] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
   const mappingFileRef = useRef<HTMLInputElement>(null);
   const importId = upload?.import._id;
+  const simple = !!upload && !!partner && !advanced;
 
   const { data: job, mutate: mutateJob } = useSWR<ImportRow>(
     importId ? `${BASE}/providers/${importId}` : null,
@@ -151,7 +151,8 @@ const ProviderImportPage = () => {
 
   // live preview, a moment after the last change
   useEffect(() => {
-    if (!importId || !mapping.lists.length) {
+    // the partner file's simple screen has no preview
+    if (!importId || !mapping.lists.length || simple) {
       setPreview(undefined);
       return;
     }
@@ -168,7 +169,7 @@ const ProviderImportPage = () => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [importId, mappingText]);
+  }, [importId, mappingText, simple]);
 
   const onFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -181,16 +182,19 @@ const ProviderImportPage = () => {
       setUpload(r.data);
       // a partner's file (DrDr...) is recognised: its built-in template is used
       const tpl = r.data.template;
+      setAdvanced(false);
       if (tpl && isMapping(tpl.mapping)) {
         setMapping(tpl.mapping);
         setTemplateUsed(tpl.name);
         setTemplateName(tpl.name);
         setDetected(tpl.name);
+        setPartner(tpl.builtin ? tpl : undefined);
         mutateTemplates();
       } else {
         setMapping(r.data.suggestion);
         setTemplateUsed(undefined);
         setDetected(undefined);
+        setPartner(undefined);
       }
       setValidatedFor(undefined);
       setHistoryKey((k) => k + 1);
@@ -212,6 +216,8 @@ const ProviderImportPage = () => {
         setTemplateName(row.template || tpl?.name || "");
       }
       setDetected(tpl?.name);
+      setPartner(tpl?.builtin ? tpl : undefined);
+      setAdvanced(false);
       setValidatedFor(row.status === "validated" && row.mapping ? JSON.stringify(row.mapping) : undefined);
       mutateJob();
     } catch (err) {
@@ -322,6 +328,27 @@ const ProviderImportPage = () => {
   const validation = job?.validation;
   const validatedCurrent = job?.status === "validated" && validatedFor === mappingText;
   const missingLists = mapping.lists.filter((l) => upload && !upload.lists.some((s) => s.path === l.path));
+  const progress = !!job && (running || job.status === "failed" || job.status === "done") && (
+    <MapJobProgress
+      job={{
+        status: running ? "running" : job.status === "failed" ? "failed" : "done",
+        phase: job.progress?.phase || "",
+        total: job.progress?.total || 0,
+        processed: job.progress?.processed || 0,
+        startedAt: job.startedAt || job.createdAt,
+        ...(job.error ? { error: { message: job.error } } : {}),
+      } as never}
+      phaseText={(phase) =>
+        phase === "availability"
+          ? ta("ساخت نوبت‌های خالی از ساعت‌های کاری")
+          : phase === "starting"
+            ? ta("در حال شروع")
+            : KINDS.includes(phase as ImportKind)
+              ? kindLabel(phase)
+              : undefined
+      }
+    />
+  );
 
   return (
     <div className={classes.main}>
@@ -351,7 +378,26 @@ const ProviderImportPage = () => {
         )}
       </Box>
 
-      {!!upload && !!catalog && (
+      {simple && !!partner && !!upload && (
+        <PartnerImport
+          template={partner}
+          count={upload.lists.find((l) => l.path === mapping.lists[0]?.path)?.count || 0}
+          validated={validatedCurrent}
+          starting={starting}
+          running={running}
+          applying={job?.status === "applying"}
+          done={job?.status === "done"}
+          onValidate={() => start("validate")}
+          onApply={() => start("apply")}
+          onAdvanced={() => setAdvanced(true)}
+        >
+          {progress}
+          {!!report && <ImportReportView report={report} fileName={job?.fileName} compact />}
+          {!report && !!validation && job?.status !== "applying" && <ImportReportView report={validation} fileName={job?.fileName} compact />}
+        </PartnerImport>
+      )}
+
+      {!simple && !!upload && !!catalog && (
         <Box className={classes.section}>
           <h3 className={classes.sectionTitle}>{ta("۲. فهرست‌ها و نگاشت فیلدها")}</h3>
           <div className={classes.templates}>
@@ -429,14 +475,13 @@ const ProviderImportPage = () => {
           {!!detected && (
             <p className={classes.fileLine}>
               <Badge color="Success">{ta("فایل «${1}» شناخته شد و الگوی آن خودکار انتخاب شد", [detected])}</Badge>
-              {!!(upload.import.partner?.contractRef || upload.import.partner?.generatedAt) && (
-                <span className={classes.fieldMeta}>
-                  {ta("قرارداد ${1}، تاریخ تولید فایل ${2}", [upload.import.partner?.contractRef || "-", formatDate(upload.import.partner?.generatedAt) || "-"])}
-                </span>
+              {!!partner && (
+                <button type="button" className={classes.linkButton} onClick={() => setAdvanced(false)}>
+                  {ta("بازگشت به صفحه‌ی ساده")}
+                </button>
               )}
             </p>
           )}
-          {!!mapping.options && <PartnerOptionsEditor options={mapping.options} onChange={(options) => setMapping((m) => ({ ...m, options }))} />}
           {!!missingLists.length && (
             <p className={classes.warn}>
               {ta("این فهرست‌های الگو در فایل نیستند: ${1}", [missingLists.map((l) => l.path || "/").join("، ")])}
@@ -462,7 +507,7 @@ const ProviderImportPage = () => {
                   catalog={catalog}
                   valueKey={String(i)}
                   preview={preview}
-                  aiSplit={preview?.ai ? aiSplit : undefined}
+                  aiSplit={preview?.ai && !partner ? aiSplit : undefined}
                 />
               </details>
             );
@@ -470,14 +515,14 @@ const ProviderImportPage = () => {
         </Box>
       )}
 
-      {!!upload && !!mapping.lists.length && (
+      {!simple && !!upload && !!mapping.lists.length && (
         <Box className={classes.section}>
           <h3 className={classes.sectionTitle}>{ta("۳. پیش‌نمایش")}</h3>
           <PreviewPanel preview={preview} loading={previewing} />
         </Box>
       )}
 
-      {!!upload && !!mapping.lists.length && (
+      {!simple && !!upload && !!mapping.lists.length && (
         <Box className={classes.section}>
           <h3 className={classes.sectionTitle}>{ta("۴. بررسی و اعمال")}</h3>
           <p className={classes.hint}>
@@ -497,27 +542,7 @@ const ProviderImportPage = () => {
             </Button>
             {!validatedCurrent && job?.status !== "done" && <span className={classes.fieldMeta}>{ta("پیش از اعمال، نگاشت فعلی را بررسی کنید.")}</span>}
           </div>
-          {!!job && (running || job.status === "failed" || job.status === "done") && (
-            <MapJobProgress
-              job={{
-                status: running ? "running" : job.status === "failed" ? "failed" : "done",
-                phase: job.progress?.phase || "",
-                total: job.progress?.total || 0,
-                processed: job.progress?.processed || 0,
-                startedAt: job.startedAt || job.createdAt,
-                ...(job.error ? { error: { message: job.error } } : {}),
-              } as never}
-              phaseText={(phase) =>
-                phase === "availability"
-                  ? ta("ساخت نوبت‌های خالی از ساعت‌های کاری")
-                  : phase === "starting"
-                    ? ta("در حال شروع")
-                    : KINDS.includes(phase as ImportKind)
-                      ? kindLabel(phase)
-                      : undefined
-              }
-            />
-          )}
+          {progress}
           {!!report && <ImportReportView report={report} fileName={job?.fileName} />}
           {!report && !!validation && job?.status !== "applying" && <ImportReportView report={validation} fileName={job?.fileName} />}
         </Box>

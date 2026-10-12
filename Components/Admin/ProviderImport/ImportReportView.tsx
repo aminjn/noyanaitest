@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { adminIntlTag, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
-import { TEHRAN_TZ } from "@/Components/helpers/tehranTime";
+import { adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
 import Badge from "@/Components/UI/Badge";
 import Button from "@/Components/UI/Button";
 import Table from "@/Components/Admin/UI/Table";
@@ -29,45 +28,38 @@ export const downloadJson = (data: unknown, name: string) => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
-const pct = (part: number, whole: number) => (whole ? `${n(Math.round((part / whole) * 100))}٪` : "");
 
-// what was read out of a partner's free text: the accuracy the admin checks
-// before running the import
-const Extraction = ({ x }: { x: ExtractionStats }) => {
+// how the doctors' fields were matched: what the admin checks before the run
+export const Extraction = ({ x }: { x: ExtractionStats }) => {
   const d = x.doctors || 0;
   const items: { label: string; value: string; note?: string }[] = [
-    { label: ta("شماره نظام پزشکی"), value: `${n(x.medicalCode)} / ${n(d)}`, note: pct(x.medicalCode, d) },
-    { label: ta("تخصص اصلی"), value: `${n(x.specialityMain)} / ${n(d)}`, note: x.specialityByHint ? ta("${1} از دسته‌ی منبع", [n(x.specialityByHint)]) : undefined },
-    { label: ta("فلوشیپ و فوق تخصص"), value: n(x.fellowships), note: x.specialityNew ? ta("${1} تخصص تازه", [n(x.specialityNew)]) : undefined },
-    { label: ta("تخصص نزدیک (نیازمند انتخاب)"), value: n(x.specialitySuggested) },
-    { label: ta("ساعت کاری"), value: `${n(x.hours)} / ${n(d)}`, note: x.hoursUnread ? ta("${1} خوانده نشد", [n(x.hoursUnread)]) : undefined },
-    { label: ta("بیمه‌های طرف قرارداد"), value: `${n(x.insurers)} / ${n(d)}`, note: ta("${1} پیوند بیمه", [n(x.insurerLinks)]) },
+    { label: ta("تخصص اصلی"), value: `${n(x.specialityMain)} / ${n(d)}`, note: x.specialityNew ? ta("${1} تخصص تازه", [n(x.specialityNew)]) : undefined },
+    { label: ta("فلوشیپ و فوق تخصص"), value: n(x.fellowships) },
+    ...(x.specialitySuggested ? [{ label: ta("تخصص نزدیک (نیازمند انتخاب)"), value: n(x.specialitySuggested) }] : []),
     {
       label: ta("بیماری‌ها"),
       value: ta("${1} تطبیق", [n(x.diseases?.matched)]),
-      note: ta("${1} تازه، ${2} پیدانشده", [n(x.diseases?.created), n(x.diseases?.leftovers)]),
+      note: x.diseases?.leftovers
+        ? ta("${1} تازه، ${2} پیدانشده", [n(x.diseases?.created), n(x.diseases?.leftovers)])
+        : ta("${1} تازه", [n(x.diseases?.created)]),
     },
     {
       label: ta("خدمات"),
       value: ta("${1} تطبیق", [n(x.services?.matched)]),
-      note: ta("${1} تازه، ${2} پیدانشده", [n(x.services?.created), n(x.services?.leftovers)]),
+      note: x.services?.leftovers
+        ? ta("${1} تازه، ${2} پیدانشده", [n(x.services?.created), n(x.services?.leftovers)])
+        : ta("${1} تازه", [n(x.services?.created)]),
     },
     {
       label: ta("شهر و استان"),
-      value: `${n((x.place?.point || 0) + (x.place?.address || 0) + (x.place?.section || 0))} / ${n(d)}`,
-      note: ta("نقشه ${1}، نشانی ${2}، عنوان فایل ${3}، ناهمخوان ${4}", [n(x.place?.point), n(x.place?.address), n(x.place?.section), n(x.place?.conflicts)]),
+      value: `${n((x.place?.point || 0) + (x.place?.address || 0))} / ${n(d)}`,
+      note: ta("نقشه ${1}، نشانی ${2}، ناهمخوان ${3}", [n(x.place?.point), n(x.place?.address), n(x.place?.conflicts)]),
     },
-    { label: ta("اینستاگرام"), value: n(x.instagram) },
     { label: ta("عکس"), value: `${n(x.photo)} / ${n(d)}` },
-    {
-      label: ta("پاک‌سازی معرفی"),
-      value: ta("${1} نویسه از ${2}", [n(x.bio?.charsAfter), n(x.bio?.charsBefore)]),
-      note: pct(x.bio?.charsAfter || 0, x.bio?.charsBefore || 0),
-    },
   ];
   return (
     <div className={classes.created}>
-      <h5 className={classes.subTitle}>{ta("آنچه از متن‌های منبع خوانده شد")}</h5>
+      <h5 className={classes.subTitle}>{ta("تطبیق فیلدهای پزشکان")}</h5>
       <div className={classes.stats}>
         {items.map((it) => (
           <div key={it.label} className={classes.stat}>
@@ -77,11 +69,6 @@ const Extraction = ({ x }: { x: ExtractionStats }) => {
           </div>
         ))}
       </div>
-      {!!x.section?.city && (
-        <p className={classes.hint}>
-          {ta("عنوان فایل شهر «${1}» را می‌گوید اما ${2} پزشک جای دیگری هستند و ${3} پزشک در همین شهر؛ شهر هر پزشک از نقشه یا نشانی خودش گرفته شد.", [x.section.city, n(x.section.elsewhere), n(x.section.matching)])}
-        </p>
-      )}
     </div>
   );
 };
@@ -91,7 +78,9 @@ type IssueRow = { id: string; record: ReportRecord; level: string; field: string
 const actionColor = (a: ReportRecord["action"]) =>
   a === "create" ? "Success" : a === "update" ? "Info" : a === "fail" ? "Error" : "Secondary";
 
-const ImportReportView = ({ report, fileName }: { report: ImportReport; fileName?: string }) => {
+// `compact`: the partner file's simple screen - the counts, what was added
+// to the catalogues and each record's problems
+const ImportReportView = ({ report, fileName, compact }: { report: ImportReport; fileName?: string; compact?: boolean }) => {
   const applied = report.mode === "apply";
   const rows = useMemo<IssueRow[]>(
     () =>
@@ -138,26 +127,17 @@ const ImportReportView = ({ report, fileName }: { report: ImportReport; fileName
         <Badge color={t.fail ? "Error" : "Secondary"} size="L">{`${actionLabel("fail", applied)}: ${n(t.fail)}`}</Badge>
         <Badge color={t.warnings ? "Warning" : "Secondary"} size="L">{ta("هشدار: ${1}", [n(t.warnings)])}</Badge>
       </div>
-      <div className={classes.kindCounts}>
-        {Object.entries(report.byKind || {}).map(([kind, c]) => (
-          <div key={kind} className={classes.kindCount}>
-            <strong>{kindLabel(kind)}</strong>
-            <span>
-              {ta("${1} رکورد: ${2} جدید، ${3} به‌روز، ${4} بدون تغییر، ${5} ناموفق", [n(c.records), n(c.create), n(c.update), n(c.unchanged), n(c.fail)])}
-            </span>
-          </div>
-        ))}
-      </div>
-      {!!report.source && (
-        <p className={classes.hint}>
-          {ta("منبع: ${1}، قرارداد ${2}، تاریخ فایل ${3}", [
-            report.source.key,
-            report.source.contractRef || "-",
-            report.source.generatedAt && !Number.isNaN(Date.parse(report.source.generatedAt))
-              ? new Date(report.source.generatedAt).toLocaleString(adminIntlTag(), { timeZone: TEHRAN_TZ, dateStyle: "medium", timeStyle: "short" })
-              : report.source.generatedAt || "-",
-          ])}
-        </p>
+      {!compact && (
+        <div className={classes.kindCounts}>
+          {Object.entries(report.byKind || {}).map(([kind, c]) => (
+            <div key={kind} className={classes.kindCount}>
+              <strong>{kindLabel(kind)}</strong>
+              <span>
+                {ta("${1} رکورد: ${2} جدید، ${3} به‌روز، ${4} بدون تغییر، ${5} ناموفق", [n(c.records), n(c.create), n(c.update), n(c.unchanged), n(c.fail)])}
+              </span>
+            </div>
+          ))}
+        </div>
       )}
       {!!report.extraction && <Extraction x={report.extraction} />}
       {(!!created.specialities?.length || !!created.tests?.length || !!created.categories?.length || !!created.diseases?.length || !!created.services?.length) && (
@@ -176,7 +156,7 @@ const ImportReportView = ({ report, fileName }: { report: ImportReport; fileName
             : ta("رکوردهای دارای خطا هنگام اعمال کنار گذاشته می‌شوند؛ بقیه وارد می‌شوند.")}
         </p>
       )}
-      {!!placeRows.length && (
+      {!compact && !!placeRows.length && (
         <details className={classes.listBlock}>
           <summary className={classes.listSummary}>{ta("شهر هر رکورد (${1})", [n(placeRows.length)])}</summary>
           <Table
