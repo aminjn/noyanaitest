@@ -3880,5 +3880,6 @@
  "کنار گذاشتن": "Leave out",
  "کنار گذاشتن همه": "Leave all out",
  "کنار گذاشته می‌شود": "Left out",
- "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Insurers from our insurer list found in the text; an insurer not in the list isn't recognised."
+ "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Insurers from our insurer list found in the text; an insurer not in the list isn't recognised.",
+ "این پزشک در فایل تکراری بود و اطلاعاتش با ردیف «${1}» یکی شد": "This doctor appears more than once in the file; their data was merged into row «${1}»"
 }

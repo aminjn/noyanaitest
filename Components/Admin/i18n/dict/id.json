@@ -3880,5 +3880,6 @@
  "کنار گذاشتن": "Lewati",
  "کنار گذاشتن همه": "Lewati semua",
  "کنار گذاشته می‌شود": "Dilewati",
- "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Asuransi dari daftar kami yang ditemukan dalam teks; asuransi yang tidak ada di daftar tidak dikenali."
+ "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Asuransi dari daftar kami yang ditemukan dalam teks; asuransi yang tidak ada di daftar tidak dikenali.",
+ "این پزشک در فایل تکراری بود و اطلاعاتش با ردیف «${1}» یکی شد": "Dokter ini muncul lebih dari sekali dalam file; datanya digabung ke baris «${1}»"
 }
