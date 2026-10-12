@@ -24,6 +24,8 @@ import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import LocationSection from "../Clinic/LocationSection";
 import CommentSection from "../Comment/CommentSection";
 import SmallAd from "../UI/ListPage/SmallAd";
+import FaqList from "../UI/FaqList";
+import { FaqEntry } from "../Seo/autoFaq";
 
 const NS: ContentNamespace[] = ["common", "hospitalPage"];
 
@@ -61,6 +63,8 @@ export type HospitalPageNode = Omit<
 
 export type HospitalPageProps = {
   data: HospitalPageNode;
+  // the automatic FAQ, worded on the server (app/hospital/[slug]/page.tsx)
+  faqItems?: FaqEntry[];
 };
 
 const doctorsOf = (rows: unknown): PageDoctor[] =>
@@ -79,7 +83,7 @@ export const liveHospitalClinics = (list: HospitalPageNode["clinics"]) =>
       },
     }));
 
-const HospitalPage = ({ data }: HospitalPageProps) => {
+const HospitalPage = ({ data, faqItems }: HospitalPageProps) => {
   const getContent = useScopedLocale(NS);
   // a linked clinic may have been deleted (populate gives null): skip it
   const clinics = useMemo(
@@ -198,6 +202,15 @@ const HospitalPage = ({ data }: HospitalPageProps) => {
           name={data.name}
           address={data.address}
         />
+        {!!faqItems?.length && (
+          <div className={classes.comments}>
+            <FaqList
+              id="faq"
+              items={faqItems}
+              title={getContent("afqTitle", [data.name || ""])}
+            />
+          </div>
+        )}
         <div className={classes.comments} id="comments">
           <CommentSection model="Hospital" nodeId={data._id} />
         </div>

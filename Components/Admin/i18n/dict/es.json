@@ -3781,5 +3781,6 @@
  "ورود پزشک به تامین و ثبت نسخه، ارجاع و ویزیت در سامانه‌ی تامین.": "Inicio de sesión del médico en Tamin y registro de recetas, derivaciones y visitas en el sistema de Tamin.",
  "اتصال و کاتالوگ‌های تامین": "Conexión y catálogos de Tamin",
  "نشانی بازگشت (redirect_uri)": "Dirección de retorno (redirect_uri)",
- "نشانی سایت (siteBaseUrl)": "Dirección del sitio (siteBaseUrl)"
+ "نشانی سایت (siteBaseUrl)": "Dirección del sitio (siteBaseUrl)",
+ "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Mostrar las preguntas frecuentes automáticas (con los datos de la propia página) y sus datos estructurados FAQPage"
 }

@@ -17,6 +17,7 @@ import EditIcon from "@/Components/Icons/EditIcon";
 import GarbageIcon from "@/Components/Icons/GarbageIcon";
 import DeleteDoctorFaqPopup from "./DeleteDoctorFaqPopup";
 import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
+import DoctorAutoFaqSection from "./DoctorAutoFaqSection";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelProfile"];
 
@@ -44,11 +45,16 @@ const DoctorManageFaqTab = () => {
   const { setPopup } = usePopup();
 
   return (
+    <>
+    {/* the questions built from the doctor's data (address, fees, next
+        free time...), each reworded / hidden / moved here; the doctor's
+        own questions follow them on the page */}
+    <DoctorAutoFaqSection />
     <HandleLoading data={!!data} error={error}>
       {!!data && (
         <WithTitle
           style={{ boxShadow: "none" }}
-          title={getContent("faqs")}
+          title={getContent("afqOwnTitle")}
           actions={[
             {
               title: getContent("newItem"),
@@ -117,6 +123,7 @@ const DoctorManageFaqTab = () => {
         </WithTitle>
       )}
     </HandleLoading>
+    </>
   );
 };
 

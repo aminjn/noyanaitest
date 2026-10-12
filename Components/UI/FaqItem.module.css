@@ -6,27 +6,85 @@
   overflow: hidden;
 }
 
+.heading {
+  margin: 0;
+  font: inherit;
+}
+
 .question {
+  inline-size: 100%;
   padding-block: 1rem;
   padding-inline: 1.5rem;
   color: var(--primary);
   font-size: 0.875rem;
   font-weight: 400;
+  line-height: 1.6;
   display: flex;
   align-items: center;
   gap: 1rem;
+  text-align: start;
+  background: none;
+  border: 0;
+  cursor: pointer;
 }
 
-.btn {
-  margin-inline-start: auto;
+.question:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+  border-radius: 1rem;
+}
+
+.questionText {
+  flex: 1;
+  min-inline-size: 0;
 }
 
 .chevron {
-  transition: all var(--transTime);
+  flex-shrink: 0;
+  transition: transform var(--transTime);
+}
+
+/* the chevron points down when closed, up when open */
+.chevronOpen {
+  transform: rotateZ(180deg);
+}
+
+/* height animates through the grid row (any answer length fits) */
+.answerWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transTime) ease-in-out;
+}
+
+.answerOpen {
+  grid-template-rows: 1fr;
 }
 
 .answer {
   overflow: hidden;
-  transition: all var(--transTime) ease-in-out;
-  padding-inline: 1rem;
+  min-block-size: 0;
+  padding-inline: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.answerOpen .answer {
+  padding-block-end: 1rem;
+}
+
+.answerText {
+  margin: 0;
+  color: var(--gray13);
+  font-size: 0.875rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.link {
+  align-self: flex-start;
+  color: var(--primary);
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }

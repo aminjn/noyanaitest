@@ -32,6 +32,8 @@ import CommentSection from "../Comment/CommentSection";
 import { txsMedium } from "../UI/Typography";
 import ClinicServices from "./ClinicServices";
 import MedicalCenterLayout from "./MedicalCenterLayout";
+import FaqList from "../UI/FaqList";
+import { FaqEntry } from "../Seo/autoFaq";
 
 const NS: ContentNamespace[] = ["common", "clinicPage"];
 
@@ -55,9 +57,11 @@ export type ClinicPageNode = IClinic<{
 
 export type ClinicPageProps = {
   data: ClinicPageNode;
+  // the automatic FAQ, worded on the server (app/clinic/[slug]/page.tsx)
+  faqItems?: FaqEntry[];
 };
 
-const ClinicPage = ({ data }: ClinicPageProps) => {
+const ClinicPage = ({ data, faqItems }: ClinicPageProps) => {
   const getContent = useScopedLocale(NS);
 
   return (
@@ -84,6 +88,15 @@ const ClinicPage = ({ data }: ClinicPageProps) => {
       <ClinicCertificates node={data} />
       <ClinicDoctors node={data} />
       <ClinicLocation node={data} />
+      {!!faqItems?.length && (
+        <div className={classes.comments}>
+          <FaqList
+            id="faq"
+            items={faqItems}
+            title={getContent("afqTitle", [data.name || ""])}
+          />
+        </div>
+      )}
       <div className={classes.comments} id="comments">
         <CommentSection nodeId={data._id} model="Clinic" />
       </div>

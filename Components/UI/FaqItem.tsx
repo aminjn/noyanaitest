@@ -1,44 +1,68 @@
-import { useState } from "react";
-import { IDoctorFaq } from "../DoctorPanel/Profile/DoctorManageFaqTab";
+import { useId, useState } from "react";
 import classes from "./FaqItem.module.css";
 import Ixon from "./Ixon";
 import HelpCircleIcon from "../Icons/HelpCircleIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
+import Link from "../i18n/Link";
+import { FaqLink } from "../Seo/autoFaq";
 
-const FaqItem = ({ node }: { node: IDoctorFaq }) => {
+// One question of a FAQ block (the doctor / centre pages' accordion). The
+// whole question row is the button (aria-expanded / aria-controls); the
+// answer stays in the page while closed - the FAQPage structured data
+// repeats exactly this text, and search engines read accordion content.
+const FaqItem = ({
+  node,
+}: {
+  node: { question: string; answer: string; link?: FaqLink };
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const id = useId();
+  const href = node.link?.href;
 
   return (
-    <dl className={classes.main}>
-      <dt className={classes.question}>
-        <Ixon width="1.5rem">
-          <HelpCircleIcon />
-        </Ixon>
-        <span>{node.question}</span>
+    <div className={classes.main}>
+      <h3 className={classes.heading}>
         <button
           type="button"
-          className={classes.btn}
+          className={classes.question}
+          aria-expanded={isOpen}
+          aria-controls={`${id}-answer`}
+          id={`${id}-question`}
           onClick={() => setIsOpen((prev) => !prev)}
         >
+          <Ixon width="1.5rem">
+            <HelpCircleIcon />
+          </Ixon>
+          <span className={classes.questionText}>{node.question}</span>
           <Ixon
             width="1.5rem"
-            className={classes.chevron}
-            style={{ transform: `rotateZ(${isOpen ? "90deg" : "0"})` }}
+            className={`${classes.chevron} ${isOpen ? classes.chevronOpen : ""}`}
           >
             <ChevronIcon />
           </Ixon>
         </button>
-      </dt>
-      <dd
-        className={classes.answer}
-        style={{
-          maxHeight: isOpen ? "10rem" : 0,
-          paddingBlock: isOpen ? "1rem" : "0",
-        }}
+      </h3>
+      <div
+        id={`${id}-answer`}
+        role="region"
+        aria-labelledby={`${id}-question`}
+        className={`${classes.answerWrap} ${isOpen ? classes.answerOpen : ""}`}
       >
-        {node.answer}
-      </dd>
-    </dl>
+        <div className={classes.answer}>
+          <p className={classes.answerText}>{node.answer}</p>
+          {!!href && !!node.link?.label &&
+            (href.startsWith("#") ? (
+              <a href={href} className={classes.link}>
+                {node.link.label}
+              </a>
+            ) : (
+              <Link href={href} className={classes.link}>
+                {node.link.label}
+              </Link>
+            ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -3781,5 +3781,6 @@
  "ورود پزشک به تامین و ثبت نسخه، ارجاع و ویزیت در سامانه‌ی تامین.": "Hekimin Tamin'e girişi ve reçete, sevk ve muayenelerin Tamin sistemine kaydı.",
  "اتصال و کاتالوگ‌های تامین": "Tamin bağlantısı ve katalogları",
  "نشانی بازگشت (redirect_uri)": "Yönlendirme adresi (redirect_uri)",
- "نشانی سایت (siteBaseUrl)": "Site adresi (siteBaseUrl)"
+ "نشانی سایت (siteBaseUrl)": "Site adresi (siteBaseUrl)",
+ "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Otomatik SSS'yi (sayfanın kendi verilerinden) ve FAQPage yapılandırılmış verisini göster"
 }

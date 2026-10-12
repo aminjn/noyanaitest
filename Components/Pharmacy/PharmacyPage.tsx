@@ -18,6 +18,8 @@ import StarIcon from "../Icons/StarIcon";
 import ServiceOrProductCard from "../Service/ServiceOrProductCard";
 import CartActions from "../Product/CartActions";
 import DeliveryAreaNote, { DeliveryArea } from "./DeliveryAreaNote";
+import FaqList from "../UI/FaqList";
+import { FaqEntry } from "../Seo/autoFaq";
 import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
 import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
@@ -64,12 +66,14 @@ export type PharmacyPageProps = {
   takesOrders?: boolean;
   // where it ships (2026-10, backend Lib/delivery.ts)
   deliveryArea?: DeliveryArea;
+  // the automatic FAQ, worded on the server (app/pharmacy/[slug]/page.tsx)
+  faqItems?: FaqEntry[];
 };
 
 // Public page of one pharmacy (Halodoc / Vezeeta style): who it is, where it
 // is, and what can be ordered from it right now - each card buys this
 // pharmacy's own offer, not the cheapest one on the product page.
-const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryArea }: PharmacyPageProps) => {
+const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryArea, faqItems }: PharmacyPageProps) => {
   const getContent = useScopedLocale(NS);
   const listSep = useListSeparator();
   const intlTag = useIntlLocale();
@@ -261,6 +265,16 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
         name={data.name}
         address={data.address}
       />
+
+      {!!faqItems?.length && (
+        <section className={classes.section}>
+          <FaqList
+            id="faq"
+            items={faqItems}
+            title={getContent("afqTitle", [data.name || ""])}
+          />
+        </section>
+      )}
 
       {/* verified buyer reviews (2026-10): score, tags summary, recent reviews */}
       <section className={classes.section} id="Comment">
