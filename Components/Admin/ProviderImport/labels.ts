@@ -1,5 +1,5 @@
 import { ta } from "@/Components/Admin/i18n/adminText";
-import { AnyKind, FieldType, ImportStatus, ReportRecord, Transform } from "./types";
+import { AnyKind, Extract, FieldType, ImportStatus, ReportRecord, Transform } from "./types";
 
 // Persian admin texts of the bulk provider import (translated by ta(),
 // Components/Admin/i18n/dict/*.json). Getters: ta() at module level would
@@ -37,6 +37,12 @@ const fieldLabels: Record<string, () => string> = {
   privatePhones: () => ta("تلفن‌های خصوصی (در سایت نمایش داده نمی‌شود)"),
   insurances: () => ta("بیمه‌های طرف قرارداد"),
   services: () => ta("خدمات"),
+  diseases: () => ta("بیماری‌هایی که درمان می‌کند"),
+  specialityHint: () => ta("راهنمای تخصص (نامک دسته‌ی منبع)"),
+  instagram: () => ta("اینستاگرام"),
+  officeHours: () => ta("ساعت کاری (متن)"),
+  sourceUrl: () => ta("نشانی پروفایل در منبع (فقط برای پیگیری)"),
+  cityHint: () => ta("متنی که به نام شهر ختم می‌شود (آخرین راه یافتن شهر)"),
   memberships: () => ta("عضویت در مراکز (شناسه‌ی مرکز)"),
   address: () => ta("نشانی"),
   lat: () => ta("عرض جغرافیایی"),
@@ -121,6 +127,26 @@ const transformLabels: Record<Transform, () => string> = {
 };
 export const transforms: Transform[] = ["trim", "digits", "stripTitle", "lower", "phone", "number", "rialToToman", "tomanToRial"];
 export const transformLabel = (t: Transform) => transformLabels[t]();
+
+const extractLabels: Record<Extract, () => string> = {
+  urlId: () => ta("شناسه از نشانی پروفایل"),
+  imageUrl: () => ta("نشانی اصلی تصویر (از پیوند پیش‌نمایش)"),
+  councilNumber: () => ta("شماره نظام پزشکی از متن"),
+  instagram: () => ta("اینستاگرام از متن"),
+  hoursText: () => ta("ساعت کاری از متن"),
+  cleanBio: () => ta("پاک‌سازی معرفی (حذف تبلیغ و تکرار)"),
+  joinedList: () => ta("جدا کردن نام‌های چسبیده با کاتالوگ"),
+  insurersInText: () => ta("بیمه‌های کاتالوگ در متن"),
+};
+export const extracts = Object.keys(extractLabels) as Extract[];
+export const extractLabel = (e: Extract) => extractLabels[e]?.() || e;
+
+const placeByLabels: Record<string, () => string> = {
+  point: () => ta("از موقعیت نقشه"),
+  address: () => ta("از نشانی"),
+  section: () => ta("از عنوان فایل"),
+};
+export const placeByLabel = (by?: string) => (by ? placeByLabels[by]?.() || by : "");
 
 const enumLabels: Record<string, () => string> = {
   male: () => ta("مرد"),

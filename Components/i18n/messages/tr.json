@@ -7611,5 +7611,8 @@
  "afqEditItem": "Düzenle",
  "afqCurrentAuto": "Güncel otomatik yanıt",
  "afqSave": "Kaydet",
- "afqOwnTitle": "Kendi sorularınız"
+ "afqOwnTitle": "Kendi sorularınız",
+ "drConditionsTreated": "Tedavi ettiği hastalıklar",
+ "drOfficeHours": "Muayenehane çalışma saatleri",
+ "drConditionsHint": "Tedavi ettiğiniz hastalıkları seçin; herkese açık sayfanızda gösterilir."
 }

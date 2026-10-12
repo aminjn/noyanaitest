@@ -137,6 +137,48 @@ const NewDoctorProfilePage = ({
       !!(el as { title?: string }).title,
   );
 
+  // the conditions the doctor treats (Disease catalogue); a condition whose
+  // page is still a draft is named without a link
+  const diseaseChips = (
+    (Array.isArray((doctor as { diseases?: unknown[] }).diseases)
+      ? (doctor as { diseases?: unknown[] }).diseases
+      : []) as unknown[]
+  ).filter(
+    (el): el is { _id: string; name: string; slug?: string; published?: boolean } =>
+      !!el &&
+      typeof el === "object" &&
+      typeof (el as { _id?: unknown })._id === "string" &&
+      !!(el as { name?: string }).name,
+  );
+
+  // the weekly in-person hours, one line per day (Saturday first, the
+  // Iranian week) - Paziresh24 / Doctolib show them on the profile
+  const officeHours = useMemo(() => {
+    const shifts = (
+      Array.isArray((doctor as { shifts?: unknown[] }).shifts)
+        ? (doctor as { shifts?: unknown[] }).shifts
+        : []
+    ) as { day?: number; start?: number; end?: number; sessionTypes?: string[] }[];
+    const days = new Map<number, { start: number; end: number }[]>();
+    for (const s of shifts) {
+      if (!s || typeof s.day !== "number" || typeof s.start !== "number" || typeof s.end !== "number") continue;
+      if (Array.isArray(s.sessionTypes) && s.sessionTypes.length && !s.sessionTypes.includes("inPerson")) continue;
+      const list = days.get(s.day) || [];
+      if (!list.some((r) => r.start === s.start && r.end === s.end)) list.push({ start: s.start, end: s.end });
+      days.set(s.day, list);
+    }
+    const two = new Intl.NumberFormat(intlTag, { minimumIntegerDigits: 2, useGrouping: false });
+    const clock = (m: number) => `${two.format(Math.floor(m / 60) % 24)}:${two.format(m % 60)}`;
+    return Array.from(days.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([day, ranges]) => ({
+        day,
+        // 2024-01-06 was a Saturday (day 0)
+        name: new Date(Date.UTC(2024, 0, 6 + day)).toLocaleDateString(intlTag, { weekday: "long", timeZone: "UTC" }),
+        ranges: ranges.sort((a, b) => a.start - b.start).map((r) => `${clock(r.start)}–${clock(r.end)}`),
+      }));
+  }, [doctor, intlTag]);
+
   const fullName = getDoctorProfileLabel(doctor);
   // the council number patients check a doctor by (Paziresh24 / Doctolib
   // show it on the profile), and the tick: an account with that number on
@@ -454,7 +496,15 @@ const NewDoctorProfilePage = ({
             title={getContent("about")}
           >
             {doctor.introduction ? (
-              <p className={classes.paragraph}>{doctor.introduction}</p>
+              // paragraphs kept (an imported introduction has its sections)
+              String(doctor.introduction)
+                .split(/\n{2,}/)
+                .filter((p) => p.trim())
+                .map((p, i) => (
+                  <p key={i} className={classes.paragraph}>
+                    {p}
+                  </p>
+                ))
             ) : (
               <EmptyState>{getContent("nothingFound")}</EmptyState>
             )}
@@ -512,6 +562,28 @@ const NewDoctorProfilePage = ({
                   </li>
                 ))}
               </ul>
+            )}
+            {!!diseaseChips.length && (
+              <div className={classes.subBlock}>
+                <h3 className={classes.subTitle}>{getContent("drConditionsTreated")}</h3>
+                <ul className={classes.serviceChips}>
+                  {diseaseChips.map((d) => (
+                    <li key={d._id}>
+                      {d.published === false ? (
+                        <Badge color="Primarylight" mode="Outline" radius="High">
+                          {d.name}
+                        </Badge>
+                      ) : (
+                        <Link href={`/disease/${d.slug || d._id}`}>
+                          <Badge color="Primarylight" mode="Outline" radius="High">
+                            {d.name}
+                          </Badge>
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </SectionCard>
 
@@ -605,6 +677,19 @@ const NewDoctorProfilePage = ({
                 </Ixon>
                 <span>{displayAddress}</span>
               </p>
+            )}
+            {!!officeHours.length && (
+              <div className={classes.subBlock}>
+                <h3 className={classes.subTitle}>{getContent("drOfficeHours")}</h3>
+                <ul className={classes.hoursList}>
+                  {officeHours.map((h) => (
+                    <li key={h.day} className={classes.hoursRow}>
+                      <span>{h.name}</span>
+                      <span dir="ltr">{h.ranges.join(listSep)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
             <DoctorContact
               website={doctor.website}

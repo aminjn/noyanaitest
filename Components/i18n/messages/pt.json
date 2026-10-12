@@ -7611,5 +7611,8 @@
  "afqEditItem": "Editar",
  "afqCurrentAuto": "Resposta automática atual",
  "afqSave": "Salvar",
- "afqOwnTitle": "Suas próprias perguntas"
+ "afqOwnTitle": "Suas próprias perguntas",
+ "drConditionsTreated": "Doenças que trata",
+ "drOfficeHours": "Horário do consultório",
+ "drConditionsHint": "Escolha as doenças que trata; são mostradas na sua página pública."
 }

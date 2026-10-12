@@ -17,6 +17,14 @@ const time = (m: unknown) => {
   const h = Math.floor(n / 60) % 25;
   return `${String(h).padStart(2, "0")}:${String(n % 60).padStart(2, "0")}`;
 };
+// a percent-encoded link as people read it
+const readableUrl = (v: unknown) => {
+  try {
+    return decodeURI(String(v ?? ""));
+  } catch {
+    return String(v ?? "");
+  }
+};
 const text = (v: unknown) => (Array.isArray(v) ? v.map(String).join("، ") : v === undefined || v === null ? "" : typeof v === "object" ? "" : String(v));
 
 export const IssueList = ({ issues }: { issues: Issue[] }) =>
@@ -60,7 +68,9 @@ const Line = ({ label, value }: { label: string; value: unknown }) => {
   return (
     <div className={classes.line}>
       <span className={classes.lineLabel}>{label}</span>
-      <span dir="auto">{v}</span>
+      <span dir="auto" className={v.length > 300 ? classes.lineLong : undefined}>
+        {v}
+      </span>
     </div>
   );
 };
@@ -68,7 +78,46 @@ const Line = ({ label, value }: { label: string; value: unknown }) => {
 const titleOf = (r: PreviewRecord) =>
   text(r.data.firstName || r.data.lastName ? `${text(r.data.firstName)} ${text(r.data.lastName)}` : r.data.name || r.data.address) || ta("بدون نام");
 
-const SKIP = new Set(["firstName", "lastName", "name", "externalId", "ranges", "day", "visitTypes"]);
+const SKIP = new Set(["firstName", "lastName", "name", "externalId", "ranges", "day", "visitTypes", "hoursRows"]);
+// shown resolved against the catalogues instead of as written
+const RESOLVED = new Set(["mainSpeciality", "specialities", "services", "diseases", "insurances"]);
+
+// the hours read out of the text (backend parseHoursText)
+const TextHours = ({ rows }: { rows?: unknown }) =>
+  !Array.isArray(rows) || !rows.length ? null : (
+    <ul className={classes.hours}>
+      {(rows as { days?: number[]; from?: number; to?: number }[]).map((r, i) => (
+        <li key={i}>
+          <span>{(r.days || []).map(dayLabel).join("، ") || "—"}</span>
+          <span dir="ltr">{`${time(r.from)}-${time(r.to)}`}</span>
+        </li>
+      ))}
+    </ul>
+  );
+
+const Resolved = ({ record }: { record: PreviewRecord }) => {
+  const r = record.resolved;
+  if (!r) return null;
+  const list = (x?: { matched: string[]; create: string[]; unknown: string[] }) =>
+    !x
+      ? ""
+      : [
+          x.matched.join("، "),
+          x.create.length ? ta("تازه: ${1}", [x.create.join("، ")]) : "",
+          x.unknown.length ? ta("پیدانشده: ${1}", [x.unknown.join("، ")]) : "",
+        ]
+          .filter(Boolean)
+          .join(" · ");
+  return (
+    <>
+      <Line label={fieldLabel("mainSpeciality")} value={r.mainSpeciality} />
+      <Line label={fieldLabel("specialities")} value={r.specialities} />
+      <Line label={fieldLabel("diseases")} value={list(r.diseases)} />
+      <Line label={fieldLabel("services")} value={list(r.services)} />
+      <Line label={fieldLabel("insurances")} value={r.insurances} />
+    </>
+  );
+};
 
 const RecordCard = ({ record, kind }: { record: PreviewRecord; kind: string }) => {
   const errors = record.issues.some((i) => i.level === "error");
@@ -88,10 +137,15 @@ const RecordCard = ({ record, kind }: { record: PreviewRecord; kind: string }) =
       </header>
       <div className={classes.lines}>
         {Object.entries(record.data)
-          .filter(([k]) => !SKIP.has(k) && k !== "lat" && k !== "lng")
+          .filter(([k]) => !SKIP.has(k) && k !== "lat" && k !== "lng" && !(record.resolved && RESOLVED.has(k)))
           .map(([k, v]) => (
-            <Line key={k} label={fieldLabel(k)} value={k === "gender" || k === "type" || k === "sampling" ? enumLabel(String(v)) : k === "price" ? numbers.format(Number(v)) : v} />
+            <Line
+              key={k}
+              label={fieldLabel(k)}
+              value={k === "gender" || k === "type" || k === "sampling" ? enumLabel(String(v)) : k === "price" ? numbers.format(Number(v)) : k === "sourceUrl" || k === "photo" ? readableUrl(v) : v}
+            />
           ))}
+        <Resolved record={record} />
         {!!point && <Line label={ta("روی نقشه")} value={point} />}
         {Object.entries(record.translations || {}).map(([loc, bag]) => (
           <Line key={loc} label={ta("ترجمه (${1})", [loc])} value={Object.values(bag).map(text).join(" / ")} />
@@ -118,6 +172,12 @@ const RecordCard = ({ record, kind }: { record: PreviewRecord; kind: string }) =
               <li key={i}>{`${text(t.data.name)}: ${t.data.price !== undefined ? numbers.format(Number(t.data.price)) : "—"} ${ta("تومان")}`}</li>
             ))}
           </ul>
+        </div>
+      )}
+      {Array.isArray(record.data.hoursRows) && !!record.data.hoursRows.length && (
+        <div className={classes.sub}>
+          <h5 className={classes.subTitle}>{ta("ساعت کاری خوانده‌شده از متن")}</h5>
+          <TextHours rows={record.data.hoursRows} />
         </div>
       )}
       {!!record.children.hours?.length && (

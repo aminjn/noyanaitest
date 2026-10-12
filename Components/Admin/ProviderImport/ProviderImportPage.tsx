@@ -14,6 +14,7 @@ import Table from "@/Components/Admin/UI/Table";
 import MapJobProgress from "@/Components/Admin/AppConfig/MapJobProgress";
 import { ListEditor } from "./MappingEditor";
 import PreviewPanel from "./PreviewPanel";
+import PartnerOptionsEditor from "./PartnerOptionsEditor";
 import ImportReportView, { downloadJson } from "./ImportReportView";
 import { kindLabel, statusLabel } from "./labels";
 import { Catalog, ImportKind, ImportRow, ListMapping, Mapping, Preview, Template, UploadResult } from "./types";
@@ -125,6 +126,8 @@ const ProviderImportPage = () => {
   const [starting, setStarting] = useState(false);
   const [templateName, setTemplateName] = useState("");
   const [templateUsed, setTemplateUsed] = useState<string>();
+  // the built-in template picked by itself for a recognised partner file
+  const [detected, setDetected] = useState<string>();
   const [validatedFor, setValidatedFor] = useState<string>();
   const [historyKey, setHistoryKey] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -176,8 +179,19 @@ const ProviderImportPage = () => {
     try {
       const r = await fetcher<{ data: UploadResult }>({ url: `${BASE}/providers/upload`, method: "POST", payload: { file }, bodyParser: "FORM" });
       setUpload(r.data);
-      setMapping(r.data.suggestion);
-      setTemplateUsed(undefined);
+      // a partner's file (DrDr...) is recognised: its built-in template is used
+      const tpl = r.data.template;
+      if (tpl && isMapping(tpl.mapping)) {
+        setMapping(tpl.mapping);
+        setTemplateUsed(tpl.name);
+        setTemplateName(tpl.name);
+        setDetected(tpl.name);
+        mutateTemplates();
+      } else {
+        setMapping(r.data.suggestion);
+        setTemplateUsed(undefined);
+        setDetected(undefined);
+      }
       setValidatedFor(undefined);
       setHistoryKey((k) => k + 1);
     } catch (err) {
@@ -191,7 +205,13 @@ const ProviderImportPage = () => {
     try {
       const r = await fetcher<{ data: UploadResult }>({ url: `${BASE}/providers/${row._id}/source` });
       setUpload({ ...r.data, import: row });
-      setMapping(isMapping(row.mapping) ? row.mapping : r.data.suggestion);
+      const tpl = r.data.template;
+      setMapping(isMapping(row.mapping) ? row.mapping : tpl && isMapping(tpl.mapping) ? tpl.mapping : r.data.suggestion);
+      if (row.template || tpl) {
+        setTemplateUsed(row.template || tpl?.name);
+        setTemplateName(row.template || tpl?.name || "");
+      }
+      setDetected(tpl?.name);
       setValidatedFor(row.status === "validated" && row.mapping ? JSON.stringify(row.mapping) : undefined);
       mutateJob();
     } catch (err) {
@@ -250,6 +270,32 @@ const ProviderImportPage = () => {
     setTemplateName(t.name);
   };
 
+  const resetTemplate = async (id: string) => {
+    try {
+      const r = await fetcher<{ data: Template }>({ url: `${BASE}/templates/${id}/reset`, method: "POST" });
+      await mutateTemplates();
+      if (r.data && isMapping(r.data.mapping)) setMapping(r.data.mapping);
+      pushNotification(ta("الگوی «${1}» به حالت پیش‌فرض برگشت", [r.data?.name || ""]), "Success");
+    } catch (err) {
+      pushNotification((err as Error).message, "Error");
+    }
+  };
+
+  // names written together with no separator, split by the AI (shown in
+  // the value-map step before anything is saved)
+  const aiSplit = useCallback(
+    async (field: string, chunks: string[]) => {
+      if (!importId) return {};
+      const r = await fetcher<{ data: Record<string, string[]> }>({
+        url: `${BASE}/providers/${importId}/ai-split`,
+        method: "POST",
+        payload: { field, chunks },
+      });
+      return r.data || {};
+    },
+    [importId],
+  );
+
   const deleteTemplate = async (id: string) => {
     try {
       await fetcher({ url: `${BASE}/templates/${id}`, method: "DELETE" });
@@ -266,7 +312,7 @@ const ProviderImportPage = () => {
     try {
       const parsed = JSON.parse(await file.text());
       if (!isMapping(parsed)) throw new Error();
-      setMapping({ version: 1, lists: parsed.lists });
+      setMapping({ version: 1, lists: parsed.lists, ...(parsed.options && typeof parsed.options === "object" ? { options: parsed.options } : {}) });
     } catch {
       pushNotification(ta("فایل نگاشت معتبر نیست"), "Error");
     }
@@ -313,7 +359,7 @@ const ProviderImportPage = () => {
               <option value="">{ta("استفاده از الگوی ذخیره‌شده")}</option>
               {(templates || []).map((t) => (
                 <option key={t._id} value={t._id}>
-                  {t.name}
+                  {t.builtin ? ta("${1} (داخلی)", [t.name]) : t.name}
                 </option>
               ))}
             </select>
@@ -337,15 +383,20 @@ const ProviderImportPage = () => {
             {!!templateUsed && (
               <>
                 <Badge color="Info">{ta("الگو: ${1}", [templateUsed])}</Badge>
-                {templates?.some((t) => t.name === templateUsed) && (
-                  <button
-                    type="button"
-                    className={classes.linkButton}
-                    onClick={() => deleteTemplate(templates.find((t) => t.name === templateUsed)!._id)}
-                  >
-                    {ta("حذف الگو")}
-                  </button>
-                )}
+                {(() => {
+                  const used = templates?.find((t) => t.name === templateUsed);
+                  if (!used) return null;
+                  // a built-in template is not deleted: it goes back to what ships
+                  return used.builtin ? (
+                    <button type="button" className={classes.linkButton} onClick={() => resetTemplate(used._id)}>
+                      {ta("بازگردانی به حالت پیش‌فرض")}
+                    </button>
+                  ) : (
+                    <button type="button" className={classes.linkButton} onClick={() => deleteTemplate(used._id)}>
+                      {ta("حذف الگو")}
+                    </button>
+                  );
+                })()}
               </>
             )}
           </div>
@@ -375,6 +426,17 @@ const ProviderImportPage = () => {
               );
             })}
           </div>
+          {!!detected && (
+            <p className={classes.fileLine}>
+              <Badge color="Success">{ta("فایل «${1}» شناخته شد و الگوی آن خودکار انتخاب شد", [detected])}</Badge>
+              {!!(upload.import.partner?.contractRef || upload.import.partner?.generatedAt) && (
+                <span className={classes.fieldMeta}>
+                  {ta("قرارداد ${1}، تاریخ تولید فایل ${2}", [upload.import.partner?.contractRef || "-", formatDate(upload.import.partner?.generatedAt) || "-"])}
+                </span>
+              )}
+            </p>
+          )}
+          {!!mapping.options && <PartnerOptionsEditor options={mapping.options} onChange={(options) => setMapping((m) => ({ ...m, options }))} />}
           {!!missingLists.length && (
             <p className={classes.warn}>
               {ta("این فهرست‌های الگو در فایل نیستند: ${1}", [missingLists.map((l) => l.path || "/").join("، ")])}
@@ -400,6 +462,7 @@ const ProviderImportPage = () => {
                   catalog={catalog}
                   valueKey={String(i)}
                   preview={preview}
+                  aiSplit={preview?.ai ? aiSplit : undefined}
                 />
               </details>
             );

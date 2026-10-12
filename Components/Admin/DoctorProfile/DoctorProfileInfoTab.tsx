@@ -129,6 +129,20 @@ export const useDoctorProfileInfoRenderer = (
       getDefaultValue: (node) => serviceCategoryIds(node.serviceCategories),
       section: about,
     },
+    // the conditions the doctor treats (shown on the public page)
+    diseases: {
+      type: "nodes",
+      title: ta("بیماری‌هایی که درمان می‌کند"),
+      path: `${API}/auto/disease`,
+      multi: true,
+      getOptionLabel: (node) => (node as { name?: string }).name || ta("بدون نام"),
+      getOptionValue: (node) => (node as { _id: string })._id,
+      getDefaultValue: (node) =>
+        (Array.isArray((node as { diseases?: unknown[] }).diseases) ? (node as { diseases?: unknown[] }).diseases! : [])
+          .map((d) => (d && typeof d === "object" ? String((d as { _id?: unknown })._id || "") : String(d || "")))
+          .filter(Boolean),
+      section: about,
+    },
     achivements: {
       type: "strings",
       title: ta("دستاوردها"),

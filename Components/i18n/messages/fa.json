@@ -7633,5 +7633,8 @@
  "afqEditItem": "ویرایش",
  "afqCurrentAuto": "پاسخ خودکار فعلی",
  "afqSave": "ذخیره",
- "afqOwnTitle": "سوالات خودتان"
+ "afqOwnTitle": "سوالات خودتان",
+ "drConditionsTreated": "بیماری‌هایی که درمان می‌کند",
+ "drOfficeHours": "ساعت کاری مطب",
+ "drConditionsHint": "بیماری‌هایی را که درمان می‌کنید انتخاب کنید؛ در صفحه‌ی عمومی شما نمایش داده می‌شوند."
 }

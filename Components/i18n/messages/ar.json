@@ -7611,5 +7611,8 @@
  "afqEditItem": "تعديل",
  "afqCurrentAuto": "الإجابة التلقائية الحالية",
  "afqSave": "حفظ",
- "afqOwnTitle": "أسئلتك الخاصة"
+ "afqOwnTitle": "أسئلتك الخاصة",
+ "drConditionsTreated": "الأمراض التي يعالجها",
+ "drOfficeHours": "ساعات عمل العيادة",
+ "drConditionsHint": "اختر الأمراض التي تعالجها؛ تظهر في صفحتك العامة."
 }

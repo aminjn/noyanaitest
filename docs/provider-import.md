@@ -64,3 +64,24 @@ weekly shifts (availability rebuilt); centre rows become the structured opening 
   (unknown tests are created in the catalogue).
 - Insurer (`insurances`): `name`*, `basic`, `summary`, `phone`, `website`, `address`, `lat`/`lng`, `logo`,
   `licenseNumber`, `coverages[]`, `advantages[]`, `category`.
+
+## Partner files and the built-in DrDr template (2026-10)
+
+Files from a directory NoyanAI has a data-exchange contract with are recognised on upload (`Lib/providerImport/partners.ts`: the file's `site`, or profile links on the partner's domain) and get their built-in template, seeded at boot into `ProviderImportTemplate` (`builtin: "drdr"`). It is editable like any template and cannot be deleted; `POST /admin/import/templates/:id/reset` puts the shipped version back.
+
+A grouped file (`groups[].items[]`) is offered flattened; each record can read its group (`$parent.source`) and the file's top level (`$root.section`, `$root.contract_ref`).
+
+Rule options beyond `source` / `split` / `transforms` / `valueMap`:
+
+| `extract` | What it reads |
+|---|---|
+| `urlId` | the numeric part of a profile link (`https://drdr.ir/dr/71461/...` -> `71461`); with `prefix: "drdr:"` it is the record's `externalId` |
+| `imageUrl` | the real file behind a Next.js `/_next/image/?url=` link |
+| `councilNumber` | «کد / شماره نظام پزشکی N» in a text |
+| `instagram` | an Instagram handle named in a text (the doctor's social link) |
+| `hoursText` | the office-hours paragraph of a text; the doctor field `officeHours` turns «شنبه تا چهارشنبه ۱۷ تا ۲۱» into weekly hours |
+| `cleanBio` | the introduction without the partner's booking promotion, copied reviews, address / phone / hours / insurer sections (phrase and heading lists in the mapping's `options.bio`) |
+| `joinedList` | names joined by spaces (`بیماری ها`, `خدمات`), split by the longest catalogue name first |
+| `insurersInText` | catalogue insurers named after «بیمه» in a text |
+
+Doctors' specialities, conditions, services and insurers are resolved against our catalogues by `Services/providerImportResolve.ts` (preview, dry run and run alike): «تخصص / فوق تخصص / فلوشیپ X» and «A-B» are parsed, the main speciality is the specialist part or the partner's category slug (`specialityHint`, `options.specialityHints`), a near name is only suggested, unknown conditions / services wait for the admin's choice in the value-map step (`__create__`, `__skip__`, a name, or several names with `|`; an AI split is offered when a content AI is configured). The province / city come from the map pin (NexaMap via `Lib/geoFromPoint.ts`), else the address's leading names, else `cityHint`; a pin and an address that disagree are reported. Each record's link (`ProviderImportLink.source`) keeps the partner, contract ref, file date, profile URL and photo URL for traceability; nothing of it is shown on the site.

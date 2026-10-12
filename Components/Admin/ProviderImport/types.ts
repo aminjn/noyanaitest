@@ -27,9 +27,27 @@ export type Rule = {
   split?: { by: string; index?: number; rest?: boolean };
   transforms?: Transform[];
   valueMap?: Record<string, string>;
+  // a fact read out of free text (backend Lib/providerImport/textExtract.ts)
+  extract?: Extract;
+  // put before the value (an id namespace: "drdr:")
+  prefix?: string;
+};
+export type Extract =
+  | "urlId"
+  | "imageUrl"
+  | "councilNumber"
+  | "instagram"
+  | "hoursText"
+  | "cleanBio"
+  | "joinedList"
+  | "insurersInText";
+export type MappingOptions = {
+  source?: { key: string; label?: string; refPath?: string; generatedAtPath?: string };
+  bio?: { dropPhrases?: string[]; dropSections?: string[]; keepSections?: string[] };
+  specialityHints?: Record<string, string>;
 };
 export type ListMapping = { path: string; kind: AnyKind; fields: Record<string, Rule>; children?: ListMapping[] };
-export type Mapping = { version: 1; lists: ListMapping[] };
+export type Mapping = { version: 1; lists: ListMapping[]; options?: MappingOptions };
 
 export type SourcePath = { path: string; samples: string[]; count: number; type: "string" | "number" | "boolean" | "list" | "object" };
 export type SourceList = { path: string; count: number; fields: SourcePath[]; children: SourceList[] };
@@ -48,14 +66,37 @@ export type ReportRecord = {
   claimed?: boolean;
   matchedBy?: string;
   issues: Issue[];
+  place?: { province?: string; city?: string; by?: "point" | "address" | "section" };
+};
+export type ExtractionStats = {
+  doctors: number;
+  medicalCode: number;
+  hours: number;
+  hoursUnread: number;
+  insurers: number;
+  insurerLinks: number;
+  instagram: number;
+  photo: number;
+  specialityMain: number;
+  specialityByHint: number;
+  specialitySuggested: number;
+  specialityNew: number;
+  fellowships: number;
+  diseases: { records: number; matched: number; created: number; leftovers: number };
+  services: { records: number; matched: number; created: number; leftovers: number };
+  place: { point: number; address: number; section: number; none: number; conflicts: number };
+  bio: { records: number; charsBefore: number; charsAfter: number };
+  section?: { city?: string; matching: number; elsewhere: number };
 };
 export type ImportReport = {
   mode: "validate" | "apply";
   totals: Totals;
   byKind: Record<string, Omit<Totals, "warnings" | "errors">>;
   records: ReportRecord[];
-  created: { specialities: string[]; tests: string[]; categories: string[] };
+  created: { specialities: string[]; tests: string[]; categories: string[]; diseases?: string[]; services?: string[] };
   translationsPending: number;
+  extraction?: ExtractionStats;
+  source?: { key: string; contractRef?: string; generatedAt?: string };
   startedAt: string;
   finishedAt?: string;
 };
@@ -76,6 +117,7 @@ export type ImportRow = {
   finishedAt?: string;
   createdBy?: { firstName?: string; lastName?: string; phone?: string };
   mapping?: Mapping;
+  partner?: { key?: string; contractRef?: string; generatedAt?: string; detectedTemplate?: string };
 };
 export type UploadResult = {
   import: ImportRow;
@@ -83,6 +125,8 @@ export type UploadResult = {
   lists: SourceList[];
   suggestion: Mapping;
   suggestions: Record<string, Partial<Record<ImportKind, ListMapping>>>;
+  // the built-in template of a recognised partner file (DrDr...)
+  template?: Template | null;
 };
 export type PreviewRecord = {
   path: string;
@@ -91,10 +135,29 @@ export type PreviewRecord = {
   translations: Record<string, Record<string, unknown>>;
   children: Record<string, PreviewRecord[]>;
   issues: Issue[];
+  // what the doctor's names resolve to in our catalogues
+  resolved?: {
+    mainSpeciality?: string;
+    specialities?: string[];
+    services?: { matched: string[]; create: string[]; unknown: string[] };
+    diseases?: { matched: string[]; create: string[]; unknown: string[] };
+    insurances?: string[];
+  };
+};
+export type NameRow = {
+  value: string;
+  match: "existing" | "new" | "unknown" | "suggest" | "skip" | "create";
+  to?: string;
+  suggestion?: string;
+  count?: number;
+  level?: string;
 };
 export type Preview = {
   lists: { listIndex: number; kind: AnyKind; path: string; total: number; records: PreviewRecord[] }[];
   values: Record<string, string[]>;
-  names: Record<string, { value: string; match: "existing" | "new" | "unknown"; to?: string }[]>;
+  names: Record<string, NameRow[]>;
+  summary?: Record<string, { records: number; withValue: number; matched: number; leftovers: number }>;
+  // an AI provider is configured (the joined-names split)
+  ai?: boolean;
 };
-export type Template = { _id: string; name: string; mapping: Mapping; updatedAt: string };
+export type Template = { _id: string; name: string; mapping: Mapping; updatedAt: string; builtin?: string };
