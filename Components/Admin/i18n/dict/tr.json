@@ -3782,5 +3782,21 @@
  "اتصال و کاتالوگ‌های تامین": "Tamin bağlantısı ve katalogları",
  "نشانی بازگشت (redirect_uri)": "Yönlendirme adresi (redirect_uri)",
  "نشانی سایت (siteBaseUrl)": "Site adresi (siteBaseUrl)",
- "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Otomatik SSS'yi (sayfanın kendi verilerinden) ve FAQPage yapılandırılmış verisini göster"
+ "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Otomatik SSS'yi (sayfanın kendi verilerinden) ve FAQPage yapılandırılmış verisini göster",
+ "هر رکورد تازه یا ویرایش‌شده (از فرم‌ها، ساخت سریع در فیلدها، ورود گروهی یا انتقال از سایت قدیم) خودکار به زبان‌های فعال سایت ترجمه می‌شود. ترجمه‌هایی که دستی نوشته شده‌اند هرگز جایگزین نمی‌شوند.": "Her yeni veya düzenlenen kayıt (formlardan, alanlarda hızlı oluşturmadan, toplu içe aktarmadan veya eski siteden taşımadan) sitenin etkin dillerine otomatik olarak çevrilir. Elle yazılan çeviriler asla değiştirilmez.",
+ "بررسی و ترجمه‌ی موارد ناقص": "Eksikleri kontrol et ve çevir",
+ "ترجمه‌ی خودکار تنظیم نشده است: ${1} رکورد ترجمه‌ی ناقص دارند و تا آن زمان به فارسی نمایش داده می‌شوند. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید؛ صف خودکار شروع می‌شود.": "Otomatik çeviri ayarlanmamış: ${1} kaydın çevirisi eksik ve o zamana kadar Farsça gösteriliyor. \"Sistem ayarları → Yapay zekâ\" bölümünde bir sağlayıcı seçip \"Otomatik içerik çevirisi\"ni açın; kuyruk kendiliğinden başlar.",
+ "ترجمه‌ی خودکار تنظیم نشده است. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید.": "Otomatik çeviri ayarlanmamış. \"Sistem ayarları → Yapay zekâ\" bölümünde bir sağlayıcı seçip \"Otomatik içerik çevirisi\"ni açın.",
+ "در صف: ${1}": "Kuyrukta: ${1}",
+ "ناموفق: ${1}": "Başarısız: ${1}",
+ "ترجمه‌شده از آخرین راه‌اندازی: ${1}": "Son başlatmadan beri çevrilen: ${1}",
+ "متوقف شده": "Duraklatıldı",
+ "در حال بررسی همه‌ی رکوردها…": "Tüm kayıtlar kontrol ediliyor…",
+ "آخرین بررسی: ${1} — ${2} رکورد ترجمه‌ی ناقص داشتند": "Son kontrol: ${1} — ${2} kaydın çevirisi eksikti",
+ "هنوز بررسی نشده است": "Henüz kontrol edilmedi",
+ "ناقص به تفکیک بخش": "Bölüme göre eksikler",
+ "ترجمه‌های ناموفق (${1})": "Başarısız çeviriler (${1})",
+ "متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به زبان‌های فعال سایت. هر فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.": "Veritabanı metinleri (makaleler, hastalıklar, ilaçlar, doktorlar, merkezler…) sitenin etkin dillerinde. Çevirisi olmayan bir alan o dilde Farsça gösterilir.",
+ "سوالات خودکار": "Otomatik SSS",
+ "ارائه‌دهنده‌ی هوش مصنوعی پاسخ نداد؛ صف تا ${1} صبر می‌کند و خودکار ادامه می‌دهد.": "Yapay zekâ sağlayıcısı yanıt vermedi; kuyruk ${1} saatine kadar bekler ve sonra kendiliğinden devam eder."
 }

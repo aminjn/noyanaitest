@@ -14,8 +14,33 @@ import Button from "@/Components/UI/Button";
 import Loading from "../UI/Loading";
 import ErrorMessage from "../UI/ErrorMessage";
 import { Locale, localeNames } from "@/Components/i18n/locales";
-import { LocaleStatus, segmentGroups, segmentTitle } from "./segments";
-import { adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
+import { LocaleStatus, modelTitle, segmentGroups, segmentTitle } from "./segments";
+import { adminIntlTag, adminNumberFormat, ta } from "@/Components/Admin/i18n/adminText";
+
+type QueueStatus = {
+  ready: boolean;
+  locales: Locale[];
+  queue: { pending: number; failed: number; byModel: Record<string, number> };
+  failures: { _id: string; model: string; doc: string; attempts: number; lastError?: string; updatedAt?: string }[];
+  worker: {
+    running: boolean;
+    paused: boolean;
+    translated: number;
+    written: number;
+    failed: number;
+    lastError?: string;
+    backoffUntil?: string;
+  };
+  scan: {
+    running: boolean;
+    startedAt?: string;
+    finishedAt?: string;
+    records: number;
+    missing: Record<string, Partial<Record<Locale, number>>>;
+    queued: number;
+    error?: string;
+  };
+};
 
 type Overview = {
   machine: boolean;
@@ -34,32 +59,39 @@ type RecordsResponse = {
   }[];
 };
 
-type BulkJob = {
-  running: boolean;
-  startedAt: string;
-  finishedAt?: string;
-  segment?: string;
-  processed: number;
-  total: number;
-  written: number;
-  errors: { segment: string; id: string; error: string }[];
-} | null;
-
 const num = adminNumberFormat();
+const when = (iso?: string) => {
+  if (!iso) return "";
+  try {
+    return new Intl.DateTimeFormat(adminIntlTag(), { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Tehran" }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+};
 
-const BulkPanel = ({ machine }: { machine: boolean }) => {
+// The automatic translation of the content (backend Services/autoTranslate.ts):
+// every new or edited record is queued and translated into the enabled site
+// languages by the platform AI; the backfill button queues whatever is still
+// missing (and retries the failures); with no AI provider the queue only
+// fills, and this card says how much waits.
+const AutoTranslatePanel = ({ segments }: { segments: Overview["segments"] }) => {
   const pushNotification = useNotification();
   const [busy, setBusy] = useState(false);
-  const { data: job, mutate } = useSWR<BulkJob>(
+  const { data: status, mutate } = useSWR<QueueStatus>(
     `${API}/auto/_translations/bulk`,
     (url: string) => fetcher({ url }).then((res) => res.data),
-    { refreshInterval: (latest) => (latest?.running ? 3000 : 0) },
+    { refreshInterval: (latest) => (latest?.scan?.running || (latest?.ready && latest?.queue?.pending) ? 4000 : 0) },
   );
+  const segmentOf = (model: string) => segments.find((s) => s.model === model)?.segment;
+  const titleOf = (model: string) => {
+    const segment = segmentOf(model);
+    return segment ? segmentTitle(segment) : modelTitle(model);
+  };
 
-  const start = async () => {
+  const call = async (method: "POST" | "DELETE") => {
     setBusy(true);
     try {
-      await fetcher({ url: `${API}/auto/_translations/bulk`, method: "POST", payload: {} });
+      await fetcher({ url: `${API}/auto/_translations/bulk`, method, ...(method === "POST" && { payload: {} }) });
       mutate();
     } catch (err) {
       pushNotification((err as Error).message, "Error");
@@ -67,59 +99,130 @@ const BulkPanel = ({ machine }: { machine: boolean }) => {
       setBusy(false);
     }
   };
-  const stop = async () => {
-    await fetcher({ url: `${API}/auto/_translations/bulk`, method: "DELETE" });
-    mutate();
-  };
 
-  const percent = job?.total ? Math.min(100, Math.round((job.processed / job.total) * 100)) : 0;
+  if (!status) return null;
+  const queue = status.queue || { pending: 0, failed: 0, byModel: {} };
+  const scan = status.scan || { running: false, records: 0, missing: {}, queued: 0 };
+  const failures = Array.isArray(status.failures) ? status.failures : [];
+  const locales = Array.isArray(status.locales) ? status.locales : [];
+  const missingByLocale = locales.map((l) => ({
+    locale: l,
+    count: Object.values(scan.missing || {}).reduce((sum, row) => sum + (Number(row?.[l]) || 0), 0),
+  }));
+  const missingByModel = Object.entries(scan.missing || {})
+    .map(([model, row]) => ({ model, count: Math.max(0, ...Object.values(row || {}).map((n) => Number(n) || 0)) }))
+    .filter((r) => r.count > 0)
+    .sort((a, b) => b.count - a.count);
+  const waiting = Math.max(Number(scan.records) || 0, Number(queue.pending) || 0);
 
   return (
     <section className={classes.card}>
       <div className={classes.bulkHead}>
         <div>
-          <h2 className={classes.cardTitle}>{ta("ترجمه خودکار همه محتوا")}</h2>
+          <h2 className={classes.cardTitle}>{ta("ترجمه‌ی خودکار محتوا")}</h2>
           <p className={classes.note}>
-            {machine
-              ? ta("همه رکوردها به ۱۴ زبان ترجمه می‌شوند؛ ترجمه‌های دستی دست نمی‌خورند و ترجمه‌های خودکارِ قدیمی (بعد از تغییر متن فارسی) دوباره ساخته می‌شوند.")
-              : ta("ترجمه خودکار روی سرور تنظیم نشده است (ANTHROPIC_API_KEY یا TRANSLATION_OLLAMA_MODEL). تا آن زمان ترجمه‌ها را دستی وارد کنید.")}
+            {ta("هر رکورد تازه یا ویرایش‌شده (از فرم‌ها، ساخت سریع در فیلدها، ورود گروهی یا انتقال از سایت قدیم) خودکار به زبان‌های فعال سایت ترجمه می‌شود. ترجمه‌هایی که دستی نوشته شده‌اند هرگز جایگزین نمی‌شوند.")}
           </p>
         </div>
-        {machine &&
-          (job?.running ? (
-            <Button size="M" mode="Outline" variant="Error" onClick={stop}>
-              {ta("توقف")}
-            </Button>
-          ) : (
-            <Button size="M" onClick={start} isLoading={busy}>
-              {ta("شروع ترجمه خودکار")}
-            </Button>
-          ))}
-      </div>
-      {job && (
-        <div className={classes.progress}>
-          <div className={classes.bar}>
-            <span style={{ width: `${percent}%` }} />
-          </div>
-          <span className={classes.note}>
-            {job.running
-              ? ta("در حال ترجمه «${1}» — ${2} از ${3} رکورد", [segmentTitle(job.segment || ""), num.format(job.processed), num.format(job.total)])
-              : ta("آخرین اجرا: ${1} رکورد، ${2} فیلد ترجمه شد", [num.format(job.processed), num.format(job.written)])}
-            {job.errors.length > 0 && ta(" · ${1} خطا", [num.format(job.errors.length)])}
-          </span>
-          {!job.running && job.errors.length > 0 && (
-            <details className={classes.errors}>
-              <summary>{ta("خطاها")}</summary>
-              <ul>
-                {job.errors.map((e, i) => (
-                  <li key={i}>
-                    <code>{`${e.segment} ${e.id}`}</code> {e.error}
-                  </li>
-                ))}
-              </ul>
-            </details>
+        <div className={classes.bulkActions}>
+          {status.ready && !scan.running && (
+            status.worker?.paused ? (
+              <Button size="M" mode="Outline" onClick={() => call("POST")} isLoading={busy}>
+                {ta("ادامه")}
+              </Button>
+            ) : queue.pending > 0 ? (
+              <Button size="M" mode="Outline" variant="Error" onClick={() => call("DELETE")} isLoading={busy}>
+                {ta("توقف")}
+              </Button>
+            ) : null
           )}
+          <Button size="M" onClick={() => call("POST")} isLoading={busy || scan.running} disabled={scan.running}>
+            {ta("بررسی و ترجمه‌ی موارد ناقص")}
+          </Button>
         </div>
+      </div>
+
+      {!status.ready && (
+        <p className={classes.warning} role="alert">
+          {waiting > 0
+            ? ta("ترجمه‌ی خودکار تنظیم نشده است: ${1} رکورد ترجمه‌ی ناقص دارند و تا آن زمان به فارسی نمایش داده می‌شوند. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید؛ صف خودکار شروع می‌شود.", [num.format(waiting)])
+            : ta("ترجمه‌ی خودکار تنظیم نشده است. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید.")}
+        </p>
+      )}
+
+      <div className={classes.stats}>
+        <span>{ta("در صف: ${1}", [num.format(queue.pending || 0)])}</span>
+        <span>{ta("ناموفق: ${1}", [num.format(queue.failed || 0)])}</span>
+        <span>{ta("ترجمه‌شده از آخرین راه‌اندازی: ${1}", [num.format(status.worker?.translated || 0)])}</span>
+        {status.worker?.paused && <span className={classes.paused}>{ta("متوقف شده")}</span>}
+      </div>
+      {status.ready && !!status.worker?.backoffUntil && (
+        <p className={classes.warning} role="status">
+          {ta("ارائه‌دهنده‌ی هوش مصنوعی پاسخ نداد؛ صف تا ${1} صبر می‌کند و خودکار ادامه می‌دهد.", [when(status.worker.backoffUntil)])}
+          {status.worker.lastError && (
+            <>
+              {" "}
+              <code dir="ltr">{status.worker.lastError}</code>
+            </>
+          )}
+        </p>
+      )}
+
+      <div className={classes.progress}>
+        <span className={classes.note}>
+          {scan.running
+            ? ta("در حال بررسی همه‌ی رکوردها…")
+            : scan.finishedAt
+              ? ta("آخرین بررسی: ${1} — ${2} رکورد ترجمه‌ی ناقص داشتند", [when(scan.finishedAt), num.format(scan.records || 0)])
+              : ta("هنوز بررسی نشده است")}
+        </span>
+        {!!missingByLocale.length && !scan.running && (
+          <div className={classes.chips}>
+            {missingByLocale.map(({ locale, count }) => (
+              <span key={locale} className={classes.chip} title={localeNames[locale]}>
+                {`${locale.toUpperCase()} ${num.format(count)}`}
+              </span>
+            ))}
+          </div>
+        )}
+        {scan.error && <span className={classes.errors}>{scan.error}</span>}
+      </div>
+
+      {missingByModel.length > 0 && (
+        <details className={classes.details}>
+          <summary>{ta("ناقص به تفکیک بخش")}</summary>
+          <ul>
+            {missingByModel.map(({ model, count }) => (
+              <li key={model}>
+                <span>{titleOf(model)}</span>
+                <span>{num.format(count)}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      {failures.length > 0 && (
+        <details className={classes.errors}>
+          <summary>{ta("ترجمه‌های ناموفق (${1})", [num.format(queue.failed || failures.length)])}</summary>
+          <ul>
+            {failures.map((f) => {
+              const segment = segmentOf(f.model);
+              return (
+                <li key={f._id}>
+                  {segment ? (
+                    <Link href={adminPath(`/translations/${segment}/${f.doc}`)} className={classes.link}>
+                      {titleOf(f.model)}
+                    </Link>
+                  ) : (
+                    <span>{titleOf(f.model)}</span>
+                  )}{" "}
+                  <code dir="ltr">{f.doc}</code> {f.lastError || ""}
+                </li>
+              );
+            })}
+          </ul>
+        </details>
       )}
     </section>
   );
@@ -164,11 +267,11 @@ const AdminContentTranslationsPage = () => {
       <header className={classes.header}>
         <h1 className={classes.title}>{ta("ترجمه محتوا")}</h1>
         <span className={classes.subtitle}>
-          {ta("متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به ۱۴ زبان سایت. هر فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.")}
+          {ta("متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به زبان‌های فعال سایت. هر فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.")}
         </span>
       </header>
 
-      {user?.role === "admin" && <BulkPanel machine={overview.machine} />}
+      {user?.role === "admin" && <AutoTranslatePanel segments={overview.segments || []} />}
 
       <section className={classes.card}>
         <div className={classes.toolbar}>

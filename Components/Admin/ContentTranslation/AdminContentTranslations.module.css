@@ -427,3 +427,71 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* automatic translation card (2026-10) */
+.bulkHead > .bulkActions {
+  flex: 0 0 auto;
+  min-width: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.warning {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border-inline-start: 3px solid var(--warning);
+  background: var(--warningT1);
+  color: var(--gray13);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.paused {
+  color: var(--warning);
+  font-weight: 700;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.chip {
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  background: var(--gray3);
+  color: var(--gray11);
+  font-size: 0.75rem;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.details {
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.details ul {
+  margin-top: 0.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 28rem;
+}
+
+.details li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}

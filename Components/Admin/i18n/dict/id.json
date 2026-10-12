@@ -3782,5 +3782,21 @@
  "اتصال و کاتالوگ‌های تامین": "Koneksi dan katalog Tamin",
  "نشانی بازگشت (redirect_uri)": "Alamat pengalihan (redirect_uri)",
  "نشانی سایت (siteBaseUrl)": "Alamat situs (siteBaseUrl)",
- "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Tampilkan FAQ otomatis (dari data halaman itu sendiri) dan data terstruktur FAQPage-nya"
+ "سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود": "Tampilkan FAQ otomatis (dari data halaman itu sendiri) dan data terstruktur FAQPage-nya",
+ "هر رکورد تازه یا ویرایش‌شده (از فرم‌ها، ساخت سریع در فیلدها، ورود گروهی یا انتقال از سایت قدیم) خودکار به زبان‌های فعال سایت ترجمه می‌شود. ترجمه‌هایی که دستی نوشته شده‌اند هرگز جایگزین نمی‌شوند.": "Setiap catatan baru atau yang diedit (dari formulir, pembuatan cepat di kolom, impor massal, atau migrasi situs lama) diterjemahkan otomatis ke bahasa aktif situs. Terjemahan yang ditulis manual tidak pernah diganti.",
+ "بررسی و ترجمه‌ی موارد ناقص": "Periksa dan terjemahkan yang kurang",
+ "ترجمه‌ی خودکار تنظیم نشده است: ${1} رکورد ترجمه‌ی ناقص دارند و تا آن زمان به فارسی نمایش داده می‌شوند. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید؛ صف خودکار شروع می‌شود.": "Terjemahan otomatis belum diatur: ${1} catatan memiliki terjemahan yang kurang dan sampai saat itu ditampilkan dalam bahasa Persia. Di \"Pengaturan sistem → AI\", pilih penyedia dan aktifkan \"Terjemahan konten otomatis\"; antrean akan berjalan sendiri.",
+ "ترجمه‌ی خودکار تنظیم نشده است. در «تنظیمات سیستم ← هوش مصنوعی» ارائه‌دهنده و «ترجمه‌ی خودکار محتوا» را روشن کنید.": "Terjemahan otomatis belum diatur. Di \"Pengaturan sistem → AI\", pilih penyedia dan aktifkan \"Terjemahan konten otomatis\".",
+ "در صف: ${1}": "Dalam antrean: ${1}",
+ "ناموفق: ${1}": "Gagal: ${1}",
+ "ترجمه‌شده از آخرین راه‌اندازی: ${1}": "Diterjemahkan sejak mulai ulang terakhir: ${1}",
+ "متوقف شده": "Dijeda",
+ "در حال بررسی همه‌ی رکوردها…": "Memeriksa semua catatan…",
+ "آخرین بررسی: ${1} — ${2} رکورد ترجمه‌ی ناقص داشتند": "Pemeriksaan terakhir: ${1} — ${2} catatan memiliki terjemahan yang kurang",
+ "هنوز بررسی نشده است": "Belum diperiksa",
+ "ناقص به تفکیک بخش": "Kurang per bagian",
+ "ترجمه‌های ناموفق (${1})": "Terjemahan gagal (${1})",
+ "متن‌های پایگاه داده (مقالات، بیماری‌ها، داروها، پزشکان، مراکز و…) به زبان‌های فعال سایت. هر فیلدی که ترجمه نداشته باشد، در آن زبان فارسی نمایش داده می‌شود.": "Teks basis data (artikel, penyakit, obat, dokter, pusat…) dalam bahasa aktif situs. Kolom tanpa terjemahan ditampilkan dalam bahasa Persia pada bahasa itu.",
+ "سوالات خودکار": "FAQ otomatis",
+ "ارائه‌دهنده‌ی هوش مصنوعی پاسخ نداد؛ صف تا ${1} صبر می‌کند و خودکار ادامه می‌دهد.": "Penyedia AI tidak merespons; antrean menunggu hingga ${1} lalu berlanjut sendiri."
 }

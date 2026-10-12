@@ -102,7 +102,10 @@ const PublicDoctorProfile = async ({
   // structured Q&A to be the visible one): the automatic questions built
   // from the doctor's data with their changes, then their own questions
   const { autoFaq, ...pageData } = data;
-  const faqItems = doctorPageFaq(autoFaq, data.doctor, data.faqs, faqCtx);
+  // only this doctor's own questions: the ones once shared by every doctor
+  // page (no doctor) are archived, the automatic FAQ replaces them
+  const ownFaqs = (Array.isArray(data.faqs) ? data.faqs : []).filter((f) => !!f?.doctor && !f.archived);
+  const faqItems = doctorPageFaq(autoFaq, data.doctor, ownFaqs, faqCtx);
   const pageUrl = `${DOMAIN.replace(/\/$/, "")}/dr/${data.doctor.slug || data.doctor._id}`;
   return (
     <>
