@@ -3880,5 +3880,6 @@
  "کنار گذاشتن": "Dışarıda bırak",
  "کنار گذاشتن همه": "Hepsini dışarıda bırak",
  "کنار گذاشته می‌شود": "Dışarıda bırakılır",
- "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Metinde bulunan, sigorta listemizdeki sigortalar; listede olmayan sigorta tanınmaz."
+ "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Metinde bulunan, sigorta listemizdeki sigortalar; listede olmayan sigorta tanınmaz.",
+ "این پزشک در فایل تکراری بود و اطلاعاتش با ردیف «${1}» یکی شد": "Bu doktor dosyada birden fazla kez var; bilgileri «${1}» satırıyla birleştirildi"
 }

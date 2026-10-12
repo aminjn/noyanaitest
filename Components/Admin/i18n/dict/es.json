@@ -3880,5 +3880,6 @@
  "کنار گذاشتن": "Omitir",
  "کنار گذاشتن همه": "Omitir todos",
  "کنار گذاشته می‌شود": "Se omite",
- "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Aseguradoras de nuestra lista encontradas en el texto; una aseguradora que no esté en la lista no se reconoce."
+ "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Aseguradoras de nuestra lista encontradas en el texto; una aseguradora que no esté en la lista no se reconoce.",
+ "این پزشک در فایل تکراری بود و اطلاعاتش با ردیف «${1}» یکی شد": "Este médico aparece varias veces en el archivo; sus datos se fusionaron con la fila «${1}»"
 }

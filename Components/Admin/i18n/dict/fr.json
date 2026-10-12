@@ -3880,5 +3880,6 @@
  "کنار گذاشتن": "Ignorer",
  "کنار گذاشتن همه": "Tout ignorer",
  "کنار گذاشته می‌شود": "Ignoré",
- "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Assureurs de notre liste trouvés dans le texte ; un assureur absent de la liste n'est pas reconnu."
+ "بیمه‌هایی از فهرست بیمه‌ها که در متن پیدا شدند؛ بیمه‌ای که در فهرست نباشد شناخته نمی‌شود.": "Assureurs de notre liste trouvés dans le texte ; un assureur absent de la liste n'est pas reconnu.",
+ "این پزشک در فایل تکراری بود و اطلاعاتش با ردیف «${1}» یکی شد": "Ce médecin apparaît plusieurs fois dans le fichier ; ses données ont été fusionnées avec la ligne «${1}»"
 }
