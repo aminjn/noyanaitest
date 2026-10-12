@@ -20,6 +20,8 @@ import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
 import HostedImage from "@/Components/UI/HostedImage";
 import Ixon from "@/Components/UI/Ixon";
 import FaqList from "@/Components/UI/FaqList";
+import { doctorDisplayName, FaqEntry } from "@/Components/Seo/autoFaq";
+import { useListSeparator, useIntlLocale } from "@/Components/i18n/navigation";
 import dynamic from "next/dynamic";
 
 // the map library loads after the page, not before it
@@ -98,8 +100,15 @@ const EmptyState = ({ children }: { children: ReactNode }) => (
 const NewDoctorProfilePage = ({
   doctor,
   faqs,
-}: PublicDoctorProfilePageProps) => {
+  faqItems,
+}: PublicDoctorProfilePageProps & {
+  // the automatic questions + the doctor's own, worded on the server (the
+  // same list as the page's FAQPage data, app/dr/[slug]/page.tsx)
+  faqItems?: FaqEntry[];
+}) => {
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
+  const listSep = useListSeparator();
   const specialityChips = (() => {
     const list = [
       doctor.mainSpeciality,
@@ -164,7 +173,17 @@ const NewDoctorProfilePage = ({
 
   const hasRecords = !!doctor.achivements?.length;
   const hasGallery = !!doctor.gallery?.some((el) => !!el?.image);
-  const hasFaqs = Array.isArray(faqs) && faqs.length > 0;
+  const faqList: { id?: string; _id?: string; question: string; answer: string }[] =
+    Array.isArray(faqItems) ? faqItems : Array.isArray(faqs) ? faqs : [];
+  const hasFaqs = faqList.length > 0;
+  // «سوالات متداول درباره‌ی دکتر …»
+  const faqTitle = getContent("afqTitle", [
+    doctorDisplayName(
+      { t: getContent, intl: intlTag, sep: listSep },
+      doctor.firstName,
+      doctor.lastName,
+    ) || fullName,
+  ]);
 
   const tabs: {
     id: string;
@@ -398,7 +417,7 @@ const NewDoctorProfilePage = ({
             ))}
           </nav>
         </div>
-        <div className={classes.side}>
+        <div className={classes.side} id="dr-booking">
           {(doctor as { claimed?: boolean }).claimed === false ? (
             // imported from the old directory, no account yet: no booking
             // widget (it would show empty slots) - a way to claim instead
@@ -592,7 +611,7 @@ const NewDoctorProfilePage = ({
 
           {hasFaqs && (
             <div id="dr-faq" ref={faqRef} className={classes.section}>
-              <FaqList items={faqs} />
+              <FaqList items={faqList} title={faqTitle} />
             </div>
           )}
         </div>

@@ -2,9 +2,12 @@ import ClinicPage, { ClinicPageProps } from "@/Components/Clinic/ClinicPage";
 import { getPublicData } from "@/Components/helpers/getPublicData";
 import { notFound } from "next/navigation";
 import {
+  getNodeAutoFaqEnabled,
   getNodePageMetadata,
   getNodePageWebSchema,
 } from "@/Components/helpers/getPageMetadata";
+import { centrePageFaq, withFaqPage } from "@/Components/Seo/autoFaq";
+import { getServerFaqContext } from "@/Components/Seo/serverFaqContext";
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
 import LocaleScopeProvider from "@/Components/Store/LocaleScopeProvider";
 import { getScopedTextContent } from "@/Components/helpers/getScopedTextContent";
@@ -21,15 +24,19 @@ const Clinic = async (ctx: { params: { slug: string } }) => {
     getScopedTextContent(NS),
   ]);
   if (!data) return notFound();
-  const webSchema = await getNodePageWebSchema(
-    "/clinic/[slug]",
-    ctx.params.slug,
-  );
+  const [webSchema, faqOn, faqCtx] = await Promise.all([
+    getNodePageWebSchema("/clinic/[slug]", ctx.params.slug),
+    getNodeAutoFaqEnabled("/clinic/[slug]", ctx.params.slug),
+    getServerFaqContext(),
+  ]);
+  // the automatic FAQ from the clinic's own data: the visible block and the
+  // FAQPage data are one list (Components/Seo/autoFaq.ts)
+  const faqItems = faqOn ? centrePageFaq("clinic", data.data, faqCtx) : [];
   return (
     <>
-      <JsonLdSchema schema={webSchema} />
+      <JsonLdSchema schema={withFaqPage(webSchema, faqItems)} />
       <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
-        <ClinicPage {...data} />
+        <ClinicPage {...data} faqItems={faqItems} />
       </LocaleScopeProvider>
     </>
   );

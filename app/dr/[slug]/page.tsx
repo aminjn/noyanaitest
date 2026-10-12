@@ -13,6 +13,8 @@ import {
 import JsonLdSchema from "@/Components/UI/JsonLdSchema";
 import { DOMAIN, FilePath } from "@/Components/config";
 import { getDoctorProfileLabel } from "@/Components/Admin/Lib/LabelGetters";
+import { AutoFaqPayload, doctorPageFaq, withFaqPage } from "@/Components/Seo/autoFaq";
+import { getServerFaqContext } from "@/Components/Seo/serverFaqContext";
 
 const NS: ContentNamespace[] = [
   "drProfile",
@@ -76,9 +78,10 @@ const PublicDoctorProfile = async ({
 }: {
   params: { slug: string };
 }) => {
-  const [data, textContent] = await Promise.all([
-    getPublicData<PublicDoctorProfilePageProps>(`dr/${slug}`),
+  const [data, textContent, faqCtx] = await Promise.all([
+    getPublicData<PublicDoctorProfilePageProps & { autoFaq?: AutoFaqPayload }>(`dr/${slug}`),
     getScopedTextContent(NS),
+    getServerFaqContext(),
   ]);
   if (!data) return notFound();
   // one URL per doctor: an id link moves to the slug
@@ -95,11 +98,19 @@ const PublicDoctorProfile = async ({
   const adminSchema = data.doctor.slug
     ? await getNodePageWebSchema("/dr/[slug]", data.doctor.slug)
     : undefined;
+  // the FAQ block and its FAQPage data from one list (Google wants the
+  // structured Q&A to be the visible one): the automatic questions built
+  // from the doctor's data with their changes, then their own questions
+  const { autoFaq, ...pageData } = data;
+  const faqItems = doctorPageFaq(autoFaq, data.doctor, data.faqs, faqCtx);
+  const pageUrl = `${DOMAIN.replace(/\/$/, "")}/dr/${data.doctor.slug || data.doctor._id}`;
   return (
     <>
-      <JsonLdSchema schema={adminSchema || physicianSchema(data.doctor)} />
+      <JsonLdSchema
+        schema={withFaqPage(adminSchema || physicianSchema(data.doctor), faqItems, pageUrl)}
+      />
       <LocaleScopeProvider namespaces={NS} initialTextContent={textContent}>
-        <NewDoctorProfilePage {...data} />
+        <NewDoctorProfilePage {...pageData} faqItems={faqItems} />
       </LocaleScopeProvider>
     </>
   );

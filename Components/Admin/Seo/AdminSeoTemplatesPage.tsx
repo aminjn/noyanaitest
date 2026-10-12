@@ -21,7 +21,9 @@ type Row = {
   path: string;
   kind: "node" | "list";
   variables: string[];
-  saved: (Tpl & { noIndex?: boolean; translations?: Partial<Record<Locale, Tpl>> }) | null;
+  // a profile page type with an automatic FAQ (backend Lib/autoFaq.ts)
+  autoFaq?: boolean;
+  saved: (Tpl & { noIndex?: boolean; autoFaq?: boolean; translations?: Partial<Record<Locale, Tpl>> }) | null;
   defaults: Partial<Record<Locale, Tpl | null>>;
 };
 type Preview = {
@@ -105,6 +107,7 @@ const AdminSeoTemplatesPage = () => {
   const [source, setSource] = useState<Tpl>({});
   const [translations, setTranslations] = useState<Partial<Record<Locale, Tpl>>>({});
   const [noIndex, setNoIndex] = useState(false);
+  const [autoFaq, setAutoFaq] = useState(true);
   const [busy, setBusy] = useState(false);
   const [sample, setSample] = useState("");
   const focused = useRef<"title" | "description">("title");
@@ -118,6 +121,7 @@ const AdminSeoTemplatesPage = () => {
     });
     setTranslations(row.saved?.translations || {});
     setNoIndex(!!row.saved?.noIndex);
+    setAutoFaq(row.saved?.autoFaq !== false);
     setSample("");
   }, [row]);
 
@@ -155,6 +159,7 @@ const AdminSeoTemplatesPage = () => {
           description: source.description || "",
           keywords: (source.keywords || []).filter(Boolean),
           noIndex,
+          ...(row.autoFaq && { autoFaq }),
           translations: Object.fromEntries(
             Object.entries(translations).map(([l, t]) => [
               l,
@@ -295,6 +300,14 @@ const AdminSeoTemplatesPage = () => {
                 <label className={classes.check}>
                   <input type="checkbox" checked={noIndex} onChange={(e) => setNoIndex(e.target.checked)} />
                   <span>{ta("این نوع صفحه در نتایج جستجو نمایش داده نشود (noindex)")}</span>
+                </label>
+              )}
+              {isSource && !!row?.autoFaq && (
+                // the FAQ block + FAQPage data built from each profile's own
+                // data (address, price, next free time...), on by default
+                <label className={classes.check}>
+                  <input type="checkbox" checked={autoFaq} onChange={(e) => setAutoFaq(e.target.checked)} />
+                  <span>{ta("سوالات متداول خودکار (از اطلاعات خود صفحه) و داده‌ی ساختاریافته‌ی FAQPage نمایش داده شود")}</span>
                 </label>
               )}
               <div className={classes.actions}>

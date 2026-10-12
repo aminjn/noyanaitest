@@ -10,6 +10,8 @@ import classes from "./ParaClinicPage.module.css";
 import ParaClinicTests from "./ParaClinicTests";
 import BreadCrump from "../UI/BreadCrump";
 import useScopedLocale from "@/Components/Hooks/useScopedLocale";
+import FaqList from "../UI/FaqList";
+import { FaqEntry } from "../Seo/autoFaq";
 
 export type ParaClinicPageProps = {
   data: IParaClinic<{
@@ -24,9 +26,11 @@ export type ParaClinicPageProps = {
   // false: the lab's plan has no online orders - its tests are shown with
   // prices but not sold here (the cart would refuse them)
   takesOrders?: boolean;
+  // the automatic FAQ, worded on the server (app/paraClinic/[slug]/page.tsx)
+  faqItems?: FaqEntry[];
 };
 
-const ParaClinicPage = ({ data, takesOrders }: ParaClinicPageProps) => {
+const ParaClinicPage = ({ data, takesOrders, faqItems }: ParaClinicPageProps) => {
   const getContent = useScopedLocale();
   return (
     <div className={classes.main}>
@@ -51,6 +55,15 @@ const ParaClinicPage = ({ data, takesOrders }: ParaClinicPageProps) => {
         name={data.name}
         address={data.address}
       />
+      {!!faqItems?.length && (
+        <div className={classes.comments}>
+          <FaqList
+            id="faq"
+            items={faqItems}
+            title={getContent("afqTitle", [data.name || ""])}
+          />
+        </div>
+      )}
       <div className={classes.comments} id="Comment">
         <CommentSection nodeId={data._id} model="ParaClinic" />
       </div>

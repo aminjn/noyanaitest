@@ -49,6 +49,8 @@ type ResolvedSeo = {
   noIndex?: boolean;
   noFollow?: boolean;
   schema?: Record<string, unknown>[];
+  // a profile page type's automatic FAQ is on (backend Lib/autoFaq.ts)
+  autoFaq?: boolean;
 };
 
 const origin = () => DOMAIN.replace(/\/$/, "");
@@ -298,6 +300,18 @@ export const getNodePageWebSchema = async (
   if (!nodeSlug) return undefined;
   const slug = decodeSlug(nodeSlug);
   return seoGraph(await fetchSeo(path, slug)) ?? (await fetchNodePageMeta(path, slug))?.webSchema;
+};
+
+// Whether a profile page shows its automatic FAQ (the super admin's switch
+// in «سئوی خودکار»; on unless switched off) - the same cached SEO request as
+// the page's metadata and structured data.
+export const getNodeAutoFaqEnabled = async (
+  path: PageMetaNodeResourceType,
+  nodeSlug?: string,
+): Promise<boolean> => {
+  if (!nodeSlug) return false;
+  const seo = await fetchSeo(path, decodeSlug(nodeSlug));
+  return seo?.autoFaq !== false;
 };
 
 // The medical directory (2026-10): /disease, /drug, /symptom and their facet
