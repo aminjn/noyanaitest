@@ -122,6 +122,22 @@ const DoctorManageDetailsTab = () => {
               getDefaultValue: (inp) => serviceCategoryIds(inp.serviceCategories),
               hint: getContent("serviceCatalogHint"),
             },
+            // the conditions the doctor treats, from the Disease catalogue
+            // (shown on the public page; searched as the list is long)
+            diseases: {
+              type: "nodes",
+              title: getContent("drConditionsTreated"),
+              path: `${API}/public/selectdisease`,
+              multi: true,
+              search: { param: "q", selectedParam: "selected" },
+              getOptionLabel: (node) => (node as { name?: string }).name || "",
+              getOptionValue: (node) => (node as { _id: string })._id,
+              getDefaultValue: (inp) =>
+                (Array.isArray((inp as { diseases?: unknown[] }).diseases) ? (inp as { diseases?: unknown[] }).diseases! : [])
+                  .map((d) => (d && typeof d === "object" ? String((d as { _id?: unknown })._id || "") : String(d || "")))
+                  .filter(Boolean),
+              hint: getContent("drConditionsHint"),
+            },
             achivements: { type: "strings", title: getContent("achivemets") },
             website: { type: "text", title: getContent("website") },
             landLine: { type: "text", title: getContent("landLine") },

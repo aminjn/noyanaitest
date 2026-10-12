@@ -7611,5 +7611,8 @@
  "afqEditItem": "编辑",
  "afqCurrentAuto": "当前自动回答",
  "afqSave": "保存",
- "afqOwnTitle": "您自己的问题"
+ "afqOwnTitle": "您自己的问题",
+ "drConditionsTreated": "诊治的疾病",
+ "drOfficeHours": "门诊时间",
+ "drConditionsHint": "选择您诊治的疾病；它们会显示在您的公开页面上。"
 }

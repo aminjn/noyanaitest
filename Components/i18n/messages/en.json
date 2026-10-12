@@ -7611,5 +7611,8 @@
  "afqEditItem": "Edit",
  "afqCurrentAuto": "Current automatic answer",
  "afqSave": "Save",
- "afqOwnTitle": "Your own questions"
+ "afqOwnTitle": "Your own questions",
+ "drConditionsTreated": "Conditions treated",
+ "drOfficeHours": "Office hours",
+ "drConditionsHint": "Pick the conditions you treat; they're shown on your public page."
 }

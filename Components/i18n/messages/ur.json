@@ -7611,5 +7611,8 @@
  "afqEditItem": "ترمیم کریں",
  "afqCurrentAuto": "موجودہ خودکار جواب",
  "afqSave": "محفوظ کریں",
- "afqOwnTitle": "آپ کے اپنے سوالات"
+ "afqOwnTitle": "آپ کے اپنے سوالات",
+ "drConditionsTreated": "جن بیماریوں کا علاج کرتے ہیں",
+ "drOfficeHours": "کلینک کے اوقات",
+ "drConditionsHint": "وہ بیماریاں چنیں جن کا آپ علاج کرتے ہیں؛ یہ آپ کے عوامی صفحے پر دکھائی جاتی ہیں۔"
 }

@@ -7611,5 +7611,8 @@
  "afqEditItem": "Edit",
  "afqCurrentAuto": "Jawaban otomatis saat ini",
  "afqSave": "Simpan",
- "afqOwnTitle": "Pertanyaan Anda sendiri"
+ "afqOwnTitle": "Pertanyaan Anda sendiri",
+ "drConditionsTreated": "Penyakit yang ditangani",
+ "drOfficeHours": "Jam praktik",
+ "drConditionsHint": "Pilih penyakit yang Anda tangani; penyakit itu ditampilkan di halaman publik Anda."
 }

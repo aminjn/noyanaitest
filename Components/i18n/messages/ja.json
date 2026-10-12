@@ -7611,5 +7611,8 @@
  "afqEditItem": "編集",
  "afqCurrentAuto": "現在の自動回答",
  "afqSave": "保存",
- "afqOwnTitle": "ご自身の質問"
+ "afqOwnTitle": "ご自身の質問",
+ "drConditionsTreated": "対応する疾患",
+ "drOfficeHours": "診療時間",
+ "drConditionsHint": "対応する疾患を選んでください。公開ページに表示されます。"
 }

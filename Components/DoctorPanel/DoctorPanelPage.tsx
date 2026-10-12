@@ -248,6 +248,8 @@ export interface IDoctorProfile<
   // catalogue entries (ids, or populated on the public page); an old
   // profile may still hold free-text strings until the boot migration runs
   serviceCategories?: (IServiceCategory | string)[];
+  // the conditions the doctor treats (ids, or populated on the public page)
+  diseases?: (string | { _id: string; name?: string; slug?: string; published?: boolean })[];
   achivements: string[];
   website?: string;
   landLine?: string;

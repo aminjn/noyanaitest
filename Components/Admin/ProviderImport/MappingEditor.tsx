@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 import { ta } from "@/Components/Admin/i18n/adminText";
 import Badge from "@/Components/UI/Badge";
-import { dayLabel, dayValues, enumLabel, fieldLabel, kindLabel, transformLabel, transforms, typeLabel } from "./labels";
-import { AnyKind, Catalog, ListMapping, Preview, Rule, SourceList, SourcePath, TargetField, Transform } from "./types";
+import { dayLabel, dayValues, enumLabel, extractLabel, extracts, fieldLabel, kindLabel, transformLabel, transforms, typeLabel } from "./labels";
+import ResolvedValueMap from "./ResolvedValueMap";
+import { AnyKind, Catalog, Extract, ListMapping, NameRow, Preview, Rule, SourceList, SourcePath, TargetField, Transform } from "./types";
 import classes from "./ProviderImport.module.css";
 
 // The field mapping of one source list (bulk provider import): every field
@@ -17,6 +18,10 @@ import classes from "./ProviderImport.module.css";
 const OTHER_LOCALES = ["en", "ar", "zh", "hi", "es", "fr", "ru", "pt", "de", "tr", "ur", "bn", "id", "ja"];
 // fields whose values the admin can map one by one (enums and catalogue names)
 const VALUE_MAP_FIELDS = new Set(["gender", "type", "sampling", "day", "visitTypes", "mainSpeciality", "specialities", "insurances", "category", "medicalTitle"]);
+// fields resolved against our catalogues part by part (their own value-map
+// step, ResolvedValueMap)
+const RESOLVED_FIELDS = new Set(["mainSpeciality", "specialities", "insurances", "services", "diseases"]);
+export type AiSplit = (field: string, chunks: string[]) => Promise<Record<string, string[]>>;
 
 const nameKey = (s: string) =>
   s
@@ -85,6 +90,8 @@ const RuleEditor = ({
   onChange,
   values,
   names,
+  resolvedRows,
+  aiSplit,
 }: {
   field: TargetField;
   ruleKey: string;
@@ -93,6 +100,9 @@ const RuleEditor = ({
   onChange: (rule?: Rule) => void;
   values?: string[];
   names?: Preview["names"][string];
+  // the resolved names of this field over the whole file (catalogue fields)
+  resolvedRows?: NameRow[];
+  aiSplit?: AiSplit;
 }) => {
   const mode = modeOf(rule);
   const options = enumOptions(field);
@@ -103,15 +113,15 @@ const RuleEditor = ({
     onChange(next);
   };
   const setMode = (m: Mode) => {
-    const keep = { transforms: rule?.transforms, split: rule?.split, valueMap: rule?.valueMap };
+    const keep = { transforms: rule?.transforms, split: rule?.split, valueMap: rule?.valueMap, extract: rule?.extract, prefix: rule?.prefix };
     if (m === "none") return onChange(undefined);
     if (m === "field") return onChange({ ...keep, source: rule?.source || rule?.sources?.[0] || "" });
     if (m === "combine") return onChange({ ...keep, sources: rule?.sources?.length ? rule.sources : [rule?.source || "", ""], join: rule?.join ?? " " });
     onChange({ ...keep, constant: options?.[0]?.value ?? "" });
   };
   const constantValue = rule?.constant === undefined ? "" : Array.isArray(rule.constant) ? rule.constant.join(", ") : String(rule.constant);
-  const extras = (rule?.transforms?.length || 0) + (rule?.split ? 1 : 0) + Object.keys(rule?.valueMap || {}).length;
-  const mapValues = VALUE_MAP_FIELDS.has(field.key) && !!values?.length;
+  const extras = (rule?.transforms?.length || 0) + (rule?.split ? 1 : 0) + (rule?.extract ? 1 : 0) + (rule?.prefix ? 1 : 0) + (resolvedRows ? 0 : Object.keys(rule?.valueMap || {}).length);
+  const mapValues = VALUE_MAP_FIELDS.has(field.key) && !resolvedRows && !!values?.length;
 
   return (
     <div className={classes.rule}>
@@ -183,6 +193,27 @@ const RuleEditor = ({
       )}
       {open && mode !== "none" && mode !== "constant" && (
         <div className={classes.extras}>
+          <div className={classes.extractRow}>
+            <label className={classes.inline}>
+              <span>{ta("استخراج از متن")}</span>
+              <select
+                className={classes.select}
+                value={rule?.extract || ""}
+                onChange={(e) => set({ extract: (e.target.value || undefined) as Extract | undefined })}
+              >
+                <option value="">{ta("ندارد")}</option>
+                {extracts.map((x) => (
+                  <option key={x} value={x}>
+                    {extractLabel(x)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className={classes.inline}>
+              <span>{ta("پیشوند")}</span>
+              <input className={classes.short} dir="ltr" value={rule?.prefix || ""} onChange={(e) => set({ prefix: e.target.value || undefined })} />
+            </label>
+          </div>
           <div className={classes.inlineRow}>
             <label className={classes.inline}>
               <input
@@ -283,6 +314,10 @@ const RuleEditor = ({
           )}
         </div>
       )}
+      {mode !== "none" && !!resolvedRows?.length && (
+        <ResolvedValueMap field={field.key} rows={resolvedRows} valueMap={rule?.valueMap} onChange={(valueMap) => set({ valueMap })} aiSplit={aiSplit} />
+      )}
+      {mode !== "none" && !!rule?.extract && !open && <span className={classes.fieldMeta}>{extractLabel(rule.extract)}</span>}
     </div>
   );
 };
@@ -297,6 +332,7 @@ export const ListEditor = ({
   catalog,
   valueKey,
   preview,
+  aiSplit,
 }: {
   kind: AnyKind;
   source: SourceList;
@@ -305,6 +341,7 @@ export const ListEditor = ({
   catalog: Catalog;
   valueKey: string;
   preview?: Preview;
+  aiSplit?: AiSplit;
 }) => {
   const fields = useMemo(() => source.fields.filter((f) => f.type !== "object" || f.path.endsWith("[]")), [source.fields]);
   const setRule = (key: string, rule?: Rule) => {
@@ -352,6 +389,16 @@ export const ListEditor = ({
                   onChange={(r) => setRule(field.key, r)}
                   values={preview?.values[`${valueKey}:${field.key}`]}
                   names={preview?.names[`${valueKey}:${field.key}`]}
+                  // the specialities' step is shown once (on «تخصص‌ها»)
+                  resolvedRows={
+                    kind === "doctor" &&
+                    RESOLVED_FIELDS.has(field.key) &&
+                    !(field.key === "mainSpeciality" && mapping.fields.specialities) &&
+                    !(field.key === "insurances" && mapping.fields.insurances?.extract !== "insurersInText")
+                      ? preview?.names[`${valueKey}:${field.key}`]
+                      : undefined
+                  }
+                  aiSplit={aiSplit}
                 />
                 {translated.map((key) => (
                   <div key={key} className={classes.translationRow}>
