@@ -6,7 +6,11 @@ import { navigationUrl } from "../helpers/navigationUrl";
 
 // navigationUrl with the super admin's NexaMap link format (map config,
 // loaded once per page); an external link opens in a new tab.
-const useNavigationUrl = (coordinates?: number[] | null, name?: string) => {
+const useNavigationUrl = (
+  coordinates?: number[] | null,
+  name?: string,
+  origin?: { lat: number; lng: number } | null,
+) => {
   const [template, setTemplate] = useState<string | null>(null);
   useEffect(() => {
     let alive = true;
@@ -15,7 +19,7 @@ const useNavigationUrl = (coordinates?: number[] | null, name?: string) => {
       alive = false;
     };
   }, []);
-  const href = navigationUrl(coordinates, name, template);
+  const href = navigationUrl(coordinates, name, template, origin);
   return { href, external: !!href && /^https:/i.test(href) };
 };
 
