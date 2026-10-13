@@ -18,6 +18,11 @@ const NS: ContentNamespace[] = [
   "specialityPage",
   "doctorsList",
   "uiDoctorCard",
+  // the always-open search and filters beside the list
+  "booking",
+  "bookingFlow",
+  "bookingSessionSelectorPopup",
+  "doctorPanelShiftUtils",
 ];
 
 export const generateMetadata = ({

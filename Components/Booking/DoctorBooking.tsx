@@ -58,10 +58,19 @@ const DoctorBooking = ({
   common,
   setCommon,
   descriptions,
+  preset,
+  initialRows,
+  embedded,
 }: {
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
   descriptions?: IBookingDescription[];
+  // a page that is itself a filtered list (a speciality page) starts the
+  // search narrowed to it, with its server-rendered first page shown until
+  // the visitor changes a filter
+  preset?: DoctorBookingOptions;
+  initialRows?: { rows: BookingPageDoctor[]; count: number };
+  embedded?: boolean;
 }) => {
   // deep links from other pages preselect a filter, e.g. a disease page's
   // "book a doctor" -> /book?disease=<id>&name=<its name>
@@ -75,6 +84,7 @@ const DoctorBooking = ({
     // a doctor page's service chip: the doctors who offer that service
     const service = searchParams?.get("service");
     return {
+      ...(preset || {}),
       ...(service ? { service: [{ _id: service, title: name } as IServiceCategory] } : {}),
       ...(insurance ? { insurance: [{ _id: insurance, name }] } : {}),
       ...(disease ? { disease: [{ _id: disease, name } as unknown as IDisease] } : {}),
@@ -153,6 +163,10 @@ const DoctorBooking = ({
     if (options.query) params.append("query", options.query);
     return params;
   }, [debouncedOptions, common]);
+
+  const [initialOptions] = useState(options);
+  const untouched =
+    !!initialRows && options === initialOptions && common.sort === "Best";
 
   const { data: data2 } = useSWR<{
     rows: BookingPageDoctor[];
@@ -318,6 +332,7 @@ const DoctorBooking = ({
   return (
     <Fragment>
       <BookingHeader
+        hideTitle={embedded}
         onChange={(e) =>
           setOptions((prev) => ({ ...prev, query: e.target.value }))
         }
@@ -731,20 +746,24 @@ const DoctorBooking = ({
         <DoctorBookinResult
           common={common}
           setCommon={setCommon}
-          data={data2?.rows}
-          count={data2?.count?.[0]?.total ?? 0}
+          data={data2?.rows ?? (untouched ? initialRows?.rows : undefined)}
+          count={
+            data2?.count?.[0]?.total ??
+            (untouched ? initialRows?.count : undefined) ??
+            0
+          }
           options={options}
           setOptions={setOptions}
           descriptions={descriptions}
         />
       </BookingLayout>
-      <BookingMeta
+      {!embedded && <BookingMeta
         title="doctorBookingMetaTitle"
         description="doctorBookingMetaDescription"
         label="doctorBookingMetaLabel"
         legend="doctorBookingMetaLegend"
         descriptions={descriptions}
-      />
+      />}
     </Fragment>
   );
 };
