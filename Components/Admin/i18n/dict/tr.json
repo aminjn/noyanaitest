@@ -3930,5 +3930,12 @@
  "موردی برای مرتب‌سازی نیست": "Düzenlenecek bir şey yok",
  "تخصص‌ها مرتب شدند": "Uzmanlıklar düzenlendi",
  "خدمت: ${1}": "Hizmet: ${1}",
- "این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.": "Bu değişiklikler uygulansın mı? ${1} kayıt: ${2}. Her birleştirme 30 gün boyunca geri alınabilir."
+ "این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.": "Bu değişiklikler uygulansın mı? ${1} kayıt: ${2}. Her birleştirme 30 gün boyunca geri alınabilir.",
+ "نام مرکز": "Merkez adı",
+ "تلفن مرکز (عمومی)": "Merkez telefonu (herkese açık)",
+ "نشانی مرکز (استان و شهر: تهران)": "Merkez adresi (il ve şehir: Tahran)",
+ "بیمه‌های طرف قرارداد (بیمه‌ی ناشناخته کنار گذاشته می‌شود)": "Anlaşmalı sigortalar (bilinmeyen sigorta dışarıda bırakılır)",
+ "شبانه‌روزی (وقتی «شبانه‌روزی» در آن آمده باشد)": "24 saat açık («شبانه‌روزی» yazıyorsa)",
+ "هر فیلد فایل مستقیم به یک جای پروفایل مرکز می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل، همان مرکز را به‌روز می‌کند و مرکز تکراری نمی‌سازد.": "Dosyanın her alanı doğrudan merkez profilinde tek bir yere gider; dosyadan başka hiçbir şey okunmaz ya da saklanmaz. Aynı dosyayı yeniden çalıştırmak aynı merkezi günceller, kopya oluşturmaz.",
+ "${1} مرکز در فایل": "Dosyada ${1} merkez"
 }
