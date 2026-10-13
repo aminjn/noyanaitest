@@ -151,6 +151,11 @@ const destinationLabels: Record<PartnerDestination, () => string> = {
   location: () => ta("موقعیت مطب روی نقشه (استان و شهر از روی آن)"),
   address: () => ta("نشانی مطب"),
   photo: () => ta("عکس پزشک (دریافت و روی سرور نویان ذخیره می‌شود)"),
+  centreName: () => ta("نام مرکز"),
+  centrePhone: () => ta("تلفن مرکز (عمومی)"),
+  centreAddress: () => ta("نشانی مرکز (استان و شهر: تهران)"),
+  insurances: () => ta("بیمه‌های طرف قرارداد (بیمه‌ی ناشناخته کنار گذاشته می‌شود)"),
+  roundTheClock: () => ta("شبانه‌روزی (وقتی «شبانه‌روزی» در آن آمده باشد)"),
   ignored: () => ta("نادیده گرفته می‌شود؛ هیچ‌جا ذخیره نمی‌شود"),
 };
 export const destinationLabel = (to: string) => destinationLabels[to as PartnerDestination]?.() || to;

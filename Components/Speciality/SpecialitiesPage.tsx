@@ -18,6 +18,8 @@ import SmallAd from "../UI/ListPage/SmallAd";
 import Link from "@/Components/i18n/Link";
 import Pagination from "../UI/Pagination";
 import SpecialityIcon from "../Icons/speciality/SpecialityIcon";
+import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "specialitiesList"];
 
@@ -37,6 +39,7 @@ export type SpecialitiesPageProps = {
 // speciality is the only level, and each card opens its doctors.
 const SpecialitiesPage = ({ data, pagesCount }: SpecialitiesPageProps) => {
   const getContent = useScopedLocale(NS);
+  const intl = useIntlLocale();
   const groups = new Set((Array.isArray(data) ? data : []).map((n) => n?.group || "medical")).size;
 
   const searchParams = useSearchParams();
@@ -88,7 +91,12 @@ const SpecialitiesPage = ({ data, pagesCount }: SpecialitiesPageProps) => {
           <section key={group.key} className={classes.group}>
             {/* medicine, dentistry, the other health professions - as
                 Paziresh24 groups them; one heading only when there are more */}
-            {groups > 1 && <h2 className={classes.groupTitle}>{getContent(group.title)}</h2>}
+            {groups > 1 && (
+              <h2 className={classes.groupTitle}>
+                {getContent(group.title)}
+                <span className={classes.groupCount}>{rows.length.toLocaleString(intl)}</span>
+              </h2>
+            )}
             <ul className={classes.tiles}>
               {rows.map((node) => (
                 <li key={node._id}>
@@ -99,8 +107,11 @@ const SpecialitiesPage = ({ data, pagesCount }: SpecialitiesPageProps) => {
                     <span className={classes.tileText}>
                       <span className={classes.tileName}>{node.name}</span>
                       <span className={classes.tileCount}>
-                        {getContent("nDoctors", [String(node.doctorsCountWithSideSpeciality || 0)])}
+                        {getContent("nDoctors", [(node.doctorsCountWithSideSpeciality || 0).toLocaleString(intl)])}
                       </span>
+                    </span>
+                    <span className={classes.tileArrow} aria-hidden>
+                      <ArrowLeftIcon />
                     </span>
                   </Link>
                 </li>

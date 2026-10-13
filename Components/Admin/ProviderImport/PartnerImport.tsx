@@ -39,11 +39,15 @@ type Props = {
 const PartnerImport = ({ template, count, validated, starting, running, applying, done, onValidate, onApply, onAdvanced, children }: Props) => {
   const fields = Array.isArray(template.fields) ? template.fields : [];
   const canApply = validated && !running;
+  // a centres file (DrDr's pharmacies) talks about centres, not doctors
+  const doctors = (template.mapping?.lists?.[0]?.kind || "doctor") === "doctor";
   return (
     <Box className={classes.section}>
       <h3 className={classes.sectionTitle}>{ta("فایل «${1}» شناخته شد", [template.name])}</h3>
       <p className={classes.hint}>
-        {ta("هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.")}
+        {doctors
+          ? ta("هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.")
+          : ta("هر فیلد فایل مستقیم به یک جای پروفایل مرکز می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل، همان مرکز را به‌روز می‌کند و مرکز تکراری نمی‌سازد.")}
       </p>
       <table className={classes.fieldMap}>
         <thead>
@@ -64,7 +68,7 @@ const PartnerImport = ({ template, count, validated, starting, running, applying
         </tbody>
       </table>
       <p className={classes.fileLine}>
-        <strong>{ta("${1} پزشک در فایل", [numbers.format(count)])}</strong>
+        <strong>{doctors ? ta("${1} پزشک در فایل", [numbers.format(count)]) : ta("${1} مرکز در فایل", [numbers.format(count)])}</strong>
       </p>
       <div className={classes.actionsRow}>
         <Button size="M" variant="Neutral" isLoading={starting && !validated} onClick={running ? undefined : onValidate}>

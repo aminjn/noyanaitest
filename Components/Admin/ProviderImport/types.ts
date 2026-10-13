@@ -140,6 +140,21 @@ export type Preview = {
 };
 // where each field of a partner's record goes on the profile (built-in
 // templates; backend Lib/providerImport/partners.ts)
-export type PartnerDestination = "name" | "speciality" | "phone" | "bio" | "diseases" | "services" | "location" | "address" | "photo" | "ignored";
+export type PartnerDestination =
+  | "name"
+  | "speciality"
+  | "phone"
+  | "bio"
+  | "diseases"
+  | "services"
+  | "location"
+  | "address"
+  | "photo"
+  | "centreName"
+  | "centrePhone"
+  | "centreAddress"
+  | "insurances"
+  | "roundTheClock"
+  | "ignored";
 export type PartnerField = { source: string; to: PartnerDestination };
 export type Template = { _id: string; name: string; mapping: Mapping; updatedAt: string; builtin?: string; fields?: PartnerField[] };
