@@ -8,7 +8,13 @@
 }
 
 .headerIcon {
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  flex-shrink: 0;
 }
 
 .headerContent {
@@ -92,4 +98,32 @@
 /* an ad slot or description that rendered nothing leaves no gap */
 .box > :empty {
   display: none;
+}
+
+/* «درباره این تخصص»: a short text under the title (2026-10) */
+.aboutShort {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--primary0);
+  border: 1px solid var(--primary1);
+  color: var(--gray10);
+  font-size: 0.875rem;
+  line-height: 1.9;
+  animation: aboutIn 0.18s ease-out;
+}
+
+.aboutMore {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+@keyframes aboutIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }

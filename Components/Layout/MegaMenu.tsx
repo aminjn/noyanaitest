@@ -1,3 +1,4 @@
+import SpecialityIcon from "@/Components/Icons/speciality/SpecialityIcon";
 import Link from "@/Components/i18n/Link";
 import {
   KeyboardEvent,
@@ -267,7 +268,9 @@ const MegaMenu = () => {
                     onClick={() => close()}
                   >
                     <span className={`${classes.itemIcon} tone-${active.tone}`}>
-                      <Ixon width="1rem">{active.icon}</Ixon>
+                      <Ixon width="1rem">
+                        {active.key === "specialities" ? <SpecialityIcon node={cat} /> : active.icon}
+                      </Ixon>
                     </span>
                     <span className={classes.itemLabel}>
                       {cat.title || cat.name}
@@ -275,22 +278,6 @@ const MegaMenu = () => {
                   </Link>
                 </li>
               ))}
-              {items.length > shown.length && (
-                <li>
-                  <Link
-                    href={active.allTarget}
-                    className={`${classes.item} ${classes.itemMore}`}
-                    onClick={() => close()}
-                  >
-                    <span className={classes.itemLabel}>
-                      {getContent("fullListOfX", [label])}
-                    </span>
-                    <Ixon width="0.875rem">
-                      <ArrowLeftIcon />
-                    </Ixon>
-                  </Link>
-                </li>
-              )}
             </ul>
           ) : (
             <p className={classes.emptyNote}>{getContent("nothingFound")}</p>

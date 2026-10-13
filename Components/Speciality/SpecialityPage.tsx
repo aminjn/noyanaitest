@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import classes from "./SpecialityPage.module.css";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
@@ -8,7 +9,7 @@ import { ContentNamespace } from "../Enums/contentNamespaces";
 import { DoctorSessionType } from "../DoctorPanel/Calendar/DoctorCalendarDay";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import Ixon from "../UI/Ixon";
-import StetoscopeIcon from "../Icons/StetoscopeIcon";
+import SpecialityIcon from "../Icons/speciality/SpecialityIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import Button from "../UI/Button";
 import ArrowCircleDownIcon from "../Icons/ArrowCircleDownIcon";
@@ -50,6 +51,20 @@ const SpecialityPage = ({
   diseases,
 }: SpecialityPageProps) => {
   const getContent = useScopedLocale(NS);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  // the speciality's summary, else the start of its description as text
+  const { aboutText, aboutTruncated } = useMemo(() => {
+    const summary = typeof data.summary === "string" ? data.summary.trim() : "";
+    const plain = String(data.description || "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (summary) return { aboutText: summary, aboutTruncated: plain.length > 0 };
+    if (!plain) return { aboutText: "", aboutTruncated: false };
+    const cut = plain.length > 320 ? `${plain.slice(0, 320).replace(/\s+\S*$/, "")}…` : plain;
+    return { aboutText: cut, aboutTruncated: plain.length > 320 };
+  }, [data.summary, data.description]);
 
   return (
     <ListPageLayout
@@ -64,8 +79,8 @@ const SpecialityPage = ({
     >
       <div className={classes.header}>
         <div className={`${classes.headerIcon} glassIcon`}>
-          <Ixon width="2.5rem">
-            <StetoscopeIcon />
+          <Ixon width="1.5rem">
+            <SpecialityIcon node={data} />
           </Ixon>
         </div>
         <div className={classes.headerContent}>
@@ -79,19 +94,39 @@ const SpecialityPage = ({
             </div>
           </div>
         </div>
-        <div className={classes.headActions}>
-          <Button
-            variant="Primary"
-            mode="Inline"
-            size="S"
-            radius="High"
-            tailIcon={<ArrowCircleDownIcon />}
-            href="#about"
-          >
-            {getContent("aboutThisSpeciality")}
-          </Button>
-        </div>
+        {!!aboutText && (
+          <div className={classes.headActions}>
+            <Button
+              variant="Primary"
+              mode="Inline"
+              size="S"
+              radius="High"
+              tailIcon={
+                <span style={{ display: "inline-flex", transform: aboutOpen ? "rotate(180deg)" : undefined, transition: "transform .2s" }}>
+                  <ArrowCircleDownIcon />
+                </span>
+              }
+              onClick={() => setAboutOpen((v) => !v)}
+              aria-expanded={aboutOpen}
+              aria-controls="speciality-about-short"
+            >
+              {getContent("aboutThisSpeciality")}
+            </Button>
+          </div>
+        )}
       </div>
+      {/* «درباره این تخصص» opens a short text right here (2026-10); the
+          full description stays at the bottom of the page */}
+      {aboutOpen && !!aboutText && (
+        <div id="speciality-about-short" className={classes.aboutShort}>
+          <p>{aboutText}</p>
+          {aboutTruncated && (
+            <a href="#about" className={classes.aboutMore}>
+              {getContent("seeMore")}
+            </a>
+          )}
+        </div>
+      )}
       {/* the doctors of this speciality with every filter always open
           beside them (2026-10, like Doctolib / Zocdoc result pages): the
           server-rendered first page shows until a filter changes */}

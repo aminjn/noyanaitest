@@ -3,7 +3,7 @@ import classes from "./SpecialityCard.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
-import StetoscopeIcon from "../Icons/StetoscopeIcon";
+import SpecialityIcon from "../Icons/speciality/SpecialityIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import CrownIcon from "../Icons/CrownIcon";
@@ -15,6 +15,7 @@ import { chunk } from "../helpers/lib";
 import { SwiperSlide } from "swiper/react";
 import { tsmBold, txsMedium } from "../UI/Typography";
 import { useMemo, useState } from "react";
+import SafeBoundary from "../UI/SafeBoundary";
 
 const NS: ContentNamespace[] = ["common", "specialityCard"];
 
@@ -27,9 +28,10 @@ const DoctorsSlider = ({
 
   const [index, setIndex] = useState<number>(0);
 
-  const chunks = useMemo(() => chunk(nodes), [nodes]);
+  const list = useMemo(() => (Array.isArray(nodes) ? nodes.filter((n) => !!n?._id) : []), [nodes]);
+  const chunks = useMemo(() => chunk(list), [list]);
 
-  if (!nodes.length) return null;
+  if (!list.length) return null;
   if (!chunks.length) return null;
   return (
     <div className={classes.sliderContent}>
@@ -41,15 +43,16 @@ const DoctorsSlider = ({
           }}
           onSlideChange={(e) => setIndex(e.activeIndex)}
         >
-          {chunk(nodes).map((chunk, i) => (
+          {chunks.map((chunk, i) => (
             <SwiperSlide key={`Chunk${i}`}>
               <div className={classes.chunk}>
                 {chunk.map((doctor) => (
-                  <DoctorCardAlt
-                    key={doctor._id}
-                    variant="row"
-                    node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]}
-                  />
+                  <SafeBoundary key={doctor._id} name="speciality-card-doctor">
+                    <DoctorCardAlt
+                      variant="row"
+                      node={doctor as Parameters<typeof DoctorCardAlt>[0]["node"]}
+                    />
+                  </SafeBoundary>
                 ))}
               </div>
             </SwiperSlide>
@@ -81,7 +84,7 @@ const SpecialityCard = ({
       <div className={classes.header}>
         <div className={`${classes.headerIcon} glassIcon`}>
           <Ixon width="2rem">
-            <StetoscopeIcon />
+            <SpecialityIcon node={node} />
           </Ixon>
         </div>
         <div className={classes.headerDetails}>
