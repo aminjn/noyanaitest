@@ -124,24 +124,9 @@ const AdminCatalogCleanupTab = ({ kind }: { kind: CatalogKind }) => {
 
       <div className={classes.toolbar}>
         {kind === "speciality" && (
-          <Button
-            variant="Primary"
-            mode="Outline"
-            size="M"
-            radius="High"
-            isLoading={busy === "seed"}
-            onClick={() =>
-              confirm(ta("فهرست رسمی تخصص‌های ایران ساخته یا با تخصص‌های موجود یکی شود؟ چیزی حذف نمی‌شود."), () =>
-                run("seed", () => post(`${API}/admin/catalog/speciality/seed`), ta("فهرست رسمی به‌روز شد")),
-              )
-            }
-          >
-            {ta("اعمال فهرست رسمی تخصص‌ها")}
-          </Button>
-        )}
-        {kind === "speciality" && (
-          // procedures filed as specialities become services, other
-          // wordings and non-fields are merged (Lib/catalog/tidySpecialities.ts
+          // one button (2026-10): the official list is applied, procedures
+          // filed as specialities become services, fellowships fold into
+          // their speciality, other wordings and non-fields are merged (Lib/catalog/tidySpecialities.ts
           // in the backend): a preview first, then the confirmation
           <Button
             variant="Primary"
@@ -165,11 +150,13 @@ const AdminCatalogCleanupTab = ({ kind }: { kind: CatalogKind }) => {
                   return;
                 }
                 const lines = steps
+                  .slice(0, 30)
                   .map(
                     (st) =>
                       `${(Array.isArray(st.sources) ? st.sources : []).join("، ")} ← ${st.target}${st.service ? ` (${ta("خدمت: ${1}", [st.service])})` : ""}`,
                   )
-                  .join(" · ");
+                  .join(" · ")
+                  .concat(steps.length > 30 ? " …" : "");
                 confirm(ta("این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.", [String(preview?.entries || 0), lines]), () =>
                   run("tidy", () => post(`${API}/admin/catalog/speciality/tidy`), ta("تخصص‌ها مرتب شدند")),
                 );
