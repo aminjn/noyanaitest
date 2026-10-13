@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "Ihre eigenen Fragen",
  "drConditionsTreated": "Behandelte Erkrankungen",
  "drOfficeHours": "Sprechzeiten",
- "drConditionsHint": "Wählen Sie die Erkrankungen, die Sie behandeln; sie erscheinen auf Ihrer öffentlichen Seite."
+ "drConditionsHint": "Wählen Sie die Erkrankungen, die Sie behandeln; sie erscheinen auf Ihrer öffentlichen Seite.",
+ "authTitle": "Anmelden oder registrieren",
+ "authPhoneSubtitle": "Geben Sie Ihre Mobilnummer ein, wir senden Ihnen einen Bestätigungscode per SMS.",
+ "authSignupTitle": "Konto erstellen",
+ "authSignupSubtitle": "Mit dieser Nummer gibt es noch kein Konto. Geben Sie zur Registrierung Ihre nationale Ausweisnummer und Ihr Geburtsdatum ein.",
+ "authOtpTitle": "Bestätigungscode eingeben",
+ "authTrustLine": "Ihre Daten sind vertraulich und bei Noyan sicher aufgehoben.",
+ "nationalCodeFormatError": "Die nationale Ausweisnummer muss 10 Ziffern haben",
+ "birthDateRequired": "Wählen Sie Ihr Geburtsdatum",
+ "otpDigitLabel": "Ziffer ${1} von ${2}",
+ "otpCodeLabel": "Bestätigungscode",
+ "authVerify": "Bestätigen und anmelden",
+ "accountMenu": "Kontomenü",
+ "yourPanels": "Ihre Bereiche",
+ "personalAccount": "Persönliches Konto"
 }

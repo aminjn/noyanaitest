@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "أسئلتك الخاصة",
  "drConditionsTreated": "الأمراض التي يعالجها",
  "drOfficeHours": "ساعات عمل العيادة",
- "drConditionsHint": "اختر الأمراض التي تعالجها؛ تظهر في صفحتك العامة."
+ "drConditionsHint": "اختر الأمراض التي تعالجها؛ تظهر في صفحتك العامة.",
+ "authTitle": "تسجيل الدخول أو إنشاء حساب",
+ "authPhoneSubtitle": "أدخل رقم هاتفك المحمول وسنرسل إليك رمز التحقق برسالة نصية.",
+ "authSignupTitle": "إنشاء حسابك",
+ "authSignupSubtitle": "لا يوجد حساب بهذا الرقم بعد. أدخل رقمك الوطني وتاريخ ميلادك للتسجيل.",
+ "authOtpTitle": "أدخل رمز التحقق",
+ "authTrustLine": "معلوماتك سرية وتبقى آمنة لدى نويان.",
+ "nationalCodeFormatError": "يجب أن يتكون الرقم الوطني من 10 أرقام",
+ "birthDateRequired": "اختر تاريخ ميلادك",
+ "otpDigitLabel": "الرقم ${1} من ${2}",
+ "otpCodeLabel": "رمز التحقق",
+ "authVerify": "تحقق وسجّل الدخول",
+ "accountMenu": "قائمة الحساب",
+ "yourPanels": "لوحاتك",
+ "personalAccount": "حساب شخصي"
 }

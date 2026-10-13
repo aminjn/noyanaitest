@@ -10,3 +10,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* phones: a popup whose root is marked [data-sheet] (the sign-in dialog)
+   docks to the bottom edge as a sheet instead of floating in the middle */
+@media only screen and (max-width: 560px) {
+  .content:has(> [data-sheet]) {
+    top: auto;
+    inset-inline: 0;
+    inset-block-end: 0;
+    transform: none;
+  }
+}

@@ -1,44 +1,153 @@
-.form {
+/* The sign-in card: centred on wide screens, a bottom sheet on phones. */
+.sheet {
+  /* a popup covers the tab bar */
+  --bottomNavSpace: 0px;
+  position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  gap: 1.5rem;
+  width: min(26.25rem, calc(100vw - 2rem));
+  max-height: min(46rem, calc(100dvh - 2rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.5rem 1.75rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radiusLg);
+  background-color: var(--white);
+  box-shadow: var(--elev3);
+  color: var(--textBody);
+  animation: cardIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.legend {
-  color: var(--gray13);
-  font-size: 1.125rem;
-  font-weight: 500;
-  margin-bottom: 0.8rem;
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.tip {
-  color: var(--gray7);
-  font-size: 0.875rem;
-  font-weight: 400;
+.grabber {
+  display: none;
 }
 
-.submit.submit {
-  margin-top: auto;
-  height: 3.5rem;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.middle {
+.top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  min-height: 2.5rem;
 }
 
-.back {
-  color: var(--secondary);
-  font-size: 0.75rem;
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-inline-end: -0.5rem;
+  border: none;
+  border-radius: var(--radiusPill);
+  background: transparent;
+  color: var(--textMuted);
+  cursor: pointer;
+  transition:
+    background-color var(--transTime),
+    color var(--transTime);
+}
+
+.close:hover {
+  background-color: var(--gray3);
+  color: var(--textStrong);
+}
+
+.close:focus-visible {
+  outline: none;
+  box-shadow: var(--focusRing);
+}
+
+.foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--line);
+  text-align: center;
+}
+
+.trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0;
+  font-size: 0.8125rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  margin-block: auto;
+  color: var(--successS1);
 }
 
-.switch {
-  margin-top: 0.75rem;
+html[data-theme="dark"] .trust {
+  color: var(--successS2);
+}
+
+.terms {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--textMuted);
+}
+
+.termsLink {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 35%, transparent);
+  text-underline-offset: 3px;
+}
+
+.termsLink:hover {
+  text-decoration-color: currentColor;
+}
+
+/* phones: a bottom sheet with a grabber, above the home indicator */
+@media only screen and (max-width: 560px) {
+  .sheet {
+    width: 100vw;
+    max-height: calc(100dvh - 1.5rem);
+    padding: 0.625rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    gap: 1.25rem;
+    border-width: 1px 0 0;
+    border-radius: var(--radiusLg) var(--radiusLg) 0 0;
+    box-shadow: 0 -18px 50px -20px rgba(15, 18, 60, 0.45);
+    animation: sheetUp 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .grabber {
+    display: block;
+    align-self: center;
+    width: 2.5rem;
+    height: 0.3125rem;
+    margin-block-end: -0.5rem;
+    border-radius: var(--radiusPill);
+    background-color: var(--gray5);
+  }
+}
+
+@keyframes sheetUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    animation: none;
+  }
 }

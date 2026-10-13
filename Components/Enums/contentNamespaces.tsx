@@ -690,7 +690,7 @@ export const contentNamespaces = {
     // (useScopedLocale migration, 2026-09)
     // Sitewide chrome rendered from the root Layout: PublicHeader (+ headerCategories
     // tabs, NavLinks, modal labels), PublicFooter, PublicMobileMenu, SearchModal,
-    // UserButton/MobileUserButton (+ useUserMenus), SwitchProfile (+ usePanelsMaps),
+    // UserButton (+ useUserMenus), SwitchProfile (+ usePanelsMaps), Auth/AuthFlow,
     // CartModal, NotificationModal, Auth/Login/Signup/Logout popups, LoginRequired
     // (every panel layout), SocketContext, FaqList.
     "aboutUs",
@@ -1015,6 +1015,20 @@ export const contentNamespaces = {
     "afqCServicesA",
     "afqCDoctorsQ",
     "afqCDoctorsA",
+    "authTitle",
+    "authPhoneSubtitle",
+    "authSignupTitle",
+    "authSignupSubtitle",
+    "authOtpTitle",
+    "authTrustLine",
+    "nationalCodeFormatError",
+    "birthDateRequired",
+    "otpDigitLabel",
+    "otpCodeLabel",
+    "authVerify",
+    "accountMenu",
+    "yourPanels",
+    "personalAccount",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,

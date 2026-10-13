@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "Your own questions",
  "drConditionsTreated": "Conditions treated",
  "drOfficeHours": "Office hours",
- "drConditionsHint": "Pick the conditions you treat; they're shown on your public page."
+ "drConditionsHint": "Pick the conditions you treat; they're shown on your public page.",
+ "authTitle": "Log in or sign up",
+ "authPhoneSubtitle": "Enter your mobile number and we'll text you a verification code.",
+ "authSignupTitle": "Create your account",
+ "authSignupSubtitle": "There's no account with this number yet. Enter your national ID and date of birth to sign up.",
+ "authOtpTitle": "Enter the verification code",
+ "authTrustLine": "Your information is confidential and kept safe with Noyan.",
+ "nationalCodeFormatError": "Your national ID must be 10 digits",
+ "birthDateRequired": "Select your date of birth",
+ "otpDigitLabel": "Digit ${1} of ${2}",
+ "otpCodeLabel": "Verification code",
+ "authVerify": "Verify and log in",
+ "accountMenu": "Account menu",
+ "yourPanels": "Your panels",
+ "personalAccount": "Personal account"
 }

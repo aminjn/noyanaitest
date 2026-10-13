@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "您自己的问题",
  "drConditionsTreated": "诊治的疾病",
  "drOfficeHours": "门诊时间",
- "drConditionsHint": "选择您诊治的疾病；它们会显示在您的公开页面上。"
+ "drConditionsHint": "选择您诊治的疾病；它们会显示在您的公开页面上。",
+ "authTitle": "登录或注册",
+ "authPhoneSubtitle": "输入您的手机号码，我们会通过短信向您发送验证码。",
+ "authSignupTitle": "创建您的账户",
+ "authSignupSubtitle": "该号码尚未注册账户。请输入您的身份证号和出生日期完成注册。",
+ "authOtpTitle": "输入验证码",
+ "authTrustLine": "您的信息将被保密，并在 Noyan 安全保存。",
+ "nationalCodeFormatError": "身份证号必须为 10 位数字",
+ "birthDateRequired": "请选择您的出生日期",
+ "otpDigitLabel": "第 ${1} 位，共 ${2} 位",
+ "otpCodeLabel": "验证码",
+ "authVerify": "验证并登录",
+ "accountMenu": "账户菜单",
+ "yourPanels": "您的面板",
+ "personalAccount": "个人账户"
 }

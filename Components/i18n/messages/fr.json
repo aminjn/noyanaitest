@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "Vos propres questions",
  "drConditionsTreated": "Pathologies traitées",
  "drOfficeHours": "Horaires du cabinet",
- "drConditionsHint": "Choisissez les pathologies que vous traitez ; elles s'affichent sur votre page publique."
+ "drConditionsHint": "Choisissez les pathologies que vous traitez ; elles s'affichent sur votre page publique.",
+ "authTitle": "Connexion ou inscription",
+ "authPhoneSubtitle": "Saisissez votre numéro de mobile et nous vous enverrons un code de vérification par SMS.",
+ "authSignupTitle": "Créez votre compte",
+ "authSignupSubtitle": "Aucun compte n'existe encore avec ce numéro. Saisissez votre numéro d'identité nationale et votre date de naissance pour vous inscrire.",
+ "authOtpTitle": "Saisissez le code de vérification",
+ "authTrustLine": "Vos informations sont confidentielles et restent en sécurité chez Noyan.",
+ "nationalCodeFormatError": "Le numéro d'identité nationale doit comporter 10 chiffres",
+ "birthDateRequired": "Sélectionnez votre date de naissance",
+ "otpDigitLabel": "Chiffre ${1} sur ${2}",
+ "otpCodeLabel": "Code de vérification",
+ "authVerify": "Vérifier et se connecter",
+ "accountMenu": "Menu du compte",
+ "yourPanels": "Vos espaces",
+ "personalAccount": "Compte personnel"
 }

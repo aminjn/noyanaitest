@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "Kendi sorularınız",
  "drConditionsTreated": "Tedavi ettiği hastalıklar",
  "drOfficeHours": "Muayenehane çalışma saatleri",
- "drConditionsHint": "Tedavi ettiğiniz hastalıkları seçin; herkese açık sayfanızda gösterilir."
+ "drConditionsHint": "Tedavi ettiğiniz hastalıkları seçin; herkese açık sayfanızda gösterilir.",
+ "authTitle": "Giriş yap veya kaydol",
+ "authPhoneSubtitle": "Cep telefonu numaranızı girin, size SMS ile bir doğrulama kodu gönderelim.",
+ "authSignupTitle": "Hesabınızı oluşturun",
+ "authSignupSubtitle": "Bu numarayla henüz bir hesap yok. Kaydolmak için ulusal kimlik numaranızı ve doğum tarihinizi girin.",
+ "authOtpTitle": "Doğrulama kodunu girin",
+ "authTrustLine": "Bilgileriniz gizlidir ve Noyan'da güvende kalır.",
+ "nationalCodeFormatError": "Ulusal kimlik numarası 10 haneli olmalıdır",
+ "birthDateRequired": "Doğum tarihinizi seçin",
+ "otpDigitLabel": "${2} haneden ${1}. hane",
+ "otpCodeLabel": "Doğrulama kodu",
+ "authVerify": "Doğrula ve giriş yap",
+ "accountMenu": "Hesap menüsü",
+ "yourPanels": "Panelleriniz",
+ "personalAccount": "Kişisel hesap"
 }

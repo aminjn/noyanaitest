@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "ご自身の質問",
  "drConditionsTreated": "対応する疾患",
  "drOfficeHours": "診療時間",
- "drConditionsHint": "対応する疾患を選んでください。公開ページに表示されます。"
+ "drConditionsHint": "対応する疾患を選んでください。公開ページに表示されます。",
+ "authTitle": "ログインまたは新規登録",
+ "authPhoneSubtitle": "携帯電話番号を入力してください。確認コードをSMSでお送りします。",
+ "authSignupTitle": "アカウントを作成",
+ "authSignupSubtitle": "この番号のアカウントはまだありません。登録するには国民ID番号と生年月日を入力してください。",
+ "authOtpTitle": "確認コードを入力",
+ "authTrustLine": "お客様の情報は機密として扱われ、Noyanで安全に保管されます。",
+ "nationalCodeFormatError": "国民ID番号は10桁で入力してください",
+ "birthDateRequired": "生年月日を選択してください",
+ "otpDigitLabel": "${2}桁中${1}桁目",
+ "otpCodeLabel": "確認コード",
+ "authVerify": "確認してログイン",
+ "accountMenu": "アカウントメニュー",
+ "yourPanels": "あなたのパネル",
+ "personalAccount": "個人アカウント"
 }

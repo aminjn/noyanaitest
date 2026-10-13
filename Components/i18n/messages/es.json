@@ -7614,5 +7614,19 @@
  "afqOwnTitle": "Sus propias preguntas",
  "drConditionsTreated": "Enfermedades que trata",
  "drOfficeHours": "Horario de consulta",
- "drConditionsHint": "Elija las enfermedades que trata; se muestran en su página pública."
+ "drConditionsHint": "Elija las enfermedades que trata; se muestran en su página pública.",
+ "authTitle": "Inicia sesión o regístrate",
+ "authPhoneSubtitle": "Introduce tu número de móvil y te enviaremos un código de verificación por SMS.",
+ "authSignupTitle": "Crea tu cuenta",
+ "authSignupSubtitle": "Aún no hay ninguna cuenta con este número. Introduce tu documento nacional de identidad y tu fecha de nacimiento para registrarte.",
+ "authOtpTitle": "Introduce el código de verificación",
+ "authTrustLine": "Tu información es confidencial y está segura con Noyan.",
+ "nationalCodeFormatError": "El documento nacional de identidad debe tener 10 dígitos",
+ "birthDateRequired": "Selecciona tu fecha de nacimiento",
+ "otpDigitLabel": "Dígito ${1} de ${2}",
+ "otpCodeLabel": "Código de verificación",
+ "authVerify": "Verificar e iniciar sesión",
+ "accountMenu": "Menú de la cuenta",
+ "yourPanels": "Tus paneles",
+ "personalAccount": "Cuenta personal"
 }
