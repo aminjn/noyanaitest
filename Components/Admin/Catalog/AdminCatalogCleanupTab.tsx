@@ -139,6 +139,50 @@ const AdminCatalogCleanupTab = ({ kind }: { kind: CatalogKind }) => {
             {ta("اعمال فهرست رسمی تخصص‌ها")}
           </Button>
         )}
+        {kind === "speciality" && (
+          // procedures filed as specialities become services, other
+          // wordings and non-fields are merged (Lib/catalog/tidySpecialities.ts
+          // in the backend): a preview first, then the confirmation
+          <Button
+            variant="Primary"
+            mode="Outline"
+            size="M"
+            radius="High"
+            isLoading={busy === "tidy"}
+            onClick={async () => {
+              if (busy) return;
+              setBusy("tidy");
+              setNotice(null);
+              try {
+                const preview = (
+                  (await post(`${API}/admin/catalog/speciality/tidy`, { dry: true })) as {
+                    data?: { steps?: { target: string; sources?: string[]; service?: string }[]; entries?: number };
+                  }
+                )?.data;
+                const steps = Array.isArray(preview?.steps) ? preview.steps : [];
+                if (!steps.length) {
+                  setNotice({ ok: true, text: ta("موردی برای مرتب‌سازی نیست") });
+                  return;
+                }
+                const lines = steps
+                  .map(
+                    (st) =>
+                      `${(Array.isArray(st.sources) ? st.sources : []).join("، ")} ← ${st.target}${st.service ? ` (${ta("خدمت: ${1}", [st.service])})` : ""}`,
+                  )
+                  .join(" · ");
+                confirm(ta("این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.", [String(preview?.entries || 0), lines]), () =>
+                  run("tidy", () => post(`${API}/admin/catalog/speciality/tidy`), ta("تخصص‌ها مرتب شدند")),
+                );
+              } catch (err) {
+                setNotice({ ok: false, text: err instanceof Error ? err.message : ta("انجام نشد") });
+              } finally {
+                setBusy(null);
+              }
+            }}
+          >
+            {ta("مرتب‌سازی تخصص‌ها")}
+          </Button>
+        )}
         <Button
           variant="Primary"
           mode="Fill"

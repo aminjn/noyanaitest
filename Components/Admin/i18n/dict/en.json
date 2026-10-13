@@ -3925,5 +3925,10 @@
  "ساخت مورد تازه": "Create a new entry",
  "ادغام و پاک‌سازی": "Merge and clean up",
  "موارد بدون پزشک و بدون استفاده بایگانی شوند؟ (حذف نمی‌شوند)": "Archive the entries with no doctors and no use? (They aren't deleted)",
- "موارد بدون استفاده بایگانی شدند": "Unused entries were archived"
+ "موارد بدون استفاده بایگانی شدند": "Unused entries were archived",
+ "مرتب‌سازی تخصص‌ها": "Tidy up specialities",
+ "موردی برای مرتب‌سازی نیست": "Nothing to tidy up",
+ "تخصص‌ها مرتب شدند": "Specialities tidied up",
+ "خدمت: ${1}": "Service: ${1}",
+ "این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.": "Apply these changes? ${1} entries: ${2}. Every merge can be undone for 30 days."
 }

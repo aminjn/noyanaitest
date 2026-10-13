@@ -7642,5 +7642,9 @@
  "dpdPrToday": "Hari ini",
  "dpdPr7": "7 hari terakhir",
  "dpdPr30": "30 hari terakhir",
- "dpdPrNoPhone": "Anda belum menambahkan nomor publik (praktik atau telepon rumah)"
+ "dpdPrNoPhone": "Anda belum menambahkan nomor publik (praktik atau telepon rumah)",
+ "specGroupMedical": "Spesialisasi medis",
+ "specGroupDental": "Kedokteran gigi",
+ "specGroupAllied": "Tenaga kesehatan lainnya",
+ "subSpecialities": "Subspesialisasi dan fellowship"
 }

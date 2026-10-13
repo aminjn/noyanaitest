@@ -7642,5 +7642,9 @@
  "dpdPrToday": "Aujourd'hui",
  "dpdPr7": "7 derniers jours",
  "dpdPr30": "30 derniers jours",
- "dpdPrNoPhone": "Vous n'avez pas encore ajouté de numéro public (cabinet ou fixe)"
+ "dpdPrNoPhone": "Vous n'avez pas encore ajouté de numéro public (cabinet ou fixe)",
+ "specGroupMedical": "Spécialités médicales",
+ "specGroupDental": "Dentisterie",
+ "specGroupAllied": "Autres professionnels de santé",
+ "subSpecialities": "Surspécialités et fellowships"
 }

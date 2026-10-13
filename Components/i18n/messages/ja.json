@@ -7642,5 +7642,9 @@
  "dpdPrToday": "今日",
  "dpdPr7": "過去 7 日間",
  "dpdPr30": "過去 30 日間",
- "dpdPrNoPhone": "公開番号（診療所または固定電話）がまだ登録されていません"
+ "dpdPrNoPhone": "公開番号（診療所または固定電話）がまだ登録されていません",
+ "specGroupMedical": "医療の専門分野",
+ "specGroupDental": "歯科",
+ "specGroupAllied": "その他の医療専門職",
+ "subSpecialities": "サブスペシャルティとフェローシップ"
 }

@@ -3925,5 +3925,10 @@
  "ساخت مورد تازه": "Crear una entrada nueva",
  "ادغام و پاک‌سازی": "Fusionar y limpiar",
  "موارد بدون پزشک و بدون استفاده بایگانی شوند؟ (حذف نمی‌شوند)": "¿Archivar las entradas sin médicos y sin uso? (No se borran)",
- "موارد بدون استفاده بایگانی شدند": "Se archivaron las entradas sin uso"
+ "موارد بدون استفاده بایگانی شدند": "Se archivaron las entradas sin uso",
+ "مرتب‌سازی تخصص‌ها": "Ordenar especialidades",
+ "موردی برای مرتب‌سازی نیست": "No hay nada que ordenar",
+ "تخصص‌ها مرتب شدند": "Especialidades ordenadas",
+ "خدمت: ${1}": "Servicio: ${1}",
+ "این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.": "¿Aplicar estos cambios? ${1} elementos: ${2}. Cada fusión se puede deshacer durante 30 días."
 }

@@ -7642,5 +7642,9 @@
  "dpdPrToday": "آج",
  "dpdPr7": "پچھلے 7 دن",
  "dpdPr30": "پچھلے 30 دن",
- "dpdPrNoPhone": "آپ نے ابھی تک کوئی عوامی نمبر (مطب یا لینڈ لائن) درج نہیں کیا"
+ "dpdPrNoPhone": "آپ نے ابھی تک کوئی عوامی نمبر (مطب یا لینڈ لائن) درج نہیں کیا",
+ "specGroupMedical": "طبی تخصصات",
+ "specGroupDental": "دندان سازی",
+ "specGroupAllied": "دیگر طبی عملہ",
+ "subSpecialities": "ذیلی تخصصات اور فیلوشپ"
 }
