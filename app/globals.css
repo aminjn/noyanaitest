@@ -100,7 +100,7 @@
   --mesh: radial-gradient(55% 60% at 92% 0%, #c7d2fe 0%, rgba(199, 210, 254, 0) 70%),
     radial-gradient(45% 55% at 8% 12%, #fbcfe8 0%, rgba(251, 207, 232, 0) 70%),
     radial-gradient(60% 55% at 45% 105%, #bff0e6 0%, rgba(191, 240, 230, 0) 70%);
-  --glass: rgba(255, 255, 255, 0.64);
+  --glass: rgba(255, 255, 255, 0.88);
   --glassStrong: rgba(255, 255, 255, 0.82);
   --glassLine: rgba(255, 255, 255, 0.9);
   --glassBlur: blur(22px) saturate(150%);
@@ -297,7 +297,7 @@ html[data-theme="dark"] {
   --mesh: radial-gradient(55% 60% at 92% 0%, rgba(99, 86, 255, 0.38) 0%, rgba(99, 86, 255, 0) 70%),
     radial-gradient(45% 55% at 8% 12%, rgba(219, 39, 119, 0.22) 0%, rgba(219, 39, 119, 0) 70%),
     radial-gradient(60% 55% at 45% 105%, rgba(20, 184, 166, 0.22) 0%, rgba(20, 184, 166, 0) 70%);
-  --glass: rgba(22, 26, 52, 0.58);
+  --glass: rgba(22, 26, 52, 0.9);
   --glassStrong: rgba(30, 35, 68, 0.78);
   --glassLine: rgba(255, 255, 255, 0.08);
   --glassShadow: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
@@ -701,4 +701,13 @@ body {
 }
 body.bottomNavHidden {
   --bottomNavLive: env(safe-area-inset-bottom, 0px);
+}
+
+/* Speed (2026-10): every blurred surface is re-composited on each scroll
+   frame, and a page carried 40-60 of them (cards, icon tiles, panels), which
+   made desktop scrolling lag badly. Only the header and the open menus keep
+   the frost; every other surface is a plain, near-opaque fill. */
+*:not(header):not(.glassMenu) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }

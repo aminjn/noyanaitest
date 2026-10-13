@@ -5,7 +5,6 @@ import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
 import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import { useSearchParams } from "next/navigation";
 import { DoctorSessionType } from "../DoctorPanel/Calendar/DoctorCalendarDay";
 import ListPageLayout from "../UI/ListPage/ListPageLayout";
 import Ixon from "../UI/Ixon";
@@ -13,8 +12,7 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import Button from "../UI/Button";
 import ArrowCircleDownIcon from "../Icons/ArrowCircleDownIcon";
-import ListPageList from "../UI/ListPage/ListPageList";
-import DoctorCardAlt from "../UI/DoctorCardAlt";
+import BookingPage2, { BookingPageDoctor } from "../Booking/BookingPage2";
 import BigAd from "../UI/ListPage/BigAd";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
@@ -53,8 +51,6 @@ const SpecialityPage = ({
 }: SpecialityPageProps) => {
   const getContent = useScopedLocale(NS);
 
-  const searchParams = useSearchParams();
-
   return (
     <ListPageLayout
       trail={[
@@ -84,17 +80,6 @@ const SpecialityPage = ({
           </div>
         </div>
         <div className={classes.headActions}>
-          {/* the full search (date, visit type, city...) already narrowed to
-              this speciality - the same doctors, with every filter */}
-          <Button
-            variant="Primary"
-            mode="Fill"
-            size="L"
-            radius="High"
-            href={`/book?speciality=${data._id}&name=${encodeURIComponent(data.name || "")}`}
-          >
-            {getContent("filterTheseDoctors")}
-          </Button>
           <Button
             variant="Primary"
             mode="Outline"
@@ -107,19 +92,17 @@ const SpecialityPage = ({
           </Button>
         </div>
       </div>
-      <ListPageList
-        itemWidth="14.75rem"
-        pagination={{
-          pagesCount,
-          currentPage: Number(searchParams.get("page")) || 1,
-          makePath: (page) =>
-            `/speciality/${data.slug || data._id}?page=${page}`,
+      {/* the doctors of this speciality with every filter always open
+          beside them (2026-10, like Doctolib / Zocdoc result pages): the
+          server-rendered first page shows until a filter changes */}
+      <BookingPage2
+        embedded
+        preset={{ speciality: [data] }}
+        initialRows={{
+          rows: (Array.isArray(doctors) ? doctors : []) as unknown as BookingPageDoctor[],
+          count,
         }}
-      >
-        {doctors.map((node) => (
-          <DoctorCardAlt key={node._id} node={node} />
-        ))}
-      </ListPageList>
+      />
       <div className={classes.box} id="about">
         <BigAd
           position="speciality1"

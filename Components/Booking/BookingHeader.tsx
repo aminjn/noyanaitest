@@ -24,21 +24,28 @@ const NS: ContentNamespace[] = ["common", "booking"];
 const BookingHeader = ({
   onChange,
   onAdvancedSearch,
+  hideTitle,
 }: {
   onChange: ChangeEventHandler<HTMLInputElement>;
   onAdvancedSearch?: () => unknown;
+  // a page with its own title (a speciality page) shows only the search
+  hideTitle?: boolean;
 }) => {
   const push = useProgress();
 
   const getContent = useScopedLocale(NS);
   return (
     <div className={classes.header}>
-      <h1 className={`${classes.title} ${txlDemiBold}`}>
-        {getContent("bookingTitle")}
-      </h1>
-      <legend className={`${classes.subtitle} ${txsMedium}`}>
-        {getContent("bookingSubTitle")}
-      </legend>
+      {!hideTitle && (
+        <>
+          <h1 className={`${classes.title} ${txlDemiBold}`}>
+            {getContent("bookingTitle")}
+          </h1>
+          <legend className={`${classes.subtitle} ${txsMedium}`}>
+            {getContent("bookingSubTitle")}
+          </legend>
+        </>
+      )}
       <div className={classes.searchContainer}>
         <div className={classes.searchBox}>
           <Ixon width="1.5rem" className={classes.searchIcon}>

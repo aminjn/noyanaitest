@@ -99,8 +99,14 @@ export type BookingPageDoctor = IDoctorProfile<{
 
 const BookingPage2 = ({
   descriptions,
+  preset,
+  initialRows,
+  embedded,
 }: {
   descriptions?: Record<BookingDescriptionSegment, IBookingDescription[]>;
+  preset?: DoctorBookingOptions;
+  initialRows?: { rows: BookingPageDoctor[]; count: number };
+  embedded?: boolean;
 }) => {
   const [common, setCommon] = useState<BookingCommon>({
     view: "Grid",
@@ -115,6 +121,9 @@ const BookingPage2 = ({
           common={common}
           setCommon={setCommon}
           descriptions={descriptions?.Doctor}
+          preset={preset}
+          initialRows={initialRows}
+          embedded={embedded}
         />
       )}
       {common.node === "clinic" && (

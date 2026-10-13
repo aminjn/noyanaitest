@@ -8,7 +8,6 @@
   padding-inline-end: 0;
   background-color: var(--meshBase);
   background-image: var(--mesh);
-  background-attachment: fixed;
 }
 
 /* ---- sidebar: a floating glass column ---- */
