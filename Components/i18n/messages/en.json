@@ -7628,5 +7628,18 @@
  "authVerify": "Verify and log in",
  "accountMenu": "Account menu",
  "yourPanels": "Your panels",
- "personalAccount": "Personal account"
+ "personalAccount": "Personal account",
+ "drSeeMore": "Show more",
+ "drSeeLess": "Show less",
+ "drMoreItems": "+${1} more",
+ "drShowPhone": "Show phone number",
+ "drPhoneError": "Couldn't show the number; please try again",
+ "afqPhoneHiddenA": "To see the phone number of ${1}, tap “Show phone number” on this page.",
+ "afqBookCallHiddenA": "To arrange a visit, see the phone number with “Show phone number” on this page.",
+ "dpdPrTitle": "Your number shown",
+ "dpdPrHint": "How many times patients revealed your phone number on your public page",
+ "dpdPrToday": "Today",
+ "dpdPr7": "Last 7 days",
+ "dpdPr30": "Last 30 days",
+ "dpdPrNoPhone": "You haven't added a public number (office phone or land line) yet"
 }

@@ -7628,5 +7628,18 @@
  "authVerify": "验证并登录",
  "accountMenu": "账户菜单",
  "yourPanels": "您的面板",
- "personalAccount": "个人账户"
+ "personalAccount": "个人账户",
+ "drSeeMore": "显示更多",
+ "drSeeLess": "收起",
+ "drMoreItems": "另外 ${1} 项",
+ "drShowPhone": "显示电话号码",
+ "drPhoneError": "无法显示号码，请重试",
+ "afqPhoneHiddenA": "要查看 ${1} 的电话号码，请点击本页的“显示电话号码”。",
+ "afqBookCallHiddenA": "如需预约，请通过本页的“显示电话号码”查看号码。",
+ "dpdPrTitle": "您的号码展示次数",
+ "dpdPrHint": "患者在您的公开页面上查看您电话号码的次数",
+ "dpdPrToday": "今天",
+ "dpdPr7": "最近 7 天",
+ "dpdPr30": "最近 30 天",
+ "dpdPrNoPhone": "您尚未添加公开号码（诊所电话或座机）"
 }

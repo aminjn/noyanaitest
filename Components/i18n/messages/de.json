@@ -7628,5 +7628,18 @@
  "authVerify": "Bestätigen und anmelden",
  "accountMenu": "Kontomenü",
  "yourPanels": "Ihre Bereiche",
- "personalAccount": "Persönliches Konto"
+ "personalAccount": "Persönliches Konto",
+ "drSeeMore": "Mehr anzeigen",
+ "drSeeLess": "Weniger anzeigen",
+ "drMoreItems": "+${1} weitere",
+ "drShowPhone": "Telefonnummer anzeigen",
+ "drPhoneError": "Die Nummer konnte nicht angezeigt werden; bitte erneut versuchen",
+ "afqPhoneHiddenA": "Um die Telefonnummer von ${1} zu sehen, tippen Sie auf dieser Seite auf „Telefonnummer anzeigen“.",
+ "afqBookCallHiddenA": "Für einen Termin sehen Sie die Nummer über „Telefonnummer anzeigen“ auf dieser Seite.",
+ "dpdPrTitle": "Ihre Nummer angezeigt",
+ "dpdPrHint": "Wie oft Patienten Ihre Nummer auf Ihrer öffentlichen Seite angezeigt haben",
+ "dpdPrToday": "Heute",
+ "dpdPr7": "Letzte 7 Tage",
+ "dpdPr30": "Letzte 30 Tage",
+ "dpdPrNoPhone": "Sie haben noch keine öffentliche Nummer (Praxis oder Festnetz) hinterlegt"
 }

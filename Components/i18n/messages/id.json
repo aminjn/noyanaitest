@@ -7628,5 +7628,18 @@
  "authVerify": "Verifikasi dan masuk",
  "accountMenu": "Menu akun",
  "yourPanels": "Panel Anda",
- "personalAccount": "Akun pribadi"
+ "personalAccount": "Akun pribadi",
+ "drSeeMore": "Lihat selengkapnya",
+ "drSeeLess": "Tampilkan lebih sedikit",
+ "drMoreItems": "+${1} lainnya",
+ "drShowPhone": "Tampilkan nomor telepon",
+ "drPhoneError": "Nomor tidak dapat ditampilkan; coba lagi",
+ "afqPhoneHiddenA": "Untuk melihat nomor telepon ${1}, ketuk “Tampilkan nomor telepon” di halaman ini.",
+ "afqBookCallHiddenA": "Untuk mengatur kunjungan, lihat nomornya lewat “Tampilkan nomor telepon” di halaman ini.",
+ "dpdPrTitle": "Nomor Anda ditampilkan",
+ "dpdPrHint": "Berapa kali pasien menampilkan nomor Anda di halaman publik Anda",
+ "dpdPrToday": "Hari ini",
+ "dpdPr7": "7 hari terakhir",
+ "dpdPr30": "30 hari terakhir",
+ "dpdPrNoPhone": "Anda belum menambahkan nomor publik (praktik atau telepon rumah)"
 }

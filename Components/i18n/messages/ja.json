@@ -7628,5 +7628,18 @@
  "authVerify": "確認してログイン",
  "accountMenu": "アカウントメニュー",
  "yourPanels": "あなたのパネル",
- "personalAccount": "個人アカウント"
+ "personalAccount": "個人アカウント",
+ "drSeeMore": "もっと見る",
+ "drSeeLess": "閉じる",
+ "drMoreItems": "他 ${1} 件",
+ "drShowPhone": "電話番号を表示",
+ "drPhoneError": "番号を表示できませんでした。もう一度お試しください",
+ "afqPhoneHiddenA": "${1} の電話番号は、このページの「電話番号を表示」をタップするとご覧いただけます。",
+ "afqBookCallHiddenA": "予約の調整は、このページの「電話番号を表示」で番号をご確認ください。",
+ "dpdPrTitle": "番号の表示回数",
+ "dpdPrHint": "患者が公開ページであなたの番号を表示した回数",
+ "dpdPrToday": "今日",
+ "dpdPr7": "過去 7 日間",
+ "dpdPr30": "過去 30 日間",
+ "dpdPrNoPhone": "公開番号（診療所または固定電話）がまだ登録されていません"
 }

@@ -1029,6 +1029,8 @@ export const contentNamespaces = {
     "accountMenu",
     "yourPanels",
     "personalAccount",
+    "afqPhoneHiddenA",
+    "afqBookCallHiddenA",
   ],
 
   // Every key actually referenced by Components/Home/*.tsx (HomeHero,
@@ -3066,6 +3068,12 @@ export const contentNamespaces = {
     "dpdPlanEndedBanner",
     "dpdPlanEndingBanner",
     "dpdRenewPlan",
+    "dpdPrTitle",
+    "dpdPrHint",
+    "dpdPrToday",
+    "dpdPr7",
+    "dpdPr30",
+    "dpdPrNoPhone",
   ],
 
   // app/doctorpanel/finance/page.tsx (DoctorManageFinancePage, 2026-09).
@@ -6933,6 +6941,11 @@ export const contentNamespaces = {
     "whatsapp",
     "aparat",
     "website",
+    "drSeeMore",
+    "drSeeLess",
+    "drMoreItems",
+    "drShowPhone",
+    "drPhoneError",
   ],
   // Components/Dr/New/BookingSidebar — reusable (/dr/[slug], /book/finalize/[nodeId]); incl. doctorSessionTypeContentKeyDict + patientTypeDict values.
   drBookingSidebar: [

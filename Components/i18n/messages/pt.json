@@ -7628,5 +7628,18 @@
  "authVerify": "Verificar e entrar",
  "accountMenu": "Menu da conta",
  "yourPanels": "Seus painéis",
- "personalAccount": "Conta pessoal"
+ "personalAccount": "Conta pessoal",
+ "drSeeMore": "Ver mais",
+ "drSeeLess": "Ver menos",
+ "drMoreItems": "+${1} mais",
+ "drShowPhone": "Mostrar o telefone",
+ "drPhoneError": "Não foi possível mostrar o número; tente novamente",
+ "afqPhoneHiddenA": "Para ver o telefone de ${1}, toque em «Mostrar o telefone» nesta página.",
+ "afqBookCallHiddenA": "Para marcar uma consulta, veja o número em «Mostrar o telefone» nesta página.",
+ "dpdPrTitle": "O seu número mostrado",
+ "dpdPrHint": "Vezes que os pacientes viram o seu número na sua página pública",
+ "dpdPrToday": "Hoje",
+ "dpdPr7": "Últimos 7 dias",
+ "dpdPr30": "Últimos 30 dias",
+ "dpdPrNoPhone": "Ainda não adicionou um número público (consultório ou fixo)"
 }

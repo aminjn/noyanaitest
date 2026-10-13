@@ -7793,6 +7793,19 @@ const contentKeys = [
   "accountMenu",
   "yourPanels",
   "personalAccount",
+  "drSeeMore",
+  "drSeeLess",
+  "drMoreItems",
+  "drShowPhone",
+  "drPhoneError",
+  "afqPhoneHiddenA",
+  "afqBookCallHiddenA",
+  "dpdPrTitle",
+  "dpdPrHint",
+  "dpdPrToday",
+  "dpdPr7",
+  "dpdPr30",
+  "dpdPrNoPhone",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
