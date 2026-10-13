@@ -63,6 +63,7 @@ export type ExtractionStats = {
   specialityMain: number;
   specialitySuggested: number;
   specialityNew: number;
+  specialityQueued?: number;
   fellowships: number;
   diseases: { records: number; matched: number; created: number; leftovers: number };
   services: { records: number; matched: number; created: number; leftovers: number };

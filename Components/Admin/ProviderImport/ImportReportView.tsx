@@ -33,7 +33,7 @@ export const downloadJson = (data: unknown, name: string) => {
 export const Extraction = ({ x }: { x: ExtractionStats }) => {
   const d = x.doctors || 0;
   const items: { label: string; value: string; note?: string }[] = [
-    { label: ta("تخصص اصلی"), value: `${n(x.specialityMain)} / ${n(d)}`, note: x.specialityNew ? ta("${1} تخصص تازه", [n(x.specialityNew)]) : undefined },
+    { label: ta("تخصص اصلی"), value: `${n(x.specialityMain)} / ${n(d)}`, note: x.specialityQueued ? ta("${1} نام به صف «ادغام و پاک‌سازی» رفت", [n(x.specialityQueued)]) : x.specialityNew ? ta("${1} تخصص تازه", [n(x.specialityNew)]) : undefined },
     { label: ta("فلوشیپ و فوق تخصص"), value: n(x.fellowships) },
     ...(x.specialitySuggested ? [{ label: ta("تخصص نزدیک (نیازمند انتخاب)"), value: n(x.specialitySuggested) }] : []),
     {
