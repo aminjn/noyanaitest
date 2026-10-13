@@ -189,8 +189,10 @@ export const buildDoctorFaq = (
   if (!dr) return [];
   const out: Draft[] = [];
   const typeLabel = (type: VisitType) => t(visitTypeKey[type]);
-  const phones = phonesOf(facts.phone?.phones, facts.phone?.phone);
-  const phone = phones[0]?.phone || "";
+  // the number itself is never worded (2026-10): the page shows it on
+  // «نمایش شماره تماس» only, each reveal counted (backend Lib/phoneReveal.ts)
+  const hasPhone =
+    !!facts.booking?.hasPhone || phonesOf(facts.phone?.phones, facts.phone?.phone).length > 0;
 
   // how to book
   const booking = facts.booking;
@@ -209,7 +211,7 @@ export const buildDoctorFaq = (
         question: t("afqBookQ", [dr]),
         answer: sentences(
           t(booking.claimed === false ? "afqBookUnclaimedA" : "afqBookOffA", [dr]),
-          !!phone && t("afqBookCallA", [phone]),
+          hasPhone && t("afqBookCallHiddenA"),
         ),
         link: { href: "#dr-address", label: t("afqLinkContact") },
       });
@@ -286,11 +288,11 @@ export const buildDoctorFaq = (
 
   // public phones: each office's (with its name) and the profile's land
   // line - never an account's mobile (the backend leaves it out)
-  if (phones.length)
+  if (hasPhone)
     out.push({
       key: "phone",
       question: t("afqPhoneQ", [dr]),
-      answer: t("afqPhoneA", [dr, phonesText(ctx, phones)]),
+      answer: t("afqPhoneHiddenA", [dr]),
       link: { href: "#dr-address", label: t("afqLinkContact") },
     });
 
