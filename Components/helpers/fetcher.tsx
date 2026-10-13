@@ -93,10 +93,14 @@ export class FetchError extends Error {
   // the error body's extra details, e.g. `ai` of an AI refusal (backend
   // Lib/ai/aiGate.ts: locked / limit reached, reset time, upgrade path)
   ai?: unknown;
-  constructor(message: string, status?: number, ai?: unknown) {
+  // the backend's stable machine code, when it sends one (e.g.
+  // NOT_REGISTERED from POST /auth); the message itself is translated
+  code?: string;
+  constructor(message: string, status?: number, ai?: unknown, code?: string) {
     super(message);
     this.status = status;
     this.ai = ai;
+    this.code = code;
   }
 }
 
@@ -160,7 +164,8 @@ const fetcherInner = async <TResult,>({
     throw new FetchError(
       data.message || getFallbackErrorMessages().unknownError,
       response.status,
-      data?.ai
+      data?.ai,
+      typeof data?.code === "string" ? data.code : undefined
     );
   return data;
 };
