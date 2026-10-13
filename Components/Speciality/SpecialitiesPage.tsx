@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import useProgress from "../Hooks/useProgress";
 import ListPageList from "../UI/ListPage/ListPageList";
 import SmallAd from "../UI/ListPage/SmallAd";
+import SafeBoundary from "../UI/SafeBoundary";
 
 const NS: ContentNamespace[] = ["common", "specialitiesList"];
 
@@ -82,8 +83,10 @@ const SpecialitiesPage = ({ data, pagesCount }: SpecialitiesPageProps) => {
           pagesCount: pagesCount,
         }}
       >
-        {data.map((node) => (
-          <SpecialityCard key={node._id} node={node} />
+        {(Array.isArray(data) ? data : []).filter((n) => !!n?._id).map((node) => (
+          <SafeBoundary key={node._id} name="speciality-card">
+            <SpecialityCard node={node} />
+          </SafeBoundary>
         ))}
       </ListPageList>
       <SmallAd position="specialities1" />

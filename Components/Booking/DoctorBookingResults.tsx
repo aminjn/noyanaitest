@@ -12,6 +12,7 @@ import Ixon from "../UI/Ixon";
 import CategoriesIcon from "../Icons/CategoriesIcon";
 import { t2xsRegular } from "../UI/Typography";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
+import SafeBoundary from "../UI/SafeBoundary";
 import BookingResults from "./BookingResults";
 import { IBookingDescription } from "../Admin/BookingDescription/AdminManageBookingDescriptionsPage";
 const DoctorBookinResult = ({
@@ -39,12 +40,13 @@ const DoctorBookinResult = ({
       {/* the one shared doctor card (same as the homepage), with the
           first free day and its times - grid view uses the full card, list
           view the row */}
-      {(Array.isArray(data) ? data : []).map((doctor) => (
-        <DoctorCardAlt
-          key={doctor._id}
-          node={doctor as unknown as Parameters<typeof DoctorCardAlt>[0]["node"]}
-          variant={common.view === "Grid" ? "grid" : "row"}
-        />
+      {(Array.isArray(data) ? data : []).filter((d) => !!d?._id).map((doctor) => (
+        <SafeBoundary key={doctor._id} name="booking-card">
+          <DoctorCardAlt
+            node={doctor as unknown as Parameters<typeof DoctorCardAlt>[0]["node"]}
+            variant={common.view === "Grid" ? "grid" : "row"}
+          />
+        </SafeBoundary>
       ))}
     </BookingResults>
   );

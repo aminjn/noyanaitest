@@ -36,6 +36,21 @@ const LOCALE_NS: ContentNamespace[] = ["common", "uiDoctorCard"];
 // map); `bookable={false}` is a doctor without online booking (the legacy
 // directory), shown with the same card but no "book" action - the
 // Paziresh24 / Doctolib pattern for unclaimed profiles.
+// «province، city» on the card (2026-10): without the words «استان» /
+// «شهر» the stored names may carry, and one name when both are the same
+// (Tehran, Tehran). Either may be missing or a bare id: never crash.
+const placeName = (v: unknown) =>
+  v && typeof v === "object" && typeof (v as { name?: unknown }).name === "string"
+    ? (v as { name: string }).name.replace(/^\s*(استان|شهرستان|شهر)\s+/, "").trim()
+    : "";
+export const placeLine = (node: { province?: unknown; city?: unknown }) => {
+  const province = placeName(node.province);
+  const city = placeName((node as { city?: unknown }).city);
+  if (!province) return city;
+  if (!city || city === province) return province;
+  return `${province}، ${city}`;
+};
+
 const DoctorCardAlt = ({
   node,
   className = "",
@@ -233,7 +248,7 @@ const DoctorCardAlt = ({
               <Ixon width="1rem">
                 <LocationIcon />
               </Ixon>
-              <span>{node.province?.name || getContent("location")}</span>
+              <span>{placeLine(node) || getContent("location")}</span>
             </legend>
             <div className={classes.settingsBadges}>
               <Badge
