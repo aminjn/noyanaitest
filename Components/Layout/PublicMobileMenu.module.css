@@ -20,14 +20,14 @@
   position: absolute;
   inset: 0;
   background-color: rgba(8, 10, 30, 0.38);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
   opacity: 0;
   transition: opacity var(--transTime) ease-in-out;
 }
 
 .root.open .backdrop {
   opacity: 1;
+  -webkit-backdrop-filter: var(--overlayBlur);
+  backdrop-filter: var(--overlayBlur);
 }
 
 /* frosted drawer from the inline-start edge (where the burger is) */

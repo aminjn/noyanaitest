@@ -92,6 +92,8 @@
   .backdropOpen {
     opacity: 1;
     pointer-events: auto;
+    -webkit-backdrop-filter: var(--overlayBlur);
+    backdrop-filter: var(--overlayBlur);
   }
 
   .drawer {
