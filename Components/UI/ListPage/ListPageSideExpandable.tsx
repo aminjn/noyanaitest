@@ -11,7 +11,7 @@ const ListPageSideExpandable = ({
   title,
 }: {
   title: string;
-  items: { title: string; target: string }[];
+  items: { title: string; target: string; icon?: React.ReactNode }[];
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -43,7 +43,14 @@ const ListPageSideExpandable = ({
             href={el.target}
             className={`${classes.item} ${txsRegular}`}
           >
-            <span>{el.title}</span>
+            <span className={classes.itemTitle}>
+              {!!el.icon && (
+                <Ixon width="1.125rem" className={classes.itemIcon}>
+                  {el.icon}
+                </Ixon>
+              )}
+              {el.title}
+            </span>
             <Ixon width="1rem" className={classes.arrow}>
               <ArrowLeftIcon />
             </Ixon>

@@ -62,6 +62,7 @@ import { CollapsibleList, CollapsibleText } from "./Collapsible";
 import DoctorProducts, { useDoctorProducts } from "./DoctorProducts";
 import ShopIcon from "@/Components/Icons/LinebagIcon";
 import Button from "@/Components/UI/Button";
+import SpecialityIcon from "@/Components/Icons/speciality/SpecialityIcon";
 
 const NS: ContentNamespace[] = ["common", "drProfile"];
 
@@ -415,7 +416,7 @@ const NewDoctorProfilePage = ({
                   <Link
                     href={`/speciality/${doctor.mainSpeciality.slug || doctor.mainSpeciality._id}`}
                   >
-                    <Badge>{doctor.mainSpeciality.name}</Badge>
+                    <Badge leadIcon={<SpecialityIcon node={doctor.mainSpeciality} />}>{doctor.mainSpeciality.name}</Badge>
                   </Link>
                 )}
               </div>
@@ -559,7 +560,7 @@ const NewDoctorProfilePage = ({
               <div className={classes.chips}>
                 {specialityChips.map((sp) => (
                   <Link key={sp._id} href={`/speciality/${sp.slug || sp._id}`}>
-                    <Badge color="Primarylight" mode="Fill" radius="High">
+                    <Badge color="Primarylight" mode="Fill" radius="High" leadIcon={<SpecialityIcon node={sp} />}>
                       {sp.name}
                     </Badge>
                   </Link>

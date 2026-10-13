@@ -26,6 +26,7 @@ import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
 import { bookSpecialistHref } from "../Directory/DirectoryFunnel";
+import SpecialityIcon from "@/Components/Icons/speciality/SpecialityIcon";
 
 const NS: ContentNamespace[] = ["common", "drugPage"];
 
@@ -97,6 +98,7 @@ const DrugPage = ({ data, diseases, doctors, specialities }: DrugPageProps) => {
               items={specialities.map((el) => ({
                 title: el.name || "",
                 target: `/speciality/${el.slug || el._id}`,
+                icon: <SpecialityIcon node={el} />,
               }))}
             />
             <ListPageSideExpandable
