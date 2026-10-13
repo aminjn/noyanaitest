@@ -2,7 +2,7 @@ import { getPublicData } from "@/Components/helpers/getPublicData";
 import SpecialityPage, {
   SpecialityPageProps,
 } from "@/Components/Speciality/SpecialityPage";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   getNodePageMetadata,
   getNodePageWebSchema,
@@ -51,6 +51,9 @@ const Speciality = async ({
   ]);
 
   if (!data) return notFound();
+  // a speciality merged into another: its address moves to the target's
+  const redirectTo = (data as { redirect?: string }).redirect;
+  if (redirectTo) permanentRedirect(`/speciality/${encodeURIComponent(redirectTo)}`);
   const webSchema = await getNodePageWebSchema("/speciality/[slug]", slug);
   return (
     <>

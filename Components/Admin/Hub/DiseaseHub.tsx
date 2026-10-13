@@ -3,6 +3,7 @@
 import AdminSectionHub from "../UI/AdminSectionHub";
 import useHubTabAccess from "../UI/useHubTabAccess";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminCatalogCleanupTab from "@/Components/Admin/Catalog/AdminCatalogCleanupTab";
 import AdminManageDiseaseCategoriesPage from "@/Components/Admin/DiseaseCategory/AdminManageDiseaseCategoriesPage";
 import AdminManageDiseasesPage from "@/Components/Admin/Disease/AdminManageDiseasesPage";
 
@@ -28,6 +29,13 @@ const DiseaseHub = () => {
           hint: ta("هر دسته‌ی فعال یک صفحه در فهرست بیماری‌های سایت دارد. برچسب‌های قدیمی بیماری در این دسته‌ها ادغام شده‌اند."),
           exclude: !canOpen("Disease"),
           content: <AdminManageDiseaseCategoriesPage />,
+        },
+        {
+          // duplicate conditions folded into one (2026-10)
+          id: "cleanup",
+          title: ta("ادغام و پاک‌سازی"),
+          exclude: !canOpen("Disease"),
+          content: <AdminCatalogCleanupTab kind="disease" />,
         },
       ]}
     />

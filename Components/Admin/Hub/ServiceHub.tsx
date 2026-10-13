@@ -3,6 +3,7 @@
 import AdminSectionHub from "../UI/AdminSectionHub";
 import useHubTabAccess from "../UI/useHubTabAccess";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminCatalogCleanupTab from "@/Components/Admin/Catalog/AdminCatalogCleanupTab";
 import AdminManageServiceCategoriesPage from "@/Components/Admin/ServiceCategory/AdminManageServiceCategoriesPage";
 import AdminManageServicePackagesPage from "@/Components/Admin/ServicePackage/AdminManageServicePackagesPage";
 import AdminManageServicesPage from "@/Components/Admin/Service/AdminManageServicesPage";
@@ -40,6 +41,14 @@ const ServiceHub = () => {
           title: ta("پیشنهادهای پزشکان"),
           exclude: !canOpen("Service"),
           content: <AdminServiceSuggestionsPage />,
+        },
+        {
+          // duplicate service categories folded into one, unused ones
+          // archived, names imports could not place (2026-10)
+          id: "cleanup",
+          title: ta("ادغام و پاک‌سازی"),
+          exclude: !canOpen("Service"),
+          content: <AdminCatalogCleanupTab kind="service" />,
         },
       ]}
     />
