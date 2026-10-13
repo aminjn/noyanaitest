@@ -295,7 +295,7 @@ const PlaceLocationCard = ({
 
   // NexaMap's own site/app once the super admin set its link format; until
   // then our route page (hidden on that page itself)
-  const nav = useNavigationUrl(coords || undefined, name);
+  const nav = useNavigationUrl(coords || undefined, name, me.point);
   const navUrl = autoRoute && !nav.external ? undefined : nav.href;
   const shownAddress = address || info?.address || "";
   const parkingInfo = info?.parking && info.parking.count > 0 ? info.parking : null;
