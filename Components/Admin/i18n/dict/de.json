@@ -3875,5 +3875,17 @@
  "نشانی مطب": "Praxisadresse",
  "نقشه ${1}، نشانی ${2}، ناهمخوان ${3}": "Karte ${1}, Adresse ${2}, abweichend ${3}",
  "پیش از اعمال، فایل را بررسی کنید.": "Prüfen Sie die Datei vor dem Anwenden.",
- "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Jedes Feld der Datei geht direkt an genau eine Stelle des Arztprofils; sonst wird nichts aus der Datei gelesen oder gespeichert. Ein erneuter Lauf dieser oder einer späteren Datei aktualisiert dieselbe Person, statt ein Duplikat anzulegen; bei einem vom Inhaber beanspruchten Profil werden nur leere Felder gefüllt."
+ "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Jedes Feld der Datei geht direkt an genau eine Stelle des Arztprofils; sonst wird nichts aus der Datei gelesen oder gespeichert. Ein erneuter Lauf dieser oder einer späteren Datei aktualisiert dieselbe Person, statt ein Duplikat anzulegen; bei einem vom Inhaber beanspruchten Profil werden nur leere Felder gefüllt.",
+ "بازدید صفحه‌ها": "Seitenbesuche",
+ "نمایش شماره تماس": "Telefonnummer-Anzeigen",
+ "دفعات نمایش شماره": "Anzeigen der Nummer",
+ "پروفایل‌ها": "Profile",
+ "بیشترین نمایش شماره": "Am häufigsten angezeigte Nummern",
+ "نمایش‌های اخیر": "Letzte Anzeigen",
+ "تعداد نمایش": "Anzeigen",
+ "آخرین نمایش": "Letzte Anzeige",
+ "دستگاه": "Gerät",
+ "تبلت": "Tablet",
+ "دسکتاپ": "Desktop",
+ "در ${1} روز اخیر": "in den letzten ${1} Tagen"
 }

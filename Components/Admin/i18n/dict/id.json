@@ -3875,5 +3875,17 @@
  "نشانی مطب": "Alamat praktik",
  "نقشه ${1}، نشانی ${2}، ناهمخوان ${3}": "Peta ${1}, alamat ${2}, tidak cocok ${3}",
  "پیش از اعمال، فایل را بررسی کنید.": "Periksa berkas sebelum menerapkannya.",
- "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Setiap bidang berkas langsung masuk ke satu tempat di profil dokter; tidak ada hal lain dari berkas yang dibaca atau disimpan. Menjalankan ulang berkas ini, atau berkas berikutnya, memperbarui dokter yang sama alih-alih membuat duplikat; profil yang sudah diklaim pemiliknya hanya diisi pada bidang yang kosong."
+ "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Setiap bidang berkas langsung masuk ke satu tempat di profil dokter; tidak ada hal lain dari berkas yang dibaca atau disimpan. Menjalankan ulang berkas ini, atau berkas berikutnya, memperbarui dokter yang sama alih-alih membuat duplikat; profil yang sudah diklaim pemiliknya hanya diisi pada bidang yang kosong.",
+ "بازدید صفحه‌ها": "Kunjungan halaman",
+ "نمایش شماره تماس": "Tampilan nomor telepon",
+ "دفعات نمایش شماره": "Jumlah tampilan nomor",
+ "پروفایل‌ها": "Profil",
+ "بیشترین نمایش شماره": "Nomor paling sering ditampilkan",
+ "نمایش‌های اخیر": "Tampilan terbaru",
+ "تعداد نمایش": "Tampilan",
+ "آخرین نمایش": "Tampilan terakhir",
+ "دستگاه": "Perangkat",
+ "تبلت": "Tablet",
+ "دسکتاپ": "Desktop",
+ "در ${1} روز اخیر": "dalam ${1} hari terakhir"
 }

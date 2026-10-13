@@ -56,3 +56,19 @@
   color: var(--primary6);
   border-color: var(--primary6);
 }
+
+/* the profile's top card: one inline row next to «نمایش شماره تماس» */
+.compact {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.75rem;
+  margin-block-start: 0;
+}
+.compact .row {
+  font-size: 0.8125rem;
+}
+.compact .social {
+  inline-size: 2rem;
+  block-size: 2rem;
+}
