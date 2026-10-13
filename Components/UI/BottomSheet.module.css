@@ -10,6 +10,8 @@
   position: absolute;
   inset: 0;
   background: rgba(12, 14, 40, 0.42);
+  -webkit-backdrop-filter: var(--overlayBlur);
+  backdrop-filter: var(--overlayBlur);
   animation: fade 0.2s ease-out;
 }
 .panel {

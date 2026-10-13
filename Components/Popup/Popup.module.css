@@ -1,7 +1,9 @@
 .blur {
   position: fixed;
   inset: 0;
-  backdrop-filter: brightness(40%);
+  background-color: rgba(8, 10, 30, 0.45);
+  -webkit-backdrop-filter: var(--overlayBlur);
+  backdrop-filter: var(--overlayBlur);
 }
 
 .content {

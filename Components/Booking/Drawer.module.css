@@ -7,7 +7,9 @@
 .backdrop {
   position: absolute;
   inset: 0;
-  backdrop-filter: brightness(50%) blur(10px);
+  background-color: rgba(8, 10, 30, 0.45);
+  -webkit-backdrop-filter: var(--overlayBlur);
+  backdrop-filter: var(--overlayBlur);
 }
 
 .main {

@@ -707,7 +707,14 @@ body.bottomNavHidden {
    frame, and a page carried 40-60 of them (cards, icon tiles, panels), which
    made desktop scrolling lag badly. Only the header and the open menus keep
    the frost; every other surface is a plain, near-opaque fill. */
-*:not(header):not(.glassMenu) {
+*:not(header):not(.glassMenu):not([class*="_backdrop__"]):not([class*="Backdrop__"]):not([class*="_blur__"]) {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
+}
+
+/* What sits behind an open popup, sheet or drawer is blurred (2026-10):
+   one full-screen layer, only while it is open - cheap, unlike dozens of
+   blurred cards. Every overlay uses this one value. */
+:root {
+  --overlayBlur: blur(8px) saturate(120%);
 }
