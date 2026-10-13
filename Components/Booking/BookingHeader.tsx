@@ -35,7 +35,7 @@ const BookingHeader = ({
 
   const getContent = useScopedLocale(NS);
   return (
-    <div className={classes.header}>
+    <div className={`${classes.header} ${hideTitle ? classes.compact : ""}`}>
       {!hideTitle && (
         <>
           <h1 className={`${classes.title} ${txlDemiBold}`}>

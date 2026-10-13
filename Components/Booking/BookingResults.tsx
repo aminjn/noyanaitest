@@ -17,8 +17,10 @@ const BookingResults = ({
   setCommon,
   children,
   count,
+  after,
 }: {
   children?: ReactNode;
+  after?: ReactNode;
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
   count?: number;
@@ -79,6 +81,7 @@ const BookingResults = ({
       >
         {children}
       </div>
+      {after}
     </div>
   );
 };

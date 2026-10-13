@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import {
   DoctorBookingOptions,
   BookingPageDoctor,
@@ -22,6 +22,7 @@ const DoctorBookinResult = ({
   common,
   setCommon,
   descriptions,
+  loadMore,
 }: {
   options: DoctorBookingOptions;
   setOptions: Dispatch<SetStateAction<DoctorBookingOptions>>;
@@ -30,9 +31,11 @@ const DoctorBookinResult = ({
   common: BookingCommon;
   setCommon: Dispatch<SetStateAction<BookingCommon>>;
   descriptions?: IBookingDescription[];
+  // the scroll sentinel that loads the next page
+  loadMore?: ReactNode;
 }) => {
   return (
-    <BookingResults common={common} setCommon={setCommon} count={count}>
+    <BookingResults common={common} setCommon={setCommon} count={count} after={loadMore}>
       {/* the one shared doctor card (same as the homepage), with the
           first free day and its times - grid view uses the full card, list
           view the row */}

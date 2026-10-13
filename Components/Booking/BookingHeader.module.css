@@ -108,3 +108,16 @@
     gap: 0.5rem;
   }
 }
+
+/* embedded in a page with its own title (speciality): no hero band, a slim
+   search pill */
+.compact.compact {
+  padding-block: 0.75rem 0;
+}
+.compact::before {
+  display: none;
+}
+.compact .searchBox {
+  min-height: 2.75rem;
+  box-shadow: var(--elev1);
+}
