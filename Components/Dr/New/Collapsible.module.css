@@ -1,0 +1,27 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.body {
+  max-height: calc(var(--lines, 4) * 1.85em);
+  overflow: hidden;
+  width: 100%;
+}
+
+.open {
+  max-height: none;
+}
+
+.toggle {
+  color: var(--primary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding-block: 0.125rem;
+}
+
+.toggle:hover {
+  color: var(--primary7);
+}

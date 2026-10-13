@@ -29,6 +29,7 @@ import FileIcon from "@/Components/Icons/FileIcon";
 import CurrentLicenseWidget from "../CurrentLicenseWidget";
 import BookingStatusCard from "../BookingStatus/BookingStatusCard";
 import LicenseRenewBanner from "../LicenseRenewBanner";
+import PhoneRevealCard from "./PhoneRevealCard";
 import VisitQuickActions from "../Desk/VisitQuickActions";
 
 const NS: ContentNamespace[] = ["common", "doctorPanelHome"];
@@ -400,6 +401,9 @@ const DoctorDashboard = () => {
           {data.isOwner && <BookingStatusCard hideWhenLive />}
 
           <LicenseRenewBanner />
+
+          {/* how often patients showed the doctor's number on their page */}
+          {data.isOwner && <PhoneRevealCard />}
 
           <div className={classes.rowTop}>
             {/* ---- assistant ---- */}

@@ -57,6 +57,10 @@ import DoctorReviews from "./DoctorReviews";
 import InsuranceCoverage from "./InsuranceCoverage";
 import BookingSidebar from "./BookingSidebar";
 import DoctorContact from "./DoctorContact";
+import PhoneReveal, { PhoneRevealHandle } from "./PhoneReveal";
+import { CollapsibleList, CollapsibleText } from "./Collapsible";
+import DoctorProducts, { useDoctorProducts } from "./DoctorProducts";
+import ShopIcon from "@/Components/Icons/LinebagIcon";
 import Button from "@/Components/UI/Button";
 
 const NS: ContentNamespace[] = ["common", "drProfile"];
@@ -101,7 +105,10 @@ const NewDoctorProfilePage = ({
   doctor,
   faqs,
   faqItems,
+  phoneReveal,
 }: PublicDoctorProfilePageProps & {
+  // «نمایش شماره تماس»: the page has no number, only this handle
+  phoneReveal?: PhoneRevealHandle;
   // the automatic questions + the doctor's own, worded on the server (the
   // same list as the page's FAQPage data, app/dr/[slug]/page.tsx)
   faqItems?: FaqEntry[];
@@ -212,6 +219,9 @@ const NewDoctorProfilePage = ({
   const reviewsRef = useRef<HTMLDivElement>(null);
   const addressRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+  const { data: products } = useDoctorProducts(doctor._id);
+  const hasProducts = !!products?.length;
 
   const hasRecords = !!doctor.achivements?.length;
   const hasGallery = !!doctor.gallery?.some((el) => !!el?.image);
@@ -263,15 +273,19 @@ const NewDoctorProfilePage = ({
             },
           ]
         : []),
-      { id: "dr-reviews", ref: reviewsRef, label: "patientReviews" },
+      // the address before the reviews (2026-10): where and when first
       { id: "dr-address", ref: addressRef, label: "address" },
+      ...(hasProducts
+        ? [{ id: "dr-products", ref: productsRef, label: "products" as ContentKey }]
+        : []),
+      { id: "dr-reviews", ref: reviewsRef, label: "patientReviews" },
       // the FAQ block is only drawn when there are questions: its tab
       // scrolled to nothing
       ...(hasFaqs
         ? [{ id: "dr-faq", ref: faqRef, label: "faqs" as ContentKey }]
         : []),
     ],
-    [hasRecords, hasGallery, hasFaqs],
+    [hasRecords, hasGallery, hasFaqs, hasProducts],
   );
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
@@ -432,6 +446,16 @@ const NewDoctorProfilePage = ({
                   </span>
                 )}
               </div>
+              {/* contact at the top (2026-10): the number behind «نمایش
+                  شماره تماس», the website and the social pages */}
+              <div className={classes.contactRow}>
+                <PhoneReveal id={doctor._id} handle={phoneReveal} />
+                <DoctorContact
+                  compact
+                  website={doctor.website}
+                  socials={doctor.socials}
+                />
+              </div>
               {!!activeTypes.length && (
                 <div className={classes.identityTags}>
                   {activeTypes.map((st) => (
@@ -496,15 +520,18 @@ const NewDoctorProfilePage = ({
             title={getContent("about")}
           >
             {doctor.introduction ? (
-              // paragraphs kept (an imported introduction has its sections)
-              String(doctor.introduction)
-                .split(/\n{2,}/)
-                .filter((p) => p.trim())
-                .map((p, i) => (
-                  <p key={i} className={classes.paragraph}>
-                    {p}
-                  </p>
-                ))
+              // paragraphs kept (an imported introduction has its sections);
+              // a long one folds behind «مشاهده بیشتر»
+              <CollapsibleText lines={5}>
+                {String(doctor.introduction)
+                  .split(/\n{2,}/)
+                  .filter((p) => p.trim())
+                  .map((p, i) => (
+                    <p key={i} className={classes.paragraph}>
+                      {p}
+                    </p>
+                  ))}
+              </CollapsibleText>
             ) : (
               <EmptyState>{getContent("nothingFound")}</EmptyState>
             )}
@@ -546,8 +573,10 @@ const NewDoctorProfilePage = ({
                 <EmptyState>{getContent("nothingFound")}</EmptyState>
               )
             ) : (
-              <ul className={classes.serviceChips}>
-                {serviceChips.map((service) => (
+              <CollapsibleList
+                className={classes.serviceChips}
+                items={serviceChips}
+                render={(service) => (
                   <li key={service._id}>
                     <Link
                       href={`/book?${new URLSearchParams({
@@ -560,14 +589,16 @@ const NewDoctorProfilePage = ({
                       </Badge>
                     </Link>
                   </li>
-                ))}
-              </ul>
+                )}
+              />
             )}
             {!!diseaseChips.length && (
               <div className={classes.subBlock}>
                 <h3 className={classes.subTitle}>{getContent("drConditionsTreated")}</h3>
-                <ul className={classes.serviceChips}>
-                  {diseaseChips.map((d) => (
+                <CollapsibleList
+                  className={classes.serviceChips}
+                  items={diseaseChips}
+                  render={(d) => (
                     <li key={d._id}>
                       {d.published === false ? (
                         <Badge color="Primarylight" mode="Outline" radius="High">
@@ -581,8 +612,8 @@ const NewDoctorProfilePage = ({
                         </Link>
                       )}
                     </li>
-                  ))}
-                </ul>
+                  )}
+                />
               </div>
             )}
           </SectionCard>
@@ -630,35 +661,13 @@ const NewDoctorProfilePage = ({
           )}
 
           <SectionCard
-            id="dr-reviews"
-            sectionRef={reviewsRef}
-            icon={<StarIcon />}
-            title={
-              <span className={classes.reviewsTitle}>
-                {!!doctor.feedbackCount && (
-                  <span className={classes.reviewsCount}>{`(${currencize(
-                    doctor.feedbackCount,
-                  )})`}</span>
-                )}
-                <span>{getContent("patientReviews")}</span>
-              </span>
-            }
-          >
-            {/* verified visit reviews only (one per completed visit) */}
-            <DoctorReviews doctorId={doctor._id} />
-          </SectionCard>
-
-          <SectionCard
             id="dr-address"
             sectionRef={addressRef}
             icon={<LocationIcon />}
             title={getContent("address")}
           >
             {!displayAddress && !locationCards.length ? (
-              // the contact links below may be all there is
-              !(doctor.website || doctor.landLine || doctor.socials?.length) && (
-                <EmptyState>{getContent("nothingFound")}</EmptyState>
-              )
+              <EmptyState>{getContent("nothingFound")}</EmptyState>
             ) : locationCards.length ? (
               <div className={classes.locations}>
                 {locationCards.map((card) => (
@@ -691,12 +700,38 @@ const NewDoctorProfilePage = ({
                 </ul>
               </div>
             )}
-            <DoctorContact
-              website={doctor.website}
-              landLine={doctor.landLine}
-              socials={doctor.socials}
-            />
           </SectionCard>
+
+          {hasProducts && (
+            <SectionCard
+              id="dr-products"
+              sectionRef={productsRef}
+              icon={<ShopIcon />}
+              title={getContent("drProducts")}
+            >
+              <DoctorProducts items={products || []} />
+            </SectionCard>
+          )}
+
+          <SectionCard
+            id="dr-reviews"
+            sectionRef={reviewsRef}
+            icon={<StarIcon />}
+            title={
+              <span className={classes.reviewsTitle}>
+                {!!doctor.feedbackCount && (
+                  <span className={classes.reviewsCount}>{`(${currencize(
+                    doctor.feedbackCount,
+                  )})`}</span>
+                )}
+                <span>{getContent("patientReviews")}</span>
+              </span>
+            }
+          >
+            {/* verified visit reviews only (one per completed visit) */}
+            <DoctorReviews doctorId={doctor._id} />
+          </SectionCard>
+
 
           {hasFaqs && (
             <div id="dr-faq" ref={faqRef} className={classes.section}>

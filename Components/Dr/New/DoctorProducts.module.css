@@ -1,0 +1,11 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
+  gap: 0.75rem;
+}
+
+/* cards fill their cell instead of a carousel width */
+.grid > * {
+  width: auto !important;
+  min-width: 0;
+}

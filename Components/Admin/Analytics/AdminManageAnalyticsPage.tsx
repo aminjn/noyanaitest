@@ -11,6 +11,8 @@ import Box from "../UI/Box";
 import DataPair from "../UI/DataPair";
 import classes from "./AdminManageAnalyticsPage.module.css";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import AdminSectionHub from "../UI/AdminSectionHub";
+import AdminPhoneRevealsTab from "./AdminPhoneRevealsTab";
 
 export interface IAnalyticsTotals {
   totalVisits: number;
@@ -50,7 +52,7 @@ const visitorLabel = (node: IAnalyticsPageVisit): string =>
   node.identity?.user?.username ||
   (node.identity?.visitorId ? ta("مهمان (${1})", [node.identity.visitorId.slice(0, 8)]) : ta("ناشناس"));
 
-const AdminManageAnalyticsPage = () => {
+const AdminVisitsTab = () => {
   const { data, error } = useSWR<IAnalyticsSummary>(
     `${API}/analytics/summary`,
     (url: string) => fetcher({ url }).then((res) => res.data),
@@ -151,5 +153,17 @@ const AdminManageAnalyticsPage = () => {
     </HandleLoading>
   );
 };
+
+// one page for the site's numbers (2026-10): page visits, and the
+// «نمایش شماره تماس» reveals as a tab of it
+const AdminManageAnalyticsPage = () => (
+  <AdminSectionHub
+    title={ta("آمار بازدید")}
+    tabs={[
+      { id: "visits", title: ta("بازدید صفحه‌ها"), content: <AdminVisitsTab /> },
+      { id: "phone", title: ta("نمایش شماره تماس"), content: <AdminPhoneRevealsTab /> },
+    ]}
+  />
+);
 
 export default AdminManageAnalyticsPage;

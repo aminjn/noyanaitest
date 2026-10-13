@@ -1,0 +1,71 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radiusLg, 1rem);
+  background: var(--white);
+  border: 1px solid var(--cardLine, var(--gray3));
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--gray13);
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--gray8);
+}
+
+.empty {
+  font-size: 0.8125rem;
+  color: var(--primary);
+}
+
+.body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.stats dt {
+  font-size: 0.75rem;
+  color: var(--gray8);
+}
+
+.stats dd {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gray13);
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  block-size: 2.5rem;
+  min-inline-size: 9rem;
+  flex: 1;
+  max-inline-size: 16rem;
+}
+
+.bars span {
+  flex: 1;
+  border-radius: 2px;
+  background: var(--primary3);
+}
