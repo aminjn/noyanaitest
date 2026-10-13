@@ -62,3 +62,16 @@
   color: var(--gray11);
   padding-block: 0.75rem;
 }
+
+/* a speciality's icon before its name (2026-10) */
+.itemTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.itemIcon {
+  flex-shrink: 0;
+  color: var(--primary6);
+}

@@ -5,7 +5,7 @@ import classes from "./HomeSpecialities.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import Ixon from "../UI/Ixon";
-import HostedImage from "../UI/HostedImage";
+import SpecialityIcon from "../Icons/speciality/SpecialityIcon";
 import { tlgBold, tsmDemiBold, } from "../UI/Typography";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
@@ -93,15 +93,10 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
               className={`${classes.speciality} ${activeNode?._id === node._id ? classes.activeSpeciality : ""}`}
               onClick={() => setActiveNode(node)}
             >
-              <div className={classes.image}>
-                <HostedImage
-                  src={node.image}
-                  alt={node.name || ""}
-                  fill
-                  style={{ objectFit: "contain" }}
-                  sizes="3.5rem"
-                  loading="lazy"
-                />
+              {/* the speciality's icon from the pack (2026-10), the same
+                  everywhere on the site, instead of an uploaded picture */}
+              <div className={classes.image} aria-hidden>
+                <SpecialityIcon node={node} />
               </div>
               <span className={`${classes.specialityName} ${tsmDemiBold}`}>
                 {node.name}

@@ -30,6 +30,7 @@ import ListPageSideExpandable from "../UI/ListPage/ListPageSideExpandable";
 import ListPageAISummary from "../UI/ListPage/ListPageAiSummary";
 import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
+import SpecialityIcon from "@/Components/Icons/speciality/SpecialityIcon";
 import DirectoryFunnel, {
   aiCheckHref,
   bookSpecialistHref,
@@ -125,6 +126,7 @@ const DiseasePage = ({ data, clinics, doctors }: DiseasePageProps) => {
               items={(data.specialities ?? []).map((el) => ({
                 title: el.name || "",
                 target: `/speciality/${el.slug || el._id}`,
+                icon: <SpecialityIcon node={el} />,
               }))}
             />
             <ListPageSideExpandable

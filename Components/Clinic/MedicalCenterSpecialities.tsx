@@ -6,6 +6,7 @@ import Badge from "../UI/Badge";
 import Link from "@/Components/i18n/Link";
 import IconTitle from "../UI/IconTitle";
 import classes from "./MedicalCenterSpecialities.module.css";
+import SpecialityIcon from "@/Components/Icons/speciality/SpecialityIcon";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 const MedicalCenterSpecialities = ({ nodes }: { nodes: ISpeciality[] }) => {
@@ -20,7 +21,7 @@ const MedicalCenterSpecialities = ({ nodes }: { nodes: ISpeciality[] }) => {
         {nodes.map((el) => (
           // a speciality chip leads to its doctors
           <Link key={el._id} href={`/speciality/${el.slug || el._id}`}>
-            <Badge color="Primarylight" size="XXL" radius="High" mode="Fill">
+            <Badge color="Primarylight" size="XXL" radius="High" mode="Fill" leadIcon={<SpecialityIcon node={el} />}>
               {el.name}
             </Badge>
           </Link>

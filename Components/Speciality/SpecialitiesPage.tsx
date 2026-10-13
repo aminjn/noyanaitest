@@ -18,10 +18,13 @@ import SmallAd from "../UI/ListPage/SmallAd";
 import Link from "@/Components/i18n/Link";
 import Pagination from "../UI/Pagination";
 import SpecialityIcon from "../Icons/speciality/SpecialityIcon";
-import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "specialitiesList"];
+
+// each tile its own soft colour (2026-10, like Practo / Halodoc's icon
+// grids), from the site's tone tokens
+const TONES = ["indigo", "teal", "rose", "amber", "sky", "violet"] as const;
 
 type SpecialityGroup = "medical" | "dental" | "allied";
 const GROUPS: { key: SpecialityGroup; title: ContentKey }[] = [
@@ -98,9 +101,12 @@ const SpecialitiesPage = ({ data, pagesCount }: SpecialitiesPageProps) => {
               </h2>
             )}
             <ul className={classes.tiles}>
-              {rows.map((node) => (
+              {rows.map((node, i) => (
                 <li key={node._id}>
-                  <Link href={`/speciality/${node.slug || node._id}`} className={classes.tile}>
+                  <Link
+                    href={`/speciality/${node.slug || node._id}`}
+                    className={`${classes.tile} ${classes[TONES[i % TONES.length]]}`}
+                  >
                     <span className={classes.tileIcon} aria-hidden>
                       <SpecialityIcon node={node} />
                     </span>
@@ -109,9 +115,6 @@ const SpecialitiesPage = ({ data, pagesCount }: SpecialitiesPageProps) => {
                       <span className={classes.tileCount}>
                         {getContent("nDoctors", [(node.doctorsCountWithSideSpeciality || 0).toLocaleString(intl)])}
                       </span>
-                    </span>
-                    <span className={classes.tileArrow} aria-hidden>
-                      <ArrowLeftIcon />
                     </span>
                   </Link>
                 </li>
