@@ -3937,5 +3937,7 @@
  "بیمه‌های طرف قرارداد (بیمه‌ی ناشناخته کنار گذاشته می‌شود)": "Seguradoras aceitas (uma desconhecida é deixada de fora)",
  "شبانه‌روزی (وقتی «شبانه‌روزی» در آن آمده باشد)": "Aberto 24 horas (quando diz «شبانه‌روزی»)",
  "هر فیلد فایل مستقیم به یک جای پروفایل مرکز می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل، همان مرکز را به‌روز می‌کند و مرکز تکراری نمی‌سازد.": "Cada campo do arquivo vai direto para um lugar do perfil do centro; nada mais do arquivo é lido ou guardado. Rodar o mesmo arquivo de novo atualiza o mesmo centro sem criar duplicado.",
- "${1} مرکز در فایل": "${1} centros no arquivo"
+ "${1} مرکز در فایل": "${1} centros no arquivo",
+ "نشانی مرکز؛ موقعیت روی نقشه از روی همین نشانی پیدا می‌شود (استان و شهر: تهران)": "Endereço do centro; a posição no mapa é obtida deste endereço (província e cidade: Teerã)",
+ "نشانی روی نقشه پیدا نشد؛ موقعیت را بعداً روی نقشه بزنید": "O endereço não foi encontrado no mapa; marque a posição no mapa depois"
 }

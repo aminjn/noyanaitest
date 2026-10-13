@@ -3937,5 +3937,7 @@
  "بیمه‌های طرف قرارداد (بیمه‌ی ناشناخته کنار گذاشته می‌شود)": "Asuransi yang diterima (asuransi tak dikenal dilewati)",
  "شبانه‌روزی (وقتی «شبانه‌روزی» در آن آمده باشد)": "Buka 24 jam (bila tertulis «شبانه‌روزی»)",
  "هر فیلد فایل مستقیم به یک جای پروفایل مرکز می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل، همان مرکز را به‌روز می‌کند و مرکز تکراری نمی‌سازد.": "Setiap kolom file langsung masuk ke satu tempat di profil pusat; tidak ada hal lain dari file yang dibaca atau disimpan. Menjalankan file yang sama lagi memperbarui pusat yang sama tanpa membuat duplikat.",
- "${1} مرکز در فایل": "${1} pusat dalam file"
+ "${1} مرکز در فایل": "${1} pusat dalam file",
+ "نشانی مرکز؛ موقعیت روی نقشه از روی همین نشانی پیدا می‌شود (استان و شهر: تهران)": "Alamat pusat; lokasi di peta dicari dari alamat ini (provinsi dan kota: Teheran)",
+ "نشانی روی نقشه پیدا نشد؛ موقعیت را بعداً روی نقشه بزنید": "Alamat tidak ditemukan di peta; tetapkan lokasi di peta nanti"
 }

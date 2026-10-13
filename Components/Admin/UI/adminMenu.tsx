@@ -100,6 +100,8 @@ export const adminMenu: AdminMenuGroup[] = [
       { get title() { return ta("پاراکلینیک‌ها"); }, href: "paraClinic", access: "ParaClinic" },
       { get title() { return ta("داروخانه‌ها"); }, href: "pharmacy", access: "Pharmacy" },
       { get title() { return ta("بیمه‌ها"); }, href: "insurance", access: "Insurance" },
+      // every provider type from one JSON file: full admins only (no access)
+      { get title() { return ta("ورود گروهی (JSON)"); }, href: "providerImport" },
     ],
   },
   {
@@ -389,21 +391,6 @@ export const adminHubs: AdminHub[] = [
         icon: <FolderIcon />,
         items: [
       { get title() { return ta("برچسب داروها"); }, href: "drugTag", access: "Drug" },
-        ],
-      },
-    ],
-  },
-  {
-    hub: "doctorprofile",
-    sections: [
-      {
-        id: "doctorImport",
-        get title() { return ta("پزشکان"); },
-        icon: <FolderIcon />,
-        // the bulk import writes every provider type: super admin only
-        super: true,
-        items: [
-      { get title() { return ta("ورود گروهی (JSON)"); }, href: "doctorprofile?tab=import" },
         ],
       },
     ],
