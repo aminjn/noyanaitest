@@ -82,8 +82,8 @@ const SpecialityPage = ({
         <div className={classes.headActions}>
           <Button
             variant="Primary"
-            mode="Outline"
-            size="L"
+            mode="Inline"
+            size="S"
             radius="High"
             tailIcon={<ArrowCircleDownIcon />}
             href="#about"

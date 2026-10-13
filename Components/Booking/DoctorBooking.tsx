@@ -8,6 +8,7 @@ import {
   SetStateAction,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import BookingHeader from "./BookingHeader";
@@ -19,7 +20,7 @@ import {
   DoctorBookingOptions,
 } from "./BookingPage2";
 import useDebounce from "../Hooks/useDebounce";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
 import BookingMeta from "./BookingMeta";
@@ -111,7 +112,6 @@ const DoctorBooking = ({
     const params = new URLSearchParams();
     const options = { ...debouncedOptions };
     params.append("sort", common.sort);
-    params.append("page", "1");
     if (!!options.clinic?.length)
       for (const clinic of options.clinic) params.append("clinic", clinic._id);
     if (options.sessiontype?.length)
@@ -168,12 +168,46 @@ const DoctorBooking = ({
   const untouched =
     !!initialRows && options === initialOptions && common.sort === "Best";
 
-  const { data: data2 } = useSWR<{
-    rows: BookingPageDoctor[];
-    count: { total: number }[];
-  }>(`${API}/public/filterBooking2?${params.toString()}`, (url: string) =>
-    fetcher({ url }).then((res) => res.data),
+  // every result, loaded a page at a time as the visitor scrolls (no
+  // "show more" button, 2026-10)
+  type ResultsPage = { rows: BookingPageDoctor[]; count: { total: number }[] };
+  const {
+    data: pages,
+    size,
+    setSize,
+    isValidating,
+  } = useSWRInfinite<ResultsPage>(
+    (index, prev: ResultsPage | null) =>
+      prev && !(Array.isArray(prev.rows) && prev.rows.length)
+        ? null
+        : `${API}/public/filterBooking2?${params.toString()}&page=${index + 1}`,
+    (url: string) => fetcher({ url }).then((res) => res.data),
+    { revalidateFirstPage: false },
   );
+  const fetchedRows = pages
+    ? pages.flatMap((pg) => (Array.isArray(pg?.rows) ? pg.rows : []))
+    : undefined;
+  const total = pages?.[0]?.count?.[0]?.total;
+  const rows = fetchedRows ?? (untouched ? initialRows?.rows : undefined);
+  const resultCount = total ?? (untouched ? initialRows?.count : undefined) ?? 0;
+  const hasMore =
+    !!pages &&
+    (fetchedRows?.length ?? 0) < (total ?? 0) &&
+    !!pages[pages.length - 1]?.rows?.length;
+  const sentinel = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el || !hasMore) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && !isValidating)
+          setSize((n) => (n === size ? n + 1 : n));
+      },
+      { rootMargin: "600px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [hasMore, isValidating, size, setSize]);
 
   // Flat field grid for BookingAdvancedSearchPopup - the same options state
   // (and mostly the same field components) DoctorBookingFilters.tsx's
@@ -746,12 +780,9 @@ const DoctorBooking = ({
         <DoctorBookinResult
           common={common}
           setCommon={setCommon}
-          data={data2?.rows ?? (untouched ? initialRows?.rows : undefined)}
-          count={
-            data2?.count?.[0]?.total ??
-            (untouched ? initialRows?.count : undefined) ??
-            0
-          }
+          data={rows}
+          count={resultCount}
+          loadMore={<div ref={sentinel} aria-hidden="true" />}
           options={options}
           setOptions={setOptions}
           descriptions={descriptions}
