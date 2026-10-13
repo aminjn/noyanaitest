@@ -33,6 +33,10 @@ const CodeInput = ({
   const getContent = useScopedLocale();
   const refs = useRef<(HTMLInputElement | null)[]>([]);
   const digits = Array.from({ length }, (_, i) => value[i] || "");
+  // the code as of the last keystroke: fast typing (or a keyboard that
+  // types for you) can land in the next box before the parent re-renders
+  const latest = useRef(value);
+  latest.current = value;
 
   const focusBox = (i: number) => {
     const el = refs.current[Math.max(0, Math.min(length - 1, i))];
@@ -55,6 +59,7 @@ const CodeInput = ({
 
   const commit = (next: string) => {
     const clean = toLatinDigits(next).replace(/\D/g, "").slice(0, length);
+    latest.current = clean;
     onChange(clean);
     if (clean.length === length) onComplete?.(clean);
     return clean;
@@ -62,7 +67,7 @@ const CodeInput = ({
 
   // write `typed` starting at box `index`, keeping the boxes before it
   const fillFrom = (index: number, typed: string) => {
-    const head = digits.slice(0, index).join("");
+    const head = latest.current.slice(0, index);
     const clean = commit(head + typed);
     focusBox(clean.length >= length ? length - 1 : clean.length);
   };
@@ -102,7 +107,7 @@ const CodeInput = ({
           aria-invalid={invalid || undefined}
           onFocus={(e) => {
             // the boxes fill in order: a tap past the end goes to the first empty one
-            if (index > value.length) return focusBox(value.length);
+            if (index > latest.current.length) return focusBox(latest.current.length);
             e.currentTarget.select();
           }}
           onPaste={onPaste}
@@ -111,19 +116,19 @@ const CodeInput = ({
             const typed = toLatinDigits(e.target.value).replace(/\D/g, "");
             if (!typed) {
               // the digit was deleted (select + delete, cut)
-              const next = digits.slice();
-              next[index] = "";
-              onChange(next.join("").slice(0, index) + next.slice(index + 1).join(""));
+              const cur = latest.current;
+              commit(cur.slice(0, index) + cur.slice(index + 1));
               return;
             }
             // a box holding a digit got one more: the newest replaces it
-            const fresh = typed.length === 2 && digit ? typed.replace(digit, "") || typed[1] : typed;
+            const had = latest.current[index] || "";
+            const fresh = typed.length === 2 && had ? typed.replace(had, "") || typed[1] : typed;
             fillFrom(index, fresh);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Backspace" && !digit && index > 0) {
+            if (e.key === "Backspace" && !latest.current[index] && index > 0) {
               e.preventDefault();
-              onChange(value.slice(0, index - 1));
+              commit(latest.current.slice(0, index - 1));
               focusBox(index - 1);
             } else if (e.key === "ArrowLeft") {
               e.preventDefault();
