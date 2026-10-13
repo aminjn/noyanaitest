@@ -72,7 +72,11 @@ const History = ({ onOpen, refreshKey }: { onOpen: (row: ImportRow) => void; ref
           name: ta("وضعیت"),
           value: (r) => statusLabel(r.status),
           component: (r) => (
-            <Badge color={r.status === "done" ? "Success" : r.status === "failed" ? "Error" : r.status === "validated" ? "Info" : "Secondary"}>
+            <Badge
+              size="L"
+              style={{ whiteSpace: "nowrap" }}
+              color={r.status === "done" ? "Success" : r.status === "failed" ? "Error" : r.status === "validated" ? "Info" : "Secondary"}
+            >
               {statusLabel(r.status)}
             </Badge>
           ),
