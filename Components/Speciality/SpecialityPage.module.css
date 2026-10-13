@@ -127,3 +127,48 @@
     transform: translateY(-4px);
   }
 }
+
+/* the subspecialities and fellowships under the title (2026-10) */
+.subs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.subsTitle {
+  font-size: 0.8125rem;
+  color: var(--gray8);
+}
+
+.subsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.subChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 2rem;
+  font-size: 0.8125rem;
+  background: var(--primary0);
+  color: var(--primary6);
+  border: 1px solid var(--primary1);
+}
+
+.subChip:hover,
+.subChip:focus-visible {
+  border-color: var(--primary3);
+}
+
+.subCount {
+  font-size: 0.6875rem;
+  color: var(--gray8);
+}

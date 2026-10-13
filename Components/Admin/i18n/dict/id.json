@@ -3925,5 +3925,10 @@
  "ساخت مورد تازه": "Buat entri baru",
  "ادغام و پاک‌سازی": "Gabung dan bersihkan",
  "موارد بدون پزشک و بدون استفاده بایگانی شوند؟ (حذف نمی‌شوند)": "Arsipkan entri tanpa dokter dan tak terpakai? (Tidak dihapus)",
- "موارد بدون استفاده بایگانی شدند": "Entri tak terpakai diarsipkan"
+ "موارد بدون استفاده بایگانی شدند": "Entri tak terpakai diarsipkan",
+ "مرتب‌سازی تخصص‌ها": "Rapikan spesialisasi",
+ "موردی برای مرتب‌سازی نیست": "Tidak ada yang perlu dirapikan",
+ "تخصص‌ها مرتب شدند": "Spesialisasi telah dirapikan",
+ "خدمت: ${1}": "Layanan: ${1}",
+ "این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.": "Terapkan perubahan ini? ${1} entri: ${2}. Setiap penggabungan dapat dibatalkan selama 30 hari."
 }

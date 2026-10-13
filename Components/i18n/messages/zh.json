@@ -7642,5 +7642,9 @@
  "dpdPrToday": "今天",
  "dpdPr7": "最近 7 天",
  "dpdPr30": "最近 30 天",
- "dpdPrNoPhone": "您尚未添加公开号码（诊所电话或座机）"
+ "dpdPrNoPhone": "您尚未添加公开号码（诊所电话或座机）",
+ "specGroupMedical": "医学专科",
+ "specGroupDental": "牙科",
+ "specGroupAllied": "其他医护人员",
+ "subSpecialities": "亚专科与专科进修"
 }

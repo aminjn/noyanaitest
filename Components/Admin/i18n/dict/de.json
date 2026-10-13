@@ -3925,5 +3925,10 @@
  "ساخت مورد تازه": "Neuen Eintrag anlegen",
  "ادغام و پاک‌سازی": "Zusammenführen und bereinigen",
  "موارد بدون پزشک و بدون استفاده بایگانی شوند؟ (حذف نمی‌شوند)": "Einträge ohne Ärzte und ohne Verwendung archivieren? (Sie werden nicht gelöscht)",
- "موارد بدون استفاده بایگانی شدند": "Unbenutzte Einträge wurden archiviert"
+ "موارد بدون استفاده بایگانی شدند": "Unbenutzte Einträge wurden archiviert",
+ "مرتب‌سازی تخصص‌ها": "Fachrichtungen bereinigen",
+ "موردی برای مرتب‌سازی نیست": "Nichts zu bereinigen",
+ "تخصص‌ها مرتب شدند": "Fachrichtungen bereinigt",
+ "خدمت: ${1}": "Leistung: ${1}",
+ "این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.": "Diese Änderungen anwenden? ${1} Einträge: ${2}. Jede Zusammenführung lässt sich 30 Tage lang rückgängig machen."
 }

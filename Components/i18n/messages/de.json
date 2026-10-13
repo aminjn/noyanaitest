@@ -7642,5 +7642,9 @@
  "dpdPrToday": "Heute",
  "dpdPr7": "Letzte 7 Tage",
  "dpdPr30": "Letzte 30 Tage",
- "dpdPrNoPhone": "Sie haben noch keine öffentliche Nummer (Praxis oder Festnetz) hinterlegt"
+ "dpdPrNoPhone": "Sie haben noch keine öffentliche Nummer (Praxis oder Festnetz) hinterlegt",
+ "specGroupMedical": "Medizinische Fachrichtungen",
+ "specGroupDental": "Zahnmedizin",
+ "specGroupAllied": "Weitere Gesundheitsberufe",
+ "subSpecialities": "Schwerpunkte und Fellowships"
 }

@@ -19,6 +19,7 @@ import RenderRtf from "../UI/RenderRtf";
 import SmallAd from "../UI/ListPage/SmallAd";
 import { t2xlRegular, tmdDemiBold, tsmMedium } from "../UI/Typography";
 import Link from "@/Components/i18n/Link";
+import { useIntlLocale } from "@/Components/i18n/navigation";
 
 const NS: ContentNamespace[] = ["common", "specialityPage"];
 
@@ -41,6 +42,8 @@ export type SpecialityPageProps = {
   count: number;
   // the diseases linked to this speciality (published ones)
   diseases?: { _id: string; name?: string; slug?: string }[];
+  // its subspecialities and fellowships that have doctors
+  subSpecialities?: { _id: string; name?: string; slug?: string; doctorsCount?: number }[];
 };
 
 const SpecialityPage = ({
@@ -49,8 +52,10 @@ const SpecialityPage = ({
   pagesCount,
   count,
   diseases,
+  subSpecialities,
 }: SpecialityPageProps) => {
   const getContent = useScopedLocale(NS);
+  const intl = useIntlLocale();
   const [aboutOpen, setAboutOpen] = useState(false);
   // the speciality's summary, else the start of its description as text
   const { aboutText, aboutTruncated } = useMemo(() => {
@@ -126,6 +131,25 @@ const SpecialityPage = ({
             </a>
           )}
         </div>
+      )}
+      {/* its subspecialities and fellowships (2026-10): the directory
+          lists the main fields only, the narrower ones open from here */}
+      {Array.isArray(subSpecialities) && subSpecialities.some((n) => !!n?._id && !!n.name) && (
+        <nav className={classes.subs} aria-label={getContent("subSpecialities")}>
+          <span className={classes.subsTitle}>{getContent("subSpecialities")}</span>
+          <ul className={classes.subsList}>
+            {subSpecialities
+              .filter((n) => !!n?._id && !!n.name)
+              .map((n) => (
+                <li key={n._id}>
+                  <Link href={`/speciality/${n.slug || n._id}`} className={classes.subChip}>
+                    {n.name}
+                    {!!n.doctorsCount && <span className={classes.subCount}>{n.doctorsCount.toLocaleString(intl)}</span>}
+                  </Link>
+                </li>
+              ))}
+          </ul>
+        </nav>
       )}
       {/* the doctors of this speciality with every filter always open
           beside them (2026-10, like Doctolib / Zocdoc result pages): the

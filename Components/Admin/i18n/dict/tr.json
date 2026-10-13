@@ -3925,5 +3925,10 @@
  "ساخت مورد تازه": "Yeni kayıt oluştur",
  "ادغام و پاک‌سازی": "Birleştir ve temizle",
  "موارد بدون پزشک و بدون استفاده بایگانی شوند؟ (حذف نمی‌شوند)": "Doktorsuz ve kullanılmayan kayıtlar arşivlensin mi? (Silinmez)",
- "موارد بدون استفاده بایگانی شدند": "Kullanılmayan kayıtlar arşivlendi"
+ "موارد بدون استفاده بایگانی شدند": "Kullanılmayan kayıtlar arşivlendi",
+ "مرتب‌سازی تخصص‌ها": "Uzmanlıkları düzenle",
+ "موردی برای مرتب‌سازی نیست": "Düzenlenecek bir şey yok",
+ "تخصص‌ها مرتب شدند": "Uzmanlıklar düzenlendi",
+ "خدمت: ${1}": "Hizmet: ${1}",
+ "این تغییرات انجام شود؟ ${1} مورد: ${2}. هر ادغام تا ۳۰ روز برگشت‌پذیر است.": "Bu değişiklikler uygulansın mı? ${1} kayıt: ${2}. Her birleştirme 30 gün boyunca geri alınabilir."
 }

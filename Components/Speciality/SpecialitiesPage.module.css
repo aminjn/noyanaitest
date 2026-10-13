@@ -46,11 +46,24 @@
 }
 
 /* the directory tiles (2026-10): compact, three to four per row */
+.group {
+  margin-top: 1.25rem;
+}
+
+.groupTitle {
+  margin: 0 0 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--gray12);
+}
+
 .tiles {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   gap: 0.625rem;
-  margin-top: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .tile {
