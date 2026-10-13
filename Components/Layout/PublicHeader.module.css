@@ -252,31 +252,52 @@
   display: none;
 }
 
-/* laptops (1312-1520px): the full menu only fits tighter; without this it
-   spilled over the search button at 1366px */
+/* The menu's fit is measured on the bar itself (PublicHeader: useNavFit),
+   not guessed from the screen width: the bar is capped at 90rem and the
+   account button grows when signed in, so a wide screen can be as tight as
+   a laptop. data-fit="tight" packs the links, "burger" moves them into the
+   burger menu. Before the first measure (server HTML) the old screen-width
+   rules stand in. */
+.inner[data-fit="tight"] {
+  gap: 0.5rem;
+}
+
+.inner[data-fit="tight"] .link {
+  padding-inline: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.inner[data-fit="tight"] .accent,
+.inner[data-fit="tight"] .accent:hover {
+  margin-inline-start: 0.25rem;
+  padding-inline: 0.75rem;
+}
+
+.inner[data-fit="burger"] .nav {
+  display: none;
+}
+
+.inner[data-fit="burger"] .burgerBtn {
+  display: flex;
+}
+
 @media (max-width: 95rem) {
-  .inner {
+  .inner:not([data-fit]) {
     gap: 0.5rem;
   }
 
-  .link {
+  .inner:not([data-fit]) .link {
     padding-inline: 0.5rem;
     font-size: 0.875rem;
-  }
-
-  .accent,
-  .accent:hover {
-    margin-inline-start: 0.25rem;
-    padding-inline: 0.75rem;
   }
 }
 
 @media (max-width: 82rem) {
-  .nav {
+  .inner:not([data-fit]) .nav {
     display: none;
   }
 
-  .burgerBtn {
+  .inner:not([data-fit]) .burgerBtn {
     display: flex;
   }
 }
