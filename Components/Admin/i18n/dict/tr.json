@@ -3875,5 +3875,17 @@
  "نشانی مطب": "Muayenehane adresi",
  "نقشه ${1}، نشانی ${2}، ناهمخوان ${3}": "Harita ${1}, adres ${2}, uyumsuz ${3}",
  "پیش از اعمال، فایل را بررسی کنید.": "Uygulamadan önce dosyayı kontrol edin.",
- "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Dosyanın her alanı doğrudan hekim profilinde tek bir yere gider; dosyadan başka hiçbir şey okunmaz ya da saklanmaz. Bu dosyayı ya da sonrakini yeniden çalıştırmak aynı hekimi günceller, kopya oluşturmaz; sahibinin sahiplendiği bir profilde yalnızca boş alanlar doldurulur."
+ "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Dosyanın her alanı doğrudan hekim profilinde tek bir yere gider; dosyadan başka hiçbir şey okunmaz ya da saklanmaz. Bu dosyayı ya da sonrakini yeniden çalıştırmak aynı hekimi günceller, kopya oluşturmaz; sahibinin sahiplendiği bir profilde yalnızca boş alanlar doldurulur.",
+ "بازدید صفحه‌ها": "Sayfa ziyaretleri",
+ "نمایش شماره تماس": "Telefon numarası gösterimi",
+ "دفعات نمایش شماره": "Numara gösterim sayısı",
+ "پروفایل‌ها": "Profiller",
+ "بیشترین نمایش شماره": "En çok gösterilen numaralar",
+ "نمایش‌های اخیر": "Son gösterimler",
+ "تعداد نمایش": "Gösterim",
+ "آخرین نمایش": "Son gösterim",
+ "دستگاه": "Cihaz",
+ "تبلت": "Tablet",
+ "دسکتاپ": "Masaüstü",
+ "در ${1} روز اخیر": "son ${1} günde"
 }

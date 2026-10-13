@@ -3875,5 +3875,17 @@
  "نشانی مطب": "Office address",
  "نقشه ${1}، نشانی ${2}، ناهمخوان ${3}": "Map ${1}, address ${2}, mismatched ${3}",
  "پیش از اعمال، فایل را بررسی کنید.": "Check the file before applying it.",
- "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Each field of the file goes straight to one place on the doctor’s profile; nothing else is read from the file or kept. Running this file again, or a later one, updates the same doctor instead of creating a duplicate; a profile its owner has claimed only gets its empty fields filled."
+ "هر فیلد فایل مستقیم به یک جای پروفایل پزشک می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل یا فایل بعدی، همان پزشک را به‌روز می‌کند و پزشک تکراری نمی‌سازد؛ پروفایلی که صاحبش آن را ادعا کرده فقط در فیلدهای خالی پر می‌شود.": "Each field of the file goes straight to one place on the doctor’s profile; nothing else is read from the file or kept. Running this file again, or a later one, updates the same doctor instead of creating a duplicate; a profile its owner has claimed only gets its empty fields filled.",
+ "بازدید صفحه‌ها": "Page visits",
+ "نمایش شماره تماس": "Phone number reveals",
+ "دفعات نمایش شماره": "Number reveals",
+ "پروفایل‌ها": "Profiles",
+ "بیشترین نمایش شماره": "Most revealed numbers",
+ "نمایش‌های اخیر": "Recent reveals",
+ "تعداد نمایش": "Reveals",
+ "آخرین نمایش": "Last reveal",
+ "دستگاه": "Device",
+ "تبلت": "Tablet",
+ "دسکتاپ": "Desktop",
+ "در ${1} روز اخیر": "in the last ${1} days"
 }

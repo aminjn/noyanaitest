@@ -46,10 +46,13 @@ const DoctorContact = ({
   website,
   landLine,
   socials,
+  compact,
 }: {
   website?: string;
   landLine?: string;
   socials?: Social[];
+  // one inline row (the profile's top card): no title, small links
+  compact?: boolean;
 }) => {
   const getContent = useScopedLocale(NS);
   const site = safeUrl(website);
@@ -60,8 +63,8 @@ const DoctorContact = ({
   );
   if (!site && !phone && !links.length) return null;
   return (
-    <div className={classes.main}>
-      <h3 className={classes.title}>{getContent("contactInfo")}</h3>
+    <div className={`${classes.main} ${compact ? classes.compact : ""}`}>
+      {!compact && <h3 className={classes.title}>{getContent("contactInfo")}</h3>}
       {(!!site || !!phone) && (
         <div className={classes.rows}>
           {!!phone && (
