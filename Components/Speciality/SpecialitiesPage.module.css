@@ -44,3 +44,70 @@
   justify-content: space-between;
   margin-top: 1.5rem;
 }
+
+/* the directory tiles (2026-10): compact, three to four per row */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.875rem;
+  background: var(--white);
+  border: 1px solid var(--cardLine, var(--gray3));
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.tile:hover,
+.tile:focus-visible {
+  border-color: var(--primary3);
+  box-shadow: 0 4px 14px -8px rgba(79, 70, 229, 0.35);
+}
+
+.tileIcon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.55rem;
+  border-radius: 0.75rem;
+  background: var(--primary0);
+  color: var(--primary6);
+}
+
+.tileText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tileName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray13);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tileCount {
+  font-size: 0.75rem;
+  color: var(--gray8);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 36rem) {
+  .tiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
