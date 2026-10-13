@@ -5,7 +5,7 @@ import UserButton from "./UserButton";
 import LanguageSwitcher from "../i18n/LanguageSwitcher";
 import ThemeToggle from "../UI/Theme/ThemeToggle";
 import { usePathname } from "@/Components/i18n/navigation";
-import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
+import { Fragment, ReactNode, RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Ixon from "../UI/Ixon";
 import ChevronIcon from "../Icons/ChevronIcon";
 import { ContentKey } from "../Enums/contentKeys";
@@ -116,6 +116,59 @@ const WithSubs = ({
   );
 };
 
+
+// How much of the menu fits on the bar right now: measured on the bar (a
+// capped 90rem row whose account button widens when signed in), so the
+// links never run under the search / account buttons at any screen size.
+type NavFit = "full" | "tight" | "burger";
+const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+const useNavFit = (innerRef: RefObject<HTMLElement>) => {
+  const [fit, setFit] = useState<NavFit | undefined>(undefined);
+  useIsoLayoutEffect(() => {
+    const inner = innerRef.current;
+    if (!inner) return;
+    const nav = inner.querySelector<HTMLElement>("[data-nav]");
+    const start = inner.querySelector<HTMLElement>("[data-start]");
+    const end = inner.querySelector<HTMLElement>("[data-end]");
+    if (!nav || !start || !end) return;
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        // phones: the CSS already shows the burger
+        if (window.matchMedia("(max-width: 750px)").matches) return setFit("burger");
+        const prev = inner.getAttribute("data-fit");
+        const cs = getComputedStyle(inner);
+        const widthOf = (mode: NavFit) => {
+          inner.setAttribute("data-fit", mode);
+          const gap = parseFloat(cs.columnGap || cs.gap) || 0;
+          const pad = parseFloat(cs.paddingInlineStart || cs.paddingLeft) + parseFloat(cs.paddingInlineEnd || cs.paddingRight);
+          const room = inner.clientWidth - pad - start.offsetWidth - end.offsetWidth - gap * 2;
+          return { room, need: nav.scrollWidth };
+        };
+        const full = widthOf("full");
+        const tight = widthOf("tight");
+        // a small margin so the last link never touches the search button
+        const next: NavFit = full.need + 8 <= full.room ? "full" : tight.need + 8 <= tight.room ? "tight" : "burger";
+        if (prev) inner.setAttribute("data-fit", prev);
+        else inner.removeAttribute("data-fit");
+        setFit(next);
+      });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(inner);
+    ro.observe(end);
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [innerRef]);
+  return fit;
+};
+
 const modals = ["search", "cart", "notification"] as const;
 
 type Modal = (typeof modals)[number];
@@ -136,6 +189,8 @@ const PublicHeader = () => {
   const getContent = useScopedLocale(LOCALE_NS);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const innerRef = useRef<HTMLElement>(null);
+  const navFit = useNavFit(innerRef);
 
   const [openModel, setOpenModel] = useState<Modal | null>(null);
 
@@ -159,8 +214,8 @@ const PublicHeader = () => {
       <div
         className={`${classes.container} ${isScrolled ? classes.scrolled : ""}`}
       >
-        <header className={classes.inner}>
-          <div className={classes.start}>
+        <header className={classes.inner} ref={innerRef} data-fit={navFit}>
+          <div className={classes.start} data-start>
             <button
               type="button"
               data-burger
@@ -177,7 +232,7 @@ const PublicHeader = () => {
               <LogoLong />
             </Link>
           </div>
-          <nav className={classes.nav}>
+          <nav className={classes.nav} data-nav>
             <NavLink title="homePage" target="/" />
             <MegaMenu />
             <NavLink title="officeBook" target="/book" />
@@ -200,7 +255,7 @@ const PublicHeader = () => {
               icon={<StetoscopeIcon />}
             />
           </nav>
-          <div className={classes.end}>
+          <div className={classes.end} data-end>
             <div
               className={`${classes.endContent} ${!!openModel ? classes.hideMobileOpen : ""}`}
             >
