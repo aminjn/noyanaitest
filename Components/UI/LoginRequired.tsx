@@ -1,6 +1,5 @@
 import usePopup from "../Hooks/usePopup";
 import LoginIcon from "../Icons/LoginIcon";
-import UserEditIcon from "../Icons/UserEditIcon";
 import AuthPopup from "../Popups/AuthPopup";
 import Button from "./Button";
 import classes from "./LoginRequired.module.css";
@@ -233,25 +232,16 @@ const LoginRequired = () => {
         </p>
       </div>
       <div className={classes.actions}>
+        {/* one flow for both: a new number reaches the sign-up step in it */}
         <Button
-          tailIcon={<UserEditIcon />}
-          onClick={() => setPopup("Auth", <AuthPopup signup />)}
+          tailIcon={<LoginIcon />}
+          onClick={() => setPopup("Auth", <AuthPopup />)}
           radius="Medium"
           size="L"
           variant="Primary"
           mode="Fill"
         >
-          {getContent("signup")}
-        </Button>
-        <Button
-          mode="Outline"
-          variant="Primary"
-          size="L"
-          radius="Medium"
-          tailIcon={<LoginIcon />}
-          onClick={() => setPopup("Auth", <AuthPopup />)}
-        >
-          {getContent("login")}
+          {getContent("loginOrSignup")}
         </Button>
       </div>
     </div>
