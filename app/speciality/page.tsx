@@ -28,6 +28,7 @@ const SepecailitiesList = async (ctx: {
   if (isNaN(page) || !Number.isInteger(page) || page < 1) return notFound();
   const params = new URLSearchParams();
   params.append("page", page.toString());
+  params.append("compact", "1");
   if (search) params.append("query", search);
   const [data, textContent] = await Promise.all([
     getPublicData<SpecialitiesPageProps>(
