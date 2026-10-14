@@ -29,7 +29,7 @@ const tiles: {
 }[] = [
   { key: "doctors", description: "tileDoctorsDesc", href: "/book", icon: <StetoscopeIcon />, tone: "tone-indigo" },
   { key: "aiDetection", description: "tileAiDesc", href: "/wizard", icon: <SparkIcon />, tone: "tone-violet" },
-  { key: "homeHeroQuickLinkPharmacy", description: "tilePharmacyDesc", href: "/product", icon: <PillIcon />, tone: "tone-teal" },
+  { key: "homeHeroQuickLinkPharmacy", description: "tilePharmacyDesc", href: "/pharmacy", icon: <PillIcon />, tone: "tone-teal" },
   { key: "homeHeroQuickLinkLab", description: "tileLabDesc", href: "/paraClinic", icon: <FlaskIcon />, tone: "tone-amber" },
 ];
 

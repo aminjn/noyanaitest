@@ -273,6 +273,26 @@
   padding-inline: 0.75rem;
 }
 
+.inner[data-fit="compact"] {
+  gap: 0.375rem;
+}
+
+.inner[data-fit="compact"] .link {
+  padding-inline: 0.4rem;
+  font-size: 0.8125rem;
+}
+
+.inner[data-fit="compact"] .accent,
+.inner[data-fit="compact"] .accent:hover {
+  margin-inline-start: 0.125rem;
+  padding-inline: 0.625rem;
+}
+
+/* the account button keeps its avatar; its name / number makes room */
+.inner[data-fit="compact"] [data-account-name] {
+  display: none;
+}
+
 .inner[data-fit="burger"] .nav {
   display: none;
 }
