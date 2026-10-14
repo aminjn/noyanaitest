@@ -1,3 +1,5 @@
+import PillIcon from "../Icons/PillIcon";
+import FlaskIcon from "../Icons/FlaskIcon";
 import Link from "@/Components/i18n/Link";
 import { ReactNode, useEffect, useRef } from "react";
 import classes from "./PublicMobileMenu.module.css";
@@ -39,6 +41,9 @@ const menuItems: { title: ContentKey; target: string; icon: ReactNode }[] = [
   { title: "officeBook", target: "/book", icon: <Calendar02Icon /> },
   { title: "aiDetection", target: "/wizard", icon: <SparkIcon /> },
   { title: "noyanClinic", target: "/clinic", icon: <BuildingIcon /> },
+  // the pharmacy and lab directories (2026-10)
+  { title: "pharmacies", target: "/pharmacy", icon: <PillIcon /> },
+  { title: "paraClinics", target: "/paraClinic", icon: <FlaskIcon /> },
   { title: "blogs", target: "/mag", icon: <BookIcon /> },
   {
     title: "bookingGuide",

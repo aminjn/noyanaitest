@@ -355,7 +355,10 @@ const UserButton = () => {
         data-account-trigger="desktop"
       >
         <Avatar src={user.avatar} name={name} size="2rem" />
-        <span className={classes.triggerName}>{name ? short : <bdi dir="ltr">{short}</bdi>}</span>
+        {/* data-account-name: the header hides it when the menu needs the room */}
+        <span className={classes.triggerName} data-account-name>
+          {name ? short : <bdi dir="ltr">{short}</bdi>}
+        </span>
         <Ixon width="1rem" className={classes.chevron}>
           <ChevronIcon />
         </Ixon>

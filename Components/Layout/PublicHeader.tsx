@@ -120,7 +120,7 @@ const WithSubs = ({
 // How much of the menu fits on the bar right now: measured on the bar (a
 // capped 90rem row whose account button widens when signed in), so the
 // links never run under the search / account buttons at any screen size.
-type NavFit = "full" | "tight" | "burger";
+type NavFit = "full" | "tight" | "compact" | "burger";
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 const useNavFit = (innerRef: RefObject<HTMLElement>) => {
   const [fit, setFit] = useState<NavFit | undefined>(undefined);
@@ -148,8 +148,12 @@ const useNavFit = (innerRef: RefObject<HTMLElement>) => {
         };
         const full = widthOf("full");
         const tight = widthOf("tight");
+        // packed links and the account button as its avatar only (2026-10:
+        // a signed-in phone number took the menu's room on a laptop)
+        const compact = widthOf("compact");
         // a small margin so the last link never touches the search button
-        const next: NavFit = full.need + 8 <= full.room ? "full" : tight.need + 8 <= tight.room ? "tight" : "burger";
+        const fits = (m: { need: number; room: number }) => m.need + 8 <= m.room;
+        const next: NavFit = fits(full) ? "full" : fits(tight) ? "tight" : fits(compact) ? "compact" : "burger";
         if (prev) inner.setAttribute("data-fit", prev);
         else inner.removeAttribute("data-fit");
         setFit(next);
@@ -241,6 +245,10 @@ const PublicHeader = () => {
             <WithSubs
               title="more"
               subs={[
+                // the pharmacy and lab directories (2026-10): reachable from
+                // the menu, not only the footer
+                { title: "pharmacies", taregt: "/pharmacy" },
+                { title: "paraClinics", taregt: "/paraClinic" },
                 { title: "blogs", taregt: "/mag" },
                 { title: "bookingGuide", taregt: "/bookingGuide" },
                 { title: "faqs", taregt: "/faq" },
