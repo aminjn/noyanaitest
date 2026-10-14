@@ -36,6 +36,7 @@ import HostedImage from "../UI/HostedImage";
 import StarIcon from "../Icons/StarIcon";
 import { currencize } from "../helpers/currencize";
 import Link from "@/Components/i18n/Link";
+import BookingPage2 from "../Booking/BookingPage2";
 
 const NS: ContentNamespace[] = ["common", "services"];
 
@@ -113,6 +114,15 @@ const ServiceListPage = ({
   });
 
   const push = useProgress();
+  // the service picked in the menu / the category row (2026-10): the doctors
+  // who offer it, with every filter, as a speciality page shows its doctors
+  // (Doctolib's «acte» pages list the practitioners who do it)
+  const categoryParam = searchParams.get("category");
+  const selected = categoryParam
+    ? (Array.isArray(categories) ? categories : []).find(
+        (c) => !!c && (c.slug === categoryParam || c._id === categoryParam),
+      )
+    : undefined;
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -139,6 +149,14 @@ const ServiceListPage = ({
         onChange={(e) => setQuery(e.target.value)}
       />
       <ListPageCategorySelector categories={categories} basePath={"/service"} />
+      {!!selected && (
+        <section className={classes.doctors}>
+          <h2 className={`${classes.doctorsTitle} ${tlgDemiBold}`}>
+            {getContent("doctorsOfferingX", [selected.title || ""])}
+          </h2>
+          <BookingPage2 key={selected._id} embedded preset={{ service: [selected] }} />
+        </section>
+      )}
       {!!specials.length && (
         <SpecialsBox
           title={getContent("specialServicesTitle")}

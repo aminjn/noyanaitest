@@ -7646,5 +7646,6 @@
  "specGroupMedical": "Медицинские специальности",
  "specGroupDental": "Стоматология",
  "specGroupAllied": "Другие медицинские специалисты",
- "subSpecialities": "Узкие специализации и стажировки"
+ "subSpecialities": "Узкие специализации и стажировки",
+ "doctorsOfferingX": "Врачи, которые делают «${1}»"
 }

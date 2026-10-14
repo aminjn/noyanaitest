@@ -7668,5 +7668,6 @@
  "specGroupMedical": "تخصص‌های پزشکی",
  "specGroupDental": "دندانپزشکی",
  "specGroupAllied": "سایر کادر درمان",
- "subSpecialities": "فوق‌تخصص‌ها و فلوشیپ‌ها"
+ "subSpecialities": "فوق‌تخصص‌ها و فلوشیپ‌ها",
+ "doctorsOfferingX": "پزشکانی که «${1}» را انجام می‌دهند"
 }

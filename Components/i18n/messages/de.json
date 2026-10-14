@@ -7646,5 +7646,6 @@
  "specGroupMedical": "Medizinische Fachrichtungen",
  "specGroupDental": "Zahnmedizin",
  "specGroupAllied": "Weitere Gesundheitsberufe",
- "subSpecialities": "Schwerpunkte und Fellowships"
+ "subSpecialities": "Schwerpunkte und Fellowships",
+ "doctorsOfferingX": "Ärztinnen und Ärzte, die «${1}» anbieten"
 }

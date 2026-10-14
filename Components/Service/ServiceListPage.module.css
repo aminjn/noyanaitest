@@ -53,3 +53,16 @@
   color: var(--primary9);
   margin-inline-start: auto;
 }
+
+/* the doctors who offer the picked service (2026-10) */
+.doctors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-block: 1rem 1.5rem;
+}
+
+.doctorsTitle {
+  margin: 0;
+  color: var(--gray13);
+}

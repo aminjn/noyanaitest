@@ -7646,5 +7646,6 @@
  "specGroupMedical": "Tıp uzmanlıkları",
  "specGroupDental": "Diş hekimliği",
  "specGroupAllied": "Diğer sağlık profesyonelleri",
- "subSpecialities": "Yan dallar ve fellowship'ler"
+ "subSpecialities": "Yan dallar ve fellowship'ler",
+ "doctorsOfferingX": "«${1}» yapan doktorlar"
 }

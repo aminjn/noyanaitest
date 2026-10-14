@@ -7646,5 +7646,6 @@
  "specGroupMedical": "医学专科",
  "specGroupDental": "牙科",
  "specGroupAllied": "其他医护人员",
- "subSpecialities": "亚专科与专科进修"
+ "subSpecialities": "亚专科与专科进修",
+ "doctorsOfferingX": "提供“${1}”的医生"
 }

@@ -568,7 +568,7 @@ const NewDoctorProfilePage = ({
               </div>
             )}
             {/* the services come from the catalogue (2026-10): each opens
-                the doctors who offer it on /book, as a speciality does */}
+                the service's page with the doctors who offer it */}
             {!serviceChips.length ? (
               !specialityChips.length && (
                 <EmptyState>{getContent("nothingFound")}</EmptyState>
@@ -579,10 +579,12 @@ const NewDoctorProfilePage = ({
                 items={serviceChips}
                 render={(service) => (
                   <li key={service._id}>
+                    {/* the service's page: the doctors who offer it, with
+                        every filter (2026-10) */}
                     <Link
-                      href={`/book?${new URLSearchParams({
-                        service: service._id,
-                        name: service.title || "",
+                      className={classes.serviceLink}
+                      href={`/service?${new URLSearchParams({
+                        category: (service as { slug?: string }).slug || service._id,
                       }).toString()}`}
                     >
                       <Badge color="Primarylight" mode="Outline" radius="High">
