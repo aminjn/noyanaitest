@@ -454,3 +454,23 @@
   align-items: center;
   gap: 0.5rem 0.75rem;
 }
+
+/* a service chip is a link: it looks and reacts like one (2026-10) */
+.serviceLink {
+  display: inline-flex;
+  border-radius: 2rem;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+.serviceLink:hover,
+.serviceLink:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px -10px var(--primary6);
+}
+
+.serviceLink:hover > *,
+.serviceLink:focus-visible > * {
+  background: var(--primary0);
+}

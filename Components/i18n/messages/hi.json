@@ -7646,5 +7646,6 @@
  "specGroupMedical": "चिकित्सा विशेषज्ञताएँ",
  "specGroupDental": "दंत चिकित्सा",
  "specGroupAllied": "अन्य स्वास्थ्य पेशेवर",
- "subSpecialities": "उप-विशेषज्ञताएँ और फ़ेलोशिप"
+ "subSpecialities": "उप-विशेषज्ञताएँ और फ़ेलोशिप",
+ "doctorsOfferingX": "डॉक्टर जो «${1}» करते हैं"
 }

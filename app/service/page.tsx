@@ -16,6 +16,13 @@ const NS: ContentNamespace[] = [
   "services",
   "productServiceSwitch",
   "productServiceCard",
+  // the doctors who offer the picked service (the embedded booking list)
+  "doctorsList",
+  "uiDoctorCard",
+  "booking",
+  "bookingFlow",
+  "bookingSessionSelectorPopup",
+  "doctorPanelShiftUtils",
 ];
 
 export const generateMetadata = () => getListPageMetadata("/service");

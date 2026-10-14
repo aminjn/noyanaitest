@@ -7646,5 +7646,6 @@
  "specGroupMedical": "Spesialisasi medis",
  "specGroupDental": "Kedokteran gigi",
  "specGroupAllied": "Tenaga kesehatan lainnya",
- "subSpecialities": "Subspesialisasi dan fellowship"
+ "subSpecialities": "Subspesialisasi dan fellowship",
+ "doctorsOfferingX": "Dokter yang menangani «${1}»"
 }

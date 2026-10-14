@@ -7646,5 +7646,6 @@
  "specGroupMedical": "医療の専門分野",
  "specGroupDental": "歯科",
  "specGroupAllied": "その他の医療専門職",
- "subSpecialities": "サブスペシャルティとフェローシップ"
+ "subSpecialities": "サブスペシャルティとフェローシップ",
+ "doctorsOfferingX": "「${1}」を行う医師"
 }

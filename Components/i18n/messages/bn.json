@@ -7646,5 +7646,6 @@
  "specGroupMedical": "চিকিৎসা বিশেষত্ব",
  "specGroupDental": "দন্তচিকিৎসা",
  "specGroupAllied": "অন্যান্য স্বাস্থ্য পেশাজীবী",
- "subSpecialities": "উপ-বিশেষত্ব ও ফেলোশিপ"
+ "subSpecialities": "উপ-বিশেষত্ব ও ফেলোশিপ",
+ "doctorsOfferingX": "যে চিকিৎসকেরা «${1}» করেন"
 }

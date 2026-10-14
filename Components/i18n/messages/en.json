@@ -7646,5 +7646,6 @@
  "specGroupMedical": "Medical specialities",
  "specGroupDental": "Dentistry",
  "specGroupAllied": "Other health professionals",
- "subSpecialities": "Subspecialities and fellowships"
+ "subSpecialities": "Subspecialities and fellowships",
+ "doctorsOfferingX": "Doctors who offer «${1}»"
 }

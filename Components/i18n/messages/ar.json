@@ -7646,5 +7646,6 @@
  "specGroupMedical": "التخصصات الطبية",
  "specGroupDental": "طب الأسنان",
  "specGroupAllied": "مهن صحية أخرى",
- "subSpecialities": "التخصصات الدقيقة والزمالات"
+ "subSpecialities": "التخصصات الدقيقة والزمالات",
+ "doctorsOfferingX": "الأطباء الذين يقدّمون «${1}»"
 }
