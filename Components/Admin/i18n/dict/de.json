@@ -3939,5 +3939,6 @@
  "هر فیلد فایل مستقیم به یک جای پروفایل مرکز می‌رود و چیز دیگری از فایل خوانده یا نگه داشته نمی‌شود. اجرای دوباره‌ی همین فایل، همان مرکز را به‌روز می‌کند و مرکز تکراری نمی‌سازد.": "Jedes Feld der Datei geht direkt an eine Stelle im Profil der Einrichtung; sonst wird nichts gelesen oder gespeichert. Ein erneuter Lauf derselben Datei aktualisiert dieselbe Einrichtung und legt kein Duplikat an.",
  "${1} مرکز در فایل": "${1} Einrichtungen in der Datei",
  "نشانی مرکز؛ موقعیت روی نقشه از روی همین نشانی پیدا می‌شود (استان و شهر: تهران)": "Adresse der Einrichtung; die Kartenposition wird aus dieser Adresse ermittelt (Provinz und Stadt: Teheran)",
- "نشانی روی نقشه پیدا نشد؛ موقعیت را بعداً روی نقشه بزنید": "Die Adresse wurde auf der Karte nicht gefunden; setzen Sie den Standort später auf der Karte"
+ "نشانی روی نقشه پیدا نشد؛ موقعیت را بعداً روی نقشه بزنید": "Die Adresse wurde auf der Karte nicht gefunden; setzen Sie den Standort später auf der Karte",
+ "مسئول فنی، در معرفی داروخانه («مسئول فنی: …»)": "Verantwortliche/r Apotheker/in, in der Vorstellung der Apotheke («مسئول فنی: …»)"
 }

@@ -155,6 +155,7 @@ export type PartnerDestination =
   | "centreAddress"
   | "insurances"
   | "roundTheClock"
+  | "pharmacist"
   | "ignored";
 export type PartnerField = { source: string; to: PartnerDestination };
 export type Template = { _id: string; name: string; mapping: Mapping; updatedAt: string; builtin?: string; fields?: PartnerField[] };

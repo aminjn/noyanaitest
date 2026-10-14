@@ -156,6 +156,7 @@ const destinationLabels: Record<PartnerDestination, () => string> = {
   centreAddress: () => ta("نشانی مرکز؛ موقعیت روی نقشه از روی همین نشانی پیدا می‌شود (استان و شهر: تهران)"),
   insurances: () => ta("بیمه‌های طرف قرارداد (بیمه‌ی ناشناخته کنار گذاشته می‌شود)"),
   roundTheClock: () => ta("شبانه‌روزی (وقتی «شبانه‌روزی» در آن آمده باشد)"),
+  pharmacist: () => ta("مسئول فنی، در معرفی داروخانه («مسئول فنی: …»)"),
   ignored: () => ta("نادیده گرفته می‌شود؛ هیچ‌جا ذخیره نمی‌شود"),
 };
 export const destinationLabel = (to: string) => destinationLabels[to as PartnerDestination]?.() || to;
