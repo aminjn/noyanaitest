@@ -7647,5 +7647,6 @@
  "specGroupDental": "Dentisterie",
  "specGroupAllied": "Autres professionnels de santé",
  "subSpecialities": "Surspécialités et fellowships",
- "doctorsOfferingX": "Médecins qui proposent « ${1} »"
+ "doctorsOfferingX": "Médecins qui proposent « ${1} »",
+ "ohEveryDay": "Tous les jours"
 }

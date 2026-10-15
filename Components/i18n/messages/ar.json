@@ -7647,5 +7647,6 @@
  "specGroupDental": "طب الأسنان",
  "specGroupAllied": "مهن صحية أخرى",
  "subSpecialities": "التخصصات الدقيقة والزمالات",
- "doctorsOfferingX": "الأطباء الذين يقدّمون «${1}»"
+ "doctorsOfferingX": "الأطباء الذين يقدّمون «${1}»",
+ "ohEveryDay": "كل أيام الأسبوع"
 }

@@ -7669,5 +7669,6 @@
  "specGroupDental": "دندانپزشکی",
  "specGroupAllied": "سایر کادر درمان",
  "subSpecialities": "فوق‌تخصص‌ها و فلوشیپ‌ها",
- "doctorsOfferingX": "پزشکانی که «${1}» را انجام می‌دهند"
+ "doctorsOfferingX": "پزشکانی که «${1}» را انجام می‌دهند",
+ "ohEveryDay": "هر روز هفته"
 }
