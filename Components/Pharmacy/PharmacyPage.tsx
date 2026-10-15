@@ -113,7 +113,7 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
       <BreadCrump
         trail={[
           { title: getContent("homePage"), target: "/" },
-          { title: getContent("products"), target: "/product" },
+          { title: getContent("pharmacies"), target: "/pharmacy" },
           { title: data.name || data._id, target: `/pharmacy/${data.slug || data._id}` },
         ]}
         className={classes.crump}
