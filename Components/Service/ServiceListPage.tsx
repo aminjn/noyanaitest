@@ -184,7 +184,7 @@ const ServiceListPage = ({
         }}
       />
       <ListPageList
-        itemWidth="16.5rem"
+        itemWidth="12rem"
         pagination={{
           currentPage: Number(searchParams.get("page")) || 1,
           makePath: (page) => {

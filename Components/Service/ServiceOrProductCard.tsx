@@ -113,7 +113,7 @@ const ServiceOrProductCard = ({
           </div>
           <div className={classes.score}>
             <span className={t2xsRegular}>{rating}</span>
-            <Ixon width="1rem" className={classes.star}>
+            <Ixon width=".8rem" className={classes.star}>
               <StarIcon />
             </Ixon>
           </div>
