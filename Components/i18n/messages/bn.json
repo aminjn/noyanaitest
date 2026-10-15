@@ -7647,5 +7647,6 @@
  "specGroupDental": "দন্তচিকিৎসা",
  "specGroupAllied": "অন্যান্য স্বাস্থ্য পেশাজীবী",
  "subSpecialities": "উপ-বিশেষত্ব ও ফেলোশিপ",
- "doctorsOfferingX": "যে চিকিৎসকেরা «${1}» করেন"
+ "doctorsOfferingX": "যে চিকিৎসকেরা «${1}» করেন",
+ "ohEveryDay": "সপ্তাহের প্রতিদিন"
 }

@@ -886,6 +886,7 @@ const contentKeys = [
   "specialitiesListLegend",
   "searchInSpecialities",
   "nDoctors",
+  "ohEveryDay",
   "doctorsOfferingX",
   "specGroupMedical",
   "specGroupDental",

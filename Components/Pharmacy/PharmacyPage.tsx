@@ -23,7 +23,8 @@ import { FaqEntry } from "../Seo/autoFaq";
 import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
 import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
-import { exceptionsOf, weekOf } from "../OpeningHours/openingHours";
+import { exceptionsOf, isFullDay, weekOf } from "../OpeningHours/openingHours";
+import CallCallingIcon from "../Icons/CallCallingIcon";
 import {
   IProduct,
   IProductSeller,
@@ -108,6 +109,15 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
           title: getContent("availableInStock"),
         };
 
+  // a pharmacy open around the clock every day: one line, not a 7-row table
+  const week = weekOf(data.openingHours);
+  const everyDay24 =
+    (!!week && week.every((d) => isFullDay(d)) && !exceptionsOf(data.openingHours).length) ||
+    (!hasWeek && !!facts.isRoundTheClock);
+  const coords = data.location?.coordinates;
+  const hasPin = Array.isArray(coords) && coords.length === 2;
+  const hasProducts = !!offers.length || !!packages.length;
+
   return (
     <div className={classes.main}>
       <BreadCrump
@@ -119,7 +129,9 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
         className={classes.crump}
       />
 
-      <section className={classes.intro}>
+      {/* the profile's head (2026-10, compact like Doctolib / Halodoc): who,
+          where, open or not - and the two things a visitor does: call, go */}
+      <section className={classes.hero}>
         {!!data.banner && (
           <div className={classes.banner}>
             <HostedImage alt={data.name || ""} src={data.banner} fill sizes="100vw" style={{ objectFit: "cover" }} />
@@ -127,159 +139,184 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
         )}
         <div className={classes.head}>
           <div className={classes.avatar}>
-            <HostedImage alt={data.name || ""} src={data.avatar} fill sizes="5rem" style={{ objectFit: "cover" }} />
+            <HostedImage alt={data.name || ""} src={data.avatar} fill sizes="3.5rem" style={{ objectFit: "cover" }} />
           </div>
           <div className={classes.headText}>
             <h1 className={classes.name}>
               {data.name}
               {/* a valid licence the staff approved, not every pharmacy */}
-              <CentreVerifiedTick verified={data.verified} size="1.1rem" />
+              <CentreVerifiedTick verified={data.verified} size="1rem" />
             </h1>
-            {reviewCount > 0 && (
-              <a className={classes.rating} href="#Comment">
-                <Ixon width=".9rem" className={classes.star}>
-                  <StarIcon />
-                </Ixon>
-                <strong>{scoreFmt.format(Number(data.averageScore) || 0)}</strong>
-                <span>{`(${getContent("nComments", [new Intl.NumberFormat(intlTag).format(reviewCount)])})`}</span>
-              </a>
-            )}
             {(!!place || !!data.address) && (
               <span className={classes.place}>
-                <Ixon width=".9rem">
+                <Ixon width=".8rem">
                   <LocationIcon />
                 </Ixon>
                 {[place, data.address].filter(Boolean).join(" - ")}
               </span>
             )}
-            {takesOrders !== false && <DeliveryAreaNote area={deliveryArea} rxNote />}
-            {/* open now / closes at (2026-10, backend Lib/openingHours.ts) */}
-            <OpenStatusBadge status={data.openStatus} />
-            {((!!facts.isRoundTheClock && !hasWeek) || (!!facts.businessTime && !hasWeek) || !!facts.phone) && (
-              <span className={classes.facts}>
-                {!!facts.isRoundTheClock && !hasWeek && <span className={classes.chip}>{getContent("roundTheClock")}</span>}
-                {!!facts.businessTime && !hasWeek && (
-                  <span>
-                    {getContent("businessTime")}: {facts.businessTime}
-                  </span>
-                )}
-                {!!facts.phone && (
-                  <a href={`tel:${facts.phone}`} dir="ltr">
-                    {facts.phone}
-                  </a>
-                )}
-              </span>
-            )}
-          </div>
-        </div>
-        {!!insurers.length && (
-          <div className={classes.about}>
-            <h2 className={classes.sectionTitle}>{getContent("paraClinicInsurances")}</h2>
-            <div className={classes.facts}>
-              {insurers.map((el) => (
-                <Link key={el._id} className={classes.chip} href={`/insurance/${el.slug || el._id}`}>
-                  {el.name || el._id}
-                </Link>
-              ))}
+            <div className={classes.badges}>
+              {/* open now / closes at (backend Lib/openingHours.ts) */}
+              <OpenStatusBadge status={data.openStatus} />
+              {reviewCount > 0 && (
+                <a className={classes.rating} href="#Comment">
+                  <Ixon width=".8rem" className={classes.star}>
+                    <StarIcon />
+                  </Ixon>
+                  <strong>{scoreFmt.format(Number(data.averageScore) || 0)}</strong>
+                  <span>{`(${getContent("nComments", [new Intl.NumberFormat(intlTag).format(reviewCount)])})`}</span>
+                </a>
+              )}
             </div>
           </div>
-        )}
-        {hasWeek && (
-          <div className={classes.about}>
-            <OpeningHoursTable hours={data.openingHours} status={data.openStatus} note={facts.businessTime} />
-          </div>
-        )}
-        {!!data.summary && (
-          <div className={classes.about}>
-            <h2 className={classes.sectionTitle}>{getContent("about")}</h2>
-            <p>{data.summary}</p>
-          </div>
-        )}
+          {(!!facts.phone || hasPin) && (
+            <div className={classes.actions}>
+              {!!facts.phone && (
+                <a className={classes.primaryAction} href={`tel:${facts.phone}`}>
+                  <Ixon width="1rem">
+                    <CallCallingIcon />
+                  </Ixon>
+                  <span>{getContent("call")}</span>
+                  <bdi dir="ltr" className={classes.phone}>
+                    {facts.phone}
+                  </bdi>
+                </a>
+              )}
+              {hasPin && (
+                <a className={classes.ghostAction} href="#location">
+                  <Ixon width="1rem">
+                    <LocationIcon />
+                  </Ixon>
+                  <span>{getContent("mapOpenInNavApp")}</span>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
       </section>
 
-      <section className={classes.section}>
-        <h2 className={classes.sectionTitle}>{getContent("pharmacyProductsTitle")}</h2>
-        {!offers.length && !packages.length && (
-          <p className={classes.empty}>{getContent("pharmacyNoProducts")}</p>
-        )}
-        {!orderable && (!!offers.length || !!packages.length) && (
-          <p className={classes.notice}>{getContent("onlineOrderUnavailable")}</p>
-        )}
-        {!!offers.length && (
-          <ul className={classes.grid}>
-            {offers.map((offer) => (
-              <li key={offer._id} className={classes.cell}>
-                <ul className={classes.cardWrap}>
-                  <ServiceOrProductCard
-                    name={offer.product?.name || ""}
-                    image={offer.product?.image}
-                    category={offer.product?.category?.name}
-                    commentCount={offer.product?.commentCount || 0}
-                    rating={offer.product?.averageScore || 0}
-                    price={offer.price || 0}
-                    discount={offer.discount || 0}
-                    detail={stockDetail(offer.inStock)}
-                    target={`/product/${offer.product?.slug || offer.product?._id}`}
-                  />
+      <div className={classes.layout}>
+        <div className={classes.primary}>
+          {(!!data.summary || !!insurers.length) && (
+            <section className={classes.card}>
+              {!!data.summary && (
+                <div className={classes.about}>
+                  <h2 className={classes.sectionTitle}>{getContent("about")}</h2>
+                  <p>{data.summary}</p>
+                </div>
+              )}
+              {!!insurers.length && (
+                <div className={classes.about}>
+                  <h2 className={classes.sectionTitle}>{getContent("paraClinicInsurances")}</h2>
+                  <div className={classes.chips}>
+                    {insurers.map((el) => (
+                      <Link key={el._id} className={classes.chip} href={`/insurance/${el.slug || el._id}`}>
+                        {el.name || el._id}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* what can be ordered from it; a pharmacy with nothing online
+              shows no empty box */}
+          {hasProducts && (
+            <section className={classes.card}>
+              <h2 className={classes.sectionTitle}>{getContent("pharmacyProductsTitle")}</h2>
+              {!orderable && <p className={classes.notice}>{getContent("onlineOrderUnavailable")}</p>}
+              {!!offers.length && (
+                <ul className={classes.grid}>
+                  {offers.map((offer) => (
+                    <li key={offer._id} className={classes.cell}>
+                      <ul className={classes.cardWrap}>
+                        <ServiceOrProductCard
+                          name={offer.product?.name || ""}
+                          image={offer.product?.image}
+                          category={offer.product?.category?.name}
+                          commentCount={offer.product?.commentCount || 0}
+                          rating={offer.product?.averageScore || 0}
+                          price={offer.price || 0}
+                          discount={offer.discount || 0}
+                          detail={stockDetail(offer.inStock)}
+                          target={`/product/${offer.product?.slug || offer.product?._id}`}
+                        />
+                      </ul>
+                      {orderable && offer.inStock !== false && <CartActions itemId={offer._id} model="products" />}
+                    </li>
+                  ))}
                 </ul>
-                {orderable && offer.inStock !== false && (
-                  <CartActions itemId={offer._id} model="products" />
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-        {!!packages.length && (
-          <>
-            <h3 className={classes.subTitle}>{getContent("productPackages")}</h3>
-            <ul className={classes.grid}>
-              {packages.map((node) => (
-                <li key={node._id} className={classes.cell}>
-                  <ul className={classes.cardWrap}>
-                    <ServiceOrProductCard
-                      name={node.name || ""}
-                      image={node.image}
-                      category={node.category?.name}
-                      commentCount={node.commentCount || 0}
-                      rating={node.averageScore || 0}
-                      price={node.price || 0}
-                      discount={node.discount || 0}
-                      pack={Array.isArray(node.products) ? node.products.length : undefined}
-                      detail={stockDetail(node.inStock)}
-                      target={`/productPackage/${node.slug || node._id}`}
-                    />
+              )}
+              {!!packages.length && (
+                <>
+                  <h3 className={classes.subTitle}>{getContent("productPackages")}</h3>
+                  <ul className={classes.grid}>
+                    {packages.map((node) => (
+                      <li key={node._id} className={classes.cell}>
+                        <ul className={classes.cardWrap}>
+                          <ServiceOrProductCard
+                            name={node.name || ""}
+                            image={node.image}
+                            category={node.category?.name}
+                            commentCount={node.commentCount || 0}
+                            rating={node.averageScore || 0}
+                            price={node.price || 0}
+                            discount={node.discount || 0}
+                            pack={Array.isArray(node.products) ? node.products.length : undefined}
+                            detail={stockDetail(node.inStock)}
+                            target={`/productPackage/${node.slug || node._id}`}
+                          />
+                        </ul>
+                        {orderable && node.inStock !== false && (
+                          <CartActions itemId={node._id} model="productPackages" />
+                        )}
+                      </li>
+                    ))}
                   </ul>
-                  {orderable && node.inStock !== false && (
-                    <CartActions itemId={node._id} model="productPackages" />
-                  )}
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </section>
+                </>
+              )}
+            </section>
+          )}
 
-      <LocationSection
-        className={classes.location}
-        coords={data.location?.coordinates}
-        name={data.name}
-        address={data.address}
-      />
+          {!!faqItems?.length && (
+            <section className={classes.card}>
+              <FaqList id="faq" items={faqItems} title={getContent("afqTitle", [data.name || ""])} />
+            </section>
+          )}
 
-      {!!faqItems?.length && (
-        <section className={classes.section}>
-          <FaqList
-            id="faq"
-            items={faqItems}
-            title={getContent("afqTitle", [data.name || ""])}
-          />
-        </section>
-      )}
+          {/* verified buyer reviews: score, tags summary, recent reviews */}
+          <section className={classes.card} id="Comment">
+            <CommentSection nodeId={data._id} model="Pharmacy" />
+          </section>
+        </div>
 
-      {/* verified buyer reviews (2026-10): score, tags summary, recent reviews */}
-      <section className={classes.section} id="Comment">
-        <CommentSection nodeId={data._id} model="Pharmacy" />
-      </section>
+        <aside className={classes.side}>
+          {(hasWeek || everyDay24 || !!facts.businessTime) && (
+            <section className={classes.card}>
+              <h2 className={classes.sectionTitle}>{getContent("ohWeekTitle")}</h2>
+              {everyDay24 ? (
+                <p className={classes.allDay}>
+                  <span className={classes.dot} aria-hidden />
+                  {getContent("ohEveryDay")} · {getContent("ohAllDay")}
+                </p>
+              ) : hasWeek ? (
+                <div className={classes.hours}>
+                  <OpeningHoursTable hours={data.openingHours} status={data.openStatus} note={facts.businessTime} />
+                </div>
+              ) : (
+                <p className={classes.muted}>{facts.businessTime}</p>
+              )}
+            </section>
+          )}
+          {orderable && (
+            <section className={classes.card}>
+              <DeliveryAreaNote area={deliveryArea} rxNote />
+            </section>
+          )}
+          <LocationSection className={classes.location} coords={coords} name={data.name} address={data.address} />
+        </aside>
+      </div>
     </div>
   );
 };

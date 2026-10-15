@@ -7647,5 +7647,6 @@
  "specGroupDental": "Стоматология",
  "specGroupAllied": "Другие медицинские специалисты",
  "subSpecialities": "Узкие специализации и стажировки",
- "doctorsOfferingX": "Врачи, которые делают «${1}»"
+ "doctorsOfferingX": "Врачи, которые делают «${1}»",
+ "ohEveryDay": "Каждый день"
 }

@@ -6341,6 +6341,8 @@ export const contentNamespaces = {
   ],
   // app/pharmacy/[slug]/page.tsx (Components/Pharmacy/PharmacyPage).
   pharmacyPage: [
+    "call",
+    "mapOpenInNavApp",
     "deliveryNationwide",
     "deliveryOnlyInCity",
     "deliveryToAreas",
@@ -7403,6 +7405,7 @@ export const contentNamespaces = {
   // structured opening hours (2026-10): the open-now badge, the week
   // table, the open-now filter and the panels' hours editor
   openingHours: [
+    "ohEveryDay",
     "ohOpenNow",
     "ohClosedNow",
     "ohOpen24h",

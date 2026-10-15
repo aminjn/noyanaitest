@@ -7647,5 +7647,6 @@
  "specGroupDental": "歯科",
  "specGroupAllied": "その他の医療専門職",
  "subSpecialities": "サブスペシャルティとフェローシップ",
- "doctorsOfferingX": "「${1}」を行う医師"
+ "doctorsOfferingX": "「${1}」を行う医師",
+ "ohEveryDay": "毎日"
 }

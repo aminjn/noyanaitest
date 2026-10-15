@@ -7647,5 +7647,6 @@
  "specGroupDental": "Kedokteran gigi",
  "specGroupAllied": "Tenaga kesehatan lainnya",
  "subSpecialities": "Subspesialisasi dan fellowship",
- "doctorsOfferingX": "Dokter yang menangani «${1}»"
+ "doctorsOfferingX": "Dokter yang menangani «${1}»",
+ "ohEveryDay": "Setiap hari"
 }
