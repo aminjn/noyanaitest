@@ -66,7 +66,10 @@ const InsurancesPage = ({
 
   const push = useProgress();
 
+  // a new search opens its first page; otherwise the URL is left alone
+  // (it rewrote every URL without its page: «صفحه بعد» went back to page 1)
   useEffect(() => {
+    if ((searchParams.get("search") || "") === (query || "")) return;
     const params = new URLSearchParams();
     if (query) params.append("search", query);
     const categories = searchParams.getAll("category");
