@@ -24,7 +24,7 @@ import { IPharmacy } from "../DoctorPanel/Pharmacy/DoctorPharmaciesTab";
 import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
 import { exceptionsOf, isFullDay, weekOf } from "../OpeningHours/openingHours";
-import CallCallingIcon from "../Icons/CallCallingIcon";
+import PhoneReveal, { PhoneRevealHandle } from "../Dr/New/PhoneReveal";
 import {
   IProduct,
   IProductSeller,
@@ -117,6 +117,7 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
   const coords = data.location?.coordinates;
   const hasPin = Array.isArray(coords) && coords.length === 2;
   const hasProducts = !!offers.length || !!packages.length;
+  const reveal = (data as { phoneReveal?: PhoneRevealHandle }).phoneReveal;
 
   return (
     <div className={classes.main}>
@@ -169,19 +170,11 @@ const PharmacyPage = ({ data, products, productPackages, takesOrders, deliveryAr
               )}
             </div>
           </div>
-          {(!!facts.phone || hasPin) && (
+          {(!!reveal?.count || hasPin) && (
             <div className={classes.actions}>
-              {!!facts.phone && (
-                <a className={classes.primaryAction} href={`tel:${facts.phone}`}>
-                  <Ixon width="1rem">
-                    <CallCallingIcon />
-                  </Ixon>
-                  <span>{getContent("call")}</span>
-                  <bdi dir="ltr" className={classes.phone}>
-                    {facts.phone}
-                  </bdi>
-                </a>
-              )}
+              {/* the number behind «نمایش شماره تماس», each reveal counted
+                  (backend Lib/phoneReveal.ts) */}
+              {!!reveal?.count && <PhoneReveal id={data._id} handle={reveal} placement="header" />}
               {hasPin && (
                 <a className={classes.ghostAction} href="#location">
                   <Ixon width="1rem">

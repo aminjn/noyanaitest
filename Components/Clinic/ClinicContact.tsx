@@ -5,6 +5,7 @@ import { tsmRegular, txsDemiBold, txsRegular } from "../UI/Typography";
 import classes from "./ClinicContact.module.css";
 import { ClinicPageNode } from "./ClinicPage";
 import MedicalCenterContactInfo from "./MedicalCenterContactInfo";
+import { PhoneRevealHandle } from "../Dr/New/PhoneReveal";
 const ClinicContact = ({ node }: { node: ClinicPageNode }) => {
   return (
     <MedicalCenterContactInfo
@@ -15,6 +16,7 @@ const ClinicContact = ({ node }: { node: ClinicPageNode }) => {
       mail={node.mail}
       owner={node.owner ? getDoctorProfileLabel(node.owner) : undefined}
       phone={node.phone}
+      reveal={{ id: node._id, handle: (node as { phoneReveal?: PhoneRevealHandle }).phoneReveal }}
       website={node.website}
     />
   );

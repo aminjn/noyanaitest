@@ -11,6 +11,7 @@ import classes from "./HospitalsPage.module.css";
 import MedicalCenterSummary from "../Clinic/MedicalCenterSummary";
 import MedicalCenterTagList from "../Clinic/MedicalCenterTagList";
 import MedicalCenterContactInfo, { hasContactInfo } from "../Clinic/MedicalCenterContactInfo";
+import { PhoneRevealHandle } from "../Dr/New/PhoneReveal";
 import { getDoctorProfileLabel } from "../Admin/Lib/LabelGetters";
 import HospitalPageClinics from "./HospitalPageClinics";
 import { ISpeciality } from "../Admin/Speciality/AdminManageSpecialitiesPage";
@@ -177,6 +178,7 @@ const HospitalPage = ({ data, faqItems }: HospitalPageProps) => {
           owner={data.owner ? getDoctorProfileLabel(data.owner) : undefined}
           phone={data.phone}
           website={data.website}
+          reveal={{ id: data._id, handle: (data as { phoneReveal?: PhoneRevealHandle }).phoneReveal }}
         />
         {/* the hospital's own departments / wards, each with its doctors */}
         <MedicalCenterDepartments
