@@ -42,6 +42,9 @@ export type CategoryLike = {
   slug?: string;
   name?: string;
   title?: string;
+  // a section without categories in use lists its items instead (backend
+  // getHeader): the entry opens the item's own page
+  isItem?: boolean;
 };
 
 // soft colour pair for an icon tile (see the --tone* tokens in globals.css)
@@ -56,6 +59,14 @@ export type CategoryTab = {
   tone: Tone;
   allTarget: string;
   hrefFor: (value: string) => string;
+  // an item's own page (a section listing its items, not its categories)
+  itemHref?: (value: string) => string;
+};
+
+// the entry's link: the item's page or the category's list
+export const entryHref = (tab: CategoryTab, entry: CategoryLike) => {
+  const value = entry.slug || entry._id;
+  return entry.isItem && tab.itemHref ? tab.itemHref(value) : tab.hrefFor(value);
 };
 
 // The header's mega menu and the mobile drawer read the same list.
@@ -76,6 +87,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "rose",
     label: "diseases",
     allTarget: "/disease",
+    itemHref: (v) => `/disease/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/disease?category=${v}`,
   },
   {
@@ -85,6 +97,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "amber",
     label: "symptoms",
     allTarget: "/symptom",
+    itemHref: (v) => `/symptom/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/symptom?category=${encodeURIComponent(v)}`,
   },
   {
@@ -94,6 +107,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "sky",
     label: "clinics",
     allTarget: "/clinic",
+    itemHref: (v) => `/clinic/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/clinic?category=${v}`,
   },
   {
@@ -103,6 +117,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "teal",
     label: "paraClinics",
     allTarget: "/paraClinic",
+    itemHref: (v) => `/paraClinic/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/paraClinic?category=${v}`,
   },
   {
@@ -112,6 +127,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "rose",
     label: "hospitals",
     allTarget: "/hospital",
+    itemHref: (v) => `/hospital/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/hospital?category=${v}`,
   },
   {
@@ -130,6 +146,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "teal",
     label: "products",
     allTarget: "/product",
+    itemHref: (v) => `/product/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/product?category=${v}`,
   },
   {
@@ -139,6 +156,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "sky",
     label: "insurances",
     allTarget: "/insurance",
+    itemHref: (v) => `/insurance/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/insurance?category=${v}`,
   },
   {
@@ -148,6 +166,7 @@ export const categoryTabs: CategoryTab[] = [
     tone: "amber",
     label: "tests",
     allTarget: "/test",
+    itemHref: (v) => `/test/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/test?category=${encodeURIComponent(v)}`,
   },
   {
@@ -158,6 +177,7 @@ export const categoryTabs: CategoryTab[] = [
     label: "blogs",
     allTarget: "/mag",
     // the blog list filters by ?category= (there is no /mag/category route)
+    itemHref: (v) => `/mag/${encodeURIComponent(v)}`,
     hrefFor: (v) => `/mag?category=${encodeURIComponent(v)}`,
   },
 ];
