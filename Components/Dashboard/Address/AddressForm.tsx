@@ -135,6 +135,8 @@ const AddressForm = ({
         compact
         defaultValue={point || undefined}
         hint={getContent("addressPinFirst")}
+        // a typed address moves the pin (PointPickerCore)
+        currentAddress={form.address}
         onChange={(p) => {
           moved.current = true;
           setPoint(p);
