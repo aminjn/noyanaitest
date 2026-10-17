@@ -9,7 +9,7 @@ import Button from "@/Components/UI/Button";
 import Ixon from "@/Components/UI/Ixon";
 import LocationIcon from "@/Components/Icons/LocationIcon";
 import PlaceSearch, { PlacePick } from "./PlaceSearch";
-import { geocode, getMapConfig, LatLng, reverseGeocode, ReverseResult } from "./nexamap";
+import { geocodeAddressPin, getMapConfig, LatLng, reverseGeocode, ReverseResult } from "./nexamap";
 import { asPoint } from "./point";
 
 export { asPoint };
@@ -38,8 +38,7 @@ const REVERSE_DEBOUNCE_MS = 350;
 // a typed address moves the pin once the typing stops
 const GEOCODE_DEBOUNCE_MS = 900;
 const GEOCODE_MIN_CHARS = 6;
-// a match no finer than the city would only put the pin on the city centre
-const COARSE_MATCH = new Set(["country", "province", "state", "county", "city", "region"]);
+
 
 // The body of both location pickers: place search, the map (a click sets
 // the point), "my location", optional typed coordinates, and the address of
@@ -142,6 +141,8 @@ const PointPickerCore = ({
   const lastAddressRef = useRef((currentAddress || "").trim());
   const ownAddressRef = useRef<string>("");
   const rootRef = useRef<HTMLDivElement>(null);
+  // where the map is: a typed address's pin is looked for near it
+  const nearRef = useRef<LatLng | null>(null);
   useEffect(() => {
     if (!reverseOn || !Number.isFinite(lat) || !Number.isFinite(lng)) return;
     let alive = true;
@@ -195,19 +196,12 @@ const PointPickerCore = ({
     if (!typing) return;
     let alive = true;
     const timer = setTimeout(() => {
-      geocode(text)
-        .then((results) => {
-          if (!alive) return;
-          const hit = (Array.isArray(results) ? results : []).find(
-            (r) =>
-              !!r?.location &&
-              Number.isFinite(r.location.lat) &&
-              Number.isFinite(r.location.lng) &&
-              !COARSE_MATCH.has(String(r.match_level || "")) &&
-              (typeof r.confidence !== "number" || r.confidence >= 0.5),
-          );
-          if (!hit) return;
-          const next: [number, number] = [hit.location.lng, hit.location.lat];
+      // as written, then without the plaque and shortened (backend
+      // Lib/geocodeAddress.ts), nearest to where the map is
+      geocodeAddressPin(text, { near: nearRef.current })
+        .then((hit) => {
+          if (!alive || !hit || !Number.isFinite(hit.lat) || !Number.isFinite(hit.lng)) return;
+          const next: [number, number] = [hit.lng, hit.lat];
           select(next);
           flyTo(next);
         })
@@ -265,6 +259,7 @@ const PointPickerCore = ({
     : center
       ? { lat: center.lat, lng: center.lng }
       : null;
+  nearRef.current = near;
 
   const addressText = address?.formatted_address?.trim() || "";
   const zone = address?.extras?.in_traffic_zone;
