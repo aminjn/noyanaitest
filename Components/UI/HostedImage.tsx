@@ -2,7 +2,7 @@
 
 import Image, { ImageProps } from "next/image";
 import { useEffect, useState } from "react";
-import { imagePath, isAbsoluteFileUrl } from "../helpers/imagepath";
+import { imagePath } from "../helpers/imagepath";
 import classes from "./HostedImage.module.css";
 
 export type HostedImageProps = Omit<ImageProps, "src" | "alt"> & {
@@ -81,9 +81,13 @@ const HostedImage = ({
         onLoad?.(e);
       }}
       {...rest}
-      // an absolute URL on another host (an old-site image) is not one the
-      // image optimizer may fetch: the browser loads it directly
-      unoptimized={rest.unoptimized || isAbsoluteFileUrl(src)}
+      // the browser loads an uploaded file straight from /files (nginx and
+      // the CDN serve and cache it). Through Next's optimizer the frontend
+      // server had to download every file again from the site's own public
+      // address - on the server that round trip is slow or fails (2026-10:
+      // /_next/image 500s on the insurers list and a slow page). Also an
+      // old-site image on another host, which the optimizer may not fetch.
+      unoptimized
     />
   );
 };
