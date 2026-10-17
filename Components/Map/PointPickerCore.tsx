@@ -9,7 +9,7 @@ import Button from "@/Components/UI/Button";
 import Ixon from "@/Components/UI/Ixon";
 import LocationIcon from "@/Components/Icons/LocationIcon";
 import PlaceSearch, { PlacePick } from "./PlaceSearch";
-import { getMapConfig, LatLng, reverseGeocode, ReverseResult } from "./nexamap";
+import { geocode, getMapConfig, LatLng, reverseGeocode, ReverseResult } from "./nexamap";
 import { asPoint } from "./point";
 
 export { asPoint };
@@ -35,6 +35,11 @@ export type PointPickerTexts = {
 export type AddressComponents = Record<string, string>;
 
 const REVERSE_DEBOUNCE_MS = 350;
+// a typed address moves the pin once the typing stops
+const GEOCODE_DEBOUNCE_MS = 900;
+const GEOCODE_MIN_CHARS = 6;
+// a match no finer than the city would only put the pin on the city centre
+const COARSE_MATCH = new Set(["country", "province", "state", "county", "city", "region"]);
 
 // The body of both location pickers: place search, the map (a click sets
 // the point), "my location", optional typed coordinates, and the address of
@@ -78,6 +83,7 @@ const PointPickerCore = ({
   // a point the user chose (map, search, GPS, typing) vs. the saved one
   const [touched, setTouched] = useState<boolean>(false);
   const [reverseOn, setReverseOn] = useState<boolean>(false);
+  const [geocodeOn, setGeocodeOn] = useState<boolean>(false);
   const [address, setAddress] = useState<ReverseResult | null>(null);
   const [addressState, setAddressState] = useState<"idle" | "loading" | "error">("idle");
   const [locating, setLocating] = useState<boolean>(false);
@@ -112,7 +118,9 @@ const PointPickerCore = ({
   useEffect(() => {
     let alive = true;
     getMapConfig().then((config) => {
-      if (alive) setReverseOn(!!config?.enabled && config.features?.reverse !== false);
+      if (!alive) return;
+      setReverseOn(!!config?.enabled && config.features?.reverse !== false);
+      setGeocodeOn(!!config?.enabled && config.features?.search !== false);
     });
     return () => {
       alive = false;
@@ -129,6 +137,11 @@ const PointPickerCore = ({
   onUseAddressRef.current = onUseAddress;
   const currentAddressRef = useRef(currentAddress);
   currentAddressRef.current = currentAddress;
+  // the address the form started with / last saw, and the last one the map
+  // wrote into it (the address → pin effect below skips both)
+  const lastAddressRef = useRef((currentAddress || "").trim());
+  const ownAddressRef = useRef<string>("");
+  const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!reverseOn || !Number.isFinite(lat) || !Number.isFinite(lng)) return;
     let alive = true;
@@ -144,8 +157,10 @@ const PointPickerCore = ({
           const components = result?.components || {};
           onAddressRef.current?.(text, components);
           // an empty address field is filled right away
-          if (!currentAddressRef.current?.trim())
+          if (!currentAddressRef.current?.trim()) {
+            ownAddressRef.current = text;
             onUseAddressRef.current?.(text, components);
+          }
         })
         .catch(() => {
           if (!alive) return;
@@ -158,6 +173,51 @@ const PointPickerCore = ({
       clearTimeout(timer);
     };
   }, [reverseOn, lat, lng, touched]);
+
+  // the other way round (2026-10, the owner's rule: both must work): an
+  // address typed in the form's address field moves the pin to it. Not the
+  // address the form started with, nor one the map itself wrote there (the
+  // chosen point's own address), so a pin and its address never chase
+  // each other.
+  useEffect(() => {
+    const text = (currentAddress || "").trim();
+    if (!geocodeOn || text === lastAddressRef.current) return;
+    lastAddressRef.current = text;
+    if (text.length < GEOCODE_MIN_CHARS || text === ownAddressRef.current) return;
+    // only what the user is typing in the form's own address field: a
+    // value a form filled itself (from the chosen point) arrives while the
+    // focus is on the map or elsewhere
+    const active = typeof document !== "undefined" ? document.activeElement : null;
+    const typing =
+      active instanceof HTMLElement &&
+      (active.tagName === "TEXTAREA" || active.tagName === "INPUT") &&
+      !rootRef.current?.contains(active);
+    if (!typing) return;
+    let alive = true;
+    const timer = setTimeout(() => {
+      geocode(text)
+        .then((results) => {
+          if (!alive) return;
+          const hit = (Array.isArray(results) ? results : []).find(
+            (r) =>
+              !!r?.location &&
+              Number.isFinite(r.location.lat) &&
+              Number.isFinite(r.location.lng) &&
+              !COARSE_MATCH.has(String(r.match_level || "")) &&
+              (typeof r.confidence !== "number" || r.confidence >= 0.5),
+          );
+          if (!hit) return;
+          const next: [number, number] = [hit.location.lng, hit.location.lat];
+          select(next);
+          flyTo(next);
+        })
+        .catch(() => {});
+    }, GEOCODE_DEBOUNCE_MS);
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
+  }, [currentAddress, geocodeOn, select, flyTo]);
 
   const locate = () => {
     setLocateError("");
@@ -214,7 +274,7 @@ const PointPickerCore = ({
     addressText !== (currentAddress || "").trim();
 
   return (
-    <div className={`${classes.main} ${compact ? classes.compact : ""}`}>
+    <div ref={rootRef} className={`${classes.main} ${compact ? classes.compact : ""}`}>
       {!!hint && <p className={classes.hint}>{hint}</p>}
       <div className={classes.searchRow}>
         <div className={classes.search}>
@@ -301,7 +361,10 @@ const PointPickerCore = ({
               size="S"
               mode="Outline"
               variant="Primary"
-              onClick={() => onUseAddress?.(addressText, address?.components || {})}
+              onClick={() => {
+                ownAddressRef.current = addressText;
+                onUseAddress?.(addressText, address?.components || {});
+              }}
               className={classes.use}
             >
               {texts.useThisAddress}
