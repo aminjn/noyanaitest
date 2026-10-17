@@ -130,7 +130,7 @@ const InsurancesPage = ({
       </div>
       <ListPageActiveFilters basePath="/insurance" filters={filters} />
       <ListPageList
-        itemWidth="22.8125rem"
+        itemWidth="20rem"
         pagination={{
           currentPage: Number(searchParams.get("page")) || 1,
           makePath: (page) => {

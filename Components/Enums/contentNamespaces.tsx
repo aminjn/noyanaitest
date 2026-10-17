@@ -6253,7 +6253,7 @@ export const contentNamespaces = {
     "centreOnlineOrder",
     "centreInStoreOnly",
   ],
-  insuranceCard: ["establishedAtx", "member", "center", "doctor"],
+  insuranceCard: ["establishedAtx", "member", "center", "doctor", "basicInsurance", "finInsSupplementary", "seeDetails"],
 
   // ---- Pages.
   // app/clinic/page.tsx (ClinicsListPage).
