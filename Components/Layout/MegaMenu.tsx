@@ -27,6 +27,7 @@ import {
   categoryTabs,
   CategoryLike,
   CategoryTab,
+  entryHref,
   HeaderCategories,
 } from "./headerCategories";
 import useHeaderCategories from "./useHeaderCategories";
@@ -263,7 +264,7 @@ const MegaMenu = () => {
               {shown.map((cat) => (
                 <li key={cat._id}>
                   <Link
-                    href={active.hrefFor(cat.slug || cat._id)}
+                    href={entryHref(active, cat)}
                     className={classes.item}
                     onClick={() => close()}
                   >
