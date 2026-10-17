@@ -60,9 +60,10 @@ const CartActions = ({
         <Button
           variant="Error"
           mode="Fill"
-          size="M"
+          size="S"
           radius="Medium"
-          tailIcon-={<CartIcon />}
+          tailIcon={<CartIcon />}
+          iconWidth="1rem"
           onClick={() =>
             mutateCartItem({
               item: itemId,

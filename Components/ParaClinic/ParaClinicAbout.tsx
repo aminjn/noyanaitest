@@ -18,6 +18,7 @@ import FlaskIcon from "../Icons/FlaskIcon";
 import { tbaseMedium, tsmMedium, tsmRegular } from "../UI/Typography";
 
 import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
+import PhoneReveal, { PhoneRevealHandle } from "../Dr/New/PhoneReveal";
 import { exceptionsOf, weekOf } from "../OpeningHours/openingHours";
 const NS: ContentNamespace[] = ["common", "paraClinicPage", "openingHours"];
 
@@ -140,7 +141,12 @@ const ParaClinicAbout = ({ data }: ParaClinicPageProps) => {
             .filter(Boolean)
             .join(listSep)}
         />
-        <Detail icon={<CallingIcon />} value={data.phone} />
+        {/* the lab's number behind «نمایش شماره تماس», each reveal counted */}
+        {(data as { phoneReveal?: PhoneRevealHandle }).phoneReveal?.count ? (
+          <PhoneReveal id={data._id} handle={(data as { phoneReveal?: PhoneRevealHandle }).phoneReveal} placement="contact" />
+        ) : (
+          <Detail icon={<CallingIcon />} value={data.phone} />
+        )}
         {hasWeek ? (
           <OpeningHoursTable hours={data.openingHours} status={data.openStatus} note={data.businessTime} />
         ) : (

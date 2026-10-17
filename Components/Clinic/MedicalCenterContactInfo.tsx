@@ -6,6 +6,7 @@ import { tsmRegular, txsDemiBold, txsRegular } from "../UI/Typography";
 import classes from "./MedicalCenterContactInfo.module.css";
 import OpeningHoursTable from "../OpeningHours/OpeningHoursTable";
 import { exceptionsOf, OpeningHours, OpenStatus, weekOf } from "../OpeningHours/openingHours";
+import PhoneReveal, { PhoneRevealHandle } from "../Dr/New/PhoneReveal";
 
 const NS: ContentNamespace[] = ["common", "medicalCenter"];
 
@@ -20,10 +21,10 @@ type ContactFields = {
 // a structured week (2026-10) shows as the table, its free text as the note
 const hasWeek = (h?: OpeningHours | null) => !!weekOf(h) || !!exceptionsOf(h).length;
 // a centre with nothing to show gets no empty box (nor a nav chip for it)
-export const hasContactInfo = (n: ContactFields & { owner?: unknown }) =>
+export const hasContactInfo = (n: ContactFields & { owner?: unknown; phoneReveal?: PhoneRevealHandle }) =>
   [n.address, n.phone, n.website, n.mail, n.businessTimes].some(
     (v) => typeof v === "string" && !!v.trim(),
-  ) || !!n.owner || hasWeek(n.openingHours);
+  ) || !!n.owner || hasWeek(n.openingHours) || !!n.phoneReveal?.count;
 const MedicalCenterContactInfo = ({
   address,
   businessTimes,
@@ -33,7 +34,10 @@ const MedicalCenterContactInfo = ({
   website,
   openingHours,
   openStatus,
+  reveal,
 }: {
+  // the centre's number behind «نمایش شماره تماس» (each reveal counted)
+  reveal?: { id: string; handle?: PhoneRevealHandle };
   address?: string;
   phone?: string;
   website?: string;
@@ -45,7 +49,7 @@ const MedicalCenterContactInfo = ({
 }) => {
   const getContent = useScopedLocale(NS);
 
-  if (!hasContactInfo({ address, phone, website, mail, businessTimes, owner, openingHours })) return null;
+  if (!hasContactInfo({ address, phone, website, mail, businessTimes, owner, openingHours, phoneReveal: reveal?.handle })) return null;
   return (
     <div className={classes.main} id="contact">
       <IconTitle icon={<LocationIcon />}>{getContent("contactInfo")}</IconTitle>
@@ -54,7 +58,12 @@ const MedicalCenterContactInfo = ({
           <p className={`${classes.black} ${tsmRegular}`}>{address}</p>
         )}
         {/* the phone dials, the site and mail open (a patient calls to ask) */}
-        {!!phone?.trim() && (
+        {!!reveal?.handle?.count && (
+          <div className={classes.black}>
+            <PhoneReveal id={reveal.id} handle={reveal.handle} placement="contact" />
+          </div>
+        )}
+        {!reveal?.handle && !!phone?.trim() && (
           <p className={`${classes.black} ${tsmRegular}`}>
             <a href={`tel:${phone.replace(/[^\d+]/g, "")}`} dir="ltr">
               {phone}

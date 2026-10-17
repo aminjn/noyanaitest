@@ -9,7 +9,9 @@ import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
 import classes from "./PhoneReveal.module.css";
 
-const NS: ContentNamespace[] = ["common", "drProfile"];
+// its texts sit in "common": every profile page (doctor, clinic, hospital,
+// lab, pharmacy) shows the button
+const NS: ContentNamespace[] = ["common"];
 
 export type PhoneRevealHandle = { kind: string; count: number; ticket: string };
 type PublicPhone = { phone: string; name?: string };
