@@ -141,10 +141,12 @@ const FeedSources = () => {
   const [busy, setBusy] = useState<string | null>(null);
   const feeds = Array.isArray(data) ? data.filter((f) => f && f._id) : [];
 
-  const sync = async (feed: Feed) => {
+  // full: everything again, not only what changed since the last run (the
+  // records an older import placed wrongly are put right)
+  const sync = async (feed: Feed, full = false) => {
     setBusy(feed._id);
     try {
-      await fetcher({ url: `${BASE}/${feed._id}/sync`, method: "POST" });
+      await fetcher({ url: `${BASE}/${feed._id}/sync`, method: "POST", payload: full ? { full: true } : {} });
       await mutate();
     } catch (err) {
       pushNotification((err as Error).message, "Error");
@@ -192,6 +194,14 @@ const FeedSources = () => {
                   <div className={classes.rowActions}>
                     <Button size="S" isLoading={busy === feed._id || !!feed.syncing} onClick={feed.syncing ? undefined : () => sync(feed)}>
                       {ta("همگام‌سازی الان")}
+                    </Button>
+                    <Button
+                      size="S"
+                      variant="Neutral"
+                      title={ta("همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات")}
+                      onClick={feed.syncing || busy === feed._id ? undefined : () => sync(feed, true)}
+                    >
+                      {ta("همگام‌سازی کامل")}
                     </Button>
                     <Button size="S" variant="Neutral" onClick={() => setEditing(feed._id)}>
                       {ta("ویرایش")}
