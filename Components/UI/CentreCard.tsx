@@ -18,6 +18,8 @@ import PlusIcon from "../Icons/PlusIcon";
 import ShieldIcon from "../Icons/ShieldIcon";
 import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
+import UserGroupIcon from "../Icons/UserGroupIcon";
+import HospitalIcon from "../Icons/HospitalIcon";
 import CentreVerifiedTick from "./CentreVerifiedTick";
 import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 import { OpenStatus } from "../OpeningHours/openingHours";
@@ -31,7 +33,7 @@ import { currencize } from "../helpers/currencize";
 
 const NS: ContentNamespace[] = ["common", "centreCard"];
 
-export type CentreKind = "clinic" | "hospital" | "paraClinic" | "pharmacy";
+export type CentreKind = "clinic" | "hospital" | "paraClinic" | "pharmacy" | "insurance";
 
 // the public page and list of each kind (the list is where a tag or an
 // insurer chip leads: the same list, narrowed to it)
@@ -40,18 +42,21 @@ const kindPath: Record<CentreKind, string> = {
   hospital: "/hospital",
   paraClinic: "/paraClinic",
   pharmacy: "/pharmacy",
+  insurance: "/insurance",
 };
 const kindLabel: Record<CentreKind, ContentKey> = {
   clinic: "clinic",
   hospital: "hospital",
   paraClinic: "lab",
   pharmacy: "pharmacy",
+  insurance: "insurance",
 };
 const actionLabel: Record<CentreKind, ContentKey> = {
   clinic: "seeDetails",
   hospital: "seeDetails",
   paraClinic: "seeParaClinic",
   pharmacy: "seePharmacy",
+  insurance: "seeDetails",
 };
 
 // one lab's offer of the test the list was opened for (Halodoc / Vezeeta:
@@ -93,6 +98,12 @@ export type CentreCardNode = {
   // pharmacy: its plan takes online orders, and where it ships
   takesOrders?: boolean;
   deliveryArea?: DeliveryArea | null;
+  // insurer (2026-10: the insurers list uses this card too): basic or
+  // supplementary, founded, members, and its network on the site
+  isBasic?: boolean;
+  establishment?: string;
+  membersCount?: string;
+  network?: { clinics?: number; hospitals?: number; paraClinics?: number; doctors?: number } | null;
 };
 
 type Named = { _id: string; name: string };
@@ -199,7 +210,11 @@ const CentreCard = ({
   const image = node?.image || node?.avatar || node?.banner;
   const place = named(node?.city)?.name || named(node?.province)?.name;
   const category = named(node?.category)?.name;
-  const tags = namedList(node?.tags);
+  // an insurer's tag that only repeats its basic / supplementary badge
+  // («بیمه‌ی پایه» beside «بیمه پایه») is left out
+  const squash = (v: string) => v.replace(/[\s\u200cی]+/g, "");
+  const kindBadge = kind === "insurance" ? squash(getContent(node?.isBasic ? "basicInsurance" : "finInsSupplementary")) : "";
+  const tags = namedList(node?.tags).filter((t) => !kindBadge || squash(t.name) !== kindBadge);
   const insurers = namedList(node?.insurances);
   // approved, verified reviews only; nothing before the first one
   const reviews = Number(node?.reviewCount ?? node?.commentCount) || 0;
@@ -221,6 +236,10 @@ const CentreCard = ({
   // flag alone is shown on a centre without structured hours
   const roundTheClock = !!node?.isRoundTheClock && !node?.openStatus;
   const linkProps = newTab ? { target: "_blank" } : {};
+  const networkCentres =
+    (Number(node?.network?.clinics) || 0) + (Number(node?.network?.hospitals) || 0) + (Number(node?.network?.paraClinics) || 0);
+  // an insurer's image is its logo: shown whole, not cropped
+  const logo = kind === "insurance";
 
   const facts = (
     <>
@@ -235,6 +254,38 @@ const CentreCard = ({
             <StetoscopeIcon />
           </Ixon>
           {getContent("nBeds", [new Intl.NumberFormat(intlTag).format(Number(node.bedCount))])}
+        </span>
+      )}
+      {kind === "insurance" && (
+        <Badge color={node?.isBasic ? "Primarylight" : "Disabled"} size="S" mode="Fill" radius="High">
+          {getContent(node?.isBasic ? "basicInsurance" : "finInsSupplementary")}
+        </Badge>
+      )}
+      {kind === "insurance" && !!node?.establishment && (
+        <span className={`${classes.muted} ${txsRegular}`}>{getContent("establishedAtx", [node.establishment])}</span>
+      )}
+      {kind === "insurance" && !!node?.membersCount && (
+        <span className={`${classes.muted} ${txsRegular}`}>
+          <Ixon width=".75rem">
+            <UserGroupIcon />
+          </Ixon>
+          {`${node.membersCount} ${getContent("member")}`}
+        </span>
+      )}
+      {kind === "insurance" && networkCentres > 0 && (
+        <span className={`${classes.muted} ${txsRegular}`}>
+          <Ixon width=".75rem">
+            <HospitalIcon />
+          </Ixon>
+          {`${new Intl.NumberFormat(intlTag).format(networkCentres)} ${getContent("center")}`}
+        </span>
+      )}
+      {kind === "insurance" && Number(node?.network?.doctors) > 0 && (
+        <span className={`${classes.muted} ${txsRegular}`}>
+          <Ixon width=".75rem">
+            <StetoscopeIcon />
+          </Ixon>
+          {`${new Intl.NumberFormat(intlTag).format(Number(node!.network!.doctors))} ${getContent("doctor")}`}
         </span>
       )}
       {kind === "pharmacy" && typeof node?.takesOrders === "boolean" && (
@@ -318,8 +369,8 @@ const CentreCard = ({
 
   return (
     <Tag className={`${classes.main} ${className}`} style={style}>
-      <Link href={href} className={classes.media} tabIndex={-1} aria-hidden {...linkProps}>
-        <HostedImage alt={name} src={image} sizes="24rem" style={{ objectFit: "cover" }} fill />
+      <Link href={href} className={`${classes.media} ${logo ? classes.mediaLogo : ""}`} tabIndex={-1} aria-hidden {...linkProps}>
+        <HostedImage alt={name} src={image} sizes="24rem" style={{ objectFit: logo ? "contain" : "cover" }} fill />
         {!!category && (
           <Badge color="Black" size="S" mode="Outline" radius="High" className={classes.mediaStart}>
             {category}

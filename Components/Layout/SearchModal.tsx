@@ -37,7 +37,6 @@ import TestCard from "../Test/TestCard";
 import ServiceCard from "../Service/ServiceCard";
 import SpecialityCard from "../Speciality/SpecialityCard";
 import SymptomCard from "../Symptom/SymptomCard";
-import InsuranceCard from "../Insurance/InsuranceCard";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 import DrugCard from "../Drug/DrugCard";
 import { tbaseMedium, tsmDemiBold } from "../UI/Typography";
@@ -381,7 +380,7 @@ const SearchModal = ({ close }: { close: () => unknown }) => {
                   title={getContent("insurances")}
                   nodes={data.insurances}
                   width="22.8125rem"
-                  render={(node) => <InsuranceCard node={node} />}
+                  render={(node) => <CentreCard kind="insurance" node={node} />}
                   all="/insurance"
                   query={trimmed}
                   onNavigate={close}
