@@ -59,6 +59,9 @@ const baseMetadata: Metadata = {
     title: "NoyanAI",
     statusBarStyle: "default",
   },
+  // the standard name beside Apple's: Chrome warns on every page that
+  // «apple-mobile-web-app-capable» alone is deprecated
+  other: { "mobile-web-app-capable": "yes" },
 };
 
 // Site-wide defaults in the visitor's language: a page with its own title
