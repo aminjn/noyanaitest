@@ -106,6 +106,19 @@ export type GeocodeResult = {
 export const geocode = (address: string) =>
   get<{ results: GeocodeResult[] }>("geocode", { address }).then((d) => d.results || []);
 
+// an address as people write it («…، نبش کوچه…، پلاک ۹۷۴») to one pin: the
+// backend tries it as written, then without the plaque and shortened
+// (backend Lib/geocodeAddress.ts); null when nothing finer than the city
+export type AddressPin = LatLng & { query: string; matchLevel?: string };
+export const geocodeAddressPin = (address: string, opts: { near?: LatLng | null; province?: string; city?: string } = {}) =>
+  get<{ result: AddressPin | null }>("geocode-address", {
+    address,
+    province: opts.province,
+    city: opts.city,
+    lat: opts.near?.lat,
+    lng: opts.near?.lng,
+  }).then((d) => d?.result ?? null);
+
 export type ReverseResult = {
   place_id?: string;
   formatted_address?: string;

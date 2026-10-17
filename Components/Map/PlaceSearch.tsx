@@ -15,7 +15,7 @@ import SearchIcon from "@/Components/Icons/SearchIcon";
 import LoadingIcon from "@/Components/Icons/LoadingIcon";
 import {
   autocomplete,
-  geocode,
+  geocodeAddressPin,
   getMapConfig,
   LatLng,
   newSessionToken,
@@ -175,11 +175,11 @@ const PlaceSearch = ({
       const id = ++requestRef.current;
       setLoading(true);
       try {
-        const results = await geocode(q);
+        // a whole written address («…، نبش کوچه…، پلاک ۹۷۴»): as written,
+        // then simplified (backend Lib/geocodeAddress.ts)
+        const pin = await geocodeAddressPin(q, { near });
         if (id !== requestRef.current) return;
-        const hit = Array.isArray(results)
-          ? results.find((r) => validPoint(r?.location))
-          : undefined;
+        const hit = pin && validPoint(pin) ? { location: { lat: pin.lat, lng: pin.lng }, formatted_address: q } : undefined;
         if (!hit) {
           setItems([]);
           setAnswered(query.trim());
@@ -197,7 +197,7 @@ const PlaceSearch = ({
         if (id === requestRef.current) setLoading(false);
       }
     },
-    [finish, query],
+    [finish, query, near],
   );
 
   const choose = useCallback(
