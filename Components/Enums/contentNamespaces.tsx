@@ -6252,6 +6252,13 @@ export const contentNamespaces = {
     "centreVerified",
     "centreOnlineOrder",
     "centreInStoreOnly",
+    "insurance",
+    "basicInsurance",
+    "finInsSupplementary",
+    "establishedAtx",
+    "member",
+    "center",
+    "doctor",
   ],
   insuranceCard: ["establishedAtx", "member", "center", "doctor", "basicInsurance", "finInsSupplementary", "seeDetails"],
 

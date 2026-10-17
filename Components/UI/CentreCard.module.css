@@ -32,6 +32,16 @@
   overflow: hidden;
 }
 
+/* an insurer's logo, whole on the media band */
+.mediaLogo {
+  background-color: var(--white, #fff);
+  border-block-end: 1px solid var(--cardLine, var(--gray3));
+}
+
+.mediaLogo img {
+  padding: 0.75rem 1.5rem;
+}
+
 .mediaStart,
 .mediaEnd {
   position: absolute;

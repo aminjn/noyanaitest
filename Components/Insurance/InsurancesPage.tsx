@@ -16,7 +16,7 @@ import useProgress from "../Hooks/useProgress";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
 import { keepListFilters, ListPageFilters } from "../UI/ListPage/listFilters";
-import InsuranceCard from "./InsuranceCard";
+import CentreCard from "../UI/CentreCard";
 import { useEffect } from "react";
 import { t2xsRegular, tlgMedium, tsmBold, tsmRegular } from "../UI/Typography";
 import Link from "@/Components/i18n/Link";
@@ -133,7 +133,7 @@ const InsurancesPage = ({
       </div>
       <ListPageActiveFilters basePath="/insurance" filters={filters} />
       <ListPageList
-        itemWidth="20rem"
+        itemWidth="24.0625rem"
         pagination={{
           currentPage: Number(searchParams.get("page")) || 1,
           makePath: (page) => {
@@ -149,7 +149,7 @@ const InsurancesPage = ({
         }}
       >
         {data.map((node) => (
-          <InsuranceCard key={node._id} node={node} />
+          <CentreCard as="li" kind="insurance" key={node._id} node={node} />
         ))}
       </ListPageList>
     </ListPageLayout>
