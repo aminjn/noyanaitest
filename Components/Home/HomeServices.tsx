@@ -1,4 +1,5 @@
 import SectionHeader from "../UI/SectionHeader";
+import RowScroller from "../UI/RowScroller";
 import classes from "./HomeServices.module.css";
 import { IService } from "../Admin/Service/AdminManageServicesPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
@@ -7,8 +8,6 @@ import Ixon from "../UI/Ixon";
 import Image from "next/image";
 import serviceImage from "./services.png";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
-import SwiperSlider from "../UI/SwiperSlider";
-import { SwiperSlide } from "swiper/react";
 // the one service card of the site (the homepage had its own dead copy)
 import ServiceCard from "../Service/ServiceCard";
 import {
@@ -35,15 +34,15 @@ const HomeServices = ({
       />
       <div className={classes.content}>
         <div className={classes.list}>
-          <SwiperSlider swiperClass={classes.swiper} ltr>
+          <RowScroller itemWidth="15rem">
             {nodes.map((node) => (
-              <SwiperSlide tag="li" key={node._id} className={classes.slide}>
+              <li key={node._id} className={classes.slide}>
                 <ServiceCard
                   node={{ ...node, model: "Service" } as Parameters<typeof ServiceCard>[0]["node"]}
                 />
-              </SwiperSlide>
+              </li>
             ))}
-          </SwiperSlider>
+          </RowScroller>
         </div>
         <div className={classes.intro}>
           <div className={classes.image}>
