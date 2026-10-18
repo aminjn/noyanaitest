@@ -60,15 +60,7 @@ const AdminManageBlogPage = () => {
           required: true,
           section: details,
         },
-        summary: { title: ta("خلاصه"), type: "text", section: details },
-        author: { title: ta("نویسنده"), type: "text", section: details },
-        publishedAt: {
-          title: ta("تاریخ انتشار"),
-          type: "date",
-          section: details,
-        },
-        slug: { title: ta("اسلاگ"), type: "text", section: details },
-        order: { title: ta("رتبه"), type: "number", section: details },
+        // the category and tags right under the title: picked or created here
         category: {
           title: ta("دسته بندی"),
           type: "nodes",
@@ -92,6 +84,15 @@ const AdminManageBlogPage = () => {
           multi: true,
           section: details,
         },
+        summary: { title: ta("خلاصه"), type: "text", section: details },
+        author: { title: ta("نویسنده"), type: "text", section: details },
+        publishedAt: {
+          title: ta("تاریخ انتشار"),
+          type: "date",
+          section: details,
+        },
+        slug: { title: ta("اسلاگ"), type: "text", section: details },
+        order: { title: ta("رتبه"), type: "number", section: details },
         related: {
           title: ta("مقالات مرتبط"),
           type: "nodes",

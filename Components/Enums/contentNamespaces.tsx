@@ -4898,6 +4898,7 @@ export const contentNamespaces = {
     "xToman",
   ],
   mag: [
+    "magCategories",
     "magCtaTitle",
     "magCtaLegend",
     "magCtaAi",
@@ -6787,6 +6788,8 @@ export const contentNamespaces = {
   blogMainCard: ["noyan"],
   // app/mag/[blogSlug] (Blog/BlogPage).
   magPost: [
+    "magCategories",
+    "mostViewedArticles",
     "magCtaTitle",
     "magCtaLegend",
     "magCtaAi",

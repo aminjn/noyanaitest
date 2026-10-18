@@ -19,6 +19,7 @@ import { IBlogTag } from "../Admin/BlogTag/AdminManageBlogTgasPage";
 import BlogsHotTags from "./BlogsHotTags";
 import BlogsRRS from "./BlogsRRS";
 import BlogsCta from "./BlogsCta";
+import BlogsCategories, { BlogCategoryCount } from "./BlogsCategories";
 import { ContentKey } from "../Enums/contentKeys";
 
 const NS: ContentNamespace[] = ["common", "mag"];
@@ -32,6 +33,7 @@ export type BlogsPageProps = {
   chosen?: IBlog<{ CategoryPopulated: Record<never, never> }>[];
   mostViewed: IBlog[];
   hotTags: IBlogTag[];
+  categoryCounts?: BlogCategoryCount[];
 };
 
 const blogSorts = ["order", "date"] as const;
@@ -157,6 +159,7 @@ const BlogsPage = (props: BlogsPageProps) => {
         {/* stays in view while the list scrolls (desktop) */}
         <aside className={classes.side}>
           <BlogsCta />
+          <BlogsCategories nodes={props.categoryCounts} active={categorySlug} />
           <BlogsMostViewed nodes={props.mostViewed || []} />
           <BlogsHotTags nodes={props.hotTags} />
           <BlogsRRS />
