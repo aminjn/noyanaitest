@@ -7650,5 +7650,14 @@
  "doctorsOfferingX": "「${1}」を行う医師",
  "ohEveryDay": "毎日",
  "scrollNext": "次の項目",
- "scrollPrev": "前の項目"
+ "scrollPrev": "前の項目",
+ "magCtaTitle": "医療の疑問がありますか？",
+ "magCtaLegend": "症状をスマートアシスタントに伝えるか、今すぐ専門医を予約しましょう。",
+ "magCtaAi": "スマート診断",
+ "magCtaBook": "医師を予約",
+ "magToc": "目次",
+ "magRelated": "関連記事",
+ "magCopyLink": "リンクをコピー",
+ "magDisclaimer": "この記事は情報提供のみを目的とし、医師の診察・診断・治療に代わるものではありません。健康については医師にご相談ください。",
+ "magThisWeek": "今週のおすすめ"
 }

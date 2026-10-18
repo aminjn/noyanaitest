@@ -18,6 +18,7 @@ import BlogsMostViewed from "./BlogsMostViewed";
 import { IBlogTag } from "../Admin/BlogTag/AdminManageBlogTgasPage";
 import BlogsHotTags from "./BlogsHotTags";
 import BlogsRRS from "./BlogsRRS";
+import BlogsCta from "./BlogsCta";
 import { ContentKey } from "../Enums/contentKeys";
 
 const NS: ContentNamespace[] = ["common", "mag"];
@@ -127,7 +128,7 @@ const BlogsPage = (props: BlogsPageProps) => {
             </div>
           </div>
           <ListPageList
-            itemWidth="24rem"
+            itemWidth="16.5rem"
             pagination={{
               makePath: (page) => {
                 const params = new URLSearchParams();
@@ -147,15 +148,19 @@ const BlogsPage = (props: BlogsPageProps) => {
             }}
           >
             {props.blogs?.map((node) => (
-              <BlogMainCard key={node._id} node={node} />
+              <li key={node._id}>
+                <BlogMainCard node={node} />
+              </li>
             ))}
           </ListPageList>
         </div>
-        <div className={classes.side}>
-          <BlogsMostViewed nodes={props.mostViewed} />
+        {/* stays in view while the list scrolls (desktop) */}
+        <aside className={classes.side}>
+          <BlogsCta />
+          <BlogsMostViewed nodes={props.mostViewed || []} />
           <BlogsHotTags nodes={props.hotTags} />
           <BlogsRRS />
-        </div>
+        </aside>
       </div>
     </div>
   );

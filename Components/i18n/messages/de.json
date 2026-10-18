@@ -7650,5 +7650,14 @@
  "doctorsOfferingX": "Ärztinnen und Ärzte, die «${1}» anbieten",
  "ohEveryDay": "Jeden Tag",
  "scrollNext": "Nächste Einträge",
- "scrollPrev": "Vorherige Einträge"
+ "scrollPrev": "Vorherige Einträge",
+ "magCtaTitle": "Eine medizinische Frage?",
+ "magCtaLegend": "Schildern Sie dem smarten Assistenten Ihre Symptome oder buchen Sie jetzt einen Facharzt.",
+ "magCtaAi": "Smarte Prüfung",
+ "magCtaBook": "Arzt buchen",
+ "magToc": "Inhalt",
+ "magRelated": "Ähnliche Artikel",
+ "magCopyLink": "Link kopieren",
+ "magDisclaimer": "Dieser Artikel dient nur der Information und ersetzt keine ärztliche Untersuchung, Diagnose oder Behandlung. Fragen Sie Ihren Arzt.",
+ "magThisWeek": "Tipps der Woche"
 }

@@ -7650,5 +7650,14 @@
  "doctorsOfferingX": "Doctors who offer «${1}»",
  "ohEveryDay": "Every day",
  "scrollNext": "Next items",
- "scrollPrev": "Previous items"
+ "scrollPrev": "Previous items",
+ "magCtaTitle": "Have a medical question?",
+ "magCtaLegend": "Tell the smart assistant your symptoms, or book a specialist now.",
+ "magCtaAi": "Smart check",
+ "magCtaBook": "Book a doctor",
+ "magToc": "Contents",
+ "magRelated": "Related articles",
+ "magCopyLink": "Copy link",
+ "magDisclaimer": "This article is for information only and does not replace a doctor's examination, diagnosis or treatment. Consult a doctor about your health.",
+ "magThisWeek": "This week's picks"
 }

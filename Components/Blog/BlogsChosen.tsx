@@ -72,8 +72,8 @@ const ChosenBlogCard = ({
         <div className={`${classes.author} ${txsDemiBold}`}>
           <Ixon width="2rem">
             <UserIcon />
-            <span>{node.author || getContent("noyan")}</span>
           </Ixon>
+          <span>{node.author || getContent("noyan")}</span>
         </div>
         <span className={`${classes.publish} ${t2xsRegular}`}>
           {getRelativeTime(node.publishedAt)}

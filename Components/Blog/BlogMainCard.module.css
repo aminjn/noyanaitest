@@ -1,12 +1,14 @@
 .main {
-  width: 24rem;
-  height: 24rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow: hidden;
   /* shared public card surface (globals.css card tokens) */
   background-color: var(--cardBg);
   border: 1px solid var(--cardLine);
   border-radius: var(--radiusMd);
   box-shadow: var(--elev1);
+  color: inherit;
   transition:
     box-shadow 200ms,
     border-color 200ms,
@@ -16,52 +18,89 @@
 .main:hover {
   box-shadow: var(--elev2);
   border-color: var(--cardLineHover);
+  transform: translateY(-2px);
 }
 
 .image {
   position: relative;
-  width: 100%;
-  height: 11rem;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, var(--primary0), var(--primary1));
   flex-shrink: 0;
+}
+
+.category {
+  position: absolute;
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 100dvw;
+  background: var(--cardBg);
+  color: var(--primary);
+  box-shadow: var(--elev1);
 }
 
 .content {
   display: flex;
-  flex: 1;
-  padding: 1rem;
   flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem 1.1rem;
+  flex: 1;
 }
 
 .title {
-  margin-bottom: auto;
-  color: var(--black);
+  color: var(--gray13);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.7;
+}
+
+.main:hover .title {
+  color: var(--primary);
 }
 
 .summary {
+  color: var(--gray9);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.9;
+}
+
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-block-start: auto;
+  padding-block-start: 0.6rem;
+  border-block-start: 1px solid var(--line);
   color: var(--gray8);
 }
 
 .author {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  color: var(--gray13);
-  margin-top: 0.675rem;
-  border-bottom: 1px solid var(--gray3);
-  width: 100%;
+  color: var(--gray11);
+  font-weight: 600;
 }
 
-.details {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 0.75rem;
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--gray6);
 }
 
-.readTime {
-  display: flex;
+.time {
+  display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--gray8);
+  margin-inline-start: auto;
+}
+
+.compact .content {
+  padding: 0.75rem 0.9rem 0.9rem;
 }

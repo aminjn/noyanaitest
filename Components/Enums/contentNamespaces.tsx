@@ -4898,6 +4898,10 @@ export const contentNamespaces = {
     "xToman",
   ],
   mag: [
+    "magCtaTitle",
+    "magCtaLegend",
+    "magCtaAi",
+    "magCtaBook",
     // (useScopedLocale migration, 2026-09)
     // app/mag (BlogsPage incl. sortContentKeyDict, BlogsChosen, BlogsHotTags, BlogsMostViewed, BlogsRRS, BlogsSearch).
     "chosenBlogs",
@@ -6783,6 +6787,15 @@ export const contentNamespaces = {
   blogMainCard: ["noyan"],
   // app/mag/[blogSlug] (Blog/BlogPage).
   magPost: [
+    "magCtaTitle",
+    "magCtaLegend",
+    "magCtaAi",
+    "magCtaBook",
+    "magToc",
+    "magRelated",
+    "magCopyLink",
+    "magDisclaimer",
+    "magThisWeek",
     "blogBookLegend",
     "bookReservation",
     "noyan",
