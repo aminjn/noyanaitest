@@ -61,6 +61,7 @@ import BooleanToIcon from "@/Components/UI/BooleanToIcon";
 import SearchIcon from "@/Components/Icons/SearchIcon";
 import DownloadIcon from "@/Components/Icons/DownloadIcon";
 import { ta } from "@/Components/Admin/i18n/adminText";
+import { booleanFields, BulkBar, QuickToggle, useBulkActions, useBulkSource } from "./TableBulk";
 
 // Quiet grid that sits on the glass card and follows the light/dark
 // tokens (every color is a CSS variable, so the theme switch needs no rerender).
@@ -181,6 +182,17 @@ const TableGrid = <T,>({
   const isRtl = (rtlLocales as readonly string[]).includes(locale);
   const getContent = useScopedLocale(LOCALE_NS);
 
+  // bulk and quick edits, when the rows come from an admin auto list
+  // (Components/Admin/UI/TableBulk.tsx)
+  const bulkSource = useBulkSource(data);
+  const bulkKeys = useMemo(
+    () => (bulkSource ? booleanFields(renderer as never, data) : []),
+    [bulkSource, renderer, data],
+  );
+  const bulk = useBulkActions(bulkSource);
+  const setBulkField = bulk.setField;
+  const [selected, setSelected] = useState<T[]>([]);
+
   const columnDefs = useMemo<ColDef<T>[]>(() => {
     // Phones: nothing is pinned (a pinned column would eat the screen) and
     // the name column is narrower; the grid scrolls sideways instead.
@@ -261,12 +273,23 @@ const TableGrid = <T,>({
         initialPinned: column.pin,
         valueGetter: ({ data }) =>
           data && column.value ? safe(() => column.value?.(data) as ReactNode) : null,
-        cellRenderer: ({ data }: { data: T }) =>
-          data
-            ? safe(
-                () => column.component?.(data) ?? display(column.value?.(data)),
-              )
-            : "",
+        cellRenderer: ({ data }: { data: T }) => {
+          if (!data) return "";
+          const cell = safe(
+            () => column.component?.(data) ?? display(column.value?.(data)),
+          );
+          // a yes/no field of the record toggles with one click
+          return bulkKeys.includes(key) ? (
+            <QuickToggle
+              cell={cell}
+              row={data as never}
+              field={key}
+              onToggle={(row, field, value) => setBulkField([row], field, value)}
+            />
+          ) : (
+            cell
+          );
+        },
         tooltipValueGetter: ({ data }) => {
           const value = data && column.value ? safe(() => column.value?.(data) as ReactNode) : null;
           // same invalid-date guard as the cell itself
@@ -285,7 +308,7 @@ const TableGrid = <T,>({
         cellEditorParams: column.editParams,
       } as ColDef<T>;
     });
-  }, [renderer, intlTag, isRtl]);
+  }, [renderer, intlTag, isRtl, bulkKeys, setBulkField]);
 
   // Short lists (offices, secretaries, FAQs…) don't need a spreadsheet:
   // no filter row, no paging, and the grid is only as tall as its rows.
@@ -435,6 +458,23 @@ const TableGrid = <T,>({
         </div>
       </div>
       )}
+      {!!bulkSource && (
+        <BulkBar
+          selected={selected as never}
+          fields={bulkKeys}
+          titles={Object.fromEntries(bulkKeys.map((k) => [k, renderer[k]?.name || k]))}
+          busy={bulk.busy}
+          onSet={async (field, value) => {
+            await bulk.setField(selected as never, field, value);
+            gridApi.current?.deselectAll();
+          }}
+          onRemove={async () => {
+            await bulk.remove(selected as never);
+            gridApi.current?.deselectAll();
+          }}
+          onClear={() => gridApi.current?.deselectAll()}
+        />
+      )}
       <div
         className={`${classes.grid} ${!rows ? classes.gridEmpty : ""} ${compact ? classes.gridCompact : ""}`}
       >
@@ -444,6 +484,12 @@ const TableGrid = <T,>({
           gridApi.current = e.api;
         }}
         onModelUpdated={(e) => setShown(e.api.getDisplayedRowCount())}
+        rowSelection={
+          bulkSource
+            ? { mode: "multiRow", checkboxes: true, headerCheckbox: true, enableClickSelection: false }
+            : undefined
+        }
+        onSelectionChanged={(e) => setSelected(e.api.getSelectedRows())}
         overlayNoRowsTemplate={noRowsTemplate}
         paginationPageSize={50}
         paginationPageSizeSelector={[20, 50, 100, 200]}

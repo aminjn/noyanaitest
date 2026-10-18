@@ -3965,5 +3965,9 @@
  "هنوز منبعی وصل نشده است.": "Noch keine Quelle verbunden.",
  "آدرس داده‌های شریک را یک بار وارد کنید؛ سرور خودش طبق زمان‌بندی (یا با «همگام‌سازی الان») فقط تغییرات بعد از آخرین اجرا را صفحه‌به‌صفحه می‌خواند و با همان قالب شریک وارد می‌کند. پزشک یا مرکز تکراری ساخته نمی‌شود و پروفایل ادعاشده فقط در فیلدهای خالی پر می‌شود. گزارش هر اجرا در تاریخچه‌ی «ورود گروهی (JSON)» است. کلید فقط روی سرور می‌ماند.": "Geben Sie die Datenadresse des Partners einmal ein; der Server liest sie nach Zeitplan (oder mit „Jetzt synchronisieren“) – nur die Änderungen seit dem letzten Lauf, Seite für Seite – und importiert sie mit derselben Partnervorlage. Es entstehen keine doppelten Ärzte oder Zentren, und ein beanspruchtes Profil wird nur in leeren Feldern ergänzt. Der Bericht jedes Laufs steht im Verlauf von „Massenimport (JSON)“. Der Schlüssel bleibt auf dem Server.",
  "همگام‌سازی کامل": "Vollständige Synchronisierung",
- "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "Alle Datensätze werden neu gelesen und korrigiert, nicht nur die Änderungen"
+ "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "Alle Datensätze werden neu gelesen und korrigiert, nicht nur die Änderungen",
+ "${1} مورد انجام شد": "${1} erledigt",
+ "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} nicht erledigt (Zugriff oder eine Regel dieses Bereichs)",
+ "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "${1} Einträge löschen? Das kann nicht rückgängig gemacht werden.",
+ "حذف انتخاب‌شده‌ها": "Auswahl löschen"
 }
