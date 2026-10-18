@@ -769,6 +769,8 @@ export const contentNamespaces = {
     "searchPlaceholder",
     "secretaryDashboard",
     "seeAll",
+    "scrollNext",
+    "scrollPrev",
     "services",
     "signout",
     "signup",

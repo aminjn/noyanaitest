@@ -17,6 +17,7 @@ import SwiperSlider from "../UI/SwiperSlider";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 import Button from "../UI/Button";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
+import RowScroller from "../UI/RowScroller";
 
 const NS: ContentNamespace[] = ["common", "home"];
 
@@ -86,7 +87,8 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
         description={getContent("megaDescSpecialities")}
         action={{ href: "/speciality", label: getContent("seeAll") }}
       />
-      <ul className={classes.grid}>
+      {/* two rows that scroll sideways, however many the admin picks */}
+      <RowScroller className={classes.grid} itemWidth="10rem">
         {nodes.map((node) => (
           <li key={node._id}>
             <div
@@ -104,7 +106,7 @@ const HomeSpecialitiesInner = ({ nodes }: { nodes: ISpeciality[] }) => {
             </div>
           </li>
         ))}
-      </ul>
+      </RowScroller>
       {!!activeNode && <SpecialityDoctors node={activeNode} />}
     </div>
   );

@@ -7648,5 +7648,7 @@
  "specGroupAllied": "Tenaga kesehatan lainnya",
  "subSpecialities": "Subspesialisasi dan fellowship",
  "doctorsOfferingX": "Dokter yang menangani «${1}»",
- "ohEveryDay": "Setiap hari"
+ "ohEveryDay": "Setiap hari",
+ "scrollNext": "Item berikutnya",
+ "scrollPrev": "Item sebelumnya"
 }

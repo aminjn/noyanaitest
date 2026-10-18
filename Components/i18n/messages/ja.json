@@ -7648,5 +7648,7 @@
  "specGroupAllied": "その他の医療専門職",
  "subSpecialities": "サブスペシャルティとフェローシップ",
  "doctorsOfferingX": "「${1}」を行う医師",
- "ohEveryDay": "毎日"
+ "ohEveryDay": "毎日",
+ "scrollNext": "次の項目",
+ "scrollPrev": "前の項目"
 }

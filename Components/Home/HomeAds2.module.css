@@ -65,3 +65,14 @@
 .big {
   min-height: 14rem;
 }
+
+/* a picture-only banner fills its slot */
+.banner {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  min-height: 8.5rem;
+}
+.big.banner {
+  min-height: 14rem;
+}

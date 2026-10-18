@@ -7648,5 +7648,7 @@
  "specGroupAllied": "অন্যান্য স্বাস্থ্য পেশাজীবী",
  "subSpecialities": "উপ-বিশেষত্ব ও ফেলোশিপ",
  "doctorsOfferingX": "যে চিকিৎসকেরা «${1}» করেন",
- "ohEveryDay": "সপ্তাহের প্রতিদিন"
+ "ohEveryDay": "সপ্তাহের প্রতিদিন",
+ "scrollNext": "পরের আইটেম",
+ "scrollPrev": "আগের আইটেম"
 }

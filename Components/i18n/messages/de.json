@@ -7648,5 +7648,7 @@
  "specGroupAllied": "Weitere Gesundheitsberufe",
  "subSpecialities": "Schwerpunkte und Fellowships",
  "doctorsOfferingX": "Ärztinnen und Ärzte, die «${1}» anbieten",
- "ohEveryDay": "Jeden Tag"
+ "ohEveryDay": "Jeden Tag",
+ "scrollNext": "Nächste Einträge",
+ "scrollPrev": "Vorherige Einträge"
 }
