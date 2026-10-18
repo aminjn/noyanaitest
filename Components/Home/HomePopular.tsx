@@ -2,9 +2,8 @@ import { IDoctorProfile } from "../DoctorPanel/DoctorPanelPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
 import SectionHeader from "../UI/SectionHeader";
+import RowScroller from "../UI/RowScroller";
 import classes from "./HomePopular.module.css";
-import SwiperSlider from "../UI/SwiperSlider";
-import { SwiperSlide } from "swiper/react";
 import DoctorCardAlt from "../UI/DoctorCardAlt";
 
 const NS: ContentNamespace[] = ["common", "home"];
@@ -23,13 +22,13 @@ const HomePopular = ({
         title={getContent("popularDoctors")}
         action={{ href: "/book", label: getContent("seeAll") }}
       />
-      <SwiperSlider>
+      <RowScroller itemWidth="14.75rem">
         {nodes.map((node) => (
-          <SwiperSlide key={node._id} tag="li" className={classes.slide}>
+          <li key={node._id} className={classes.slide}>
             <DoctorCardAlt node={node} />
-          </SwiperSlide>
+          </li>
         ))}
-      </SwiperSlider>
+      </RowScroller>
     </div>
   );
 };
