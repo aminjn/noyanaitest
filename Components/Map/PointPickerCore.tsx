@@ -140,6 +140,10 @@ const PointPickerCore = ({
   // wrote into it (the address → pin effect below skips both)
   const lastAddressRef = useRef((currentAddress || "").trim());
   const ownAddressRef = useRef<string>("");
+  // the user has typed in the address field since the form opened: from
+  // then on a chosen point only offers its address, it never overwrites
+  // what they wrote (plaque, unit...)
+  const typedRef = useRef<boolean>(false);
   const rootRef = useRef<HTMLDivElement>(null);
   // where the map is: a typed address's pin is looked for near it
   const nearRef = useRef<LatLng | null>(null);
@@ -157,8 +161,10 @@ const PointPickerCore = ({
           if (!text || !touched) return;
           const components = result?.components || {};
           onAddressRef.current?.(text, components);
-          // an empty address field is filled right away
-          if (!currentAddressRef.current?.trim()) {
+          // the address field follows the pin (2026-10, the owner's rule: a
+          // click on the map writes its address), unless the user typed
+          // their own; then "use this address" offers it
+          if (!currentAddressRef.current?.trim() || !typedRef.current) {
             ownAddressRef.current = text;
             onUseAddressRef.current?.(text, components);
           }
@@ -194,6 +200,7 @@ const PointPickerCore = ({
       (active.tagName === "TEXTAREA" || active.tagName === "INPUT") &&
       !rootRef.current?.contains(active);
     if (!typing) return;
+    typedRef.current = true;
     let alive = true;
     const timer = setTimeout(() => {
       // as written, then without the plaque and shortened (backend
