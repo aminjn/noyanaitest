@@ -7670,5 +7670,7 @@
  "specGroupAllied": "سایر کادر درمان",
  "subSpecialities": "فوق‌تخصص‌ها و فلوشیپ‌ها",
  "doctorsOfferingX": "پزشکانی که «${1}» را انجام می‌دهند",
- "ohEveryDay": "هر روز هفته"
+ "ohEveryDay": "هر روز هفته",
+ "scrollNext": "موارد بعدی",
+ "scrollPrev": "موارد قبلی"
 }

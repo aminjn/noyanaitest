@@ -7648,5 +7648,7 @@
  "specGroupAllied": "Otros profesionales de la salud",
  "subSpecialities": "Subespecialidades y fellowships",
  "doctorsOfferingX": "Médicos que ofrecen «${1}»",
- "ohEveryDay": "Todos los días"
+ "ohEveryDay": "Todos los días",
+ "scrollNext": "Siguientes",
+ "scrollPrev": "Anteriores"
 }

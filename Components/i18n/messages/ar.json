@@ -7648,5 +7648,7 @@
  "specGroupAllied": "مهن صحية أخرى",
  "subSpecialities": "التخصصات الدقيقة والزمالات",
  "doctorsOfferingX": "الأطباء الذين يقدّمون «${1}»",
- "ohEveryDay": "كل أيام الأسبوع"
+ "ohEveryDay": "كل أيام الأسبوع",
+ "scrollNext": "العناصر التالية",
+ "scrollPrev": "العناصر السابقة"
 }

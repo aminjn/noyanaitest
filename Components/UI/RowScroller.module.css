@@ -1,0 +1,100 @@
+.main {
+  position: relative;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.875rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-block: 0.25rem 0.5rem;
+  padding-inline: 0.125rem;
+  margin: 0;
+  list-style: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track > * {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+/* the fades say there is more on that side (a mask: works over the
+   page's gradient background) */
+.fadeStart .track {
+  mask-image: linear-gradient(to right, transparent, #000 3rem);
+}
+.fadeEnd .track {
+  mask-image: linear-gradient(to left, transparent, #000 3rem);
+}
+.fadeStart.fadeEnd .track {
+  mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+}
+:global([dir="rtl"]) .fadeStart .track {
+  mask-image: linear-gradient(to left, transparent, #000 3rem);
+}
+:global([dir="rtl"]) .fadeEnd .track {
+  mask-image: linear-gradient(to right, transparent, #000 3rem);
+}
+:global([dir="rtl"]) .fadeStart.fadeEnd .track {
+  mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+}
+
+.arrow {
+  position: absolute;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  color: var(--primary);
+  box-shadow: var(--elev2);
+  cursor: pointer;
+}
+
+.arrow:hover {
+  border-color: var(--primary);
+}
+
+.prev {
+  inset-inline-start: -0.75rem;
+}
+
+.next {
+  inset-inline-end: -0.75rem;
+}
+
+/* the chevron points down: turn it to the scroll direction */
+.next svg {
+  transform: rotate(-90deg);
+}
+
+.prev svg {
+  transform: rotate(90deg);
+}
+
+:global([dir="rtl"]) .next svg {
+  transform: rotate(90deg);
+}
+
+:global([dir="rtl"]) .prev svg {
+  transform: rotate(-90deg);
+}
+
+@media (max-width: 600px) {
+  .arrow {
+    display: none;
+  }
+}

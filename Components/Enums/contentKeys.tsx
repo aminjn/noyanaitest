@@ -644,6 +644,8 @@ const contentKeys = [
   "noyanIntroductionLegend",
   "mostViewedSpecialities",
   "seeAll",
+  "scrollNext",
+  "scrollPrev",
   "greatest",
   "xSpecialityGreatestDoctors",
   "goToPage",

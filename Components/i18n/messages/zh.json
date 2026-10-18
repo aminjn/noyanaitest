@@ -7648,5 +7648,7 @@
  "specGroupAllied": "其他医护人员",
  "subSpecialities": "亚专科与专科进修",
  "doctorsOfferingX": "提供“${1}”的医生",
- "ohEveryDay": "每天"
+ "ohEveryDay": "每天",
+ "scrollNext": "下一组",
+ "scrollPrev": "上一组"
 }

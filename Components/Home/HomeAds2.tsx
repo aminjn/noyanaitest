@@ -13,6 +13,14 @@ const Item = ({
   className = "",
   style,
 }: WithStyleProps<{ node: IAdvertisement }>) => {
+  // a ready-made banner (its text is in the picture, nothing typed under
+  // it): the picture fills the slot and the whole slot is the link
+  if (node.image && !node.title && !node.description && !node.legend)
+    return (
+      <a href={node.target || undefined} className={`${classes.item} ${classes.banner} ${className}`} style={style}>
+        <HostedImage src={node.image} alt="" fill sizes="(max-width: 1100px) 100vw, 40rem" style={{ objectFit: "cover" }} loading="lazy" />
+      </a>
+    );
   return (
     <div className={`${classes.item} ${className}`} style={style}>
       <div className={classes.image}>

@@ -7648,5 +7648,7 @@
  "specGroupAllied": "अन्य स्वास्थ्य पेशेवर",
  "subSpecialities": "उप-विशेषज्ञताएँ और फ़ेलोशिप",
  "doctorsOfferingX": "डॉक्टर जो «${1}» करते हैं",
- "ohEveryDay": "हर दिन"
+ "ohEveryDay": "हर दिन",
+ "scrollNext": "अगले आइटम",
+ "scrollPrev": "पिछले आइटम"
 }
