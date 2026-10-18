@@ -22,7 +22,7 @@ const HomePopular = ({
         title={getContent("popularDoctors")}
         action={{ href: "/book", label: getContent("seeAll") }}
       />
-      <RowScroller itemWidth="14.75rem">
+      <RowScroller rows={1} itemWidth="14.75rem">
         {nodes.map((node) => (
           <li key={node._id} className={classes.slide}>
             <DoctorCardAlt node={node} />

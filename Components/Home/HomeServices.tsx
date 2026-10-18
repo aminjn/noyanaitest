@@ -34,7 +34,7 @@ const HomeServices = ({
       />
       <div className={classes.content}>
         <div className={classes.list}>
-          <RowScroller itemWidth="15rem">
+          <RowScroller rows={1} itemWidth="15rem">
             {nodes.map((node) => (
               <li key={node._id} className={classes.slide}>
                 <ServiceCard
