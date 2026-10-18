@@ -3969,5 +3969,6 @@
  "${1} مورد انجام شد": "${1} erledigt",
  "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} nicht erledigt (Zugriff oder eine Regel dieses Bereichs)",
  "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "${1} Einträge löschen? Das kann nicht rückgängig gemacht werden.",
- "حذف انتخاب‌شده‌ها": "Auswahl löschen"
+ "حذف انتخاب‌شده‌ها": "Auswahl löschen",
+ "تشخیص هوشمند": "Intelligente Diagnose"
 }

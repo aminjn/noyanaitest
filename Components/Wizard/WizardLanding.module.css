@@ -1,0 +1,272 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 64rem;
+  margin-inline: auto;
+  margin-block: 2.5rem 4rem;
+  padding-inline: var(--gutter, 1rem);
+  width: 100%;
+}
+
+/* the H1 and the question box: the first thing a visitor from search sees */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2.5rem 1.5rem 2rem;
+  border-radius: var(--radiusLg, 1.5rem);
+  background: linear-gradient(135deg, var(--primary0), var(--primary1) 55%, var(--secondary1, var(--primary1)));
+  border: 1px solid var(--primary2);
+}
+
+.badge {
+  padding: 0.3rem 0.9rem;
+  border-radius: 100dvw;
+  background: var(--cardBg);
+  color: var(--primary);
+  border: 1px solid var(--primary2);
+}
+
+.title {
+  color: var(--gray13);
+  line-height: 1.5;
+  max-width: 44rem;
+}
+
+.lead {
+  color: var(--gray11);
+  line-height: 2;
+  max-width: 46rem;
+}
+
+.ask {
+  width: 100%;
+  max-width: 44rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.askForm {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  border-radius: 1.25rem;
+  background: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev2, var(--elev1));
+}
+
+.askForm:focus-within {
+  border-color: var(--primary);
+}
+
+.askInput {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--gray13);
+  padding: 0.5rem 0.6rem;
+  line-height: 1.8;
+  text-align: start;
+  font: inherit;
+}
+
+.askSend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  padding: 0.75rem 1.2rem;
+  border: none;
+  border-radius: 0.9rem;
+  background: var(--primary);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.askSend:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+:global([dir="rtl"]) .askSend svg {
+  transform: scaleX(-1);
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.examplesLabel {
+  color: var(--gray9);
+}
+
+.example {
+  padding: 0.35rem 0.8rem;
+  border-radius: 100dvw;
+  border: 1px solid var(--cardLine);
+  background: var(--cardBg);
+  color: var(--gray11);
+  cursor: pointer;
+}
+
+.example:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.trust {
+  color: var(--gray9);
+}
+
+.emergency {
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radiusMd, 1rem);
+  border-inline-start: 3px solid var(--error, #e5484d);
+  background: var(--cardBg);
+  color: var(--gray11);
+  line-height: 1.9;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.h2 {
+  color: var(--gray13);
+}
+
+.more {
+  color: var(--primary);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border-radius: var(--radiusLg, 1.25rem);
+  background: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev1);
+}
+
+.stepNo {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--primary1);
+  color: var(--primary);
+}
+
+.stepTitle {
+  color: var(--gray13);
+}
+
+.stepText {
+  color: var(--gray10);
+  line-height: 1.9;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
+  border-radius: 100dvw;
+  background: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  color: var(--gray12);
+}
+
+.chip:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.partChip {
+  background: var(--primary0);
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.faqItem {
+  border-radius: var(--radiusMd, 1rem);
+  background: var(--cardBg);
+  border: 1px solid var(--cardLine);
+  padding: 0.25rem 1.1rem;
+}
+
+.faqQ {
+  cursor: pointer;
+  padding-block: 0.8rem;
+  color: var(--gray13);
+  list-style-position: inside;
+}
+
+.faqA {
+  color: var(--gray10);
+  line-height: 2;
+  padding-block-end: 0.9rem;
+}
+
+@media only screen and (max-width: 700px) {
+  .main {
+    margin-block: 1.25rem 3rem;
+    gap: 2rem;
+  }
+
+  .hero {
+    padding: 1.75rem 1rem 1.5rem;
+  }
+
+  .askForm {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .askSend {
+    justify-content: center;
+  }
+
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

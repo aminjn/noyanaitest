@@ -54,6 +54,7 @@ export const sitemapNodePath: Record<
 export const sitemapStaticPages: string[] = [
   "/",
   "/book",
+  "/wizard",
   "/drug",
   "/disease",
   "/symptom",

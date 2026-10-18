@@ -5,6 +5,9 @@ import { ContentNamespace } from "@/Components/Enums/contentNamespaces";
 
 const NS: ContentNamespace[] = ["wizardPage"];
 
+// a visitor's own chat: never in search
+export const metadata = { robots: { index: false, follow: false } };
+
 const Wizard = async () => {
   const textContent = await getScopedTextContent(NS);
   return (

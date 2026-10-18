@@ -25,6 +25,7 @@ export const pageMetaListResourceTypes = [
   "/policy",
   "/privacy",
   "/map",
+  "/wizard",
   "/become/doctor",
   "/become/clinic",
   "/become/hospital",
@@ -130,6 +131,9 @@ export const pageMetaListResourceTypeLabels: Record<
 },
   get "/map"() {
   return ta("نقشه");
+},
+  get "/wizard"() {
+  return ta("تشخیص هوشمند");
 },
   get "/become/doctor"() {
   return ta("ثبت نام پزشک");
