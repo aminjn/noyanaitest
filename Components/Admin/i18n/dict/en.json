@@ -3969,5 +3969,6 @@
  "${1} مورد انجام شد": "${1} done",
  "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} not done (access, or that section's own rule)",
  "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "Delete ${1} items? This cannot be undone.",
- "حذف انتخاب‌شده‌ها": "Delete selected"
+ "حذف انتخاب‌شده‌ها": "Delete selected",
+ "تشخیص هوشمند": "Smart diagnosis"
 }

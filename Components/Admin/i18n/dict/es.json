@@ -3969,5 +3969,6 @@
  "${1} مورد انجام شد": "${1} hechos",
  "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} sin hacer (acceso o una regla de esa sección)",
  "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "¿Eliminar ${1} elementos? No se puede deshacer.",
- "حذف انتخاب‌شده‌ها": "Eliminar seleccionados"
+ "حذف انتخاب‌شده‌ها": "Eliminar seleccionados",
+ "تشخیص هوشمند": "Diagnóstico inteligente"
 }

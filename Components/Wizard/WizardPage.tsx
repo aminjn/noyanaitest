@@ -6,7 +6,7 @@ import classes from "./WizardPage.module.css";
 import useSWR, { mutate as mutateGlobal } from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import Form from "../UI/Form";
 import Ixon from "../UI/Ixon";
 import SendIcon from "../Icons/SendIcon";
@@ -26,6 +26,7 @@ import { PRO_ME_URL, useMyPro } from "../Pro/useProData";
 import { ContentKey } from "../Enums/contentKeys";
 import { useIntlLocale } from "../i18n/navigation";
 import { markAiUsed } from "../Ai/aiDiscovery";
+import { WIZARD_ASK_EVENT } from "./WizardHeroAsk";
 
 const NS: ContentNamespace[] = ["common", "wizardPage"];
 
@@ -64,7 +65,9 @@ const TypingIndicator = ({ label }: { label: string }) => (
   </div>
 );
 
-const WizardPage = () => {
+// `landing`: what a visitor who is not signed in sees on /wizard (the
+// server-rendered WizardLanding, the page search engines index)
+const WizardPage = ({ landing }: { landing?: ReactNode }) => {
   const { user } = useUser();
   const { nodeId } = useParams<{ nodeId?: string }>();
 
@@ -123,6 +126,16 @@ const WizardPage = () => {
       // no prefill
     }
   }, [nodeId]);
+
+  // the question typed on the landing waits in the composer after sign-in
+  useEffect(() => {
+    const onAsk = (e: Event) => {
+      const q = (e as CustomEvent<string>).detail;
+      if (typeof q === "string" && q) setPrompt(q.slice(0, 500));
+    };
+    window.addEventListener(WIZARD_ASK_EVENT, onAsk);
+    return () => window.removeEventListener(WIZARD_ASK_EVENT, onAsk);
+  }, []);
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -218,7 +231,7 @@ const WizardPage = () => {
     [onSend],
   );
 
-  if (!user) return <LoginRequired />;
+  if (!user) return landing && !nodeId ? <>{landing}</> : <LoginRequired />;
 
   const isLoadingHistory = !!nodeId && !data && !isSending;
   const hasMessages = !!data?.length || isSending;

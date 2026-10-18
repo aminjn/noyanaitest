@@ -17,7 +17,8 @@ const privatePaths = [
   "/pharmacypanel",
   "/secretarypanel",
   "/onboarding",
-  "/wizard",
+  // the landing /wizard is public; the chats under it are not
+  "/wizard/",
   "/cart",
   "/order",
   "/payment",
