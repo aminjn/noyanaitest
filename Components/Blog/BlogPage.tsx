@@ -12,6 +12,9 @@ import BreadCrump from "../UI/BreadCrump";
 import RenderRtf from "../UI/RenderRtf";
 import BlogMainCard from "./BlogMainCard";
 import BlogsCta from "./BlogsCta";
+import BlogsCategories, { BlogCategoryCount } from "./BlogsCategories";
+import BlogsMostViewed from "./BlogsMostViewed";
+import { normalizeArticle } from "./normalizeArticle";
 import Link from "@/Components/i18n/Link";
 import CopyIcon from "../Icons/CopyIcon";
 import TelegramIcon from "../Icons/TelegramIcon";
@@ -44,6 +47,8 @@ export type BlogPageProps = {
     Tags: Record<never, never>;
   }>;
   thisWeek?: IBlog[];
+  categoryCounts?: BlogCategoryCount[];
+  mostViewed?: IBlog[];
 };
 
 type TocItem = { id: string; text: string; level: number };
@@ -61,10 +66,14 @@ const BlogPage = (props: BlogPageProps) => {
     (url: string) => fetcher({ url }).then((res) => res.data),
   );
 
-  const { blog, thisWeek } = useMemo<BlogPageProps>(
+  const { blog, thisWeek, categoryCounts, mostViewed } = useMemo<BlogPageProps>(
     () => clientData || props,
     [clientData, props],
   );
+
+  // imported posts read cleanly: no empty-paragraph gaps, the page's own
+  // typography, their title lines as headings (Components/Blog/normalizeArticle)
+  const content = useMemo(() => normalizeArticle(blog?.content), [blog?.content]);
 
   const getContent = useScopedLocale(NS);
   const readTime = useReadTime();
@@ -95,7 +104,7 @@ const BlogPage = (props: BlogPageProps) => {
     );
     headings.forEach((h) => observer.observe(h));
     return () => observer.disconnect();
-  }, [blog?._id, blog?.content]);
+  }, [blog?._id, content]);
 
   // how far the reader is in the article
   const [progress, setProgress] = useState(0);
@@ -210,7 +219,7 @@ const BlogPage = (props: BlogPageProps) => {
       <div className={classes.wrap}>
         <article className={classes.article}>
           <div className={classes.content} ref={contentRef}>
-            <RenderRtf value={blog.content} />
+            <RenderRtf key={blog._id} value={content} />
           </div>
           <p className={`${classes.disclaimer} ${txsRegular}`}>{getContent("magDisclaimer")}</p>
           {!!tags.length && (
@@ -241,6 +250,11 @@ const BlogPage = (props: BlogPageProps) => {
             </nav>
           )}
           <BlogsCta className={classes.desktopOnly} />
+          <BlogsCategories
+            nodes={categoryCounts}
+            active={blog.category ? blog.category.slug || blog.category._id : undefined}
+          />
+          <BlogsMostViewed nodes={(mostViewed || []).slice(0, 5)} />
           {!!week.length && (
             <div className={classes.week}>
               <h4 className={`${classes.sideTitle} ${tmdBold}`}>{getContent("magThisWeek")}</h4>

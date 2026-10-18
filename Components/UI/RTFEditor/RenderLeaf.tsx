@@ -2,13 +2,14 @@ import { RenderLeafProps } from "slate-react";
 import { CSSProperties } from "react";
 import Link from "@/Components/i18n/Link";
 const RenderLeaf = ({ children, leaf, attributes }: RenderLeafProps) => {
+  // only what the writer set: the rest comes from the page (its size,
+  // colour in light and dark mode, and leading); a fixed 16px black at 100%
+  // line height on every piece of text broke dark mode and article reading
   const style: CSSProperties = {
-    fontSize: leaf.size || 16,
-    //TODO: add default color for link element
-    color: leaf.color || "var(--black)",
-    backgroundColor: leaf.bg || "transparent",
-    textAlign: "center",
-    lineHeight: leaf.lineHeight || "100%",
+    ...(leaf.size ? { fontSize: leaf.size } : {}),
+    ...(leaf.color ? { color: leaf.color } : {}),
+    ...(leaf.bg ? { backgroundColor: leaf.bg } : {}),
+    ...(leaf.lineHeight ? { lineHeight: leaf.lineHeight } : {}),
   };
   if (leaf.href)
     children = (
