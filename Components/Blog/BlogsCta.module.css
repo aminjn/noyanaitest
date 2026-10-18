@@ -1,0 +1,40 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  border-radius: var(--radiusLg);
+  background: linear-gradient(150deg, var(--primary1), var(--cardBg) 70%);
+  border: 1px solid var(--cardLine);
+  box-shadow: var(--elev1);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.9rem;
+  background: var(--primary);
+  color: var(--white);
+}
+
+.title {
+  color: var(--gray13);
+}
+
+.legend {
+  color: var(--gray9);
+  line-height: 1.9;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.actions > * {
+  flex: 1;
+  min-width: 8rem;
+}

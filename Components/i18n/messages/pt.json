@@ -7650,5 +7650,14 @@
  "doctorsOfferingX": "Médicos que oferecem «${1}»",
  "ohEveryDay": "Todos os dias",
  "scrollNext": "Próximos itens",
- "scrollPrev": "Itens anteriores"
+ "scrollPrev": "Itens anteriores",
+ "magCtaTitle": "Tem uma dúvida médica?",
+ "magCtaLegend": "Conte seus sintomas ao assistente inteligente ou agende agora com um especialista.",
+ "magCtaAi": "Diagnóstico inteligente",
+ "magCtaBook": "Agendar médico",
+ "magToc": "Conteúdo",
+ "magRelated": "Artigos relacionados",
+ "magCopyLink": "Copiar link",
+ "magDisclaimer": "Este artigo é apenas informativo e não substitui exame, diagnóstico ou tratamento médico. Consulte um médico.",
+ "magThisWeek": "Destaques da semana"
 }

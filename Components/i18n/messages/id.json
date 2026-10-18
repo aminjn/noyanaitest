@@ -7650,5 +7650,14 @@
  "doctorsOfferingX": "Dokter yang menangani «${1}»",
  "ohEveryDay": "Setiap hari",
  "scrollNext": "Item berikutnya",
- "scrollPrev": "Item sebelumnya"
+ "scrollPrev": "Item sebelumnya",
+ "magCtaTitle": "Punya pertanyaan medis?",
+ "magCtaLegend": "Ceritakan gejala Anda ke asisten pintar, atau buat janji dengan dokter spesialis sekarang.",
+ "magCtaAi": "Cek pintar",
+ "magCtaBook": "Buat janji dokter",
+ "magToc": "Daftar isi",
+ "magRelated": "Artikel terkait",
+ "magCopyLink": "Salin tautan",
+ "magDisclaimer": "Artikel ini hanya untuk informasi dan tidak menggantikan pemeriksaan, diagnosis, atau pengobatan dokter. Konsultasikan kesehatan Anda dengan dokter.",
+ "magThisWeek": "Pilihan minggu ini"
 }

@@ -7650,5 +7650,14 @@
  "doctorsOfferingX": "«${1}» yapan doktorlar",
  "ohEveryDay": "Her gün",
  "scrollNext": "Sonraki öğeler",
- "scrollPrev": "Önceki öğeler"
+ "scrollPrev": "Önceki öğeler",
+ "magCtaTitle": "Tıbbi bir sorunuz mu var?",
+ "magCtaLegend": "Belirtilerinizi akıllı asistana anlatın ya da hemen bir uzmandan randevu alın.",
+ "magCtaAi": "Akıllı kontrol",
+ "magCtaBook": "Doktor randevusu",
+ "magToc": "İçindekiler",
+ "magRelated": "İlgili yazılar",
+ "magCopyLink": "Bağlantıyı kopyala",
+ "magDisclaimer": "Bu yazı yalnızca bilgilendirme amaçlıdır; doktor muayenesi, tanısı ve tedavisinin yerini tutmaz. Sağlığınız için doktora danışın.",
+ "magThisWeek": "Bu haftanın seçkisi"
 }

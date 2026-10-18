@@ -7650,5 +7650,14 @@
  "doctorsOfferingX": "提供“${1}”的医生",
  "ohEveryDay": "每天",
  "scrollNext": "下一组",
- "scrollPrev": "上一组"
+ "scrollPrev": "上一组",
+ "magCtaTitle": "有医学问题吗？",
+ "magCtaLegend": "把症状告诉智能助手，或立即预约专科医生。",
+ "magCtaAi": "智能自测",
+ "magCtaBook": "预约医生",
+ "magToc": "目录",
+ "magRelated": "相关文章",
+ "magCopyLink": "复制链接",
+ "magDisclaimer": "本文仅供参考，不能替代医生的检查、诊断和治疗。请就您的健康咨询医生。",
+ "magThisWeek": "本周精选"
 }
