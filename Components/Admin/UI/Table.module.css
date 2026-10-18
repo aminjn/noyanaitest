@@ -157,3 +157,51 @@
   opacity: 0.5;
   cursor: default;
 }
+
+/* bulk and quick edits (TableBulk.tsx) */
+.quickToggle {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.quickToggle:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.bulkBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.6rem 0.9rem;
+  margin-block-end: 0.6rem;
+  border-radius: 12px;
+  background: var(--primary1);
+  border: 1px solid var(--line);
+}
+.bulkCount {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--gray13);
+}
+.bulkField {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.bulkFieldName {
+  font-size: 0.8rem;
+  color: var(--gray9);
+}
+.bulkEnd {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-inline-start: auto;
+}
+@media (max-width: 600px) {
+  .bulkEnd {
+    margin-inline-start: 0;
+    width: 100%;
+  }
+}

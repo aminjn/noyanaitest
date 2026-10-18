@@ -3965,5 +3965,9 @@
  "هنوز منبعی وصل نشده است.": "No source connected yet.",
  "آدرس داده‌های شریک را یک بار وارد کنید؛ سرور خودش طبق زمان‌بندی (یا با «همگام‌سازی الان») فقط تغییرات بعد از آخرین اجرا را صفحه‌به‌صفحه می‌خواند و با همان قالب شریک وارد می‌کند. پزشک یا مرکز تکراری ساخته نمی‌شود و پروفایل ادعاشده فقط در فیلدهای خالی پر می‌شود. گزارش هر اجرا در تاریخچه‌ی «ورود گروهی (JSON)» است. کلید فقط روی سرور می‌ماند.": "Enter the partner's data address once; the server reads it on schedule (or on “Sync now”) — only the changes since the last run, page by page — and imports them with the same partner template. No duplicate doctor or centre is created, and a claimed profile is only filled in empty fields. Each run's report is in the “Bulk import (JSON)” history. The key stays on the server.",
  "همگام‌سازی کامل": "Full sync",
- "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "All records are read and corrected again, not only the changes"
+ "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "All records are read and corrected again, not only the changes",
+ "${1} مورد انجام شد": "${1} done",
+ "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} not done (access, or that section's own rule)",
+ "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "Delete ${1} items? This cannot be undone.",
+ "حذف انتخاب‌شده‌ها": "Delete selected"
 }

@@ -3965,5 +3965,9 @@
  "هنوز منبعی وصل نشده است.": "Henüz bağlı kaynak yok.",
  "آدرس داده‌های شریک را یک بار وارد کنید؛ سرور خودش طبق زمان‌بندی (یا با «همگام‌سازی الان») فقط تغییرات بعد از آخرین اجرا را صفحه‌به‌صفحه می‌خواند و با همان قالب شریک وارد می‌کند. پزشک یا مرکز تکراری ساخته نمی‌شود و پروفایل ادعاشده فقط در فیلدهای خالی پر می‌شود. گزارش هر اجرا در تاریخچه‌ی «ورود گروهی (JSON)» است. کلید فقط روی سرور می‌ماند.": "İş ortağının veri adresini bir kez girin; sunucu onu zamanlamaya göre (veya “Şimdi eşitle” ile) okur — yalnızca son çalıştırmadan beri olan değişiklikleri, sayfa sayfa — ve aynı iş ortağı şablonuyla içe aktarır. Yinelenen doktor veya merkez oluşturulmaz; sahiplenilmiş profil yalnızca boş alanlarda doldurulur. Her çalıştırmanın raporu “Toplu içe aktarma (JSON)” geçmişindedir. Anahtar yalnızca sunucuda kalır.",
  "همگام‌سازی کامل": "Tam eşitleme",
- "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "Yalnızca değişiklikler değil, tüm kayıtlar yeniden okunur ve düzeltilir"
+ "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "Yalnızca değişiklikler değil, tüm kayıtlar yeniden okunur ve düzeltilir",
+ "${1} مورد انجام شد": "${1} tamamlandı",
+ "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} yapılamadı (erişim veya o bölümün kuralı)",
+ "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "${1} öğe silinsin mi? Bu geri alınamaz.",
+ "حذف انتخاب‌شده‌ها": "Seçilenleri sil"
 }

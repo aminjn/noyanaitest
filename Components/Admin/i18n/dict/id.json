@@ -3965,5 +3965,9 @@
  "هنوز منبعی وصل نشده است.": "Belum ada sumber yang terhubung.",
  "آدرس داده‌های شریک را یک بار وارد کنید؛ سرور خودش طبق زمان‌بندی (یا با «همگام‌سازی الان») فقط تغییرات بعد از آخرین اجرا را صفحه‌به‌صفحه می‌خواند و با همان قالب شریک وارد می‌کند. پزشک یا مرکز تکراری ساخته نمی‌شود و پروفایل ادعاشده فقط در فیلدهای خالی پر می‌شود. گزارش هر اجرا در تاریخچه‌ی «ورود گروهی (JSON)» است. کلید فقط روی سرور می‌ماند.": "Masukkan alamat data mitra sekali; server membacanya sesuai jadwal (atau lewat “Sinkronkan sekarang”) — hanya perubahan sejak proses terakhir, halaman demi halaman — lalu mengimpornya dengan templat mitra yang sama. Tidak ada dokter atau pusat ganda, dan profil yang sudah diklaim hanya diisi pada kolom kosong. Laporan tiap proses ada di riwayat “Impor massal (JSON)”. Kunci tetap di server.",
  "همگام‌سازی کامل": "Sinkronisasi penuh",
- "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "Semua catatan dibaca dan diperbaiki lagi, bukan hanya perubahannya"
+ "همه‌ی رکوردها دوباره خوانده و اصلاح می‌شوند، نه فقط تغییرات": "Semua catatan dibaca dan diperbaiki lagi, bukan hanya perubahannya",
+ "${1} مورد انجام شد": "${1} selesai",
+ "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} tidak selesai (akses atau aturan bagian itu)",
+ "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "Hapus ${1} item? Ini tidak dapat dibatalkan.",
+ "حذف انتخاب‌شده‌ها": "Hapus yang dipilih"
 }
