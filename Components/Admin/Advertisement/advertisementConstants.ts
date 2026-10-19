@@ -43,7 +43,8 @@ export type AdvertisementPosition = (typeof advertisementPositions)[number];
 // on it and the picture size that fits. Listed page by page, so the picker
 // groups them.
 const slot = (page: string, place: string, size: string) =>
-  `${ta(page)} — ${ta(place)} (${size})`;
+  // the size kept left to right (width × height) inside RTL text
+  `${ta(page)} — ${ta(place)} (\u2066${size}\u2069)`;
 
 export const advertisementPositionLabels: Record<
   AdvertisementPosition,
