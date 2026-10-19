@@ -7690,5 +7690,10 @@
  "wizLandA3": "Oui. Vos conversations ne sont visibles que dans votre compte et vous pouvez les supprimer à tout moment.",
  "wizLandQ4": "Comment trouver un médecin ensuite ?",
  "wizLandA4": "L’assistant propose la bonne spécialité ; vous voyez ses médecins avec avis, assurance et premier créneau, et réservez en cabinet ou en ligne.",
- "wizLandEmergency": "Urgence ? Douleur thoracique, essoufflement sévère, engourdissement soudain du visage ou du bras, saignement important ou malaise : n’attendez pas, appelez les urgences."
+ "wizLandEmergency": "Urgence ? Douleur thoracique, essoufflement sévère, engourdissement soudain du visage ou du bras, saignement important ou malaise : n’attendez pas, appelez les urgences.",
+ "homeConsultTitle": "Consultation médicale en ligne dans la messagerie NoyanAI",
+ "homeConsultLine1": "Consultation par texte, audio et vidéo",
+ "homeConsultLine2": "Un espace sûr et rapide",
+ "homeConsultCta": "Réserver une téléconsultation",
+ "adBadge": "Pub"
 }

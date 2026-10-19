@@ -7690,5 +7690,10 @@
  "wizLandA3": "Yes. Your chats are visible only in your own account, and you can delete them at any time.",
  "wizLandQ4": "How do I find a doctor afterwards?",
  "wizLandA4": "The assistant suggests the right specialty; from there you see its doctors with patient reviews, insurance and the earliest slot, and book a visit or an online consultation.",
- "wizLandEmergency": "Emergency? With chest pain, severe shortness of breath, sudden numbness of the face or arm, heavy bleeding or fainting, don’t wait – call your local emergency number."
+ "wizLandEmergency": "Emergency? With chest pain, severe shortness of breath, sudden numbness of the face or arm, heavy bleeding or fainting, don’t wait – call your local emergency number.",
+ "homeConsultTitle": "Online medical consultation in the NoyanAI messenger",
+ "homeConsultLine1": "Text, voice and video consultation",
+ "homeConsultLine2": "A secure, fast space for your consultation",
+ "homeConsultCta": "Book an online visit",
+ "adBadge": "Ad"
 }

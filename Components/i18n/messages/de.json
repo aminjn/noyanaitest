@@ -7690,5 +7690,10 @@
  "wizLandA3": "Ja. Ihre Chats sind nur in Ihrem Konto sichtbar und jederzeit löschbar.",
  "wizLandQ4": "Wie finde ich danach eine Ärztin oder einen Arzt?",
  "wizLandA4": "Der Assistent schlägt die passende Fachrichtung vor; dort sehen Sie Ärztinnen und Ärzte mit Bewertungen, Versicherung und dem nächsten freien Termin und buchen vor Ort oder online.",
- "wizLandEmergency": "Notfall? Bei Brustschmerzen, starker Atemnot, plötzlicher Taubheit in Gesicht oder Arm, starker Blutung oder Bewusstlosigkeit nicht warten – den Notruf wählen."
+ "wizLandEmergency": "Notfall? Bei Brustschmerzen, starker Atemnot, plötzlicher Taubheit in Gesicht oder Arm, starker Blutung oder Bewusstlosigkeit nicht warten – den Notruf wählen.",
+ "homeConsultTitle": "Online-Sprechstunde im NoyanAI-Messenger",
+ "homeConsultLine1": "Per Text, Sprache und Video",
+ "homeConsultLine2": "Sicher und schnell",
+ "homeConsultCta": "Online-Termin buchen",
+ "adBadge": "Anzeige"
 }

@@ -7690,5 +7690,10 @@
  "wizLandA3": "Sim. Suas conversas aparecem só na sua conta e podem ser apagadas quando quiser.",
  "wizLandQ4": "Como encontro um médico depois?",
  "wizLandA4": "O assistente sugere a especialidade certa; dali você vê os médicos com avaliações, convênio e o horário mais próximo, e agenda presencial ou online.",
- "wizLandEmergency": "Emergência? Com dor no peito, falta de ar intensa, dormência súbita no rosto ou braço, sangramento forte ou desmaio, não espere: ligue para a emergência."
+ "wizLandEmergency": "Emergência? Com dor no peito, falta de ar intensa, dormência súbita no rosto ou braço, sangramento forte ou desmaio, não espere: ligue para a emergência.",
+ "homeConsultTitle": "Consulta médica online no mensageiro da NoyanAI",
+ "homeConsultLine1": "Consulta por texto, voz e vídeo",
+ "homeConsultLine2": "Um ambiente seguro e rápido",
+ "homeConsultCta": "Agendar consulta online",
+ "adBadge": "Anúncio"
 }
