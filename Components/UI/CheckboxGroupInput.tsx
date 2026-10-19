@@ -44,6 +44,9 @@ const CheckboxGroupInput = ({
     set(input.includes(key) ? input.filter((el) => el !== key) : [...input, key]);
 
   const selected = keys.filter((key) => input.includes(key)).length;
+  // long labels (e.g. the ad slots: page, place and size) get wider boxes
+  // and wrap instead of being cut off
+  const wide = keys.some((key) => String(options[key] ?? "").length > 24);
 
   return (
     <div className={classes.main}>
@@ -63,11 +66,11 @@ const CheckboxGroupInput = ({
           </span>
         )}
       </div>
-      <div className={classes.options}>
+      <div className={`${classes.options} ${wide ? classes.wide : ""}`}>
         {keys.map((key) => {
           const on = input.includes(key);
           return (
-            <label key={key} className={`${classes.option} ${on ? classes.on : ""}`}>
+            <label key={key} className={`${classes.option} ${on ? classes.on : ""}`} title={options[key]}>
               <input
                 type="checkbox"
                 className={classes.native}

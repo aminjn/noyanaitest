@@ -38,47 +38,105 @@ export const advertisementPositions = [
 
 export type AdvertisementPosition = (typeof advertisementPositions)[number];
 
+// Where each slot shows, in words the admin can act on (2026-10, the
+// owner could not tell what "home3" or "drugs2" meant): the page, the place
+// on it and the picture size that fits. Listed page by page, so the picker
+// groups them.
+const slot = (page: string, place: string, size: string) =>
+  // the size kept left to right (width × height) inside RTL text
+  `${ta(page)} — ${ta(place)} (\u2066${size}\u2069)`;
+
 export const advertisementPositionLabels: Record<
   AdvertisementPosition,
   string
 > = {
   get home1() {
-    return ta("صفحه‌ی اصلی: بنر عریض بالای پزشکان برتر");
+    return slot("صفحه‌ی اصلی", "بنر عریض بالای پزشکان برتر", "1400×150");
   },
   get home2() {
-    return ta("صفحه‌ی اصلی: کارت بزرگ زیر پزشکان برتر (خالی = کارت مشاوره‌ی آنلاین)");
+    return slot("صفحه‌ی اصلی", "کارت بزرگ زیر پزشکان برتر (خالی = کارت مشاوره‌ی آنلاین)", "800×400");
   },
   get home3() {
-    return ta("صفحه‌ی اصلی: بنر اول کنار کارت بزرگ (نسبت ۴ به ۱)");
+    return slot("صفحه‌ی اصلی", "بنر اول کنار کارت بزرگ", "1200×300");
   },
   get home4() {
-    return ta("صفحه‌ی اصلی: بنر دوم کنار کارت بزرگ (نسبت ۴ به ۱)");
+    return slot("صفحه‌ی اصلی", "بنر دوم کنار کارت بزرگ", "1200×300");
   },
-  home5: "home5",
-  home6: "home6",
-  clinics1: "clinics1",
-  clinics2: "clinics2",
-  disease1: "disease1",
-  disease2: "disease2",
-  diseases1: "diseases1",
-  diseases2: "diseases2",
-  drug1: "drug1",
-  drug2: "drug2",
-  drugs1: "drugs1",
-  drugs2: "drugs2",
-  hospitals1: "hospitals1",
-  hospitals2: "hospitals2",
-  specialities1: "specialities1",
-  speciality1: "speciality1",
-  speciality2: "speciality2",
-  symptom1: "symptom1",
-  symptom2: "symptom2",
-  symptoms1: "symptoms1",
-  symptoms2: "symptoms2",
-  tests1: "tests1",
-  tests2: "tests2",
-  hospital1: "hospital1",
-  paraClinics1: "paraClinics1",
+  get home5() {
+    return slot("صفحه‌ی اصلی", "نوار باریک اول، بالای مقالات", "1200×128");
+  },
+  get home6() {
+    return slot("صفحه‌ی اصلی", "نوار باریک دوم، بالای مقالات", "1200×128");
+  },
+  get specialities1() {
+    return slot("فهرست تخصص‌ها", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get speciality1() {
+    return slot("صفحه‌ی هر تخصص", "بنر عریض بالای صفحه", "1400×150");
+  },
+  get speciality2() {
+    return slot("صفحه‌ی هر تخصص", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get diseases1() {
+    return slot("فهرست بیماری‌ها", "بنر عریض بالای صفحه", "1400×150");
+  },
+  get diseases2() {
+    return slot("فهرست بیماری‌ها", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get disease1() {
+    return slot("صفحه‌ی هر بیماری", "بنر عریض بالای صفحه", "1400×150");
+  },
+  get disease2() {
+    return slot("صفحه‌ی هر بیماری", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get symptoms1() {
+    return slot("فهرست علائم", "بنر عریض بالای صفحه", "1400×150");
+  },
+  get symptoms2() {
+    return slot("فهرست علائم", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get symptom1() {
+    return slot("صفحه‌ی هر علامت", "بنر عریض بالای صفحه", "1400×150");
+  },
+  get symptom2() {
+    return slot("صفحه‌ی هر علامت", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get drugs1() {
+    return slot("فهرست داروها", "بنر عریض بالای صفحه", "1400×150");
+  },
+  get drugs2() {
+    return slot("فهرست داروها", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get drug1() {
+    return slot("صفحه‌ی هر دارو", "بنر عریض بالای صفحه", "1400×150");
+  },
+  get drug2() {
+    return slot("صفحه‌ی هر دارو", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get clinics1() {
+    return slot("فهرست کلینیک‌ها", "بنر عریض بالای فهرست", "1400×150");
+  },
+  get clinics2() {
+    return slot("فهرست کلینیک‌ها", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get hospitals1() {
+    return slot("فهرست بیمارستان‌ها", "بنر عریض بالای فهرست", "1400×150");
+  },
+  get hospitals2() {
+    return slot("فهرست بیمارستان‌ها", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get hospital1() {
+    return slot("صفحه‌ی هر بیمارستان", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get tests1() {
+    return slot("فهرست آزمایش‌ها", "بنر عریض بالای فهرست", "1400×150");
+  },
+  get tests2() {
+    return slot("فهرست آزمایش‌ها", "نوار باریک پایین صفحه", "1200×64");
+  },
+  get paraClinics1() {
+    return slot("فهرست آزمایشگاه‌ها و تصویربرداری", "نوار باریک بالای فهرست", "1200×64");
+  },
 };
 
 // Mongoose model names an Advertisement can target via `resource`, for
