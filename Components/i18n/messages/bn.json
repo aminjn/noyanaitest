@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "টেক্সট, অডিও ও ভিডিও পরামর্শ",
  "homeConsultLine2": "নিরাপদ ও দ্রুত পরামর্শের পরিবেশ",
  "homeConsultCta": "অনলাইন ভিজিট বুক করুন",
- "adBadge": "বিজ্ঞাপন"
+ "adBadge": "বিজ্ঞাপন",
+ "phSearchCity": "শহর খুঁজুন…",
+ "phAllCities": "সব শহর",
+ "phAllInsurances": "সব বীমা",
+ "phClearFilters": "সব ফিল্টার মুছুন",
+ "phFoundCount": "${1}টি ফার্মেসি"
 }

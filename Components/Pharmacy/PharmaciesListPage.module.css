@@ -1,0 +1,26 @@
+/* filters beside the results; stacked on a phone */
+.layout {
+  display: grid;
+  grid-template-columns: 17.5rem minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  margin-block-start: 1rem;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.count {
+  color: var(--gray12);
+}
+
+@media only screen and (max-width: 1000px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}

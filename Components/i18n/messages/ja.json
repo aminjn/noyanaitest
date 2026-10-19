@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "テキスト・音声・ビデオで相談",
  "homeConsultLine2": "安全で快適な相談環境",
  "homeConsultCta": "オンライン診療を予約",
- "adBadge": "広告"
+ "adBadge": "広告",
+ "phSearchCity": "都市を検索…",
+ "phAllCities": "すべての都市",
+ "phAllInsurances": "すべての保険",
+ "phClearFilters": "すべての絞り込みを解除",
+ "phFoundCount": "${1} 件の薬局"
 }

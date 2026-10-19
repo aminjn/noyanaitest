@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "टेक्स्ट, ऑडियो और वीडियो परामर्श",
  "homeConsultLine2": "सुरक्षित और तेज़ परामर्श",
  "homeConsultCta": "ऑनलाइन विज़िट बुक करें",
- "adBadge": "विज्ञापन"
+ "adBadge": "विज्ञापन",
+ "phSearchCity": "शहर खोजें…",
+ "phAllCities": "सभी शहर",
+ "phAllInsurances": "सभी बीमा",
+ "phClearFilters": "सभी फ़िल्टर हटाएँ",
+ "phFoundCount": "${1} फ़ार्मेसी"
 }

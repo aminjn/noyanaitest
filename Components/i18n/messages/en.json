@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "Text, voice and video consultation",
  "homeConsultLine2": "A secure, fast space for your consultation",
  "homeConsultCta": "Book an online visit",
- "adBadge": "Ad"
+ "adBadge": "Ad",
+ "phSearchCity": "Search city…",
+ "phAllCities": "All cities",
+ "phAllInsurances": "All insurers",
+ "phClearFilters": "Clear all filters",
+ "phFoundCount": "${1} pharmacies"
 }

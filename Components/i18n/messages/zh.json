@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "文字、语音和视频问诊",
  "homeConsultLine2": "安全、快速的问诊环境",
  "homeConsultCta": "预约在线问诊",
- "adBadge": "广告"
+ "adBadge": "广告",
+ "phSearchCity": "搜索城市…",
+ "phAllCities": "全部城市",
+ "phAllInsurances": "全部保险",
+ "phClearFilters": "清除全部筛选",
+ "phFoundCount": "${1} 家药店"
 }

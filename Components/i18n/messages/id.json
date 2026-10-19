@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "Konsultasi teks, suara, dan video",
  "homeConsultLine2": "Ruang konsultasi yang aman dan cepat",
  "homeConsultCta": "Pesan kunjungan online",
- "adBadge": "Iklan"
+ "adBadge": "Iklan",
+ "phSearchCity": "Cari kota…",
+ "phAllCities": "Semua kota",
+ "phAllInsurances": "Semua asuransi",
+ "phClearFilters": "Hapus semua filter",
+ "phFoundCount": "${1} apotek"
 }
