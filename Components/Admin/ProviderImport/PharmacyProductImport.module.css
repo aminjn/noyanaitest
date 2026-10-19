@@ -1,0 +1,81 @@
+.picker {
+  max-inline-size: 32rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.625rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--cardLine, var(--gray4));
+  border-radius: 0.75rem;
+  background: var(--cardBg, var(--gray1));
+  backdrop-filter: var(--cardBlur);
+}
+
+.stat strong {
+  font-size: 1.25rem;
+  color: var(--gray13);
+}
+
+.stat span {
+  font-size: 0.75rem;
+  color: var(--gray9);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--gray4);
+  border-radius: 0.75rem;
+}
+
+.table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+  border-block-end: 1px solid var(--gray3);
+  vertical-align: middle;
+}
+
+.table th {
+  color: var(--gray9);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table td:first-child {
+  min-inline-size: 14rem;
+}
+
+.badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.skipped {
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.skipped summary {
+  cursor: pointer;
+}
+
+.skipped ul {
+  margin-block-start: 0.5rem;
+  padding-inline-start: 1.25rem;
+  list-style: disc;
+}
