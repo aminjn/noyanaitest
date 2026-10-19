@@ -162,6 +162,8 @@ a.pill:hover {
   border-radius: 1.125rem;
   border: 1px solid var(--glassLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   transition: transform var(--transTime), border-color var(--transTime);
 }
 
@@ -215,6 +217,8 @@ a.pill:hover {
   padding: 0.875rem 1rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray11);
   font-size: 0.875rem;
 }
@@ -371,6 +375,8 @@ a.pill:hover {
   padding: 0.5rem 0.875rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   font-size: 0.875rem;
   color: var(--gray12);
@@ -504,6 +510,8 @@ a.pill:hover {
   border-radius: 1rem;
   border: 1px solid var(--glassLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
 }
 
@@ -535,10 +543,14 @@ a.pill:hover {
 
 .appointment:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .isNext {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   box-shadow: 0 6px 20px -10px rgba(37, 99, 235, 0.55);
 }
 

@@ -123,6 +123,8 @@
 
 .tabOn {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
@@ -140,6 +142,8 @@
   text-align: center;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   color: var(--gray9);
   line-height: 1.9;

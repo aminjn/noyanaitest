@@ -152,6 +152,8 @@
   padding: 0.5rem;
   border-radius: 0.875rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   color: var(--textStrong);
   font-size: 0.875rem;
@@ -205,6 +207,8 @@
   padding: 0.25rem;
   border-radius: var(--radiusMd);
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
 }
 

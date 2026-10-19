@@ -19,6 +19,8 @@
   border: 1px solid var(--cardLine);
   border-radius: var(--radiusSm);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   min-width: 0;
 }
 .icon {

@@ -107,6 +107,8 @@
   border-radius: 50%;
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--gray11);
   cursor: pointer;
   transition: color 150ms, border-color 150ms;
@@ -204,6 +206,8 @@
   border-radius: var(--radiusMd);
   border-inline-start: 3px solid var(--warning, #f2994a);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--gray10);
   line-height: 1.9;
 }
@@ -224,6 +228,8 @@
   padding: 0.3rem 0.75rem;
   border-radius: 100dvw;
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   color: var(--gray11);
 }
@@ -257,6 +263,8 @@
   padding: 1.1rem 1.2rem;
   border-radius: var(--radiusLg);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev1);
 }

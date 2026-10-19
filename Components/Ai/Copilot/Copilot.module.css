@@ -113,6 +113,8 @@
 
 .iconBtn:hover {
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .body {
@@ -149,6 +151,8 @@
   padding: 0.5rem 0.75rem;
   border-radius: 1rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--line);
   color: var(--gray13);
   font-size: 0.875rem;
@@ -198,6 +202,8 @@
   border-radius: 1.25rem;
   border: 1px solid var(--line);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.875rem;
@@ -308,6 +314,8 @@
   border-radius: var(--radiusSm);
   border: 1px solid var(--line);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.875rem;

@@ -5,6 +5,8 @@
   padding: 1.25rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   box-shadow: var(--glassShadow);
   scroll-margin-block-start: 5rem;
@@ -157,6 +159,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .opt {
@@ -211,6 +215,8 @@
   border-radius: var(--radiusMd);
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .noticeHead {
@@ -308,6 +314,8 @@
   border-radius: 50%;
   border: 1px solid var(--glassLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--gray11);
   cursor: pointer;
 }

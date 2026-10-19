@@ -29,6 +29,8 @@
   padding: 1rem;
   border-radius: 1.25rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
 }
 
@@ -60,6 +62,8 @@
 
 .type:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .typeOn {
@@ -98,6 +102,8 @@
   border: 1px solid var(--glassLine);
   border-radius: 0.75rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.875rem;
@@ -132,6 +138,8 @@
   border-radius: 999px;
   border: 1px solid var(--glassLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font-size: 0.75rem;
   color: var(--gray11);
 }
@@ -187,6 +195,8 @@
   padding: 0.875rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .serpUrl {

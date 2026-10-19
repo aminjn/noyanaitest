@@ -53,6 +53,8 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   background-color: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font: inherit;
   font-size: 0.8125rem;
   color: var(--black);
@@ -133,6 +135,8 @@
 .pinned:hover,
 .groupHeader:hover {
   background-color: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .groupTitle {
@@ -175,6 +179,8 @@
 
 .item:hover {
   background-color: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
 }
 

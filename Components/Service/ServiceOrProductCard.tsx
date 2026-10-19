@@ -1,25 +1,26 @@
-import Image from "next/image";
 import classes from "./ServiceOrProductCard.module.css";
-import { FilePath } from "../config";
-import Badge from "../UI/Badge";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import {
-  t2xsDemiBold,
-  t2xsMedium,
-  t2xsRegular,
-  tsmMedium,
-  txsMedium,
-} from "../UI/Typography";
+import { t2xsDemiBold, t2xsMedium, tlgBold, tsmDemiBold, txsMedium } from "../UI/Typography";
 import { ReactNode, useMemo } from "react";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
+import PillIcon from "../Icons/PillIcon";
+import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 import { clamp } from "../helpers/lib";
 import { currencize } from "../helpers/currencize";
 import Link from "@/Components/i18n/Link";
 import HostedImage from "../UI/HostedImage";
 
 const NS: ContentNamespace[] = ["common", "productServiceCard"];
+
+// The shop card for products, product packages and services (2026-10
+// redesign, the owner's review: "the medicine card is awful, what is
+// «in stock» even for"). As Digikala, Snapp Pharmacy and Amazon Pharmacy
+// show a product: the picture on a soft tile with the discount on it, the
+// name, who sells it and the rating, and the price the buyer pays with the
+// list price struck through; the whole card opens the page. Glass surface
+// like every NoyanAI card.
 const ServiceOrProductCard = ({
   name,
   image,
@@ -49,95 +50,88 @@ const ServiceOrProductCard = ({
 }) => {
   const getContent = useScopedLocale(NS);
 
-  const disocuntPercent = useMemo<number>(
-    () =>
-      clamp(0, Math.ceil((discount / price) * 100), Number.MAX_SAFE_INTEGER),
+  const percent = useMemo<number>(
+    () => (price > 0 ? clamp(0, Math.round((discount / price) * 100), 99) : 0),
     [discount, price],
   );
+  const pays = clamp(0, price - (discount || 0), Number.MAX_SAFE_INTEGER);
+  const score = Number(rating) || 0;
 
   return (
     <li className={classes.main}>
-      <div className={classes.image}>
-        <HostedImage
-          src={image}
-          alt={name}
-          fill
-          sizes="16.5rem"
-          style={{ objectFit: "contain" }}
-          loading="lazy"
-        />
-        {!!category && (
-          <Badge
-            className={classes.category}
-            color="Disabled"
-            mode="Fill"
-            size="S"
-            radius="High"
-          >
-            {category}
-          </Badge>
-        )}
-        {pack && (
-          <div className={classes.package}>
-            <span>{getContent("package")}</span>
-            <span className={classes.packageBadge}>{pack}</span>
-          </div>
-        )}
-      </div>
-      <div className={classes.content}>
-        <Link href={target}>
-          <h3 className={`${classes.name} ${txsMedium}`}>{name}</h3>
-        </Link>
-        {packageInfo && (
-          <p className={`${classes.services} ${t2xsMedium}`}>{packageInfo}</p>
-        )}
-        {!!owner && (
-          <div className={classes.doctor}>
-            {owner.icon}
-            <span className={`${classes.doctorName} ${t2xsMedium}`}>
-              {owner.title}
+      <Link href={target} className={classes.link} aria-label={name}>
+        <div className={classes.image}>
+          {image ? (
+            <HostedImage
+              src={image}
+              alt={name}
+              fill
+              sizes="16.5rem"
+              style={{ objectFit: "contain" }}
+              loading="lazy"
+              className={classes.picture}
+            />
+          ) : (
+            <span className={classes.placeholder} aria-hidden>
+              <Ixon width="2.25rem">
+                <PillIcon />
+              </Ixon>
             </span>
-          </div>
-        )}
-        <div className={classes.details}>
-          {!!detail && (
-            <div className={classes.province}>
+          )}
+          {!!category && <span className={`${classes.chip} ${t2xsMedium}`}>{category}</span>}
+          {!!percent && (
+            <span className={`${classes.off} ${t2xsDemiBold}`}>
+              {getContent("percentSymbol", [percent.toString()])}
+            </span>
+          )}
+          {!!pack && (
+            <span className={`${classes.pack} ${t2xsMedium}`}>
+              {getContent("package")} · {pack}
+            </span>
+          )}
+        </div>
+        <div className={classes.content}>
+          <h3 className={`${classes.name} ${tsmDemiBold}`}>{name}</h3>
+          {!!packageInfo && <p className={`${classes.services} ${t2xsMedium}`}>{packageInfo}</p>}
+          {!!owner?.title && (
+            <div className={`${classes.meta} ${t2xsMedium}`}>
+              {owner.icon}
+              <span className={classes.ellipsis}>{owner.title}</span>
+            </div>
+          )}
+          {!!detail?.title && (
+            <div className={`${classes.meta} ${t2xsMedium}`}>
               {detail.icon}
-              <span>{detail.title}</span>
+              <span className={classes.ellipsis}>{detail.title}</span>
             </div>
           )}
-          <div className={classes.stats}>
-            <span
-              className={`${classes.count} ${t2xsRegular}`}
-            >{`(${getContent("xComments", [commentCount?.toString() || "0"])})`}</span>
-          </div>
-          <div className={classes.score}>
-            <span className={t2xsRegular}>{rating}</span>
-            <Ixon width=".8rem" className={classes.star}>
-              <StarIcon />
-            </Ixon>
-          </div>
-        </div>
-        <div className={classes.footer}>
-          {!!disocuntPercent && (
-            <div className={`${classes.percent} ${t2xsDemiBold}`}>
-              {getContent("percentSymbol", [disocuntPercent.toString()])}
-            </div>
-          )}
-          <div className={classes.prices}>
-            <span className={classes.price}>
-              {/* the price the user pays; the list price is struck through */}
-              <span className={tsmMedium}>
-                {currencize(clamp(0, price - (discount || 0), Number.MAX_SAFE_INTEGER))}
+          {(score > 0 || commentCount > 0) && (
+            <div className={`${classes.rating} ${t2xsMedium}`}>
+              <Ixon width=".8rem" className={classes.star}>
+                <StarIcon />
+              </Ixon>
+              <span>{score.toFixed(1)}</span>
+              <span className={classes.count}>
+                ({getContent("xComments", [String(commentCount || 0)])})
               </span>
-              <span className={txsMedium}>{getContent("toman")}</span>
+            </div>
+          )}
+          <div className={classes.footer}>
+            <div className={classes.prices}>
+              {!!discount && <s className={`${classes.striked} ${t2xsMedium}`}>{currencize(price)}</s>}
+              <span className={classes.price}>
+                <span className={tlgBold}>{currencize(pays)}</span>
+                <span className={`${classes.unit} ${txsMedium}`}>{getContent("toman")}</span>
+              </span>
+            </div>
+            <span className={classes.go} aria-hidden>
+              <Ixon width="1.1rem">
+                <ArrowLeftIcon />
+              </Ixon>
             </span>
-            {!!discount && (
-              <s className={`${classes.striked} ${t2xsMedium}`}>{currencize(price)}</s>
-            )}
           </div>
         </div>
-      </div>
+      </Link>
     </li>
   );
 };

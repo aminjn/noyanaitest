@@ -36,6 +36,8 @@
   border-radius: 1rem;
   border: 1px solid var(--line);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   cursor: pointer;
   transition: border-color var(--transTime), background-color var(--transTime);
 }

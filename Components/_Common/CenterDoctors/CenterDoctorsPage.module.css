@@ -189,6 +189,8 @@
   padding: 0.625rem 0.75rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .select {
@@ -198,6 +200,8 @@
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   font-size: 0.75rem;
   font-weight: 700;
@@ -287,6 +291,8 @@
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   text-align: center;
 }

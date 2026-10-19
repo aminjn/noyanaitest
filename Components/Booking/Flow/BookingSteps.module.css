@@ -36,6 +36,8 @@
   border-radius: var(--radiusPill);
   border: 1.5px solid var(--gray4);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   font-weight: 700;
   font-size: var(--fsXs);
 }

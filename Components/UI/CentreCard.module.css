@@ -7,6 +7,8 @@
   width: 100%;
   overflow: hidden;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   border-radius: var(--radiusMd);
   box-shadow: var(--elev1);
@@ -56,6 +58,8 @@
 .mediaStart {
   inset-inline-start: 0.75rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
 }
 
 .mediaEnd {
@@ -169,6 +173,8 @@
   border-radius: 100dvw;
   border: 1px solid var(--cardLine);
   background-color: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray11);
   font-size: 0.6875rem;
   line-height: 1.5;
@@ -254,6 +260,8 @@ a.chip:hover {
   padding: 0.75rem;
   border-radius: 0.875rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev1);
   transition:

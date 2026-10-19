@@ -2,11 +2,9 @@ import { IProduct } from "../Admin/Product/AdminManageProductsPage";
 import { IProductPackage } from "../Admin/ProductPackage/AdminManageProductPackagesPage";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import CheckSquareIcon from "../Icons/CheckSquareIcon";
 import UserCircleIcon from "../Icons/UserCircleIcon";
 import ServiceOrProductCard from "../Service/ServiceOrProductCard";
 import Ixon from "../UI/Ixon";
-import classes from "./ProductCard.module.css";
 
 const NS: ContentNamespace[] = ["common", "productServiceCard"];
 const ProductCard = ({
@@ -47,14 +45,6 @@ const ProductCard = ({
       price={node.model === "Product" ? best?.price || 0 : node.price || 0}
       rating={node.averageScore}
       category={node.category?.name}
-      detail={{
-        icon: (
-          <Ixon className={classes.checkIcon} width=".75rem">
-            <CheckSquareIcon />
-          </Ixon>
-        ),
-        title: getContent("availableInStock"),
-      }}
       image={node.image}
       owner={
         node.model === "Product"

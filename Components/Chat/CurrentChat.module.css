@@ -294,6 +294,8 @@
   .emptyHeader {
     display: flex;
     background: var(--glassStrong);
+    backdrop-filter: var(--glassBlur);
+    -webkit-backdrop-filter: var(--glassBlur);
     padding-block: 1rem;
     padding-inline: 1.5rem;
     position: sticky;

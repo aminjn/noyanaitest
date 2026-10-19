@@ -36,6 +36,8 @@
   padding-inline: 1.5rem;
   padding-block: 1.125rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   border-radius: var(--radiusSm);
   cursor: pointer;

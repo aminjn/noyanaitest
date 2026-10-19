@@ -38,6 +38,8 @@
 
 .link:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
 }
 
@@ -98,6 +100,8 @@
 
 .activeLink .balance {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--toneIndigoInk);
 }
 
@@ -131,6 +135,8 @@
   border: 1px solid var(--glassLine);
   border-radius: 1.125rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   transition: border-color var(--transTime), background-color var(--transTime);
 }
 

@@ -32,6 +32,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--glassLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--textStrong);
   font: inherit;
   cursor: pointer;
@@ -84,6 +86,8 @@
   border-radius: var(--radiusSm);
   border: 1px solid var(--glassLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--textStrong);
   font: inherit;
   text-align: start;
@@ -115,6 +119,8 @@
 
 .working {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 /* not a working day (template), a closed holiday or a whole day off */
@@ -261,6 +267,8 @@
 
 .lgWorking {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .lgOff {

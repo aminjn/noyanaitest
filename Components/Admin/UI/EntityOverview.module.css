@@ -19,11 +19,15 @@
   font-weight: 600;
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
 }
 
 a.chip:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .ok {
@@ -70,6 +74,8 @@ a.chip:hover {
   padding: 0.875rem 1rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
 }
 
@@ -98,6 +104,8 @@ a.chip:hover {
   padding: 1rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
 }
 
@@ -118,6 +126,8 @@ a.chip:hover {
   padding: 0 0.5rem;
   border-radius: 999px;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font-size: 0.75rem;
   line-height: 1.375rem;
 }
@@ -132,6 +142,8 @@ a.chip:hover {
   padding: 0.25rem 0.625rem;
   border-radius: 0.5rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font-size: 0.8125rem;
   color: var(--gray12);
 }

@@ -38,6 +38,8 @@
   padding: 3rem 1.5rem;
   border-radius: 1rem;
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   text-align: center;
   color: var(--gray10);

@@ -12,6 +12,8 @@
   padding: 1rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
 }
 
@@ -56,6 +58,8 @@
   padding: 0.875rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .serpUrl {

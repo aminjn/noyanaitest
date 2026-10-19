@@ -37,6 +37,8 @@
 .chip {
   border: 1px solid var(--aiLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
 }
 

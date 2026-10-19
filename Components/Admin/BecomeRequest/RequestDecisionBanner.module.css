@@ -8,6 +8,8 @@
   border-inline-start-width: 0.25rem;
   border-radius: var(--radiusSm);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .pending {

@@ -51,6 +51,8 @@
   border-radius: 0.75rem;
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font-size: 0.875rem;
   font-weight: 800;
@@ -85,6 +87,8 @@
   border-radius: 999px;
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray11);
   font-size: 0.8125rem;
   font-weight: 700;
@@ -116,6 +120,8 @@
   padding: 1.25rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   box-shadow: var(--glassShadow);
 }
@@ -154,6 +160,8 @@
   padding: 0.625rem 0.875rem;
   border-radius: 0.875rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .offDates {
@@ -204,6 +212,8 @@
   border-radius: 0.875rem;
   border: 1px solid var(--cardLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--textStrong);
   font: inherit;
   font-size: var(--fsSm);
@@ -250,6 +260,8 @@
 
 .patientItem:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .patientOn,

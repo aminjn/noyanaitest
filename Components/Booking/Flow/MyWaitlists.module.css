@@ -43,6 +43,8 @@
   border-radius: var(--radiusSm);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
 }
 .ended {
   opacity: 0.65;

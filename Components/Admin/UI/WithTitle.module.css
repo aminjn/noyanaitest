@@ -56,6 +56,8 @@
 
 .contextBtn:hover {
   background-color: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .headerActions {

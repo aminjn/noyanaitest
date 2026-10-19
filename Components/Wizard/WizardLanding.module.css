@@ -26,6 +26,8 @@
   padding: 0.3rem 0.9rem;
   border-radius: 100dvw;
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--primary);
   border: 1px solid var(--primary2);
 }
@@ -57,6 +59,8 @@
   padding: 0.6rem;
   border-radius: 1.25rem;
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev2, var(--elev1));
 }
@@ -118,6 +122,8 @@
   border-radius: 100dvw;
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--gray11);
   cursor: pointer;
 }
@@ -136,6 +142,8 @@
   border-radius: var(--radiusMd, 1rem);
   border-inline-start: 3px solid var(--error, #e5484d);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--gray11);
   line-height: 1.9;
 }
@@ -174,6 +182,8 @@
   padding: 1.25rem;
   border-radius: var(--radiusLg, 1.25rem);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev1);
 }
@@ -208,6 +218,8 @@
   padding: 0.45rem 0.95rem;
   border-radius: 100dvw;
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   color: var(--gray12);
 }
@@ -230,6 +242,8 @@
 .faqItem {
   border-radius: var(--radiusMd, 1rem);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   padding: 0.25rem 1.1rem;
 }

@@ -40,6 +40,8 @@
   padding: 1.25rem 0.75rem;
   border-radius: var(--radiusMd);
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev1);
   transition:
@@ -95,6 +97,8 @@
   padding: 1.5rem;
   border-radius: var(--radiusLg);
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev2);
 }

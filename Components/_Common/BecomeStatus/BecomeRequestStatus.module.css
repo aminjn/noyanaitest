@@ -8,6 +8,8 @@
   padding: 1rem 1.25rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   color: var(--gray12);
   line-height: 1.8;

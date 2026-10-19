@@ -16,6 +16,8 @@
   padding: 2.25rem 1.5rem;
   border-radius: var(--radiusLg, 1.5rem);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   box-shadow: var(--glassShadow);
   text-align: center;

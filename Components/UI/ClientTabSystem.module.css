@@ -48,6 +48,8 @@
 .activeItem:hover {
   color: var(--gray13);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   font-weight: 800;
 }

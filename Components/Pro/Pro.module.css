@@ -40,6 +40,8 @@
   padding: 0.875rem 1rem;
   border-radius: var(--radiusMd);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
 }
 
@@ -95,6 +97,8 @@
   border-radius: var(--radiusLg);
   border: 2px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: inherit;
   font: inherit;
   text-align: start;
@@ -316,6 +320,8 @@
   padding: 1.375rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   box-shadow: var(--glassShadow);
 }

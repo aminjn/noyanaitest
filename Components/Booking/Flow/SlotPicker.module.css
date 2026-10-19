@@ -77,6 +77,8 @@
   border: 1px solid var(--cardLine);
   border-radius: 50%;
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textBody);
   cursor: pointer;
 }
@@ -118,6 +120,8 @@
   border-radius: var(--radiusSm);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textStrong);
   cursor: pointer;
   transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
@@ -308,6 +312,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLineHover);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--primary7);
   font-weight: 600;
   font-size: var(--fsSm);

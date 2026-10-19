@@ -15,6 +15,8 @@
   border: 1px solid var(--glassLine);
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   text-align: start;
@@ -113,6 +115,8 @@
 .add:hover,
 .addOnly:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
 }
 
