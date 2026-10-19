@@ -8,7 +8,14 @@ import Ixon from "./Ixon";
 import Badge from "./Badge";
 import Button from "./Button";
 import { WithStyleProps } from "../Layout/Layout";
-import { t2xsRegular, tbaseMedium, tsmDemiBold, tsmMedium, txsMedium, txsRegular } from "./Typography";
+import {
+  t2xsRegular,
+  tbaseMedium,
+  tsmDemiBold,
+  tsmMedium,
+  txsMedium,
+  txsRegular,
+} from "./Typography";
 import StarIcon from "../Icons/StarIcon";
 import LocationIcon from "../Icons/LocationIcon";
 import ChevronIcon from "../Icons/ChevronIcon";
@@ -20,6 +27,8 @@ import StetoscopeIcon from "../Icons/StetoscopeIcon";
 import ShoppingCartIcon from "../Icons/ShoppingCartIcon";
 import UserGroupIcon from "../Icons/UserGroupIcon";
 import HospitalIcon from "../Icons/HospitalIcon";
+import PillIcon from "../Icons/PillIcon";
+import FlaskIcon from "../Icons/FlaskIcon";
 import CentreVerifiedTick from "./CentreVerifiedTick";
 import OpenStatusBadge from "../OpeningHours/OpenStatusBadge";
 import { OpenStatus } from "../OpeningHours/openingHours";
@@ -33,7 +42,12 @@ import { currencize } from "../helpers/currencize";
 
 const NS: ContentNamespace[] = ["common", "centreCard"];
 
-export type CentreKind = "clinic" | "hospital" | "paraClinic" | "pharmacy" | "insurance";
+export type CentreKind =
+  | "clinic"
+  | "hospital"
+  | "paraClinic"
+  | "pharmacy"
+  | "insurance";
 
 // the public page and list of each kind (the list is where a tag or an
 // insurer chip leads: the same list, narrowed to it)
@@ -103,7 +117,12 @@ export type CentreCardNode = {
   isBasic?: boolean;
   establishment?: string;
   membersCount?: string;
-  network?: { clinics?: number; hospitals?: number; paraClinics?: number; doctors?: number } | null;
+  network?: {
+    clinics?: number;
+    hospitals?: number;
+    paraClinics?: number;
+    doctors?: number;
+  } | null;
 };
 
 type Named = { _id: string; name: string };
@@ -118,13 +137,26 @@ const named = (value: unknown): Named | undefined =>
       }
     : undefined;
 const namedList = (value: unknown): Named[] =>
-  (Array.isArray(value) ? value : []).map(named).filter((el): el is Named => !!el && !!el._id);
+  (Array.isArray(value) ? value : [])
+    .map(named)
+    .filter((el): el is Named => !!el && !!el._id);
 
 const MAX_INSURERS = 3;
 
+// the kind's sign on a centre without a picture (a pharmacy's pill, a
+// lab's flask) instead of a banner holding one big letter
+const kindIcon: Record<CentreKind, () => ReactNode> = {
+  clinic: () => <StetoscopeIcon />,
+  hospital: () => <HospitalIcon />,
+  paraClinic: () => <FlaskIcon />,
+  pharmacy: () => <PillIcon />,
+  insurance: () => <ShieldIcon />,
+};
+
 const OfferRow = ({ offer }: { offer: CentreTestOffer }) => {
   const getContent = useScopedLocale(NS);
-  const { cart, mutateCartItem, removeCartItem, isMutating, isRemoving } = useCart();
+  const { cart, mutateCartItem, removeCartItem, isMutating, isRemoving } =
+    useCart();
   const id = offer._id || "";
   const tests = Array.isArray(cart?.tests) ? cart.tests : [];
   const inCart = !!tests.find((el) => el?.item?._id === id)?.qty;
@@ -213,8 +245,15 @@ const CentreCard = ({
   // an insurer's tag that only repeats its basic / supplementary badge
   // («بیمه‌ی پایه» beside «بیمه پایه») is left out
   const squash = (v: string) => v.replace(/[\s\u200cی]+/g, "");
-  const kindBadge = kind === "insurance" ? squash(getContent(node?.isBasic ? "basicInsurance" : "finInsSupplementary")) : "";
-  const tags = namedList(node?.tags).filter((t) => !kindBadge || squash(t.name) !== kindBadge);
+  const kindBadge =
+    kind === "insurance"
+      ? squash(
+          getContent(node?.isBasic ? "basicInsurance" : "finInsSupplementary"),
+        )
+      : "";
+  const tags = namedList(node?.tags).filter(
+    (t) => !kindBadge || squash(t.name) !== kindBadge,
+  );
   const insurers = namedList(node?.insurances);
   // approved, verified reviews only; nothing before the first one
   const reviews = Number(node?.reviewCount ?? node?.commentCount) || 0;
@@ -226,7 +265,10 @@ const CentreCard = ({
           <StarIcon />
         </Ixon>
         <span className={classes.score}>
-          {new Intl.NumberFormat(intlTag, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(score)}
+          {new Intl.NumberFormat(intlTag, {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1,
+          }).format(score)}
         </span>
         <span>{`(${getContent("nComments", [new Intl.NumberFormat(intlTag).format(reviews)])})`}</span>
       </span>
@@ -237,7 +279,9 @@ const CentreCard = ({
   const roundTheClock = !!node?.isRoundTheClock && !node?.openStatus;
   const linkProps = newTab ? { target: "_blank" } : {};
   const networkCentres =
-    (Number(node?.network?.clinics) || 0) + (Number(node?.network?.hospitals) || 0) + (Number(node?.network?.paraClinics) || 0);
+    (Number(node?.network?.clinics) || 0) +
+    (Number(node?.network?.hospitals) || 0) +
+    (Number(node?.network?.paraClinics) || 0);
   // an insurer's image is its logo: shown whole, not cropped
   const logo = kind === "insurance";
 
@@ -253,16 +297,25 @@ const CentreCard = ({
           <Ixon width=".75rem">
             <StetoscopeIcon />
           </Ixon>
-          {getContent("nBeds", [new Intl.NumberFormat(intlTag).format(Number(node.bedCount))])}
+          {getContent("nBeds", [
+            new Intl.NumberFormat(intlTag).format(Number(node.bedCount)),
+          ])}
         </span>
       )}
       {kind === "insurance" && (
-        <Badge color={node?.isBasic ? "Primarylight" : "Disabled"} size="S" mode="Fill" radius="High">
+        <Badge
+          color={node?.isBasic ? "Primarylight" : "Disabled"}
+          size="S"
+          mode="Fill"
+          radius="High"
+        >
           {getContent(node?.isBasic ? "basicInsurance" : "finInsSupplementary")}
         </Badge>
       )}
       {kind === "insurance" && !!node?.establishment && (
-        <span className={`${classes.muted} ${txsRegular}`}>{getContent("establishedAtx", [node.establishment])}</span>
+        <span className={`${classes.muted} ${txsRegular}`}>
+          {getContent("establishedAtx", [node.establishment])}
+        </span>
       )}
       {kind === "insurance" && !!node?.membersCount && (
         <span className={`${classes.muted} ${txsRegular}`}>
@@ -289,11 +342,15 @@ const CentreCard = ({
         </span>
       )}
       {kind === "pharmacy" && typeof node?.takesOrders === "boolean" && (
-        <span className={`${node.takesOrders ? classes.ok : classes.muted} ${txsRegular}`}>
+        <span
+          className={`${node.takesOrders ? classes.ok : classes.muted} ${txsRegular}`}
+        >
           <Ixon width=".75rem">
             <ShoppingCartIcon />
           </Ixon>
-          {getContent(node.takesOrders ? "centreOnlineOrder" : "centreInStoreOnly")}
+          {getContent(
+            node.takesOrders ? "centreOnlineOrder" : "centreInStoreOnly",
+          )}
         </span>
       )}
     </>
@@ -303,13 +360,20 @@ const CentreCard = ({
       <DeliveryAreaNote area={node.deliveryArea} className={classes.delivery} />
     ) : null;
   const insurerChips = insurers.length ? (
-    <div className={classes.chips} aria-label={getContent("paraClinicInsurances")}>
+    <div
+      className={classes.chips}
+      aria-label={getContent("paraClinicInsurances")}
+    >
       <Ixon width=".875rem" className={classes.chipsIcon}>
         <ShieldIcon />
       </Ixon>
       {insurers.slice(0, MAX_INSURERS).map((el) => (
         // an insurer chip is a filter: the same list, its in-network centres
-        <Link key={el._id} href={`${kindPath[kind]}?insurance=${el._id}`} className={classes.chip}>
+        <Link
+          key={el._id}
+          href={`${kindPath[kind]}?insurance=${el._id}`}
+          className={classes.chip}
+        >
           {el.name}
         </Link>
       ))}
@@ -321,7 +385,9 @@ const CentreCard = ({
     </div>
   ) : null;
   const travelChip = travel ? (
-    <span className={`${classes.travel} ${txsMedium}`}>{getContent("mapTravelTimeByCar", [travel])}</span>
+    <span className={`${classes.travel} ${txsMedium}`}>
+      {getContent("mapTravelTimeByCar", [travel])}
+    </span>
   ) : null;
 
   if (variant === "row")
@@ -329,7 +395,13 @@ const CentreCard = ({
       <Tag className={`${classes.rowBox} ${className}`} style={style}>
         <Link href={href} className={classes.row} {...linkProps}>
           <span className={classes.rowImage}>
-            <HostedImage src={image} alt={name} fill sizes="3.5rem" style={{ objectFit: "cover" }} />
+            <HostedImage
+              src={image}
+              alt={name}
+              fill
+              sizes="3.5rem"
+              style={{ objectFit: "cover" }}
+            />
           </span>
           <span className={classes.rowText}>
             <span className={classes.nameLine}>
@@ -337,16 +409,22 @@ const CentreCard = ({
               {tick}
             </span>
             <span className={`${classes.muted} ${t2xsRegular}`}>
-              {[getContent(kindLabel[kind]), category, place].filter(Boolean).join(" · ")}
+              {[getContent(kindLabel[kind]), category, place]
+                .filter(Boolean)
+                .join(" · ")}
             </span>
             {!!node?.address && (
-              <span className={`${classes.address} ${t2xsRegular}`}>{node.address}</span>
+              <span className={`${classes.address} ${t2xsRegular}`}>
+                {node.address}
+              </span>
             )}
             <span className={classes.rowMeta}>
               {rating}
               <OpenStatusBadge status={node?.openStatus} compact />
               {roundTheClock && kind !== "hospital" && (
-                <span className={`${classes.ok} ${txsRegular}`}>{getContent("roundTheClock")}</span>
+                <span className={`${classes.ok} ${txsRegular}`}>
+                  {getContent("roundTheClock")}
+                </span>
               )}
               {facts}
             </span>
@@ -367,28 +445,84 @@ const CentreCard = ({
       </Tag>
     );
 
+  // no picture: a compact glass head (the kind's sign beside the name), no
+  // empty banner (2026-10, the owner's review of the pharmacy list)
+  const bare = !image;
+
   return (
-    <Tag className={`${classes.main} ${className}`} style={style}>
-      <Link href={href} className={`${classes.media} ${logo ? classes.mediaLogo : ""}`} tabIndex={-1} aria-hidden {...linkProps}>
-        <HostedImage alt={name} src={image} sizes="24rem" style={{ objectFit: logo ? "contain" : "cover" }} fill />
-        {!!category && (
-          <Badge color="Black" size="S" mode="Outline" radius="High" className={classes.mediaStart}>
-            {category}
-          </Badge>
-        )}
-        {roundTheClock && kind !== "hospital" && (
-          <Badge color="Success" size="S" mode="Fill" radius="High" className={classes.mediaEnd}>
-            {getContent("roundTheClock")}
-          </Badge>
-        )}
-      </Link>
+    <Tag
+      className={`${classes.main} ${bare ? classes.bare : ""} ${className}`}
+      style={style}
+    >
+      {!bare && (
+        <Link
+          href={href}
+          className={`${classes.media} ${logo ? classes.mediaLogo : ""}`}
+          tabIndex={-1}
+          aria-hidden
+          {...linkProps}
+        >
+          <HostedImage
+            alt={name}
+            src={image}
+            sizes="24rem"
+            style={{ objectFit: logo ? "contain" : "cover" }}
+            fill
+          />
+          {!!category && (
+            <Badge
+              color="Black"
+              size="S"
+              mode="Outline"
+              radius="High"
+              className={classes.mediaStart}
+            >
+              {category}
+            </Badge>
+          )}
+          {roundTheClock && kind !== "hospital" && (
+            <Badge
+              color="Success"
+              size="S"
+              mode="Fill"
+              radius="High"
+              className={classes.mediaEnd}
+            >
+              {getContent("roundTheClock")}
+            </Badge>
+          )}
+        </Link>
+      )}
       <div className={classes.body}>
         {travelChip}
         <div className={classes.head}>
-          <Link href={href} className={classes.nameLine} {...linkProps}>
-            <h3 className={`${classes.name} ${tbaseMedium}`}>{name}</h3>
-            {tick}
-          </Link>
+          {bare && (
+            <span className={classes.sign} aria-hidden>
+              <Ixon width="1.35rem">{kindIcon[kind]()}</Ixon>
+            </span>
+          )}
+          <span className={classes.headText}>
+            <Link href={href} className={classes.nameLine} {...linkProps}>
+              <h3 className={`${classes.name} ${tbaseMedium}`}>{name}</h3>
+              {tick}
+            </Link>
+            {bare && (!!category || (roundTheClock && kind !== "hospital")) && (
+              <span className={classes.headBadges}>
+                {!!category && (
+                  <span className={`${classes.softChip} ${txsRegular}`}>
+                    {category}
+                  </span>
+                )}
+                {roundTheClock && kind !== "hospital" && (
+                  <span
+                    className={`${classes.softChip} ${classes.okChip} ${txsRegular}`}
+                  >
+                    {getContent("roundTheClock")}
+                  </span>
+                )}
+              </span>
+            )}
+          </span>
           {rating}
         </div>
         {!!place && (
@@ -419,7 +553,11 @@ const CentreCard = ({
       </div>
       {!!offer && <OfferRow offer={offer} />}
       {footer}
-      <Link href={href} className={`${classes.action} ${txsMedium}`} {...linkProps}>
+      <Link
+        href={href}
+        className={`${classes.action} ${txsMedium}`}
+        {...linkProps}
+      >
         <span>{getContent(actionLabel[kind])}</span>
         <Ixon width="1.25rem" className={classes.chevron}>
           <ChevronIcon />

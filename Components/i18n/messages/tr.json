@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "Yazılı, sesli ve görüntülü danışmanlık",
  "homeConsultLine2": "Güvenli ve hızlı bir ortam",
  "homeConsultCta": "Çevrimiçi muayene randevusu",
- "adBadge": "Reklam"
+ "adBadge": "Reklam",
+ "phSearchCity": "Şehir ara…",
+ "phAllCities": "Tüm şehirler",
+ "phAllInsurances": "Tüm sigortalar",
+ "phClearFilters": "Tüm filtreleri temizle",
+ "phFoundCount": "${1} eczane"
 }

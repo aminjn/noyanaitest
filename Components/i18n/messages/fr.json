@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "Consultation par texte, audio et vidéo",
  "homeConsultLine2": "Un espace sûr et rapide",
  "homeConsultCta": "Réserver une téléconsultation",
- "adBadge": "Pub"
+ "adBadge": "Pub",
+ "phSearchCity": "Rechercher une ville…",
+ "phAllCities": "Toutes les villes",
+ "phAllInsurances": "Toutes les assurances",
+ "phClearFilters": "Effacer tous les filtres",
+ "phFoundCount": "${1} pharmacies"
 }

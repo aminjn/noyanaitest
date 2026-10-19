@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "Per Text, Sprache und Video",
  "homeConsultLine2": "Sicher und schnell",
  "homeConsultCta": "Online-Termin buchen",
- "adBadge": "Anzeige"
+ "adBadge": "Anzeige",
+ "phSearchCity": "Stadt suchen…",
+ "phAllCities": "Alle Städte",
+ "phAllInsurances": "Alle Versicherungen",
+ "phClearFilters": "Alle Filter entfernen",
+ "phFoundCount": "${1} Apotheken"
 }

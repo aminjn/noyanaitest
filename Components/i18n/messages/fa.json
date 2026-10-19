@@ -7717,5 +7717,10 @@
  "homeConsultLine1": "مشاوره‌ی متنی، صوتی و تصویری",
  "homeConsultLine2": "فضای امن و پرسرعت برای مشاوره",
  "homeConsultCta": "نوبت‌دهی ویزیت آنلاین",
- "adBadge": "تبلیغ"
+ "adBadge": "تبلیغ",
+ "phSearchCity": "جستجوی شهر…",
+ "phAllCities": "همه‌ی شهرها",
+ "phAllInsurances": "همه‌ی بیمه‌ها",
+ "phClearFilters": "حذف همه‌ی فیلترها",
+ "phFoundCount": "${1} داروخانه"
 }

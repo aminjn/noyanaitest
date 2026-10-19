@@ -12,9 +12,10 @@ import ListPageHeader from "../UI/ListPage/ListPageHeader";
 import ListPageSearch from "../UI/ListPage/ListPageSearch";
 import ListPageList from "../UI/ListPage/ListPageList";
 import ListPageActiveFilters from "../UI/ListPage/ListPageActiveFilters";
-import ListPageOpenNowFilter from "../UI/ListPage/ListPageOpenNowFilter";
-import ListPageCategorySelector from "../UI/ListPage/ListPageCategorySelector";
-import ListPageHeaderToggle from "../UI/ListPage/ListPageHeaderToggle";
+import PharmacyFilters from "./PharmacyFilters";
+import { useIntlLocale } from "../i18n/navigation";
+import { tsmDemiBold } from "../UI/Typography";
+import classes from "./PharmaciesListPage.module.css";
 import { ListPageFilters } from "../UI/ListPage/listFilters";
 import CentreCard from "../UI/CentreCard";
 
@@ -40,12 +41,19 @@ export type PharmaciesListPageProps = {
 };
 
 // what the list keeps when one filter changes
-const KEPT = ["search", "city", "insurance", "roundTheClock", "openNow"] as const;
+const KEPT = [
+  "search",
+  "city",
+  "insurance",
+  "roundTheClock",
+  "openNow",
+] as const;
 
-// The pharmacy list (2026-10), like the clinic and lab lists: search, the
-// 24-hour switch, the insurer that pays the prescription and the city, each
-// a link (so every view is a crawlable URL) and a removable chip. The cards
-// are the shared centre card (Components/UI/CentreCard).
+// The pharmacy list (2026-10 redesign after Snapp Pharmacy / Tapsi Dr):
+// search on top, the filters in one glass panel beside the results (open
+// now, 24 hours, the city, the insurer that pays the prescription - each a
+// link, so every view is a crawlable URL), the count and the removable
+// chips above the cards (the shared centre card, Components/UI/CentreCard).
 const PharmaciesListPage = ({
   data,
   pagesCount,
@@ -57,6 +65,7 @@ const PharmaciesListPage = ({
   openNowCount,
 }: PharmaciesListPageProps) => {
   const getContent = useScopedLocale(NS);
+  const intlTag = useIntlLocale();
   const searchParams = useSearchParams();
   const push = useProgress();
 
@@ -64,7 +73,9 @@ const PharmaciesListPage = ({
     initialValue: searchParams.get("search") || "",
   });
 
-  const build = (change: Partial<Record<(typeof KEPT)[number] | "page", string | null>>) => {
+  const build = (
+    change: Partial<Record<(typeof KEPT)[number] | "page", string | null>>,
+  ) => {
     const params = new URLSearchParams();
     for (const key of KEPT) {
       const value = key in change ? change[key] : searchParams.get(key);
@@ -82,8 +93,12 @@ const PharmaciesListPage = ({
   }, [query]);
 
   const list = Array.isArray(data) ? data.filter((el) => !!el?._id) : [];
-  const cityList = Array.isArray(cities) ? cities.filter((c) => !!c?._id && !!c.name) : [];
-  const insurerList = Array.isArray(insurances) ? insurances.filter((c) => !!c?._id && !!c.name) : [];
+  const cityList = Array.isArray(cities)
+    ? cities.filter((c) => !!c?._id && !!c.name)
+    : [];
+  const insurerList = Array.isArray(insurances)
+    ? insurances.filter((c) => !!c?._id && !!c.name)
+    : [];
   const roundTheClock = searchParams.get("roundTheClock") === "1";
 
   return (
@@ -93,56 +108,52 @@ const PharmaciesListPage = ({
         { title: getContent("pharmacies"), target: "/pharmacy" },
       ]}
     >
-      <ListPageHeader title={getContent("pharmacies")} legend={getContent("pharmaciesListLegend")} />
+      <ListPageHeader
+        title={getContent("pharmacies")}
+        legend={getContent("pharmaciesListLegend")}
+      />
       <ListPageSearch
         placeholder={getContent("searchInPharmacies")}
         defaultValue={searchParams.get("search") || ""}
         onChange={(e) => setQuery(e.target.value)}
       />
-      {(Number(roundTheClockCount) > 0 || roundTheClock) && (
-        <ListPageHeaderToggle
-          count={Number(count) || list.length}
-          active={roundTheClock}
-          label={getContent("roundTheClock")}
-          onChange={() => push(build({ roundTheClock: roundTheClock ? null : "1", page: null }))}
+      <div className={classes.layout}>
+        <PharmacyFilters
+          cities={cityList}
+          insurances={insurerList}
+          current={{
+            city: searchParams.get("city"),
+            insurance: searchParams.get("insurance"),
+            roundTheClock,
+            openNow: searchParams.get("openNow") === "1",
+          }}
+          build={build}
+          showRoundTheClock={Number(roundTheClockCount) > 0 || roundTheClock}
+          showOpenNow={Number(openNowCount) > 0 || !!filters?.openNow}
         />
-      )}
-      {cityList.length > 1 && (
-        <ListPageCategorySelector
-          basePath="/pharmacy"
-          title={getContent("city")}
-          categories={cityList}
-          hrefOf={(c) => build({ city: c._id })}
-          isActive={(c) => c._id === searchParams.get("city")}
-          allHref={build({ city: null })}
-          allActive={!searchParams.get("city")}
-        />
-      )}
-      {!!insurerList.length && (
-        <ListPageCategorySelector
-          basePath="/pharmacy"
-          title={getContent("insurance")}
-          categories={insurerList}
-          hrefOf={(c) => build({ insurance: c._id })}
-          isActive={(c) => c._id === searchParams.get("insurance")}
-          allHref={build({ insurance: null })}
-          allActive={!searchParams.get("insurance")}
-        />
-      )}
-      {(Number(openNowCount) > 0 || !!filters?.openNow) && <ListPageOpenNowFilter basePath="/pharmacy" />}
-      <ListPageActiveFilters basePath="/pharmacy" filters={filters} />
-      <ListPageList
-        itemWidth="24.0625rem"
-        pagination={{
-          currentPage: Number(searchParams.get("page")) || 1,
-          makePath: (page) => build({ page: String(page) }),
-          pagesCount,
-        }}
-      >
-        {list.map((node) => (
-          <CentreCard as="li" kind="pharmacy" key={node._id} node={node} />
-        ))}
-      </ListPageList>
+        <div className={classes.results}>
+          <p className={`${classes.count} ${tsmDemiBold}`}>
+            {getContent("phFoundCount", [
+              new Intl.NumberFormat(intlTag).format(
+                Number(count) || list.length,
+              ),
+            ])}
+          </p>
+          <ListPageActiveFilters basePath="/pharmacy" filters={filters} />
+          <ListPageList
+            itemWidth="19.5rem"
+            pagination={{
+              currentPage: Number(searchParams.get("page")) || 1,
+              makePath: (page) => build({ page: String(page) }),
+              pagesCount,
+            }}
+          >
+            {list.map((node) => (
+              <CentreCard as="li" kind="pharmacy" key={node._id} node={node} />
+            ))}
+          </ListPageList>
+        </div>
+      </div>
     </ListPageLayout>
   );
 };

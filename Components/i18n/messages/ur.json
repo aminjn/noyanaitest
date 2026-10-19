@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "تحریری، آڈیو اور ویڈیو مشورہ",
  "homeConsultLine2": "محفوظ اور تیز رفتار ماحول",
  "homeConsultCta": "آن لائن وزٹ بک کریں",
- "adBadge": "اشتہار"
+ "adBadge": "اشتہار",
+ "phSearchCity": "شہر تلاش کریں…",
+ "phAllCities": "تمام شہر",
+ "phAllInsurances": "تمام بیمے",
+ "phClearFilters": "تمام فلٹر ہٹائیں",
+ "phFoundCount": "${1} فارمیسیاں"
 }

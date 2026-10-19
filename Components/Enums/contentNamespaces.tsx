@@ -7248,6 +7248,13 @@ export const contentNamespaces = {
     "insurance",
     "city",
     "nothingWasFound",
+    "phSearchCity",
+    "phAllCities",
+    "phAllInsurances",
+    "phClearFilters",
+    "phFoundCount",
+    "filters",
+    "ohOpenNowFilter",
   ],
   // Components/Test/TestCard — reusable (test list, SearchModal).
   testCard: ["seeDetails"],

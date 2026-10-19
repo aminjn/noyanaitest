@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "استشارة نصية وصوتية ومرئية",
  "homeConsultLine2": "مساحة آمنة وسريعة للاستشارة",
  "homeConsultCta": "احجز زيارة عبر الإنترنت",
- "adBadge": "إعلان"
+ "adBadge": "إعلان",
+ "phSearchCity": "ابحث عن مدينة…",
+ "phAllCities": "كل المدن",
+ "phAllInsurances": "كل شركات التأمين",
+ "phClearFilters": "مسح كل الفلاتر",
+ "phFoundCount": "${1} صيدلية"
 }

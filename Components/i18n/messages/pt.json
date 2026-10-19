@@ -7695,5 +7695,10 @@
  "homeConsultLine1": "Consulta por texto, voz e vídeo",
  "homeConsultLine2": "Um ambiente seguro e rápido",
  "homeConsultCta": "Agendar consulta online",
- "adBadge": "Anúncio"
+ "adBadge": "Anúncio",
+ "phSearchCity": "Buscar cidade…",
+ "phAllCities": "Todas as cidades",
+ "phAllInsurances": "Todos os convênios",
+ "phClearFilters": "Limpar todos os filtros",
+ "phFoundCount": "${1} farmácias"
 }
