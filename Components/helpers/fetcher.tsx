@@ -155,8 +155,9 @@ const fetcherInner = async <TResult,>({
     body,
   });
   if (!response.headers.get("content-type")?.includes("json"))
+    // the status says which: a gateway timeout (504), a crash page (502)...
     throw new FetchError(
-      getFallbackErrorMessages().invalidResponse,
+      `${getFallbackErrorMessages().invalidResponse}${response.status ? ` (${response.status})` : ""}`,
       response.status
     );
   const data = await response.json();
