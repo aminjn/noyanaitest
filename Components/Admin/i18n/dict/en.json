@@ -3970,5 +3970,9 @@
  "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} not done (access, or that section's own rule)",
  "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "Delete ${1} items? This cannot be undone.",
  "حذف انتخاب‌شده‌ها": "Delete selected",
- "تشخیص هوشمند": "Smart diagnosis"
+ "تشخیص هوشمند": "Smart diagnosis",
+ "صفحه‌ی اصلی: بنر عریض بالای پزشکان برتر": "Home: wide banner above top doctors",
+ "صفحه‌ی اصلی: کارت بزرگ زیر پزشکان برتر (خالی = کارت مشاوره‌ی آنلاین)": "Home: large card under top doctors (empty = online consultation card)",
+ "صفحه‌ی اصلی: بنر اول کنار کارت بزرگ (نسبت ۴ به ۱)": "Home: first banner beside the large card (4:1)",
+ "صفحه‌ی اصلی: بنر دوم کنار کارت بزرگ (نسبت ۴ به ۱)": "Home: second banner beside the large card (4:1)"
 }

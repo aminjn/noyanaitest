@@ -3970,5 +3970,9 @@
  "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} yapılamadı (erişim veya o bölümün kuralı)",
  "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "${1} öğe silinsin mi? Bu geri alınamaz.",
  "حذف انتخاب‌شده‌ها": "Seçilenleri sil",
- "تشخیص هوشمند": "Akıllı teşhis"
+ "تشخیص هوشمند": "Akıllı teşhis",
+ "صفحه‌ی اصلی: بنر عریض بالای پزشکان برتر": "Ana sayfa: en iyi doktorların üstünde geniş afiş",
+ "صفحه‌ی اصلی: کارت بزرگ زیر پزشکان برتر (خالی = کارت مشاوره‌ی آنلاین)": "Ana sayfa: en iyi doktorların altındaki büyük kart (boş = çevrimiçi danışma kartı)",
+ "صفحه‌ی اصلی: بنر اول کنار کارت بزرگ (نسبت ۴ به ۱)": "Ana sayfa: büyük kartın yanındaki ilk afiş (4:1)",
+ "صفحه‌ی اصلی: بنر دوم کنار کارت بزرگ (نسبت ۴ به ۱)": "Ana sayfa: büyük kartın yanındaki ikinci afiş (4:1)"
 }

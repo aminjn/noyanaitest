@@ -7690,5 +7690,10 @@
  "wizLandA3": "Sí. Tus chats solo se ven en tu cuenta y puedes borrarlos cuando quieras.",
  "wizLandQ4": "¿Cómo encuentro médico después?",
  "wizLandA4": "El asistente sugiere la especialidad; desde ahí ves sus médicos con opiniones, seguros y la primera cita libre, y reservas presencial u online.",
- "wizLandEmergency": "¿Urgencia? Con dolor en el pecho, falta de aire intensa, adormecimiento súbito de cara o brazo, sangrado abundante o desmayo, no esperes: llama a emergencias."
+ "wizLandEmergency": "¿Urgencia? Con dolor en el pecho, falta de aire intensa, adormecimiento súbito de cara o brazo, sangrado abundante o desmayo, no esperes: llama a emergencias.",
+ "homeConsultTitle": "Consulta médica online en el mensajero de NoyanAI",
+ "homeConsultLine1": "Consulta por texto, voz y video",
+ "homeConsultLine2": "Un espacio seguro y rápido",
+ "homeConsultCta": "Reservar visita online",
+ "adBadge": "Anuncio"
 }

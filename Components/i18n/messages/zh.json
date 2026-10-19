@@ -7690,5 +7690,10 @@
  "wizLandA3": "会。对话只在您自己的账户中可见，可随时删除。",
  "wizLandQ4": "自查后如何找医生？",
  "wizLandA4": "助手会建议合适的科室；您可直接查看该科医生的患者评价、医保和最近号源，预约线下或在线问诊。",
- "wizLandEmergency": "紧急情况？如有胸痛、严重呼吸困难、面部或手臂突然麻木、大量出血或晕厥，请勿等待，立即拨打急救电话。"
+ "wizLandEmergency": "紧急情况？如有胸痛、严重呼吸困难、面部或手臂突然麻木、大量出血或晕厥，请勿等待，立即拨打急救电话。",
+ "homeConsultTitle": "在 NoyanAI 消息中进行在线问诊",
+ "homeConsultLine1": "文字、语音和视频问诊",
+ "homeConsultLine2": "安全、快速的问诊环境",
+ "homeConsultCta": "预约在线问诊",
+ "adBadge": "广告"
 }

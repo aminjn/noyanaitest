@@ -3970,5 +3970,9 @@
  "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} sin hacer (acceso o una regla de esa sección)",
  "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "¿Eliminar ${1} elementos? No se puede deshacer.",
  "حذف انتخاب‌شده‌ها": "Eliminar seleccionados",
- "تشخیص هوشمند": "Diagnóstico inteligente"
+ "تشخیص هوشمند": "Diagnóstico inteligente",
+ "صفحه‌ی اصلی: بنر عریض بالای پزشکان برتر": "Inicio: banner ancho sobre los mejores médicos",
+ "صفحه‌ی اصلی: کارت بزرگ زیر پزشکان برتر (خالی = کارت مشاوره‌ی آنلاین)": "Inicio: tarjeta grande bajo los mejores médicos (vacío = consulta online)",
+ "صفحه‌ی اصلی: بنر اول کنار کارت بزرگ (نسبت ۴ به ۱)": "Inicio: primer banner junto a la tarjeta grande (4:1)",
+ "صفحه‌ی اصلی: بنر دوم کنار کارت بزرگ (نسبت ۴ به ۱)": "Inicio: segundo banner junto a la tarjeta grande (4:1)"
 }

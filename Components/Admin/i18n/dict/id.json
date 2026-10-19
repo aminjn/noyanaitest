@@ -3970,5 +3970,9 @@
  "${1} مورد انجام نشد (دسترسی یا قانون همان بخش)": "${1} tidak selesai (akses atau aturan bagian itu)",
  "${1} مورد حذف شود؟ این کار برگشت‌پذیر نیست.": "Hapus ${1} item? Ini tidak dapat dibatalkan.",
  "حذف انتخاب‌شده‌ها": "Hapus yang dipilih",
- "تشخیص هوشمند": "Diagnosis cerdas"
+ "تشخیص هوشمند": "Diagnosis cerdas",
+ "صفحه‌ی اصلی: بنر عریض بالای پزشکان برتر": "Beranda: banner lebar di atas dokter teratas",
+ "صفحه‌ی اصلی: کارت بزرگ زیر پزشکان برتر (خالی = کارت مشاوره‌ی آنلاین)": "Beranda: kartu besar di bawah dokter teratas (kosong = kartu konsultasi online)",
+ "صفحه‌ی اصلی: بنر اول کنار کارت بزرگ (نسبت ۴ به ۱)": "Beranda: banner pertama di samping kartu besar (4:1)",
+ "صفحه‌ی اصلی: بنر دوم کنار کارت بزرگ (نسبت ۴ به ۱)": "Beranda: banner kedua di samping kartu besar (4:1)"
 }

@@ -42,10 +42,18 @@ export const advertisementPositionLabels: Record<
   AdvertisementPosition,
   string
 > = {
-  home1: "home1",
-  home2: "home2",
-  home3: "home3",
-  home4: "home4",
+  get home1() {
+    return ta("صفحه‌ی اصلی: بنر عریض بالای پزشکان برتر");
+  },
+  get home2() {
+    return ta("صفحه‌ی اصلی: کارت بزرگ زیر پزشکان برتر (خالی = کارت مشاوره‌ی آنلاین)");
+  },
+  get home3() {
+    return ta("صفحه‌ی اصلی: بنر اول کنار کارت بزرگ (نسبت ۴ به ۱)");
+  },
+  get home4() {
+    return ta("صفحه‌ی اصلی: بنر دوم کنار کارت بزرگ (نسبت ۴ به ۱)");
+  },
   home5: "home5",
   home6: "home6",
   clinics1: "clinics1",

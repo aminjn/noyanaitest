@@ -7690,5 +7690,10 @@
  "wizLandA3": "Evet. Sohbetleriniz yalnızca hesabınızda görünür ve istediğiniz zaman silebilirsiniz.",
  "wizLandQ4": "Sonrasında nasıl doktor bulurum?",
  "wizLandA4": "Asistan doğru uzmanlığı önerir; oradan hasta yorumları, sigorta ve en yakın randevuyla doktorları görüp yüz yüze veya çevrimiçi randevu alırsınız.",
- "wizLandEmergency": "Acil mi? Göğüs ağrısı, şiddetli nefes darlığı, yüzde veya kolda ani uyuşma, ağır kanama ya da bayılma varsa beklemeyin, acil numarayı arayın."
+ "wizLandEmergency": "Acil mi? Göğüs ağrısı, şiddetli nefes darlığı, yüzde veya kolda ani uyuşma, ağır kanama ya da bayılma varsa beklemeyin, acil numarayı arayın.",
+ "homeConsultTitle": "NoyanAI mesajlaşmada çevrimiçi doktor danışmanlığı",
+ "homeConsultLine1": "Yazılı, sesli ve görüntülü danışmanlık",
+ "homeConsultLine2": "Güvenli ve hızlı bir ortam",
+ "homeConsultCta": "Çevrimiçi muayene randevusu",
+ "adBadge": "Reklam"
 }

@@ -1132,6 +1132,11 @@ export const contentNamespaces = {
     "joinPropSms",
     "joinPropPay",
     "joinPropFree",
+    "homeConsultTitle",
+    "homeConsultLine1",
+    "homeConsultLine2",
+    "homeConsultCta",
+    "adBadge",
   ],
 
   // app/doctors/page.tsx (DoctorsListPage, DoctorCard).

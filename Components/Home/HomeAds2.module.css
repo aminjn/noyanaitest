@@ -1,78 +1,138 @@
 .main {
-  display: flex;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem;
   padding-block: 3rem;
 }
 
-@media screen and (max-width: 1100px) {
-  .main {
-    flex-direction: column;
-  }
+.alone {
+  grid-template-columns: minmax(0, 1fr);
 }
 
-.main > * {
-  flex: 1;
-  min-width: fit-content;
-}
-
-.side {
+/* the online-consultation card (or the home2 banner in its place) */
+.feature {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.item {
-  display: flex;
-  gap: 2rem;
-  padding: 2rem;
   align-items: center;
-  background-color: var(--primary1);
-  border-radius: 1rem;
-  min-width: fit-content;
-  max-width: 100%;
+  gap: 1rem;
+  min-height: 17.5rem;
+  padding: 2rem 2.25rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, var(--primary0), var(--primary1));
+  border: 1px solid var(--primary2);
+  overflow: hidden;
 }
 
-.content {
+.feature > .banner {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+
+.featureText {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  align-items: flex-end;
-  justify-content: space-between;
-  height: 100%;
+  gap: 1rem;
   flex: 1;
-  max-width: calc(60% - 2rem);
+  min-width: 0;
+  z-index: 1;
 }
 
 .title {
-  color: var(--primary8);
+  color: var(--primary8, var(--gray13));
+  line-height: 1.7;
 }
 
-.description {
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   color: var(--gray10);
+  line-height: 1.9;
 }
 
-.image {
-  align-self: stretch;
-  width: 40%;
+.cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.8rem 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--secondary, var(--primary));
+  color: var(--onColor, #fff);
+  white-space: nowrap;
+}
+
+:global([dir="ltr"]) .cta svg {
+  transform: scaleX(-1);
+}
+
+.phone {
   position: relative;
+  width: 11rem;
+  align-self: stretch;
   flex-shrink: 0;
+  transform: rotate(-6deg) translateY(-0.5rem);
 }
 
-.big .image {
-  transform: translateY(-4.875rem);
+/* the two banners, stacked */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.big {
-  min-height: 14rem;
-}
-
-/* a picture-only banner fills its slot */
 .banner {
   position: relative;
+  display: block;
+  flex: 1;
+  min-height: 8rem;
+  border-radius: 1.25rem;
   overflow: hidden;
-  padding: 0;
-  min-height: 8.5rem;
+  background: var(--primary1);
 }
-.big.banner {
-  min-height: 14rem;
+
+.banner img {
+  transition: transform 300ms ease;
+}
+
+a.banner:hover img {
+  transform: scale(1.02);
+}
+
+.adLabel {
+  position: absolute;
+  inset-block-end: 0.6rem;
+  inset-inline-end: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.4rem;
+  background: rgb(0 0 0 / 0.35);
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+@media screen and (max-width: 900px) {
+  .main {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: 2rem;
+  }
+
+  .feature {
+    min-height: 14rem;
+    padding: 1.5rem;
+  }
+
+  .phone {
+    width: 5.5rem;
+  }
+
+  .feature {
+    gap: 0.5rem;
+  }
+
+  .banner {
+    min-height: 0;
+    aspect-ratio: 4 / 1;
+  }
 }
