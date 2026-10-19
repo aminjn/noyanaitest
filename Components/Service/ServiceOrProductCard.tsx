@@ -1,7 +1,13 @@
 import classes from "./ServiceOrProductCard.module.css";
 import useScopedLocale from "../Hooks/useScopedLocale";
 import { ContentNamespace } from "../Enums/contentNamespaces";
-import { t2xsDemiBold, t2xsMedium, tlgBold, tsmDemiBold, txsMedium } from "../UI/Typography";
+import {
+  t2xsDemiBold,
+  t2xsMedium,
+  tlgBold,
+  tsmDemiBold,
+  txsMedium,
+} from "../UI/Typography";
 import { ReactNode, useMemo } from "react";
 import Ixon from "../UI/Ixon";
 import StarIcon from "../Icons/StarIcon";
@@ -78,7 +84,9 @@ const ServiceOrProductCard = ({
               </Ixon>
             </span>
           )}
-          {!!category && <span className={`${classes.chip} ${t2xsMedium}`}>{category}</span>}
+          {!!category && (
+            <span className={`${classes.chip} ${t2xsMedium}`}>{category}</span>
+          )}
           {!!percent && (
             <span className={`${classes.off} ${t2xsDemiBold}`}>
               {getContent("percentSymbol", [percent.toString()])}
@@ -92,7 +100,9 @@ const ServiceOrProductCard = ({
         </div>
         <div className={classes.content}>
           <h3 className={`${classes.name} ${tsmDemiBold}`}>{name}</h3>
-          {!!packageInfo && <p className={`${classes.services} ${t2xsMedium}`}>{packageInfo}</p>}
+          {!!packageInfo && (
+            <p className={`${classes.services} ${t2xsMedium}`}>{packageInfo}</p>
+          )}
           {!!owner?.title && (
             <div className={`${classes.meta} ${t2xsMedium}`}>
               {owner.icon}
@@ -117,13 +127,24 @@ const ServiceOrProductCard = ({
             </div>
           )}
           <div className={classes.footer}>
-            <div className={classes.prices}>
-              {!!discount && <s className={`${classes.striked} ${t2xsMedium}`}>{currencize(price)}</s>}
-              <span className={classes.price}>
-                <span className={tlgBold}>{currencize(pays)}</span>
-                <span className={`${classes.unit} ${txsMedium}`}>{getContent("toman")}</span>
-              </span>
-            </div>
+            {/* no live offer: no "0 toman" */}
+            {pays > 0 ? (
+              <div className={classes.prices}>
+                {!!discount && (
+                  <s className={`${classes.striked} ${t2xsMedium}`}>
+                    {currencize(price)}
+                  </s>
+                )}
+                <span className={classes.price}>
+                  <span className={tlgBold}>{currencize(pays)}</span>
+                  <span className={`${classes.unit} ${txsMedium}`}>
+                    {getContent("toman")}
+                  </span>
+                </span>
+              </div>
+            ) : (
+              <span />
+            )}
             <span className={classes.go} aria-hidden>
               <Ixon width="1.1rem">
                 <ArrowLeftIcon />

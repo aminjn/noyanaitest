@@ -38,6 +38,8 @@
   position: relative;
   margin: 0.5rem 0.5rem 0;
   aspect-ratio: 4 / 3;
+  /* a full-width card on a phone keeps a tile, not a poster */
+  max-height: 10.5rem;
   border-radius: 0.9rem;
   overflow: hidden;
   background:
