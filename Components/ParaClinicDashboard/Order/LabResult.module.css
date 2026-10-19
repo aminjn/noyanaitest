@@ -21,6 +21,8 @@
   border-radius: 1rem;
   border: 1px dashed var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   font-size: 0.8125rem;
 }

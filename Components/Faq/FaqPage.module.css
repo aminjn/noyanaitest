@@ -37,6 +37,8 @@
   border-radius: var(--radiusPill);
   box-shadow: var(--elev1);
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   margin-top: 2.5rem;
   width: fit-content;
   margin-inline: auto;

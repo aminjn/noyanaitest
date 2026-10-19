@@ -59,6 +59,8 @@
   border-radius: 50%;
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--primary);
   box-shadow: var(--elev2);
   cursor: pointer;

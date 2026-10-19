@@ -8,6 +8,8 @@
   border-radius: var(--radiusLg);
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   box-shadow: var(--glassShadow);
   color: var(--textBody);
   font-size: var(--fsSm);
@@ -67,6 +69,8 @@
   padding: var(--sp2) var(--sp3);
   border-radius: var(--radiusSm);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textStrong);
 }
 .fix {
@@ -85,6 +89,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLineHover);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--primary7);
   font-weight: 600;
   font-size: var(--fsXs);

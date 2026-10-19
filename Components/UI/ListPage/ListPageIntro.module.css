@@ -3,6 +3,8 @@
   flex-direction: column;
   padding: 1.25rem 1.5rem 1.5rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev1);
   border-radius: var(--radiusMd);

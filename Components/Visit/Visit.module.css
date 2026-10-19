@@ -230,6 +230,8 @@
 
 .ghostBtn:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 /* fixed violet: white text stays readable in both themes */

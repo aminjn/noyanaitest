@@ -409,6 +409,8 @@
 .Neutral.Outline {
   /* a calm glass secondary action, not a heavy black frame */
   background-color: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   --btnRingColor: var(--gray5);
 }
@@ -507,4 +509,34 @@
   background-color: rgba(12, 14, 52, 0.34);
   color: #fff;
   --btnRingColor: #fff;
+}
+
+/* Glass buttons everywhere (2026-10, the owner's look): a filled button
+   gets a glossy edge (a light line on top, a soft shade below), an outline
+   or neutral one a frosted, translucent face with a white edge. The ring
+   (focus / pressed) is kept in the same shadow list. */
+.main.Fill {
+  box-shadow:
+    0 0 0 var(--btnRingWidth, 0px) var(--btnRingColor, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    0 10px 22px -14px rgba(40, 36, 140, 0.75);
+}
+
+.main.Outline {
+  background-color: var(--glassChip);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  box-shadow:
+    0 0 0 var(--btnRingWidth, 0px) var(--btnRingColor, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.main.Neutral.Fill {
+  color: var(--gray12);
+  background-color: var(--glassChip);
+  background-image: none;
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid var(--glassChipLine);
 }

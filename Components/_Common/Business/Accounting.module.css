@@ -32,6 +32,8 @@
   padding: 1.25rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   box-shadow: var(--glassShadow);
   min-width: 0;
@@ -65,6 +67,8 @@
   padding: 1rem 1.125rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
 }
 
@@ -214,6 +218,8 @@
 
 .segmented .on {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
@@ -247,6 +253,8 @@
   /* glassLine vanishes on a white popup: a solid border reads on both */
   border: 1px solid var(--gray4);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.875rem;
@@ -343,6 +351,8 @@
 
 .rowLink:hover td {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .groupRow td {
@@ -494,6 +504,8 @@
   /* glassLine vanishes on a white popup: a solid border reads on both */
   border: 1px solid var(--gray4);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.8125rem;
@@ -559,6 +571,8 @@
   border-radius: var(--radiusLg);
   border: 1px solid var(--line);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .closeSteps {

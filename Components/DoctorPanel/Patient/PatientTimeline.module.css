@@ -69,6 +69,8 @@
 
 .filterOn {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--textStrong);
   box-shadow: var(--elev1);
 }
@@ -119,6 +121,8 @@
   padding: var(--sp3) var(--sp4);
   border-radius: var(--radiusSm);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
 }
 

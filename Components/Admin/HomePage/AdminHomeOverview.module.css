@@ -12,6 +12,8 @@
   border: 1px solid var(--line);
   border-radius: 1rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .head {

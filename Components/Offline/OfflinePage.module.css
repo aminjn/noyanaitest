@@ -16,6 +16,8 @@
   text-align: center;
   border-radius: var(--radiusLg);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev2);
 }

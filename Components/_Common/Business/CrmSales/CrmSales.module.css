@@ -17,6 +17,8 @@
   border-radius: 0.75rem;
   border: 1px solid var(--gray4);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.875rem;
@@ -75,6 +77,8 @@
   padding: 0.625rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   min-width: 0;
 }
@@ -235,6 +239,8 @@
 .suggest button:hover,
 .suggest button:focus-visible {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .totals {
@@ -321,6 +327,8 @@
   border-radius: var(--radiusLg);
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .bars {

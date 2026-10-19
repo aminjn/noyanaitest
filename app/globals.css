@@ -100,8 +100,8 @@
   --mesh: radial-gradient(55% 60% at 92% 0%, #c7d2fe 0%, rgba(199, 210, 254, 0) 70%),
     radial-gradient(45% 55% at 8% 12%, #fbcfe8 0%, rgba(251, 207, 232, 0) 70%),
     radial-gradient(60% 55% at 45% 105%, #bff0e6 0%, rgba(191, 240, 230, 0) 70%);
-  --glass: rgba(255, 255, 255, 0.88);
-  --glassStrong: rgba(255, 255, 255, 0.82);
+  --glass: rgba(255, 255, 255, 0.64);
+  --glassStrong: rgba(255, 255, 255, 0.72);
   --glassLine: rgba(255, 255, 255, 0.9);
   --glassBlur: blur(22px) saturate(150%);
   --glassShadow: 0 12px 40px -16px rgba(40, 48, 120, 0.25);
@@ -144,13 +144,16 @@
   --textBody: var(--gray11);
   --textMuted: var(--gray9);
   /* elevation: soft, indigo-tinted */
-  --elev1: 0 1px 2px rgba(23, 26, 64, 0.06), 0 1px 1px rgba(23, 26, 64, 0.03);
+  --elev1: 0 1px 2px rgba(23, 26, 64, 0.06), 0 6px 18px -10px rgba(30, 35, 100, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   --elev2: 0 10px 24px -12px rgba(30, 35, 100, 0.18), 0 2px 6px -2px rgba(30, 35, 100, 0.08);
   --elev3: 0 30px 60px -24px rgba(40, 44, 130, 0.32), 0 10px 20px -10px rgba(40, 44, 130, 0.14);
   /* cards on the public site */
-  --cardBg: var(--white);
-  --cardLine: rgba(30, 35, 70, 0.08);
+  /* glass cards (2026-10, the owner's look for every NoyanAI card): a
+     frosted, translucent surface with a white edge over the page's colour */
+  --cardBg: rgba(255, 255, 255, 0.6);
+  --cardLine: rgba(255, 255, 255, 0.82);
   --cardLineHover: rgba(79, 70, 229, 0.32);
+  --cardBlur: blur(18px) saturate(170%);
   /* frosted menus (header, mega menu, drawer, dropdowns) */
   --menuGlass: rgba(255, 255, 255, 0.66);
   --menuGlassSolid: #ffffff; /* when backdrop-filter is unsupported */
@@ -297,19 +300,19 @@ html[data-theme="dark"] {
   --mesh: radial-gradient(55% 60% at 92% 0%, rgba(99, 86, 255, 0.38) 0%, rgba(99, 86, 255, 0) 70%),
     radial-gradient(45% 55% at 8% 12%, rgba(219, 39, 119, 0.22) 0%, rgba(219, 39, 119, 0) 70%),
     radial-gradient(60% 55% at 45% 105%, rgba(20, 184, 166, 0.22) 0%, rgba(20, 184, 166, 0) 70%);
-  --glass: rgba(22, 26, 52, 0.9);
-  --glassStrong: rgba(30, 35, 68, 0.78);
+  --glass: rgba(22, 26, 52, 0.62);
+  --glassStrong: rgba(30, 35, 68, 0.66);
   --glassLine: rgba(255, 255, 255, 0.08);
   --glassShadow: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
   --line: rgba(255, 255, 255, 0.08);
   --focusRing: 0 0 0 3px rgba(161, 139, 255, 0.35);
 
   --textMuted: var(--gray9);
-  --elev1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --elev1: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --elev2: 0 12px 28px -14px rgba(0, 0, 0, 0.7), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
   --elev3: 0 30px 70px -24px rgba(0, 0, 0, 0.8), 0 10px 24px -12px rgba(0, 0, 0, 0.5);
-  --cardBg: rgba(23, 28, 58, 0.82);
-  --cardLine: rgba(255, 255, 255, 0.08);
+  --cardBg: rgba(23, 28, 58, 0.56);
+  --cardLine: rgba(255, 255, 255, 0.1);
   --cardLineHover: rgba(161, 139, 255, 0.45);
   --menuGlass: rgba(18, 22, 48, 0.64);
   --menuGlassSolid: #161a36;

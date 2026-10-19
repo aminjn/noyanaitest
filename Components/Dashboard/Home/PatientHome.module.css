@@ -130,6 +130,8 @@
   border-radius: 1.125rem;
   border: 1px solid var(--glassLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   transition: transform var(--transTime), border-color var(--transTime);
 }
 
@@ -248,6 +250,8 @@
   padding: 0.75rem 0.875rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font-size: 0.8125rem;
   color: var(--gray9);
 }
@@ -391,6 +395,8 @@
   padding: 0.875rem;
   border-radius: 1.25rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .instructions {
@@ -416,6 +422,8 @@
   padding: 0.625rem;
   border-radius: 1.125rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .ghost {

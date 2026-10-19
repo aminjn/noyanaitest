@@ -6,6 +6,8 @@
   border: 1px solid var(--glassLine);
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .title {
@@ -53,6 +55,8 @@
   border: 1px solid var(--glassLine);
   border-radius: 0.75rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.875rem;
@@ -125,6 +129,8 @@
   border: 1px solid var(--glassLine);
   border-radius: 999px;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   font-size: 0.875rem;
   cursor: pointer;

@@ -2,6 +2,8 @@
   padding: 1.1rem 1.2rem;
   border-radius: var(--radiusLg);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   box-shadow: var(--elev1);
 }

@@ -46,6 +46,8 @@
   padding: 1rem;
   border-radius: 1.25rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   box-shadow: var(--glassShadow);
 }

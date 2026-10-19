@@ -8,6 +8,8 @@
   border-radius: var(--radiusMd);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   box-shadow: var(--elev2);
   color: var(--textStrong);
 }
@@ -143,6 +145,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textBody);
   font-size: var(--fsSm);
   font-weight: 600;

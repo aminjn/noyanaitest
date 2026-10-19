@@ -6,6 +6,8 @@
   padding: var(--sp3) var(--sp4);
   border-radius: var(--radiusSm);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--cardLine);
 }
 
@@ -45,6 +47,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textBody);
   font: inherit;
   font-size: var(--fsXs);

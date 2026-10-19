@@ -31,6 +31,8 @@
   border: 1px solid var(--glassLine);
   border-radius: 0.75rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font: inherit;
   font-size: 0.8125rem;
   color: var(--gray11);
@@ -40,6 +42,8 @@
 
 .refresh:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .refresh:disabled {
@@ -63,6 +67,8 @@
   border: 1px solid var(--glassLine);
   border-radius: 999px;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray11);
   font: inherit;
   font-size: 0.8125rem;
@@ -72,6 +78,8 @@
 
 .chip:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .chip:focus-visible,
@@ -93,6 +101,8 @@
   padding: 0 0.375rem;
   border-radius: 999px;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: inherit;
   font-size: 0.6875rem;
   font-weight: 700;
@@ -130,6 +140,8 @@
 
 .row:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .kind {
@@ -203,6 +215,8 @@
   gap: 0.75rem;
   padding: 3rem 1rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   border-radius: var(--radiusLg);
   color: var(--successS3);

@@ -10,6 +10,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--textStrong);
   font: inherit;
   font-size: var(--fsSm);
@@ -124,6 +126,8 @@
   border-radius: 0.75rem;
   border: 1px solid var(--cardLine);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--textStrong);
   font: inherit;
   font-size: var(--fsSm);

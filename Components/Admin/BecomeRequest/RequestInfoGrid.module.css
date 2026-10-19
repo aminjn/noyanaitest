@@ -29,6 +29,8 @@
   border: 1px solid var(--line);
   border-radius: var(--radiusSm);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   text-align: start;
 }
 

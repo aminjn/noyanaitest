@@ -34,6 +34,8 @@
   border-radius: var(--radiusMd);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   box-shadow: var(--elev1);
 }
 .mobileOnly {
@@ -149,6 +151,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLineHover);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--primary7);
   font-size: var(--fsSm);
   font-weight: 600;
@@ -243,6 +247,8 @@
   border-radius: var(--radiusSm);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textStrong);
   text-align: start;
   cursor: pointer;
@@ -326,6 +332,8 @@
   border-radius: var(--radiusSm);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textStrong);
   font: inherit;
   font-size: var(--fsSm);
@@ -349,6 +357,8 @@
   border-radius: var(--radiusPill);
   border: 1px solid var(--cardLine);
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   color: var(--textBody);
   font-size: var(--fsSm);
   cursor: pointer;
@@ -528,6 +538,8 @@
   flex-direction: column;
   align-items: flex-start;
   background: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
 }
 .errorBox p {

@@ -115,6 +115,8 @@
   flex-direction: column;
   gap: 0.75rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 .draftHead {
   display: flex;
@@ -162,6 +164,8 @@
   border-radius: 0.75rem;
   border: 1px solid var(--line);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   display: inline-flex;
   align-items: center;
@@ -322,6 +326,8 @@
   border-radius: 0.75rem;
   border: 1px solid var(--line);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   padding: 0.625rem 0.75rem;
 }
@@ -362,6 +368,8 @@
   border-radius: 0.75rem;
   border: 1px solid var(--gray4);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.875rem;

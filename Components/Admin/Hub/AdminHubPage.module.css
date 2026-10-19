@@ -83,6 +83,8 @@
 
 .link:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .link:focus-visible {

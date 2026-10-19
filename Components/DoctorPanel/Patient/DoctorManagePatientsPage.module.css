@@ -36,6 +36,8 @@
   padding: 0 1rem;
   border-radius: 999px;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   color: var(--gray9);
 }
@@ -55,6 +57,8 @@
   text-align: center;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   color: var(--gray9);
 }
@@ -130,6 +134,8 @@
   padding: 0.625rem 0.75rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font-size: 0.75rem;
   color: var(--gray9);
 }

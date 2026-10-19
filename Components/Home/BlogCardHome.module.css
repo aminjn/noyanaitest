@@ -6,6 +6,8 @@
   overflow: hidden;
   /* shared public card surface (globals.css card tokens) */
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   border-radius: var(--radiusMd);
   box-shadow: var(--elev1);

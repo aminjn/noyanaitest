@@ -43,6 +43,8 @@
 
 .tabOn {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
@@ -79,6 +81,8 @@
   padding: 3rem 1rem;
   border-radius: var(--radiusLg);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--glassLine);
   color: var(--gray10);
   text-align: center;
@@ -164,6 +168,8 @@
   padding: 0.625rem 0.75rem;
   border-radius: 1rem;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   font-size: 0.75rem;
   color: var(--gray9);
 }

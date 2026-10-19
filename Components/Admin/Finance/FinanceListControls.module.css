@@ -23,6 +23,8 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.8125rem;
@@ -112,6 +114,8 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray11);
   font: inherit;
   font-size: 0.75rem;

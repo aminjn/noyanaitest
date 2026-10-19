@@ -121,6 +121,8 @@
   border-radius: 0.625rem;
   border: 1px solid var(--gray4);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.8125rem;

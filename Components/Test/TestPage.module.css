@@ -5,6 +5,8 @@
   margin-block: 1.5rem;
   padding: 1.5rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   border-radius: var(--radiusMd);
   box-shadow: var(--elev1);
@@ -64,6 +66,8 @@
   gap: 0.75rem;
   padding: 1.25rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px solid var(--cardLine);
   border-radius: var(--radiusMd);
 }
@@ -83,6 +87,8 @@
   padding: 2rem 1.5rem;
   border-radius: 1rem;
   background-color: var(--cardBg);
+  backdrop-filter: var(--cardBlur);
+  -webkit-backdrop-filter: var(--cardBlur);
   border: 1px dashed var(--cardLine);
   color: var(--gray8);
   text-align: center;

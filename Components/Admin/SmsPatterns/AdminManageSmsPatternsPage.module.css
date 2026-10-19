@@ -9,6 +9,8 @@
   padding: 0.875rem 1rem;
   border-radius: 0.75rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--line);
   color: var(--gray9);
   line-height: 1.8;
@@ -23,6 +25,8 @@
   padding: 0.625rem 0.75rem;
   border-radius: 0.625rem;
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--line);
   min-width: 0;
 }

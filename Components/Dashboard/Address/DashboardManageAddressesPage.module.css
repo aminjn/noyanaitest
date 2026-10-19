@@ -162,6 +162,8 @@
 
 .ghost {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border: 1px solid var(--line);
   color: var(--gray12);
 }

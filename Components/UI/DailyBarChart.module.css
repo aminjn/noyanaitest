@@ -27,6 +27,8 @@
   flex-shrink: 0;
   border: 1px solid var(--glassLine);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   border-radius: 0.5rem;
   padding: 0.25rem 0.625rem;
   font: inherit;
@@ -37,6 +39,8 @@
 
 .toggle:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .toggle:focus-visible {

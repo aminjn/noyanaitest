@@ -55,6 +55,8 @@
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray12);
   font-size: 0.8125rem;
   font-weight: 700;
@@ -63,6 +65,8 @@
 .quick a:hover,
 .quick button:hover {
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .grid2 {
@@ -131,6 +135,8 @@
   border-radius: 0.75rem;
   border: 1px solid var(--line);
   background: var(--glass);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
 }
 
 .creditsTitle {
@@ -188,6 +194,8 @@
   border-radius: var(--radiusLg);
   border: 1px solid var(--line);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
 }
 
@@ -263,6 +271,8 @@
   border-radius: 0.625rem;
   border: 1px solid var(--gray4);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.8125rem;
@@ -389,6 +399,8 @@
   border-radius: 0.625rem;
   border: 1px solid var(--gray4);
   background: var(--glassStrong);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
   color: var(--gray13);
   font: inherit;
   font-size: 0.8125rem;
