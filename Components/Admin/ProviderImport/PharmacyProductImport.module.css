@@ -4,7 +4,7 @@
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
   gap: 0.625rem;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .table td:first-child {
-  min-inline-size: 14rem;
+  min-inline-size: 11rem;
 }
 
 .badges {
