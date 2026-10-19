@@ -36,6 +36,8 @@ type Plan = {
   updatedOffers?: number;
   unchangedOffers?: number;
   newCategories?: string[];
+  categories?: { name: string; count: number; match?: { _id: string; name?: string } }[];
+  uncategorized?: number;
   skipped?: { name: string; reason: string }[];
   sample?: { name: string; price: number; inStock: boolean; category?: string; matched: boolean }[];
   images?: number;
@@ -58,16 +60,23 @@ const PharmacyProductImport = () => {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [result, setResult] = useState<Plan | null>(null);
   const [busy, setBusy] = useState<"preview" | "apply" | null>(null);
+  // the admin's category choices: file category -> site category id ("" =
+  // a new category of that name), and the one for rows that have none
+  const [categoryMap, setCategoryMap] = useState<Record<string, string>>({});
+  const [fallback, setFallback] = useState<string>("");
 
   const send = async (step: "preview" | "apply", f: File | null = file, id: string | null = pharmacy) => {
     if (!id) return pushNotification(ta("داروخانه را انتخاب کنید"), "Error");
     if (!f) return pushNotification(ta("فایلی بارگذاری نشد"), "Error");
     setBusy(step);
     try {
-      const r = await fetcher<{ data: Plan }>({ url: `${BASE}/${step}`, method: "POST", payload: { pharmacy: id, file: f }, bodyParser: "FORM" });
+      const categories = JSON.stringify({ map: categoryMap, fallback: fallback || undefined });
+      const r = await fetcher<{ data: Plan }>({ url: `${BASE}/${step}`, method: "POST", payload: { pharmacy: id, file: f, categories }, bodyParser: "FORM" });
       if (step === "preview") {
         setPlan(r.data || null);
         setResult(null);
+        const list = Array.isArray(r.data?.categories) ? r.data.categories : [];
+        setCategoryMap(Object.fromEntries(list.map((c) => [c.name, c.match?._id || ""])));
       } else {
         setResult(r.data || null);
         setPlan(null);
@@ -157,13 +166,62 @@ const PharmacyProductImport = () => {
               </div>
             ))}
           </div>
-          {!!view.newCategories?.length && (
+          {!!result && !!view.newCategories?.length && (
             <p className={classes.hint}>
               {ta("دسته‌های تازه: ${1}", [view.newCategories.join("، ")])}
             </p>
           )}
           {!!result?.imageFailures && (
             <p className={classes.hint}>{ta("${1} عکس دریافت نشد؛ نشانی اصلی آن نگه داشته شد.", [n(result.imageFailures)])}</p>
+          )}
+          {!result && (!!view.categories?.length || !!view.uncategorized) && (
+            <div className={own.categories}>
+              <h4 className={own.subTitle}>{ta("دسته‌بندی محصولات")}</h4>
+              <p className={classes.hint}>
+                {ta("هر دسته‌ی فایل به دسته‌ی هم‌نام سایت وصل می‌شود و اگر نباشد ساخته می‌شود. می‌توانید دسته‌ی دیگری انتخاب کنید یا همین‌جا دسته‌ی تازه بسازید.")}
+              </p>
+              {(view.categories || []).map((c) => (
+                <div key={c.name} className={own.categoryRow}>
+                  <div className={own.categoryName}>
+                    <strong dir="auto">{c.name}</strong>
+                    <span>{ta("${1} محصول", [n(c.count)])}</span>
+                    {!categoryMap[c.name] && !c.match && <Badge color="Info">{ta("دسته‌ی تازه ساخته می‌شود")}</Badge>}
+                  </div>
+                  <div className={own.categoryPick}>
+                    <NodesSelector
+                      key={`${c.name}-${c.match?._id || ""}`}
+                      multi={false}
+                      path={`${API}/auto/productCategory`}
+                      creatable={{ path: `${API}/auto/productCategory` }}
+                      clearable
+                      defaultValue={c.match?._id}
+                      getOptionLabel={(node) => String((node as Option)?.name || "")}
+                      getOptionValue={(node) => String((node as Option)?._id || "")}
+                      onChange={(v) => setCategoryMap((prev) => ({ ...prev, [c.name]: v || "" }))}
+                    />
+                  </div>
+                </div>
+              ))}
+              {!!view.uncategorized && (
+                <div className={own.categoryRow}>
+                  <div className={own.categoryName}>
+                    <strong>{ta("بدون دسته")}</strong>
+                    <span>{ta("${1} محصول", [n(view.uncategorized)])}</span>
+                  </div>
+                  <div className={own.categoryPick}>
+                    <NodesSelector
+                      multi={false}
+                      path={`${API}/auto/productCategory`}
+                      creatable={{ path: `${API}/auto/productCategory` }}
+                      clearable
+                      getOptionLabel={(node) => String((node as Option)?.name || "")}
+                      getOptionValue={(node) => String((node as Option)?._id || "")}
+                      onChange={(v) => setFallback(v || "")}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           )}
           {!!view.sample?.length && (
             <div className={own.tableWrap}>

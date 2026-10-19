@@ -4041,5 +4041,9 @@
  "نتیجه‌ی ورود محصولات ${1}": "Ergebnis des Produktimports: ${1}",
  "پیشنهاد تازه‌ی داروخانه": "Neue Angebote der Apotheke",
  "پیش‌نمایش": "Vorschau",
- "پیش‌نمایش محصولات ${1}": "Produktvorschau: ${1}"
+ "پیش‌نمایش محصولات ${1}": "Produktvorschau: ${1}",
+ "${1} محصول": "${1} Produkte",
+ "بدون دسته": "Ohne Kategorie",
+ "دسته‌ی تازه ساخته می‌شود": "Eine neue Kategorie wird angelegt",
+ "هر دسته‌ی فایل به دسته‌ی هم‌نام سایت وصل می‌شود و اگر نباشد ساخته می‌شود. می‌توانید دسته‌ی دیگری انتخاب کنید یا همین‌جا دسته‌ی تازه بسازید.": "Jede Kategorie der Datei wird mit der gleichnamigen Kategorie der Website verknüpft oder angelegt, wenn es keine gibt. Sie können eine andere wählen oder hier eine neue anlegen."
 }
