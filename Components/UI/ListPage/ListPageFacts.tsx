@@ -2,6 +2,7 @@ import classes from "./ListPageFacts.module.css";
 import { tmdDemiBold, tsmMedium, tsmRegular } from "../Typography";
 import Ixon from "../Ixon";
 import AlertTriangleIcon from "@/Components/Icons/AlertTriangleIcon";
+import { readableText } from "@/Components/helpers/readableText";
 
 export type ListPageFact = { title: string; value?: string | null };
 
@@ -26,9 +27,9 @@ const ListPageFacts = ({
   // block is drawn for it even when no field is filled
   note?: string;
 }) => {
-  const filled = (Array.isArray(items) ? items : []).filter(
-    (el) => typeof el?.value === "string" && el.value.trim(),
-  );
+  const filled = (Array.isArray(items) ? items : [])
+    .map((el) => ({ title: el?.title, value: readableText(typeof el?.value === "string" ? el.value : "") }))
+    .filter((el) => el.value);
   if (!filled.length && !note) return null;
   return (
     <section

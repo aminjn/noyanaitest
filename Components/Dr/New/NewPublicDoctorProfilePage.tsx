@@ -1,4 +1,5 @@
 "use client";
+import { readableText } from "@/Components/helpers/readableText";
 import { officeAddressText } from "@/Components/DoctorPanel/Office/officeAddress";
 import {
   Fragment,
@@ -524,7 +525,7 @@ const NewDoctorProfilePage = ({
               // paragraphs kept (an imported introduction has its sections);
               // a long one folds behind «مشاهده بیشتر»
               <CollapsibleText lines={5}>
-                {String(doctor.introduction)
+                {readableText(String(doctor.introduction))
                   .split(/\n{2,}/)
                   .filter((p) => p.trim())
                   .map((p, i) => (
