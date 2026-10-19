@@ -79,3 +79,49 @@
   padding-inline-start: 1.25rem;
   list-style: disc;
 }
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--gray13);
+}
+
+.categoryRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--cardLine, var(--gray4));
+  border-radius: 0.75rem;
+  background: var(--cardBg, var(--gray1));
+}
+
+.categoryName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--gray11);
+}
+
+.categoryName strong {
+  color: var(--gray13);
+}
+
+.categoryPick {
+  min-inline-size: 0;
+}
+
+@media (max-width: 640px) {
+  .categoryRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

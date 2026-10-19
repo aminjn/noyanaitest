@@ -4041,5 +4041,9 @@
  "نتیجه‌ی ورود محصولات ${1}": "Product import result: ${1}",
  "پیشنهاد تازه‌ی داروخانه": "New pharmacy offers",
  "پیش‌نمایش": "Preview",
- "پیش‌نمایش محصولات ${1}": "Product preview: ${1}"
+ "پیش‌نمایش محصولات ${1}": "Product preview: ${1}",
+ "${1} محصول": "${1} products",
+ "بدون دسته": "No category",
+ "دسته‌ی تازه ساخته می‌شود": "A new category will be created",
+ "هر دسته‌ی فایل به دسته‌ی هم‌نام سایت وصل می‌شود و اگر نباشد ساخته می‌شود. می‌توانید دسته‌ی دیگری انتخاب کنید یا همین‌جا دسته‌ی تازه بسازید.": "Each category in the file is linked to the site's category of the same name, or created if there is none. You can pick another category or create a new one right here."
 }

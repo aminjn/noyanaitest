@@ -4041,5 +4041,9 @@
  "نتیجه‌ی ورود محصولات ${1}": "${1} ürün içe aktarma sonucu",
  "پیشنهاد تازه‌ی داروخانه": "Eczanenin yeni teklifleri",
  "پیش‌نمایش": "Önizleme",
- "پیش‌نمایش محصولات ${1}": "${1} ürün önizlemesi"
+ "پیش‌نمایش محصولات ${1}": "${1} ürün önizlemesi",
+ "${1} محصول": "${1} ürün",
+ "بدون دسته": "Kategorisiz",
+ "دسته‌ی تازه ساخته می‌شود": "Yeni kategori oluşturulacak",
+ "هر دسته‌ی فایل به دسته‌ی هم‌نام سایت وصل می‌شود و اگر نباشد ساخته می‌شود. می‌توانید دسته‌ی دیگری انتخاب کنید یا همین‌جا دسته‌ی تازه بسازید.": "Dosyadaki her kategori sitedeki aynı adlı kategoriye bağlanır, yoksa oluşturulur. Başka bir kategori seçebilir veya burada yenisini oluşturabilirsiniz."
 }
