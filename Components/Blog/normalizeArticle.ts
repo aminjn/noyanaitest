@@ -56,13 +56,47 @@ const titleLevel = (block: Block) => {
   return big || bold ? 2 : 3;
 };
 
+// A body that never became the editor's JSON (an old post kept as HTML or
+// plain text) showed as an empty page: it is read as paragraphs, headings
+// and list items instead.
+const ENTITIES: Record<string, string> = { nbsp: " ", amp: "&", lt: "<", gt: ">", quot: '"', zwnj: "\u200c" };
+const decode = (s: string) =>
+  s.replace(/&(#\d+|[a-z]+);/gi, (m, c: string) =>
+    c[0] === "#" ? String.fromCodePoint(Number(c.slice(1)) || 32) : ENTITIES[c.toLowerCase()] ?? m,
+  );
+const fromText = (raw: string): Block[] => {
+  const marked = raw
+    .replace(/<\s*br\s*\/?>/gi, "\n")
+    .replace(/<\s*h([1-6])[^>]*>/gi, "\n\n\u0001$1")
+    .replace(/<\s*li[^>]*>/gi, "\n\n\u0002")
+    .replace(/<\/\s*(p|div|h[1-6]|li|section|article|blockquote|tr)\s*>/gi, "\n\n")
+    .replace(/<[^>]+>/g, "");
+  const blocks: Block[] = [];
+  for (const part of decode(marked).split(/\n\s*\n/)) {
+    let text = part.trim();
+    if (!text) continue;
+    let block: Block = { type: "p" };
+    if (text[0] === "\u0001") {
+      const level = Math.min(Math.max(Number(text[1]) || 2, 2), 4);
+      text = text.slice(2).trim();
+      block = { type: "h", level };
+    } else if (text[0] === "\u0002") {
+      text = text.slice(1).trim();
+      block = { type: "p" };
+      text = `• ${text}`;
+    }
+    if (text) blocks.push({ ...block, children: [{ text: text.replace(/\s*\n\s*/g, " ") }] });
+  }
+  return blocks;
+};
+
 export const normalizeArticle = (value?: string): string | undefined => {
   if (!value) return value;
   let nodes: Block[];
   try {
     nodes = JSON.parse(value);
   } catch {
-    return value;
+    nodes = fromText(value);
   }
   if (!Array.isArray(nodes)) return value;
   // empty paragraphs were spacing: the page has its own
