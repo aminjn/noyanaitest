@@ -46,6 +46,8 @@ export interface IBotChatMessage extends MongoDoc {
   meta?: {
     // the answers the patient can tap under a question
     options?: string[];
+    // a question of the site's own interview: which one of how many
+    interview?: { id: string; q: string; n: number; total: number };
     urgency?: "emergency" | "soon" | "routine";
     speciality?: { _id: string; name: string; slug?: string };
     diseases?: { _id: string; name: string; slug?: string }[];
@@ -358,7 +360,10 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
     while (i >= 0 && !isAssessment(list[i])) i--;
     return list.slice(i + 1);
   })();
-  const asked = sinceAssessment.filter((m) => m.role === "assistant").length;
+  // the site's interview knows its own length; a model's questions are up to 4
+  const lastInterview = list[list.length - 1]?.meta?.interview;
+  const total = lastInterview ? Math.max(1, Number(lastInterview.total) || 1) : 4;
+  const asked = lastInterview ? Math.min(Number(lastInterview.n) || 1, total) : Math.min(sinceAssessment.filter((m) => m.role === "assistant").length, 4);
   const showProgress = asked > 0 && !!data?.length && !isAssessment(data[data.length - 1]);
 
   return (
@@ -401,12 +406,12 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
             <span className={classes.progress}>
               <span>
                 {getContent("wizProgress", [
-                  new Intl.NumberFormat(intlTag).format(Math.min(asked, 4)),
-                  new Intl.NumberFormat(intlTag).format(4),
+                  new Intl.NumberFormat(intlTag).format(asked),
+                  new Intl.NumberFormat(intlTag).format(total),
                 ])}
               </span>
               <span className={classes.progressTrack} aria-hidden="true">
-                <span className={classes.progressFill} style={{ width: `${(Math.min(asked, 4) / 4) * 100}%` }} />
+                <span className={classes.progressFill} style={{ width: `${(asked / total) * 100}%` }} />
               </span>
             </span>
           )}

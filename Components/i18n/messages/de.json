@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "Erste Einschätzung",
  "wizUrgencyEmergency": "Notfall · jetzt 115 anrufen",
  "wizUrgencySoon": "In den nächsten Tagen zum Arzt",
- "wizUrgencyRoutine": "Nicht dringend",
+ "wizUrgencyRoutine": "Kein dringendes Anzeichen erkannt",
  "wizPossible": "Möglichkeiten:",
  "wizSpecialistSuggested": "Empfohlener Facharzt:",
  "wizProgress": "Frage ${1} von ${2}",
- "wizEmergencyNote": "Im Notfall 115 anrufen. Dieser Assistent ersetzt keine ärztliche Untersuchung."
+ "wizEmergencyNote": "Im Notfall 115 anrufen. Dieser Assistent ersetzt keine ärztliche Untersuchung.",
+ "wizNearNoneAtAll": "Auf der Website wurde noch kein Arzt für ${1} gefunden. Sehen Sie sich die vollständige Ärzteliste an oder gehen Sie zu einem Allgemeinarzt."
 }

@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "Initial assessment",
  "wizUrgencyEmergency": "Emergency · call 115 now",
  "wizUrgencySoon": "See a doctor within a few days",
- "wizUrgencyRoutine": "Not urgent",
+ "wizUrgencyRoutine": "No urgent sign found",
  "wizPossible": "Possibilities:",
  "wizSpecialistSuggested": "Suggested specialist:",
  "wizProgress": "Question ${1} of ${2}",
- "wizEmergencyNote": "In an emergency call 115. This assistant does not replace a doctor’s examination."
+ "wizEmergencyNote": "In an emergency call 115. This assistant does not replace a doctor’s examination.",
+ "wizNearNoneAtAll": "No ${1} doctor was found on the site yet. See the full list of doctors or visit a general practitioner."
 }

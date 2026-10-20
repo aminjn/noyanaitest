@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "初期評価",
  "wizUrgencyEmergency": "緊急 · 今すぐ115に電話",
  "wizUrgencySoon": "数日以内に受診してください",
- "wizUrgencyRoutine": "緊急ではありません",
+ "wizUrgencyRoutine": "緊急の兆候は見られません",
  "wizPossible": "考えられるもの：",
  "wizSpecialistSuggested": "おすすめの専門医：",
  "wizProgress": "質問 ${1} / ${2}",
- "wizEmergencyNote": "緊急時は115に電話してください。このアシスタントは医師の診察に代わるものではありません。"
+ "wizEmergencyNote": "緊急時は115に電話してください。このアシスタントは医師の診察に代わるものではありません。",
+ "wizNearNoneAtAll": "サイトにはまだ${1}の医師が見つかりません。医師の一覧を見るか、一般医を受診してください。"
 }

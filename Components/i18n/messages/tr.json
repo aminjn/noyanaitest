@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "İlk değerlendirme",
  "wizUrgencyEmergency": "Acil · şimdi 115’i arayın",
  "wizUrgencySoon": "Birkaç gün içinde doktora gidin",
- "wizUrgencyRoutine": "Acil değil",
+ "wizUrgencyRoutine": "Acil bir belirti görülmedi",
  "wizPossible": "Olasılıklar:",
  "wizSpecialistSuggested": "Önerilen uzman:",
  "wizProgress": "Soru ${1} / ${2}",
- "wizEmergencyNote": "Acil durumda 115’i arayın. Bu asistan doktor muayenesinin yerini tutmaz."
+ "wizEmergencyNote": "Acil durumda 115’i arayın. Bu asistan doktor muayenesinin yerini tutmaz.",
+ "wizNearNoneAtAll": "Sitede henüz ${1} doktoru bulunamadı. Tüm doktor listesine bakın veya bir pratisyen hekime gidin."
 }

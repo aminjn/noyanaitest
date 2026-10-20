@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "التقييم الأولي",
  "wizUrgencyEmergency": "طارئ · اتصل بـ 115 الآن",
  "wizUrgencySoon": "راجع الطبيب خلال أيام",
- "wizUrgencyRoutine": "غير عاجل",
+ "wizUrgencyRoutine": "لم تُلاحظ علامة طارئة",
  "wizPossible": "الاحتمالات:",
  "wizSpecialistSuggested": "الاختصاصي المقترح:",
  "wizProgress": "السؤال ${1} من ${2}",
- "wizEmergencyNote": "في الحالات الطارئة اتصل بـ 115. هذا المساعد لا يحل محل فحص الطبيب."
+ "wizEmergencyNote": "في الحالات الطارئة اتصل بـ 115. هذا المساعد لا يحل محل فحص الطبيب.",
+ "wizNearNoneAtAll": "لم يُعثر بعد على طبيب ${1} في الموقع. اطّلع على قائمة الأطباء الكاملة أو راجع طبيبًا عامًا."
 }
