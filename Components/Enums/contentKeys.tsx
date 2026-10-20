@@ -7865,6 +7865,17 @@ const contentKeys = [
   "phAllInsurances",
   "phClearFilters",
   "phFoundCount",
+  "wizNearTitle",
+  "wizNearAsk",
+  "wizNearUseMine",
+  "wizNearTypeAddress",
+  "wizNearGeoDenied",
+  "wizNearAddressPlaceholder",
+  "wizNearNoPlace",
+  "wizNearLoading",
+  "wizNearNoneClose",
+  "wizNearSeeAll",
+  "wizNearChangePlace",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];

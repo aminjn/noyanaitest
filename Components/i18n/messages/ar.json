@@ -7700,5 +7700,16 @@
  "phAllCities": "كل المدن",
  "phAllInsurances": "كل شركات التأمين",
  "phClearFilters": "مسح كل الفلاتر",
- "phFoundCount": "${1} صيدلية"
+ "phFoundCount": "${1} صيدلية",
+ "wizNearTitle": "أطباء ${1} القريبون منك",
+ "wizNearAsk": "لرؤية أقرب الأطباء، شارك موقعك أو اكتب عنوانك أو مدينتك.",
+ "wizNearUseMine": "استخدم موقعي الحالي",
+ "wizNearTypeAddress": "اكتب عنوانًا أو مدينة",
+ "wizNearGeoDenied": "لم يكن موقعك متاحًا؛ اكتب عنوانك أو مدينتك.",
+ "wizNearAddressPlaceholder": "العنوان أو الحي أو المدينة",
+ "wizNearNoPlace": "لم يُعثر على مكان",
+ "wizNearLoading": "جارٍ البحث عن أطباء قريبين…",
+ "wizNearNoneClose": "لم يُعثر على طبيب من هذا التخصص بالقرب منك؛ إليك أفضل أطبائه:",
+ "wizNearSeeAll": "عرض كل أطباء ${1}",
+ "wizNearChangePlace": "تغيير الموقع"
 }

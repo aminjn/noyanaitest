@@ -7700,5 +7700,16 @@
  "phAllCities": "Semua kota",
  "phAllInsurances": "Semua asuransi",
  "phClearFilters": "Hapus semua filter",
- "phFoundCount": "${1} apotek"
+ "phFoundCount": "${1} apotek",
+ "wizNearTitle": "Dokter ${1} di dekat Anda",
+ "wizNearAsk": "Untuk melihat dokter terdekat, bagikan lokasi Anda atau tulis alamat atau kota Anda.",
+ "wizNearUseMine": "Gunakan lokasi saya saat ini",
+ "wizNearTypeAddress": "Tulis alamat atau kota",
+ "wizNearGeoDenied": "Lokasi Anda tidak tersedia; tulis alamat atau kota Anda.",
+ "wizNearAddressPlaceholder": "Alamat, lingkungan, atau kota",
+ "wizNearNoPlace": "Tempat tidak ditemukan",
+ "wizNearLoading": "Mencari dokter terdekat…",
+ "wizNearNoneClose": "Tidak ada dokter spesialis ini di dekat Anda; berikut yang terbaik:",
+ "wizNearSeeAll": "Lihat semua dokter ${1}",
+ "wizNearChangePlace": "Ubah lokasi"
 }

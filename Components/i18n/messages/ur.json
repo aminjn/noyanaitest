@@ -7700,5 +7700,16 @@
  "phAllCities": "تمام شہر",
  "phAllInsurances": "تمام بیمے",
  "phClearFilters": "تمام فلٹر ہٹائیں",
- "phFoundCount": "${1} فارمیسیاں"
+ "phFoundCount": "${1} فارمیسیاں",
+ "wizNearTitle": "آپ کے قریب ${1} ڈاکٹر",
+ "wizNearAsk": "قریب ترین ڈاکٹر دیکھنے کے لیے اپنا مقام بتائیں یا اپنا پتہ یا شہر لکھیں۔",
+ "wizNearUseMine": "میرا موجودہ مقام استعمال کریں",
+ "wizNearTypeAddress": "پتہ یا شہر لکھیں",
+ "wizNearGeoDenied": "آپ کا مقام دستیاب نہیں تھا؛ اپنا پتہ یا شہر لکھیں۔",
+ "wizNearAddressPlaceholder": "پتہ، محلہ یا شہر",
+ "wizNearNoPlace": "کوئی جگہ نہیں ملی",
+ "wizNearLoading": "قریبی ڈاکٹر تلاش کیے جا رہے ہیں…",
+ "wizNearNoneClose": "آپ کے قریب اس شعبے کا کوئی ڈاکٹر نہیں ملا؛ اس کے بہترین ڈاکٹر یہ ہیں:",
+ "wizNearSeeAll": "تمام ${1} ڈاکٹر دیکھیں",
+ "wizNearChangePlace": "مقام تبدیل کریں"
 }

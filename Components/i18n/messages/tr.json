@@ -7700,5 +7700,16 @@
  "phAllCities": "Tüm şehirler",
  "phAllInsurances": "Tüm sigortalar",
  "phClearFilters": "Tüm filtreleri temizle",
- "phFoundCount": "${1} eczane"
+ "phFoundCount": "${1} eczane",
+ "wizNearTitle": "Yakınınızdaki ${1} doktorları",
+ "wizNearAsk": "En yakın doktorları görmek için konumunuzu paylaşın veya adresinizi ya da şehrinizi yazın.",
+ "wizNearUseMine": "Mevcut konumumu kullan",
+ "wizNearTypeAddress": "Adres veya şehir yazın",
+ "wizNearGeoDenied": "Konumunuz alınamadı; adresinizi veya şehrinizi yazın.",
+ "wizNearAddressPlaceholder": "Adres, semt veya şehir",
+ "wizNearNoPlace": "Yer bulunamadı",
+ "wizNearLoading": "Yakındaki doktorlar aranıyor…",
+ "wizNearNoneClose": "Yakınınızda bu uzmanlıkta doktor bulunamadı; işte en iyileri:",
+ "wizNearSeeAll": "Tüm ${1} doktorlarını gör",
+ "wizNearChangePlace": "Konumu değiştir"
 }

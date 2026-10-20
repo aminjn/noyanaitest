@@ -7700,5 +7700,16 @@
  "phAllCities": "सभी शहर",
  "phAllInsurances": "सभी बीमा",
  "phClearFilters": "सभी फ़िल्टर हटाएँ",
- "phFoundCount": "${1} फ़ार्मेसी"
+ "phFoundCount": "${1} फ़ार्मेसी",
+ "wizNearTitle": "आपके पास के ${1} डॉक्टर",
+ "wizNearAsk": "सबसे पास के डॉक्टर देखने के लिए अपना स्थान साझा करें या अपना पता या शहर लिखें।",
+ "wizNearUseMine": "मेरा वर्तमान स्थान उपयोग करें",
+ "wizNearTypeAddress": "पता या शहर लिखें",
+ "wizNearGeoDenied": "आपका स्थान उपलब्ध नहीं था; अपना पता या शहर लिखें।",
+ "wizNearAddressPlaceholder": "पता, मोहल्ला या शहर",
+ "wizNearNoPlace": "कोई स्थान नहीं मिला",
+ "wizNearLoading": "पास के डॉक्टर खोजे जा रहे हैं…",
+ "wizNearNoneClose": "आपके पास इस विशेषज्ञता का कोई डॉक्टर नहीं मिला; इसके सबसे अच्छे डॉक्टर ये हैं:",
+ "wizNearSeeAll": "सभी ${1} डॉक्टर देखें",
+ "wizNearChangePlace": "स्थान बदलें"
 }

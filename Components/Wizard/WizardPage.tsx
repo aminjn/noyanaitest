@@ -27,6 +27,8 @@ import { ContentKey } from "../Enums/contentKeys";
 import { useIntlLocale } from "../i18n/navigation";
 import { markAiUsed } from "../Ai/aiDiscovery";
 import { WIZARD_ASK_EVENT } from "./WizardHeroAsk";
+import WizardMessageText, { hideMachineLines } from "./WizardMessageText";
+import WizardNearbyDoctors from "./WizardNearbyDoctors";
 
 const NS: ContentNamespace[] = ["common", "wizardPage"];
 
@@ -39,6 +41,11 @@ export interface IBotChatMessage extends MongoDoc {
   content: string;
   role: BotChatMessageRole;
   createdAt: Date;
+  // what an assessment named (backend Lib/wizardTriage.ts)
+  meta?: {
+    speciality?: { _id: string; name: string; slug?: string };
+    diseases?: { _id: string; name: string; slug?: string }[];
+  };
 }
 
 const Message = ({ node }: { node: IBotChatMessage }) => {
@@ -48,9 +55,15 @@ const Message = ({ node }: { node: IBotChatMessage }) => {
         node.role === "user" ? classes.userMessage : classes.assistantMessage
       }`}
     >
-      <p className={`${classes.messageContent} ${tsmRegular}`}>
-        {node.content}
-      </p>
+      {node.role === "assistant" ? (
+        <div className={`${classes.messageContent} ${classes.assistantText} ${tsmRegular}`}>
+          <WizardMessageText text={node.content} links={node.meta?.diseases} />
+        </div>
+      ) : (
+        <p className={`${classes.messageContent} ${tsmRegular}`}>
+          {node.content}
+        </p>
+      )}
     </div>
   );
 };
@@ -85,6 +98,7 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
   const [sentPrompt, setSentPrompt] = useState<string>("");
   const [isSending, setIsSending] = useState<boolean>(false);
   const [incomingStream, setIncomingStream] = useState<string>("");
+  const [streamMeta, setStreamMeta] = useState<IBotChatMessage["meta"]>(undefined);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   // the day's free messages are used up (429, 2026-10 «پرو»)
   const [limitReached, setLimitReached] = useState<boolean>(false);
@@ -150,6 +164,7 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
     setIsSending(true);
     setSentPrompt(message);
     setIncomingStream("");
+    setStreamMeta(undefined);
     setPrompt("");
     let capturedChatId: string | undefined;
     try {
@@ -195,7 +210,13 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
             setIncomingStream(
               (prev) => prev + JSON.parse(line.replace("data: ", "")),
             );
-          else if (line.startsWith("chatId: "))
+          else if (line.startsWith("meta: ")) {
+            try {
+              setStreamMeta(JSON.parse(line.replace("meta: ", "")));
+            } catch {
+              /* links only */
+            }
+          } else if (line.startsWith("chatId: "))
             capturedChatId = JSON.parse(line.replace("chatId: ", ""));
           else if (line.startsWith("errorMessage: "))
             pushNotification(
@@ -234,6 +255,8 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
   if (!user) return landing && !nodeId ? <>{landing}</> : <LoginRequired />;
 
   const isLoadingHistory = !!nodeId && !data && !isSending;
+  const nearbySpeciality = [...(Array.isArray(data) ? data : [])].reverse().find((m) => m.role === "assistant" && m.meta?.speciality)
+    ?.meta?.speciality;
   const hasMessages = !!data?.length || isSending;
 
   return (
@@ -293,7 +316,7 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
                   }}
                 />
               )}
-              {!!incomingStream && (
+              {!!hideMachineLines(incomingStream) && (
                 <Message
                   node={{
                     _id: "pending-assistant",
@@ -302,10 +325,15 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
                     content: incomingStream,
                     createdAt: new Date(),
                     role: "assistant",
+                    meta: streamMeta,
                   }}
                 />
               )}
-              {isSending && !incomingStream && (
+              {/* the last assessment's specialty: its doctors near the patient */}
+              {!isSending && !!nearbySpeciality && (
+                <WizardNearbyDoctors key={nearbySpeciality._id} speciality={nearbySpeciality} />
+              )}
+              {isSending && !hideMachineLines(incomingStream) && (
                 <TypingIndicator label={getContent("aiIsTyping")} />
               )}
               <div ref={messagesEndRef} />

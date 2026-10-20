@@ -7700,5 +7700,16 @@
  "phAllCities": "Alle Städte",
  "phAllInsurances": "Alle Versicherungen",
  "phClearFilters": "Alle Filter entfernen",
- "phFoundCount": "${1} Apotheken"
+ "phFoundCount": "${1} Apotheken",
+ "wizNearTitle": "${1} in Ihrer Nähe",
+ "wizNearAsk": "Um die nächstgelegenen Ärzte zu sehen, teilen Sie Ihren Standort oder geben Sie Adresse oder Stadt ein.",
+ "wizNearUseMine": "Meinen aktuellen Standort verwenden",
+ "wizNearTypeAddress": "Adresse oder Stadt eingeben",
+ "wizNearGeoDenied": "Ihr Standort war nicht verfügbar; geben Sie Adresse oder Stadt ein.",
+ "wizNearAddressPlaceholder": "Adresse, Viertel oder Stadt",
+ "wizNearNoPlace": "Kein Ort gefunden",
+ "wizNearLoading": "Ärzte in der Nähe werden gesucht…",
+ "wizNearNoneClose": "In Ihrer Nähe gibt es keinen Arzt dieser Fachrichtung; hier die besten:",
+ "wizNearSeeAll": "Alle ${1} ansehen",
+ "wizNearChangePlace": "Standort ändern"
 }

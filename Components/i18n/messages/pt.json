@@ -7700,5 +7700,16 @@
  "phAllCities": "Todas as cidades",
  "phAllInsurances": "Todos os convênios",
  "phClearFilters": "Limpar todos os filtros",
- "phFoundCount": "${1} farmácias"
+ "phFoundCount": "${1} farmácias",
+ "wizNearTitle": "Médicos de ${1} perto de você",
+ "wizNearAsk": "Para ver os médicos mais próximos, compartilhe sua localização ou digite seu endereço ou cidade.",
+ "wizNearUseMine": "Usar minha localização atual",
+ "wizNearTypeAddress": "Digitar um endereço ou cidade",
+ "wizNearGeoDenied": "Sua localização não estava disponível; digite seu endereço ou cidade.",
+ "wizNearAddressPlaceholder": "Endereço, bairro ou cidade",
+ "wizNearNoPlace": "Nenhum lugar encontrado",
+ "wizNearLoading": "Procurando médicos próximos…",
+ "wizNearNoneClose": "Nenhum médico desta especialidade foi encontrado perto de você; estes são os melhores:",
+ "wizNearSeeAll": "Ver todos os médicos de ${1}",
+ "wizNearChangePlace": "Alterar localização"
 }

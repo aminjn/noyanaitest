@@ -7700,5 +7700,16 @@
  "phAllCities": "全部城市",
  "phAllInsurances": "全部保险",
  "phClearFilters": "清除全部筛选",
- "phFoundCount": "${1} 家药店"
+ "phFoundCount": "${1} 家药店",
+ "wizNearTitle": "您附近的${1}医生",
+ "wizNearAsk": "要查看最近的医生，请分享您的位置或输入地址或城市。",
+ "wizNearUseMine": "使用我当前的位置",
+ "wizNearTypeAddress": "输入地址或城市",
+ "wizNearGeoDenied": "无法获取您的位置；请输入地址或城市。",
+ "wizNearAddressPlaceholder": "地址、街区或城市",
+ "wizNearNoPlace": "未找到地点",
+ "wizNearLoading": "正在查找附近的医生…",
+ "wizNearNoneClose": "附近没有找到该专科的医生；以下是该专科的优秀医生：",
+ "wizNearSeeAll": "查看所有${1}医生",
+ "wizNearChangePlace": "更改位置"
 }
