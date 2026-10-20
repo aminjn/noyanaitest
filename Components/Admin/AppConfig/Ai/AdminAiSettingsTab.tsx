@@ -157,7 +157,7 @@ const FeatureCard = ({
           <strong>{meta.title}</strong>
           <span className={base.note}>{meta.note}</span>
         </div>
-        <ToggleInput title={meta.title} value={value.enabled} onChange={() => onChange({ enabled: !value.enabled })} />
+        <ToggleInput value={value.enabled} onChange={() => onChange({ enabled: !value.enabled })} />
       </div>
       <div className={classes.fields}>
         <SelectInput
