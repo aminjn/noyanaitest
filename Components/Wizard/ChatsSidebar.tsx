@@ -122,6 +122,8 @@ const ChatsSidebar = ({
       ) : (
         <Loading />
       )}
+      {/* the one line every health chat carries (Ada, K Health) */}
+      <p className={classes.emergency}>{getContent("wizEmergencyNote")}</p>
     </div>
   );
 };

@@ -27,6 +27,9 @@ import { ContentKey } from "../Enums/contentKeys";
 import { useIntlLocale } from "../i18n/navigation";
 import { markAiUsed } from "../Ai/aiDiscovery";
 import { WIZARD_ASK_EVENT } from "./WizardHeroAsk";
+import Link from "../i18n/Link";
+import WizardMessageText, { hideMachineLines } from "./WizardMessageText";
+import WizardNearbyDoctors from "./WizardNearbyDoctors";
 
 const NS: ContentNamespace[] = ["common", "wizardPage"];
 
@@ -39,24 +42,110 @@ export interface IBotChatMessage extends MongoDoc {
   content: string;
   role: BotChatMessageRole;
   createdAt: Date;
+  // what an assessment named (backend Lib/wizardTriage.ts)
+  meta?: {
+    // the answers the patient can tap under a question
+    options?: string[];
+    urgency?: "emergency" | "soon" | "routine";
+    speciality?: { _id: string; name: string; slug?: string };
+    diseases?: { _id: string; name: string; slug?: string }[];
+  };
 }
 
-const Message = ({ node }: { node: IBotChatMessage }) => {
+// an assessment (not a question): it named a specialty, conditions or how urgent
+const isAssessment = (node: IBotChatMessage) =>
+  node.role === "assistant" && !!(node.meta?.speciality || node.meta?.diseases?.length || node.meta?.urgency);
+
+const URGENCY_KEY: Record<"emergency" | "soon" | "routine", ContentKey> = {
+  emergency: "wizUrgencyEmergency",
+  soon: "wizUrgencySoon",
+  routine: "wizUrgencyRoutine",
+};
+
+const Avatar = () => (
+  <span className={classes.avatar} aria-hidden="true">
+    <Ixon width="1rem">
+      <AiIcon />
+    </Ixon>
+  </span>
+);
+
+// Design A (2026-10, benchmark Ada): the patient's words in a filled bubble,
+// the assistant's as plain text beside its avatar, the answers to tap under
+// its question, and the assessment as one card: how urgent, the conditions
+// (links to their pages), what to do, who to see.
+const Message = ({
+  node,
+  onPick,
+  getContent,
+}: {
+  node: IBotChatMessage;
+  // the quick replies are live (the last question only)
+  onPick?: (answer: string) => unknown;
+  getContent: (key: ContentKey, params?: string[]) => string;
+}) => {
+  if (node.role === "user")
+    return (
+      <div className={`${classes.message} ${classes.userMessage}`}>
+        <p className={`${classes.messageContent} ${tsmRegular}`}>{node.content}</p>
+      </div>
+    );
+  const meta = node.meta;
+  const body = <WizardMessageText text={node.content} links={meta?.diseases} />;
   return (
-    <div
-      className={`${classes.message} ${
-        node.role === "user" ? classes.userMessage : classes.assistantMessage
-      }`}
-    >
-      <p className={`${classes.messageContent} ${tsmRegular}`}>
-        {node.content}
-      </p>
+    <div className={`${classes.message} ${classes.assistantMessage}`}>
+      <Avatar />
+      <div className={classes.assistantColumn}>
+        {isAssessment(node) ? (
+          <div className={`${classes.assessCard} ${tsmRegular}`}>
+            <div className={classes.assessHead}>
+              <strong>{getContent("wizAssessTitle")}</strong>
+              {!!meta?.urgency && (
+                <span className={`${classes.urgency} ${classes[`urgency_${meta.urgency}`]}`}>
+                  {getContent(URGENCY_KEY[meta.urgency])}
+                </span>
+              )}
+            </div>
+            {!!meta?.diseases?.length && (
+              <div className={classes.assessChips}>
+                <span className={classes.assessLabel}>{getContent("wizPossible")}</span>
+                {meta.diseases
+                  .filter((d) => d.slug)
+                  .map((d) => (
+                    <Link key={d._id} href={`/disease/${d.slug}`} className={classes.diseaseChip}>
+                      {d.name}
+                    </Link>
+                  ))}
+              </div>
+            )}
+            <div className={classes.assistantText}>{body}</div>
+            {!!meta?.speciality && (
+              <div className={classes.assessSpecialist}>
+                <span>{getContent("wizSpecialistSuggested")}</span>
+                <strong>{meta.speciality.name}</strong>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className={`${classes.assistantText} ${tsmRegular}`}>{body}</div>
+        )}
+        {!!onPick && !!meta?.options?.length && (
+          <div className={classes.quickReplies}>
+            {meta.options.map((answer) => (
+              <button key={answer} type="button" className={classes.quickReply} onClick={() => onPick(answer)}>
+                {answer}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 const TypingIndicator = ({ label }: { label: string }) => (
   <div className={`${classes.message} ${classes.assistantMessage}`}>
+    <Avatar />
     <div className={classes.typing} role="status" aria-label={label}>
       <span />
       <span />
@@ -85,6 +174,7 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
   const [sentPrompt, setSentPrompt] = useState<string>("");
   const [isSending, setIsSending] = useState<boolean>(false);
   const [incomingStream, setIncomingStream] = useState<string>("");
+  const [streamMeta, setStreamMeta] = useState<IBotChatMessage["meta"]>(undefined);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   // the day's free messages are used up (429, 2026-10 «پرو»)
   const [limitReached, setLimitReached] = useState<boolean>(false);
@@ -144,12 +234,14 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
     el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
   }, [prompt]);
 
-  const onSend = useCallback(async () => {
-    const message = prompt.trim();
+  // a tapped quick reply sends its own text; the form sends what was typed
+  const onSend = useCallback(async (answer?: unknown) => {
+    const message = (typeof answer === "string" ? answer : prompt).trim();
     if (!message || isSending) return;
     setIsSending(true);
     setSentPrompt(message);
     setIncomingStream("");
+    setStreamMeta(undefined);
     setPrompt("");
     let capturedChatId: string | undefined;
     try {
@@ -195,7 +287,13 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
             setIncomingStream(
               (prev) => prev + JSON.parse(line.replace("data: ", "")),
             );
-          else if (line.startsWith("chatId: "))
+          else if (line.startsWith("meta: ")) {
+            try {
+              setStreamMeta(JSON.parse(line.replace("meta: ", "")));
+            } catch {
+              /* links only */
+            }
+          } else if (line.startsWith("chatId: "))
             capturedChatId = JSON.parse(line.replace("chatId: ", ""));
           else if (line.startsWith("errorMessage: "))
             pushNotification(
@@ -234,7 +332,18 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
   if (!user) return landing && !nodeId ? <>{landing}</> : <LoginRequired />;
 
   const isLoadingHistory = !!nodeId && !data && !isSending;
+  const nearbySpeciality = [...(Array.isArray(data) ? data : [])].reverse().find((m) => m.role === "assistant" && m.meta?.speciality)
+    ?.meta?.speciality;
   const hasMessages = !!data?.length || isSending;
+  // «سؤال ۲ از ۴»: the questions asked since the last assessment
+  const sinceAssessment = (() => {
+    const list = Array.isArray(data) ? data : [];
+    let i = list.length - 1;
+    while (i >= 0 && !isAssessment(list[i])) i--;
+    return list.slice(i + 1);
+  })();
+  const asked = sinceAssessment.filter((m) => m.role === "assistant").length;
+  const showProgress = asked > 0 && !!data?.length && !isAssessment(data[data.length - 1]);
 
   return (
     <div className={classes.container}>
@@ -272,17 +381,36 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
           <span className={classes.headerTitle}>
             {chat?.name || getContent("aiAssistant")}
           </span>
+          {showProgress && (
+            <span className={classes.progress}>
+              <span>
+                {getContent("wizProgress", [
+                  new Intl.NumberFormat(intlTag).format(Math.min(asked, 4)),
+                  new Intl.NumberFormat(intlTag).format(4),
+                ])}
+              </span>
+              <span className={classes.progressTrack} aria-hidden="true">
+                <span className={classes.progressFill} style={{ width: `${(Math.min(asked, 4) / 4) * 100}%` }} />
+              </span>
+            </span>
+          )}
         </div>
         <div className={classes.body}>
           {isLoadingHistory ? (
             <Loading />
           ) : hasMessages ? (
             <div className={classes.messages}>
-              {data?.map((message) => (
-                <Message node={message} key={message._id} />
+              {data?.map((message, i) => (
+                <Message
+                  node={message}
+                  key={message._id}
+                  getContent={getContent}
+                  onPick={!isSending && i === data.length - 1 ? onSend : undefined}
+                />
               ))}
               {isSending && (
                 <Message
+                  getContent={getContent}
                   node={{
                     _id: "pending-user",
                     __v: 0,
@@ -293,8 +421,9 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
                   }}
                 />
               )}
-              {!!incomingStream && (
+              {!!hideMachineLines(incomingStream) && (
                 <Message
+                  getContent={getContent}
                   node={{
                     _id: "pending-assistant",
                     __v: 0,
@@ -302,10 +431,15 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
                     content: incomingStream,
                     createdAt: new Date(),
                     role: "assistant",
+                    meta: streamMeta,
                   }}
                 />
               )}
-              {isSending && !incomingStream && (
+              {/* the last assessment's specialty: its doctors near the patient */}
+              {!isSending && !!nearbySpeciality && (
+                <WizardNearbyDoctors key={nearbySpeciality._id} speciality={nearbySpeciality} />
+              )}
+              {isSending && !hideMachineLines(incomingStream) && (
                 <TypingIndicator label={getContent("aiIsTyping")} />
               )}
               <div ref={messagesEndRef} />
