@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "Penilaian awal",
  "wizUrgencyEmergency": "Darurat · hubungi 115 sekarang",
  "wizUrgencySoon": "Temui dokter dalam beberapa hari",
- "wizUrgencyRoutine": "Tidak mendesak",
+ "wizUrgencyRoutine": "Tidak ada tanda darurat",
  "wizPossible": "Kemungkinan:",
  "wizSpecialistSuggested": "Spesialis yang disarankan:",
  "wizProgress": "Pertanyaan ${1} dari ${2}",
- "wizEmergencyNote": "Dalam keadaan darurat hubungi 115. Asisten ini tidak menggantikan pemeriksaan dokter."
+ "wizEmergencyNote": "Dalam keadaan darurat hubungi 115. Asisten ini tidak menggantikan pemeriksaan dokter.",
+ "wizNearNoneAtAll": "Belum ada dokter ${1} di situs ini. Lihat daftar lengkap dokter atau kunjungi dokter umum."
 }

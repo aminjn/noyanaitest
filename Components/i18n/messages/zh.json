@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "初步评估",
  "wizUrgencyEmergency": "紧急 · 立即拨打 115",
  "wizUrgencySoon": "请在几天内就医",
- "wizUrgencyRoutine": "不紧急",
+ "wizUrgencyRoutine": "未发现紧急迹象",
  "wizPossible": "可能情况：",
  "wizSpecialistSuggested": "建议就诊专科：",
  "wizProgress": "第 ${1} 题，共 ${2} 题",
- "wizEmergencyNote": "紧急情况请拨打 115。本助手不能替代医生检查。"
+ "wizEmergencyNote": "紧急情况请拨打 115。本助手不能替代医生检查。",
+ "wizNearNoneAtAll": "网站上暂未找到${1}医生。请查看完整医生列表，或就诊全科医生。"
 }

@@ -7715,9 +7715,10 @@
  "wizAssessTitle": "Evaluación inicial",
  "wizUrgencyEmergency": "Urgencia · llame al 115 ahora",
  "wizUrgencySoon": "Consulte a un médico en unos días",
- "wizUrgencyRoutine": "No urgente",
+ "wizUrgencyRoutine": "No se vio ninguna señal urgente",
  "wizPossible": "Posibilidades:",
  "wizSpecialistSuggested": "Especialista sugerido:",
  "wizProgress": "Pregunta ${1} de ${2}",
- "wizEmergencyNote": "En una emergencia llame al 115. Este asistente no sustituye la exploración médica."
+ "wizEmergencyNote": "En una emergencia llame al 115. Este asistente no sustituye la exploración médica.",
+ "wizNearNoneAtAll": "Aún no se encontró ningún médico de ${1} en el sitio. Consulte la lista completa de médicos o acuda a un médico general."
 }

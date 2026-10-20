@@ -89,10 +89,13 @@ const WizardNearbyDoctors = ({ speciality }: { speciality: Speciality }) => {
     return `${API}/public/filterBooking2?${params.toString()}`;
   };
   const rowsOf = (res: { data?: { rows?: unknown } }) => (Array.isArray(res?.data?.rows) ? (res.data.rows as Row[]) : []);
-  const { data: near, isLoading } = useSWR(point ? query(true) : null, (url: string) => fetcher({ url }).then(rowsOf));
+  const { data: near, isLoading, error: nearError } = useSWR(point ? query(true) : null, (url: string) => fetcher({ url }).then(rowsOf));
   // none within reach: the specialty's best doctors anywhere
-  const { data: anywhere } = useSWR(point && near && !near.length ? query(false) : null, (url: string) => fetcher({ url }).then(rowsOf));
+  const { data: anywhere, error: anywhereError } = useSWR(point && near && !near.length ? query(false) : null, (url: string) => fetcher({ url }).then(rowsOf));
   const rows = (near?.length ? near : anywhere || []).filter((r) => !!r?._id).slice(0, 4);
+  // the site has no doctor of this specialty (or the search failed): say so,
+  // never an empty card
+  const noneAtAll = !rows.length && (!!nearError || !!anywhereError || (!!near && !near.length && !!anywhere && !anywhere.length));
   const allHref = `/book?speciality=${speciality._id}&name=${encodeURIComponent(speciality.name)}`;
 
   return (
@@ -125,6 +128,7 @@ const WizardNearbyDoctors = ({ speciality }: { speciality: Speciality }) => {
         <>
           {isLoading && <p className={classes.nearbyNote}>{getContent("wizNearLoading")}</p>}
           {!!near && !near.length && !!rows.length && <p className={classes.nearbyNote}>{getContent("wizNearNoneClose")}</p>}
+          {noneAtAll && <p className={classes.nearbyNote}>{getContent("wizNearNoneAtAll", [speciality.name])}</p>}
           <div className={classes.nearbyCards}>
             {rows.map((doctor) => (
               <SafeBoundary key={doctor._id} name="wizard-doctor">

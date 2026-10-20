@@ -7884,6 +7884,7 @@ const contentKeys = [
   "wizSpecialistSuggested",
   "wizProgress",
   "wizEmergencyNote",
+  "wizNearNoneAtAll",
 ] as const;
 
 export type ContentKey = (typeof contentKeys)[number];
