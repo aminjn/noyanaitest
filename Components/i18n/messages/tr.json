@@ -7711,5 +7711,13 @@
  "wizNearLoading": "Yakındaki doktorlar aranıyor…",
  "wizNearNoneClose": "Yakınınızda bu uzmanlıkta doktor bulunamadı; işte en iyileri:",
  "wizNearSeeAll": "Tüm ${1} doktorlarını gör",
- "wizNearChangePlace": "Konumu değiştir"
+ "wizNearChangePlace": "Konumu değiştir",
+ "wizAssessTitle": "İlk değerlendirme",
+ "wizUrgencyEmergency": "Acil · şimdi 115’i arayın",
+ "wizUrgencySoon": "Birkaç gün içinde doktora gidin",
+ "wizUrgencyRoutine": "Acil değil",
+ "wizPossible": "Olasılıklar:",
+ "wizSpecialistSuggested": "Önerilen uzman:",
+ "wizProgress": "Soru ${1} / ${2}",
+ "wizEmergencyNote": "Acil durumda 115’i arayın. Bu asistan doktor muayenesinin yerini tutmaz."
 }

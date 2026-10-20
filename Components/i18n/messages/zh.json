@@ -7711,5 +7711,13 @@
  "wizNearLoading": "正在查找附近的医生…",
  "wizNearNoneClose": "附近没有找到该专科的医生；以下是该专科的优秀医生：",
  "wizNearSeeAll": "查看所有${1}医生",
- "wizNearChangePlace": "更改位置"
+ "wizNearChangePlace": "更改位置",
+ "wizAssessTitle": "初步评估",
+ "wizUrgencyEmergency": "紧急 · 立即拨打 115",
+ "wizUrgencySoon": "请在几天内就医",
+ "wizUrgencyRoutine": "不紧急",
+ "wizPossible": "可能情况：",
+ "wizSpecialistSuggested": "建议就诊专科：",
+ "wizProgress": "第 ${1} 题，共 ${2} 题",
+ "wizEmergencyNote": "紧急情况请拨打 115。本助手不能替代医生检查。"
 }

@@ -7711,5 +7711,13 @@
  "wizNearLoading": "Procurando médicos próximos…",
  "wizNearNoneClose": "Nenhum médico desta especialidade foi encontrado perto de você; estes são os melhores:",
  "wizNearSeeAll": "Ver todos os médicos de ${1}",
- "wizNearChangePlace": "Alterar localização"
+ "wizNearChangePlace": "Alterar localização",
+ "wizAssessTitle": "Avaliação inicial",
+ "wizUrgencyEmergency": "Emergência · ligue 115 agora",
+ "wizUrgencySoon": "Procure um médico em alguns dias",
+ "wizUrgencyRoutine": "Não urgente",
+ "wizPossible": "Possibilidades:",
+ "wizSpecialistSuggested": "Especialista sugerido:",
+ "wizProgress": "Pergunta ${1} de ${2}",
+ "wizEmergencyNote": "Em uma emergência ligue 115. Este assistente não substitui o exame médico."
 }

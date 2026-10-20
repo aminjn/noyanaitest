@@ -7711,5 +7711,13 @@
  "wizNearLoading": "جارٍ البحث عن أطباء قريبين…",
  "wizNearNoneClose": "لم يُعثر على طبيب من هذا التخصص بالقرب منك؛ إليك أفضل أطبائه:",
  "wizNearSeeAll": "عرض كل أطباء ${1}",
- "wizNearChangePlace": "تغيير الموقع"
+ "wizNearChangePlace": "تغيير الموقع",
+ "wizAssessTitle": "التقييم الأولي",
+ "wizUrgencyEmergency": "طارئ · اتصل بـ 115 الآن",
+ "wizUrgencySoon": "راجع الطبيب خلال أيام",
+ "wizUrgencyRoutine": "غير عاجل",
+ "wizPossible": "الاحتمالات:",
+ "wizSpecialistSuggested": "الاختصاصي المقترح:",
+ "wizProgress": "السؤال ${1} من ${2}",
+ "wizEmergencyNote": "في الحالات الطارئة اتصل بـ 115. هذا المساعد لا يحل محل فحص الطبيب."
 }

@@ -7711,5 +7711,13 @@
  "wizNearLoading": "Ищем врачей поблизости…",
  "wizNearNoneClose": "Рядом с вами нет врачей этой специальности; вот лучшие из них:",
  "wizNearSeeAll": "Все врачи (${1})",
- "wizNearChangePlace": "Изменить место"
+ "wizNearChangePlace": "Изменить место",
+ "wizAssessTitle": "Предварительная оценка",
+ "wizUrgencyEmergency": "Экстренно · звоните 115 сейчас",
+ "wizUrgencySoon": "Обратитесь к врачу в ближайшие дни",
+ "wizUrgencyRoutine": "Не срочно",
+ "wizPossible": "Возможные причины:",
+ "wizSpecialistSuggested": "Рекомендуемый специалист:",
+ "wizProgress": "Вопрос ${1} из ${2}",
+ "wizEmergencyNote": "В экстренной ситуации звоните 115. Помощник не заменяет осмотр врача."
 }

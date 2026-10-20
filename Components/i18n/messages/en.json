@@ -7711,5 +7711,13 @@
  "wizNearLoading": "Finding doctors near you…",
  "wizNearNoneClose": "No doctor of this specialty was found near you; here are its best ones:",
  "wizNearSeeAll": "See all ${1} doctors",
- "wizNearChangePlace": "Change location"
+ "wizNearChangePlace": "Change location",
+ "wizAssessTitle": "Initial assessment",
+ "wizUrgencyEmergency": "Emergency · call 115 now",
+ "wizUrgencySoon": "See a doctor within a few days",
+ "wizUrgencyRoutine": "Not urgent",
+ "wizPossible": "Possibilities:",
+ "wizSpecialistSuggested": "Suggested specialist:",
+ "wizProgress": "Question ${1} of ${2}",
+ "wizEmergencyNote": "In an emergency call 115. This assistant does not replace a doctor’s examination."
 }

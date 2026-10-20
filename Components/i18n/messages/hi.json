@@ -7711,5 +7711,13 @@
  "wizNearLoading": "पास के डॉक्टर खोजे जा रहे हैं…",
  "wizNearNoneClose": "आपके पास इस विशेषज्ञता का कोई डॉक्टर नहीं मिला; इसके सबसे अच्छे डॉक्टर ये हैं:",
  "wizNearSeeAll": "सभी ${1} डॉक्टर देखें",
- "wizNearChangePlace": "स्थान बदलें"
+ "wizNearChangePlace": "स्थान बदलें",
+ "wizAssessTitle": "प्रारंभिक आकलन",
+ "wizUrgencyEmergency": "आपातकाल · अभी 115 पर कॉल करें",
+ "wizUrgencySoon": "कुछ दिनों में डॉक्टर को दिखाएँ",
+ "wizUrgencyRoutine": "तत्काल नहीं",
+ "wizPossible": "संभावनाएँ:",
+ "wizSpecialistSuggested": "सुझाया गया विशेषज्ञ:",
+ "wizProgress": "प्रश्न ${1} / ${2}",
+ "wizEmergencyNote": "आपात स्थिति में 115 पर कॉल करें। यह सहायक डॉक्टर की जाँच की जगह नहीं लेता।"
 }

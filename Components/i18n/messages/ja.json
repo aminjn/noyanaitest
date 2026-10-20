@@ -7711,5 +7711,13 @@
  "wizNearLoading": "近くの医師を探しています…",
  "wizNearNoneClose": "お近くにこの専門の医師は見つかりませんでした。評価の高い医師はこちら：",
  "wizNearSeeAll": "${1}の医師をすべて見る",
- "wizNearChangePlace": "場所を変更"
+ "wizNearChangePlace": "場所を変更",
+ "wizAssessTitle": "初期評価",
+ "wizUrgencyEmergency": "緊急 · 今すぐ115に電話",
+ "wizUrgencySoon": "数日以内に受診してください",
+ "wizUrgencyRoutine": "緊急ではありません",
+ "wizPossible": "考えられるもの：",
+ "wizSpecialistSuggested": "おすすめの専門医：",
+ "wizProgress": "質問 ${1} / ${2}",
+ "wizEmergencyNote": "緊急時は115に電話してください。このアシスタントは医師の診察に代わるものではありません。"
 }

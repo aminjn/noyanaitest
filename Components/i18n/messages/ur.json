@@ -7711,5 +7711,13 @@
  "wizNearLoading": "قریبی ڈاکٹر تلاش کیے جا رہے ہیں…",
  "wizNearNoneClose": "آپ کے قریب اس شعبے کا کوئی ڈاکٹر نہیں ملا؛ اس کے بہترین ڈاکٹر یہ ہیں:",
  "wizNearSeeAll": "تمام ${1} ڈاکٹر دیکھیں",
- "wizNearChangePlace": "مقام تبدیل کریں"
+ "wizNearChangePlace": "مقام تبدیل کریں",
+ "wizAssessTitle": "ابتدائی جائزہ",
+ "wizUrgencyEmergency": "ہنگامی · ابھی 115 پر کال کریں",
+ "wizUrgencySoon": "چند دنوں میں ڈاکٹر کو دکھائیں",
+ "wizUrgencyRoutine": "فوری نہیں",
+ "wizPossible": "امکانات:",
+ "wizSpecialistSuggested": "تجویز کردہ ماہر:",
+ "wizProgress": "سوال ${1} از ${2}",
+ "wizEmergencyNote": "ہنگامی صورت میں 115 پر کال کریں۔ یہ معاون ڈاکٹر کے معائنے کا متبادل نہیں۔"
 }

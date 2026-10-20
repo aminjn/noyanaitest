@@ -97,3 +97,14 @@
     background-color: var(--white);
   }
 }
+
+.emergency {
+  margin: auto 1rem 1rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 0.75rem;
+  line-height: 1.8;
+  text-align: start;
+}

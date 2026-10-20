@@ -7733,5 +7733,13 @@
  "wizNearLoading": "در حال پیدا کردن پزشکان نزدیک…",
  "wizNearNoneClose": "نزدیک شما پزشکی از این تخصص پیدا نشد؛ بهترین‌های این تخصص را ببینید:",
  "wizNearSeeAll": "دیدن همه‌ی پزشکان ${1}",
- "wizNearChangePlace": "تغییر موقعیت"
+ "wizNearChangePlace": "تغییر موقعیت",
+ "wizAssessTitle": "ارزیابی اولیه",
+ "wizUrgencyEmergency": "اورژانسی · همین حالا با ۱۱۵ تماس بگیرید",
+ "wizUrgencySoon": "ظرف چند روز به پزشک مراجعه کنید",
+ "wizUrgencyRoutine": "فوری نیست",
+ "wizPossible": "احتمال‌ها:",
+ "wizSpecialistSuggested": "متخصص پیشنهادی:",
+ "wizProgress": "سؤال ${1} از ${2}",
+ "wizEmergencyNote": "در شرایط اورژانسی با ۱۱۵ تماس بگیرید. این دستیار جای معاینه‌ی پزشک را نمی‌گیرد."
 }
