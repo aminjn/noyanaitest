@@ -6,7 +6,7 @@ import classes from "./WizardPage.module.css";
 import useSWR, { mutate as mutateGlobal } from "swr";
 import { API } from "../config";
 import { fetcher } from "../helpers/fetcher";
-import { KeyboardEvent, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, KeyboardEvent, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import Form from "../UI/Form";
 import Ixon from "../UI/Ixon";
 import SendIcon from "../Icons/SendIcon";
@@ -52,9 +52,22 @@ export interface IBotChatMessage extends MongoDoc {
   };
 }
 
-// an assessment (not a question): it named a specialty, conditions or how urgent
+// the message opens with a question (its first or second line ends in «؟»)
+const opensWithQuestion = (content: string) =>
+  String(content || "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .slice(0, 2)
+    .some((l) => /[?؟][\s"'»)!.…]*$/.test(l));
+
+// an assessment (not a question): it named a specialty or how urgent. A reply
+// that opens with a question waits for the answer, whatever else it says;
+// condition names alone are only links in the text.
 const isAssessment = (node: IBotChatMessage) =>
-  node.role === "assistant" && !!(node.meta?.speciality || node.meta?.diseases?.length || node.meta?.urgency);
+  node.role === "assistant" &&
+  !!(node.meta?.speciality || node.meta?.urgency) &&
+  (node.meta?.urgency === "emergency" || !opensWithQuestion(node.content));
 
 const URGENCY_KEY: Record<"emergency" | "soon" | "routine", ContentKey> = {
   emergency: "wizUrgencyEmergency",
@@ -332,8 +345,11 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
   if (!user) return landing && !nodeId ? <>{landing}</> : <LoginRequired />;
 
   const isLoadingHistory = !!nodeId && !data && !isSending;
-  const nearbySpeciality = [...(Array.isArray(data) ? data : [])].reverse().find((m) => m.role === "assistant" && m.meta?.speciality)
-    ?.meta?.speciality;
+  // the last assessment's specialty: its doctors near the patient, right under it
+  const list = Array.isArray(data) ? data : [];
+  let nearbyAt = list.length - 1;
+  while (nearbyAt >= 0 && !(isAssessment(list[nearbyAt]) && list[nearbyAt].meta?.speciality)) nearbyAt--;
+  const nearbySpeciality = nearbyAt >= 0 ? list[nearbyAt].meta?.speciality : undefined;
   const hasMessages = !!data?.length || isSending;
   // «سؤال ۲ از ۴»: the questions asked since the last assessment
   const sinceAssessment = (() => {
@@ -401,12 +417,16 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
           ) : hasMessages ? (
             <div className={classes.messages}>
               {data?.map((message, i) => (
-                <Message
-                  node={message}
-                  key={message._id}
-                  getContent={getContent}
-                  onPick={!isSending && i === data.length - 1 ? onSend : undefined}
-                />
+                <Fragment key={message._id}>
+                  <Message
+                    node={message}
+                    getContent={getContent}
+                    onPick={!isSending && i === data.length - 1 ? onSend : undefined}
+                  />
+                  {i === nearbyAt && !!nearbySpeciality && (
+                    <WizardNearbyDoctors key={nearbySpeciality._id} speciality={nearbySpeciality} />
+                  )}
+                </Fragment>
               ))}
               {isSending && (
                 <Message
@@ -434,10 +454,6 @@ const WizardPage = ({ landing }: { landing?: ReactNode }) => {
                     meta: streamMeta,
                   }}
                 />
-              )}
-              {/* the last assessment's specialty: its doctors near the patient */}
-              {!isSending && !!nearbySpeciality && (
-                <WizardNearbyDoctors key={nearbySpeciality._id} speciality={nearbySpeciality} />
               )}
               {isSending && !hideMachineLines(incomingStream) && (
                 <TypingIndicator label={getContent("aiIsTyping")} />
