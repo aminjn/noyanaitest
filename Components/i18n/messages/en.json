@@ -4442,7 +4442,7 @@
  "faiAgain": "Analyse again",
  "faiClose": "Close",
  "faiDraftNote": "Written by the AI from these books’ own figures; check the figures in the reports before deciding.",
- "faiOff": "The finance AI assistant is not turned on for this server. The site manager turns it on in System settings → AI (clinical assistant).",
+ "faiOff": "The finance AI assistant is not turned on for this server. The site manager turns it on in System settings → AI → Finance assistant.",
  "faiOpenSettings": "AI settings",
  "faiInCountry": "Processed on the in-country server (data stays in the country)",
  "faiCloud": "Processed by the cloud service the site manager chose; patient names are not sent",

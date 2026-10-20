@@ -4442,7 +4442,7 @@
  "faiAgain": "Analisis ulang",
  "faiClose": "Tutup",
  "faiDraftNote": "Ditulis AI dari angka pembukuan ini; periksa angkanya di laporan sebelum memutuskan.",
- "faiOff": "Asisten AI keuangan belum aktif di server ini. Pengelola situs mengaktifkannya di Pengaturan sistem → AI (asisten klinis).",
+ "faiOff": "Asisten AI keuangan belum aktif di server ini. Pengelola situs mengaktifkannya di Pengaturan sistem → AI → Asisten keuangan.",
  "faiOpenSettings": "Pengaturan AI",
  "faiInCountry": "Diproses di server dalam negeri (data tidak keluar negeri)",
  "faiCloud": "Diproses oleh layanan cloud pilihan pengelola situs; nama pasien tidak dikirim",

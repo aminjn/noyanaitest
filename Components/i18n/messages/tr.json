@@ -4442,7 +4442,7 @@
  "faiAgain": "Yeniden analiz et",
  "faiClose": "Kapat",
  "faiDraftNote": "Metni yapay zekâ bu defterlerin rakamlarından yazdı; karar vermeden önce rakamları raporlarda kontrol edin.",
- "faiOff": "Finans yapay zekâ asistanı bu sunucuda açık değil. Site yöneticisi Sistem ayarları → Yapay zekâ (klinik asistan) bölümünden açar.",
+ "faiOff": "Finans yapay zekâ asistanı bu sunucuda açık değil. Site yöneticisi bunu Sistem ayarları → Yapay zekâ → Finans asistanı bölümünden açar.",
  "faiOpenSettings": "Yapay zekâ ayarları",
  "faiInCountry": "Yurt içi sunucuda işlenir (veri ülke dışına çıkmaz)",
  "faiCloud": "Site yöneticisinin seçtiği bulut hizmetinde işlenir; hasta adları gönderilmez",

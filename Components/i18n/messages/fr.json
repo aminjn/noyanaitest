@@ -4442,7 +4442,7 @@
  "faiAgain": "Relancer l’analyse",
  "faiClose": "Fermer",
  "faiDraftNote": "Rédigé par l’IA à partir des chiffres de ces livres ; vérifiez-les dans les rapports avant de décider.",
- "faiOff": "L’assistant financier IA n’est pas activé sur ce serveur. Le gestionnaire du site l’active dans Paramètres système → IA (assistant clinique).",
+ "faiOff": "L’assistant IA financier n’est pas activé sur ce serveur. L’administrateur l’active dans Paramètres système → IA → Assistant financier.",
  "faiOpenSettings": "Paramètres IA",
  "faiInCountry": "Traité sur le serveur national (les données restent dans le pays)",
  "faiCloud": "Traité par le service cloud choisi par le gestionnaire ; les noms des patients ne sont pas envoyés",
