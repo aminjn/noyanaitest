@@ -31,6 +31,7 @@ import { IReservation } from "./DashboardManageBookingsPage";
 import ReservationJoinButton from "./ReservationJoinButton";
 import ReservationCancel from "./ReservationCancel";
 import classes from "./BookingManagePanel.module.css";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 // the map library loads after the page, not before it
 const PlaceLocationCard = dynamic(() => import("@/Components/Map/PlaceLocationCard"), { ssr: false });
@@ -297,7 +298,7 @@ const BookingManagePanel = ({
                     <Ixon width="0.9rem">{s.done ? <CheckIcon /> : s.icon}</Ixon>
                   </span>
                   {s.href && !s.done ? (
-                    <a href={s.href} className={classes.textLink}>
+                    <a href={safeHref(s.href)} className={classes.textLink}>
                       {getContent(s.key)}
                     </a>
                   ) : (

@@ -49,9 +49,39 @@ function fileHostPatterns() {
 const LOCALES = ["fa", "en", "ar", "zh", "hi", "es", "fr", "ru", "pt", "de", "tr", "ur", "bn", "id", "ja"];
 const LOCALE_PATTERN = LOCALES.join("|");
 
+// Security headers on every page. No script-src CSP: maps, the payment
+// gateway hand-off and the inline JSON-LD / theme scripts would need a
+// nonce setup first; these directives restrict nothing the site uses.
+const SECURITY_HEADERS = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  // camera / microphone for calls and voice notes, location for "near me"
+  {
+    key: "Permissions-Policy",
+    value: "camera=(self), microphone=(self), geolocation=(self), payment=(self), usb=(), serial=(), hid=(), browsing-topics=()",
+  },
+];
+// No other site may frame a page (clickjacking on the panels, payment and
+// OTP screens) - except the public CRM form /f/<slug>, which providers embed
+// on their own sites with the <iframe> snippet from the CRM settings.
+const NO_FRAME_HEADERS = [
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Content-Security-Policy", value: "frame-ancestors 'self'; base-uri 'self'; object-src 'none'" },
+];
+const EMBEDDABLE_HEADERS = [{ key: "Content-Security-Policy", value: "base-uri 'self'; object-src 'none'" }];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  poweredByHeader: false,
+  async headers() {
+    return [
+      { source: "/:path*", headers: SECURITY_HEADERS },
+      { source: `/((?!f/|(?:${LOCALE_PATTERN})/f/).*)`, headers: NO_FRAME_HEADERS },
+      { source: "/f/:slug*", headers: EMBEDDABLE_HEADERS },
+      { source: `/:locale(${LOCALE_PATTERN})/f/:slug*`, headers: EMBEDDABLE_HEADERS },
+    ];
+  },
   async rewrites() {
     return {
       beforeFiles: [

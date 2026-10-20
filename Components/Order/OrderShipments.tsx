@@ -20,6 +20,7 @@ import ConfirmationPopup from "../Admin/UI/ConfirmationPopup";
 import { IOrderShipment, ShipmentState, shipmentStateOf } from "./orderShipment";
 import { t2xsRegular, tsmRegular } from "../UI/Typography";
 import classes from "./OrderShipments.module.css";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 const NS: ContentNamespace[] = ["common", "orderConfirmation"];
 
@@ -211,7 +212,7 @@ const OrderShipments = ({
                   </>
                 )}
                 {!!s.trackingLink && (
-                  <a href={s.trackingLink} target="_blank" rel="noreferrer" className={classes.link}>
+                  <a href={safeHref(s.trackingLink)} target="_blank" rel="noreferrer" className={classes.link}>
                     {getContent("shipTrack")}
                   </a>
                 )}

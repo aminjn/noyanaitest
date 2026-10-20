@@ -13,6 +13,7 @@ import useScopedLocale from "../Hooks/useScopedLocale";
 import DownloadIcon from "../Icons/DownloadIcon";
 import usePwaInstall, { openInstallSheet } from "../Pwa/usePwaInstall";
 import { ContentNamespace } from "../Enums/contentNamespaces";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 const LOCALE_NS: ContentNamespace[] = ["common"];
 
@@ -76,7 +77,7 @@ const PublicFooter = () => {
                 <li key={social.label}>
                   <a
                     className={classes.socialLink}
-                    href={social.href}
+                    href={safeHref(social.href)}
                     target="_blank"
                     rel="noreferrer"
                     aria-label={social.label}

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher } from "@/Components/helpers/fetcher";
+import { safeLocalPath } from "@/Components/helpers/safeHref";
 import useNotification from "@/Components/Hooks/useNotification";
 import useProgress from "@/Components/Hooks/useProgress";
 import { useIntlLocale } from "@/Components/i18n/navigation";
@@ -50,8 +51,11 @@ type Line = { item: string; label: string; qty: number; unitCost: number };
 type SlotValue = { date?: string; start?: number | null; end?: number };
 
 // the panel's own path or the admin's (no language prefix there)
-const Go = ({ href, children, admin }: { href: string; children: React.ReactNode; admin: boolean }) =>
-  admin ? <a href={href}>{children}</a> : <Link href={href}>{children}</Link>;
+// (an AI-made link: only a path on this site, never "javascript:" or another host)
+const Go = ({ href, children, admin }: { href: string; children: React.ReactNode; admin: boolean }) => {
+  const path = safeLocalPath(href, "#");
+  return admin ? <a href={path}>{children}</a> : <Link href={path}>{children}</Link>;
+};
 
 const SlotField = ({
   profile,
@@ -408,7 +412,12 @@ const CopilotCard = ({
     return (
       <p className={ai.muted}>
         {card.title ? `${t(card.title)} · ` : ""}
-        <button type="button" className={classes.link} onClick={() => (admin || card.path.startsWith("/wizard") ? (window.location.href = card.path) : push(card.path))}>
+        <button type="button" className={classes.link} onClick={() => {
+            const path = safeLocalPath(card.path);
+            if (!path) return;
+            if (admin || path.startsWith("/wizard")) window.location.href = path;
+            else push(path);
+          }}>
           {t(T("copOpenPage", "باز کردن صفحه"))}
         </button>
       </p>
