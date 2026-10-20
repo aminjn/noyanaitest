@@ -4069,5 +4069,6 @@
  "نوع سرویس": "Hizmet türü",
  "کلید ذخیره‌شده می‌ماند مگر کلید تازه وارد کنید.": "Yeni anahtar girmedikçe kayıtlı anahtar kalır.",
  "گفتگوی بیماران در دستیار سلامت سایت؛ فقط با سرور Ollama": "Sitenin sağlık asistanında hasta sohbetleri; yalnızca Ollama sunucusu",
- "یک بار وصل کنید؛ همه‌ی بخش‌ها از همین اتصال استفاده می‌کنند. بعد «بارگذاری مدل‌ها» را بزنید و برای هر بخش مدل و دستورالعمل آن را انتخاب کنید.": "Bir kez bağlanın; tüm bölümler bu bağlantıyı kullanır. Sonra Modelleri yükle’ye basın ve her bölüm için model ile talimatı seçin."
+ "یک بار وصل کنید؛ همه‌ی بخش‌ها از همین اتصال استفاده می‌کنند. بعد «بارگذاری مدل‌ها» را بزنید و برای هر بخش مدل و دستورالعمل آن را انتخاب کنید.": "Bir kez bağlanın; tüm bölümler bu bağlantıyı kullanır. Sonra Modelleri yükle’ye basın ve her bölüm için model ile talimatı seçin.",
+ "کلید API (اگر سرور کلید دارد)": "API anahtarı (sunucuda varsa)"
 }

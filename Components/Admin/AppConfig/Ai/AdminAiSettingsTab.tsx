@@ -333,9 +333,9 @@ const AiSettingsForm = ({ data, refresh }: { data: AiSettings; refresh: () => un
             inputClass={base.ltr}
             onChange={(e) => setUrl(e.target.value)}
           />
-          {kind !== "ollama" && (
-            <Input
-              title={ta("کلید API")}
+          {/* an Ollama server behind a key gets it too (as a bearer token) */}
+          <Input
+              title={kind === "ollama" ? ta("کلید API (اگر سرور کلید دارد)") : ta("کلید API")}
               type="password"
               autoComplete="new-password"
               defaultValue=""
@@ -343,12 +343,11 @@ const AiSettingsForm = ({ data, refresh }: { data: AiSettings; refresh: () => un
               inputClass={base.ltr}
               onChange={(e) => setKey(e.target.value)}
             />
-          )}
         </div>
-        {kind !== "ollama" && data.connection.keySet && (
+        {data.connection.keySet && (
           <p className={base.note}>{ta("کلید ذخیره‌شده می‌ماند مگر کلید تازه وارد کنید.")}</p>
         )}
-        {kind !== "ollama" && data.connection.keyFromEnv && (
+        {kind === "anthropic" && data.connection.keyFromEnv && (
           <p className={base.note}>{ta("کلیدی اینجا ذخیره نشده و کلید فایل ‎.env سرور استفاده می‌شود.")}</p>
         )}
         <div className={base.row}>
