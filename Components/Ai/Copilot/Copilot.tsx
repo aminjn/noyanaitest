@@ -2,6 +2,7 @@
 
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { fetcher } from "@/Components/helpers/fetcher";
+import { safeLocalPath } from "@/Components/helpers/safeHref";
 import useProgress from "@/Components/Hooks/useProgress";
 import { useIntlLocale, usePathname } from "@/Components/i18n/navigation";
 import { adminIntlTag } from "@/Components/Admin/i18n/adminText";
@@ -84,9 +85,10 @@ const CopilotPanel = ({ profile, onClose }: { profile: AiProfile; onClose: () =>
         mutate();
         // a page the user asked for opens right away
         if (d.card?.type === "navigate") {
-          const path = d.card.path;
-          if (profile === "admin" || path.startsWith("/wizard")) window.location.href = path;
-          else push(path);
+          // only a path on this site (the reply is model output)
+          const path = safeLocalPath(d.card.path);
+          if (path && (profile === "admin" || path.startsWith("/wizard"))) window.location.href = path;
+          else if (path) push(path);
         }
       } catch (err) {
         // refused by the AI policy: the locked / limit state, not an error

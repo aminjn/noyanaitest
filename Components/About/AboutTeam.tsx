@@ -5,6 +5,7 @@ import TitleLegend from "./TitleLegend";
 import LinkedinIcon from "../Icons/LinkedinIcon";
 import Ixon from "../UI/Ixon";
 import { tmdBold, tsmBold, tsmRegular } from "../UI/Typography";
+import { safeHref } from "@/Components/helpers/safeHref";
 const AboutTeam = ({ team }: { team: IAboutTeam[] }) => {
   if (!Array.isArray(team) || !team.length) return null;
   return (
@@ -34,7 +35,7 @@ const AboutTeam = ({ team }: { team: IAboutTeam[] }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={classes.linkedin}
-                href={member.linkedin}
+                href={safeHref(member.linkedin)}
                 aria-label="LinkedIn"
               >
                 <Ixon width="1.25rem">

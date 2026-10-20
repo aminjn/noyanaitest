@@ -360,7 +360,7 @@ const InvoiceView = ({ id, onChanged }: { id: string; onChanged: () => unknown }
     if (!w) return;
     const dir = document.documentElement.dir || "rtl";
     w.document.write(
-      `<!doctype html><html dir="${dir}" lang="${document.documentElement.lang}"><head><meta charset="utf-8"><title>${t("finInvoiceN", [String(data?.number || "")])}</title>` +
+      `<!doctype html><html dir="${dir}" lang="${document.documentElement.lang}"><head><meta charset="utf-8"><title>${t("finInvoiceN", [String(data?.number || "")]).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`)}</title>` +
         `<style>body{font-family:Vazirmatn,Tahoma,sans-serif;padding:24px;color:#111}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:6px;border-bottom:1px solid #ddd;text-align:start}td.n,th.n{text-align:end}h2{margin:0 0 8px}.m{color:#555;font-size:13px}.t{margin-top:12px;margin-inline-start:auto;max-width:320px}.t div{display:flex;justify-content:space-between;padding:3px 0}.g{font-weight:800;border-top:1px solid #999}</style></head><body>` +
         sheet.current.innerHTML +
         `</body></html>`,

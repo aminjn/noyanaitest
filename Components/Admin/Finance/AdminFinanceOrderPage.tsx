@@ -59,6 +59,7 @@ import AdminSamplingReschedulePopup, {
   AdminBuyerAddress,
   IAdminSampling,
 } from "./AdminSamplingReschedulePopup";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 type Seller = { _id: string; name: string; kind?: string } | null;
 
@@ -1089,7 +1090,7 @@ const AdminFinanceOrderPage = () => {
                             <>
                               <Field label={ta("کد رهگیری")}>
                                 {s.trackingLink ? (
-                                  <a className={classes.link} href={s.trackingLink} target="_blank" rel="noreferrer" dir="ltr">
+                                  <a className={classes.link} href={safeHref(s.trackingLink)} target="_blank" rel="noreferrer" dir="ltr">
                                     {s.trackingCode}
                                   </a>
                                 ) : (
@@ -1193,7 +1194,7 @@ const AdminFinanceOrderPage = () => {
                                 {s.ride.shareUrl && (
                                   <a
                                     className={classes.link}
-                                    href={s.ride.shareUrl}
+                                    href={safeHref(s.ride.shareUrl)}
                                     target="_blank"
                                     rel="noreferrer"
                                   >

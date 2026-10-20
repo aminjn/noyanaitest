@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import Ixon from "../UI/Ixon";
 import classes from "./InfoPair.module.css";
 import CogIcon from "../Icons/CogIcon";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 const InfoPair = ({
   icon = <CogIcon />,
@@ -23,7 +24,7 @@ const InfoPair = ({
         <span>{title}</span>
       </legend>
       {target ? (
-        <a className={classes.value} rel="nofollow" href={target}>
+        <a className={classes.value} rel="nofollow" href={safeHref(target)}>
           {value}
         </a>
       ) : (

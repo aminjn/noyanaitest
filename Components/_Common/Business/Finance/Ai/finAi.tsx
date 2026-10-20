@@ -10,6 +10,7 @@ import { useFin, useFinText } from "../finShared";
 import AiLocked, { aiGateOf, AiFeatureState, gateOfState } from "@/Components/Ai/AiLocked";
 import { AiProfile } from "@/Components/Ai/aiShared";
 import ai from "./FinAi.module.css";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 // Shared bits of the finance assistant (2026-10, «دستیار هوش مصنوعی مالی»,
 // backend Lib/business/financeAi.ts under /<panel>/biz/finance/ai): the
@@ -102,7 +103,7 @@ export const AiOff = ({ status }: { status?: FinAiStatus }) => {
       <SparkIcon />
       <span>{t("faiOff")}</span>
       {!!status?.settingsUrl && (
-        <a className={ai.aiButton} href={status.settingsUrl}>
+        <a className={ai.aiButton} href={safeHref(status.settingsUrl)}>
           {t("faiOpenSettings")}
         </a>
       )}

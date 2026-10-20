@@ -11,12 +11,13 @@ import LinkedinIcon from "../Icons/LinkedinIcon";
 import InstagramIcon from "../Icons/InstagramIcon";
 import TelegramIcon from "../Icons/TelegramIcon";
 import { tbaseMedium, tbaseRegular } from "../UI/Typography";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 const NS: ContentNamespace[] = ["common", "contactPage"];
 
 const SocialItem = ({ href, icon }: { href: string; icon: ReactNode }) => {
   return (
-    <a className={classes.social} href={href} target="_blank">
+    <a className={classes.social} href={safeHref(href)} target="_blank" rel="noopener noreferrer">
       <Ixon width="1.25rem">{icon}</Ixon>
     </a>
   );

@@ -16,6 +16,16 @@ export const getPublicData = async <T,>(
   path: string,
   searchParams?: Record<string, string>,
 ): Promise<T | undefined> => {
+  // a slug from the URL ("/dr/%2e%2e") must not walk the backend URL out of
+  // /api/v1/public/ (this fetch runs server side, on the private address)
+  const unsafeSegment = (seg: string) => {
+    let d = seg;
+    try {
+      d = decodeURIComponent(seg);
+    } catch {}
+    return d === "." || d === ".." || /[\\/]/.test(d);
+  };
+  if (path.split("?")[0].split("/").some(unsafeSegment)) return;
   const qs =
     searchParams && Object.keys(searchParams).length
       ? `?${new URLSearchParams(searchParams).toString()}`

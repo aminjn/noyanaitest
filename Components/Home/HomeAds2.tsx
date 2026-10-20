@@ -10,6 +10,7 @@ import Ixon from "../UI/Ixon";
 import { tmdMedium, tsmDemiBold, txlBold, txsMedium } from "../UI/Typography";
 import mobileImage from "./mobile.png";
 import classes from "./HomeAds2.module.css";
+import { safeHref } from "@/Components/helpers/safeHref";
 
 const NS: ContentNamespace[] = ["common", "home"];
 
@@ -33,7 +34,7 @@ const Banner = ({ node, label }: { node: IAdvertisement; label: string }) => {
     </>
   );
   return node.target ? (
-    <a href={node.target} className={classes.banner} rel="sponsored noopener">
+    <a href={safeHref(node.target)} className={classes.banner} rel="sponsored noopener">
       {body}
     </a>
   ) : (
