@@ -23,7 +23,7 @@ import classes from "../AdminMapSettings.module.css";
 // a connection test per feature and the Ollama models. Who may use which
 // AI feature, and how much, is the «سیاست هوش مصنوعی» tab (AdminAiPolicyTab).
 
-type AiStatus = { on: boolean; provider?: string; model?: string };
+type AiStatus = { on: boolean; provider?: string; model?: string; why?: string };
 
 type AiSettings = {
   aiProvider: "anthropic" | "openai" | "ollama";
@@ -99,6 +99,12 @@ const TestRow = ({ feature, title, status }: { feature: Feature; title: string; 
           {ta("آزمایش اتصال")}
         </Button>
       </div>
+      {!status?.on && !!status?.why && (
+        // what is missing, so "off" is never a riddle (the backend says it)
+        <span className={classes.error} dir="auto">
+          {status.why}
+        </span>
+      )}
       {!!result && (
         <div className={classes.row} aria-live="polite">
           <Badge color={result.ok ? "Success" : "Error"} size="L">
@@ -109,7 +115,11 @@ const TestRow = ({ feature, title, status }: { feature: Feature; title: string; 
               {ta("${1} میلی‌ثانیه", [result.latencyMs.toLocaleString(adminIntlTag())])}
             </span>
           )}
-          {!result.ok && !!result.error && <span className={`${classes.error} ${classes.ltr}`}>{result.error}</span>}
+          {!result.ok && !!result.error && (
+            <span className={classes.error} dir="auto">
+              {result.error}
+            </span>
+          )}
           {result.ok && !!result.models && (
             <span className={`${classes.note} ${classes.ltr}`}>
               {result.models.length ? result.models.join("، ") : ta("هیچ مدلی روی سرور نیست")}
