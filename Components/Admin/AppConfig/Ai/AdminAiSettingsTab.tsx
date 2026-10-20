@@ -1,80 +1,147 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { API } from "@/Components/config";
 import { fetcher, FetchError } from "@/Components/helpers/fetcher";
 import useNotification from "@/Components/Hooks/useNotification";
 import HandleLoading from "../../UI/HandleLoading";
 import WithTitle from "../../UI/WithTitle";
-import CreateForm from "../../UI/CreateForm";
 import Box from "../../UI/Box";
 import Button from "@/Components/UI/Button";
 import Badge from "@/Components/UI/Badge";
+import Input from "@/Components/UI/Input";
+import SelectInput from "@/Components/UI/SelectInput";
+import AreaInput from "@/Components/UI/AreaInput";
+import ToggleInput from "@/Components/UI/ToggleInput";
 import { adminIntlTag, ta } from "@/Components/Admin/i18n/adminText";
 import AdminManageOllamaPage from "../../Ollama/AdminManageOllamaPage";
-import classes from "../AdminMapSettings.module.css";
+import base from "../AdminMapSettings.module.css";
+import classes from "./AdminAiSettings.module.css";
 
-// «هوش مصنوعی ← اتصال و مدل‌ها» in the system settings (2026-10): every AI provider of the
-// site in one form - machine translation of content, the doctor's clinical
-// assistant, the visit scribe's speech-to-text and the Ollama server of the
-// chat bot (backend Lib/aiSettings.ts, GET/POST /admin/ai/settings). Keys
-// are write-only. An empty field falls back to the server's .env. Below:
-// a connection test per feature and the Ollama models. Who may use which
-// AI feature, and how much, is the «سیاست هوش مصنوعی» tab (AdminAiPolicyTab).
+// «هوش مصنوعی ← اتصال و مدل‌ها» in the system settings (2026-10): the site's
+// one AI connection (Ollama in Iran, an OpenAI-compatible service or
+// Anthropic) entered once, its models loaded with one button, then every AI
+// feature under it, one after another: its switch, the model it uses and
+// the admin's own instruction for it (backend Lib/aiSettings.ts AI_FEATURES,
+// GET/POST /admin/ai/settings, POST /admin/ai/models). The key is
+// write-only. Who may use which feature, and how much, is the «سیاست هوش
+// مصنوعی» tab (AdminAiPolicyTab).
+//
+// Benchmark: Doctolib's and Practo's AI tools sit on one vendor connection
+// with per-feature prompts set by their own teams; here the super admin
+// does both, and patient data can stay on an Ollama server inside Iran.
 
-type AiStatus = { on: boolean; provider?: string; model?: string; why?: string };
+type Kind = "ollama" | "openai" | "anthropic";
+type FeatureKey = "translation" | "content" | "clinical" | "finance" | "chat" | "stt";
+type FeatureState = { enabled: boolean; model: string; instruction: string; language?: string };
+type FeatureView = FeatureState & { on: boolean; runningModel: string; why?: string };
 
 type AiSettings = {
-  aiProvider: "anthropic" | "openai" | "ollama";
-  aiBaseUrl: string;
-  apiKeySet: boolean;
-  apiKeyPreview: string;
-  apiKeyFromEnv: boolean;
-  ollamaHost: string;
-  translationAiEnabled: boolean;
-  translationAiModel: string;
-  clinicalAiEnabled: boolean;
-  clinicalAiProvider: "ollama" | "cloud";
-  clinicalAiModel: string;
-  sttEnabled: boolean;
+  connection: { kind: Kind; url: string; keySet: boolean; keyPreview?: string; keyFromEnv?: boolean };
+  features: Record<FeatureKey, FeatureView>;
   sttUrl: string;
   sttKeySet: boolean;
-  sttKeyPreview: string;
-  sttModel: string;
-  sttLanguage: string;
-  defaults?: Record<string, string>;
-  status?: { translation?: AiStatus; clinical?: AiStatus; stt?: AiStatus; chat?: AiStatus };
+  sttKeyPreview?: string;
 };
 
-type AiInput = Omit<AiSettings, "apiKeySet" | "apiKeyPreview" | "apiKeyFromEnv" | "sttKeySet" | "sttKeyPreview" | "defaults" | "status"> & {
-  aiApiKey: string;
-  sttApiKey: string;
+type TestResult = { ok: boolean; latencyMs?: number; provider?: string; model?: string; error?: string };
+
+const FEATURE_KEYS: FeatureKey[] = ["translation", "content", "clinical", "finance", "chat", "stt"];
+
+const featureMeta: Record<FeatureKey, { readonly title: string; readonly note: string }> = {
+  translation: {
+    get title() {
+      return ta("ترجمه‌ی خودکار محتوا");
+    },
+    get note() {
+      return ta("ترجمه‌ی متن‌ها، صفحه‌ها و محتوای سایت به همه‌ی زبان‌های فعال");
+    },
+  },
+  content: {
+    get title() {
+      return ta("محتوای پزشکی و ورود داده");
+    },
+    get note() {
+      return ta("نوشتن و بازبینی بیماری‌ها، داروها و علائم، و جدا کردن نام‌ها در ورود گروهی؛ بدون مدل جدا همان مدل ترجمه");
+    },
+  },
+  clinical: {
+    get title() {
+      return ta("دستیار بالینی پزشک");
+    },
+    get note() {
+      return ta("دستیار نویان در پنل‌ها، نسخه‌نویس ویزیت، خلاصه‌ی پرونده، پیشنهاد پاسخ گفتگو و متن پیامک (داده‌ی بیمار)");
+    },
+  },
+  finance: {
+    get title() {
+      return ta("دستیار مالی و حسابداری");
+    },
+    get note() {
+      return ta("سند خودکار، خواندن رسید، تحلیل مالی و فیش حقوقی در بخش مالی پنل‌ها؛ بدون مدل جدا همان مدل دستیار بالینی");
+    },
+  },
+  chat: {
+    get title() {
+      return ta("دستیار گفتگوی سلامت");
+    },
+    get note() {
+      return ta("گفتگوی بیماران در دستیار سلامت سایت؛ فقط با سرور Ollama");
+    },
+  },
+  stt: {
+    get title() {
+      return ta("تبدیل گفتار به متن");
+    },
+    get note() {
+      return ta("نسخه‌نویس صوتی ویزیت و ورود صوتی؛ با اتصال سازگار با OpenAI که مدل Whisper دارد");
+    },
+  },
 };
 
-type Feature = "translation" | "clinical" | "stt" | "ollama";
-
-type TestResult = {
-  ok: boolean;
-  latencyMs?: number;
-  provider?: string;
-  model?: string;
-  models?: string[];
-  error?: string;
+const urlPlaceholder: Record<Kind, string> = {
+  ollama: "http://10.0.0.5:11434",
+  openai: "https://api.openai.com/v1",
+  anthropic: "https://api.anthropic.com",
 };
 
 const providerName = (p?: string) =>
   p === "anthropic" ? "Anthropic (Claude)" : p === "openai" ? ta("سازگار با OpenAI") : p === "ollama" ? "Ollama" : p || "";
 
-const TestRow = ({ feature, title, status }: { feature: Feature; title: string; status?: AiStatus }) => {
+const FeatureCard = ({
+  name,
+  view,
+  value,
+  models,
+  modelsKey,
+  onChange,
+}: {
+  name: FeatureKey;
+  view: FeatureView;
+  value: FeatureState;
+  models: string[];
+  modelsKey: number;
+  onChange: (next: Partial<FeatureState>) => void;
+}) => {
   const pushNotification = useNotification();
   const [testing, setTesting] = useState(false);
   const [result, setResult] = useState<TestResult | null>(null);
-  const run = async () => {
+  const meta = featureMeta[name];
+  // the loaded models, plus the one saved (it may not be in the list)
+  const options = useMemo(() => {
+    const list = Array.from(new Set([...(value.model ? [value.model] : []), ...models]));
+    return {
+      "": view.runningModel && !value.model ? ta("خودکار (${1})", [view.runningModel]) : ta("خودکار"),
+      ...Object.fromEntries(list.map((m) => [m, m])),
+    };
+  }, [models, value.model, view.runningModel]);
+
+  const test = async () => {
     if (testing) return;
     setTesting(true);
     try {
-      const res = await fetcher({ url: `${API}/admin/ai/test`, method: "POST", payload: { feature }, bodyParser: "JSON" });
+      const res = await fetcher({ url: `${API}/admin/ai/test`, method: "POST", payload: { feature: name }, bodyParser: "JSON" });
       setResult(res?.data && typeof res.data === "object" ? (res.data as TestResult) : null);
     } catch (err) {
       if (err instanceof FetchError) pushNotification(err.message, "Error");
@@ -82,51 +149,258 @@ const TestRow = ({ feature, title, status }: { feature: Feature; title: string; 
       setTesting(false);
     }
   };
+
   return (
-    <div className={classes.stack}>
-      <div className={classes.row}>
-        <strong>{title}</strong>
-        <Badge color={status?.on ? "Success" : "Disabled"} size="L">
-          {status?.on ? ta("فعال") : ta("غیرفعال")}
-        </Badge>
-        {status?.on && !!status.provider && (
-          <span className={`${classes.note} ${classes.ltr}`}>
-            {providerName(status.provider)}
-            {status.model ? ` · ${status.model}` : ""}
-          </span>
+    <Box className={classes.card}>
+      <div className={classes.cardHead}>
+        <div className={classes.cardTitle}>
+          <strong>{meta.title}</strong>
+          <span className={base.note}>{meta.note}</span>
+        </div>
+        <ToggleInput title={meta.title} value={value.enabled} onChange={() => onChange({ enabled: !value.enabled })} />
+      </div>
+      <div className={classes.fields}>
+        <SelectInput
+          key={`${name}-${modelsKey}`}
+          title={name === "stt" ? ta("مدل گفتار به متن") : ta("مدل")}
+          options={options}
+          defaultValue={value.model}
+          onChange={(e) => onChange({ model: e.target.value })}
+        />
+        {name === "stt" && (
+          <Input
+            title={ta("زبان گفتار (پیش‌فرض fa)")}
+            defaultValue={value.language || ""}
+            inputClass={base.ltr}
+            onChange={(e) => onChange({ language: e.target.value })}
+          />
         )}
-        <Button size="S" mode="Outline" onClick={run} isLoading={testing}>
+      </div>
+      {name !== "stt" && (
+        <AreaInput
+          title={ta("دستورالعمل این بخش (اختیاری)")}
+          defaultValue={value.instruction}
+          onChange={(e) => onChange({ instruction: e.target.value })}
+        />
+      )}
+      <div className={base.row}>
+        <Badge color={view.on ? "Success" : "Disabled"} size="L">
+          {view.on ? ta("فعال") : ta("غیرفعال")}
+        </Badge>
+        {view.on && !!view.runningModel && <span className={`${base.note} ${base.ltr}`}>{view.runningModel}</span>}
+        <Button size="S" mode="Outline" onClick={test} isLoading={testing}>
           {ta("آزمایش اتصال")}
         </Button>
       </div>
-      {!status?.on && !!status?.why && (
-        // what is missing, so "off" is never a riddle (the backend says it)
-        <span className={classes.error} dir="auto">
-          {status.why}
+      {!view.on && !!view.why && (
+        <span className={base.error} dir="auto">
+          {view.why}
         </span>
       )}
       {!!result && (
-        <div className={classes.row} aria-live="polite">
+        <div className={base.row} aria-live="polite">
           <Badge color={result.ok ? "Success" : "Error"} size="L">
             {result.ok ? ta("اتصال برقرار است") : ta("اتصال ناموفق")}
           </Badge>
           {typeof result.latencyMs === "number" && (
-            <span className={classes.note}>
-              {ta("${1} میلی‌ثانیه", [result.latencyMs.toLocaleString(adminIntlTag())])}
+            <span className={base.note}>{ta("${1} میلی‌ثانیه", [result.latencyMs.toLocaleString(adminIntlTag())])}</span>
+          )}
+          {result.ok && !!result.model && (
+            <span className={`${base.note} ${base.ltr}`}>
+              {providerName(result.provider)}
+              {result.provider ? " · " : ""}
+              {result.model}
             </span>
           )}
           {!result.ok && !!result.error && (
-            <span className={classes.error} dir="auto">
+            <span className={base.error} dir="auto">
               {result.error}
-            </span>
-          )}
-          {result.ok && !!result.models && (
-            <span className={`${classes.note} ${classes.ltr}`}>
-              {result.models.length ? result.models.join("، ") : ta("هیچ مدلی روی سرور نیست")}
             </span>
           )}
         </div>
       )}
+    </Box>
+  );
+};
+
+const AiSettingsForm = ({ data, refresh }: { data: AiSettings; refresh: () => unknown }) => {
+  const pushNotification = useNotification();
+  const [kind, setKind] = useState<Kind>(data.connection.kind || "ollama");
+  const [url, setUrl] = useState(data.connection.url || "");
+  const [key, setKey] = useState("");
+  const [features, setFeatures] = useState<Record<FeatureKey, FeatureState>>(() =>
+    Object.fromEntries(
+      FEATURE_KEYS.map((f) => {
+        const v = data.features?.[f];
+        return [f, { enabled: !!v?.enabled, model: v?.model || "", instruction: v?.instruction || "", language: v?.language || "" }];
+      }),
+    ) as Record<FeatureKey, FeatureState>,
+  );
+  const [sttUrl, setSttUrl] = useState(data.sttUrl || "");
+  const [sttKey, setSttKey] = useState("");
+  const [models, setModels] = useState<string[]>([]);
+  const [modelsKey, setModelsKey] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string>("");
+  const [saving, setSaving] = useState(false);
+
+  const loadModels = async () => {
+    if (loading) return;
+    setLoading(true);
+    setLoadError("");
+    try {
+      const res = await fetcher({
+        url: `${API}/admin/ai/models`,
+        method: "POST",
+        payload: { kind, url: url.trim(), ...(key ? { key } : {}) },
+        bodyParser: "JSON",
+      });
+      const d = res?.data as { ok?: boolean; models?: unknown; error?: string } | undefined;
+      const list = Array.isArray(d?.models) ? (d.models as unknown[]).map(String) : [];
+      if (!d?.ok) setLoadError(d?.error || ta("اتصال ناموفق"));
+      setModels(list);
+      setModelsKey((k) => k + 1);
+      if (d?.ok && !list.length) setLoadError(ta("هیچ مدلی روی سرور نیست"));
+    } catch (err) {
+      if (err instanceof FetchError) setLoadError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // the saved connection's models on open
+  useEffect(() => {
+    if (data.connection.url || data.connection.keySet) loadModels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const save = async () => {
+    if (saving) return;
+    setSaving(true);
+    try {
+      await fetcher({
+        url: `${API}/admin/ai/settings`,
+        method: "POST",
+        bodyParser: "JSON",
+        payload: {
+          connection: { kind, url: url.trim(), ...(key ? { key } : {}) },
+          features,
+          sttUrl: sttUrl.trim(),
+          ...(sttKey ? { sttKey } : {}),
+        },
+      });
+      setKey("");
+      setSttKey("");
+      pushNotification(ta("تنظیمات ذخیره شد"), "Success");
+      refresh();
+    } catch (err) {
+      if (err instanceof FetchError) pushNotification(err.message, "Error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const setFeature = (f: FeatureKey) => (next: Partial<FeatureState>) =>
+    setFeatures((prev) => ({ ...prev, [f]: { ...prev[f], ...next } }));
+
+  return (
+    <div className={base.stack}>
+      <Box className={classes.card}>
+        <h3 className={base.sectionTitle}>{ta("اتصال هوش مصنوعی")}</h3>
+        <p className={base.note}>
+          {ta("یک بار وصل کنید؛ همه‌ی بخش‌ها از همین اتصال استفاده می‌کنند. بعد «بارگذاری مدل‌ها» را بزنید و برای هر بخش مدل و دستورالعمل آن را انتخاب کنید.")}
+        </p>
+        <div className={classes.fields}>
+          <SelectInput
+            title={ta("نوع سرویس")}
+            defaultValue={kind}
+            options={{
+              ollama: ta("Ollama (سرور داخل ایران)"),
+              openai: ta("سازگار با OpenAI (OpenAI، OpenRouter، Groq، سرور داخلی و...)"),
+              anthropic: "Anthropic (Claude)",
+            }}
+            onChange={(e) => {
+              setKind(e.target.value as Kind);
+              setModels([]);
+              setModelsKey((k) => k + 1);
+            }}
+          />
+          <Input
+            key={`url-${kind}`}
+            title={ta("آدرس")}
+            defaultValue={url}
+            placeholder={urlPlaceholder[kind]}
+            inputClass={base.ltr}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          {kind !== "ollama" && (
+            <Input
+              title={ta("کلید API")}
+              type="password"
+              autoComplete="new-password"
+              defaultValue=""
+              placeholder={data.connection.keySet ? data.connection.keyPreview || "" : ""}
+              inputClass={base.ltr}
+              onChange={(e) => setKey(e.target.value)}
+            />
+          )}
+        </div>
+        {kind !== "ollama" && data.connection.keySet && (
+          <p className={base.note}>{ta("کلید ذخیره‌شده می‌ماند مگر کلید تازه وارد کنید.")}</p>
+        )}
+        {kind !== "ollama" && data.connection.keyFromEnv && (
+          <p className={base.note}>{ta("کلیدی اینجا ذخیره نشده و کلید فایل ‎.env سرور استفاده می‌شود.")}</p>
+        )}
+        <div className={base.row}>
+          <Button size="M" mode="Outline" onClick={loadModels} isLoading={loading}>
+            {ta("بارگذاری مدل‌ها")}
+          </Button>
+          {!!models.length && <span className={base.note}>{ta("${1} مدل پیدا شد", [models.length.toLocaleString(adminIntlTag())])}</span>}
+          {!!loadError && (
+            <span className={base.error} dir="auto">
+              {loadError}
+            </span>
+          )}
+        </div>
+      </Box>
+
+      {FEATURE_KEYS.map((f) => (
+        <FeatureCard
+          key={f}
+          name={f}
+          view={data.features?.[f] || { enabled: false, model: "", instruction: "", on: false, runningModel: "" }}
+          value={features[f]}
+          models={models}
+          modelsKey={modelsKey}
+          onChange={setFeature(f)}
+        />
+      ))}
+
+      <details className={classes.advanced}>
+        <summary>{ta("سرور جدای گفتار به متن (اختیاری)")}</summary>
+        <p className={base.note}>
+          {ta("فقط وقتی اتصال اصلی گفتار به متن ندارد (مثلاً Ollama)؛ یک سرور سازگار با OpenAI که Whisper دارد، مثل http://127.0.0.1:8000/v1")}
+        </p>
+        <div className={classes.fields}>
+          <Input title={ta("آدرس سرور گفتار به متن")} defaultValue={sttUrl} inputClass={base.ltr} onChange={(e) => setSttUrl(e.target.value)} />
+          <Input
+            title={ta("کلید API (اختیاری)")}
+            type="password"
+            autoComplete="new-password"
+            defaultValue=""
+            placeholder={data.sttKeySet ? data.sttKeyPreview || "" : ""}
+            inputClass={base.ltr}
+            onChange={(e) => setSttKey(e.target.value)}
+          />
+        </div>
+      </details>
+
+      <div className={classes.saveBar}>
+        <Button size="M" onClick={save} isLoading={saving}>
+          {ta("ثبت")}
+        </Button>
+        <span className={base.note}>{ta("آزمایش اتصال هر بخش با تنظیمات ذخیره‌شده انجام می‌شود؛ اول «ثبت» را بزنید.")}</span>
+      </div>
     </div>
   );
 };
@@ -135,131 +409,24 @@ const AdminAiSettingsTab = () => {
   const { data, error, mutate } = useSWR<AiSettings>(`${API}/admin/ai/settings`, (url: string) =>
     fetcher({ url }).then((res) => res.data),
   );
+  const [version, setVersion] = useState(0);
 
   return (
     <HandleLoading data={!!data} error={error}>
       {!!data && (
-        <div className={classes.stack}>
+        <div className={base.stack}>
           <WithTitle title={ta("هوش مصنوعی")}>
-            <p className={classes.note}>
-              {ta("سرویس‌دهنده، کلید و مدل‌های هوش مصنوعی سایت: ترجمه‌ی خودکار محتوا، دستیار بالینی پزشک، تبدیل گفتار به متن و دستیار گفتگو. کلیدها فقط روی سرور می‌مانند. فیلد خالی یعنی مقدار فایل ‎.env سرور.")}
-            </p>
-            <p className={classes.note}>
-              {ta("«دستیار نویان» در همه‌ی پنل‌ها، نسخه با صدا، پیشنهاد پاسخ گفتگو، خلاصه‌ی پرونده، متن پیامک و تحلیل تماس همه با «دستیار بالینی» کار می‌کنند (داده‌ی بیمار) و صدا با «گفتار به متن».")}
-            </p>
-            <p className={classes.note}>
-              {ta("نمونه‌ی نام مدل: claude-sonnet-5 (Anthropic)، gpt-4o (OpenAI)، qwen2.5:14b (Ollama). نمونه‌ی آدرس Ollama: http://10.0.0.5:11434 و آدرس گفتار به متن: http://127.0.0.1:8000/v1")}
-            </p>
-            {[data.apiKeySet && data.apiKeyPreview, data.sttKeySet && data.sttKeyPreview]
-              .filter(Boolean)
-              .map((preview) => (
-                <p key={String(preview)} className={classes.note}>
-                  {ta("کلید ذخیره‌شده: ${1}. برای تغییر، کلید جدید را وارد کنید؛ اگر خالی بماند همان کلید می‌ماند.", [String(preview)])}
-                </p>
-              ))}
-            {data.apiKeyFromEnv && (
-              <p className={classes.note}>{ta("کلیدی اینجا ذخیره نشده و کلید فایل ‎.env سرور استفاده می‌شود.")}</p>
-            )}
-            <CreateForm<AiInput>
-              key={`${data.apiKeyPreview}|${data.sttKeyPreview}|${data.aiProvider}`}
-              layout="tabs"
-              defaultValue={{
-                aiProvider: data.aiProvider,
-                aiApiKey: "",
-                aiBaseUrl: data.aiBaseUrl || "",
-                ollamaHost: data.ollamaHost || "",
-                translationAiEnabled: !!data.translationAiEnabled,
-                translationAiModel: data.translationAiModel || "",
-                clinicalAiEnabled: !!data.clinicalAiEnabled,
-                clinicalAiProvider: data.clinicalAiProvider || "ollama",
-                clinicalAiModel: data.clinicalAiModel || "",
-                sttEnabled: !!data.sttEnabled,
-                sttUrl: data.sttUrl || "",
-                sttApiKey: "",
-                sttModel: data.sttModel || "",
-                sttLanguage: data.sttLanguage || "",
-              }}
-              hookProps={{
-                path: `${API}/admin/ai/settings`,
-                method: "POST",
-                parser: "JSON",
-                successCb: () => mutate(),
-              }}
-              renderer={{
-                aiProvider: {
-                  title: ta("سرویس‌دهنده‌ی اصلی"),
-                  type: "select",
-                  options: {
-                    anthropic: "Anthropic (Claude)",
-                    openai: ta("سازگار با OpenAI (OpenAI، OpenRouter، Groq، سرور داخلی و...)"),
-                    ollama: ta("Ollama (سرور داخل ایران)"),
-                  },
-                  section: ta("اتصال"),
-                },
-                aiApiKey: {
-                  title: ta("کلید API"),
-                  type: "secret",
-                  section: ta("اتصال"),
-                },
-                aiBaseUrl: {
-                  title: ta("آدرس سرویس (Base URL)"),
-                  type: "text", ltr: true,
-                  section: ta("اتصال"),
-                },
-                ollamaHost: {
-                  title: ta("آدرس سرور Ollama"),
-                  type: "text", ltr: true,
-                  section: ta("اتصال"),
-                },
-                translationAiEnabled: { title: ta("ترجمه‌ی خودکار محتوا"), type: "bool", section: ta("ترجمه") },
-                translationAiModel: {
-                  title: ta("مدل ترجمه"),
-                  type: "text", ltr: true,
-                  section: ta("ترجمه"),
-                },
-                clinicalAiEnabled: { title: ta("دستیار بالینی پزشک"), type: "bool", section: ta("دستیار بالینی") },
-                clinicalAiProvider: {
-                  title: ta("محل پردازش داده‌ی بیمار"),
-                  type: "select",
-                  options: {
-                    ollama: ta("سرور Ollama داخلی (پیشنهادی)"),
-                    cloud: ta("سرویس‌دهنده‌ی اصلی (ابری)"),
-                  },
-                  section: ta("دستیار بالینی"),
-                },
-                clinicalAiModel: { title: ta("مدل دستیار بالینی"), type: "text", ltr: true, section: ta("دستیار بالینی") },
-                sttEnabled: { title: ta("تبدیل گفتار به متن (نسخه‌نویس ویزیت)"), type: "bool", section: ta("گفتار به متن") },
-                sttUrl: {
-                  title: ta("آدرس سرور گفتار به متن"),
-                  type: "text", ltr: true,
-                  section: ta("گفتار به متن"),
-                },
-                sttApiKey: {
-                  title: ta("کلید API (اختیاری)"),
-                  type: "secret",
-                  section: ta("گفتار به متن"),
-                },
-                sttModel: { title: ta("مدل (پیش‌فرض whisper-1)"), type: "text", ltr: true, section: ta("گفتار به متن") },
-                sttLanguage: { title: ta("زبان گفتار (پیش‌فرض fa)"), type: "text", ltr: true, section: ta("گفتار به متن") },
+            <AiSettingsForm
+              key={version}
+              data={data}
+              refresh={async () => {
+                await mutate();
+                setVersion((v) => v + 1);
               }}
             />
           </WithTitle>
-
-          <Box className={classes.box}>
-            <h3 className={classes.sectionTitle}>{ta("وضعیت و آزمایش اتصال")}</h3>
-            <p className={classes.note}>{ta("هر آزمایش یک درخواست کوتاه واقعی با تنظیمات ذخیره‌شده می‌فرستد. اول «ثبت» را بزنید.")}</p>
-            <TestRow feature="translation" title={ta("ترجمه‌ی خودکار محتوا")} status={data.status?.translation} />
-            <TestRow feature="clinical" title={ta("دستیار بالینی پزشک")} status={data.status?.clinical} />
-            <TestRow feature="stt" title={ta("تبدیل گفتار به متن")} status={data.status?.stt} />
-            <TestRow
-              feature="ollama"
-              title={ta("سرور Ollama (دستیار گفتگو)")}
-              status={data.status?.chat?.on ? { on: true, provider: "ollama" } : { on: false }}
-            />
-          </Box>
-
-          {!!data.ollamaHost && (
-            <WithTitle title={ta("دستیار گفتگو: مدل‌ها و دستورالعمل‌ها")}>
+          {data.connection.kind === "ollama" && !!data.connection.url && (
+            <WithTitle title={ta("مدل‌های سرور Ollama و تنظیمات پیشرفته‌ی دستیار گفتگو")}>
               <AdminManageOllamaPage />
             </WithTitle>
           )}

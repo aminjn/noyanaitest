@@ -4442,7 +4442,7 @@
  "faiAgain": "Erneut analysieren",
  "faiClose": "Schließen",
  "faiDraftNote": "Von der KI aus den Zahlen dieser Bücher geschrieben; prüfen Sie die Zahlen vor einer Entscheidung in den Berichten.",
- "faiOff": "Der Finanz-KI-Assistent ist auf diesem Server nicht aktiviert. Die Seitenverwaltung aktiviert ihn unter Systemeinstellungen → KI (klinischer Assistent).",
+ "faiOff": "Der Finanz-KI-Assistent ist auf diesem Server nicht eingeschaltet. Der Seitenbetreiber schaltet ihn unter Systemeinstellungen → KI → Finanzassistent ein.",
  "faiOpenSettings": "KI-Einstellungen",
  "faiInCountry": "Verarbeitung auf dem inländischen Server (Daten bleiben im Land)",
  "faiCloud": "Verarbeitung durch den von der Verwaltung gewählten Cloud-Dienst; Patientennamen werden nicht gesendet",
