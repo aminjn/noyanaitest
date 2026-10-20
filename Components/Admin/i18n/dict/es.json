@@ -4069,5 +4069,6 @@
  "نوع سرویس": "Tipo de servicio",
  "کلید ذخیره‌شده می‌ماند مگر کلید تازه وارد کنید.": "La clave guardada se mantiene salvo que introduzca una nueva.",
  "گفتگوی بیماران در دستیار سلامت سایت؛ فقط با سرور Ollama": "Conversaciones de pacientes en el asistente de salud del sitio; solo con servidor Ollama",
- "یک بار وصل کنید؛ همه‌ی بخش‌ها از همین اتصال استفاده می‌کنند. بعد «بارگذاری مدل‌ها» را بزنید و برای هر بخش مدل و دستورالعمل آن را انتخاب کنید.": "Conéctese una vez; todas las secciones usan esta conexión. Luego pulse Cargar modelos y elija el modelo y la instrucción de cada sección."
+ "یک بار وصل کنید؛ همه‌ی بخش‌ها از همین اتصال استفاده می‌کنند. بعد «بارگذاری مدل‌ها» را بزنید و برای هر بخش مدل و دستورالعمل آن را انتخاب کنید.": "Conéctese una vez; todas las secciones usan esta conexión. Luego pulse Cargar modelos y elija el modelo y la instrucción de cada sección.",
+ "کلید API (اگر سرور کلید دارد)": "Clave API (si el servidor la tiene)"
 }
