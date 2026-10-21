@@ -23,6 +23,12 @@ import AdminManageSmsPatternsPage from "../SmsPatterns/AdminManageSmsPatternsPag
 export interface IAppConfig extends MongoDoc {
   singleton: "SINGLETON";
 
+  // search-engine ownership (Components/Admin/Seo/AdminSiteVerificationTab)
+  googleVerifyFiles?: string[];
+  googleVerifyMeta?: string;
+  bingVerifyMeta?: string;
+  yandexVerifyMeta?: string;
+
   sipHost: string;
   sipUsername: string;
   sipPassword: string;
