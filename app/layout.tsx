@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { getSiteVerification } from "@/Components/helpers/siteVerification";
 import localFont from "next/font/local";
 import "./globals.css";
 import Layout from "@/Components/Layout/Layout";
@@ -73,8 +74,15 @@ export const generateMetadata = async (): Promise<Metadata> => {
   const locale = isLocale(headerLocale) ? headerLocale : site.default;
   const messages = await getMessages(locale);
   const brand = messages.aboutTitleNoyan || "NoyanAI";
+  // Search Console / Bing / Yandex ownership tags, set by the super admin
+  const verify = await getSiteVerification();
   return {
     ...baseMetadata,
+    verification: {
+      ...(verify.google ? { google: verify.google } : {}),
+      ...(verify.yandex ? { yandex: verify.yandex } : {}),
+      ...(verify.bing ? { other: { "msvalidate.01": verify.bing } } : {}),
+    },
     title: { default: messages.siteTitle || brand, template: `%s | ${brand}` },
     description: messages.footerText,
     alternates: localeAlternates(site.enabled),

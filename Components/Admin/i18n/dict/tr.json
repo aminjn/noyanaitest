@@ -4070,5 +4070,13 @@
  "کلید ذخیره‌شده می‌ماند مگر کلید تازه وارد کنید.": "Yeni anahtar girmedikçe kayıtlı anahtar kalır.",
  "گفتگوی بیماران در دستیار سلامت سایت؛ فقط با سرور Ollama": "Sitenin sağlık asistanında hasta sohbetleri; yalnızca Ollama sunucusu",
  "یک بار وصل کنید؛ همه‌ی بخش‌ها از همین اتصال استفاده می‌کنند. بعد «بارگذاری مدل‌ها» را بزنید و برای هر بخش مدل و دستورالعمل آن را انتخاب کنید.": "Bir kez bağlanın; tüm bölümler bu bağlantıyı kullanır. Sonra Modelleri yükle’ye basın ve her bölüm için model ile talimatı seçin.",
- "کلید API (اگر سرور کلید دارد)": "API anahtarı (sunucuda varsa)"
+ "کلید API (اگر سرور کلید دارد)": "API anahtarı (sunucuda varsa)",
+ "تأیید مالکیت": "Sahiplik doğrulama",
+ "تأیید مالکیت سایت در موتورهای جستجو": "Arama motorlarında site sahipliği doğrulama",
+ "فایل تأیید گوگل (روش HTML file)": "Google doğrulama dosyası (HTML file yöntemi)",
+ "فقط نام فایلی را که سرچ کنسول می‌دهد بنویسید، مثل google3643291f8ce14994.html. سایت خودش آن را سر آدرس اصلی نشان می‌دهد؛ بعد در سرچ کنسول «Verify» را بزنید.": "Yalnızca Search Console'un verdiği dosya adını yazın, ör. google3643291f8ce14994.html. Site onu ana adreste kendisi sunar; ardından Search Console'da «Verify»a basın.",
+ "کد تأیید گوگل (روش HTML tag)": "Google doğrulama kodu (HTML tag yöntemi)",
+ "کد content یا کل تگ meta را بچسبانید.": "content kodunu veya meta etiketinin tamamını yapıştırın.",
+ "کد تأیید بینگ (msvalidate.01)": "Bing doğrulama kodu (msvalidate.01)",
+ "کد تأیید یاندکس": "Yandex doğrulama kodu"
 }

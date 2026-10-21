@@ -7,10 +7,12 @@ import AdminManagePageMetaListPage from "@/Components/Admin/PageMeta/AdminManage
 import AdminManageShortLinksPage from "@/Components/Admin/ShortLink/AdminManageShortLinksPage";
 import AdminManageRedirectionsPage from "@/Components/Admin/Redirection/AdminManageRedirectionsPage";
 import AdminSeoTemplatesPage from "@/Components/Admin/Seo/AdminSeoTemplatesPage";
+import AdminSiteVerificationTab from "@/Components/Admin/Seo/AdminSiteVerificationTab";
 
 // سئو و لینک‌ها (2026-09 audit): page metadata, short links and redirects
 // were three menu items. «سئوی خودکار» (2026-10): per-type templates that
-// describe every page from its own record.
+// describe every page from its own record. «تأیید مالکیت» (2026-10): the
+// Search Console / Bing / Yandex ownership codes the site serves itself.
 const SeoHub = () => {
   const canOpen = useHubTabAccess();
   return (
@@ -40,6 +42,12 @@ const SeoHub = () => {
           title: ta("ریدایرکت‌ها"),
           exclude: !canOpen("Redirection"),
           content: <AdminManageRedirectionsPage />,
+        },
+        {
+          id: "verification",
+          title: ta("تأیید مالکیت"),
+          exclude: !canOpen("admin"),
+          content: <AdminSiteVerificationTab />,
         },
       ]}
     />

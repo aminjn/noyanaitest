@@ -4070,5 +4070,13 @@
  "کلید ذخیره‌شده می‌ماند مگر کلید تازه وارد کنید.": "La clave guardada se mantiene salvo que introduzca una nueva.",
  "گفتگوی بیماران در دستیار سلامت سایت؛ فقط با سرور Ollama": "Conversaciones de pacientes en el asistente de salud del sitio; solo con servidor Ollama",
  "یک بار وصل کنید؛ همه‌ی بخش‌ها از همین اتصال استفاده می‌کنند. بعد «بارگذاری مدل‌ها» را بزنید و برای هر بخش مدل و دستورالعمل آن را انتخاب کنید.": "Conéctese una vez; todas las secciones usan esta conexión. Luego pulse Cargar modelos y elija el modelo y la instrucción de cada sección.",
- "کلید API (اگر سرور کلید دارد)": "Clave API (si el servidor la tiene)"
+ "کلید API (اگر سرور کلید دارد)": "Clave API (si el servidor la tiene)",
+ "تأیید مالکیت": "Verificación de propiedad",
+ "تأیید مالکیت سایت در موتورهای جستجو": "Verificación de propiedad del sitio en buscadores",
+ "فایل تأیید گوگل (روش HTML file)": "Archivo de verificación de Google (método HTML file)",
+ "فقط نام فایلی را که سرچ کنسول می‌دهد بنویسید، مثل google3643291f8ce14994.html. سایت خودش آن را سر آدرس اصلی نشان می‌دهد؛ بعد در سرچ کنسول «Verify» را بزنید.": "Escriba solo el nombre del archivo que da Search Console, p. ej. google3643291f8ce14994.html. El sitio lo sirve en su dirección raíz; luego pulse «Verify» en Search Console.",
+ "کد تأیید گوگل (روش HTML tag)": "Código de verificación de Google (método HTML tag)",
+ "کد content یا کل تگ meta را بچسبانید.": "Pegue el código content o la etiqueta meta completa.",
+ "کد تأیید بینگ (msvalidate.01)": "Código de verificación de Bing (msvalidate.01)",
+ "کد تأیید یاندکس": "Código de verificación de Yandex"
 }

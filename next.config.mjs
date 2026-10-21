@@ -85,6 +85,8 @@ const nextConfig = {
   async rewrites() {
     return {
       beforeFiles: [
+        // Search Console's verification file (app/site-verification)
+        { source: "/:file(google[0-9a-f]{8,32}\\.html)", destination: "/site-verification/:file" },
         { source: `/:locale(${LOCALE_PATTERN})`, destination: "/" },
         { source: `/:locale(${LOCALE_PATTERN})/:path*`, destination: "/:path*" },
       ],
